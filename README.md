@@ -1,5 +1,7 @@
 # fa
 
+[![Build Status](https://app.bitrise.io/app/2e97ae983a0baf63/status.svg?token=Kg4JDljz_pyEiCAGiUsi3A&branch=master)](https://app.bitrise.io/app/2e97ae983a0baf63)
+
 A new Flutter project.
 
 ## Getting Started
