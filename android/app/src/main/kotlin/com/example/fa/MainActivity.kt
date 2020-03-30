@@ -1,4 +1,4 @@
-package com.example.fa
+package com.bitgap.3fa
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
