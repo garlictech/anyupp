@@ -15,6 +15,7 @@ const SCHEMA_ROOT = join(process.cwd(), 'libs/graphql/schema/src');
         path: `${SCHEMA_ROOT}/lib/api.ts`,
         emitTypenameField: true,
         outputAs: 'class',
+        installSubscriptionHandlers: true,
       },
     }),
     GraphqlResolversModule,
