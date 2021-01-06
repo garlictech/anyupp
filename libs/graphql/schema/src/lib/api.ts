@@ -1,54 +1,22 @@
-import gql from 'graphql-tag';
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
-/** All built-in and custom scalars, mapped to their actual values */
-export interface Scalars {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+
+/** ------------------------------------------------------
+ * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+ * -------------------------------------------------------
+ */
+
+/* tslint:disable */
+/* eslint-disable */
+export class AdminUser {
+    __typename?: 'AdminUser';
+    email?: string;
+    name?: string;
+    phone?: string;
 }
 
-export interface AdminUser {
-  __typename?: 'AdminUser';
-  email?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
+export abstract class IQuery {
+    __typename?: 'IQuery';
+
+    abstract hello(): string | Promise<string>;
+
+    abstract getAdminUser(id: string): AdminUser | Promise<AdminUser>;
 }
-
-export interface Query {
-  __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
-  getAdminUser?: Maybe<AdminUser>;
-}
-
-export interface QueryGetAdminUserArgs {
-  id: Scalars['String'];
-}
-
-export type GetAdminUserQueryVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-export type GetAdminUserQuery = { __typename?: 'Query' } & {
-  getAdminUser?: Maybe<
-    { __typename?: 'AdminUser' } & Pick<AdminUser, 'email' | 'name' | 'phone'>
-  >;
-};
-
-export const GetAdminUser = gql`
-  query GetAdminUser($id: String!) {
-    getAdminUser(id: $id) {
-      email
-      name
-      phone
-    }
-  }
-`;
