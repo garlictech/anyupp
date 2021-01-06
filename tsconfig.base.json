@@ -16,8 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@bgap/graphql/resolvers": ["libs/graphql/resolvers/src/index.ts"],
-      "@bgap/graphql/schema": ["libs/graphql/schema/src/index.ts"]
+      "@bgap/graphql/schema": ["libs/graphql/schema/src/index.ts"],
+      "@bgap/graphql/resolvers": ["libs/graphql/resolvers/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

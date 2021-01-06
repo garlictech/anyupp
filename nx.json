@@ -32,10 +32,10 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-server": {
+    "graphql-schema": {
       "tags": []
     },
-    "graphql-schema": {
+    "graphql-server": {
       "tags": []
     },
     "graphql-resolvers": {

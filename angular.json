@@ -139,6 +139,32 @@
         }
       }
     },
+    "graphql-schema": {
+      "root": "libs/graphql/schema",
+      "sourceRoot": "libs/graphql/schema/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/graphql/schema/tsconfig.lib.json",
+              "libs/graphql/schema/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/graphql/schema/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/graphql/schema/jest.config.js",
+            "tsConfig": "libs/graphql/schema/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "graphql-server": {
       "root": "apps/graphql-server",
       "sourceRoot": "apps/graphql-server/src",
@@ -189,32 +215,6 @@
           "options": {
             "jestConfig": "apps/graphql-server/jest.config.js",
             "tsConfig": "apps/graphql-server/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "graphql-schema": {
-      "root": "libs/graphql/schema",
-      "sourceRoot": "libs/graphql/schema/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/graphql/schema/tsconfig.lib.json",
-              "libs/graphql/schema/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/graphql/schema/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/graphql/schema/jest.config.js",
-            "tsConfig": "libs/graphql/schema/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
