@@ -1,0 +1,86 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.openingHours' | translate }}</legend>
+  <table>
+    <tr *ngFor="let day of dayKeys">
+      <td class="caption">{{ 'common.days.' + day | translate }}:</td>
+      <td>
+        <input
+          nbInput
+          fieldSize="small"
+          [placeholder]="'common.hmPlaceholder' | translate"
+          [formControl]="scheduleControl['controls'][day]['controls'].from"
+          [status]="
+            scheduleControl['controls'][day]['controls'].from.touched &&
+            (scheduleControl['controls'][day]['controls'].from.errors?.required ||
+              scheduleControl['controls'][day]['controls'].from.invalid)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+      </td>
+      <td>-</td>
+      <td>
+        <input
+          nbInput
+          fieldSize="small"
+          [placeholder]="'common.hmPlaceholder' | translate"
+          [formControl]="scheduleControl['controls'][day]['controls'].to"
+          [status]="
+            scheduleControl['controls'][day]['controls'].to.touched &&
+            (scheduleControl['controls'][day]['controls'].to.errors?.required ||
+              scheduleControl['controls'][day]['controls'].to.invalid)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+      </td>
+    </tr>
+  </table>
+
+  <hr />
+  <div class="label">
+    {{ 'common.days.custom' | translate }}
+
+    <button nbButton type="button" shape="round" size="tiny" class="float-right" (click)="addCustomDate()">
+      <nb-icon icon="plus-outline"></nb-icon>
+    </button>
+
+    <div class="clearfix"></div>
+
+    <table>
+      <tr *ngFor="let customDay of scheduleControl['controls'].override['controls']; index as i">
+        <td>
+          <input nbInput fieldSize="small" [formControl]="customDay.controls.date" type="date" />
+        </td>
+        <td>
+          <input
+            nbInput
+            fieldSize="small"
+            [placeholder]="'common.hmPlaceholder' | translate"
+            [formControl]="customDay.controls.from"
+            [status]="
+              customDay.controls.from.touched &&
+              (customDay.controls.from.errors?.required || customDay.controls.from.invalid)
+                ? 'danger'
+                : 'basic'
+            "
+          />
+        </td>
+        <td>-</td>
+        <td>
+          <input
+            nbInput
+            fieldSize="small"
+            [placeholder]="'common.hmPlaceholder' | translate"
+            [formControl]="customDay.controls.to"
+            [status]="
+              customDay.controls.to.touched && (customDay.controls.to.errors?.required || customDay.controls.to.invalid)
+                ? 'danger'
+                : 'basic'
+            "
+          />
+        </td>
+      </tr>
+    </table>
+  </div>
+</fieldset>

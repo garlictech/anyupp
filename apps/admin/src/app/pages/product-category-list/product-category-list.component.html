@@ -1,0 +1,21 @@
+<nb-card class="h-100 mb-0">
+  <nb-card-header>
+    <div class="float-left">
+      {{ 'productCategories.listTitle' | translate }}
+    </div>
+    <button nbButton type="button" shape="round" size="small" class="float-right" (click)="addProductCategory()">
+      <nb-icon icon="plus-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list-item *ngFor="let productCategory of productCategories; first as isFirst; last as isLast">
+      <app-product-category-list-item
+        class="w-100"
+        [productCategory]="productCategory"
+        (positionChange)="positionChange($event)"
+        [isFirst]="isFirst"
+        [isLast]="isLast"
+      ></app-product-category-list-item>
+    </nb-list-item>
+  </nb-card-body>
+</nb-card>

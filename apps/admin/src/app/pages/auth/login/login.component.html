@@ -1,0 +1,17 @@
+<nb-layout center>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-body>
+        <h1 class="title">
+          AnyUpp Login <sup>{{ env.name }}</sup>
+        </h1>
+
+        <app-login-form *ngIf="formMode === EFormMode.LOGIN" [toggleResetForm]="toggleResetForm"></app-login-form>
+        <app-password-reset-form
+          *ngIf="formMode === EFormMode.RESET"
+          [toggleResetForm]="toggleResetForm"
+        ></app-password-reset-form>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

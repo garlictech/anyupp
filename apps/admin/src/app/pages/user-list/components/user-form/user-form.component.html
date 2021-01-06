@@ -1,0 +1,21 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">{{ (user && user._id ? 'users.editUser' : 'users.newUser') | translate }}</div>
+    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+      <app-form-text-input caption="common.name" type="text" [control]="dialogForm.controls.name"></app-form-text-input>
+
+      <app-form-contact-group [contactFormGroup]="dialogForm"></app-form-contact-group>
+
+      <div class="mt-20">
+        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

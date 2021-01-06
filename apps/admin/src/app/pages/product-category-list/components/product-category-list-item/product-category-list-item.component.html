@@ -1,0 +1,17 @@
+<nb-user
+  class="float-left"
+  [name]="productCategory.name | localize"
+  [title]="productCategory.description | localize"
+  [picture]="productCategory.image"
+></nb-user>
+
+<button nbButton shape="round" size="tiny" class="float-right" [title]="'common.edit' | translate" (click)="editProductCategory()">
+  <nb-icon icon="edit-outline"></nb-icon>
+</button>
+
+<button [hidden]="isLast" nbButton shape="round" size="tiny" class="float-right mr-2" [title]="'products.moveDown' | translate" (click)="moveDown()">
+  <nb-icon icon="chevron-down"></nb-icon>
+</button>
+<button [hidden]="isFirst" nbButton shape="round" size="tiny" class="float-right mr-2" [title]="'products.moveUp' | translate" (click)="moveUp()">
+  <nb-icon icon="chevron-up"></nb-icon>
+</button>

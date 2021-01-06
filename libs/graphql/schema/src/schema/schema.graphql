@@ -1,0 +1,10 @@
+type AdminUser {
+  email: String
+  name: String
+  phone: String
+}
+
+type Query {
+  hello: String
+  getAdminUser(id: String!): AdminUser
+}

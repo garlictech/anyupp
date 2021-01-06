@@ -1,0 +1,39 @@
+::ng-deep nb-action.active nb-icon {
+  color: #222b45;
+}
+
+::ng-deep nb-action.inactive nb-icon {
+  opacity: 0.4;
+}
+
+::ng-deep .resized .font-larger {
+  font-size: larger !important;
+}
+
+::ng-deep .resized nb-icon {
+  font-size: x-large !important;
+}
+
+::ng-deep .resized nb-badge.ready-count {
+  margin-right: 0.9rem !important;
+}
+
+::ng-deep .resized nb-badge.items-count {
+  top: -2px !important;
+  position: relative !important;
+}
+
+::ng-deep .clock-container {
+  font-size: xx-large;
+  display: block;
+  position: absolute;
+  top: 20px;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+
+  nb-badge.clock {
+    font-size: xx-large !important;
+    position: relative !important;
+  }
+}

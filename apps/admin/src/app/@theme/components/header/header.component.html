@@ -1,0 +1,37 @@
+<div class="header-left-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+
+    <!--strong>{{ 'appTitle' | translate }}</strong>
+    <sup class="ml-1 label-2">{{ env.name }}</sup-->
+
+    <!-- CHAIN SELECT -->
+    <app-active-chain-selector></app-active-chain-selector>
+
+    <!-- GROUP SELECT -->
+    <app-active-group-selector></app-active-group-selector>
+
+    <!-- UNIT SELECT -->
+    <app-active-unit-selector></app-active-unit-selector>
+  </div>
+</div>
+
+<div class="header-right-container" *ngIf="adminUser">
+  <!-- USER MENU -->
+  <nb-actions size="small">
+    <nb-action class="user-action">
+      <button nbButton shape="round" class="mr-2" status="control" [nbContextMenu]="languageMenu">
+        {{ selectedLang }}
+      </button>
+
+      <nb-user
+        [nbContextMenu]="userMenu"
+        [onlyPicture]="userPictureOnly"
+        [name]="userName"
+        [picture]="userImage"
+      ></nb-user>
+    </nb-action>
+  </nb-actions>
+</div>

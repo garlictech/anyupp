@@ -1,0 +1,47 @@
+<nb-card class="h-100">
+  <nb-card-header class="p-1">
+    <nb-actions [size]="buttonSize" class="pb-2 pt-2" fullWidth>
+      <nb-action
+        icon="clock-outline"
+        [badgeText]="placedOrders.length > 0 ? placedOrders.length : ''"
+        badgePosition="bottom right"
+        badgeStatus="warning"
+        [ngClass]="dashboardSettings.ticketListType === EDashboardTicketListType.PLACED ? 'active' : 'inactive'"
+        (click)="selectListType(EDashboardTicketListType.PLACED)"
+      ></nb-action>
+      <nb-action
+        icon="checkmark-circle-2-outline"
+        [badgeText]="uniqueReadyOrdersCount > 0 ? uniqueReadyOrdersCount : ''"
+        badgePosition="bottom right"
+        badgeStatus="info"
+        [ngClass]="dashboardSettings.ticketListType === EDashboardTicketListType.READY ? 'active' : 'inactive'"
+        (click)="selectListType(EDashboardTicketListType.READY)"
+      ></nb-action>
+      <nb-action
+        icon="alert-circle-outline"
+        [badgeText]="uniquePaymentUsersCount > 0 ? uniquePaymentUsersCount : ''"
+        badgePosition="bottom right"
+        badgeStatus="danger"
+        [ngClass]="
+          dashboardSettings.ticketListType === EDashboardTicketListType.PAYMENT_INTENTION ? 'active' : 'inactive'
+        "
+        (click)="selectListType(EDashboardTicketListType.PAYMENT_INTENTION)"
+      ></nb-action>
+    </nb-actions>
+  </nb-card-header>
+  <nb-card-body class="p-2">
+    <nb-list-item
+      *ngFor="let order of filteredOrders; trackBy: trackByFn"
+      (click)="selectOrder(order)"
+      [ngClass]="{ selectedOrder: order._id === selectedOrder?._id }"
+    >
+      <app-order-ticket-list-item
+        class="w-100"
+        [order]="order"
+        [showMarkers]="true"
+        [selectedOrderUserId]="selectedOrder?.userId"
+        [ticketListType]="dashboardSettings.ticketListType"
+      ></app-order-ticket-list-item>
+    </nb-list-item>
+  </nb-card-body>
+</nb-card>

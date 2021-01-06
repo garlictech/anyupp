@@ -1,0 +1,17 @@
+<nb-layout windowMode>
+  <nb-layout-header fixed>
+    <app-header></app-header>
+  </nb-layout-header>
+
+  <nb-sidebar class="menu-sidebar" state="compacted" tag="menu-sidebar">
+    <nb-menu [items]="menu"></nb-menu>
+
+    <div class="caption version-info" (click)="reloadWindow()">
+      {{ 'appTitle' | translate }} <sup>{{ env.name }}</sup>
+    </div>
+  </nb-sidebar>
+
+  <nb-layout-column class="p-3">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

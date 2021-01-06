@@ -1,0 +1,276 @@
+{
+  "appTitle": "AnyUpp",
+  "common": {
+    "name": "Név",
+    "nameEN": "Név (EN)",
+    "nameDE": "Név (DE)",
+    "nameHU": "Név (HU)",
+    "edit": "Szerkesztés",
+    "color": "Szín",
+    "description": "Leírás",
+    "descriptionEN": "Leírás (EN)",
+    "descriptionDE": "Leírás (DE)",
+    "descriptionHU": "Leírás (HU)",
+    "isActive": "Aktív",
+    "confirm": "Megerősítés",
+    "cancel": "Mégse",
+    "ok": "OK",
+    "yes": "Igen",
+    "no": "Nem",
+    "email": "Email",
+    "chain": "Chain",
+    "image": "Kép",
+    "title": "Cím",
+    "group": "Group",
+    "unit": "Unit",
+    "currency": "Pénznem",
+    "taxPercent": "Adó (%)",
+    "from": "-tól",
+    "to": "-ig",
+    "language": "Nyelv",
+    "type": "Típus",
+    "lang": {
+      "english": "Angol",
+      "german": "Német",
+      "hungarian": "Magyar"
+    },
+    "productCategory": "Termék kategória",
+    "productType": "Termék típus",
+    "contact": {
+      "contact": "Kapcsolat",
+       "country": "Ország",
+       "postalCode": "Irányítószám",
+       "city": "Település",
+       "address": "Cím",
+       "locationLat": "Lokáció (lat)",
+       "locationLng": "Lokáció (lng)"
+    },
+    "submit": "Elküld",
+    "imageUploadSuccess": "Sikeres képfeltöltés",
+    "imageRemoveSuccess": "Sikeres kép törlés",
+    "insertSuccessful": "Sikeres beszúrás",
+    "updateSuccessful": "Sikeres frissítés",
+    "days": {
+      "mon": "Hétfő",
+      "tue": "Kedd",
+      "wed": "Szerda",
+      "thu": "Csütörtök",
+      "fri": "Péntek",
+      "sat": "Szombat",
+      "sun": "Vasárnap",
+      "custom": "Egyedi dátumok"
+    },
+    "hmPlaceholder": "óó:pp",
+    "paymentModes": {
+      "title": "Fizetési módok",
+      "inapp": "Online",
+      "cash": "Készpénz",
+      "card": "Kártya"
+    },
+    "sum": "Összesen",
+    "width": "szélesség",
+    "height": "magasság"
+  },
+  "menu": {
+    "dashboard": "Vezérlőpult",
+    "products": "Termékek",
+    "productCategories": "Termék kategóriák",
+    "units": "Units",
+    "groups": "Groups",
+    "chains": "Chains",
+    "users": "Felhasználók",
+    "admins": "Adminisztrátorok"
+  },
+  "header": {
+    "profile": "Profile",
+    "logout": "Kijelentkezés"
+  },
+  "dashboard": {
+    "listTitle": "Vezérlőpult",
+    "isAcceptingOrders": "Rendeléseket fogad",
+    "defaultLane": "Default",
+    "reports": {
+      "salesPerType": "Termék típusok",
+      "salesPerPaymentMethod": "Fizetési típusok",
+      "uniqueUsers": "Egyedi vásárlók",
+      "ordersAmount": "Megrendelések összege",
+      "ordersCount": "Megrendelések száma",
+      "dayHistory": "Napi történet",
+      "historyToday": "Ma",
+      "history1W": "1H",
+      "history1Y": "1É",
+      "hourlyBreakdown": "Óránkénti bontás"
+    }
+  },
+  "chains": {
+    "listTitle": "Chainek",
+    "editChain": "Chain szerkesztése",
+    "newChain": "Új chain",
+    "style": {
+      "style": "Stílus",
+      "colors": {
+        "textDark": "Szöveg (sötét)",
+        "textLight": "Szöveg (világos)",
+        "backgroundDark": "Háttér (sötét)",
+        "backgroundLight": "Háttér (világos)",
+        "borderDark": "Keret (sötét)",
+        "borderLight": "Keret (világos)",
+        "highlight": "Kiemelés",
+        "indicator": "Indikátor",
+        "disabled": "Inaktív"
+      },
+      "images": {
+        "logo": "Logo",
+        "header": "Fejléc"
+      }
+    }
+  },
+  "products": {
+    "listTitle": "Termékek",
+    "chainProducts": "Chain termékek",
+    "groupProducts": "Group termékek",
+    "unitProducts": "Unit termékek",
+    "editProduct": "Termék szerkesztése",
+    "extendProduct": "Termék származtatása",
+    "newProduct": "Új termék",
+    "availability": "Elérhetőség",
+    "isAvailable": "Elérhető",
+    "isVisible": "Látható",
+    "position": "Pozíció",
+    "contains": "Összetétel",
+    "allergens": {
+      "title": "Allergének",
+      "lactose": "Laktóz",
+      "nuts": "Mogyoró"
+    },
+    "ingredients": {
+      "title": "Hozzávalók"
+    },
+    "variants": "Variánsok",
+    "packSize": "Pack size",
+    "packUnit": "Pack unit",
+    "refPrice": "Referencia ár",
+    "price": "Ár",
+    "variantName": "Variáns név",
+    "variantNameEN": "Variáns név (EN)",
+    "variantNameDE": "Variáns név (DE)",
+    "variantNameHU": "Variáns név (HU)",
+    "basicInfo": "Alapadatok",
+    "always": "Mindig",
+    "weekly": "Heti",
+    "seasonal": "Szezonális",
+    "dayFrom": "Nap -tól",
+    "dayTo": "Nap -ig",
+    "timeFrom": "Idő -től",
+    "timeTo": "Idő -ig",
+    "addVariant": "Variáns hozzáadása",
+    "addAvailability": "Elérhetőség hozzáadása",
+    "moveDown": "Mozgatás lefelé",
+    "moveUp": "Mozgatás felfelé",
+    "lane": "Pálya",
+    "productType": {
+      "drink": "Ital",
+      "food": "Étel",
+      "other": "Egyéb"
+    },
+    "takeaway": "Elvitelre"
+  },
+  "productCategories": {
+    "listTitle": "Termék kategóriák",
+    "editProductCategory": "Kategória szerkesztése",
+    "newProductCategory": "Új kategória"
+  },
+  "groups": {
+    "listTitle": "Groupok",
+    "editGroup": "Group szerkesztése",
+    "newGroup": "Új group"
+  },
+  "units": {
+    "listTitle": "Unitok",
+    "editUnit": "Unit szerkesztése",
+    "newUnit": "Új unit",
+    "open": "Nyitva",
+    "openFrom": "Nyitva -tól",
+    "openTo": "Nyitva -ig",
+    "openingHours": "Nyitvatartás",
+    "locateOnMap": "Mutasd a térképen",
+    "lanes": "Pályák",
+    "addLane": "Pálya hozzáadása",
+    "regenerateMenu": "Étlap újragenerálása",
+    "editFloorMap": "Alaprajz szerkesztése",
+    "table": "Asztal",
+    "seat": "Szék",
+    "counter": "Pult",
+    "wall": "Fal",
+    "label": "Felirat",
+    "tableId": "Asztal ID",
+    "seatId": "Szék ID"
+  },
+  "users": {
+    "listTitle": "Felhasználók",
+    "editUser": "Felhasználó szerkesztése",
+    "newUser": "Új felhasználó"
+  },
+  "adminUsers": {
+    "listTitle": "Adminisztrátorok",
+    "editAdminUser": "Adminisztrátor szerkesztése",
+    "newAdminUser": "Új adminisztrátor",
+    "editAdminUserRole": "Adminisztrátori jogok szerkesztése"
+  },
+  "orders": {
+    "listTitle": "Megrendelések",
+    "ordersAccepted": "Rendelések fogadva",
+    "ordersBlocked": "Rendelések tiltva",
+    "orderDetails": "Rendelés részletei",
+    "confirmIsAcceptOrder": "Biztosan engedélyezed a rendelések fogadását?",
+    "confirmNotAcceptOrder": "Biztosan letiltod a rendelések fogadását?",
+    "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
+    "userOrdersCount": "{{ count }} rendelés",
+    "status": {
+      "PLACED": "Placed",
+      "PROCESSING": "Processing",
+      "READY": "Ready",
+      "SERVED": "Served",
+      "WAITING_FOR_PAYMENT": "Waiting for payment",
+      "PAID": "Paid",
+      "FAILED": "Failed",
+      "REJECTED": "Rejected"
+    }
+  },
+  "print": {
+    "items": "Tételek",
+    "vatDetails": "ÁFA részletezés"
+  },
+  "auth": {
+    "login": "Bejelentkezés",
+    "password": "Jelszó",
+    "authFailed": "Azonosítás sikertelen",
+    "forgottenPassword": "Elfelejtett jelszó",
+    "sendResetEmail": "Jelszó visszaállítás email küldése",
+    "reminderSent": "Emlékeztető elküldve",
+    "reminderError": "Hiba az emlékeztető elküldésekor"
+  },
+  "roles": {
+    "role": "Jog",
+    "roles": "Jogok",
+    "editRoles": "Jogok szerkesztése",
+    "superuser": "Superuser",
+    "chainAdmin": "Chain adminisztrátor",
+    "groupAdmin": "Group adminisztrátor",
+    "unitAdmin": "Unit adminisztrátor",
+    "staff": "Személyzet",
+    "inactive": "Inaktív",
+    "addChain": "Chain hozzáadása",
+    "selectChain": "Chain kiválasztása",
+    "assignedChains": "Hozzárendelt chainek",
+    "selectGroup": "Group kiválasztása",
+    "assignedGroups": "Hozzárendelt groupok",
+    "selectUnit": "Unit kiválasztása",
+    "assignedUnits": "Hozzárendelt unit",
+    "assign": "Hozzárendelés"
+  },
+  "errors": {
+    "availabilityWeeklyDateInterval": "A nyitó nap kisebb kell legyen, mint a záró!",
+    "availabilityWeeklyTimeInterval": "A nyitó óra kisebb kell legyen, mint a záró!"
+  }
+}

@@ -1,0 +1,20 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()" [autocomplete]="false">
+  <app-form-text-input caption="common.email" type="text" [control]="loginForm.controls.email"></app-form-text-input>
+  <app-form-text-input
+    caption="auth.password"
+    type="password"
+    [control]="loginForm.controls.password"
+  ></app-form-text-input>
+
+  <div class="mt-20">
+    <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="loginForm.invalid">
+      {{ 'auth.login' | translate }}
+    </button>
+  </div>
+</form>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <a href="#" class="label" (click)="toggleResetForm($event, true)">{{ 'auth.forgottenPassword' | translate }}</a>
+  </div>
+</div>

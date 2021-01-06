@@ -1,0 +1,20 @@
+nb-sidebar.compacted {
+  .select-container {
+    display: none;
+  }
+
+  .version-info {
+    display: none;
+  }
+}
+
+.version-info {
+  position: absolute;
+  bottom: 20px;
+  cursor: pointer;
+}
+
+app-header {
+  width: 100%;
+  position: relative;
+}

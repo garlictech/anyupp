@@ -1,0 +1,15 @@
+<nb-card class="h-100">
+  <nb-card-body class="p-2">
+    <div class="mb-2">
+      <input nbInput type="date" fullWidth [formControl]="dateFormControl" />
+    </div>
+    <nb-list-item
+      *ngFor="let order of dailyOrders"
+      (click)="selectOrder(order)"
+      class="{{ currentStatus(order.statusLog).toLowerCase() }}"
+      [ngClass]="{ selectedOrder: order._id === selectedOrder?._id }"
+    >
+      <app-order-ticket-list-item class="w-100" [order]="order" [showMarkers]="false"></app-order-ticket-list-item>
+    </nb-list-item>
+  </nb-card-body>
+</nb-card>

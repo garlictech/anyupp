@@ -1,0 +1,14 @@
+@import '../../../../@theme/styles/themes';
+
+.accepting-orders  {
+  position: relative;
+  top: -4px;
+}
+
+app-order-print {
+  display: none;
+}
+
+::ng-deep .selectedOrder {
+  background-color: nb-theme(color-basic-200) !important;
+}

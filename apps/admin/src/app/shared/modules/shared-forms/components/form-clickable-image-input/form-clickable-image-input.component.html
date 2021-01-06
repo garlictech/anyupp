@@ -1,0 +1,21 @@
+<input type="file" accept="image/png, image/jpeg, image/svg+xml" (change)="fileInputListener($event)" #fileInput />
+
+<label class="caption">{{ caption | translate }}</label>
+<div
+  class="image-preview"
+  [ngStyle]="{
+    width: width,
+    height: height,
+    background: pathUrl,
+    borderRadius: borderRadius
+  }"
+  [ngClass]="{
+    clickable: !imagePath
+  }"
+  (click)="loadImage()"
+>
+  <nb-icon icon="plus" *ngIf="!imagePath"></nb-icon>
+  <div class="removeBtn clickable" *ngIf="imagePath" (click)="remove()">
+    <nb-icon icon="minus"></nb-icon>
+  </div>
+</div>

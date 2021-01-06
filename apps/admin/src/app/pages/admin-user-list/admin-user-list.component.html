@@ -1,0 +1,15 @@
+<nb-card class="h-100 mb-0">
+  <nb-card-header>
+    <div class="float-left">
+      {{ 'adminUsers.listTitle' | translate }}
+    </div>
+    <button nbButton type="button" shape="round" size="small" class="float-right" (click)="addUser()">
+      <nb-icon icon="plus-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list-item *ngFor="let adminUser of adminUsers$ | async">
+      <app-admin-user-list-item class="w-100" [adminUser]="adminUser"></app-admin-user-list-item>
+    </nb-list-item>
+  </nb-card-body>
+</nb-card>
