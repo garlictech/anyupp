@@ -8,9 +8,8 @@ describe('ReportsHourlyBreakdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsHourlyBreakdownComponent ]
-    })
-    .compileComponents();
+      declarations: [ReportsHourlyBreakdownComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

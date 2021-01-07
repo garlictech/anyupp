@@ -36,7 +36,11 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [GroupListComponent, GroupListItemComponent, GroupFormComponent],
+  declarations: [
+    GroupListComponent,
+    GroupListItemComponent,
+    GroupFormComponent,
+  ],
   imports: [
     CommonModule,
     TranslateModule,

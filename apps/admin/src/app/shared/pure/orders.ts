@@ -32,7 +32,9 @@ export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus => {
   }
 };
 
-export const getNextOrderItemStatus = (currStatus: EOrderStatus): EOrderStatus => {
+export const getNextOrderItemStatus = (
+  currStatus: EOrderStatus
+): EOrderStatus => {
   switch (currStatus) {
     case EOrderStatus.PLACED:
       return EOrderStatus.PROCESSING;
@@ -45,7 +47,9 @@ export const getNextOrderItemStatus = (currStatus: EOrderStatus): EOrderStatus =
   }
 };
 
-export const getPrevOrderItemStatus = (currStatus: EOrderStatus): EOrderStatus => {
+export const getPrevOrderItemStatus = (
+  currStatus: EOrderStatus
+): EOrderStatus => {
   switch (currStatus) {
     case EOrderStatus.SERVED:
       return EOrderStatus.READY;
@@ -58,7 +62,10 @@ export const getPrevOrderItemStatus = (currStatus: EOrderStatus): EOrderStatus =
   }
 };
 
-export const getOrderLaneColor = (orderItem: ILaneOrderItem, unit: IUnit): string => {
+export const getOrderLaneColor = (
+  orderItem: ILaneOrderItem,
+  unit: IUnit
+): string => {
   return unit?.lanes && orderItem.laneId
     ? unit.lanes[orderItem.laneId].color || DEFAULT_LANE_COLOR
     : DEFAULT_LANE_COLOR;
@@ -100,7 +107,9 @@ export const getLowestStatus = (statuses: EOrderStatus[]): EOrderStatus => {
   return SORTED_ORDER_STATUSES[Math.min(...statusIndices)];
 };
 
-export const getOrdersByUser = (orders: IOrder[]): IFloorMapUserOrderObjects => {
+export const getOrdersByUser = (
+  orders: IOrder[]
+): IFloorMapUserOrderObjects => {
   const ordersByUser: IFloorMapUserOrderObjects = {};
 
   orders.forEach((order: IOrder): void => {
@@ -115,7 +124,8 @@ export const getOrdersByUser = (orders: IOrder[]): IFloorMapUserOrderObjects => 
     } else {
       ordersByUser[order.userId].orders.push({ ...order });
       ordersByUser[order.userId].hasPaymentIntention =
-        ordersByUser[order.userId].hasPaymentIntention || order.paymentIntention > 0;
+        ordersByUser[order.userId].hasPaymentIntention ||
+        order.paymentIntention > 0;
 
       if (order.created > ordersByUser[order.userId].lastOrder.created) {
         ordersByUser[order.userId].lastOrder = { ...order };
@@ -140,14 +150,19 @@ export const getTableOrders = (
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
       (userOrder: IFloorMapUserOrders): boolean =>
-        `${userOrder.lastOrder.place.table}.${userOrder.lastOrder.place.seat}` === tsID
+        `${userOrder.lastOrder.place.table}.${userOrder.lastOrder.place.seat}` ===
+        tsID
     );
 
     tableOrders[tsID] = {
       tsID,
       userOrders,
-      hasPaymentIntention: userOrders.map((o): boolean => o.hasPaymentIntention).some((i): boolean => !!i),
-      lowestStatus: getLowestStatus(userOrders.map((o): EOrderStatus => o.lowestStatus)),
+      hasPaymentIntention: userOrders
+        .map((o): boolean => o.hasPaymentIntention)
+        .some((i): boolean => !!i),
+      lowestStatus: getLowestStatus(
+        userOrders.map((o): EOrderStatus => o.lowestStatus)
+      ),
     };
   });
 

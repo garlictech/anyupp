@@ -6,7 +6,11 @@ import { IAdminUser, IGroup, IProduct } from 'src/app/shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { DataService } from 'src/app/shared/services/data';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, groupListSelectors, productListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+  productListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NbDialogService, NbTabsetComponent } from '@nebular/theme';
@@ -65,12 +69,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productListSelectors.getChainProductsOfSelectedCategory()),
-        map((products): IProduct[] => products.sort(customNumberCompare('position'))),
+        map((products): IProduct[] =>
+          products.sort(customNumberCompare('position'))
+        ),
         untilDestroyed(this)
       )
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
-        this._sortedChainProductIds = this.chainProducts.map((p): string => p._id);
+        this._sortedChainProductIds = this.chainProducts.map(
+          (p): string => p._id
+        );
       });
 
     this.groupProducts$ = this._store.pipe(
@@ -79,18 +87,32 @@ export class ProductListComponent implements OnInit, OnDestroy {
     );
     this._store
       .pipe(
-        select(productListSelectors.getExtendedUnitProductsOfSelectedCategory()),
-        map((products): IProduct[] => products.sort(customNumberCompare('position'))),
+        select(
+          productListSelectors.getExtendedUnitProductsOfSelectedCategory()
+        ),
+        map((products): IProduct[] =>
+          products.sort(customNumberCompare('position'))
+        ),
         untilDestroyed(this)
       )
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
-        this._sortedUnitProductIds = this.unitProducts.map((p): string => p._id);
+        this._sortedUnitProductIds = this.unitProducts.map(
+          (p): string => p._id
+        );
       });
 
     combineLatest([
-      this._store.pipe(select(productListSelectors.getPendingGroupProductsOfSelectedCategory()), untilDestroyed(this)),
-      this._store.pipe(select(productListSelectors.getPendingUnitProductsOfSelectedCategory()), untilDestroyed(this)),
+      this._store.pipe(
+        select(
+          productListSelectors.getPendingGroupProductsOfSelectedCategory()
+        ),
+        untilDestroyed(this)
+      ),
+      this._store.pipe(
+        select(productListSelectors.getPendingUnitProductsOfSelectedCategory()),
+        untilDestroyed(this)
+      ),
       this._store.pipe(
         select(currentUserSelectors.getAdminUser),
         skipWhile((adminUser): boolean => !adminUser)
@@ -98,12 +120,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([pendingGroupProducts, pendingUnitProducts, adminUser]: [IProduct[], IProduct[], IAdminUser]): void => {
+        ([pendingGroupProducts, pendingUnitProducts, adminUser]: [
+          IProduct[],
+          IProduct[],
+          IAdminUser
+        ]): void => {
           this.adminUser = adminUser;
 
-          this.pendingGroupProducts = [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN].includes(
-            _get(adminUser, 'roles.role')
-          )
+          this.pendingGroupProducts = [
+            EAdminRole.SUPERUSER,
+            EAdminRole.CHAIN_ADMIN,
+            EAdminRole.GROUP_ADMIN,
+          ].includes(_get(adminUser, 'roles.role'))
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -144,15 +172,27 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const idx = this._sortedChainProductIds.indexOf($event.productId);
 
     if (
-      (idx >= 0 && $event.change === 1 && idx < this._sortedChainProductIds.length - 1) ||
+      (idx >= 0 &&
+        $event.change === 1 &&
+        idx < this._sortedChainProductIds.length - 1) ||
       ($event.change === -1 && idx > 0)
     ) {
       this._sortedChainProductIds.splice(idx, 1);
-      this._sortedChainProductIds.splice(idx + $event.change, 0, $event.productId);
+      this._sortedChainProductIds.splice(
+        idx + $event.change,
+        0,
+        $event.productId
+      );
 
-      this._sortedChainProductIds.forEach((productId: string, pos: number): void => {
-        this._dataService.updateChainProductPosition(this.selectedChainId, productId, (pos + 1).toString());
-      });
+      this._sortedChainProductIds.forEach(
+        (productId: string, pos: number): void => {
+          this._dataService.updateChainProductPosition(
+            this.selectedChainId,
+            productId,
+            (pos + 1).toString()
+          );
+        }
+      );
     }
   }
 
@@ -160,15 +200,27 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (
-      (idx >= 0 && $event.change === 1 && idx < this._sortedUnitProductIds.length - 1) ||
+      (idx >= 0 &&
+        $event.change === 1 &&
+        idx < this._sortedUnitProductIds.length - 1) ||
       ($event.change === -1 && idx > 0)
     ) {
       this._sortedUnitProductIds.splice(idx, 1);
-      this._sortedUnitProductIds.splice(idx + $event.change, 0, $event.productId);
+      this._sortedUnitProductIds.splice(
+        idx + $event.change,
+        0,
+        $event.productId
+      );
 
-      this._sortedUnitProductIds.forEach((productId: string, pos: number): void => {
-        this._dataService.updateUnitProductPosition(this.selectedUnitId, productId, (pos + 1).toString());
-      });
+      this._sortedUnitProductIds.forEach(
+        (productId: string, pos: number): void => {
+          this._dataService.updateUnitProductPosition(
+            this.selectedUnitId,
+            productId,
+            (pos + 1).toString()
+          );
+        }
+      );
     }
   }
 }

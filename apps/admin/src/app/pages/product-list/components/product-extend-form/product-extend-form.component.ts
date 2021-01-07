@@ -15,7 +15,11 @@ import { customNumberCompare, objectToArray } from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, productCategoryListSelectors, unitListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  productCategoryListSelectors,
+  unitListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
@@ -28,7 +32,9 @@ import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms
   selector: 'app-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
-export class ProductExtendFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class ProductExtendFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public product: IProduct;
   public productLevel: EProductLevel;
   public eProductLevel = EProductLevel;
@@ -89,7 +95,10 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
     });
 
     if (this.productLevel === EProductLevel.GROUP) {
-      this.dialogForm.addControl('tax', new FormControl('', Validators.required));
+      this.dialogForm.addControl(
+        'tax',
+        new FormControl('', Validators.required)
+      );
     }
     if (this.productLevel === EProductLevel.UNIT) {
       this.dialogForm.addControl('laneId', new FormControl(''));
@@ -100,18 +109,23 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
       this.dialogForm.patchValue(_omit(this.product, 'variants'));
 
       // Parse variants object to temp array
-      const variantsArr = objectToArray(this.product.variants || {}, '_variantId').sort(
-        customNumberCompare('position')
-      );
+      const variantsArr = objectToArray(
+        this.product.variants || {},
+        '_variantId'
+      ).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup(this.productLevel);
+        const variantGroup = this._formsService.createProductVariantFormGroup(
+          this.productLevel
+        );
         variantGroup.patchValue(variant);
 
         _get(variant, 'availabilities', []).forEach((availability): void => {
           const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
           availabilityGroup.patchValue(availability);
-          (variantGroup.controls.availabilities as FormArray).push(availabilityGroup);
+          (variantGroup.controls.availabilities as FormArray).push(
+            availabilityGroup
+          );
         });
 
         (this.dialogForm.controls._variantArr as FormArray).push(variantGroup);
@@ -149,10 +163,18 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
 
         switch (this.productLevel) {
           case EProductLevel.GROUP:
-            updatePromise = this._dataService.updateGroupProduct(this._selectedGroupId, this.product._id, value);
+            updatePromise = this._dataService.updateGroupProduct(
+              this._selectedGroupId,
+              this.product._id,
+              value
+            );
             break;
           case EProductLevel.UNIT:
-            updatePromise = this._dataService.updateUnitProduct(this._selectedUnitId, this.product._id, value);
+            updatePromise = this._dataService.updateUnitProduct(
+              this._selectedUnitId,
+              this.product._id,
+              value
+            );
             break;
           default:
             break;
@@ -160,7 +182,11 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
 
         updatePromise.then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -175,10 +201,16 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
 
         switch (this.productLevel) {
           case EProductLevel.GROUP:
-            insertPromise = this._dataService.insertGroupProduct(this._selectedGroupId, value);
+            insertPromise = this._dataService.insertGroupProduct(
+              this._selectedGroupId,
+              value
+            );
             break;
           case EProductLevel.UNIT:
-            insertPromise = this._dataService.insertUnitProduct(this._selectedUnitId, value);
+            insertPromise = this._dataService.insertUnitProduct(
+              this._selectedUnitId,
+              value
+            );
             break;
           default:
             break;
@@ -186,7 +218,11 @@ export class ProductExtendFormComponent extends AbstractFormDialogComponent impl
 
         insertPromise.then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful'
+            );
             this.close();
           },
           (err): any => {

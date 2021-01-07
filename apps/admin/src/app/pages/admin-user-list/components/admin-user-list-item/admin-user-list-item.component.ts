@@ -53,10 +53,18 @@ export class AdminUserListItemComponent {
           callback: (): void => {
             this._authService.sendPasswordResetEmail(this.adminUser.email).then(
               (): void => {
-                this._toasterService.show(EToasterType.SUCCESS, '', 'auth.reminderSent');
+                this._toasterService.show(
+                  EToasterType.SUCCESS,
+                  '',
+                  'auth.reminderSent'
+                );
               },
               (): void => {
-                this._toasterService.show(EToasterType.DANGER, '', 'auth.reminderError');
+                this._toasterService.show(
+                  EToasterType.DANGER,
+                  '',
+                  'auth.reminderError'
+                );
               }
             );
           },

@@ -3,9 +3,17 @@
 </div>
 <div class="row" *ngFor="let unit of assignedUnits; let idx = index">
   <div class="col-12 subtitle-2">
-    {{ unit.chainName}} / {{ unit.groupName }} / {{ unit.unitName }}
+    {{ unit.chainName }} / {{ unit.groupName }} / {{ unit.unitName }}
 
-    <button nbButton type="button" status="danger" shape="round" size="tiny" class="ml-2" (click)="removeUnit(idx)">
+    <button
+      nbButton
+      type="button"
+      status="danger"
+      shape="round"
+      size="tiny"
+      class="ml-2"
+      (click)="removeUnit(idx)"
+    >
       <nb-icon icon="minus-outline"></nb-icon>
     </button>
   </div>
@@ -17,9 +25,14 @@
       <label class="caption">{{ 'roles.selectChain' | translate }}</label>
     </div>
     <div>
-      <nb-select size="small" [formControl]="entitySelector['controls'].chainId">
+      <nb-select
+        size="small"
+        [formControl]="entitySelector['controls'].chainId"
+      >
         <nb-option value="">-</nb-option>
-        <nb-option *ngFor="let option of chainOptions" [value]="option.key">{{ option.value }}</nb-option>
+        <nb-option *ngFor="let option of chainOptions" [value]="option.key">{{
+          option.value
+        }}</nb-option>
       </nb-select>
     </div>
   </div>
@@ -30,7 +43,9 @@
 
     <nb-select size="small" [formControl]="entitySelector['controls'].groupId">
       <nb-option value="">-</nb-option>
-      <nb-option *ngFor="let option of groupOptions" [value]="option.key">{{ option.value }}</nb-option>
+      <nb-option *ngFor="let option of groupOptions" [value]="option.key">{{
+        option.value
+      }}</nb-option>
     </nb-select>
   </div>
 </div>
@@ -43,7 +58,9 @@
     <div>
       <nb-select size="small" [formControl]="entitySelector['controls'].unitId">
         <nb-option value="">-</nb-option>
-        <nb-option *ngFor="let option of unitOptions" [value]="option.key">{{ option.value }}</nb-option>
+        <nb-option *ngFor="let option of unitOptions" [value]="option.key">{{
+          option.value
+        }}</nb-option>
       </nb-select>
     </div>
   </div>

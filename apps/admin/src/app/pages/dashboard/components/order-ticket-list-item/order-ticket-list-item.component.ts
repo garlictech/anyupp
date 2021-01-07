@@ -1,5 +1,8 @@
 import { IOrder, IOrderItem } from 'src/app/shared/interfaces';
-import { currentStatus, currentStatus as currentStatusFn } from 'src/app/shared/pure';
+import {
+  currentStatus,
+  currentStatus as currentStatusFn,
+} from 'src/app/shared/pure';
 
 import { Component, Input, OnChanges } from '@angular/core';
 import { EDashboardTicketListType, EOrderStatus } from 'src/app/shared/enums';
@@ -21,7 +24,10 @@ export class OrderTicketListItemComponent implements OnChanges {
   ngOnChanges(): void {
     this.readyCount =
       this.ticketListType === EDashboardTicketListType.PLACED
-        ? this.order.items.filter((i: IOrderItem): boolean => currentStatus(i.statusLog) === EOrderStatus.READY).length
+        ? this.order.items.filter(
+            (i: IOrderItem): boolean =>
+              currentStatus(i.statusLog) === EOrderStatus.READY
+          ).length
         : 0; // Show badhe only in placed list
   }
 }

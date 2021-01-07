@@ -13,7 +13,12 @@ import {
   createTableRect,
   createWall,
 } from './floor-map-objects';
-import { generateId, getObjectBg, getObjectRadius, getObjectText } from './floor-map-utils';
+import {
+  generateId,
+  getObjectBg,
+  getObjectRadius,
+  getObjectText,
+} from './floor-map-utils';
 
 export let mapRawData: IFloorMapData;
 
@@ -36,7 +41,10 @@ export const loadRawData = (data: IFloorMapData): void => {
     });
 };
 
-export const loadRawDataObject = (rawData: IFloorMapDataObject, setActive: boolean): void => {
+export const loadRawDataObject = (
+  rawData: IFloorMapDataObject,
+  setActive: boolean
+): void => {
   const { id, ...data } = rawData;
 
   mapRawData.objects[id] = data;
@@ -102,7 +110,9 @@ export const setTextToActiveObject = (text: string): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
-    const textField = obj.getObjects().filter((o): boolean => o instanceof fabric.IText)[0];
+    const textField = obj
+      .getObjects()
+      .filter((o): boolean => o instanceof fabric.IText)[0];
 
     if (textField) {
       textField.set('text', text);
@@ -119,7 +129,8 @@ export const setRawDataField = (key: string, value: string | number): void => {
   }
 };
 
-export const getRawDataField = (obj: any, key: string): string | number => mapRawData.objects[obj.id][key];
+export const getRawDataField = (obj: any, key: string): string | number =>
+  mapRawData.objects[obj.id][key];
 
 const _getObjectProperties = (obj): any => ({
   id: obj.id,

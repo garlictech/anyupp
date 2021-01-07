@@ -21,7 +21,9 @@ export const contactFormGroup = (formBuilder: FormBuilder): any => ({
   }),
 });
 
-export const multiLangValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+export const multiLangValidator: ValidatorFn = (
+  control: FormGroup
+): ValidationErrors | null => {
   const hu = control.get('hu')?.value;
   const en = control.get('en')?.value;
   const de = control.get('de')?.value;
@@ -29,7 +31,9 @@ export const multiLangValidator: ValidatorFn = (control: FormGroup): ValidationE
   return hu || en || de ? null : { empty: true };
 };
 
-export const productAvailabilityValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+export const productAvailabilityValidator: ValidatorFn = (
+  control: FormGroup
+): ValidationErrors | null => {
   const type = control.get('type')?.value;
   const dayFrom = control.get('dayFrom')?.value;
   const dayTo = control.get('dayTo')?.value;
@@ -46,12 +50,27 @@ export const productAvailabilityValidator: ValidatorFn = (control: FormGroup): V
           : { dayInterval: true }
         : { missingDay: true };
 
-    const timeError = timeFrom && timeTo ? (timeFrom < timeTo ? null : { timeInterval: true }) : { missingTime: true };
+    const timeError =
+      timeFrom && timeTo
+        ? timeFrom < timeTo
+          ? null
+          : { timeInterval: true }
+        : { missingTime: true };
 
     return dayError || timeError || null;
   } else if (type === EVariantAvailabilityType.SEASONAL) {
-    const dayError = dayFrom && dayTo ? (dayFrom <= dayTo ? null : { dayInterval: true }) : { missingDay: true };
-    const timeError = timeFrom && timeTo ? (timeFrom < timeTo ? null : { timeInterval: true }) : { missingTime: true };
+    const dayError =
+      dayFrom && dayTo
+        ? dayFrom <= dayTo
+          ? null
+          : { dayInterval: true }
+        : { missingDay: true };
+    const timeError =
+      timeFrom && timeTo
+        ? timeFrom < timeTo
+          ? null
+          : { timeInterval: true }
+        : { missingTime: true };
 
     return dayError || timeError || null;
   }
@@ -59,7 +78,9 @@ export const productAvailabilityValidator: ValidatorFn = (control: FormGroup): V
   return null;
 };
 
-export const unitOpeningHoursValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+export const unitOpeningHoursValidator: ValidatorFn = (
+  control: FormGroup
+): ValidationErrors | null => {
   let error = null;
 
   Object.keys(control.value).forEach((d: string): void => {

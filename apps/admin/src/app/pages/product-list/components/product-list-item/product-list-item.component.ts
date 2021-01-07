@@ -1,10 +1,21 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { EAdminRole, EProductLevel, EVariantAvailabilityType } from 'src/app/shared/enums';
+import {
+  EAdminRole,
+  EProductLevel,
+  EVariantAvailabilityType,
+} from 'src/app/shared/enums';
 import { IAdminUserRole, IProduct } from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
 import { currentUserSelectors } from 'src/app/store/selectors';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -31,20 +42,31 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public EProductLevel = EProductLevel;
   public EVariantAvailabilityType = EVariantAvailabilityType;
 
-  constructor(private _nbDialogService: NbDialogService, private _store: Store<IState>) {}
+  constructor(
+    private _nbDialogService: NbDialogService,
+    private _store: Store<IState>
+  ) {}
 
   ngOnInit(): void {
     this._store
-      .pipe(select(currentUserSelectors.getAdminUserRoles), untilDestroyed(this))
+      .pipe(
+        select(currentUserSelectors.getAdminUserRoles),
+        untilDestroyed(this)
+      )
       .subscribe((adminUserRole: IAdminUserRole): void => {
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
-            this.hasRoleToEdit = [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN].includes(adminUserRole.role);
+            this.hasRoleToEdit = [
+              EAdminRole.SUPERUSER,
+              EAdminRole.CHAIN_ADMIN,
+            ].includes(adminUserRole.role);
             break;
           case EProductLevel.GROUP:
-            this.hasRoleToEdit = [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN].includes(
-              adminUserRole.role
-            );
+            this.hasRoleToEdit = [
+              EAdminRole.SUPERUSER,
+              EAdminRole.CHAIN_ADMIN,
+              EAdminRole.GROUP_ADMIN,
+            ].includes(adminUserRole.role);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [

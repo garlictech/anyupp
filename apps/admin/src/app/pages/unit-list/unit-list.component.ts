@@ -2,7 +2,11 @@ import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { IGroup, IUnit } from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, groupListSelectors, unitListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+  unitListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -20,14 +24,26 @@ export class UnitListComponent implements OnInit, OnDestroy {
   public units: IUnit[];
   public selectedChainId$: Observable<string>;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
-    this.selectedChainId$ = this._store.pipe(select(currentUserSelectors.getSelectedChainId), untilDestroyed(this));
+    this.selectedChainId$ = this._store.pipe(
+      select(currentUserSelectors.getSelectedChainId),
+      untilDestroyed(this)
+    );
 
     combineLatest([
-      this._store.pipe(select(groupListSelectors.getSelectedChainGroups), untilDestroyed(this)),
-      this._store.pipe(select(unitListSelectors.getSelectedGroupUnits), untilDestroyed(this)),
+      this._store.pipe(
+        select(groupListSelectors.getSelectedChainGroups),
+        untilDestroyed(this)
+      ),
+      this._store.pipe(
+        select(unitListSelectors.getSelectedGroupUnits),
+        untilDestroyed(this)
+      ),
     ]).subscribe(([groups, units]: [IGroup[], IUnit[]]): void => {
       this.units = _cloneDeep(units);
 

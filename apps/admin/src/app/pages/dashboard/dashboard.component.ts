@@ -1,6 +1,10 @@
 import { timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+} from 'src/app/shared/enums';
 import { IUnit } from 'src/app/shared/interfaces';
 import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { zeroFill } from 'src/app/shared/pure';
@@ -45,7 +49,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardSettings = dashboardSettings;
 
         this.resized = this.dashboardSettings.size === EDashboardSize.LARGER;
-        this.buttonSize = this.resized ? ENebularButtonSize.MEDIUM : ENebularButtonSize.SMALL;
+        this.buttonSize = this.resized
+          ? ENebularButtonSize.MEDIUM
+          : ENebularButtonSize.SMALL;
       });
 
     this._store
@@ -66,7 +72,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((): void => {
         const date = new Date();
-        this.time = `${zeroFill(date.getHours())}:${zeroFill(date.getMinutes())}:${zeroFill(date.getSeconds())}`;
+        this.time = `${zeroFill(date.getHours())}:${zeroFill(
+          date.getMinutes()
+        )}:${zeroFill(date.getSeconds())}`;
       });
   }
 
@@ -97,7 +105,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public toggleResize(): void {
     this._store.dispatch(
       dashboardActions.setSize({
-        size: this.dashboardSettings.size === EDashboardSize.NORMAL ? EDashboardSize.LARGER : EDashboardSize.NORMAL,
+        size:
+          this.dashboardSettings.size === EDashboardSize.NORMAL
+            ? EDashboardSize.LARGER
+            : EDashboardSize.NORMAL,
       })
     );
   }
@@ -110,7 +121,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialog.componentRef.instance.options = {
-      message: this.selectedUnit.isAcceptingOrders ? 'orders.confirmNotAcceptOrder' : 'orders.confirmIsAcceptOrder',
+      message: this.selectedUnit.isAcceptingOrders
+        ? 'orders.confirmNotAcceptOrder'
+        : 'orders.confirmIsAcceptOrder',
       buttons: [
         {
           label: 'common.ok',

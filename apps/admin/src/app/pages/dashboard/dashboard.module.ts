@@ -7,8 +7,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbActionsModule, NbBadgeModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule,
-  NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbSpinnerModule, NbUserModule
+  NbActionsModule,
+  NbBadgeModule,
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbSpinnerModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,9 +32,7 @@ import { OrderEditComponent } from './components/order-edit/order-edit.component
 import { OrderPrintComponent } from './components/order-print/order-print.component';
 import { OrderProductListComponent } from './components/order-product-list/order-product-list.component';
 import { OrderTicketBodyComponent } from './components/order-ticket-body/order-ticket-body.component';
-import {
-  OrderTicketHistoryListComponent
-} from './components/order-ticket-history-list/order-ticket-history-list.component';
+import { OrderTicketHistoryListComponent } from './components/order-ticket-history-list/order-ticket-history-list.component';
 import { OrderTicketListItemComponent } from './components/order-ticket-list-item/order-ticket-list-item.component';
 import { OrderTicketListComponent } from './components/order-ticket-list/order-ticket-list.component';
 import { ReportsBodyComponent } from './components/reports-body/reports-body.component';

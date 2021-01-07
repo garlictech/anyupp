@@ -1,5 +1,10 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
-import { EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod } from 'src/app/shared/enums';
+import {
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  EPaymentMethod,
+} from 'src/app/shared/enums';
 import { IAdminUser, IKeyValue, IOrder } from 'src/app/shared/interfaces';
 import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
 import { DataService } from 'src/app/shared/services/data';
@@ -28,7 +33,11 @@ export class OrderEditComponent implements OnDestroy {
 
   private _adminUser: IAdminUser;
 
-  constructor(private _store: Store<IState>, private _orderService: OrderService, private _dataService: DataService) {
+  constructor(
+    private _store: Store<IState>,
+    private _orderService: OrderService,
+    private _dataService: DataService
+  ) {
     this.workingOrderStatus = false;
 
     Object.keys(EPaymentMethod).forEach((key): void => {
@@ -44,7 +53,8 @@ export class OrderEditComponent implements OnDestroy {
         this._adminUser = adminUser;
 
         this.buttonSize =
-          _get(this._adminUser, 'settings.dashboardSize') === EDashboardSize.LARGER
+          _get(this._adminUser, 'settings.dashboardSize') ===
+          EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
       });
@@ -59,15 +69,17 @@ export class OrderEditComponent implements OnDestroy {
   }
 
   public removeOrder(): void {
-    this._orderService.updateOrderStatus(_cloneDeep(this.order), EOrderStatus.REJECTED).then(
-      (): void => {
-        this.workingOrderStatus = false;
-      },
-      (err): void => {
-        console.error(err);
-        this.workingOrderStatus = false;
-      }
-    );
+    this._orderService
+      .updateOrderStatus(_cloneDeep(this.order), EOrderStatus.REJECTED)
+      .then(
+        (): void => {
+          this.workingOrderStatus = false;
+        },
+        (err): void => {
+          console.error(err);
+          this.workingOrderStatus = false;
+        }
+      );
 
     this._store.dispatch(
       dashboardActions.setOrderEditing({
@@ -77,7 +89,12 @@ export class OrderEditComponent implements OnDestroy {
   }
 
   public removeOrderItem(idx: number): void {
-    this._orderService.updateOrderItemStatus(this.order._id, this.order.userId, EOrderStatus.REJECTED, idx);
+    this._orderService.updateOrderItemStatus(
+      this.order._id,
+      this.order.userId,
+      EOrderStatus.REJECTED,
+      idx
+    );
   }
 
   public updateOrderPaymentMethod(method: EPaymentMethod): void {

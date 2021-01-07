@@ -1,5 +1,7 @@
 <nb-card class="h-100">
-  <nb-card-header class="p-1 pl-2">{{ 'dashboard.reports.ordersAmount' | translate }}</nb-card-header>
+  <nb-card-header class="p-1 pl-2">{{
+    'dashboard.reports.ordersAmount' | translate
+  }}</nb-card-header>
   <nb-card-body class="p-1">
     <h1 class="order-count text-center mt-4">
       {{ ordersSum | currencyFormatter: currency }}

@@ -38,12 +38,12 @@
     "productType": "Product type",
     "contact": {
       "contact": "Contact",
-       "country": "Country",
-       "postalCode": "Postal code",
-       "city": "City",
-       "address": "Address",
-       "locationLat": "Location (lat)",
-       "locationLng": "Location (lng)"
+      "country": "Country",
+      "postalCode": "Postal code",
+      "city": "City",
+      "address": "Address",
+      "locationLat": "Location (lat)",
+      "locationLng": "Location (lng)"
     },
     "submit": "Submit",
     "imageUploadSuccess": "Image uploaded successfully",

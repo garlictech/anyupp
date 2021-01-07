@@ -6,7 +6,13 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 import { EAdminRole } from '../../enums';
 import { IAdminUser } from '../../interfaces';
@@ -32,7 +38,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       switchMap(
         (user): Observable<any> =>
           user
-            ? this._angularFireDatabase.object(`/adminUsers/${user.uid}`).valueChanges().pipe(take(1))
+            ? this._angularFireDatabase
+                .object(`/adminUsers/${user.uid}`)
+                .valueChanges()
+                .pipe(take(1))
             : of(undefined)
       ),
       map((adminUser: IAdminUser): any => {
@@ -57,7 +66,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         (user): Observable<any> =>
           user
             ? this._angularFireDatabase
-                .object(`/${environment.dbPrefix}/adminUserCredentials/${user.uid}`)
+                .object(
+                  `/${environment.dbPrefix}/adminUserCredentials/${user.uid}`
+                )
                 .valueChanges()
                 .pipe(take(1))
             : of(undefined)

@@ -34,7 +34,11 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [ChainListComponent, ChainListItemComponent, ChainFormComponent],
+  declarations: [
+    ChainListComponent,
+    ChainListItemComponent,
+    ChainFormComponent,
+  ],
   imports: [
     CommonModule,
     TranslateModule,

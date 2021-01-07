@@ -16,9 +16,14 @@ import { multiLangValidator, productAvailabilityValidator } from '../../pure';
   providedIn: 'root',
 })
 export class FormsService {
-  constructor(private _store: Store<IState>, private _formBuilder: FormBuilder) {}
+  constructor(
+    private _store: Store<IState>,
+    private _formBuilder: FormBuilder
+  ) {}
 
-  public createProductVariantFormGroup = (productLevel: EProductLevel): FormGroup => {
+  public createProductVariantFormGroup = (
+    productLevel: EProductLevel
+  ): FormGroup => {
     const groupConfig: any = {
       _variantId: [uuidV1()],
       variantName: this._formBuilder.group(
@@ -59,7 +64,10 @@ export class FormsService {
   public createCustomDailyScheduleFormGroup = (): FormGroup => {
     return this._formBuilder.group({
       date: ['', [Validators.required]],
-      from: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
+      from: [
+        '',
+        [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)],
+      ],
       to: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
     });
   };
@@ -73,5 +81,8 @@ export class FormsService {
   };
 
   public adminExistingEmailValidator = (control: FormGroup): Observable<any> =>
-    this._store.pipe(select(adminUserListSelectors.getAdminUserByEmail(control.value)), take(1));
+    this._store.pipe(
+      select(adminUserListSelectors.getAdminUserByEmail(control.value)),
+      take(1)
+    );
 }

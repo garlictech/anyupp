@@ -1,15 +1,28 @@
 import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from 'src/app/shared/const';
-import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from 'src/app/shared/interfaces';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  IPaymentMode,
+  IUnit,
+} from 'src/app/shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { contactFormGroup, multiLangValidator, unitOpeningHoursValidator } from 'src/app/shared/pure';
+import {
+  contactFormGroup,
+  multiLangValidator,
+  unitOpeningHoursValidator,
+} from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, groupListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+} from 'src/app/store/selectors';
 
-// tslint:disable: no-string-literal
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,7 +33,9 @@ import { select, Store } from '@ngrx/store';
   selector: 'app-unit-form',
   templateUrl: './unit-form.component.html',
 })
-export class UnitFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class UnitFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public unit: IUnit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[];
@@ -34,7 +49,10 @@ export class UnitFormComponent extends AbstractFormDialogComponent implements On
     this._store = this._injector.get(Store);
     this._formsService = this._injector.get(FormsService);
     this._store
-      .pipe(select(groupListSelectors.getSelectedChainGroups), untilDestroyed(this))
+      .pipe(
+        select(groupListSelectors.getSelectedChainGroups),
+        untilDestroyed(this)
+      )
       .subscribe((groups: IGroup[]): void => {
         this.groups = groups;
 
@@ -108,13 +126,18 @@ export class UnitFormComponent extends AbstractFormDialogComponent implements On
       this.dialogForm.patchValue(this.unit);
 
       // Parse openingHours object to temp array
-      const override: ICustomDailySchedule[] = _get(this.unit, 'openingHours.override');
+      const override: ICustomDailySchedule[] = _get(
+        this.unit,
+        'openingHours.override'
+      );
       if (override) {
         override.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          this.dialogForm.controls.openingHours['controls'].override.push(dayGroup);
+          this.dialogForm.controls.openingHours['controls'].override.push(
+            dayGroup
+          );
         });
       }
 
@@ -166,7 +189,11 @@ export class UnitFormComponent extends AbstractFormDialogComponent implements On
       if (_get(this.unit, '_id')) {
         this._dataService.updateUnit(this.unit._id, value).then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -176,7 +203,11 @@ export class UnitFormComponent extends AbstractFormDialogComponent implements On
       } else {
         this._dataService.insertUnit(value).then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -188,12 +219,18 @@ export class UnitFormComponent extends AbstractFormDialogComponent implements On
   }
 
   public paymentModeIsChecked(paymentMode: IPaymentMode): boolean {
-    return (this.dialogForm.value.paymentModes || []).map((m): string => m.name).indexOf(paymentMode.name) >= 0;
+    return (
+      (this.dialogForm.value.paymentModes || [])
+        .map((m): string => m.name)
+        .indexOf(paymentMode.name) >= 0
+    );
   }
 
   public togglePaymentMode(paymentMode: IPaymentMode): void {
     const paymentModesArr: IPaymentMode[] = this.dialogForm.value.paymentModes;
-    const idx = paymentModesArr.map((m): string => m.name).indexOf(paymentMode.name);
+    const idx = paymentModesArr
+      .map((m): string => m.name)
+      .indexOf(paymentMode.name);
 
     if (idx < 0) {
       paymentModesArr.push(_pick(paymentMode, ['name', 'method']));

@@ -4,7 +4,14 @@ import { EUnitMapObjectType } from 'src/app/shared/enums';
 import { IFloorMapData, IFloorMapDataObject } from 'src/app/shared/interfaces';
 import * as floorMapFuncs from 'src/app/shared/pure/floor-map';
 
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
@@ -17,7 +24,8 @@ import { floorMapActions } from 'src/app/store/actions';
   templateUrl: './floor-map-editor.component.html',
   styleUrls: ['./floor-map-editor.component.scss'],
 })
-export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FloorMapEditorComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode: boolean;
   @Input() floorMap: IFloorMapData;
   public dimensionForm: FormGroup;
@@ -25,7 +33,10 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
   public objectProperties;
   public EUnitMapObjectType = EUnitMapObjectType;
 
-  constructor(private _store: Store<IState>, private _formBuilder: FormBuilder) {}
+  constructor(
+    private _store: Store<IState>,
+    private _formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     const w = this.floorMap?.w || 800;
@@ -43,26 +54,36 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
       seatId: [''],
     });
 
-    this.dimensionForm.valueChanges.pipe(debounceTime(500), untilDestroyed(this)).subscribe((value): void => {
-      floorMapFuncs.resizeCanvas(value.width, value.height);
-      floorMapFuncs.mapRawData.w = +value.width;
-      floorMapFuncs.mapRawData.h = +value.height;
-    });
-    this.objectForm.valueChanges.pipe(debounceTime(500), untilDestroyed(this)).subscribe((value): void => {
-      floorMapFuncs.setTextToActiveObject(value.text);
+    this.dimensionForm.valueChanges
+      .pipe(debounceTime(500), untilDestroyed(this))
+      .subscribe((value): void => {
+        floorMapFuncs.resizeCanvas(value.width, value.height);
+        floorMapFuncs.mapRawData.w = +value.width;
+        floorMapFuncs.mapRawData.h = +value.height;
+      });
+    this.objectForm.valueChanges
+      .pipe(debounceTime(500), untilDestroyed(this))
+      .subscribe((value): void => {
+        floorMapFuncs.setTextToActiveObject(value.text);
 
-      floorMapFuncs.setRawDataField('c', value.text);
-      floorMapFuncs.setRawDataField('tID', value.tableId || null);
-      floorMapFuncs.setRawDataField('sID', value.seatId || null);
-    });
+        floorMapFuncs.setRawDataField('c', value.text);
+        floorMapFuncs.setRawDataField('tID', value.tableId || null);
+        floorMapFuncs.setRawDataField('sID', value.seatId || null);
+      });
   }
 
   ngAfterViewInit(): void {
     floorMapFuncs.initCanvas(this.editMode);
-    floorMapFuncs.resizeCanvas(this.dimensionForm.value.width, this.dimensionForm.value.height);
+    floorMapFuncs.resizeCanvas(
+      this.dimensionForm.value.width,
+      this.dimensionForm.value.height
+    );
 
     if (this.editMode) {
-      floorMapFuncs.registerCanvasEvent('object:modified', floorMapFuncs.updateObjectMapRawData);
+      floorMapFuncs.registerCanvasEvent(
+        'object:modified',
+        floorMapFuncs.updateObjectMapRawData
+      );
       floorMapFuncs.registerCanvasEvent('mouse:up', (e): void => {
         if (e.target?.id) {
           this.objectForm.setValue({
@@ -71,8 +92,12 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
             seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || '',
           });
 
-          this.objectForm.controls['tableId'][floorMapFuncs.isTableOrSeat(e.target) ? 'enable' : 'disable']();
-          this.objectForm.controls['seatId'][floorMapFuncs.isSeat(e.target) ? 'enable' : 'disable']();
+          this.objectForm.controls['tableId'][
+            floorMapFuncs.isTableOrSeat(e.target) ? 'enable' : 'disable'
+          ]();
+          this.objectForm.controls['seatId'][
+            floorMapFuncs.isSeat(e.target) ? 'enable' : 'disable'
+          ]();
         } else {
           this.objectForm.setValue({
             text: '',
@@ -93,7 +118,9 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
       });
     }
 
-    this._store.dispatch(floorMapActions.floorMapInitialized({ initialized: true }));
+    this._store.dispatch(
+      floorMapActions.floorMapInitialized({ initialized: true })
+    );
   }
 
   ngOnDestroy(): void {

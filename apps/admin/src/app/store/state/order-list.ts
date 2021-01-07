@@ -2,7 +2,7 @@ import { IOrder } from 'src/app/shared/interfaces';
 
 import { EntityState } from '@ngrx/entity';
 
-export interface IOrderEntityState extends EntityState<IOrder> {}
+export type IOrderEntityState = EntityState<IOrder>
 
 export interface IOrderListState {
   active: IOrderEntityState;

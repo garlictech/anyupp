@@ -8,9 +8,8 @@ describe('ReportsDailySalesPerTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsDailySalesPerTypeComponent ]
-    })
-    .compileComponents();
+      declarations: [ReportsDailySalesPerTypeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

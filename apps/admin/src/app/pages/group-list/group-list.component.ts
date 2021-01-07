@@ -1,7 +1,11 @@
 import { Observable } from 'rxjs';
 import { IChain, IGroup } from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
-import { chainListSelectors, currentUserSelectors, groupListSelectors } from 'src/app/store/selectors';
+import {
+  chainListSelectors,
+  currentUserSelectors,
+  groupListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -20,12 +24,24 @@ export class GroupListComponent implements OnInit, OnDestroy {
   public chains$: Observable<IChain[]>;
   public selectedChainId$: Observable<string>;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
-    this.groups$ = this._store.pipe(select(groupListSelectors.getAllGroups), untilDestroyed(this));
-    this.chains$ = this._store.pipe(select(chainListSelectors.getAllChains), untilDestroyed(this));
-    this.selectedChainId$ = this._store.pipe(select(currentUserSelectors.getSelectedChainId), untilDestroyed(this));
+    this.groups$ = this._store.pipe(
+      select(groupListSelectors.getAllGroups),
+      untilDestroyed(this)
+    );
+    this.chains$ = this._store.pipe(
+      select(chainListSelectors.getAllChains),
+      untilDestroyed(this)
+    );
+    this.selectedChainId$ = this._store.pipe(
+      select(currentUserSelectors.getSelectedChainId),
+      untilDestroyed(this)
+    );
   }
 
   ngOnDestroy(): void {

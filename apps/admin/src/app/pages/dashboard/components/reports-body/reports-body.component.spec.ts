@@ -6,12 +6,13 @@ describe('ReportsBodyComponent', (): void => {
   let component: ReportsBodyComponent;
   let fixture: ComponentFixture<ReportsBodyComponent>;
 
-  beforeEach(async (): Promise<any> => {
-    await TestBed.configureTestingModule({
-      declarations: [ ReportsBodyComponent ]
-    })
-    .compileComponents();
-  });
+  beforeEach(
+    async (): Promise<any> => {
+      await TestBed.configureTestingModule({
+        declarations: [ReportsBodyComponent],
+      }).compileComponents();
+    }
+  );
 
   beforeEach((): void => {
     fixture = TestBed.createComponent(ReportsBodyComponent);

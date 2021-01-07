@@ -1,5 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
-import { IFloorMapTableOrderObjects, IFloorMapTableOrders } from 'src/app/shared/interfaces';
+import {
+  IFloorMapTableOrderObjects,
+  IFloorMapTableOrders,
+} from 'src/app/shared/interfaces';
 
 import { Component, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
@@ -18,9 +21,11 @@ export class FloorMapOrdersComponent implements OnInit {
   constructor(private _nbDialogRef: NbDialogRef<any>) {}
 
   ngOnInit(): void {
-    this.allTableOrders$.pipe().subscribe((tableOrders: IFloorMapTableOrderObjects): void => {
-      this.tableOrders = tableOrders[`${this.tableId}.${this.seatId}`];
-    });
+    this.allTableOrders$
+      .pipe()
+      .subscribe((tableOrders: IFloorMapTableOrderObjects): void => {
+        this.tableOrders = tableOrders[`${this.tableId}.${this.seatId}`];
+      });
   }
 
   public close(): void {

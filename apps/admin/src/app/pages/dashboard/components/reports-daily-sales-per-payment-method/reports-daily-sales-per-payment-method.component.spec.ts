@@ -8,13 +8,14 @@ describe('ReportsDailySalesPerPaymentMethodComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsDailySalesPerPaymentMethodComponent ]
-    })
-    .compileComponents();
+      declarations: [ReportsDailySalesPerPaymentMethodComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportsDailySalesPerPaymentMethodComponent);
+    fixture = TestBed.createComponent(
+      ReportsDailySalesPerPaymentMethodComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

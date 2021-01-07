@@ -1,14 +1,27 @@
 <div class="row p-0 m-0">
   <ng-container *ngFor="let orderItem of order?.items; index as i">
-    <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-right font-larger">{{ i + 1 }}.</div>
-    <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
-      {{ orderItem.productName | localize }} ({{ orderItem.variantName | localize }})
-
-      <app-colorized-lane-icon [laneId]="orderItem.laneId"></app-colorized-lane-icon>
+    <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-right font-larger">
+      {{ i + 1 }}.
     </div>
-    <div class="col-1 col-md-1 p-2 m-auto caption text-right font-weight-bold font-larger">{{ orderItem.quantity }}x</div>
+    <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
+      {{ orderItem.productName | localize }} ({{
+        orderItem.variantName | localize
+      }})
+
+      <app-colorized-lane-icon
+        [laneId]="orderItem.laneId"
+      ></app-colorized-lane-icon>
+    </div>
+    <div
+      class="col-1 col-md-1 p-2 m-auto caption text-right font-weight-bold font-larger"
+    >
+      {{ orderItem.quantity }}x
+    </div>
     <div class="col-3 col-md-2 p-2 m-auto caption text-right font-larger">
-      {{ orderItem.priceShown.priceSum | currencyFormatter: orderItem.priceShown.currency }}
+      {{
+        orderItem.priceShown.priceSum
+          | currencyFormatter: orderItem.priceShown.currency
+      }}
     </div>
     <div class="text-right p-2 col-8 col-md-3 m-auto">
       <ng-container
@@ -60,7 +73,10 @@
   </div>
 
   <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
-    {{ order.sumPriceShown.priceSum | currencyFormatter: order.sumPriceShown.currency }}
+    {{
+      order.sumPriceShown.priceSum
+        | currencyFormatter: order.sumPriceShown.currency
+    }}
   </div>
   <div class="text-right p-2 col-3 m-auto">
     <button

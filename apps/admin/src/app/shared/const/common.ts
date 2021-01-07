@@ -25,13 +25,32 @@ export const MENU_ROLES = {
     EAdminRole.UNIT_ADMIN,
     EAdminRole.STAFF,
   ],
-  PRODUCTS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN, EAdminRole.UNIT_ADMIN],
+  PRODUCTS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+    EAdminRole.UNIT_ADMIN,
+  ],
   PRODUCT_CATEGORIES: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
-  UNITS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN, EAdminRole.UNIT_ADMIN],
-  GROUPS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN],
+  UNITS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+    EAdminRole.UNIT_ADMIN,
+  ],
+  GROUPS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+  ],
   CHAINS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
   USERS: [EAdminRole.SUPERUSER],
-  ADMINS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN, EAdminRole.GROUP_ADMIN, EAdminRole.UNIT_ADMIN],
+  ADMINS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+    EAdminRole.UNIT_ADMIN,
+  ],
 };
 
 export const PAYMENT_MODES: IPaymentMode[] = [

@@ -1,12 +1,20 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { EDashboardSize, EDashboardTicketListType, ENebularButtonSize, EOrderStatus } from 'src/app/shared/enums';
+import {
+  EDashboardSize,
+  EDashboardTicketListType,
+  ENebularButtonSize,
+  EOrderStatus,
+} from 'src/app/shared/enums';
 import { IOrder } from 'src/app/shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
 import { IState } from 'src/app/store';
 import { dashboardActions } from 'src/app/store/actions';
-import { dashboardSelectors, orderListSelectors } from 'src/app/store/selectors';
+import {
+  dashboardSelectors,
+  orderListSelectors,
+} from 'src/app/store/selectors';
 import { IDashboardSettings } from 'src/app/store/state';
 
 import { Component, OnDestroy } from '@angular/core';
@@ -38,19 +46,33 @@ export class OrderTicketListComponent implements OnDestroy {
 
   constructor(private _store: Store<IState>) {
     combineLatest([
-      this._store.pipe(select(orderListSelectors.getAllActiveOrders), untilDestroyed(this)),
-      this._store.pipe(select(dashboardSelectors.getTicketListType), untilDestroyed(this)),
-    ]).subscribe(([activeOrders, ticketListType]: [IOrder[], EDashboardTicketListType]): void => {
-      this._orders = activeOrders;
+      this._store.pipe(
+        select(orderListSelectors.getAllActiveOrders),
+        untilDestroyed(this)
+      ),
+      this._store.pipe(
+        select(dashboardSelectors.getTicketListType),
+        untilDestroyed(this)
+      ),
+    ]).subscribe(
+      ([activeOrders, ticketListType]: [
+        IOrder[],
+        EDashboardTicketListType
+      ]): void => {
+        this._orders = activeOrders;
 
-      this._refreshPlacedOrders();
-      this._refreshReadyOrders();
-      this._refreshPaymentOrders();
-      this._refreshFilteredOrders(ticketListType);
-    });
+        this._refreshPlacedOrders();
+        this._refreshReadyOrders();
+        this._refreshPaymentOrders();
+        this._refreshFilteredOrders(ticketListType);
+      }
+    );
 
     this._store
-      .pipe(select(dashboardSelectors.getSelectedActiveOrder()), untilDestroyed(this))
+      .pipe(
+        select(dashboardSelectors.getSelectedActiveOrder()),
+        untilDestroyed(this)
+      )
       .subscribe((selectedOrder: IOrder): void => {
         this.selectedOrder = selectedOrder;
       });
@@ -61,7 +83,9 @@ export class OrderTicketListComponent implements OnDestroy {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =
-          this.dashboardSettings.size === EDashboardSize.LARGER ? ENebularButtonSize.MEDIUM : ENebularButtonSize.SMALL;
+          this.dashboardSettings.size === EDashboardSize.LARGER
+            ? ENebularButtonSize.MEDIUM
+            : ENebularButtonSize.SMALL;
       });
   }
 
@@ -71,16 +95,24 @@ export class OrderTicketListComponent implements OnDestroy {
 
   private _refreshPlacedOrders(): void {
     this.placedOrders = [
-      ...this._orders.filter((o: IOrder): boolean => currentStatusFn(o.statusLog) !== EOrderStatus.READY),
+      ...this._orders.filter(
+        (o: IOrder): boolean =>
+          currentStatusFn(o.statusLog) !== EOrderStatus.READY
+      ),
     ];
   }
 
   private _refreshReadyOrders(): void {
     this.readyOrders = [
-      ...this._orders.filter((o: IOrder): boolean => currentStatusFn(o.statusLog) === EOrderStatus.READY),
+      ...this._orders.filter(
+        (o: IOrder): boolean =>
+          currentStatusFn(o.statusLog) === EOrderStatus.READY
+      ),
     ];
 
-    this.uniqueReadyOrdersCount = this.readyOrders.filter((v, i, a): boolean => a.indexOf(v) === i).length;
+    this.uniqueReadyOrdersCount = this.readyOrders.filter(
+      (v, i, a): boolean => a.indexOf(v) === i
+    ).length;
   }
 
   private _refreshPaymentOrders(): void {
@@ -90,26 +122,36 @@ export class OrderTicketListComponent implements OnDestroy {
       .filter((v, i, a): boolean => a.indexOf(v) === i); // unique filter
 
     this.uniquePaymentUsersCount = uniquePaymentUsers.length;
-    this.paymentOrders = [...this._orders.filter((o: IOrder): boolean => uniquePaymentUsers.includes(o.userId))];
+    this.paymentOrders = [
+      ...this._orders.filter((o: IOrder): boolean =>
+        uniquePaymentUsers.includes(o.userId)
+      ),
+    ];
   }
 
   private _refreshFilteredOrders(listType: EDashboardTicketListType): void {
     switch (listType) {
       case EDashboardTicketListType.PLACED:
-        this.filteredOrders = this.placedOrders.sort(customNumberCompare('created'));
+        this.filteredOrders = this.placedOrders.sort(
+          customNumberCompare('created')
+        );
         break;
       case EDashboardTicketListType.READY:
         this.filteredOrders = this.readyOrders;
         break;
       case EDashboardTicketListType.PAYMENT_INTENTION:
-        this.filteredOrders = this.paymentOrders.sort(customNumberCompare('paymentIntention'));
+        this.filteredOrders = this.paymentOrders.sort(
+          customNumberCompare('paymentIntention')
+        );
         break;
     }
 
     this._store
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
       .subscribe((selectedOrderId: string): void => {
-        const found = this.filteredOrders.map((o): string => o._id).includes(selectedOrderId);
+        const found = this.filteredOrders
+          .map((o): string => o._id)
+          .includes(selectedOrderId);
 
         if (!found) {
           this.selectOrder(this.filteredOrders[0]);
@@ -118,7 +160,9 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public selectOrder(order: IOrder): void {
-    const selectedOrder = this._orders.find((o): boolean => o._id === order?._id);
+    const selectedOrder = this._orders.find(
+      (o): boolean => o._id === order?._id
+    );
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({

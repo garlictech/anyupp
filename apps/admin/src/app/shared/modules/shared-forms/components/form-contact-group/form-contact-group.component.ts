@@ -22,7 +22,9 @@ export class FormContactGroupComponent {
     const query = encodeURI(`${co} ${p} ${ci} ${a}`);
 
     this._httpClient
-      .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`)
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
+      )
       .subscribe((response: any): any => {
         if (response.status === 'OK' && response.results[0]) {
           this._patchLocation(_get(response, 'results[0].geometry.location'));

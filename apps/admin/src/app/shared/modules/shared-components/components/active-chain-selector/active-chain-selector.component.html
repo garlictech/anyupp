@@ -1,4 +1,8 @@
-<nb-icon *ngIf="showIcon" [status]="selectedChainId ? 'basic' : 'danger'" icon="shield-outline"></nb-icon>
+<nb-icon
+  *ngIf="showIcon"
+  [status]="selectedChainId ? 'basic' : 'danger'"
+  icon="shield-outline"
+></nb-icon>
 <nb-select
   [status]="selectedChainId ? 'basic' : 'danger'"
   placeholder="{{ 'common.chain' | translate }}"
@@ -7,5 +11,7 @@
   (selectedChange)="onChainSelected($event)"
   [selected]="selectedChainId"
 >
-  <nb-option *ngFor="let option of chains$ | async" [value]="option._id">{{ option.name }}</nb-option>
+  <nb-option *ngFor="let option of chains$ | async" [value]="option._id">{{
+    option.name
+  }}</nb-option>
 </nb-select>

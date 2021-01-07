@@ -17,7 +17,10 @@ export class FormProductAvailabilitiesComponent {
   public EVariantAvailabilityType = EVariantAvailabilityType;
   public iterativeAvailabilities: IKeyValue[];
 
-  constructor(private _formsService: FormsService, private _translateService: TranslateService) {
+  constructor(
+    private _formsService: FormsService,
+    private _translateService: TranslateService
+  ) {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
       (key): IKeyValue => ({
         key,
@@ -42,7 +45,9 @@ export class FormProductAvailabilitiesComponent {
   ];
 
   public addAvailability(): void {
-    this.availabilityFormArray.push(this._formsService.createProductAvailabilityFormGroup());
+    this.availabilityFormArray.push(
+      this._formsService.createProductAvailabilityFormGroup()
+    );
   }
 
   public removeAvailability(idx: number): void {

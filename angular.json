@@ -21,10 +21,7 @@
             "polyfills": "apps/admin/src/polyfills.ts",
             "tsConfig": "apps/admin/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/admin/src/favicon.ico",
-              "apps/admin/src/assets"
-            ],
+            "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
             "styles": [
               "apps/anyupp/src/styles.scss",
               "node_modules/@nebular/theme/styles/prebuilt/default.css",
@@ -75,9 +72,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -97,16 +92,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "apps/admin/tsconfig.app.json",
-              "apps/admin/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/admin/**/*"
-            ]
+            "lintFilePatterns": ["apps/admin/**/*.ts", "apps/admin/**/*.html"]
           }
         },
         "test": {
@@ -115,9 +103,7 @@
             "jestConfig": "apps/admin/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/admin"
-          ]
+          "outputs": ["coverage/apps/admin"]
         }
       }
     },
@@ -140,15 +126,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "apps/admin-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/admin-e2e/**/*"
-            ]
+            "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -160,16 +140,9 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/graphql/schema/tsconfig.lib.json",
-              "libs/graphql/schema/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/graphql/schema/**/*"
-            ]
+            "lintFilePatterns": ["libs/graphql/schema/**/*.ts"]
           }
         },
         "test": {
@@ -178,9 +151,7 @@
             "jestConfig": "libs/graphql/schema/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/graphql/schema"
-          ]
+          "outputs": ["coverage/libs/graphql/schema"]
         }
       }
     },
@@ -197,9 +168,7 @@
             "outputPath": "dist/apps/graphql-server",
             "main": "apps/graphql-server/src/main.ts",
             "tsConfig": "apps/graphql-server/tsconfig.app.json",
-            "assets": [
-              "apps/graphql-server/src/assets"
-            ]
+            "assets": ["apps/graphql-server/src/assets"]
           },
           "configurations": {
             "production": {
@@ -214,9 +183,7 @@
               ]
             }
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -225,16 +192,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "apps/graphql-server/tsconfig.app.json",
-              "apps/graphql-server/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/graphql-server/**/*"
-            ]
+            "lintFilePatterns": ["apps/graphql-server/**/*.ts"]
           }
         },
         "test": {
@@ -243,9 +203,7 @@
             "jestConfig": "apps/graphql-server/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/apps/graphql-server"
-          ]
+          "outputs": ["coverage/apps/graphql-server"]
         }
       }
     },
@@ -256,16 +214,9 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/graphql/resolvers/tsconfig.lib.json",
-              "libs/graphql/resolvers/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/graphql/resolvers/**/*"
-            ]
+            "lintFilePatterns": ["libs/graphql/resolvers/**/*.ts"]
           }
         },
         "test": {
@@ -274,49 +225,48 @@
             "jestConfig": "libs/graphql/resolvers/jest.config.js",
             "passWithNoTests": true
           },
-          "outputs": [
-            "coverage/libs/graphql/resolvers"
-          ]
+          "outputs": ["coverage/libs/graphql/resolvers"]
         }
       }
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "yarn"
   },
   "schematics": {
     "@nrwl/workspace": {
       "library": {
-        "linter": "tslint"
+        "linter": "eslint"
       }
     },
     "@nrwl/cypress": {
       "cypress-project": {
-        "linter": "tslint"
+        "linter": "eslint"
       }
     },
     "@nrwl/node": {
       "application": {
-        "linter": "tslint"
+        "linter": "eslint"
       },
       "library": {
-        "linter": "tslint"
+        "linter": "eslint"
       }
     },
     "@nrwl/nest": {
       "application": {
-        "linter": "tslint"
+        "linter": "eslint"
       },
       "library": {
-        "linter": "tslint"
+        "linter": "eslint"
       }
     },
     "@nrwl/express": {
       "application": {
-        "linter": "tslint"
+        "linter": "eslint"
       },
       "library": {
-        "linter": "tslint"
+        "linter": "eslint"
       }
     },
     "@nrwl/angular:application": {

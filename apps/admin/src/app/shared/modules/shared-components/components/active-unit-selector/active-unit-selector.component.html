@@ -1,4 +1,8 @@
-<nb-icon *ngIf="showIcon" [status]="selectedUnitId ? 'basic' : 'danger'" icon="home-outline"></nb-icon>
+<nb-icon
+  *ngIf="showIcon"
+  [status]="selectedUnitId ? 'basic' : 'danger'"
+  icon="home-outline"
+></nb-icon>
 <nb-select
   [status]="selectedUnitId ? 'basic' : 'danger'"
   placeholder="{{ 'common.unit' | translate }}"
@@ -7,5 +11,7 @@
   (selectedChange)="onUnitSelected($event)"
   [selected]="selectedUnitId"
 >
-  <nb-option *ngFor="let option of units$ | async" [value]="option._id">{{ option.name }}</nb-option>
+  <nb-option *ngFor="let option of units$ | async" [value]="option._id">{{
+    option.name
+  }}</nb-option>
 </nb-select>

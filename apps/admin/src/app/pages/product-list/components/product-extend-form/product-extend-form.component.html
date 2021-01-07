@@ -1,9 +1,19 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (editing ? 'products.editProduct' : 'products.extendProduct') | translate }}
+      {{
+        (editing ? 'products.editProduct' : 'products.extendProduct')
+          | translate
+      }}
     </div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -38,7 +48,10 @@
             </app-form-select>
           </div>
           <div class="col-3 pt-4" *ngIf="productLevel === eProductLevel.UNIT">
-            <app-form-checkbox caption="products.takeaway" [control]="dialogForm.controls.takeaway"></app-form-checkbox>
+            <app-form-checkbox
+              caption="products.takeaway"
+              [control]="dialogForm.controls.takeaway"
+            ></app-form-checkbox>
           </div>
           <div class="col-3 pt-4">
             <app-form-checkbox
@@ -57,7 +70,14 @@
       ></app-form-product-variants>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

@@ -1,4 +1,8 @@
-import { EDashboardListMode, EDashboardSize, EDashboardTicketListType } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  EDashboardTicketListType,
+} from 'src/app/shared/enums';
 
 export interface IDashboardSettings {
   listMode: EDashboardListMode;

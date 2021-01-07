@@ -11,7 +11,12 @@
         [status]="selectedUnit.isAcceptingOrders ? 'success' : 'danger'"
         (click)="toggleAcceptingOrders($event)"
       >
-        {{ (selectedUnit.isAcceptingOrders ? 'orders.ordersAccepted' : 'orders.ordersBlocked') | translate }}
+        {{
+          (selectedUnit.isAcceptingOrders
+            ? 'orders.ordersAccepted'
+            : 'orders.ordersBlocked'
+          ) | translate
+        }}
       </button>
     </div>
 
@@ -20,29 +25,52 @@
     </div>
 
     <nb-actions [size]="buttonSize" class="float-right">
-      <nb-action [icon]="resized ? 'minimize-outline' : 'maximize-outline'" (click)="toggleResize()"></nb-action>
       <nb-action
-        [ngClass]="dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP ? 'active' : 'inactive'"
+        [icon]="resized ? 'minimize-outline' : 'maximize-outline'"
+        (click)="toggleResize()"
+      ></nb-action>
+      <nb-action
+        [ngClass]="
+          dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
+            ? 'active'
+            : 'inactive'
+        "
         icon="map-outline"
         (click)="selectListMode(EDashboardListMode.FLOOR_MAP)"
       ></nb-action>
       <nb-action
-        [ngClass]="dashboardSettings.listMode === EDashboardListMode.LANES ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.listMode === EDashboardListMode.LANES
+            ? 'active'
+            : 'inactive'
+        "
         icon="swap-outline"
         (click)="selectListMode(EDashboardListMode.LANES)"
       ></nb-action>
       <nb-action
-        [ngClass]="dashboardSettings.listMode === EDashboardListMode.CURRENT ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.listMode === EDashboardListMode.CURRENT
+            ? 'active'
+            : 'inactive'
+        "
         icon="clock-outline"
         (click)="selectListMode(EDashboardListMode.CURRENT)"
       ></nb-action>
       <nb-action
-        [ngClass]="dashboardSettings.listMode === EDashboardListMode.HISTORY ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.listMode === EDashboardListMode.HISTORY
+            ? 'active'
+            : 'inactive'
+        "
         icon="archive-outline"
         (click)="selectListMode(EDashboardListMode.HISTORY)"
       ></nb-action>
       <nb-action
-        [ngClass]="dashboardSettings.listMode === EDashboardListMode.REPORTS ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.listMode === EDashboardListMode.REPORTS
+            ? 'active'
+            : 'inactive'
+        "
         icon="pie-chart-outline"
         (click)="selectListMode(EDashboardListMode.REPORTS)"
       ></nb-action>
@@ -55,8 +83,14 @@
         dashboardSettings.listMode === EDashboardListMode.HISTORY
       "
     ></app-order-ticket-body>
-    <app-lanes-body *ngIf="dashboardSettings.listMode === EDashboardListMode.LANES"></app-lanes-body>
-    <app-floor-map-body *ngIf="dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP"></app-floor-map-body>
-    <app-reports-body *ngIf="dashboardSettings.listMode === EDashboardListMode.REPORTS"></app-reports-body>
+    <app-lanes-body
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.LANES"
+    ></app-lanes-body>
+    <app-floor-map-body
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP"
+    ></app-floor-map-body>
+    <app-reports-body
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.REPORTS"
+    ></app-reports-body>
   </nb-card-body>
 </nb-card>

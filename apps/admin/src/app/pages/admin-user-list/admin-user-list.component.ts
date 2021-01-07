@@ -17,10 +17,16 @@ import { AdminUserFormComponent } from './components/admin-user-form/admin-user-
 export class AdminUserListComponent implements OnInit, OnDestroy {
   public adminUsers$: Observable<IAdminUser[]>;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
-    this.adminUsers$ = this._store.pipe(select(adminUserListSelectors.getAllAdminUsers), untilDestroyed(this));
+    this.adminUsers$ = this._store.pipe(
+      select(adminUserListSelectors.getAllAdminUsers),
+      untilDestroyed(this)
+    );
   }
 
   ngOnDestroy(): void {

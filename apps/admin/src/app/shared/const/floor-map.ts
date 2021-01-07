@@ -13,7 +13,7 @@ export const FLOOR_MAP_CONFIG = {
   seatStroke: '#32230b',
   barFill: 'rgba(0, 93, 127, 0.7)',
   barStroke: '#003e54',
-  wallFill: 'rgba(136, 136, 136, 0.7)'
+  wallFill: 'rgba(136, 136, 136, 0.7)',
 };
 
 export const FLOOR_MAP_TEXT_CONFIG = {

@@ -1,7 +1,16 @@
 <nb-card>
   <nb-card-header>
-    <div class="float-left">{{ (unit?._id ? 'units.editUnit' : 'units.newUnit') | translate }}</div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <div class="float-left">
+      {{ (unit?._id ? 'units.editUnit' : 'units.newUnit') | translate }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -69,12 +78,17 @@
         </div>
 
         <div class="col-md-4 pt-4">
-          <app-form-checkbox caption="common.isActive" [control]="dialogForm.controls.isActive"></app-form-checkbox>
+          <app-form-checkbox
+            caption="common.isActive"
+            [control]="dialogForm.controls.isActive"
+          ></app-form-checkbox>
         </div>
       </div>
 
       <fieldset class="form">
-        <legend class="label">{{ 'common.paymentModes.title' | translate }}</legend>
+        <legend class="label">
+          {{ 'common.paymentModes.title' | translate }}
+        </legend>
 
         <nb-checkbox
           class="mr-5 mb-3"
@@ -86,14 +100,27 @@
         </nb-checkbox>
       </fieldset>
 
-      <app-form-contact-group [contactFormGroup]="dialogForm"></app-form-contact-group>
+      <app-form-contact-group
+        [contactFormGroup]="dialogForm"
+      ></app-form-contact-group>
 
-      <app-form-weekly-schedule [scheduleControl]="dialogForm.controls.openingHours"></app-form-weekly-schedule>
+      <app-form-weekly-schedule
+        [scheduleControl]="dialogForm.controls.openingHours"
+      ></app-form-weekly-schedule>
 
-      <app-form-unit-lanes [lanesFormArray]="dialogForm.controls._lanesArr"></app-form-unit-lanes>
+      <app-form-unit-lanes
+        [lanesFormArray]="dialogForm.controls._lanesArr"
+      ></app-form-unit-lanes>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

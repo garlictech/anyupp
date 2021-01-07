@@ -1,13 +1,22 @@
 import { skipWhile } from 'rxjs/operators';
 import { currentStatus } from 'src/app/shared/pure/orders';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, groupListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+} from 'src/app/store/selectors';
 
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
 import { EOrderStatus } from '../../enums';
-import { IAdminUser, IGroup, IOrder, IOrderItem, IProduct } from '../../interfaces';
+import {
+  IAdminUser,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+} from '../../interfaces';
 import { LocalizePipe } from '../../pipes';
 import { DataService } from '../data';
 
@@ -18,10 +27,16 @@ export class OrderService {
   private _adminUser: IAdminUser;
   private _groupCurrency: string;
 
-  constructor(private _store: Store<IState>, private _dataService: DataService, private _localizePipe: LocalizePipe) {
-    this._store.pipe(select(currentUserSelectors.getAdminUser)).subscribe((adminUser: IAdminUser): void => {
-      this._adminUser = adminUser;
-    });
+  constructor(
+    private _store: Store<IState>,
+    private _dataService: DataService,
+    private _localizePipe: LocalizePipe
+  ) {
+    this._store
+      .pipe(select(currentUserSelectors.getAdminUser))
+      .subscribe((adminUser: IAdminUser): void => {
+        this._adminUser = adminUser;
+      });
 
     this._store
       .pipe(
@@ -37,12 +52,14 @@ export class OrderService {
     order.items[idx].quantity += value;
 
     if (order.items[idx].quantity > 0) {
-      order.items[idx].priceShown.priceSum = order.items[idx].quantity * order.items[idx].priceShown.pricePerUnit;
+      order.items[idx].priceShown.priceSum =
+        order.items[idx].quantity * order.items[idx].priceShown.pricePerUnit;
       order.sumPriceShown.priceSum = 0;
       order.items.forEach((item: IOrderItem): void => {
         order.sumPriceShown.priceSum += item.priceShown.priceSum;
       });
-      order.sumPriceShown.taxSum = order.sumPriceShown.priceSum * 0.01 * order.sumPriceShown.tax;
+      order.sumPriceShown.taxSum =
+        order.sumPriceShown.priceSum * 0.01 * order.sumPriceShown.tax;
 
       this._dataService
         .updateOrderItemQuantityAndPrice(
@@ -54,14 +71,25 @@ export class OrderService {
           order.items[idx]
         )
         .then((): void => {
-          if (currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED) {
-            this.updateOrderItemStatus(order._id, order.userId, EOrderStatus.PLACED, idx);
+          if (
+            currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED
+          ) {
+            this.updateOrderItemStatus(
+              order._id,
+              order.userId,
+              EOrderStatus.PLACED,
+              idx
+            );
           }
         });
     }
   }
 
-  public addProductVariant(order: IOrder, product: IProduct, variantId: string): void {
+  public addProductVariant(
+    order: IOrder,
+    product: IProduct,
+    variantId: string
+  ): void {
     const now = new Date().getTime();
     const tax = parseInt(product.tax || '0', 10);
 
@@ -105,7 +133,12 @@ export class OrderService {
     );
   }
 
-  public updateOrderItemStatus(orderId: string, orderUserId: string, status: EOrderStatus, idx: number): Promise<any> {
+  public updateOrderItemStatus(
+    orderId: string,
+    orderUserId: string,
+    status: EOrderStatus,
+    idx: number
+  ): Promise<any> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,

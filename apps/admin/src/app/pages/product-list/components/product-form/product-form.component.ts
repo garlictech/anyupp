@@ -1,13 +1,26 @@
 import { get as _get, omit as _omit, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { EImageType, EProductLevel, EProductType } from 'src/app/shared/enums';
-import { IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant } from 'src/app/shared/interfaces';
+import {
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+} from 'src/app/shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { customNumberCompare, multiLangValidator, objectToArray } from 'src/app/shared/pure';
+import {
+  customNumberCompare,
+  multiLangValidator,
+  objectToArray,
+} from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, productCategoryListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  productCategoryListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
@@ -19,7 +32,9 @@ import { select, Store } from '@ngrx/store';
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
 })
-export class ProductFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class ProductFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public eImageType = EImageType;
   public product: IProduct;
   public productLevel: EProductLevel;
@@ -57,11 +72,15 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
       .subscribe((userSettings: IAdminUserSettings): void => {
         this._selectedChainId = userSettings.selectedChainId;
         this._selectedGroupId = userSettings.selectedGroupId;
-        this._selectedProductCategoryId = userSettings.selectedProductCategoryId;
+        this._selectedProductCategoryId =
+          userSettings.selectedProductCategoryId;
       });
 
     this._store
-      .pipe(select(productCategoryListSelectors.getAllProductCategories), untilDestroyed(this))
+      .pipe(
+        select(productCategoryListSelectors.getAllProductCategories),
+        untilDestroyed(this)
+      )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories.map(
           (productCategory): IKeyValue => ({
@@ -114,12 +133,15 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
       this.dialogForm.patchValue(_omit(this.product, 'variants'));
 
       // Parse variants object to temp array
-      const variantsArr = objectToArray(this.product.variants || {}, '_variantId').sort(
-        customNumberCompare('position')
-      );
+      const variantsArr = objectToArray(
+        this.product.variants || {},
+        '_variantId'
+      ).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup(this.productLevel);
+        const variantGroup = this._formsService.createProductVariantFormGroup(
+          this.productLevel
+        );
         variantGroup.patchValue(variant);
 
         (this.dialogForm.controls._variantArr as FormArray).push(variantGroup);
@@ -127,7 +149,9 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
     } else {
       // Patch ProductCategoryID
       if (this._selectedProductCategoryId) {
-        this.dialogForm.controls.productCategoryId.patchValue(this._selectedProductCategoryId);
+        this.dialogForm.controls.productCategoryId.patchValue(
+          this._selectedProductCategoryId
+        );
       }
       this.dialogForm.controls.isVisible.patchValue(true);
     }
@@ -151,7 +175,11 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
 
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
-            updatePromise = this._dataService.updateChainProduct(this._selectedChainId, this.product._id, value);
+            updatePromise = this._dataService.updateChainProduct(
+              this._selectedChainId,
+              this.product._id,
+              value
+            );
             break;
           default:
             break;
@@ -159,7 +187,11 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
 
         updatePromise.then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -171,7 +203,10 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
 
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
-            insertPromise = this._dataService.insertChainProduct(this._selectedChainId, value);
+            insertPromise = this._dataService.insertChainProduct(
+              this._selectedChainId,
+              value
+            );
             break;
           default:
             break;
@@ -179,7 +214,11 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
 
         insertPromise.then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -196,12 +235,24 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
     // Update existing user's image
     if (_get(this.product, '_id')) {
       this._dataService
-        .updateProductCategoryImagePath(this._selectedGroupId, this.product._id, imagePath)
+        .updateProductCategoryImagePath(
+          this._selectedGroupId,
+          this.product._id,
+          imagePath
+        )
         .then((): void => {
-          this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess'
+          );
         });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageUploadSuccess'
+      );
     }
   };
 
@@ -214,11 +265,25 @@ export class ProductFormComponent extends AbstractFormDialogComponent implements
 
     // Update existing user's image
     if (_get(this.product, '_id')) {
-      this._dataService.updateProductCategoryImagePath(this._selectedGroupId, this.product._id, null).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
-      });
+      this._dataService
+        .updateProductCategoryImagePath(
+          this._selectedGroupId,
+          this.product._id,
+          null
+        )
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess'
+          );
+        });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageRemoveSuccess'
+      );
     }
   };
 }

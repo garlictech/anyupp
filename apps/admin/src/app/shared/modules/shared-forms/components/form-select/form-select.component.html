@@ -3,8 +3,15 @@
     <label class="caption">{{ caption | translate }}</label>
   </div>
   <div>
-    <nb-select width="100" [size]="size" [formControl]="control" (selectedChange)="onChange($event)">
-      <nb-option value="" *ngIf="!control.value || forceShowEmptyOption">-</nb-option>
+    <nb-select
+      width="100"
+      [size]="size"
+      [formControl]="control"
+      (selectedChange)="onChange($event)"
+    >
+      <nb-option value="" *ngIf="!control.value || forceShowEmptyOption"
+        >-</nb-option
+      >
       <nb-option *ngFor="let option of options" [value]="option.key">{{
         localize ? (option.value | localize) : (option.value | translate)
       }}</nb-option>

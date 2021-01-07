@@ -1,7 +1,15 @@
-import { EDashboardListMode, EDashboardSize, EDashboardTicketListType } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  EDashboardTicketListType,
+} from 'src/app/shared/enums';
 import { IOrder } from 'src/app/shared/interfaces';
 
-import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  MemoizedSelector,
+} from '@ngrx/store';
 
 import { IDashboardSettings, IDashboardState } from '../state';
 import { getAllActiveOrders, getAllHistoryOrders } from './order-list';
@@ -13,7 +21,9 @@ export const getSelectedActiveOrder = (): MemoizedSelector<object, IOrder> => {
     getSelectedOrderId,
     getAllActiveOrders,
     (selectedOrderId: string, activeOrders: IOrder[]): IOrder => {
-      return activeOrders.find((order): boolean => order._id === selectedOrderId);
+      return activeOrders.find(
+        (order): boolean => order._id === selectedOrderId
+      );
     }
   );
 };
@@ -23,7 +33,9 @@ export const getSelectedHistoryOrder = (): MemoizedSelector<object, IOrder> => {
     getSelectedOrderId,
     getAllHistoryOrders,
     (selectedOrderId: string, historyOrders: IOrder[]): IOrder => {
-      return historyOrders.find((order): boolean => order._id === selectedOrderId);
+      return historyOrders.find(
+        (order): boolean => order._id === selectedOrderId
+      );
     }
   );
 };
@@ -45,10 +57,14 @@ export const getListMode = createSelector(
 
 export const getTicketListType = createSelector(
   featureSelector,
-  (state: IDashboardState): EDashboardTicketListType => state.settings.ticketListType
+  (state: IDashboardState): EDashboardTicketListType =>
+    state.settings.ticketListType
 );
 
-export const getSize = createSelector(featureSelector, (state: IDashboardState): EDashboardSize => state.settings.size);
+export const getSize = createSelector(
+  featureSelector,
+  (state: IDashboardState): EDashboardSize => state.settings.size
+);
 
 export const getSelectedLanes = createSelector(
   featureSelector,

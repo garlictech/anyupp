@@ -8,7 +8,14 @@ import { reducer } from 'src/app/shared/pure';
 import { IState } from 'src/app/store';
 import { productListSelectors } from 'src/app/store/selectors';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,14 +26,19 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './reports-daily-sales-per-type.component.html',
   styleUrls: ['./reports-daily-sales-per-type.component.scss'],
 })
-export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestroy {
+export class ReportsDailySalesPerTypeComponent
+  implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
   @Input() orders$: Observable<IOrder[]>;
-  @Input() currency: string = '';
+  @Input() currency = '';
 
   private _chart: Chart;
 
-  constructor(private _store: Store<IState>, private _translateService: TranslateService, private _currencyFormatter: CurrencyFormatterPipe) {}
+  constructor(
+    private _store: Store<IState>,
+    private _translateService: TranslateService,
+    private _currencyFormatter: CurrencyFormatterPipe
+  ) {}
 
   ngAfterViewInit(): void {
     this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
@@ -49,9 +61,13 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestr
           callbacks: {
             label: (tooltipItem, data) => {
               const label = data.labels[tooltipItem.index] || '';
-              const value: number = <number>data.datasets[0].data[tooltipItem.index] || 0;
+              const value: number =
+                <number>data.datasets[0].data[tooltipItem.index] || 0;
 
-              return ` ${label}: ${this._currencyFormatter.transform(value, this.currency)}`;
+              return ` ${label}: ${this._currencyFormatter.transform(
+                value,
+                this.currency
+              )}`;
             },
           },
         },
@@ -68,7 +84,9 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestr
               },
             },
             formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(reducer);
+              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(
+                reducer
+              );
               const perc = ((value / sum) * 100).toFixed(0);
               return ` ${perc}%`;
             },
@@ -77,7 +95,12 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestr
       },
     });
 
-    combineLatest([this._store.pipe(select(productListSelectors.getAllGeneratedUnitProducts)), this.orders$])
+    combineLatest([
+      this._store.pipe(
+        select(productListSelectors.getAllGeneratedUnitProducts)
+      ),
+      this.orders$,
+    ])
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         const amounts = this._orderAmounts(products, orders);
@@ -91,10 +114,12 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestr
         this._chart.update();
       });
 
-    this._translateService.onLangChange.pipe(untilDestroyed(this)).subscribe(() => {
-      this._chart.data.labels = this._translatedLabels();
-      this._chart.update();
-    });
+    this._translateService.onLangChange
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this._chart.data.labels = this._translatedLabels();
+        this._chart.update();
+      });
   }
 
   ngOnDestroy(): void {
@@ -109,12 +134,12 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit, OnDestr
     };
 
     const productTypeMap = {};
-    products.forEach(p => {
+    products.forEach((p) => {
       productTypeMap[p._id] = p.productType;
     });
 
-    orders.forEach(o => {
-      o.items.forEach(i => {
+    orders.forEach((o) => {
+      o.items.forEach((i) => {
         amounts[productTypeMap[i.productId]] += i.priceShown.priceSum;
       });
     });

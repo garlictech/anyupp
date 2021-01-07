@@ -3,7 +3,14 @@
     <div class="float-left">
       {{ 'adminUsers.editAdminUserRole' | translate }}
     </div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -11,10 +18,19 @@
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="subtitle">{{ adminUser.name }}</div>
 
-      <app-form-admin-role [roleFormGroup]="dialogForm.controls.roles"></app-form-admin-role>
+      <app-form-admin-role
+        [roleFormGroup]="dialogForm.controls.roles"
+      ></app-form-admin-role>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

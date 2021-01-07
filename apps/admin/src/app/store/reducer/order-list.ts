@@ -1,14 +1,22 @@
 import { IOrder } from 'src/app/shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { ActionReducer, ActionReducerMap, combineReducers, createReducer, on } from '@ngrx/store';
+import {
+  ActionReducer,
+  ActionReducerMap,
+  combineReducers,
+  createReducer,
+  on,
+} from '@ngrx/store';
 
 import { orderListActions } from '../actions';
 import { IOrderListState } from '../state';
 
 // ACTIVE
 
-export const activeOrderListAdapter: EntityAdapter<IOrder> = createEntityAdapter<IOrder>({
+export const activeOrderListAdapter: EntityAdapter<IOrder> = createEntityAdapter<
+  IOrder
+>({
   selectId: (item: IOrder): string => item._id,
 });
 export const activeOrderListInitialState: EntityState<IOrder> = activeOrderListAdapter.getInitialState();
@@ -17,14 +25,20 @@ const activeOrderListReducer = createReducer(
   activeOrderListInitialState,
   on(
     orderListActions.setAllActiveOrders,
-    (state, { orders }): EntityState<IOrder> => activeOrderListAdapter.setAll(orders, state)
+    (state, { orders }): EntityState<IOrder> =>
+      activeOrderListAdapter.setAll(orders, state)
   ),
-  on(orderListActions.resetActiveOrders, (state): EntityState<IOrder> => activeOrderListAdapter.removeAll(state))
+  on(
+    orderListActions.resetActiveOrders,
+    (state): EntityState<IOrder> => activeOrderListAdapter.removeAll(state)
+  )
 );
 
 // HISTORY
 
-export const historyOrderListAdapter: EntityAdapter<IOrder> = createEntityAdapter<IOrder>({
+export const historyOrderListAdapter: EntityAdapter<IOrder> = createEntityAdapter<
+  IOrder
+>({
   selectId: (item: IOrder): string => item._id,
 });
 export const historyOrderListInitialState: EntityState<IOrder> = historyOrderListAdapter.getInitialState();
@@ -33,9 +47,13 @@ const historyOrderListReducer = createReducer(
   historyOrderListInitialState,
   on(
     orderListActions.setAllHistoryOrders,
-    (state, { orders }): EntityState<IOrder> => historyOrderListAdapter.setAll(orders, state)
+    (state, { orders }): EntityState<IOrder> =>
+      historyOrderListAdapter.setAll(orders, state)
   ),
-  on(orderListActions.resetHistoryOrders, (state): EntityState<IOrder> => historyOrderListAdapter.removeAll(state))
+  on(
+    orderListActions.resetHistoryOrders,
+    (state): EntityState<IOrder> => historyOrderListAdapter.removeAll(state)
+  )
 );
 
 const reducerMap: ActionReducerMap<IOrderListState> = {

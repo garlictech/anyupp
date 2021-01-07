@@ -75,7 +75,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   public env = environment;
   public menu: NbMenuItem[] = [];
 
-  constructor(private _store: Store<IState>, private _translateService: TranslateService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this._store

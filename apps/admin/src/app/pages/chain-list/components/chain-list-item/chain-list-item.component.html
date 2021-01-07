@@ -5,7 +5,10 @@
     [title]="chain.description | localize"
     [picture]="chainLogo"
   ></nb-user>
-  <app-status-led class="float-left ml-2" [status]="chain.isActive"></app-status-led>
+  <app-status-led
+    class="float-left ml-2"
+    [status]="chain.isActive"
+  ></app-status-led>
 
   <div class="clearfix"></div>
   <app-contact [contact]="chain"></app-contact>

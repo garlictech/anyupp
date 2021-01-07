@@ -7,11 +7,19 @@
   <app-contact [contact]="unit"></app-contact>
 
   <div class="caption">
-    <nb-icon icon="globe-outline"></nb-icon><strong>{{ unit._group?.name }}</strong>
+    <nb-icon icon="globe-outline"></nb-icon
+    ><strong>{{ unit._group?.name }}</strong>
   </div>
 </div>
 
-<button nbButton shape="round" size="tiny" class="float-right" [title]="'common.edit' | translate" (click)="editUnit()">
+<button
+  nbButton
+  shape="round"
+  size="tiny"
+  class="float-right"
+  [title]="'common.edit' | translate"
+  (click)="editUnit()"
+>
   <nb-icon icon="edit-outline"></nb-icon>
 </button>
 

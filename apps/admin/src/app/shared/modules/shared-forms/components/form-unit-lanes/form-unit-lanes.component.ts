@@ -17,13 +17,19 @@ export class FormUnitLanesComponent implements OnInit {
   @Input() lanesFormArray: FormArray;
   public usedLaneIds: string[];
 
-  constructor(private _store: Store<IState>, private _formsService: FormsService) {
+  constructor(
+    private _store: Store<IState>,
+    private _formsService: FormsService
+  ) {
     this.usedLaneIds = [];
   }
 
   ngOnInit(): void {
     this._store
-      .pipe(select(productListSelectors.getUnitProductLaneIds()), untilDestroyed(this))
+      .pipe(
+        select(productListSelectors.getUnitProductLaneIds()),
+        untilDestroyed(this)
+      )
       .subscribe((laneIds: string[]): void => {
         this.usedLaneIds = laneIds;
       });

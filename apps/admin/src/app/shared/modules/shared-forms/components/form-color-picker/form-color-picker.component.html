@@ -1,4 +1,11 @@
 <div class="form-control-group">
   <label class="caption">{{ caption | translate }}</label>
-  <input type="button" class="color-picker-input" [value]="color" [(colorPicker)]="color" [style.background]="color" (colorPickerChange)="onChange($event)"/>
+  <input
+    type="button"
+    class="color-picker-input"
+    [value]="color"
+    [(colorPicker)]="color"
+    [style.background]="color"
+    (colorPickerChange)="onChange($event)"
+  />
 </div>

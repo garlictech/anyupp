@@ -2,10 +2,18 @@ import { IProduct } from 'src/app/shared/interfaces';
 
 import { createAction, props } from '@ngrx/store';
 
-export const resetChainProducts = createAction('[ProductList] Reset chain products');
-export const resetGroupProducts = createAction('[ProductList] Reset group products');
-export const resetUnitProducts = createAction('[ProductList] Reset unit products');
-export const resetGeneratedUnitProducts = createAction('[ProductList] Reset generated unit products');
+export const resetChainProducts = createAction(
+  '[ProductList] Reset chain products'
+);
+export const resetGroupProducts = createAction(
+  '[ProductList] Reset group products'
+);
+export const resetUnitProducts = createAction(
+  '[ProductList] Reset unit products'
+);
+export const resetGeneratedUnitProducts = createAction(
+  '[ProductList] Reset generated unit products'
+);
 export const setAllChainProducts = createAction(
   '[ProductList] Set all chain products',
   props<{ products: IProduct[] }>()

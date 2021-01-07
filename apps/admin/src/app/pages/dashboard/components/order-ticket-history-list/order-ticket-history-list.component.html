@@ -9,7 +9,11 @@
       class="{{ currentStatus(order.statusLog).toLowerCase() }}"
       [ngClass]="{ selectedOrder: order._id === selectedOrder?._id }"
     >
-      <app-order-ticket-list-item class="w-100" [order]="order" [showMarkers]="false"></app-order-ticket-list-item>
+      <app-order-ticket-list-item
+        class="w-100"
+        [order]="order"
+        [showMarkers]="false"
+      ></app-order-ticket-list-item>
     </nb-list-item>
   </nb-card-body>
 </nb-card>

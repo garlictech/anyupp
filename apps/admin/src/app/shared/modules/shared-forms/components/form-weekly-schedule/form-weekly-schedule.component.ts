@@ -17,6 +17,8 @@ export class FormWeeklyScheduleComponent implements OnInit {
   ngOnInit(): void {}
 
   public addCustomDate(): void {
-    this.scheduleControl['controls'].override.push(this._formsService.createCustomDailyScheduleFormGroup());
+    this.scheduleControl['controls'].override.push(
+      this._formsService.createCustomDailyScheduleFormGroup()
+    );
   }
 }

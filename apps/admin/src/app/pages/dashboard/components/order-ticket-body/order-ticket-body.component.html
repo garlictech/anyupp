@@ -2,7 +2,9 @@
   <!-- LEFT COLUMN -->
   <div class="col-12 col-md-4 p-1 md-h-100">
     <ng-container *ngIf="!dashboardSettings.orderEditing">
-      <app-order-ticket-list *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"></app-order-ticket-list>
+      <app-order-ticket-list
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+      ></app-order-ticket-list>
 
       <app-order-ticket-history-list
         *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
@@ -26,8 +28,10 @@
           <div class="d-inline ml-3" *ngIf="ordersSum">
             Σ
             {{
-              (dashboardSettings.showAllUserOrders ? ordersSum.all : ordersSum.selected)
-                | currencyFormatter: ordersSum.currency
+              (dashboardSettings.showAllUserOrders
+                ? ordersSum.all
+                : ordersSum.selected
+              ) | currencyFormatter: ordersSum.currency
             }}
           </div>
 
@@ -77,13 +81,17 @@
           <app-order-details
             *ngIf="
               !dashboardSettings.showAllUserOrders ||
-              (dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.HISTORY)
+              (dashboardSettings.showAllUserOrders &&
+                dashboardSettings.listMode === EDashboardListMode.HISTORY)
             "
             [order]="selectedOrder"
           ></app-order-details>
 
           <ng-container
-            *ngIf="dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.CURRENT"
+            *ngIf="
+              dashboardSettings.showAllUserOrders &&
+              dashboardSettings.listMode === EDashboardListMode.CURRENT
+            "
           >
             <ng-container *ngFor="let order of userActiveOrders">
               <app-order-details [order]="order"></app-order-details>
@@ -97,7 +105,10 @@
         </ng-container>
 
         <!-- ORDER EDIT -->
-        <app-order-edit *ngIf="dashboardSettings.orderEditing" [order]="selectedOrder"></app-order-edit>
+        <app-order-edit
+          *ngIf="dashboardSettings.orderEditing"
+          [order]="selectedOrder"
+        ></app-order-edit>
       </nb-card-body>
     </nb-card>
   </div>

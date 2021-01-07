@@ -1,10 +1,17 @@
 import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+} from 'src/app/shared/enums';
 import { IOrder } from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
 import { dashboardActions } from 'src/app/store/actions';
-import { dashboardSelectors, orderListSelectors } from 'src/app/store/selectors';
+import {
+  dashboardSelectors,
+  orderListSelectors,
+} from 'src/app/store/selectors';
 import { IDashboardSettings } from 'src/app/store/state';
 
 // import * as printJS from 'print-js';
@@ -30,7 +37,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount: number;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
     this._store
@@ -39,7 +49,9 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =
-          this.dashboardSettings.size === EDashboardSize.LARGER ? ENebularButtonSize.MEDIUM : ENebularButtonSize.SMALL;
+          this.dashboardSettings.size === EDashboardSize.LARGER
+            ? ENebularButtonSize.MEDIUM
+            : ENebularButtonSize.SMALL;
       });
 
     this._store
@@ -78,18 +90,35 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       };
 
       this._store
-        .pipe(select(orderListSelectors.getActiveOrdersCountByUserId(this.selectedOrder.userId)), take(1))
+        .pipe(
+          select(
+            orderListSelectors.getActiveOrdersCountByUserId(
+              this.selectedOrder.userId
+            )
+          ),
+          take(1)
+        )
         .subscribe((activeOrdersCount: number): void => {
           this.activeOrdersCount = activeOrdersCount;
         });
 
       this._store
-        .pipe(select(orderListSelectors.getActiveOrdersByUserId(this.selectedOrder.userId)), take(1))
+        .pipe(
+          select(
+            orderListSelectors.getActiveOrdersByUserId(
+              this.selectedOrder.userId
+            )
+          ),
+          take(1)
+        )
         .subscribe((userActiveOrders: IOrder[]): void => {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
-          this.userActiveOrders.map((o: IOrder): void => (this.ordersSum.all += o.sumPriceShown.priceSum));
+          this.userActiveOrders.map(
+            (o: IOrder): void =>
+              (this.ordersSum.all += o.sumPriceShown.priceSum)
+          );
         });
     }
   }
@@ -126,7 +155,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = this.dashboardSettings.showAllUserOrders
+    dialog.componentRef.instance.orders = this.dashboardSettings
+      .showAllUserOrders
       ? this.userActiveOrders
       : [this.selectedOrder];
   }

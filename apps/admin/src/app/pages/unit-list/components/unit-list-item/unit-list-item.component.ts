@@ -17,7 +17,10 @@ export class UnitListItemComponent {
   @Input() unit: IUnit;
   public workingGenerateStatus: boolean;
 
-  constructor(private _nbDialogService: NbDialogService, private _dataService: DataService) {}
+  constructor(
+    private _nbDialogService: NbDialogService,
+    private _dataService: DataService
+  ) {}
 
   public editUnit(): void {
     const dialog = this._nbDialogService.open(UnitFormComponent, {

@@ -1,9 +1,21 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (product && product._id ? 'products.editProduct' : 'products.newProduct') | translate }}
+      {{
+        (product && product._id
+          ? 'products.editProduct'
+          : 'products.newProduct'
+        ) | translate
+      }}
     </div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -79,7 +91,10 @@
         </div>
 
         <div class="col-md-4 pt-4">
-          <app-form-checkbox caption="products.isVisible" [control]="dialogForm.controls.isVisible"></app-form-checkbox>
+          <app-form-checkbox
+            caption="products.isVisible"
+            [control]="dialogForm.controls.isVisible"
+          ></app-form-checkbox>
         </div>
       </div>
 
@@ -95,24 +110,34 @@
         <legend class="label">{{ 'products.contains' | translate }}</legend>
 
         <div formGroupName="allergens">
-          <label class="caption">{{ 'products.allergens.title' | translate }}</label>
+          <label class="caption">{{
+            'products.allergens.title' | translate
+          }}</label>
 
           <div class="row">
             <div class="col-md-3">
               <app-form-checkbox
                 caption="products.allergens.lactose"
-                [control]="dialogForm.controls.contains['controls'].allergens['controls'].lactose"
+                [control]="
+                  dialogForm.controls.contains['controls'].allergens['controls']
+                    .lactose
+                "
               ></app-form-checkbox>
             </div>
             <div class="col-md-3">
               <app-form-checkbox
                 caption="products.allergens.nuts"
-                [control]="dialogForm.controls.contains['controls'].allergens['controls'].nuts"
+                [control]="
+                  dialogForm.controls.contains['controls'].allergens['controls']
+                    .nuts
+                "
               ></app-form-checkbox>
             </div>
           </div>
 
-          <label class="caption">{{ 'products.ingredients.title' | translate }}</label>
+          <label class="caption">{{
+            'products.ingredients.title' | translate
+          }}</label>
           <div class="col-md-3">...</div>
         </div>
       </fieldset>
@@ -131,7 +156,14 @@
       ></app-form-clickable-image-input>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

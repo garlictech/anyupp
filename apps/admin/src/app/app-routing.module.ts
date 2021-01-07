@@ -18,7 +18,10 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: (): any => import('./pages/dashboard/dashboard.module').then((m): any => m.DashboardModule),
+        loadChildren: (): any =>
+          import('./pages/dashboard/dashboard.module').then(
+            (m): any => m.DashboardModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.DASHBOARD,
@@ -27,7 +30,9 @@ const routes: Routes = [
       {
         path: 'products',
         loadChildren: (): any =>
-          import('./pages/product-list/product-list.module').then((m): any => m.ProductListModule),
+          import('./pages/product-list/product-list.module').then(
+            (m): any => m.ProductListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.PRODUCTS,
@@ -36,9 +41,9 @@ const routes: Routes = [
       {
         path: 'product-categories',
         loadChildren: (): any =>
-          import('./pages/product-category-list/product-category-list.module').then(
-            (m): any => m.ProductCategoryListModule
-          ),
+          import(
+            './pages/product-category-list/product-category-list.module'
+          ).then((m): any => m.ProductCategoryListModule),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.PRODUCT_CATEGORIES,
@@ -46,7 +51,10 @@ const routes: Routes = [
       },
       {
         path: 'groups',
-        loadChildren: (): any => import('./pages/group-list/group-list.module').then((m): any => m.GroupListModule),
+        loadChildren: (): any =>
+          import('./pages/group-list/group-list.module').then(
+            (m): any => m.GroupListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.GROUPS,
@@ -54,7 +62,10 @@ const routes: Routes = [
       },
       {
         path: 'units',
-        loadChildren: (): any => import('./pages/unit-list/unit-list.module').then((m): any => m.UnitListModule),
+        loadChildren: (): any =>
+          import('./pages/unit-list/unit-list.module').then(
+            (m): any => m.UnitListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.UNITS,
@@ -62,7 +73,10 @@ const routes: Routes = [
       },
       {
         path: 'chains',
-        loadChildren: (): any => import('./pages/chain-list/chain-list.module').then((m): any => m.ChainListModule),
+        loadChildren: (): any =>
+          import('./pages/chain-list/chain-list.module').then(
+            (m): any => m.ChainListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.CHAINS,
@@ -70,7 +84,10 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: (): any => import('./pages/user-list/user-list.module').then((m): any => m.UserListModule),
+        loadChildren: (): any =>
+          import('./pages/user-list/user-list.module').then(
+            (m): any => m.UserListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.USERS,
@@ -79,7 +96,9 @@ const routes: Routes = [
       {
         path: 'admins',
         loadChildren: (): any =>
-          import('./pages/admin-user-list/admin-user-list.module').then((m): any => m.AdminUserListModule),
+          import('./pages/admin-user-list/admin-user-list.module').then(
+            (m): any => m.AdminUserListModule
+          ),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.ADMINS,
@@ -92,14 +111,22 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadChildren: (): any => import('./pages/auth/login/login.module').then((m): any => m.LoginModule),
+        loadChildren: (): any =>
+          import('./pages/auth/login/login.module').then(
+            (m): any => m.LoginModule
+          ),
       },
     ],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false, relativeLinkResolution: 'legacy' })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: false,
+      relativeLinkResolution: 'legacy',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

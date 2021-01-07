@@ -1,8 +1,19 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
-import { EDashboardSize, ENebularButtonSize, EOrderStatus } from 'src/app/shared/enums';
-import { IAdminUser, IGroup, IOrder, IOrderItem, IProduct, IProductCategory } from 'src/app/shared/interfaces';
+import {
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+} from 'src/app/shared/enums';
+import {
+  IAdminUser,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+  IProductCategory,
+} from 'src/app/shared/interfaces';
 import { currentStatus } from 'src/app/shared/pure/orders';
 import { OrderService } from 'src/app/shared/services/order';
 import { IState } from 'src/app/store';
@@ -31,7 +42,10 @@ export class OrderProductListComponent {
   public groupCurrency: string;
   public buttonSize: ENebularButtonSize;
 
-  constructor(private _store: Store<IState>, private _orderService: OrderService) {
+  constructor(
+    private _store: Store<IState>,
+    private _orderService: OrderService
+  ) {
     this.generatedUnitProducts = [];
 
     this._store
@@ -53,21 +67,40 @@ export class OrderProductListComponent {
       });
 
     combineLatest([
-      this._store.pipe(select(productCategoryListSelectors.getAllProductCategories), untilDestroyed(this)),
-      this._store.pipe(select(productListSelectors.getAllGeneratedUnitProducts), untilDestroyed(this)),
+      this._store.pipe(
+        select(productCategoryListSelectors.getAllProductCategories),
+        untilDestroyed(this)
+      ),
+      this._store.pipe(
+        select(productListSelectors.getAllGeneratedUnitProducts),
+        untilDestroyed(this)
+      ),
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([productCategories, generatedUnitProducts]: [IProductCategory[], IProduct[]]): void => {
-        this.generatedUnitProducts = generatedUnitProducts;
+      .subscribe(
+        ([productCategories, generatedUnitProducts]: [
+          IProductCategory[],
+          IProduct[]
+        ]): void => {
+          this.generatedUnitProducts = generatedUnitProducts;
 
-        this.productCategories = productCategories.filter((category: IProductCategory): boolean => {
-          return (
-            this.generatedUnitProducts.filter((p: IProduct): boolean => p.productCategoryId === category._id).length > 0
+          this.productCategories = productCategories.filter(
+            (category: IProductCategory): boolean => {
+              return (
+                this.generatedUnitProducts.filter(
+                  (p: IProduct): boolean => p.productCategoryId === category._id
+                ).length > 0
+              );
+            }
           );
-        });
 
-        this.selectedProductCategoryId = _get(this.productCategories, '[0]._id', undefined);
-      });
+          this.selectedProductCategoryId = _get(
+            this.productCategories,
+            '[0]._id',
+            undefined
+          );
+        }
+      );
   }
 
   public onProductCategorySelected(productCategoryId: string): void {
@@ -83,9 +116,17 @@ export class OrderProductListComponent {
     );
 
     if (existingVariantOrderIdx >= 0) {
-      this._orderService.updateQuantity(_cloneDeep(this.selectedOrder), existingVariantOrderIdx, 1);
+      this._orderService.updateQuantity(
+        _cloneDeep(this.selectedOrder),
+        existingVariantOrderIdx,
+        1
+      );
 
-      if (currentStatus(this.selectedOrder.items[existingVariantOrderIdx].statusLog) === EOrderStatus.REJECTED) {
+      if (
+        currentStatus(
+          this.selectedOrder.items[existingVariantOrderIdx].statusLog
+        ) === EOrderStatus.REJECTED
+      ) {
         this._orderService.updateOrderItemStatus(
           this.selectedOrder._id,
           this.selectedOrder.userId,
@@ -94,7 +135,11 @@ export class OrderProductListComponent {
         );
       }
     } else {
-      this._orderService.addProductVariant(_cloneDeep(this.selectedOrder), product, variantId);
+      this._orderService.addProductVariant(
+        _cloneDeep(this.selectedOrder),
+        product,
+        variantId
+      );
     }
   }
 }

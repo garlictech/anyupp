@@ -12,7 +12,9 @@ import { Validators } from '@angular/forms';
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
 })
-export class UserFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class UserFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public user: IUser;
 
   private _authService: AuthService;
@@ -44,7 +46,11 @@ export class UserFormComponent extends AbstractFormDialogComponent implements On
       if (_get(this.user, '_id')) {
         this._dataService.updateUser(this.user._id, this.dialogForm.value).then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -52,29 +58,37 @@ export class UserFormComponent extends AbstractFormDialogComponent implements On
           }
         );
       } else {
-        this._authService.createUserWithEmailAndRandomPassword(this.dialogForm.value.email).then(
-          (): void => {
-            this._dataService.insertUser(this.dialogForm.value).then(
-              (): void => {
-                this._authService.sendPasswordResetEmail(this.dialogForm.value.email).then(
-                  (): void => {
-                    this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
-                    this.close();
-                  },
-                  (err): any => {
-                    console.error('PASSW RESET ERROR', err);
-                  }
-                );
-              },
-              (err): any => {
-                console.error('USER INSERT ERROR', err);
-              }
-            );
-          },
-          (err): any => {
-            console.error('AUTH USER CRATE ERROR', err);
-          }
-        );
+        this._authService
+          .createUserWithEmailAndRandomPassword(this.dialogForm.value.email)
+          .then(
+            (): void => {
+              this._dataService.insertUser(this.dialogForm.value).then(
+                (): void => {
+                  this._authService
+                    .sendPasswordResetEmail(this.dialogForm.value.email)
+                    .then(
+                      (): void => {
+                        this._toasterService.show(
+                          EToasterType.SUCCESS,
+                          '',
+                          'common.insertSuccessful'
+                        );
+                        this.close();
+                      },
+                      (err): any => {
+                        console.error('PASSW RESET ERROR', err);
+                      }
+                    );
+                },
+                (err): any => {
+                  console.error('USER INSERT ERROR', err);
+                }
+              );
+            },
+            (err): any => {
+              console.error('AUTH USER CRATE ERROR', err);
+            }
+          );
       }
     }
   }

@@ -46,7 +46,12 @@ const _drawGrid = (): void => {
   for (let i = 0; i < fabricCanvas.height / FLOOR_MAP_CONFIG.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
-        [0, i * FLOOR_MAP_CONFIG.grid, fabricCanvas.width, i * FLOOR_MAP_CONFIG.grid],
+        [
+          0,
+          i * FLOOR_MAP_CONFIG.grid,
+          fabricCanvas.width,
+          i * FLOOR_MAP_CONFIG.grid,
+        ],
         FLOOR_MAP_GRID_OPTIONS
       )
     );
@@ -56,7 +61,12 @@ const _drawGrid = (): void => {
   for (let i = 0; i < fabricCanvas.width / FLOOR_MAP_CONFIG.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
-        [i * FLOOR_MAP_CONFIG.grid, 0, i * FLOOR_MAP_CONFIG.grid, fabricCanvas.height],
+        [
+          i * FLOOR_MAP_CONFIG.grid,
+          0,
+          i * FLOOR_MAP_CONFIG.grid,
+          fabricCanvas.height,
+        ],
         FLOOR_MAP_GRID_OPTIONS
       )
     );
@@ -76,10 +86,16 @@ const _snapToGrid = (e): void => {
 
   e.target.set({
     left:
-      (Math.round(e.target.left / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)) * FLOOR_MAP_CONFIG.grid) /
+      (Math.round(
+        e.target.left / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)
+      ) *
+        FLOOR_MAP_CONFIG.grid) /
       FLOOR_MAP_CONFIG.gridDivider,
     top:
-      (Math.round(e.target.top / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)) * FLOOR_MAP_CONFIG.grid) /
+      (Math.round(
+        e.target.top / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)
+      ) *
+        FLOOR_MAP_CONFIG.grid) /
       FLOOR_MAP_CONFIG.gridDivider,
   });
 };
@@ -119,13 +135,16 @@ const _onScale = (e): void => {
 };
 
 const _roundScale = (val: number): number =>
-  (Math.round(val / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)) * FLOOR_MAP_CONFIG.grid) /
+  (Math.round(val / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)) *
+    FLOOR_MAP_CONFIG.grid) /
   FLOOR_MAP_CONFIG.gridDivider;
 
 const _onScaled = (e): void => {
   const target = e.target;
   const bg: any = utils.getObjectBg(target);
-  const textField = target.getObjects()?.filter((o): boolean => o instanceof fabric.IText)[0];
+  const textField = target
+    .getObjects()
+    ?.filter((o): boolean => o instanceof fabric.IText)[0];
   const commonParams = {
     width: _roundScale(e.target.getScaledWidth()),
     height: _roundScale(e.target.getScaledHeight()),

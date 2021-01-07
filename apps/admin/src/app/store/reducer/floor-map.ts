@@ -18,6 +18,9 @@ const reducer = createReducer(
   }))
 );
 
-export function floorMapReducer(state: IFloorMapState | undefined, action: Action): any {
+export function floorMapReducer(
+  state: IFloorMapState | undefined,
+  action: Action
+): any {
   return reducer(state, action);
 }

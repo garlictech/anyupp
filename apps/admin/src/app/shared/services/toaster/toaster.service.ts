@@ -16,9 +16,17 @@ export enum EToasterType {
   providedIn: 'root',
 })
 export class ToasterService {
-  constructor(private _nbToastrService: NbToastrService, private _translateService: TranslateService) {}
+  constructor(
+    private _nbToastrService: NbToastrService,
+    private _translateService: TranslateService
+  ) {}
 
-  public show(type: EToasterType, message: any, title?: any, config?: Partial<NbToastrConfig>): void {
+  public show(
+    type: EToasterType,
+    message: any,
+    title?: any,
+    config?: Partial<NbToastrConfig>
+  ): void {
     this._nbToastrService[type](
       message ? this._translateService.instant(message) : '',
       title ? this._translateService.instant(title) : '',

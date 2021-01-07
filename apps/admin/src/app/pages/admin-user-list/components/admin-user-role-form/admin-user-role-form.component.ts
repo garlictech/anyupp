@@ -10,7 +10,9 @@ import { Validators } from '@angular/forms';
   selector: 'app-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
 })
-export class AdminUserRoleFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class AdminUserRoleFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public adminUser: IAdminUser;
 
   constructor(protected _injector: Injector) {
@@ -34,15 +36,21 @@ export class AdminUserRoleFormComponent extends AbstractFormDialogComponent impl
 
   public submit(): void {
     if (this.dialogForm.valid) {
-      this._dataService.updateAdminUserRoles(this.adminUser._id, this.dialogForm.value.roles).then(
-        (): void => {
-          this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
-          this.close();
-        },
-        (err): any => {
-          console.error('USER UPDATE ERROR', err);
-        }
-      );
+      this._dataService
+        .updateAdminUserRoles(this.adminUser._id, this.dialogForm.value.roles)
+        .then(
+          (): void => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
+            this.close();
+          },
+          (err): any => {
+            console.error('USER UPDATE ERROR', err);
+          }
+        );
     }
   }
 
@@ -51,11 +59,21 @@ export class AdminUserRoleFormComponent extends AbstractFormDialogComponent impl
 
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
-      this._dataService.updateAdminUserProfileImagePath(this.adminUser._id, imagePath).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
-      });
+      this._dataService
+        .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess'
+          );
+        });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageUploadSuccess'
+      );
     }
   };
 
@@ -65,11 +83,21 @@ export class AdminUserRoleFormComponent extends AbstractFormDialogComponent impl
 
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
-      this._dataService.updateAdminUserProfileImagePath(this.adminUser._id, null).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
-      });
+      this._dataService
+        .updateAdminUserProfileImagePath(this.adminUser._id, null)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess'
+          );
+        });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageRemoveSuccess'
+      );
     }
   };
 }

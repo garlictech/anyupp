@@ -4,7 +4,14 @@ import { Observable } from 'rxjs';
 import { IOrder } from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,11 +25,14 @@ import { TranslateService } from '@ngx-translate/core';
 export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
   @Input() orders$: Observable<IOrder[]>;
-  @Input() currency: string = '';
+  @Input() currency = '';
 
   private _chart: Chart;
 
-  constructor(private _store: Store<IState>, private _translateService: TranslateService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _translateService: TranslateService
+  ) {}
 
   ngAfterViewInit(): void {
     this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
@@ -112,10 +122,12 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
       });
 */
 
-    this._translateService.onLangChange.pipe(untilDestroyed(this)).subscribe(() => {
-      this._chart.data.labels = this._translatedLabels();
-      this._chart.update();
-    });
+    this._translateService.onLangChange
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this._chart.data.labels = this._translatedLabels();
+        this._chart.update();
+      });
   }
 
   ngOnDestroy(): void {

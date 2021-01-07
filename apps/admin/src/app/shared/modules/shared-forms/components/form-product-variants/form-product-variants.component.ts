@@ -24,14 +24,19 @@ export class FormProductVariantsComponent {
   }
 
   public addVariant(): void {
-    this.variantFormArray.push(this._formsService.createProductVariantFormGroup(this.productLevel));
+    this.variantFormArray.push(
+      this._formsService.createProductVariantFormGroup(this.productLevel)
+    );
   }
 
   public move(idx: number, change: number): void {
     const arr = this.variantFormArray.value;
     const movingItem = arr[idx];
 
-    if ((idx >= 0 && change === 1 && idx < arr.length - 1) || (change === -1 && idx > 0)) {
+    if (
+      (idx >= 0 && change === 1 && idx < arr.length - 1) ||
+      (change === -1 && idx > 0)
+    ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
       arr.forEach((variant: IProductVariant, pos: number): void => {
@@ -40,17 +45,19 @@ export class FormProductVariantsComponent {
 
       arr.sort(customNumberCompare('position'));
 
-      this.variantFormArray.controls.forEach((g: FormGroup, i: number): void => {
-        g.patchValue(arr[i]);
-        (g.controls.availabilities as FormArray).clear();
+      this.variantFormArray.controls.forEach(
+        (g: FormGroup, i: number): void => {
+          g.patchValue(arr[i]);
+          (g.controls.availabilities as FormArray).clear();
 
-        _get(arr[i], 'availabilities', []).forEach((availability): void => {
-          const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-          availabilityGroup.patchValue(availability);
+          _get(arr[i], 'availabilities', []).forEach((availability): void => {
+            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
+            availabilityGroup.patchValue(availability);
 
-          (g.controls.availabilities as FormArray).push(availabilityGroup);
-        });
-      });
+            (g.controls.availabilities as FormArray).push(availabilityGroup);
+          });
+        }
+      );
     }
   }
 }

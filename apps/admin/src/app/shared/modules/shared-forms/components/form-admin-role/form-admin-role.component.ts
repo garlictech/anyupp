@@ -24,8 +24,10 @@ export class FormAdminRoleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roleFormGroup['controls'].role.valueChanges.subscribe((role: EAdminRole): void => {
-      this.roleFormGroup['controls'].entities.patchValue([]);
-    });
+    this.roleFormGroup['controls'].role.valueChanges.subscribe(
+      (role: EAdminRole): void => {
+        this.roleFormGroup['controls'].entities.patchValue([]);
+      }
+    );
   }
 }

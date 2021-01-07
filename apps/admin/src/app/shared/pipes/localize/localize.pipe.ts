@@ -20,9 +20,11 @@ export class LocalizePipe implements PipeTransform {
     }
 
     let selectedLang;
-    this._store.pipe(select(currentUserSelectors.getSelectedLanguage), take(1)).subscribe((lang: string): void => {
-      selectedLang = (lang || DEFAULT_LANG).substr(0, 2);
-    });
+    this._store
+      .pipe(select(currentUserSelectors.getSelectedLanguage), take(1))
+      .subscribe((lang: string): void => {
+        selectedLang = (lang || DEFAULT_LANG).substr(0, 2);
+      });
 
     return (
       // Selected
@@ -30,7 +32,9 @@ export class LocalizePipe implements PipeTransform {
       // Or EN fallback
       value['en'] ||
       // Or get the first not null string
-      Object.values(value).filter((v: string): boolean => typeof v === 'string' && v.length > 0)[0] ||
+      Object.values(value).filter(
+        (v: string): boolean => typeof v === 'string' && v.length > 0
+      )[0] ||
       // Or empty...
       ''
     );

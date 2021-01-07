@@ -39,7 +39,12 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [UnitListComponent, UnitListItemComponent, UnitFormComponent, UnitFloorMapComponent],
+  declarations: [
+    UnitListComponent,
+    UnitListItemComponent,
+    UnitFormComponent,
+    UnitFloorMapComponent,
+  ],
   imports: [
     CommonModule,
     TranslateModule,

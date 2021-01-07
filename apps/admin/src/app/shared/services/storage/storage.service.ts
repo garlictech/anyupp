@@ -14,7 +14,9 @@ export class StorageService {
     const ext = file.name.split('.').pop();
     const ref = this._angularFireStorage.ref(`${folderPath}${uuid}.${ext}`);
 
-    return ref.put(file).then((_): Promise<any> => ref.getDownloadURL().toPromise());
+    return ref
+      .put(file)
+      .then((_): Promise<any> => ref.getDownloadURL().toPromise());
   }
 
   public removeFile(filePath: string): Promise<any> {

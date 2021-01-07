@@ -1,14 +1,24 @@
 <div class="w-100 position-relative">
-  <div class="table-seat font-larger" [ngClass]="'bg-' + currentStatus(order.statusLog).toLowerCase()">
+  <div
+    class="table-seat font-larger"
+    [ngClass]="'bg-' + currentStatus(order.statusLog).toLowerCase()"
+  >
     {{ order?.place.table }}<br />{{ order?.place.seat }}
   </div>
 
   <div class="float-left ml-4-5">
     <div>
-      <span class="subtitle-2 font-larger">{{ order.created | localizedDate: 'HH:mm' }}</span>
-      <nb-badge class="items-count position-relative" status="basic" [text]="order.items.length"></nb-badge>
+      <span class="subtitle-2 font-larger">{{
+        order.created | localizedDate: 'HH:mm'
+      }}</span>
+      <nb-badge
+        class="items-count position-relative"
+        status="basic"
+        [text]="order.items.length"
+      ></nb-badge>
       <span class="caption ml-4 font-larger font-weight-bold">{{
-        order.sumPriceShown.priceSum | currencyFormatter: order.sumPriceShown.currency
+        order.sumPriceShown.priceSum
+          | currencyFormatter: order.sumPriceShown.currency
       }}</span>
     </div>
   </div>
@@ -19,7 +29,11 @@
     </div>
 
     <div class="float-right" *ngIf="order?.paymentIntention > 0">
-      <nb-icon class="smaller-icon" status="danger" icon="alert-circle-outline"></nb-icon>
+      <nb-icon
+        class="smaller-icon"
+        status="danger"
+        icon="alert-circle-outline"
+      ></nb-icon>
     </div>
 
     <nb-badge

@@ -7,6 +7,10 @@
     [fieldSize]="fieldSize"
     [formControl]="control"
     [autocomplete]="false"
-    [status]="control.touched && (control.errors?.required || control.invalid) ? 'danger' : 'basic'"
+    [status]="
+      control.touched && (control.errors?.required || control.invalid)
+        ? 'danger'
+        : 'basic'
+    "
   />
 </div>

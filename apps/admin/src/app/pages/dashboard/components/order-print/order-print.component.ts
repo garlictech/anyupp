@@ -1,6 +1,12 @@
 import * as printJS from 'print-js';
 import { filter, take } from 'rxjs/operators';
-import { IChain, IOrder, IOrderItem, IPlace, IUnit } from 'src/app/shared/interfaces';
+import {
+  IChain,
+  IOrder,
+  IOrderItem,
+  IPlace,
+  IUnit,
+} from 'src/app/shared/interfaces';
 import { IState } from 'src/app/store';
 import { chainListSelectors, unitListSelectors } from 'src/app/store/selectors';
 
@@ -26,7 +32,10 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public sum: any;
   public place: IPlace;
 
-  constructor(private _store: Store<IState>, private _nbDialogRef: NbDialogRef<any>) {
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogRef: NbDialogRef<any>
+  ) {
     combineLatest([
       this._store.pipe(
         select(chainListSelectors.getSeletedChain),
@@ -73,7 +82,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         // Collect items
         if (variants[item.variantId]) {
           variants[item.variantId].quantity += item.quantity;
-          variants[item.variantId].priceShown.priceSum += item.priceShown.priceSum;
+          variants[item.variantId].priceShown.priceSum +=
+            item.priceShown.priceSum;
           variants[item.variantId].priceShown.taxSum += item.priceShown.taxSum;
         } else {
           variants[item.variantId] = {

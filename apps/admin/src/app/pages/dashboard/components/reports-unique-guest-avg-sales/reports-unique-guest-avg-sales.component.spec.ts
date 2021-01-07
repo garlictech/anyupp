@@ -8,9 +8,8 @@ describe('ReportsUniqueGuestAvgSalesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsUniqueGuestAvgSalesComponent ]
-    })
-    .compileComponents();
+      declarations: [ReportsUniqueGuestAvgSalesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

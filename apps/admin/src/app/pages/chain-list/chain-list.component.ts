@@ -17,10 +17,16 @@ import { ChainFormComponent } from './components/chain-form/chain-form.component
 export class ChainListComponent implements OnInit, OnDestroy {
   public chains$: Observable<IChain[]>;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
-    this.chains$ = this._store.pipe(select(chainListSelectors.getAllChains), untilDestroyed(this));
+    this.chains$ = this._store.pipe(
+      select(chainListSelectors.getAllChains),
+      untilDestroyed(this)
+    );
   }
 
   ngOnDestroy(): void {

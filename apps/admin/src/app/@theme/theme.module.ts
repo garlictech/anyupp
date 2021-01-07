@@ -37,7 +37,13 @@ const NB_MODULES = [
 const COMPONENTS = [HeaderComponent, FooterComponent, AdminLayoutComponent];
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, RouterModule, SharedComponentsModule, ...NB_MODULES],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    RouterModule,
+    SharedComponentsModule,
+    ...NB_MODULES,
+  ],
   exports: [CommonModule, ...COMPONENTS],
   declarations: [...COMPONENTS],
 })

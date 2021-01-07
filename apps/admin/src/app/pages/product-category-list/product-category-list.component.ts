@@ -3,7 +3,10 @@ import { IProductCategory } from 'src/app/shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { DataService } from 'src/app/shared/services/data';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, productCategoryListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  productCategoryListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -32,16 +35,23 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productCategoryListSelectors.getAllProductCategories),
-        map((products): IProductCategory[] => products.sort(customNumberCompare('position'))),
+        map((products): IProductCategory[] =>
+          products.sort(customNumberCompare('position'))
+        ),
         untilDestroyed(this)
       )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories;
-        this._sortedProductCategoryIds = this.productCategories.map((p): string => p._id);
+        this._sortedProductCategoryIds = this.productCategories.map(
+          (p): string => p._id
+        );
       });
 
     this._store
-      .pipe(select(currentUserSelectors.getSelectedChainId), untilDestroyed(this))
+      .pipe(
+        select(currentUserSelectors.getSelectedChainId),
+        untilDestroyed(this)
+      )
       .subscribe((selectedChainId: string): void => {
         this._selectedChainId = selectedChainId;
       });
@@ -61,18 +71,32 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   }
 
   public positionChange($event: any): void {
-    const idx = this._sortedProductCategoryIds.indexOf($event.productCategoryId);
+    const idx = this._sortedProductCategoryIds.indexOf(
+      $event.productCategoryId
+    );
 
     if (
-      (idx >= 0 && $event.change === 1 && idx < this._sortedProductCategoryIds.length - 1) ||
+      (idx >= 0 &&
+        $event.change === 1 &&
+        idx < this._sortedProductCategoryIds.length - 1) ||
       ($event.change === -1 && idx > 0)
     ) {
       this._sortedProductCategoryIds.splice(idx, 1);
-      this._sortedProductCategoryIds.splice(idx + $event.change, 0, $event.productCategoryId);
+      this._sortedProductCategoryIds.splice(
+        idx + $event.change,
+        0,
+        $event.productCategoryId
+      );
 
-      this._sortedProductCategoryIds.forEach((productCategoryId: string, pos: number): void => {
-        this._dataService.updateProductCategoryPosition(this._selectedChainId, productCategoryId, (pos + 1).toString());
-      });
+      this._sortedProductCategoryIds.forEach(
+        (productCategoryId: string, pos: number): void => {
+          this._dataService.updateProductCategoryPosition(
+            this._selectedChainId,
+            productCategoryId,
+            (pos + 1).toString()
+          );
+        }
+      );
     }
   }
 }

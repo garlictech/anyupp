@@ -38,12 +38,12 @@
     "productType": "Termék típus",
     "contact": {
       "contact": "Kapcsolat",
-       "country": "Ország",
-       "postalCode": "Irányítószám",
-       "city": "Település",
-       "address": "Cím",
-       "locationLat": "Lokáció (lat)",
-       "locationLng": "Lokáció (lng)"
+      "country": "Ország",
+      "postalCode": "Irányítószám",
+      "city": "Település",
+      "address": "Cím",
+      "locationLat": "Lokáció (lat)",
+      "locationLng": "Lokáció (lng)"
     },
     "submit": "Elküld",
     "imageUploadSuccess": "Sikeres képfeltöltés",

@@ -1,7 +1,19 @@
 <nb-card>
   <nb-card-header>
-    <div class="float-left">{{ (group && group._id ? 'groups.editGroup' : 'groups.newGroup') | translate }}</div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <div class="float-left">
+      {{
+        (group && group._id ? 'groups.editGroup' : 'groups.newGroup')
+          | translate
+      }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -48,10 +60,19 @@
         [control]="dialogForm.controls.description['controls'].de"
       ></app-form-text-input>
 
-      <app-form-contact-group [contactFormGroup]="dialogForm"></app-form-contact-group>
+      <app-form-contact-group
+        [contactFormGroup]="dialogForm"
+      ></app-form-contact-group>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

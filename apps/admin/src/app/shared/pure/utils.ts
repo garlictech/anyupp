@@ -1,6 +1,9 @@
 import { IDayInterval } from '../interfaces';
 
-export const customNumberCompare = (field: string, desc: boolean = false): any => (a: any, b: any): number => {
+export const customNumberCompare = (
+  field: string,
+  desc: boolean = false
+): any => (a: any, b: any): number => {
   if (+a[field] < +b[field]) {
     return desc ? 1 : -1;
   }
@@ -11,7 +14,10 @@ export const customNumberCompare = (field: string, desc: boolean = false): any =
   return 0;
 };
 
-export const customStringCompare = (field: string, desc: boolean = false): any => (a: any, b: any): number => {
+export const customStringCompare = (
+  field: string,
+  desc: boolean = false
+): any => (a: any, b: any): number => {
   if (a[field] < b[field]) {
     return desc ? 1 : -1;
   }
@@ -56,4 +62,5 @@ export const dayInterval = (value: any): IDayInterval => {
   };
 };
 
-export const reducer = (accumulator, currentValue): any => accumulator + currentValue;
+export const reducer = (accumulator, currentValue): any =>
+  accumulator + currentValue;

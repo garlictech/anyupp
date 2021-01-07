@@ -1,7 +1,14 @@
 <fieldset class="form">
   <legend class="label">{{ 'products.variants' | translate }}</legend>
   <div class="container">
-    <div *ngFor="let variant of variantFormArray['controls']; index as i; first as isFirst; last as isLast">
+    <div
+      *ngFor="
+        let variant of variantFormArray['controls'];
+        index as i;
+        first as isFirst;
+        last as isLast
+      "
+    >
       <!-- ORDER EDIT -->
       <div class="mb-2" *ngIf="productLevel !== EProductLevel.CHAIN">
         <!--
@@ -101,7 +108,9 @@
             <app-form-static-text
               *ngIf="productLevel === EProductLevel.UNIT"
               caption="products.refPrice"
-              [value]="variant.value.refGroupPrice | currencyFormatter : currency"
+              [value]="
+                variant.value.refGroupPrice | currencyFormatter: currency
+              "
             >
             </app-form-static-text>
           </div>
@@ -129,6 +138,7 @@
     class="float-right"
     (click)="addVariant()"
   >
-    <nb-icon icon="plus-outline"></nb-icon> {{ 'products.addVariant' | translate }}
+    <nb-icon icon="plus-outline"></nb-icon>
+    {{ 'products.addVariant' | translate }}
   </button>
 </fieldset>

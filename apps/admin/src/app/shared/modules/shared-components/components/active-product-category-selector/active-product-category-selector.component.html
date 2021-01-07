@@ -1,4 +1,8 @@
-<nb-icon *ngIf="showIcon" [status]="selectedProductCategoryId ? 'basic' : 'danger'" icon="grid-outline"></nb-icon>
+<nb-icon
+  *ngIf="showIcon"
+  [status]="selectedProductCategoryId ? 'basic' : 'danger'"
+  icon="grid-outline"
+></nb-icon>
 <nb-select
   [status]="selectedProductCategoryId ? 'basic' : 'danger'"
   placeholder="{{ 'common.productCategory' | translate }}"
@@ -7,5 +11,9 @@
   (selectedChange)="onProductCategorySelected($event)"
   [selected]="selectedProductCategoryId"
 >
-  <nb-option *ngFor="let option of productCategories$ | async" [value]="option._id">{{ option.name | localize }}</nb-option>
+  <nb-option
+    *ngFor="let option of productCategories$ | async"
+    [value]="option._id"
+    >{{ option.name | localize }}</nb-option
+  >
 </nb-select>

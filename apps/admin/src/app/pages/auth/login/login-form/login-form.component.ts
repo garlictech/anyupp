@@ -11,7 +11,10 @@ export class LoginFormComponent {
   @Input() toggleResetForm: any;
   public loginForm: FormGroup;
 
-  constructor(private _formBuilder: FormBuilder, private _authService: AuthService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService
+  ) {
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -20,7 +23,10 @@ export class LoginFormComponent {
 
   public login(): void {
     if (this.loginForm.valid) {
-      this._authService.signIn(this.loginForm.value.email, this.loginForm.value.password);
+      this._authService.signIn(
+        this.loginForm.value.email,
+        this.loginForm.value.password
+      );
     }
   }
 }

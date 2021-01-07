@@ -6,7 +6,11 @@
         [badgeText]="placedOrders.length > 0 ? placedOrders.length : ''"
         badgePosition="bottom right"
         badgeStatus="warning"
-        [ngClass]="dashboardSettings.ticketListType === EDashboardTicketListType.PLACED ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.ticketListType === EDashboardTicketListType.PLACED
+            ? 'active'
+            : 'inactive'
+        "
         (click)="selectListType(EDashboardTicketListType.PLACED)"
       ></nb-action>
       <nb-action
@@ -14,7 +18,11 @@
         [badgeText]="uniqueReadyOrdersCount > 0 ? uniqueReadyOrdersCount : ''"
         badgePosition="bottom right"
         badgeStatus="info"
-        [ngClass]="dashboardSettings.ticketListType === EDashboardTicketListType.READY ? 'active' : 'inactive'"
+        [ngClass]="
+          dashboardSettings.ticketListType === EDashboardTicketListType.READY
+            ? 'active'
+            : 'inactive'
+        "
         (click)="selectListType(EDashboardTicketListType.READY)"
       ></nb-action>
       <nb-action
@@ -23,7 +31,10 @@
         badgePosition="bottom right"
         badgeStatus="danger"
         [ngClass]="
-          dashboardSettings.ticketListType === EDashboardTicketListType.PAYMENT_INTENTION ? 'active' : 'inactive'
+          dashboardSettings.ticketListType ===
+          EDashboardTicketListType.PAYMENT_INTENTION
+            ? 'active'
+            : 'inactive'
         "
         (click)="selectListType(EDashboardTicketListType.PAYMENT_INTENTION)"
       ></nb-action>

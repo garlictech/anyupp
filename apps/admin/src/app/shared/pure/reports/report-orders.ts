@@ -19,8 +19,8 @@ export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKey
 export const getDailyOrdersSum = (dailyHistoryOrders: IOrder[]): number => {
   let sum = 0;
 
-  dailyHistoryOrders.forEach(o => {
-    sum += o.sumPriceShown.priceSum
+  dailyHistoryOrders.forEach((o) => {
+    sum += o.sumPriceShown.priceSum;
   });
 
   return sum;

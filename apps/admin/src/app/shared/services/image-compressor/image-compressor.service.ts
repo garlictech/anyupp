@@ -8,7 +8,11 @@ import { EImageType } from '../../enums';
 export class ImageCompressorService {
   constructor() {}
 
-  compress(file: File, imageType: EImageType, targetSize: number = 750): Observable<any> {
+  compress(
+    file: File,
+    imageType: EImageType,
+    targetSize: number = 750
+  ): Observable<any> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
@@ -46,10 +50,14 @@ export class ImageCompressorService {
             ctx.canvas.toBlob(
               (blob): void => {
                 observer.next(
-                  new File([blob], file.name.substr(0, file.name.lastIndexOf('.')) + ext, {
-                    type: imageType,
-                    lastModified: Date.now(),
-                  })
+                  new File(
+                    [blob],
+                    file.name.substr(0, file.name.lastIndexOf('.')) + ext,
+                    {
+                      type: imageType,
+                      lastModified: Date.now(),
+                    }
+                  )
                 );
               },
               imageType,

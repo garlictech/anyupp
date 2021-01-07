@@ -1,7 +1,11 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ENebularButtonSize, EOrderStatus } from 'src/app/shared/enums';
-import { ILaneOrderItem, IStatusLogItem, IUnit } from 'src/app/shared/interfaces';
+import {
+  ILaneOrderItem,
+  IStatusLogItem,
+  IUnit,
+} from 'src/app/shared/interfaces';
 import { objectToArray } from 'src/app/shared/pure';
 import {
   currentStatus as currentStatusFn,
@@ -32,11 +36,21 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public EOrderStatus = EOrderStatus;
   public processingTimer = 0;
 
-  constructor(private _store: Store<IState>, private _orderService: OrderService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _orderService: OrderService
+  ) {}
 
   ngOnInit(): void {
     this._store
-      .pipe(select(productListSelectors.getGeneratedProductImageById(this.orderItem.productId)), take(1))
+      .pipe(
+        select(
+          productListSelectors.getGeneratedProductImageById(
+            this.orderItem.productId
+          )
+        ),
+        take(1)
+      )
       .subscribe((image: string): void => {
         this.orderItem.image = image;
       });
@@ -46,12 +60,16 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     if (this.orderItem.currentStatus === EOrderStatus.PROCESSING) {
       const processingInfo = objectToArray(this.orderItem.statusLog, 'ts')
         .reverse() // <-- Find the LAST processing status
-        .find((t: IStatusLogItem): boolean => t.status === EOrderStatus.PROCESSING);
+        .find(
+          (t: IStatusLogItem): boolean => t.status === EOrderStatus.PROCESSING
+        );
 
       timer(0, 1000)
         .pipe(untilDestroyed(this))
         .subscribe((): void => {
-          this.processingTimer = Math.floor((new Date().getTime() - parseInt(processingInfo.ts, 10)) * 0.001);
+          this.processingTimer = Math.floor(
+            (new Date().getTime() - parseInt(processingInfo.ts, 10)) * 0.001
+          );
         });
     }
   }

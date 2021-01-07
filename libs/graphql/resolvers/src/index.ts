@@ -1,1 +1,1 @@
-export * from './lib/graphql-resolvers.module';
+export * from './module/graphql-resolvers.module';

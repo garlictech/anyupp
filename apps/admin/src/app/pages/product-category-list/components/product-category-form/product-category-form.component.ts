@@ -15,7 +15,9 @@ import { select, Store } from '@ngrx/store';
   selector: 'app-product-category-form',
   templateUrl: './product-category-form.component.html',
 })
-export class ProductCategoryFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class ProductCategoryFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public productCategory: IProductCategory;
   public eImageType = EImageType;
   private _store: Store<IState>;
@@ -66,10 +68,18 @@ export class ProductCategoryFormComponent extends AbstractFormDialogComponent im
     if (this.dialogForm.valid) {
       if (_get(this.productCategory, '_id')) {
         this._dataService
-          .updateProductCategory(this._selectedChainId, this.productCategory._id, this.dialogForm.value)
+          .updateProductCategory(
+            this._selectedChainId,
+            this.productCategory._id,
+            this.dialogForm.value
+          )
           .then(
             (): void => {
-              this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful'
+              );
               this.close();
             },
             (err): any => {
@@ -77,15 +87,21 @@ export class ProductCategoryFormComponent extends AbstractFormDialogComponent im
             }
           );
       } else {
-        this._dataService.insertProductCategory(this._selectedChainId, this.dialogForm.value).then(
-          (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
-            this.close();
-          },
-          (err): any => {
-            console.error('CHAIN INSERT ERROR', err);
-          }
-        );
+        this._dataService
+          .insertProductCategory(this._selectedChainId, this.dialogForm.value)
+          .then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.insertSuccessful'
+              );
+              this.close();
+            },
+            (err): any => {
+              console.error('CHAIN INSERT ERROR', err);
+            }
+          );
       }
     }
   }
@@ -96,12 +112,24 @@ export class ProductCategoryFormComponent extends AbstractFormDialogComponent im
     // Update existing user's image
     if (_get(this.productCategory, '_id')) {
       this._dataService
-        .updateProductCategoryImagePath(this._selectedChainId, this.productCategory._id, imagePath)
+        .updateProductCategoryImagePath(
+          this._selectedChainId,
+          this.productCategory._id,
+          imagePath
+        )
         .then((): void => {
-          this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess'
+          );
         });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageUploadSuccess'
+      );
     }
   };
 
@@ -115,12 +143,24 @@ export class ProductCategoryFormComponent extends AbstractFormDialogComponent im
     // Update existing user's image
     if (_get(this.productCategory, '_id')) {
       this._dataService
-        .updateProductCategoryImagePath(this._selectedChainId, this.productCategory._id, null)
+        .updateProductCategoryImagePath(
+          this._selectedChainId,
+          this.productCategory._id,
+          null
+        )
         .then((): void => {
-          this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess'
+          );
         });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageRemoveSuccess'
+      );
     }
   };
 }

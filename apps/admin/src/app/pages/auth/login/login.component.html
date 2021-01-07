@@ -6,7 +6,10 @@
           AnyUpp Login <sup>{{ env.name }}</sup>
         </h1>
 
-        <app-login-form *ngIf="formMode === EFormMode.LOGIN" [toggleResetForm]="toggleResetForm"></app-login-form>
+        <app-login-form
+          *ngIf="formMode === EFormMode.LOGIN"
+          [toggleResetForm]="toggleResetForm"
+        ></app-login-form>
         <app-password-reset-form
           *ngIf="formMode === EFormMode.RESET"
           [toggleResetForm]="toggleResetForm"

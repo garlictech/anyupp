@@ -13,17 +13,20 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 })
 export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
   @Input() orders$: Observable<IOrder[]>;
-  @Input() currency: string = '';
+  @Input() currency = '';
 
   public uniqueUserCount = 0;
   public ordersSumAvg = 0;
 
   ngOnInit(): void {
-    this.orders$.pipe(untilDestroyed(this)).subscribe((orders: IOrder[]): void => {
-      this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
-      const dailyOrdersSum = getDailyOrdersSum(orders);
-      this.ordersSumAvg = this.uniqueUserCount > 0 ? (dailyOrdersSum / this.uniqueUserCount) :0
-    });
+    this.orders$
+      .pipe(untilDestroyed(this))
+      .subscribe((orders: IOrder[]): void => {
+        this.uniqueUserCount = [...new Set(orders.map((o) => o.userId))].length;
+        const dailyOrdersSum = getDailyOrdersSum(orders);
+        this.ordersSumAvg =
+          this.uniqueUserCount > 0 ? dailyOrdersSum / this.uniqueUserCount : 0;
+      });
   }
 
   ngOnDestroy(): void {

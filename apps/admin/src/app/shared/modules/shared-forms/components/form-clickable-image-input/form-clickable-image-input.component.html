@@ -1,6 +1,11 @@
-<input type="file" accept="image/png, image/jpeg, image/svg+xml" (change)="fileInputListener($event)" #fileInput />
+<input
+  type="file"
+  accept="image/png, image/jpeg, image/svg+xml"
+  (change)="fileInputListener($event)"
+  #fileInput
+/>
 
-<label class="caption">{{ caption | translate }}</label>
+<label class="caption">{{ caption | translate }}</label>
 <div
   class="image-preview"
   [ngStyle]="{

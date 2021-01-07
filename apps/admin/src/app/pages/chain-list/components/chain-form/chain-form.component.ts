@@ -5,7 +5,7 @@ import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms
 import { contactFormGroup, multiLangValidator } from 'src/app/shared/pure';
 import { EToasterType } from 'src/app/shared/services/toaster';
 
-// tslint:disable: no-string-literal
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
@@ -14,7 +14,9 @@ import { Validators } from '@angular/forms';
   templateUrl: './chain-form.component.html',
   styleUrls: ['./chain-form.component.scss'],
 })
-export class ChainFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class ChainFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public chain: IChain;
   public eImageType = EImageType;
 
@@ -72,19 +74,29 @@ export class ChainFormComponent extends AbstractFormDialogComponent implements O
   public submit(): void {
     if (this.dialogForm.valid) {
       if (_get(this.chain, '_id')) {
-        this._dataService.updateChain(this.chain._id, this.dialogForm.value).then(
-          (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
-            this.close();
-          },
-          (err): any => {
-            console.error('CHAIN UPDATE ERROR', err);
-          }
-        );
+        this._dataService
+          .updateChain(this.chain._id, this.dialogForm.value)
+          .then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful'
+              );
+              this.close();
+            },
+            (err): any => {
+              console.error('CHAIN UPDATE ERROR', err);
+            }
+          );
       } else {
         this._dataService.insertChain(this.dialogForm.value).then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful'
+            );
             this.close();
           },
           (err): any => {
@@ -96,20 +108,34 @@ export class ChainFormComponent extends AbstractFormDialogComponent implements O
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(imagePath);
+    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
+      imagePath
+    );
 
     // Update existing user's image
     if (_get(this.chain, '_id')) {
-      this._dataService.updateChainImagePath(this.chain._id, key, imagePath).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
-      });
+      this._dataService
+        .updateChainImagePath(this.chain._id, key, imagePath)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess'
+          );
+        });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageUploadSuccess'
+      );
     }
   };
 
   public logoRemoveCallback = (key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue('');
+    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
+      ''
+    );
 
     if (this.chain) {
       _set(this.chain, `style.images.${key}`, null);
@@ -117,11 +143,21 @@ export class ChainFormComponent extends AbstractFormDialogComponent implements O
 
     // Update existing user's image
     if (_get(this.chain, '_id')) {
-      this._dataService.updateChainImagePath(this.chain._id, key, null).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
-      });
+      this._dataService
+        .updateChainImagePath(this.chain._id, key, null)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess'
+          );
+        });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageRemoveSuccess'
+      );
     }
   };
 }

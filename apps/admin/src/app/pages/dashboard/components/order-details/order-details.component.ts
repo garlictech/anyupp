@@ -1,4 +1,9 @@
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, EOrderStatus } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+} from 'src/app/shared/enums';
 import { IOrder, IStatusLog } from 'src/app/shared/interfaces';
 import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import {
@@ -45,7 +50,9 @@ export class OrderDetailsComponent implements OnDestroy {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =
-          this.dashboardSettings.size === EDashboardSize.LARGER ? ENebularButtonSize.MEDIUM : ENebularButtonSize.SMALL;
+          this.dashboardSettings.size === EDashboardSize.LARGER
+            ? ENebularButtonSize.MEDIUM
+            : ENebularButtonSize.SMALL;
       });
   }
 
@@ -80,10 +87,17 @@ export class OrderDetailsComponent implements OnDestroy {
   }
 
   public updateOrderItemStatus(idx: number): void {
-    const status = getNextOrderItemStatus(currentStatusFn(this.order.items[idx].statusLog));
+    const status = getNextOrderItemStatus(
+      currentStatusFn(this.order.items[idx].statusLog)
+    );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(this.order._id, this.order.userId, status, idx);
+      this._orderService.updateOrderItemStatus(
+        this.order._id,
+        this.order.userId,
+        status,
+        idx
+      );
     }
   }
 
@@ -98,7 +112,12 @@ export class OrderDetailsComponent implements OnDestroy {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._orderService.updateOrderItemStatus(this.order._id, this.order.userId, EOrderStatus.PLACED, idx);
+            this._orderService.updateOrderItemStatus(
+              this.order._id,
+              this.order.userId,
+              EOrderStatus.PLACED,
+              idx
+            );
           },
           status: 'success',
         },

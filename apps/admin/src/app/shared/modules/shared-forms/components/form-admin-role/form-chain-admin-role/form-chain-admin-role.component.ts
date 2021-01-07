@@ -20,7 +20,10 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedChains: IChain[];
 
-  constructor(private _store: Store<IState>, private _formBuilder: FormBuilder) {
+  constructor(
+    private _store: Store<IState>,
+    private _formBuilder: FormBuilder
+  ) {
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
       chainId: [''],
@@ -30,7 +33,9 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(select(chainListSelectors.getAllChains)),
-      this.control['controls'].entities.valueChanges.pipe(startWith(this.control.value.entities)),
+      this.control['controls'].entities.valueChanges.pipe(
+        startWith(this.control.value.entities)
+      ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([chains, entities]: [IChain[], IAdminRoleEntity[]]): void => {

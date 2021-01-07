@@ -1,10 +1,18 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
-import { IAdminRoleEntity, IChain, IGroup, IKeyValue } from 'src/app/shared/interfaces';
+import {
+  IAdminRoleEntity,
+  IChain,
+  IGroup,
+  IKeyValue,
+} from 'src/app/shared/interfaces';
 import { DataService } from 'src/app/shared/services/data';
 import { IState } from 'src/app/store';
-import { chainListSelectors, groupListSelectors } from 'src/app/store/selectors';
+import {
+  chainListSelectors,
+  groupListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -23,7 +31,11 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedGroups: any[];
 
-  constructor(private _store: Store<IState>, private _formBuilder: FormBuilder, private _dataService: DataService) {
+  constructor(
+    private _store: Store<IState>,
+    private _formBuilder: FormBuilder,
+    private _dataService: DataService
+  ) {
     this.groupOptions = [];
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
@@ -36,57 +48,75 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(select(chainListSelectors.getAllChains)),
       this._store.pipe(select(groupListSelectors.getAllGroups)),
-      this.control['controls'].entities.valueChanges.pipe(startWith(this.control.value.entities)),
+      this.control['controls'].entities.valueChanges.pipe(
+        startWith(this.control.value.entities)
+      ),
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([chains, groups, entities]: [IChain[], IGroup[], IAdminRoleEntity[]]): void => {
-        // Fill the chain list
-        this.chainOptions = [];
-        chains.forEach((chain: IChain): void => {
-          this.chainOptions.push({
-            key: chain._id,
-            value: chain.name,
+      .subscribe(
+        ([chains, groups, entities]: [
+          IChain[],
+          IGroup[],
+          IAdminRoleEntity[]
+        ]): void => {
+          // Fill the chain list
+          this.chainOptions = [];
+          chains.forEach((chain: IChain): void => {
+            this.chainOptions.push({
+              key: chain._id,
+              value: chain.name,
+            });
           });
-        });
 
-        // Fill the assigned entity list
-        this.assignedGroups = [];
-        entities.forEach((entity: IAdminRoleEntity): void => {
-          this.assignedGroups.push({
-            chainName: _get(
-              chains.find((c): boolean => c._id === entity.chainId),
-              'name'
-            ),
-            groupName: _get(
-              groups.find((g): boolean => g._id === entity.groupId),
-              'name'
-            ),
+          // Fill the assigned entity list
+          this.assignedGroups = [];
+          entities.forEach((entity: IAdminRoleEntity): void => {
+            this.assignedGroups.push({
+              chainName: _get(
+                chains.find((c): boolean => c._id === entity.chainId),
+                'name'
+              ),
+              groupName: _get(
+                groups.find((g): boolean => g._id === entity.groupId),
+                'name'
+              ),
+            });
           });
-        });
-      });
+        }
+      );
 
     combineLatest([
       this.entitySelector.valueChanges,
-      this.control['controls'].entities.valueChanges.pipe(startWith(this.control.value.entities)),
+      this.control['controls'].entities.valueChanges.pipe(
+        startWith(this.control.value.entities)
+      ),
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([selectorValue, entities]: [any, IAdminRoleEntity[]]): void => {
-        this._store
-          .pipe(select(groupListSelectors.getGroupsByChainId(selectorValue.chainId)))
-          .pipe(take(1))
-          .subscribe((groups): void => {
-            this.groupOptions = [];
+      .subscribe(
+        ([selectorValue, entities]: [any, IAdminRoleEntity[]]): void => {
+          this._store
+            .pipe(
+              select(
+                groupListSelectors.getGroupsByChainId(selectorValue.chainId)
+              )
+            )
+            .pipe(take(1))
+            .subscribe((groups): void => {
+              this.groupOptions = [];
 
-            groups.forEach((group: IGroup): void => {
-              if (!entities.map((e): string => e.groupId).includes(group._id)) {
-                this.groupOptions.push({
-                  key: group._id,
-                  value: group.name,
-                });
-              }
+              groups.forEach((group: IGroup): void => {
+                if (
+                  !entities.map((e): string => e.groupId).includes(group._id)
+                ) {
+                  this.groupOptions.push({
+                    key: group._id,
+                    value: group.name,
+                  });
+                }
+              });
             });
-          });
-      });
+        }
+      );
   }
 
   ngOnDestroy(): void {

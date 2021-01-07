@@ -37,7 +37,9 @@ export const getGroupInitialData = (g: fabric.Group): any => ({
 
 export const getObjectText = (obj: fabric.Group): string => {
   if (obj?.getObjects) {
-    const textField: any = obj.getObjects()?.filter((o): boolean => o instanceof fabric.IText)[0];
+    const textField: any = obj
+      .getObjects()
+      ?.filter((o): boolean => o instanceof fabric.IText)[0];
 
     return textField ? textField.text : '';
   }
@@ -55,7 +57,9 @@ export const getObjectBg = (obj: fabric.Group): any => {
 
 export const getObjectRadius = (obj: fabric.Group): string => {
   if (obj?.getObjects) {
-    const circleField: any = obj.getObjects()?.filter((o): boolean => o instanceof fabric.Circle)[0];
+    const circleField: any = obj
+      .getObjects()
+      ?.filter((o): boolean => o instanceof fabric.Circle)[0];
 
     return circleField ? circleField.radius : null;
   }
@@ -63,12 +67,15 @@ export const getObjectRadius = (obj: fabric.Group): string => {
   return null;
 };
 
-export const isTable = (obj: any): boolean => (<string>obj.type || '').indexOf('table') === 0;
+export const isTable = (obj: any): boolean =>
+  (<string>obj.type || '').indexOf('table') === 0;
 
 export const isTableOrSeat = (obj: any): boolean =>
-  (<string>obj.type || '').indexOf('table') === 0 || (<string>obj.type || '').indexOf('seat') === 0;
+  (<string>obj.type || '').indexOf('table') === 0 ||
+  (<string>obj.type || '').indexOf('seat') === 0;
 
-export const isSeat = (obj: any): boolean => (<string>obj.type || '').indexOf('seat') === 0;
+export const isSeat = (obj: any): boolean =>
+  (<string>obj.type || '').indexOf('seat') === 0;
 
 export const getTableSeatIds = (data: IFloorMapData): string[] =>
   Object.values(data?.objects || {})
@@ -88,4 +95,5 @@ export const getStatusBgColor = (status: EOrderStatus): string => {
   }
 };
 
-export const getTableSeatId = (obj: IFloorMapDataObject): string => `${obj.tID}.${obj.sID}`;
+export const getTableSeatId = (obj: IFloorMapDataObject): string =>
+  `${obj.tID}.${obj.sID}`;

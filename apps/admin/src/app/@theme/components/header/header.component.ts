@@ -10,7 +10,12 @@ import { IState } from 'src/app/store';
 import { currentUserSelectors } from 'src/app/store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import {
+  NbMediaBreakpointsService,
+  NbMenuService,
+  NbSidebarService,
+  NbThemeService,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -109,7 +114,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
         untilDestroyed(this)
       )
-      .subscribe((isLessThanXl: boolean): boolean => (this.userPictureOnly = isLessThanXl));
+      .subscribe(
+        (isLessThanXl: boolean): boolean =>
+          (this.userPictureOnly = isLessThanXl)
+      );
 
     this._menuService
       .onItemClick()
@@ -149,8 +157,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private _onLanguageSelected(lang: string): void {
-    if (_get(this.adminUser, '_id') && lang !== _get(this.adminUser, 'settings.selectedLanguage')) {
-      this._dataService.updateAdminUserSeletedLanguage(this.adminUser._id, lang);
+    if (
+      _get(this.adminUser, '_id') &&
+      lang !== _get(this.adminUser, 'settings.selectedLanguage')
+    ) {
+      this._dataService.updateAdminUserSeletedLanguage(
+        this.adminUser._id,
+        lang
+      );
     }
   }
 }

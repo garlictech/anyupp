@@ -5,7 +5,9 @@
     </div>
 
     <div class="float-right">
-      <app-active-product-category-selector class="float-right"></app-active-product-category-selector>
+      <app-active-product-category-selector
+        class="float-right"
+      ></app-active-product-category-selector>
       <button
         [disabled]="selectedProductLevel !== EProductLevel.CHAIN"
         nbButton
@@ -28,7 +30,9 @@
         [disabled]="!selectedChainId"
       >
         <ng-container *ngFor="let product of chainProducts">
-          <nb-list-item *ngIf="product.productCategoryId === selectedProductCategoryId">
+          <nb-list-item
+            *ngIf="product.productCategoryId === selectedProductCategoryId"
+          >
             <app-product-list-item
               class="w-100"
               [product]="product"
@@ -86,7 +90,13 @@
               [currency]="groupCurrency"
             ></app-product-list-item>
           </nb-list-item>
-          <nb-list-item *ngFor="let product of unitProducts; first as isFirst; last as isLast">
+          <nb-list-item
+            *ngFor="
+              let product of unitProducts;
+              first as isFirst;
+              last as isLast
+            "
+          >
             <app-product-list-item
               class="w-100"
               [product]="product"

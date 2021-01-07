@@ -17,7 +17,10 @@ import { select, Store } from '@ngrx/store';
 export class LanguageSelectorComponent implements OnDestroy {
   private _adminUser: IAdminUser;
 
-  constructor(private _store: Store<IState>, private _dataService: DataService) {
+  constructor(
+    private _store: Store<IState>,
+    private _dataService: DataService
+  ) {
     this._store
       .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
@@ -34,8 +37,14 @@ export class LanguageSelectorComponent implements OnDestroy {
   }
 
   public onLanguageSelected(lang: string): void {
-    if (_get(this._adminUser, '_id') && lang !== this._adminUser.settings.selectedLanguage) {
-      this._dataService.updateAdminUserSeletedLanguage(this._adminUser._id, lang);
+    if (
+      _get(this._adminUser, '_id') &&
+      lang !== this._adminUser.settings.selectedLanguage
+    ) {
+      this._dataService.updateAdminUserSeletedLanguage(
+        this._adminUser._id,
+        lang
+      );
     }
   }
 }

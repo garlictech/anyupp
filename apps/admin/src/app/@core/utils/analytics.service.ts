@@ -15,9 +15,11 @@ export class AnalyticsService {
 
   public trackPageViews(): void {
     if (this.enabled) {
-      this.router.events.pipe(filter((event): boolean => event instanceof NavigationEnd)).subscribe((): void => {
-        ga('send', { hitType: 'pageview', page: this.location.path() });
-      });
+      this.router.events
+        .pipe(filter((event): boolean => event instanceof NavigationEnd))
+        .subscribe((): void => {
+          ga('send', { hitType: 'pageview', page: this.location.path() });
+        });
     }
   }
 

@@ -5,7 +5,10 @@ import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms
 import { contactFormGroup, multiLangValidator } from 'src/app/shared/pure';
 import { EToasterType } from 'src/app/shared/services/toaster';
 import { IState } from 'src/app/store';
-import { chainListSelectors, currentUserSelectors } from 'src/app/store/selectors';
+import {
+  chainListSelectors,
+  currentUserSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
@@ -17,7 +20,9 @@ import { select, Store } from '@ngrx/store';
   selector: 'app-group-form',
   templateUrl: './group-form.component.html',
 })
-export class GroupFormComponent extends AbstractFormDialogComponent implements OnInit, OnDestroy {
+export class GroupFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit, OnDestroy {
   public group: IGroup;
   public chainOptions: IKeyValue[];
   public currencyOptions: IKeyValue[];
@@ -87,19 +92,29 @@ export class GroupFormComponent extends AbstractFormDialogComponent implements O
   public submit(): void {
     if (this.dialogForm.valid) {
       if (_get(this.group, '_id')) {
-        this._dataService.updateGroup(this.group._id, this.dialogForm.value).then(
-          (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
-            this.close();
-          },
-          (err): any => {
-            console.error('GROUP UPDATE ERROR', err);
-          }
-        );
+        this._dataService
+          .updateGroup(this.group._id, this.dialogForm.value)
+          .then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful'
+              );
+              this.close();
+            },
+            (err): any => {
+              console.error('GROUP UPDATE ERROR', err);
+            }
+          );
       } else {
         this._dataService.insertGroup(this.dialogForm.value).then(
           (): void => {
-            this._toasterService.show(EToasterType.SUCCESS, '', 'common.insertSuccessful');
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful'
+            );
             this.close();
           },
           (err): any => {

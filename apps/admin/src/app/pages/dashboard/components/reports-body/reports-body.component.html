@@ -37,13 +37,14 @@
       [currency]="groupCurrency"
     ></app-reports-day-history>
   </div-->
-
 </div>
 
 <div class="row md-overflow-hidden m-0 p-0 hourly-breakdown-row">
   <div class="col-12 p-1">
-    <app-reports-hourly-breakdown class="d-block w-100 h-100"
-    [orders$]="dailyHistoryOrders$"
-    [currency]="groupCurrency"></app-reports-hourly-breakdown>
+    <app-reports-hourly-breakdown
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-hourly-breakdown>
   </div>
 </div>

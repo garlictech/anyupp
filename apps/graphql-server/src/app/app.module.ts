@@ -14,13 +14,13 @@ const SCHEMA_ROOT = join(process.cwd(), 'libs/graphql/schema/src');
       definitions: {
         path: `${SCHEMA_ROOT}/lib/api.ts`,
         emitTypenameField: true,
-        outputAs: 'class',
-        installSubscriptionHandlers: true,
+        outputAs: 'class'
       },
+      installSubscriptionHandlers: true
     }),
-    GraphqlResolversModule,
+    GraphqlResolversModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

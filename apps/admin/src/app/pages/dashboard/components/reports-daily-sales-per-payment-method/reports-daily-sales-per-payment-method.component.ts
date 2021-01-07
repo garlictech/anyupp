@@ -6,7 +6,14 @@ import { IOrder } from 'src/app/shared/interfaces';
 import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
 import { reducer } from 'src/app/shared/pure';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -16,14 +23,18 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './reports-daily-sales-per-payment-method.component.html',
   styleUrls: ['./reports-daily-sales-per-payment-method.component.scss'],
 })
-export class ReportsDailySalesPerPaymentMethodComponent implements AfterViewInit, OnDestroy {
+export class ReportsDailySalesPerPaymentMethodComponent
+  implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
   @Input() orders$: Observable<IOrder[]>;
-  @Input() currency: string = '';
+  @Input() currency = '';
 
   private _chart: Chart;
 
-  constructor(private _currencyFormatter: CurrencyFormatterPipe, private _translateService: TranslateService) {}
+  constructor(
+    private _currencyFormatter: CurrencyFormatterPipe,
+    private _translateService: TranslateService
+  ) {}
 
   ngAfterViewInit(): void {
     this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
@@ -48,9 +59,13 @@ export class ReportsDailySalesPerPaymentMethodComponent implements AfterViewInit
           callbacks: {
             label: (tooltipItem, data) => {
               const label = data.labels[tooltipItem.index] || '';
-              const value: number = <number>data.datasets[0].data[tooltipItem.index] || 0;
+              const value: number =
+                <number>data.datasets[0].data[tooltipItem.index] || 0;
 
-              return ` ${label}: ${this._currencyFormatter.transform(value, this.currency)}`;
+              return ` ${label}: ${this._currencyFormatter.transform(
+                value,
+                this.currency
+              )}`;
             },
           },
         },
@@ -65,7 +80,9 @@ export class ReportsDailySalesPerPaymentMethodComponent implements AfterViewInit
               },
             },
             formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(reducer);
+              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(
+                reducer
+              );
               const perc = ((value / sum) * 100).toFixed(0);
               return `${perc}%`;
             },
@@ -74,22 +91,26 @@ export class ReportsDailySalesPerPaymentMethodComponent implements AfterViewInit
       },
     });
 
-    this.orders$.pipe(untilDestroyed(this)).subscribe((orders: IOrder[]): void => {
-      const amounts = this._orderAmounts(orders);
+    this.orders$
+      .pipe(untilDestroyed(this))
+      .subscribe((orders: IOrder[]): void => {
+        const amounts = this._orderAmounts(orders);
 
-      this._chart.data.datasets[0].data = [
-        amounts[EPaymentMethod.CARD],
-        amounts[EPaymentMethod.CASH],
-        amounts[EPaymentMethod.INAPP],
-      ];
+        this._chart.data.datasets[0].data = [
+          amounts[EPaymentMethod.CARD],
+          amounts[EPaymentMethod.CASH],
+          amounts[EPaymentMethod.INAPP],
+        ];
 
-      this._chart.update();
-    });
+        this._chart.update();
+      });
 
-    this._translateService.onLangChange.pipe(untilDestroyed(this)).subscribe(() => {
-      this._chart.data.labels = this._translatedLabels();
-      this._chart.update();
-    });
+    this._translateService.onLangChange
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this._chart.data.labels = this._translatedLabels();
+        this._chart.update();
+      });
   }
 
   ngOnDestroy(): void {
@@ -103,7 +124,7 @@ export class ReportsDailySalesPerPaymentMethodComponent implements AfterViewInit
       [EPaymentMethod.INAPP]: 0,
     };
 
-    orders.forEach(o => {
+    orders.forEach((o) => {
       amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
     });
 

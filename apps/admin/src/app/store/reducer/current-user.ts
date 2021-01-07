@@ -16,6 +16,9 @@ const reducer = createReducer(
   }))
 );
 
-export function currentUserReducer(state: ICurrentUserState | undefined, action: Action): any {
+export function currentUserReducer(
+  state: ICurrentUserState | undefined,
+  action: Action
+): any {
   return reducer(state, action);
 }

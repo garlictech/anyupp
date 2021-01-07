@@ -3,7 +3,10 @@ import { getDayIntervals } from 'src/app/shared/pure/forms';
 import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
 import { IState } from 'src/app/store';
 import { dashboardActions } from 'src/app/store/actions';
-import { dashboardSelectors, orderListSelectors } from 'src/app/store/selectors';
+import {
+  dashboardSelectors,
+  orderListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -27,17 +30,25 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
   private _dateIntervals: IDateIntervals;
 
   constructor(private _store: Store<IState>) {
-    this.dateFormControl = new FormControl(new Date().toISOString().slice(0, 10));
+    this.dateFormControl = new FormControl(
+      new Date().toISOString().slice(0, 10)
+    );
     this._refresDayIntervals();
 
     this._store
-      .pipe(select(dashboardSelectors.getSelectedHistoryOrder()), untilDestroyed(this))
+      .pipe(
+        select(dashboardSelectors.getSelectedHistoryOrder()),
+        untilDestroyed(this)
+      )
       .subscribe((selectedOrder: IOrder): void => {
         this.selectedOrder = selectedOrder;
       });
 
     this._store
-      .pipe(select(orderListSelectors.getAllHistoryOrders), untilDestroyed(this))
+      .pipe(
+        select(orderListSelectors.getAllHistoryOrders),
+        untilDestroyed(this)
+      )
       .subscribe((historyOrders: IOrder[]): void => {
         this._orders = historyOrders.sort(customNumberCompare('created'));
 
@@ -56,7 +67,9 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
 
   private _refreshDailyOrders(selectFirstItem: boolean = false): void {
     this.dailyOrders = this._orders.filter(
-      (o: IOrder): boolean => o.created >= this._dateIntervals.from && o.created <= this._dateIntervals.to
+      (o: IOrder): boolean =>
+        o.created >= this._dateIntervals.from &&
+        o.created <= this._dateIntervals.to
     );
 
     if (selectFirstItem) {
@@ -69,7 +82,9 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
   }
 
   public selectOrder(order: IOrder): void {
-    const selectedOrder = this._orders.find((o): boolean => o._id === order?._id);
+    const selectedOrder = this._orders.find(
+      (o): boolean => o._id === order?._id
+    );
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({

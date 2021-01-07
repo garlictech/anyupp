@@ -18,10 +18,16 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 export class UserListComponent implements OnInit, OnDestroy {
   public users$: Observable<IUser[]>;
 
-  constructor(private _store: Store<IState>, private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _store: Store<IState>,
+    private _nbDialogService: NbDialogService
+  ) {}
 
   ngOnInit(): void {
-    this.users$ = this._store.pipe(select(userListSelectors.getAllUsers), untilDestroyed(this));
+    this.users$ = this._store.pipe(
+      select(userListSelectors.getAllUsers),
+      untilDestroyed(this)
+    );
   }
 
   ngOnDestroy(): void {

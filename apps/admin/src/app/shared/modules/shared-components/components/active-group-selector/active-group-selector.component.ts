@@ -3,7 +3,10 @@ import { Observable } from 'rxjs';
 import { IAdminUser, IGroup } from 'src/app/shared/interfaces';
 import { DataService } from 'src/app/shared/services/data';
 import { IState } from 'src/app/store';
-import { currentUserSelectors, groupListSelectors } from 'src/app/store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+} from 'src/app/store/selectors';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,9 +23,15 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
   public groups$: Observable<IGroup[]>;
   private _adminUser: IAdminUser;
 
-  constructor(private _store: Store<IState>, private _dataService: DataService) {
+  constructor(
+    private _store: Store<IState>,
+    private _dataService: DataService
+  ) {
     this.showIcon = false;
-    this.groups$ = this._store.pipe(select(groupListSelectors.getSelectedChainGroups), untilDestroyed(this));
+    this.groups$ = this._store.pipe(
+      select(groupListSelectors.getSelectedChainGroups),
+      untilDestroyed(this)
+    );
 
     this._store
       .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
@@ -40,7 +49,10 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
   }
 
   public onGroupSelected(groupId: string): void {
-    if (_get(this._adminUser, '_id') && groupId !== _get(this._adminUser, 'settings.selectedGroupId')) {
+    if (
+      _get(this._adminUser, '_id') &&
+      groupId !== _get(this._adminUser, 'settings.selectedGroupId')
+    ) {
       this._dataService.updateAdminUserSettings(this._adminUser._id, {
         ..._get(this._adminUser, 'settings', {}),
         selectedGroupId: groupId,

@@ -35,7 +35,11 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [ProductCategoryListComponent, ProductCategoryFormComponent, ProductCategoryListItemComponent],
+  declarations: [
+    ProductCategoryListComponent,
+    ProductCategoryFormComponent,
+    ProductCategoryListItemComponent,
+  ],
   imports: [
     CommonModule,
     TranslateModule,

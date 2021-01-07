@@ -1,16 +1,33 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">{{ 'units.editFloorMap' | translate }}</div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
-      <app-floor-map-editor [editMode]="true" [floorMap]="unit.floorMap"></app-floor-map-editor>
+      <app-floor-map-editor
+        [editMode]="true"
+        [floorMap]="unit.floorMap"
+      ></app-floor-map-editor>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

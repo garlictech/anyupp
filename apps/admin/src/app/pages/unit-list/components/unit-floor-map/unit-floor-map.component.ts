@@ -14,7 +14,9 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './unit-floor-map.component.html',
   styleUrls: ['./unit-floor-map.component.scss'],
 })
-export class UnitFloorMapComponent extends AbstractFormDialogComponent implements OnInit {
+export class UnitFloorMapComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public unit: IUnit;
   public rawForm: FormGroup;
 
@@ -40,15 +42,21 @@ export class UnitFloorMapComponent extends AbstractFormDialogComponent implement
   }
 
   public submit(): void {
-    this._dataService.updateUnit(this.unit._id, { floorMap: floorMapFuncs.mapRawData }).then(
-      (): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
-        this.close();
-      },
-      (err): any => {
-        console.error('GROUP UPDATE ERROR', err);
-      }
-    );
+    this._dataService
+      .updateUnit(this.unit._id, { floorMap: floorMapFuncs.mapRawData })
+      .then(
+        (): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful'
+          );
+          this.close();
+        },
+        (err): any => {
+          console.error('GROUP UPDATE ERROR', err);
+        }
+      );
   }
 
   /*

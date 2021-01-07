@@ -27,20 +27,20 @@
   },
   "projects": {
     "admin": {
-      "tags": []
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
     "admin-e2e": {
       "tags": [],
       "implicitDependencies": ["admin"]
     },
     "graphql-schema": {
-      "tags": []
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "graphql-server": {
-      "tags": []
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "graphql-resolvers": {
-      "tags": []
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     }
   }
 }

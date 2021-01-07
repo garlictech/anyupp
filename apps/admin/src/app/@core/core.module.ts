@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { LayoutService } from './utils';

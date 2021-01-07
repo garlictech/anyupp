@@ -1,9 +1,21 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (adminUser && adminUser._id ? 'adminUsers.editAdminUser' : 'adminUsers.newAdminUser') | translate }}
+      {{
+        (adminUser && adminUser._id
+          ? 'adminUsers.editAdminUser'
+          : 'adminUsers.newAdminUser'
+        ) | translate
+      }}
     </div>
-    <button nbButton ghost shape="round" size="small" class="float-right" (click)="close()">
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
       <nb-icon icon="close-outline"></nb-icon>
     </button>
   </nb-card-header>
@@ -26,12 +38,25 @@
         </div>
       </div>
 
-      <app-form-text-input caption="common.name" type="text" [control]="dialogForm.controls.name"></app-form-text-input>
+      <app-form-text-input
+        caption="common.name"
+        type="text"
+        [control]="dialogForm.controls.name"
+      ></app-form-text-input>
 
-      <app-form-contact-group [contactFormGroup]="dialogForm"></app-form-contact-group>
+      <app-form-contact-group
+        [contactFormGroup]="dialogForm"
+      ></app-form-contact-group>
 
       <div class="mt-20">
-        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
           {{ 'common.submit' | translate }}
         </button>
       </div>

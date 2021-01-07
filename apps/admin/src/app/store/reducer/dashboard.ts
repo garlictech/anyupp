@@ -1,4 +1,8 @@
-import { EDashboardListMode, EDashboardSize, EDashboardTicketListType } from 'src/app/shared/enums';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  EDashboardTicketListType,
+} from 'src/app/shared/enums';
 
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -50,13 +54,16 @@ const reducer = createReducer(
       orderEditing,
     },
   })),
-  on(dashboardActions.setShowAllUserOrders, (state, { showAllUserOrders }): any => ({
-    ...state,
-    settings: {
-      ...state.settings,
-      showAllUserOrders,
-    },
-  })),
+  on(
+    dashboardActions.setShowAllUserOrders,
+    (state, { showAllUserOrders }): any => ({
+      ...state,
+      settings: {
+        ...state.settings,
+        showAllUserOrders,
+      },
+    })
+  ),
   on(dashboardActions.setTicketListType, (state, { ticketListType }): any => ({
     ...state,
     settings: {
@@ -73,6 +80,9 @@ const reducer = createReducer(
   }))
 );
 
-export function dashboardReducer(state: IDashboardState | undefined, action: Action): any {
+export function dashboardReducer(
+  state: IDashboardState | undefined,
+  action: Action
+): any {
   return reducer(state, action);
 }

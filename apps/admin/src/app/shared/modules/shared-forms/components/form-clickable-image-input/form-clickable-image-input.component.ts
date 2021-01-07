@@ -26,7 +26,10 @@ export class FormClickableImageInputComponent {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  constructor(private _storageService: StorageService, private _imageCompressorService: ImageCompressorService) {
+  constructor(
+    private _storageService: StorageService,
+    private _imageCompressorService: ImageCompressorService
+  ) {
     this.caption = '';
   }
 
@@ -47,14 +50,16 @@ export class FormClickableImageInputComponent {
       if (file.type === 'image/svg+xml') {
         this._uploadFile(file);
       } else {
-        this._imageCompressorService.compress(file, this.imageType, this.maxSize).subscribe(
-          (_file): void => {
-            this._uploadFile(_file);
-          },
-          (err): void => {
-            console.error('Compress error', err);
-          }
-        );
+        this._imageCompressorService
+          .compress(file, this.imageType, this.maxSize)
+          .subscribe(
+            (_file): void => {
+              this._uploadFile(_file);
+            },
+            (err): void => {
+              console.error('Compress error', err);
+            }
+          );
       }
     }
   }

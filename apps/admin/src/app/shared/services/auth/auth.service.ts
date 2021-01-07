@@ -78,10 +78,15 @@ export class AuthService {
     }
   }
 
-  public createUserWithEmailAndRandomPassword(email: string): Promise<firebase.auth.UserCredential> {
+  public createUserWithEmailAndRandomPassword(
+    email: string
+  ): Promise<firebase.auth.UserCredential> {
     const password = Math.random().toString(36).substring(2, 10);
 
-    return this._angularFireAuth.createUserWithEmailAndPassword(email, password);
+    return this._angularFireAuth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
   }
 
   public sendPasswordResetEmail(email: string): Promise<any> {

@@ -11,7 +11,8 @@
           [formControl]="scheduleControl['controls'][day]['controls'].from"
           [status]="
             scheduleControl['controls'][day]['controls'].from.touched &&
-            (scheduleControl['controls'][day]['controls'].from.errors?.required ||
+            (scheduleControl['controls'][day]['controls'].from.errors
+              ?.required ||
               scheduleControl['controls'][day]['controls'].from.invalid)
               ? 'danger'
               : 'basic'
@@ -41,16 +42,33 @@
   <div class="label">
     {{ 'common.days.custom' | translate }}
 
-    <button nbButton type="button" shape="round" size="tiny" class="float-right" (click)="addCustomDate()">
+    <button
+      nbButton
+      type="button"
+      shape="round"
+      size="tiny"
+      class="float-right"
+      (click)="addCustomDate()"
+    >
       <nb-icon icon="plus-outline"></nb-icon>
     </button>
 
     <div class="clearfix"></div>
 
     <table>
-      <tr *ngFor="let customDay of scheduleControl['controls'].override['controls']; index as i">
+      <tr
+        *ngFor="
+          let customDay of scheduleControl['controls'].override['controls'];
+          index as i
+        "
+      >
         <td>
-          <input nbInput fieldSize="small" [formControl]="customDay.controls.date" type="date" />
+          <input
+            nbInput
+            fieldSize="small"
+            [formControl]="customDay.controls.date"
+            type="date"
+          />
         </td>
         <td>
           <input
@@ -60,7 +78,8 @@
             [formControl]="customDay.controls.from"
             [status]="
               customDay.controls.from.touched &&
-              (customDay.controls.from.errors?.required || customDay.controls.from.invalid)
+              (customDay.controls.from.errors?.required ||
+                customDay.controls.from.invalid)
                 ? 'danger'
                 : 'basic'
             "
@@ -74,7 +93,9 @@
             [placeholder]="'common.hmPlaceholder' | translate"
             [formControl]="customDay.controls.to"
             [status]="
-              customDay.controls.to.touched && (customDay.controls.to.errors?.required || customDay.controls.to.invalid)
+              customDay.controls.to.touched &&
+              (customDay.controls.to.errors?.required ||
+                customDay.controls.to.invalid)
                 ? 'danger'
                 : 'basic'
             "

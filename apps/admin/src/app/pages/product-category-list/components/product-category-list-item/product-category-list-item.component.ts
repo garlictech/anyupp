@@ -24,7 +24,9 @@ export class ProductCategoryListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.productCategory = _cloneDeep(this.productCategory);
+    dialog.componentRef.instance.productCategory = _cloneDeep(
+      this.productCategory
+    );
   }
 
   public moveUp(): void {

@@ -26,9 +26,13 @@ const _ital = (rawObject: IFloorMapDataObject): any => ({
 });
 
 const _commonGroupOptions = (): any =>
-  fabricEditMode ? FLOOR_MAP_ENABLED_GROUP_OPTIONS : FLOOR_MAP_DISABLED_GROUP_OPTIONS;
+  fabricEditMode
+    ? FLOOR_MAP_ENABLED_GROUP_OPTIONS
+    : FLOOR_MAP_DISABLED_GROUP_OPTIONS;
 
-export const createTableRect = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createTableRect = (
+  rawObject: IFloorMapDataObject
+): fabric.Group => {
   const bg = new fabric.Rect({
     fill: FLOOR_MAP_CONFIG.tableFill,
     stroke: FLOOR_MAP_CONFIG.tableStroke,
@@ -46,7 +50,9 @@ export const createTableRect = (rawObject: IFloorMapDataObject): fabric.Group =>
   });
 };
 
-export const createTableCircle = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createTableCircle = (
+  rawObject: IFloorMapDataObject
+): fabric.Group => {
   const bg = new fabric.Circle({
     radius: rawObject.r,
     fill: FLOOR_MAP_CONFIG.tableFill,
@@ -66,7 +72,9 @@ export const createTableCircle = (rawObject: IFloorMapDataObject): fabric.Group 
   return group;
 };
 
-export const createTriangle = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createTriangle = (
+  rawObject: IFloorMapDataObject
+): fabric.Group => {
   const bg = new fabric.Triangle(<any>{
     radius: rawObject.r,
     fill: FLOOR_MAP_CONFIG.tableFill,
@@ -82,7 +90,9 @@ export const createTriangle = (rawObject: IFloorMapDataObject): fabric.Group => 
   });
 };
 
-export const createSeatRect = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createSeatRect = (
+  rawObject: IFloorMapDataObject
+): fabric.Group => {
   const bg = new fabric.Rect(<any>{
     ..._wh(rawObject),
     fill: FLOOR_MAP_CONFIG.seatFill,
@@ -100,7 +110,9 @@ export const createSeatRect = (rawObject: IFloorMapDataObject): fabric.Group => 
   });
 };
 
-export const createSeatCircle = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createSeatCircle = (
+  rawObject: IFloorMapDataObject
+): fabric.Group => {
   const bg = new fabric.Circle(<any>{
     radius: rawObject.r,
     fill: FLOOR_MAP_CONFIG.seatFill,
@@ -158,7 +170,10 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
     ..._wh(rawObject),
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, { ...FLOOR_MAP_TEXT_CONFIG, fill: '#000' });
+  const caption = new fabric.IText(rawObject.c, {
+    ...FLOOR_MAP_TEXT_CONFIG,
+    fill: '#000',
+  });
 
   return new fabric.Group([bg, caption], <any>{
     type: EUnitMapObjectType.LABEL,
@@ -167,7 +182,8 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-export const getObjectById = (id: string): fabric.Group => fabricCanvas.getObjects().find((o): boolean => o.id === id);
+export const getObjectById = (id: string): fabric.Group =>
+  fabricCanvas.getObjects().find((o): boolean => o.id === id);
 
 export const setBorder = (
   obj: fabric.Group,
@@ -182,7 +198,10 @@ export const setBorder = (
   }
 };
 
-export const setBgColor = (obj: fabric.Group, color: string = FLOOR_MAP_CONFIG.seatFill): void => {
+export const setBgColor = (
+  obj: fabric.Group,
+  color: string = FLOOR_MAP_CONFIG.seatFill
+): void => {
   const bgObj: fabric.Group = getObjectBg(obj);
 
   if (bgObj) {

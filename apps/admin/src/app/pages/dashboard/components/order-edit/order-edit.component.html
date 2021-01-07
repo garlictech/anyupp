@@ -1,19 +1,40 @@
 <div class="row p-0 m-0">
   <ng-container *ngFor="let orderItem of order?.items; index as i">
-    <div class="col-1 p-2 m-auto subtitle-2 text-right font-larger">{{ i + 1 }}.</div>
+    <div class="col-1 p-2 m-auto subtitle-2 text-right font-larger">
+      {{ i + 1 }}.
+    </div>
     <div
       class="col-5 p-2 m-auto subtitle-2 font-larger"
-      [ngClass]="{ rejected: currentStatus(orderItem.statusLog) === EOrderStatus.REJECTED }"
+      [ngClass]="{
+        rejected: currentStatus(orderItem.statusLog) === EOrderStatus.REJECTED
+      }"
     >
-      {{ orderItem.productName | localize }} ({{ orderItem.variantName | localize }})
+      {{ orderItem.productName | localize }} ({{
+        orderItem.variantName | localize
+      }})
     </div>
-    <div class="col-1 p-2 m-auto caption text-right font-weight-bold font-larger">{{ orderItem.quantity }}x</div>
+    <div
+      class="col-1 p-2 m-auto caption text-right font-weight-bold font-larger"
+    >
+      {{ orderItem.quantity }}x
+    </div>
     <div class="col-2 p-2 m-auto caption text-right font-larger">
-      {{ orderItem.priceShown.priceSum | currencyFormatter: orderItem.priceShown.currency }}
+      {{
+        orderItem.priceShown.priceSum
+          | currencyFormatter: orderItem.priceShown.currency
+      }}
     </div>
     <div class="text-right p-2 col-3 m-auto">
-      <ng-container *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.REJECTED">
-        <button nbButton status="warning" [size]="buttonSize" shape="round" (click)="removeOrderItem(i)">
+      <ng-container
+        *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.REJECTED"
+      >
+        <button
+          nbButton
+          status="warning"
+          [size]="buttonSize"
+          shape="round"
+          (click)="removeOrderItem(i)"
+        >
           <nb-icon icon="trash-2-outline"></nb-icon>
         </button>
 
@@ -30,7 +51,14 @@
         </button>
       </ng-container>
 
-      <button nbButton class="ml-3" status="success" [size]="buttonSize" shape="round" (click)="updateQuantity(i, 1)">
+      <button
+        nbButton
+        class="ml-3"
+        status="success"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateQuantity(i, 1)"
+      >
         <nb-icon icon="plus-outline"></nb-icon>
       </button>
     </div>
@@ -56,7 +84,10 @@
   </div>
 
   <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
-    {{ order.sumPriceShown.priceSum | currencyFormatter: order.sumPriceShown.currency }}
+    {{
+      order.sumPriceShown.priceSum
+        | currencyFormatter: order.sumPriceShown.currency
+    }}
   </div>
   <div class="col-3 p-2 pr-2 text-right m-auto">
     <button

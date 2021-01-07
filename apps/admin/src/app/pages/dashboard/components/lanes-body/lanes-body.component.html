@@ -9,7 +9,9 @@
         *ngFor="let lane of unitLanes"
         (checkedChange)="toggleLane(lane._id)"
         ><span [ngStyle]="{ color: lane.color }"
-          >{{ lane.name }} ({{ lane.placedCount }}/{{ lane.processingCount }}/{{ lane.readyCount }})</span
+          >{{ lane.name }} ({{ lane.placedCount }}/{{ lane.processingCount }}/{{
+            lane.readyCount
+          }})</span
         ></nb-checkbox
       >
     </nb-card-header>
@@ -18,7 +20,9 @@
         <!-- PLACED COLUMN -->
         <div class="col-md-3 p-1 md-overflow-hidden md-h-100">
           <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
-            <nb-card-header class="p-2">{{ 'orders.status.PLACED' | translate }}</nb-card-header>
+            <nb-card-header class="p-2">{{
+              'orders.status.PLACED' | translate
+            }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <app-lane-item
                 *ngFor="let orderItem of placedItems"
@@ -34,7 +38,9 @@
         <!-- PROCESSING COLUMN -->
         <div class="col-md-5 p-1 md-overflow-hidden md-h-100">
           <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
-            <nb-card-header class="p-2">{{ 'orders.status.PROCESSING' | translate }}</nb-card-header>
+            <nb-card-header class="p-2">{{
+              'orders.status.PROCESSING' | translate
+            }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <app-lane-item
                 *ngFor="let orderItem of processingItems"
@@ -50,7 +56,9 @@
         <!-- READY COLUMN -->
         <div class="col-md-4 p-1 md-overflow-hidden md-h-100">
           <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
-            <nb-card-header class="p-2">{{ 'orders.status.READY' | translate }}</nb-card-header>
+            <nb-card-header class="p-2">{{
+              'orders.status.READY' | translate
+            }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <app-lane-item
                 *ngFor="let orderItem of readyItems"

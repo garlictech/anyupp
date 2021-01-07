@@ -35,12 +35,14 @@
     }
   }
 
-  app-active-chain-selector, app-active-group-selector,  app-active-unit-selector {
+  app-active-chain-selector,
+  app-active-group-selector,
+  app-active-unit-selector {
     margin-left: 1rem;
   }
 
   ::ng-deep nb-search button {
-    padding: 0!important;
+    padding: 0 !important;
   }
 
   .header-container {
