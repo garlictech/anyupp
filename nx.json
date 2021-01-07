@@ -41,6 +41,13 @@
     },
     "graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "website": {
+      "tags": []
+    },
+    "website-e2e": {
+      "tags": [],
+      "implicitDependencies": ["website"]
     }
   }
 }
