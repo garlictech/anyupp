@@ -5,7 +5,7 @@ Before(() => {
 });
 
 Given('the user is logged in', () => {
-  //cy.login('my-email@something.com', 'myPassword');
+  cy.login('my-email@something.com', 'myPassword');
 });
 
 Then('the {string} message is displayed', (message: string) => {
