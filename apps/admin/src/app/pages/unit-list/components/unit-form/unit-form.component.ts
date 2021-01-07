@@ -7,7 +7,7 @@ import {
   IKeyValue,
   IPaymentMode,
   IUnit,
-} from 'src/app/shared/interfaces';
+} from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import {
   contactFormGroup,
@@ -16,11 +16,11 @@ import {
 } from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   groupListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';

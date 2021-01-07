@@ -3,10 +3,10 @@ import {
   EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
-} from 'src/app/shared/enums';
-import { IAdminUserRole, IProduct } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
+} from '../../shared/enums';
+import { IAdminUserRole, IProduct } from '../../shared/interfaces';
+import { IState } from '../../store';
+import { currentUserSelectors } from '../../store/selectors';
 
 import {
   Component,

@@ -1,4 +1,4 @@
-import { IOrder } from 'src/app/shared/interfaces';
+import { IOrder } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

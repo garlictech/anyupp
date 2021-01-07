@@ -2,8 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import {
   EDashboardListMode,
   EDashboardSize,
-  EDashboardTicketListType,
-} from 'src/app/shared/enums';
+  EDashboardTicketListType
+} from '../../shared/enums';
 
 export const resetDashboard = createAction('[Dashboard] Reset dashboard');
 export const setSelectedOrderId = createAction(

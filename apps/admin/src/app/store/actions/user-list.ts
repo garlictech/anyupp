@@ -1,6 +1,5 @@
-import { IUser } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IUser } from '../../shared/interfaces';
 
 export const resetUsers = createAction('[UserList] Reset users');
 export const setAllUsers = createAction(

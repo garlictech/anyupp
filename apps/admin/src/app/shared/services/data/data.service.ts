@@ -1,13 +1,6 @@
 import { get as _get, intersection as _intersection } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  take,
-  takeUntil,
-} from 'rxjs/operators';
-import { IState } from 'src/app/store';
+import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
 import {
   adminUserListActions,
   chainListActions,
@@ -18,10 +11,9 @@ import {
   productCategoryListActions,
   productListActions,
   unitListActions,
-  userListActions,
-} from 'src/app/store/actions';
-import { currentUserSelectors } from 'src/app/store/selectors';
-import { environment } from 'src/environments/environment';
+  userListActions
+} from '../../../store/actions';
+import { currentUserSelectors } from '../../../store/selectors';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -44,12 +36,14 @@ import {
   IProduct,
   IProductCategory,
   IUnit,
-  IUser,
+  IUser
 } from '../../interfaces';
 import { objectToArray } from '../../pure';
+import { IState } from '../../../store';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DataService {
   private _destroyConnection$: Subject<boolean> = new Subject<boolean>();
@@ -69,7 +63,7 @@ export class DataService {
       this._angularFireDatabase.object(`adminUsers/${userId}`).valueChanges(),
       this._angularFireDatabase
         .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}`)
-        .valueChanges(),
+        .valueChanges()
     ])
       .pipe(takeUntil(this._destroyConnection$))
       .subscribe(([adminUser, adminUserCredentials]: [any, any]): void => {
@@ -78,8 +72,8 @@ export class DataService {
             adminUser: {
               _id: userId,
               ...adminUser,
-              ...adminUserCredentials,
-            },
+              ...adminUserCredentials
+            }
           })
         );
       });
@@ -141,57 +135,57 @@ export class DataService {
             break;
           case EAdminRole.CHAIN_ADMIN:
             this._subscribeToChainsByRole(
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               'chainId',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToUnitsByRole(
               'chainId',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.GROUP_ADMIN:
             this._subscribeToChainsByRole(
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.groupId)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId)
             );
             this._subscribeToUnitsByRole(
               'groupId',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.groupId)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId)
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.UNIT_ADMIN:
             this._subscribeToChainsByRole(
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.groupId)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId)
             );
             this._subscribeToUnitsByRole(
               '_id',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.unitId)
+              (adminUserRoles?.entities ?? []).map(e => e.unitId)
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.STAFF:
             this._subscribeToChainsByRole(
-              _get(adminUserRoles, 'entities', []).map((e): string => e.chainId)
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.groupId)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId)
             );
             this._subscribeToUnitsByRole(
               '_id',
-              _get(adminUserRoles, 'entities', []).map((e): string => e.unitId)
+              (adminUserRoles?.entities ?? []).map(e => e.unitId)
             );
             break;
           default:
@@ -224,7 +218,7 @@ export class DataService {
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c._id)
-            ),
+            )
           })
         );
       });
@@ -245,7 +239,7 @@ export class DataService {
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c[fieldName])
-            ),
+            )
           })
         );
       });
@@ -266,7 +260,7 @@ export class DataService {
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c[fieldName])
-            ),
+            )
           })
         );
       });
@@ -280,7 +274,7 @@ export class DataService {
       .subscribe((data: any): void => {
         this._store.dispatch(
           productCategoryListActions.setAllProductCategories({
-            productCategories: objectToArray(data),
+            productCategories: objectToArray(data)
           })
         );
       });
@@ -294,7 +288,7 @@ export class DataService {
       .subscribe((data: any): void => {
         this._store.dispatch(
           productListActions.setAllChainProducts({
-            products: objectToArray(data),
+            products: objectToArray(data)
           })
         );
       });
@@ -308,7 +302,7 @@ export class DataService {
       .subscribe((data: any): void => {
         this._store.dispatch(
           productListActions.setAllGroupProducts({
-            products: objectToArray(data),
+            products: objectToArray(data)
           })
         );
       });
@@ -322,7 +316,7 @@ export class DataService {
       .subscribe((data: any): void => {
         this._store.dispatch(
           productListActions.setAllUnitProducts({
-            products: objectToArray(data),
+            products: objectToArray(data)
           })
         );
       });
@@ -345,14 +339,14 @@ export class DataService {
             products.push({
               ...categoryValue[productId],
               _id: productId,
-              productCategoryId,
+              productCategoryId
             });
           });
         });
 
         this._store.dispatch(
           productListActions.setAllGeneratedUnitProducts({
-            products,
+            products
           })
         );
       });
@@ -383,7 +377,7 @@ export class DataService {
                 (order: IOrder): IOrder => {
                   return {
                     ...order,
-                    userId,
+                    userId
                   };
                 }
               )
@@ -393,7 +387,7 @@ export class DataService {
                 (order: IOrder): IOrder => {
                   return {
                     ...order,
-                    userId,
+                    userId
                   };
                 }
               )
@@ -403,12 +397,12 @@ export class DataService {
 
         this._store.dispatch(
           orderListActions.setAllActiveOrders({
-            orders: activeOrders,
+            orders: activeOrders
           })
         );
         this._store.dispatch(
           orderListActions.setAllHistoryOrders({
-            orders: historyOrders,
+            orders: historyOrders
           })
         );
       });
@@ -422,7 +416,7 @@ export class DataService {
       .subscribe((data: any): void => {
         this._store.dispatch(
           userListActions.setAllUsers({
-            users: objectToArray(data),
+            users: objectToArray(data)
           })
         );
       });
@@ -435,7 +429,7 @@ export class DataService {
       this._angularFireDatabase.object(`/adminUsers/`).valueChanges(),
       this._angularFireDatabase
         .object(`/${environment.dbPrefix}/adminUserCredentials/`)
-        .valueChanges(),
+        .valueChanges()
     ])
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe(([_adminUsers, _adminUserCredentials]: [any, any]): void => {
@@ -448,7 +442,7 @@ export class DataService {
         commonKeys.forEach((key: string): void => {
           data[key] = {
             ..._adminUsers[key],
-            ..._adminUserCredentials[key],
+            ..._adminUserCredentials[key]
           };
         });
         switch (loggedAdminRole.role) {
@@ -458,22 +452,17 @@ export class DataService {
           case EAdminRole.CHAIN_ADMIN:
             adminUsers = objectToArray(data).filter(
               (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminChainIds = _get(
-                  loggedAdminRole,
-                  'entities',
-                  []
-                ).map((e): string => e['chainId']);
-                const currentAdminChainIds = _get(
-                  currentAdminUser,
-                  'roles.entities',
-                  []
-                ).map((e): string => e['chainId']);
-
+                const loggedAdminChainIds = (
+                  loggedAdminRole?.entities ?? []
+                ).map((e): string => e.chainId);
+                const currentAdminChainIds = (
+                  currentAdminUser?.roles?.entities ?? []
+                ).map((e): string => e.chainId);
                 // Chain admin shows only the group/unit admins and the staffs of his chains
                 return [
                   EAdminRole.GROUP_ADMIN,
                   EAdminRole.UNIT_ADMIN,
-                  EAdminRole.STAFF,
+                  EAdminRole.STAFF
                 ].includes(currentAdminUser.roles.role)
                   ? _intersection(loggedAdminChainIds, currentAdminChainIds)
                       .length > 0
@@ -484,16 +473,12 @@ export class DataService {
           case EAdminRole.GROUP_ADMIN:
             adminUsers = objectToArray(data).filter(
               (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminGroupIds = _get(
-                  loggedAdminRole,
-                  'entities',
-                  []
-                ).map((e): string => e['groupId']);
-                const currentAdminGroupIds = _get(
-                  currentAdminUser,
-                  'roles.entities',
-                  []
-                ).map((e): string => e['groupId']);
+                const loggedAdminGroupIds = (
+                  loggedAdminRole?.entities ?? []
+                ).map((e): string => e.unitId);
+                const currentAdminGroupIds = (
+                  currentAdminUser?.roles?.entities ?? []
+                ).map((e): string => e.groupId);
 
                 // Chain admin shows only the group/unit admins and the staffs of his chains
                 return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
@@ -508,15 +493,11 @@ export class DataService {
           case EAdminRole.UNIT_ADMIN:
             adminUsers = objectToArray(data).filter(
               (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminUnitIds = _get(
-                  loggedAdminRole,
-                  'entities',
-                  []
+                const loggedAdminUnitIds = (
+                  loggedAdminRole?.entities ?? []
                 ).map((e): string => e['unitId']);
-                const currentAdminUnitIds = _get(
-                  currentAdminUser,
-                  'roles.entities',
-                  []
+                const currentAdminUnitIds = (
+                  currentAdminUser?.roles?.entities ?? []
                 ).map((e): string => e['unitId']);
 
                 // Chain admin shows only the group/unit admins and the staffs of his chains
@@ -533,7 +514,7 @@ export class DataService {
 
         this._store.dispatch(
           adminUserListActions.setAllAdminUsers({
-            adminUsers,
+            adminUsers
           })
         );
       });
@@ -586,7 +567,7 @@ export class DataService {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/chains/${chainId}/style/images`)
       .update({
-        [key]: imagePath,
+        [key]: imagePath
       });
   }
 
@@ -628,7 +609,7 @@ export class DataService {
     );
 
     return callable({
-      unitId,
+      unitId
     }).toPromise();
   }
 
@@ -667,7 +648,7 @@ export class DataService {
         `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
       )
       .update({
-        image: imagePath,
+        image: imagePath
       });
   }
 
@@ -681,7 +662,7 @@ export class DataService {
         `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
       )
       .update({
-        position: value,
+        position: value
       });
   }
 
@@ -738,7 +719,7 @@ export class DataService {
         `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
       )
       .update({
-        position: value,
+        position: value
       });
   }
 
@@ -772,7 +753,7 @@ export class DataService {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
       .update({
-        position: value,
+        position: value
       });
   }
 
@@ -810,7 +791,7 @@ export class DataService {
       unitId,
       userId,
       orderId,
-      status,
+      status
     }).toPromise();
   }
 
@@ -930,7 +911,7 @@ export class DataService {
         `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
       )
       .update({
-        selectedLanguage: language,
+        selectedLanguage: language
       });
   }
 
@@ -939,7 +920,7 @@ export class DataService {
     imagePath: string
   ): Promise<any> {
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
-      profileImage: imagePath,
+      profileImage: imagePath
     });
   }
 

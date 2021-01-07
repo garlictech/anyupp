@@ -1,6 +1,6 @@
 import { WEEKLY_VARIANT_AVAILABILITY } from 'src/app/shared/const';
-import { EVariantAvailabilityType } from 'src/app/shared/enums';
-import { IKeyValue } from 'src/app/shared/interfaces';
+import { EVariantAvailabilityType } from '../../shared/enums';
+import { IKeyValue } from '../../shared/interfaces';
 import { FormsService } from 'src/app/shared/services/forms';
 
 import { Component, Input } from '@angular/core';

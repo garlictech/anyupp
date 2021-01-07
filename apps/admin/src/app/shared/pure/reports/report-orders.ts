@@ -1,4 +1,4 @@
-import { IKeyValueObject, IOrder } from '../../interfaces';
+import { IOrder } from '../../interfaces';
 
 /*
 export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKeyValueObject => {
@@ -19,7 +19,7 @@ export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKey
 export const getDailyOrdersSum = (dailyHistoryOrders: IOrder[]): number => {
   let sum = 0;
 
-  dailyHistoryOrders.forEach((o) => {
+  dailyHistoryOrders.forEach(o => {
     sum += o.sumPriceShown.priceSum;
   });
 

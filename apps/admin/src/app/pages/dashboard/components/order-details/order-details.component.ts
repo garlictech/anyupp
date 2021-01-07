@@ -2,20 +2,20 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
-} from 'src/app/shared/enums';
-import { IOrder, IStatusLog } from 'src/app/shared/interfaces';
-import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+  EOrderStatus
+} from '../../../../shared/enums';
+import { IOrder, IStatusLog } from '../../../../shared/interfaces';
+import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import {
   currentStatus as currentStatusFn,
   getNextOrderItemStatus,
   getNextOrderStatus,
-  getStatusColor,
-} from 'src/app/shared/pure/orders';
-import { OrderService } from 'src/app/shared/services/order';
-import { IState } from 'src/app/store';
-import { dashboardSelectors } from 'src/app/store/selectors';
-import { IDashboardSettings } from 'src/app/store/state';
+  getStatusColor
+} from '../../../../shared/pure/orders';
+import { OrderService } from '../../../../shared/services/order';
+import { IState } from '../../../../store';
+import { dashboardSelectors } from '../../../../store/selectors';
+import { IDashboardSettings } from '../../../../store/state';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -26,7 +26,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-order-details',
   styleUrls: ['./order-details.component.scss'],
-  templateUrl: './order-details.component.html',
+  templateUrl: './order-details.component.html'
 })
 export class OrderDetailsComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -103,7 +103,7 @@ export class OrderDetailsComponent implements OnDestroy {
 
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
+      dialogClass: 'form-dialog'
     });
 
     dialog.componentRef.instance.options = {
@@ -119,14 +119,14 @@ export class OrderDetailsComponent implements OnDestroy {
               idx
             );
           },
-          status: 'success',
+          status: 'success'
         },
         {
           label: 'common.cancel',
           callback: (): void => {},
-          status: 'basic',
-        },
-      ],
+          status: 'basic'
+        }
+      ]
     };
   }
 }

@@ -1,12 +1,12 @@
 import { map } from 'rxjs/operators';
-import { IProductCategory } from 'src/app/shared/interfaces';
+import { IProductCategory } from '../../shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   productCategoryListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

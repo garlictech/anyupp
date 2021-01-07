@@ -1,4 +1,4 @@
-import { IChain } from 'src/app/shared/interfaces';
+import { IChain } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

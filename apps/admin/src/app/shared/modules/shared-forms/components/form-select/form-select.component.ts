@@ -1,4 +1,4 @@
-import { IKeyValue } from 'src/app/shared/interfaces';
+import { IKeyValue } from '../../shared/interfaces';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';

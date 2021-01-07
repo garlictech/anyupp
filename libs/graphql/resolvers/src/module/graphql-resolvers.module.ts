@@ -12,17 +12,17 @@ import { PubSub } from 'graphql-subscriptions';
     AdminUserResolver,
     {
       provide: 'PUB_SUB',
-      useValue: new PubSub()
-    }
+      useValue: new PubSub(),
+    },
   ],
-  exports: []
+  exports: [],
 })
 export class GraphqlResolversModule {
   constructor() {
     admin.initializeApp({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       credential: admin.credential.cert(serviceAccount as any),
-      databaseURL: 'https://project-3fa.firebaseio.com/'
+      databaseURL: 'https://project-3fa.firebaseio.com/',
     });
   }
 }

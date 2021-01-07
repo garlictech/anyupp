@@ -1,20 +1,19 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IGroup } from 'src/app/shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
+import { IAdminUser, IGroup } from '../../../../interfaces';
 import {
   currentUserSelectors,
   groupListSelectors,
-} from 'src/app/store/selectors';
-
+} from '../../../../../store/selectors';
+import { IState } from '../../../../../store';
+import { DataService } from '../../../../services/data';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-group-selector',
+  selector: 'bgap-active-group-selector',
   templateUrl: './active-group-selector.component.html',
   styleUrls: ['./active-group-selector.component.scss'],
 })

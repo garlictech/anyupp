@@ -4,25 +4,25 @@ import { skipWhile } from 'rxjs/operators';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
-} from 'src/app/shared/enums';
+  EOrderStatus
+} from '../../../../shared/enums';
 import {
   IAdminUser,
   IGroup,
   IOrder,
   IOrderItem,
   IProduct,
-  IProductCategory,
-} from 'src/app/shared/interfaces';
-import { currentStatus } from 'src/app/shared/pure/orders';
-import { OrderService } from 'src/app/shared/services/order';
-import { IState } from 'src/app/store';
+  IProductCategory
+} from '../../../../shared/interfaces';
+import { currentStatus } from '../../../../shared/pure/orders';
+import { OrderService } from '../../../../shared/services/order';
+import { IState } from '../../../../store';
 import {
   currentUserSelectors,
   groupListSelectors,
   productCategoryListSelectors,
-  productListSelectors,
-} from 'src/app/store/selectors';
+  productListSelectors
+} from '../../../../store/selectors';
 
 import { Component, Input } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -32,7 +32,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-order-product-list',
   templateUrl: './order-product-list.component.html',
-  styleUrls: ['./order-product-list.component.scss'],
+  styleUrls: ['./order-product-list.component.scss']
 })
 export class OrderProductListComponent {
   @Input() selectedOrder: IOrder;
@@ -74,7 +74,7 @@ export class OrderProductListComponent {
       this._store.pipe(
         select(productListSelectors.getAllGeneratedUnitProducts),
         untilDestroyed(this)
-      ),
+      )
     ])
       .pipe(untilDestroyed(this))
       .subscribe(

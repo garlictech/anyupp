@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
-import { IChain, IGroup } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
+import { IChain, IGroup } from '../../shared/interfaces';
+import { IState } from '../../store';
 import {
   chainListSelectors,
   currentUserSelectors,
   groupListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

@@ -4,15 +4,15 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-} from 'src/app/shared/enums';
-import { IUnit } from 'src/app/shared/interfaces';
+} from '../../shared/enums';
+import { IUnit } from '../../shared/interfaces';
 import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { zeroFill } from 'src/app/shared/pure';
 import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
-import { dashboardActions } from 'src/app/store/actions';
-import { dashboardSelectors, unitListSelectors } from 'src/app/store/selectors';
-import { IDashboardSettings } from 'src/app/store/state';
+import { IState } from '../../store';
+import { dashboardActions } from '../../store/actions';
+import { dashboardSelectors, unitListSelectors } from '../../store/selectors';
+import { IDashboardSettings } from '../../store/state';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';

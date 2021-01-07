@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
-import { EUnitMapObjectType } from 'src/app/shared/enums';
-import { IFloorMapData, IFloorMapDataObject } from 'src/app/shared/interfaces';
-import { customStringCompare, objectToArray } from 'src/app/shared/pure/utils';
+import { EUnitMapObjectType } from '../../enums';
+import { IFloorMapData, IFloorMapDataObject } from '../../interfaces';
+import { customStringCompare, objectToArray } from '../utils';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {

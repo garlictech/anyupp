@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IChain } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
-import { chainListSelectors } from 'src/app/store/selectors';
+import { IChain } from '../../shared/interfaces';
+import { IState } from '../../store';
+import { chainListSelectors } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

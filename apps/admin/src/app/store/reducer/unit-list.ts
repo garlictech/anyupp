@@ -1,4 +1,4 @@
-import { IUnit } from 'src/app/shared/interfaces';
+import { IUnit } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

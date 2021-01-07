@@ -1,23 +1,23 @@
-import { IDateIntervals, IOrder } from 'src/app/shared/interfaces';
-import { getDayIntervals } from 'src/app/shared/pure/forms';
-import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
-import { IState } from 'src/app/store';
-import { dashboardActions } from 'src/app/store/actions';
+import { IDateIntervals, IOrder } from '../../../../shared/interfaces';
+import { getDayIntervals } from '../../../../shared/pure/forms';
+import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
+import { IState } from '../../../../store';
+import { dashboardActions } from '../../../../store/actions';
 import {
   dashboardSelectors,
-  orderListSelectors,
-} from 'src/app/store/selectors';
+  orderListSelectors
+} from '../../../../store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { customNumberCompare } from '../../../../shared/pure';
 import { select, Store } from '@ngrx/store';
-import { customNumberCompare } from 'src/app/shared/pure';
 
 @UntilDestroy()
 @Component({
   selector: 'app-order-ticket-history-list',
-  templateUrl: './order-ticket-history-list.component.html',
+  templateUrl: './order-ticket-history-list.component.html'
 })
 export class OrderTicketHistoryListComponent implements OnDestroy {
   public selectedOrder: IOrder;
@@ -88,7 +88,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({
-        orderId: selectedOrder ? selectedOrder._id : undefined,
+        orderId: selectedOrder ? selectedOrder._id : undefined
       })
     );
   }

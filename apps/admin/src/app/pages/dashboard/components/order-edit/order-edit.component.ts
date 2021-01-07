@@ -3,25 +3,25 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus,
-  EPaymentMethod,
-} from 'src/app/shared/enums';
-import { IAdminUser, IKeyValue, IOrder } from 'src/app/shared/interfaces';
-import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
-import { DataService } from 'src/app/shared/services/data';
-import { OrderService } from 'src/app/shared/services/order';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
+  EPaymentMethod
+} from '../../../../shared/enums';
+import { IAdminUser, IKeyValue, IOrder } from '../../../../shared/interfaces';
+import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
+import { DataService } from '../../../../shared/services/data';
+import { OrderService } from '../../../../shared/services/order';
+import { IState } from '../../../../store';
+import { currentUserSelectors } from '../../../../store/selectors';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { dashboardActions } from '../../../../store/actions';
 import { select, Store } from '@ngrx/store';
-import { dashboardActions } from 'src/app/store/actions';
 
 @UntilDestroy()
 @Component({
   selector: 'app-order-edit',
   templateUrl: './order-edit.component.html',
-  styleUrls: ['./order-edit.component.scss'],
+  styleUrls: ['./order-edit.component.scss']
 })
 export class OrderEditComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -43,7 +43,7 @@ export class OrderEditComponent implements OnDestroy {
     Object.keys(EPaymentMethod).forEach((key): void => {
       this.paymentMethods.push({
         key,
-        value: EPaymentMethod[key],
+        value: EPaymentMethod[key]
       });
     });
 
@@ -83,7 +83,7 @@ export class OrderEditComponent implements OnDestroy {
 
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: false,
+        orderEditing: false
       })
     );
   }
@@ -104,7 +104,7 @@ export class OrderEditComponent implements OnDestroy {
       this.order.userId,
       this.order._id,
       {
-        paymentMethod: method,
+        paymentMethod: method
       }
     );
   }

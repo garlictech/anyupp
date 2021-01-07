@@ -1,6 +1,5 @@
-import { IOrder } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IOrder } from '../../shared/interfaces';
 
 export const resetActiveOrders = createAction(
   '[OrderList] Reset active orders'

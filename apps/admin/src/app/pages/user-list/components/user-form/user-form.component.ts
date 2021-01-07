@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IUser } from 'src/app/shared/interfaces';
+import { IUser } from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import { contactFormGroup } from 'src/app/shared/pure';
 import { AuthService } from 'src/app/shared/services/auth';

@@ -1,13 +1,13 @@
 import { get as _get, omit as _omit, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { EImageType, EProductLevel, EProductType } from 'src/app/shared/enums';
+import { EImageType, EProductLevel, EProductType } from '../../shared/enums';
 import {
   IAdminUserSettings,
   IKeyValue,
   IProduct,
   IProductCategory,
   IProductVariant,
-} from 'src/app/shared/interfaces';
+} from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import {
   customNumberCompare,
@@ -16,11 +16,11 @@ import {
 } from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   productCategoryListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';

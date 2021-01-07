@@ -1,28 +1,27 @@
 import { debounceTime } from 'rxjs/operators';
-import { FLOOR_MAP_OBJECT_DEFAULTS } from 'src/app/shared/const';
-import { EUnitMapObjectType } from 'src/app/shared/enums';
-import { IFloorMapData, IFloorMapDataObject } from 'src/app/shared/interfaces';
-import * as floorMapFuncs from 'src/app/shared/pure/floor-map';
+import * as floorMapFuncs from '../../../../../shared/pure/floor-map';
 
 import {
   AfterViewInit,
   Component,
   Input,
   OnDestroy,
-  OnInit,
-  ViewChild,
+  OnInit
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { IState } from 'src/app/store';
-import { floorMapActions } from 'src/app/store/actions';
+import { IFloorMapData, IFloorMapDataObject } from '../../../../interfaces';
+import { EUnitMapObjectType } from '../../../../enums';
+import { FLOOR_MAP_OBJECT_DEFAULTS } from '../../../../const';
+import { IState } from '../../../../../store';
+import { floorMapActions } from '../../../../../store/actions';
 
 @UntilDestroy()
 @Component({
   selector: 'app-floor-map-editor',
   templateUrl: './floor-map-editor.component.html',
-  styleUrls: ['./floor-map-editor.component.scss'],
+  styleUrls: ['./floor-map-editor.component.scss']
 })
 export class FloorMapEditorComponent
   implements OnInit, OnDestroy, AfterViewInit {
@@ -46,12 +45,12 @@ export class FloorMapEditorComponent
 
     this.dimensionForm = this._formBuilder.group({
       width: [w],
-      height: [h],
+      height: [h]
     });
     this.objectForm = this._formBuilder.group({
       text: [''],
       tableId: [''],
-      seatId: [''],
+      seatId: ['']
     });
 
     this.dimensionForm.valueChanges
@@ -89,7 +88,7 @@ export class FloorMapEditorComponent
           this.objectForm.setValue({
             text: floorMapFuncs.getObjectText(e.target),
             tableId: floorMapFuncs.getRawDataField(e.target, 'tID') || '',
-            seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || '',
+            seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || ''
           });
 
           this.objectForm.controls['tableId'][
@@ -102,7 +101,7 @@ export class FloorMapEditorComponent
           this.objectForm.setValue({
             text: '',
             tableId: '',
-            seatId: '',
+            seatId: ''
           });
         }
       });
@@ -114,7 +113,7 @@ export class FloorMapEditorComponent
 
       this.dimensionForm.patchValue({
         width: floorMapFuncs.mapRawData.w,
-        height: floorMapFuncs.mapRawData.h,
+        height: floorMapFuncs.mapRawData.h
       });
     }
 
@@ -133,7 +132,7 @@ export class FloorMapEditorComponent
       id,
       t: objectType,
       ...FLOOR_MAP_OBJECT_DEFAULTS.common,
-      ...FLOOR_MAP_OBJECT_DEFAULTS[objectType],
+      ...FLOOR_MAP_OBJECT_DEFAULTS[objectType]
     };
 
     floorMapFuncs.loadRawDataObject(rawDataObject, true);

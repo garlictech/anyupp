@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IGroup } from 'src/app/shared/interfaces';
+import { IGroup } from '../../shared/interfaces';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

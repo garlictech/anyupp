@@ -1,18 +1,17 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUser } from 'src/app/shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
-
 import { Component, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { IAdminUser } from '../../../../interfaces';
+import { DataService } from '../../../../services/data';
+import { IState } from '../../../../../store';
+import { currentUserSelectors } from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
   selector: 'app-language-selector',
   templateUrl: './language-selector.component.html',
-  styleUrls: ['./language-selector.component.scss'],
+  styleUrls: ['./language-selector.component.scss']
 })
 export class LanguageSelectorComponent implements OnDestroy {
   private _adminUser: IAdminUser;

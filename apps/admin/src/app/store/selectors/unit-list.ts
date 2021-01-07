@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUserSettings, IUnit } from 'src/app/shared/interfaces';
+import { IAdminUserSettings, IUnit } from '../../shared/interfaces';
 
 import {
   createFeatureSelector,

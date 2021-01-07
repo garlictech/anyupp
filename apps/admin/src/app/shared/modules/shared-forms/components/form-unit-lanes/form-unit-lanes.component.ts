@@ -1,6 +1,6 @@
 import { FormsService } from 'src/app/shared/services/forms';
-import { IState } from 'src/app/store';
-import { productListSelectors } from 'src/app/store/selectors';
+import { IState } from '../../store';
+import { productListSelectors } from '../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';

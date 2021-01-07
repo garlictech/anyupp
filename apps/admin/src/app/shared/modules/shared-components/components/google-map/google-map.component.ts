@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 
@@ -15,7 +15,7 @@ declare const google;
 @Component({
   selector: 'app-google-map',
   templateUrl: './google-map.component.html',
-  styleUrls: ['./google-map.component.scss'],
+  styleUrls: ['./google-map.component.scss']
 })
 export class GoogleMapComponent implements OnChanges {
   @Input() markerLocation;
@@ -30,20 +30,20 @@ export class GoogleMapComponent implements OnChanges {
   constructor() {
     this.markerData = {
       options: {
-        draggable: true,
-      },
+        draggable: true
+      }
     };
 
     this.center = {
       lat: 0,
-      lng: 0,
+      lng: 0
     };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.markerData.location = {
       lat: parseFloat(changes.markerLocation.currentValue.lat || 0),
-      lng: parseFloat(changes.markerLocation.currentValue.lng || 0),
+      lng: parseFloat(changes.markerLocation.currentValue.lng || 0)
     };
 
     if (this.markerElem) {
@@ -55,10 +55,10 @@ export class GoogleMapComponent implements OnChanges {
     }
   }
 
-  public dragEnd($event: google.maps.MouseEvent): void {
+  public dragEnd($event): void {
     this.positionChange.emit({
       lat: $event.latLng.lat(),
-      lng: $event.latLng.lng(),
+      lng: $event.latLng.lng()
     });
   }
 

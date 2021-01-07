@@ -2,7 +2,7 @@ import { ImageCompressorService } from 'src/app/shared/services/image-compressor
 import { StorageService } from 'src/app/shared/services/storage';
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { EImageType } from 'src/app/shared/enums';
+import { EImageType } from '../../shared/enums';
 
 @Component({
   selector: 'app-form-clickable-image-input',

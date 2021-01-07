@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IAdminUser } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
-import { adminUserListSelectors } from 'src/app/store/selectors';
+import { IAdminUser } from '../../shared/interfaces';
+import { IState } from '../../store';
+import { adminUserListSelectors } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

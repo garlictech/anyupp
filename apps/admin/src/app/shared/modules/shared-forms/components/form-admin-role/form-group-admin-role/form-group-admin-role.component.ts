@@ -6,13 +6,13 @@ import {
   IChain,
   IGroup,
   IKeyValue,
-} from 'src/app/shared/interfaces';
+} from '../../shared/interfaces';
 import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   chainListSelectors,
   groupListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';

@@ -1,12 +1,12 @@
-import { IUnit } from 'src/app/shared/interfaces';
+import { IUnit } from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import * as floorMapFuncs from 'src/app/shared/pure';
 import { EToasterType } from 'src/app/shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IState } from 'src/app/store';
-import { floorMapActions } from 'src/app/store/actions';
+import { IState } from '../../store';
+import { floorMapActions } from '../../store/actions';
 import { FormGroup } from '@angular/forms';
 
 @Component({

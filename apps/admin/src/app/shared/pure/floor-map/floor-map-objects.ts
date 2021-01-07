@@ -6,9 +6,9 @@ import {
   FLOOR_MAP_DISABLED_GROUP_OPTIONS,
   FLOOR_MAP_ENABLED_GROUP_OPTIONS,
   FLOOR_MAP_TEXT_CONFIG,
-} from 'src/app/shared/const';
-import { EUnitMapObjectType } from 'src/app/shared/enums';
-import { IFloorMapDataObject } from 'src/app/shared/interfaces';
+} from '../../const';
+import { EUnitMapObjectType } from '../../enums';
+import { IFloorMapDataObject } from '../../interfaces';
 
 import { fabricCanvas, fabricEditMode } from './floor-map-canvas';
 import { getObjectBg } from './floor-map-utils';

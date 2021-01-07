@@ -1,16 +1,16 @@
 import { skipWhile, take } from 'rxjs/operators';
-import { DEFAULT_LANE_COLOR } from 'src/app/shared/const';
-import { IUnit } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
-import { unitListSelectors } from 'src/app/store/selectors';
+import { IUnit } from '../../../../interfaces';
+import { IState } from '../../../../../store';
+import { unitListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { DEFAULT_LANE_COLOR } from '../../../../const';
 
 @Component({
   selector: 'app-colorized-lane-icon',
   templateUrl: './colorized-lane-icon.component.html',
-  styleUrls: ['./colorized-lane-icon.component.scss'],
+  styleUrls: ['./colorized-lane-icon.component.scss']
 })
 export class ColorizedLaneIconComponent implements OnInit {
   @Input() laneId: string;

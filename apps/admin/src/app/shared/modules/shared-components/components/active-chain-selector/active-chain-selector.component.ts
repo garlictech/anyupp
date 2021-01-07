@@ -1,22 +1,21 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IChain } from 'src/app/shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
-import {
-  chainListSelectors,
-  currentUserSelectors,
-} from 'src/app/store/selectors';
-
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { IAdminUser, IChain } from '../../../../interfaces';
+import { DataService } from '../../../../services/data';
+import { IState } from '../../../../../store';
+import {
+  chainListSelectors,
+  currentUserSelectors
+} from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
   selector: 'app-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
-  styleUrls: ['./active-chain-selector.component.scss'],
+  styleUrls: ['./active-chain-selector.component.scss']
 })
 export class ActiveChainSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
@@ -58,7 +57,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!
         selectedUnitId: null, // Reset unit id!
-        selectedProductCategoryId: null, // Reset category id!
+        selectedProductCategoryId: null // Reset category id!
       });
     }
   }

@@ -1,6 +1,5 @@
-import { IGroup } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IGroup } from '../../shared/interfaces';
 
 export const resetGroups = createAction('[GroupList] Reset groups');
 export const setAllGroups = createAction(

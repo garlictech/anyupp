@@ -2,7 +2,7 @@ import { get as _get, omit as _omit } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { EProductLevel } from 'src/app/shared/enums';
+import { EProductLevel } from '../../shared/enums';
 import {
   IAdminUserSettings,
   IKeyValue,
@@ -10,16 +10,16 @@ import {
   IProductCategory,
   IProductVariant,
   IUnit,
-} from 'src/app/shared/interfaces';
+} from '../../shared/interfaces';
 import { customNumberCompare, objectToArray } from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   productCategoryListSelectors,
   unitListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';

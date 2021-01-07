@@ -1,8 +1,8 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { EPaymentMethod } from 'src/app/shared/enums';
-import { IOrder } from 'src/app/shared/interfaces';
+import { EPaymentMethod } from '../../shared/enums';
+import { IOrder } from '../../shared/interfaces';
 import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
 import { reducer } from 'src/app/shared/pure';
 
@@ -124,7 +124,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
       [EPaymentMethod.INAPP]: 0,
     };
 
-    orders.forEach((o) => {
+    orders.forEach(o => {
       amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
     });
 

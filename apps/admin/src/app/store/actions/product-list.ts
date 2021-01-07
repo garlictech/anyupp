@@ -1,6 +1,5 @@
-import { IProduct } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IProduct } from '../../shared/interfaces';
 
 export const resetChainProducts = createAction(
   '[ProductList] Reset chain products'

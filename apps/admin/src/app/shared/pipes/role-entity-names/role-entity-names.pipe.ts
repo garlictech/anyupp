@@ -1,17 +1,16 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { IState } from 'src/app/store';
-import {
-  chainListSelectors,
-  groupListSelectors,
-  unitListSelectors,
-} from 'src/app/store/selectors';
-
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { select, Store } from '@ngrx/store';
 
 import { IAdminUserRole, IChain, IGroup, IUnit } from '../../interfaces';
+import { IState } from '../../../store';
+import {
+  chainListSelectors,
+  groupListSelectors,
+  unitListSelectors,
+} from '../../../store/selectors';
 
 @Pipe({
   name: 'roleEntityNames',

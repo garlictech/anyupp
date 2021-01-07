@@ -1,16 +1,16 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
-import { EAdminRole, EProductLevel } from 'src/app/shared/enums';
-import { IAdminUser, IGroup, IProduct } from 'src/app/shared/interfaces';
+import { EAdminRole, EProductLevel } from '../../shared/enums';
+import { IAdminUser, IGroup, IProduct } from '../../shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   groupListSelectors,
   productListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NbDialogService, NbTabsetComponent } from '@nebular/theme';

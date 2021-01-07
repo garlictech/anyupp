@@ -1,4 +1,4 @@
-import { IAdminUser } from 'src/app/shared/interfaces';
+import { IAdminUser } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IProduct } from 'src/app/shared/interfaces';
+import { IProduct } from '../../shared/interfaces';
 
 import {
   createFeatureSelector,

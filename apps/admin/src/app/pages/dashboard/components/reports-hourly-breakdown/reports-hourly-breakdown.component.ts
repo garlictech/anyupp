@@ -1,11 +1,11 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
-import { EProductType } from 'src/app/shared/enums';
-import { IOrder, IProduct } from 'src/app/shared/interfaces';
+import { EProductType } from '../../shared/enums';
+import { IOrder, IProduct } from '../../shared/interfaces';
 import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
-import { IState } from 'src/app/store';
-import { productListSelectors } from 'src/app/store/selectors';
+import { IState } from '../../store';
+import { productListSelectors } from '../../store/selectors';
 
 import {
   AfterViewInit,
@@ -215,13 +215,13 @@ export class ReportsHourlyBreakdownComponent
     };
 
     const productTypeMap = {};
-    products.forEach((p) => {
+    products.forEach(p => {
       productTypeMap[p._id] = p.productType;
     });
 
-    orders.forEach((o) => {
+    orders.forEach(o => {
       const hour = new Date(o.created).getHours();
-      o.items.forEach((i) => {
+      o.items.forEach(i => {
         amounts[productTypeMap[i.productId]][hour] += i.priceShown.priceSum;
         amounts['sum'][hour] += i.priceShown.priceSum;
       });

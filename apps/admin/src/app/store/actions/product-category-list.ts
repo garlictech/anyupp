@@ -1,6 +1,5 @@
-import { IProductCategory } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IProductCategory } from '../../shared/interfaces';
 
 export const resetProductCategories = createAction(
   '[ProductCategoryList] Reset product categories'

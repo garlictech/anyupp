@@ -3,7 +3,7 @@ import {
   IAdminUser,
   IAdminUserRole,
   IAdminUserSettings,
-} from 'src/app/shared/interfaces';
+} from '../../shared/interfaces';
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 

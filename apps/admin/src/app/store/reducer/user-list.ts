@@ -1,4 +1,4 @@
-import { IUser } from 'src/app/shared/interfaces';
+import { IUser } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

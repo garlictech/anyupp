@@ -1,22 +1,22 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IProductCategory } from 'src/app/shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
+import { IAdminUser, IProductCategory } from '../../../../interfaces';
+import { IState } from '../../../../../store';
 import {
   currentUserSelectors,
-  productCategoryListSelectors,
-} from 'src/app/store/selectors';
+  productCategoryListSelectors
+} from '../../../../../store/selectors';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { DataService } from '../../../../services/data';
 
 @UntilDestroy()
 @Component({
   selector: 'app-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
-  styleUrls: ['./active-product-category-selector.component.scss'],
+  styleUrls: ['./active-product-category-selector.component.scss']
 })
 export class ActiveProductCategorySelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
@@ -56,7 +56,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser._id, {
         ..._get(this._adminUser, 'settings', {}),
-        selectedProductCategoryId: productCategoryId,
+        selectedProductCategoryId: productCategoryId
       });
     }
   }

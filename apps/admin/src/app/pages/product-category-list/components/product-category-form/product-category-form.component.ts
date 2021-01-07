@@ -1,12 +1,12 @@
 import { get as _get, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { EImageType } from 'src/app/shared/enums';
-import { IProductCategory } from 'src/app/shared/interfaces';
+import { EImageType } from '../../shared/enums';
+import { IProductCategory } from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import { multiLangValidator } from 'src/app/shared/pure';
 import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
+import { IState } from '../../store';
+import { currentUserSelectors } from '../../store/selectors';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';

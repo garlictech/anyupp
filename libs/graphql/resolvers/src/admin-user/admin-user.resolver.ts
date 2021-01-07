@@ -12,9 +12,9 @@ export class AdminUserResolver {
     admin
       .database()
       .ref(`adminUsers`)
-      .on('child_changed', (data) =>
+      .on('child_changed', data =>
         this.pubSub.publish('adminUserChanged', {
-          adminUserChanged: { id: data.key, ...data.val() }
+          adminUserChanged: { id: data.key, ...data.val() },
         })
       );
   }
@@ -25,7 +25,7 @@ export class AdminUserResolver {
       .database()
       .ref(`adminUsers/${id}`)
       .once('value')
-      .then((snap) => snap.val());
+      .then(snap => snap.val());
   }
 
   @Mutation('updateAdminUser')
@@ -42,7 +42,8 @@ export class AdminUserResolver {
 
   // Subscribe for the changes of a [articular admin user]
   @Subscription('adminUserChanged', {
-    filter: (payload, variables) => payload.adminUserChanged.id === variables.id
+    filter: (payload, variables) =>
+      payload.adminUserChanged.id === variables.id,
   })
   adminUserChanged() {
     return this.pubSub.asyncIterator('adminUserChanged');

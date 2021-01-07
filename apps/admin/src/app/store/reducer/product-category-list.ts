@@ -1,4 +1,4 @@
-import { IProductCategory } from 'src/app/shared/interfaces';
+import { IProductCategory } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

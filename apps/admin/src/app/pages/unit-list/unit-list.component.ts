@@ -1,12 +1,12 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
-import { IGroup, IUnit } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
+import { IGroup, IUnit } from '../../shared/interfaces';
+import { IState } from '../../store';
 import {
   currentUserSelectors,
   groupListSelectors,
   unitListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

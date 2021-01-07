@@ -1,8 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
 import {
   IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-} from 'src/app/shared/interfaces';
+  IFloorMapTableOrders
+} from '../../../../shared/interfaces';
 
 import { Component, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
@@ -10,7 +10,7 @@ import { NbDialogRef } from '@nebular/theme';
 @Component({
   selector: 'app-floor-map-orders',
   templateUrl: './floor-map-orders.component.html',
-  styleUrls: ['./floor-map-orders.component.scss'],
+  styleUrls: ['./floor-map-orders.component.scss']
 })
 export class FloorMapOrdersComponent implements OnInit {
   public tableId: string;

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
-import { EProductLevel } from 'src/app/shared/enums';
-import { IProductVariant } from 'src/app/shared/interfaces';
+import { EProductLevel } from '../../shared/enums';
+import { IProductVariant } from '../../shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { FormsService } from 'src/app/shared/services/forms';
 

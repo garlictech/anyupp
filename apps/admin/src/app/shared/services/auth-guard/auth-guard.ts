@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -11,7 +11,7 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 
 import { EAdminRole } from '../../enums';
@@ -19,7 +19,7 @@ import { IAdminUser } from '../../interfaces';
 import { EToasterType, ToasterService } from '../toaster';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(

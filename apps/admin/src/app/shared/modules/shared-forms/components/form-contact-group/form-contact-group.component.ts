@@ -4,7 +4,7 @@ import { GOOGLE_API_KEY } from 'src/app/shared/const';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ILocation } from 'src/app/shared/interfaces';
+import { ILocation } from '../../shared/interfaces';
 
 @Component({
   selector: 'app-form-contact-group',

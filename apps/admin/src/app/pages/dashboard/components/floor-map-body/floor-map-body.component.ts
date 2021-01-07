@@ -6,8 +6,8 @@ import {
   IFloorMapTableOrders,
   IFloorMapUserOrderObjects,
   IOrder,
-  IUnit,
-} from 'src/app/shared/interfaces';
+  IUnit
+} from '../../../../shared/interfaces';
 import {
   fabricCanvas,
   getObjectById,
@@ -19,23 +19,22 @@ import {
   objectToArray,
   registerCanvasEvent,
   setBgColor,
-  setBorder,
-} from 'src/app/shared/pure';
-import { IState } from 'src/app/store';
-import { floorMapActions } from 'src/app/store/actions';
+  setBorder
+} from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { floorMapActions } from '../../../../store/actions';
 import {
   floorMapSelectors,
   orderListSelectors,
-  unitListSelectors,
-} from 'src/app/store/selectors';
+  unitListSelectors
+} from '../../../../store/selectors';
 
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -46,7 +45,7 @@ import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.co
 @UntilDestroy()
 @Component({
   selector: 'app-floor-map-body',
-  templateUrl: './floor-map-body.component.html',
+  templateUrl: './floor-map-body.component.html'
 })
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
   @ViewChild('floorMap') floorMapEl: ElementRef;
@@ -176,7 +175,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           hasBackdrop: true,
           closeOnBackdropClick: false,
           hasScroll: true,
-          dialogClass: 'floor-map-order-dialog',
+          dialogClass: 'floor-map-order-dialog'
         });
 
         dialog.componentRef.instance.tableId = rawObject.tID;

@@ -5,17 +5,17 @@ import {
   EDashboardTicketListType,
   ENebularButtonSize,
   EOrderStatus,
-} from 'src/app/shared/enums';
-import { IOrder } from 'src/app/shared/interfaces';
+} from '../../shared/enums';
+import { IOrder } from '../../shared/interfaces';
 import { customNumberCompare } from 'src/app/shared/pure';
 import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
-import { IState } from 'src/app/store';
-import { dashboardActions } from 'src/app/store/actions';
+import { IState } from '../../store';
+import { dashboardActions } from '../../store/actions';
 import {
   dashboardSelectors,
   orderListSelectors,
-} from 'src/app/store/selectors';
-import { IDashboardSettings } from 'src/app/store/state';
+} from '../../store/selectors';
+import { IDashboardSettings } from '../../store/state';
 
 import { Component, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

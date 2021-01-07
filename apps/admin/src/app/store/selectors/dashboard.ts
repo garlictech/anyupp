@@ -2,8 +2,8 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-} from 'src/app/shared/enums';
-import { IOrder } from 'src/app/shared/interfaces';
+} from '../../shared/enums';
+import { IOrder } from '../../shared/interfaces';
 
 import {
   createFeatureSelector,

@@ -1,12 +1,12 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, skipWhile } from 'rxjs/operators';
-import { IGroup, IKeyValueObject, IOrder } from 'src/app/shared/interfaces';
+import { IGroup, IKeyValueObject, IOrder } from '../../shared/interfaces';
 import { dayInterval } from 'src/app/shared/pure';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   groupListSelectors,
   orderListSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';

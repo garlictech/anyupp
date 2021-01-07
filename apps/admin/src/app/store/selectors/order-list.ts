@@ -1,11 +1,11 @@
-import { EOrderStatus } from 'src/app/shared/enums';
-import { ILaneOrderItem, IOrder, IOrderItem } from 'src/app/shared/interfaces';
-import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
+import { EOrderStatus } from '../../shared/enums';
+import { ILaneOrderItem, IOrder, IOrderItem } from '../../shared/interfaces';
+import { currentStatus as currentStatusFn } from '../../shared/pure/orders';
 
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
+  MemoizedSelector
 } from '@ngrx/store';
 
 import { activeOrderListAdapter, historyOrderListAdapter } from '../reducer';
@@ -75,7 +75,7 @@ export const getLaneOrderItemsByStatus = (
             .map(
               (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
                 ...orderItem,
-                idx,
+                idx
               })
             )
             .filter(
@@ -88,7 +88,7 @@ export const getLaneOrderItemsByStatus = (
                 orderId: order._id,
                 userId: order.userId,
                 place: order.place,
-                currentStatus: status,
+                currentStatus: status
               })
             )
         );

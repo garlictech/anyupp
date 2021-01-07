@@ -1,31 +1,30 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ENebularButtonSize, EOrderStatus } from 'src/app/shared/enums';
+import { ENebularButtonSize, EOrderStatus } from '../../../../shared/enums';
 import {
   ILaneOrderItem,
   IStatusLogItem,
-  IUnit,
-} from 'src/app/shared/interfaces';
-import { objectToArray } from 'src/app/shared/pure';
+  IUnit
+} from '../../../../shared/interfaces';
 import {
   currentStatus as currentStatusFn,
   getNextOrderItemStatus,
   getOrderLaneColor,
-  getPrevOrderItemStatus,
-} from 'src/app/shared/pure/orders';
-import { OrderService } from 'src/app/shared/services/order';
-import { IState } from 'src/app/store';
-import { productListSelectors } from 'src/app/store/selectors';
-
+  getPrevOrderItemStatus
+} from '../../../../shared/pure/orders';
+import { OrderService } from '../../../../shared/services/order';
+import { IState } from '../../../../store';
+import { productListSelectors } from '../../../../store/selectors';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { objectToArray } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({
   selector: 'app-lane-item',
   templateUrl: './lane-item.component.html',
-  styleUrls: ['./lane-item.component.scss'],
+  styleUrls: ['./lane-item.component.scss']
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem: ILaneOrderItem;

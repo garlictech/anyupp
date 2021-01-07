@@ -1,14 +1,14 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { IChain, IGroup, IKeyValue } from 'src/app/shared/interfaces';
+import { IChain, IGroup, IKeyValue } from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import { contactFormGroup, multiLangValidator } from 'src/app/shared/pure';
 import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from 'src/app/store';
+import { IState } from '../../store';
 import {
   chainListSelectors,
   currentUserSelectors,
-} from 'src/app/store/selectors';
+} from '../../store/selectors';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';

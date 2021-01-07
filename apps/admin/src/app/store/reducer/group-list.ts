@@ -1,4 +1,4 @@
-import { IGroup } from 'src/app/shared/interfaces';
+import { IGroup } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

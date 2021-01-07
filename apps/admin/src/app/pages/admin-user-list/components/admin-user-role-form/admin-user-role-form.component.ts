@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUser } from 'src/app/shared/interfaces';
+import { IAdminUser } from '../../shared/interfaces';
 import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
 import { EToasterType } from 'src/app/shared/services/toaster';
 

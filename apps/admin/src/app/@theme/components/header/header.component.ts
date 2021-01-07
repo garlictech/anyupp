@@ -1,30 +1,30 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LayoutService } from 'src/app/@core/utils';
-import { DEFAULT_LANG } from 'src/app/shared/const';
-import { IAdminUser, IGroup } from 'src/app/shared/interfaces';
-import { AuthService } from 'src/app/shared/services/auth';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
+import { IAdminUser, IGroup } from '../../../shared/interfaces';
+import { IState } from '../../../store';
+import { currentUserSelectors } from '../../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
-  NbThemeService,
+  NbThemeService
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { LayoutService } from '../../../@core/utils';
+import { DataService } from '../../../shared/services/data';
+import { AuthService } from '../../../shared/services/auth';
+import { DEFAULT_LANG } from '../../../shared/const';
 
 @UntilDestroy()
 @Component({
   selector: 'app-header',
   styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html',
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public groups$: Observable<IGroup[]>;
@@ -50,15 +50,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userMenu = [
       {
         title: 'Profile',
-        langKey: 'header.profile',
+        langKey: 'header.profile'
       },
       {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
           this._authService.signOut();
-        },
-      },
+        }
+      }
     ];
 
     this.languageMenu = [
@@ -67,22 +67,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         langKey: 'common.lang.hungarian',
         onClick: (): void => {
           this._onLanguageSelected('hu-HU');
-        },
+        }
       },
       {
         title: 'English',
         langKey: 'common.lang.english',
         onClick: (): void => {
           this._onLanguageSelected('en-US');
-        },
+        }
       },
       {
         title: 'German',
         langKey: 'common.lang.german',
         onClick: (): void => {
           this._onLanguageSelected('de-DE');
-        },
-      },
+        }
+      }
     ];
 
     this._store

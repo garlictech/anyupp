@@ -1,16 +1,15 @@
 import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
-import { MENU_ROLES } from 'src/app/shared/const';
-import { IAdminUser } from 'src/app/shared/interfaces';
-import { IState } from 'src/app/store';
-import { currentUserSelectors } from 'src/app/store/selectors';
-import { environment } from 'src/environments/environment';
-
+import { IAdminUser } from '../../../shared/interfaces';
+import { IState } from '../../../store';
+import { currentUserSelectors } from '../../../store/selectors';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { MENU_ROLES } from '../../../shared/const';
+import { environment } from '../../../../environments/environment';
 
 const menuItems = {
   dashboard: {
@@ -18,57 +17,57 @@ const menuItems = {
     icon: 'home-outline',
     link: '/admin/dashboard',
     home: true,
-    roles: MENU_ROLES.DASHBOARD,
+    roles: MENU_ROLES.DASHBOARD
   },
   products: {
     title: 'menu.products',
     icon: 'cube-outline',
     link: '/admin/products',
-    roles: MENU_ROLES.PRODUCTS,
+    roles: MENU_ROLES.PRODUCTS
   },
   productCategories: {
     title: 'menu.productCategories',
     icon: 'grid-outline',
     link: '/admin/product-categories',
-    roles: MENU_ROLES.PRODUCT_CATEGORIES,
+    roles: MENU_ROLES.PRODUCT_CATEGORIES
   },
   units: {
     title: 'menu.units',
     icon: 'home-outline',
     link: '/admin/units',
-    roles: MENU_ROLES.UNITS,
+    roles: MENU_ROLES.UNITS
   },
   groups: {
     title: 'menu.groups',
     icon: 'globe-outline',
     link: '/admin/groups',
-    roles: MENU_ROLES.GROUPS,
+    roles: MENU_ROLES.GROUPS
   },
   chains: {
     title: 'menu.chains',
     icon: 'shield-outline',
     link: '/admin/chains',
-    roles: MENU_ROLES.CHAINS,
+    roles: MENU_ROLES.CHAINS
   },
   users: {
     title: 'menu.users',
     icon: 'people-outline',
     link: '/admin/users',
-    roles: MENU_ROLES.USERS,
+    roles: MENU_ROLES.USERS
   },
   admins: {
     title: 'menu.admins',
     icon: 'person-outline',
     link: '/admin/admins',
-    roles: MENU_ROLES.ADMINS,
-  },
+    roles: MENU_ROLES.ADMINS
+  }
 };
 
 @UntilDestroy()
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss'],
+  styleUrls: ['./admin-layout.component.scss']
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   public adminUser: IAdminUser;
@@ -96,7 +95,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           if (menuItem.roles.includes(_get(this.adminUser, 'roles.role'))) {
             this.menu.push({
               ...menuItem,
-              title: this._translateService.instant(menuItem.title),
+              title: this._translateService.instant(menuItem.title)
             });
           }
         });

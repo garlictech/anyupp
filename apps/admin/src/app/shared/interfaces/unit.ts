@@ -1,5 +1,5 @@
-import { IFloorMapData } from 'src/app/shared/interfaces';
 import { IContact } from './contact';
+import { IFloorMapData } from './floor-map';
 import { IGroup } from './group';
 import { ILocalizedItem } from './localized-item';
 import { IDailySchedule, IWeeklySchedule } from './weekly-schedule';

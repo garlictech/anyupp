@@ -1,20 +1,19 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IUnit } from 'src/app/shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from 'src/app/store';
 import {
   currentUserSelectors,
   unitListSelectors,
-} from 'src/app/store/selectors';
-
+} from '../../../../../store/selectors';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { IAdminUser, IUnit } from '../../../../interfaces';
+import { IState } from '../../../../../store';
+import { DataService } from '../../../../services/data';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-unit-selector',
+  selector: 'bgap-active-unit-selector',
   templateUrl: './active-unit-selector.component.html',
   styleUrls: ['./active-unit-selector.component.scss'],
 })

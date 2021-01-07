@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IOrder } from 'src/app/shared/interfaces';
+import { IOrder } from '../../shared/interfaces';
 import { getDailyOrdersSum } from 'src/app/shared/pure';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -22,7 +22,7 @@ export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
     this.orders$
       .pipe(untilDestroyed(this))
       .subscribe((orders: IOrder[]): void => {
-        this.uniqueUserCount = [...new Set(orders.map((o) => o.userId))].length;
+        this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
         const dailyOrdersSum = getDailyOrdersSum(orders);
         this.ordersSumAvg =
           this.uniqueUserCount > 0 ? dailyOrdersSum / this.uniqueUserCount : 0;

@@ -1,6 +1,5 @@
-import { IUnit } from 'src/app/shared/interfaces';
-
 import { createAction, props } from '@ngrx/store';
+import { IUnit } from '../../shared/interfaces';
 
 export const resetUnits = createAction('[UnitList] Reset units');
 export const setAllUnits = createAction(
