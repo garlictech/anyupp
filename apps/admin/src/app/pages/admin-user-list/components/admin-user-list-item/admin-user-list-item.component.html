@@ -1,0 +1,48 @@
+<nb-user
+  class="float-left role-border {{ adminUser.roles?.role.toLowerCase() }}"
+  [name]="adminUser.name"
+  [title]="adminUser.email"
+  [picture]="adminUser.profileImage"
+></nb-user>
+
+<button
+  nbButton
+  shape="round"
+  size="tiny"
+  class="float-right"
+  [title]="'common.edit' | translate"
+  (click)="editAdminUser()"
+>
+  <nb-icon icon="edit-outline"></nb-icon>
+</button>
+
+<button
+  nbButton
+  shape="round"
+  size="tiny"
+  class="float-right mr-2"
+  [title]="'roles.editRoles' | translate"
+  (click)="editAdminUserRoles()"
+>
+  <nb-icon icon="shield-outline"></nb-icon>
+</button>
+
+<button
+  nbButton
+  shape="round"
+  size="tiny"
+  class="float-right mr-2"
+  [title]="'auth.sendResetEmail' | translate"
+  (click)="resetEmail()"
+>
+  <nb-icon icon="email-outline"></nb-icon>
+</button>
+
+<div class="clearfix"></div>
+
+<div class="pl-5">
+  <div class="subtitle-2">
+    {{ 'roles.' + adminUser.roles.role | translate }}
+  </div>
+  <div class="caption" [innerHTML]="adminUser.roles | roleEntityNames"></div>
+</div>

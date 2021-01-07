@@ -1,0 +1,46 @@
+{
+  "npmScope": "bgap",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*",
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "accessToken": "ZmQxOTFkZTQtODBhYi00MmVlLTgxZmMtYTkwYmUwZDBjNTIwfHJlYWQtd3JpdGU=",
+        "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "projects": {
+    "admin": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin"]
+    },
+    "graphql-schema": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "graphql-server": {
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
+    },
+    "graphql-resolvers": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    }
+  }
+}

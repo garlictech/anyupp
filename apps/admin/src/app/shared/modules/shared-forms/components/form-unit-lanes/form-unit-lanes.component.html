@@ -1,0 +1,53 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.lanes' | translate }}</legend>
+  <div class="container">
+    <div
+      *ngFor="
+        let lane of lanesFormArray['controls'];
+        index as i;
+        first as isFirst;
+        last as isLast
+      "
+    >
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <app-form-text-input
+            caption="common.name"
+            type="text"
+            [control]="lane.controls.name"
+          ></app-form-text-input>
+        </div>
+        <div class="col-10 col-md-4">
+          <app-form-color-picker
+            [control]="lane.controls.color"
+            caption="common.color"
+          >
+          </app-form-color-picker>
+        </div>
+        <div class="col-2 col-md-2 pt-3 text-right">
+          <button
+            nbButton
+            status="danger"
+            size="small"
+            shape="round"
+            (click)="removeLane(i)"
+            [disabled]="usedLaneIds.includes(lane.value._laneId)"
+          >
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    nbButton
+    type="button"
+    shape="round"
+    size="tiny"
+    class="float-right mt-3"
+    (click)="addLane()"
+  >
+    <nb-icon icon="plus-outline"></nb-icon> {{ 'units.addLane' | translate }}
+  </button>
+</fieldset>

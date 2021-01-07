@@ -1,0 +1,76 @@
+<div class="md-h-100 md-overflow-hidden p-1">
+  <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
+    <nb-card-header class="p-2">
+      <nb-checkbox
+        class="mr-3"
+        status="light"
+        s
+        [checked]="selectedLanes.includes(lane._id)"
+        *ngFor="let lane of unitLanes"
+        (checkedChange)="toggleLane(lane._id)"
+        ><span [ngStyle]="{ color: lane.color }"
+          >{{ lane.name }} ({{ lane.placedCount }}/{{ lane.processingCount }}/{{
+            lane.readyCount
+          }})</span
+        ></nb-checkbox
+      >
+    </nb-card-header>
+    <nb-card-body class="md-overflow-hidden p-1">
+      <div class="row md-overflow-hidden md-h-100 p-0 m-0">
+        <!-- PLACED COLUMN -->
+        <div class="col-md-3 p-1 md-overflow-hidden md-h-100">
+          <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
+            <nb-card-header class="p-2">{{
+              'orders.status.PLACED' | translate
+            }}</nb-card-header>
+            <nb-card-body class="overflow-auto p-2">
+              <app-lane-item
+                *ngFor="let orderItem of placedItems"
+                class="w-100"
+                [orderItem]="orderItem"
+                [buttonSize]="buttonSize"
+                [unit]="unit"
+              ></app-lane-item>
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <!-- PROCESSING COLUMN -->
+        <div class="col-md-5 p-1 md-overflow-hidden md-h-100">
+          <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
+            <nb-card-header class="p-2">{{
+              'orders.status.PROCESSING' | translate
+            }}</nb-card-header>
+            <nb-card-body class="overflow-auto p-2">
+              <app-lane-item
+                *ngFor="let orderItem of processingItems"
+                class="w-100"
+                [orderItem]="orderItem"
+                [buttonSize]="buttonSize"
+                [unit]="unit"
+              ></app-lane-item>
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <!-- READY COLUMN -->
+        <div class="col-md-4 p-1 md-overflow-hidden md-h-100">
+          <nb-card class="md-h-100 md-overflow-hidden m-0 p-0">
+            <nb-card-header class="p-2">{{
+              'orders.status.READY' | translate
+            }}</nb-card-header>
+            <nb-card-body class="overflow-auto p-2">
+              <app-lane-item
+                *ngFor="let orderItem of readyItems"
+                class="w-100"
+                [orderItem]="orderItem"
+                [buttonSize]="buttonSize"
+                [unit]="unit"
+              ></app-lane-item>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>

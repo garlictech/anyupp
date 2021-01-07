@@ -1,0 +1,115 @@
+<div class="row md-h-100 md-overflow-hidden m-0 p-0">
+  <!-- LEFT COLUMN -->
+  <div class="col-12 col-md-4 p-1 md-h-100">
+    <ng-container *ngIf="!dashboardSettings.orderEditing">
+      <app-order-ticket-list
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+      ></app-order-ticket-list>
+
+      <app-order-ticket-history-list
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+      ></app-order-ticket-history-list>
+    </ng-container>
+
+    <app-order-product-list
+      *ngIf="dashboardSettings.orderEditing"
+      [selectedOrder]="selectedOrder"
+    ></app-order-product-list>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="col-12 col-md-8 p-1 md-h-100">
+    <nb-card *ngIf="selectedOrder" class="md-h-100">
+      <nb-card-header class="p-2">
+        <div class="float-left font-larger pt-1">
+          <nb-icon class="user-icon" icon="person-outline"></nb-icon>
+          {{ selectedOrder.place?.table }}/{{ selectedOrder.place?.seat }}
+
+          <div class="d-inline ml-3" *ngIf="ordersSum">
+            Σ
+            {{
+              (dashboardSettings.showAllUserOrders
+                ? ordersSum.all
+                : ordersSum.selected
+              ) | currencyFormatter: ordersSum.currency
+            }}
+          </div>
+
+          <button
+            *ngIf="
+              dashboardSettings.listMode === EDashboardListMode.CURRENT &&
+              activeOrdersCount > 1 &&
+              !dashboardSettings.orderEditing
+            "
+            nbButton
+            shape="round"
+            class="ml-3 d-inline"
+            [size]="buttonSize"
+            [status]="dashboardSettings.showAllUserOrders ? 'success' : 'basic'"
+            (click)="toggleShowAllUserOrders()"
+            [translate]="'orders.userOrdersCount'"
+            [translateParams]="{ count: activeOrdersCount }"
+          ></button>
+        </div>
+
+        <button
+          *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+          nbButton
+          class="float-right mt-1"
+          [size]="buttonSize"
+          shape="round"
+          (click)="editSelectedOrder()"
+        >
+          <nb-icon icon="edit-outline"></nb-icon>
+        </button>
+
+        <button
+          nbSpinnerStatus="control"
+          nbButton
+          status="success"
+          [size]="buttonSize"
+          shape="round"
+          class="float-right mr-2 mt-1"
+          (click)="print()"
+        >
+          <nb-icon icon="printer-outline"></nb-icon>
+        </button>
+      </nb-card-header>
+      <nb-card-body class="p-0">
+        <!-- ORDER DETAILS -->
+        <ng-container *ngIf="!dashboardSettings.orderEditing">
+          <app-order-details
+            *ngIf="
+              !dashboardSettings.showAllUserOrders ||
+              (dashboardSettings.showAllUserOrders &&
+                dashboardSettings.listMode === EDashboardListMode.HISTORY)
+            "
+            [order]="selectedOrder"
+          ></app-order-details>
+
+          <ng-container
+            *ngIf="
+              dashboardSettings.showAllUserOrders &&
+              dashboardSettings.listMode === EDashboardListMode.CURRENT
+            "
+          >
+            <ng-container *ngFor="let order of userActiveOrders">
+              <app-order-details [order]="order"></app-order-details>
+              <hr class="mb-2" />
+            </ng-container>
+          </ng-container>
+
+          <!--app-order-print
+            [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.CURRENT) ? userActiveOrders : [selectedOrder]"
+          ></app-order-print-->
+        </ng-container>
+
+        <!-- ORDER EDIT -->
+        <app-order-edit
+          *ngIf="dashboardSettings.orderEditing"
+          [order]="selectedOrder"
+        ></app-order-edit>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

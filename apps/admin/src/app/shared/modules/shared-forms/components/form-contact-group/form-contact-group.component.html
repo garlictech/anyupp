@@ -1,0 +1,76 @@
+<fieldset class="form" [formGroup]="contactFormGroup">
+  <legend class="label">{{ 'common.contact.contact' | translate }}</legend>
+
+  <app-form-text-input
+    caption="common.email"
+    type="email"
+    [control]="contactFormGroup['controls'].email"
+  ></app-form-text-input>
+  <app-form-text-input
+    caption="Phone"
+    type="text"
+    [control]="contactFormGroup['controls'].phone"
+  ></app-form-text-input>
+
+  <div class="label mt-20">Address</div>
+  <app-form-text-input
+    caption="common.title"
+    type="text"
+    [control]="contactFormGroup['controls'].address['controls'].title"
+  ></app-form-text-input>
+  <app-form-text-input
+    caption="common.contact.country"
+    type="text"
+    [control]="contactFormGroup['controls'].address['controls'].country"
+  ></app-form-text-input>
+  <app-form-text-input
+    caption="common.contact.postalCode"
+    type="text"
+    [control]="contactFormGroup['controls'].address['controls'].postalCode"
+  ></app-form-text-input>
+  <app-form-text-input
+    caption="common.contact.city"
+    type="text"
+    [control]="contactFormGroup['controls'].address['controls'].city"
+  ></app-form-text-input>
+  <app-form-text-input
+    caption="common.contact.address"
+    type="text"
+    [control]="contactFormGroup['controls'].address['controls'].address"
+  ></app-form-text-input>
+
+  <div class="row">
+    <div class="col-md-6">
+      <app-form-text-input
+        caption="common.contact.locationLat"
+        type="text"
+        [control]="
+          contactFormGroup['controls'].address['controls'].location['controls']
+            .lat
+        "
+      ></app-form-text-input>
+    </div>
+    <div class="col-md-6">
+      <app-form-text-input
+        caption="common.contact.locationLng"
+        type="text"
+        [control]="
+          contactFormGroup['controls'].address['controls'].location['controls']
+            .lng
+        "
+      ></app-form-text-input>
+    </div>
+  </div>
+
+  <app-google-map
+    [markerLocation]="contactFormGroup.value.address.location"
+    (positionChange)="markerPositionChange($event)"
+  ></app-google-map>
+
+  <div class="mt-3">
+    <button type="button" nbButton size="small" (click)="locateAddress()">
+      <nb-icon icon="pin-outline"></nb-icon>
+      {{ 'units.locateOnMap' | translate }}
+    </button>
+  </div>
+</fieldset>

@@ -1,0 +1,73 @@
+<nb-list-item>
+  <div
+    class="table-seat font-larger"
+    [ngStyle]="{ backgroundColor: orderItem.laneColor }"
+  >
+    {{ orderItem.place.table }}<br />{{ orderItem.place.seat }}
+  </div>
+  <div class="row w-100 p-0 m-0 ml-2 float-right">
+    <div
+      class="p-1 subtitle-2 font-larger position-relative"
+      [ngClass]="{
+        'col-12 col-xl-6':
+          orderItem.currentStatus === EOrderStatus.PROCESSING ||
+          orderItem.currentStatus === EOrderStatus.READY,
+        'col-12 col-xl-8': orderItem.currentStatus === EOrderStatus.PLACED
+      }"
+    >
+      <nb-user
+        class="w-100 ml-4 font-larger"
+        [name]="orderItem.productName | localize"
+        [title]="orderItem.variantName | localize"
+        [picture]="orderItem.image"
+      ></nb-user>
+    </div>
+    <div
+      class="col-2 col-xl-1 p-0 m-auto subtitle-2 font-weight-bold text-right font-larger"
+    >
+      {{ orderItem.quantity }}x
+    </div>
+
+    <div
+      *ngIf="orderItem.currentStatus === EOrderStatus.PROCESSING"
+      class="col-2 col-xl-2 m-auto"
+    >
+      <nb-badge
+        class="font-larger p-2 position-static"
+        [text]="processingTimer | secToHms"
+        status="danger"
+      ></nb-badge>
+    </div>
+
+    <div class="p-1 col-8 col-xl-3 text-right">
+      <button
+        *ngIf="
+          orderItem.currentStatus === EOrderStatus.PROCESSING ||
+          orderItem.currentStatus === EOrderStatus.READY
+        "
+        nbButton
+        status="warning"
+        [size]="buttonSize"
+        shape="round"
+        class="font-larger mr-2"
+        (click)="moveBack()"
+      >
+        <nb-icon class="smaller-icon" icon="arrow-left-outline"></nb-icon>
+      </button>
+      <button
+        *ngIf="
+          orderItem.currentStatus === EOrderStatus.PLACED ||
+          orderItem.currentStatus === EOrderStatus.PROCESSING
+        "
+        nbButton
+        status="success"
+        [size]="buttonSize"
+        shape="round"
+        class="font-larger"
+        (click)="moveForward()"
+      >
+        <nb-icon class="smaller-icon" icon="arrow-right-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+</nb-list-item>

@@ -1,0 +1,24 @@
+type AdminUser {
+  email: String
+  name: String
+  phone: String
+}
+
+input UpdateAdminUserInput {
+  email: String
+  name: String
+  phone: String
+}
+
+type Query {
+  hello: String
+  getAdminUser(id: ID!): AdminUser
+}
+
+type Subscription {
+  adminUserChanged(id: ID!): AdminUser
+}
+
+type Mutation {
+  updateAdminUser(id: ID!, newAdminData: UpdateAdminUserInput!): Boolean!
+}

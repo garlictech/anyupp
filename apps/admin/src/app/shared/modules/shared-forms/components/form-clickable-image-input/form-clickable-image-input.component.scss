@@ -1,0 +1,42 @@
+.image-preview {
+  background-color: #f7f9fc !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: auto !important;
+  position: relative !important;
+}
+
+.clickable {
+  cursor: pointer !important;
+}
+
+.removeBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  z-index: 10000000;
+  right: -10px;
+  top: -10px;
+
+  nb-icon {
+    color: white;
+    font-size: 12px;
+  }
+}
+
+nb-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+input[type='file'] {
+  visibility: hidden;
+  width: 0;
+}

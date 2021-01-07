@@ -1,0 +1,35 @@
+<fieldset class="form" [formGroup]="roleFormGroup">
+  <legend class="label">{{ 'roles.roles' | translate }}</legend>
+
+  <div class="row">
+    <div class="col-6">
+      <app-form-select
+        [control]="roleFormGroup['controls'].role"
+        caption="roles.role"
+        [options]="roleOptions"
+        [localize]="false"
+      >
+      </app-form-select>
+    </div>
+  </div>
+
+  <app-form-chain-admin-role
+    [control]="roleFormGroup"
+    *ngIf="roleFormGroup.value.role === eAdminRole.CHAIN_ADMIN"
+  ></app-form-chain-admin-role>
+
+  <app-form-group-admin-role
+    [control]="roleFormGroup"
+    *ngIf="roleFormGroup.value.role === eAdminRole.GROUP_ADMIN"
+  ></app-form-group-admin-role>
+
+  <app-form-unit-admin-role
+    [control]="roleFormGroup"
+    *ngIf="roleFormGroup.value.role === eAdminRole.UNIT_ADMIN"
+  ></app-form-unit-admin-role>
+
+  <app-form-staff-role
+    [control]="roleFormGroup"
+    *ngIf="roleFormGroup.value.role === eAdminRole.STAFF"
+  ></app-form-staff-role>
+</fieldset>

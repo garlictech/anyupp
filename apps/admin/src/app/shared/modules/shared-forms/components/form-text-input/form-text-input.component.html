@@ -1,0 +1,16 @@
+<div class="form-control-group">
+  <label class="caption">{{ staticCaption || (caption | translate) }}</label>
+  <input
+    nbInput
+    [type]="type"
+    fullWidth
+    [fieldSize]="fieldSize"
+    [formControl]="control"
+    [autocomplete]="false"
+    [status]="
+      control.touched && (control.errors?.required || control.invalid)
+        ? 'danger'
+        : 'basic'
+    "
+  />
+</div>

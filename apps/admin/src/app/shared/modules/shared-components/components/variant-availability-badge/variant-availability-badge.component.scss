@@ -1,0 +1,17 @@
+span {
+  padding: 1px;
+  background-color: tomato;
+  border-radius: 50%;
+  color: white;
+  width: 16px;
+  display: inline-block;
+  height: 16px;
+  text-align: center;
+  line-height: 14px;
+  margin-left: 4px;
+
+  nb-icon {
+    font-size: 0.65rem !important;
+    color: white;
+  }
+}

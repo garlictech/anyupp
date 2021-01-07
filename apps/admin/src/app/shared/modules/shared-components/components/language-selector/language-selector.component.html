@@ -1,0 +1,10 @@
+<nb-select
+  placeholder="{{ 'common.language' | translate }}"
+  shape="round"
+  size="small"
+  (selectedChange)="onLanguageSelected($event)"
+  [selected]="selectedLanguage"
+>
+  <nb-option value="en">{{ 'common.lang.english' | translate }}</nb-option>
+  <nb-option value="de">{{ 'common.lang.german' | translate }}</nb-option>
+</nb-select>

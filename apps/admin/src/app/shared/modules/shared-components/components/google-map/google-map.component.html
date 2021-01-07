@@ -1,0 +1,12 @@
+<google-map [zoom]="zoom" [center]="center">
+  <map-marker
+    #markerElem
+    [position]="markerData.position"
+    [options]="markerData.options"
+    (mapClick)="openInfo(markerElem, markerData.info)"
+    (mapDragend)="dragEnd($event)"
+  >
+  </map-marker>
+
+  <!--map-info-window>{{ infoContent }}</map-info-window-->
+</google-map>

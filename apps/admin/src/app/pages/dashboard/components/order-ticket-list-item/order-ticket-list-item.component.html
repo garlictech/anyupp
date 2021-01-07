@@ -1,0 +1,50 @@
+<div class="w-100 position-relative">
+  <div
+    class="table-seat font-larger"
+    [ngClass]="'bg-' + currentStatus(order.statusLog).toLowerCase()"
+  >
+    {{ order?.place.table }}<br />{{ order?.place.seat }}
+  </div>
+
+  <div class="float-left ml-4-5">
+    <div>
+      <span class="subtitle-2 font-larger">{{
+        order.created | localizedDate: 'HH:mm'
+      }}</span>
+      <nb-badge
+        class="items-count position-relative"
+        status="basic"
+        [text]="order.items.length"
+      ></nb-badge>
+      <span class="caption ml-4 font-larger font-weight-bold">{{
+        order.sumPriceShown.priceSum
+          | currencyFormatter: order.sumPriceShown.currency
+      }}</span>
+    </div>
+  </div>
+
+  <ng-container *ngIf="showMarkers">
+    <div class="float-right ml-2" *ngIf="order.userId === selectedOrderUserId">
+      <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+    </div>
+
+    <div class="float-right" *ngIf="order?.paymentIntention > 0">
+      <nb-icon
+        class="smaller-icon"
+        status="danger"
+        icon="alert-circle-outline"
+      ></nb-icon>
+    </div>
+
+    <nb-badge
+      *ngIf="readyCount > 0"
+      class="ready-count position-absolute mt-4 mr-2"
+      status="info"
+      [text]="readyCount"
+    ></nb-badge>
+    <div class="clearfix"></div>
+  </ng-container>
+
+  <div class="clearfix"></div>
+  <div class="caption mt-1 font-larger ml-4-5">{{ order._id }}</div>
+</div>

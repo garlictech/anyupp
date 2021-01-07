@@ -1,0 +1,15 @@
+<nb-card class="h-100">
+  <nb-card-header class="p-1 pl-2">{{
+    'dashboard.reports.uniqueUsers' | translate
+  }}</nb-card-header>
+  <nb-card-body class="p-1">
+    <h1 class="user-count text-center mt-4">
+      {{ uniqueUserCount }}
+    </h1>
+
+    <div class="sales-value text-center d-block mb-3">
+      {{ ordersSumAvg | currencyFormatter: currency }} /
+      <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+    </div>
+  </nb-card-body>
+</nb-card>

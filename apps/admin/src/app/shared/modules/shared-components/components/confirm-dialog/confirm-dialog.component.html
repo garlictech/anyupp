@@ -1,0 +1,15 @@
+<nb-card *ngIf="options">
+  <nb-card-header>{{ 'common.confirm' | translate }}</nb-card-header>
+  <nb-card-body>{{ options.message | translate }}</nb-card-body>
+  <nb-card-footer>
+    <button
+      *ngFor="let button of options.buttons"
+      class="float-right ml-3"
+      [status]="button.status"
+      nbButton
+      (click)="click(button.callback)"
+    >
+      {{ button.label | translate }}
+    </button>
+  </nb-card-footer>
+</nb-card>

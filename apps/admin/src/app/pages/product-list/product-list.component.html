@@ -1,0 +1,114 @@
+<nb-card class="h-100 mb-0">
+  <nb-card-header>
+    <div class="float-left">
+      {{ 'products.listTitle' | translate }}
+    </div>
+
+    <div class="float-right">
+      <app-active-product-category-selector
+        class="float-right"
+      ></app-active-product-category-selector>
+      <button
+        [disabled]="selectedProductLevel !== EProductLevel.CHAIN"
+        nbButton
+        class="float-right mr-2"
+        type="button"
+        shape="round"
+        size="small"
+        (click)="addProduct()"
+      >
+        <nb-icon icon="plus-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="p-2">
+    <nb-tabset (changeTab)="selectLevel($event)" fullWidth #tabset>
+      <nb-tab
+        [tabTitle]="'products.chainProducts' | translate"
+        [tabId]="EProductLevel.CHAIN"
+        [active]="selectedProductLevel === EProductLevel.CHAIN"
+        [disabled]="!selectedChainId"
+      >
+        <ng-container *ngFor="let product of chainProducts">
+          <nb-list-item
+            *ngIf="product.productCategoryId === selectedProductCategoryId"
+          >
+            <app-product-list-item
+              class="w-100"
+              [product]="product"
+              [productLevel]="EProductLevel.CHAIN"
+              [currency]="groupCurrency"
+              (positionChange)="chainPositionChange($event)"
+            ></app-product-list-item>
+          </nb-list-item>
+        </ng-container>
+      </nb-tab>
+      <nb-tab
+        [tabTitle]="'products.groupProducts' | translate"
+        [tabId]="EProductLevel.GROUP"
+        [active]="selectedProductLevel === EProductLevel.GROUP"
+        [badgeText]="selectedGroupId ? pendingGroupProducts.length || '' : ''"
+        badgeStatus="danger"
+        [disabled]="!selectedGroupId"
+      >
+        <ng-container *ngIf="selectedGroupId">
+          <nb-list-item *ngFor="let product of pendingGroupProducts">
+            <app-product-list-item
+              class="w-100"
+              [pending]="true"
+              [product]="product"
+              [productLevel]="EProductLevel.GROUP"
+              [currency]="groupCurrency"
+            ></app-product-list-item>
+          </nb-list-item>
+          <nb-list-item *ngFor="let product of groupProducts$ | async">
+            <app-product-list-item
+              class="w-100"
+              [pending]="false"
+              [product]="product"
+              [productLevel]="EProductLevel.GROUP"
+              [currency]="groupCurrency"
+            ></app-product-list-item>
+          </nb-list-item>
+        </ng-container>
+      </nb-tab>
+      <nb-tab
+        [tabTitle]="'products.unitProducts' | translate"
+        [tabId]="EProductLevel.UNIT"
+        [active]="selectedProductLevel === EProductLevel.UNIT"
+        [badgeText]="selectedUnitId ? pendingUnitProducts.length || '' : ''"
+        badgeStatus="danger"
+        [disabled]="!selectedUnitId"
+      >
+        <ng-container *ngIf="selectedUnitId">
+          <nb-list-item *ngFor="let product of pendingUnitProducts">
+            <app-product-list-item
+              class="w-100"
+              [pending]="true"
+              [product]="product"
+              [productLevel]="EProductLevel.UNIT"
+              [currency]="groupCurrency"
+            ></app-product-list-item>
+          </nb-list-item>
+          <nb-list-item
+            *ngFor="
+              let product of unitProducts;
+              first as isFirst;
+              last as isLast
+            "
+          >
+            <app-product-list-item
+              class="w-100"
+              [product]="product"
+              [productLevel]="EProductLevel.UNIT"
+              [currency]="groupCurrency"
+              (positionChange)="unitPositionChange($event)"
+              [isFirst]="isFirst"
+              [isLast]="isLast"
+            ></app-product-list-item>
+          </nb-list-item>
+        </ng-container>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

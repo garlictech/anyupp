@@ -1,0 +1,17 @@
+<nb-icon
+  *ngIf="showIcon"
+  [status]="selectedGroupId ? 'basic' : 'danger'"
+  icon="globe-outline"
+></nb-icon>
+<nb-select
+  [status]="selectedGroupId ? 'basic' : 'danger'"
+  placeholder="{{ 'common.group' | translate }}"
+  shape="round"
+  size="small"
+  (selectedChange)="onGroupSelected($event)"
+  [selected]="selectedGroupId"
+>
+  <nb-option *ngFor="let option of groups$ | async" [value]="option._id">{{
+    option.name
+  }}</nb-option>
+</nb-select>

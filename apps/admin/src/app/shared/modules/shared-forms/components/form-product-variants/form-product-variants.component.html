@@ -1,0 +1,144 @@
+<fieldset class="form">
+  <legend class="label">{{ 'products.variants' | translate }}</legend>
+  <div class="container">
+    <div
+      *ngFor="
+        let variant of variantFormArray['controls'];
+        index as i;
+        first as isFirst;
+        last as isLast
+      "
+    >
+      <!-- ORDER EDIT -->
+      <div class="mb-2" *ngIf="productLevel !== EProductLevel.CHAIN">
+        <!--
+        <span *ngIf="variant.value.variantName">{{ variant.value.variantName | localize }}</span>
+        {{ variant.value.pack.size }}
+        {{ variant.value.pack.unit }}
+        -->
+
+        <div class="float-right">
+          <button
+            type="button"
+            [hidden]="isLast"
+            nbButton
+            shape="round"
+            size="tiny"
+            [title]="'products.moveDown' | translate"
+            class="float-right mr-2"
+            (click)="move(i, 1)"
+          >
+            <nb-icon icon="chevron-down"></nb-icon>
+          </button>
+          <button
+            type="button"
+            [hidden]="isFirst"
+            nbButton
+            shape="round"
+            size="tiny"
+            [title]="'products.moveUp' | translate"
+            class="float-right mr-2"
+            (click)="move(i, -1)"
+          >
+            <nb-icon icon="chevron-up"></nb-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.variantNameHU"
+            type="text"
+            [control]="variant.controls.variantName['controls'].hu"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.variantNameEN"
+            type="text"
+            [control]="variant.controls.variantName['controls'].en"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.variantNameDE"
+            type="text"
+            [control]="variant.controls.variantName['controls'].de"
+          ></app-form-text-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.packSize"
+            type="number"
+            [control]="variant.controls.pack['controls'].size"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.packUnit"
+            type="text"
+            [control]="variant.controls.pack['controls'].unit"
+          ></app-form-text-input>
+        </div>
+
+        <div class="col-md-4 pt-4">
+          <app-form-checkbox
+            caption="products.isAvailable"
+            [control]="variant.controls.isAvailable"
+          ></app-form-checkbox>
+        </div>
+      </div>
+
+      <!-- GROUP & UNIT -->
+      <ng-container *ngIf="productLevel !== EProductLevel.CHAIN">
+        <div class="row">
+          <div class="col-sm-3">
+            <app-form-text-input
+              *ngIf="productLevel === EProductLevel.GROUP"
+              caption="products.refPrice"
+              type="number"
+              [control]="variant.controls.refGroupPrice"
+            ></app-form-text-input>
+            <app-form-static-text
+              *ngIf="productLevel === EProductLevel.UNIT"
+              caption="products.refPrice"
+              [value]="
+                variant.value.refGroupPrice | currencyFormatter: currency
+              "
+            >
+            </app-form-static-text>
+          </div>
+        </div>
+
+        <app-form-product-availabilities
+          [availabilityFormArray]="variant.controls.availabilities"
+          [currency]="currency"
+        ></app-form-product-availabilities>
+
+        <div class="clearfix"></div>
+      </ng-container>
+      <!-- /GROUP & UNIT -->
+
+      <hr />
+    </div>
+  </div>
+
+  <button
+    *ngIf="allowAddVariant"
+    nbButton
+    type="button"
+    shape="round"
+    size="tiny"
+    class="float-right"
+    (click)="addVariant()"
+  >
+    <nb-icon icon="plus-outline"></nb-icon>
+    {{ 'products.addVariant' | translate }}
+  </button>
+</fieldset>

@@ -1,0 +1,72 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { EImageType } from '../../enums';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ImageCompressorService {
+  constructor() {}
+
+  compress(
+    file: File,
+    imageType: EImageType,
+    targetSize: number = 750
+  ): Observable<any> {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Observable((observer): void => {
+      reader.onload = (ev): void => {
+        const img = new Image();
+        img.src = (ev.target as any).result;
+
+        (img.onload = (): void => {
+          const elem = document.createElement('canvas'); // Use Angular's Renderer2 method
+          let scaleFactor;
+
+          if (Math.max(img.width, img.height) < targetSize) {
+            // Not need to resize, return with the original file
+            observer.next(file);
+          } else {
+            const ctx = <CanvasRenderingContext2D>elem.getContext('2d');
+
+            if (img.width > img.height) {
+              scaleFactor = targetSize / img.width;
+              elem.width = targetSize;
+              elem.height = img.height * scaleFactor;
+
+              ctx.drawImage(img, 0, 0, targetSize, img.height * scaleFactor);
+            } else {
+              scaleFactor = targetSize / img.height;
+              elem.height = targetSize;
+              elem.width = img.width * scaleFactor;
+
+              ctx.drawImage(img, 0, 0, img.width * scaleFactor, targetSize);
+            }
+
+            const ext = imageType === EImageType.JPEG ? '.jpg' : '.png';
+
+            ctx.canvas.toBlob(
+              (blob): void => {
+                observer.next(
+                  new File(
+                    [blob],
+                    file.name.substr(0, file.name.lastIndexOf('.')) + ext,
+                    {
+                      type: imageType,
+                      lastModified: Date.now(),
+                    }
+                  )
+                );
+              },
+              imageType,
+              0.8
+            );
+          }
+        }),
+          (reader.onerror = (error): void => observer.error(error));
+      };
+    });
+  }
+}

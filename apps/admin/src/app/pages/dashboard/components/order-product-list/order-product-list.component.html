@@ -1,0 +1,63 @@
+<nb-card class="h-100">
+  <nb-card-header class="p-2">
+    <div class="float-left font-larger">
+      {{ 'products.listTitle' | translate }}
+    </div>
+  </nb-card-header>
+  <nb-card-body class="overflow-auto p-2">
+    <nb-select
+      placeholder="{{ 'common.productCategory' | translate }}"
+      [size]="buttonSize"
+      (selectedChange)="onProductCategorySelected($event)"
+      [selected]="selectedProductCategoryId"
+    >
+      <nb-option
+        *ngFor="let option of productCategories"
+        [value]="option._id"
+        >{{ option.name | localize }}</nb-option
+      >
+    </nb-select>
+
+    <ng-container *ngFor="let product of generatedUnitProducts">
+      <nb-list-item
+        class="d-block"
+        *ngIf="product.productCategoryId === selectedProductCategoryId"
+      >
+        <div class="w-100">
+          <img class="product-image float-left" [src]="product.image" />
+          <div class="p-2 font-larger float-left">
+            {{ product.name | localize }}
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div
+          class="row"
+          *ngFor="let variant of product.variants | objectToArray"
+        >
+          <div class="caption col-5 pt-2 m-auto font-larger">
+            {{ variant.variantName | localize }}
+          </div>
+
+          <div class="caption col-4 pt-2 m-auto font-larger">
+            {{ variant.price | currencyFormatter: groupCurrency }}
+          </div>
+
+          <div class="col-3 pt-2">
+            <button
+              nbButton
+              class="ml-3"
+              status="success"
+              [size]="buttonSize"
+              shape="round"
+              (click)="addProductVariant(product, variant._id)"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </nb-list-item>
+    </ng-container>
+  </nb-card-body>
+</nb-card>

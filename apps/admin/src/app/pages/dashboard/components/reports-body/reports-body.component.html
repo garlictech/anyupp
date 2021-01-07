@@ -1,0 +1,50 @@
+<div class="mb-2 p-1">
+  <input nbInput type="date" [formControl]="dateFormControl" />
+</div>
+<div class="row md-overflow-hidden m-0 p-0">
+  <div class="col-12 col-md-3 p-1">
+    <app-reports-unique-guest-avg-sales
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-unique-guest-avg-sales>
+  </div>
+  <div class="col-12 col-md-3 p-1">
+    <app-reports-orders-amount-avg-sales
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-orders-amount-avg-sales>
+  </div>
+  <div class="col-12 col-md-3 p-1">
+    <app-reports-daily-sales-per-type
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-daily-sales-per-type>
+  </div>
+  <div class="col-12 col-md-3 p-1">
+    <app-reports-daily-sales-per-payment-method
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-daily-sales-per-payment-method>
+  </div>
+  <!--div class="col-12 col-md-3 p-1">
+    <app-reports-day-history
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-day-history>
+  </div-->
+</div>
+
+<div class="row md-overflow-hidden m-0 p-0 hourly-breakdown-row">
+  <div class="col-12 p-1">
+    <app-reports-hourly-breakdown
+      class="d-block w-100 h-100"
+      [orders$]="dailyHistoryOrders$"
+      [currency]="groupCurrency"
+    ></app-reports-hourly-breakdown>
+  </div>
+</div>

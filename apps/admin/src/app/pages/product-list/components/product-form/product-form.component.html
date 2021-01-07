@@ -1,0 +1,172 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">
+      {{
+        (product && product._id
+          ? 'products.editProduct'
+          : 'products.newProduct'
+        ) | translate
+      }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+      <div class="row">
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.nameHU"
+            type="text"
+            [control]="dialogForm.controls.name['controls'].hu"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.nameEN"
+            type="text"
+            [control]="dialogForm.controls.name['controls'].en"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.nameDE"
+            type="text"
+            [control]="dialogForm.controls.name['controls'].de"
+          ></app-form-text-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.descriptionHU"
+            type="text"
+            [control]="dialogForm.controls.description['controls'].hu"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.descriptionEN"
+            type="text"
+            [control]="dialogForm.controls.description['controls'].en"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="common.descriptionDE"
+            type="text"
+            [control]="dialogForm.controls.description['controls'].de"
+          ></app-form-text-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <app-form-select
+            [control]="dialogForm.controls.productCategoryId"
+            caption="common.productCategory"
+            [options]="productCategories"
+            [localize]="true"
+          >
+          </app-form-select>
+        </div>
+
+        <div class="col-md-4">
+          <app-form-select
+            [control]="dialogForm.controls.productType"
+            caption="common.productType"
+            [options]="productTypes"
+            [localize]="false"
+          >
+          </app-form-select>
+        </div>
+
+        <div class="col-md-4 pt-4">
+          <app-form-checkbox
+            caption="products.isVisible"
+            [control]="dialogForm.controls.isVisible"
+          ></app-form-checkbox>
+        </div>
+      </div>
+
+      <!-- VARIANTS -->
+      <app-form-product-variants
+        [productLevel]="productLevel"
+        [variantFormArray]="dialogForm.controls._variantArr"
+      ></app-form-product-variants>
+
+      <!-- CONTAINS -->
+
+      <fieldset class="form" formGroupName="contains">
+        <legend class="label">{{ 'products.contains' | translate }}</legend>
+
+        <div formGroupName="allergens">
+          <label class="caption">{{
+            'products.allergens.title' | translate
+          }}</label>
+
+          <div class="row">
+            <div class="col-md-3">
+              <app-form-checkbox
+                caption="products.allergens.lactose"
+                [control]="
+                  dialogForm.controls.contains['controls'].allergens['controls']
+                    .lactose
+                "
+              ></app-form-checkbox>
+            </div>
+            <div class="col-md-3">
+              <app-form-checkbox
+                caption="products.allergens.nuts"
+                [control]="
+                  dialogForm.controls.contains['controls'].allergens['controls']
+                    .nuts
+                "
+              ></app-form-checkbox>
+            </div>
+          </div>
+
+          <label class="caption">{{
+            'products.ingredients.title' | translate
+          }}</label>
+          <div class="col-md-3">...</div>
+        </div>
+      </fieldset>
+
+      <app-form-clickable-image-input
+        [imagePath]="imagePath"
+        [imageType]="eImageType.JPEG"
+        [uploadCallbackFn]="imageUploadCallback"
+        [removeCallbackFn]="imageRemoveCallback"
+        [maxSize]="480"
+        caption="common.image"
+        uploadFolderPath="/products/"
+        width="200px"
+        height="200px"
+        borderRadius="0.25rem"
+      ></app-form-clickable-image-input>
+
+      <div class="mt-20">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

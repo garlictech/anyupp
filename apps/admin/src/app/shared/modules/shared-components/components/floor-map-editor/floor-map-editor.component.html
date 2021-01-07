@@ -1,0 +1,152 @@
+<div class="container-fluid text-center">
+  <div *ngIf="editMode" class="form-group admin-menu">
+    <div class="row">
+      <div class="col-1 form-group p-1">
+        <input
+          nbInput
+          type="number"
+          [placeholder]="'common.width' | translate"
+          fieldSize="tiny"
+          [formControl]="dimensionForm.controls.width"
+          class="form-control p-1"
+        />
+      </div>
+      <div class="col-1 form-group p-1">
+        <input
+          nbInput
+          type="number"
+          [placeholder]="'common.height' | translate"
+          fieldSize="tiny"
+          [formControl]="dimensionForm.controls.height"
+          class="form-control p-1"
+        />
+      </div>
+      <div class="col-1 form-group p-1">
+        <input
+          nbInput
+          fieldSize="tiny"
+          [formControl]="objectForm.controls.text"
+          [placeholder]="'units.label' | translate"
+          class="form-control p-1"
+        />
+      </div>
+      <div class="col-1 form-group p-1">
+        <input
+          nbInput
+          fieldSize="tiny"
+          [formControl]="objectForm.controls.tableId"
+          [placeholder]="'units.tableId' | translate"
+          class="form-control p-1"
+        />
+      </div>
+      <div class="col-1 form-group p-1">
+        <input
+          nbInput
+          fieldSize="tiny"
+          [formControl]="objectForm.controls.seatId"
+          [placeholder]="'units.seatId' | translate"
+          class="form-control p-1"
+        />
+      </div>
+      <div class="col-7 form-group p-1 text-left">
+        <div class="btn-group">
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1 pl-2"
+            (click)="addObject(EUnitMapObjectType.TABLE_RECTANGLE)"
+          >
+            ▢ {{ 'units.table' | translate }}
+          </button>
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn"
+            (click)="addObject(EUnitMapObjectType.TABLE_CIRCLE)"
+          >
+            ◯ {{ 'units.table' | translate }}
+          </button>
+          <!--button type="button" nbButton shape="round" size="small" class="btn" (click)="addObject('triangle')">△ Table</button-->
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1"
+            (click)="addObject(EUnitMapObjectType.SEAT_RECTANGLE)"
+          >
+            ▢ {{ 'units.seat' | translate }}
+          </button>
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1"
+            (click)="addObject(EUnitMapObjectType.SEAT_CIRCLE)"
+          >
+            ◯ {{ 'units.seat' | translate }}
+          </button>
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1"
+            (click)="addObject(EUnitMapObjectType.COUNTER)"
+          >
+            {{ 'units.counter' | translate }}
+          </button>
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1"
+            (click)="addObject(EUnitMapObjectType.WALL)"
+          >
+            {{ 'units.wall' | translate }}
+          </button>
+          <button
+            type="button"
+            nbButton
+            shape="round"
+            size="small"
+            class="btn p-1 pr-2"
+            (click)="addObject(EUnitMapObjectType.LABEL)"
+          >
+            {{ 'units.label' | translate }}
+          </button>
+        </div>
+        <button
+          type="button"
+          nbButton
+          status="warning"
+          shape="round"
+          size="small"
+          class="ml-2"
+          (click)="copyObject()"
+        >
+          <nb-icon icon="copy-outline"></nb-icon>
+        </button>
+        <button
+          type="button"
+          nbButton
+          status="danger"
+          shape="round"
+          size="small"
+          class="ml-2"
+          (click)="removeObject()"
+        >
+          <nb-icon icon="trash-2-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="canvas" width="900" height="400"></canvas>
+</div>

@@ -1,0 +1,128 @@
+<div class="container">
+  <ng-container
+    *ngFor="
+      let availability of availabilityFormArray['controls'];
+      index as i;
+      first as isFirst;
+      last as isLast
+    "
+  >
+    <hr />
+    <div class="row">
+      <div class="col-md-4">
+        <app-form-select
+          [control]="availability.controls.type"
+          caption="common.type"
+          [options]="availabilityTypes"
+          (selectionChange)="onTypeChange($event, i)"
+          [localize]="false"
+        >
+        </app-form-select>
+      </div>
+
+      <div class="col-md-4">
+        <app-form-text-input
+          [staticCaption]="
+            ('products.price' | translate) + ' (' + currency + ')'
+          "
+          type="number"
+          [control]="availability.controls.price"
+        ></app-form-text-input>
+      </div>
+
+      <div class="col-md-4 pt-3 text-right">
+        <button
+          nbButton
+          status="danger"
+          size="small"
+          shape="round"
+          (click)="removeAvailability(i)"
+        >
+          <nb-icon icon="trash-2-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+    <div
+      class="row"
+      *ngIf="availability.value.type !== EVariantAvailabilityType.ALWAYS"
+    >
+      <ng-container
+        *ngIf="availability.value.type === EVariantAvailabilityType.WEEKLY"
+      >
+        <div class="col-md-4">
+          <app-form-select
+            [control]="availability.controls.dayFrom"
+            caption="products.dayFrom"
+            [options]="iterativeAvailabilities"
+            [localize]="false"
+          >
+          </app-form-select>
+        </div>
+        <div class="col-md-4">
+          <app-form-select
+            [control]="availability.controls.dayTo"
+            caption="products.dayTo"
+            [options]="iterativeAvailabilities"
+            [localize]="false"
+          >
+          </app-form-select>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="availability.value.type === EVariantAvailabilityType.SEASONAL"
+      >
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.dayFrom"
+            type="date"
+            [control]="availability.controls.dayFrom"
+          ></app-form-text-input>
+        </div>
+        <div class="col-md-4">
+          <app-form-text-input
+            caption="products.dayTo"
+            type="date"
+            [control]="availability.controls.dayTo"
+          ></app-form-text-input>
+        </div>
+      </ng-container>
+
+      <div class="col-md-2">
+        <app-form-text-input
+          caption="products.timeFrom"
+          type="text"
+          [control]="availability.controls.timeFrom"
+        ></app-form-text-input>
+      </div>
+      <div class="col-md-2">
+        <app-form-text-input
+          caption="products.timeTo"
+          type="text"
+          [control]="availability.controls.timeTo"
+        ></app-form-text-input>
+      </div>
+    </div>
+
+    <ng-container *ngIf="availability.errors">
+      <div class="form-error-msg" *ngIf="availability.errors.dayInterval">
+        {{ 'errors.availabilityWeeklyDateInterval' | translate }}
+      </div>
+      <div class="form-error-msg" *ngIf="availability.errors.timeInterval">
+        {{ 'errors.availabilityWeeklyTimeInterval' | translate }}
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<button
+  nbButton
+  type="button"
+  shape="round"
+  size="tiny"
+  class="float-right mt-3"
+  (click)="addAvailability()"
+>
+  <nb-icon icon="plus-outline"></nb-icon>
+  {{ 'products.addAvailability' | translate }}
+</button>

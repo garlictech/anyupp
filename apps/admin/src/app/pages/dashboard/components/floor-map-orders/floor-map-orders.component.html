@@ -1,0 +1,29 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">{{ tableId }}/{{ seatId }}</div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container *ngFor="let userOrder of tableOrders.userOrders">
+      <div class="mb-2 font-weight-bold">
+        <nb-icon class="user-icon" icon="person-outline"></nb-icon>
+        {{ userOrder.userId }}
+      </div>
+
+      <app-order-details
+        *ngFor="let order of userOrder.orders"
+        [order]="order"
+      ></app-order-details>
+      <hr class="mb-2" />
+    </ng-container>
+  </nb-card-body>
+</nb-card>
