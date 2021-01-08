@@ -1,8 +1,8 @@
 import { get as _get } from 'lodash-es';
-import { EProductLevel } from '../../shared/enums';
-import { IProductVariant } from '../../shared/interfaces';
-import { customNumberCompare } from 'src/app/shared/pure';
-import { FormsService } from 'src/app/shared/services/forms';
+import { EProductLevel } from '../../../../enums';
+import { IProductVariant } from '../../../../interfaces';
+import { customNumberCompare } from '../../../../pure';
+import { FormsService } from '../../../../services/forms';
 
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';

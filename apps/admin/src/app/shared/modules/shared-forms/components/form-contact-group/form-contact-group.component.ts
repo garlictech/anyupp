@@ -1,10 +1,10 @@
 import { get as _get } from 'lodash-es';
-import { GOOGLE_API_KEY } from 'src/app/shared/const';
+import { GOOGLE_API_KEY } from '../../../../const';
 
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ILocation } from '../../shared/interfaces';
+import { ILocation } from '../../../../interfaces';
 
 @Component({
   selector: 'app-form-contact-group',

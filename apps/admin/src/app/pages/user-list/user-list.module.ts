@@ -1,4 +1,4 @@
-import { SharedFormsModule } from 'src/app/shared/modules/shared-forms';
+import { SharedFormsModule } from '../../shared/modules/shared-forms';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';

@@ -1,5 +1,5 @@
-import { SharedFormsModule } from 'src/app/shared/modules/shared-forms';
-import { PipesModule } from 'src/app/shared/pipes';
+import { SharedFormsModule } from '../../shared/modules/shared-forms';
+import { PipesModule } from '../../shared/pipes';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';

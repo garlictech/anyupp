@@ -6,9 +6,9 @@ import {
   ENebularButtonSize,
 } from '../../shared/enums';
 import { IUnit } from '../../shared/interfaces';
-import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
-import { zeroFill } from 'src/app/shared/pure';
-import { DataService } from 'src/app/shared/services/data';
+import { ConfirmDialogComponent } from '../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+import { zeroFill } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';
 import { dashboardActions } from '../../store/actions';
 import { dashboardSelectors, unitListSelectors } from '../../store/selectors';

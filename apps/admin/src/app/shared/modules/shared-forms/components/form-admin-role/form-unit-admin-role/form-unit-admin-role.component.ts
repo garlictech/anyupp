@@ -7,14 +7,14 @@ import {
   IGroup,
   IKeyValue,
   IUnit,
-} from '../../shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from '../../store';
+} from '../../../../../interfaces';
+import { DataService } from '../../../../../services/data';
+import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
   unitListSelectors,
-} from '../../store/selectors';
+} from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';

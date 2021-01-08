@@ -1,12 +1,12 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
-import { EProductType } from '../../shared/enums';
-import { IOrder, IProduct } from '../../shared/interfaces';
-import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
-import { reducer } from 'src/app/shared/pure';
-import { IState } from '../../store';
-import { productListSelectors } from '../../store/selectors';
+import { EProductType } from '../../../../shared/enums';
+import { IOrder, IProduct } from '../../../../shared/interfaces';
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { reducer } from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { productListSelectors } from '../../../../store/selectors';
 
 import {
   AfterViewInit,

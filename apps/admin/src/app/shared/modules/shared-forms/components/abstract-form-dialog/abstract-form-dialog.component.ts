@@ -1,5 +1,5 @@
-import { DataService } from 'src/app/shared/services/data';
-import { ToasterService } from 'src/app/shared/services/toaster/toaster.service';
+import { DataService } from '../../../../../shared/services/data';
+import { ToasterService } from '../../../../../shared/services/toaster/toaster.service';
 
 import { Component, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';

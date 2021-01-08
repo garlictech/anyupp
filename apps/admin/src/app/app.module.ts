@@ -1,4 +1,4 @@
-import { FIREBASE_CONFIG } from 'src/firebase.config';
+import { FIREBASE_CONFIG } from '../firebase.config';
 
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';

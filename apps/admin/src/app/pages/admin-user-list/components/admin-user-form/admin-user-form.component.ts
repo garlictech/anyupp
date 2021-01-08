@@ -1,11 +1,11 @@
 import { get as _get } from 'lodash-es';
-import { EAdminRole, EImageType } from '../../shared/enums';
-import { IAdminUser } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { contactFormGroup } from 'src/app/shared/pure';
-import { AuthService } from 'src/app/shared/services/auth';
-import { FormsService } from 'src/app/shared/services/forms';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { EAdminRole, EImageType } from '../../../../shared/enums';
+import { IAdminUser } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { contactFormGroup } from '../../../../shared/pure';
+import { AuthService } from '../../../../shared/services/auth';
+import { FormsService } from '../../../../shared/services/forms';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';

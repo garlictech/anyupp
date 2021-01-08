@@ -1,10 +1,10 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { EPaymentMethod } from '../../shared/enums';
-import { IOrder } from '../../shared/interfaces';
-import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
-import { reducer } from 'src/app/shared/pure';
+import { EPaymentMethod } from '../../../../shared/enums';
+import { IOrder } from '../../../../shared/interfaces';
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { reducer } from '../../../../shared/pure';
 
 import {
   AfterViewInit,

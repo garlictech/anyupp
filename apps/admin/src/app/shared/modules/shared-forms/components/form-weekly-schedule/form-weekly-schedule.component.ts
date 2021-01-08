@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FormsService } from 'src/app/shared/services/forms';
+import { FormsService } from '../../../../services/forms';
 
 @Component({
   selector: 'app-form-weekly-schedule',

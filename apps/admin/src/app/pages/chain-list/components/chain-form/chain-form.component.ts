@@ -1,9 +1,9 @@
 import { get as _get, set as _set } from 'lodash-es';
-import { EImageType } from '../../shared/enums';
-import { IChain } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { contactFormGroup, multiLangValidator } from 'src/app/shared/pure';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { EImageType } from '../../../../shared/enums';
+import { IChain } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';

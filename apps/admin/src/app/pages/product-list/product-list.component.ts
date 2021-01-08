@@ -3,8 +3,8 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 import { EAdminRole, EProductLevel } from '../../shared/enums';
 import { IAdminUser, IGroup, IProduct } from '../../shared/interfaces';
-import { customNumberCompare } from 'src/app/shared/pure';
-import { DataService } from 'src/app/shared/services/data';
+import { customNumberCompare } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';
 import {
   currentUserSelectors,

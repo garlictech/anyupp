@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { IState } from '../../store';
-import { adminUserListSelectors } from '../../store/selectors';
+import { IState } from '../../../store';
+import { adminUserListSelectors } from '../../../store/selectors';
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';

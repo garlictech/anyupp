@@ -1,8 +1,8 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { IOrder } from '../../shared/interfaces';
-import { IState } from '../../store';
+import { IOrder } from '../../../../shared/interfaces';
+import { IState } from '../../../../store';
 
 import {
   AfterViewInit,

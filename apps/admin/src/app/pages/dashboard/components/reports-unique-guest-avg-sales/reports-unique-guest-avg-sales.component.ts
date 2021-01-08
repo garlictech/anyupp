@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { IOrder } from '../../shared/interfaces';
-import { getDailyOrdersSum } from 'src/app/shared/pure';
+import { IOrder } from '../../../../shared/interfaces';
+import { getDailyOrdersSum } from '../../../../shared/pure';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

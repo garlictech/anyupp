@@ -1,11 +1,11 @@
-import { IOrder, IOrderItem } from '../../shared/interfaces';
+import { IOrder, IOrderItem } from '../../../../shared/interfaces';
 import {
   currentStatus,
   currentStatus as currentStatusFn,
-} from 'src/app/shared/pure';
+} from '../../../../shared/pure';
 
 import { Component, Input, OnChanges } from '@angular/core';
-import { EDashboardTicketListType, EOrderStatus } from '../../shared/enums';
+import { EDashboardTicketListType, EOrderStatus } from '../../../../shared/enums';
 
 @Component({
   selector: 'app-order-ticket-list-item',
@@ -22,6 +22,7 @@ export class OrderTicketListItemComponent implements OnChanges {
   public readyCount;
 
   ngOnChanges(): void {
+    /*
     this.readyCount =
       this.ticketListType === EDashboardTicketListType.PLACED
         ? this.order.items.filter(
@@ -29,5 +30,6 @@ export class OrderTicketListItemComponent implements OnChanges {
               currentStatus(i.statusLog) === EOrderStatus.READY
           ).length
         : 0; // Show badhe only in placed list
+        */
   }
 }
