@@ -19,10 +19,10 @@
         {{ userOrder.userId }}
       </div>
 
-      <app-order-details
+      <bgap-order-details
         *ngFor="let order of userOrder.orders"
         [order]="order"
-      ></app-order-details>
+      ></bgap-order-details>
       <hr class="mb-2" />
     </ng-container>
   </nb-card-body>

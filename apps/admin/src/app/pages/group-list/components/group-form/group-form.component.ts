@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-group-form',
+  selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
 export class GroupFormComponent
@@ -103,7 +103,7 @@ export class GroupFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('GROUP UPDATE ERROR', err);
             }
           );
@@ -117,7 +117,7 @@ export class GroupFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

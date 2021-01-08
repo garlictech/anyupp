@@ -30,7 +30,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-product-list',
+  selector: 'bgap-order-product-list',
   templateUrl: './order-product-list.component.html',
   styleUrls: ['./order-product-list.component.scss']
 })

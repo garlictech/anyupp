@@ -18,70 +18,70 @@
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-6">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.name"
             type="text"
             [control]="dialogForm.controls.name"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-6">
-          <app-form-select
+          <bgap-form-select
             caption="common.group"
             [options]="groupOptions"
             [control]="dialogForm.controls.groupId"
             [localize]="false"
-          ></app-form-select>
+          ></bgap-form-select>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
             [control]="dialogForm.controls.description['controls'].hu"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
             [control]="dialogForm.controls.description['controls'].en"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
             [control]="dialogForm.controls.description['controls'].de"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="units.openFrom"
             type="date"
             [control]="dialogForm.controls.open['controls'].from"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="units.openTo"
             type="date"
             [control]="dialogForm.controls.open['controls'].to"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
 
         <div class="col-md-4 pt-4">
-          <app-form-checkbox
+          <bgap-form-checkbox
             caption="common.isActive"
             [control]="dialogForm.controls.isActive"
-          ></app-form-checkbox>
+          ></bgap-form-checkbox>
         </div>
       </div>
 
@@ -100,17 +100,17 @@
         </nb-checkbox>
       </fieldset>
 
-      <app-form-contact-group
+      <bgap-form-contact-group
         [contactFormGroup]="dialogForm"
-      ></app-form-contact-group>
+      ></bgap-form-contact-group>
 
-      <app-form-weekly-schedule
+      <bgap-form-weekly-schedule
         [scheduleControl]="dialogForm.controls.openingHours"
-      ></app-form-weekly-schedule>
+      ></bgap-form-weekly-schedule>
 
-      <app-form-unit-lanes
+      <bgap-form-unit-lanes
         [lanesFormArray]="dialogForm.controls._lanesArr"
-      ></app-form-unit-lanes>
+      ></bgap-form-unit-lanes>
 
       <div class="mt-20">
         <button

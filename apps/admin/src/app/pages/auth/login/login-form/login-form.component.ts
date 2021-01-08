@@ -4,11 +4,11 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'bgap-login-form',
   templateUrl: './login-form.component.html',
 })
 export class LoginFormComponent {
-  @Input() toggleResetForm: any;
+  @Input() toggleResetForm;
   public loginForm: FormGroup;
 
   constructor(

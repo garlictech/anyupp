@@ -7,7 +7,7 @@ describe('PasswordResetFormComponent', (): void => {
   let fixture: ComponentFixture<PasswordResetFormComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [PasswordResetFormComponent],
       }).compileComponents();

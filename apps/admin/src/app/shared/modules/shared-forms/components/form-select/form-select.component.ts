@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-select',
+  selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
 })
 export class FormSelectComponent {

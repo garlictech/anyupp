@@ -22,7 +22,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-dashboard',
+  selector: 'bgap-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  public toggleAcceptingOrders($event: any): void {
+  public toggleAcceptingOrders($event: Event): void {
     $event.preventDefault();
 
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {

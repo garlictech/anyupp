@@ -2,6 +2,7 @@ import { IChain } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -38,6 +39,6 @@ const reducerMap: ActionReducerMap<IChainListState> = {
 
 const reducer: ActionReducer<IChainListState> = combineReducers(reducerMap);
 
-export function chainListReducer(state: any, action: any): IChainListState {
+export function chainListReducer(state: IChainListState | undefined, action: Action): IChainListState {
   return reducer(state, action);
 }

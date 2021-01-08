@@ -31,7 +31,7 @@ const laneFilter = (selectedLanes: string[]): any => (
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lanes-body',
+  selector: 'bgap-lanes-body',
   templateUrl: './lanes-body.component.html',
   styleUrls: ['./lanes-body.component.scss']
 })

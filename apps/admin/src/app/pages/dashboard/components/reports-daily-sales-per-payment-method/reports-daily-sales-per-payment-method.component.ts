@@ -2,7 +2,7 @@ import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
 import { EPaymentMethod } from '../../../../shared/enums';
-import { IOrder } from '../../../../shared/interfaces';
+import { IOrder, IOrderAmounts } from '../../../../shared/interfaces';
 import { CurrencyFormatterPipe } from '../../../../shared/pipes';
 import { reducer } from '../../../../shared/pure';
 
@@ -19,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-daily-sales-per-payment-method',
+  selector: 'bgap-reports-daily-sales-per-payment-method',
   templateUrl: './reports-daily-sales-per-payment-method.component.html',
   styleUrls: ['./reports-daily-sales-per-payment-method.component.scss'],
 })
@@ -118,7 +118,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
   }
 
   private _orderAmounts(orders: IOrder[]) {
-    const amounts: any = {
+    const amounts: IOrderAmounts = {
       [EPaymentMethod.CARD]: 0,
       [EPaymentMethod.CASH]: 0,
       [EPaymentMethod.INAPP]: 0,

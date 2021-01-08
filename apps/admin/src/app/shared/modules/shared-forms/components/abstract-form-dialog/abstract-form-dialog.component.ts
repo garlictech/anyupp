@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
-  selector: 'app-abstract-form-dialog',
+  selector: 'bgap-abstract-form-dialog',
   template: '',
 })
 export class AbstractFormDialogComponent {
@@ -14,7 +14,7 @@ export class AbstractFormDialogComponent {
   protected _dataService: DataService;
   protected _formBuilder: FormBuilder;
   protected _toasterService: ToasterService;
-  private _nbDialogRef: NbDialogRef<any>;
+  private _nbDialogRef: NbDialogRef<unknown>;
 
   constructor(protected _injector: Injector) {
     this._nbDialogRef = this._injector.get(NbDialogRef);

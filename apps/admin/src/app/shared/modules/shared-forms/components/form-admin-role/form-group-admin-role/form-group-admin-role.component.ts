@@ -6,6 +6,7 @@ import {
   IChain,
   IGroup,
   IKeyValue,
+  IAssignedEntityNames,
 } from '../../../../../interfaces';
 import { DataService } from '../../../../../services/data';
 import { IState } from '../../../../../../store';
@@ -21,7 +22,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-group-admin-role',
+  selector: 'bgap-form-group-admin-role',
   templateUrl: './form-group-admin-role.component.html',
 })
 export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
@@ -29,7 +30,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public entitySelector: FormGroup;
-  public assignedGroups: any[];
+  public assignedGroups: IAssignedEntityNames[];
 
   constructor(
     private _store: Store<IState>,

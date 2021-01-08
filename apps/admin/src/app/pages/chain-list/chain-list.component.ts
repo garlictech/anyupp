@@ -11,7 +11,7 @@ import { ChainFormComponent } from './components/chain-form/chain-form.component
 
 @UntilDestroy()
 @Component({
-  selector: 'app-chain-list',
+  selector: 'bgap-chain-list',
   templateUrl: './chain-list.component.html',
 })
 export class ChainListComponent implements OnInit, OnDestroy {

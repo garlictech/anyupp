@@ -4,7 +4,7 @@ import {
   EProductLevel,
   EVariantAvailabilityType,
 } from '../../../../shared/enums';
-import { IAdminUserRole, IProduct } from '../../../../shared/interfaces';
+import { IAdminUserRole, IProduct, IProductVariant } from '../../../../shared/interfaces';
 import { IState } from '../../../../store';
 import { currentUserSelectors } from '../../../../store/selectors';
 
@@ -25,7 +25,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-list-item',
+  selector: 'bgap-product-list-item',
   templateUrl: './product-list-item.component.html',
   styleUrls: ['./product-list-item.component.scss'],
 })
@@ -86,7 +86,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  get variantsArray(): any[] {
+  get variantsArray(): IProductVariant[] {
     return Object.values(this.product.variants || {});
   }
 

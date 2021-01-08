@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-text-input',
+  selector: 'bgap-form-text-input',
   templateUrl: './form-text-input.component.html',
 })
 export class FormTextInputComponent {

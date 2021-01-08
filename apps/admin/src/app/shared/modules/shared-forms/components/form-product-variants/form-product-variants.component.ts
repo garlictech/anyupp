@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-product-variants',
+  selector: 'bgap-form-product-variants',
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
@@ -25,7 +25,7 @@ export class FormProductVariantsComponent {
 
   public addVariant(): void {
     this.variantFormArray.push(
-      this._formsService.createProductVariantFormGroup(this.productLevel)
+      this._formsService.createProductVariantFormGroup()
     );
   }
 

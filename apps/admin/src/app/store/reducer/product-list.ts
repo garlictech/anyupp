@@ -2,6 +2,7 @@ import { IProduct } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -112,6 +113,6 @@ const reducerMap: ActionReducerMap<IProductListState> = {
 
 const reducer: ActionReducer<IProductListState> = combineReducers(reducerMap);
 
-export function productListReducer(state: any, action: any): IProductListState {
+export function productListReducer(state: IProductListState | undefined, action: Action): IProductListState {
   return reducer(state, action);
 }

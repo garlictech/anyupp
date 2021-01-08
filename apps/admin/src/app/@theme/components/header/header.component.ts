@@ -22,7 +22,7 @@ import { DEFAULT_LANG } from '../../../shared/const';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-header',
+  selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html'
 })

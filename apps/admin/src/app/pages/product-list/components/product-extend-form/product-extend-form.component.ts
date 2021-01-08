@@ -29,7 +29,7 @@ import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-f
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-extend-form',
+  selector: 'bgap-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
 export class ProductExtendFormComponent
@@ -115,9 +115,7 @@ export class ProductExtendFormComponent
       ).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup(
-          this.productLevel
-        );
+        const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
         _get(variant, 'availabilities', []).forEach((availability): void => {

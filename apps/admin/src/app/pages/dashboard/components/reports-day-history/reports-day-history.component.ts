@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-day-history',
+  selector: 'bgap-reports-day-history',
   templateUrl: './reports-day-history.component.html',
   styleUrls: ['./reports-day-history.component.scss'],
 })
@@ -55,7 +55,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
-            label: (tooltipItem, data) => {
+            label: () => {
               return ''; //tooltipItem.yLabel;
             },
           },
@@ -120,7 +120,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
         this._chart.update();
       });
-*/
+    */
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))

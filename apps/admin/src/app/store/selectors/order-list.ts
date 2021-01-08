@@ -83,7 +83,7 @@ export const getLaneOrderItemsByStatus = (
                 currentStatusFn(orderItem.statusLog) === status
             )
             .map(
-              (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
+              (orderItem: IOrderItem): ILaneOrderItem => ({
                 ...orderItem,
                 orderId: order._id,
                 userId: order.userId,

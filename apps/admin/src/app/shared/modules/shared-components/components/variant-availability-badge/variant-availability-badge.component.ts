@@ -3,7 +3,7 @@ import { EVariantAvailabilityType } from '../../../../enums';
 import { IAvailability } from '../../../../interfaces';
 
 @Component({
-  selector: 'app-variant-availability-badge',
+  selector: 'bgap-variant-availability-badge',
   templateUrl: './variant-availability-badge.component.html',
   styleUrls: ['./variant-availability-badge.component.scss']
 })
@@ -12,8 +12,4 @@ export class VariantAvailabilityBadgeComponent implements OnInit {
   @Input() currency: string;
 
   public EVariantAvailabilityType = EVariantAvailabilityType;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

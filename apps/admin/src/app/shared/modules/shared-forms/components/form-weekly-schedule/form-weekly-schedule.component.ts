@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { FormsService } from '../../../../services/forms';
 
 @Component({
-  selector: 'app-form-weekly-schedule',
+  selector: 'bgap-form-weekly-schedule',
   templateUrl: './form-weekly-schedule.component.html',
 })
 export class FormWeeklyScheduleComponent implements OnInit {
@@ -13,8 +13,6 @@ export class FormWeeklyScheduleComponent implements OnInit {
   constructor(private _formsService: FormsService) {
     this.dayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   }
-
-  ngOnInit(): void {}
 
   public addCustomDate(): void {
     this.scheduleControl['controls'].override.push(

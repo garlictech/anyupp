@@ -10,7 +10,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-chain-form',
+  selector: 'bgap-chain-form',
   templateUrl: './chain-form.component.html',
   styleUrls: ['./chain-form.component.scss'],
 })
@@ -85,7 +85,7 @@ export class ChainFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('CHAIN UPDATE ERROR', err);
             }
           );
@@ -99,7 +99,7 @@ export class ChainFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

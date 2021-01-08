@@ -12,7 +12,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-user-list',
+  selector: 'bgap-user-list',
   templateUrl: './user-list.component.html',
 })
 export class UserListComponent implements OnInit, OnDestroy {

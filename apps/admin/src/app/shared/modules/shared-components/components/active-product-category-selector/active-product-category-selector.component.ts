@@ -14,7 +14,7 @@ import { DataService } from '../../../../services/data';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-product-category-selector',
+  selector: 'bgap-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
   styleUrls: ['./active-product-category-selector.component.scss']
 })

@@ -123,7 +123,7 @@ export class OrderService {
     );
   }
 
-  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<any> {
+  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
     return this._dataService.insertOrderStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
@@ -138,7 +138,7 @@ export class OrderService {
     orderUserId: string,
     status: EOrderStatus,
     idx: number
-  ): Promise<any> {
+  ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,

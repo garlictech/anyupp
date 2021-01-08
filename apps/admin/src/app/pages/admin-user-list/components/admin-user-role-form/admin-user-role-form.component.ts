@@ -7,7 +7,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-user-role-form',
+  selector: 'bgap-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
 })
 export class AdminUserRoleFormComponent
@@ -47,7 +47,7 @@ export class AdminUserRoleFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('USER UPDATE ERROR', err);
           }
         );

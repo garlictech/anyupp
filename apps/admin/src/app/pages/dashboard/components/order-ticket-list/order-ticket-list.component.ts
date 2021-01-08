@@ -23,7 +23,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-list',
+  selector: 'bgap-order-ticket-list',
   templateUrl: './order-ticket-list.component.html',
   styleUrls: ['./order-ticket-list.component.scss'],
 })

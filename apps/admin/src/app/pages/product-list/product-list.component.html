@@ -5,9 +5,9 @@
     </div>
 
     <div class="float-right">
-      <app-active-product-category-selector
+      <bgap-active-product-category-selector
         class="float-right"
-      ></app-active-product-category-selector>
+      ></bgap-active-product-category-selector>
       <button
         [disabled]="selectedProductLevel !== EProductLevel.CHAIN"
         nbButton
@@ -33,13 +33,13 @@
           <nb-list-item
             *ngIf="product.productCategoryId === selectedProductCategoryId"
           >
-            <app-product-list-item
+            <bgap-product-list-item
               class="w-100"
               [product]="product"
               [productLevel]="EProductLevel.CHAIN"
               [currency]="groupCurrency"
               (positionChange)="chainPositionChange($event)"
-            ></app-product-list-item>
+            ></bgap-product-list-item>
           </nb-list-item>
         </ng-container>
       </nb-tab>
@@ -53,22 +53,22 @@
       >
         <ng-container *ngIf="selectedGroupId">
           <nb-list-item *ngFor="let product of pendingGroupProducts">
-            <app-product-list-item
+            <bgap-product-list-item
               class="w-100"
               [pending]="true"
               [product]="product"
               [productLevel]="EProductLevel.GROUP"
               [currency]="groupCurrency"
-            ></app-product-list-item>
+            ></bgap-product-list-item>
           </nb-list-item>
           <nb-list-item *ngFor="let product of groupProducts$ | async">
-            <app-product-list-item
+            <bgap-product-list-item
               class="w-100"
               [pending]="false"
               [product]="product"
               [productLevel]="EProductLevel.GROUP"
               [currency]="groupCurrency"
-            ></app-product-list-item>
+            ></bgap-product-list-item>
           </nb-list-item>
         </ng-container>
       </nb-tab>
@@ -82,13 +82,13 @@
       >
         <ng-container *ngIf="selectedUnitId">
           <nb-list-item *ngFor="let product of pendingUnitProducts">
-            <app-product-list-item
+            <bgap-product-list-item
               class="w-100"
               [pending]="true"
               [product]="product"
               [productLevel]="EProductLevel.UNIT"
               [currency]="groupCurrency"
-            ></app-product-list-item>
+            ></bgap-product-list-item>
           </nb-list-item>
           <nb-list-item
             *ngFor="
@@ -97,7 +97,7 @@
               last as isLast
             "
           >
-            <app-product-list-item
+            <bgap-product-list-item
               class="w-100"
               [product]="product"
               [productLevel]="EProductLevel.UNIT"
@@ -105,7 +105,7 @@
               (positionChange)="unitPositionChange($event)"
               [isFirst]="isFirst"
               [isLast]="isLast"
-            ></app-product-list-item>
+            ></bgap-product-list-item>
           </nb-list-item>
         </ng-container>
       </nb-tab>

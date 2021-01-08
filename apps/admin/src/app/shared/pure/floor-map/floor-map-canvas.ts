@@ -141,7 +141,7 @@ const _roundScale = (val: number): number =>
 
 const _onScaled = (e): void => {
   const target = e.target;
-  const bg: any = utils.getObjectBg(target);
+  const bg: fabric.Group = utils.getObjectBg(target);
   const textField = target
     .getObjects()
     ?.filter((o): boolean => o instanceof fabric.IText)[0];

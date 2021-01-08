@@ -7,7 +7,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-unique-guest-avg-sales',
+  selector: 'bgap-reports-unique-guest-avg-sales',
   templateUrl: './reports-unique-guest-avg-sales.component.html',
   styleUrls: ['./reports-unique-guest-avg-sales.component.scss'],
 })

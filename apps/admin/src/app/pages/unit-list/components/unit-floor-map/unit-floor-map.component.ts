@@ -10,7 +10,7 @@ import { floorMapActions } from '../../../../store/actions';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-unit-floor-map',
+  selector: 'bgap-unit-floor-map',
   templateUrl: './unit-floor-map.component.html',
   styleUrls: ['./unit-floor-map.component.scss'],
 })

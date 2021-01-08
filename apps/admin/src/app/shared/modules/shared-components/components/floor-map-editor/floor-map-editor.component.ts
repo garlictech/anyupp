@@ -19,7 +19,7 @@ import { floorMapActions } from '../../../../../store/actions';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-floor-map-editor',
+  selector: 'bgap-floor-map-editor',
   templateUrl: './floor-map-editor.component.html',
   styleUrls: ['./floor-map-editor.component.scss']
 })

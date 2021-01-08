@@ -7,7 +7,7 @@ describe('OrderTicketHistoryListComponent', (): void => {
   let fixture: ComponentFixture<OrderTicketHistoryListComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [OrderTicketHistoryListComponent],
       }).compileComponents();

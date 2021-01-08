@@ -11,7 +11,7 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';
 
 @Component({
-  selector: 'app-admin-user-list-item',
+  selector: 'bgap-admin-user-list-item',
   templateUrl: './admin-user-list-item.component.html',
   styleUrls: ['./admin-user-list-item.component.scss'],
 })
@@ -72,7 +72,7 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {},
+          callback: () => {},
           status: 'basic',
         },
       ],

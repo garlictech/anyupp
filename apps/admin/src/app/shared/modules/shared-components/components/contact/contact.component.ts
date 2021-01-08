@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-contact',
+  selector: 'bgap-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })

@@ -46,3 +46,11 @@ export interface IFloorMapTableOrders {
 export interface IFloorMapTableOrderObjects {
   [tableSeatId: string]: IFloorMapTableOrders;
 }
+
+export interface IFabricObject extends fabric.Object {
+  id: string;
+}
+
+export interface IFabricGroup extends fabric.Group {
+  id: string;
+}

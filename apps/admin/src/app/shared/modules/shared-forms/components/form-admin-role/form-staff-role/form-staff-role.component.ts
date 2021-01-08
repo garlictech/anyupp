@@ -3,12 +3,12 @@ import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 import {
   IAdminRoleEntity,
+  IAssignedEntityNames,
   IChain,
   IGroup,
   IKeyValue,
   IUnit,
 } from '../../../../../interfaces';
-import { DataService } from '../../../../../services/data';
 import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
@@ -23,7 +23,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-staff-role',
+  selector: 'bgap-form-staff-role',
   templateUrl: './form-staff-role.component.html',
 })
 export class FormStaffRoleComponent implements OnInit, OnDestroy {
@@ -32,12 +32,11 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
   public chainOptions: IKeyValue[];
   public unitOptions: IKeyValue[];
   public entitySelector: FormGroup;
-  public assignedUnits: any[];
+  public assignedUnits: IAssignedEntityNames[];
 
   constructor(
     private _store: Store<IState>,
     private _formBuilder: FormBuilder,
-    private _dataService: DataService
   ) {
     this.groupOptions = [];
     this.chainOptions = [];

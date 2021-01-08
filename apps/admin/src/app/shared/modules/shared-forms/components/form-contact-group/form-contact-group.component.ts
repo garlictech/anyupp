@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
 import { ILocation } from '../../../../interfaces';
 
 @Component({
-  selector: 'app-form-contact-group',
+  selector: 'bgap-form-contact-group',
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
@@ -25,7 +25,7 @@ export class FormContactGroupComponent {
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
       )
-      .subscribe((response: any): any => {
+      .subscribe((response: any): void => { // TODO create interface for the response
         if (response.status === 'OK' && response.results[0]) {
           this._patchLocation(_get(response, 'results[0].geometry.location'));
         }

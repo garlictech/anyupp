@@ -19,7 +19,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-edit',
+  selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
   styleUrls: ['./order-edit.component.scss']
 })
@@ -98,6 +98,8 @@ export class OrderEditComponent implements OnDestroy {
   }
 
   public updateOrderPaymentMethod(method: EPaymentMethod): void {
+    // TODO userRoles-ból!
+    /*
     this._dataService.updateOrderPaymentMode(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
@@ -107,5 +109,6 @@ export class OrderEditComponent implements OnDestroy {
         paymentMethod: method
       }
     );
+    */
   }
 }

@@ -2,6 +2,7 @@ import { IGroup } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -38,6 +39,6 @@ const reducerMap: ActionReducerMap<IGroupListState> = {
 
 const reducer: ActionReducer<IGroupListState> = combineReducers(reducerMap);
 
-export function groupListReducer(state: any, action: any): IGroupListState {
+export function groupListReducer(state: IGroupListState | undefined, action: Action): IGroupListState {
   return reducer(state, action);
 }

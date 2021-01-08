@@ -27,10 +27,12 @@ import { DEFAULT_LANG } from '../../const';
 import { EAdminRole, EOrderStatus } from '../../enums';
 import {
   IAdminUser,
+  IAdminUserCredential,
   IAdminUserRole,
   IAdminUserSettings,
   IChain,
   IGroup,
+  IMergedAdminUser,
   IOrder,
   IOrderItem,
   IProduct,
@@ -66,7 +68,7 @@ export class DataService {
         .valueChanges()
     ])
       .pipe(takeUntil(this._destroyConnection$))
-      .subscribe(([adminUser, adminUserCredentials]: [any, any]): void => {
+      .subscribe(([adminUser, adminUserCredentials]: [IAdminUser, IAdminUserCredential]): void => {
         this._store.dispatch(
           currentUserActions.setCurrentAdminUser({
             adminUser: {
@@ -211,7 +213,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/chains/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           chainListActions.setAllChains({
             chains: objectToArray(data).filter((c: IChain): boolean =>
@@ -232,7 +234,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/groups/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           groupListActions.setAllGroups({
             groups: objectToArray(data).filter((c: IGroup): boolean =>
@@ -253,7 +255,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/units/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           unitListActions.setAllUnits({
             units: objectToArray(data).filter((c: IUnit): boolean =>
@@ -271,7 +273,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/productCategories/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productCategoryListActions.setAllProductCategories({
             productCategories: objectToArray(data)
@@ -285,7 +287,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/products/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllChainProducts({
             products: objectToArray(data)
@@ -299,7 +301,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/products/groups/${groupId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllGroupProducts({
             products: objectToArray(data)
@@ -313,7 +315,7 @@ export class DataService {
       .object(`/${environment.dbPrefix}/products/units/${unitId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllUnitProducts({
             products: objectToArray(data)
@@ -329,7 +331,7 @@ export class DataService {
       )
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         const products = [];
 
         Object.keys(data || {}).forEach((productCategoryId: string): void => {
@@ -362,7 +364,7 @@ export class DataService {
       )
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         let activeOrders = [];
         let historyOrders = [];
 
@@ -413,7 +415,7 @@ export class DataService {
       .object(`/users/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           userListActions.setAllUsers({
             users: objectToArray(data)
@@ -432,8 +434,8 @@ export class DataService {
         .valueChanges()
     ])
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe(([_adminUsers, _adminUserCredentials]: [any, any]): void => {
-        const data = {};
+      .subscribe(([_adminUsers, _adminUserCredentials]: [IAdminUser, IAdminUserCredential]): void => {
+        const data: IMergedAdminUser = {};
         const commonKeys: string[] = _intersection(
           Object.keys(_adminUsers || {}),
           Object.keys(_adminUserCredentials || {})
@@ -451,7 +453,7 @@ export class DataService {
             break;
           case EAdminRole.CHAIN_ADMIN:
             adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
+              (currentAdminUser: IMergedAdminUser): boolean => {
                 const loggedAdminChainIds = (
                   loggedAdminRole?.entities ?? []
                 ).map((e): string => e.chainId);
@@ -472,7 +474,7 @@ export class DataService {
             break;
           case EAdminRole.GROUP_ADMIN:
             adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
+              (currentAdminUser: IMergedAdminUser): boolean => {
                 const loggedAdminGroupIds = (
                   loggedAdminRole?.entities ?? []
                 ).map((e): string => e.unitId);
@@ -492,7 +494,7 @@ export class DataService {
             break;
           case EAdminRole.UNIT_ADMIN:
             adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
+              (currentAdminUser: IMergedAdminUser): boolean => {
                 const loggedAdminUnitIds = (
                   loggedAdminRole?.entities ?? []
                 ).map((e): string => e['unitId']);
@@ -553,7 +555,7 @@ export class DataService {
       .push(value);
   }
 
-  public updateChain(chainId: string, value: IChain): Promise<any> {
+  public updateChain(chainId: string, value: IChain): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/chains/${chainId}`)
       .update(value);
@@ -563,7 +565,7 @@ export class DataService {
     chainId: string,
     key: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/chains/${chainId}/style/images`)
       .update({
@@ -581,7 +583,7 @@ export class DataService {
       .push(value);
   }
 
-  public updateGroup(groupId: string, value: IGroup): Promise<any> {
+  public updateGroup(groupId: string, value: IGroup): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/groups/${groupId}`)
       .update(value);
@@ -597,13 +599,13 @@ export class DataService {
       .push(value);
   }
 
-  public updateUnit(unitId: string, value: any): Promise<any> {
+  public updateUnit(unitId: string, value): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/units/${unitId}`)
       .update(value);
   }
 
-  public regenerateUnitData(unitId: string): Promise<any> {
+  public regenerateUnitData(unitId: string): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
       `${environment.dbPrefix}-regenerateUnitData`
     );
@@ -630,7 +632,7 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     value: IProductCategory
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
@@ -642,7 +644,7 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
@@ -656,7 +658,7 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
@@ -701,7 +703,7 @@ export class DataService {
     chainId: string,
     productId: string,
     value: IProduct
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
@@ -713,7 +715,7 @@ export class DataService {
     chainId: string,
     productId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
@@ -726,8 +728,8 @@ export class DataService {
   public updateGroupProduct(
     groupId: string,
     productId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/products/groups/${groupId}/${productId}`
@@ -738,8 +740,8 @@ export class DataService {
   public updateUnitProduct(
     unitId: string,
     productId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
       .update(value);
@@ -749,7 +751,7 @@ export class DataService {
     unitId: string,
     productId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
       .update({
@@ -766,7 +768,7 @@ export class DataService {
     unitId: string,
     userId: string,
     orderId: string
-  ): Observable<any> {
+  ): Observable<unknown> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
@@ -781,7 +783,7 @@ export class DataService {
     userId: string,
     orderId: string,
     status: EOrderStatus
-  ): Promise<any> {
+  ): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
       `${environment.dbPrefix}-setNewOrderStatus`
     );
@@ -800,8 +802,8 @@ export class DataService {
     unitId: string,
     userId: string,
     orderId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
@@ -815,8 +817,8 @@ export class DataService {
     userId: string,
     orderId: string,
     idx: number,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
@@ -830,8 +832,8 @@ export class DataService {
     userId: string,
     orderId: string,
     idx: number,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
@@ -846,7 +848,7 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IOrderItem
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
@@ -862,7 +864,7 @@ export class DataService {
     return this._angularFireDatabase.list(`/users`).push(value);
   }
 
-  public updateUser(userId: string, value: IUser): Promise<any> {
+  public updateUser(userId: string, value: IUser): Promise<void> {
     return this._angularFireDatabase.object(`/users/${userId}`).update(value);
   }
 
@@ -876,7 +878,7 @@ export class DataService {
     return this._angularFireDatabase.list(`/adminUsers`).push(value);
   }
 
-  public updateAdminUser(userId: string, value: IAdminUser): Promise<any> {
+  public updateAdminUser(userId: string, value: IAdminUser): Promise<void> {
     return this._angularFireDatabase
       .object(`/adminUsers/${userId}`)
       .update(value);
@@ -885,7 +887,7 @@ export class DataService {
   public updateAdminUserRoles(
     userId: string,
     value: IAdminUserRole
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}/roles`)
       .update(value);
@@ -894,7 +896,7 @@ export class DataService {
   public updateAdminUserSettings(
     userId: string,
     value: IAdminUserSettings
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
@@ -905,7 +907,7 @@ export class DataService {
   public updateAdminUserSeletedLanguage(
     userId: string,
     language: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
         `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
@@ -918,7 +920,7 @@ export class DataService {
   public updateAdminUserProfileImagePath(
     userId: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
       profileImage: imagePath
     });
@@ -927,10 +929,10 @@ export class DataService {
   public async getAdminUserByEmail(email: string): Promise<any> {
     return new Promise((resolve): void => {
       this._angularFireDatabase
-        .list(`/adminUsers`, (ref): any =>
+        .list(`/adminUsers`, (ref) =>
           ref.orderByChild('email').equalTo(email.trim())
         )
-        .snapshotChanges()
+        .snapshotChanges() // TODO  snapshotChanges????
         .pipe(take(1))
         .subscribe((val): void => {
           resolve(val);
@@ -938,13 +940,13 @@ export class DataService {
     });
   }
 
-  public async getUserByEmail(email: string): Promise<any> {
+  public async getUserByEmail(email: string): Promise<unknown> {
     return new Promise((resolve): void => {
       this._angularFireDatabase
-        .list(`/users`, (ref): any =>
+        .list(`/users`, (ref) =>
           ref.orderByChild('email').equalTo(email.trim())
         )
-        .snapshotChanges()
+        .snapshotChanges() // TODO  snapshotChanges????
         .pipe(take(1))
         .subscribe((val): void => {
           resolve(val);

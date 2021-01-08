@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { DEFAULT_LANE_COLOR } from '../../../../const';
 
 @Component({
-  selector: 'app-colorized-lane-icon',
+  selector: 'bgap-colorized-lane-icon',
   templateUrl: './colorized-lane-icon.component.html',
   styleUrls: ['./colorized-lane-icon.component.scss']
 })

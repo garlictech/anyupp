@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 import { EAdminRole, EProductLevel } from '../../shared/enums';
-import { IAdminUser, IGroup, IProduct } from '../../shared/interfaces';
+import { IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '../../shared/interfaces';
 import { customNumberCompare } from '../../shared/pure';
 import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';
@@ -13,7 +13,7 @@ import {
 } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NbDialogService, NbTabsetComponent } from '@nebular/theme';
+import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -21,7 +21,7 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-list',
+  selector: 'bgap-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
@@ -38,8 +38,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public selectedProductLevel: EProductLevel;
   public adminUser: IAdminUser;
 
-  private _sortedChainProductIds: any[];
-  private _sortedUnitProductIds: any[];
+  private _sortedChainProductIds: string[];
+  private _sortedUnitProductIds: string[];
 
   constructor(
     private _store: Store<IState>,
@@ -153,8 +153,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  public selectLevel($event: any): void {
-    this.selectedProductLevel = $event.tabId;
+  public selectLevel($event: NbTabComponent): void {
+    this.selectedProductLevel = <EProductLevel>$event.tabId;
   }
 
   public addProduct(): void {
@@ -168,7 +168,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public chainPositionChange($event: any): void {
+  public chainPositionChange($event: IProductOrderChangeEvent): void {
     const idx = this._sortedChainProductIds.indexOf($event.productId);
 
     if (

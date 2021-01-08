@@ -9,7 +9,7 @@ import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.componen
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
 @Component({
-  selector: 'app-unit-list-item',
+  selector: 'bgap-unit-list-item',
   templateUrl: './unit-list-item.component.html',
   styleUrls: ['./unit-list-item.component.scss'],
 })

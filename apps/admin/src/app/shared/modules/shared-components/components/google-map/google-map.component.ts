@@ -13,7 +13,7 @@ import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 declare const google;
 
 @Component({
-  selector: 'app-google-map',
+  selector: 'bgap-google-map',
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.scss']
 })
@@ -62,7 +62,7 @@ export class GoogleMapComponent implements OnChanges {
     });
   }
 
-  public openInfo(marker: MapMarker, content: any): void {
+  public openInfo(/*marker: MapMarker, content: any*/): void {
     /*
     this.infoContent = content;
     this.info.open(marker);

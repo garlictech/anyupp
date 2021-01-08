@@ -18,9 +18,9 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/dashboard/dashboard.module').then(
-            (m): any => m.DashboardModule
+            (m) => m.DashboardModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -29,9 +29,9 @@ const routes: Routes = [
       },
       {
         path: 'products',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/product-list/product-list.module').then(
-            (m): any => m.ProductListModule
+            (m) => m.ProductListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -40,10 +40,10 @@ const routes: Routes = [
       },
       {
         path: 'product-categories',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import(
             './pages/product-category-list/product-category-list.module'
-          ).then((m): any => m.ProductCategoryListModule),
+          ).then((m) => m.ProductCategoryListModule),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.PRODUCT_CATEGORIES,
@@ -51,9 +51,9 @@ const routes: Routes = [
       },
       {
         path: 'groups',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/group-list/group-list.module').then(
-            (m): any => m.GroupListModule
+            (m) => m.GroupListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -62,9 +62,9 @@ const routes: Routes = [
       },
       {
         path: 'units',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/unit-list/unit-list.module').then(
-            (m): any => m.UnitListModule
+            (m) => m.UnitListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -73,9 +73,9 @@ const routes: Routes = [
       },
       {
         path: 'chains',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/chain-list/chain-list.module').then(
-            (m): any => m.ChainListModule
+            (m) => m.ChainListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -84,9 +84,9 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/user-list/user-list.module').then(
-            (m): any => m.UserListModule
+            (m) => m.UserListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -95,9 +95,9 @@ const routes: Routes = [
       },
       {
         path: 'admins',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/admin-user-list/admin-user-list.module').then(
-            (m): any => m.AdminUserListModule
+            (m) => m.AdminUserListModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -111,9 +111,9 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadChildren: (): any =>
+        loadChildren: () =>
           import('./pages/auth/login/login.module').then(
-            (m): any => m.LoginModule
+            (m) => m.LoginModule
           ),
       },
     ],

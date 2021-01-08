@@ -12,7 +12,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-product-category-form',
+  selector: 'bgap-product-category-form',
   templateUrl: './product-category-form.component.html',
 })
 export class ProductCategoryFormComponent
@@ -82,7 +82,7 @@ export class ProductCategoryFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('CHAIN UPDATE ERROR', err);
             }
           );
@@ -98,7 +98,7 @@ export class ProductCategoryFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('CHAIN INSERT ERROR', err);
             }
           );

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
-  selector: 'app-floor-map-orders',
+  selector: 'bgap-floor-map-orders',
   templateUrl: './floor-map-orders.component.html',
   styleUrls: ['./floor-map-orders.component.scss']
 })
@@ -18,7 +18,7 @@ export class FloorMapOrdersComponent implements OnInit {
   public allTableOrders$: BehaviorSubject<IFloorMapTableOrderObjects>;
   public tableOrders: IFloorMapTableOrders;
 
-  constructor(private _nbDialogRef: NbDialogRef<any>) {}
+  constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 
   ngOnInit(): void {
     this.allTableOrders$

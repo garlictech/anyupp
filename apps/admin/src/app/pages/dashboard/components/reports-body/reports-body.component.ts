@@ -15,7 +15,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-body',
+  selector: 'bgap-reports-body',
   templateUrl: './reports-body.component.html',
   styleUrls: ['./reports-body.component.scss'],
 })

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-checkbox',
+  selector: 'bgap-form-checkbox',
   templateUrl: './form-checkbox.component.html',
 })
 export class FormCheckboxComponent {

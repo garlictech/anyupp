@@ -8,7 +8,7 @@ enum EFormMode {
 }
 
 @Component({
-  selector: 'app-login',
+  selector: 'bgap-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -17,7 +17,7 @@ export class LoginComponent {
   public formMode: EFormMode = EFormMode.LOGIN;
   public EFormMode = EFormMode;
 
-  public toggleResetForm = ($event: any, showResetForm: boolean): void => {
+  public toggleResetForm = ($event: Event, showResetForm: boolean): void => {
     $event?.preventDefault();
 
     this.formMode = showResetForm ? EFormMode.RESET : EFormMode.LOGIN;

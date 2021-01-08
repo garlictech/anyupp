@@ -11,7 +11,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-chain-admin-role',
+  selector: 'bgap-form-chain-admin-role',
   templateUrl: './form-chain-admin-role.component.html',
 })
 export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
@@ -57,6 +57,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
+
   }
 
   public addChain(): void {

@@ -16,10 +16,10 @@
   </nb-card-header>
   <nb-card-body>
     <nb-list-item *ngFor="let adminUser of adminUsers$ | async">
-      <app-admin-user-list-item
+      <bgap-admin-user-list-item
         class="w-100"
         [adminUser]="adminUser"
-      ></app-admin-user-list-item>
+      ></bgap-admin-user-list-item>
     </nb-list-item>
   </nb-card-body>
 </nb-card>

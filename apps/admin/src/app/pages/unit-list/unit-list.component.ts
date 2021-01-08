@@ -17,7 +17,7 @@ import { UnitFormComponent } from './components/unit-form/unit-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-unit-list',
+  selector: 'bgap-unit-list',
   templateUrl: './unit-list.component.html',
 })
 export class UnitListComponent implements OnInit, OnDestroy {

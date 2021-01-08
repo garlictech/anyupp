@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 import { EUnitMapObjectType } from '../../enums';
-import { IFloorMapData, IFloorMapDataObject } from '../../interfaces';
+import { IFloorMapData, IFloorMapDataObject, IFabricGroup } from '../../interfaces';
 import { customStringCompare, objectToArray } from '../utils';
 
 import { fabricCanvas } from './floor-map-canvas';
@@ -129,10 +129,10 @@ export const setRawDataField = (key: string, value: string | number): void => {
   }
 };
 
-export const getRawDataField = (obj: any, key: string): string | number =>
+export const getRawDataField = (obj: IFabricGroup, key: string): string | number =>
   mapRawData.objects[obj.id][key];
 
-const _getObjectProperties = (obj): any => ({
+const _getObjectProperties = (obj): unknown => ({
   id: obj.id,
   type: obj.type,
   width: getObjectBg(obj).width,

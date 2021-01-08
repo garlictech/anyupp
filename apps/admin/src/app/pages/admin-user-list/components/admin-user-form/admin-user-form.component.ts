@@ -11,7 +11,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-user-form',
+  selector: 'bgap-admin-user-form',
   templateUrl: './admin-user-form.component.html',
 })
 export class AdminUserFormComponent
@@ -70,6 +70,7 @@ export class AdminUserFormComponent
           );
       } else {
         // Find existing global admin account (not from stage-dependent adminCredentials)
+        // TODO type conflict
         const adminUsersByEmail: any[] = await this._dataService.getAdminUserByEmail(
           this.dialogForm.value.email
         );

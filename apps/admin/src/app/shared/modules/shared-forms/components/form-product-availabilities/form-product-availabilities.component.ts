@@ -8,7 +8,7 @@ import { FormArray } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-form-product-availabilities',
+  selector: 'bgap-form-product-availabilities',
   templateUrl: './form-product-availabilities.component.html',
 })
 export class FormProductAvailabilitiesComponent {

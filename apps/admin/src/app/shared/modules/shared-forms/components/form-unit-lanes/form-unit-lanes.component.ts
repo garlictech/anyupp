@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-unit-lanes',
+  selector: 'bgap-form-unit-lanes',
   templateUrl: './form-unit-lanes.component.html',
   styleUrls: ['./form-unit-lanes.component.scss'],
 })

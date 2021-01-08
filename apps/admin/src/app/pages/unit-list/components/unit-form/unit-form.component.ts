@@ -30,7 +30,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-unit-form',
+  selector: 'bgap-unit-form',
   templateUrl: './unit-form.component.html',
 })
 export class UnitFormComponent
@@ -196,7 +196,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP UPDATE ERROR', err);
           }
         );
@@ -210,7 +210,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

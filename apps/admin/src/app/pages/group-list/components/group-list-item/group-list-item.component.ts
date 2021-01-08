@@ -7,7 +7,7 @@ import { NbDialogService } from '@nebular/theme';
 import { GroupFormComponent } from '../group-form/group-form.component';
 
 @Component({
-  selector: 'app-group-list-item',
+  selector: 'bgap-group-list-item',
   templateUrl: './group-list-item.component.html',
   styleUrls: ['./group-list-item.component.scss'],
 })

@@ -2,19 +2,19 @@
   <!-- LEFT COLUMN -->
   <div class="col-12 col-md-4 p-1 md-h-100">
     <ng-container *ngIf="!dashboardSettings.orderEditing">
-      <app-order-ticket-list
+      <bgap-order-ticket-list
         *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
-      ></app-order-ticket-list>
+      ></bgap-order-ticket-list>
 
-      <app-order-ticket-history-list
+      <bgap-order-ticket-history-list
         *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
-      ></app-order-ticket-history-list>
+      ></bgap-order-ticket-history-list>
     </ng-container>
 
-    <app-order-product-list
+    <bgap-order-product-list
       *ngIf="dashboardSettings.orderEditing"
       [selectedOrder]="selectedOrder"
-    ></app-order-product-list>
+    ></bgap-order-product-list>
   </div>
 
   <!-- RIGHT COLUMN -->
@@ -78,14 +78,14 @@
       <nb-card-body class="p-0">
         <!-- ORDER DETAILS -->
         <ng-container *ngIf="!dashboardSettings.orderEditing">
-          <app-order-details
+          <bgap-order-details
             *ngIf="
               !dashboardSettings.showAllUserOrders ||
               (dashboardSettings.showAllUserOrders &&
                 dashboardSettings.listMode === EDashboardListMode.HISTORY)
             "
             [order]="selectedOrder"
-          ></app-order-details>
+          ></bgap-order-details>
 
           <ng-container
             *ngIf="
@@ -94,21 +94,21 @@
             "
           >
             <ng-container *ngFor="let order of userActiveOrders">
-              <app-order-details [order]="order"></app-order-details>
+              <bgap-order-details [order]="order"></bgap-order-details>
               <hr class="mb-2" />
             </ng-container>
           </ng-container>
 
           <!--app-order-print
             [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.CURRENT) ? userActiveOrders : [selectedOrder]"
-          ></app-order-print-->
+          ></bgap-order-print-->
         </ng-container>
 
         <!-- ORDER EDIT -->
-        <app-order-edit
+        <bgap-order-edit
           *ngIf="dashboardSettings.orderEditing"
           [order]="selectedOrder"
-        ></app-order-edit>
+        ></bgap-order-edit>
       </nb-card-body>
     </nb-card>
   </div>

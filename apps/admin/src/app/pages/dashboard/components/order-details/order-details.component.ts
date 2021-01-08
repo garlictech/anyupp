@@ -24,7 +24,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-details',
+  selector: 'bgap-order-details',
   styleUrls: ['./order-details.component.scss'],
   templateUrl: './order-details.component.html'
 })

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-form-static-text',
+  selector: 'bgap-form-static-text',
   templateUrl: './form-static-text.component.html',
   styleUrls: ['./form-static-text.component.scss'],
 })

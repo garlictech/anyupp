@@ -13,7 +13,7 @@ import {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-chain-selector',
+  selector: 'bgap-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
   styleUrls: ['./active-chain-selector.component.scss']
 })

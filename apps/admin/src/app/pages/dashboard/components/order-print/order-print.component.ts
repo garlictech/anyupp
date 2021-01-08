@@ -21,7 +21,7 @@ import { combineLatest } from 'rxjs';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-print',
+  selector: 'bgap-order-print',
   templateUrl: './order-print.component.html',
   styleUrls: ['./order-print.component.scss']
 })
@@ -37,7 +37,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
 
   constructor(
     private _store: Store<IState>,
-    private _nbDialogRef: NbDialogRef<any>
+    private _nbDialogRef: NbDialogRef<unknown>
   ) {
     combineLatest([
       this._store.pipe(

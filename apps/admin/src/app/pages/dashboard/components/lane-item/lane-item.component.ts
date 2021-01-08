@@ -22,7 +22,7 @@ import { objectToArray } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lane-item',
+  selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
   styleUrls: ['./lane-item.component.scss']
 })

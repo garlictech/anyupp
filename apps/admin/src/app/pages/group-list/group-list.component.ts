@@ -16,7 +16,7 @@ import { GroupFormComponent } from './components/group-form/group-form.component
 
 @UntilDestroy()
 @Component({
-  selector: 'app-group-list',
+  selector: 'bgap-group-list',
   templateUrl: './group-list.component.html',
 })
 export class GroupListComponent implements OnInit, OnDestroy {

@@ -9,7 +9,7 @@ import { currentUserSelectors } from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-language-selector',
+  selector: 'bgap-language-selector',
   templateUrl: './language-selector.component.html',
   styleUrls: ['./language-selector.component.scss']
 })
@@ -36,6 +36,7 @@ export class LanguageSelectorComponent implements OnDestroy {
   }
 
   public onLanguageSelected(lang: string): void {
+    /* TODO FROM AdminUserCredentials !!!
     if (
       _get(this._adminUser, '_id') &&
       lang !== this._adminUser.settings.selectedLanguage
@@ -45,5 +46,6 @@ export class LanguageSelectorComponent implements OnDestroy {
         lang
       );
     }
+    */
   }
 }

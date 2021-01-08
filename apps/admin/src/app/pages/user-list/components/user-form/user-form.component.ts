@@ -9,7 +9,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-form',
+  selector: 'bgap-user-form',
   templateUrl: './user-form.component.html',
 })
 export class UserFormComponent
@@ -53,7 +53,7 @@ export class UserFormComponent
             );
             this.close();
           },
-          (err): any => {
+          err => {
             console.error('USER UPDATE ERROR', err);
           }
         );
@@ -75,17 +75,17 @@ export class UserFormComponent
                         );
                         this.close();
                       },
-                      (err): any => {
+                      err => {
                         console.error('PASSW RESET ERROR', err);
                       }
                     );
                 },
-                (err): any => {
+                err => {
                   console.error('USER INSERT ERROR', err);
                 }
               );
             },
-            (err): any => {
+            err => {
               console.error('AUTH USER CRATE ERROR', err);
             }
           );

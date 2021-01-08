@@ -21,7 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-hourly-breakdown',
+  selector: 'bgap-reports-hourly-breakdown',
   templateUrl: './reports-hourly-breakdown.component.html',
   styleUrls: ['./reports-hourly-breakdown.component.scss'],
 })
@@ -206,6 +206,7 @@ export class ReportsHourlyBreakdownComponent
   }
 
   private _orderAmounts(products: IProduct[], orders: IOrder[]) {
+    // TODO interface
     const amounts: any = {
       [EProductType.DRINK]: new Array(24).fill(0),
       [EProductType.FOOD]: new Array(24).fill(0),

@@ -29,15 +29,15 @@ export const fixBorderScale = (o, target): void => {
   }
 };
 
-export const getGroupInitialData = (g: fabric.Group): any => ({
-  t: (<any>g).type,
-  x: (<any>g).left,
-  y: (<any>g).top,
+export const getGroupInitialData = (g: fabric.Group) => ({
+  t: g.type,
+  x: g.left,
+  y: g.top,
 });
 
 export const getObjectText = (obj: fabric.Group): string => {
   if (obj?.getObjects) {
-    const textField: any = obj
+    const textField: fabric.IText = <fabric.IText>obj
       .getObjects()
       ?.filter((o): boolean => o instanceof fabric.IText)[0];
 
@@ -47,17 +47,17 @@ export const getObjectText = (obj: fabric.Group): string => {
   return '';
 };
 
-export const getObjectBg = (obj: fabric.Group): any => {
+export const getObjectBg = (obj: fabric.Group): fabric.Group => {
   if (obj?.getObjects) {
-    return obj.getObjects()?.filter((o): boolean => o.type === 'bg')[0];
+    return <fabric.Group>obj.getObjects()?.filter((o): boolean => o.type === 'bg')[0];
   }
 
   return;
 };
 
-export const getObjectRadius = (obj: fabric.Group): string => {
+export const getObjectRadius = (obj: fabric.Group): number => {
   if (obj?.getObjects) {
-    const circleField: any = obj
+    const circleField: fabric.Circle = <fabric.Circle>obj
       .getObjects()
       ?.filter((o): boolean => o instanceof fabric.Circle)[0];
 
@@ -67,14 +67,14 @@ export const getObjectRadius = (obj: fabric.Group): string => {
   return null;
 };
 
-export const isTable = (obj: any): boolean =>
+export const isTable = (obj: fabric.Object): boolean =>
   (<string>obj.type || '').indexOf('table') === 0;
 
-export const isTableOrSeat = (obj: any): boolean =>
+export const isTableOrSeat = (obj: fabric.Object): boolean =>
   (<string>obj.type || '').indexOf('table') === 0 ||
   (<string>obj.type || '').indexOf('seat') === 0;
 
-export const isSeat = (obj: any): boolean =>
+export const isSeat = (obj: fabric.Object): boolean =>
   (<string>obj.type || '').indexOf('seat') === 0;
 
 export const getTableSeatIds = (data: IFloorMapData): string[] =>

@@ -29,7 +29,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-form',
+  selector: 'bgap-product-form',
   templateUrl: './product-form.component.html',
 })
 export class ProductFormComponent
@@ -139,9 +139,7 @@ export class ProductFormComponent
       ).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup(
-          this.productLevel
-        );
+        const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
         (this.dialogForm.controls._variantArr as FormArray).push(variantGroup);
@@ -194,7 +192,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -221,7 +219,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

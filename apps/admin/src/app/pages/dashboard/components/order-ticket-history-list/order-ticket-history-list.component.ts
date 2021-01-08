@@ -16,7 +16,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-history-list',
+  selector: 'bgap-order-ticket-history-list',
   templateUrl: './order-ticket-history-list.component.html'
 })
 export class OrderTicketHistoryListComponent implements OnDestroy {

@@ -7,7 +7,7 @@ import { NbDialogService } from '@nebular/theme';
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @Component({
-  selector: 'app-chain-list-item',
+  selector: 'bgap-chain-list-item',
   templateUrl: './chain-list-item.component.html',
   styleUrls: ['./chain-list-item.component.scss'],
 })

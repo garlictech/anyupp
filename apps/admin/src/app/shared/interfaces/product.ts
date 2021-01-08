@@ -58,3 +58,8 @@ export interface IProduct {
   laneId?: string;
   productType: EProductType;
 }
+
+export interface IProductOrderChangeEvent {
+  change: number;
+  productId: string;
+}

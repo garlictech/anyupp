@@ -65,7 +65,7 @@ const menuItems = {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-admin-layout',
+  selector: 'bgap-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss']
 })
