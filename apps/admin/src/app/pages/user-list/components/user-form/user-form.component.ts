@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { IUser } from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';
 import { EToasterType } from '../../../../shared/services/toaster';

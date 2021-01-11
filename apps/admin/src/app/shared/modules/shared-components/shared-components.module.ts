@@ -20,19 +20,18 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 
 import { PipesModule } from '../../pipes';
-import { ActiveChainSelectorComponent } from './components/active-chain-selector/active-chain-selector.component';
-import { ActiveGroupSelectorComponent } from './components/active-group-selector/active-group-selector.component';
-import { ActiveProductCategorySelectorComponent } from './components/active-product-category-selector/active-product-category-selector.component';
-import { ActiveUnitSelectorComponent } from './components/active-unit-selector/active-unit-selector.component';
-import { AddressComponent } from './components/address/address.component';
-import { ColorizedLaneIconComponent } from './components/colorized-lane-icon/colorized-lane-icon.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { ContactComponent } from './components/contact/contact.component';
-import { FloorMapEditorComponent } from './components/floor-map-editor/floor-map-editor.component';
-import { GoogleMapComponent } from './components/google-map/google-map.component';
-import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
-import { StatusLedComponent } from './components/status-led/status-led.component';
-import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge/variant-availability-badge.component';
+import { ActiveChainSelectorComponent } from './components/active-chain-selector';
+import { ActiveGroupSelectorComponent } from './components/active-group-selector';
+import { ActiveProductCategorySelectorComponent } from './components/active-product-category-selector';
+import { ActiveUnitSelectorComponent } from './components/active-unit-selector';
+import { AddressComponent } from './components/address';
+import { ColorizedLaneIconComponent } from './components/colorized-lane-icon';
+import { ConfirmDialogComponent } from './components/confirm-dialog';
+import { ContactComponent } from './components/contact';
+import { FloorMapEditorComponent } from './components/floor-map-editor';
+import { GoogleMapComponent } from './components/google-map';
+import { StatusLedComponent } from './components/status-led';
+import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
 
 const NB_MODULES = [
   NbIconModule,
@@ -59,13 +58,13 @@ const COMPONENTS = [
   ActiveGroupSelectorComponent,
   ActiveUnitSelectorComponent,
   ActiveProductCategorySelectorComponent,
-  LanguageSelectorComponent,
   GoogleMapComponent,
   VariantAvailabilityBadgeComponent,
   ConfirmDialogComponent,
   StatusLedComponent,
   ColorizedLaneIconComponent,
   FloorMapEditorComponent,
+  ContactComponent
 ];
 
 @NgModule({

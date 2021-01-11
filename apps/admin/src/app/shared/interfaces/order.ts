@@ -74,3 +74,12 @@ export interface IOrderSum {
   currency?: string;
   all?: number;
 }
+
+export interface IOrderAmount {
+  [key: string]: number[];
+}
+
+export interface ICurrencyValue {
+  value: number;
+  currency: string;
+}

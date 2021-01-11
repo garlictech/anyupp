@@ -141,7 +141,7 @@ const _roundScale = (val: number): number =>
 
 const _onScaled = (e): void => {
   const target = e.target;
-  const bg: fabric.Group = utils.getObjectBg(target);
+  const bg: fabric.Rect | fabric.Circle = utils.getObjectBg(target);
   const textField = target
     .getObjects()
     ?.filter((o): boolean => o instanceof fabric.IText)[0];
@@ -153,10 +153,8 @@ const _onScaled = (e): void => {
   };
 
   // Update radius
-  if (bg.radius) {
-    bg.set({
-      radius: _roundScale(bg.radius * e.target.scaleX),
-    });
+  if ((<fabric.Circle>bg).radius) {
+    (<fabric.Circle>bg).setRadius(_roundScale((<fabric.Circle>bg).radius * e.target.scaleX));
   }
 
   // Reset text scale
@@ -168,7 +166,7 @@ const _onScaled = (e): void => {
   }
 
   // Update background & container
-  bg.set(commonParams);
+  (<fabric.Object>bg).set(commonParams);
   target.set(commonParams);
 
   utils.fixBorderScale(bg, e.target);

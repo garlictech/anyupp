@@ -2,7 +2,7 @@ import { get as _get, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { EImageType } from '../../../../shared/enums';
 import { IProductCategory } from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';

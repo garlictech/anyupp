@@ -78,6 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -136,7 +137,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {},
+          callback: (): void => {/**/},
           status: 'basic',
         },
       ],

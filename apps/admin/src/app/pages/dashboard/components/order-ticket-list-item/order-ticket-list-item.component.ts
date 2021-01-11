@@ -4,7 +4,7 @@ import {
   currentStatus as currentStatusFn,
 } from '../../../../shared/pure';
 
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EDashboardTicketListType } from '../../../../shared/enums';
 
 @Component({

@@ -26,17 +26,13 @@ export interface IAdminUserRole {
   entities: IAdminRoleEntity[];
 }
 
-export interface IAdminUser extends IContact {
-  _id?: string;
-  name?: string;
-  profileImage?: string;
-}
-
 export interface IAdminUserCredential {
   roles?: IAdminUserRole;
   settings?: IAdminUserSettings;
 }
 
-export interface IMergedAdminUser extends IAdminUser, IAdminUserCredential {
-
+export interface IAdminUser extends IContact, IAdminUserCredential {
+  _id?: string;
+  name?: string;
+  profileImage?: string;
 }

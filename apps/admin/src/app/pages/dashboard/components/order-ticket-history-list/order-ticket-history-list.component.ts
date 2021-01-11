@@ -55,12 +55,13 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
         this._refreshDailyOrders(!this.selectedOrder);
       });
 
-    this.dateFormControl.valueChanges.subscribe((val): void => {
+    this.dateFormControl.valueChanges.subscribe((): void => {
       this._refresDayIntervals();
       this._refreshDailyOrders(true);
     });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

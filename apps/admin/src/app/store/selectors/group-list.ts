@@ -4,7 +4,6 @@ import { IAdminUserSettings, IGroup } from '../../shared/interfaces';
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { groupListAdapter } from '../reducer';
@@ -13,10 +12,7 @@ import * as currentUserSelectors from './current-user';
 
 const featureSelector = createFeatureSelector<IGroupListState>('groupList');
 
-const groupListSelector: MemoizedSelector<
-  object,
-  IGroupEntityState
-> = createSelector(
+const groupListSelector = createSelector(
   featureSelector,
   (state: IGroupListState): IGroupEntityState => state.groups
 );
@@ -27,7 +23,7 @@ export const getAllGroupIds = groupListAdapter.getSelectors(groupListSelector)
 export const getAllGroupCount = groupListAdapter.getSelectors(groupListSelector)
   .selectTotal;
 
-export const getGroupById = (id: string): MemoizedSelector<object, IGroup> => {
+export const getGroupById = (id: string) => {
   return createSelector(
     getAllGroups,
     (groups: IGroup[]): IGroup =>
@@ -47,7 +43,7 @@ export const getSelectedChainGroups = createSelector(
 
 export const getGroupsByChainId = (
   chainId: string
-): MemoizedSelector<object, IGroup[]> => {
+) => {
   return createSelector(getAllGroups, (groups: IGroup[]): IGroup[] =>
     groups.filter((group): boolean => group.chainId === chainId)
   );

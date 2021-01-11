@@ -25,7 +25,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 
 @UntilDestroy()
 @Component({
@@ -187,7 +187,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -223,7 +223,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

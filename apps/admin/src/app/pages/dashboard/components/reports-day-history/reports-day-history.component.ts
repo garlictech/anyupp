@@ -130,6 +130,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

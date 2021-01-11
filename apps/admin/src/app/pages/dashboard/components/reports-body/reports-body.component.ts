@@ -60,6 +60,7 @@ export class ReportsBodyComponent implements OnDestroy {
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

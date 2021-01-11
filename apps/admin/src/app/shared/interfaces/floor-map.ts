@@ -54,3 +54,17 @@ export interface IFabricObject extends fabric.Object {
 export interface IFabricGroup extends fabric.Group {
   id: string;
 }
+
+export interface IFabricObjectProperties {
+  id: string;
+  type: string;
+  width: number;
+  height: number;
+  radius: number;
+  angle: number;
+  left: number;
+  top: number;
+  caption: string;
+}
+
+

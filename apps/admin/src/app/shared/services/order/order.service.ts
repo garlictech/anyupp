@@ -17,7 +17,6 @@ import {
   IOrderItem,
   IProduct
 } from '../../interfaces';
-import { LocalizePipe } from '../../pipes';
 import { DataService } from '../data';
 
 @Injectable({
@@ -29,8 +28,7 @@ export class OrderService {
 
   constructor(
     private _store: Store<IState>,
-    private _dataService: DataService,
-    private _localizePipe: LocalizePipe
+    private _dataService: DataService
   ) {
     this._store
       .pipe(select(currentUserSelectors.getAdminUser))

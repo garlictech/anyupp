@@ -72,7 +72,7 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: () => {},
+          callback: () => {/**/},
           status: 'basic',
         },
       ],

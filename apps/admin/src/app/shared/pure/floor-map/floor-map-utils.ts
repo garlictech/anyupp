@@ -47,9 +47,9 @@ export const getObjectText = (obj: fabric.Group): string => {
   return '';
 };
 
-export const getObjectBg = (obj: fabric.Group): fabric.Group => {
+export const getObjectBg = (obj: fabric.Group): fabric.Rect | fabric.Circle => {
   if (obj?.getObjects) {
-    return <fabric.Group>obj.getObjects()?.filter((o): boolean => o.type === 'bg')[0];
+    return obj.getObjects()?.filter((o): boolean => o.type === 'bg')[0];
   }
 
   return;

@@ -8,7 +8,7 @@ import {
   IProductCategory,
   IProductVariant,
 } from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import {
   customNumberCompare,
   multiLangValidator,

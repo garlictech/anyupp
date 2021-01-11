@@ -172,11 +172,11 @@ export const setBorder = (
   color: string = FLOOR_MAP_CONFIG.seatStroke,
   strokeWidth: number = FLOOR_MAP_CONFIG.strokeWidth
 ): void => {
-  const bgObj: fabric.Group = getObjectBg(obj);
+  const bgObj: fabric.Rect | fabric.Circle = getObjectBg(obj);
 
   if (bgObj) {
-    bgObj.set('stroke', color);
-    bgObj.set('strokeWidth', strokeWidth);
+    (<fabric.Object>bgObj).set('stroke', color);
+    (<fabric.Object>bgObj).set('strokeWidth', strokeWidth);
   }
 };
 
@@ -184,9 +184,9 @@ export const setBgColor = (
   obj: fabric.Group,
   color: string = FLOOR_MAP_CONFIG.seatFill
 ): void => {
-  const bgObj: fabric.Group = getObjectBg(obj);
+  const bgObj: fabric.Rect | fabric.Circle = getObjectBg(obj);
 
   if (bgObj) {
-    bgObj.set('fill', color);
+    (<fabric.Object>bgObj).set('fill', color);
   }
 };

@@ -6,5 +6,5 @@ export interface IGroup extends IContact {
   chainId: string;
   name: string;
   description: ILocalizedItem<string>;
-  currency: string; // group edit, unit readonly  TODO
+  currency: string; // group edit, unit readonly
 }

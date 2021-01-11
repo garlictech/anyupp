@@ -49,11 +49,11 @@ export interface IProduct {
   image: string;
   productCategoryId: string;
   isVisible: boolean; // temp
-  contains: any; // TODO interface
+  // contains: any; // TODO interface
   position: string;
   variants: IProductVariantsObject;
   // alwaysAvailableOnOpen: boolean; // TODO
-  ingredients: IProductIngredients; // TODO later...
+  // ingredients: IProductIngredients; // TODO later...
   tax: string; // %
   laneId?: string;
   productType: EProductType;

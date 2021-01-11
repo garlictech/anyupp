@@ -1,5 +1,5 @@
 import { IUnit } from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import * as floorMapFuncs from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
 
@@ -53,7 +53,7 @@ export class UnitFloorMapComponent
           );
           this.close();
         },
-        (err): any => {
+        (err) => {
           console.error('GROUP UPDATE ERROR', err);
         }
       );
@@ -66,7 +66,7 @@ export class UnitFloorMapComponent
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
         this.close();
       },
-      (err): any => {
+      (err) => {
         console.error('GROUP UPDATE ERROR', err);
       }
     );

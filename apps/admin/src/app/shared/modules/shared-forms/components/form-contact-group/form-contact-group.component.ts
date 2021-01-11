@@ -6,6 +6,11 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ILocation } from '../../../../interfaces';
 
+interface IGeocodeResponse {
+  status: string;
+  results: unknown[];
+}
+
 @Component({
   selector: 'bgap-form-contact-group',
   templateUrl: './form-contact-group.component.html',
@@ -25,14 +30,14 @@ export class FormContactGroupComponent {
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
       )
-      .subscribe((response: any): void => { // TODO create interface for the response
+      .subscribe((response: IGeocodeResponse): void => {
         if (response.status === 'OK' && response.results[0]) {
           this._patchLocation(_get(response, 'results[0].geometry.location'));
         }
       });
   }
 
-  public markerPositionChange($event: any): void {
+  public markerPositionChange($event): void {
     this._patchLocation($event);
   }
 

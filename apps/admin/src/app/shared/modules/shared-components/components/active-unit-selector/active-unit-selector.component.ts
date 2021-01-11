@@ -43,6 +43,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedUnitId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

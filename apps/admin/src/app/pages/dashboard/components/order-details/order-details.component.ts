@@ -64,6 +64,7 @@ export class OrderDetailsComponent implements OnDestroy {
     return getStatusColor(EOrderStatus.PLACED);
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -123,7 +124,7 @@ export class OrderDetailsComponent implements OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {},
+          callback: (): void => {/**/},
           status: 'basic'
         }
       ]

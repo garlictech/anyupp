@@ -2,9 +2,11 @@ import * as printJS from 'print-js';
 import { filter, take } from 'rxjs/operators';
 import {
   IChain,
+  ICurrencyValue,
   IOrder,
   IOrderItem,
   IPlace,
+  IPriceShown,
   IUnit
 } from '../../../../shared/interfaces';
 import { IState } from '../../../../store';
@@ -30,9 +32,9 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public unit: IUnit;
   public chain: IChain;
   public now: string;
-  public parsedOrders: any[];
-  public parsedVats: any[];
-  public sum: any;
+  public parsedOrders: IOrder[];
+  public parsedVats: IPriceShown[];
+  public sum: ICurrencyValue;
   public place: IPlace;
 
   constructor(

@@ -149,6 +149,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -196,7 +197,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public unitPositionChange($event: any): void {
+  public unitPositionChange($event): void {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (

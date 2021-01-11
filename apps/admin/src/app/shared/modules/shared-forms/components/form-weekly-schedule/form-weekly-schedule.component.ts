@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormsService } from '../../../../services/forms';
 
@@ -6,7 +6,7 @@ import { FormsService } from '../../../../services/forms';
   selector: 'bgap-form-weekly-schedule',
   templateUrl: './form-weekly-schedule.component.html',
 })
-export class FormWeeklyScheduleComponent implements OnInit {
+export class FormWeeklyScheduleComponent {
   @Input() scheduleControl: FormControl;
   public dayKeys: string[];
 

@@ -44,6 +44,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedProductCategoryId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

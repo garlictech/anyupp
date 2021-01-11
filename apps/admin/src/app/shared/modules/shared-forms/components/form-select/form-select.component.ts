@@ -21,7 +21,7 @@ export class FormSelectComponent {
     this.size = 'small';
   }
 
-  public onChange($event: any): void {
+  public onChange($event: Event): void {
     if (this.selectionChange) {
       this.selectionChange.emit($event);
     }

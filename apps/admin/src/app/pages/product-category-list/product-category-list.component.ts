@@ -22,7 +22,7 @@ import { ProductCategoryFormComponent } from './components/product-category-form
 })
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[];
-  private _sortedProductCategoryIds: any[];
+  private _sortedProductCategoryIds: string[];
   private _selectedChainId: string;
 
   constructor(
@@ -57,6 +57,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

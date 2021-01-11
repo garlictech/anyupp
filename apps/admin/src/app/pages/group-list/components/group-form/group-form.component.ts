@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
 import { IChain, IGroup, IKeyValue } from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
@@ -85,6 +85,7 @@ export class GroupFormComponent
     }
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -1,5 +1,5 @@
 export function throwIfAlreadyLoaded(
-  parentModule: any,
+  parentModule: unknown,
   moduleName: string
 ): void {
   if (parentModule) {

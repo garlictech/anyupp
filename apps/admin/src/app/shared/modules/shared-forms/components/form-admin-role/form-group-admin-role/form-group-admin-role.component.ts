@@ -94,7 +94,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [any, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
           this._store
             .pipe(
               select(
@@ -120,6 +120,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

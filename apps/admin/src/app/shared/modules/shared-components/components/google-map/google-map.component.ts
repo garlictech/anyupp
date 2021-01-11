@@ -61,11 +61,4 @@ export class GoogleMapComponent implements OnChanges {
       lng: $event.latLng.lng()
     });
   }
-
-  public openInfo(/*marker: MapMarker, content: any*/): void {
-    /*
-    this.infoContent = content;
-    this.info.open(marker);
-    */
-  }
 }

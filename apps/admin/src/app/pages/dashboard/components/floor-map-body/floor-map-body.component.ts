@@ -68,7 +68,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(unitListSelectors.getSelectedUnit),
-        tap((unit: IUnit): void => {
+        tap((): void => {
           this.unit = undefined;
         }),
         filter((unit: IUnit): boolean => !!unit),
@@ -101,9 +101,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
               ? clientWidth / this.unit.floorMap.w
               : clientHeight / this.unit.floorMap.h;
 
-          // TODO type instead of any
-          (<any>document.querySelector('#floorMap')).style.transform = `scale(${scale.toFixed(2)})`;
-          (<any>document.querySelector('#floorMap')).style.transformOrigin =
+          (<HTMLElement>document.querySelector('#floorMap')).style.transform = `scale(${scale.toFixed(2)})`;
+          (<HTMLElement>document.querySelector('#floorMap')).style.transformOrigin =
             'top left';
         }),
         switchMap(
@@ -159,6 +158,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

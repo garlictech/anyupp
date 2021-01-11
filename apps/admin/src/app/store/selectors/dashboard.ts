@@ -8,7 +8,6 @@ import { IOrder } from '../../shared/interfaces';
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { IDashboardSettings, IDashboardState } from '../state';
@@ -16,7 +15,7 @@ import { getAllActiveOrders, getAllHistoryOrders } from './order-list';
 
 const featureSelector = createFeatureSelector<IDashboardState>('dashboard');
 
-export const getSelectedActiveOrder = (): MemoizedSelector<object, IOrder> => {
+export const getSelectedActiveOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllActiveOrders,
@@ -28,7 +27,7 @@ export const getSelectedActiveOrder = (): MemoizedSelector<object, IOrder> => {
   );
 };
 
-export const getSelectedHistoryOrder = (): MemoizedSelector<object, IOrder> => {
+export const getSelectedHistoryOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllHistoryOrders,
