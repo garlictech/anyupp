@@ -23,8 +23,7 @@ import { floorMapActions } from '../../../../../store/actions';
   templateUrl: './floor-map-editor.component.html',
   styleUrls: ['./floor-map-editor.component.scss']
 })
-export class FloorMapEditorComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode: boolean;
   @Input() floorMap: IFloorMapData;
   public dimensionForm: FormGroup;

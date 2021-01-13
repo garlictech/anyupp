@@ -116,6 +116,7 @@ export const setTextToActiveObject = (text: string): void => {
 
     if (textField) {
       textField.set('text', text);
+      obj.dirty = true;
       fabricCanvas.renderAll();
     }
   }
