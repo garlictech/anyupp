@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { IAdminUser } from '../../interfaces';
 import { DataService } from '../data';
 import { EToasterType, ToasterService } from '../toaster';
-import * as firebaseAdmin from 'firebase-admin';
 
 @Injectable({
   providedIn: 'root',
@@ -84,27 +83,6 @@ export class AuthService {
   ): Promise<firebase.auth.UserCredential> {
     const password = Math.random().toString(36).substring(2, 10);
 
-    /*
-    firebaseAdmin
-      .auth()
-      .createUser({
-        email: 'user@example.com',
-        emailVerified: false,
-        phoneNumber: '+11234567890',
-        password: password,
-        displayName: 'John Doe',
-        photoURL: 'http://www.example.com/12345678/photo.png',
-        disabled: false,
-      })
-      .then(userRecord => {
-        // See the UserRecord reference doc for the contents of userRecord.
-        console.log('Successfully created new user:', userRecord.uid);
-      })
-      .catch(error => {
-        console.log('Error creating new user:', error);
-      });
-
-    */
     return this._angularFireAuth.createUserWithEmailAndPassword(
       email,
       password
