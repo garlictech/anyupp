@@ -37,3 +37,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# libs
+/libs/admin/firebase/config/src/lib/config/*

@@ -1,4 +1,3 @@
-import { FIREBASE_CONFIG } from '../firebase.config';
 
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -34,6 +33,8 @@ import { AppComponent } from './app.component';
 import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
 
+import { adminFirebaseConfig} from '@bgap/admin/firebase/config';
+
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
   NbLayoutModule,
@@ -53,7 +54,7 @@ const NB_MODULES = [
 ];
 
 const FIREBASE_MODULES = [
-  AngularFireModule.initializeApp(FIREBASE_CONFIG),
+  AngularFireModule.initializeApp(adminFirebaseConfig()),
   AngularFireAuthModule,
   AngularFireDatabaseModule,
   AngularFireStorageModule,

@@ -42,7 +42,7 @@
 
 <div class="pl-5">
   <div class="subtitle-2">
-    {{ 'roles.' + adminUser.roles.role | translate }}
+    {{ 'roles.' + adminUser?.roles?.role | translate }}
   </div>
-  <div class="caption" [innerHTML]="adminUser.roles | roleEntityNames"></div>
+  <div class="caption" [innerHTML]="adminUser?.roles | roleEntityNames"></div>
 </div>

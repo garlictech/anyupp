@@ -60,29 +60,20 @@ export class DataService {
 
   public initDataConnections(userId: string): void {
     // Load user data
-    combineLatest([
-      this._angularFireDatabase.object(`adminUsers/${userId}`).valueChanges(),
-      this._angularFireDatabase
-        .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}`)
-        .valueChanges(),
-    ])
+    this._angularFireDatabase
+      .object(`adminUsers/${userId}`)
+      .valueChanges()
       .pipe(takeUntil(this._destroyConnection$))
-      .subscribe(
-        ([adminUser, adminUserCredentials]: [
-          IAdminUser,
-          IAdminUserCredential
-        ]): void => {
-          this._store.dispatch(
-            currentUserActions.setCurrentAdminUser({
-              adminUser: {
-                _id: userId,
-                ...adminUser,
-                ...adminUserCredentials,
-              },
-            })
-          );
-        }
-      );
+      .subscribe((adminUser: IAdminUser): void => {
+        this._store.dispatch(
+          currentUserActions.setCurrentAdminUser({
+            adminUser: {
+              _id: userId,
+              ...adminUser,
+            },
+          })
+        );
+      });
 
     // Get user settings
     this._store
@@ -214,7 +205,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/`)
+      .object(`/chains/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -235,7 +226,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/groups/`)
+      .object(`/groups/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -256,7 +247,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/units/`)
+      .object(`/units/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -274,7 +265,7 @@ export class DataService {
 
   private _subscribeToChainProductCategories(chainId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/productCategories/chains/${chainId}`)
+      .object(`/productCategories/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -288,7 +279,7 @@ export class DataService {
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/chains/${chainId}`)
+      .object(`/products/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -302,7 +293,7 @@ export class DataService {
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/groups/${groupId}`)
+      .object(`/products/groups/${groupId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -316,7 +307,7 @@ export class DataService {
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}`)
+      .object(`/products/units/${unitId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -330,9 +321,7 @@ export class DataService {
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/generated/productList/units/${unitId}/productCategories`
-      )
+      .object(`/generated/productList/units/${unitId}/productCategories`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -363,9 +352,7 @@ export class DataService {
     unitId: string
   ): void {
     this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users`
-      )
+      .object(`/orders/chains/${chainId}/units/${unitId}/users`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -431,36 +418,16 @@ export class DataService {
   private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
     let adminUsers;
 
-    combineLatest([
-      this._angularFireDatabase.object(`/adminUsers/`).valueChanges(),
-      this._angularFireDatabase
-        .object(`/${environment.dbPrefix}/adminUserCredentials/`)
-        .valueChanges(),
-    ])
+    this._angularFireDatabase.object(`/adminUsers/`).valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe(
-        ([_adminUsers, _adminUserCredentials]: [
-          IAdminUser,
-          IAdminUserCredential
-        ]): void => {
-          const data: IAdminUser = {};
-          const commonKeys: string[] = _intersection(
-            Object.keys(_adminUsers || {}),
-            Object.keys(_adminUserCredentials || {})
-          );
-
-          commonKeys.forEach((key: string): void => {
-            data[key] = {
-              ..._adminUsers[key],
-              ..._adminUserCredentials[key],
-            };
-          });
+        (_adminUsers: IAdminUser): void => {
           switch (loggedAdminRole.role) {
             case EAdminRole.SUPERUSER:
-              adminUsers = objectToArray(data);
+              adminUsers = objectToArray(_adminUsers);
               break;
             case EAdminRole.CHAIN_ADMIN:
-              adminUsers = objectToArray(data).filter(
+              adminUsers = objectToArray(_adminUsers).filter(
                 (currentAdminUser: IAdminUser): boolean => {
                   const loggedAdminChainIds = (
                     loggedAdminRole?.entities ?? []
@@ -481,7 +448,7 @@ export class DataService {
               );
               break;
             case EAdminRole.GROUP_ADMIN:
-              adminUsers = objectToArray(data).filter(
+              adminUsers = objectToArray(_adminUsers).filter(
                 (currentAdminUser: IAdminUser): boolean => {
                   const loggedAdminGroupIds = (
                     loggedAdminRole?.entities ?? []
@@ -501,7 +468,7 @@ export class DataService {
               );
               break;
             case EAdminRole.UNIT_ADMIN:
-              adminUsers = objectToArray(data).filter(
+              adminUsers = objectToArray(_adminUsers).filter(
                 (currentAdminUser: IAdminUser): boolean => {
                   const loggedAdminUnitIds = (
                     loggedAdminRole?.entities ?? []
@@ -559,15 +526,11 @@ export class DataService {
   //
 
   public insertChain(value: IChain): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/chains`)
-      .push(value);
+    return this._angularFireDatabase.list(`/chains`).push(value);
   }
 
   public updateChain(chainId: string, value: IChain): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/${chainId}`)
-      .update(value);
+    return this._angularFireDatabase.object(`/chains/${chainId}`).update(value);
   }
 
   public updateChainImagePath(
@@ -576,7 +539,7 @@ export class DataService {
     imagePath: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/${chainId}/style/images`)
+      .object(`/chains/${chainId}/style/images`)
       .update({
         [key]: imagePath,
       });
@@ -587,15 +550,11 @@ export class DataService {
   //
 
   public insertGroup(value: IGroup): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/groups`)
-      .push(value);
+    return this._angularFireDatabase.list(`/groups`).push(value);
   }
 
   public updateGroup(groupId: string, value: IGroup): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/groups/${groupId}`)
-      .update(value);
+    return this._angularFireDatabase.object(`/groups/${groupId}`).update(value);
   }
 
   //
@@ -603,20 +562,17 @@ export class DataService {
   //
 
   public insertUnit(value: IUnit): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/units`)
-      .push(value);
+    return this._angularFireDatabase.list(`/units`).push(value);
   }
 
   public updateUnit(unitId: string, value): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/units/${unitId}`)
-      .update(value);
+    return this._angularFireDatabase.object(`/units/${unitId}`).update(value);
   }
 
   public regenerateUnitData(unitId: string): Promise<void> {
+    // TODO `${environment.dbPrefix}-regenerateUnitData`
     const callable = this._angularFireFunctions.httpsCallable(
-      `${environment.dbPrefix}-regenerateUnitData`
+      `regenerateUnitData`
     );
 
     return callable({
@@ -633,7 +589,7 @@ export class DataService {
     value: IProductCategory
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/productCategories/chains/${chainId}`)
+      .list(`/productCategories/chains/${chainId}`)
       .push(value);
   }
 
@@ -643,9 +599,7 @@ export class DataService {
     value: IProductCategory
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update(value);
   }
 
@@ -655,9 +609,7 @@ export class DataService {
     imagePath: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update({
         image: imagePath,
       });
@@ -669,9 +621,7 @@ export class DataService {
     value: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update({
         position: value,
       });
@@ -686,7 +636,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/chains/${chainId}`)
+      .list(`/products/chains/${chainId}`)
       .push(value);
   }
 
@@ -695,7 +645,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/groups/${groupId}`)
+      .list(`/products/groups/${groupId}`)
       .push(value);
   }
 
@@ -704,7 +654,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/units/${unitId}`)
+      .list(`/products/units/${unitId}`)
       .push(value);
   }
 
@@ -714,9 +664,7 @@ export class DataService {
     value: IProduct
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
-      )
+      .object(`/products/chains/${chainId}/${productId}`)
       .update(value);
   }
 
@@ -726,9 +674,7 @@ export class DataService {
     value: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
-      )
+      .object(`/products/chains/${chainId}/${productId}`)
       .update({
         position: value,
       });
@@ -740,9 +686,7 @@ export class DataService {
     value
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/groups/${groupId}/${productId}`
-      )
+      .object(`/products/groups/${groupId}/${productId}`)
       .update(value);
   }
 
@@ -752,7 +696,7 @@ export class DataService {
     value
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
+      .object(`/products/units/${unitId}/${productId}`)
       .update(value);
   }
 
@@ -762,7 +706,7 @@ export class DataService {
     value: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
+      .object(`/products/units/${unitId}/${productId}`)
       .update({
         position: value,
       });
@@ -780,7 +724,7 @@ export class DataService {
   ): Observable<unknown> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
       )
       .valueChanges()
       .pipe(take(1));
@@ -794,7 +738,7 @@ export class DataService {
     status: EOrderStatus
   ): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
-      `${environment.dbPrefix}-setNewOrderStatus`
+      `setNewOrderStatus`
     );
 
     return callable({
@@ -815,7 +759,7 @@ export class DataService {
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
       )
       .update(value);
   }
@@ -830,7 +774,7 @@ export class DataService {
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
       )
       .update(value);
   }
@@ -845,7 +789,7 @@ export class DataService {
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -860,7 +804,7 @@ export class DataService {
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -898,7 +842,7 @@ export class DataService {
     value: IAdminUserRole
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}/roles`)
+      .object(`/adminUsers/${userId}/roles`)
       .update(value);
   }
 
@@ -907,9 +851,7 @@ export class DataService {
     value: IAdminUserSettings
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
-      )
+      .object(`/adminUsers/${userId}/settings`)
       .update(value);
   }
 
@@ -918,9 +860,7 @@ export class DataService {
     language: string
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
-      )
+      .object(`/adminUsers/${userId}/settings`)
       .update({
         selectedLanguage: language,
       });

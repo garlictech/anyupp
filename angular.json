@@ -49,6 +49,10 @@
                 {
                   "replace": "apps/admin/src/environments/environment.ts",
                   "with": "apps/admin/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "libs/admin/firebase/config/src/lib/config/firebase.config.ts",
+                  "with": "libs/admin/firebase/config/src/lib/config/firebase.config.prod.ts"
                 }
               ],
               "optimization": true,
@@ -68,6 +72,30 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
+                }
+              ]
+            },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/admin/src/environments/environment.ts",
+                  "with": "apps/admin/src/environments/environment.qa.ts"
+                },
+                {
+                  "replace": "libs/admin/firebase/config/src/lib/config/firebase.config.ts",
+                  "with": "libs/admin/firebase/config/src/lib/config/firebase.config.qa.ts"
+                }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/admin/src/environments/environment.ts",
+                  "with": "apps/admin/src/environments/environment.staging.ts"
+                },
+                {
+                  "replace": "libs/admin/firebase/config/src/lib/config/firebase.config.ts",
+                  "with": "libs/admin/firebase/config/src/lib/config/firebase.config.staging.ts"
                 }
               ]
             }
@@ -228,7 +256,29 @@
           "outputs": ["coverage/libs/graphql/resolvers"]
         }
       }
+    },
+    "admin-firebase-config": {
+      "root": "libs/admin/firebase/config",
+      "sourceRoot": "libs/admin/firebase/config/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/firebase/config/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/firebase/config"],
+          "options": {
+            "jestConfig": "libs/admin/firebase/config/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
+
   },
   "cli": {
     "defaultCollection": "@nrwl/angular",

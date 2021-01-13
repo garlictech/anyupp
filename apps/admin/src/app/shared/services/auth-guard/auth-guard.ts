@@ -58,22 +58,22 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return of('guard').pipe(
       switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<IAdminUserCredential | undefined> =>
+        (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
                 .object(
-                  `/${environment.dbPrefix}/adminUserCredentials/${user.uid}`
+                  `/adminUsers/${user.uid}`
                 )
                 .valueChanges()
                 .pipe(take(1))
             : of(undefined)
       ),
-      map((adminUserCredential: IAdminUserCredential) => {
-        if (_get(adminUserCredential, 'roles.role') === EAdminRole.INACTIVE) {
+      map((adminUser: IAdminUser) => {
+        if (_get(adminUser, 'roles.role') === EAdminRole.INACTIVE) {
           this._angularFireAuth.signOut();
           this._router.navigate(['auth/login']);
         } else {
-          const adminRole: EAdminRole = _get(adminUserCredential, 'roles.role', '');
+          const adminRole: EAdminRole = _get(adminUser, 'roles.role', '');
           const routeRoles: EAdminRole[] = _get(next, 'data.roles', []);
 
           if (!routeRoles.includes(adminRole)) {

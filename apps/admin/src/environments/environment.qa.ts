@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  dbPrefix: 'qa',
+  id: 'qa',
   name: 'QA',
 };
