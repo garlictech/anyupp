@@ -17,10 +17,10 @@
   <nb-card-body>
     <ng-container *ngFor="let group of groups$ | async">
       <nb-list-item *ngIf="group.chainId === (selectedChainId$ | async)">
-        <app-group-list-item
+        <bgap-group-list-item
           class="w-100"
           [group]="group"
-        ></app-group-list-item>
+        ></bgap-group-list-item>
       </nb-list-item>
     </ng-container>
   </nb-card-body>

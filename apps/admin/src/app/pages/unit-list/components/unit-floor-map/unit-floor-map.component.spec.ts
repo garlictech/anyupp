@@ -7,7 +7,7 @@ describe('UnitFloorMapComponent', (): void => {
   let fixture: ComponentFixture<UnitFloorMapComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [UnitFloorMapComponent],
       }).compileComponents();

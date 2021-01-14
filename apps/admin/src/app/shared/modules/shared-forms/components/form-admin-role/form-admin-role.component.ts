@@ -1,12 +1,12 @@
-import { EAdminRole } from '../../shared/enums';
-import { IKeyValue } from '../../shared/interfaces';
+import { EAdminRole } from '../../../../enums';
+import { IKeyValue } from '../../../../interfaces';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-form-admin-role',
+  selector: 'bgap-form-admin-role',
   templateUrl: './form-admin-role.component.html',
 })
 export class FormAdminRoleComponent implements OnInit {
@@ -25,7 +25,7 @@ export class FormAdminRoleComponent implements OnInit {
 
   ngOnInit(): void {
     this.roleFormGroup['controls'].role.valueChanges.subscribe(
-      (role: EAdminRole): void => {
+      (): void => {
         this.roleFormGroup['controls'].entities.patchValue([]);
       }
     );

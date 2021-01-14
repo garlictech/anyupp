@@ -1,13 +1,13 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUser } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { IAdminUser } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-user-role-form',
+  selector: 'bgap-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
 })
 export class AdminUserRoleFormComponent
@@ -47,7 +47,7 @@ export class AdminUserRoleFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('USER UPDATE ERROR', err);
           }
         );

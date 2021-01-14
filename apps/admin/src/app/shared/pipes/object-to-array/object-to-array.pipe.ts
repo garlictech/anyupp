@@ -6,7 +6,7 @@ import { objectToArray } from '../../pure';
   name: 'objectToArray',
 })
 export class ObjectToArrayPipe implements PipeTransform {
-  transform(value: unknown): any[] {
+  transform(value: unknown): unknown[] {
     return objectToArray(value);
   }
 }

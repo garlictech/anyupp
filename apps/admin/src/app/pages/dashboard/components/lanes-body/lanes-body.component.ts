@@ -25,13 +25,13 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-const laneFilter = (selectedLanes: string[]): any => (
+const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem
 ): boolean => selectedLanes.includes(orderItem.laneId || 'default');
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lanes-body',
+  selector: 'bgap-lanes-body',
   templateUrl: './lanes-body.component.html',
   styleUrls: ['./lanes-body.component.scss']
 })
@@ -137,6 +137,7 @@ export class LanesBodyComponent implements OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

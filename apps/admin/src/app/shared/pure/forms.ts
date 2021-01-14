@@ -5,7 +5,7 @@ import { EVariantAvailabilityType } from '../enums';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IDateIntervals } from '../interfaces';
 
-export const contactFormGroup = (formBuilder: FormBuilder): any => ({
+export const contactFormGroup = (formBuilder: FormBuilder) => ({
   email: ['', [Validators.email]],
   phone: [''],
   address: formBuilder.group({

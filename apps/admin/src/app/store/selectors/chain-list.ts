@@ -4,7 +4,6 @@ import { IAdminUserSettings, IChain } from '../../shared/interfaces';
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { chainListAdapter } from '../reducer';
@@ -13,10 +12,7 @@ import * as currentUserSelectors from './current-user';
 
 const featureSelector = createFeatureSelector<IChainListState>('chainList');
 
-const chainListSelector: MemoizedSelector<
-  object,
-  IChainEntityState
-> = createSelector(
+const chainListSelector = createSelector(
   featureSelector,
   (state: IChainListState): IChainEntityState => state.chains
 );
@@ -27,7 +23,7 @@ export const getAllChainIds = chainListAdapter.getSelectors(chainListSelector)
 export const getAllChainCount = chainListAdapter.getSelectors(chainListSelector)
   .selectTotal;
 
-export const getChainById = (id: string): MemoizedSelector<object, IChain> => {
+export const getChainById = (id: string) => {
   return createSelector(
     getAllChains,
     (chains: IChain[]): IChain =>

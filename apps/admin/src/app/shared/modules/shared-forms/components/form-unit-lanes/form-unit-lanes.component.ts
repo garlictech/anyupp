@@ -1,6 +1,6 @@
-import { FormsService } from 'src/app/shared/services/forms';
-import { IState } from '../../store';
-import { productListSelectors } from '../../store/selectors';
+import { FormsService } from '../../../../services/forms';
+import { IState } from '../../../../../store';
+import { productListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-unit-lanes',
+  selector: 'bgap-form-unit-lanes',
   templateUrl: './form-unit-lanes.component.html',
   styleUrls: ['./form-unit-lanes.component.scss'],
 })

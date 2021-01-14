@@ -1,14 +1,14 @@
-import { WEEKLY_VARIANT_AVAILABILITY } from 'src/app/shared/const';
-import { EVariantAvailabilityType } from '../../shared/enums';
-import { IKeyValue } from '../../shared/interfaces';
-import { FormsService } from 'src/app/shared/services/forms';
+import { WEEKLY_VARIANT_AVAILABILITY } from '../../../../const';
+import { EVariantAvailabilityType } from '../../../../enums';
+import { IKeyValue } from '../../../../interfaces';
+import { FormsService } from '../../../../services/forms';
 
 import { Component, Input } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-form-product-availabilities',
+  selector: 'bgap-form-product-availabilities',
   templateUrl: './form-product-availabilities.component.html',
 })
 export class FormProductAvailabilitiesComponent {

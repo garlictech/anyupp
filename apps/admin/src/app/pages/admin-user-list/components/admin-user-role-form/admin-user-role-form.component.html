@@ -18,9 +18,9 @@
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="subtitle">{{ adminUser.name }}</div>
 
-      <app-form-admin-role
+      <bgap-form-admin-role
         [roleFormGroup]="dialogForm.controls.roles"
-      ></app-form-admin-role>
+      ></bgap-form-admin-role>
 
       <div class="mt-20">
         <button

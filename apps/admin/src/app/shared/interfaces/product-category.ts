@@ -7,3 +7,8 @@ export interface IProductCategory {
   name: ILocalizedItem<string>;
   position: string;
 }
+
+export interface IProductCategoryOrderChangeEvent {
+  change: number;
+  productCategoryId: string;
+}

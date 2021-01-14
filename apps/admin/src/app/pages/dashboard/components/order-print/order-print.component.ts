@@ -2,9 +2,11 @@ import * as printJS from 'print-js';
 import { filter, take } from 'rxjs/operators';
 import {
   IChain,
+  ICurrencyValue,
   IOrder,
   IOrderItem,
   IPlace,
+  IPriceShown,
   IUnit
 } from '../../../../shared/interfaces';
 import { IState } from '../../../../store';
@@ -21,7 +23,7 @@ import { combineLatest } from 'rxjs';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-print',
+  selector: 'bgap-order-print',
   templateUrl: './order-print.component.html',
   styleUrls: ['./order-print.component.scss']
 })
@@ -30,14 +32,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public unit: IUnit;
   public chain: IChain;
   public now: string;
-  public parsedOrders: any[];
-  public parsedVats: any[];
-  public sum: any;
+  public parsedOrders: IOrder[];
+  public parsedVats: IPriceShown[];
+  public sum: ICurrencyValue;
   public place: IPlace;
 
   constructor(
     private _store: Store<IState>,
-    private _nbDialogRef: NbDialogRef<any>
+    private _nbDialogRef: NbDialogRef<unknown>
   ) {
     combineLatest([
       this._store.pipe(

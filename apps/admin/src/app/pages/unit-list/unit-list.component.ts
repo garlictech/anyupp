@@ -17,7 +17,7 @@ import { UnitFormComponent } from './components/unit-form/unit-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-unit-list',
+  selector: 'bgap-unit-list',
   templateUrl: './unit-list.component.html',
 })
 export class UnitListComponent implements OnInit, OnDestroy {
@@ -53,6 +53,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
     });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

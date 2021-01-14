@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IProductCategory } from '../../shared/interfaces';
+import { IProductCategory } from '../../../../shared/interfaces';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -7,7 +7,7 @@ import { NbDialogService } from '@nebular/theme';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @Component({
-  selector: 'app-product-category-list-item',
+  selector: 'bgap-product-category-list-item',
   templateUrl: './product-category-list-item.component.html',
   styleUrls: ['./product-category-list-item.component.scss'],
 })

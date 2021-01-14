@@ -64,3 +64,22 @@ export interface IDateIntervals {
   from: number;
   to: number;
 }
+
+export interface IOrderAmounts {
+  [id: string]: number;
+}
+
+export interface IOrderSum {
+  selected?: number;
+  currency?: string;
+  all?: number;
+}
+
+export interface IOrderAmount {
+  [key: string]: number[];
+}
+
+export interface ICurrencyValue {
+  value: number;
+  currency: string;
+}

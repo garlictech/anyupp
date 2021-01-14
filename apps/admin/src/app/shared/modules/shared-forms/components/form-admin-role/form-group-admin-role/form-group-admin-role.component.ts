@@ -6,13 +6,14 @@ import {
   IChain,
   IGroup,
   IKeyValue,
-} from '../../shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from '../../store';
+  IAssignedEntityNames,
+} from '../../../../../interfaces';
+import { DataService } from '../../../../../services/data';
+import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
-} from '../../store/selectors';
+} from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -21,7 +22,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-group-admin-role',
+  selector: 'bgap-form-group-admin-role',
   templateUrl: './form-group-admin-role.component.html',
 })
 export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
@@ -29,7 +30,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public entitySelector: FormGroup;
-  public assignedGroups: any[];
+  public assignedGroups: IAssignedEntityNames[];
 
   constructor(
     private _store: Store<IState>,
@@ -93,7 +94,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [any, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
           this._store
             .pipe(
               select(
@@ -119,6 +120,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -16,10 +16,10 @@ export class StorageService {
 
     return ref
       .put(file)
-      .then((_): Promise<any> => ref.getDownloadURL().toPromise());
+      .then((): Promise<string> => ref.getDownloadURL().toPromise());
   }
 
-  public removeFile(filePath: string): Promise<any> {
+  public removeFile(filePath: string): Promise<void> {
     return this._angularFireStorage.storage.refFromURL(filePath).delete();
   }
 }

@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '../../../../shared/interfaces';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -7,7 +7,7 @@ import { NbDialogService } from '@nebular/theme';
 import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
-  selector: 'app-user-list-item',
+  selector: 'bgap-user-list-item',
   templateUrl: './user-list-item.component.html',
 })
 export class UserListItemComponent {

@@ -2,6 +2,7 @@ import { IAdminUser } from '../../shared/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -39,8 +40,8 @@ const reducerMap: ActionReducerMap<IAdminUserListState> = {
 const reducer: ActionReducer<IAdminUserListState> = combineReducers(reducerMap);
 
 export function adminUserListReducer(
-  state: any,
-  action: any
+  state: IAdminUserListState | undefined,
+  action: Action
 ): IAdminUserListState {
   return reducer(state, action);
 }

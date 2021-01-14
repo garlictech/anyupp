@@ -1,12 +1,12 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, skipWhile } from 'rxjs/operators';
-import { IGroup, IKeyValueObject, IOrder } from '../../shared/interfaces';
-import { dayInterval } from 'src/app/shared/pure';
-import { IState } from '../../store';
+import { IGroup, IKeyValueObject, IOrder } from '../../../../shared/interfaces';
+import { dayInterval } from '../../../../shared/pure';
+import { IState } from '../../../../store';
 import {
   groupListSelectors,
   orderListSelectors,
-} from '../../store/selectors';
+} from '../../../../store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -15,7 +15,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-body',
+  selector: 'bgap-reports-body',
   templateUrl: './reports-body.component.html',
   styleUrls: ['./reports-body.component.scss'],
 })
@@ -60,6 +60,7 @@ export class ReportsBodyComponent implements OnDestroy {
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

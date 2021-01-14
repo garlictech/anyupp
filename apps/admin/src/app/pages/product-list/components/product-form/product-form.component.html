@@ -23,86 +23,86 @@
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.nameHU"
             type="text"
             [control]="dialogForm.controls.name['controls'].hu"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.nameEN"
             type="text"
             [control]="dialogForm.controls.name['controls'].en"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.nameDE"
             type="text"
             [control]="dialogForm.controls.name['controls'].de"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
             [control]="dialogForm.controls.description['controls'].hu"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
             [control]="dialogForm.controls.description['controls'].en"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
             [control]="dialogForm.controls.description['controls'].de"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
-          <app-form-select
+          <bgap-form-select
             [control]="dialogForm.controls.productCategoryId"
             caption="common.productCategory"
             [options]="productCategories"
             [localize]="true"
           >
-          </app-form-select>
+          </bgap-form-select>
         </div>
 
         <div class="col-md-4">
-          <app-form-select
+          <bgap-form-select
             [control]="dialogForm.controls.productType"
             caption="common.productType"
             [options]="productTypes"
             [localize]="false"
           >
-          </app-form-select>
+          </bgap-form-select>
         </div>
 
         <div class="col-md-4 pt-4">
-          <app-form-checkbox
+          <bgap-form-checkbox
             caption="products.isVisible"
             [control]="dialogForm.controls.isVisible"
-          ></app-form-checkbox>
+          ></bgap-form-checkbox>
         </div>
       </div>
 
       <!-- VARIANTS -->
-      <app-form-product-variants
+      <bgap-form-product-variants
         [productLevel]="productLevel"
         [variantFormArray]="dialogForm.controls._variantArr"
-      ></app-form-product-variants>
+      ></bgap-form-product-variants>
 
       <!-- CONTAINS -->
 
@@ -116,22 +116,22 @@
 
           <div class="row">
             <div class="col-md-3">
-              <app-form-checkbox
+              <bgap-form-checkbox
                 caption="products.allergens.lactose"
                 [control]="
                   dialogForm.controls.contains['controls'].allergens['controls']
                     .lactose
                 "
-              ></app-form-checkbox>
+              ></bgap-form-checkbox>
             </div>
             <div class="col-md-3">
-              <app-form-checkbox
+              <bgap-form-checkbox
                 caption="products.allergens.nuts"
                 [control]="
                   dialogForm.controls.contains['controls'].allergens['controls']
                     .nuts
                 "
-              ></app-form-checkbox>
+              ></bgap-form-checkbox>
             </div>
           </div>
 
@@ -142,7 +142,7 @@
         </div>
       </fieldset>
 
-      <app-form-clickable-image-input
+      <bgap-form-clickable-image-input
         [imagePath]="imagePath"
         [imageType]="eImageType.JPEG"
         [uploadCallbackFn]="imageUploadCallback"
@@ -153,7 +153,7 @@
         width="200px"
         height="200px"
         borderRadius="0.25rem"
-      ></app-form-clickable-image-input>
+      ></bgap-form-clickable-image-input>
 
       <div class="mt-20">
         <button

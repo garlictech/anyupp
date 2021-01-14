@@ -19,12 +19,11 @@ import { floorMapActions } from '../../../../../store/actions';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-floor-map-editor',
+  selector: 'bgap-floor-map-editor',
   templateUrl: './floor-map-editor.component.html',
   styleUrls: ['./floor-map-editor.component.scss']
 })
-export class FloorMapEditorComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode: boolean;
   @Input() floorMap: IFloorMapData;
   public dimensionForm: FormGroup;
@@ -122,6 +121,7 @@ export class FloorMapEditorComponent
     );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

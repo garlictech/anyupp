@@ -11,7 +11,7 @@ import {
   productCategoryListActions,
   productListActions,
   unitListActions,
-  userListActions
+  userListActions,
 } from '../../../store/actions';
 import { currentUserSelectors } from '../../../store/selectors';
 
@@ -27,6 +27,7 @@ import { DEFAULT_LANG } from '../../const';
 import { EAdminRole, EOrderStatus } from '../../enums';
 import {
   IAdminUser,
+  IAdminUserCredential,
   IAdminUserRole,
   IAdminUserSettings,
   IChain,
@@ -36,14 +37,14 @@ import {
   IProduct,
   IProductCategory,
   IUnit,
-  IUser
+  IUser,
 } from '../../interfaces';
 import { objectToArray } from '../../pure';
 import { IState } from '../../../store';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private _destroyConnection$: Subject<boolean> = new Subject<boolean>();
@@ -59,21 +60,17 @@ export class DataService {
 
   public initDataConnections(userId: string): void {
     // Load user data
-    combineLatest([
-      this._angularFireDatabase.object(`adminUsers/${userId}`).valueChanges(),
-      this._angularFireDatabase
-        .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}`)
-        .valueChanges()
-    ])
+    this._angularFireDatabase
+      .object(`adminUsers/${userId}`)
+      .valueChanges()
       .pipe(takeUntil(this._destroyConnection$))
-      .subscribe(([adminUser, adminUserCredentials]: [any, any]): void => {
+      .subscribe((adminUser: IAdminUser): void => {
         this._store.dispatch(
           currentUserActions.setCurrentAdminUser({
             adminUser: {
               _id: userId,
               ...adminUser,
-              ...adminUserCredentials
-            }
+            },
           })
         );
       });
@@ -208,17 +205,17 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/`)
+      .object(`/chains/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           chainListActions.setAllChains({
             chains: objectToArray(data).filter((c: IChain): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c._id)
-            )
+            ),
           })
         );
       });
@@ -229,17 +226,17 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/groups/`)
+      .object(`/groups/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           groupListActions.setAllGroups({
             groups: objectToArray(data).filter((c: IGroup): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c[fieldName])
-            )
+            ),
           })
         );
       });
@@ -250,17 +247,17 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/units/`)
+      .object(`/units/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           unitListActions.setAllUnits({
             units: objectToArray(data).filter((c: IUnit): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c[fieldName])
-            )
+            ),
           })
         );
       });
@@ -268,13 +265,13 @@ export class DataService {
 
   private _subscribeToChainProductCategories(chainId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/productCategories/chains/${chainId}`)
+      .object(`/productCategories/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productCategoryListActions.setAllProductCategories({
-            productCategories: objectToArray(data)
+            productCategories: objectToArray(data),
           })
         );
       });
@@ -282,13 +279,13 @@ export class DataService {
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/chains/${chainId}`)
+      .object(`/products/chains/${chainId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllChainProducts({
-            products: objectToArray(data)
+            products: objectToArray(data),
           })
         );
       });
@@ -296,13 +293,13 @@ export class DataService {
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/groups/${groupId}`)
+      .object(`/products/groups/${groupId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllGroupProducts({
-            products: objectToArray(data)
+            products: objectToArray(data),
           })
         );
       });
@@ -310,13 +307,13 @@ export class DataService {
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}`)
+      .object(`/products/units/${unitId}`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           productListActions.setAllUnitProducts({
-            products: objectToArray(data)
+            products: objectToArray(data),
           })
         );
       });
@@ -324,12 +321,10 @@ export class DataService {
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/generated/productList/units/${unitId}/productCategories`
-      )
+      .object(`/generated/productList/units/${unitId}/productCategories`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         const products = [];
 
         Object.keys(data || {}).forEach((productCategoryId: string): void => {
@@ -339,14 +334,14 @@ export class DataService {
             products.push({
               ...categoryValue[productId],
               _id: productId,
-              productCategoryId
+              productCategoryId,
             });
           });
         });
 
         this._store.dispatch(
           productListActions.setAllGeneratedUnitProducts({
-            products
+            products,
           })
         );
       });
@@ -357,12 +352,10 @@ export class DataService {
     unitId: string
   ): void {
     this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users`
-      )
+      .object(`/orders/chains/${chainId}/units/${unitId}/users`)
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         let activeOrders = [];
         let historyOrders = [];
 
@@ -377,7 +370,7 @@ export class DataService {
                 (order: IOrder): IOrder => {
                   return {
                     ...order,
-                    userId
+                    userId,
                   };
                 }
               )
@@ -387,7 +380,7 @@ export class DataService {
                 (order: IOrder): IOrder => {
                   return {
                     ...order,
-                    userId
+                    userId,
                   };
                 }
               )
@@ -397,12 +390,12 @@ export class DataService {
 
         this._store.dispatch(
           orderListActions.setAllActiveOrders({
-            orders: activeOrders
+            orders: activeOrders,
           })
         );
         this._store.dispatch(
           orderListActions.setAllHistoryOrders({
-            orders: historyOrders
+            orders: historyOrders,
           })
         );
       });
@@ -413,10 +406,10 @@ export class DataService {
       .object(`/users/`)
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: any): void => {
+      .subscribe((data): void => {
         this._store.dispatch(
           userListActions.setAllUsers({
-            users: objectToArray(data)
+            users: objectToArray(data),
           })
         );
       });
@@ -425,99 +418,84 @@ export class DataService {
   private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
     let adminUsers;
 
-    combineLatest([
-      this._angularFireDatabase.object(`/adminUsers/`).valueChanges(),
-      this._angularFireDatabase
-        .object(`/${environment.dbPrefix}/adminUserCredentials/`)
-        .valueChanges()
-    ])
+    this._angularFireDatabase.object(`/adminUsers/`).valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe(([_adminUsers, _adminUserCredentials]: [any, any]): void => {
-        const data = {};
-        const commonKeys: string[] = _intersection(
-          Object.keys(_adminUsers || {}),
-          Object.keys(_adminUserCredentials || {})
-        );
+      .subscribe(
+        (_adminUsers: IAdminUser): void => {
+          switch (loggedAdminRole.role) {
+            case EAdminRole.SUPERUSER:
+              adminUsers = objectToArray(_adminUsers);
+              break;
+            case EAdminRole.CHAIN_ADMIN:
+              adminUsers = objectToArray(_adminUsers).filter(
+                (currentAdminUser: IAdminUser): boolean => {
+                  const loggedAdminChainIds = (
+                    loggedAdminRole?.entities ?? []
+                  ).map((e): string => e.chainId);
+                  const currentAdminChainIds = (
+                    currentAdminUser?.roles?.entities ?? []
+                  ).map((e): string => e.chainId);
+                  // Chain admin shows only the group/unit admins and the staffs of his chains
+                  return [
+                    EAdminRole.GROUP_ADMIN,
+                    EAdminRole.UNIT_ADMIN,
+                    EAdminRole.STAFF,
+                  ].includes(currentAdminUser.roles.role)
+                    ? _intersection(loggedAdminChainIds, currentAdminChainIds)
+                        .length > 0
+                    : false;
+                }
+              );
+              break;
+            case EAdminRole.GROUP_ADMIN:
+              adminUsers = objectToArray(_adminUsers).filter(
+                (currentAdminUser: IAdminUser): boolean => {
+                  const loggedAdminGroupIds = (
+                    loggedAdminRole?.entities ?? []
+                  ).map((e): string => e.unitId);
+                  const currentAdminGroupIds = (
+                    currentAdminUser?.roles?.entities ?? []
+                  ).map((e): string => e.groupId);
 
-        commonKeys.forEach((key: string): void => {
-          data[key] = {
-            ..._adminUsers[key],
-            ..._adminUserCredentials[key]
-          };
-        });
-        switch (loggedAdminRole.role) {
-          case EAdminRole.SUPERUSER:
-            adminUsers = objectToArray(data);
-            break;
-          case EAdminRole.CHAIN_ADMIN:
-            adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminChainIds = (
-                  loggedAdminRole?.entities ?? []
-                ).map((e): string => e.chainId);
-                const currentAdminChainIds = (
-                  currentAdminUser?.roles?.entities ?? []
-                ).map((e): string => e.chainId);
-                // Chain admin shows only the group/unit admins and the staffs of his chains
-                return [
-                  EAdminRole.GROUP_ADMIN,
-                  EAdminRole.UNIT_ADMIN,
-                  EAdminRole.STAFF
-                ].includes(currentAdminUser.roles.role)
-                  ? _intersection(loggedAdminChainIds, currentAdminChainIds)
-                      .length > 0
-                  : false;
-              }
-            );
-            break;
-          case EAdminRole.GROUP_ADMIN:
-            adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminGroupIds = (
-                  loggedAdminRole?.entities ?? []
-                ).map((e): string => e.unitId);
-                const currentAdminGroupIds = (
-                  currentAdminUser?.roles?.entities ?? []
-                ).map((e): string => e.groupId);
+                  // Chain admin shows only the group/unit admins and the staffs of his chains
+                  return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
+                    currentAdminUser.roles.role
+                  )
+                    ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
+                        .length > 0
+                    : false;
+                }
+              );
+              break;
+            case EAdminRole.UNIT_ADMIN:
+              adminUsers = objectToArray(_adminUsers).filter(
+                (currentAdminUser: IAdminUser): boolean => {
+                  const loggedAdminUnitIds = (
+                    loggedAdminRole?.entities ?? []
+                  ).map((e): string => e['unitId']);
+                  const currentAdminUnitIds = (
+                    currentAdminUser?.roles?.entities ?? []
+                  ).map((e): string => e['unitId']);
 
-                // Chain admin shows only the group/unit admins and the staffs of his chains
-                return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
-                  currentAdminUser.roles.role
-                )
-                  ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
-                      .length > 0
-                  : false;
-              }
-            );
-            break;
-          case EAdminRole.UNIT_ADMIN:
-            adminUsers = objectToArray(data).filter(
-              (currentAdminUser: IAdminUser): boolean => {
-                const loggedAdminUnitIds = (
-                  loggedAdminRole?.entities ?? []
-                ).map((e): string => e['unitId']);
-                const currentAdminUnitIds = (
-                  currentAdminUser?.roles?.entities ?? []
-                ).map((e): string => e['unitId']);
+                  // Chain admin shows only the group/unit admins and the staffs of his chains
+                  return currentAdminUser.roles.role === EAdminRole.STAFF
+                    ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
+                        .length > 0
+                    : false;
+                }
+              );
+              break;
+            default:
+              break;
+          }
 
-                // Chain admin shows only the group/unit admins and the staffs of his chains
-                return currentAdminUser.roles.role === EAdminRole.STAFF
-                  ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
-                      .length > 0
-                  : false;
-              }
-            );
-            break;
-          default:
-            break;
+          this._store.dispatch(
+            adminUserListActions.setAllAdminUsers({
+              adminUsers,
+            })
+          );
         }
-
-        this._store.dispatch(
-          adminUserListActions.setAllAdminUsers({
-            adminUsers
-          })
-        );
-      });
+      );
   }
 
   public destroyDataConnection(): void {
@@ -548,26 +526,22 @@ export class DataService {
   //
 
   public insertChain(value: IChain): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/chains`)
-      .push(value);
+    return this._angularFireDatabase.list(`/chains`).push(value);
   }
 
-  public updateChain(chainId: string, value: IChain): Promise<any> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/${chainId}`)
-      .update(value);
+  public updateChain(chainId: string, value: IChain): Promise<void> {
+    return this._angularFireDatabase.object(`/chains/${chainId}`).update(value);
   }
 
   public updateChainImagePath(
     chainId: string,
     key: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/chains/${chainId}/style/images`)
+      .object(`/chains/${chainId}/style/images`)
       .update({
-        [key]: imagePath
+        [key]: imagePath,
       });
   }
 
@@ -576,15 +550,11 @@ export class DataService {
   //
 
   public insertGroup(value: IGroup): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/groups`)
-      .push(value);
+    return this._angularFireDatabase.list(`/groups`).push(value);
   }
 
-  public updateGroup(groupId: string, value: IGroup): Promise<any> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/groups/${groupId}`)
-      .update(value);
+  public updateGroup(groupId: string, value: IGroup): Promise<void> {
+    return this._angularFireDatabase.object(`/groups/${groupId}`).update(value);
   }
 
   //
@@ -592,24 +562,21 @@ export class DataService {
   //
 
   public insertUnit(value: IUnit): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/units`)
-      .push(value);
+    return this._angularFireDatabase.list(`/units`).push(value);
   }
 
-  public updateUnit(unitId: string, value: any): Promise<any> {
-    return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/units/${unitId}`)
-      .update(value);
+  public updateUnit(unitId: string, value): Promise<void> {
+    return this._angularFireDatabase.object(`/units/${unitId}`).update(value);
   }
 
-  public regenerateUnitData(unitId: string): Promise<any> {
+  public regenerateUnitData(unitId: string): Promise<void> {
+    // TODO `${environment.dbPrefix}-regenerateUnitData`
     const callable = this._angularFireFunctions.httpsCallable(
-      `${environment.dbPrefix}-regenerateUnitData`
+      `regenerateUnitData`
     );
 
     return callable({
-      unitId
+      unitId,
     }).toPromise();
   }
 
@@ -622,7 +589,7 @@ export class DataService {
     value: IProductCategory
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/productCategories/chains/${chainId}`)
+      .list(`/productCategories/chains/${chainId}`)
       .push(value);
   }
 
@@ -630,11 +597,9 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     value: IProductCategory
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update(value);
   }
 
@@ -642,13 +607,11 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update({
-        image: imagePath
+        image: imagePath,
       });
   }
 
@@ -656,13 +619,11 @@ export class DataService {
     chainId: string,
     productCategoryId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/productCategories/chains/${chainId}/${productCategoryId}`
-      )
+      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
       .update({
-        position: value
+        position: value,
       });
   }
 
@@ -675,7 +636,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/chains/${chainId}`)
+      .list(`/products/chains/${chainId}`)
       .push(value);
   }
 
@@ -684,7 +645,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/groups/${groupId}`)
+      .list(`/products/groups/${groupId}`)
       .push(value);
   }
 
@@ -693,7 +654,7 @@ export class DataService {
     value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
-      .list(`/${environment.dbPrefix}/products/units/${unitId}`)
+      .list(`/products/units/${unitId}`)
       .push(value);
   }
 
@@ -701,11 +662,9 @@ export class DataService {
     chainId: string,
     productId: string,
     value: IProduct
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
-      )
+      .object(`/products/chains/${chainId}/${productId}`)
       .update(value);
   }
 
@@ -713,35 +672,31 @@ export class DataService {
     chainId: string,
     productId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/chains/${chainId}/${productId}`
-      )
+      .object(`/products/chains/${chainId}/${productId}`)
       .update({
-        position: value
+        position: value,
       });
   }
 
   public updateGroupProduct(
     groupId: string,
     productId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/products/groups/${groupId}/${productId}`
-      )
+      .object(`/products/groups/${groupId}/${productId}`)
       .update(value);
   }
 
   public updateUnitProduct(
     unitId: string,
     productId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
+      .object(`/products/units/${unitId}/${productId}`)
       .update(value);
   }
 
@@ -749,11 +704,11 @@ export class DataService {
     unitId: string,
     productId: string,
     value: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/products/units/${unitId}/${productId}`)
+      .object(`/products/units/${unitId}/${productId}`)
       .update({
-        position: value
+        position: value,
       });
   }
 
@@ -766,10 +721,10 @@ export class DataService {
     unitId: string,
     userId: string,
     orderId: string
-  ): Observable<any> {
+  ): Observable<unknown> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
       )
       .valueChanges()
       .pipe(take(1));
@@ -781,9 +736,9 @@ export class DataService {
     userId: string,
     orderId: string,
     status: EOrderStatus
-  ): Promise<any> {
+  ): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
-      `${environment.dbPrefix}-setNewOrderStatus`
+      `setNewOrderStatus`
     );
 
     return callable({
@@ -791,7 +746,7 @@ export class DataService {
       unitId,
       userId,
       orderId,
-      status
+      status,
     }).toPromise();
   }
 
@@ -800,11 +755,11 @@ export class DataService {
     unitId: string,
     userId: string,
     orderId: string,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
       )
       .update(value);
   }
@@ -815,11 +770,11 @@ export class DataService {
     userId: string,
     orderId: string,
     idx: number,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
       )
       .update(value);
   }
@@ -830,11 +785,11 @@ export class DataService {
     userId: string,
     orderId: string,
     idx: number,
-    value: any
-  ): Promise<any> {
+    value
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -846,10 +801,10 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IOrderItem
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/${environment.dbPrefix}/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -862,7 +817,7 @@ export class DataService {
     return this._angularFireDatabase.list(`/users`).push(value);
   }
 
-  public updateUser(userId: string, value: IUser): Promise<any> {
+  public updateUser(userId: string, value: IUser): Promise<void> {
     return this._angularFireDatabase.object(`/users/${userId}`).update(value);
   }
 
@@ -876,7 +831,7 @@ export class DataService {
     return this._angularFireDatabase.list(`/adminUsers`).push(value);
   }
 
-  public updateAdminUser(userId: string, value: IAdminUser): Promise<any> {
+  public updateAdminUser(userId: string, value: IAdminUser): Promise<void> {
     return this._angularFireDatabase
       .object(`/adminUsers/${userId}`)
       .update(value);
@@ -885,69 +840,73 @@ export class DataService {
   public updateAdminUserRoles(
     userId: string,
     value: IAdminUserRole
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(`/${environment.dbPrefix}/adminUserCredentials/${userId}/roles`)
+      .object(`/adminUsers/${userId}/roles`)
       .update(value);
   }
 
   public updateAdminUserSettings(
     userId: string,
     value: IAdminUserSettings
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
-      )
+      .object(`/adminUsers/${userId}/settings`)
       .update(value);
   }
 
   public updateAdminUserSeletedLanguage(
     userId: string,
     language: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/${environment.dbPrefix}/adminUserCredentials/${userId}/settings`
-      )
+      .object(`/adminUsers/${userId}/settings`)
       .update({
-        selectedLanguage: language
+        selectedLanguage: language,
       });
   }
 
   public updateAdminUserProfileImagePath(
     userId: string,
     imagePath: string
-  ): Promise<any> {
+  ): Promise<void> {
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
-      profileImage: imagePath
+      profileImage: imagePath,
     });
   }
 
-  public async getAdminUserByEmail(email: string): Promise<any> {
+  public async getAdminUserByEmail(email: string): Promise<IAdminUser[]> {
     return new Promise((resolve): void => {
       this._angularFireDatabase
-        .list(`/adminUsers`, (ref): any =>
+        .list(`/adminUsers`, ref =>
           ref.orderByChild('email').equalTo(email.trim())
         )
         .snapshotChanges()
         .pipe(take(1))
-        .subscribe((val): void => {
-          resolve(val);
+        .subscribe((snapshots): void => {
+          resolve(
+            snapshots.map(s => ({
+              _id: s.key,
+              ...(<IAdminUser>s.payload.val()),
+            }))
+          );
         });
     });
   }
 
-  public async getUserByEmail(email: string): Promise<any> {
+  public async getUserByEmail(email: string): Promise<IUser[]> {
     return new Promise((resolve): void => {
       this._angularFireDatabase
-        .list(`/users`, (ref): any =>
-          ref.orderByChild('email').equalTo(email.trim())
-        )
+        .list(`/users`, ref => ref.orderByChild('email').equalTo(email.trim()))
         .snapshotChanges()
         .pipe(take(1))
-        .subscribe((val): void => {
-          resolve(val);
+        .subscribe((snapshots): void => {
+          resolve(
+            snapshots.map(s => ({
+              _id: s.key,
+              ...(<IUser>s.payload.val()),
+            }))
+          );
         });
     });
   }

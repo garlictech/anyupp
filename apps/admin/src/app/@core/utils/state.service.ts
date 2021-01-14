@@ -4,10 +4,16 @@ import { takeWhile } from 'rxjs/operators';
 
 import { NbLayoutDirection, NbLayoutDirectionService } from '@nebular/theme';
 
-// TODO: Add Angular decorator.
+interface ILayoutItem {
+  name: string;
+  icon: string;
+  id: string;
+  selected?: boolean;
+}
+
 @Injectable()
 export class StateService implements OnDestroy {
-  protected layouts: any = [
+  protected layouts: ILayoutItem[] = [
     {
       name: 'One Column',
       icon: 'nb-layout-default',
@@ -26,7 +32,7 @@ export class StateService implements OnDestroy {
     },
   ];
 
-  protected sidebars: any = [
+  protected sidebars: ILayoutItem[] = [
     {
       name: 'Sidebar at layout start',
       icon: 'nb-layout-sidebar-left',
@@ -43,7 +49,7 @@ export class StateService implements OnDestroy {
   protected layoutState$ = new BehaviorSubject(this.layouts[0]);
   protected sidebarState$ = new BehaviorSubject(this.sidebars[0]);
 
-  alive = true;
+  public alive = true;
 
   constructor(directionService: NbLayoutDirectionService) {
     directionService
@@ -71,27 +77,27 @@ export class StateService implements OnDestroy {
     endSidebar.icon = endIconClass;
   }
 
-  public setLayoutState(state: any): any {
+  public setLayoutState(state): void {
     this.layoutState$.next(state);
   }
 
-  public getLayoutStates(): Observable<any[]> {
+  public getLayoutStates(): Observable<ILayoutItem[]> {
     return observableOf(this.layouts);
   }
 
-  public onLayoutState(): Observable<any> {
+  public onLayoutState(): Observable<ILayoutItem> {
     return this.layoutState$.asObservable();
   }
 
-  public setSidebarState(state: any): any {
+  public setSidebarState(state): void {
     this.sidebarState$.next(state);
   }
 
-  public getSidebarStates(): Observable<any[]> {
+  public getSidebarStates(): Observable<ILayoutItem[]> {
     return observableOf(this.sidebars);
   }
 
-  public onSidebarState(): Observable<any> {
+  public onSidebarState(): Observable<ILayoutItem> {
     return this.sidebarState$.asObservable();
   }
 }

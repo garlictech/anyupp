@@ -7,7 +7,7 @@ describe('FormColorPickerComponent', (): void => {
   let fixture: ComponentFixture<FormColorPickerComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [FormColorPickerComponent],
       }).compileComponents();

@@ -7,7 +7,7 @@ describe('StatusLedComponent', (): void => {
   let fixture: ComponentFixture<StatusLedComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [StatusLedComponent],
       }).compileComponents();

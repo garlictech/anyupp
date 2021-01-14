@@ -23,8 +23,8 @@ export class ToasterService {
 
   public show(
     type: EToasterType,
-    message: any,
-    title?: any,
+    message: string,
+    title?: string,
     config?: Partial<NbToastrConfig>
   ): void {
     this._nbToastrService[type](

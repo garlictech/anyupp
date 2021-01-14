@@ -41,6 +41,10 @@
     "graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
+
+    "admin-firebase-config": {
+      "tags": ["scope:admin", "type:utils", "platform:angular"]
+    },
     "website": {
       "tags": []
     },

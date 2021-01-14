@@ -1,8 +1,8 @@
 export interface IKeyValue {
   key: string;
-  value: string | any;
+  value: string | unknown;
 }
 
 export interface IKeyValueObject {
-  [key: string]: string | any;
+  [key: string]: string | unknown;
 }

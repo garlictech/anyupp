@@ -22,7 +22,7 @@ import { objectToArray } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lane-item',
+  selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
   styleUrls: ['./lane-item.component.scss']
 })
@@ -73,6 +73,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

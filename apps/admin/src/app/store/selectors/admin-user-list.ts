@@ -1,11 +1,6 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import { IAdminUser } from '../../shared/interfaces';
-
-import {
-  createFeatureSelector,
-  createSelector,
-  MemoizedSelector,
-} from '@ngrx/store';
-
 import { adminUserListAdapter } from '../reducer';
 import { IAdminUserEntityState, IAdminUserListState } from '../state';
 
@@ -13,10 +8,7 @@ const featureSelector = createFeatureSelector<IAdminUserListState>(
   'adminUserList'
 );
 
-const adminUserListSelector: MemoizedSelector<
-  object,
-  IAdminUserEntityState
-> = createSelector(
+const adminUserListSelector = createSelector(
   featureSelector,
   (state: IAdminUserListState): IAdminUserEntityState => state.adminUsers
 );
@@ -30,9 +22,7 @@ export const getAllAdminUserCount = adminUserListAdapter.getSelectors(
   adminUserListSelector
 ).selectTotal;
 
-export const getAdminUserById = (
-  id: string
-): MemoizedSelector<object, IAdminUser> => {
+export const getAdminUserById = (id: string) => {
   return createSelector(
     getAllAdminUsers,
     (adminUsers: IAdminUser[]): IAdminUser =>
@@ -40,9 +30,7 @@ export const getAdminUserById = (
   );
 };
 
-export const getAdminUserByEmail = (
-  email: string
-): MemoizedSelector<object, IAdminUser> => {
+export const getAdminUserByEmail = (email: string) => {
   return createSelector(
     getAllAdminUsers,
     (adminUsers: IAdminUser[]): IAdminUser =>

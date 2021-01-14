@@ -17,7 +17,6 @@ import {
   IOrderItem,
   IProduct
 } from '../../interfaces';
-import { LocalizePipe } from '../../pipes';
 import { DataService } from '../data';
 
 @Injectable({
@@ -29,8 +28,7 @@ export class OrderService {
 
   constructor(
     private _store: Store<IState>,
-    private _dataService: DataService,
-    private _localizePipe: LocalizePipe
+    private _dataService: DataService
   ) {
     this._store
       .pipe(select(currentUserSelectors.getAdminUser))
@@ -123,7 +121,7 @@ export class OrderService {
     );
   }
 
-  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<any> {
+  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
     return this._dataService.insertOrderStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
@@ -138,7 +136,7 @@ export class OrderService {
     orderUserId: string,
     status: EOrderStatus,
     idx: number
-  ): Promise<any> {
+  ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,

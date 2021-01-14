@@ -13,11 +13,11 @@ export class LayoutService {
     this.layoutSize$.next();
   }
 
-  public onChangeLayoutSize(): Observable<any> {
+  public onChangeLayoutSize(): Observable<unknown> {
     return this.layoutSizeChange$.pipe(delay(1));
   }
 
-  public onSafeChangeLayoutSize(): Observable<any> {
+  public onSafeChangeLayoutSize(): Observable<unknown> {
     return this.layoutSizeChange$.pipe(debounceTime(350));
   }
 }

@@ -16,7 +16,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-history-list',
+  selector: 'bgap-order-ticket-history-list',
   templateUrl: './order-ticket-history-list.component.html'
 })
 export class OrderTicketHistoryListComponent implements OnDestroy {
@@ -55,12 +55,13 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
         this._refreshDailyOrders(!this.selectedOrder);
       });
 
-    this.dateFormControl.valueChanges.subscribe((val): void => {
+    this.dateFormControl.valueChanges.subscribe((): void => {
       this._refresDayIntervals();
       this._refreshDailyOrders(true);
     });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

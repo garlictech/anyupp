@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DEFAULT_LANG } from './shared/const';
 
 @Component({
-  selector: 'app-root',
+  selector: 'bgap-root',
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent {

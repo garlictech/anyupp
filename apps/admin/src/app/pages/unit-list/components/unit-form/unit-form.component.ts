@@ -1,26 +1,26 @@
 import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from 'src/app/shared/const';
+import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from '../../../../shared/const';
 import {
   ICustomDailySchedule,
   IGroup,
   IKeyValue,
   IPaymentMode,
   IUnit,
-} from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+} from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import {
   contactFormGroup,
   multiLangValidator,
   unitOpeningHoursValidator,
-} from 'src/app/shared/pure';
-import { FormsService } from 'src/app/shared/services/forms';
-import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from '../../store';
+} from '../../../../shared/pure';
+import { FormsService } from '../../../../shared/services/forms';
+import { EToasterType } from '../../../../shared/services/toaster';
+import { IState } from '../../../../store';
 import {
   currentUserSelectors,
   groupListSelectors,
-} from '../../store/selectors';
+} from '../../../../store/selectors';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
@@ -30,7 +30,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-unit-form',
+  selector: 'bgap-unit-form',
   templateUrl: './unit-form.component.html',
 })
 export class UnitFormComponent
@@ -196,7 +196,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP UPDATE ERROR', err);
           }
         );
@@ -210,7 +210,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

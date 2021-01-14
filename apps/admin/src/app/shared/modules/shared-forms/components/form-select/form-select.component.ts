@@ -1,10 +1,10 @@
-import { IKeyValue } from '../../shared/interfaces';
+import { IKeyValue } from '../../../../interfaces';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-select',
+  selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
 })
 export class FormSelectComponent {
@@ -21,7 +21,7 @@ export class FormSelectComponent {
     this.size = 'small';
   }
 
-  public onChange($event: any): void {
+  public onChange($event: Event): void {
     if (this.selectionChange) {
       this.selectionChange.emit($event);
     }

@@ -5,7 +5,6 @@ import { currentStatus as currentStatusFn } from '../../shared/pure/orders';
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector
 } from '@ngrx/store';
 
 import { activeOrderListAdapter, historyOrderListAdapter } from '../reducer';
@@ -15,10 +14,7 @@ const featureSelector = createFeatureSelector<IOrderListState>('orderList');
 
 // ACTIVE
 
-const activeOrderListSelector: MemoizedSelector<
-  object,
-  IOrderEntityState
-> = createSelector(
+const activeOrderListSelector = createSelector(
   featureSelector,
   (state: IOrderListState): IOrderEntityState => state.active
 );
@@ -34,7 +30,7 @@ export const getAllActiveOrderCount = activeOrderListAdapter.getSelectors(
 
 export const getActiveOrderById = (
   id: string
-): MemoizedSelector<object, IOrder> => {
+) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): IOrder =>
@@ -44,7 +40,7 @@ export const getActiveOrderById = (
 
 export const getActiveOrdersByUserId = (
   userId: string
-): MemoizedSelector<object, IOrder[]> => {
+) => {
   return createSelector(getAllActiveOrders, (orders: IOrder[]): IOrder[] =>
     orders.filter((order): boolean => order.userId === userId)
   );
@@ -52,7 +48,7 @@ export const getActiveOrdersByUserId = (
 
 export const getActiveOrdersCountByUserId = (
   userId: string
-): MemoizedSelector<object, number> => {
+) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): number =>
@@ -62,7 +58,7 @@ export const getActiveOrdersCountByUserId = (
 
 export const getLaneOrderItemsByStatus = (
   status: EOrderStatus
-): MemoizedSelector<object, ILaneOrderItem[]> => {
+) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): ILaneOrderItem[] => {
@@ -83,7 +79,7 @@ export const getLaneOrderItemsByStatus = (
                 currentStatusFn(orderItem.statusLog) === status
             )
             .map(
-              (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
+              (orderItem: IOrderItem): ILaneOrderItem => ({
                 ...orderItem,
                 orderId: order._id,
                 userId: order.userId,
@@ -101,10 +97,7 @@ export const getLaneOrderItemsByStatus = (
 
 // HISTORY
 
-const historyOrderListSelector: MemoizedSelector<
-  object,
-  IOrderEntityState
-> = createSelector(
+const historyOrderListSelector = createSelector(
   featureSelector,
   (state: IOrderListState): IOrderEntityState => state.history
 );
@@ -120,7 +113,7 @@ export const getAllHistoryOrderCount = historyOrderListAdapter.getSelectors(
 
 export const getHistoryOrderById = (
   id: string
-): MemoizedSelector<object, IOrder> => {
+) => {
   return createSelector(
     getAllHistoryOrders,
     (orders: IOrder[]): IOrder =>

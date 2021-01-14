@@ -31,43 +31,43 @@
 
         <div class="row">
           <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
-            <app-form-text-input
+            <bgap-form-text-input
               caption="common.taxPercent"
               type="number"
               [control]="dialogForm.controls.tax"
-            ></app-form-text-input>
+            ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
-            <app-form-select
+            <bgap-form-select
               [control]="dialogForm.controls.laneId"
               caption="products.lane"
               [options]="unitLanes"
               [localize]="false"
               [forceShowEmptyOption]="true"
             >
-            </app-form-select>
+            </bgap-form-select>
           </div>
           <div class="col-3 pt-4" *ngIf="productLevel === eProductLevel.UNIT">
-            <app-form-checkbox
+            <bgap-form-checkbox
               caption="products.takeaway"
               [control]="dialogForm.controls.takeaway"
-            ></app-form-checkbox>
+            ></bgap-form-checkbox>
           </div>
           <div class="col-3 pt-4">
-            <app-form-checkbox
+            <bgap-form-checkbox
               caption="products.isVisible"
               [control]="dialogForm.controls.isVisible"
-            ></app-form-checkbox>
+            ></bgap-form-checkbox>
           </div>
         </div>
       </fieldset>
 
-      <app-form-product-variants
+      <bgap-form-product-variants
         [productLevel]="productLevel"
         [variantFormArray]="dialogForm.controls._variantArr"
         [allowAddVariant]="false"
         [currency]="currency"
-      ></app-form-product-variants>
+      ></bgap-form-product-variants>
 
       <div class="mt-20">
         <button

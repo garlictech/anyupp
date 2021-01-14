@@ -13,7 +13,7 @@ import {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-chain-selector',
+  selector: 'bgap-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
   styleUrls: ['./active-chain-selector.component.scss']
 })
@@ -43,6 +43,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedChainId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

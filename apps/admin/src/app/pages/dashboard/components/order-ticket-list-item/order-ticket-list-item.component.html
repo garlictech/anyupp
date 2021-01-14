@@ -1,9 +1,10 @@
 <div class="w-100 position-relative">
+
   <div
     class="table-seat font-larger"
     [ngClass]="'bg-' + currentStatus(order.statusLog).toLowerCase()"
   >
-    {{ order?.place.table }}<br />{{ order?.place.seat }}
+    {{ order?.place?.table }}<br />{{ order?.place?.seat }}
   </div>
 
   <div class="float-left ml-4-5">
@@ -17,8 +18,8 @@
         [text]="order.items.length"
       ></nb-badge>
       <span class="caption ml-4 font-larger font-weight-bold">{{
-        order.sumPriceShown.priceSum
-          | currencyFormatter: order.sumPriceShown.currency
+        order?.sumPriceShown?.priceSum
+          | currencyFormatter: order?.sumPriceShown?.currency
       }}</span>
     </div>
   </div>

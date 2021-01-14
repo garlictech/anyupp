@@ -1,19 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 import { EVariantAvailabilityType } from '../../../../enums';
 import { IAvailability } from '../../../../interfaces';
 
 @Component({
-  selector: 'app-variant-availability-badge',
+  selector: 'bgap-variant-availability-badge',
   templateUrl: './variant-availability-badge.component.html',
   styleUrls: ['./variant-availability-badge.component.scss']
 })
-export class VariantAvailabilityBadgeComponent implements OnInit {
+export class VariantAvailabilityBadgeComponent {
   @Input() availability: IAvailability;
   @Input() currency: string;
 
   public EVariantAvailabilityType = EVariantAvailabilityType;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

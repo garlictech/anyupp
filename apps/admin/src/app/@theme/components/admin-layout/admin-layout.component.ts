@@ -65,7 +65,7 @@ const menuItems = {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-admin-layout',
+  selector: 'bgap-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss']
 })
@@ -102,6 +102,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

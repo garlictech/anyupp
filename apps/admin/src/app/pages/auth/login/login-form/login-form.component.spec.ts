@@ -7,7 +7,7 @@ describe('LoginFormComponent', (): void => {
   let fixture: ComponentFixture<LoginFormComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [LoginFormComponent],
       }).compileComponents();

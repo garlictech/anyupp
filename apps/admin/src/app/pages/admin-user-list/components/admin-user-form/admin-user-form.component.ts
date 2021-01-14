@@ -1,17 +1,17 @@
 import { get as _get } from 'lodash-es';
-import { EAdminRole, EImageType } from '../../shared/enums';
-import { IAdminUser } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { contactFormGroup } from 'src/app/shared/pure';
-import { AuthService } from 'src/app/shared/services/auth';
-import { FormsService } from 'src/app/shared/services/forms';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { EAdminRole, EImageType } from '../../../../shared/enums';
+import { IAdminUser, IUser } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { contactFormGroup } from '../../../../shared/pure';
+import { AuthService } from '../../../../shared/services/auth';
+import { FormsService } from '../../../../shared/services/forms';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-user-form',
+  selector: 'bgap-admin-user-form',
   templateUrl: './admin-user-form.component.html',
 })
 export class AdminUserFormComponent
@@ -50,7 +50,7 @@ export class AdminUserFormComponent
     }
   }
 
-  public async submit(): Promise<any> {
+  public async submit(): Promise<void> {
     if (this.dialogForm.valid) {
       if (_get(this.adminUser, '_id')) {
         this._dataService
@@ -64,16 +64,16 @@ export class AdminUserFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('USER UPDATE ERROR', err);
             }
           );
       } else {
         // Find existing global admin account (not from stage-dependent adminCredentials)
-        const adminUsersByEmail: any[] = await this._dataService.getAdminUserByEmail(
+        const adminUsersByEmail: IAdminUser[] = await this._dataService.getAdminUserByEmail(
           this.dialogForm.value.email
         );
-        const usersByEmail: any[] = await this._dataService.getUserByEmail(
+        const usersByEmail: IUser[] = await this._dataService.getUserByEmail(
           this.dialogForm.value.email
         );
         const existingUser = adminUsersByEmail[0] || usersByEmail[0];
@@ -86,7 +86,7 @@ export class AdminUserFormComponent
               (credential: firebase.auth.UserCredential): void => {
                 this._saveAdminUser(credential.user.uid);
               },
-              (err): any => {
+              (err) => {
                 console.error('AUTH USER CRATE ERROR', err);
               }
             );
@@ -94,7 +94,7 @@ export class AdminUserFormComponent
           // Admin user exist, so we have to create a credential on the current stage
           // The email field validator filters the existing admins from the current stage
           this._dataService
-            .updateAdminUserRoles(adminUsersByEmail[0].key, {
+            .updateAdminUserRoles(adminUsersByEmail[0]._id, {
               entities: [],
               role: EAdminRole.INACTIVE,
             })
@@ -109,7 +109,7 @@ export class AdminUserFormComponent
         } else if (usersByEmail[0]) {
           // Customer user exists (registered on the app)
           // Now we create an admin from the given UID
-          this._saveAdminUser(usersByEmail[0].key);
+          this._saveAdminUser(usersByEmail[0]._id);
         }
       }
     }
@@ -137,17 +137,17 @@ export class AdminUserFormComponent
                     );
                     this.close();
                   },
-                  (err): any => {
+                  (err) => {
                     console.error('PASSW RESET ERROR', err);
                   }
                 );
             },
-            (err): any => {
+            (err) => {
               console.error('USER UPDATE ROLE ERROR', err);
             }
           );
       },
-      (err): any => {
+      (err) => {
         console.error('USER UPDATE ERROR', err);
       }
     );

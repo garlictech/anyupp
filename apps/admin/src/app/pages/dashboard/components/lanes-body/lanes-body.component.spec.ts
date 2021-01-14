@@ -7,7 +7,7 @@ describe('LanesBodyComponent', (): void => {
   let fixture: ComponentFixture<LanesBodyComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [LanesBodyComponent],
       }).compileComponents();

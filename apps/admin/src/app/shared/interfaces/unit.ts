@@ -2,19 +2,8 @@ import { IContact } from './contact';
 import { IFloorMapData } from './floor-map';
 import { IGroup } from './group';
 import { ILocalizedItem } from './localized-item';
+import { IPaymentMode } from './payment';
 import { IDailySchedule, IWeeklySchedule } from './weekly-schedule';
-
-export interface IUnitSchedule {
-  [mask: string]: boolean;
-}
-
-export interface IUnitService {
-  pickupPoint: boolean;
-}
-
-export interface IUnitTable {
-  [seatId: string]: IUnitSeat;
-}
 
 export interface IUnitSeat {
   user: string; // ???
@@ -50,15 +39,9 @@ export interface IUnit extends IContact {
   isAcceptingOrders: boolean;
   name: string;
   description: ILocalizedItem<string>;
-  image: string;
-  queue: any; // ????
-  schedule: IUnitSchedule;
-  services: IUnitService; // ????
-  tables: {
-    [tableId: string]: IUnitTable;
-  };
   open: IDailySchedule;
   openingHours: IWeeklySchedule;
   lanes: ILanesObject;
   floorMap: IFloorMapData;
+  paymentModes: IPaymentMode[];
 }

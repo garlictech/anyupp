@@ -5,12 +5,12 @@
   [picture]="product.image"
 ></nb-user>
 
-<app-status-led class="ml-1" [status]="product.isVisible"></app-status-led>
+<bgap-status-led class="ml-1" [status]="product.isVisible"></bgap-status-led>
 
-<app-colorized-lane-icon
+<bgap-colorized-lane-icon
   *ngIf="productLevel === EProductLevel.UNIT"
   [laneId]="product.laneId"
-></app-colorized-lane-icon>
+></bgap-colorized-lane-icon>
 
 <ng-container *ngIf="hasRoleToEdit">
   <div *ngIf="!pending">
@@ -79,17 +79,17 @@
     <ng-container
       *ngFor="let availability of variant.availabilities; last as isLast"
     >
-      <app-variant-availability-badge
+      <bgap-variant-availability-badge
         [availability]="availability"
         [currency]="currency"
-      ></app-variant-availability-badge>
+      ></bgap-variant-availability-badge>
 
       <span *ngIf="!isLast"> &bull; </span>
     </ng-container>
 
-    <app-status-led
+    <bgap-status-led
       class="ml-1"
       [status]="variant.isAvailable"
-    ></app-status-led>
+    ></bgap-status-led>
   </div>
 </div>

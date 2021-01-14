@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 import { EUnitMapObjectType } from '../../enums';
-import { IFloorMapData, IFloorMapDataObject } from '../../interfaces';
+import { IFloorMapData, IFloorMapDataObject, IFabricGroup, IFabricObjectProperties } from '../../interfaces';
 import { customStringCompare, objectToArray } from '../utils';
 
 import { fabricCanvas } from './floor-map-canvas';
@@ -116,6 +116,7 @@ export const setTextToActiveObject = (text: string): void => {
 
     if (textField) {
       textField.set('text', text);
+      obj.dirty = true;
       fabricCanvas.renderAll();
     }
   }
@@ -129,10 +130,10 @@ export const setRawDataField = (key: string, value: string | number): void => {
   }
 };
 
-export const getRawDataField = (obj: any, key: string): string | number =>
+export const getRawDataField = (obj: IFabricGroup, key: string): string | number =>
   mapRawData.objects[obj.id][key];
 
-const _getObjectProperties = (obj): any => ({
+const _getObjectProperties = (obj): IFabricObjectProperties => ({
   id: obj.id,
   type: obj.type,
   width: getObjectBg(obj).width,
@@ -145,7 +146,7 @@ const _getObjectProperties = (obj): any => ({
 });
 
 export const updateObjectMapRawData = (e): void => {
-  const objectProperties = _getObjectProperties(e.target);
+  const objectProperties: IFabricObjectProperties = _getObjectProperties(e.target);
 
   if (objectProperties) {
     const { id, ...objectData } = objectProperties;

@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
-import { IChain } from '../../shared/interfaces';
+import { IChain } from '../../../../shared/interfaces';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -7,7 +7,7 @@ import { NbDialogService } from '@nebular/theme';
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @Component({
-  selector: 'app-chain-list-item',
+  selector: 'bgap-chain-list-item',
   templateUrl: './chain-list-item.component.html',
   styleUrls: ['./chain-list-item.component.scss'],
 })

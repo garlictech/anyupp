@@ -5,7 +5,7 @@ import {
   EDashboardSize,
   ENebularButtonSize
 } from '../../../../shared/enums';
-import { IOrder } from '../../../../shared/interfaces';
+import { IOrder, IOrderSum } from '../../../../shared/interfaces';
 import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
 import {
@@ -24,7 +24,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-body',
+  selector: 'bgap-order-ticket-body',
   templateUrl: './order-ticket-body.component.html',
   styleUrls: ['./order-ticket-body.component.scss']
 })
@@ -32,7 +32,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public dashboardSettings: IDashboardSettings;
   public selectedOrder: IOrder;
   public buttonSize: ENebularButtonSize;
-  public ordersSum: any;
+  public ordersSum: IOrderSum;
   public userActiveOrders: IOrder[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount: number;
@@ -78,6 +78,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -116,7 +117,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
 
           this.ordersSum.all = 0;
           this.userActiveOrders.map(
-            (o: IOrder): void =>
+            (o: IOrder): number =>
               (this.ordersSum.all += o.sumPriceShown.priceSum)
           );
         });

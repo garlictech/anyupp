@@ -1,20 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FormsService } from 'src/app/shared/services/forms';
+import { FormsService } from '../../../../services/forms';
 
 @Component({
-  selector: 'app-form-weekly-schedule',
+  selector: 'bgap-form-weekly-schedule',
   templateUrl: './form-weekly-schedule.component.html',
 })
-export class FormWeeklyScheduleComponent implements OnInit {
+export class FormWeeklyScheduleComponent {
   @Input() scheduleControl: FormControl;
   public dayKeys: string[];
 
   constructor(private _formsService: FormsService) {
     this.dayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   }
-
-  ngOnInit(): void {}
 
   public addCustomDate(): void {
     this.scheduleControl['controls'].override.push(

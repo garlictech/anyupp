@@ -1,8 +1,8 @@
 import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { IAdminRoleEntity, IChain, IKeyValue } from '../../shared/interfaces';
-import { IState } from '../../store';
-import { chainListSelectors } from '../../store/selectors';
+import { IAdminRoleEntity, IChain, IKeyValue } from '../../../../../interfaces';
+import { IState } from '../../../../../../store';
+import { chainListSelectors } from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -11,7 +11,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-chain-admin-role',
+  selector: 'bgap-form-chain-admin-role',
   templateUrl: './form-chain-admin-role.component.html',
 })
 export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
@@ -55,6 +55,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { IState } from '../../store';
-import { adminUserListSelectors } from '../../store/selectors';
+import { IState } from '../../../store';
+import { adminUserListSelectors } from '../../../store/selectors';
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
@@ -9,8 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 
 import { TIME_FORMAT_PATTERN } from '../../const';
-import { EProductLevel, EVariantAvailabilityType } from '../../enums';
+import { EVariantAvailabilityType } from '../../enums';
 import { multiLangValidator, productAvailabilityValidator } from '../../pure';
+import { IAdminUser } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +22,8 @@ export class FormsService {
     private _formBuilder: FormBuilder
   ) {}
 
-  public createProductVariantFormGroup = (
-    productLevel: EProductLevel
-  ): FormGroup => {
-    const groupConfig: any = {
+  public createProductVariantFormGroup = (): FormGroup => {
+    const groupConfig = {
       _variantId: [uuidV1()],
       variantName: this._formBuilder.group(
         {
@@ -80,7 +79,7 @@ export class FormsService {
     });
   };
 
-  public adminExistingEmailValidator = (control: FormGroup): Observable<any> =>
+  public adminExistingEmailValidator = (control: FormGroup): Observable<IAdminUser> =>
     this._store.pipe(
       select(adminUserListSelectors.getAdminUserByEmail(control.value)),
       take(1)

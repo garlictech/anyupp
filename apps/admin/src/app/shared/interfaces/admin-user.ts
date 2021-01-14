@@ -15,15 +15,24 @@ export interface IAdminRoleEntity {
   unitId?: string;
 }
 
+export interface IAssignedEntityNames {
+  chainName?: string;
+  groupName?: string;
+  unitName?: string;
+}
+
 export interface IAdminUserRole {
   role: EAdminRole;
   entities: IAdminRoleEntity[];
 }
 
-export interface IAdminUser extends IContact {
+export interface IAdminUserCredential {
+  roles?: IAdminUserRole;
+  settings?: IAdminUserSettings;
+}
+
+export interface IAdminUser extends IContact, IAdminUserCredential {
   _id?: string;
   name?: string;
-  roles?: IAdminUserRole;
   profileImage?: string;
-  settings?: IAdminUserSettings;
 }

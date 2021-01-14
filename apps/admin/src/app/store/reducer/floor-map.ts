@@ -9,10 +9,10 @@ export const initialFloorMapState: IFloorMapState = {
 
 const reducer = createReducer(
   initialFloorMapState,
-  on(floorMapActions.resetFloorMap, (): any => ({
+  on(floorMapActions.resetFloorMap, () => ({
     ...initialFloorMapState,
   })),
-  on(floorMapActions.floorMapInitialized, (state, { initialized }): any => ({
+  on(floorMapActions.floorMapInitialized, (state, { initialized }) => ({
     ...state,
     initialized,
   }))
@@ -21,6 +21,6 @@ const reducer = createReducer(
 export function floorMapReducer(
   state: IFloorMapState | undefined,
   action: Action
-): any {
+) {
   return reducer(state, action);
 }

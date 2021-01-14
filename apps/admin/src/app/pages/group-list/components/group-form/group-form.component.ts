@@ -1,14 +1,14 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { IChain, IGroup, IKeyValue } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { contactFormGroup, multiLangValidator } from 'src/app/shared/pure';
-import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from '../../store';
+import { IChain, IGroup, IKeyValue } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
+import { EToasterType } from '../../../../shared/services/toaster';
+import { IState } from '../../../../store';
 import {
   chainListSelectors,
   currentUserSelectors,
-} from '../../store/selectors';
+} from '../../../../store/selectors';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-group-form',
+  selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
 export class GroupFormComponent
@@ -85,6 +85,7 @@ export class GroupFormComponent
     }
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -103,7 +104,7 @@ export class GroupFormComponent
               );
               this.close();
             },
-            (err): any => {
+            (err) => {
               console.error('GROUP UPDATE ERROR', err);
             }
           );
@@ -117,7 +118,7 @@ export class GroupFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

@@ -49,49 +49,49 @@
 
       <div class="row">
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="products.variantNameHU"
             type="text"
             [control]="variant.controls.variantName['controls'].hu"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="products.variantNameEN"
             type="text"
             [control]="variant.controls.variantName['controls'].en"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="products.variantNameDE"
             type="text"
             [control]="variant.controls.variantName['controls'].de"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="products.packSize"
             type="number"
             [control]="variant.controls.pack['controls'].size"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="products.packUnit"
             type="text"
             [control]="variant.controls.pack['controls'].unit"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
 
         <div class="col-md-4 pt-4">
-          <app-form-checkbox
+          <bgap-form-checkbox
             caption="products.isAvailable"
             [control]="variant.controls.isAvailable"
-          ></app-form-checkbox>
+          ></bgap-form-checkbox>
         </div>
       </div>
 
@@ -99,27 +99,27 @@
       <ng-container *ngIf="productLevel !== EProductLevel.CHAIN">
         <div class="row">
           <div class="col-sm-3">
-            <app-form-text-input
+            <bgap-form-text-input
               *ngIf="productLevel === EProductLevel.GROUP"
               caption="products.refPrice"
               type="number"
               [control]="variant.controls.refGroupPrice"
-            ></app-form-text-input>
-            <app-form-static-text
+            ></bgap-form-text-input>
+            <bgap-form-static-text
               *ngIf="productLevel === EProductLevel.UNIT"
               caption="products.refPrice"
               [value]="
                 variant.value.refGroupPrice | currencyFormatter: currency
               "
             >
-            </app-form-static-text>
+            </bgap-form-static-text>
           </div>
         </div>
 
-        <app-form-product-availabilities
+        <bgap-form-product-availabilities
           [availabilityFormArray]="variant.controls.availabilities"
           [currency]="currency"
-        ></app-form-product-availabilities>
+        ></bgap-form-product-availabilities>
 
         <div class="clearfix"></div>
       </ng-container>

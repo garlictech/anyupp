@@ -19,7 +19,11 @@
     "baseUrl": ".",
     "paths": {
       "@bgap/graphql/schema": ["libs/graphql/schema/src/index.ts"],
-      "@bgap/graphql/resolvers": ["libs/graphql/resolvers/src/index.ts"]
+      "@bgap/graphql/resolvers": ["libs/graphql/resolvers/src/index.ts"],
+      "@bgap/shared/firebase/config": [
+        "libs/shared/firebase/config/src/index.ts"
+      ],
+      "@bgap/admin/firebase/config": ["libs/admin/firebase/config/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

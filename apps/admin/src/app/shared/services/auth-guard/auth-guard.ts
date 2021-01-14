@@ -11,15 +11,14 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot
 } from '@angular/router';
 
 import { EAdminRole } from '../../enums';
-import { IAdminUser } from '../../interfaces';
+import { IAdminUser, IAdminUserCredential } from '../../interfaces';
 import { EToasterType, ToasterService } from '../toaster';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
@@ -29,14 +28,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     private _angularFireAuth: AngularFireAuth
   ) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<any> =>
+        (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
                 .object(`/adminUsers/${user.uid}`)
@@ -44,7 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 .pipe(take(1))
             : of(undefined)
       ),
-      map((adminUser: IAdminUser): any => {
+      map((adminUser: IAdminUser) => {
         if (!adminUser) {
           this._router.navigate(['auth/login']);
 
@@ -57,23 +53,22 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    next: ActivatedRouteSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<any> =>
+        (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
                 .object(
-                  `/${environment.dbPrefix}/adminUserCredentials/${user.uid}`
+                  `/adminUsers/${user.uid}`
                 )
                 .valueChanges()
                 .pipe(take(1))
             : of(undefined)
       ),
-      map((adminUser: IAdminUser): any => {
+      map((adminUser: IAdminUser) => {
         if (_get(adminUser, 'roles.role') === EAdminRole.INACTIVE) {
           this._angularFireAuth.signOut();
           this._router.navigate(['auth/login']);

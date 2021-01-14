@@ -6,9 +6,9 @@ import {
   ENebularButtonSize,
 } from '../../shared/enums';
 import { IUnit } from '../../shared/interfaces';
-import { ConfirmDialogComponent } from 'src/app/shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
-import { zeroFill } from 'src/app/shared/pure';
-import { DataService } from 'src/app/shared/services/data';
+import { ConfirmDialogComponent } from '../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+import { zeroFill } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';
 import { dashboardActions } from '../../store/actions';
 import { dashboardSelectors, unitListSelectors } from '../../store/selectors';
@@ -22,7 +22,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-dashboard',
+  selector: 'bgap-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -78,6 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -113,7 +114,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  public toggleAcceptingOrders($event: any): void {
+  public toggleAcceptingOrders($event: Event): void {
     $event.preventDefault();
 
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
@@ -136,7 +137,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {},
+          callback: (): void => {/**/},
           status: 'basic',
         },
       ],

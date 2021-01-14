@@ -1,6 +1,6 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUnit } from '../../shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
+import { IUnit } from '../../../../shared/interfaces';
+import { DataService } from '../../../../shared/services/data';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -9,7 +9,7 @@ import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.componen
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
 @Component({
-  selector: 'app-unit-list-item',
+  selector: 'bgap-unit-list-item',
   templateUrl: './unit-list-item.component.html',
   styleUrls: ['./unit-list-item.component.scss'],
 })

@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
-import { IProductCategory } from '../../shared/interfaces';
-import { customNumberCompare } from 'src/app/shared/pure';
-import { DataService } from 'src/app/shared/services/data';
+import { IProductCategory, IProductCategoryOrderChangeEvent } from '../../shared/interfaces';
+import { customNumberCompare } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';
 import {
   currentUserSelectors,
@@ -17,12 +17,12 @@ import { ProductCategoryFormComponent } from './components/product-category-form
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-category-list',
+  selector: 'bgap-product-category-list',
   templateUrl: './product-category-list.component.html',
 })
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[];
-  private _sortedProductCategoryIds: any[];
+  private _sortedProductCategoryIds: string[];
   private _selectedChainId: string;
 
   constructor(
@@ -57,6 +57,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -70,7 +71,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public positionChange($event: any): void {
+  public positionChange($event: IProductCategoryOrderChangeEvent): void {
     const idx = this._sortedProductCategoryIds.indexOf(
       $event.productCategoryId
     );

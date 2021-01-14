@@ -5,7 +5,7 @@ import {
   EOrderStatus,
   EPaymentMethod
 } from '../../../../shared/enums';
-import { IAdminUser, IKeyValue, IOrder } from '../../../../shared/interfaces';
+import { IAdminUser, IOrder } from '../../../../shared/interfaces';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { DataService } from '../../../../shared/services/data';
 import { OrderService } from '../../../../shared/services/order';
@@ -17,15 +17,20 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { dashboardActions } from '../../../../store/actions';
 import { select, Store } from '@ngrx/store';
 
+interface IPaymentMethodKV {
+  key: string;
+  value: EPaymentMethod
+}
+
 @UntilDestroy()
 @Component({
-  selector: 'app-order-edit',
+  selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
   styleUrls: ['./order-edit.component.scss']
 })
 export class OrderEditComponent implements OnDestroy {
   @Input() order: IOrder;
-  public paymentMethods: IKeyValue[] = [];
+  public paymentMethods: IPaymentMethodKV[] = [];
   public EOrderStatus = EOrderStatus;
   public buttonSize: ENebularButtonSize;
   public workingOrderStatus: boolean;
@@ -60,6 +65,7 @@ export class OrderEditComponent implements OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -97,7 +103,7 @@ export class OrderEditComponent implements OnDestroy {
     );
   }
 
-  public updateOrderPaymentMethod(method: EPaymentMethod): void {
+  public updateOrderPaymentMethod(method: string): void {
     this._dataService.updateOrderPaymentMode(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,

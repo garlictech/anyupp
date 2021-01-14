@@ -1,16 +1,16 @@
-import { IUnit } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import * as floorMapFuncs from 'src/app/shared/pure';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { IUnit } from '../../../../shared/interfaces';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import * as floorMapFuncs from '../../../../shared/pure';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IState } from '../../store';
-import { floorMapActions } from '../../store/actions';
+import { IState } from '../../../../store';
+import { floorMapActions } from '../../../../store/actions';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-unit-floor-map',
+  selector: 'bgap-unit-floor-map',
   templateUrl: './unit-floor-map.component.html',
   styleUrls: ['./unit-floor-map.component.scss'],
 })
@@ -53,7 +53,7 @@ export class UnitFloorMapComponent
           );
           this.close();
         },
-        (err): any => {
+        (err) => {
           console.error('GROUP UPDATE ERROR', err);
         }
       );
@@ -66,7 +66,7 @@ export class UnitFloorMapComponent
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
         this.close();
       },
-      (err): any => {
+      (err) => {
         console.error('GROUP UPDATE ERROR', err);
       }
     );

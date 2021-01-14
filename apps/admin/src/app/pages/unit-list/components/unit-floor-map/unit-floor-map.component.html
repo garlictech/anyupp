@@ -14,10 +14,10 @@
   </nb-card-header>
   <nb-card-body class="p-2">
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
-      <app-floor-map-editor
+      <bgap-floor-map-editor
         [editMode]="true"
         [floorMap]="unit.floorMap"
-      ></app-floor-map-editor>
+      ></bgap-floor-map-editor>
 
       <div class="mt-20">
         <button

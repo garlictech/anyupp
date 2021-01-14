@@ -43,6 +43,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedGroupId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

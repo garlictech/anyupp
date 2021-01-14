@@ -11,7 +11,7 @@ import { AdminUserFormComponent } from './components/admin-user-form/admin-user-
 
 @UntilDestroy()
 @Component({
-  selector: 'app-admin-user-list',
+  selector: 'bgap-admin-user-list',
   templateUrl: './admin-user-list.component.html',
 })
 export class AdminUserListComponent implements OnInit, OnDestroy {
@@ -29,6 +29,7 @@ export class AdminUserListComponent implements OnInit, OnDestroy {
     );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
