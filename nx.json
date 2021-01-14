@@ -10,7 +10,6 @@
       "devDependencies": "*"
     },
     "tsconfig.base.json": "*",
-    "tslint.json": "*",
     "nx.json": "*",
     ".eslintrc.json": "*"
   },
@@ -42,8 +41,16 @@
     "graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
+
     "admin-firebase-config": {
       "tags": ["scope:admin", "type:utils", "platform:angular"]
+    },
+    "website": {
+      "tags": []
+    },
+    "website-e2e": {
+      "tags": [],
+      "implicitDependencies": ["website"]
     }
   }
 }
