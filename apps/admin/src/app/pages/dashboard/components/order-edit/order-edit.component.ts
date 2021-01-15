@@ -97,7 +97,6 @@ export class OrderEditComponent implements OnDestroy {
   public removeOrderItem(idx: number): void {
     this._orderService.updateOrderItemStatus(
       this.order._id,
-      this.order.userId,
       EOrderStatus.REJECTED,
       idx
     );
@@ -107,7 +106,6 @@ export class OrderEditComponent implements OnDestroy {
     this._dataService.updateOrderPaymentMode(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      this.order.userId,
       this.order._id,
       {
         paymentMethod: method

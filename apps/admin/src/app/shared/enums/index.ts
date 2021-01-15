@@ -1,6 +1,7 @@
 export * from './admin-role';
 export * from './dashboard-list-type';
 export * from './dashboard-size';
+export * from './firebase';
 export * from './floor-map';
 export * from './image-type';
 export * from './variant-availability-type';

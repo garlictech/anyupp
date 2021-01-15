@@ -63,7 +63,6 @@ export class OrderService {
         .updateOrderItemQuantityAndPrice(
           this._adminUser.settings.selectedChainId,
           this._adminUser.settings.selectedUnitId,
-          order.userId,
           order._id,
           idx,
           order.items[idx]
@@ -74,7 +73,6 @@ export class OrderService {
           ) {
             this.updateOrderItemStatus(
               order._id,
-              order.userId,
               EOrderStatus.PLACED,
               idx
             );
@@ -94,7 +92,6 @@ export class OrderService {
     this._dataService.addOrderItem(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      order.userId,
       order._id,
       order.items.length,
       {
@@ -125,7 +122,6 @@ export class OrderService {
     return this._dataService.insertOrderStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      order.userId,
       order._id,
       status
     );
@@ -133,14 +129,12 @@ export class OrderService {
 
   public updateOrderItemStatus(
     orderId: string,
-    orderUserId: string,
     status: EOrderStatus,
     idx: number
   ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      orderUserId,
       orderId,
       idx,
       {

@@ -102,7 +102,7 @@ export const unitOpeningHoursValidator: ValidatorFn = (
   return error;
 };
 
-export const getDayIntervals = (dateValue: string): IDateIntervals => {
+export const getDayIntervals = (dateValue: string | number): IDateIntervals => {
   const start = new Date(dateValue);
   start.setHours(0, 0, 0, 0);
 

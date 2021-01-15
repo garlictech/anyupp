@@ -129,7 +129,6 @@ export class OrderProductListComponent {
       ) {
         this._orderService.updateOrderItemStatus(
           this.selectedOrder._id,
-          this.selectedOrder.userId,
           EOrderStatus.PLACED,
           existingVariantOrderIdx
         );

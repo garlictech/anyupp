@@ -81,7 +81,6 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveForward(): void {
     this._orderService.updateOrderItemStatus(
       this.orderItem.orderId,
-      this.orderItem.userId,
       getNextOrderItemStatus(this.orderItem.currentStatus),
       this.orderItem.idx
     );
@@ -90,7 +89,6 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveBack(): void {
     this._orderService.updateOrderItemStatus(
       this.orderItem.orderId,
-      this.orderItem.userId,
       getPrevOrderItemStatus(this.orderItem.currentStatus),
       this.orderItem.idx
     );

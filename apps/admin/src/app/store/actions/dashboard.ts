@@ -37,3 +37,7 @@ export const setSelectedLanes = createAction(
   '[Dashboard] Set selected lanes',
   props<{ selectedLanes: string[] }>()
 );
+export const setHistoryDate = createAction(
+  '[Dashboard] Set history date',
+  props<{ historyDate: number }>()
+);

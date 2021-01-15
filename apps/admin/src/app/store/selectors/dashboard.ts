@@ -69,3 +69,8 @@ export const getSelectedLanes = createSelector(
   featureSelector,
   (state: IDashboardState): string[] => state.settings.selectedLanes
 );
+
+export const getSelectedHistoryDate = createSelector(
+  featureSelector,
+  (state: IDashboardState): number => state.settings.historyDate
+);
