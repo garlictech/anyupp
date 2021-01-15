@@ -95,7 +95,6 @@ export class OrderDetailsComponent implements OnDestroy {
     if (status) {
       this._orderService.updateOrderItemStatus(
         this.order._id,
-        this.order.userId,
         status,
         idx
       );
@@ -115,7 +114,6 @@ export class OrderDetailsComponent implements OnDestroy {
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
               this.order._id,
-              this.order.userId,
               EOrderStatus.PLACED,
               idx
             );

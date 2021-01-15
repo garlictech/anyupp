@@ -352,50 +352,31 @@ export class DataService {
     unitId: string
   ): void {
     this._angularFireDatabase
-      .object(`/orders/chains/${chainId}/units/${unitId}/users`)
-      .valueChanges()
+      .list(`/orders/chains/${chainId}/units/${unitId}/active`)
+      .stateChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
-        let activeOrders = [];
-        let historyOrders = [];
-
-        // TODO
-        // Get history orders with daily interval query!!!
-        //
-
-        Object.keys(data || {}).forEach((userId: string): void => {
-          if (userId !== 'undefined') {
-            activeOrders = activeOrders.concat(
-              objectToArray(_get(data[userId], 'active', {})).map(
-                (order: IOrder): IOrder => {
-                  return {
-                    ...order,
-                    userId,
-                  };
-                }
-              )
-            );
-            historyOrders = historyOrders.concat(
-              objectToArray(_get(data[userId], 'history', {})).map(
-                (order: IOrder): IOrder => {
-                  return {
-                    ...order,
-                    userId,
-                  };
-                }
-              )
-            );
-          }
-        });
-
         this._store.dispatch(
-          orderListActions.setAllActiveOrders({
-            orders: activeOrders,
+          orderListActions.upsertActiveOrder({
+            order: {
+              _id: data.key,
+              ...(<IOrder>data.payload.val()),
+            },
           })
         );
+      });
+
+    this._angularFireDatabase
+      .list(`/orders/chains/${chainId}/units/${unitId}/history`)
+      .stateChanges()
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe((data): void => {
         this._store.dispatch(
-          orderListActions.setAllHistoryOrders({
-            orders: historyOrders,
+          orderListActions.upsertHistoryOrder({
+            order: {
+              _id: data.key,
+              ...(<IOrder>data.payload.val()),
+            },
           })
         );
       });
@@ -418,84 +399,84 @@ export class DataService {
   private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
     let adminUsers;
 
-    this._angularFireDatabase.object(`/adminUsers/`).valueChanges()
+    this._angularFireDatabase
+      .object(`/adminUsers/`)
+      .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
-      .subscribe(
-        (_adminUsers: IAdminUser): void => {
-          switch (loggedAdminRole.role) {
-            case EAdminRole.SUPERUSER:
-              adminUsers = objectToArray(_adminUsers);
-              break;
-            case EAdminRole.CHAIN_ADMIN:
-              adminUsers = objectToArray(_adminUsers).filter(
-                (currentAdminUser: IAdminUser): boolean => {
-                  const loggedAdminChainIds = (
-                    loggedAdminRole?.entities ?? []
-                  ).map((e): string => e.chainId);
-                  const currentAdminChainIds = (
-                    currentAdminUser?.roles?.entities ?? []
-                  ).map((e): string => e.chainId);
-                  // Chain admin shows only the group/unit admins and the staffs of his chains
-                  return [
-                    EAdminRole.GROUP_ADMIN,
-                    EAdminRole.UNIT_ADMIN,
-                    EAdminRole.STAFF,
-                  ].includes(currentAdminUser.roles.role)
-                    ? _intersection(loggedAdminChainIds, currentAdminChainIds)
-                        .length > 0
-                    : false;
-                }
-              );
-              break;
-            case EAdminRole.GROUP_ADMIN:
-              adminUsers = objectToArray(_adminUsers).filter(
-                (currentAdminUser: IAdminUser): boolean => {
-                  const loggedAdminGroupIds = (
-                    loggedAdminRole?.entities ?? []
-                  ).map((e): string => e.unitId);
-                  const currentAdminGroupIds = (
-                    currentAdminUser?.roles?.entities ?? []
-                  ).map((e): string => e.groupId);
+      .subscribe((_adminUsers: IAdminUser): void => {
+        switch (loggedAdminRole.role) {
+          case EAdminRole.SUPERUSER:
+            adminUsers = objectToArray(_adminUsers);
+            break;
+          case EAdminRole.CHAIN_ADMIN:
+            adminUsers = objectToArray(_adminUsers).filter(
+              (currentAdminUser: IAdminUser): boolean => {
+                const loggedAdminChainIds = (
+                  loggedAdminRole?.entities ?? []
+                ).map((e): string => e.chainId);
+                const currentAdminChainIds = (
+                  currentAdminUser?.roles?.entities ?? []
+                ).map((e): string => e.chainId);
+                // Chain admin shows only the group/unit admins and the staffs of his chains
+                return [
+                  EAdminRole.GROUP_ADMIN,
+                  EAdminRole.UNIT_ADMIN,
+                  EAdminRole.STAFF,
+                ].includes(currentAdminUser.roles.role)
+                  ? _intersection(loggedAdminChainIds, currentAdminChainIds)
+                      .length > 0
+                  : false;
+              }
+            );
+            break;
+          case EAdminRole.GROUP_ADMIN:
+            adminUsers = objectToArray(_adminUsers).filter(
+              (currentAdminUser: IAdminUser): boolean => {
+                const loggedAdminGroupIds = (
+                  loggedAdminRole?.entities ?? []
+                ).map((e): string => e.unitId);
+                const currentAdminGroupIds = (
+                  currentAdminUser?.roles?.entities ?? []
+                ).map((e): string => e.groupId);
 
-                  // Chain admin shows only the group/unit admins and the staffs of his chains
-                  return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
-                    currentAdminUser.roles.role
-                  )
-                    ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
-                        .length > 0
-                    : false;
-                }
-              );
-              break;
-            case EAdminRole.UNIT_ADMIN:
-              adminUsers = objectToArray(_adminUsers).filter(
-                (currentAdminUser: IAdminUser): boolean => {
-                  const loggedAdminUnitIds = (
-                    loggedAdminRole?.entities ?? []
-                  ).map((e): string => e['unitId']);
-                  const currentAdminUnitIds = (
-                    currentAdminUser?.roles?.entities ?? []
-                  ).map((e): string => e['unitId']);
+                // Chain admin shows only the group/unit admins and the staffs of his chains
+                return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
+                  currentAdminUser.roles.role
+                )
+                  ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
+                      .length > 0
+                  : false;
+              }
+            );
+            break;
+          case EAdminRole.UNIT_ADMIN:
+            adminUsers = objectToArray(_adminUsers).filter(
+              (currentAdminUser: IAdminUser): boolean => {
+                const loggedAdminUnitIds = (
+                  loggedAdminRole?.entities ?? []
+                ).map((e): string => e['unitId']);
+                const currentAdminUnitIds = (
+                  currentAdminUser?.roles?.entities ?? []
+                ).map((e): string => e['unitId']);
 
-                  // Chain admin shows only the group/unit admins and the staffs of his chains
-                  return currentAdminUser.roles.role === EAdminRole.STAFF
-                    ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
-                        .length > 0
-                    : false;
-                }
-              );
-              break;
-            default:
-              break;
-          }
-
-          this._store.dispatch(
-            adminUserListActions.setAllAdminUsers({
-              adminUsers,
-            })
-          );
+                // Chain admin shows only the group/unit admins and the staffs of his chains
+                return currentAdminUser.roles.role === EAdminRole.STAFF
+                  ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
+                      .length > 0
+                  : false;
+              }
+            );
+            break;
+          default:
+            break;
         }
-      );
+
+        this._store.dispatch(
+          adminUserListActions.setAllAdminUsers({
+            adminUsers,
+          })
+        );
+      });
   }
 
   public destroyDataConnection(): void {
@@ -570,7 +551,6 @@ export class DataService {
   }
 
   public regenerateUnitData(unitId: string): Promise<void> {
-    // TODO `${environment.dbPrefix}-regenerateUnitData`
     const callable = this._angularFireFunctions.httpsCallable(
       `regenerateUnitData`
     );
@@ -716,15 +696,14 @@ export class DataService {
   // Order
   //
 
-  public getOrder$(
+  public getActiveOrder$(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string
   ): Observable<unknown> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}`
       )
       .valueChanges()
       .pipe(take(1));
@@ -733,7 +712,6 @@ export class DataService {
   public insertOrderStatus(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string,
     status: EOrderStatus
   ): Promise<void> {
@@ -744,7 +722,6 @@ export class DataService {
     return callable({
       chainId,
       unitId,
-      userId,
       orderId,
       status,
     }).toPromise();
@@ -753,13 +730,12 @@ export class DataService {
   public updateOrderPaymentMode(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string,
     value
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}`
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}`
       )
       .update(value);
   }
@@ -767,14 +743,13 @@ export class DataService {
   public insertOrderItemStatus(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string,
     idx: number,
     value
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}/statusLog`
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`
       )
       .update(value);
   }
@@ -782,14 +757,13 @@ export class DataService {
   public updateOrderItemQuantityAndPrice(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string,
     idx: number,
     value
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -797,14 +771,13 @@ export class DataService {
   public addOrderItem(
     chainId: string,
     unitId: string,
-    userId: string,
     orderId: string,
     idx: number,
     value: IOrderItem
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/users/${userId}/active/${orderId}/items/${idx}`
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
