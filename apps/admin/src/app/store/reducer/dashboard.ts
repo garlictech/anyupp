@@ -17,6 +17,7 @@ export const initialDashboardState: IDashboardState = {
     showAllUserOrders: false,
     ticketListType: EDashboardTicketListType.PLACED,
     selectedLanes: ['default'],
+    historyDate: (new Date()).getTime()
   },
 };
 
@@ -76,6 +77,13 @@ const reducer = createReducer(
     settings: {
       ...state.settings,
       selectedLanes,
+    },
+  })),
+  on(dashboardActions.setHistoryDate, (state, { historyDate }) => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      historyDate,
     },
   }))
 );

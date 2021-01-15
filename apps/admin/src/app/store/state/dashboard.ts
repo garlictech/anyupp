@@ -11,6 +11,7 @@ export interface IDashboardSettings {
   showAllUserOrders: boolean;
   ticketListType: EDashboardTicketListType;
   selectedLanes: string[];
+  historyDate: number;
 }
 
 export interface IDashboardState {

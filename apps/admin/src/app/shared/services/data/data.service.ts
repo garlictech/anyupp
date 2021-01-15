@@ -1,6 +1,13 @@
 import { get as _get, intersection as _intersection } from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import {
   adminUserListActions,
   chainListActions,
@@ -13,7 +20,10 @@ import {
   unitListActions,
   userListActions,
 } from '../../../store/actions';
-import { currentUserSelectors } from '../../../store/selectors';
+import {
+  currentUserSelectors,
+  dashboardSelectors,
+} from '../../../store/selectors';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -24,13 +34,14 @@ import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { DEFAULT_LANG } from '../../const';
-import { EAdminRole, EOrderStatus } from '../../enums';
+import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '../../enums';
 import {
   IAdminUser,
   IAdminUserCredential,
   IAdminUserRole,
   IAdminUserSettings,
   IChain,
+  IDateIntervals,
   IGroup,
   IOrder,
   IOrderItem,
@@ -39,7 +50,7 @@ import {
   IUnit,
   IUser,
 } from '../../interfaces';
-import { objectToArray } from '../../pure';
+import { getDayIntervals, objectToArray } from '../../pure';
 import { IState } from '../../../store';
 import { environment } from '../../../../environments/environment';
 
@@ -356,29 +367,65 @@ export class DataService {
       .stateChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
-        this._store.dispatch(
-          orderListActions.upsertActiveOrder({
-            order: {
-              _id: data.key,
-              ...(<IOrder>data.payload.val()),
-            },
-          })
-        );
+        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
+          this._store.dispatch(
+            orderListActions.removeActiveOrder({
+              orderId: data.key,
+            })
+          );
+        } else {
+          this._store.dispatch(
+            orderListActions.upsertActiveOrder({
+              order: {
+                _id: data.key,
+                ...(<IOrder>data.payload.val()),
+              },
+            })
+          );
+        }
       });
 
-    this._angularFireDatabase
-      .list(`/orders/chains/${chainId}/units/${unitId}/history`)
-      .stateChanges()
-      .pipe(takeUntil(this._settingsChanged$))
+    this._store
+      .pipe(
+        select(dashboardSelectors.getSelectedHistoryDate),
+        tap(() => {
+          this._store.dispatch(
+            orderListActions.setAllHistoryOrders({
+              orders: [],
+            })
+          );
+        }),
+        switchMap((historyDate: number) => {
+          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+
+          return this._angularFireDatabase
+            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
+              ref
+                .orderByChild('created')
+                .startAt(dayIntervals.from)
+                .endAt(dayIntervals.to)
+            )
+            .stateChanges();
+        }),
+        takeUntil(this._settingsChanged$)
+      )
       .subscribe((data): void => {
-        this._store.dispatch(
-          orderListActions.upsertHistoryOrder({
-            order: {
-              _id: data.key,
-              ...(<IOrder>data.payload.val()),
-            },
-          })
-        );
+        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
+          this._store.dispatch(
+            orderListActions.removeHistoryOrder({
+              orderId: data.key,
+            })
+          );
+        } else {
+          this._store.dispatch(
+            orderListActions.upsertHistoryOrder({
+              order: {
+                _id: data.key,
+                ...(<IOrder>data.payload.val()),
+              },
+            })
+          );
+        }
       });
   }
 
@@ -702,9 +749,7 @@ export class DataService {
     orderId: string
   ): Observable<unknown> {
     return this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}`
-      )
+      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .valueChanges()
       .pipe(take(1));
   }
@@ -734,9 +779,7 @@ export class DataService {
     value
   ): Promise<void> {
     return this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}`
-      )
+      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .update(value);
   }
 

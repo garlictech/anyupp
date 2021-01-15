@@ -35,6 +35,11 @@ const activeOrderListReducer = createReducer(
       activeOrderListAdapter.upsertOne(order, state)
   ),
   on(
+    orderListActions.removeActiveOrder,
+    (state, { orderId }): EntityState<IOrder> =>
+      activeOrderListAdapter.removeOne(orderId, state)
+  ),
+  on(
     orderListActions.resetActiveOrders,
     (state): EntityState<IOrder> => activeOrderListAdapter.removeAll(state)
   )
@@ -60,6 +65,11 @@ const historyOrderListReducer = createReducer(
     orderListActions.upsertHistoryOrder,
     (state, { order }): EntityState<IOrder> =>
       historyOrderListAdapter.upsertOne(order, state)
+  ),
+  on(
+    orderListActions.removeHistoryOrder,
+    (state, { orderId }): EntityState<IOrder> =>
+      historyOrderListAdapter.removeOne(orderId, state)
   ),
   on(
     orderListActions.resetHistoryOrders,

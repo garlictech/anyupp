@@ -7,6 +7,7 @@ export interface IAdminUserSettings {
   selectedUnitId?: string;
   selectedProductCategoryId?: string;
   selectedLanguage?: string;
+  selectedHistoryDate?: number;
 }
 
 export interface IAdminRoleEntity {

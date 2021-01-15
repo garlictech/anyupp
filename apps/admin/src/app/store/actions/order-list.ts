@@ -15,6 +15,10 @@ export const upsertActiveOrder = createAction(
   '[OrderList] Upsert active order',
   props<{ order: IOrder }>()
 );
+export const removeActiveOrder = createAction(
+  '[OrderList] Remove active order',
+  props<{ orderId: string }>()
+);
 export const setAllHistoryOrders = createAction(
   '[OrderList] Set all history orders',
   props<{ orders: IOrder[] }>()
@@ -22,4 +26,8 @@ export const setAllHistoryOrders = createAction(
 export const upsertHistoryOrder = createAction(
   '[OrderList] Upsert history order',
   props<{ order: IOrder }>()
+);
+export const removeHistoryOrder = createAction(
+  '[OrderList] Remove history order',
+  props<{ orderId: string }>()
 );
