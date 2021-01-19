@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'admin-firebase-config',
+  displayName: 'shared-config-firebase',
   preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/admin/firebase/config',
+  coverageDirectory: '../../../../coverage/libs/shared/config/firebase',
 };

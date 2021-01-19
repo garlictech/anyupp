@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { StripeResolver } from '../stripe/stripe.resolver';
 import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
-import serviceAccount from './serviceAccountKey.json';
+import { FIREBASE_SERVICE_ACCOUNT } from '@bgap/shared/config/firebase';
+import { FIREBASE_CONFIG } from '@bgap/shared/config/firebase';
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
 
 @Module({
@@ -21,9 +22,8 @@ export class ApiGraphqlResolversModule {
   constructor() {
     admin.initializeApp({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      credential: admin.credential.cert(serviceAccount as any),
-      databaseURL: 'https://project-3fa.firebaseio.com/',
+      credential: admin.credential.cert(<any>FIREBASE_SERVICE_ACCOUNT),
+      databaseURL: FIREBASE_CONFIG.databaseURL,
     });
   }
-
 }

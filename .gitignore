@@ -39,6 +39,6 @@ testem.log
 Thumbs.db
 
 # libs
-/libs/admin/firebase/config/src/lib/config/*
+/libs/shared/config/firebase/src/config/*
 
 cyreport

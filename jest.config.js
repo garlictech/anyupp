@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/apps/website',
     '<rootDir>/libs/api/graphql/resolvers',
     '<rootDir>/libs/api/graphql/schema',
+    '<rootDir>/libs/shared/config/firebase',
   ],
 };
