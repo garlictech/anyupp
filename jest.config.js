@@ -6,5 +6,7 @@ module.exports = {
     '<rootDir>/libs/graphql/resolvers',
     '<rootDir>/libs/admin/firebase/config',
     '<rootDir>/apps/website',
+    '<rootDir>/libs/api/graphql/resolvers',
+    '<rootDir>/libs/api/graphql/schema',
   ],
 };

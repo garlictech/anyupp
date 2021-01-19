@@ -3,9 +3,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { join } from 'path';
-import { GraphqlResolversModule } from '@bgap/graphql/resolvers';
+import { ApiGraphqlResolversModule } from '@bgap/api/graphql/resolvers';
 
-const SCHEMA_ROOT = join(process.cwd(), 'libs/graphql/schema/src');
+const SCHEMA_ROOT = join(process.cwd(), 'libs/api/graphql/schema/src');
 
 @Module({
   imports: [
@@ -17,8 +17,9 @@ const SCHEMA_ROOT = join(process.cwd(), 'libs/graphql/schema/src');
         outputAs: 'class',
       },
       installSubscriptionHandlers: true,
+
     }),
-    GraphqlResolversModule,
+    ApiGraphqlResolversModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -32,16 +32,9 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-schema": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
     "graphql-server": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
-    "graphql-resolvers": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-
     "admin-firebase-config": {
       "tags": ["scope:admin", "type:utils", "platform:angular"]
     },
@@ -51,6 +44,12 @@
     "website-e2e": {
       "tags": [],
       "implicitDependencies": ["website"]
+    },
+    "api-graphql-resolvers": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "api-graphql-schema": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }

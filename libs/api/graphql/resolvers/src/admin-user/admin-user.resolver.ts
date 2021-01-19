@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
-import { AdminUser, UpdateAdminUserInput } from '@bgap/graphql/schema';
+import { AdminUser, UpdateAdminUserInput } from '@bgap/api/graphql/schema';
 import { Inject } from '@nestjs/common';
 
 @Resolver('AdminUser')
@@ -21,6 +21,7 @@ export class AdminUserResolver {
 
   @Query('getAdminUser')
   async getAdminUser(@Args('id') id: string): Promise<AdminUser> {
+    console.error('getAdminUser id', id);
     return admin
       .database()
       .ref(`adminUsers/${id}`)

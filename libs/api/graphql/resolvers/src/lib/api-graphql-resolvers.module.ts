@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { HelloResolver } from '../hello/hello.resolver';
+import { StripeResolver } from '../stripe/stripe.resolver';
+import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
 import serviceAccount from './serviceAccountKey.json';
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
-import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   controllers: [],
   providers: [
-    HelloResolver,
+    StripeResolver,
     AdminUserResolver,
     {
       provide: 'PUB_SUB',
@@ -17,7 +17,7 @@ import { PubSub } from 'graphql-subscriptions';
   ],
   exports: [],
 })
-export class GraphqlResolversModule {
+export class ApiGraphqlResolversModule {
   constructor() {
     admin.initializeApp({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,4 +25,5 @@ export class GraphqlResolversModule {
       databaseURL: 'https://project-3fa.firebaseio.com/',
     });
   }
+
 }
