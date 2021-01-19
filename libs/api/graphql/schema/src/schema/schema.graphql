@@ -10,10 +10,15 @@ input UpdateAdminUserInput {
   phone: String
 }
 
+input CreateAdminUserInput {
+  email: String
+  name: String
+  phone: String
+}
+
 type Query {
   hello: String
   getAdminUser(id: ID!): AdminUser
-  getAdminUsers: [AdminUser]
 }
 
 type Subscription {
@@ -22,4 +27,5 @@ type Subscription {
 
 type Mutation {
   updateAdminUser(id: ID!, newAdminData: UpdateAdminUserInput!): Boolean!
+  createAdminUser(newAdminData: CreateAdminUserInput!): Boolean!
 }
