@@ -33,7 +33,7 @@ import { AppComponent } from './app.component';
 import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
 
-import { adminFirebaseConfig} from '@bgap/admin/firebase/config';
+import { FIREBASE_CONFIG } from '@bgap/shared/config/firebase';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -54,7 +54,7 @@ const NB_MODULES = [
 ];
 
 const FIREBASE_MODULES = [
-  AngularFireModule.initializeApp(adminFirebaseConfig()),
+  AngularFireModule.initializeApp(FIREBASE_CONFIG),
   AngularFireAuthModule,
   AngularFireDatabaseModule,
   AngularFireStorageModule,

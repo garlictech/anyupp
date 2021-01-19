@@ -21,7 +21,6 @@ export class AdminUserResolver {
 
   @Query('getAdminUser')
   async getAdminUser(@Args('id') id: string): Promise<AdminUser> {
-    console.error('getAdminUser id', id);
     return admin
       .database()
       .ref(`adminUsers/${id}`)
