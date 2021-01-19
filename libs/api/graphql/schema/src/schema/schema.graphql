@@ -13,6 +13,7 @@ input UpdateAdminUserInput {
 type Query {
   hello: String
   getAdminUser(id: ID!): AdminUser
+  getAdminUsers: [AdminUser]
 }
 
 type Subscription {

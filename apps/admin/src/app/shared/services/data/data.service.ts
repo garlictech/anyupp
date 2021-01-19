@@ -216,7 +216,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/chains/`)
+      .object(`/chains/`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -237,7 +237,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/groups/`)
+      .object(`/groups/`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -258,7 +258,7 @@ export class DataService {
     loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
-      .object(`/units/`)
+      .object(`/units/`) // TODO list??
       .valueChanges()
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
@@ -276,7 +276,7 @@ export class DataService {
 
   private _subscribeToChainProductCategories(chainId: string): void {
     this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}`)
+      .object(`/productCategories/chains/${chainId}`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -290,7 +290,7 @@ export class DataService {
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
     this._angularFireDatabase
-      .object(`/products/chains/${chainId}`)
+      .object(`/products/chains/${chainId}`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -304,7 +304,7 @@ export class DataService {
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
     this._angularFireDatabase
-      .object(`/products/groups/${groupId}`)
+      .object(`/products/groups/${groupId}`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -318,7 +318,7 @@ export class DataService {
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(`/products/units/${unitId}`)
+      .object(`/products/units/${unitId}`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
@@ -332,7 +332,7 @@ export class DataService {
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
     this._angularFireDatabase
-      .object(`/generated/productList/units/${unitId}/productCategories`)
+      .object(`/generated/productList/units/${unitId}/productCategories`) // TODO list?
       .valueChanges()
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {

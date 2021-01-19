@@ -25,6 +25,8 @@ export abstract class IQuery {
     abstract hello(): string | Promise<string>;
 
     abstract getAdminUser(id: string): AdminUser | Promise<AdminUser>;
+
+    abstract getAdminUsers(): AdminUser[] | Promise<AdminUser[]>;
 }
 
 export abstract class ISubscription {

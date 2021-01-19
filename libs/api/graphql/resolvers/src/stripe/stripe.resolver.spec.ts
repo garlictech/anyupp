@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HelloResolver } from './hello.resolver';
+import { StripeResolver } from './stripe.resolver';
 
-describe('HelloResolver', () => {
-  let resolver: HelloResolver;
+describe('StripeResolver', () => {
+  let resolver: StripeResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HelloResolver],
+      providers: [StripeResolver],
     }).compile();
 
-    resolver = module.get<HelloResolver>(HelloResolver);
+    resolver = module.get<StripeResolver>(StripeResolver);
   });
 
   it('should be defined', () => {
