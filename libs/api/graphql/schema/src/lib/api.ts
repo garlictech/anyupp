@@ -12,6 +12,12 @@ export class UpdateAdminUserInput {
     phone?: string;
 }
 
+export class CreateAdminUserInput {
+    email?: string;
+    name?: string;
+    phone?: string;
+}
+
 export class AdminUser {
     __typename?: 'AdminUser';
     email?: string;
@@ -25,8 +31,6 @@ export abstract class IQuery {
     abstract hello(): string | Promise<string>;
 
     abstract getAdminUser(id: string): AdminUser | Promise<AdminUser>;
-
-    abstract getAdminUsers(): AdminUser[] | Promise<AdminUser[]>;
 }
 
 export abstract class ISubscription {
@@ -39,4 +43,6 @@ export abstract class IMutation {
     __typename?: 'IMutation';
 
     abstract updateAdminUser(id: string, newAdminData: UpdateAdminUserInput): boolean | Promise<boolean>;
+
+    abstract createAdminUser(newAdminData: CreateAdminUserInput): boolean | Promise<boolean>;
 }

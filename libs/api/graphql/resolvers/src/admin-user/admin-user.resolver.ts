@@ -1,14 +1,18 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
-import { AdminUser, UpdateAdminUserInput } from '@bgap/api/graphql/schema';
+import {
+  AdminUser,
+  CreateAdminUserInput,
+  UpdateAdminUserInput,
+} from '@bgap/api/graphql/schema';
 import { Inject } from '@nestjs/common';
 
 @Resolver('AdminUser')
 export class AdminUserResolver {
   constructor(@Inject('PUB_SUB') private pubSub: PubSub) {
-    // Thus guy subscribes to the admin list element changes, whenever
-    // it changes, publishes them to the graphwl subscribers.
+    // Subscribing to the admin list element changes, whenever
+    // it changes, publishes them to the graphql subscribers.
     admin
       .database()
       .ref(`adminUsers`)
@@ -20,7 +24,7 @@ export class AdminUserResolver {
   }
 
   @Query('getAdminUser')
-  async getAdminUser(@Args('id') id: string): Promise<AdminUser> {
+  async get(@Args('id') id: string): Promise<AdminUser> {
     return admin
       .database()
       .ref(`adminUsers/${id}`)
@@ -29,7 +33,7 @@ export class AdminUserResolver {
   }
 
   @Mutation('updateAdminUser')
-  async updateAdminUser(
+  async update(
     @Args('newAdminData') newAdminData: UpdateAdminUserInput,
     @Args('id') id: string
   ): Promise<boolean> {
@@ -40,12 +44,28 @@ export class AdminUserResolver {
       .then(() => true);
   }
 
+  @Mutation('createAdminUser')
+  async create(
+    @Args('newAdminData') newAdminData: CreateAdminUserInput
+  ): Promise<boolean> {
+    const user = await admin.auth().createUser({
+      ...newAdminData,
+      password: Math.random().toString(36).substring(2, 10),
+    });
+    return admin
+      .database()
+      .ref(`adminUsers/${user.uid}`)
+      .update(newAdminData)
+      .then(() => true);
+  }
+
+  // TODO: is this filter works, or the subscription in the constructor the one who triggers the changes?
   // Subscribe for the changes of a [articular admin user]
   @Subscription('adminUserChanged', {
     filter: (payload, variables) =>
       payload.adminUserChanged.id === variables.id,
   })
-  adminUserChanged() {
+  onChanged() {
     return this.pubSub.asyncIterator('adminUserChanged');
   }
 }

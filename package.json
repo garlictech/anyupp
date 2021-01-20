@@ -27,8 +27,12 @@
     "help": "nx help",
     "schema:generate": "pushd libs/graphql/schema && graphql-codegen --config codegen.yml && popd",
     "cucumber:report": "node ./tools/generate-cucumber-report.js",
+    "*** GENERATE GRAPHQL TYPINGS FROM SCHEMA ***": "it runs in WATCH mode",
+    "graphql:gt": "node ./tools/generate-typings.js",
     "workspace-generator": "nx workspace-generator",
-    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+    "*** GRAPHQL SERVER ***": "",
+    "graphql:serve": "nx serve graphql-server"
   },
   "private": true,
   "dependencies": {
