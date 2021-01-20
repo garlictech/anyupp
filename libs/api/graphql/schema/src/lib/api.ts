@@ -22,11 +22,7 @@ export class AdminUser {
 export abstract class IQuery {
     __typename?: 'IQuery';
 
-    abstract hello(): string | Promise<string>;
-
     abstract getAdminUser(id: string): AdminUser | Promise<AdminUser>;
-
-    abstract getAdminUsers(): AdminUser[] | Promise<AdminUser[]>;
 }
 
 export abstract class ISubscription {
@@ -39,4 +35,11 @@ export abstract class IMutation {
     __typename?: 'IMutation';
 
     abstract updateAdminUser(id: string, newAdminData: UpdateAdminUserInput): boolean | Promise<boolean>;
+}
+
+export class User {
+    __typename?: 'User';
+    email?: string;
+    name?: string;
+    phone?: string;
 }

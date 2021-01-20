@@ -4529,6 +4529,15 @@ anymatch@^3.0.3, anymatch@~3.1.1:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apollo-angular@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-2.2.0.tgz#de6003ad6c0a785a11b026f31b78561479c07b96"
+  integrity sha512-/38ynj2gMJ1M/JlSDB6vv1fGYJy7WDukJn/3wQnoOYay5ZeU0rsAJdBaSZQiOPxqAJgVoGfU787/aXjIC1PWZg==
+  dependencies:
+    extract-files "^9.0.0"
+    semver "^7.0.0"
+    tslib "^2.0.0"
+
 apollo-cache-control@^0.11.1, apollo-cache-control@^0.11.6:
   version "0.11.6"
   resolved "https://registry.yarnpkg.com/apollo-cache-control/-/apollo-cache-control-0.11.6.tgz#f7bdf924272af47ac474cf3f3f35cfc038cc9485"
