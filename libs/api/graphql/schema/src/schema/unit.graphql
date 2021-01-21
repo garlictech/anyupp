@@ -1,0 +1,45 @@
+type Unit {
+  id: ID!
+  groupId: ID!
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItem
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DailySchedule
+  openingHours: WeeklySchedule
+}
+
+type PaymentMode {
+  name: String!
+  caption: String
+  method: String!
+}
+
+type FloorMapData {
+  w: Int
+  h: Int
+  objects: [FloorMapDataObject]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: String!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String # Table ID
+  sID: String # Seat Id
+}
+
+type Lane {
+  id: ID
+  name: String
+  color: String
+}
