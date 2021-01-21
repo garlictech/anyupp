@@ -392,6 +392,27 @@
           }
         }
       }
+    },
+    "shared-config-stripe": {
+      "root": "libs/shared/config/stripe",
+      "sourceRoot": "libs/shared/config/stripe/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/config/stripe/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/config/stripe"],
+          "options": {
+            "jestConfig": "libs/shared/config/stripe/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
