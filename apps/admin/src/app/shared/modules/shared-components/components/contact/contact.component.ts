@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { IChain, IGroup, IUnit } from '../../../../interfaces';
+import { IChain, IGroup, IUnit } from '@bgap/shared/types/interfaces';
 
 @Component({
   selector: 'bgap-contact',

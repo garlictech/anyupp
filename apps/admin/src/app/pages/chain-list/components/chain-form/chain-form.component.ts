@@ -1,6 +1,6 @@
 import { get as _get, set as _set } from 'lodash-es';
-import { EImageType } from '../../../../shared/enums';
-import { IChain } from '../../../../shared/interfaces';
+import { EImageType } from '@bgap/shared/types/enums';
+import { IChain } from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IProductCategory } from '../../../../interfaces';
+import { IAdminUser, IProductCategory } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../../store';
 import {
   currentUserSelectors,

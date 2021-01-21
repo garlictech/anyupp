@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IAdminUser } from '../../shared/interfaces';
+import { IAdminUser } from '@bgap/shared/types/interfaces';
 import { IState } from '../../store';
 import { adminUserListSelectors } from '../../store/selectors';
 

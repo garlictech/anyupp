@@ -1,8 +1,8 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { EPaymentMethod } from '../../../../shared/enums';
-import { IOrder, IOrderAmounts } from '../../../../shared/interfaces';
+import { EPaymentMethod } from '@bgap/shared/types/enums';
+import { IOrder, IOrderAmounts } from '@bgap/shared/types/interfaces';
 import { CurrencyFormatterPipe } from '../../../../shared/pipes';
 import { reducer } from '../../../../shared/pure';
 

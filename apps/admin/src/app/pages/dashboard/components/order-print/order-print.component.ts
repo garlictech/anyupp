@@ -8,7 +8,7 @@ import {
   IPlace,
   IPriceShown,
   IUnit
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../store';
 import {
   chainListSelectors,

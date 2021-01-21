@@ -1,4 +1,4 @@
-import { IUnit } from '../../../../shared/interfaces';
+import { IUnit } from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import * as floorMapFuncs from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';

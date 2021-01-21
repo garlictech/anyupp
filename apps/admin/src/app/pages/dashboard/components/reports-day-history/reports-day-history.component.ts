@@ -1,7 +1,7 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { IOrder } from '../../../../shared/interfaces';
+import { IOrder } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../store';
 
 import {

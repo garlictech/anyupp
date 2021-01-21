@@ -1,5 +1,5 @@
 import { skipWhile, take } from 'rxjs/operators';
-import { IUnit } from '../../../../interfaces';
+import { IUnit } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../../store';
 import { unitListSelectors } from '../../../../../store/selectors';
 

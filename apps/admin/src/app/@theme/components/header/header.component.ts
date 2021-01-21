@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IAdminUser, IGroup } from '../../../shared/interfaces';
+import { IAdminUser, IGroup } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 

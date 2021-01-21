@@ -1,4 +1,4 @@
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '@bgap/shared/types/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

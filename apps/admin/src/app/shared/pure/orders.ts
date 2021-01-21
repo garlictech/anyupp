@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 
 import { DEFAULT_LANE_COLOR } from '../const';
-import { EOrderStatus } from '../enums';
+import { EOrderStatus } from '@bgap/shared/types/enums';
 import {
   IFloorMapTableOrderObjects,
   IFloorMapUserOrderObjects,
@@ -10,7 +10,7 @@ import {
   IOrder,
   IStatusLog,
   IUnit,
-} from '../interfaces';
+} from '@bgap/shared/types/interfaces';
 
 export const currentStatus = (status: IStatusLog): EOrderStatus => {
   const statusArr = Object.values(status || {});

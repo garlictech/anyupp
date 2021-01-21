@@ -1,6 +1,6 @@
 import { WEEKLY_VARIANT_AVAILABILITY } from '../../../../const';
-import { EVariantAvailabilityType } from '../../../../enums';
-import { IKeyValue } from '../../../../interfaces';
+import { EVariantAvailabilityType } from '@bgap/shared/types/enums';
+import { IKeyValue } from '@bgap/shared/types/interfaces';
 import { FormsService } from '../../../../services/forms';
 
 import { Component, Input } from '@angular/core';

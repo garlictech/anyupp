@@ -5,7 +5,7 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus
-} from '../../../../shared/enums';
+} from '@bgap/shared/types/enums';
 import {
   IAdminUser,
   IGroup,
@@ -13,7 +13,7 @@ import {
   IOrderItem,
   IProduct,
   IProductCategory
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { currentStatus } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';

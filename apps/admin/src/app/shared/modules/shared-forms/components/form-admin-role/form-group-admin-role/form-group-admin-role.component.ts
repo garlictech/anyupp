@@ -7,7 +7,7 @@ import {
   IGroup,
   IKeyValue,
   IAssignedEntityNames,
-} from '../../../../../interfaces';
+} from '@bgap/shared/types/interfaces';
 import { DataService } from '../../../../../services/data';
 import { IState } from '../../../../../../store';
 import {

@@ -4,8 +4,8 @@ import {
   ENebularButtonSize,
   EOrderStatus,
   EPaymentMethod
-} from '../../../../shared/enums';
-import { IAdminUser, IOrder } from '../../../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IAdminUser, IOrder } from '@bgap/shared/types/interfaces';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { DataService } from '../../../../shared/services/data';
 import { OrderService } from '../../../../shared/services/order';

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
-import { IAdminUser } from '../../../shared/interfaces';
+import { IAdminUser } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 import { Component, OnDestroy, OnInit } from '@angular/core';

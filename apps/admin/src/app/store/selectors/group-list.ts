@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUserSettings, IGroup } from '../../shared/interfaces';
+import { IAdminUserSettings, IGroup } from '@bgap/shared/types/interfaces';
 
 import {
   createFeatureSelector,

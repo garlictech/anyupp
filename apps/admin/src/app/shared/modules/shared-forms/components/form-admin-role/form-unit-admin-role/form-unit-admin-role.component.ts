@@ -8,7 +8,7 @@ import {
   IGroup,
   IKeyValue,
   IUnit,
-} from '../../../../../interfaces';
+} from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../../../store';
 import {
   chainListSelectors,

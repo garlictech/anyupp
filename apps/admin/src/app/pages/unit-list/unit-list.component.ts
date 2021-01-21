@@ -1,6 +1,6 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
-import { IGroup, IUnit } from '../../shared/interfaces';
+import { IGroup, IUnit } from '@bgap/shared/types/interfaces';
 import { IState } from '../../store';
 import {
   currentUserSelectors,

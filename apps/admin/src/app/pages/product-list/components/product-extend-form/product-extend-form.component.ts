@@ -2,7 +2,7 @@ import { get as _get, omit as _omit } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { EProductLevel } from '../../../../shared/enums';
+import { EProductLevel } from '@bgap/shared/types/enums';
 import {
   IAdminUserSettings,
   IKeyValue,
@@ -10,7 +10,7 @@ import {
   IProductCategory,
   IProductVariant,
   IUnit,
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { customNumberCompare, objectToArray } from '../../../../shared/pure';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
-import { EAdminRole, EImageType } from '../../../../shared/enums';
-import { IAdminUser, IUser } from '../../../../shared/interfaces';
+import { EAdminRole, EImageType } from '@bgap/shared/types/enums';
+import { IAdminUser, IUser } from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';

@@ -2,7 +2,7 @@ import { ImageCompressorService } from '../../../../services/image-compressor';
 import { StorageService } from '../../../../services/storage';
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { EImageType } from '../../../../enums';
+import { EImageType } from '@bgap/shared/types/enums';
 
 @Component({
   selector: 'bgap-form-clickable-image-input',

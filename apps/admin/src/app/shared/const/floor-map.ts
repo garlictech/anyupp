@@ -1,4 +1,4 @@
-import { EUnitMapObjectType } from '../enums';
+import { EUnitMapObjectType } from '@bgap/shared/types/enums';
 
 export const FLOOR_MAP_CONFIG = {
   grid: 10,

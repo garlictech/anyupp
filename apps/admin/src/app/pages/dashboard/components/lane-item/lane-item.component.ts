@@ -1,11 +1,11 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ENebularButtonSize, EOrderStatus } from '../../../../shared/enums';
+import { ENebularButtonSize, EOrderStatus } from '@bgap/shared/types/enums';
 import {
   ILaneOrderItem,
   IStatusLogItem,
   IUnit
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import {
   currentStatus as currentStatusFn,
   getNextOrderItemStatus,

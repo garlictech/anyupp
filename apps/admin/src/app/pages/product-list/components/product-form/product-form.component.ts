@@ -1,13 +1,13 @@
 import { get as _get, omit as _omit, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { EImageType, EProductLevel, EProductType } from '../../../../shared/enums';
+import { EImageType, EProductLevel, EProductType } from '@bgap/shared/types/enums';
 import {
   IAdminUserSettings,
   IKeyValue,
   IProduct,
   IProductCategory,
   IProductVariant,
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import {
   customNumberCompare,

@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, skipWhile } from 'rxjs/operators';
-import { IGroup, IKeyValueObject, IOrder } from '../../../../shared/interfaces';
+import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types/interfaces';
 import { dayInterval } from '../../../../shared/pure';
 import { IState } from '../../../../store';
 import {

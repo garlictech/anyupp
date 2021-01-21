@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
-import { EUnitMapObjectType } from '../../enums';
-import { IFloorMapData, IFloorMapDataObject, IFabricGroup, IFabricObjectProperties } from '../../interfaces';
+import { EUnitMapObjectType } from '@bgap/shared/types/enums';
+import { IFloorMapData, IFloorMapDataObject, IFabricGroup, IFabricObjectProperties } from '@bgap/shared/types/interfaces';
 import { customStringCompare, objectToArray } from '../utils';
 
 import { fabricCanvas } from './floor-map-canvas';

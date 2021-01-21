@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EImageType } from '../../enums';
+import { EImageType } from '@bgap/shared/types/enums';
 
 @Injectable({
   providedIn: 'root',

@@ -7,7 +7,7 @@ import {
   IKeyValue,
   IPaymentMode,
   IUnit,
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import {
   contactFormGroup,

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
-import { EProductLevel } from '../../../../enums';
-import { IProductVariant } from '../../../../interfaces';
+import { EProductLevel } from '@bgap/shared/types/enums';
+import { IProductVariant } from '@bgap/shared/types/interfaces';
 import { customNumberCompare } from '../../../../pure';
 import { FormsService } from '../../../../services/forms';
 

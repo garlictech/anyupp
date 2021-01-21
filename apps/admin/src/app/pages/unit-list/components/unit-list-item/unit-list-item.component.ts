@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUnit } from '../../../../shared/interfaces';
+import { IUnit } from '@bgap/shared/types/interfaces';
 import { DataService } from '../../../../shared/services/data';
 
 import { Component, Input } from '@angular/core';

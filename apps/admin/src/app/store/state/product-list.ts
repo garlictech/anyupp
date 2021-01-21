@@ -1,4 +1,4 @@
-import { IProduct } from '../../shared/interfaces';
+import { IProduct } from '@bgap/shared/types/interfaces';
 
 import { EntityState } from '@ngrx/entity';
 

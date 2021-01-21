@@ -1,58 +1,26 @@
-import { get as _get, intersection as _intersection } from 'lodash-es';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
-import {
-  adminUserListActions,
-  chainListActions,
-  currentUserActions,
-  dashboardActions,
-  groupListActions,
-  orderListActions,
-  productCategoryListActions,
-  productListActions,
-  unitListActions,
-  userListActions,
-} from '../../../store/actions';
-import {
-  currentUserSelectors,
-  dashboardSelectors,
-} from '../../../store/selectors';
+import { intersection as _intersection } from 'lodash-es';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-
 import { AngularFireFunctions } from '@angular/fire/functions';
-
+import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '@bgap/shared/types/enums';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-import { DEFAULT_LANG } from '../../const';
-import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '../../enums';
-import {
-  IAdminUser,
-  IAdminUserCredential,
-  IAdminUserRole,
-  IAdminUserSettings,
-  IChain,
-  IDateIntervals,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IUnit,
-  IUser,
-} from '../../interfaces';
-import { getDayIntervals, objectToArray } from '../../pure';
 import { IState } from '../../../store';
-import { environment } from '../../../../environments/environment';
+import {
+  adminUserListActions, chainListActions, currentUserActions, dashboardActions, groupListActions, orderListActions,
+  productCategoryListActions, productListActions, unitListActions, userListActions
+} from '../../../store/actions';
+import { currentUserSelectors, dashboardSelectors } from '../../../store/selectors';
+import { DEFAULT_LANG } from '../../const';
+import {
+  IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IUnit, IUser
+} from '@bgap/shared/types/interfaces';
+import { getDayIntervals, objectToArray } from '../../pure';
 
 @Injectable({
   providedIn: 'root',
@@ -388,7 +356,7 @@ export class DataService {
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryDate),
-        tap(() => {
+        tap(() => {
           this._store.dispatch(
             orderListActions.setAllHistoryOrders({
               orders: [],

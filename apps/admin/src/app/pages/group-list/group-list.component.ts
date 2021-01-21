@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IChain, IGroup } from '../../shared/interfaces';
+import { IChain, IGroup } from '@bgap/shared/types/interfaces';
 import { IState } from '../../store';
 import {
   chainListSelectors,

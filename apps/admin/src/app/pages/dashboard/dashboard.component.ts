@@ -4,8 +4,8 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-} from '../../shared/enums';
-import { IUnit } from '../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IUnit } from '@bgap/shared/types/interfaces';
 import { ConfirmDialogComponent } from '../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { zeroFill } from '../../shared/pure';
 import { DataService } from '../../shared/services/data';

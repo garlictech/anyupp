@@ -34,7 +34,8 @@
     "*** GRAPHQL SERVER ***": "",
     "graphql:serve": "nx serve graphql-server",
     "*** ADMIN SITE ***": "",
-    "admin:serve": "nx serve admin"
+    "admin:serve": "nx serve admin",
+    "admin:lint": "nx lint admin"
   },
   "private": true,
   "dependencies": {

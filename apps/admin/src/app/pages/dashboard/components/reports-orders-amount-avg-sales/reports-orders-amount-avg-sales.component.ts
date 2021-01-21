@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IOrder } from '../../../../shared/interfaces';
+import { IOrder } from '@bgap/shared/types/interfaces';
 import { getDailyOrdersSum } from '../../../../shared/pure';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';

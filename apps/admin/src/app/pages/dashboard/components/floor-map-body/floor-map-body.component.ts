@@ -7,7 +7,7 @@ import {
   IFloorMapUserOrderObjects,
   IOrder,
   IUnit
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import {
   fabricCanvas,
   getObjectById,

@@ -1,5 +1,5 @@
-import { EOrderStatus } from '../../shared/enums';
-import { ILaneOrderItem, IOrder, IOrderItem } from '../../shared/interfaces';
+import { EOrderStatus } from '@bgap/shared/types/enums';
+import { ILaneOrderItem, IOrder, IOrderItem } from '@bgap/shared/types/interfaces';
 import { currentStatus as currentStatusFn } from '../../shared/pure/orders';
 
 import {

@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IAdminUser } from '../../../../shared/interfaces';
+import { IAdminUser } from '@bgap/shared/types/interfaces';
 import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../../../../shared/services/auth';
 import { EToasterType, ToasterService } from '../../../../shared/services/toaster';

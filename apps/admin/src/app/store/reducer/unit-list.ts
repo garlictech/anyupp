@@ -1,4 +1,4 @@
-import { IUnit } from '../../shared/interfaces';
+import { IUnit } from '@bgap/shared/types/interfaces';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

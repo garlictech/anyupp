@@ -5,8 +5,8 @@ import {
   EDashboardTicketListType,
   ENebularButtonSize,
   EOrderStatus,
-} from '../../../../shared/enums';
-import { IOrder } from '../../../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IOrder } from '@bgap/shared/types/interfaces';
 import { customNumberCompare } from '../../../../shared/pure';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { IState } from '../../../../store';

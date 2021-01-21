@@ -3,8 +3,8 @@ import {
   EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
-} from '../../../../shared/enums';
-import { IAdminUserRole, IProduct, IProductVariant } from '../../../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IAdminUserRole, IProduct, IProductVariant } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../store';
 import { currentUserSelectors } from '../../../../store/selectors';
 

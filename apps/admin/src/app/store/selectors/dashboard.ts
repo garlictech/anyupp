@@ -2,8 +2,8 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-} from '../../shared/enums';
-import { IOrder } from '../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IOrder } from '@bgap/shared/types/interfaces';
 
 import {
   createFeatureSelector,

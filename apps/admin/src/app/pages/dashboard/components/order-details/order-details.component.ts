@@ -3,8 +3,8 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus
-} from '../../../../shared/enums';
-import { IOrder, IStatusLog } from '../../../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IOrder, IStatusLog } from '@bgap/shared/types/interfaces';
 import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import {
   currentStatus as currentStatusFn,

@@ -4,8 +4,8 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize
-} from '../../../../shared/enums';
-import { IOrder, IOrderSum } from '../../../../shared/interfaces';
+} from '@bgap/shared/types/enums';
+import { IOrder, IOrderSum } from '@bgap/shared/types/interfaces';
 import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
 import {

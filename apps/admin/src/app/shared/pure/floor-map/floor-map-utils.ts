@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
-import { EOrderStatus } from '../../enums';
-import { IFloorMapData, IFloorMapDataObject } from '../../interfaces';
+import { EOrderStatus } from '@bgap/shared/types/enums';
+import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types/interfaces';
 
 export const generateId = (): string => {
   return Math.random().toString(36).substr(2, 16);

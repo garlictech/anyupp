@@ -1,5 +1,5 @@
 import { EntityState } from '@ngrx/entity';
-import { IChain } from '../../shared/interfaces';
+import { IChain } from '@bgap/shared/types/interfaces';
 
 export type IChainEntityState = EntityState<IChain>;
 

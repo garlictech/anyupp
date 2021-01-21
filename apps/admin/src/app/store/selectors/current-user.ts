@@ -3,7 +3,7 @@ import {
   IAdminUser,
   IAdminUserRole,
   IAdminUserSettings,
-} from '../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 

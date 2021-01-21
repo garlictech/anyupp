@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IOrder } from '../../shared/interfaces';
+import { IOrder } from '@bgap/shared/types/interfaces';
 
 export const resetActiveOrders = createAction(
   '[OrderList] Reset active orders'

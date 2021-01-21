@@ -1,8 +1,8 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
-import { EAdminRole, EProductLevel } from '../../shared/enums';
-import { IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '../../shared/interfaces';
+import { EAdminRole, EProductLevel } from '@bgap/shared/types/enums';
+import { IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types/interfaces';
 import { customNumberCompare } from '../../shared/pure';
 import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';

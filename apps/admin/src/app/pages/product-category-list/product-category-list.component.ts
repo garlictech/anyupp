@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { IProductCategory, IProductCategoryOrderChangeEvent } from '../../shared/interfaces';
+import { IProductCategory, IProductCategoryOrderChangeEvent } from '@bgap/shared/types/interfaces';
 import { customNumberCompare } from '../../shared/pure';
 import { DataService } from '../../shared/services/data';
 import { IState } from '../../store';

@@ -1,5 +1,5 @@
-import { EAdminRole } from '../../../../enums';
-import { IKeyValue } from '../../../../interfaces';
+import { EAdminRole } from '@bgap/shared/types/enums';
+import { IKeyValue } from '@bgap/shared/types/interfaces';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';

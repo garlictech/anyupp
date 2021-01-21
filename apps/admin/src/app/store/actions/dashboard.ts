@@ -3,7 +3,7 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType
-} from '../../shared/enums';
+} from '@bgap/shared/types/enums';
 
 export const resetDashboard = createAction('[Dashboard] Reset dashboard');
 export const setSelectedOrderId = createAction(

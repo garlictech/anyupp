@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { IChain, IGroup, IKeyValue } from '../../../../shared/interfaces';
+import { IChain, IGroup, IKeyValue } from '@bgap/shared/types/interfaces';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';

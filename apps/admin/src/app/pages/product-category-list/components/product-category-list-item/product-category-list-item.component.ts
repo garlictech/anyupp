@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IProductCategory } from '../../../../shared/interfaces';
+import { IProductCategory } from '@bgap/shared/types/interfaces';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

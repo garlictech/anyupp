@@ -5,12 +5,12 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus
-} from '../../../../shared/enums';
+} from '@bgap/shared/types/enums';
 import {
   IDetailedLane,
   ILaneOrderItem,
   IUnit
-} from '../../../../shared/interfaces';
+} from '@bgap/shared/types/interfaces';
 import { objectToArray } from '../../../../shared/pure';
 import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';

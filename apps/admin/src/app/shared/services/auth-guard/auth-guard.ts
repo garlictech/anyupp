@@ -1,20 +1,14 @@
 import { get as _get } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { EAdminRole } from '@bgap/shared/types/enums';
+import { IAdminUser } from '@bgap/shared/types/interfaces';
 
-import { EAdminRole } from '../../enums';
-import { IAdminUser, IAdminUserCredential } from '../../interfaces';
 import { EToasterType, ToasterService } from '../toaster';
 
 @Injectable({

@@ -1,19 +1,16 @@
-import { IDateIntervals, IOrder } from '../../../../shared/interfaces';
-import { getDayIntervals } from '../../../../shared/pure/forms';
-import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
-import { IState } from '../../../../store';
-import { dashboardActions } from '../../../../store/actions';
-import {
-  dashboardSelectors,
-  orderListSelectors,
-} from '../../../../store/selectors';
+import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { IOrder } from '@bgap/shared/types/interfaces';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { customNumberCompare } from '../../../../shared/pure';
 import { select, Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+
+import { customNumberCompare } from '../../../../shared/pure';
+import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
+import { IState } from '../../../../store';
+import { dashboardActions } from '../../../../store/actions';
+import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
