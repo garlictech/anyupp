@@ -1,0 +1,16 @@
+overwrite: true
+schema: libs/api/graphql/schema/src/schema/*.graphql
+documents: libs/api/graphql/schema/src/schema/modules/*.graphql
+generates:
+  libs/api/graphql/schema/src/lib/api.ts:
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-document-nodes
+    config:
+      declarationKind: 'interface'
+      namingConvention:
+        enumValues: change-case#lowerCase
