@@ -1,25 +1,15 @@
 import * as printJS from 'print-js';
+import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import {
-  IChain,
-  ICurrencyValue,
-  IOrder,
-  IOrderItem,
-  IPlace,
-  IPriceShown,
-  IUnit
-} from '@bgap/shared/types/interfaces';
-import { IState } from '../../../../store';
-import {
-  chainListSelectors,
-  unitListSelectors
-} from '../../../../store/selectors';
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { IChain, ICurrencyValue, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+
+import { IState } from '../../../../store';
+import { chainListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

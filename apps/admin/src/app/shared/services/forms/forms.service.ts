@@ -9,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 
 import { TIME_FORMAT_PATTERN } from '../../const';
-import { EVariantAvailabilityType } from '@bgap/shared/types/enums';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 import { multiLangValidator, productAvailabilityValidator } from '../../pure';
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',

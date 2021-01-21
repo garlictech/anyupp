@@ -1,4 +1,4 @@
-import { IConfirmOptions } from '@bgap/shared/types/interfaces';
+import { IConfirmOptions } from '@bgap/shared/types';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';

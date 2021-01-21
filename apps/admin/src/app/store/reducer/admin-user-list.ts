@@ -1,4 +1,4 @@
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

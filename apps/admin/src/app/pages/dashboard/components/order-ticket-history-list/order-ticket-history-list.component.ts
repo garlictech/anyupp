@@ -2,7 +2,7 @@ import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IOrder } from '@bgap/shared/types/interfaces';
+import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 

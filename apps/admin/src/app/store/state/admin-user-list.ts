@@ -1,6 +1,6 @@
 import { EntityState } from '@ngrx/entity';
 
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 
 export type IAdminUserEntityState = EntityState<IAdminUser>;
 

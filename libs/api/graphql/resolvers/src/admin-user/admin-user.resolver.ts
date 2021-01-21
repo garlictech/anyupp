@@ -1,13 +1,10 @@
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
-import {
-  AdminUser,
-  CreateAdminUserInput,
-  UpdateAdminUserInput,
-} from '@bgap/api/graphql/schema';
-import { EAdminRole } from '@bgap/shared/types/enums';
+import { PubSub } from 'graphql-subscriptions';
+
+import { AdminUser, CreateAdminUserInput, UpdateAdminUserInput } from '@bgap/api/graphql/schema';
+import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 
 @Resolver('AdminUser')
 export class AdminUserResolver {

@@ -1,23 +1,16 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
-import { EProductType } from '@bgap/shared/types/enums';
-import { IOrderAmount, IOrder, IProduct } from '@bgap/shared/types/interfaces';
-import { CurrencyFormatterPipe } from '../../../../shared/pipes';
-import { IState } from '../../../../store';
-import { productListSelectors } from '../../../../store/selectors';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { EProductType, IOrder, IOrderAmount, IProduct } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { IState } from '../../../../store';
+import { productListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

@@ -5,7 +5,7 @@ import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap } from 'r
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
-import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '@bgap/shared/types/enums';
+import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,7 +19,7 @@ import { DEFAULT_LANG } from '../../const';
 import {
   IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals, IGroup, IOrder, IOrderItem, IProduct,
   IProductCategory, IUnit, IUser
-} from '@bgap/shared/types/interfaces';
+} from '@bgap/shared/types';
 import { getDayIntervals, objectToArray } from '../../pure';
 
 @Injectable({

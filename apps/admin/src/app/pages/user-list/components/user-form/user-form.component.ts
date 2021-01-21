@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IUser } from '@bgap/shared/types/interfaces';
+import { IUser } from '@bgap/shared/types';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';

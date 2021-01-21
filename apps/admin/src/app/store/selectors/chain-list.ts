@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUserSettings, IChain } from '@bgap/shared/types/interfaces';
+import { IAdminUserSettings, IChain } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,

@@ -7,7 +7,7 @@ import {
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { IAdminUser, IUnit } from '@bgap/shared/types/interfaces';
+import { IAdminUser, IUnit } from '@bgap/shared/types';
 import { IState } from '../../../../../store';
 import { DataService } from '../../../../services/data';
 

@@ -1,19 +1,17 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { IChain, IGroup, IKeyValue } from '@bgap/shared/types/interfaces';
+
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import {
-  chainListSelectors,
-  currentUserSelectors,
-} from '../../../../store/selectors';
-
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { chainListSelectors, currentUserSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

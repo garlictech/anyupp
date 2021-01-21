@@ -1,18 +1,14 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
-import { IGroup, IUnit } from '@bgap/shared/types/interfaces';
-import { IState } from '../../store';
-import {
-  currentUserSelectors,
-  groupListSelectors,
-  unitListSelectors,
-} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IGroup, IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { IState } from '../../store';
+import { currentUserSelectors, groupListSelectors, unitListSelectors } from '../../store/selectors';
 import { UnitFormComponent } from './components/unit-form/unit-form.component';
 
 @UntilDestroy()

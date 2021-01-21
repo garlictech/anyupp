@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 
 export const resetAdminUsers = createAction(
   '[AdminUserList] Reset admin users'

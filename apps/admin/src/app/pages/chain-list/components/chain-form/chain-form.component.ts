@@ -1,13 +1,13 @@
 import { get as _get, set as _set } from 'lodash-es';
-import { EImageType } from '@bgap/shared/types/enums';
-import { IChain } from '@bgap/shared/types/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
-import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
-import { EToasterType } from '../../../../shared/services/toaster';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { EImageType, IChain } from '@bgap/shared/types';
+
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 @Component({
   selector: 'bgap-chain-form',

@@ -1,7 +1,7 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
-import { IChain } from '@bgap/shared/types/interfaces';
 
 import { Component, Input } from '@angular/core';
+import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { ChainFormComponent } from '../chain-form/chain-form.component';

@@ -1,25 +1,17 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import {
-  EDashboardSize,
-  EDashboardTicketListType,
-  ENebularButtonSize,
-  EOrderStatus,
-} from '@bgap/shared/types/enums';
-import { IOrder } from '@bgap/shared/types/interfaces';
+
+import { Component, OnDestroy } from '@angular/core';
+import { EDashboardSize, EDashboardTicketListType, ENebularButtonSize, EOrderStatus, IOrder } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { customNumberCompare } from '../../../../shared/pure';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
-import {
-  dashboardSelectors,
-  orderListSelectors,
-} from '../../../../store/selectors';
+import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
 import { IDashboardSettings } from '../../../../store/state';
-
-import { Component, OnDestroy } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({

@@ -1,11 +1,7 @@
-import { IOrder } from '@bgap/shared/types/interfaces';
-import {
-
-  currentStatus as currentStatusFn,
-} from '../../../../shared/pure';
-
 import { Component, Input } from '@angular/core';
-import { EDashboardTicketListType } from '@bgap/shared/types/enums';
+import { EDashboardTicketListType, IOrder } from '@bgap/shared/types';
+
+import { currentStatus as currentStatusFn } from '../../../../shared/pure';
 
 @Component({
   selector: 'bgap-order-ticket-list-item',

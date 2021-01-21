@@ -1,5 +1,5 @@
-import { EAdminRole, EPaymentMethod } from '@bgap/shared/types/enums';
-import { IPaymentMode } from '@bgap/shared/types/interfaces';
+import { EAdminRole, EPaymentMethod } from '@bgap/shared/types';
+import { IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
 export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';

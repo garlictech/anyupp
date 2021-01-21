@@ -25,7 +25,7 @@
       "@bgap/shared/config/firebase": [
         "libs/shared/config/firebase/src/index.ts"
       ],
-      "@bgap/shared/types/*": ["libs/shared/types/src/lib/*"]
+      "@bgap/shared/types": ["libs/shared/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

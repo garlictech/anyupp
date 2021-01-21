@@ -1,21 +1,14 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { EPaymentMethod } from '@bgap/shared/types/enums';
-import { IOrder, IOrderAmounts } from '@bgap/shared/types/interfaces';
-import { CurrencyFormatterPipe } from '../../../../shared/pipes';
-import { reducer } from '../../../../shared/pure';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { EPaymentMethod, IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
+
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { reducer } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({

@@ -1,14 +1,14 @@
 import { get as _get } from 'lodash-es';
-import { EAdminRole, EImageType } from '@bgap/shared/types/enums';
-import { IAdminUser, IUser } from '@bgap/shared/types/interfaces';
+
+import { Component, Injector, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { EAdminRole, EImageType, IAdminUser, IUser } from '@bgap/shared/types';
+
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
-
-import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'bgap-admin-user-form',

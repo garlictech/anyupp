@@ -1,4 +1,4 @@
-import { IProductCategory } from '@bgap/shared/types/interfaces';
+import { IProductCategory } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

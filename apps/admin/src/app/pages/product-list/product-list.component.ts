@@ -1,22 +1,17 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
-import { EAdminRole, EProductLevel } from '@bgap/shared/types/enums';
-import { IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types/interfaces';
-import { customNumberCompare } from '../../shared/pure';
-import { DataService } from '../../shared/services/data';
-import { IState } from '../../store';
-import {
-  currentUserSelectors,
-  groupListSelectors,
-  productListSelectors,
-} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { customNumberCompare } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
+import { IState } from '../../store';
+import { currentUserSelectors, groupListSelectors, productListSelectors } from '../../store/selectors';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @UntilDestroy()

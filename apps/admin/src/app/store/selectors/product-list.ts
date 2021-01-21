@@ -1,5 +1,5 @@
 import { get as _get } from 'lodash-es';
-import { IProduct } from '@bgap/shared/types/interfaces';
+import { IProduct } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,

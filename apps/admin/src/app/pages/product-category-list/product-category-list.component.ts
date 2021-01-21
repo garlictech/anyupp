@@ -1,18 +1,15 @@
 import { map } from 'rxjs/operators';
-import { IProductCategory, IProductCategoryOrderChangeEvent } from '@bgap/shared/types/interfaces';
-import { customNumberCompare } from '../../shared/pure';
-import { DataService } from '../../shared/services/data';
-import { IState } from '../../store';
-import {
-  currentUserSelectors,
-  productCategoryListSelectors,
-} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IProductCategory, IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { customNumberCompare } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
+import { IState } from '../../store';
+import { currentUserSelectors, productCategoryListSelectors } from '../../store/selectors';
 import { ProductCategoryFormComponent } from './components/product-category-form/product-category-form.component';
 
 @UntilDestroy()

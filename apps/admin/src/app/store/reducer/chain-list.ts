@@ -1,4 +1,4 @@
-import { IChain } from '@bgap/shared/types/interfaces';
+import { IChain } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {

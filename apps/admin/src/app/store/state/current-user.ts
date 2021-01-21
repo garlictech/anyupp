@@ -1,4 +1,4 @@
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 
 export interface ICurrentUserState {
   adminUser?: IAdminUser;

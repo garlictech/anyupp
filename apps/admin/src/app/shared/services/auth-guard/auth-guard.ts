@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
-import { EAdminRole } from '@bgap/shared/types/enums';
-import { IAdminUser } from '@bgap/shared/types/interfaces';
+import { EAdminRole } from '@bgap/shared/types';
+import { IAdminUser } from '@bgap/shared/types';
 
 import { EToasterType, ToasterService } from '../toaster';
 

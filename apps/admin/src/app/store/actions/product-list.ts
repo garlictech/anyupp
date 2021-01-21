@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IProduct } from '@bgap/shared/types/interfaces';
+import { IProduct } from '@bgap/shared/types';
 
 export const resetChainProducts = createAction(
   '[ProductList] Reset chain products'

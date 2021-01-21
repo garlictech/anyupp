@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { EVariantAvailabilityType } from '@bgap/shared/types/enums';
-import { IDateIntervals } from '@bgap/shared/types/interfaces';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { IDateIntervals } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 

@@ -7,8 +7,8 @@ import {
   FLOOR_MAP_ENABLED_GROUP_OPTIONS,
   FLOOR_MAP_TEXT_CONFIG,
 } from '../../const';
-import { EUnitMapObjectType } from '@bgap/shared/types/enums';
-import { IFloorMapDataObject } from '@bgap/shared/types/interfaces';
+import { EUnitMapObjectType } from '@bgap/shared/types';
+import { IFloorMapDataObject } from '@bgap/shared/types';
 
 import { fabricCanvas, fabricEditMode } from './floor-map-canvas';
 import { getObjectBg } from './floor-map-utils';

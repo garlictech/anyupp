@@ -1,4 +1,4 @@
-import { IOrder } from '@bgap/shared/types/interfaces';
+import { IOrder } from '@bgap/shared/types';
 
 import { EntityState } from '@ngrx/entity';
 

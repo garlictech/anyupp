@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IChain } from '@bgap/shared/types/interfaces';
+import { IChain } from '@bgap/shared/types';
 
 export const resetChains = createAction('[ChainList] Reset chains');
 export const setAllChains = createAction(
