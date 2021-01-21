@@ -65,6 +65,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@nrwl/angular": "11.0.20",
     "apollo-angular": "^2.2.0",
+    "apollo-link-error": "^1.1.13",
     "apollo-server-express": "^2.19.1",
     "apollo-server-fastify": "^2.19.1",
     "bootstrap": "^4.5.3",

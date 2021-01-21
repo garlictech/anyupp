@@ -5,3 +5,7 @@ query GetAdminUser($id: String!) {
     phone
   }
 }
+
+mutation CreateAdminUser($data: CreateAdminUserInput!) {
+  createAdminUser(newAdminData: $data)
+}
