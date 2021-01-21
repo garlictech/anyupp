@@ -50,6 +50,9 @@
     },
     "shared-config-firebase": {
       "tags": ["scope:admin", "type:utils", "platform:angular"]
+    },
+    "shared-types": {
+      "tags": ["scope:shared", "type:utils", "platform:angular"]
     }
   }
 }
