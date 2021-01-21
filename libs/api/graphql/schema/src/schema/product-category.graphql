@@ -1,0 +1,7 @@
+type ProductCategory {
+  id: ID
+  description: LocalizedItem
+  image: String
+  name: LocalizedItem
+  position: String
+}
