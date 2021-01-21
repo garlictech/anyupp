@@ -24,7 +24,8 @@
       "@bgap/api/graphql/schema": ["libs/api/graphql/schema/src/index.ts"],
       "@bgap/shared/config/firebase": [
         "libs/shared/config/firebase/src/index.ts"
-      ]
+      ],
+      "@bgap/shared/config/stripe": ["libs/shared/config/stripe/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

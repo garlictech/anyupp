@@ -129,15 +129,22 @@ Visit [Nx Cloud](https://nx.app/) to learn more.
 
 
 ## Generators
+[Generators](https://nx.dev/latest/angular/plugins/workspace/nrwl-workspace-overview)
 
+TIP: use `--dry-run` to check your idea. It shows what will be generated without writing to disk.
 
+### Generate a ??? (simple workspace lib)
+`nx g @nrwl/workspace:lib admin/firebase/config`
+
+### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/library)
+`nx g @nrwl/workspace:rm ...`
+
+### Generate a nest lib
+```
+nx g @nrwl/nest:lib ...
 nx g @nrwl/nest:lib api/graphql/schema
 nx g @nrwl/nest:lib api/graphql/resolvers
+```
 
-nx g @nrwl/nest:resolver -p api-graphql-resolvers
-
-
-nx g @nrwl/workspace:lib admin/firebase/config
-
-
-nx g @nrwl/workspace:rm <project name>
+### Generate a nest graphQL resolver
+`nx g @nrwl/nest:resolver -p api-graphql-resolvers`

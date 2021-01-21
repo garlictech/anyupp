@@ -1,0 +1,77 @@
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+type Query {
+  getCustomerStripeCards(customerId: ID): [StripeCard]
+}
+
+enum Brand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+enum Funding {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+enum Type {
+  alipay
+  au_becs_debit
+  bacs_debit
+  bancontact
+  card
+  eps
+  fpx
+  giropay
+  grabpay
+  ideal
+  oxxo
+  p24
+  sepa_debit
+  sofort
+}
+
+type CardChecks {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+type Metadata {
+  key: String!
+  value: String!
+}
+
+interface MetadataInterface {
+  metadata: [Metadata!]!
+}
+
+interface NodeInterface {
+  id: ID!
+  object: String!
+}
+
+type StripeCard implements MetadataInterface & NodeInterface {
+  brand: Brand
+  checks: CardChecks
+  country: CountryCode
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: Funding
+  three_d_secure: String
+  # wallet: String # to do
+  # IMPLEMENTED INTERFACES
+  id: ID!
+  object: String!
+  metadata: [Metadata!]!
+}
