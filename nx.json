@@ -53,6 +53,9 @@
     },
     "shared-types": {
       "tags": ["scope:shared", "type:utils", "platform:angular"]
+    },
+    "shared-config-stripe": {
+      "tags": ["scope:shared", "type:utils", "platform:nest"]
     }
   }
 }

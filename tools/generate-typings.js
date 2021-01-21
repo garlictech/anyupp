@@ -3,7 +3,6 @@ const path = require('path');
 
 const SCHEMA_ROOT = path.join(process.cwd(), 'libs/api/graphql/schema/src');
 
-console.error('SCHEMA_ROOT', SCHEMA_ROOT);
 const definitionsFactory = new graphql.GraphQLDefinitionsFactory();
 definitionsFactory.generate({
   typePaths: [`${SCHEMA_ROOT}/schema/**/*.graphql`],

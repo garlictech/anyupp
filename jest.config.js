@@ -10,5 +10,6 @@ module.exports = {
     '<rootDir>/libs/api/graphql/schema',
     '<rootDir>/libs/shared/config/firebase',
     '<rootDir>/libs/shared/types',
+    '<rootDir>/libs/shared/config/stripe',
   ],
 };
