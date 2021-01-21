@@ -1,5 +1,9 @@
 type User {
-  email: String
+  id: ID!
   name: String
+  address: Address
+  email: String
   phone: String
+  profileImage: String
+  login: String
 }

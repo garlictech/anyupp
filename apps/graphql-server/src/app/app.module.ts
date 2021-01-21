@@ -11,15 +11,13 @@ const SCHEMA_ROOT = join(process.cwd(), 'libs/api/graphql/schema/src');
   imports: [
     GraphQLModule.forRoot({
       typePaths: [`${SCHEMA_ROOT}/schema/**/*.graphql`],
-      definitions: {
-        path: `${SCHEMA_ROOT}/lib/api.ts`,
-        emitTypenameField: true,
-        outputAs: 'class',
-      },
       installSubscriptionHandlers: true,
-
+      // https://docs.nestjs.com/graphql/subscriptions#customize-subscriptions-server
+      // subscriptions: {
+      //   keepAlive: 5000,
+      // },
     }),
-    ApiGraphqlResolversModule
+    ApiGraphqlResolversModule,
   ],
   controllers: [AppController],
   providers: [AppService],
