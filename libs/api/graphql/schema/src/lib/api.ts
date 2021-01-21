@@ -13,9 +13,24 @@ export class UpdateAdminUserInput {
 }
 
 export class CreateAdminUserInput {
-    email?: string;
     name?: string;
+    address?: AddressInput;
+    email?: string;
     phone?: string;
+}
+
+export class AddressInput {
+    address?: string;
+    city?: string;
+    country?: string;
+    title?: string;
+    postalCode?: string;
+    location?: LocationInput;
+}
+
+export class LocationInput {
+    lat?: number;
+    lng?: number;
 }
 
 export class AdminUser {
