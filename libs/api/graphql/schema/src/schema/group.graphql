@@ -1,0 +1,11 @@
+
+type Group {
+  id: ID!
+  chainId: ID!
+  name: String
+  description: LocalizedItem
+  currency: String
+  address: Address
+  email: String
+  phone: String
+}

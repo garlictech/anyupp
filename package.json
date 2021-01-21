@@ -32,7 +32,9 @@
     "workspace-generator": "nx workspace-generator",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "*** GRAPHQL SERVER ***": "",
-    "graphql:serve": "nx serve graphql-server"
+    "graphql:serve": "nx serve graphql-server",
+    "*** ADMIN SITE ***": "",
+    "admin:serve": "nx serve admin"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +63,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@nrwl/angular": "11.0.20",
+    "apollo-angular": "^2.2.0",
     "apollo-server-express": "^2.19.1",
     "apollo-server-fastify": "^2.19.1",
     "bootstrap": "^4.5.3",
