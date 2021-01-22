@@ -16,52 +16,6 @@ export interface Scalars {
   Float: number;
 }
 
-export interface Address {
-  __typename?: 'Address';
-  address?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  location?: Maybe<Location>;
-  lopikula?: Maybe<Scalars['ID']>;
-  postalCode?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-}
-
-export interface AdminUser {
-  __typename?: 'AdminUser';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  profileImage?: Maybe<Scalars['String']>;
-  roles: AdminUserRole;
-  settings?: Maybe<AdminUserSettings>;
-  address?: Maybe<Address>;
-  email?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-}
-
-export interface AdminUserRole {
-  __typename?: 'AdminUserRole';
-  role: Scalars['String'];
-  entities?: Maybe<Array<Maybe<AdminRoleEntity>>>;
-}
-
-export interface AdminUserSettings {
-  __typename?: 'AdminUserSettings';
-  selectedChainId?: Maybe<Scalars['String']>;
-  selectedGroupId?: Maybe<Scalars['String']>;
-  selectedUnitId?: Maybe<Scalars['String']>;
-  selectedProductCategoryId?: Maybe<Scalars['String']>;
-  selectedLanguage?: Maybe<Scalars['String']>;
-  selectedHistoryDate?: Maybe<Scalars['Int']>;
-}
-
-export interface AdminRoleEntity {
-  __typename?: 'AdminRoleEntity';
-  chainId?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
-  unitId?: Maybe<Scalars['String']>;
-}
-
 export interface UpdateAdminUserInput {
   email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -69,9 +23,24 @@ export interface UpdateAdminUserInput {
 }
 
 export interface CreateAdminUserInput {
-  email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  address?: Maybe<AddressInput>;
+  email?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+}
+
+export interface AddressInput {
+  address?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  location?: Maybe<LocationInput>;
+  postalCode?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+}
+
+export interface LocationInput {
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
 }
 
 export interface Query {
@@ -112,6 +81,57 @@ export interface MutationCreateAdminUserArgs {
   newAdminData: CreateAdminUserInput;
 }
 
+export interface AdminUser {
+  __typename?: 'AdminUser';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  profileImage?: Maybe<Scalars['String']>;
+  roles: AdminUserRole;
+  settings?: Maybe<AdminUserSettings>;
+  address?: Maybe<Address>;
+  email?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+}
+
+export interface AdminUserRole {
+  __typename?: 'AdminUserRole';
+  role: Scalars['String'];
+  entities?: Maybe<Array<Maybe<AdminRoleEntity>>>;
+}
+
+export interface AdminUserSettings {
+  __typename?: 'AdminUserSettings';
+  selectedChainId?: Maybe<Scalars['String']>;
+  selectedGroupId?: Maybe<Scalars['String']>;
+  selectedUnitId?: Maybe<Scalars['String']>;
+  selectedProductCategoryId?: Maybe<Scalars['String']>;
+  selectedLanguage?: Maybe<Scalars['String']>;
+  selectedHistoryDate?: Maybe<Scalars['Int']>;
+}
+
+export interface Address {
+  __typename?: 'Address';
+  address?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  location?: Maybe<Location>;
+  postalCode?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+}
+
+export interface Location {
+  __typename?: 'Location';
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
+}
+
+export interface AdminRoleEntity {
+  __typename?: 'AdminRoleEntity';
+  chainId?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
+  unitId?: Maybe<Scalars['String']>;
+}
+
 export interface Chain {
   __typename?: 'Chain';
   id: Scalars['ID'];
@@ -125,6 +145,13 @@ export interface ChainStyle {
   __typename?: 'ChainStyle';
   colors?: Maybe<ChainStyleColors>;
   images?: Maybe<ChainStyleImages>;
+}
+
+export interface LocalizedItem {
+  __typename?: 'LocalizedItem';
+  de?: Maybe<Scalars['String']>;
+  en?: Maybe<Scalars['String']>;
+  hu?: Maybe<Scalars['String']>;
 }
 
 export interface ChainStyleColors {
@@ -146,19 +173,6 @@ export interface ChainStyleImages {
   logo?: Maybe<Scalars['String']>;
 }
 
-export interface Location {
-  __typename?: 'Location';
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
-}
-
-export interface LocalizedItem {
-  __typename?: 'LocalizedItem';
-  en?: Maybe<Scalars['String']>;
-  de?: Maybe<Scalars['String']>;
-  hu?: Maybe<Scalars['String']>;
-}
-
 export interface DailySchedule {
   __typename?: 'DailySchedule';
   from?: Maybe<Scalars['String']>;
@@ -174,14 +188,14 @@ export interface CustomDailySchedule {
 
 export interface WeeklySchedule {
   __typename?: 'WeeklySchedule';
-  mon?: Maybe<DailySchedule>;
-  tue?: Maybe<DailySchedule>;
-  wed?: Maybe<DailySchedule>;
-  thu?: Maybe<DailySchedule>;
   fri?: Maybe<DailySchedule>;
+  mon?: Maybe<DailySchedule>;
+  override?: Maybe<Array<Maybe<CustomDailySchedule>>>;
   sat?: Maybe<DailySchedule>;
   sun?: Maybe<DailySchedule>;
-  override?: Maybe<Array<Maybe<CustomDailySchedule>>>;
+  thu?: Maybe<DailySchedule>;
+  tue?: Maybe<DailySchedule>;
+  wed?: Maybe<DailySchedule>;
 }
 
 /** An ISO 3166-1 alpha-2 country code. Available country codes can be listed with the List Country Specs endpoint. */
@@ -795,6 +809,13 @@ export interface FloorMapData {
   objects?: Maybe<Array<Maybe<FloorMapDataObject>>>;
 }
 
+export interface Lane {
+  __typename?: 'Lane';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+}
+
 export interface FloorMapDataObject {
   __typename?: 'FloorMapDataObject';
   id: Scalars['ID'];
@@ -808,13 +829,6 @@ export interface FloorMapDataObject {
   y: Scalars['Int'];
   tID?: Maybe<Scalars['String']>;
   sID?: Maybe<Scalars['String']>;
-}
-
-export interface Lane {
-  __typename?: 'Lane';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
 }
 
 export interface User {
@@ -838,6 +852,15 @@ export type GetAdminUserQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type CreateAdminUserMutationVariables = Exact<{
+  data: CreateAdminUserInput;
+}>;
+
+export type CreateAdminUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'createAdminUser'
+>;
+
 export const GetAdminUser = gql`
   query GetAdminUser($id: ID!) {
     getAdminUser(id: $id) {
@@ -845,5 +868,10 @@ export const GetAdminUser = gql`
       name
       phone
     }
+  }
+`;
+export const CreateAdminUser = gql`
+  mutation CreateAdminUser($data: CreateAdminUserInput!) {
+    createAdminUser(newAdminData: $data)
   }
 `;

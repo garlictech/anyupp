@@ -1,4 +1,4 @@
-query GetAdminUser($id: String!) {
+query GetAdminUser($id: ID!) {
   getAdminUser(id: $id) {
     email
     name
