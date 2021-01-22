@@ -35,9 +35,6 @@
     "graphql-server": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
-    "website": {
-      "tags": []
-    },
     "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
