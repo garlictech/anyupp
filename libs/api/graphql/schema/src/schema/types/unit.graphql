@@ -1,3 +1,7 @@
+# import LocalizedItem from "common.graphql"
+# import DailySchedule from "common.graphql"
+# import WeeklySchedule from "common.graphql"
+
 type Unit {
   id: ID!
   groupId: ID!
