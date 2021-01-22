@@ -134,7 +134,7 @@ Visit [Nx Cloud](https://nx.app/) to learn more.
 TIP: use `--dry-run` to check your idea. It shows what will be generated without writing to disk.
 
 ### Generate a ??? (simple workspace lib)
-`nx g @nrwl/workspace:lib admin/firebase/config`
+`nx g @nrwl/workspace:lib shared/config`
 
 ### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/library)
 `nx g @nrwl/workspace:rm ...`
