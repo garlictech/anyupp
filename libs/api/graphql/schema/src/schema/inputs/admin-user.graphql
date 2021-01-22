@@ -1,4 +1,6 @@
 
+# import AddressInput from "common.graphql"
+
 input UpdateAdminUserInput {
   email: String
   name: String

@@ -1,3 +1,5 @@
+# import LocalizedItem from "common.graphql"
+
 type ProductCategory {
   id: ID
   description: LocalizedItem
