@@ -1,17 +1,15 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, skipWhile } from 'rxjs/operators';
-import { IGroup, IKeyValueObject, IOrder } from '../../../../shared/interfaces';
-import { dayInterval } from '../../../../shared/pure';
-import { IState } from '../../../../store';
-import {
-  groupListSelectors,
-  orderListSelectors,
-} from '../../../../store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { dayInterval } from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { groupListSelectors, orderListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

@@ -1,4 +1,4 @@
-import { IOrder } from '../../interfaces';
+import { IOrder } from '@bgap/shared/types';
 
 /*
 export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKeyValueObject => {

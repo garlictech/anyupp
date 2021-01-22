@@ -1,24 +1,18 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ENebularButtonSize, EOrderStatus } from '../../../../shared/enums';
+
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ENebularButtonSize, EOrderStatus, ILaneOrderItem, IStatusLogItem, IUnit } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
+import { objectToArray } from '../../../../shared/pure';
 import {
-  ILaneOrderItem,
-  IStatusLogItem,
-  IUnit
-} from '../../../../shared/interfaces';
-import {
-  currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
-  getOrderLaneColor,
-  getPrevOrderItemStatus
+  currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
 } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';
 import { productListSelectors } from '../../../../store/selectors';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-import { objectToArray } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({

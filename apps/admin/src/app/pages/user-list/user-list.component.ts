@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '@bgap/shared/types';
 import { IState } from '../../store';
 import { userListSelectors } from '../../store/selectors';
 

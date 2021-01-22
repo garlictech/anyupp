@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { IAdminUser } from '../../shared/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 import { adminUserListAdapter } from '../reducer';
 import { IAdminUserEntityState, IAdminUserListState } from '../state';
 

@@ -1,14 +1,15 @@
 import { get as _get } from 'lodash-es';
-import { EAdminRole, EImageType } from '../../../../shared/enums';
-import { IAdminUser, IUser } from '../../../../shared/interfaces';
+
+import { Component, Injector, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { EAdminRole, EImageType, IAdminUser, IUser } from '@bgap/shared/types';
+
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
-
-import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Apollo, gql } from 'apollo-angular';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -21,10 +22,12 @@ export class AdminUserFormComponent
   public eImageType = EImageType;
   private _authService: AuthService;
   private _formService: FormsService;
+  private _apollo: Apollo;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
+    this._apollo = this._injector.get(Apollo);
     this._authService = this._injector.get(AuthService);
     this._formService = this._injector.get(FormsService);
   }
@@ -52,6 +55,7 @@ export class AdminUserFormComponent
 
   public async submit(): Promise<void> {
     if (this.dialogForm.valid) {
+      // Update
       if (_get(this.adminUser, '_id')) {
         this._dataService
           .updateAdminUser(this.adminUser._id, this.dialogForm.value)
@@ -64,10 +68,11 @@ export class AdminUserFormComponent
               );
               this.close();
             },
-            (err) => {
+            err => {
               console.error('USER UPDATE ERROR', err);
             }
           );
+        // Create
       } else {
         // Find existing global admin account (not from stage-dependent adminCredentials)
         const adminUsersByEmail: IAdminUser[] = await this._dataService.getAdminUserByEmail(
@@ -79,6 +84,55 @@ export class AdminUserFormComponent
         const existingUser = adminUsersByEmail[0] || usersByEmail[0];
 
         if (!existingUser) {
+          console.error('START APOLLO MUTATION', this.dialogForm.value);
+
+          /*
+          const TEST_SUBSCRIBTION = gql`
+            subscription OnAdminUserChanged($id: ID!) {
+              adminUserChanged(id: $id) {
+                email
+                name
+                phone
+              }
+            }
+          `;
+
+          this._apollo
+            .subscribe<any>({
+              query: TEST_SUBSCRIBTION,
+              variables: {
+                id: 'GswaMyVle4fVFASBiynt5f8C2EF3',
+              },
+            })
+            .subscribe(
+              ({ data }) => {
+                console.log('******', data);
+              },
+              error => {
+                console.log('there was an error sending the query', error);
+              }
+            );
+          */
+
+          const gqlCreateAdminUser = gql`mutation CreateAdminUser($data: CreateAdminUserInput!) {createAdminUser(newAdminData: $data)}`;
+
+          this._apollo
+            .mutate({
+              mutation: gqlCreateAdminUser,
+              variables: {
+                data: this.dialogForm.value
+              }
+            })
+            .subscribe(
+              ({ data }) => {
+                console.error('******', data);
+              },
+              error => {
+                console.error('there was an error sending the query', error);
+              }
+            );
+
+          /*
           // The admin is absolutely new, so we create a new account
           this._authService
             .createUserWithEmailAndRandomPassword(this.dialogForm.value.email)
@@ -90,6 +144,7 @@ export class AdminUserFormComponent
                 console.error('AUTH USER CRATE ERROR', err);
               }
             );
+            */
         } else if (adminUsersByEmail[0]) {
           // Admin user exist, so we have to create a credential on the current stage
           // The email field validator filters the existing admins from the current stage
@@ -137,17 +192,17 @@ export class AdminUserFormComponent
                     );
                     this.close();
                   },
-                  (err) => {
+                  err => {
                     console.error('PASSW RESET ERROR', err);
                   }
                 );
             },
-            (err) => {
+            err => {
               console.error('USER UPDATE ROLE ERROR', err);
             }
           );
       },
-      (err) => {
+      err => {
         console.error('USER UPDATE ERROR', err);
       }
     );

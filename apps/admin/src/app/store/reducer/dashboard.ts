@@ -2,7 +2,7 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-} from '../../shared/enums';
+} from '@bgap/shared/types';
 
 import { Action, createReducer, on } from '@ngrx/store';
 

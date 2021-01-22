@@ -1,10 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
-import {
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders
-} from '../../../../shared/interfaces';
 
 import { Component, OnInit } from '@angular/core';
+import { IFloorMapTableOrderObjects, IFloorMapTableOrders } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({

@@ -1,3 +1,5 @@
+import { fabric } from 'fabric';
+
 import { EOrderStatus } from '../enums';
 import { IOrder } from './order';
 

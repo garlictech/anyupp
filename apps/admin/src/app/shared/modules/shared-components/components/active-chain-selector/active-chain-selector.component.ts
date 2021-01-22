@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { IAdminUser, IChain } from '../../../../interfaces';
+import { IAdminUser, IChain } from '@bgap/shared/types';
 import { DataService } from '../../../../services/data';
 import { IState } from '../../../../../store';
 import {

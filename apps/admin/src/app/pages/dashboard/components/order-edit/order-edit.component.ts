@@ -1,21 +1,18 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
+
+import { Component, Input, OnDestroy } from '@angular/core';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  EPaymentMethod
-} from '../../../../shared/enums';
-import { IAdminUser, IOrder } from '../../../../shared/interfaces';
+  EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
+} from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { DataService } from '../../../../shared/services/data';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';
-import { currentUserSelectors } from '../../../../store/selectors';
-
-import { Component, Input, OnDestroy } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { dashboardActions } from '../../../../store/actions';
-import { select, Store } from '@ngrx/store';
+import { currentUserSelectors } from '../../../../store/selectors';
 
 interface IPaymentMethodKV {
   key: string;

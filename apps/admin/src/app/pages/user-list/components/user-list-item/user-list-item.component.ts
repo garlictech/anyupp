@@ -1,5 +1,5 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUser } from '../../../../shared/interfaces';
+import { IUser } from '@bgap/shared/types';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';

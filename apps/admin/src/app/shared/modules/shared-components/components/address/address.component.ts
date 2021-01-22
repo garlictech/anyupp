@@ -1,4 +1,4 @@
-import { IAddress } from '../../../../interfaces';
+import { IAddress } from '@bgap/shared/types';
 
 import { Component, Input } from '@angular/core';
 

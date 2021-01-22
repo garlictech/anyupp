@@ -1,45 +1,21 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
-import {
-  IFloorMapDataObject,
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-  IFloorMapUserOrderObjects,
-  IOrder,
-  IUnit
-} from '../../../../shared/interfaces';
-import {
-  fabricCanvas,
-  getObjectById,
-  getOrdersByUser,
-  getStatusBgColor,
-  getTableOrders,
-  getTableSeatId,
-  getTableSeatIds,
-  objectToArray,
-  registerCanvasEvent,
-  setBgColor,
-  setBorder
-} from '../../../../shared/pure';
-import { IState } from '../../../../store';
-import { floorMapActions } from '../../../../store/actions';
-import {
-  floorMapSelectors,
-  orderListSelectors,
-  unitListSelectors
-} from '../../../../store/selectors';
 
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+  IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import {
+  fabricCanvas, getObjectById, getOrdersByUser, getStatusBgColor, getTableOrders, getTableSeatId, getTableSeatIds,
+  objectToArray, registerCanvasEvent, setBgColor, setBorder
+} from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { floorMapActions } from '../../../../store/actions';
+import { floorMapSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 
 @UntilDestroy()

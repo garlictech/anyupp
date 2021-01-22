@@ -1,32 +1,20 @@
 import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
 import { take } from 'rxjs/operators';
-import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from '../../../../shared/const';
-import {
-  ICustomDailySchedule,
-  IGroup,
-  IKeyValue,
-  IPaymentMode,
-  IUnit,
-} from '../../../../shared/interfaces';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
-import {
-  contactFormGroup,
-  multiLangValidator,
-  unitOpeningHoursValidator,
-} from '../../../../shared/pure';
-import { FormsService } from '../../../../shared/services/forms';
-import { EToasterType } from '../../../../shared/services/toaster';
-import { IState } from '../../../../store';
-import {
-  currentUserSelectors,
-  groupListSelectors,
-} from '../../../../store/selectors';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from '../../../../shared/const';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { contactFormGroup, multiLangValidator, unitOpeningHoursValidator } from '../../../../shared/pure';
+import { FormsService } from '../../../../shared/services/forms';
+import { EToasterType } from '../../../../shared/services/toaster';
+import { IState } from '../../../../store';
+import { currentUserSelectors, groupListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

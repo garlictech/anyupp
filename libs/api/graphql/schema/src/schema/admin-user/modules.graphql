@@ -1,0 +1,11 @@
+query GetAdminUser($id: String!) {
+  getAdminUser(id: $id) {
+    email
+    name
+    phone
+  }
+}
+
+mutation CreateAdminUser($data: CreateAdminUserInput!) {
+  createAdminUser(newAdminData: $data)
+}

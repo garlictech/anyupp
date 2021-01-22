@@ -11,8 +11,8 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { IFloorMapData, IFloorMapDataObject } from '../../../../interfaces';
-import { EUnitMapObjectType } from '../../../../enums';
+import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
+import { EUnitMapObjectType } from '@bgap/shared/types';
 import { FLOOR_MAP_OBJECT_DEFAULTS } from '../../../../const';
 import { IState } from '../../../../../store';
 import { floorMapActions } from '../../../../../store/actions';

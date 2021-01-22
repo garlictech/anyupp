@@ -1,0 +1,13 @@
+
+input UpdateAdminUserInput {
+  email: String
+  name: String
+  phone: String
+}
+
+input CreateAdminUserInput {
+  name: String
+  address: AddressInput
+  email: String
+  phone: String
+}

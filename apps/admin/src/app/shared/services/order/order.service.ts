@@ -9,14 +9,14 @@ import {
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
-import { EOrderStatus } from '../../enums';
+import { EOrderStatus } from '@bgap/shared/types';
 import {
   IAdminUser,
   IGroup,
   IOrder,
   IOrderItem,
   IProduct
-} from '../../interfaces';
+} from '@bgap/shared/types';
 import { DataService } from '../data';
 
 @Injectable({

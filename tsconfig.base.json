@@ -25,6 +25,7 @@
       "@bgap/shared/config/firebase": [
         "libs/shared/config/firebase/src/index.ts"
       ],
+      "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
       "@bgap/shared/config/stripe": ["libs/shared/config/stripe/src/index.ts"]
     }
   },

@@ -1,13 +1,13 @@
-import { IUnit } from '../../../../shared/interfaces';
+import { Component, Injector, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { IUnit } from '@bgap/shared/types';
+import { Store } from '@ngrx/store';
+
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import * as floorMapFuncs from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
-
-import { Component, Injector, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { IState } from '../../../../store';
 import { floorMapActions } from '../../../../store/actions';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'bgap-unit-floor-map',

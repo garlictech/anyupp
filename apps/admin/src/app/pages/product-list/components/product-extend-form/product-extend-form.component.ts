@@ -2,30 +2,20 @@ import { get as _get, omit as _omit } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { EProductLevel } from '../../../../shared/enums';
+import { Component, Injector, OnInit } from '@angular/core';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import {
-  IAdminUserSettings,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
-} from '../../../../shared/interfaces';
+  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
+} from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { customNumberCompare, objectToArray } from '../../../../shared/pure';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import {
-  currentUserSelectors,
-  productCategoryListSelectors,
-  unitListSelectors,
-} from '../../../../store/selectors';
-
-import { Component, Injector, OnInit } from '@angular/core';
-import { FormArray, FormControl, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { currentUserSelectors, productCategoryListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

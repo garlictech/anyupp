@@ -1,4 +1,4 @@
-import { IDayInterval } from '../interfaces';
+import { IDayInterval } from '@bgap/shared/types';
 
 export const customNumberCompare = (
   field: string,

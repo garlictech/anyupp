@@ -4,7 +4,7 @@ import { GOOGLE_API_KEY } from '../../../../const';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ILocation } from '../../../../interfaces';
+import { ILocation } from '@bgap/shared/types';
 
 interface IGeocodeResponse {
   status: string;

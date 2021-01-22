@@ -1,12 +1,13 @@
 import { Observable } from 'rxjs';
-import { IChain } from '../../shared/interfaces';
-import { IState } from '../../store';
-import { chainListSelectors } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { IState } from '../../store';
+import { chainListSelectors } from '../../store/selectors';
 import { ChainFormComponent } from './components/chain-form/chain-form.component';
 
 @UntilDestroy()

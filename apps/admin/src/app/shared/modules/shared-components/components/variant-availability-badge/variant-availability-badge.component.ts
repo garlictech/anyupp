@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { EVariantAvailabilityType } from '../../../../enums';
-import { IAvailability } from '../../../../interfaces';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { IAvailability } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-variant-availability-badge',

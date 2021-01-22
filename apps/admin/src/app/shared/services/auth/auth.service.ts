@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 
-import { IAdminUser } from '../../interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 import { DataService } from '../data';
 import { EToasterType, ToasterService } from '../toaster';
 
