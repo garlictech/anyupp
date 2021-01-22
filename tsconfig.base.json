@@ -23,7 +23,6 @@
       ],
       "@bgap/api/graphql/schema": ["libs/api/graphql/schema/src/index.ts"],
       "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
-      "@bgap/shared/config/stripe": ["libs/shared/config/stripe/src/index.ts"],
       "@bgap/shared/config": ["libs/shared/config/src/index.ts"]
     }
   },
