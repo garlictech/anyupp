@@ -38,10 +38,6 @@
     "website": {
       "tags": []
     },
-    "website-e2e": {
-      "tags": [],
-      "implicitDependencies": ["website"]
-    },
     "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
