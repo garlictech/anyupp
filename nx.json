@@ -52,7 +52,7 @@
       "tags": ["scope:shared", "type:utils", "platform:angular"]
     },
     "shared-config": {
-      "tags": []
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }
