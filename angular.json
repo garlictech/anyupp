@@ -382,27 +382,6 @@
         }
       }
     },
-    "shared-config-firebase": {
-      "root": "libs/shared/config/firebase",
-      "sourceRoot": "libs/shared/config/firebase/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/shared/config/firebase/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/config/firebase"],
-          "options": {
-            "jestConfig": "libs/shared/config/firebase/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "shared-types": {
       "root": "libs/shared/types",
       "sourceRoot": "libs/shared/types/src",

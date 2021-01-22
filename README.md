@@ -136,8 +136,8 @@ TIP: use `--dry-run` to check your idea. It shows what will be generated without
 ### Generate a ??? (simple workspace lib)
 `nx g @nrwl/workspace:lib shared/config`
 
-### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/library)
-`nx g @nrwl/workspace:rm ...`
+### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
+`nx g @nrwl/workspace:rm shared-config-firebase`
 
 ### Generate a nest lib
 ```
