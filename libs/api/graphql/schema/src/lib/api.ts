@@ -62,54 +62,6 @@ export interface AdminRoleEntity {
   unitId?: Maybe<Scalars['String']>;
 }
 
-<<<<<<< HEAD
-export enum Type {
-    alipay = "alipay",
-    au_becs_debit = "au_becs_debit",
-    bacs_debit = "bacs_debit",
-    bancontact = "bancontact",
-    card = "card",
-    eps = "eps",
-    fpx = "fpx",
-    giropay = "giropay",
-    grabpay = "grabpay",
-    ideal = "ideal",
-    oxxo = "oxxo",
-    p24 = "p24",
-    sepa_debit = "sepa_debit",
-    sofort = "sofort"
-}
-
-export class UpdateAdminUserInput {
-    email?: string;
-    name?: string;
-    phone?: string;
-}
-
-export class CreateAdminUserInput {
-    name?: string;
-    address?: AddressInput;
-    email?: string;
-    phone?: string;
-}
-
-export class AddressInput {
-    address?: string;
-    city?: string;
-    country?: string;
-    title?: string;
-    postalCode?: string;
-    location?: LocationInput;
-}
-
-export class LocationInput {
-    lat?: number;
-    lng?: number;
-}
-
-export interface MetadataInterface {
-    metadata: Metadata[];
-=======
 export interface UpdateAdminUserInput {
   email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -120,7 +72,6 @@ export interface CreateAdminUserInput {
   email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
->>>>>>> 844e92439bd3147194a7a7b6f2449448d8927bbf
 }
 
 export interface Query {
@@ -129,43 +80,8 @@ export interface Query {
   getCustomerStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
 }
 
-<<<<<<< HEAD
-export abstract class IQuery {
-    __typename?: 'IQuery';
-
-    abstract getAdminUser(id: string): AdminUser | Promise<AdminUser>;
-
-    abstract getCustomerStripeCards(customerId?: string): StripeCard[] | Promise<StripeCard[]>;
-}
-
-export abstract class ISubscription {
-    __typename?: 'ISubscription';
-
-    abstract adminUserChanged(id: string): AdminUser | Promise<AdminUser>;
-}
-
-export abstract class IMutation {
-    __typename?: 'IMutation';
-
-    abstract updateAdminUser(id: string, newAdminData: UpdateAdminUserInput): boolean | Promise<boolean>;
-
-    abstract createAdminUser(newAdminData: CreateAdminUserInput): boolean | Promise<boolean>;
-}
-
-export class AdminUser {
-    __typename?: 'AdminUser';
-    id: string;
-    name?: string;
-    profileImage?: string;
-    roles: AdminUserRole;
-    settings?: AdminUserSettings;
-    address?: Address;
-    email?: string;
-    phone?: string;
-=======
 export interface QueryGetAdminUserArgs {
   id: Scalars['ID'];
->>>>>>> 844e92439bd3147194a7a7b6f2449448d8927bbf
 }
 
 export interface QueryGetCustomerStripeCardsArgs {
@@ -181,15 +97,6 @@ export interface SubscriptionAdminUserChangedArgs {
   id: Scalars['ID'];
 }
 
-<<<<<<< HEAD
-export class Chain {
-    __typename?: 'Chain';
-    id: string;
-    name?: string;
-    description?: LocalizedItem;
-    style?: ChainStyle;
-    isActive?: boolean;
-=======
 export interface Mutation {
   __typename?: 'Mutation';
   updateAdminUser: Scalars['Boolean'];
@@ -256,7 +163,6 @@ export interface DailySchedule {
   __typename?: 'DailySchedule';
   from?: Maybe<Scalars['String']>;
   to?: Maybe<Scalars['String']>;
->>>>>>> 844e92439bd3147194a7a7b6f2449448d8927bbf
 }
 
 export interface CustomDailySchedule {
