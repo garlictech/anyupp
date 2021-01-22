@@ -114,11 +114,7 @@ export class AdminUserFormComponent
             );
           */
 
-          const gqlCreateAdminUser = gql`
-            mutation CreateAdminUser($data: CreateAdminUserInput!) {
-              createAdminUser(newAdminData: $data)
-            }
-          `;
+          const gqlCreateAdminUser = gql`mutation CreateAdminUser($data: CreateAdminUserInput!) {createAdminUser(newAdminData: $data)}`;
 
           this._apollo
             .mutate({
