@@ -1,10 +1,14 @@
 import * as admin from 'firebase-admin';
 import { PubSub } from 'graphql-subscriptions';
 
-import { AdminUser, CreateAdminUserInput, UpdateAdminUserInput } from '@bgap/api/graphql/schema';
 import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import {
+  AdminUser,
+  UpdateAdminUserInput,
+  CreateAdminUserInput,
+} from '@bgap/api/graphql/schema';
 
 @Resolver('AdminUser')
 export class AdminUserResolver {
@@ -48,7 +52,7 @@ export class AdminUserResolver {
   ): Promise<boolean> {
     const user = await admin.auth().createUser({
       ...newAdminData,
-      password: Math.random().toString(36).substring(2, 10)
+      password: Math.random().toString(36).substring(2, 10),
     });
     return admin
       .database()
@@ -56,8 +60,8 @@ export class AdminUserResolver {
       .update({
         ...newAdminData,
         roles: {
-          role: EAdminRole.INACTIVE
-        }
+          role: EAdminRole.INACTIVE,
+        },
       })
       .then(() => true);
   }

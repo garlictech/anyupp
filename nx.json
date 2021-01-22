@@ -49,7 +49,7 @@
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "shared-types": {
-      "tags": ["scope:shared", "type:utils", "platform:angular"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
