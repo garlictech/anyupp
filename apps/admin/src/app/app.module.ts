@@ -19,9 +19,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { FIREBASE_CONFIG } from '@bgap/shared/config/firebase';
 import {
-  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbLayoutModule,
+  NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -33,6 +38,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
+import { FIREBASE_CONFIG } from '@bgap/shared/config';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),

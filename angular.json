@@ -51,8 +51,16 @@
                   "with": "apps/admin/src/environments/environment.prod.ts"
                 },
                 {
-                  "replace": "libs/shared/config/firebase/src/lib/config/firebase.config.ts",
-                  "with": "libs/shared/config/firebase/src/lib/config/firebase.config.prod.ts"
+                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
+                  "with": "libs/shared/config/src/lib/config/prod/firebase.config.prod.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
+                  "with": "libs/shared/config/src/lib/config/prod/stripe.config.prod.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
+                  "with": "libs/shared/config/src/lib/config/prod/service-account-key.prod.json"
                 }
               ],
               "optimization": true,
@@ -82,8 +90,16 @@
                   "with": "apps/admin/src/environments/environment.qa.ts"
                 },
                 {
-                  "replace": "libs/shared/config/firebase/src/lib/config/firebase.config.ts",
-                  "with": "libs/shared/config/firebase/src/lib/config/firebase.config.qa.ts"
+                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
+                  "with": "libs/shared/config/src/lib/config/qa/firebase.config.qa.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
+                  "with": "libs/shared/config/src/lib/config/qa/stripe.config.qa.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
+                  "with": "libs/shared/config/src/lib/config/qa/service-account-key.qa.json"
                 }
               ]
             },
@@ -94,8 +110,16 @@
                   "with": "apps/admin/src/environments/environment.staging.ts"
                 },
                 {
-                  "replace": "libs/shared/config/firebase/src/lib/config/firebase.config.ts",
-                  "with": "libs/shared/config/firebase/src/lib/config/firebase.config.staging.ts"
+                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
+                  "with": "libs/shared/config/src/lib/config/staging/firebase.config.staging.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
+                  "with": "libs/shared/config/src/lib/config/staging/stripe.config.staging.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
+                  "with": "libs/shared/config/src/lib/config/staging/service-account-key.staging.json"
                 }
               ]
             }
@@ -213,123 +237,6 @@
         }
       }
     },
-    "website": {
-      "projectType": "application",
-      "root": "apps/website",
-      "sourceRoot": "apps/website/src",
-      "prefix": "bgap",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/apps/website",
-            "index": "apps/website/src/index.html",
-            "main": "apps/website/src/main.ts",
-            "polyfills": "apps/website/src/polyfills.ts",
-            "tsConfig": "apps/website/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "apps/website/src/favicon.ico",
-              "apps/website/src/assets"
-            ],
-            "styles": ["apps/website/src/styles.scss"],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/website/src/environments/environment.ts",
-                  "with": "apps/website/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "website:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "website:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "website:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/website/tsconfig.app.json",
-              "apps/website/tsconfig.spec.json",
-              "apps/website/tsconfig.editor.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/website/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/website"],
-          "options": {
-            "jestConfig": "apps/website/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "website-e2e": {
-      "root": "apps/website-e2e",
-      "sourceRoot": "apps/website-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/website-e2e/cypress.json",
-            "tsConfig": "apps/website-e2e/tsconfig.e2e.json",
-            "devServerTarget": "website:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "website:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/website-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/website-e2e/**/*"]
-          }
-        }
-      }
-    },
     "api-graphql-resolvers": {
       "root": "libs/api/graphql/resolvers",
       "sourceRoot": "libs/api/graphql/resolvers/src",
@@ -382,27 +289,6 @@
         }
       }
     },
-    "shared-config-firebase": {
-      "root": "libs/shared/config/firebase",
-      "sourceRoot": "libs/shared/config/firebase/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/shared/config/firebase/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/config/firebase"],
-          "options": {
-            "jestConfig": "libs/shared/config/firebase/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "shared-types": {
       "root": "libs/shared/types",
       "sourceRoot": "libs/shared/types/src",
@@ -424,22 +310,22 @@
         }
       }
     },
-    "shared-config-stripe": {
-      "root": "libs/shared/config/stripe",
-      "sourceRoot": "libs/shared/config/stripe/src",
+    "shared-config": {
+      "root": "libs/shared/config",
+      "sourceRoot": "libs/shared/config/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/shared/config/stripe/**/*.ts"]
+            "lintFilePatterns": ["libs/shared/config/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared/config/stripe"],
+          "outputs": ["coverage/libs/shared/config"],
           "options": {
-            "jestConfig": "libs/shared/config/stripe/jest.config.js",
+            "jestConfig": "libs/shared/config/jest.config.js",
             "passWithNoTests": true
           }
         }

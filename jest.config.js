@@ -11,5 +11,6 @@ module.exports = {
     '<rootDir>/libs/shared/config/firebase',
     '<rootDir>/libs/shared/types',
     '<rootDir>/libs/shared/config/stripe',
+    '<rootDir>/libs/shared/config',
   ],
 };
