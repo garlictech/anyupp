@@ -38,6 +38,6 @@ testem.log
 Thumbs.db
 
 # libs
-/libs/shared/config/*/src/config/*
+/libs/shared/config/src/lib/config/*
 
 cyreport

@@ -1,13 +1,13 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
 import Stripe from 'stripe';
 
-import { STRIPE_CONFIG } from '@bgap/shared/config/stripe';
 import {
   Brand,
   CountryCode,
   Funding,
   StripeCard,
 } from '@bgap/api/graphql/schema';
+import { STRIPE_CONFIG } from '@bgap/shared/config';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver('Stripe')
 export class StripeResolver {
