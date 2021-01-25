@@ -1,9 +1,5 @@
 # STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
 
-type Query {
-  getCustomerStripeCards(customerId: ID): [StripeCard]
-}
-
 # https://stripe.com/docs/api/cards/object?lang=node
 # Card brand
 enum CardBrand {
