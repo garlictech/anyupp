@@ -7,6 +7,7 @@ type Subscription {
 }
 
 type Mutation {
-  updateAdminUser(id: ID!, newAdminData: UpdateAdminUserInput!): Boolean!
-  createAdminUser(newAdminData: CreateAdminUserInput!): Boolean!
+  createAdminUser(newAdminData: AdminUserInput!): Boolean!
+  updateAdminUser(id: ID!, newAdminData: AdminUserInput!): Boolean!
+  updateAdminUserRole(id: ID!, newAdminRoleData: AdminUserRoleInput!): Boolean!
 }

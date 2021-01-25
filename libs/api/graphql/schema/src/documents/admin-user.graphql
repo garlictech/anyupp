@@ -6,6 +6,14 @@ query GetAdminUser($id: ID!) {
   }
 }
 
-mutation CreateAdminUser($data: CreateAdminUserInput!) {
+mutation CreateAdminUser($data: AdminUserInput!) {
   createAdminUser(newAdminData: $data)
+}
+
+mutation UpdateAdminUser($data: AdminUserInput!, $id: ID!) {
+  updateAdminUser(newAdminData: $data, id: $id)
+}
+
+mutation UpdateAdminUserRole($data: AdminUserRoleInput!, $id: ID!) {
+  updateAdminUserRole(newAdminRoleData: $data, id: $id)
 }

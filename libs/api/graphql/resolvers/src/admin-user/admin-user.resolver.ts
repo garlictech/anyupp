@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import { PubSub } from 'graphql-subscriptions';
 
-import { AdminUser, CreateAdminUserInput, UpdateAdminUserInput } from '@bgap/api/graphql/schema';
+import { AdminUser, AdminUserInput, AdminUserRoleInput } from '@bgap/api/graphql/schema';
 import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
@@ -30,9 +30,44 @@ export class AdminUserResolver {
       .then(snap => snap.val());
   }
 
+  @Mutation('createAdminUser')
+  async create(
+    @Args('newAdminData') newAdminData: AdminUserInput
+  ): Promise<boolean> {
+    const createInactiveAdminUser = (uid: string) => {
+      return admin
+          .database()
+          .ref(`adminUsers/${uid}`)
+          .update({
+            ...newAdminData,
+            roles: {
+              role: EAdminRole.INACTIVE,
+            },
+          })
+          .then(() => true, () => false);
+    }
+
+    try {
+     const user = await admin.auth().createUser({
+        email: newAdminData.email,
+        password: Math.random().toString(36).substring(2, 10),
+      });
+
+      return user ? createInactiveAdminUser(user.uid) : false;
+    } catch (err) {
+      if (err.code === 'auth/email-already-exists') {
+        const existingUser = await admin
+          .auth()
+          .getUserByEmail(newAdminData.email);
+
+        return existingUser ? createInactiveAdminUser(existingUser.uid) : false;
+      }
+    }
+  }
+
   @Mutation('updateAdminUser')
   async update(
-    @Args('newAdminData') newAdminData: UpdateAdminUserInput,
+    @Args('newAdminData') newAdminData: AdminUserInput,
     @Args('id') id: string
   ): Promise<boolean> {
     return admin
@@ -42,23 +77,15 @@ export class AdminUserResolver {
       .then(() => true);
   }
 
-  @Mutation('createAdminUser')
-  async create(
-    @Args('newAdminData') newAdminData: CreateAdminUserInput
+  @Mutation('updateAdminUserRole')
+  async updateRole(
+    @Args('newAdminRoleData') newAdminRoleData: AdminUserRoleInput,
+    @Args('id') id: string
   ): Promise<boolean> {
-    const user = await admin.auth().createUser({
-      ...newAdminData,
-      password: Math.random().toString(36).substring(2, 10)
-    });
     return admin
       .database()
-      .ref(`adminUsers/${user.uid}`)
-      .update({
-        ...newAdminData,
-        roles: {
-          role: EAdminRole.INACTIVE
-        }
-      })
+      .ref(`/adminUsers/${id}/roles`)
+      .update(newAdminRoleData)
       .then(() => true);
   }
 

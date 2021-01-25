@@ -858,40 +858,4 @@ export class DataService {
       profileImage: imagePath,
     });
   }
-
-  public async getAdminUserByEmail(email: string): Promise<IAdminUser[]> {
-    return new Promise((resolve): void => {
-      this._angularFireDatabase
-        .list(`/adminUsers`, ref =>
-          ref.orderByChild('email').equalTo(email.trim())
-        )
-        .snapshotChanges()
-        .pipe(take(1))
-        .subscribe((snapshots): void => {
-          resolve(
-            snapshots.map(s => ({
-              _id: s.key,
-              ...(<IAdminUser>s.payload.val()),
-            }))
-          );
-        });
-    });
-  }
-
-  public async getUserByEmail(email: string): Promise<IUser[]> {
-    return new Promise((resolve): void => {
-      this._angularFireDatabase
-        .list(`/users`, ref => ref.orderByChild('email').equalTo(email.trim()))
-        .snapshotChanges()
-        .pipe(take(1))
-        .subscribe((snapshots): void => {
-          resolve(
-            snapshots.map(s => ({
-              _id: s.key,
-              ...(<IUser>s.payload.val()),
-            }))
-          );
-        });
-    });
-  }
 }

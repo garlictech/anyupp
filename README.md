@@ -157,3 +157,6 @@ nx g @nrwl/nest:lib api/graphql/resolvers
 
 ### Start graphql server
 `nx serve graphql-server`
+
+### Generate GQL resolver
+`nx g @nrwl/nest:resolver -p api-graphql-resolvers`
