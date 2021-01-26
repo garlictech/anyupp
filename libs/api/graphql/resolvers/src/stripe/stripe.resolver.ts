@@ -1,9 +1,9 @@
 import Stripe from 'stripe';
 
 import {
-  Brand,
+  CardBrand,
   CountryCode,
-  Funding,
+  CardFundingType,
   StripeCard,
 } from '@bgap/api/graphql/schema';
 import { STRIPE_CONFIG } from '@bgap/shared/config';
@@ -11,7 +11,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver('Stripe')
 export class StripeResolver {
-  stripe: Stripe;
+  private stripe: Stripe;
   constructor() {
     this.stripe = new Stripe(STRIPE_CONFIG.stripe_secret_key, {
       apiVersion: '2020-08-27',
@@ -23,11 +23,10 @@ export class StripeResolver {
     @Args('customerId') customerId: string
   ): Promise<StripeCard[]> {
     const paymentMethods = await this.stripe.paymentMethods.list({
-      customer: customerId ? customerId : 'cus_HqrrboxTxefVa3', // TODO: remove default
+      customer: customerId,
       type: 'card',
     });
-    const cards = paymentMethods.data.map(mapPaymentMethodToCard);
-    return cards;
+    return paymentMethods.data.map(mapPaymentMethodToCard);
   }
 }
 
@@ -36,11 +35,12 @@ const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   id: pm.id,
   metadata: Object.entries(pm.metadata).map(mapMetadataToObjectArray),
   object: pm.object,
-  brand: Brand[pm.card.brand],
+  brand: CardBrand[pm.card.brand],
   country: CountryCode[pm.card.country],
-  funding: Funding[pm.card.funding],
+  funding: CardFundingType[pm.card.funding],
 });
 
+// [key, value] => {key:key, value:value}
 const mapMetadataToObjectArray = ([key, value]) => ({
   key,
   value,

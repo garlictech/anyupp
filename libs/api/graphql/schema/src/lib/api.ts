@@ -719,7 +719,7 @@ export interface Availability {
   price?: Maybe<Scalars['Float']>;
 }
 
-export enum Brand {
+export enum CardBrand {
   amex = 'amex',
   diners = 'diners',
   discover = 'discover',
@@ -730,28 +730,11 @@ export enum Brand {
   unknown = 'unknown',
 }
 
-export enum Funding {
+export enum CardFundingType {
   credit = 'credit',
   debit = 'debit',
   prepaid = 'prepaid',
   unknown = 'unknown',
-}
-
-export enum Type {
-  alipay = 'alipay',
-  au_becs_debit = 'au_becs_debit',
-  bacs_debit = 'bacs_debit',
-  bancontact = 'bancontact',
-  card = 'card',
-  eps = 'eps',
-  fpx = 'fpx',
-  giropay = 'giropay',
-  grabpay = 'grabpay',
-  ideal = 'ideal',
-  oxxo = 'oxxo',
-  p24 = 'p24',
-  sepa_debit = 'sepa_debit',
-  sofort = 'sofort',
 }
 
 export interface CardChecks {
@@ -761,14 +744,14 @@ export interface CardChecks {
   cvc_check?: Maybe<Scalars['String']>;
 }
 
-export interface Metadata {
-  __typename?: 'Metadata';
+export interface StripeMetadata {
+  __typename?: 'StripeMetadata';
   key: Scalars['String'];
   value: Scalars['String'];
 }
 
-export interface MetadataInterface {
-  metadata: Array<Metadata>;
+export interface StripeMetadataInterface {
+  metadata: Array<StripeMetadata>;
 }
 
 export interface NodeInterface {
@@ -776,20 +759,20 @@ export interface NodeInterface {
   object: Scalars['String'];
 }
 
-export interface StripeCard extends MetadataInterface, NodeInterface {
+export interface StripeCard extends StripeMetadataInterface, NodeInterface {
   __typename?: 'StripeCard';
-  brand?: Maybe<Brand>;
+  brand?: Maybe<CardBrand>;
   checks?: Maybe<CardChecks>;
   country?: Maybe<CountryCode>;
   last4?: Maybe<Scalars['String']>;
   exp_month?: Maybe<Scalars['Int']>;
   exp_year?: Maybe<Scalars['Int']>;
   fingerprint?: Maybe<Scalars['String']>;
-  funding?: Maybe<Funding>;
+  funding?: Maybe<CardFundingType>;
   three_d_secure?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   object: Scalars['String'];
-  metadata: Array<Metadata>;
+  metadata: Array<StripeMetadata>;
 }
 
 export interface Unit {
