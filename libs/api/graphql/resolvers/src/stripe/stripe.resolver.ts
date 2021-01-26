@@ -1,9 +1,9 @@
 import Stripe from 'stripe';
 
 import {
-  Brand,
+  CardBrand,
   CountryCode,
-  Funding,
+  CardFundingType,
   StripeCard,
 } from '@bgap/api/graphql/schema';
 import { STRIPE_CONFIG } from '@bgap/shared/config';
@@ -35,9 +35,9 @@ const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   id: pm.id,
   metadata: Object.entries(pm.metadata).map(mapMetadataToObjectArray),
   object: pm.object,
-  brand: Brand[pm.card.brand],
+  brand: CardBrand[pm.card.brand],
   country: CountryCode[pm.card.country],
-  funding: Funding[pm.card.funding],
+  funding: CardFundingType[pm.card.funding],
 });
 
 // [key, value] => {key:key, value:value}
