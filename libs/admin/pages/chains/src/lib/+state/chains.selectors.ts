@@ -1,3 +1,4 @@
+import { IAdminUserSettings, IChain } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   CHAINS_FEATURE_KEY,
@@ -41,4 +42,22 @@ export const getSelected = createSelector(
   getChainsEntities,
   getSelectedId,
   (entities, selectedId) => selectedId && entities[selectedId]
+);
+
+
+export const getChainById = (id: string) => {
+  return createSelector(
+    getAllChains,
+    (chains: IChain[]): IChain =>
+      chains.find((chain): boolean => chain._id === id)
+  );
+};
+
+export const getSeletedChain = createSelector(
+  currentUserSelectors.getAdminUserSettings,
+  getAllChains,
+  (userSettings: IAdminUserSettings, chains: IChain[]): IChain =>
+    chains.find(
+      (chain): boolean => chain._id === userSettings?.selectedChainId)
+    )
 );

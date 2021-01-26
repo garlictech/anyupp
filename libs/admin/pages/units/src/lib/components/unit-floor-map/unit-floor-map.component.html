@@ -1,1 +1,46 @@
-<p>unit-floor-map works!</p>
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">{{ 'units.editFloorMap' | translate }}</div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body class="p-2">
+    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+      <bgap-floor-map-editor
+        [editMode]="true"
+        [floorMap]="unit.floorMap"
+      ></bgap-floor-map-editor>
+
+      <div class="mt-20">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+
+    <!--form [formGroup]="rawForm" (ngSubmit)="submitRaw()" [autocomplete]="false">
+      <textarea class="w-100" height="100" [formControl]="rawForm.controls['floorMap']"></textarea>
+
+      <div class="mt-20">
+        <button nbButton size="small" type="submit" fullWidth status="primary" [disabled]="dialogForm.invalid">
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form-->
+  </nb-card-body>
+</nb-card>

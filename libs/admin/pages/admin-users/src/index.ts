@@ -1,5 +1,4 @@
-export * from './lib/+state/admin-users.actions';
+export * as adminUsersActions from './lib/+state/admin-users.actions';
 export * from './lib/+state/admin-users.reducer';
-export * from './lib/+state/admin-users.selectors';
-export * from './lib/+state/admin-users.models';
+export * as adminUsersSelectors from './lib/+state/admin-users.selectors';
 export * from './lib/admin-pages-admin-users.module';

@@ -8,8 +8,8 @@ import {
   IKeyValue,
   IAssignedEntityNames,
 } from '@bgap/shared/types';
-import { DataService } from '../../../../../services/data';
-import { IState } from '../../../../../../store';
+import { DataService } from '@bgap/admin/shared/data';
+
 import {
   chainListSelectors,
   groupListSelectors,

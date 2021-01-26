@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { cloneDeep as _cloneDeep } from 'lodash-es';
+import { IUser } from '@bgap/shared/types';
+
+import { Component, Input } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
+
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'bgap-user-list-item',
   templateUrl: './user-list-item.component.html',
-  styleUrls: ['./user-list-item.component.scss']
 })
-export class UserListItemComponent implements OnInit {
+export class UserListItemComponent {
+  @Input() user: IUser;
 
-  constructor() { }
+  constructor(private _nbDialogService: NbDialogService) {}
 
-  ngOnInit(): void {
+  editUser(): void {
+    const dialog = this._nbDialogService.open(UserFormComponent, {
+      dialogClass: 'form-dialog',
+    });
+
+    dialog.componentRef.instance.user = _cloneDeep(this.user);
   }
-
 }

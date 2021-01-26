@@ -5,8 +5,8 @@ import {
   currentUserSelectors,
   groupListSelectors,
 } from '../../../../../store/selectors';
-import { IState } from '../../../../../store';
-import { DataService } from '../../../../services/data';
+
+import { DataService } from '@bgap/admin/shared/data';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

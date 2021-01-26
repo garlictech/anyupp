@@ -50,7 +50,10 @@
         "libs/admin/pages/dashboard/src/index.ts"
       ],
       "@bgap/admin/pages/auth": ["libs/admin/pages/auth/src/index.ts"],
-      "@bgap/admin/shared/config": ["libs/admin/shared/config/src/index.ts"]
+      "@bgap/admin/shared/config": ["libs/admin/shared/config/src/index.ts"],
+      "@bgap/admin/shared/floor-map": [
+        "libs/admin/shared/floor-map/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

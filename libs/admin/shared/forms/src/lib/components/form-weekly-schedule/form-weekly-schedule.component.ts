@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FormsService } from '../../../../services/forms';
+import { FormsService } from '@bgap/admin/shared/forms';
 
 @Component({
   selector: 'bgap-form-weekly-schedule',

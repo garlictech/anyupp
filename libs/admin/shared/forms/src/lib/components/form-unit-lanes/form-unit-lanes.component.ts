@@ -1,11 +1,10 @@
-import { FormsService } from '../../../../services/forms';
-import { IState } from '../../../../../store';
-import { productListSelectors } from '../../../../../store/selectors';
-
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
+import { FormsService } from '@bgap/admin/shared/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { productListSelectors } from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

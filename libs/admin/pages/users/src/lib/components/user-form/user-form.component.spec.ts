@@ -1,25 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserFormComponent } from './user-form.component';
 
-describe('UserFormComponent', () => {
+describe('UserFormComponent', (): void => {
   let component: UserFormComponent;
   let fixture: ComponentFixture<UserFormComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UserFormComponent ]
+  beforeEach(
+    waitForAsync((): void => {
+      TestBed.configureTestingModule({
+        declarations: [UserFormComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  });
+  );
 
-  beforeEach(() => {
+  beforeEach((): void => {
     fixture = TestBed.createComponent(UserFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 });

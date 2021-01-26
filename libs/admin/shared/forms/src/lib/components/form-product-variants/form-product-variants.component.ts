@@ -1,11 +1,10 @@
 import { get as _get } from 'lodash-es';
-import { EProductLevel } from '@bgap/shared/types';
-import { IProductVariant } from '@bgap/shared/types';
-import { customNumberCompare } from '../../../../pure';
-import { FormsService } from '../../../../services/forms';
 
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
+import { FormsService } from '@bgap/admin/shared/forms';
+import { customNumberCompare } from '@bgap/admin/shared/utils';
+import { EProductLevel, IProductVariant } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-form-product-variants',

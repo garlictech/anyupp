@@ -1,9 +1,9 @@
 import { get as _get } from 'lodash-es';
-import { GOOGLE_API_KEY } from '../../../../const';
 
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { GOOGLE_API_KEY } from '@bgap/admin/shared/utils';
 import { ILocation } from '@bgap/shared/types';
 
 interface IGeocodeResponse {

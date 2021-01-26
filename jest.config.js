@@ -31,5 +31,6 @@ module.exports = {
     '<rootDir>/libs/admin/pages/dashboard',
     '<rootDir>/libs/admin/pages/auth',
     '<rootDir>/libs/admin/shared/config',
+    '<rootDir>/libs/admin/shared/floor-map',
   ],
 };

@@ -20,7 +20,6 @@ import { AddressComponent } from './components/address';
 import { ColorizedLaneIconComponent } from './components/colorized-lane-icon';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ContactComponent } from './components/contact';
-import { FloorMapEditorComponent } from './components/floor-map-editor';
 import { GoogleMapComponent } from './components/google-map';
 import { StatusLedComponent } from './components/status-led';
 import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
@@ -55,7 +54,6 @@ const COMPONENTS = [
   ConfirmDialogComponent,
   StatusLedComponent,
   ColorizedLaneIconComponent,
-  FloorMapEditorComponent,
   ContactComponent
 ];
 

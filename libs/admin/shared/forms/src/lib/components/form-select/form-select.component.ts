@@ -1,7 +1,6 @@
-import { IKeyValue } from '@bgap/shared/types';
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { IKeyValue } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-form-select',

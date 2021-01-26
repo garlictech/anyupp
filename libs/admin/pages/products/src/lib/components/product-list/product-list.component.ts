@@ -3,16 +3,15 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DataService } from '@bgap/admin/shared/data';
+import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { customNumberCompare } from '../../shared/pure';
-import { DataService } from '../../shared/services/data';
-import { IState } from '../../store';
 import { currentUserSelectors, groupListSelectors, productListSelectors } from '../../store/selectors';
-import { ProductFormComponent } from './components/product-form/product-form.component';
+import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({

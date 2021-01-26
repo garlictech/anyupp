@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
 import {
-
-  chainListReducer,
   currentUserReducer,
   dashboardReducer,
   floorMapReducer,
@@ -15,8 +13,6 @@ import {
 } from './reducer';
 import { productListReducer } from './reducer/product-list';
 import {
-
-  IChainListState,
   ICurrentUserState,
   IDashboardState,
   IFloorMapState,
@@ -29,8 +25,6 @@ import {
 import { IProductListState } from './state/product-list';
 
 export interface IState {
-
-  chainList: IChainListState;
   currentUser: ICurrentUserState;
   dashboard: IDashboardState;
   floorMap: IFloorMapState;
@@ -43,8 +37,6 @@ export interface IState {
 }
 
 const reducers: ActionReducerMap<IState> = {
-
-  chainList: chainListReducer,
   currentUser: currentUserReducer,
   dashboard: dashboardReducer,
   floorMap: floorMapReducer,

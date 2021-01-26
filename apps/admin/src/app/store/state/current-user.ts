@@ -1,5 +1,8 @@
 import { IAdminUser } from '@bgap/shared/types';
 
 export interface ICurrentUserState {
-  adminUser?: IAdminUser;
+  loggedUser?: IAdminUser;
 }
+
+
+// TODO ezt a pages/auth-ba

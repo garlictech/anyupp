@@ -1,10 +1,8 @@
-import { WEEKLY_VARIANT_AVAILABILITY } from '../../../../const';
-import { EVariantAvailabilityType } from '@bgap/shared/types';
-import { IKeyValue } from '@bgap/shared/types';
-import { FormsService } from '../../../../services/forms';
-
 import { Component, Input } from '@angular/core';
 import { FormArray } from '@angular/forms';
+import { FormsService } from '@bgap/admin/shared/forms';
+import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
+import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

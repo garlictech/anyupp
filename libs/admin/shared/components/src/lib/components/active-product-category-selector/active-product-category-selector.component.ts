@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { IAdminUser, IProductCategory } from '@bgap/shared/types';
-import { IState } from '../../../../../store';
+
 import {
   currentUserSelectors,
   productCategoryListSelectors
@@ -10,7 +10,7 @@ import {
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { DataService } from '../../../../services/data';
+import { DataService } from '@bgap/admin/shared/data';
 
 @UntilDestroy()
 @Component({

@@ -1,8 +1,7 @@
-import { DataService } from '../../../../../shared/services/data';
-import { ToasterService } from '../../../../../shared/services/toaster/toaster.service';
-
 import { Component, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DataService } from '@bgap/admin/shared/data';
+import { ToasterService } from '@bgap/admin/shared/utils';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({

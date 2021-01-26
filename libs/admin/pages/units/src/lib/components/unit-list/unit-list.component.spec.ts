@@ -1,25 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitListComponent } from './unit-list.component';
 
-describe('UnitListComponent', () => {
+describe('UnitListComponent', (): void => {
   let component: UnitListComponent;
   let fixture: ComponentFixture<UnitListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UnitListComponent ]
+  beforeEach(
+    waitForAsync((): void => {
+      TestBed.configureTestingModule({
+        declarations: [UnitListComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  });
+  );
 
-  beforeEach(() => {
+  beforeEach((): void => {
     fixture = TestBed.createComponent(UnitListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 });

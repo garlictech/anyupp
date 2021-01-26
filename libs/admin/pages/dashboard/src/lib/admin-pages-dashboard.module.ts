@@ -7,8 +7,19 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbActionsModule, NbBadgeModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule,
-  NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbSpinnerModule, NbUserModule
+  NbActionsModule,
+  NbBadgeModule,
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbSpinnerModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -32,6 +43,10 @@ import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-bre
 import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales';
 import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales';
 import { DashboardComponent } from './dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromDashboard from './+state/dashboard.reducer';
+import { DashboardEffects } from './+state/dashboard.effects';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -88,6 +103,11 @@ const NB_MODULES = [
       },
     ]),
     ...NB_MODULES,
+    StoreModule.forFeature(
+      fromDashboard.DASHBOARD_FEATURE_KEY,
+      fromDashboard.reducer
+    ),
+    EffectsModule.forFeature([DashboardEffects]),
   ],
 })
 export class AdminPagesDashboardModule {}

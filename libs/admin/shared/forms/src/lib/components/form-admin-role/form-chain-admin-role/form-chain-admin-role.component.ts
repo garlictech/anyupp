@@ -1,8 +1,8 @@
 import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { IAdminRoleEntity, IChain, IKeyValue } from '@bgap/shared/types';
-import { IState } from '../../../../../../store';
-import { chainListSelectors } from '../../../../../../store/selectors';
+
+import { chainListSelectors } from '@bgap/admin/pages/chains';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';

@@ -2,24 +2,25 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitFloorMapComponent } from './unit-floor-map.component';
 
-describe('UnitFloorMapComponent', () => {
+describe('UnitFloorMapComponent', (): void => {
   let component: UnitFloorMapComponent;
   let fixture: ComponentFixture<UnitFloorMapComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UnitFloorMapComponent ]
-    })
-    .compileComponents();
-  });
+  beforeEach(
+    async (): Promise<void> => {
+      await TestBed.configureTestingModule({
+        declarations: [UnitFloorMapComponent],
+      }).compileComponents();
+    }
+  );
 
-  beforeEach(() => {
+  beforeEach((): void => {
     fixture = TestBed.createComponent(UnitFloorMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 });

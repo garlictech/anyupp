@@ -1,11 +1,11 @@
 import { skipWhile, take } from 'rxjs/operators';
 import { IUnit } from '@bgap/shared/types';
-import { IState } from '../../../../../store';
+
 import { unitListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { DEFAULT_LANE_COLOR } from '../../../../const';
+import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 
 @Component({
   selector: 'bgap-colorized-lane-icon',

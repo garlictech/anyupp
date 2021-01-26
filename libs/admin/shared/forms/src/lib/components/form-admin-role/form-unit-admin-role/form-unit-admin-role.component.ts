@@ -9,7 +9,7 @@ import {
   IKeyValue,
   IUnit,
 } from '@bgap/shared/types';
-import { IState } from '../../../../../../store';
+
 import {
   chainListSelectors,
   groupListSelectors,
