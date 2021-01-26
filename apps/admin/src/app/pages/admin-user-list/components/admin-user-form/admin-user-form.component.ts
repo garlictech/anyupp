@@ -1,15 +1,16 @@
+import { Apollo, gql } from 'apollo-angular';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { EAdminRole, EImageType, IAdminUser, IUser } from '@bgap/shared/types';
+import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
+import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
-import { contactFormGroup } from '../../../../shared/pure';
+import { cleanObject, contactFormGroup } from '../../../../shared/pure';
 import { AuthService } from '../../../../shared/services/auth';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
-import { Apollo, gql } from 'apollo-angular';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -20,7 +21,6 @@ export class AdminUserFormComponent
   implements OnInit {
   public adminUser: IAdminUser;
   public eImageType = EImageType;
-  private _authService: AuthService;
   private _formService: FormsService;
   private _apollo: Apollo;
 
@@ -28,7 +28,6 @@ export class AdminUserFormComponent
     super(_injector);
 
     this._apollo = this._injector.get(Apollo);
-    this._authService = this._injector.get(AuthService);
     this._formService = this._injector.get(FormsService);
   }
 
@@ -43,24 +42,29 @@ export class AdminUserFormComponent
       profileImage: [''], // Just for file upload!!
     });
 
-    // Add custom asyncValidator to check existing email
-    this.dialogForm.controls['email'].setAsyncValidators([
-      this._formService.adminExistingEmailValidator,
-    ]);
-
     if (this.adminUser) {
       this.dialogForm.patchValue(this.adminUser);
+    } else {
+      // Add custom asyncValidator to check existing email
+      this.dialogForm.controls['email'].setAsyncValidators([
+        this._formService.adminExistingEmailValidator,
+      ]);
     }
   }
 
   public async submit(): Promise<void> {
     if (this.dialogForm.valid) {
-      // Update
-      if (_get(this.adminUser, '_id')) {
-        this._dataService
-          .updateAdminUser(this.adminUser._id, this.dialogForm.value)
-          .then(
-            (): void => {
+      if (this.adminUser?._id) {
+        this._apollo
+          .mutate({
+            mutation: UpdateAdminUser,
+            variables: {
+              data: cleanObject(this.dialogForm.value),
+              id: this.adminUser._id,
+            },
+          })
+          .subscribe(
+            ({ data }) => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
@@ -68,144 +72,33 @@ export class AdminUserFormComponent
               );
               this.close();
             },
-            err => {
-              console.error('USER UPDATE ERROR', err);
+            error => {
+              console.error('there was an error sending the query', error);
             }
           );
-        // Create
       } else {
-        // Find existing global admin account (not from stage-dependent adminCredentials)
-        const adminUsersByEmail: IAdminUser[] = await this._dataService.getAdminUserByEmail(
-          this.dialogForm.value.email
-        );
-        const usersByEmail: IUser[] = await this._dataService.getUserByEmail(
-          this.dialogForm.value.email
-        );
-        const existingUser = adminUsersByEmail[0] || usersByEmail[0];
-
-        if (!existingUser) {
-          console.error('START APOLLO MUTATION', this.dialogForm.value);
-
-          /*
-          const TEST_SUBSCRIBTION = gql`
-            subscription OnAdminUserChanged($id: ID!) {
-              adminUserChanged(id: $id) {
-                email
-                name
-                phone
-              }
-            }
-          `;
-
-          this._apollo
-            .subscribe<any>({
-              query: TEST_SUBSCRIBTION,
-              variables: {
-                id: 'GswaMyVle4fVFASBiynt5f8C2EF3',
-              },
-            })
-            .subscribe(
-              ({ data }) => {
-                console.log('******', data);
-              },
-              error => {
-                console.log('there was an error sending the query', error);
-              }
-            );
-          */
-
-          const gqlCreateAdminUser = gql`mutation CreateAdminUser($data: CreateAdminUserInput!) {createAdminUser(newAdminData: $data)}`;
-
-          this._apollo
-            .mutate({
-              mutation: gqlCreateAdminUser,
-              variables: {
-                data: this.dialogForm.value
-              }
-            })
-            .subscribe(
-              ({ data }) => {
-                console.error('******', data);
-              },
-              error => {
-                console.error('there was an error sending the query', error);
-              }
-            );
-
-          /*
-          // The admin is absolutely new, so we create a new account
-          this._authService
-            .createUserWithEmailAndRandomPassword(this.dialogForm.value.email)
-            .then(
-              (credential: firebase.auth.UserCredential): void => {
-                this._saveAdminUser(credential.user.uid);
-              },
-              (err) => {
-                console.error('AUTH USER CRATE ERROR', err);
-              }
-            );
-            */
-        } else if (adminUsersByEmail[0]) {
-          // Admin user exist, so we have to create a credential on the current stage
-          // The email field validator filters the existing admins from the current stage
-          this._dataService
-            .updateAdminUserRoles(adminUsersByEmail[0]._id, {
-              entities: [],
-              role: EAdminRole.INACTIVE,
-            })
-            .then((): void => {
+        this._apollo
+          .mutate({
+            mutation: CreateAdminUser,
+            variables: {
+              data: cleanObject(this.dialogForm.value),
+            },
+          })
+          .subscribe(
+            ({ data }) => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
                 'common.insertSuccessful'
               );
               this.close();
-            });
-        } else if (usersByEmail[0]) {
-          // Customer user exists (registered on the app)
-          // Now we create an admin from the given UID
-          this._saveAdminUser(usersByEmail[0]._id);
-        }
-      }
-    }
-  }
-
-  private _saveAdminUser(uid: string): void {
-    // Now we use the update method to insert admin user with the created uid
-    this._dataService.updateAdminUser(uid, this.dialogForm.value).then(
-      (): void => {
-        this._dataService
-          .updateAdminUserRoles(uid, {
-            entities: [],
-            role: EAdminRole.INACTIVE,
-          })
-          .then(
-            (): void => {
-              this._authService
-                .sendPasswordResetEmail(this.dialogForm.value.email)
-                .then(
-                  (): void => {
-                    this._toasterService.show(
-                      EToasterType.SUCCESS,
-                      '',
-                      'common.insertSuccessful'
-                    );
-                    this.close();
-                  },
-                  err => {
-                    console.error('PASSW RESET ERROR', err);
-                  }
-                );
             },
-            err => {
-              console.error('USER UPDATE ROLE ERROR', err);
+            error => {
+              console.error('there was an error sending the query', error);
             }
           );
-      },
-      err => {
-        console.error('USER UPDATE ERROR', err);
       }
-    );
+    }
   }
 
   public imageUploadCallback = (imagePath: string): void => {

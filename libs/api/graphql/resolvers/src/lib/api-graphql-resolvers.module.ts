@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
-import { StripeResolver } from '../stripe/stripe.resolver';
-import { PubSub } from 'graphql-subscriptions';
 import * as admin from 'firebase-admin';
+import { PubSub } from 'graphql-subscriptions';
+
+import { Module } from '@nestjs/common';
+
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
+import { StripeResolver } from '../stripe/stripe.resolver';
+import { UserResolver } from '../user/user.resolver';
+
 import { FIREBASE_CONFIG, FIREBASE_SERVICE_ACCOUNT } from '@bgap/shared/config';
 
 @Module({
@@ -10,6 +14,7 @@ import { FIREBASE_CONFIG, FIREBASE_SERVICE_ACCOUNT } from '@bgap/shared/config';
   providers: [
     StripeResolver,
     AdminUserResolver,
+    UserResolver,
     {
       provide: 'PUB_SUB',
       useValue: new PubSub(),

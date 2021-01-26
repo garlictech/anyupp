@@ -1,9 +1,9 @@
 import { IDayInterval } from '@bgap/shared/types';
 
-export const customNumberCompare = (
-  field: string,
-  desc: boolean = false
-) => (a: unknown, b: unknown): number => {
+export const customNumberCompare = (field: string, desc: boolean = false) => (
+  a: unknown,
+  b: unknown
+): number => {
   if (+a[field] < +b[field]) {
     return desc ? 1 : -1;
   }
@@ -14,10 +14,10 @@ export const customNumberCompare = (
   return 0;
 };
 
-export const customStringCompare = (
-  field: string,
-  desc: boolean = false
-) => (a: unknown, b: unknown): number => {
+export const customStringCompare = (field: string, desc: boolean = false) => (
+  a: unknown,
+  b: unknown
+): number => {
   if (a[field] < b[field]) {
     return desc ? 1 : -1;
   }
@@ -64,3 +64,18 @@ export const dayInterval = (value: string): IDayInterval => {
 
 export const reducer = (accumulator, currentValue): number =>
   accumulator + currentValue;
+
+export const cleanObject = obj => {
+  let finalObj = {};
+  Object.keys(obj).forEach(key => {
+    if (obj[key] && typeof obj[key] === 'object') {
+      const nestedObj = cleanObject(obj[key]);
+      if (Object.keys(nestedObj).length) {
+        finalObj[key] = nestedObj;
+      }
+    } else if (obj[key] !== '' && obj[key] !== undefined && obj[key] !== null) {
+      finalObj[key] = obj[key];
+    }
+  });
+  return finalObj;
+};
