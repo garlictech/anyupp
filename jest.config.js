@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/libs/api/graphql/schema',
     '<rootDir>/libs/shared/types',
     '<rootDir>/libs/shared/config',
+    '<rootDir>/libs/api/data-access',
   ],
 };

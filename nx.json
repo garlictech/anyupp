@@ -46,6 +46,9 @@
     },
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "api-data-access": {
+      "tags": []
     }
   }
 }
