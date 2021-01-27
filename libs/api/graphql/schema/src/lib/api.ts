@@ -75,12 +75,19 @@ export interface SubscriptionAdminUserChangedArgs {
 export interface Mutation {
   __typename?: 'Mutation';
   createAdminUser: Scalars['Boolean'];
+  startStripePayment: Scalars['String'];
   updateAdminUser: Scalars['Boolean'];
   updateAdminUserRole: Scalars['Boolean'];
 }
 
 export interface MutationCreateAdminUserArgs {
   newAdminData: AdminUserInput;
+}
+
+export interface MutationStartStripePaymentArgs {
+  chainId: Scalars['ID'];
+  unitId: Scalars['ID'];
+  userId: Scalars['ID'];
 }
 
 export interface MutationUpdateAdminUserArgs {
