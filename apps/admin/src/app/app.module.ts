@@ -38,6 +38,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
+import { environment } from '../environments/environment';
 import { FIREBASE_CONFIG } from '@bgap/shared/config';
 
 const NB_MODULES = [
@@ -105,14 +106,12 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
         // Create an http link:
         const http = httpLink.create({
-          // uri: `https://graphql-inmg2ygdca-uc.a.run.app/graphql`,
-          uri: `http://localhost:3333/graphql`,
+          uri: environment.gql.http,
         });
 
         // Create a WebSocket link:
         const ws = new WebSocketLink({
-          // uri: `wss://graphql-inmg2ygdca-uc.a.run.app/graphql`,
-          uri: `ws://localhost:3333/graphql`,
+          uri: environment.gql.ws,
           options: {
             reconnect: true,
           },

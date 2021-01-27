@@ -16,17 +16,12 @@ export interface Scalars {
   Float: number;
 }
 
-export interface UpdateAdminUserInput {
-  email?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-}
-
-export interface CreateAdminUserInput {
+export interface AdminUserInput {
   name?: Maybe<Scalars['String']>;
   address?: Maybe<AddressInput>;
   email?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  profileImage?: Maybe<Scalars['String']>;
 }
 
 export interface AddressInput {
@@ -41,6 +36,17 @@ export interface AddressInput {
 export interface LocationInput {
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
+}
+
+export interface AdminUserRoleInput {
+  role: Scalars['String'];
+  entities?: Maybe<Array<Maybe<AdminRoleEntityInput>>>;
+}
+
+export interface AdminRoleEntityInput {
+  chainId?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
+  unitId?: Maybe<Scalars['String']>;
 }
 
 export interface Query {
@@ -71,10 +77,11 @@ export interface Mutation {
   createAdminUser: Scalars['Boolean'];
   startStripePayment: Scalars['String'];
   updateAdminUser: Scalars['Boolean'];
+  updateAdminUserRole: Scalars['Boolean'];
 }
 
 export interface MutationCreateAdminUserArgs {
-  newAdminData: CreateAdminUserInput;
+  newAdminData: AdminUserInput;
 }
 
 export interface MutationStartStripePaymentArgs {
@@ -85,7 +92,12 @@ export interface MutationStartStripePaymentArgs {
 
 export interface MutationUpdateAdminUserArgs {
   id: Scalars['ID'];
-  newAdminData: UpdateAdminUserInput;
+  newAdminData: AdminUserInput;
+}
+
+export interface MutationUpdateAdminUserRoleArgs {
+  id: Scalars['ID'];
+  newAdminRoleData: AdminUserRoleInput;
 }
 
 export interface AdminUser {
@@ -843,12 +855,32 @@ export type GetAdminUserQuery = { __typename?: 'Query' } & {
 };
 
 export type CreateAdminUserMutationVariables = Exact<{
-  data: CreateAdminUserInput;
+  data: AdminUserInput;
 }>;
 
 export type CreateAdminUserMutation = { __typename?: 'Mutation' } & Pick<
   Mutation,
   'createAdminUser'
+>;
+
+export type UpdateAdminUserMutationVariables = Exact<{
+  data: AdminUserInput;
+  id: Scalars['ID'];
+}>;
+
+export type UpdateAdminUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'updateAdminUser'
+>;
+
+export type UpdateAdminUserRoleMutationVariables = Exact<{
+  data: AdminUserRoleInput;
+  id: Scalars['ID'];
+}>;
+
+export type UpdateAdminUserRoleMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'updateAdminUserRole'
 >;
 
 export const GetAdminUser = gql`
@@ -861,7 +893,17 @@ export const GetAdminUser = gql`
   }
 `;
 export const CreateAdminUser = gql`
-  mutation CreateAdminUser($data: CreateAdminUserInput!) {
+  mutation CreateAdminUser($data: AdminUserInput!) {
     createAdminUser(newAdminData: $data)
+  }
+`;
+export const UpdateAdminUser = gql`
+  mutation UpdateAdminUser($data: AdminUserInput!, $id: ID!) {
+    updateAdminUser(newAdminData: $data, id: $id)
+  }
+`;
+export const UpdateAdminUserRole = gql`
+  mutation UpdateAdminUserRole($data: AdminUserRoleInput!, $id: ID!) {
+    updateAdminUserRole(newAdminRoleData: $data, id: $id)
   }
 `;

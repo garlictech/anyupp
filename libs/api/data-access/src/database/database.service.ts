@@ -13,4 +13,6 @@ export class DatabaseService {
 
   adminUsersRef = () => this.database.ref('adminUsers');
   adminUserRef = (id: string) => this.adminUsersRef().child(id);
+  adminUserRolesRef = (userId: string) =>
+    this.adminUserRef(userId).child('roles');
 }
