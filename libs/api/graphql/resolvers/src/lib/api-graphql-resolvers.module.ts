@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { StripeResolver } from '../stripe/stripe.resolver';
 import { PubSub } from 'graphql-subscriptions';
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
+import { ApiDataAccessModule } from '@bgap/api/data-access';
 
 @Module({
   controllers: [],

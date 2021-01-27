@@ -1,18 +1,11 @@
 import { Module } from '@nestjs/common';
-import * as admin from 'firebase-admin';
-import { FIREBASE_CONFIG, FIREBASE_SERVICE_ACCOUNT } from '@bgap/shared/config';
+import { DatabaseService } from '../database/database.service';
+import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   controllers: [],
-  providers: [],
-  exports: [],
+  providers: [FirebaseAdminService, DatabaseService, AuthService],
+  exports: [DatabaseService, AuthService],
 })
-export class ApiDataAccessModule {
-  constructor() {
-    admin.initializeApp({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      credential: admin.credential.cert(<any>FIREBASE_SERVICE_ACCOUNT),
-      databaseURL: FIREBASE_CONFIG.databaseURL,
-    });
-  }
-}
+export class ApiDataAccessModule {}

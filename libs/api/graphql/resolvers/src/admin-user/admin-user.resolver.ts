@@ -1,9 +1,9 @@
-import * as admin from 'firebase-admin';
 import { PubSub } from 'graphql-subscriptions';
 
 import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { DatabaseService, AuthService } from '@bgap/api/data-access';
 import {
   AdminUser,
   UpdateAdminUserInput,
@@ -12,24 +12,24 @@ import {
 
 @Resolver('AdminUser')
 export class AdminUserResolver {
-  constructor(@Inject('PUB_SUB') private pubSub: PubSub) {
+  constructor(
+    @Inject('PUB_SUB') private pubSub: PubSub,
+    private databaseService: DatabaseService,
+    private authService: AuthService
+  ) {
     // Subscribing to the admin list element changes, whenever
     // it changes, publishes them to the graphql subscribers.
-    admin
-      .database()
-      .ref(`adminUsers`)
-      .on('child_changed', data =>
-        this.pubSub.publish('adminUserChanged', {
-          adminUserChanged: { id: data.key, ...data.val() },
-        })
-      );
+    this.databaseService.adminUsersRef().on('child_changed', data =>
+      this.pubSub.publish('adminUserChanged', {
+        adminUserChanged: { id: data.key, ...data.val() },
+      })
+    );
   }
 
   @Query('getAdminUser')
   async get(@Args('id') id: string): Promise<AdminUser> {
-    return admin
-      .database()
-      .ref(`adminUsers/${id}`)
+    return this.databaseService
+      .adminUserRef(id)
       .once('value')
       .then(snap => snap.val());
   }
@@ -39,9 +39,8 @@ export class AdminUserResolver {
     @Args('newAdminData') newAdminData: UpdateAdminUserInput,
     @Args('id') id: string
   ): Promise<boolean> {
-    return admin
-      .database()
-      .ref(`adminUsers/${id}`)
+    return this.databaseService
+      .adminUserRef(id)
       .update(newAdminData)
       .then(() => true);
   }
@@ -50,13 +49,12 @@ export class AdminUserResolver {
   async create(
     @Args('newAdminData') newAdminData: CreateAdminUserInput
   ): Promise<boolean> {
-    const user = await admin.auth().createUser({
+    const user = await this.authService.auth.createUser({
       ...newAdminData,
       password: Math.random().toString(36).substring(2, 10),
     });
-    return admin
-      .database()
-      .ref(`adminUsers/${user.uid}`)
+    return this.databaseService
+      .adminUserRef(user.uid)
       .update({
         ...newAdminData,
         roles: {
