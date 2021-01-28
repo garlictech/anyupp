@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/shared/types',
     '<rootDir>/libs/shared/config',
     '<rootDir>/libs/api/data-access',
+    '<rootDir>/libs/api/utils',
   ],
 };
