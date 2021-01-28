@@ -49,6 +49,12 @@
     },
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "infrastructure-build-pipeline-stack": {
+      "tags": []
+    },
+    "infrastructure-anyupp-backend-stack": {
+      "tags": []
     }
   }
 }

@@ -9,5 +9,7 @@ module.exports = {
     '<rootDir>/libs/shared/types',
     '<rootDir>/libs/shared/config',
     '<rootDir>/libs/api/data-access',
+    '<rootDir>/apps/infrastructure/build-pipeline-stack',
+    '<rootDir>/apps/infrastructure/anyupp-backend-stack',
   ],
 };
