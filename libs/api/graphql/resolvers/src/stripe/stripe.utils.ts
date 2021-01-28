@@ -23,7 +23,7 @@ const mapMetadataToObjectArray = ([key, value]) => ({
 });
 
 // https://stripe.com/docs/currencies#special-cases
-export const amountConversionForStipe = (value: number, currency: string) => {
+export const amountConversionForStripe = (value: number, currency: string) => {
   switch (currency) {
     case 'HUF':
       return toFixed0Number(value) * 100; // Stripe treats the Hungarian Forint (HUF) as a zero-decimal currency

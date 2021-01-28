@@ -13,7 +13,7 @@ import {
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
-  amountConversionForStipe,
+  amountConversionForStripe,
   mapPaymentMethodToCard,
 } from './stripe.utils';
 
@@ -56,7 +56,7 @@ export class StripeResolver {
     const currency = Object.values(
       orders
     )[0].sumPriceShown.currency.toUpperCase();
-    const amount = amountConversionForStipe(sumOrders(orders), currency);
+    const amount = amountConversionForStripe(sumOrders(orders), currency);
     // return orders;
     const userRef = this.dbService.userRef(userId);
     const user = await this.dbService.getRefValue<IUser>(userRef);
