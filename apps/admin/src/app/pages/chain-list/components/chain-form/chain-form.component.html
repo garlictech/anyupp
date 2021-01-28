@@ -21,145 +21,145 @@
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-9">
-          <app-form-text-input
+          <bgap-form-text-input
             caption="common.name"
             type="text"
             [control]="dialogForm.controls.name"
-          ></app-form-text-input>
+          ></bgap-form-text-input>
         </div>
         <div class="col-md-3 pt-4">
-          <app-form-checkbox
+          <bgap-form-checkbox
             caption="common.isActive"
             [control]="dialogForm.controls.isActive"
-          ></app-form-checkbox>
+          ></bgap-form-checkbox>
         </div>
       </div>
 
-      <app-form-text-input
+      <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
         [control]="dialogForm.controls.description['controls'].hu"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
         [control]="dialogForm.controls.description['controls'].en"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
         [control]="dialogForm.controls.description['controls'].de"
-      ></app-form-text-input>
+      ></bgap-form-text-input>
 
-      <app-form-contact-group
+      <bgap-form-contact-group
         [contactFormGroup]="dialogForm"
-      ></app-form-contact-group>
+      ></bgap-form-contact-group>
 
       <fieldset class="form" formGroupName="style">
         <legend class="label">{{ 'chains.style.style' | translate }}</legend>
 
         <div class="row">
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .backgroundLight
               "
               [caption]="'chains.style.colors.backgroundLight'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .backgroundDark
               "
               [caption]="'chains.style.colors.backgroundDark'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .textLight
               "
               [caption]="'chains.style.colors.textLight'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .textDark
               "
               [caption]="'chains.style.colors.textDark'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
         </div>
 
         <div class="row">
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .borderLight
               "
               [caption]="'chains.style.colors.borderLight'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .borderDark
               "
               [caption]="'chains.style.colors.borderDark'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .highlight
               "
               [caption]="'chains.style.colors.highlight'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .indicator
               "
               [caption]="'chains.style.colors.indicator'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
         </div>
 
         <div class="row">
           <div class="col-6 col-md-3">
-            <app-form-color-picker
+            <bgap-form-color-picker
               [control]="
                 dialogForm.controls.style['controls'].colors['controls']
                   .disabled
               "
               [caption]="'chains.style.colors.disabled'"
             >
-            </app-form-color-picker>
+            </bgap-form-color-picker>
           </div>
         </div>
 
         <div class="row">
           <div class="col-6 col-md-3">
-            <app-form-clickable-image-input
+            <bgap-form-clickable-image-input
               [imagePath]="logoFilePath"
               [imageType]="eImageType.PNG"
               [uploadCallbackFn]="logoUploadCallback"
@@ -171,13 +171,13 @@
               width="200px"
               height="200px"
               borderRadius="0.25rem"
-            ></app-form-clickable-image-input>
+            ></bgap-form-clickable-image-input>
           </div>
         </div>
 
         <div class="row">
           <div class="col-12">
-            <app-form-clickable-image-input
+            <bgap-form-clickable-image-input
               [imagePath]="headerFilePath"
               [imageType]="eImageType.PNG"
               [uploadCallbackFn]="logoUploadCallback"
@@ -189,7 +189,7 @@
               width="80%"
               height="100px"
               borderRadius="0.25rem"
-            ></app-form-clickable-image-input>
+            ></bgap-form-clickable-image-input>
           </div>
         </div>
       </fieldset>

@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
-import { IAdminUser } from '../../../shared/interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -65,7 +65,7 @@ const menuItems = {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-admin-layout',
+  selector: 'bgap-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss']
 })
@@ -102,6 +102,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -1,29 +1,21 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import {
-  EDashboardSize,
-  EDashboardTicketListType,
-  ENebularButtonSize,
-  EOrderStatus,
-} from '../../shared/enums';
-import { IOrder } from '../../shared/interfaces';
-import { customNumberCompare } from 'src/app/shared/pure';
-import { currentStatus as currentStatusFn } from 'src/app/shared/pure/orders';
-import { IState } from '../../store';
-import { dashboardActions } from '../../store/actions';
-import {
-  dashboardSelectors,
-  orderListSelectors,
-} from '../../store/selectors';
-import { IDashboardSettings } from '../../store/state';
 
 import { Component, OnDestroy } from '@angular/core';
+import { EDashboardSize, EDashboardTicketListType, ENebularButtonSize, EOrderStatus, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { customNumberCompare } from '../../../../shared/pure';
+import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
+import { IState } from '../../../../store';
+import { dashboardActions } from '../../../../store/actions';
+import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
+import { IDashboardSettings } from '../../../../store/state';
+
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-list',
+  selector: 'bgap-order-ticket-list',
   templateUrl: './order-ticket-list.component.html',
   styleUrls: ['./order-ticket-list.component.scss'],
 })
@@ -89,6 +81,7 @@ export class OrderTicketListComponent implements OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

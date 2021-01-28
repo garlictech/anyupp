@@ -3,22 +3,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { join } from 'path';
-import { GraphqlResolversModule } from '@bgap/graphql/resolvers';
+import { ApiGraphqlResolversModule } from '@bgap/api/graphql/resolvers';
 
-const SCHEMA_ROOT = join(process.cwd(), 'libs/graphql/schema/src');
+const SCHEMA_ROOT = join(process.cwd(), 'libs/api/graphql/schema/src');
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       typePaths: [`${SCHEMA_ROOT}/schema/**/*.graphql`],
-      definitions: {
-        path: `${SCHEMA_ROOT}/lib/api.ts`,
-        emitTypenameField: true,
-        outputAs: 'class',
-      },
       installSubscriptionHandlers: true,
+      // https://docs.nestjs.com/graphql/subscriptions#customize-subscriptions-server
+      // subscriptions: {
+      //   keepAlive: 5000,
+      // },
     }),
-    GraphqlResolversModule,
+    ApiGraphqlResolversModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,15 +1,15 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUnit } from '../../shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
 
 import { Component, Input } from '@angular/core';
+import { IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
+import { DataService } from '../../../../shared/services/data';
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
 @Component({
-  selector: 'app-unit-list-item',
+  selector: 'bgap-unit-list-item',
   templateUrl: './unit-list-item.component.html',
   styleUrls: ['./unit-list-item.component.scss'],
 })

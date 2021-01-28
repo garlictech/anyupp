@@ -1,9 +1,8 @@
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { userListAdapter } from '../reducer';
@@ -11,10 +10,7 @@ import { IUserEntityState, IUserListState } from '../state';
 
 const featureSelector = createFeatureSelector<IUserListState>('userList');
 
-const userListSelector: MemoizedSelector<
-  object,
-  IUserEntityState
-> = createSelector(
+const userListSelector = createSelector(
   featureSelector,
   (state: IUserListState): IUserEntityState => state.users
 );
@@ -25,7 +21,7 @@ export const getAllUserIds = userListAdapter.getSelectors(userListSelector)
 export const getAllUserCount = userListAdapter.getSelectors(userListSelector)
   .selectTotal;
 
-export const getUserById = (id: string): MemoizedSelector<object, IUser> => {
+export const getUserById = (id: string) => {
   return createSelector(
     getAllUsers,
     (users: IUser[]): IUser => users.find((user): boolean => user._id === id)

@@ -1,7 +1,8 @@
-import { IProductCategory } from '../../shared/interfaces';
+import { IProductCategory } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -42,8 +43,8 @@ const reducer: ActionReducer<IProductCategoryListState> = combineReducers(
 );
 
 export function productCategoryListReducer(
-  state: any,
-  action: any
+  state: IProductCategoryListState | undefined,
+  action: Action
 ): IProductCategoryListState {
   return reducer(state, action);
 }

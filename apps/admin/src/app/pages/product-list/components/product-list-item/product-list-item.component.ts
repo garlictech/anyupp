@@ -1,31 +1,21 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import {
-  EAdminRole,
-  EProductLevel,
-  EVariantAvailabilityType,
-} from '../../shared/enums';
-import { IAdminUserRole, IProduct } from '../../shared/interfaces';
-import { IState } from '../../store';
-import { currentUserSelectors } from '../../store/selectors';
 
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+  EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { IState } from '../../../../store';
+import { currentUserSelectors } from '../../../../store/selectors';
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-list-item',
+  selector: 'bgap-product-list-item',
   templateUrl: './product-list-item.component.html',
   styleUrls: ['./product-list-item.component.scss'],
 })
@@ -82,11 +72,12 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
-  get variantsArray(): any[] {
+  get variantsArray(): IProductVariant[] {
     return Object.values(this.product.variants || {});
   }
 

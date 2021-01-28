@@ -1,22 +1,28 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUser } from '../../shared/interfaces';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
-import { EToasterType } from 'src/app/shared/services/toaster';
+import { IAdminUser } from '@bgap/shared/types';
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { EToasterType } from '../../../../shared/services/toaster';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { Apollo } from 'apollo-angular';
+import { UpdateAdminUserRole } from '@bgap/api/graphql/schema';
+import { cleanObject } from 'apps/admin/src/app/shared/pure';
 
 @Component({
-  selector: 'app-admin-user-role-form',
+  selector: 'bgap-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
 })
 export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public adminUser: IAdminUser;
+  private _apollo: Apollo;
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._apollo = this._injector.get(Apollo);
   }
 
   get userImage(): string {
@@ -36,21 +42,27 @@ export class AdminUserRoleFormComponent
 
   public submit(): void {
     if (this.dialogForm.valid) {
-      this._dataService
-        .updateAdminUserRoles(this.adminUser._id, this.dialogForm.value.roles)
-        .then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful'
-            );
-            this.close();
-          },
-          (err): any => {
-            console.error('USER UPDATE ERROR', err);
-          }
-        );
+      this._apollo
+      .mutate({
+        mutation: UpdateAdminUserRole,
+        variables: {
+          data: cleanObject(this.dialogForm.value.roles),
+          id: this.adminUser._id,
+        },
+      })
+      .subscribe(
+        ({ data }) => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful'
+          );
+          this.close();
+        },
+        error => {
+          console.error('there was an error sending the query', error);
+        }
+      );
     }
   }
 

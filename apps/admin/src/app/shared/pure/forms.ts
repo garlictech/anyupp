@@ -1,11 +1,10 @@
-import { FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { IDateIntervals } from '@bgap/shared/types';
+
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
-import { EVariantAvailabilityType } from '../enums';
 
-import { FormBuilder, Validators } from '@angular/forms';
-import { IDateIntervals } from '../interfaces';
-
-export const contactFormGroup = (formBuilder: FormBuilder): any => ({
+export const contactFormGroup = (formBuilder: FormBuilder) => ({
   email: ['', [Validators.email]],
   phone: [''],
   address: formBuilder.group({
@@ -102,7 +101,7 @@ export const unitOpeningHoursValidator: ValidatorFn = (
   return error;
 };
 
-export const getDayIntervals = (dateValue: string): IDateIntervals => {
+export const getDayIntervals = (dateValue: string | number): IDateIntervals => {
   const start = new Date(dateValue);
   start.setHours(0, 0, 0, 0);
 

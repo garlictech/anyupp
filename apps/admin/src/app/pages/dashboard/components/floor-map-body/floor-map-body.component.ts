@@ -1,50 +1,26 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
-import {
-  IFloorMapDataObject,
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-  IFloorMapUserOrderObjects,
-  IOrder,
-  IUnit
-} from '../../../../shared/interfaces';
-import {
-  fabricCanvas,
-  getObjectById,
-  getOrdersByUser,
-  getStatusBgColor,
-  getTableOrders,
-  getTableSeatId,
-  getTableSeatIds,
-  objectToArray,
-  registerCanvasEvent,
-  setBgColor,
-  setBorder
-} from '../../../../shared/pure';
-import { IState } from '../../../../store';
-import { floorMapActions } from '../../../../store/actions';
-import {
-  floorMapSelectors,
-  orderListSelectors,
-  unitListSelectors
-} from '../../../../store/selectors';
 
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+  IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import {
+  fabricCanvas, getObjectById, getOrdersByUser, getStatusBgColor, getTableOrders, getTableSeatId, getTableSeatIds,
+  objectToArray, registerCanvasEvent, setBgColor, setBorder
+} from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { floorMapActions } from '../../../../store/actions';
+import { floorMapSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-floor-map-body',
+  selector: 'bgap-floor-map-body',
   templateUrl: './floor-map-body.component.html'
 })
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
@@ -68,7 +44,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(unitListSelectors.getSelectedUnit),
-        tap((unit: IUnit): void => {
+        tap((): void => {
           this.unit = undefined;
         }),
         filter((unit: IUnit): boolean => !!unit),
@@ -83,7 +59,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
               take(1)
             )
         ),
-        tap((initialized: boolean): void => {
+        tap((): void => {
           if (this.unit.floorMap?.objects) {
             registerCanvasEvent('mouse:up', this._onMouseUp);
           }
@@ -101,10 +77,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
               ? clientWidth / this.unit.floorMap.w
               : clientHeight / this.unit.floorMap.h;
 
-          (<any>(
-            document.querySelector('#floorMap')
-          )).style.transform = `scale(${scale.toFixed(2)})`;
-          (<any>document.querySelector('#floorMap')).style.transformOrigin =
+          (<HTMLElement>document.querySelector('#floorMap')).style.transform = `scale(${scale.toFixed(2)})`;
+          (<HTMLElement>document.querySelector('#floorMap')).style.transformOrigin =
             'top left';
         }),
         switchMap(
@@ -160,6 +134,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -1,7 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IAdminUser, IGroup } from '../../../shared/interfaces';
+import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 
@@ -20,9 +20,15 @@ import { DataService } from '../../../shared/services/data';
 import { AuthService } from '../../../shared/services/auth';
 import { DEFAULT_LANG } from '../../../shared/const';
 
+interface IMenuItem {
+  title: string;
+  langKey: string;
+  onClick?(): void;
+}
+
 @UntilDestroy()
 @Component({
-  selector: 'app-header',
+  selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html'
 })
@@ -30,8 +36,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public groups$: Observable<IGroup[]>;
   public adminUser: IAdminUser;
   public userPictureOnly = false;
-  public userMenu: any[];
-  public languageMenu: any[];
+  public userMenu: IMenuItem[];
+  public languageMenu: IMenuItem[];
   public selectedLang: string;
 
   constructor(
@@ -122,6 +128,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._menuService
       .onItemClick()
       .pipe(untilDestroyed(this))
+      // Nebular theme wrong interface, menu item does not have "onClick" property
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((menu: any): void => {
         if (menu.item.onClick) {
           menu.item.onClick();
@@ -129,6 +137,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

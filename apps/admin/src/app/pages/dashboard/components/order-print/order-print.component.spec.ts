@@ -7,7 +7,7 @@ describe('OrderPrintComponent', (): void => {
   let fixture: ComponentFixture<OrderPrintComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [OrderPrintComponent],
       }).compileComponents();

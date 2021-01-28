@@ -1,0 +1,45 @@
+# import LocalizedItem from "common.graphql"
+
+type Order {
+  created: Int
+  items: [OrderItem]
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLog]
+  sumPriceShown: PriceShown
+  takeAway: Boolean
+  userId: ID
+  place: Place
+  paymentIntention: Int
+}
+
+type OrderItem {
+  created: Int
+  productName: LocalizedItem
+  priceShown: PriceShown
+  productId: ID
+  quantity: Int
+  statusLog: [StatusLog]
+  variantId: ID
+  variantName: LocalizedItem
+  laneId: ID
+}
+
+type StatusLog {
+  userId: ID
+  status: String
+  ts: Int
+}
+
+type PriceShown {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type Place {
+  seat: String
+  table: String
+}

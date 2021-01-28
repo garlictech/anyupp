@@ -1,7 +1,6 @@
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { productCategoryListAdapter } from '../reducer';
@@ -14,10 +13,7 @@ const featureSelector = createFeatureSelector<IProductCategoryListState>(
   'productCategoryList'
 );
 
-const productCategoryListSelector: MemoizedSelector<
-  object,
-  IProductCategoryEntityState
-> = createSelector(
+const productCategoryListSelector = createSelector(
   featureSelector,
   (state: IProductCategoryListState): IProductCategoryEntityState =>
     state.productCategories

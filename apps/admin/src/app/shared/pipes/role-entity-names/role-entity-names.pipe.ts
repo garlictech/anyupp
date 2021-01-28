@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { select, Store } from '@ngrx/store';
 
-import { IAdminUserRole, IChain, IGroup, IUnit } from '../../interfaces';
+import { IAdminUserRole, IChain, IGroup, IUnit } from '@bgap/shared/types';
 import { IState } from '../../../store';
 import {
   chainListSelectors,

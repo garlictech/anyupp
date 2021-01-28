@@ -5,13 +5,13 @@
     [title]="chain.description | localize"
     [picture]="chainLogo"
   ></nb-user>
-  <app-status-led
+  <bgap-status-led
     class="float-left ml-2"
     [status]="chain.isActive"
-  ></app-status-led>
+  ></bgap-status-led>
 
   <div class="clearfix"></div>
-  <app-contact [contact]="chain"></app-contact>
+  <bgap-contact [contact]="chain"></bgap-contact>
 </div>
 
 <button

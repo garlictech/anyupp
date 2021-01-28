@@ -1,5 +1,5 @@
 import { skipWhile, take } from 'rxjs/operators';
-import { IUnit } from '../../../../interfaces';
+import { IUnit } from '@bgap/shared/types';
 import { IState } from '../../../../../store';
 import { unitListSelectors } from '../../../../../store/selectors';
 
@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { DEFAULT_LANE_COLOR } from '../../../../const';
 
 @Component({
-  selector: 'app-colorized-lane-icon',
+  selector: 'bgap-colorized-lane-icon',
   templateUrl: './colorized-lane-icon.component.html',
   styleUrls: ['./colorized-lane-icon.component.scss']
 })

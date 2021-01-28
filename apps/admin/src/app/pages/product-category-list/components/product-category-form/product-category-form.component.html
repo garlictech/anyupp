@@ -21,38 +21,38 @@
   </nb-card-header>
   <nb-card-body>
     <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
-      <app-form-text-input
+      <bgap-form-text-input
         caption="common.nameHU"
         type="text"
         [control]="dialogForm.controls.name['controls'].hu"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.nameEN"
         type="text"
         [control]="dialogForm.controls.name['controls'].en"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.nameDE"
         type="text"
         [control]="dialogForm.controls.name['controls'].de"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
         [control]="dialogForm.controls.description['controls'].hu"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
         [control]="dialogForm.controls.description['controls'].en"
-      ></app-form-text-input>
-      <app-form-text-input
+      ></bgap-form-text-input>
+      <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
         [control]="dialogForm.controls.description['controls'].de"
-      ></app-form-text-input>
+      ></bgap-form-text-input>
 
-      <app-form-clickable-image-input
+      <bgap-form-clickable-image-input
         [imagePath]="imagePath"
         [imageType]="eImageType.JPEG"
         [uploadCallbackFn]="imageUploadCallback"
@@ -63,7 +63,7 @@
         width="200px"
         height="200px"
         borderRadius="0.25rem"
-      ></app-form-clickable-image-input>
+      ></bgap-form-clickable-image-input>
 
       <div class="mt-20">
         <button

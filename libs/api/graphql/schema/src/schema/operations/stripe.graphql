@@ -1,0 +1,7 @@
+type Query {
+  getCustomerStripeCards(customerId: ID): [StripeCard]
+}
+
+type Mutation {
+  startStripePayment(chainId: ID!, unitId: ID!, userId: ID!): String!
+}

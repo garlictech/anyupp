@@ -1,30 +1,25 @@
+import { Component, Input, OnDestroy } from '@angular/core';
 import {
-  EDashboardListMode,
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus
-} from '../../../../shared/enums';
-import { IOrder, IStatusLog } from '../../../../shared/interfaces';
-import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+  EDashboardListMode, EDashboardSize, ENebularButtonSize, EOrderStatus, IOrder, IStatusLog
+} from '@bgap/shared/types';
+import { NbDialogService } from '@nebular/theme';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import {
-  currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
-  getNextOrderStatus,
-  getStatusColor
+  ConfirmDialogComponent
+} from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+import {
+  currentStatus as currentStatusFn, getNextOrderItemStatus, getNextOrderStatus, getStatusColor
 } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';
 import { dashboardSelectors } from '../../../../store/selectors';
 import { IDashboardSettings } from '../../../../store/state';
 
-import { Component, Input, OnDestroy } from '@angular/core';
-import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-
 @UntilDestroy()
 @Component({
-  selector: 'app-order-details',
+  selector: 'bgap-order-details',
   styleUrls: ['./order-details.component.scss'],
   templateUrl: './order-details.component.html'
 })
@@ -64,6 +59,7 @@ export class OrderDetailsComponent implements OnDestroy {
     return getStatusColor(EOrderStatus.PLACED);
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -94,7 +90,6 @@ export class OrderDetailsComponent implements OnDestroy {
     if (status) {
       this._orderService.updateOrderItemStatus(
         this.order._id,
-        this.order.userId,
         status,
         idx
       );
@@ -114,7 +109,6 @@ export class OrderDetailsComponent implements OnDestroy {
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
               this.order._id,
-              this.order.userId,
               EOrderStatus.PLACED,
               idx
             );
@@ -123,7 +117,7 @@ export class OrderDetailsComponent implements OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {},
+          callback: (): void => {/**/},
           status: 'basic'
         }
       ]

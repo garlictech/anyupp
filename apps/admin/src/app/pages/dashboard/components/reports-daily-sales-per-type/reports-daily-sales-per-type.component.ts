@@ -1,28 +1,21 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
-import { EProductType } from '../../shared/enums';
-import { IOrder, IProduct } from '../../shared/interfaces';
-import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
-import { reducer } from 'src/app/shared/pure';
-import { IState } from '../../store';
-import { productListSelectors } from '../../store/selectors';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { EProductType, IOrder, IOrderAmounts, IProduct } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { reducer } from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { productListSelectors } from '../../../../store/selectors';
+
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-daily-sales-per-type',
+  selector: 'bgap-reports-daily-sales-per-type',
   templateUrl: './reports-daily-sales-per-type.component.html',
   styleUrls: ['./reports-daily-sales-per-type.component.scss'],
 })
@@ -122,12 +115,13 @@ export class ReportsDailySalesPerTypeComponent
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
   private _orderAmounts(products: IProduct[], orders: IOrder[]) {
-    const amounts: any = {
+    const amounts: IOrderAmounts = {
       [EProductType.DRINK]: 0,
       [EProductType.FOOD]: 0,
       [EProductType.OTHER]: 0,

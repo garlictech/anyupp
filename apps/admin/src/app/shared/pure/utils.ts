@@ -1,9 +1,9 @@
-import { IDayInterval } from '../interfaces';
+import { IDayInterval } from '@bgap/shared/types';
 
-export const customNumberCompare = (
-  field: string,
-  desc: boolean = false
-): any => (a: any, b: any): number => {
+export const customNumberCompare = (field: string, desc: boolean = false) => (
+  a: unknown,
+  b: unknown
+): number => {
   if (+a[field] < +b[field]) {
     return desc ? 1 : -1;
   }
@@ -14,10 +14,10 @@ export const customNumberCompare = (
   return 0;
 };
 
-export const customStringCompare = (
-  field: string,
-  desc: boolean = false
-): any => (a: any, b: any): number => {
+export const customStringCompare = (field: string, desc: boolean = false) => (
+  a: unknown,
+  b: unknown
+): number => {
   if (a[field] < b[field]) {
     return desc ? 1 : -1;
   }
@@ -28,7 +28,7 @@ export const customStringCompare = (
   return 0;
 };
 
-export const objectToArray = (obj: any, idKey: string = '_id'): any[] => {
+export const objectToArray = (obj: unknown, idKey: string = '_id') => {
   const arr = [];
 
   if (!obj) {
@@ -49,7 +49,7 @@ export const zeroFill = (value: number): string => {
   return ('0' + value).slice(-2);
 };
 
-export const dayInterval = (value: any): IDayInterval => {
+export const dayInterval = (value: string): IDayInterval => {
   const start = new Date(value);
   start.setHours(0, 0, 0, 0);
 
@@ -62,5 +62,20 @@ export const dayInterval = (value: any): IDayInterval => {
   };
 };
 
-export const reducer = (accumulator, currentValue): any =>
+export const reducer = (accumulator, currentValue): number =>
   accumulator + currentValue;
+
+export const cleanObject = obj => {
+  let finalObj = {};
+  Object.keys(obj).forEach(key => {
+    if (obj[key] && typeof obj[key] === 'object') {
+      const nestedObj = cleanObject(obj[key]);
+      if (Object.keys(nestedObj).length) {
+        finalObj[key] = nestedObj;
+      }
+    } else if (obj[key] !== '' && obj[key] !== undefined && obj[key] !== null) {
+      finalObj[key] = obj[key];
+    }
+  });
+  return finalObj;
+};

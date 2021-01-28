@@ -6,14 +6,14 @@
           AnyUpp Login <sup>{{ env.name }}</sup>
         </h1>
 
-        <app-login-form
+        <bgap-login-form
           *ngIf="formMode === EFormMode.LOGIN"
           [toggleResetForm]="toggleResetForm"
-        ></app-login-form>
-        <app-password-reset-form
+        ></bgap-login-form>
+        <bgap-password-reset-form
           *ngIf="formMode === EFormMode.RESET"
           [toggleResetForm]="toggleResetForm"
-        ></app-password-reset-form>
+        ></bgap-password-reset-form>
       </nb-card-body>
     </nb-card>
   </nb-layout-column>

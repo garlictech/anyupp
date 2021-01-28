@@ -1,7 +1,8 @@
-import { IOrder } from '../../shared/interfaces';
+import { IOrder } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -29,6 +30,16 @@ const activeOrderListReducer = createReducer(
       activeOrderListAdapter.setAll(orders, state)
   ),
   on(
+    orderListActions.upsertActiveOrder,
+    (state, { order }): EntityState<IOrder> =>
+      activeOrderListAdapter.upsertOne(order, state)
+  ),
+  on(
+    orderListActions.removeActiveOrder,
+    (state, { orderId }): EntityState<IOrder> =>
+      activeOrderListAdapter.removeOne(orderId, state)
+  ),
+  on(
     orderListActions.resetActiveOrders,
     (state): EntityState<IOrder> => activeOrderListAdapter.removeAll(state)
   )
@@ -51,6 +62,16 @@ const historyOrderListReducer = createReducer(
       historyOrderListAdapter.setAll(orders, state)
   ),
   on(
+    orderListActions.upsertHistoryOrder,
+    (state, { order }): EntityState<IOrder> =>
+      historyOrderListAdapter.upsertOne(order, state)
+  ),
+  on(
+    orderListActions.removeHistoryOrder,
+    (state, { orderId }): EntityState<IOrder> =>
+      historyOrderListAdapter.removeOne(orderId, state)
+  ),
+  on(
     orderListActions.resetHistoryOrders,
     (state): EntityState<IOrder> => historyOrderListAdapter.removeAll(state)
   )
@@ -63,6 +84,9 @@ const reducerMap: ActionReducerMap<IOrderListState> = {
 
 const reducer: ActionReducer<IOrderListState> = combineReducers(reducerMap);
 
-export function orderListReducer(state: any, action: any): IOrderListState {
+export function orderListReducer(
+  state: IOrderListState | undefined,
+  action: Action
+): IOrderListState {
   return reducer(state, action);
 }

@@ -1,4 +1,6 @@
-import { FIREBASE_CONFIG } from 'src/firebase.config';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { OperationDefinitionNode } from 'graphql';
 
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -14,6 +16,9 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import {
   NbDialogModule,
   NbGlobalPhysicalPosition,
@@ -33,6 +38,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
+import { environment } from '../environments/environment';
+import { FIREBASE_CONFIG } from '@bgap/shared/config';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -92,7 +99,48 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     ...NB_MODULES,
     ...FIREBASE_MODULES,
   ],
-  providers: [{ provide: REGION, useValue: 'europe-west3' }],
+  providers: [
+    { provide: REGION, useValue: 'europe-west3' },
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
+        // Create an http link:
+        const http = httpLink.create({
+          uri: environment.gql.http,
+        });
+
+        // Create a WebSocket link:
+        const ws = new WebSocketLink({
+          uri: environment.gql.ws,
+          options: {
+            reconnect: true,
+          },
+        });
+
+        // using the ability to split links, you can send data to each link
+        // depending on what kind of operation is being sent
+        const link = split(
+          // split based on operation type
+          ({ query }) => {
+            const { kind, operation } = getMainDefinition(
+              query
+            ) as OperationDefinitionNode;
+            return (
+              kind === 'OperationDefinition' && operation === 'subscription'
+            );
+          },
+          ws,
+          http
+        );
+
+        return {
+          link,
+          cache: new InMemoryCache(),
+        };
+      },
+      deps: [HttpLink],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

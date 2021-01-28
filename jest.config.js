@@ -4,6 +4,10 @@ module.exports = {
     '<rootDir>/libs/graphql/schema',
     '<rootDir>/apps/graphql-server',
     '<rootDir>/libs/graphql/resolvers',
-    '<rootDir>/apps/website',
+    '<rootDir>/libs/api/graphql/resolvers',
+    '<rootDir>/libs/api/graphql/schema',
+    '<rootDir>/libs/shared/types',
+    '<rootDir>/libs/shared/config',
+    '<rootDir>/libs/api/data-access',
   ],
 };

@@ -17,7 +17,7 @@
   <nb-card-body>
     <ng-container *ngFor="let unit of units">
       <nb-list-item *ngIf="unit._group?.chainId === (selectedChainId$ | async)">
-        <app-unit-list-item class="w-100" [unit]="unit"></app-unit-list-item>
+        <bgap-unit-list-item class="w-100" [unit]="unit"></bgap-unit-list-item>
       </nb-list-item>
     </ng-container>
   </nb-card-body>

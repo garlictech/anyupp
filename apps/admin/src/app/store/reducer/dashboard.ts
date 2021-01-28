@@ -2,7 +2,7 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-} from '../../shared/enums';
+} from '@bgap/shared/types';
 
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -17,37 +17,38 @@ export const initialDashboardState: IDashboardState = {
     showAllUserOrders: false,
     ticketListType: EDashboardTicketListType.PLACED,
     selectedLanes: ['default'],
+    historyDate: (new Date()).getTime()
   },
 };
 
 const reducer = createReducer(
   initialDashboardState,
-  on(dashboardActions.resetDashboard, (): any => ({
+  on(dashboardActions.resetDashboard, () => ({
     ...initialDashboardState,
   })),
-  on(dashboardActions.setSelectedOrderId, (state, { orderId }): any => ({
+  on(dashboardActions.setSelectedOrderId, (state, { orderId }) => ({
     ...state,
     selectedOrderId: orderId,
   })),
-  on(dashboardActions.resetSelectedOrderId, (state, {}): any => ({
+  on(dashboardActions.resetSelectedOrderId, (state) => ({
     ...state,
     selectedOrderId: undefined,
   })),
-  on(dashboardActions.setListMode, (state, { listMode }): any => ({
+  on(dashboardActions.setListMode, (state, { listMode }) => ({
     ...state,
     settings: {
       ...state.settings,
       listMode,
     },
   })),
-  on(dashboardActions.setSize, (state, { size }): any => ({
+  on(dashboardActions.setSize, (state, { size }) => ({
     ...state,
     settings: {
       ...state.settings,
       size,
     },
   })),
-  on(dashboardActions.setOrderEditing, (state, { orderEditing }): any => ({
+  on(dashboardActions.setOrderEditing, (state, { orderEditing }) => ({
     ...state,
     settings: {
       ...state.settings,
@@ -56,7 +57,7 @@ const reducer = createReducer(
   })),
   on(
     dashboardActions.setShowAllUserOrders,
-    (state, { showAllUserOrders }): any => ({
+    (state, { showAllUserOrders }) => ({
       ...state,
       settings: {
         ...state.settings,
@@ -64,18 +65,25 @@ const reducer = createReducer(
       },
     })
   ),
-  on(dashboardActions.setTicketListType, (state, { ticketListType }): any => ({
+  on(dashboardActions.setTicketListType, (state, { ticketListType }) => ({
     ...state,
     settings: {
       ...state.settings,
       ticketListType,
     },
   })),
-  on(dashboardActions.setSelectedLanes, (state, { selectedLanes }): any => ({
+  on(dashboardActions.setSelectedLanes, (state, { selectedLanes }) => ({
     ...state,
     settings: {
       ...state.settings,
       selectedLanes,
+    },
+  })),
+  on(dashboardActions.setHistoryDate, (state, { historyDate }) => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      historyDate,
     },
   }))
 );
@@ -83,6 +91,6 @@ const reducer = createReducer(
 export function dashboardReducer(
   state: IDashboardState | undefined,
   action: Action
-): any {
+) {
   return reducer(state, action);
 }

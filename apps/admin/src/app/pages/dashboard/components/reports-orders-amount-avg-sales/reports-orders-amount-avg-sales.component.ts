@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs';
-import { IOrder } from '../../shared/interfaces';
-import { getDailyOrdersSum } from 'src/app/shared/pure';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { getDailyOrdersSum } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-orders-amount-avg-sales',
+  selector: 'bgap-reports-orders-amount-avg-sales',
   templateUrl: './reports-orders-amount-avg-sales.component.html',
   styleUrls: ['./reports-orders-amount-avg-sales.component.scss'],
 })
@@ -28,6 +29,7 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

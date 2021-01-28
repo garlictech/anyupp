@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 
-import { IAdminUser } from '../../interfaces';
+import { IAdminUser } from '@bgap/shared/types';
 import { DataService } from '../data';
 import { EToasterType, ToasterService } from '../toaster';
 
@@ -46,7 +46,7 @@ export class AuthService {
     });
   }
 
-  public async signIn(email: string, password: string): Promise<any> {
+  public async signIn(email: string, password: string): Promise<void> {
     try {
       this._angularFireAuth.signInWithEmailAndPassword(email, password).then(
         (credential): void => {
@@ -65,7 +65,7 @@ export class AuthService {
     }
   }
 
-  public async signOut(): Promise<any> {
+  public async signOut(): Promise<void> {
     try {
       await this._angularFireAuth.signOut();
 
@@ -89,7 +89,7 @@ export class AuthService {
     );
   }
 
-  public sendPasswordResetEmail(email: string): Promise<any> {
+  public sendPasswordResetEmail(email: string): Promise<void> {
     return this._angularFireAuth.sendPasswordResetEmail(email);
   }
 }

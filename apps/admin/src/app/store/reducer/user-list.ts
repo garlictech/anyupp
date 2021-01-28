@@ -1,7 +1,8 @@
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '@bgap/shared/types';
 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   combineReducers,
@@ -38,6 +39,6 @@ const reducerMap: ActionReducerMap<IUserListState> = {
 
 const reducer: ActionReducer<IUserListState> = combineReducers(reducerMap);
 
-export function userListReducer(state: any, action: any): IUserListState {
+export function userListReducer(state: IUserListState | undefined, action: Action): IUserListState {
   return reducer(state, action);
 }

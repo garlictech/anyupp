@@ -1,22 +1,18 @@
 import { Observable } from 'rxjs';
-import { IChain, IGroup } from '../../shared/interfaces';
-import { IState } from '../../store';
-import {
-  chainListSelectors,
-  currentUserSelectors,
-  groupListSelectors,
-} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IChain, IGroup } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { IState } from '../../store';
+import { chainListSelectors, currentUserSelectors, groupListSelectors } from '../../store/selectors';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-group-list',
+  selector: 'bgap-group-list',
   templateUrl: './group-list.component.html',
 })
 export class GroupListComponent implements OnInit, OnDestroy {
@@ -44,6 +40,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

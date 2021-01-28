@@ -3,7 +3,7 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType
-} from '../../shared/enums';
+} from '@bgap/shared/types';
 
 export const resetDashboard = createAction('[Dashboard] Reset dashboard');
 export const setSelectedOrderId = createAction(
@@ -36,4 +36,8 @@ export const setTicketListType = createAction(
 export const setSelectedLanes = createAction(
   '[Dashboard] Set selected lanes',
   props<{ selectedLanes: string[] }>()
+);
+export const setHistoryDate = createAction(
+  '[Dashboard] Set history date',
+  props<{ historyDate: number }>()
 );

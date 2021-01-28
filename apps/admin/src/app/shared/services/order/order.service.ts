@@ -9,15 +9,14 @@ import {
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
-import { EOrderStatus } from '../../enums';
+import { EOrderStatus } from '@bgap/shared/types';
 import {
   IAdminUser,
   IGroup,
   IOrder,
   IOrderItem,
   IProduct
-} from '../../interfaces';
-import { LocalizePipe } from '../../pipes';
+} from '@bgap/shared/types';
 import { DataService } from '../data';
 
 @Injectable({
@@ -29,8 +28,7 @@ export class OrderService {
 
   constructor(
     private _store: Store<IState>,
-    private _dataService: DataService,
-    private _localizePipe: LocalizePipe
+    private _dataService: DataService
   ) {
     this._store
       .pipe(select(currentUserSelectors.getAdminUser))
@@ -65,7 +63,6 @@ export class OrderService {
         .updateOrderItemQuantityAndPrice(
           this._adminUser.settings.selectedChainId,
           this._adminUser.settings.selectedUnitId,
-          order.userId,
           order._id,
           idx,
           order.items[idx]
@@ -76,7 +73,6 @@ export class OrderService {
           ) {
             this.updateOrderItemStatus(
               order._id,
-              order.userId,
               EOrderStatus.PLACED,
               idx
             );
@@ -96,7 +92,6 @@ export class OrderService {
     this._dataService.addOrderItem(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      order.userId,
       order._id,
       order.items.length,
       {
@@ -123,11 +118,10 @@ export class OrderService {
     );
   }
 
-  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<any> {
+  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
     return this._dataService.insertOrderStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      order.userId,
       order._id,
       status
     );
@@ -135,14 +129,12 @@ export class OrderService {
 
   public updateOrderItemStatus(
     orderId: string,
-    orderUserId: string,
     status: EOrderStatus,
     idx: number
-  ): Promise<any> {
+  ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser.settings.selectedChainId,
       this._adminUser.settings.selectedUnitId,
-      orderUserId,
       orderId,
       idx,
       {

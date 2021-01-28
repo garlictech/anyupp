@@ -1,30 +1,22 @@
 import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
-import {
-  EDashboardListMode,
-  EDashboardSize,
-  ENebularButtonSize
-} from '../../../../shared/enums';
-import { IOrder } from '../../../../shared/interfaces';
-import { IState } from '../../../../store';
-import { dashboardActions } from '../../../../store/actions';
-import {
-  dashboardSelectors,
-  orderListSelectors
-} from '../../../../store/selectors';
-import { IDashboardSettings } from '../../../../store/state';
 
 // import * as printJS from 'print-js';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IOrder, IOrderSum } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
-import { OrderPrintComponent } from '../order-print/order-print.component';
 import { select, Store } from '@ngrx/store';
+
+import { IState } from '../../../../store';
+import { dashboardActions } from '../../../../store/actions';
+import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
+import { IDashboardSettings } from '../../../../store/state';
+import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-ticket-body',
+  selector: 'bgap-order-ticket-body',
   templateUrl: './order-ticket-body.component.html',
   styleUrls: ['./order-ticket-body.component.scss']
 })
@@ -32,7 +24,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public dashboardSettings: IDashboardSettings;
   public selectedOrder: IOrder;
   public buttonSize: ENebularButtonSize;
-  public ordersSum: any;
+  public ordersSum: IOrderSum;
   public userActiveOrders: IOrder[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount: number;
@@ -78,6 +70,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -116,7 +109,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
 
           this.ordersSum.all = 0;
           this.userActiveOrders.map(
-            (o: IOrder): void =>
+            (o: IOrder): number =>
               (this.ordersSum.all += o.sumPriceShown.priceSum)
           );
         });

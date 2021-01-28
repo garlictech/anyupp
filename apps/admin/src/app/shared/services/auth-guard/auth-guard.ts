@@ -1,25 +1,18 @@
 import { get as _get } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  Router,
-  RouterStateSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { EAdminRole } from '@bgap/shared/types';
+import { IAdminUser } from '@bgap/shared/types';
 
-import { EAdminRole } from '../../enums';
-import { IAdminUser } from '../../interfaces';
 import { EToasterType, ToasterService } from '../toaster';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
@@ -29,14 +22,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     private _angularFireAuth: AngularFireAuth
   ) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<any> =>
+        (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
                 .object(`/adminUsers/${user.uid}`)
@@ -44,7 +34,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 .pipe(take(1))
             : of(undefined)
       ),
-      map((adminUser: IAdminUser): any => {
+      map((adminUser: IAdminUser) => {
         if (!adminUser) {
           this._router.navigate(['auth/login']);
 
@@ -57,23 +47,22 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    next: ActivatedRouteSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<any> =>
+        (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
                 .object(
-                  `/${environment.dbPrefix}/adminUserCredentials/${user.uid}`
+                  `/adminUsers/${user.uid}`
                 )
                 .valueChanges()
                 .pipe(take(1))
             : of(undefined)
       ),
-      map((adminUser: IAdminUser): any => {
+      map((adminUser: IAdminUser) => {
         if (_get(adminUser, 'roles.role') === EAdminRole.INACTIVE) {
           this._angularFireAuth.signOut();
           this._router.navigate(['auth/login']);

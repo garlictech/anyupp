@@ -1,27 +1,22 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
-import { EAdminRole, EProductLevel } from '../../shared/enums';
-import { IAdminUser, IGroup, IProduct } from '../../shared/interfaces';
-import { customNumberCompare } from 'src/app/shared/pure';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from '../../store';
-import {
-  currentUserSelectors,
-  groupListSelectors,
-  productListSelectors,
-} from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NbDialogService, NbTabsetComponent } from '@nebular/theme';
+import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
+import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { customNumberCompare } from '../../shared/pure';
+import { DataService } from '../../shared/services/data';
+import { IState } from '../../store';
+import { currentUserSelectors, groupListSelectors, productListSelectors } from '../../store/selectors';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-list',
+  selector: 'bgap-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
@@ -38,8 +33,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public selectedProductLevel: EProductLevel;
   public adminUser: IAdminUser;
 
-  private _sortedChainProductIds: any[];
-  private _sortedUnitProductIds: any[];
+  private _sortedChainProductIds: string[];
+  private _sortedUnitProductIds: string[];
 
   constructor(
     private _store: Store<IState>,
@@ -149,12 +144,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
       );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
-  public selectLevel($event: any): void {
-    this.selectedProductLevel = $event.tabId;
+  public selectLevel($event: NbTabComponent): void {
+    this.selectedProductLevel = <EProductLevel>$event.tabId;
   }
 
   public addProduct(): void {
@@ -168,7 +164,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public chainPositionChange($event: any): void {
+  public chainPositionChange($event: IProductOrderChangeEvent): void {
     const idx = this._sortedChainProductIds.indexOf($event.productId);
 
     if (
@@ -196,7 +192,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public unitPositionChange($event: any): void {
+  public unitPositionChange($event): void {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (

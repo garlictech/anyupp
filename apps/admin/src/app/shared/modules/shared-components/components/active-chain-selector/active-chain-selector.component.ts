@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { IAdminUser, IChain } from '../../../../interfaces';
+import { IAdminUser, IChain } from '@bgap/shared/types';
 import { DataService } from '../../../../services/data';
 import { IState } from '../../../../../store';
 import {
@@ -13,7 +13,7 @@ import {
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-chain-selector',
+  selector: 'bgap-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
   styleUrls: ['./active-chain-selector.component.scss']
 })
@@ -43,6 +43,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedChainId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

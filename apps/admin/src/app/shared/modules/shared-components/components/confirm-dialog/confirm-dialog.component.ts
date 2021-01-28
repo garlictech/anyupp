@@ -1,19 +1,19 @@
-import { IConfirmOptions } from '../../../../interfaces';
+import { IConfirmOptions } from '@bgap/shared/types';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
-  selector: 'app-confirm-dialog',
+  selector: 'bgap-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmDialogComponent {
   public options: IConfirmOptions;
 
-  constructor(private _nbDialogRef: NbDialogRef<any>) {}
+  constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 
-  public click(callbackFn: any): void {
+  public click(callbackFn): void {
     if (callbackFn) {
       callbackFn();
     }

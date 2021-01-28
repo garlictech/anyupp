@@ -24,13 +24,13 @@
               'orders.status.PLACED' | translate
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
-              <app-lane-item
+              <bgap-lane-item
                 *ngFor="let orderItem of placedItems"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
-              ></app-lane-item>
+              ></bgap-lane-item>
             </nb-card-body>
           </nb-card>
         </div>
@@ -42,13 +42,13 @@
               'orders.status.PROCESSING' | translate
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
-              <app-lane-item
+              <bgap-lane-item
                 *ngFor="let orderItem of processingItems"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
-              ></app-lane-item>
+              ></bgap-lane-item>
             </nb-card-body>
           </nb-card>
         </div>
@@ -60,13 +60,13 @@
               'orders.status.READY' | translate
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
-              <app-lane-item
+              <bgap-lane-item
                 *ngFor="let orderItem of readyItems"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
-              ></app-lane-item>
+              ></bgap-lane-item>
             </nb-card-body>
           </nb-card>
         </div>

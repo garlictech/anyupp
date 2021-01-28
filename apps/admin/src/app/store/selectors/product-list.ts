@@ -1,10 +1,9 @@
 import { get as _get } from 'lodash-es';
-import { IProduct } from '../../shared/interfaces';
+import { IProduct } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import {
@@ -20,10 +19,7 @@ const featureSelector = createFeatureSelector<IProductListState>('productList');
 
 // CHAIN PRODUCTS
 
-const chainProductListSelector: MemoizedSelector<
-  object,
-  IProductEntityState
-> = createSelector(
+const chainProductListSelector = createSelector(
   featureSelector,
   (state: IProductListState): IProductEntityState => state.chainProducts
 );
@@ -39,7 +35,7 @@ export const getAllChainProductCount = chainProductListAdapter.getSelectors(
 
 export const getChainProductById = (
   id: string
-): MemoizedSelector<object, IProduct> => {
+) => {
   return createSelector(
     getAllChainProducts,
     (products: IProduct[]): IProduct =>
@@ -47,10 +43,7 @@ export const getChainProductById = (
   );
 };
 
-export const getChainProductsOfSelectedCategory = (): MemoizedSelector<
-  object,
-  IProduct[]
-> => {
+export const getChainProductsOfSelectedCategory = () => {
   return createSelector(
     getAllChainProducts,
     getSelectedProductCategoryId,
@@ -64,10 +57,7 @@ export const getChainProductsOfSelectedCategory = (): MemoizedSelector<
 
 // GROUP PRODUCTS
 
-const groupProductListSelector: MemoizedSelector<
-  object,
-  IProductEntityState
-> = createSelector(
+const groupProductListSelector = createSelector(
   featureSelector,
   (state: IProductListState): IProductEntityState => state.groupProducts
 );
@@ -83,7 +73,7 @@ export const getAllGroupProductCount = groupProductListAdapter.getSelectors(
 
 export const getGroupProductById = (
   id: string
-): MemoizedSelector<object, IProduct> => {
+) => {
   return createSelector(
     getAllGroupProducts,
     (products: IProduct[]): IProduct =>
@@ -91,10 +81,7 @@ export const getGroupProductById = (
   );
 };
 
-export const getPendingGroupProductsOfSelectedCategory = (): MemoizedSelector<
-  object,
-  IProduct[]
-> =>
+export const getPendingGroupProductsOfSelectedCategory = () =>
   createSelector(
     getAllChainProducts,
     getAllGroupProducts,
@@ -114,10 +101,7 @@ export const getPendingGroupProductsOfSelectedCategory = (): MemoizedSelector<
       })
   );
 
-export const getExtendedGroupProductsOfSelectedCategory = (): MemoizedSelector<
-  object,
-  IProduct[]
-> =>
+export const getExtendedGroupProductsOfSelectedCategory = () =>
   createSelector(
     getAllChainProducts,
     getAllGroupProducts,
@@ -144,10 +128,7 @@ export const getExtendedGroupProductsOfSelectedCategory = (): MemoizedSelector<
 
 // UNIT PRODUCTS
 
-const unitProductListSelector: MemoizedSelector<
-  object,
-  IProductEntityState
-> = createSelector(
+const unitProductListSelector = createSelector(
   featureSelector,
   (state: IProductListState): IProductEntityState => state.unitProducts
 );
@@ -163,7 +144,7 @@ export const getAllUnitProductCount = unitProductListAdapter.getSelectors(
 
 export const getUnitProductById = (
   id: string
-): MemoizedSelector<object, IProduct> => {
+) => {
   return createSelector(
     getAllUnitProducts,
     (products: IProduct[]): IProduct =>
@@ -171,10 +152,7 @@ export const getUnitProductById = (
   );
 };
 
-export const getPendingUnitProductsOfSelectedCategory = (): MemoizedSelector<
-  object,
-  IProduct[]
-> =>
+export const getPendingUnitProductsOfSelectedCategory = () =>
   createSelector(
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
@@ -194,10 +172,7 @@ export const getPendingUnitProductsOfSelectedCategory = (): MemoizedSelector<
       })
   );
 
-export const getExtendedUnitProductsOfSelectedCategory = (): MemoizedSelector<
-  object,
-  IProduct[]
-> =>
+export const getExtendedUnitProductsOfSelectedCategory = () =>
   createSelector(
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
@@ -222,7 +197,7 @@ export const getExtendedUnitProductsOfSelectedCategory = (): MemoizedSelector<
     }
   );
 
-export const getUnitProductLaneIds = (): MemoizedSelector<object, string[]> => {
+export const getUnitProductLaneIds = () => {
   return createSelector(getAllUnitProducts, (products: IProduct[]): string[] =>
     [...new Set(products.map((product): string => product.laneId))].filter(
       (id): boolean => !!id
@@ -232,10 +207,7 @@ export const getUnitProductLaneIds = (): MemoizedSelector<object, string[]> => {
 
 // GENERATED UNIT PRODUCTS
 
-const generatedUnitProductListSelector: MemoizedSelector<
-  object,
-  IProductEntityState
-> = createSelector(
+const generatedUnitProductListSelector = createSelector(
   featureSelector,
   (state: IProductListState): IProductEntityState => state.generatedUnitProducts
 );
@@ -251,7 +223,7 @@ export const getAllGeneratedUnitProductCount = generatedUnitProductListAdapter.g
 
 export const getGeneratedProductImageById = (
   id: string
-): MemoizedSelector<object, string> => {
+) => {
   return createSelector(
     getAllGeneratedUnitProducts,
     (products: IProduct[]): string =>

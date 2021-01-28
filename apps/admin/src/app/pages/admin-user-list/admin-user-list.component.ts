@@ -1,17 +1,18 @@
 import { Observable } from 'rxjs';
-import { IAdminUser } from '../../shared/interfaces';
-import { IState } from '../../store';
-import { adminUserListSelectors } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { IState } from '../../store';
+import { adminUserListSelectors } from '../../store/selectors';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-admin-user-list',
+  selector: 'bgap-admin-user-list',
   templateUrl: './admin-user-list.component.html',
 })
 export class AdminUserListComponent implements OnInit, OnDestroy {
@@ -29,6 +30,7 @@ export class AdminUserListComponent implements OnInit, OnDestroy {
     );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

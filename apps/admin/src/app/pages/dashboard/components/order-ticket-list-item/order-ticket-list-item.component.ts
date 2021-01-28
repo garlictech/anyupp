@@ -1,18 +1,14 @@
-import { IOrder, IOrderItem } from '../../shared/interfaces';
-import {
-  currentStatus,
-  currentStatus as currentStatusFn,
-} from 'src/app/shared/pure';
+import { Component, Input } from '@angular/core';
+import { EDashboardTicketListType, IOrder } from '@bgap/shared/types';
 
-import { Component, Input, OnChanges } from '@angular/core';
-import { EDashboardTicketListType, EOrderStatus } from '../../shared/enums';
+import { currentStatus as currentStatusFn } from '../../../../shared/pure';
 
 @Component({
-  selector: 'app-order-ticket-list-item',
+  selector: 'bgap-order-ticket-list-item',
   templateUrl: './order-ticket-list-item.component.html',
   styleUrls: ['./order-ticket-list-item.component.scss'],
 })
-export class OrderTicketListItemComponent implements OnChanges {
+export class OrderTicketListItemComponent {
   @Input() order: IOrder;
   @Input() showMarkers: boolean;
   @Input() selectedOrderUserId?: string;
@@ -21,7 +17,9 @@ export class OrderTicketListItemComponent implements OnChanges {
   public currentStatus = currentStatusFn;
   public readyCount;
 
+  /*
   ngOnChanges(): void {
+
     this.readyCount =
       this.ticketListType === EDashboardTicketListType.PLACED
         ? this.order.items.filter(
@@ -30,4 +28,5 @@ export class OrderTicketListItemComponent implements OnChanges {
           ).length
         : 0; // Show badhe only in placed list
   }
+  */
 }

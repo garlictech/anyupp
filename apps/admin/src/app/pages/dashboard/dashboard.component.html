@@ -77,20 +77,20 @@
     </nb-actions>
   </nb-card-header>
   <nb-card-body id="dashboardMainCardBody" class="p-1">
-    <app-order-ticket-body
+    <bgap-order-ticket-body
       *ngIf="
         dashboardSettings.listMode === EDashboardListMode.CURRENT ||
         dashboardSettings.listMode === EDashboardListMode.HISTORY
       "
-    ></app-order-ticket-body>
-    <app-lanes-body
+    ></bgap-order-ticket-body>
+    <bgap-lanes-body
       *ngIf="dashboardSettings.listMode === EDashboardListMode.LANES"
-    ></app-lanes-body>
-    <app-floor-map-body
+    ></bgap-lanes-body>
+    <bgap-floor-map-body
       *ngIf="dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP"
-    ></app-floor-map-body>
-    <app-reports-body
+    ></bgap-floor-map-body>
+    <bgap-reports-body
       *ngIf="dashboardSettings.listMode === EDashboardListMode.REPORTS"
-    ></app-reports-body>
+    ></bgap-reports-body>
   </nb-card-body>
 </nb-card>

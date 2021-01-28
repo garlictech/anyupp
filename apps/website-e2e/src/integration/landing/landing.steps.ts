@@ -11,3 +11,7 @@ Given('we are at the chain products', () => {
 Then('the {string} message is displayed', (message: string) => {
   cy.get('h1').contains(message);
 });
+
+Given('the user is logged in', () => {
+  cy.login('my-email@something.com', 'myPassword');
+});

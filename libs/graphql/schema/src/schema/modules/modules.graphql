@@ -1,7 +1,0 @@
-query GetAdminUser($id: String!) {
-  getAdminUser(id: $id) {
-    email
-    name
-    phone
-  }
-}

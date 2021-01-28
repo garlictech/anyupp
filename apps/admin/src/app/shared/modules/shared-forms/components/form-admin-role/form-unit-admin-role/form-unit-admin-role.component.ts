@@ -3,18 +3,18 @@ import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 import {
   IAdminRoleEntity,
+  IAssignedEntityNames,
   IChain,
   IGroup,
   IKeyValue,
   IUnit,
-} from '../../shared/interfaces';
-import { DataService } from 'src/app/shared/services/data';
-import { IState } from '../../store';
+} from '@bgap/shared/types';
+import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
   unitListSelectors,
-} from '../../store/selectors';
+} from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -23,7 +23,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-form-unit-admin-role',
+  selector: 'bgap-form-unit-admin-role',
   templateUrl: './form-unit-admin-role.component.html',
 })
 export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
@@ -32,12 +32,11 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
   public chainOptions: IKeyValue[];
   public unitOptions: IKeyValue[];
   public entitySelector: FormGroup;
-  public assignedUnits: any[];
+  public assignedUnits: IAssignedEntityNames[];
 
   constructor(
     private _store: Store<IState>,
-    private _formBuilder: FormBuilder,
-    private _dataService: DataService
+    private _formBuilder: FormBuilder
   ) {
     this.groupOptions = [];
     this.chainOptions = [];
@@ -103,7 +102,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [any, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
           this._store
             .pipe(
               select(
@@ -147,6 +146,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
       );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

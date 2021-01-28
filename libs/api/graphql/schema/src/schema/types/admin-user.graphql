@@ -1,0 +1,33 @@
+# import Address from "common.graphql"
+
+type AdminUser {
+  id: ID!
+  name: String
+  profileImage: String
+  roles: AdminUserRole!
+  settings: AdminUserSettings
+  address: Address
+  email: String
+  phone: String
+}
+
+type AdminUserRole {
+  role: String!
+  entities: [AdminRoleEntity]
+}
+
+type AdminRoleEntity {
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+type AdminUserSettings {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+

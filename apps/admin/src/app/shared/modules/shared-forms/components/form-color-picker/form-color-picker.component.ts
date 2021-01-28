@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-color-picker',
+  selector: 'bgap-form-color-picker',
   templateUrl: './form-color-picker.component.html',
   styleUrls: ['./form-color-picker.component.scss'],
 })
@@ -15,7 +15,7 @@ export class FormColorPickerComponent implements OnInit {
     this.color = this.control.value || '#fff';
   }
 
-  public onChange($event: any): void {
+  public onChange($event: Event): void {
     this.control.setValue($event);
   }
 }

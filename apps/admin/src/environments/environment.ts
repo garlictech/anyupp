@@ -4,8 +4,14 @@
 
 export const environment = {
   production: false,
-  dbPrefix: 'dev',
+  id: 'dev',
   name: 'DEV',
+  gql: {
+    // uri: `https://graphql-inmg2ygdca-uc.a.run.app/graphql`,
+    http: 'http://localhost:3333/graphql',
+    // uri: `wss://graphql-inmg2ygdca-uc.a.run.app/graphql`,
+    ws: 'ws://localhost:3333/graphql'
+  }
 };
 
 /*

@@ -1,25 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EImageType } from '../../enums';
+import { EImageType } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ImageCompressorService {
-  constructor() {}
-
   compress(
     file: File,
     imageType: EImageType,
     targetSize: number = 750
-  ): Observable<any> {
+  ): Observable<File> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
     return new Observable((observer): void => {
       reader.onload = (ev): void => {
         const img = new Image();
-        img.src = (ev.target as any).result;
+        img.src = <string>ev.target.result;
 
         (img.onload = (): void => {
           const elem = document.createElement('canvas'); // Use Angular's Renderer2 method

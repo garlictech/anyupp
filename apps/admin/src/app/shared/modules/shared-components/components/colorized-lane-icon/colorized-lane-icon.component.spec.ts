@@ -7,7 +7,7 @@ describe('ColorizedLaneIconComponent', (): void => {
   let fixture: ComponentFixture<ColorizedLaneIconComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
         declarations: [ColorizedLaneIconComponent],
       }).compileComponents();

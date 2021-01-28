@@ -1,27 +1,19 @@
 import * as printJS from 'print-js';
+import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import {
-  IChain,
-  IOrder,
-  IOrderItem,
-  IPlace,
-  IUnit
-} from '../../../../shared/interfaces';
-import { IState } from '../../../../store';
-import {
-  chainListSelectors,
-  unitListSelectors
-} from '../../../../store/selectors';
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { IChain, ICurrencyValue, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+
+import { IState } from '../../../../store';
+import { chainListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-print',
+  selector: 'bgap-order-print',
   templateUrl: './order-print.component.html',
   styleUrls: ['./order-print.component.scss']
 })
@@ -30,14 +22,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public unit: IUnit;
   public chain: IChain;
   public now: string;
-  public parsedOrders: any[];
-  public parsedVats: any[];
-  public sum: any;
+  public parsedOrders: IOrder[];
+  public parsedVats: IPriceShown[];
+  public sum: ICurrencyValue;
   public place: IPlace;
 
   constructor(
     private _store: Store<IState>,
-    private _nbDialogRef: NbDialogRef<any>
+    private _nbDialogRef: NbDialogRef<unknown>
   ) {
     combineLatest([
       this._store.pipe(

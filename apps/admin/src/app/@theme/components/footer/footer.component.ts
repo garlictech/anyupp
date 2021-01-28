@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-footer',
+  selector: 'bgap-footer',
   styleUrls: ['./footer.component.scss'],
   template: `
     <span class="created-by">

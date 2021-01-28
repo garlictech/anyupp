@@ -1,11 +1,11 @@
-import { ImageCompressorService } from 'src/app/shared/services/image-compressor';
-import { StorageService } from 'src/app/shared/services/storage';
+import { ImageCompressorService } from '../../../../services/image-compressor';
+import { StorageService } from '../../../../services/storage';
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { EImageType } from '../../shared/enums';
+import { EImageType } from '@bgap/shared/types';
 
 @Component({
-  selector: 'app-form-clickable-image-input',
+  selector: 'bgap-form-clickable-image-input',
   templateUrl: './form-clickable-image-input.component.html',
   styleUrls: ['./form-clickable-image-input.component.scss'],
 })
@@ -16,9 +16,9 @@ export class FormClickableImageInputComponent {
   @Input() imageType: EImageType;
   @Input() uploadFolderPath: string;
 
-  @Input() uploadCallbackFn: any;
-  @Input() removeCallbackFn: any;
-  @Input() callbackParam: any;
+  @Input() uploadCallbackFn;
+  @Input() removeCallbackFn;
+  @Input() callbackParam;
 
   @Input() width: number;
   @Input() height: number;
@@ -43,7 +43,7 @@ export class FormClickableImageInputComponent {
     }
   }
 
-  public fileInputListener($event: any): void {
+  public fileInputListener($event): void {
     const file = $event.target.files[0];
 
     if (file) {
@@ -79,11 +79,11 @@ export class FormClickableImageInputComponent {
   public remove(): void {
     if (this.imagePath) {
       this._storageService.removeFile(this.imagePath).then(
-        (d): void => {
+        (): void => {
           delete this.imagePath;
           this.removeCallbackFn(this.callbackParam);
         },
-        (err): void => {
+        (): void => {
           this.removeCallbackFn(this.callbackParam);
         }
       );

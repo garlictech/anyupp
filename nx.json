@@ -32,21 +32,23 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-schema": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
     "graphql-server": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
-    "graphql-resolvers": {
+    "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "website": {
-      "tags": []
+    "api-data-access": {
+      "tags": ["scope:shared", "type:utils", "platform:nest"]
     },
-    "website-e2e": {
-      "tags": [],
-      "implicitDependencies": ["website"]
+    "api-graphql-schema": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "shared-types": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "shared-config": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }

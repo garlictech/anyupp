@@ -1,36 +1,24 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
+
+import { Component, Input } from '@angular/core';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus
-} from '../../../../shared/enums';
-import {
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory
-} from '../../../../shared/interfaces';
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct, IProductCategory
+} from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { currentStatus } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';
 import {
-  currentUserSelectors,
-  groupListSelectors,
-  productCategoryListSelectors,
-  productListSelectors
+  currentUserSelectors, groupListSelectors, productCategoryListSelectors, productListSelectors
 } from '../../../../store/selectors';
-
-import { Component, Input } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-order-product-list',
+  selector: 'bgap-order-product-list',
   templateUrl: './order-product-list.component.html',
   styleUrls: ['./order-product-list.component.scss']
 })
@@ -129,7 +117,6 @@ export class OrderProductListComponent {
       ) {
         this._orderService.updateOrderItemStatus(
           this.selectedOrder._id,
-          this.selectedOrder.userId,
           EOrderStatus.PLACED,
           existingVariantOrderIdx
         );

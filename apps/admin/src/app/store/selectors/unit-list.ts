@@ -1,10 +1,9 @@
 import { get as _get } from 'lodash-es';
-import { IAdminUserSettings, IUnit } from '../../shared/interfaces';
+import { IAdminUserSettings, IUnit } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { unitListAdapter } from '../reducer';
@@ -13,10 +12,7 @@ import * as currentUserSelectors from './current-user';
 
 const featureSelector = createFeatureSelector<IUnitListState>('unitList');
 
-const unitListSelector: MemoizedSelector<
-  object,
-  IUnitEntityState
-> = createSelector(
+const unitListSelector = createSelector(
   featureSelector,
   (state: IUnitListState): IUnitEntityState => state.units
 );
@@ -27,7 +23,7 @@ export const getAllUnitIds = unitListAdapter.getSelectors(unitListSelector)
 export const getAllUnitCount = unitListAdapter.getSelectors(unitListSelector)
   .selectTotal;
 
-export const getUnitById = (id: string): MemoizedSelector<object, IUnit> => {
+export const getUnitById = (id: string) => {
   return createSelector(
     getAllUnits,
     (units: IUnit[]): IUnit => units.find((unit): boolean => unit._id === id)
@@ -36,7 +32,7 @@ export const getUnitById = (id: string): MemoizedSelector<object, IUnit> => {
 
 export const getUnitsByGroupId = (
   groupId: string
-): MemoizedSelector<object, IUnit[]> => {
+) => {
   return createSelector(getAllUnits, (units: IUnit[]): IUnit[] =>
     units.filter((unit): boolean => unit.groupId === groupId)
   );

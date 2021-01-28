@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IGroup } from '../../../../interfaces';
+import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
   currentUserSelectors,
   groupListSelectors,
@@ -43,6 +43,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedGroupId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

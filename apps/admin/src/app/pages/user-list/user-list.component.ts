@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IUser } from '../../shared/interfaces';
+import { IUser } from '@bgap/shared/types';
 import { IState } from '../../store';
 import { userListSelectors } from '../../store/selectors';
 
@@ -12,7 +12,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-user-list',
+  selector: 'bgap-user-list',
   templateUrl: './user-list.component.html',
 })
 export class UserListComponent implements OnInit, OnDestroy {
@@ -30,6 +30,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

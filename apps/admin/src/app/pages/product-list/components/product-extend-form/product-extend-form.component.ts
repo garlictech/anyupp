@@ -2,34 +2,24 @@ import { get as _get, omit as _omit } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { EProductLevel } from '../../shared/enums';
-import {
-  IAdminUserSettings,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
-} from '../../shared/interfaces';
-import { customNumberCompare, objectToArray } from 'src/app/shared/pure';
-import { FormsService } from 'src/app/shared/services/forms';
-import { EToasterType } from 'src/app/shared/services/toaster';
-import { IState } from '../../store';
-import {
-  currentUserSelectors,
-  productCategoryListSelectors,
-  unitListSelectors,
-} from '../../store/selectors';
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
+import {
+  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { AbstractFormDialogComponent } from 'src/app/shared/modules/shared-forms/components/abstract-form-dialog/abstract-form-dialog.component';
+
+import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
+import { customNumberCompare, objectToArray } from '../../../../shared/pure';
+import { FormsService } from '../../../../shared/services/forms';
+import { EToasterType } from '../../../../shared/services/toaster';
+import { IState } from '../../../../store';
+import { currentUserSelectors, productCategoryListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-extend-form',
+  selector: 'bgap-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
 export class ProductExtendFormComponent
@@ -115,9 +105,7 @@ export class ProductExtendFormComponent
       ).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup(
-          this.productLevel
-        );
+        const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
         _get(variant, 'availabilities', []).forEach((availability): void => {
@@ -189,7 +177,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -225,7 +213,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err): any => {
+          (err) => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

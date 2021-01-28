@@ -2,7 +2,7 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType
-} from '../../shared/enums';
+} from '@bgap/shared/types';
 
 export interface IDashboardSettings {
   listMode: EDashboardListMode;
@@ -11,6 +11,7 @@ export interface IDashboardSettings {
   showAllUserOrders: boolean;
   ticketListType: EDashboardTicketListType;
   selectedLanes: string[];
+  historyDate: number;
 }
 
 export interface IDashboardState {

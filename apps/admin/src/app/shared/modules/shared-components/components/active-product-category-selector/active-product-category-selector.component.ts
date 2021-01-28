@@ -1,6 +1,6 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IProductCategory } from '../../../../interfaces';
+import { IAdminUser, IProductCategory } from '@bgap/shared/types';
 import { IState } from '../../../../../store';
 import {
   currentUserSelectors,
@@ -14,7 +14,7 @@ import { DataService } from '../../../../services/data';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-active-product-category-selector',
+  selector: 'bgap-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
   styleUrls: ['./active-product-category-selector.component.scss']
 })
@@ -44,6 +44,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedProductCategoryId');
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

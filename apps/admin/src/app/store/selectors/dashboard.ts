@@ -2,13 +2,12 @@ import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-} from '../../shared/enums';
-import { IOrder } from '../../shared/interfaces';
+} from '@bgap/shared/types';
+import { IOrder } from '@bgap/shared/types';
 
 import {
   createFeatureSelector,
   createSelector,
-  MemoizedSelector,
 } from '@ngrx/store';
 
 import { IDashboardSettings, IDashboardState } from '../state';
@@ -16,7 +15,7 @@ import { getAllActiveOrders, getAllHistoryOrders } from './order-list';
 
 const featureSelector = createFeatureSelector<IDashboardState>('dashboard');
 
-export const getSelectedActiveOrder = (): MemoizedSelector<object, IOrder> => {
+export const getSelectedActiveOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllActiveOrders,
@@ -28,7 +27,7 @@ export const getSelectedActiveOrder = (): MemoizedSelector<object, IOrder> => {
   );
 };
 
-export const getSelectedHistoryOrder = (): MemoizedSelector<object, IOrder> => {
+export const getSelectedHistoryOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllHistoryOrders,
@@ -69,4 +68,9 @@ export const getSize = createSelector(
 export const getSelectedLanes = createSelector(
   featureSelector,
   (state: IDashboardState): string[] => state.settings.selectedLanes
+);
+
+export const getSelectedHistoryDate = createSelector(
+  featureSelector,
+  (state: IDashboardState): number => state.settings.historyDate
 );

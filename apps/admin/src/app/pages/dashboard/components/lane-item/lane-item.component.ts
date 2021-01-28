@@ -1,28 +1,22 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ENebularButtonSize, EOrderStatus } from '../../../../shared/enums';
+
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ENebularButtonSize, EOrderStatus, ILaneOrderItem, IStatusLogItem, IUnit } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
+import { objectToArray } from '../../../../shared/pure';
 import {
-  ILaneOrderItem,
-  IStatusLogItem,
-  IUnit
-} from '../../../../shared/interfaces';
-import {
-  currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
-  getOrderLaneColor,
-  getPrevOrderItemStatus
+  currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
 } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
 import { IState } from '../../../../store';
 import { productListSelectors } from '../../../../store/selectors';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-import { objectToArray } from '../../../../shared/pure';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lane-item',
+  selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
   styleUrls: ['./lane-item.component.scss']
 })
@@ -73,6 +67,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -80,7 +75,6 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveForward(): void {
     this._orderService.updateOrderItemStatus(
       this.orderItem.orderId,
-      this.orderItem.userId,
       getNextOrderItemStatus(this.orderItem.currentStatus),
       this.orderItem.idx
     );
@@ -89,7 +83,6 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveBack(): void {
     this._orderService.updateOrderItemStatus(
       this.orderItem.orderId,
-      this.orderItem.userId,
       getPrevOrderItemStatus(this.orderItem.currentStatus),
       this.orderItem.idx
     );

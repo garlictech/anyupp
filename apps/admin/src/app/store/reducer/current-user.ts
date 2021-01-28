@@ -7,10 +7,10 @@ export const initialCurrentUserState: ICurrentUserState = {};
 
 const reducer = createReducer(
   initialCurrentUserState,
-  on(currentUserActions.resetCurrentAdminUser, (): any => ({
+  on(currentUserActions.resetCurrentAdminUser, () => ({
     ...initialCurrentUserState,
   })),
-  on(currentUserActions.setCurrentAdminUser, (state, { adminUser }): any => ({
+  on(currentUserActions.setCurrentAdminUser, (state, { adminUser }) => ({
     ...state,
     adminUser,
   }))
@@ -19,6 +19,6 @@ const reducer = createReducer(
 export function currentUserReducer(
   state: ICurrentUserState | undefined,
   action: Action
-): any {
+) {
   return reducer(state, action);
 }

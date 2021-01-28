@@ -1,37 +1,27 @@
 import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { DEFAULT_LANE_COLOR } from '../../../../shared/const';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus
-} from '../../../../shared/enums';
-import {
-  IDetailedLane,
-  ILaneOrderItem,
-  IUnit
-} from '../../../../shared/interfaces';
-import { objectToArray } from '../../../../shared/pure';
-import { IState } from '../../../../store';
-import { dashboardActions } from '../../../../store/actions';
-import {
-  dashboardSelectors,
-  orderListSelectors,
-  unitListSelectors
-} from '../../../../store/selectors';
 
 import { Component, OnDestroy } from '@angular/core';
+import {
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IDetailedLane, ILaneOrderItem, IUnit
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-const laneFilter = (selectedLanes: string[]): any => (
+import { DEFAULT_LANE_COLOR } from '../../../../shared/const';
+import { objectToArray } from '../../../../shared/pure';
+import { IState } from '../../../../store';
+import { dashboardActions } from '../../../../store/actions';
+import { dashboardSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
+
+const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem
 ): boolean => selectedLanes.includes(orderItem.laneId || 'default');
 
 @UntilDestroy()
 @Component({
-  selector: 'app-lanes-body',
+  selector: 'bgap-lanes-body',
   templateUrl: './lanes-body.component.html',
   styleUrls: ['./lanes-body.component.scss']
 })
@@ -137,6 +127,7 @@ export class LanesBodyComponent implements OnDestroy {
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

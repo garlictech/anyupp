@@ -1,25 +1,18 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
-import { EPaymentMethod } from '../../shared/enums';
-import { IOrder } from '../../shared/interfaces';
-import { CurrencyFormatterPipe } from 'src/app/shared/pipes';
-import { reducer } from 'src/app/shared/pure';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { EPaymentMethod, IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
+import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import { reducer } from '../../../../shared/pure';
+
 @UntilDestroy()
 @Component({
-  selector: 'app-reports-daily-sales-per-payment-method',
+  selector: 'bgap-reports-daily-sales-per-payment-method',
   templateUrl: './reports-daily-sales-per-payment-method.component.html',
   styleUrls: ['./reports-daily-sales-per-payment-method.component.scss'],
 })
@@ -113,12 +106,13 @@ export class ReportsDailySalesPerPaymentMethodComponent
       });
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
   private _orderAmounts(orders: IOrder[]) {
-    const amounts: any = {
+    const amounts: IOrderAmounts = {
       [EPaymentMethod.CARD]: 0,
       [EPaymentMethod.CASH]: 0,
       [EPaymentMethod.INAPP]: 0,

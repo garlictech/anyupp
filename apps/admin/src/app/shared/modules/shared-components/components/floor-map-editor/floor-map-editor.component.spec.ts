@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FabricMapEditorComponent } from './fabric-map-editor.component';
+import { FloorMapEditorComponent } from './floor-map-editor.component';
 
-describe('FabricMapEditorComponent', (): void => {
-  let component: FabricMapEditorComponent;
-  let fixture: ComponentFixture<FabricMapEditorComponent>;
+describe('FloorMapEditorComponent', (): void => {
+  let component: FloorMapEditorComponent;
+  let fixture: ComponentFixture<FloorMapEditorComponent>;
 
   beforeEach(
-    async (): Promise<any> => {
+    async (): Promise<void> => {
       await TestBed.configureTestingModule({
-        declarations: [FabricMapEditorComponent],
+        declarations: [FloorMapEditorComponent],
       }).compileComponents();
     }
   );
 
   beforeEach((): void => {
-    fixture = TestBed.createComponent(FabricMapEditorComponent);
+    fixture = TestBed.createComponent(FloorMapEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
