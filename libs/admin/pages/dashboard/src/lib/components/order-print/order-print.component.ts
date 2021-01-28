@@ -3,12 +3,12 @@ import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { unitsSelectors } from '@bgap/admin/shared/units';
 import { IChain, ICurrencyValue, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { chainListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -32,12 +32,12 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   ) {
     combineLatest([
       this._store.pipe(
-        select(chainListSelectors.getSeletedChain),
+        select(chainsSelectors.getSeletedChain),
         filter((chain): boolean => !!chain),
         take(1)
       ),
       this._store.pipe(
-        select(unitListSelectors.getSelectedUnit),
+        select(unitsSelectors.getSelectedUnit),
         filter((unit): boolean => !!unit),
         take(1)
       )

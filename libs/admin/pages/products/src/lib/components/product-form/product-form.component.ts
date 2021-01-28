@@ -3,18 +3,15 @@ import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { customNumberCompare, EToasterType, objectToArray, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { customNumberCompare, multiLangValidator, objectToArray } from '../../../../shared/pure';
-import { FormsService } from '../../../../shared/services/forms';
-import { EToasterType } from '../../../../shared/services/toaster';
-import { IState } from '../../../../store';
-import { currentUserSelectors, productCategoryListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -57,7 +54,7 @@ export class ProductFormComponent
     this._formsService = this._injector.get(FormsService);
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUserSettings), take(1))
+      .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
       .subscribe((userSettings: IAdminUserSettings): void => {
         this._selectedChainId = userSettings.selectedChainId;
         this._selectedGroupId = userSettings.selectedGroupId;
@@ -67,7 +64,7 @@ export class ProductFormComponent
 
     this._store
       .pipe(
-        select(productCategoryListSelectors.getAllProductCategories),
+        select(productCategoriesSelectors.getAllProductCategories),
         untilDestroyed(this)
       )
       .subscribe((productCategories: IProductCategory[]): void => {

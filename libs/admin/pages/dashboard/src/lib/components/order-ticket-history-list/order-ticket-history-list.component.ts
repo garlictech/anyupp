@@ -2,14 +2,12 @@ import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/dashboard';
+import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/orders';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
-import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -42,7 +40,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
 
     this._store
       .pipe(
-        select(orderListSelectors.getAllHistoryOrders),
+        select(ordersSelectors.getAllHistoryOrders),
         untilDestroyed(this)
       )
       .subscribe((historyOrders: IOrder[]): void => {

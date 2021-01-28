@@ -62,9 +62,6 @@
     "admin-shared-pipes": {
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
-    "admin-pages-admin-pages-users": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
-    },
     "admin-shared-utils": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
@@ -108,6 +105,42 @@
       "tags": []
     },
     "admin-shared-floor-map": {
+      "tags": []
+    },
+    "admin-shared-orders": {
+      "tags": []
+    },
+    "admin-shared-admin-users": {
+      "tags": []
+    },
+    "admin-shared-chains": {
+      "tags": []
+    },
+    "admin-shared-dashboard": {
+      "tags": []
+    },
+    "admin-shared-groups": {
+      "tags": []
+    },
+    "admin-shared-product-categories": {
+      "tags": []
+    },
+    "admin-shared-products": {
+      "tags": []
+    },
+    "admin-shared-units": {
+      "tags": []
+    },
+    "admin-shared-users": {
+      "tags": []
+    },
+    "admin-shared-logged-user": {
+      "tags": []
+    },
+    "admin-shared-logged-user2": {
+      "tags": []
+    },
+    "admin-shared-storage": {
       "tags": []
     }
   }

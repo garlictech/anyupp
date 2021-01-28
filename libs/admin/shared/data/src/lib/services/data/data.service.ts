@@ -5,21 +5,23 @@ import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap } from 'r
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
-import { EAdminRole, EFirebaseStateEvent, EOrderStatus } from '@bgap/shared/types';
+import { adminUsersActions } from '@bgap/admin/shared/admin-users';
+import { chainsActions } from '@bgap/admin/shared/chains';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/dashboard';
+import { groupsActions } from '@bgap/admin/shared/groups';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { ordersActions } from '@bgap/admin/shared/orders';
+import { productCategoriesActions } from '@bgap/admin/shared/product-categories';
+import { productsActions } from '@bgap/admin/shared/products';
+import { unitsActions } from '@bgap/admin/shared/units';
+import { usersActions } from '@bgap/admin/shared/users';
+import { DEFAULT_LANG, objectToArray, getDayIntervals } from '@bgap/admin/shared/utils';
+import {
+  EAdminRole, EFirebaseStateEvent, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals,
+  IGroup, IOrder, IOrderItem, IProduct, IProductCategory, IUnit, IUser
+} from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-
-import {
-  adminUserListActions, chainListActions, currentUserActions, dashboardActions, groupListActions, orderListActions,
-  productCategoryListActions, productListActions, unitListActions, userListActions
-} from '../../../../../../../admin/store/actions';
-import { currentUserSelectors, dashboardSelectors } from '../../../store/selectors';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import {
-  IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals, IGroup, IOrder, IOrderItem, IProduct,
-  IProductCategory, IUnit, IUser
-} from '@bgap/shared/types';
-import { getDayIntervals, objectToArray } from '@bgap/admin/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -44,8 +46,8 @@ export class DataService {
       .pipe(takeUntil(this._destroyConnection$))
       .subscribe((adminUser: IAdminUser): void => {
         this._store.dispatch(
-          currentUserActions.setCurrentAdminUser({
-            adminUser: {
+          loggedUserActions.loadLoggedUserSuccess({
+            loggedUser: {
               _id: userId,
               ...adminUser,
             },
@@ -56,7 +58,7 @@ export class DataService {
     // Get user settings
     this._store
       .pipe(
-        select(currentUserSelectors.getAdminUserSettings),
+        select(loggedUserSelectors.getLoggedUserSettings),
         filter((settings: IAdminUserSettings): boolean => !!settings),
         distinctUntilChanged(
           (prev, curr): boolean =>
@@ -91,7 +93,7 @@ export class DataService {
     // Get user settings
     this._store
       .pipe(
-        select(currentUserSelectors.getAdminUserRoles),
+        select(loggedUserSelectors.getLoggedUserRoles),
         filter((roles: IAdminUserRole): boolean => !!roles),
         takeUntil(this._destroyConnection$)
       )
@@ -171,7 +173,7 @@ export class DataService {
     // Get user settings
     this._store
       .pipe(
-        select(currentUserSelectors.getSelectedLanguage),
+        select(loggedUserSelectors.getSelectedLanguage),
         takeUntil(this._destroyConnection$)
       )
       .subscribe((selectedLanguage: string): void => {
@@ -188,7 +190,7 @@ export class DataService {
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          chainListActions.setAllChains({
+          chainsActions.loadChainsSuccess({
             chains: objectToArray(data).filter((c: IChain): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
@@ -209,7 +211,7 @@ export class DataService {
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          groupListActions.setAllGroups({
+          groupsActions.loadGroupsSuccess({
             groups: objectToArray(data).filter((c: IGroup): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
@@ -230,7 +232,7 @@ export class DataService {
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          unitListActions.setAllUnits({
+          unitsActions.loadUnitsSuccess({
             units: objectToArray(data).filter((c: IUnit): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
@@ -248,7 +250,7 @@ export class DataService {
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          productCategoryListActions.setAllProductCategories({
+          productCategoriesActions.loadProductCategoriesSuccess({
             productCategories: objectToArray(data),
           })
         );
@@ -262,7 +264,7 @@ export class DataService {
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          productListActions.setAllChainProducts({
+          productsActions.loadChainProductsSuccess({
             products: objectToArray(data),
           })
         );
@@ -276,7 +278,7 @@ export class DataService {
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          productListActions.setAllGroupProducts({
+          productsActions.loadGroupProductsSuccess({
             products: objectToArray(data),
           })
         );
@@ -290,7 +292,7 @@ export class DataService {
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          productListActions.setAllUnitProducts({
+          productsActions.loadUnitProductsSuccess({
             products: objectToArray(data),
           })
         );
@@ -318,7 +320,7 @@ export class DataService {
         });
 
         this._store.dispatch(
-          productListActions.setAllGeneratedUnitProducts({
+          productsActions.loadGeneratedUnitProductsSuccess({
             products,
           })
         );
@@ -336,13 +338,13 @@ export class DataService {
       .subscribe((data): void => {
         if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
           this._store.dispatch(
-            orderListActions.removeActiveOrder({
+            ordersActions.removeActiveOrder({
               orderId: data.key,
             })
           );
         } else {
           this._store.dispatch(
-            orderListActions.upsertActiveOrder({
+            ordersActions.upsertActiveOrder({
               order: {
                 _id: data.key,
                 ...(<IOrder>data.payload.val()),
@@ -357,7 +359,7 @@ export class DataService {
         select(dashboardSelectors.getSelectedHistoryDate),
         tap(() => {
           this._store.dispatch(
-            orderListActions.setAllHistoryOrders({
+            ordersActions.setAllHistoryOrders({
               orders: [],
             })
           );
@@ -379,13 +381,13 @@ export class DataService {
       .subscribe((data): void => {
         if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
           this._store.dispatch(
-            orderListActions.removeHistoryOrder({
+            ordersActions.removeHistoryOrder({
               orderId: data.key,
             })
           );
         } else {
           this._store.dispatch(
-            orderListActions.upsertHistoryOrder({
+            ordersActions.upsertHistoryOrder({
               order: {
                 _id: data.key,
                 ...(<IOrder>data.payload.val()),
@@ -403,7 +405,7 @@ export class DataService {
       .pipe(takeUntil(this._rolesChanged$))
       .subscribe((data): void => {
         this._store.dispatch(
-          userListActions.setAllUsers({
+          usersActions.loadUsersSuccess({
             users: objectToArray(data),
           })
         );
@@ -486,7 +488,7 @@ export class DataService {
         }
 
         this._store.dispatch(
-          adminUserListActions.setAllAdminUsers({
+          adminUsersActions.loadAdminUsersSuccess({
             adminUsers,
           })
         );
@@ -500,19 +502,19 @@ export class DataService {
     this._rolesChanged$.next(true);
 
     // Clear store
-    this._store.dispatch(chainListActions.resetChains());
-    this._store.dispatch(groupListActions.resetGroups());
-    this._store.dispatch(unitListActions.resetUnits());
-    this._store.dispatch(userListActions.resetUsers());
-    this._store.dispatch(adminUserListActions.resetAdminUsers());
-    this._store.dispatch(productCategoryListActions.resetProductCategories());
-    this._store.dispatch(orderListActions.resetActiveOrders());
-    this._store.dispatch(orderListActions.resetHistoryOrders());
-    this._store.dispatch(productListActions.resetChainProducts());
-    this._store.dispatch(productListActions.resetGroupProducts());
-    this._store.dispatch(productListActions.resetUnitProducts());
-    this._store.dispatch(productListActions.resetGeneratedUnitProducts());
-    this._store.dispatch(currentUserActions.resetCurrentAdminUser());
+    this._store.dispatch(chainsActions.resetChains());
+    this._store.dispatch(groupsActions.resetGroups());
+    this._store.dispatch(unitsActions.resetUnits());
+    this._store.dispatch(usersActions.resetUsers());
+    this._store.dispatch(adminUsersActions.resetAdminUsers());
+    this._store.dispatch(productCategoriesActions.resetProductCategories());
+    this._store.dispatch(ordersActions.resetActiveOrders());
+    this._store.dispatch(ordersActions.resetHistoryOrders());
+    this._store.dispatch(productsActions.resetChainProducts());
+    this._store.dispatch(productsActions.resetGroupProducts());
+    this._store.dispatch(productsActions.resetUnitProducts());
+    this._store.dispatch(productsActions.resetGeneratedUnitProducts());
+    this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
   }
 

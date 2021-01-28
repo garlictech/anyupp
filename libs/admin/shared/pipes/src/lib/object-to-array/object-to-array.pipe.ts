@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
-import { objectToArray } from '../../pure';
+import { objectToArray } from '@bgap/admin/shared/utils';
 
 @Pipe({
   name: 'objectToArray',

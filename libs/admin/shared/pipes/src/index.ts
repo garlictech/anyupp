@@ -1,6 +1,8 @@
-export * from './lib/admin-shared-pipes.module';
-export * from './lib/currency-formatter';
-export * from './lib/localize';
-export * from './lib/localized-date';
-export * from './lib/object-to-array';
-export * from './lib/role-entity-names';
+import { AdminSharedPipesModule } from './lib/admin-shared-pipes.module';
+import { CurrencyFormatterPipe } from './lib/currency-formatter/currency-formatter.pipe';
+import { LocalizePipe } from './lib/localize/localize.pipe';
+import { LocalizedDatePipe } from './lib/localized-date/localized-date.pipe';
+import { ObjectToArrayPipe } from './lib/object-to-array/object-to-array.pipe';
+import { RoleEntityNamesPipe } from './lib/role-entity-names/role-entity-names.pipe';
+
+export { AdminSharedPipesModule, CurrencyFormatterPipe, LocalizePipe, LocalizedDatePipe, ObjectToArrayPipe, RoleEntityNamesPipe };

@@ -1,15 +1,13 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
+
 import { Component, Input, OnDestroy } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { DataService } from '@bgap/admin/shared/data';
+import { IAdminUser, IChain } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { IAdminUser, IChain } from '@bgap/shared/types';
-import { DataService } from '@bgap/admin/shared/data';
-
-import {
-  chainListSelectors,
-  currentUserSelectors
-} from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -28,12 +26,12 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   ) {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
-      select(chainListSelectors.getAllChains),
+      select(chainsSelectors.getAllChains),
       untilDestroyed(this)
     );
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
       });

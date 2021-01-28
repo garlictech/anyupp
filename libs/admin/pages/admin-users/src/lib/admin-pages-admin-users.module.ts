@@ -7,10 +7,8 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbButtonModule, NbCardModule, NbIconModule, NbLayoutModule, NbListModule, NbUserModule } from '@nebular/theme';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import * as fromAdminUsers from './+state/admin-users.reducer';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 import { AdminUserListItemComponent } from './components/admin-user-list-item/admin-user-list-item.component';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
@@ -35,10 +33,6 @@ const NB_MODULES = [
     AdminSharedPipesModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forFeature(
-      fromAdminUsers.ADMIN_USERS_FEATURE_KEY,
-      fromAdminUsers.reducer
-    ),
     RouterModule.forChild([
       {
         component: AdminUserListComponent,

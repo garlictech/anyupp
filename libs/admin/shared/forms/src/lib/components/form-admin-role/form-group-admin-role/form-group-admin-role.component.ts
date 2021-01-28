@@ -1,22 +1,12 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
-import {
-  IAdminRoleEntity,
-  IChain,
-  IGroup,
-  IKeyValue,
-  IAssignedEntityNames,
-} from '@bgap/shared/types';
-import { DataService } from '@bgap/admin/shared/data';
-
-import {
-  chainListSelectors,
-  groupListSelectors,
-} from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -34,8 +24,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
   constructor(
     private _store: Store<any>,
-    private _formBuilder: FormBuilder,
-    private _dataService: DataService
+    private _formBuilder: FormBuilder
   ) {
     this.groupOptions = [];
     this.chainOptions = [];
@@ -47,8 +36,8 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this._store.pipe(select(chainListSelectors.getAllChains)),
-      this._store.pipe(select(groupListSelectors.getAllGroups)),
+      this._store.pipe(select(chainsSelectors.getAllChains)),
+      this._store.pipe(select(groupsSelectors.getAllGroups)),
       this.control['controls'].entities.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
@@ -98,7 +87,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
           this._store
             .pipe(
               select(
-                groupListSelectors.getGroupsByChainId(selectorValue.chainId)
+                groupsSelectors.getGroupsByChainId(selectorValue.chainId)
               )
             )
             .pipe(take(1))

@@ -1,13 +1,11 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IGroup } from '@bgap/shared/types';
-import {
-  currentUserSelectors,
-  groupListSelectors,
-} from '../../../../../store/selectors';
 
-import { DataService } from '@bgap/admin/shared/data';
 import { Component, Input, OnDestroy } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { DataService } from '@bgap/admin/shared/data';
+import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -28,12 +26,12 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
   ) {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
-      select(groupListSelectors.getSelectedChainGroups),
+      select(groupsSelectors.getSelectedChainGroups),
       untilDestroyed(this)
     );
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
       });

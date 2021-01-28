@@ -3,17 +3,17 @@ import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
+import { productsSelectors } from '@bgap/admin/shared/products';
 import { OrderService } from '@bgap/admin/shared/data';
-import { currentStatus } from '@bgap/admin/shared/utils';
+import { currentStatus } from '@bgap/admin/shared/orders';
 import {
   EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct, IProductCategory
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import {
-  currentUserSelectors, groupListSelectors, productCategoryListSelectors, productListSelectors
-} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -37,7 +37,7 @@ export class OrderProductListComponent {
 
     this._store
       .pipe(
-        select(groupListSelectors.getSeletedGroup),
+        select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup): void => {
@@ -45,7 +45,7 @@ export class OrderProductListComponent {
       });
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this.buttonSize =
           _get(adminUser, 'settings.dashboardSize') === EDashboardSize.LARGER
@@ -55,11 +55,11 @@ export class OrderProductListComponent {
 
     combineLatest([
       this._store.pipe(
-        select(productCategoryListSelectors.getAllProductCategories),
+        select(productCategoriesSelectors.getAllProductCategories),
         untilDestroyed(this)
       ),
       this._store.pipe(
-        select(productListSelectors.getAllGeneratedUnitProducts),
+        select(productsSelectors.getAllGeneratedUnitProducts),
         untilDestroyed(this)
       )
     ])

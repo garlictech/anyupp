@@ -99,7 +99,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
     });
 
 
-    combineLatest([this._store.pipe(select(productListSelectors.getAllGeneratedUnitProducts)), this.orders$])
+    combineLatest([this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)), this.orders$])
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         const counts = this._countOrders(products, orders);

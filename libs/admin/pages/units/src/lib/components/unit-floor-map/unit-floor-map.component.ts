@@ -1,11 +1,11 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import * as floorMapFuncs from '@bgap/admin/shared/utils';
+import * as floorMapLib from '@bgap/admin/shared/floor-map';
+import { EToasterType } from '@bgap/admin/shared/utils';
 import { IUnit } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
 
-import { floorMapActions } from '../../../../store/actions';
 
 @Component({
   selector: 'bgap-unit-floor-map',
@@ -24,7 +24,7 @@ export class UnitFloorMapComponent
     super(_injector);
 
     this._store = this._injector.get(Store);
-    this._store.dispatch(floorMapActions.resetFloorMap());
+    this._store.dispatch(floorMapLib.floorMapActions.resetFloorMap());
   }
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class UnitFloorMapComponent
 
   public submit(): void {
     this._dataService
-      .updateUnit(this.unit._id, { floorMap: floorMapFuncs.mapRawData })
+      .updateUnit(this.unit._id, { floorMap: floorMapLib.mapRawData })
       .then(
         (): void => {
           this._toasterService.show(

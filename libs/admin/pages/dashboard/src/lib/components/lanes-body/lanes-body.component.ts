@@ -2,6 +2,9 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/dashboard';
+import { ordersSelectors } from '@bgap/admin/shared/orders';
+import { unitsSelectors } from '@bgap/admin/shared/units';
 import { DEFAULT_LANE_COLOR, objectToArray } from '@bgap/admin/shared/utils';
 import {
   EDashboardSize, ENebularButtonSize, EOrderStatus, IDetailedLane, ILaneOrderItem, IUnit
@@ -9,9 +12,6 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-
-import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
 
 const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem
@@ -40,23 +40,23 @@ export class LanesBodyComponent implements OnDestroy {
     combineLatest([
       this._store.pipe(
         select(
-          orderListSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)
+          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)
         )
       ),
       this._store.pipe(
         select(
-          orderListSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING)
+          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING)
         )
       ),
       this._store.pipe(
-        select(orderListSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY))
+        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY))
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),
         filter((l): boolean => !!l)
       ),
       this._store.pipe(
-        select(unitListSelectors.getSelectedUnit),
+        select(unitsSelectors.getSelectedUnit),
         filter((unit: IUnit): boolean => !!unit)
       )
     ])

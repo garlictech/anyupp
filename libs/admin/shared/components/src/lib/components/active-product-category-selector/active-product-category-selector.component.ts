@@ -1,16 +1,13 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { IAdminUser, IProductCategory } from '@bgap/shared/types';
-
-import {
-  currentUserSelectors,
-  productCategoryListSelectors
-} from '../../../../../store/selectors';
 
 import { Component, Input, OnDestroy } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
+import { DataService } from '@bgap/admin/shared/data';
+import { IAdminUser, IProductCategory } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { DataService } from '@bgap/admin/shared/data';
 
 @UntilDestroy()
 @Component({
@@ -29,12 +26,12 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
   ) {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
-      select(productCategoryListSelectors.getAllProductCategories),
+      select(productCategoriesSelectors.getAllProductCategories),
       untilDestroyed(this)
     );
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
       });

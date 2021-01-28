@@ -8,12 +8,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
   NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbUserModule
 } from '@nebular/theme';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ProductCategoriesEffects } from './+state/product-categories.effects';
-import * as fromProductCategories from './+state/product-categories.reducer';
 import { ProductCategoryFormComponent } from './components/product-category-form/product-category-form.component';
 import {
   ProductCategoryListItemComponent
@@ -40,11 +36,6 @@ const NB_MODULES = [
   ],
   imports: [
     CommonModule,
-    StoreModule.forFeature(
-      fromProductCategories.PRODUCT_CATEGORIES_FEATURE_KEY,
-      fromProductCategories.reducer
-    ),
-    EffectsModule.forFeature([ProductCategoriesEffects]),
     TranslateModule,
     AdminSharedFormsModule,
     FormsModule,

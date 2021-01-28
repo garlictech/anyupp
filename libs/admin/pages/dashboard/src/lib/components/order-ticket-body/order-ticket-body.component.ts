@@ -3,14 +3,13 @@ import { delay, switchMap, take } from 'rxjs/operators';
 
 // import * as printJS from 'print-js';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
+import { ordersSelectors } from '@bgap/admin/shared/orders';
 import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IOrder, IOrderSum } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
-import { IDashboardSettings } from '../../../../store/state';
 import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
@@ -84,7 +83,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       this._store
         .pipe(
           select(
-            orderListSelectors.getActiveOrdersCountByUserId(
+            ordersSelectors.getActiveOrdersCountByUserId(
               this.selectedOrder.userId
             )
           ),
@@ -97,7 +96,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       this._store
         .pipe(
           select(
-            orderListSelectors.getActiveOrdersByUserId(
+            ordersSelectors.getActiveOrdersByUserId(
               this.selectedOrder.userId
             )
           ),

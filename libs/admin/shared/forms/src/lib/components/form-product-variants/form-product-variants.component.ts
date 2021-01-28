@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FormsService } from '@bgap/admin/shared/forms';
+import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { EProductLevel, IProductVariant } from '@bgap/shared/types';
 

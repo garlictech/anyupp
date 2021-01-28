@@ -1,15 +1,13 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
-import {
-  currentUserSelectors,
-  unitListSelectors,
-} from '../../../../../store/selectors';
+
 import { Component, Input, OnDestroy } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { unitsSelectors } from '@bgap/admin/shared/units';
+import { DataService } from '@bgap/admin/shared/data';
+import { IAdminUser, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { IAdminUser, IUnit } from '@bgap/shared/types';
-
-import { DataService } from '@bgap/admin/shared/data';
 
 @UntilDestroy()
 @Component({
@@ -28,12 +26,12 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
   ) {
     this.showIcon = false;
     this.units$ = this._store.pipe(
-      select(unitListSelectors.getSelectedGroupUnits),
+      select(unitsSelectors.getSelectedGroupUnits),
       untilDestroyed(this)
     );
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
       });

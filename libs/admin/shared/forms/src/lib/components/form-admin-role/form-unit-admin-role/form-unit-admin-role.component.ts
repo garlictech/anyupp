@@ -1,23 +1,13 @@
 import { get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
-import {
-  IAdminRoleEntity,
-  IAssignedEntityNames,
-  IChain,
-  IGroup,
-  IKeyValue,
-  IUnit,
-} from '@bgap/shared/types';
-
-import {
-  chainListSelectors,
-  groupListSelectors,
-  unitListSelectors,
-} from '../../../../../../store/selectors';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { unitsSelectors } from '@bgap/admin/shared/units';
+import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -49,9 +39,9 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this._store.pipe(select(chainListSelectors.getAllChains)),
-      this._store.pipe(select(groupListSelectors.getAllGroups)),
-      this._store.pipe(select(unitListSelectors.getAllUnits)),
+      this._store.pipe(select(chainsSelectors.getAllChains)),
+      this._store.pipe(select(groupsSelectors.getAllGroups)),
+      this._store.pipe(select(unitsSelectors.getAllUnits)),
       this.control['controls'].entities.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
@@ -106,7 +96,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
           this._store
             .pipe(
               select(
-                groupListSelectors.getGroupsByChainId(selectorValue.chainId)
+                groupsSelectors.getGroupsByChainId(selectorValue.chainId)
               )
             )
             .pipe(take(1))
@@ -127,7 +117,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
 
           this._store
             .pipe(
-              select(unitListSelectors.getUnitsByGroupId(selectorValue.groupId))
+              select(unitsSelectors.getUnitsByGroupId(selectorValue.groupId))
             )
             .pipe(take(1))
             .subscribe((units): void => {

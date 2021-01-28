@@ -3,6 +3,8 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
 import { DataService } from '@bgap/admin/shared/data';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
@@ -10,8 +12,9 @@ import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/the
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { currentUserSelectors, groupListSelectors, productListSelectors } from '../../store/selectors';
+
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { productsSelectors } from '@bgap/admin/shared/products';
 
 @UntilDestroy()
 @Component({
@@ -62,7 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(productListSelectors.getChainProductsOfSelectedCategory()),
+        select(productsSelectors.getChainProductsOfSelectedCategory()),
         map((products): IProduct[] =>
           products.sort(customNumberCompare('position'))
         ),
@@ -76,13 +79,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
 
     this.groupProducts$ = this._store.pipe(
-      select(productListSelectors.getExtendedGroupProductsOfSelectedCategory()),
+      select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
       untilDestroyed(this)
     );
     this._store
       .pipe(
         select(
-          productListSelectors.getExtendedUnitProductsOfSelectedCategory()
+          productsSelectors.getExtendedUnitProductsOfSelectedCategory()
         ),
         map((products): IProduct[] =>
           products.sort(customNumberCompare('position'))
@@ -99,16 +102,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(
         select(
-          productListSelectors.getPendingGroupProductsOfSelectedCategory()
+          productsSelectors.getPendingGroupProductsOfSelectedCategory()
         ),
         untilDestroyed(this)
       ),
       this._store.pipe(
-        select(productListSelectors.getPendingUnitProductsOfSelectedCategory()),
+        select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
         untilDestroyed(this)
       ),
       this._store.pipe(
-        select(currentUserSelectors.getAdminUser),
+        select(loggedUserSelectors.getLoggedUser),
         skipWhile((adminUser): boolean => !adminUser)
       ),
     ])
@@ -132,7 +135,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
           this._store
             .pipe(
-              select(groupListSelectors.getSeletedGroup),
+              select(groupsSelectors.getSeletedGroup),
               skipWhile((group): boolean => !group),
               take(1)
             )

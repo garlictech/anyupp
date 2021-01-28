@@ -2,10 +2,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { unitsSelectors } from '@bgap/admin/shared/units';
 import {
-  fabricCanvas, getObjectById, getOrdersByUser, getStatusBgColor, getTableOrders, getTableSeatId, getTableSeatIds,
-  objectToArray, registerCanvasEvent, setBgColor, setBorder
-} from '@bgap/admin/shared/utils';
+  fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
+  registerCanvasEvent, setBgColor, setBorder
+} from '@bgap/admin/shared/floor-map';
+import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/orders';
+import { objectToArray } from '@bgap/admin/shared/utils';
 import {
   IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
 } from '@bgap/shared/types';
@@ -13,8 +16,6 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { floorMapActions } from '../../../../store/actions';
-import { floorMapSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 
 @UntilDestroy()
@@ -42,7 +43,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(unitListSelectors.getSelectedUnit),
+        select(unitsSelectors.getSelectedUnit),
         tap((): void => {
           this.unit = undefined;
         }),
@@ -82,7 +83,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         }),
         switchMap(
           (): Observable<IOrder[]> =>
-            this._store.pipe(select(orderListSelectors.getAllActiveOrders))
+            this._store.pipe(select(ordersSelectors.getAllActiveOrders))
         ),
         untilDestroyed(this)
       )

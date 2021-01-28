@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/utils';
+import { currentStatus as currentStatusFn } from '@bgap/admin/shared/orders';
 import { EDashboardTicketListType, IOrder } from '@bgap/shared/types';
 
 @Component({

@@ -1,16 +1,15 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 
 import { Component, Input, OnDestroy } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { dashboardActions } from '@bgap/admin/shared/dashboard';
 import { DataService, OrderService } from '@bgap/admin/shared/data';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/utils';
+import { currentStatus as currentStatusFn } from '@bgap/admin/shared/orders';
 import {
   EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { dashboardActions } from '../../../../store/actions';
-import { currentUserSelectors } from '../../../../store/selectors';
 
 interface IPaymentMethodKV {
   key: string;
@@ -48,7 +47,7 @@ export class OrderEditComponent implements OnDestroy {
     });
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
 

@@ -1,4 +1,3 @@
-import { FloorMapEntity } from './floor-map.models';
 import * as FloorMapActions from './floor-map.actions';
 import { State, initialState, reducer } from './floor-map.reducer';
 

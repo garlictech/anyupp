@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { TranslateService } from '@ngx-translate/core';
-
-export enum EToasterType {
-  DANGER = 'danger',
-  DEFAULT = 'default',
-  INFO = 'info',
-  PRIMARY = 'primary',
-  SHOW = 'show',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-}
+import { EToasterType } from '../../enums';
 
 @Injectable({
   providedIn: 'root',

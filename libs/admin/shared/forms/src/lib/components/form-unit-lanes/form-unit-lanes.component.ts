@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { FormsService } from '@bgap/admin/shared/forms';
+import { productsSelectors } from '@bgap/admin/shared/products';
+import { FormsService } from '../../services/forms/forms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { productListSelectors } from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +25,7 @@ export class FormUnitLanesComponent implements OnInit {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(productListSelectors.getUnitProductLaneIds()),
+        select(productsSelectors.getUnitProductLaneIds()),
         untilDestroyed(this)
       )
       .subscribe((laneIds: string[]): void => {

@@ -3,12 +3,12 @@ import { filter, skipWhile } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { ordersSelectors } from '@bgap/admin/shared/orders';
 import { dayInterval } from '@bgap/admin/shared/utils';
 import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { groupListSelectors, orderListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +29,7 @@ export class ReportsBodyComponent implements OnDestroy {
 
     this._store
       .pipe(
-        select(groupListSelectors.getSeletedGroup),
+        select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
         untilDestroyed(this)
       )
@@ -38,7 +38,7 @@ export class ReportsBodyComponent implements OnDestroy {
       });
 
     combineLatest([
-      this._store.pipe(select(orderListSelectors.getAllHistoryOrders)),
+      this._store.pipe(select(ordersSelectors.getAllHistoryOrders)),
       this.dateFormControl.valueChanges.pipe(filter((v): boolean => !!v)),
     ])
       .pipe(untilDestroyed(this))

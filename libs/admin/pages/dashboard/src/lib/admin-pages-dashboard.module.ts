@@ -7,46 +7,43 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbActionsModule,
-  NbBadgeModule,
-  NbButtonModule,
-  NbCardModule,
-  NbCheckboxModule,
-  NbDialogModule,
-  NbIconModule,
-  NbInputModule,
-  NbLayoutModule,
-  NbListModule,
-  NbSelectModule,
-  NbSpinnerModule,
-  NbUserModule,
+  NbActionsModule, NbBadgeModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule,
+  NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbSpinnerModule, NbUserModule
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FloorMapBodyComponent } from './components/floor-map-body';
-import { FloorMapOrdersComponent } from './components/floor-map-orders';
-import { LaneItemComponent } from './components/lane-item';
-import { LanesBodyComponent } from './components/lanes-body';
-import { OrderDetailsComponent } from './components/order-details';
-import { OrderEditComponent } from './components/order-edit';
-import { OrderPrintComponent } from './components/order-print';
-import { OrderProductListComponent } from './components/order-product-list';
-import { OrderTicketBodyComponent } from './components/order-ticket-body';
-import { OrderTicketHistoryListComponent } from './components/order-ticket-history-list';
-import { OrderTicketListComponent } from './components/order-ticket-list';
-import { OrderTicketListItemComponent } from './components/order-ticket-list-item';
-import { ReportsBodyComponent } from './components/reports-body';
-import { ReportsDailySalesPerPaymentMethodComponent } from './components/reports-daily-sales-per-payment-method';
-import { ReportsDailySalesPerTypeComponent } from './components/reports-daily-sales-per-type';
-import { ReportsDayHistoryComponent } from './components/reports-day-history';
-import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-breakdown';
-import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales';
-import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales';
-import { DashboardComponent } from './dashboard.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import * as fromDashboard from './+state/dashboard.reducer';
-import { DashboardEffects } from './+state/dashboard.effects';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FloorMapBodyComponent } from './components/floor-map-body/floor-map-body.component';
+import { FloorMapOrdersComponent } from './components/floor-map-orders/floor-map-orders.component';
+import { LaneItemComponent } from './components/lane-item/lane-item.component';
+import { LanesBodyComponent } from './components/lanes-body/lanes-body.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { OrderEditComponent } from './components/order-edit/order-edit.component';
+import { OrderPrintComponent } from './components/order-print/order-print.component';
+import { OrderProductListComponent } from './components/order-product-list/order-product-list.component';
+import { OrderTicketBodyComponent } from './components/order-ticket-body/order-ticket-body.component';
+import {
+  OrderTicketHistoryListComponent
+} from './components/order-ticket-history-list/order-ticket-history-list.component';
+import { OrderTicketListItemComponent } from './components/order-ticket-list-item/order-ticket-list-item.component';
+import { OrderTicketListComponent } from './components/order-ticket-list/order-ticket-list.component';
+import { ReportsBodyComponent } from './components/reports-body/reports-body.component';
+import {
+  ReportsDailySalesPerPaymentMethodComponent
+} from './components/reports-daily-sales-per-payment-method/reports-daily-sales-per-payment-method.component';
+import {
+  ReportsDailySalesPerTypeComponent
+} from './components/reports-daily-sales-per-type/reports-daily-sales-per-type.component';
+import { ReportsDayHistoryComponent } from './components/reports-day-history/reports-day-history.component';
+import {
+  ReportsHourlyBreakdownComponent
+} from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
+import {
+  ReportsOrdersAmountAvgSalesComponent
+} from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
+import {
+  ReportsUniqueGuestAvgSalesComponent
+} from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -102,12 +99,7 @@ const NB_MODULES = [
         path: '',
       },
     ]),
-    ...NB_MODULES,
-    StoreModule.forFeature(
-      fromDashboard.DASHBOARD_FEATURE_KEY,
-      fromDashboard.reducer
-    ),
-    EffectsModule.forFeature([DashboardEffects]),
+    ...NB_MODULES
   ],
 })
 export class AdminPagesDashboardModule {}

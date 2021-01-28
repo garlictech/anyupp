@@ -1,16 +1,13 @@
 import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { select, Store } from '@ngrx/store';
-
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { unitsSelectors } from '@bgap/admin/shared/units';
 import { IAdminUserRole, IChain, IGroup, IUnit } from '@bgap/shared/types';
-import { IState } from '../../../store';
-import {
-  chainListSelectors,
-  groupListSelectors,
-  unitListSelectors,
-} from '../../../store/selectors';
+import { select, Store } from '@ngrx/store';
 
 @Pipe({
   name: 'roleEntityNames',
@@ -30,7 +27,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
       if (entity.chainId) {
         this._store
           .pipe(
-            select(chainListSelectors.getChainById(entity.chainId), take(1))
+            select(chainsSelectors.getChainById(entity.chainId), take(1))
           )
           .subscribe((chain: IChain): void => {
             entitiesArr.push(_get(chain, 'name', ''));
@@ -39,7 +36,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
       if (entity.groupId) {
         this._store
           .pipe(
-            select(groupListSelectors.getGroupById(entity.groupId), take(1))
+            select(groupsSelectors.getGroupById(entity.groupId), take(1))
           )
           .subscribe((group: IGroup): void => {
             entitiesArr.push(_get(group, 'name', ''));
@@ -47,7 +44,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
       }
       if (entity.unitId) {
         this._store
-          .pipe(select(unitListSelectors.getUnitById(entity.unitId), take(1)))
+          .pipe(select(unitsSelectors.getUnitById(entity.unitId), take(1)))
           .subscribe((unit: IUnit): void => {
             entitiesArr.push(_get(unit, 'name', ''));
           });

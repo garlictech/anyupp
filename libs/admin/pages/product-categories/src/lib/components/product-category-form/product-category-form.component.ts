@@ -2,12 +2,11 @@ import { get as _get, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { EImageType, IProductCategory } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
-
-import { currentUserSelectors } from '../../../../store/selectors';
 
 @Component({
   selector: 'bgap-product-category-form',
@@ -26,7 +25,7 @@ export class ProductCategoryFormComponent
 
     this._store = this._injector.get(Store);
     this._store
-      .pipe(select(currentUserSelectors.getSelectedChainId), take(1))
+      .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
       .subscribe((selectedChainId: string): void => {
         this._selectedChainId = selectedChainId;
       });

@@ -1,12 +1,14 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
 import { IChain, IGroup } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { chainListSelectors, currentUserSelectors, groupListSelectors } from '../../store/selectors';
 import { GroupFormComponent } from '../group-form/group-form.component';
 
 @UntilDestroy()
@@ -26,15 +28,15 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.groups$ = this._store.pipe(
-      select(groupListSelectors.getAllGroups),
+      select(groupsSelectors.getAllGroups),
       untilDestroyed(this)
     );
     this.chains$ = this._store.pipe(
-      select(chainListSelectors.getAllChains),
+      select(chainsSelectors.getAllChains),
       untilDestroyed(this)
     );
     this.selectedChainId$ = this._store.pipe(
-      select(currentUserSelectors.getSelectedChainId),
+      select(loggedUserSelectors.getSelectedChainId),
       untilDestroyed(this)
     );
   }

@@ -2,7 +2,7 @@ import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { IAdminRoleEntity, IChain, IKeyValue } from '@bgap/shared/types';
 
-import { chainListSelectors } from '@bgap/admin/pages/chains';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -32,7 +32,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this._store.pipe(select(chainListSelectors.getAllChains)),
+      this._store.pipe(select(chainsSelectors.getAllChains)),
       this.control['controls'].entities.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),

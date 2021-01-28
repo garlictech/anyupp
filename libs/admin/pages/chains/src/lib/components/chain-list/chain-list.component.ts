@@ -1,11 +1,12 @@
+import { Observable } from 'rxjs';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { chainListSelectors } from '../../store/selectors';
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @UntilDestroy()
@@ -24,7 +25,7 @@ export class ChainListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.chains$ = this._store.pipe(
-      select(chainListSelectors.getAllChains),
+      select(chainsSelectors.getAllChains),
       untilDestroyed(this)
     );
   }

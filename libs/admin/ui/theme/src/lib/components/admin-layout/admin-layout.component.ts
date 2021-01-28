@@ -1,15 +1,15 @@
 import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
-import { IAdminUser } from '@bgap/shared/types';
-import { IState } from '../../../store';
-import { currentUserSelectors } from '../../../store/selectors';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { environment } from '@bgap/admin/shared/config';
+import { MENU_ROLES } from '@bgap/admin/shared/utils';
+import { IAdminUser } from '@bgap/shared/types';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { MENU_ROLES } from '../../../shared/const';
-import { environment } from '../../../../environments/environment';
 
 const menuItems = {
   dashboard: {
@@ -82,7 +82,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(currentUserSelectors.getAdminUser),
+        select(loggedUserSelectors.getLoggedUser),
         filter((adminUser): boolean => !!adminUser),
         debounceTime(10), // Language reload!
         untilDestroyed(this)

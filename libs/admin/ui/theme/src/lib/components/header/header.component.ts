@@ -1,24 +1,18 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IAdminUser, IGroup } from '@bgap/shared/types';
-import { IState } from '../../../store';
-import { currentUserSelectors } from '../../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  NbMediaBreakpointsService,
-  NbMenuService,
-  NbSidebarService,
-  NbThemeService
-} from '@nebular/theme';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { AuthService } from '@bgap/admin/shared/auth';
+import { DataService } from '@bgap/admin/shared/data';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { LayoutService } from '@bgap/admin/ui/core';
+import { IAdminUser, IGroup } from '@bgap/shared/types';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { LayoutService } from '../../../@core/utils';
-import { DataService } from '../../../shared/services/data';
-import { AuthService } from '../../../shared/services/auth';
-import { DEFAULT_LANG } from '../../../shared/const';
 
 interface IMenuItem {
   title: string;
@@ -92,7 +86,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ];
 
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser), untilDestroyed(this))
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this.adminUser = adminUser;
       });

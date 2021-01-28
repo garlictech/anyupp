@@ -1,11 +1,10 @@
 import { skipWhile, take } from 'rxjs/operators';
-import { IUnit } from '@bgap/shared/types';
-
-import { unitListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { unitsSelectors } from '@bgap/admin/shared/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
+import { IUnit } from '@bgap/shared/types';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'bgap-colorized-lane-icon',
@@ -23,7 +22,7 @@ export class ColorizedLaneIconComponent implements OnInit {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(unitListSelectors.getSelectedUnit),
+        select(unitsSelectors.getSelectedUnit),
         skipWhile((unit: IUnit): boolean => !unit),
         take(1)
       )

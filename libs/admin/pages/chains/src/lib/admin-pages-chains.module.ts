@@ -9,12 +9,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
   NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule, NbUserModule
 } from '@nebular/theme';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ChainsEffects } from './+state/chains.effects';
-import * as fromChains from './+state/chains.reducer';
 import { ChainFormComponent } from './components/chain-form/chain-form.component';
 import { ChainListItemComponent } from './components/chain-list-item/chain-list-item.component';
 import { ChainListComponent } from './components/chain-list/chain-list.component';
@@ -38,8 +34,6 @@ const NB_MODULES = [
   ],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromChains.CHAINS_FEATURE_KEY, fromChains.reducer),
-    EffectsModule.forFeature([ChainsEffects]),
     TranslateModule,
     AdminSharedFormsModule,
     AdminSharedComponentsModule,

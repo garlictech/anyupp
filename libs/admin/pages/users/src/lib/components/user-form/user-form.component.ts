@@ -4,7 +4,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AuthService } from '@bgap/admin/shared/auth';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
 import { IUser } from '@bgap/shared/types';
 
 @Component({

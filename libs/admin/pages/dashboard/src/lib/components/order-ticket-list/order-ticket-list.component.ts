@@ -2,14 +2,12 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import { currentStatus as currentStatusFn, customNumberCompare } from '@bgap/admin/shared/utils';
+import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
+import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/orders';
+import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { EDashboardSize, EDashboardTicketListType, ENebularButtonSize, EOrderStatus, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
-import { IDashboardSettings } from '../../../../store/state';
 
 @UntilDestroy()
 @Component({
@@ -37,7 +35,7 @@ export class OrderTicketListComponent implements OnDestroy {
   constructor(private _store: Store<any>) {
     combineLatest([
       this._store.pipe(
-        select(orderListSelectors.getAllActiveOrders),
+        select(ordersSelectors.getAllActiveOrders),
         untilDestroyed(this)
       ),
       this._store.pipe(

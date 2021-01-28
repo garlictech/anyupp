@@ -1,14 +1,15 @@
 import { map } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { DataService } from '@bgap/admin/shared/data';
+import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { IProductCategory, IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { currentUserSelectors, productCategoryListSelectors } from '../../store/selectors';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @UntilDestroy()
@@ -30,7 +31,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(
-        select(productCategoryListSelectors.getAllProductCategories),
+        select(productCategoriesSelectors.getAllProductCategories),
         map((products): IProductCategory[] =>
           products.sort(customNumberCompare('position'))
         ),
@@ -45,7 +46,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
 
     this._store
       .pipe(
-        select(currentUserSelectors.getSelectedChainId),
+        select(loggedUserSelectors.getSelectedChainId),
         untilDestroyed(this)
       )
       .subscribe((selectedChainId: string): void => {

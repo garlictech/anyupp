@@ -1,4 +1,4 @@
- import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -9,17 +9,13 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
   NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbUserModule
 } from '@nebular/theme';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { GroupsEffects } from './+state/groups.effects';
-import * as fromGroups from './+state/groups.reducer';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 import { GroupListItemComponent } from './components/group-list-item/group-list-item.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
 
-const NB_MODULES = [
+ const NB_MODULES = [
   NbLayoutModule,
   NbCardModule,
   NbListModule,
@@ -39,8 +35,6 @@ const NB_MODULES = [
   ],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromGroups.GROUPS_FEATURE_KEY, fromGroups.reducer),
-    EffectsModule.forFeature([GroupsEffects]),
     TranslateModule,
     AdminSharedComponentsModule,
     AdminSharedFormsModule,

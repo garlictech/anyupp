@@ -1,23 +1,13 @@
 import { skipWhile } from 'rxjs/operators';
-import { currentStatus } from '../../pure/orders';
-import { IState } from '../../../store';
-import {
-  currentUserSelectors,
-  groupListSelectors
-} from '../../../store/selectors';
 
 import { Injectable } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { currentStatus } from '@bgap/admin/shared/orders';
+import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
-import { EOrderStatus } from '@bgap/shared/types';
-import {
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct
-} from '@bgap/shared/types';
-import { DataService } from '../data';
+import { DataService } from '../data/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,14 +21,14 @@ export class OrderService {
     private _dataService: DataService
   ) {
     this._store
-      .pipe(select(currentUserSelectors.getAdminUser))
+      .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe((adminUser: IAdminUser): void => {
         this._adminUser = adminUser;
       });
 
     this._store
       .pipe(
-        select(groupListSelectors.getSeletedGroup),
+        select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup): void => {

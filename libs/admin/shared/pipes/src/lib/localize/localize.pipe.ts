@@ -1,9 +1,9 @@
 import { take } from 'rxjs/operators';
+
 import { Pipe, PipeTransform } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { select, Store } from '@ngrx/store';
-import { DEFAULT_LANG } from '../../const';
-import { IState } from '../../../store';
-import { currentUserSelectors } from '../../../store/selectors';
 
 @Pipe({
   name: 'localize',
@@ -19,7 +19,7 @@ export class LocalizePipe implements PipeTransform {
 
     let selectedLang;
     this._store
-      .pipe(select(currentUserSelectors.getSelectedLanguage), take(1))
+      .pipe(select(loggedUserSelectors.getSelectedLanguage), take(1))
       .subscribe((lang: string): void => {
         selectedLang = (lang || DEFAULT_LANG).substr(0, 2);
       });

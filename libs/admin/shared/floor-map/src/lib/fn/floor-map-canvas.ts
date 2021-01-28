@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-import { FLOOR_MAP_CONFIG, FLOOR_MAP_GRID_OPTIONS } from '../../const';
+import { FLOOR_MAP_CONFIG, FLOOR_MAP_GRID_OPTIONS } from '../const';
 
 import * as utils from './floor-map-utils';
 

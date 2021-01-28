@@ -4,7 +4,7 @@ import { get as _get } from 'lodash-es';
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { cleanObject, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { cleanObject, EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
 import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 

@@ -5,14 +5,14 @@ import { take } from 'rxjs/operators';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import {
   contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN, unitOpeningHoursValidator
 } from '@bgap/admin/shared/utils';
 import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { currentUserSelectors, groupListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -36,7 +36,7 @@ export class UnitFormComponent
     this._formsService = this._injector.get(FormsService);
     this._store
       .pipe(
-        select(groupListSelectors.getSelectedChainGroups),
+        select(groupsSelectors.getSelectedChainGroups),
         untilDestroyed(this)
       )
       .subscribe((groups: IGroup[]): void => {
@@ -139,7 +139,7 @@ export class UnitFormComponent
     } else {
       // Patch ChainId
       this._store
-        .pipe(select(currentUserSelectors.getSelectedChainId), take(1))
+        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string): void => {
           if (selectedChainId) {
             this.dialogForm.controls.chainId.patchValue(selectedChainId);
@@ -148,7 +148,7 @@ export class UnitFormComponent
 
       // Patch GroupId
       this._store
-        .pipe(select(currentUserSelectors.getSelectedGroupId), take(1))
+        .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string): void => {
           if (selectedGroupId) {
             this.dialogForm.controls.groupId.patchValue(selectedGroupId);

@@ -3,13 +3,13 @@ import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { chainsSelectors } from '@bgap/admin/shared/chains';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { contactFormGroup, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { EToasterType, multiLangValidator, contactFormGroup } from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import { chainListSelectors, currentUserSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +31,7 @@ export class GroupFormComponent
 
     this._store = this._injector.get(Store);
     this._store
-      .pipe(select(chainListSelectors.getAllChains), untilDestroyed(this))
+      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
       .subscribe((chains: IChain[]): void => {
         this.chains = chains;
 
@@ -72,7 +72,7 @@ export class GroupFormComponent
     } else {
       // Patch ChainId
       this._store
-        .pipe(select(currentUserSelectors.getSelectedChainId), take(1))
+        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string): void => {
           if (selectedChainId) {
             this.dialogForm.controls.chainId.patchValue(selectedChainId);

@@ -1,5 +1,5 @@
 import { ImageCompressorService } from '@bgap/admin/shared/utils';
-import { StorageService } from '@bgap/admin/shared/data';
+import { StorageService } from '@bgap/admin/shared/storage';
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { EImageType } from '@bgap/shared/types';

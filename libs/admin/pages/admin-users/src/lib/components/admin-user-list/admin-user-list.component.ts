@@ -1,3 +1,4 @@
+import { getAllAdminUsers } from 'libs/admin/shared/admin-users/src/lib/+state/admin-users.selectors';
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -6,7 +7,6 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { getAllAdminUsers } from '../../+state/admin-users.selectors';
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 
 @UntilDestroy()
