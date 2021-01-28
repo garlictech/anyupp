@@ -19,27 +19,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { FIREBASE_CONFIG } from '@bgap/shared/config';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
-  NbDialogModule,
-  NbGlobalPhysicalPosition,
-  NbLayoutModule,
-  NbMenuModule,
-  NbSidebarModule,
-  NbThemeModule,
-  NbToastrModule,
+  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
 } from '@nebular/theme';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { environment } from '../environments/environment';
 import { CoreModule } from './@core/core.module';
-import { ThemeModule } from './@theme/theme.module';
+import { ThemeModule } from '@';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DEFAULT_LANG } from './shared/const';
 import { AppStoreModule } from './store';
-import { environment } from '../environments/environment';
-import { FIREBASE_CONFIG } from '@bgap/shared/config';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -84,9 +79,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     FormsModule,
     ReactiveFormsModule,
     AppStoreModule,
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-    }),
     HttpClientModule,
     TranslateModule.forRoot({
       defaultLanguage: DEFAULT_LANG,
@@ -98,6 +90,24 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     }),
     ...NB_MODULES,
     ...FIREBASE_MODULES,
+
+    /*
+    StoreModule.forRoot(
+      {},
+      {
+        metaReducers: !environment.production ? [] : [],
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true,
+        },
+      }
+    ),
+    */
+    EffectsModule.forRoot([]),
+
+    !environment.production ? StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }) : [],
   ],
   providers: [
     { provide: REGION, useValue: 'europe-west3' },

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
 import {
-  adminUserListReducer,
+
   chainListReducer,
   currentUserReducer,
   dashboardReducer,
@@ -15,7 +15,7 @@ import {
 } from './reducer';
 import { productListReducer } from './reducer/product-list';
 import {
-  IAdminUserListState,
+
   IChainListState,
   ICurrentUserState,
   IDashboardState,
@@ -29,7 +29,7 @@ import {
 import { IProductListState } from './state/product-list';
 
 export interface IState {
-  adminUserList: IAdminUserListState;
+
   chainList: IChainListState;
   currentUser: ICurrentUserState;
   dashboard: IDashboardState;
@@ -43,7 +43,7 @@ export interface IState {
 }
 
 const reducers: ActionReducerMap<IState> = {
-  adminUserList: adminUserListReducer,
+
   chainList: chainListReducer,
   currentUser: currentUserReducer,
   dashboard: dashboardReducer,
