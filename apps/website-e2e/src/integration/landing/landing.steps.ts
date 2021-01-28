@@ -4,8 +4,8 @@ Before(() => {
   cy.visit('/');
 });
 
-Given('the user is logged in', () => {
-  cy.login('my-email@something.com', 'myPassword');
+Given('we are at the chain products', () => {
+  cy.visit('admin/products');
 });
 
 Then('the {string} message is displayed', (message: string) => {
