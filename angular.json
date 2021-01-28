@@ -1066,35 +1066,6 @@
         }
       }
     },
-    "admin-shared-logged-user2": {
-      "projectType": "library",
-      "root": "libs/admin/shared/logged-user2",
-      "sourceRoot": "libs/admin/shared/logged-user2/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/admin/shared/logged-user2/tsconfig.lib.json",
-              "libs/admin/shared/logged-user2/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/logged-user2/**/*"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/logged-user2"],
-          "options": {
-            "jestConfig": "libs/admin/shared/logged-user2/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-shared-storage": {
       "root": "libs/admin/shared/storage",
       "sourceRoot": "libs/admin/shared/storage/src",

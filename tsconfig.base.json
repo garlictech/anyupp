@@ -74,9 +74,6 @@
       "@bgap/admin/shared/logged-user": [
         "libs/admin/shared/logged-user/src/index.ts"
       ],
-      "@bgap/admin/shared/logged-user2": [
-        "libs/admin/shared/logged-user2/src/index.ts"
-      ],
       "@bgap/admin/shared/storage": ["libs/admin/shared/storage/src/index.ts"]
     }
   },

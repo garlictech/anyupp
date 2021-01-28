@@ -43,7 +43,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/users',
     '<rootDir>/libs/admin/shared/current-user',
     '<rootDir>/libs/admin/shared/logged-user',
-    '<rootDir>/libs/admin/shared/logged-user2',
     '<rootDir>/libs/admin/shared/storage',
   ],
 };
