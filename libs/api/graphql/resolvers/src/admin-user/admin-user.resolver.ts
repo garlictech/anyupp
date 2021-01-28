@@ -1,10 +1,6 @@
 import { PubSub } from 'graphql-subscriptions';
 
-import {
-  AdminUser,
-  AdminUserInput,
-  AdminUserRoleInput,
-} from '@bgap/api/graphql/schema';
+import { AdminUserInput, AdminUserRoleInput } from '@bgap/api/graphql/schema';
 import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';

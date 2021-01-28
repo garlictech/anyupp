@@ -7,7 +7,7 @@ import {
   combineReducers,
   createReducer,
   on,
-  Action
+  Action,
 } from '@ngrx/store';
 
 import { unitListActions } from '../actions';
@@ -39,6 +39,9 @@ const reducerMap: ActionReducerMap<IUnitListState> = {
 
 const reducer: ActionReducer<IUnitListState> = combineReducers(reducerMap);
 
-export function unitListReducer(state: IUnitListState | undefined, action: Action): IUnitListState {
+export function unitListReducer(
+  state: IUnitListState | undefined,
+  action: Action
+): IUnitListState {
   return reducer(state, action);
 }

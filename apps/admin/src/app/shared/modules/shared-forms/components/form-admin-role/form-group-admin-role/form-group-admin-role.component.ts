@@ -9,7 +9,6 @@ import {
   IAssignedEntityNames,
 } from '@bgap/shared/types';
 import { DataService } from '../../../../../services/data';
-import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
@@ -94,7 +93,10 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [
+          IAdminRoleEntity,
+          IAdminRoleEntity[]
+        ]): void => {
           this._store
             .pipe(
               select(

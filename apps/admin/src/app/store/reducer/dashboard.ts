@@ -17,7 +17,7 @@ export const initialDashboardState: IDashboardState = {
     showAllUserOrders: false,
     ticketListType: EDashboardTicketListType.PLACED,
     selectedLanes: ['default'],
-    historyDate: (new Date()).getTime()
+    historyDate: new Date().getTime(),
   },
 };
 
@@ -30,7 +30,7 @@ const reducer = createReducer(
     ...state,
     selectedOrderId: orderId,
   })),
-  on(dashboardActions.resetSelectedOrderId, (state) => ({
+  on(dashboardActions.resetSelectedOrderId, state => ({
     ...state,
     selectedOrderId: undefined,
   })),
@@ -55,16 +55,13 @@ const reducer = createReducer(
       orderEditing,
     },
   })),
-  on(
-    dashboardActions.setShowAllUserOrders,
-    (state, { showAllUserOrders }) => ({
-      ...state,
-      settings: {
-        ...state.settings,
-        showAllUserOrders,
-      },
-    })
-  ),
+  on(dashboardActions.setShowAllUserOrders, (state, { showAllUserOrders }) => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      showAllUserOrders,
+    },
+  })),
   on(dashboardActions.setTicketListType, (state, { ticketListType }) => ({
     ...state,
     settings: {

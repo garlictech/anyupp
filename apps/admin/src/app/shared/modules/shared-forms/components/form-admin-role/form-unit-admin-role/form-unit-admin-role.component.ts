@@ -9,7 +9,6 @@ import {
   IKeyValue,
   IUnit,
 } from '@bgap/shared/types';
-import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
@@ -102,7 +101,10 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [
+          IAdminRoleEntity,
+          IAdminRoleEntity[]
+        ]): void => {
           this._store
             .pipe(
               select(

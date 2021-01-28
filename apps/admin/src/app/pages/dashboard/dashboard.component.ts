@@ -3,17 +3,19 @@ import { filter } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IUnit } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IUnit,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import {
-  ConfirmDialogComponent
-} from '../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { zeroFill } from '../../shared/pure';
 import { DataService } from '../../shared/services/data';
-import { IState } from '../../store';
 import { dashboardActions } from '../../store/actions';
 import { dashboardSelectors, unitListSelectors } from '../../store/selectors';
 import { IDashboardSettings } from '../../store/state';
@@ -135,7 +137,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {/**/},
+          callback: (): void => {
+            /**/
+          },
           status: 'basic',
         },
       ],

@@ -1,19 +1,24 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import {
-  EDashboardListMode, EDashboardSize, ENebularButtonSize, EOrderStatus, IOrder, IStatusLog
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  IOrder,
+  IStatusLog,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import {
-  ConfirmDialogComponent
-} from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
-import {
-  currentStatus as currentStatusFn, getNextOrderItemStatus, getNextOrderStatus, getStatusColor
+  currentStatus as currentStatusFn,
+  getNextOrderItemStatus,
+  getNextOrderStatus,
+  getStatusColor,
 } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
-import { IState } from '../../../../store';
 import { dashboardSelectors } from '../../../../store/selectors';
 import { IDashboardSettings } from '../../../../store/state';
 
@@ -21,7 +26,7 @@ import { IDashboardSettings } from '../../../../store/state';
 @Component({
   selector: 'bgap-order-details',
   styleUrls: ['./order-details.component.scss'],
-  templateUrl: './order-details.component.html'
+  templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -88,17 +93,13 @@ export class OrderDetailsComponent implements OnDestroy {
     );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(
-        this.order._id,
-        status,
-        idx
-      );
+      this._orderService.updateOrderItemStatus(this.order._id, status, idx);
     }
   }
 
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog'
+      dialogClass: 'form-dialog',
     });
 
     dialog.componentRef.instance.options = {
@@ -113,14 +114,16 @@ export class OrderDetailsComponent implements OnDestroy {
               idx
             );
           },
-          status: 'success'
+          status: 'success',
         },
         {
           label: 'common.cancel',
-          callback: (): void => {/**/},
-          status: 'basic'
-        }
-      ]
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
     };
   }
 }

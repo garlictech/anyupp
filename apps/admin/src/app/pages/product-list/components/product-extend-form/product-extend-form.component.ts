@@ -5,7 +5,13 @@ import { skipWhile, take } from 'rxjs/operators';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import {
-  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
+  EProductLevel,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+  IUnit,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -15,7 +21,11 @@ import { customNumberCompare, objectToArray } from '../../../../shared/pure';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import { currentUserSelectors, productCategoryListSelectors, unitListSelectors } from '../../../../store/selectors';
+import {
+  currentUserSelectors,
+  productCategoryListSelectors,
+  unitListSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -177,7 +187,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -213,7 +223,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

@@ -85,7 +85,7 @@ export class ChainFormComponent
               );
               this.close();
             },
-            (err) => {
+            err => {
               console.error('CHAIN UPDATE ERROR', err);
             }
           );
@@ -99,7 +99,7 @@ export class ChainFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

@@ -2,7 +2,6 @@ import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
-import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -10,7 +9,7 @@ import {
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
-  NbThemeService
+  NbThemeService,
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -30,7 +29,7 @@ interface IMenuItem {
 @Component({
   selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public groups$: Observable<IGroup[]>;
@@ -56,15 +55,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userMenu = [
       {
         title: 'Profile',
-        langKey: 'header.profile'
+        langKey: 'header.profile',
       },
       {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
           this._authService.signOut();
-        }
-      }
+        },
+      },
     ];
 
     this.languageMenu = [
@@ -73,22 +72,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         langKey: 'common.lang.hungarian',
         onClick: (): void => {
           this._onLanguageSelected('hu-HU');
-        }
+        },
       },
       {
         title: 'English',
         langKey: 'common.lang.english',
         onClick: (): void => {
           this._onLanguageSelected('en-US');
-        }
+        },
       },
       {
         title: 'German',
         langKey: 'common.lang.german',
         onClick: (): void => {
           this._onLanguageSelected('de-DE');
-        }
-      }
+        },
+      },
     ];
 
     this._store

@@ -39,6 +39,9 @@ const reducerMap: ActionReducerMap<IUserListState> = {
 
 const reducer: ActionReducer<IUserListState> = combineReducers(reducerMap);
 
-export function userListReducer(state: IUserListState | undefined, action: Action): IUserListState {
+export function userListReducer(
+  state: IUserListState | undefined,
+  action: Action
+): IUserListState {
   return reducer(state, action);
 }

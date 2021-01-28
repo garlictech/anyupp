@@ -2,7 +2,10 @@ import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { IAdminUser } from '@bgap/shared/types';
 import { ConfirmDialogComponent } from '../../../../shared/modules/shared-components/components/confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../../../../shared/services/auth';
-import { EToasterType, ToasterService } from '../../../../shared/services/toaster';
+import {
+  EToasterType,
+  ToasterService,
+} from '../../../../shared/services/toaster';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
@@ -72,7 +75,9 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: () => {/**/},
+          callback: () => {
+            /**/
+          },
           status: 'basic',
         },
       ],

@@ -2,7 +2,6 @@ import { take } from 'rxjs/operators';
 import { Pipe, PipeTransform } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { DEFAULT_LANG } from '../../const';
-import { IState } from '../../../store';
 import { currentUserSelectors } from '../../../store/selectors';
 
 @Pipe({

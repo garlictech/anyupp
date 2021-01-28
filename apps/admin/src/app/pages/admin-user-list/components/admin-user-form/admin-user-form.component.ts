@@ -1,4 +1,4 @@
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -8,7 +8,6 @@ import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
 import { cleanObject, contactFormGroup } from '../../../../shared/pure';
-import { AuthService } from '../../../../shared/services/auth';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
 

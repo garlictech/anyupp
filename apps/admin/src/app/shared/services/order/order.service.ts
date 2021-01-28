@@ -1,9 +1,8 @@
 import { skipWhile } from 'rxjs/operators';
 import { currentStatus } from '../../pure/orders';
-import { IState } from '../../../store';
 import {
   currentUserSelectors,
-  groupListSelectors
+  groupListSelectors,
 } from '../../../store/selectors';
 
 import { Injectable } from '@angular/core';
@@ -15,12 +14,12 @@ import {
   IGroup,
   IOrder,
   IOrderItem,
-  IProduct
+  IProduct,
 } from '@bgap/shared/types';
 import { DataService } from '../data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
   private _adminUser: IAdminUser;
@@ -71,11 +70,7 @@ export class OrderService {
           if (
             currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED
           ) {
-            this.updateOrderItemStatus(
-              order._id,
-              EOrderStatus.PLACED,
-              idx
-            );
+            this.updateOrderItemStatus(order._id, EOrderStatus.PLACED, idx);
           }
         });
     }
@@ -101,7 +96,7 @@ export class OrderService {
           pricePerUnit: product.variants[variantId].price,
           priceSum: product.variants[variantId].price,
           tax,
-          taxSum: (product.variants[variantId].price / (100 + tax)) * tax
+          taxSum: (product.variants[variantId].price / (100 + tax)) * tax,
         },
         productId: product._id,
         productName: product.name,
@@ -109,11 +104,11 @@ export class OrderService {
         statusLog: {
           [now]: {
             status: EOrderStatus.PLACED,
-            userId: this._adminUser._id
-          }
+            userId: this._adminUser._id,
+          },
         },
         variantId,
-        variantName: product.variants[variantId].variantName
+        variantName: product.variants[variantId].variantName,
       }
     );
   }
@@ -140,8 +135,8 @@ export class OrderService {
       {
         [new Date().valueOf()]: {
           status,
-          userId: this._adminUser._id
-        }
+          userId: this._adminUser._id,
+        },
       }
     );
   }

@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { IUser } from '@bgap/shared/types';
-import { IState } from '../../store';
 import { userListSelectors } from '../../store/selectors';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';

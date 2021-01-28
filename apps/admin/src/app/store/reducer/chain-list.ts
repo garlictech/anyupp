@@ -39,6 +39,9 @@ const reducerMap: ActionReducerMap<IChainListState> = {
 
 const reducer: ActionReducer<IChainListState> = combineReducers(reducerMap);
 
-export function chainListReducer(state: IChainListState | undefined, action: Action): IChainListState {
+export function chainListReducer(
+  state: IChainListState | undefined,
+  action: Action
+): IChainListState {
   return reducer(state, action);
 }

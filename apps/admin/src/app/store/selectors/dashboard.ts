@@ -5,10 +5,7 @@ import {
 } from '@bgap/shared/types';
 import { IOrder } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { IDashboardSettings, IDashboardState } from '../state';
 import { getAllActiveOrders, getAllHistoryOrders } from './order-list';

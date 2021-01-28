@@ -2,7 +2,10 @@ import { AuthService } from '../../../../shared/services/auth';
 
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EToasterType, ToasterService } from '../../../../shared/services/toaster';
+import {
+  EToasterType,
+  ToasterService,
+} from '../../../../shared/services/toaster';
 
 @Component({
   selector: 'bgap-password-reset-form',

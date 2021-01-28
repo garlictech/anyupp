@@ -9,7 +9,6 @@ import {
   IKeyValue,
   IUnit,
 } from '@bgap/shared/types';
-import { IState } from '../../../../../../store';
 import {
   chainListSelectors,
   groupListSelectors,
@@ -36,7 +35,7 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
 
   constructor(
     private _store: Store<IState>,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: FormBuilder
   ) {
     this.groupOptions = [];
     this.chainOptions = [];
@@ -102,7 +101,10 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [
+          IAdminRoleEntity,
+          IAdminRoleEntity[]
+        ]): void => {
           this._store
             .pipe(
               select(

@@ -3,7 +3,12 @@ import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, IDetailedLane, ILaneOrderItem, IUnit
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  IDetailedLane,
+  ILaneOrderItem,
+  IUnit,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -11,9 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { DEFAULT_LANE_COLOR } from '../../../../shared/const';
 import { objectToArray } from '../../../../shared/pure';
-import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors, unitListSelectors } from '../../../../store/selectors';
+import {
+  dashboardSelectors,
+  orderListSelectors,
+  unitListSelectors,
+} from '../../../../store/selectors';
 
 const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem
@@ -23,7 +31,7 @@ const laneFilter = (selectedLanes: string[]) => (
 @Component({
   selector: 'bgap-lanes-body',
   templateUrl: './lanes-body.component.html',
-  styleUrls: ['./lanes-body.component.scss']
+  styleUrls: ['./lanes-body.component.scss'],
 })
 export class LanesBodyComponent implements OnDestroy {
   public placedItems: ILaneOrderItem[];
@@ -60,7 +68,7 @@ export class LanesBodyComponent implements OnDestroy {
       this._store.pipe(
         select(unitListSelectors.getSelectedUnit),
         filter((unit: IUnit): boolean => !!unit)
-      )
+      ),
     ])
       .pipe(debounceTime(100), untilDestroyed(this))
       .subscribe(
@@ -69,7 +77,7 @@ export class LanesBodyComponent implements OnDestroy {
           rawProcessingItems,
           rawReadyItems,
           selectedLanes,
-          unit
+          unit,
         ]: [
           ILaneOrderItem[],
           ILaneOrderItem[],
@@ -112,7 +120,7 @@ export class LanesBodyComponent implements OnDestroy {
             ).length,
             readyCount: rawReadyItems.filter(
               (i): boolean => typeof i.laneId === 'undefined'
-            ).length
+            ).length,
           });
         }
       );
@@ -138,13 +146,13 @@ export class LanesBodyComponent implements OnDestroy {
         dashboardActions.setSelectedLanes({
           selectedLanes: this.selectedLanes.filter(
             (id: string): boolean => id !== laneId
-          )
+          ),
         })
       );
     } else {
       this._store.dispatch(
         dashboardActions.setSelectedLanes({
-          selectedLanes: this.selectedLanes.concat(laneId)
+          selectedLanes: this.selectedLanes.concat(laneId),
         })
       );
     }

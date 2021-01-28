@@ -66,7 +66,7 @@ export const reducer = (accumulator, currentValue): number =>
   accumulator + currentValue;
 
 export const cleanObject = obj => {
-  let finalObj = {};
+  const finalObj = {};
   Object.keys(obj).forEach(key => {
     if (obj[key] && typeof obj[key] === 'object') {
       const nestedObj = cleanObject(obj[key]);

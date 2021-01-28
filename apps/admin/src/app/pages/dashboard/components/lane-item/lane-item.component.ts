@@ -2,23 +2,31 @@ import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ENebularButtonSize, EOrderStatus, ILaneOrderItem, IStatusLogItem, IUnit } from '@bgap/shared/types';
+import {
+  ENebularButtonSize,
+  EOrderStatus,
+  ILaneOrderItem,
+  IStatusLogItem,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { objectToArray } from '../../../../shared/pure';
 import {
-  currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
+  currentStatus as currentStatusFn,
+  getNextOrderItemStatus,
+  getOrderLaneColor,
+  getPrevOrderItemStatus,
 } from '../../../../shared/pure/orders';
 import { OrderService } from '../../../../shared/services/order';
-import { IState } from '../../../../store';
 import { productListSelectors } from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
   selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
-  styleUrls: ['./lane-item.component.scss']
+  styleUrls: ['./lane-item.component.scss'],
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem: ILaneOrderItem;

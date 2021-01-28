@@ -6,7 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -14,16 +14,16 @@ import { Store } from '@ngrx/store';
 import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
 import { EUnitMapObjectType } from '@bgap/shared/types';
 import { FLOOR_MAP_OBJECT_DEFAULTS } from '../../../../const';
-import { IState } from '../../../../../store';
 import { floorMapActions } from '../../../../../store/actions';
 
 @UntilDestroy()
 @Component({
   selector: 'bgap-floor-map-editor',
   templateUrl: './floor-map-editor.component.html',
-  styleUrls: ['./floor-map-editor.component.scss']
+  styleUrls: ['./floor-map-editor.component.scss'],
 })
-export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FloorMapEditorComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode: boolean;
   @Input() floorMap: IFloorMapData;
   public dimensionForm: FormGroup;
@@ -44,12 +44,12 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.dimensionForm = this._formBuilder.group({
       width: [w],
-      height: [h]
+      height: [h],
     });
     this.objectForm = this._formBuilder.group({
       text: [''],
       tableId: [''],
-      seatId: ['']
+      seatId: [''],
     });
 
     this.dimensionForm.valueChanges
@@ -87,7 +87,7 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
           this.objectForm.setValue({
             text: floorMapFuncs.getObjectText(e.target),
             tableId: floorMapFuncs.getRawDataField(e.target, 'tID') || '',
-            seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || ''
+            seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || '',
           });
 
           this.objectForm.controls['tableId'][
@@ -100,7 +100,7 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
           this.objectForm.setValue({
             text: '',
             tableId: '',
-            seatId: ''
+            seatId: '',
           });
         }
       });
@@ -112,7 +112,7 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
 
       this.dimensionForm.patchValue({
         width: floorMapFuncs.mapRawData.w,
-        height: floorMapFuncs.mapRawData.h
+        height: floorMapFuncs.mapRawData.h,
       });
     }
 
@@ -132,7 +132,7 @@ export class FloorMapEditorComponent implements OnInit, OnDestroy, AfterViewInit
       id,
       t: objectType,
       ...FLOOR_MAP_OBJECT_DEFAULTS.common,
-      ...FLOOR_MAP_OBJECT_DEFAULTS[objectType]
+      ...FLOOR_MAP_OBJECT_DEFAULTS[objectType],
     };
 
     floorMapFuncs.loadRawDataObject(rawDataObject, true);

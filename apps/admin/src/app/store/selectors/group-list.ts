@@ -1,10 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { IAdminUserSettings, IGroup } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { groupListAdapter } from '../reducer';
 import { IGroupEntityState, IGroupListState } from '../state';
@@ -41,9 +38,7 @@ export const getSelectedChainGroups = createSelector(
     )
 );
 
-export const getGroupsByChainId = (
-  chainId: string
-) => {
+export const getGroupsByChainId = (chainId: string) => {
   return createSelector(getAllGroups, (groups: IGroup[]): IGroup[] =>
     groups.filter((group): boolean => group.chainId === chainId)
   );

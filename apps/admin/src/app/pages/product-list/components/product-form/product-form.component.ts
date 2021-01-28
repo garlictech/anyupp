@@ -4,17 +4,31 @@ import { take } from 'rxjs/operators';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
-import { customNumberCompare, multiLangValidator, objectToArray } from '../../../../shared/pure';
+import {
+  customNumberCompare,
+  multiLangValidator,
+  objectToArray,
+} from '../../../../shared/pure';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import { currentUserSelectors, productCategoryListSelectors } from '../../../../store/selectors';
+import {
+  currentUserSelectors,
+  productCategoryListSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -181,7 +195,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -208,7 +222,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

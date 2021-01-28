@@ -1,10 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { IProduct } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
   chainProductListAdapter,
@@ -33,9 +30,7 @@ export const getAllChainProductCount = chainProductListAdapter.getSelectors(
   chainProductListSelector
 ).selectTotal;
 
-export const getChainProductById = (
-  id: string
-) => {
+export const getChainProductById = (id: string) => {
   return createSelector(
     getAllChainProducts,
     (products: IProduct[]): IProduct =>
@@ -71,9 +66,7 @@ export const getAllGroupProductCount = groupProductListAdapter.getSelectors(
   groupProductListSelector
 ).selectTotal;
 
-export const getGroupProductById = (
-  id: string
-) => {
+export const getGroupProductById = (id: string) => {
   return createSelector(
     getAllGroupProducts,
     (products: IProduct[]): IProduct =>
@@ -142,9 +135,7 @@ export const getAllUnitProductCount = unitProductListAdapter.getSelectors(
   unitProductListSelector
 ).selectTotal;
 
-export const getUnitProductById = (
-  id: string
-) => {
+export const getUnitProductById = (id: string) => {
   return createSelector(
     getAllUnitProducts,
     (products: IProduct[]): IProduct =>
@@ -221,9 +212,7 @@ export const getAllGeneratedUnitProductCount = generatedUnitProductListAdapter.g
   generatedUnitProductListSelector
 ).selectTotal;
 
-export const getGeneratedProductImageById = (
-  id: string
-) => {
+export const getGeneratedProductImageById = (id: string) => {
   return createSelector(
     getAllGeneratedUnitProducts,
     (products: IProduct[]): string =>

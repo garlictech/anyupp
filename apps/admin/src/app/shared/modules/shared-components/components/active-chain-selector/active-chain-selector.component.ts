@@ -5,17 +5,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { IAdminUser, IChain } from '@bgap/shared/types';
 import { DataService } from '../../../../services/data';
-import { IState } from '../../../../../store';
 import {
   chainListSelectors,
-  currentUserSelectors
+  currentUserSelectors,
 } from '../../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
   selector: 'bgap-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
-  styleUrls: ['./active-chain-selector.component.scss']
+  styleUrls: ['./active-chain-selector.component.scss'],
 })
 export class ActiveChainSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
@@ -58,7 +57,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!
         selectedUnitId: null, // Reset unit id!
-        selectedProductCategoryId: null // Reset category id!
+        selectedProductCategoryId: null, // Reset category id!
       });
     }
   }

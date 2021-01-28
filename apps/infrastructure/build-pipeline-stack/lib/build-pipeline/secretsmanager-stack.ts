@@ -12,7 +12,7 @@ export class SecretsManagerStack extends sst.Stack {
       'GithubOauthTokenSecret',
       {
         secretArn:
-          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:GithubAccessToken-2xxxSw'
+          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:GithubAccessToken-2xxxSw',
       }
     );
   }

@@ -11,6 +11,6 @@ export default function main(app: App): void {
     repoOwner: 'bgap',
     repoName: 'anyupp',
     repoBranch: 'dev',
-    secretsManager: secretsManagerStack
+    secretsManager: secretsManagerStack,
   });
 }

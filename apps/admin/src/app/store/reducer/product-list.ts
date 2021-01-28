@@ -113,6 +113,9 @@ const reducerMap: ActionReducerMap<IProductListState> = {
 
 const reducer: ActionReducer<IProductListState> = combineReducers(reducerMap);
 
-export function productListReducer(state: IProductListState | undefined, action: Action): IProductListState {
+export function productListReducer(
+  state: IProductListState | undefined,
+  action: Action
+): IProductListState {
   return reducer(state, action);
 }

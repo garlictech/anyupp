@@ -1,7 +1,4 @@
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { productCategoryListAdapter } from '../reducer';
 import {

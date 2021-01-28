@@ -154,7 +154,9 @@ const _onScaled = (e): void => {
 
   // Update radius
   if ((<fabric.Circle>bg).radius) {
-    (<fabric.Circle>bg).setRadius(_roundScale((<fabric.Circle>bg).radius * e.target.scaleX));
+    (<fabric.Circle>bg).setRadius(
+      _roundScale((<fabric.Circle>bg).radius * e.target.scaleX)
+    );
   }
 
   // Reset text scale

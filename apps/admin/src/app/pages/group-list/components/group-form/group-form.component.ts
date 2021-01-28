@@ -11,7 +11,10 @@ import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-f
 import { contactFormGroup, multiLangValidator } from '../../../../shared/pure';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import { chainListSelectors, currentUserSelectors } from '../../../../store/selectors';
+import {
+  chainListSelectors,
+  currentUserSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -102,7 +105,7 @@ export class GroupFormComponent
               );
               this.close();
             },
-            (err) => {
+            err => {
               console.error('GROUP UPDATE ERROR', err);
             }
           );
@@ -116,7 +119,7 @@ export class GroupFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

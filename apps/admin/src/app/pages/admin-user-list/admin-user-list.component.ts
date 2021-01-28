@@ -6,7 +6,6 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { IState } from '../../store';
 import { adminUserListSelectors } from '../../store/selectors';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 

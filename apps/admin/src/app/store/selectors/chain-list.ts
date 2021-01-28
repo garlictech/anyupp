@@ -1,10 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { IAdminUserSettings, IChain } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { chainListAdapter } from '../reducer';
 import { IChainEntityState, IChainListState } from '../state';

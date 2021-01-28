@@ -68,5 +68,3 @@ export interface IFabricObjectProperties {
   top: number;
   caption: string;
 }
-
-

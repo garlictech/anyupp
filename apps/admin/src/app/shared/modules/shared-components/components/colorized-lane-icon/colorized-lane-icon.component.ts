@@ -1,6 +1,5 @@
 import { skipWhile, take } from 'rxjs/operators';
 import { IUnit } from '@bgap/shared/types';
-import { IState } from '../../../../../store';
 import { unitListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';
@@ -10,7 +9,7 @@ import { DEFAULT_LANE_COLOR } from '../../../../const';
 @Component({
   selector: 'bgap-colorized-lane-icon',
   templateUrl: './colorized-lane-icon.component.html',
-  styleUrls: ['./colorized-lane-icon.component.scss']
+  styleUrls: ['./colorized-lane-icon.component.scss'],
 })
 export class ColorizedLaneIconComponent implements OnInit {
   @Input() laneId: string;

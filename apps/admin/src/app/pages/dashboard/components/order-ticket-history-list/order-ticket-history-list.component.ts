@@ -8,9 +8,11 @@ import { select, Store } from '@ngrx/store';
 
 import { customNumberCompare } from '../../../../shared/pure';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
-import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
-import { dashboardSelectors, orderListSelectors } from '../../../../store/selectors';
+import {
+  dashboardSelectors,
+  orderListSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

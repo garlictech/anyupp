@@ -8,8 +8,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { dayInterval } from '../../../../shared/pure';
-import { IState } from '../../../../store';
-import { groupListSelectors, orderListSelectors } from '../../../../store/selectors';
+import {
+  groupListSelectors,
+  orderListSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({

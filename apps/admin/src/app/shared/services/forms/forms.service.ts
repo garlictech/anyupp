@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { IState } from '../../../store';
 import { adminUserListSelectors } from '../../../store/selectors';
 import { v1 as uuidV1 } from 'uuid';
 
@@ -79,7 +78,9 @@ export class FormsService {
     });
   };
 
-  public adminExistingEmailValidator = (control: FormGroup): Observable<IAdminUser> =>
+  public adminExistingEmailValidator = (
+    control: FormGroup
+  ): Observable<IAdminUser> =>
     this._store.pipe(
       select(adminUserListSelectors.getAdminUserByEmail(control.value)),
       take(1)

@@ -1,10 +1,9 @@
 import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { IAdminUser, IProductCategory } from '@bgap/shared/types';
-import { IState } from '../../../../../store';
 import {
   currentUserSelectors,
-  productCategoryListSelectors
+  productCategoryListSelectors,
 } from '../../../../../store/selectors';
 
 import { Component, Input, OnDestroy } from '@angular/core';
@@ -16,7 +15,7 @@ import { DataService } from '../../../../services/data';
 @Component({
   selector: 'bgap-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
-  styleUrls: ['./active-product-category-selector.component.scss']
+  styleUrls: ['./active-product-category-selector.component.scss'],
 })
 export class ActiveProductCategorySelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
@@ -57,7 +56,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser._id, {
         ..._get(this._adminUser, 'settings', {}),
-        selectedProductCategoryId: productCategoryId
+        selectedProductCategoryId: productCategoryId,
       });
     }
   }

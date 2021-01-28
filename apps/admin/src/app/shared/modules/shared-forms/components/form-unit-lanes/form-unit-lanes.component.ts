@@ -1,5 +1,4 @@
 import { FormsService } from '../../../../services/forms';
-import { IState } from '../../../../../store';
 import { productListSelectors } from '../../../../../store/selectors';
 
 import { Component, Input, OnInit } from '@angular/core';

@@ -1,10 +1,7 @@
 import { get as _get } from 'lodash-es';
 import { IAdminUserSettings, IUnit } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { unitListAdapter } from '../reducer';
 import { IUnitEntityState, IUnitListState } from '../state';
@@ -30,9 +27,7 @@ export const getUnitById = (id: string) => {
   );
 };
 
-export const getUnitsByGroupId = (
-  groupId: string
-) => {
+export const getUnitsByGroupId = (groupId: string) => {
   return createSelector(getAllUnits, (units: IUnit[]): IUnit[] =>
     units.filter((unit): boolean => unit.groupId === groupId)
   );

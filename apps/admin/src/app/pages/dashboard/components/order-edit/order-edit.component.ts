@@ -2,7 +2,12 @@ import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 
 import { Component, Input, OnDestroy } from '@angular/core';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  EPaymentMethod,
+  IAdminUser,
+  IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -10,20 +15,19 @@ import { select, Store } from '@ngrx/store';
 import { currentStatus as currentStatusFn } from '../../../../shared/pure/orders';
 import { DataService } from '../../../../shared/services/data';
 import { OrderService } from '../../../../shared/services/order';
-import { IState } from '../../../../store';
 import { dashboardActions } from '../../../../store/actions';
 import { currentUserSelectors } from '../../../../store/selectors';
 
 interface IPaymentMethodKV {
   key: string;
-  value: EPaymentMethod
+  value: EPaymentMethod;
 }
 
 @UntilDestroy()
 @Component({
   selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
-  styleUrls: ['./order-edit.component.scss']
+  styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -45,7 +49,7 @@ export class OrderEditComponent implements OnDestroy {
     Object.keys(EPaymentMethod).forEach((key): void => {
       this.paymentMethods.push({
         key,
-        value: EPaymentMethod[key]
+        value: EPaymentMethod[key],
       });
     });
 
@@ -86,7 +90,7 @@ export class OrderEditComponent implements OnDestroy {
 
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: false
+        orderEditing: false,
       })
     );
   }
@@ -105,7 +109,7 @@ export class OrderEditComponent implements OnDestroy {
       this._adminUser.settings.selectedUnitId,
       this.order._id,
       {
-        paymentMethod: method
+        paymentMethod: method,
       }
     );
   }

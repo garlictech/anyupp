@@ -43,26 +43,26 @@ export class AdminUserRoleFormComponent
   public submit(): void {
     if (this.dialogForm.valid) {
       this._apollo
-      .mutate({
-        mutation: UpdateAdminUserRole,
-        variables: {
-          data: cleanObject(this.dialogForm.value.roles),
-          id: this.adminUser._id,
-        },
-      })
-      .subscribe(
-        ({ data }) => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful'
-          );
-          this.close();
-        },
-        error => {
-          console.error('there was an error sending the query', error);
-        }
-      );
+        .mutate({
+          mutation: UpdateAdminUserRole,
+          variables: {
+            data: cleanObject(this.dialogForm.value.roles),
+            id: this.adminUser._id,
+          },
+        })
+        .subscribe(
+          ({ data }) => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
+            this.close();
+          },
+          error => {
+            console.error('there was an error sending the query', error);
+          }
+        );
     }
   }
 

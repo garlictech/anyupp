@@ -1,7 +1,7 @@
 import {
   EDashboardListMode,
   EDashboardSize,
-  EDashboardTicketListType
+  EDashboardTicketListType,
 } from '@bgap/shared/types';
 
 export interface IDashboardSettings {

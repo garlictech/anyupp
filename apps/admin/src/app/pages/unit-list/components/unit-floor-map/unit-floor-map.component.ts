@@ -53,7 +53,7 @@ export class UnitFloorMapComponent
           );
           this.close();
         },
-        (err) => {
+        err => {
           console.error('GROUP UPDATE ERROR', err);
         }
       );

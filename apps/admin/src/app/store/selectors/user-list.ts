@@ -1,9 +1,6 @@
 import { IUser } from '@bgap/shared/types';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { userListAdapter } from '../reducer';
 import { IUserEntityState, IUserListState } from '../state';

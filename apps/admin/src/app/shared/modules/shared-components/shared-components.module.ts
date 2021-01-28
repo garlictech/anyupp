@@ -64,7 +64,7 @@ const COMPONENTS = [
   StatusLedComponent,
   ColorizedLaneIconComponent,
   FloorMapEditorComponent,
-  ContactComponent
+  ContactComponent,
 ];
 
 @NgModule({

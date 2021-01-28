@@ -6,8 +6,11 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { IState } from '../../store';
-import { chainListSelectors, currentUserSelectors, groupListSelectors } from '../../store/selectors';
+import {
+  chainListSelectors,
+  currentUserSelectors,
+  groupListSelectors,
+} from '../../store/selectors';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 
 @UntilDestroy()

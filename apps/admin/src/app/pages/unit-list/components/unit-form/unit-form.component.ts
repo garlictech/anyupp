@@ -4,17 +4,30 @@ import { take } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { PAYMENT_MODES, TIME_FORMAT_PATTERN } from '../../../../shared/const';
 import { AbstractFormDialogComponent } from '../../../../shared/modules/shared-forms/components/abstract-form-dialog';
-import { contactFormGroup, multiLangValidator, unitOpeningHoursValidator } from '../../../../shared/pure';
+import {
+  contactFormGroup,
+  multiLangValidator,
+  unitOpeningHoursValidator,
+} from '../../../../shared/pure';
 import { FormsService } from '../../../../shared/services/forms';
 import { EToasterType } from '../../../../shared/services/toaster';
 import { IState } from '../../../../store';
-import { currentUserSelectors, groupListSelectors } from '../../../../store/selectors';
+import {
+  currentUserSelectors,
+  groupListSelectors,
+} from '../../../../store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -184,7 +197,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP UPDATE ERROR', err);
           }
         );
@@ -198,7 +211,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP INSERT ERROR', err);
           }
         );
