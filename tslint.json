@@ -50,7 +50,6 @@
     "triple-equals": [true, "allow-null-check"],
     "unified-signatures": true,
     "variable-name": false,
-
     "nx-enforce-module-boundaries": [
       true,
       {
