@@ -2,12 +2,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { unitsSelectors } from '@bgap/admin/shared/units';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
   fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
   registerCanvasEvent, setBgColor, setBorder
 } from '@bgap/admin/shared/floor-map';
-import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/orders';
+import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { objectToArray } from '@bgap/admin/shared/utils';
 import {
   IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit

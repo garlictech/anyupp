@@ -2,7 +2,7 @@ import { get as _get, set as _set } from 'lodash-es';
 import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { EImageType, IProductCategory } from '@bgap/shared/types';

@@ -4,9 +4,9 @@ import { startWith, take } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { unitsSelectors } from '@bgap/admin/shared/units';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

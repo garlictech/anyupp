@@ -1,7 +1,7 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
 } from '@bgap/shared/types';

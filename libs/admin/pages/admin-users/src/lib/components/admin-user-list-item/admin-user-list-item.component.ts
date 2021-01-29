@@ -6,7 +6,7 @@ import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
-import { AuthService } from '@bgap/admin/shared/auth';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@bgap/admin/shared/auth';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 
 @Component({

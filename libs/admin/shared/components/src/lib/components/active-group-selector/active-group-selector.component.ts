@@ -2,9 +2,9 @@ import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { DataService } from '@bgap/admin/shared/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

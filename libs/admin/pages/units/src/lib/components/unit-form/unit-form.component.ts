@@ -5,8 +5,8 @@ import { take } from 'rxjs/operators';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN, unitOpeningHoursValidator
 } from '@bgap/admin/shared/utils';

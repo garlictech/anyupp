@@ -1,4 +1,4 @@
-import { getAllAdminUsers } from 'libs/admin/shared/admin-users/src/lib/+state/admin-users.selectors';
+import { getAllAdminUsers } from 'libs/admin/shared/data-access/admin-users/src/lib/+state/admin-users.selectors';
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';

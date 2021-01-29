@@ -1,7 +1,7 @@
 import { skipWhile, take } from 'rxjs/operators';
 
 import { Component, Input, OnInit } from '@angular/core';
-import { unitsSelectors } from '@bgap/admin/shared/units';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import { IUnit } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';

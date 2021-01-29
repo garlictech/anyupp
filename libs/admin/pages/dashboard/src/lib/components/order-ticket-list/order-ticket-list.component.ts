@@ -2,8 +2,8 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
-import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/orders';
+import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import { EDashboardSize, EDashboardTicketListType, ENebularButtonSize, EOrderStatus, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

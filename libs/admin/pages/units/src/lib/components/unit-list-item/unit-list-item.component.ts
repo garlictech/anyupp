@@ -1,7 +1,7 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 
 import { Component, Input } from '@angular/core';
-import { DataService } from '@bgap/admin/shared/data';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 

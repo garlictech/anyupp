@@ -1,10 +1,10 @@
 import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { dashboardActions } from '@bgap/admin/shared/dashboard';
-import { DataService, OrderService } from '@bgap/admin/shared/data';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/orders';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
+import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
+import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import {
   EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
 } from '@bgap/shared/types';
