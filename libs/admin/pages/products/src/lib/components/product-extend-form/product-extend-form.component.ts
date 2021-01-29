@@ -10,7 +10,22 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import { customNumberCompare, EToasterType, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  customNumberCompare,
+  EToasterType,
+  objectToArray,
+} from '@bgap/admin/shared/utils';
+import {
+  EProductLevel,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+  IUnit,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -175,7 +190,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -211,7 +226,7 @@ export class ProductExtendFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

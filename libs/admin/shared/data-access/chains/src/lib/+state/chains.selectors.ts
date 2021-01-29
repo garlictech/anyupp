@@ -2,7 +2,11 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { IAdminUserSettings, IChain } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { CHAINS_FEATURE_KEY, chainsAdapter, IChainsState } from './chains.reducer';
+import {
+  CHAINS_FEATURE_KEY,
+  chainsAdapter,
+  IChainsState,
+} from './chains.reducer';
 
 // Lookup the 'Chains' feature state managed by NgRx
 export const getChainsState = createFeatureSelector<IChainsState>(
@@ -21,8 +25,9 @@ export const getChainsError = createSelector(
   (state: IChainsState) => state.error
 );
 
-export const getAllChains = createSelector(getChainsState, (state: IChainsState) =>
-  selectAll(state)
+export const getAllChains = createSelector(
+  getChainsState,
+  (state: IChainsState) => selectAll(state)
 );
 
 export const getChainsEntities = createSelector(
@@ -41,7 +46,6 @@ export const getSelected = createSelector(
   (entities, selectedId) => selectedId && entities[selectedId]
 );
 
-
 export const getChainById = (id: string) => {
   return createSelector(
     getAllChains,
@@ -54,5 +58,5 @@ export const getSeletedChain = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllChains,
   (userSettings: IAdminUserSettings, chains: IChain[]): IChain =>
-    chains.find((chain): boolean => chain._id === userSettings?.selectedChainId))
-;
+    chains.find((chain): boolean => chain._id === userSettings?.selectedChainId)
+);

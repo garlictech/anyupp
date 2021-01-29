@@ -20,10 +20,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
   public units$: Observable<IUnit[]>;
   private _adminUser: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.units$ = this._store.pipe(
       select(unitsSelectors.getSelectedGroupUnits),

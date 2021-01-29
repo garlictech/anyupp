@@ -6,21 +6,26 @@ import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  EPaymentMethod,
+  IAdminUser,
+  IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 interface IPaymentMethodKV {
   key: string;
-  value: EPaymentMethod
+  value: EPaymentMethod;
 }
 
 @UntilDestroy()
 @Component({
   selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
-  styleUrls: ['./order-edit.component.scss']
+  styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -42,7 +47,7 @@ export class OrderEditComponent implements OnDestroy {
     Object.keys(EPaymentMethod).forEach((key): void => {
       this.paymentMethods.push({
         key,
-        value: EPaymentMethod[key]
+        value: EPaymentMethod[key],
       });
     });
 
@@ -83,7 +88,7 @@ export class OrderEditComponent implements OnDestroy {
 
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: false
+        orderEditing: false,
       })
     );
   }
@@ -102,7 +107,7 @@ export class OrderEditComponent implements OnDestroy {
       this._adminUser.settings.selectedUnitId,
       this.order._id,
       {
-        paymentMethod: method
+        paymentMethod: method,
       }
     );
   }

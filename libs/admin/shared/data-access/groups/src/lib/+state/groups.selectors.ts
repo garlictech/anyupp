@@ -4,7 +4,11 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { IAdminUserSettings, IGroup } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { GROUPS_FEATURE_KEY, groupsAdapter, IGroupsState } from './groups.reducer';
+import {
+  GROUPS_FEATURE_KEY,
+  groupsAdapter,
+  IGroupsState,
+} from './groups.reducer';
 
 // Lookup the 'Groups' feature state managed by NgRx
 export const getGroupsState = createFeatureSelector<IGroupsState>(
@@ -23,8 +27,9 @@ export const getGroupsError = createSelector(
   (state: IGroupsState) => state.error
 );
 
-export const getAllGroups = createSelector(getGroupsState, (state: IGroupsState) =>
-  selectAll(state)
+export const getAllGroups = createSelector(
+  getGroupsState,
+  (state: IGroupsState) => selectAll(state)
 );
 
 export const getGroupsEntities = createSelector(
@@ -42,7 +47,6 @@ export const getSelected = createSelector(
   getSelectedId,
   (entities, selectedId) => selectedId && entities[selectedId]
 );
-
 
 export const getGroupById = (id: string) => {
   return createSelector(
@@ -62,9 +66,7 @@ export const getSelectedChainGroups = createSelector(
     )
 );
 
-export const getGroupsByChainId = (
-  chainId: string
-) => {
+export const getGroupsByChainId = (chainId: string) => {
   return createSelector(getAllGroups, (groups: IGroup[]): IGroup[] =>
     groups.filter((group): boolean => group.chainId === chainId)
   );

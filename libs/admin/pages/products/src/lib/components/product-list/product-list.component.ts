@@ -7,11 +7,21 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
-import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
-import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
+import {
+  EAdminRole,
+  EProductLevel,
+  IAdminUser,
+  IGroup,
+  IProduct,
+  IProductOrderChangeEvent,
+} from '@bgap/shared/types';
+import {
+  NbDialogService,
+  NbTabComponent,
+  NbTabsetComponent,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
 
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
@@ -84,9 +94,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     );
     this._store
       .pipe(
-        select(
-          productsSelectors.getExtendedUnitProductsOfSelectedCategory()
-        ),
+        select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
         map((products): IProduct[] =>
           products.sort(customNumberCompare('position'))
         ),
@@ -101,9 +109,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     combineLatest([
       this._store.pipe(
-        select(
-          productsSelectors.getPendingGroupProductsOfSelectedCategory()
-        ),
+        select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
         untilDestroyed(this)
       ),
       this._store.pipe(

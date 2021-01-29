@@ -16,7 +16,7 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
 @Component({
   selector: 'bgap-order-ticket-body',
   templateUrl: './order-ticket-body.component.html',
-  styleUrls: ['./order-ticket-body.component.scss']
+  styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public dashboardSettings: IDashboardSettings;
@@ -77,7 +77,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     if (this.selectedOrder) {
       this.ordersSum = {
         selected: this.selectedOrder.sumPriceShown.priceSum,
-        currency: this.selectedOrder.sumPriceShown.currency
+        currency: this.selectedOrder.sumPriceShown.currency,
       };
 
       this._store
@@ -96,9 +96,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       this._store
         .pipe(
           select(
-            ordersSelectors.getActiveOrdersByUserId(
-              this.selectedOrder.userId
-            )
+            ordersSelectors.getActiveOrdersByUserId(this.selectedOrder.userId)
           ),
           take(1)
         )
@@ -117,7 +115,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public editSelectedOrder(): void {
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: !this.dashboardSettings.orderEditing
+        orderEditing: !this.dashboardSettings.orderEditing,
       })
     );
   }
@@ -125,7 +123,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public toggleShowAllUserOrders(): void {
     this._store.dispatch(
       dashboardActions.setShowAllUserOrders({
-        showAllUserOrders: !this.dashboardSettings.showAllUserOrders
+        showAllUserOrders: !this.dashboardSettings.showAllUserOrders,
       })
     );
   }
@@ -143,7 +141,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     */
 
     const dialog = this._nbDialogService.open(OrderPrintComponent, {
-      dialogClass: 'print-dialog'
+      dialogClass: 'print-dialog',
     });
 
     dialog.componentRef.instance.orders = this.dashboardSettings

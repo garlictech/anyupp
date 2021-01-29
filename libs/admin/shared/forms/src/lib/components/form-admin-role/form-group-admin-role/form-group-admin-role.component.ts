@@ -22,10 +22,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedGroups: IAssignedEntityNames[];
 
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.groupOptions = [];
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
@@ -83,12 +80,13 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([selectorValue, entities]: [IAdminRoleEntity, IAdminRoleEntity[]]): void => {
+        ([selectorValue, entities]: [
+          IAdminRoleEntity,
+          IAdminRoleEntity[]
+        ]): void => {
           this._store
             .pipe(
-              select(
-                groupsSelectors.getGroupsByChainId(selectorValue.chainId)
-              )
+              select(groupsSelectors.getGroupsByChainId(selectorValue.chainId))
             )
             .pipe(take(1))
             .subscribe((groups): void => {

@@ -1,9 +1,17 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictTemplates": true
+  },
   "compilerOptions": {
     "rootDir": ".",
+    "strict": true,
     "sourceMap": true,
     "declaration": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -16,8 +24,10 @@
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "baseUrl": ".",
     "paths": {
+      "*": ["*", "types/*"],
       "@bgap/api/graphql/resolvers": [
         "libs/api/graphql/resolvers/src/index.ts"
       ],
@@ -77,5 +87,5 @@
       "@bgap/admin/shared/data-access/storage": ["libs/admin/shared/data-access/storage/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist", "artifacts"]
 }

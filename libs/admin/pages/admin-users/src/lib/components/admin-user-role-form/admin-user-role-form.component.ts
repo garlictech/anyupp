@@ -11,104 +11,105 @@ import { IAdminUser } from '@bgap/shared/types';
 @Component({
   selector: 'bgap-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
-  styleUrls: ['./admin-user-role-form.component.scss']
+  styleUrls: ['./admin-user-role-form.component.scss'],
 })
-export class AdminUserRoleFormComponent extends AbstractFormDialogComponent
-implements OnInit {
-public adminUser: IAdminUser;
-private _apollo: Apollo;
+export class AdminUserRoleFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
+  public adminUser: IAdminUser;
+  private _apollo: Apollo;
 
-constructor(protected _injector: Injector) {
-  super(_injector);
+  constructor(protected _injector: Injector) {
+    super(_injector);
 
-  this._apollo = this._injector.get(Apollo);
-}
-
-get userImage(): string {
-  return _get(this.adminUser, 'profileImage');
-}
-
-ngOnInit(): void {
-  this.dialogForm = this._formBuilder.group({
-    roles: this._formBuilder.group({
-      role: ['', [Validators.required]],
-      entities: [[]],
-    }),
-  });
-
-  this.dialogForm.patchValue(this.adminUser);
-}
-
-public submit(): void {
-  if (this.dialogForm.valid) {
-    this._apollo
-    .mutate({
-      mutation: UpdateAdminUserRole,
-      variables: {
-        data: cleanObject(this.dialogForm.value.roles),
-        id: this.adminUser._id,
-      },
-    })
-    .subscribe(
-      ({ data }) => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.updateSuccessful'
-        );
-        this.close();
-      },
-      error => {
-        console.error('there was an error sending the query', error);
-      }
-    );
+    this._apollo = this._injector.get(Apollo);
   }
-}
 
-public imageUploadCallback = (imagePath: string): void => {
-  this.dialogForm.controls.profileImage.setValue(imagePath);
-
-  // Update existing user's image
-  if (_get(this.adminUser, '_id')) {
-    this._dataService
-      .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
-      .then((): void => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageUploadSuccess'
-        );
-      });
-  } else {
-    this._toasterService.show(
-      EToasterType.SUCCESS,
-      '',
-      'common.imageUploadSuccess'
-    );
+  get userImage(): string {
+    return _get(this.adminUser, 'profileImage');
   }
-};
 
-public imageRemoveCallback = (): void => {
-  this.dialogForm.controls.profileImage.setValue('');
-  delete this.adminUser.profileImage;
+  ngOnInit(): void {
+    this.dialogForm = this._formBuilder.group({
+      roles: this._formBuilder.group({
+        role: ['', [Validators.required]],
+        entities: [[]],
+      }),
+    });
 
-  // Update existing user's image
-  if (_get(this.adminUser, '_id')) {
-    this._dataService
-      .updateAdminUserProfileImagePath(this.adminUser._id, null)
-      .then((): void => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageRemoveSuccess'
-        );
-      });
-  } else {
-    this._toasterService.show(
-      EToasterType.SUCCESS,
-      '',
-      'common.imageRemoveSuccess'
-    );
+    this.dialogForm.patchValue(this.adminUser);
   }
-};
+
+  public submit(): void {
+    if (this.dialogForm.valid) {
+      this._apollo
+        .mutate({
+          mutation: UpdateAdminUserRole,
+          variables: {
+            data: cleanObject(this.dialogForm.value.roles),
+            id: this.adminUser._id,
+          },
+        })
+        .subscribe(
+          ({ data }) => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful'
+            );
+            this.close();
+          },
+          error => {
+            console.error('there was an error sending the query', error);
+          }
+        );
+    }
+  }
+
+  public imageUploadCallback = (imagePath: string): void => {
+    this.dialogForm.controls.profileImage.setValue(imagePath);
+
+    // Update existing user's image
+    if (_get(this.adminUser, '_id')) {
+      this._dataService
+        .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess'
+          );
+        });
+    } else {
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageUploadSuccess'
+      );
+    }
+  };
+
+  public imageRemoveCallback = (): void => {
+    this.dialogForm.controls.profileImage.setValue('');
+    delete this.adminUser.profileImage;
+
+    // Update existing user's image
+    if (_get(this.adminUser, '_id')) {
+      this._dataService
+        .updateAdminUserProfileImagePath(this.adminUser._id, null)
+        .then((): void => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess'
+          );
+        });
+    } else {
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.imageRemoveSuccess'
+      );
+    }
+  };
 }

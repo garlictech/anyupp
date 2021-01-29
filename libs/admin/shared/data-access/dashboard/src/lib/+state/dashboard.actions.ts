@@ -1,9 +1,8 @@
-
 import { createAction, props } from '@ngrx/store';
 import {
   EDashboardListMode,
   EDashboardSize,
-  EDashboardTicketListType
+  EDashboardTicketListType,
 } from '@bgap/shared/types';
 
 export const resetDashboard = createAction('[Dashboard] Reset dashboard');

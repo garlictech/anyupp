@@ -13,17 +13,14 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-active-chain-selector',
   templateUrl: './active-chain-selector.component.html',
-  styleUrls: ['./active-chain-selector.component.scss']
+  styleUrls: ['./active-chain-selector.component.scss'],
 })
 export class ActiveChainSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public chains$: Observable<IChain[]>;
   private _adminUser: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
@@ -56,7 +53,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!
         selectedUnitId: null, // Reset unit id!
-        selectedProductCategoryId: null // Reset category id!
+        selectedProductCategoryId: null, // Reset category id!
       });
     }
   }

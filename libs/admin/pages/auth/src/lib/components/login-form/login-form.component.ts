@@ -5,7 +5,7 @@ import { AuthService } from '@bgap/admin/shared/data-access/auth';
 @Component({
   selector: 'bgap-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+  styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
   @Input() toggleResetForm;

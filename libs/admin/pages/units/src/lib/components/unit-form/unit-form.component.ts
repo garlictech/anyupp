@@ -8,9 +8,20 @@ import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/fo
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
-  contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN, unitOpeningHoursValidator
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -182,7 +193,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP UPDATE ERROR', err);
           }
         );
@@ -196,7 +207,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

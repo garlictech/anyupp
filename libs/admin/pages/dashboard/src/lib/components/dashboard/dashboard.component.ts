@@ -8,7 +8,12 @@ import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { zeroFill } from '@bgap/admin/shared/utils';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IUnit } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IUnit,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -130,7 +135,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {/**/},
+          callback: (): void => {
+            /**/
+          },
           status: 'basic',
         },
       ],

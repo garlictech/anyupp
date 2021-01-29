@@ -5,7 +5,12 @@ import { combineLatest, Observable } from 'rxjs';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { EProductType, IOrder, IOrderAmount, IProduct } from '@bgap/shared/types';
+import {
+  EProductType,
+  IOrder,
+  IOrderAmount,
+  IProduct,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -149,9 +154,7 @@ export class ReportsHourlyBreakdownComponent
     });
 
     combineLatest([
-      this._store.pipe(
-        select(productsSelectors.getAllGeneratedUnitProducts)
-      ),
+      this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)),
       this.orders$,
     ])
       .pipe(untilDestroyed(this))

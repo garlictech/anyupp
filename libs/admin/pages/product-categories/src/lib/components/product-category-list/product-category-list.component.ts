@@ -5,7 +5,10 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
-import { IProductCategory, IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
+import {
+  IProductCategory,
+  IProductCategoryOrderChangeEvent,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

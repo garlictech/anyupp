@@ -9,7 +9,12 @@ import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import {
+  NbMediaBreakpointsService,
+  NbMenuService,
+  NbSidebarService,
+  NbThemeService,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +29,7 @@ interface IMenuItem {
 @Component({
   selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public groups$: Observable<IGroup[]>;
@@ -50,15 +55,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userMenu = [
       {
         title: 'Profile',
-        langKey: 'header.profile'
+        langKey: 'header.profile',
       },
       {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
           this._authService.signOut();
-        }
-      }
+        },
+      },
     ];
 
     this.languageMenu = [
@@ -67,22 +72,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         langKey: 'common.lang.hungarian',
         onClick: (): void => {
           this._onLanguageSelected('hu-HU');
-        }
+        },
       },
       {
         title: 'English',
         langKey: 'common.lang.english',
         onClick: (): void => {
           this._onLanguageSelected('en-US');
-        }
+        },
       },
       {
         title: 'German',
         langKey: 'common.lang.german',
         onClick: (): void => {
           this._onLanguageSelected('de-DE');
-        }
-      }
+        },
+      },
     ];
 
     this._store

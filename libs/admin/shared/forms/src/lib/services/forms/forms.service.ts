@@ -13,10 +13,7 @@ import { select, Store } from '@ngrx/store';
   providedIn: 'root',
 })
 export class FormsService {
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {}
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -75,7 +72,9 @@ export class FormsService {
     });
   };
 
-  public adminExistingEmailValidator = (control: FormGroup): Observable<IAdminUser> =>
+  public adminExistingEmailValidator = (
+    control: FormGroup
+  ): Observable<IAdminUser> =>
     this._store.pipe(
       select(adminUsersSelectors.getAdminUserByEmail(control.value)),
       take(1)

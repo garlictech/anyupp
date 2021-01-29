@@ -26,18 +26,14 @@ export class RoleEntityNamesPipe implements PipeTransform {
 
       if (entity.chainId) {
         this._store
-          .pipe(
-            select(chainsSelectors.getChainById(entity.chainId), take(1))
-          )
+          .pipe(select(chainsSelectors.getChainById(entity.chainId), take(1)))
           .subscribe((chain: IChain): void => {
             entitiesArr.push(_get(chain, 'name', ''));
           });
       }
       if (entity.groupId) {
         this._store
-          .pipe(
-            select(groupsSelectors.getGroupById(entity.groupId), take(1))
-          )
+          .pipe(select(groupsSelectors.getGroupById(entity.groupId), take(1)))
           .subscribe((group: IGroup): void => {
             entitiesArr.push(_get(group, 'name', ''));
           });

@@ -15,10 +15,7 @@ export class FormUnitLanesComponent implements OnInit {
   @Input() lanesFormArray: FormArray;
   public usedLaneIds: string[];
 
-  constructor(
-    private _store: Store<any>,
-    private _formsService: FormsService
-  ) {
+  constructor(private _store: Store<any>, private _formsService: FormsService) {
     this.usedLaneIds = [];
   }
 

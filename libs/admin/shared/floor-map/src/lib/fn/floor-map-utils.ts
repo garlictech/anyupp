@@ -37,9 +37,9 @@ export const getGroupInitialData = (g: fabric.Group) => ({
 
 export const getObjectText = (obj: fabric.Group): string => {
   if (obj?.getObjects) {
-    const textField: fabric.IText = <fabric.IText>obj
-      .getObjects()
-      ?.filter((o): boolean => o instanceof fabric.IText)[0];
+    const textField: fabric.IText = <fabric.IText>(
+      obj.getObjects()?.filter((o): boolean => o instanceof fabric.IText)[0]
+    );
 
     return textField ? textField.text : '';
   }
@@ -57,9 +57,9 @@ export const getObjectBg = (obj: fabric.Group): fabric.Rect | fabric.Circle => {
 
 export const getObjectRadius = (obj: fabric.Group): number => {
   if (obj?.getObjects) {
-    const circleField: fabric.Circle = <fabric.Circle>obj
-      .getObjects()
-      ?.filter((o): boolean => o instanceof fabric.Circle)[0];
+    const circleField: fabric.Circle = <fabric.Circle>(
+      obj.getObjects()?.filter((o): boolean => o instanceof fabric.Circle)[0]
+    );
 
     return circleField ? circleField.radius : null;
   }

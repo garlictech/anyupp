@@ -6,7 +6,7 @@ import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 @Component({
   selector: 'bgap-password-reset-form',
   templateUrl: './password-reset-form.component.html',
-  styleUrls: ['./password-reset-form.component.scss']
+  styleUrls: ['./password-reset-form.component.scss'],
 })
 export class PasswordResetFormComponent {
   @Input() toggleResetForm;

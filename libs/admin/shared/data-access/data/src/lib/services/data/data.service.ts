@@ -1,6 +1,13 @@
 import { intersection as _intersection } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -17,8 +24,26 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG, objectToArray, getDayIntervals } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole, EFirebaseStateEvent, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals,
-  IGroup, IOrder, IOrderItem, IProduct, IProductCategory, IUnit, IUser
+  DEFAULT_LANG,
+  objectToArray,
+  getDayIntervals,
+} from '@bgap/admin/shared/utils';
+import {
+  EAdminRole,
+  EFirebaseStateEvent,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserRole,
+  IAdminUserSettings,
+  IChain,
+  IDateIntervals,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+  IProductCategory,
+  IUnit,
+  IUser,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';

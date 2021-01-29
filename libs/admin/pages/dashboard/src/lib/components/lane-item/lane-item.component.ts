@@ -8,7 +8,13 @@ import {
   currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
 } from '@bgap/admin/shared/data-access/orders';
 import { objectToArray } from '@bgap/admin/shared/utils';
-import { ENebularButtonSize, EOrderStatus, ILaneOrderItem, IStatusLogItem, IUnit } from '@bgap/shared/types';
+import {
+  ENebularButtonSize,
+  EOrderStatus,
+  ILaneOrderItem,
+  IStatusLogItem,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -16,7 +22,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
-  styleUrls: ['./lane-item.component.scss']
+  styleUrls: ['./lane-item.component.scss'],
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem: ILaneOrderItem;

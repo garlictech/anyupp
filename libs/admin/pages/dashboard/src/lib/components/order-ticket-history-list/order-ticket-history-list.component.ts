@@ -39,10 +39,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
       });
 
     this._store
-      .pipe(
-        select(ordersSelectors.getAllHistoryOrders),
-        untilDestroyed(this)
-      )
+      .pipe(select(ordersSelectors.getAllHistoryOrders), untilDestroyed(this))
       .subscribe((historyOrders: IOrder[]): void => {
         this.dailyOrders = historyOrders.sort(customNumberCompare('created'));
 

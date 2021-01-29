@@ -10,16 +10,13 @@ import { select, Store } from '@ngrx/store';
 import { DataService } from '../data/data.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
   private _adminUser: IAdminUser;
   private _groupCurrency: string;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe((adminUser: IAdminUser): void => {
@@ -61,11 +58,7 @@ export class OrderService {
           if (
             currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED
           ) {
-            this.updateOrderItemStatus(
-              order._id,
-              EOrderStatus.PLACED,
-              idx
-            );
+            this.updateOrderItemStatus(order._id, EOrderStatus.PLACED, idx);
           }
         });
     }
@@ -91,7 +84,7 @@ export class OrderService {
           pricePerUnit: product.variants[variantId].price,
           priceSum: product.variants[variantId].price,
           tax,
-          taxSum: (product.variants[variantId].price / (100 + tax)) * tax
+          taxSum: (product.variants[variantId].price / (100 + tax)) * tax,
         },
         productId: product._id,
         productName: product.name,
@@ -99,11 +92,11 @@ export class OrderService {
         statusLog: {
           [now]: {
             status: EOrderStatus.PLACED,
-            userId: this._adminUser._id
-          }
+            userId: this._adminUser._id,
+          },
         },
         variantId,
-        variantName: product.variants[variantId].variantName
+        variantName: product.variants[variantId].variantName,
       }
     );
   }
@@ -130,8 +123,8 @@ export class OrderService {
       {
         [new Date().valueOf()]: {
           status,
-          userId: this._adminUser._id
-        }
+          userId: this._adminUser._id,
+        },
       }
     );
   }
