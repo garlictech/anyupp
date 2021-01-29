@@ -10,11 +10,6 @@ export interface IUnitSeat {
   orders: string[]; // ???
 }
 
-export interface ILocation {
-  lat: number;
-  lng: number;
-}
-
 export interface ILane {
   _id?: string;
   name: string;
