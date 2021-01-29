@@ -49,6 +49,96 @@
     },
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "admin-pages-admin-users": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-forms": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-components": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-pipes": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-utils": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-shared-data": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-shared-auth": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-ui-core": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-ui-theme": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-pages-chains": {
+      "tags": []
+    },
+    "admin-pages-groups": {
+      "tags": []
+    },
+    "admin-pages-units": {
+      "tags": []
+    },
+    "admin-pages-users": {
+      "tags": []
+    },
+    "admin-pages-products": {
+      "tags": []
+    },
+    "admin-pages-product-categories": {
+      "tags": []
+    },
+    "admin-pages-dashboard": {
+      "tags": []
+    },
+    "admin-pages-auth": {
+      "tags": []
+    },
+    "admin-shared-config": {
+      "tags": []
+    },
+    "admin-shared-floor-map": {
+      "tags": []
+    },
+    "admin-shared-orders": {
+      "tags": []
+    },
+    "admin-shared-admin-users": {
+      "tags": []
+    },
+    "admin-shared-chains": {
+      "tags": []
+    },
+    "admin-shared-dashboard": {
+      "tags": []
+    },
+    "admin-shared-groups": {
+      "tags": []
+    },
+    "admin-shared-product-categories": {
+      "tags": []
+    },
+    "admin-shared-products": {
+      "tags": []
+    },
+    "admin-shared-units": {
+      "tags": []
+    },
+    "admin-shared-users": {
+      "tags": []
+    },
+    "admin-shared-logged-user": {
+      "tags": []
+    },
+    "admin-shared-storage": {
+      "tags": []
     }
   }
 }

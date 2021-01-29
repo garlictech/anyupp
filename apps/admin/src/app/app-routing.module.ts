@@ -1,9 +1,9 @@
+import { AdminLayoutComponent } from 'libs/admin/ui/theme/src/lib/components/admin-layout/admin-layout.component';
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { AdminLayoutComponent } from './@theme/components/admin-layout/admin-layout.component';
-import { MENU_ROLES } from './shared/const';
-import { AuthGuard } from './shared/services/auth-guard';
+import { AuthGuard } from '@bgap/admin/shared/auth';
+import { MENU_ROLES } from '@bgap/admin/shared/utils';
 
 const routes: Routes = [
   {
@@ -19,8 +19,8 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./pages/dashboard/dashboard.module').then(
-            (m) => m.DashboardModule
+          import('@bgap/admin/pages/dashboard').then(
+            (m) => m.AdminPagesDashboardModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -30,8 +30,8 @@ const routes: Routes = [
       {
         path: 'products',
         loadChildren: () =>
-          import('./pages/product-list/product-list.module').then(
-            (m) => m.ProductListModule
+          import('@bgap/admin/pages/products').then(
+            (m) => m.AdminPagesProductsModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -42,8 +42,8 @@ const routes: Routes = [
         path: 'product-categories',
         loadChildren: () =>
           import(
-            './pages/product-category-list/product-category-list.module'
-          ).then((m) => m.ProductCategoryListModule),
+            '@bgap/admin/pages/product-categories'
+          ).then((m) => m.AdminPagesProductCategoriesModule),
         canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.PRODUCT_CATEGORIES,
@@ -52,8 +52,8 @@ const routes: Routes = [
       {
         path: 'groups',
         loadChildren: () =>
-          import('./pages/group-list/group-list.module').then(
-            (m) => m.GroupListModule
+          import('@bgap/admin/pages/groups').then(
+            (m) => m.AdminPagesGroupsModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -63,8 +63,8 @@ const routes: Routes = [
       {
         path: 'units',
         loadChildren: () =>
-          import('./pages/unit-list/unit-list.module').then(
-            (m) => m.UnitListModule
+          import('@bgap/admin/pages/units').then(
+            (m) => m.AdminPagesUnitsModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -74,8 +74,8 @@ const routes: Routes = [
       {
         path: 'chains',
         loadChildren: () =>
-          import('./pages/chain-list/chain-list.module').then(
-            (m) => m.ChainListModule
+          import('@bgap/admin/pages/chains').then(
+            (m) => m.AdminPagesChainsModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -85,8 +85,8 @@ const routes: Routes = [
       {
         path: 'users',
         loadChildren: () =>
-          import('./pages/user-list/user-list.module').then(
-            (m) => m.UserListModule
+          import('@bgap/admin/pages/users').then(
+            (m) => m.AdminPagesUsersModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -96,8 +96,8 @@ const routes: Routes = [
       {
         path: 'admins',
         loadChildren: () =>
-          import('./pages/admin-user-list/admin-user-list.module').then(
-            (m) => m.AdminUserListModule
+          import('@bgap/admin/pages/admin-users').then(
+            (m) => m.AdminPagesAdminUsersModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -112,8 +112,8 @@ const routes: Routes = [
       {
         path: 'login',
         loadChildren: () =>
-          import('./pages/auth/login/login.module').then(
-            (m) => m.LoginModule
+          import('@bgap/admin/pages/auth').then(
+            (m) => m.AdminPagesAuthModule
           ),
       },
     ],
