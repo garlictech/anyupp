@@ -12,5 +12,5 @@ export const loadLoggedUserFailure = createAction(
 );
 
 export const resetLoggedUser = createAction(
-  '[LoggedUser/API] Reset LoggedUser',
+  '[LoggedUser/API] Reset LoggedUser'
 );

@@ -1,9 +1,15 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
+import {
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/dashboard';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { OrderService } from '@bgap/admin/shared/data';
 import {
-  currentStatus as currentStatusFn, getNextOrderItemStatus, getNextOrderStatus, getStatusColor
+  currentStatus as currentStatusFn,
+  getNextOrderItemStatus,
+  getNextOrderStatus,
+  getStatusColor,
 } from '@bgap/admin/shared/orders';
 import {
   EDashboardListMode,

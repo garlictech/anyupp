@@ -6,7 +6,11 @@ import { Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { chainsSelectors } from '@bgap/admin/shared/chains';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator, contactFormGroup } from '@bgap/admin/shared/utils';
+import {
+  EToasterType,
+  multiLangValidator,
+  contactFormGroup,
+} from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

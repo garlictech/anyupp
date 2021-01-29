@@ -1,4 +1,3 @@
-
 import { State, floorMapAdapter, initialState } from './floor-map.reducer';
 import * as FloorMapSelectors from './floor-map.selectors';
 

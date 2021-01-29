@@ -8,8 +8,16 @@ import { AdminSharedComponentsModule } from '@bgap/admin/shared/components';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbLayoutModule,
-  NbListModule, NbSelectModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -31,7 +39,7 @@ import { FormTextInputComponent } from './components/form-text-input/form-text-i
 import { FormUnitLanesComponent } from './components/form-unit-lanes/form-unit-lanes.component';
 import { FormWeeklyScheduleComponent } from './components/form-weekly-schedule/form-weekly-schedule.component';
 
- const NB_MODULES = [
+const NB_MODULES = [
   NbIconModule,
   NbEvaIconsModule,
   NbInputModule,

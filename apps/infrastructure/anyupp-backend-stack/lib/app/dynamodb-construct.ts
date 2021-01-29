@@ -19,10 +19,10 @@ export class GtrackTable extends Construct {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST, // Use on-demand billing mode
       partitionKey: {
         name: props?.primaryKeyName ?? 'id',
-        type: dynamodb.AttributeType.STRING
+        type: dynamodb.AttributeType.STRING,
       },
       removalPolicy: RemovalPolicy.DESTROY,
-      stream: props?.isStreamed ? StreamViewType.NEW_AND_OLD_IMAGES : undefined
+      stream: props?.isStreamed ? StreamViewType.NEW_AND_OLD_IMAGES : undefined,
     };
 
     this.theTable = new dynamodb.Table(this, id, tableProps);
@@ -31,13 +31,13 @@ export class GtrackTable extends Construct {
     const tableName = id + 'TableName';
     new CfnOutput(this, tableName, {
       value: this.theTable.tableName,
-      exportName: app.logicalPrefixedName(tableName)
+      exportName: app.logicalPrefixedName(tableName),
     });
 
     const tableArn = id + 'TableArn';
     new CfnOutput(this, tableArn, {
       value: this.theTable.tableArn,
-      exportName: app.logicalPrefixedName(tableArn)
+      exportName: app.logicalPrefixedName(tableArn),
     });
   }
 }

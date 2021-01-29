@@ -20,14 +20,14 @@ export class CognitoStack extends Stack {
           handler: 'lib/cognito/passwordless-pre-sign-up/index.handler',
           code: lambda.Code.fromAsset(
             path.join(__dirname, '../../.serverless/pre-sign-up.zip')
-          )
+          ),
         }),
         preAuthentication: new lambda.Function(this, 'preAuthentication', {
           ...commonLambdaProps,
           handler: 'lib/cognito/pre-authentication/index.handler',
           code: lambda.Code.fromAsset(
             path.join(__dirname, '../../.serverless/pre-authentication.zip')
-          )
+          ),
         }),
         verifyAuthChallengeResponse: new lambda.Function(
           this,
@@ -40,7 +40,7 @@ export class CognitoStack extends Stack {
                 __dirname,
                 '../../.serverless/verify-auth-challenge-response.zip'
               )
-            )
+            ),
           }
         ),
         preTokenGeneration: new lambda.Function(this, 'preTokenGeneration', {
@@ -48,14 +48,14 @@ export class CognitoStack extends Stack {
           handler: 'lib/cognito/pre-token-generation/index.handler',
           code: lambda.Code.fromAsset(
             path.join(__dirname, '../../.serverless/pre-token-generation.zip')
-          )
+          ),
         }),
         defineAuthChallenge: new lambda.Function(this, 'defineAuthChallenge', {
           ...commonLambdaProps,
           handler: 'lib/cognito/define-auth-challenge/index.handler',
           code: lambda.Code.fromAsset(
             path.join(__dirname, '../../.serverless/define-auth-challenge.zip')
-          )
+          ),
         }),
         createAuthChallenge: new lambda.Function(this, 'createAuthChallenge', {
           ...commonLambdaProps,
@@ -66,15 +66,15 @@ export class CognitoStack extends Stack {
           environment: {
             USERPOOL_MOBILE_CLIENT_ID: 'CREATE_MOBILE_USER_POOL_CLIENT',
             DEEP_LINK: 'gtrack://app',
-            SES_FROM_ADDRESS: 'noreply@gtracksport.com'
-          }
-        })
-      }
+            SES_FROM_ADDRESS: 'noreply@gtracksport.com',
+          },
+        }),
+      },
     });
 
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool,
-      generateSecret: false // Don't need to generate secret for web app running on browsers
+      generateSecret: false, // Don't need to generate secret for web app running on browsers
     });
 
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
@@ -82,28 +82,28 @@ export class CognitoStack extends Stack {
       cognitoIdentityProviders: [
         {
           clientId: userPoolClient.userPoolClientId,
-          providerName: userPool.userPoolProviderName
-        }
-      ]
+          providerName: userPool.userPoolProviderName,
+        },
+      ],
     });
 
     // Export values
     const userPoolId = 'UserPoolId';
     new CfnOutput(this, userPoolId, {
       value: userPool.userPoolId,
-      exportName: app.logicalPrefixedName(userPoolId)
+      exportName: app.logicalPrefixedName(userPoolId),
     });
 
     const userPoolClientId = 'UserPoolClientId';
     new CfnOutput(this, userPoolClientId, {
       value: userPoolClient.userPoolClientId,
-      exportName: app.logicalPrefixedName(userPoolClientId)
+      exportName: app.logicalPrefixedName(userPoolClientId),
     });
 
     const identityPoolId = 'IdentityPoolId';
     new CfnOutput(this, identityPoolId, {
       value: identityPool.ref,
-      exportName: app.logicalPrefixedName(identityPoolId)
+      exportName: app.logicalPrefixedName(identityPoolId),
     });
   }
 }

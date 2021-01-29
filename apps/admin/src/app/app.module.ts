@@ -36,7 +36,13 @@ import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import { FIREBASE_CONFIG } from '@bgap/shared/config';
 import {
-  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbLayoutModule,
+  NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -109,9 +115,11 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         },
       }
     ),
-    !environment.production ? StoreDevtoolsModule.instrument({
-      maxAge: 25,
-    }) : [],
+    !environment.production
+      ? StoreDevtoolsModule.instrument({
+          maxAge: 25,
+        })
+      : [],
     // Store modules
     AdminSharedAdminUsersModule,
     AdminSharedChainsModule,
@@ -123,7 +131,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     AdminSharedProductCategoriesModule,
     AdminSharedProductsModule,
     AdminSharedUnitsModule,
-    AdminSharedUsersModule
+    AdminSharedUsersModule,
   ],
   providers: [
     { provide: REGION, useValue: 'europe-west3' },

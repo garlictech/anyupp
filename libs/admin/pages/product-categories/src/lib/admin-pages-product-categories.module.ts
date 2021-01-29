@@ -6,14 +6,19 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductCategoryFormComponent } from './components/product-category-form/product-category-form.component';
-import {
-  ProductCategoryListItemComponent
-} from './components/product-category-list-item/product-category-list-item.component';
+import { ProductCategoryListItemComponent } from './components/product-category-list-item/product-category-list-item.component';
 import { ProductCategoryListComponent } from './components/product-category-list/product-category-list.component';
 
 const NB_MODULES = [

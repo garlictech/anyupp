@@ -8,8 +8,15 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbCheckboxModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule,
-  NbSpinnerModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSpinnerModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 

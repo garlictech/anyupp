@@ -8,7 +8,7 @@ import { commonLambdaProps } from './lambda-common';
 import {
   GraphqlApi,
   LambdaDataSource,
-  MappingTemplate
+  MappingTemplate,
 } from '@aws-cdk/aws-appsync';
 import { Table } from '@aws-cdk/aws-dynamodb';
 
@@ -37,7 +37,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+    ),
   });
 
   tableDs.createResolver({
@@ -48,7 +48,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+    ),
   });
 
   lambdaDs.createResolver({
@@ -59,7 +59,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+    ),
   });
 
   lambdaDs.createResolver({
@@ -70,7 +70,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+    ),
   });
 
   lambdaDs.createResolver({
@@ -81,7 +81,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+    ),
   });
 };
 
@@ -100,11 +100,11 @@ export class AppsyncAppStack extends sst.Stack {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
           apiKeyConfig: {
-            expires: cdk.Expiration.after(cdk.Duration.days(365))
-          }
-        }
+            expires: cdk.Expiration.after(cdk.Duration.days(365)),
+          },
+        },
       },
-      xrayEnabled: true
+      xrayEnabled: true,
     });
 
     const apiLambda = new lambda.Function(this, 'AppSyncGtrackHandler', {
@@ -112,7 +112,7 @@ export class AppsyncAppStack extends sst.Stack {
       handler: 'lib/appsync/graphql-api/index.handler',
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/graphql-api.zip')
-      )
+      ),
     });
 
     const lambdaDs = api.addLambdaDataSource('lambdaDatasource', apiLambda);
@@ -123,12 +123,12 @@ export class AppsyncAppStack extends sst.Stack {
 
     // Prints out the AppSync GraphQL endpoint to the terminal
     new cdk.CfnOutput(this, 'GraphQLAPIURL', {
-      value: api.graphqlUrl
+      value: api.graphqlUrl,
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
     new cdk.CfnOutput(this, 'GraphQLAPIKey', {
-      value: api.apiKey || ''
+      value: api.apiKey || '',
     });
   }
 }

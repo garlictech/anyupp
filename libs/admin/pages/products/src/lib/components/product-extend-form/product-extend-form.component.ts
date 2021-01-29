@@ -7,8 +7,15 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/units';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { customNumberCompare, EToasterType, objectToArray } from '@bgap/admin/shared/utils';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  customNumberCompare,
+  EToasterType,
+  objectToArray,
+} from '@bgap/admin/shared/utils';
 import {
   EProductLevel,
   IAdminUserSettings,

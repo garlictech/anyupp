@@ -8,9 +8,8 @@ describe('AdminUserListItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminUserListItemComponent ]
-    })
-    .compileComponents();
+      declarations: [AdminUserListItemComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

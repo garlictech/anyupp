@@ -12,7 +12,7 @@ export default function main(app: App): void {
   const appsyncStack = new AppsyncAppStack(app, 'appsync', {
     poiTable: dynamoDbStack.poiTable,
     hikeTable: dynamoDbStack.hikeTable,
-    imageTable: dynamoDbStack.imageTable
+    imageTable: dynamoDbStack.imageTable,
   });
 
   appsyncStack.addDependency(dynamoDbStack);

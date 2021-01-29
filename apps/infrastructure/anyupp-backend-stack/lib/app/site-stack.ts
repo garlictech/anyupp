@@ -8,7 +8,7 @@ export class SiteStack extends sst.Stack {
     new GtrackWebsite(this, 'Admin', {
       domainName: 'gtracksport.com',
       siteSubDomain: 'admin',
-      distDir: __dirname + '../../../../../../dist/apps/admin'
+      distDir: __dirname + '../../../../../../dist/apps/admin',
     });
   }
 }

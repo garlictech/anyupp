@@ -7,7 +7,14 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/chains';
 import { groupsSelectors } from '@bgap/admin/shared/groups';
 import { unitsSelectors } from '@bgap/admin/shared/units';
-import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue, IUnit } from '@bgap/shared/types';
+import {
+  IAdminRoleEntity,
+  IAssignedEntityNames,
+  IChain,
+  IGroup,
+  IKeyValue,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -24,10 +31,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedUnits: IAssignedEntityNames[];
 
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.groupOptions = [];
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
@@ -98,9 +102,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
         ]): void => {
           this._store
             .pipe(
-              select(
-                groupsSelectors.getGroupsByChainId(selectorValue.chainId)
-              )
+              select(groupsSelectors.getGroupsByChainId(selectorValue.chainId))
             )
             .pipe(take(1))
             .subscribe((groups): void => {

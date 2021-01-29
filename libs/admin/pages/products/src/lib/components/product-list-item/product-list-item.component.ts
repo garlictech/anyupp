@@ -1,6 +1,13 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import {
   Component,

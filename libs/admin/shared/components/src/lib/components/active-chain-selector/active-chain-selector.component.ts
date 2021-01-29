@@ -20,10 +20,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
   private _adminUser: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),

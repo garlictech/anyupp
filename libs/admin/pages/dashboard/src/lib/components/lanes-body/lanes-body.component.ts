@@ -2,7 +2,10 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/orders';
 import { unitsSelectors } from '@bgap/admin/shared/units';
 import { DEFAULT_LANE_COLOR, objectToArray } from '@bgap/admin/shared/utils';
@@ -44,9 +47,7 @@ export class LanesBodyComponent implements OnDestroy {
   ) {
     combineLatest([
       this._store.pipe(
-        select(
-          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)
-        )
+        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED))
       ),
       this._store.pipe(
         select(

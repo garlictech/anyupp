@@ -1,9 +1,18 @@
 import { currentStatus as currentStatusFn } from '../fn';
-import { EOrderStatus, ILaneOrderItem, IOrder, IOrderItem } from '@bgap/shared/types';
+import {
+  EOrderStatus,
+  ILaneOrderItem,
+  IOrder,
+  IOrderItem,
+} from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  activeOrdersAdapter, historyOrdersAdapter, IOrderEntityState, IOrdersState, ORDERS_FEATURE_KEY
+  activeOrdersAdapter,
+  historyOrdersAdapter,
+  IOrderEntityState,
+  IOrdersState,
+  ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 
 // Lookup the 'Orders' feature state managed by NgRx

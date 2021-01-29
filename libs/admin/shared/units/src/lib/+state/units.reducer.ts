@@ -16,9 +16,7 @@ export interface IUnitsPartialState {
   readonly [UNITS_FEATURE_KEY]: IUnitsState;
 }
 
-export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<
-IUnit
->({
+export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<IUnit>({
   selectId: (item: IUnit): string => item._id,
 });
 
@@ -33,11 +31,11 @@ const reducer = createReducer(
   on(UnitsActions.loadUnitsSuccess, (state, { units }) =>
     unitsAdapter.setAll(units, { ...state, loaded: true })
   ),
-  on(UnitsActions.loadUnitsFailure, (state, { error }) => ({ ...state, error })),
-  on(
-    UnitsActions.resetUnits,
-    (state) => unitsAdapter.removeAll(state)
-  )
+  on(UnitsActions.loadUnitsFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+  on(UnitsActions.resetUnits, state => unitsAdapter.removeAll(state))
 );
 
 export function unitsReducer(state: IUnitsState | undefined, action: Action) {

@@ -2,14 +2,29 @@ import { fabric } from 'fabric';
 
 import { customStringCompare, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  EUnitMapObjectType, IFabricGroup, IFabricObjectProperties, IFloorMapData, IFloorMapDataObject
+  EUnitMapObjectType,
+  IFabricGroup,
+  IFabricObjectProperties,
+  IFloorMapData,
+  IFloorMapDataObject,
 } from '@bgap/shared/types';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {
-  createBar, createLabel, createSeatCircle, createSeatRect, createTableCircle, createTableRect, createWall
+  createBar,
+  createLabel,
+  createSeatCircle,
+  createSeatRect,
+  createTableCircle,
+  createTableRect,
+  createWall,
 } from './floor-map-objects';
-import { generateId, getObjectBg, getObjectRadius, getObjectText } from './floor-map-utils';
+import {
+  generateId,
+  getObjectBg,
+  getObjectRadius,
+  getObjectText,
+} from './floor-map-utils';
 
 export let mapRawData: IFloorMapData;
 

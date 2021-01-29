@@ -14,18 +14,41 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/admin-users';
 import { chainsActions } from '@bgap/admin/shared/chains';
-import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/dashboard';
 import { groupsActions } from '@bgap/admin/shared/groups';
-import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import {
+  loggedUserActions,
+  loggedUserSelectors,
+} from '@bgap/admin/shared/logged-user';
 import { ordersActions } from '@bgap/admin/shared/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/product-categories';
 import { productsActions } from '@bgap/admin/shared/products';
 import { unitsActions } from '@bgap/admin/shared/units';
 import { usersActions } from '@bgap/admin/shared/users';
-import { DEFAULT_LANG, objectToArray, getDayIntervals } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole, EFirebaseStateEvent, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals,
-  IGroup, IOrder, IOrderItem, IProduct, IProductCategory, IUnit, IUser
+  DEFAULT_LANG,
+  objectToArray,
+  getDayIntervals,
+} from '@bgap/admin/shared/utils';
+import {
+  EAdminRole,
+  EFirebaseStateEvent,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserRole,
+  IAdminUserSettings,
+  IChain,
+  IDateIntervals,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+  IProductCategory,
+  IUnit,
+  IUser,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';

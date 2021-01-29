@@ -4,7 +4,14 @@ import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/groups';
 import { currentStatus } from '@bgap/admin/shared/orders';
-import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct } from '@bgap/shared/types';
+import {
+  EOrderStatus,
+  IAdminUser,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+} from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 import { DataService } from '../data/data.service';
@@ -16,10 +23,7 @@ export class OrderService {
   private _adminUser: IAdminUser;
   private _groupCurrency: string;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe((adminUser: IAdminUser): void => {

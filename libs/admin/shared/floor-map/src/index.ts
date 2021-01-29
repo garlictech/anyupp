@@ -6,4 +6,3 @@ export * from './lib/admin-shared-floor-map.module';
 export * from './lib/const';
 export * from './lib/fn';
 export { floorMapActions, floorMapSelectors, floorMapReducer };
-

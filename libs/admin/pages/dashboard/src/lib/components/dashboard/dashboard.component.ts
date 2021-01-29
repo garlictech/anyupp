@@ -4,11 +4,20 @@ import { filter } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/dashboard';
 import { DataService } from '@bgap/admin/shared/data';
 import { unitsSelectors } from '@bgap/admin/shared/units';
 import { zeroFill } from '@bgap/admin/shared/utils';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IUnit } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IUnit,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

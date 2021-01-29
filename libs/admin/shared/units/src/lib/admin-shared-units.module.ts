@@ -7,7 +7,7 @@ import { UNITS_FEATURE_KEY, unitsReducer } from './+state/units.reducer';
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forFeature(UNITS_FEATURE_KEY, unitsReducer)
+    StoreModule.forFeature(UNITS_FEATURE_KEY, unitsReducer),
   ],
 })
 export class AdminSharedUnitsModule {}

@@ -3,13 +3,13 @@ module.exports = {
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json'
-    }
+      tsConfig: '<rootDir>/tsconfig.spec.json',
+    },
   },
   transform: {
-    '^.+\\.[tj]s$': 'ts-jest'
+    '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory:
-    '../../../coverage/apps/infrastructure/anyupp-backend-stack'
+    '../../../coverage/apps/infrastructure/anyupp-backend-stack',
 };

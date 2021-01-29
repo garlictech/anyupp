@@ -20,10 +20,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
   public productCategories$: Observable<IProductCategory[]>;
   private _adminUser: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),

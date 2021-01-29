@@ -4,7 +4,11 @@ import { get as _get, set as _set } from 'lodash-es';
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, contactFormGroup, multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  EToasterType,
+  contactFormGroup,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
 import { EImageType, IChain } from '@bgap/shared/types';
 
 @Component({

@@ -37,10 +37,7 @@ export class OrderProductListComponent {
   public groupCurrency: string;
   public buttonSize: ENebularButtonSize;
 
-  constructor(
-    private _store: Store<any>,
-    private _orderService: OrderService
-  ) {
+  constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
 
     this._store

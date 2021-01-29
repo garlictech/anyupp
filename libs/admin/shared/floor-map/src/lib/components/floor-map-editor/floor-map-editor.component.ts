@@ -1,8 +1,18 @@
 import { debounceTime } from 'rxjs/operators';
 
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EUnitMapObjectType, IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
+import {
+  EUnitMapObjectType,
+  IFloorMapData,
+  IFloorMapDataObject,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
@@ -25,10 +35,7 @@ export class FloorMapEditorComponent
   public objectProperties;
   public EUnitMapObjectType = EUnitMapObjectType;
 
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {}
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     const w = this.floorMap?.w || 800;

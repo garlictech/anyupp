@@ -14,13 +14,13 @@ export class DynamoDBStack extends sst.Stack {
 
     this.poiTable = new GtrackTable(this, 'Poi', { isStreamed: true }).theTable;
     this.imageTable = new GtrackTable(this, 'Image', {
-      isStreamed: true
+      isStreamed: true,
     }).theTable;
     this.hikeTable = new GtrackTable(this, 'Hike', {
-      isStreamed: true
+      isStreamed: true,
     }).theTable;
     this.adminTable = new GtrackTable(this, 'Admin', {
-      primaryKeyName: 'email'
+      primaryKeyName: 'email',
     }).theTable;
     this.customerTable = new GtrackTable(this, 'Customer').theTable;
   }
