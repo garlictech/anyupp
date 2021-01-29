@@ -1,4 +1,4 @@
-import { AdminLayoutComponent } from 'libs/admin/ui/theme/src/lib/components/admin-layout/admin-layout.component';
+import { AdminLayoutComponent } from '@bgap/admin/ui/theme';
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';

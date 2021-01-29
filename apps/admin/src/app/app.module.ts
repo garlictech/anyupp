@@ -129,7 +129,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     { provide: REGION, useValue: 'europe-west3' },
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
+      useFactory(httpLink: HttpLink): ApolloClientOptions<unknown> {
         // Create an http link:
         const http = httpLink.create({
           uri: environment.gql.http,
