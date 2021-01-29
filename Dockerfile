@@ -31,13 +31,8 @@ FROM base AS release
 COPY --from=dependencies /usr/src/app/prod_node_modules ./node_modules
 COPY --from=dependencies /usr/src/app/dist ./dist
 RUN mkdir -p /usr/src/libs/graphql/schema/src/
-COPY ./libs/graphql/schema/src/schema /usr/src/app/libs/graphql/schema/src/schema
+COPY ./libs/api/graphql/schema/src/schema /usr/src/app/libs/api/graphql/schema/src/schema
 ENV NODE_ENV production
 EXPOSE 3333
-CMD ls -l /usr/src/app \
-  && ls -l /usr/src/app/libs/graphql\
-  && ls -l /usr/src/app/libs/graphql/schema \
-  && ls -l /usr/src/app/libs/graphql/schema/src/\ 
-  && ls -l /usr/src/app/libs/graphql/schema/src/schema \
-  && nodemon ./dist/apps/graphql-server/main.js
+CMD nodemon ./dist/apps/graphql-server/main.js
 
