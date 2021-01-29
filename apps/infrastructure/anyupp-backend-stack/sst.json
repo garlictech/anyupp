@@ -1,6 +1,6 @@
 {
-  "name": "gtrack",
+  "name": "anyupp-backend",
   "type": "@serverless-stack/resources",
   "stage": "dev",
-  "region": "us-east-1"
+  "region": "eu-west-1"
 }

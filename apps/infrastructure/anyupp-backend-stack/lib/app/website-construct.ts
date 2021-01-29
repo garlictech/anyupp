@@ -8,19 +8,19 @@ import * as cdk from '@aws-cdk/core';
 import * as targets from '@aws-cdk/aws-route53-targets/lib';
 import * as sst from '@serverless-stack/resources';
 
-export interface GtrackWebsiteProps {
+export interface WebsiteProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
 }
 
-export class GtrackWebsite extends Construct {
-  constructor(scope: Construct, id: string, props: GtrackWebsiteProps) {
+export class WebsiteConstruct extends Construct {
+  constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
     const app = this.node.root as sst.App;
 
     const zone = route53.HostedZone.fromLookup(this, 'Zone', {
-      domainName: props.domainName,
+      domainName: props.domainName
     });
 
     const siteDomain = app.logicalPrefixedName(
@@ -38,7 +38,7 @@ export class GtrackWebsite extends Construct {
       // The default removal policy is RETAIN, which means that cdk destroy will not attempt to delete
       // the new bucket, and it will remain in your account until manually deleted. By setting the policy to
       // DESTROY, cdk destroy will attempt to delete the bucket, but will error if the bucket is not empty.
-      removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+      removalPolicy: cdk.RemovalPolicy.DESTROY // NOT recommended for production code
     });
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
@@ -49,7 +49,7 @@ export class GtrackWebsite extends Construct {
       {
         domainName: siteDomain,
         hostedZone: zone,
-        region: 'us-east-1', // Cloudfront only checks this region for certificates.
+        region: 'us-east-1' // Cloudfront only checks this region for certificates.
       }
     ).certificateArn;
     new cdk.CfnOutput(this, 'Certificate', { value: certificateArn });
@@ -63,21 +63,21 @@ export class GtrackWebsite extends Construct {
           acmCertRef: certificateArn,
           names: [siteDomain],
           sslMethod: cloudfront.SSLMethod.SNI,
-          securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+          securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016
         },
         originConfigs: [
           {
             customOriginSource: {
               domainName: siteBucket.bucketWebsiteDomainName,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY
             },
-            behaviors: [{ isDefaultBehavior: true }],
-          },
-        ],
+            behaviors: [{ isDefaultBehavior: true }]
+          }
+        ]
       }
     );
     new cdk.CfnOutput(this, 'DistributionId', {
-      value: distribution.distributionId,
+      value: distribution.distributionId
     });
 
     // Route53 alias record for the CloudFront distribution
@@ -86,7 +86,7 @@ export class GtrackWebsite extends Construct {
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       ),
-      zone,
+      zone
     });
 
     // Deploy site contents to S3 bucket
@@ -94,7 +94,7 @@ export class GtrackWebsite extends Construct {
       sources: [s3deploy.Source.asset(props.distDir)],
       destinationBucket: siteBucket,
       distribution,
-      distributionPaths: ['/*'],
+      distributionPaths: ['/*']
     });
   }
 }

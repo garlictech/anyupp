@@ -8,14 +8,12 @@ import { commonLambdaProps } from './lambda-common';
 import {
   GraphqlApi,
   LambdaDataSource,
-  MappingTemplate,
+  MappingTemplate
 } from '@aws-cdk/aws-appsync';
 import { Table } from '@aws-cdk/aws-dynamodb';
 
 interface AppsyncAppStackProps extends cdk.StackProps {
-  poiTable: Table;
-  hikeTable: Table;
-  imageTable: Table;
+  adminUserTable: Table;
 }
 
 const createCommonResolvers = (
@@ -37,7 +35,7 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    ),
+    )
   });
 
   tableDs.createResolver({
@@ -48,41 +46,41 @@ const createCommonResolvers = (
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    ),
+    )
   });
 
   lambdaDs.createResolver({
     typeName: 'Mutation',
     fieldName: 'create' + label,
     requestMappingTemplate: MappingTemplate.fromFile(
-      `lib/appsync/graphql-api/mapping-templates/create${label}-request-mapping-template.vtl`
+      `lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl`
     ),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    ),
+    )
   });
 
-  lambdaDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: `createMultiple${label}s`,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    ),
-  });
+  //lambdaDs.createResolver({
+  //  typeName: 'Mutation',
+  //  fieldName: `createMultiple${label}s`,
+  //  requestMappingTemplate: MappingTemplate.fromFile(
+  //    `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
+  //  ),
+  //  responseMappingTemplate: MappingTemplate.fromFile(
+  //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+  //  )
+  //});
 
-  lambdaDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: 'update' + label,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      `lib/appsync/graphql-api/mapping-templates/update${label}-request-mapping-template.vtl`
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    ),
-  });
+  //lambdaDs.createResolver({
+  //  typeName: 'Mutation',
+  //  fieldName: 'update' + label,
+  //  requestMappingTemplate: MappingTemplate.fromFile(
+  //    `lib/appsync/graphql-api/mapping-templates/update${label}-request-mapping-template.vtl`
+  //  ),
+  //  responseMappingTemplate: MappingTemplate.fromFile(
+  //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+  //  )
+  //});
 };
 
 export class AppsyncAppStack extends sst.Stack {
@@ -92,43 +90,41 @@ export class AppsyncAppStack extends sst.Stack {
 
     // Creates the AppSync API
     const api = new appsync.GraphqlApi(this, 'Api', {
-      name: app.logicalPrefixedName('gtrack-appsync-api'),
+      name: app.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
-        PROJECT_ROOT + 'libs/graphql-api/schema/src/schema/schema.graphql'
+        PROJECT_ROOT + 'libs/api/graphql/schema/src/schema/appsync-api.graphql'
       ),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
           apiKeyConfig: {
-            expires: cdk.Expiration.after(cdk.Duration.days(365)),
-          },
-        },
+            expires: cdk.Expiration.after(cdk.Duration.days(365))
+          }
+        }
       },
-      xrayEnabled: true,
+      xrayEnabled: true
     });
 
-    const apiLambda = new lambda.Function(this, 'AppSyncGtrackHandler', {
+    const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
       ...commonLambdaProps,
-      handler: 'lib/appsync/graphql-api/index.handler',
+      handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/graphql-api.zip')
-      ),
+      )
     });
 
     const lambdaDs = api.addLambdaDataSource('lambdaDatasource', apiLambda);
 
-    createCommonResolvers(api, props.poiTable, lambdaDs, 'Poi');
-    createCommonResolvers(api, props.imageTable, lambdaDs, 'Image');
-    createCommonResolvers(api, props.hikeTable, lambdaDs, 'Hike');
+    createCommonResolvers(api, props.adminUserTable, lambdaDs, 'AdminUser');
 
     // Prints out the AppSync GraphQL endpoint to the terminal
     new cdk.CfnOutput(this, 'GraphQLAPIURL', {
-      value: api.graphqlUrl,
+      value: api.graphqlUrl
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
     new cdk.CfnOutput(this, 'GraphQLAPIKey', {
-      value: api.apiKey || '',
+      value: api.apiKey || ''
     });
   }
 }

@@ -1,0 +1,10 @@
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key":  {
+    "id" :{ "S" : "${$utils.autoId()}" }
+  },
+  "attributeValues": {
+    $util.dynamodb.toDynamoDBJson($context.arguments)
+  }
+}
