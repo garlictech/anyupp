@@ -16,7 +16,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-group-admin-role.component.html',
 })
 export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control: FormControl;
+  @Input() control!: FormControl;
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public entitySelector: FormGroup;
@@ -25,6 +25,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.groupOptions = [];
     this.chainOptions = [];
+    this.assignedGroups = [];
     this.entitySelector = this._formBuilder.group({
       chainId: [''],
       groupId: [''],
@@ -35,7 +36,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
       this._store.pipe(select(groupsSelectors.getAllGroups)),
-      this.control['controls'].entities.valueChanges.pipe(
+      this.control.get('entities')!.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -74,7 +75,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
     combineLatest([
       this.entitySelector.valueChanges,
-      this.control['controls'].entities.valueChanges.pipe(
+      this.control.get('entities')!.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -94,7 +95,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
               groups.forEach((group: IGroup): void => {
                 if (
-                  !entities.map((e): string => e.groupId).includes(group._id)
+                  !entities.map((e): string => e.groupId!).includes(group._id)
                 ) {
                   this.groupOptions.push({
                     key: group._id,
@@ -118,7 +119,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       chainId: this.entitySelector.value.chainId,
       groupId: this.entitySelector.value.groupId,
     });
-    this.control['controls'].entities.setValue(arr);
+    this.control.get('entities')!.setValue(arr);
 
     this.entitySelector.patchValue({
       chainId: '',
@@ -130,6 +131,6 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     const arr = [...this.control.value.entities];
     arr.splice(idx, 1);
 
-    this.control['controls'].entities.setValue(arr);
+    this.control.get('entities')!.setValue(arr);
   }
 }

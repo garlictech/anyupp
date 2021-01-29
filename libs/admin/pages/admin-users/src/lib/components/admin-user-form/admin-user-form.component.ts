@@ -111,7 +111,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
+        .updateAdminUserProfileImagePath(this.adminUser._id!, imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -138,7 +138,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, null)
+        .updateAdminUserProfileImagePath(this.adminUser._id!, null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,

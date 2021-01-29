@@ -878,7 +878,7 @@ export class DataService {
 
   public updateAdminUserProfileImagePath(
     userId: string,
-    imagePath: string
+    imagePath: string | null
   ): Promise<void> {
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
       profileImage: imagePath,

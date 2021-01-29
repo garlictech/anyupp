@@ -8,7 +8,7 @@ import { AuthService } from '@bgap/admin/shared/data-access/auth';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-  @Input() toggleResetForm;
+  @Input() toggleResetForm: unknown;
   public loginForm: FormGroup;
 
   constructor(
