@@ -11,3 +11,5 @@ describe('admin', () => {
     getGreeting().contains('Welcome to admin!');
   });
 });
+
+// TODO: remove this example code but learn from it first
