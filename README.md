@@ -4,29 +4,45 @@ See the official nx docs below, let's start with the Anyupp-specific stuff.
 
 ## Executing cucumber/cypress tests
 
-Until the admin page is ready, there is a generated site to be able to play with cypress. Then, replace admin with website in the
-commands, and certainly, modify the tests. We assume yarn everywhere.
-
 After cloning the repo:
 
 ```
 yarn install
-yarn nx e2e website-e2e
+yarn nx e2e admin-e2e
 ```
 
-The last command should build and start the website, launch cypress and execute the website tests. To start it in watch mode:
+The last command should build and start the admin, launch cypress and execute the admin tests. To start it in watch mode:
 
 ```
-yarn nx e2e website-e2e --watch
+yarn nx e2e admin-e2e --watch
 ```
 
 All the reports and videos recording the test execution are generated in the `cyreport` folder of the project root. To generate a nice html report out of them:
 
 ```
+
 yarn cucumber:report
 ```
 
 then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
+
+### Writing Cucumber/Cypress tests
+
+#### VsCode
+To have Gherkin Syntax highlighting, step suggestions, linting and "Go to definition" support install and configure the 
+[Cucumber Full Language Support](https://github.com/alexkrechik/VSCucumberAutoComplete#how-to-use) extension
+
+1. Install the `cucumberautocomplete` extension
+
+1. Set the following configs in your `.vscode/settings.json` file
+```
+    "cucumberautocomplete.steps": [
+      "apps/admin-e2e/src/integration/**/*.steps.ts",
+    ],
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true
+```
 
 ## The generated nx docs
 
