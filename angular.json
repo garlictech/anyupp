@@ -161,6 +161,7 @@
         }
       }
     },
+
     "admin-e2e": {
       "root": "apps/admin-e2e",
       "sourceRoot": "apps/admin-e2e/src",
