@@ -5,10 +5,25 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { customNumberCompare, EToasterType, objectToArray, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  customNumberCompare,
+  EToasterType,
+  objectToArray,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
+import {
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -178,7 +193,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN UPDATE ERROR', err);
           }
         );
@@ -205,7 +220,7 @@ export class ProductFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('CHAIN INSERT ERROR', err);
           }
         );

@@ -3,4 +3,3 @@ import { AbstractFormDialogComponent } from './lib/components/abstract-form-dial
 import { FormsService } from './lib/services/forms/forms.service';
 
 export { AbstractFormDialogComponent, AdminSharedFormsModule, FormsService };
-

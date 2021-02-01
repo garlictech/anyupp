@@ -1,16 +1,46 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { unitsSelectors } from '@bgap/admin/shared/units';
 import {
-  fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
-  registerCanvasEvent, setBgColor, setBorder
+  fabricCanvas,
+  floorMapActions,
+  floorMapSelectors,
+  getObjectById,
+  getStatusBgColor,
+  getTableSeatId,
+  getTableSeatIds,
+  registerCanvasEvent,
+  setBgColor,
+  setBorder,
 } from '@bgap/admin/shared/floor-map';
-import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/orders';
+import {
+  getOrdersByUser,
+  getTableOrders,
+  ordersSelectors,
+} from '@bgap/admin/shared/orders';
 import { objectToArray } from '@bgap/admin/shared/utils';
 import {
-  IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  IFloorMapDataObject,
+  IFloorMapTableOrderObjects,
+  IFloorMapTableOrders,
+  IFloorMapUserOrderObjects,
+  IOrder,
+  IUnit,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -21,7 +51,7 @@ import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.co
 @UntilDestroy()
 @Component({
   selector: 'bgap-floor-map-body',
-  templateUrl: './floor-map-body.component.html'
+  templateUrl: './floor-map-body.component.html',
 })
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
   @ViewChild('floorMap') floorMapEl: ElementRef;
@@ -77,9 +107,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
               ? clientWidth / this.unit.floorMap.w
               : clientHeight / this.unit.floorMap.h;
 
-          (<HTMLElement>document.querySelector('#floorMap')).style.transform = `scale(${scale.toFixed(2)})`;
-          (<HTMLElement>document.querySelector('#floorMap')).style.transformOrigin =
-            'top left';
+          (<HTMLElement>(
+            document.querySelector('#floorMap')
+          )).style.transform = `scale(${scale.toFixed(2)})`;
+          (<HTMLElement>(
+            document.querySelector('#floorMap')
+          )).style.transformOrigin = 'top left';
         }),
         switchMap(
           (): Observable<IOrder[]> =>
@@ -150,7 +183,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           hasBackdrop: true,
           closeOnBackdropClick: false,
           hasScroll: true,
-          dialogClass: 'floor-map-order-dialog'
+          dialogClass: 'floor-map-order-dialog',
         });
 
         dialog.componentRef.instance.tableId = rawObject.tID;

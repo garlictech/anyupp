@@ -13,7 +13,7 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 @Component({
   selector: 'bgap-admin-user-list',
   templateUrl: './admin-user-list.component.html',
-  styleUrls: ['./admin-user-list.component.scss']
+  styleUrls: ['./admin-user-list.component.scss'],
 })
 export class AdminUserListComponent implements OnInit, OnDestroy {
   public adminUsers$: Observable<IAdminUser[]>;

@@ -4,7 +4,6 @@ import {
   CardBrand,
   CountryCode,
   CardFundingType,
-  StripeCard,
 } from '@bgap/api/graphql/schema';
 import { STRIPE_CONFIG } from '@bgap/shared/config';
 import { Args, Query, Resolver } from '@nestjs/graphql';

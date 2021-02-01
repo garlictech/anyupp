@@ -41,3 +41,5 @@ Thumbs.db
 /libs/shared/config/src/lib/config/*
 
 cyreport
+.setup.sh
+.build

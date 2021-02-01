@@ -1,7 +1,14 @@
-import { IAdminUser, IAdminUserRole, IAdminUserSettings } from '@bgap/shared/types';
+import {
+  IAdminUser,
+  IAdminUserRole,
+  IAdminUserSettings,
+} from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ILoggedUserState, LOGGED_USER_FEATURE_KEY } from './logged-user.reducer';
+import {
+  ILoggedUserState,
+  LOGGED_USER_FEATURE_KEY,
+} from './logged-user.reducer';
 
 // Lookup the 'Auth' feature state managed by NgRx
 export const getLoggedUserState = createFeatureSelector<ILoggedUserState>(
@@ -15,8 +22,7 @@ export const getLoggedUser = createSelector(
 
 export const getLoggedUserSettings = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUserSettings =>
-    state.loggedUser?.settings
+  (state: ILoggedUserState): IAdminUserSettings => state.loggedUser?.settings
 );
 
 export const getLoggedUserRoles = createSelector(
@@ -27,7 +33,7 @@ export const getLoggedUserRoles = createSelector(
 export const getSelectedChainId = createSelector(
   getLoggedUserState,
   (state: ILoggedUserState): string =>
-     state.loggedUser?.settings?.selectedChainId
+    state.loggedUser?.settings?.selectedChainId
 );
 
 export const getSelectedGroupId = createSelector(
@@ -53,4 +59,3 @@ export const getSelectedLanguage = createSelector(
   (state: ILoggedUserState): string =>
     state.loggedUser?.settings?.selectedLanguage
 );
-

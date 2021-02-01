@@ -79,7 +79,7 @@ export class ProductCategoryFormComponent
               );
               this.close();
             },
-            (err) => {
+            err => {
               console.error('CHAIN UPDATE ERROR', err);
             }
           );
@@ -95,7 +95,7 @@ export class ProductCategoryFormComponent
               );
               this.close();
             },
-            (err) => {
+            err => {
               console.error('CHAIN INSERT ERROR', err);
             }
           );

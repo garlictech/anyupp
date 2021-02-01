@@ -17,9 +17,9 @@ export interface Scalars {
 }
 
 export interface AdminUserInput {
-  name?: Maybe<Scalars['String']>;
   address?: Maybe<AddressInput>;
   email?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
 }
@@ -39,8 +39,8 @@ export interface LocationInput {
 }
 
 export interface AdminUserRoleInput {
-  role: Scalars['String'];
   entities?: Maybe<Array<Maybe<AdminRoleEntityInput>>>;
+  role: Scalars['String'];
 }
 
 export interface AdminRoleEntityInput {
@@ -102,30 +102,30 @@ export interface MutationUpdateAdminUserRoleArgs {
 
 export interface AdminUser {
   __typename?: 'AdminUser';
+  address?: Maybe<Address>;
+  email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
   roles: AdminUserRole;
   settings?: Maybe<AdminUserSettings>;
-  address?: Maybe<Address>;
-  email?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
 }
 
 export interface AdminUserRole {
   __typename?: 'AdminUserRole';
-  role: Scalars['String'];
   entities?: Maybe<Array<Maybe<AdminRoleEntity>>>;
+  role: Scalars['String'];
 }
 
 export interface AdminUserSettings {
   __typename?: 'AdminUserSettings';
   selectedChainId?: Maybe<Scalars['String']>;
   selectedGroupId?: Maybe<Scalars['String']>;
-  selectedUnitId?: Maybe<Scalars['String']>;
-  selectedProductCategoryId?: Maybe<Scalars['String']>;
-  selectedLanguage?: Maybe<Scalars['String']>;
   selectedHistoryDate?: Maybe<Scalars['Int']>;
+  selectedLanguage?: Maybe<Scalars['String']>;
+  selectedProductCategoryId?: Maybe<Scalars['String']>;
+  selectedUnitId?: Maybe<Scalars['String']>;
 }
 
 export interface Address {
@@ -153,11 +153,11 @@ export interface AdminRoleEntity {
 
 export interface Chain {
   __typename?: 'Chain';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
   description?: Maybe<LocalizedItem>;
-  style?: Maybe<ChainStyle>;
+  id: Scalars['ID'];
   isActive?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  style?: Maybe<ChainStyle>;
 }
 
 export interface ChainStyle {
@@ -175,15 +175,15 @@ export interface LocalizedItem {
 
 export interface ChainStyleColors {
   __typename?: 'ChainStyleColors';
-  backgroundLight?: Maybe<Scalars['String']>;
   backgroundDark?: Maybe<Scalars['String']>;
-  borderLight?: Maybe<Scalars['String']>;
+  backgroundLight?: Maybe<Scalars['String']>;
   borderDark?: Maybe<Scalars['String']>;
+  borderLight?: Maybe<Scalars['String']>;
   disabled?: Maybe<Scalars['String']>;
   highlight?: Maybe<Scalars['String']>;
   indicator?: Maybe<Scalars['String']>;
-  textLight?: Maybe<Scalars['String']>;
   textDark?: Maybe<Scalars['String']>;
+  textLight?: Maybe<Scalars['String']>;
 }
 
 export interface ChainStyleImages {
@@ -614,13 +614,13 @@ export enum Currency {
 
 export interface Group {
   __typename?: 'Group';
-  id: Scalars['ID'];
-  chainId: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<LocalizedItem>;
-  currency?: Maybe<Scalars['String']>;
   address?: Maybe<Address>;
+  chainId: Scalars['ID'];
+  currency?: Maybe<Scalars['String']>;
+  description?: Maybe<LocalizedItem>;
   email?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
 }
 
@@ -628,34 +628,34 @@ export interface Order {
   __typename?: 'Order';
   created?: Maybe<Scalars['Int']>;
   items?: Maybe<Array<Maybe<OrderItem>>>;
+  paymentIntention?: Maybe<Scalars['Int']>;
   paymentMethod?: Maybe<Scalars['String']>;
+  place?: Maybe<Place>;
   staffId?: Maybe<Scalars['ID']>;
   statusLog?: Maybe<Array<Maybe<StatusLog>>>;
   sumPriceShown?: Maybe<PriceShown>;
   takeAway?: Maybe<Scalars['Boolean']>;
   userId?: Maybe<Scalars['ID']>;
-  place?: Maybe<Place>;
-  paymentIntention?: Maybe<Scalars['Int']>;
 }
 
 export interface OrderItem {
   __typename?: 'OrderItem';
   created?: Maybe<Scalars['Int']>;
-  productName?: Maybe<LocalizedItem>;
+  laneId?: Maybe<Scalars['ID']>;
   priceShown?: Maybe<PriceShown>;
   productId?: Maybe<Scalars['ID']>;
+  productName?: Maybe<LocalizedItem>;
   quantity?: Maybe<Scalars['Int']>;
   statusLog?: Maybe<Array<Maybe<StatusLog>>>;
   variantId?: Maybe<Scalars['ID']>;
   variantName?: Maybe<LocalizedItem>;
-  laneId?: Maybe<Scalars['ID']>;
 }
 
 export interface StatusLog {
   __typename?: 'StatusLog';
-  userId?: Maybe<Scalars['ID']>;
   status?: Maybe<Scalars['String']>;
   ts?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['ID']>;
 }
 
 export interface PriceShown {
@@ -675,8 +675,8 @@ export interface Place {
 
 export interface ProductCategory {
   __typename?: 'ProductCategory';
-  id?: Maybe<Scalars['ID']>;
   description?: Maybe<LocalizedItem>;
+  id?: Maybe<Scalars['ID']>;
   image?: Maybe<Scalars['String']>;
   name?: Maybe<LocalizedItem>;
   position?: Maybe<Scalars['String']>;
@@ -684,30 +684,30 @@ export interface ProductCategory {
 
 export interface ChainProduct {
   __typename?: 'ChainProduct';
-  id: Scalars['ID'];
   description?: Maybe<LocalizedItem>;
   extends?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   isVisible?: Maybe<Scalars['Boolean']>;
-  tax?: Maybe<Scalars['Int']>;
+  laneId?: Maybe<Scalars['ID']>;
   name?: Maybe<LocalizedItem>;
   position?: Maybe<Scalars['String']>;
   productCategoryId?: Maybe<Scalars['ID']>;
-  laneId?: Maybe<Scalars['ID']>;
   productType?: Maybe<Scalars['String']>;
+  tax?: Maybe<Scalars['Int']>;
   variants?: Maybe<Array<Maybe<ProductVariant>>>;
 }
 
 export interface ProductVariant {
   __typename?: 'ProductVariant';
-  variantName?: Maybe<LocalizedItem>;
-  pack?: Maybe<ProductVariantPack>;
-  refGroupPrice?: Maybe<Scalars['Float']>;
-  isAvailable?: Maybe<Scalars['Boolean']>;
-  price?: Maybe<Scalars['Float']>;
   availabilities?: Maybe<Array<Maybe<Availability>>>;
   availableFrom?: Maybe<Scalars['String']>;
+  isAvailable?: Maybe<Scalars['Boolean']>;
+  pack?: Maybe<ProductVariantPack>;
   position?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Float']>;
+  refGroupPrice?: Maybe<Scalars['Float']>;
+  variantName?: Maybe<LocalizedItem>;
 }
 
 export interface ProductVariantPack {
@@ -718,12 +718,12 @@ export interface ProductVariantPack {
 
 export interface Availability {
   __typename?: 'Availability';
-  type?: Maybe<Scalars['String']>;
   dayFrom?: Maybe<Scalars['String']>;
   dayTo?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Float']>;
   timeFrom?: Maybe<Scalars['String']>;
   timeTo?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['Float']>;
+  type?: Maybe<Scalars['String']>;
 }
 
 export enum CardBrand {
@@ -784,64 +784,64 @@ export interface StripeCard extends StripeMetadataInterface, NodeInterface {
 
 export interface Unit {
   __typename?: 'Unit';
-  id: Scalars['ID'];
-  groupId: Scalars['ID'];
-  isActive?: Maybe<Scalars['Boolean']>;
-  isAcceptingOrders?: Maybe<Scalars['Boolean']>;
-  name?: Maybe<Scalars['String']>;
   description?: Maybe<LocalizedItem>;
-  paymentModes?: Maybe<Array<Maybe<PaymentMode>>>;
   floorMap?: Maybe<FloorMapData>;
+  groupId: Scalars['ID'];
+  id: Scalars['ID'];
+  isAcceptingOrders?: Maybe<Scalars['Boolean']>;
+  isActive?: Maybe<Scalars['Boolean']>;
   lanes?: Maybe<Array<Maybe<Lane>>>;
+  name?: Maybe<Scalars['String']>;
   open?: Maybe<DailySchedule>;
   openingHours?: Maybe<WeeklySchedule>;
+  paymentModes?: Maybe<Array<Maybe<PaymentMode>>>;
 }
 
 export interface PaymentMode {
   __typename?: 'PaymentMode';
-  name: Scalars['String'];
   caption?: Maybe<Scalars['String']>;
   method: Scalars['String'];
+  name: Scalars['String'];
 }
 
 export interface FloorMapData {
   __typename?: 'FloorMapData';
-  w?: Maybe<Scalars['Int']>;
   h?: Maybe<Scalars['Int']>;
   objects?: Maybe<Array<Maybe<FloorMapDataObject>>>;
+  w?: Maybe<Scalars['Int']>;
 }
 
 export interface Lane {
   __typename?: 'Lane';
+  color?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
 }
 
 export interface FloorMapDataObject {
   __typename?: 'FloorMapDataObject';
-  id: Scalars['ID'];
-  t: Scalars['String'];
-  c?: Maybe<Scalars['String']>;
-  w?: Maybe<Scalars['Int']>;
-  h?: Maybe<Scalars['Int']>;
-  r?: Maybe<Scalars['Int']>;
   a?: Maybe<Scalars['Int']>;
+  c?: Maybe<Scalars['String']>;
+  h?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  r?: Maybe<Scalars['Int']>;
+  sID?: Maybe<Scalars['String']>;
+  t: Scalars['String'];
+  tID?: Maybe<Scalars['String']>;
+  w?: Maybe<Scalars['Int']>;
   x: Scalars['Int'];
   y: Scalars['Int'];
-  tID?: Maybe<Scalars['String']>;
-  sID?: Maybe<Scalars['String']>;
 }
 
 export interface User {
   __typename?: 'User';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
   address?: Maybe<Address>;
   email?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  login?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
-  login?: Maybe<Scalars['String']>;
 }
 
 export type GetAdminUserQueryVariables = Exact<{

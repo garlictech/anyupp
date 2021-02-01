@@ -13,7 +13,7 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
 @Component({
   selector: 'bgap-chain-list',
   templateUrl: './chain-list.component.html',
-  styleUrls: ['./chain-list.component.scss']
+  styleUrls: ['./chain-list.component.scss'],
 })
 export class ChainListComponent implements OnInit, OnDestroy {
   public chains$: Observable<IChain[]>;

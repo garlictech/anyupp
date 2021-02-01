@@ -2,8 +2,14 @@ import { get as _get } from 'lodash-es';
 
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  EOrderStatus, IFloorMapTableOrderObjects, IFloorMapUserOrderObjects, IFloorMapUserOrders, ILaneOrderItem, IOrder,
-  IStatusLog, IUnit
+  EOrderStatus,
+  IFloorMapTableOrderObjects,
+  IFloorMapUserOrderObjects,
+  IFloorMapUserOrders,
+  ILaneOrderItem,
+  IOrder,
+  IStatusLog,
+  IUnit,
 } from '@bgap/shared/types';
 
 export const currentStatus = (status: IStatusLog): EOrderStatus => {

@@ -9,7 +9,7 @@ enum EFormMode {
 @Component({
   selector: 'bgap-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   public env = environment;
@@ -22,4 +22,3 @@ export class LoginComponent {
     this.formMode = showResetForm ? EFormMode.RESET : EFormMode.LOGIN;
   };
 }
-

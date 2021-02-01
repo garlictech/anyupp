@@ -57,6 +57,8 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@nrwl/angular": "11.0.20",
+    "@serverless-stack/cli": "0.7.2",
+    "@serverless-stack/resources": "0.7.2",
     "apollo-angular": "^2.2.0",
     "apollo-link-error": "^1.1.13",
     "apollo-server-express": "^2.19.1",
@@ -78,7 +80,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.5",
     "stripe": "^8.131.1",
-    "tslib": "^2.0.3",
+    "tslib": "^2.0.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.10.2"
   },
@@ -103,7 +105,7 @@
     "@ngrx/store-devtools": "10.0.0",
     "@nrwl/cli": "11.0.20",
     "@nrwl/cypress": "11.0.20",
-    "@nrwl/eslint-plugin-nx": "^11.0.20",
+    "@nrwl/eslint-plugin-nx": "11.0.20",
     "@nrwl/jest": "11.0.20",
     "@nrwl/nest": "11.0.20",
     "@nrwl/node": "11.0.20",
@@ -120,28 +122,28 @@
     "@types/jest": "26.0.8",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "12.12.38",
-    "@typescript-eslint/eslint-plugin": "4.3.0",
-    "@typescript-eslint/parser": "4.3.0",
-    "codelyzer": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
+    "@typescript-eslint/parser": "^4.0.0",
     "cucumber-html-reporter": "^5.3.0",
     "cypress": "6.2.1",
     "cypress-cucumber-preprocessor": "^4.0.0",
     "dotenv": "6.2.0",
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-cypress": "^2.11.2",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsdoc": "30.7.6",
-    "eslint-plugin-prefer-arrow": "1.2.2",
-    "eslint-plugin-unused-imports": "^1.0.1",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-unused-imports": "^1.0.0",
     "jest": "26.2.2",
     "jest-preset-angular": "8.3.1",
     "prettier": "2.1.2",
     "ts-jest": "26.4.0",
-    "ts-node": "9.1.1",
-    "typescript": "^3.9.7"
+    "ts-node": "~9.1.1",
+    "typescript": "~4.0.3"
   },
   "workspaces": [
-    "apps/graphql-server"
-  ]
+    "apps/graphql-server",
+    "apps/infrastructure/build-pipeline-stack"
+  ],
+  "resolutions": {
+    "typescript": "4.0.5"
+  }
 }

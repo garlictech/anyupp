@@ -30,12 +30,9 @@ const reducer = createReducer(
   }))
 );
 
-export function loggedUserReducer(state: ILoggedUserState | undefined, action: Action) {
+export function loggedUserReducer(
+  state: ILoggedUserState | undefined,
+  action: Action
+) {
   return reducer(state, action);
 }
-
-
-
-
-
-

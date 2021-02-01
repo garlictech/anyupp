@@ -4,13 +4,27 @@ import { take } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { groupsSelectors } from '@bgap/admin/shared/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 import {
-  contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN, unitOpeningHoursValidator
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -182,7 +196,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP UPDATE ERROR', err);
           }
         );
@@ -196,7 +210,7 @@ export class UnitFormComponent
             );
             this.close();
           },
-          (err) => {
+          err => {
             console.error('GROUP INSERT ERROR', err);
           }
         );

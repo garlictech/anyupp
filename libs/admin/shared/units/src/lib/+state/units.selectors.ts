@@ -25,8 +25,9 @@ export const getAllUnits = createSelector(getUnitsState, (state: IUnitsState) =>
   selectAll(state)
 );
 
-export const getUnitsEntities = createSelector(getUnitsState, (state: IUnitsState) =>
-  selectEntities(state)
+export const getUnitsEntities = createSelector(
+  getUnitsState,
+  (state: IUnitsState) => selectEntities(state)
 );
 
 export const getSelectedId = createSelector(
@@ -40,7 +41,6 @@ export const getSelected = createSelector(
   (entities, selectedId) => selectedId && entities[selectedId]
 );
 
-
 export const getUnitById = (id: string) => {
   return createSelector(
     getAllUnits,
@@ -48,9 +48,7 @@ export const getUnitById = (id: string) => {
   );
 };
 
-export const getUnitsByGroupId = (
-  groupId: string
-) => {
+export const getUnitsByGroupId = (groupId: string) => {
   return createSelector(getAllUnits, (units: IUnit[]): IUnit[] =>
     units.filter((unit): boolean => unit.groupId === groupId)
   );
@@ -69,7 +67,5 @@ export const getSelectedUnit = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllUnits,
   (userSettings: IAdminUserSettings, units: IUnit[]): IUnit =>
-    units.find(
-      (unit): boolean => unit._id === userSettings?.selectedUnitId
-    )
+    units.find((unit): boolean => unit._id === userSettings?.selectedUnitId)
 );

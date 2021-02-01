@@ -22,10 +22,12 @@ export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
   selectId: (item: IAdminUser): string => item._id,
 });
 
-export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState({
-  // set initial required properties
-  loaded: false,
-});
+export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(
+  {
+    // set initial required properties
+    loaded: false,
+  }
+);
 
 const reducer = createReducer(
   initialState,
@@ -46,6 +48,9 @@ const reducer = createReducer(
   )
 );
 
-export function adminUsersReducer(state: IAdminUsersState | undefined, action: Action) {
+export function adminUsersReducer(
+  state: IAdminUsersState | undefined,
+  action: Action
+) {
   return reducer(state, action);
 }

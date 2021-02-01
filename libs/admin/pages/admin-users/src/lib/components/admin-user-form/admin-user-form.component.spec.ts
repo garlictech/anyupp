@@ -8,9 +8,8 @@ describe('AdminUserFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminUserFormComponent ]
-    })
-    .compileComponents();
+      declarations: [AdminUserFormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

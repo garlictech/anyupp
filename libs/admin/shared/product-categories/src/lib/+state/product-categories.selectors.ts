@@ -1,7 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  IProductCategoriesState, PRODUCT_CATEGORIES_FEATURE_KEY, productCategoriesAdapter
+  IProductCategoriesState,
+  PRODUCT_CATEGORIES_FEATURE_KEY,
+  productCategoriesAdapter,
 } from './product-categories.reducer';
 
 // Lookup the 'ProductCategories' feature state managed by NgRx

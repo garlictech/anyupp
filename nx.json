@@ -139,6 +139,12 @@
     },
     "admin-shared-storage": {
       "tags": []
+    },
+    "infrastructure-anyupp-backend-stack": {
+      "tags": []
+    },
+    "infrastructure-build-pipeline-stack": {
+      "tags": []
     }
   }
 }

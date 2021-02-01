@@ -24,8 +24,9 @@ export const getAllUsers = createSelector(getUsersState, (state: IUsersState) =>
   selectAll(state)
 );
 
-export const getUsersEntities = createSelector(getUsersState, (state: IUsersState) =>
-  selectEntities(state)
+export const getUsersEntities = createSelector(
+  getUsersState,
+  (state: IUsersState) => selectEntities(state)
 );
 
 export const getSelectedId = createSelector(

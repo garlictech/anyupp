@@ -5,7 +5,11 @@ import { v1 as uuidV1 } from 'uuid';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { adminUsersSelectors } from '@bgap/admin/shared/admin-users';
-import { TIME_FORMAT_PATTERN,  multiLangValidator, productAvailabilityValidator } from '@bgap/admin/shared/utils';
+import {
+  TIME_FORMAT_PATTERN,
+  multiLangValidator,
+  productAvailabilityValidator,
+} from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IAdminUser } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
@@ -13,10 +17,7 @@ import { select, Store } from '@ngrx/store';
   providedIn: 'root',
 })
 export class FormsService {
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {}
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -75,7 +76,9 @@ export class FormsService {
     });
   };
 
-  public adminExistingEmailValidator = (control: FormGroup): Observable<IAdminUser> =>
+  public adminExistingEmailValidator = (
+    control: FormGroup
+  ): Observable<IAdminUser> =>
     this._store.pipe(
       select(adminUsersSelectors.getAdminUserByEmail(control.value)),
       take(1)

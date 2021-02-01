@@ -1,4 +1,8 @@
-import { EDashboardListMode, EDashboardSize, EDashboardTicketListType } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  EDashboardTicketListType,
+} from '@bgap/shared/types';
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as DashboardActions from './dashboard.actions';
@@ -15,7 +19,7 @@ export interface IDashboardSettings {
   historyDate: number;
 }
 
-export interface DashboardState  {
+export interface DashboardState {
   selectedOrderId?: string;
   settings: IDashboardSettings;
 }
@@ -32,7 +36,7 @@ export const initialState: DashboardState = {
     showAllUserOrders: false,
     ticketListType: EDashboardTicketListType.PLACED,
     selectedLanes: ['default'],
-    historyDate: (new Date()).getTime()
+    historyDate: new Date().getTime(),
   },
 };
 
@@ -45,7 +49,7 @@ const reducer = createReducer(
     ...state,
     selectedOrderId: orderId,
   })),
-  on(DashboardActions.resetSelectedOrderId, (state) => ({
+  on(DashboardActions.resetSelectedOrderId, state => ({
     ...state,
     selectedOrderId: undefined,
   })),
@@ -70,16 +74,13 @@ const reducer = createReducer(
       orderEditing,
     },
   })),
-  on(
-    DashboardActions.setShowAllUserOrders,
-    (state, { showAllUserOrders }) => ({
-      ...state,
-      settings: {
-        ...state.settings,
-        showAllUserOrders,
-      },
-    })
-  ),
+  on(DashboardActions.setShowAllUserOrders, (state, { showAllUserOrders }) => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      showAllUserOrders,
+    },
+  })),
   on(DashboardActions.setTicketListType, (state, { ticketListType }) => ({
     ...state,
     settings: {
@@ -103,6 +104,9 @@ const reducer = createReducer(
   }))
 );
 
-export function dashboardReducer(state: DashboardState | undefined, action: Action) {
+export function dashboardReducer(
+  state: DashboardState | undefined,
+  action: Action
+) {
   return reducer(state, action);
 }

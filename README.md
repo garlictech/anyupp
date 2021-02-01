@@ -143,19 +143,22 @@ Teams using Nx gain the advantage of building full-stack applications with their
 
 Visit [Nx Cloud](https://nx.app/) to learn more.
 
-
 ## Generators
+
 [Generators](https://nx.dev/latest/angular/plugins/workspace/nrwl-workspace-overview)
 
 TIP: use `--dry-run` to check your idea. It shows what will be generated without writing to disk.
 
 ### Generate a ??? (simple workspace lib)
+
 `nx g @nrwl/workspace:lib shared/config`
 
 ### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
+
 `nx g @nrwl/workspace:rm shared-config-firebase`
 
 ### Generate a nest lib
+
 ```
 nx g @nrwl/nest:lib ...
 nx g @nrwl/nest:lib api/graphql/schema
@@ -163,14 +166,18 @@ nx g @nrwl/nest:lib api/graphql/resolvers
 ```
 
 ### Generate a nest graphQL resolver
+
 The generator will collect the new resolver's name
 `nx g @nrwl/nest:resolver -p api-graphql-resolvers`
 
 ### Generate graphql schemas
+
 `nx build api-graphql-schema`
 
 ### Start admin
+
 `nx serve admin`
 
 ### Start graphql server
+
 `nx serve graphql-server`

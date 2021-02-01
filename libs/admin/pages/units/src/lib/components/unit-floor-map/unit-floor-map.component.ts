@@ -6,7 +6,6 @@ import { EToasterType } from '@bgap/admin/shared/utils';
 import { IUnit } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
 
-
 @Component({
   selector: 'bgap-unit-floor-map',
   templateUrl: './unit-floor-map.component.html',
@@ -51,7 +50,7 @@ export class UnitFloorMapComponent
           );
           this.close();
         },
-        (err) => {
+        err => {
           console.error('GROUP UPDATE ERROR', err);
         }
       );

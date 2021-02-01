@@ -10,7 +10,15 @@ import { productsSelectors } from '@bgap/admin/shared/products';
 import { OrderService } from '@bgap/admin/shared/data';
 import { currentStatus } from '@bgap/admin/shared/orders';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct, IProductCategory
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  IAdminUser,
+  IGroup,
+  IOrder,
+  IOrderItem,
+  IProduct,
+  IProductCategory,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -19,7 +27,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-order-product-list',
   templateUrl: './order-product-list.component.html',
-  styleUrls: ['./order-product-list.component.scss']
+  styleUrls: ['./order-product-list.component.scss'],
 })
 export class OrderProductListComponent {
   @Input() selectedOrder: IOrder;
@@ -29,10 +37,7 @@ export class OrderProductListComponent {
   public groupCurrency: string;
   public buttonSize: ENebularButtonSize;
 
-  constructor(
-    private _store: Store<any>,
-    private _orderService: OrderService
-  ) {
+  constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
 
     this._store
@@ -61,7 +66,7 @@ export class OrderProductListComponent {
       this._store.pipe(
         select(productsSelectors.getAllGeneratedUnitProducts),
         untilDestroyed(this)
-      )
+      ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
