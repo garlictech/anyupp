@@ -1107,6 +1107,7 @@
           }
         }
       }
+    }
   },
   "cli": {
     "defaultCollection": "@nrwl/angular",
