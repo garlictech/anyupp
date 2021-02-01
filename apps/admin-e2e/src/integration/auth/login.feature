@@ -6,7 +6,7 @@ Feature: Admin login
     Given I am on the login page
 
   Scenario: Check form title
-    Then I should see "AnyUpp Login" title
+    Then I should see "AnyUpp Login" text
 
 # Scenario: Login with an e-mail and password
 #   When I fill out the "Email" input with "emaillll"
