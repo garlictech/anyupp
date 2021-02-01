@@ -1,7 +1,7 @@
 @product @unit @edit @variant
 Feature: Edit Unit product
 
-    Description
+    Edit unit product
 
 Background:
   Given I am logged in
@@ -10,16 +10,13 @@ Background:
   And I am at the "Unit products" tab
   And I am on the first "Edit" button
 
-Scenario: Product basic info 
-  Given I am
-  And the "Basic info" title displayed
-  And name of the product displayed
-  When I click on the dropdown menu below the "Lane" title
-  And I click on the "Pult" option
-  And I click on the checkbox next to the "Is visible"
-  And I click on the "Submit" button
-  Then the Product is on the "Pult" lane 
-  And the  Product is visible
+Scenario: Select the lane
+  Given I am at the Lane title
+  When I click on the dropdown menu
+  And I select the "Pult" option
+  And I click on the "submit" button
+  Then the "update succesfull" title displayed
+  And the product list displayed
 
 Scenario: Variant datas
   Given I am
