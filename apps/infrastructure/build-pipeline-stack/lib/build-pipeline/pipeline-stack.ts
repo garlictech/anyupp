@@ -13,59 +13,56 @@ export interface PipelineStackProps extends sst.StackProps {
   readonly repoBranch: string;
 }
 
-export class PipelineStack extends sst.Stack {
+export class DevBuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
     super(app, id, props);
 
     const buildOutput = new codepipeline.Artifact('BuildOutput');
     const sourceOutput = new codepipeline.Artifact('SourceOutput');
 
-    const build = new codebuild.PipelineProject(this, 'build', {
+    // Build project
+    const build = new codebuild.PipelineProject(this, 'Build', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
           install: {
-            commands: ['yarn'],
+            commands: ['yarn']
           },
           build: {
             commands: [
-              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
-            ],
-          },
+              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack'
+            ]
+          }
         },
         artifacts: {
           files: [
+            'dist/apps/admin/**/*',
             'apps/infrastructure/anyupp-backend-stack/.serverless',
-            'node_modules/**/*',
-          ],
-        },
+            'node_modules/**/*'
+          ]
+        }
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
+      }
     });
 
+    // Deploy project
     const deploy = new codebuild.PipelineProject(this, 'DeployBuild', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
           install: {
-            commands: ['yarn'],
+            commands: ['yarn']
           },
           build: {
-            commands: [
-              'cd apps/infrastructure/anyupp-backend-stack',
-              'yarn sst deploy',
-            ],
-          },
-        },
-        artifacts: {
-          files: ['dist/apps/admin/**/*'],
-        },
+            commands: ['nx deploy']
+          }
+        }
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
+      }
     });
 
     new codepipeline.Pipeline(this, 'Pipeline', {
@@ -79,9 +76,9 @@ export class PipelineStack extends sst.Stack {
               output: sourceOutput,
               owner: props.repoOwner,
               repo: props.repoName,
-              branch: props.repoBranch,
-            }),
-          ],
+              branch: props.repoBranch
+            })
+          ]
         },
         {
           stageName: 'Build',
@@ -90,9 +87,9 @@ export class PipelineStack extends sst.Stack {
               actionName: 'Build',
               project: build,
               input: sourceOutput,
-              outputs: [buildOutput],
-            }),
-          ],
+              outputs: [buildOutput]
+            })
+          ]
         },
         {
           stageName: 'Deploy',
@@ -100,51 +97,11 @@ export class PipelineStack extends sst.Stack {
             new codepipeline_actions.CodeBuildAction({
               actionName: 'Deploy',
               project: deploy,
-              input: buildOutput,
-            }),
-          ],
-        },
-      ],
-    });
-
-    new codebuild.GitHubSourceCredentials(this, 'CodeBuildGitHubCreds', {
-      accessToken: props.secretsManager.githubOauthToken.secretValue,
-    });
-
-    const githubPrSource = codebuild.Source.gitHub({
-      owner: props.repoOwner,
-      repo: props.repoName,
-      webhook: true,
-      webhookFilters: [
-        codebuild.FilterGroup.inEventOf(
-          codebuild.EventAction.PULL_REQUEST_CREATED
-        ),
-        codebuild.FilterGroup.inEventOf(
-          codebuild.EventAction.PULL_REQUEST_UPDATED
-        ),
-      ],
-    });
-
-    new codebuild.Project(this, 'PullRequestClone', {
-      source: githubPrSource,
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          install: {
-            commands: ['yarn'],
-          },
-          build: {
-            commands: [
-              'yarn nx affected:lint --base=dev',
-              'yarn nx affected:test --base=dev',
-              'yarn nx affected:build --base=dev',
-            ],
-          },
-        },
-      }),
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
+              input: buildOutput
+            })
+          ]
+        }
+      ]
     });
   }
 }
