@@ -1,12 +1,23 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
+import {
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/dashboard';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { OrderService } from '@bgap/admin/shared/data';
 import {
-  currentStatus as currentStatusFn, getNextOrderItemStatus, getNextOrderStatus, getStatusColor
+  currentStatus as currentStatusFn,
+  getNextOrderItemStatus,
+  getNextOrderStatus,
+  getStatusColor,
 } from '@bgap/admin/shared/orders';
 import {
-  EDashboardListMode, EDashboardSize, ENebularButtonSize, EOrderStatus, IOrder, IStatusLog
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  IOrder,
+  IStatusLog,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -16,7 +27,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-order-details',
   styleUrls: ['./order-details.component.scss'],
-  templateUrl: './order-details.component.html'
+  templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnDestroy {
   @Input() order: IOrder;
@@ -83,17 +94,13 @@ export class OrderDetailsComponent implements OnDestroy {
     );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(
-        this.order._id,
-        status,
-        idx
-      );
+      this._orderService.updateOrderItemStatus(this.order._id, status, idx);
     }
   }
 
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog'
+      dialogClass: 'form-dialog',
     });
 
     dialog.componentRef.instance.options = {
@@ -108,14 +115,16 @@ export class OrderDetailsComponent implements OnDestroy {
               idx
             );
           },
-          status: 'success'
+          status: 'success',
         },
         {
           label: 'common.cancel',
-          callback: (): void => {/**/},
-          status: 'basic'
-        }
-      ]
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
     };
   }
 }

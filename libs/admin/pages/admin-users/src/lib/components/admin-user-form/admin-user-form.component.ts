@@ -3,17 +3,26 @@ import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { cleanObject, EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  cleanObject,
+  EToasterType,
+  contactFormGroup,
+} from '@bgap/admin/shared/utils';
 import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-admin-user-form',
   templateUrl: './admin-user-form.component.html',
-  styleUrls: ['./admin-user-form.component.scss']
+  styleUrls: ['./admin-user-form.component.scss'],
 })
-export class AdminUserFormComponent extends AbstractFormDialogComponent implements OnInit {
+export class AdminUserFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
   public adminUser: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;

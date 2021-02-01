@@ -1,9 +1,18 @@
 import { currentStatus as currentStatusFn } from '../fn';
-import { EOrderStatus, ILaneOrderItem, IOrder, IOrderItem } from '@bgap/shared/types';
+import {
+  EOrderStatus,
+  ILaneOrderItem,
+  IOrder,
+  IOrderItem,
+} from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  activeOrdersAdapter, historyOrdersAdapter, IOrderEntityState, IOrdersState, ORDERS_FEATURE_KEY
+  activeOrdersAdapter,
+  historyOrdersAdapter,
+  IOrderEntityState,
+  IOrdersState,
+  ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 
 // Lookup the 'Orders' feature state managed by NgRx
@@ -27,9 +36,7 @@ export const getAllActiveOrderCount = activeOrdersAdapter.getSelectors(
   activeOrderListSelector
 ).selectTotal;
 
-export const getActiveOrderById = (
-  id: string
-) => {
+export const getActiveOrderById = (id: string) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): IOrder =>
@@ -37,17 +44,13 @@ export const getActiveOrderById = (
   );
 };
 
-export const getActiveOrdersByUserId = (
-  userId: string
-) => {
+export const getActiveOrdersByUserId = (userId: string) => {
   return createSelector(getAllActiveOrders, (orders: IOrder[]): IOrder[] =>
     orders.filter((order): boolean => order.userId === userId)
   );
 };
 
-export const getActiveOrdersCountByUserId = (
-  userId: string
-) => {
+export const getActiveOrdersCountByUserId = (userId: string) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): number =>
@@ -55,9 +58,7 @@ export const getActiveOrdersCountByUserId = (
   );
 };
 
-export const getLaneOrderItemsByStatus = (
-  status: EOrderStatus
-) => {
+export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): ILaneOrderItem[] => {
@@ -70,7 +71,7 @@ export const getLaneOrderItemsByStatus = (
             .map(
               (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
                 ...orderItem,
-                idx
+                idx,
               })
             )
             .filter(
@@ -83,7 +84,7 @@ export const getLaneOrderItemsByStatus = (
                 orderId: order._id,
                 userId: order.userId,
                 place: order.place,
-                currentStatus: status
+                currentStatus: status,
               })
             )
         );
@@ -110,9 +111,7 @@ export const getAllHistoryOrderCount = historyOrdersAdapter.getSelectors(
   historyOrderListSelector
 ).selectTotal;
 
-export const getHistoryOrderById = (
-  id: string
-) => {
+export const getHistoryOrderById = (id: string) => {
   return createSelector(
     getAllHistoryOrders,
     (orders: IOrder[]): IOrder =>

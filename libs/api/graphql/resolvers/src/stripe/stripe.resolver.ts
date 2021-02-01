@@ -11,6 +11,7 @@ import {
   IUser,
 } from '@bgap/shared/types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { IOrder } from '../../../../../shared/types/src/lib/interfaces/order';
 
 import {
   amountConversionForStripe,
@@ -145,7 +146,7 @@ export class StripeResolver {
     unitId: string;
     userId: string;
   }): Promise<IOrders> {
-    const activeOrdersOfTheUser = await this.dbService.getRefValue(
+    const activeOrdersOfTheUser = await this.dbService.getRefValue<IOrders>(
       this.dbService.ordersUsersActiveRef({
         chainId,
         unitId,
@@ -158,7 +159,7 @@ export class StripeResolver {
     // }
 
     return Object.entries(activeOrdersOfTheUser).reduce(
-      (result, [orderId, order]) => {
+      (result, [orderId, order]: [string, IOrder]) => {
         if (
           getActualStatus(order.statusLog) === EOrderStatus.READY &&
           order.paymentMethod === EPaymentMethod.INAPP

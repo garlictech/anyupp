@@ -10,7 +10,7 @@ const options = {
   scenarioTimestamp: true,
   launchReport: false,
   storeScreenshots: true,
-  noInlineScreenshots: false
+  noInlineScreenshots: false,
 };
 
 try {

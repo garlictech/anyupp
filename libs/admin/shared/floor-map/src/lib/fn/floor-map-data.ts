@@ -2,14 +2,29 @@ import { fabric } from 'fabric';
 
 import { customStringCompare, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  EUnitMapObjectType, IFabricGroup, IFabricObjectProperties, IFloorMapData, IFloorMapDataObject
+  EUnitMapObjectType,
+  IFabricGroup,
+  IFabricObjectProperties,
+  IFloorMapData,
+  IFloorMapDataObject,
 } from '@bgap/shared/types';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {
-  createBar, createLabel, createSeatCircle, createSeatRect, createTableCircle, createTableRect, createWall
+  createBar,
+  createLabel,
+  createSeatCircle,
+  createSeatRect,
+  createTableCircle,
+  createTableRect,
+  createWall,
 } from './floor-map-objects';
-import { generateId, getObjectBg, getObjectRadius, getObjectText } from './floor-map-utils';
+import {
+  generateId,
+  getObjectBg,
+  getObjectRadius,
+  getObjectText,
+} from './floor-map-utils';
 
 export let mapRawData: IFloorMapData;
 
@@ -121,8 +136,10 @@ export const setRawDataField = (key: string, value: string | number): void => {
   }
 };
 
-export const getRawDataField = (obj: IFabricGroup, key: string): string | number =>
-  mapRawData.objects[obj.id][key];
+export const getRawDataField = (
+  obj: IFabricGroup,
+  key: string
+): string | number => mapRawData.objects[obj.id][key];
 
 const _getObjectProperties = (obj): IFabricObjectProperties => ({
   id: obj.id,
@@ -137,7 +154,9 @@ const _getObjectProperties = (obj): IFabricObjectProperties => ({
 });
 
 export const updateObjectMapRawData = (e): void => {
-  const objectProperties: IFabricObjectProperties = _getObjectProperties(e.target);
+  const objectProperties: IFabricObjectProperties = _getObjectProperties(
+    e.target
+  );
 
   if (objectProperties) {
     const { id, ...objectData } = objectProperties;

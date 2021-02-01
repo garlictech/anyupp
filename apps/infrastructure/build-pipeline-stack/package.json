@@ -1,0 +1,22 @@
+{
+  "name": "@bgap/build-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.79.0"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-codebuild": "1.79.0",
+    "@aws-cdk/aws-codecommit": "1.79.0",
+    "@aws-cdk/aws-codedeploy": "1.79.0",
+    "@aws-cdk/aws-codepipeline": "1.79.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.79.0",
+    "@aws-cdk/aws-secretsmanager": "1.79.0",
+    "@aws-cdk/core": "1.79.0"
+  }
+}

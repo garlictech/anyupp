@@ -13,17 +13,14 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
-  styleUrls: ['./active-product-category-selector.component.scss']
+  styleUrls: ['./active-product-category-selector.component.scss'],
 })
 export class ActiveProductCategorySelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public productCategories$: Observable<IProductCategory[]>;
   private _adminUser: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
@@ -54,7 +51,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser._id, {
         ..._get(this._adminUser, 'settings', {}),
-        selectedProductCategoryId: productCategoryId
+        selectedProductCategoryId: productCategoryId,
       });
     }
   }

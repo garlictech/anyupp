@@ -1,4 +1,10 @@
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { EVariantAvailabilityType, IDateIntervals } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';

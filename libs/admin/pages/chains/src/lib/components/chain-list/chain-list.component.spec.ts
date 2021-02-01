@@ -8,9 +8,8 @@ describe('ChainListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChainListComponent ]
-    })
-    .compileComponents();
+      declarations: [ChainListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

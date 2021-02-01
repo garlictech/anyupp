@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
-import { NbButtonModule, NbCardModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbInputModule,
+  NbLayoutModule,
+} from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { LoginFormComponent } from './components/login-form/login-form.component';

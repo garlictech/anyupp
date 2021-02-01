@@ -4,15 +4,20 @@ import { IProduct } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  chainProductsAdapter, generatedUnitProductsAdapter, groupProductsAdapter, IProductEntityState, unitProductsAdapter
+  chainProductsAdapter,
+  generatedUnitProductsAdapter,
+  groupProductsAdapter,
+  IProductEntityState,
+  unitProductsAdapter,
 } from './products.reducer';
-
 
 import { IProductsState, PRODUCTS_FEATURE_KEY } from './products.reducer';
 import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
 
 // Lookup the 'Products' feature state managed by NgRx
-export const getProductsState = createFeatureSelector<IProductsState>(PRODUCTS_FEATURE_KEY);
+export const getProductsState = createFeatureSelector<IProductsState>(
+  PRODUCTS_FEATURE_KEY
+);
 
 // CHAIN PRODUCTS
 
@@ -30,9 +35,7 @@ export const getAllChainProductCount = chainProductsAdapter.getSelectors(
   chainProductListSelector
 ).selectTotal;
 
-export const getChainProductById = (
-  id: string
-) => {
+export const getChainProductById = (id: string) => {
   return createSelector(
     getAllChainProducts,
     (products: IProduct[]): IProduct =>
@@ -68,9 +71,7 @@ export const getAllGroupProductCount = groupProductsAdapter.getSelectors(
   groupProductListSelector
 ).selectTotal;
 
-export const getGroupProductById = (
-  id: string
-) => {
+export const getGroupProductById = (id: string) => {
   return createSelector(
     getAllGroupProducts,
     (products: IProduct[]): IProduct =>
@@ -83,7 +84,11 @@ export const getPendingGroupProductsOfSelectedCategory = () =>
     getAllChainProducts,
     getAllGroupProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (chainProducts: IProduct[], groupProducts: IProduct[], productCategoryId: string): IProduct[] =>
+    (
+      chainProducts: IProduct[],
+      groupProducts: IProduct[],
+      productCategoryId: string
+    ): IProduct[] =>
       chainProducts.filter((chainProduct: IProduct): boolean => {
         const found = groupProducts.filter(
           (groupProduct: IProduct): boolean =>
@@ -103,7 +108,11 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
     getAllChainProducts,
     getAllGroupProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (chainProducts: IProduct[], groupProducts: IProduct[], productCategoryId: string): IProduct[] => {
+    (
+      chainProducts: IProduct[],
+      groupProducts: IProduct[],
+      productCategoryId: string
+    ): IProduct[] => {
       return groupProducts
         .map(
           (groupProduct: IProduct): IProduct => {
@@ -139,9 +148,7 @@ export const getAllUnitProductCount = unitProductsAdapter.getSelectors(
   unitProductListSelector
 ).selectTotal;
 
-export const getUnitProductById = (
-  id: string
-) => {
+export const getUnitProductById = (id: string) => {
   return createSelector(
     getAllUnitProducts,
     (products: IProduct[]): IProduct =>
@@ -154,7 +161,11 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (groupProducts: IProduct[], unitProducts: IProduct[], productCategoryId: string): IProduct[] =>
+    (
+      groupProducts: IProduct[],
+      unitProducts: IProduct[],
+      productCategoryId: string
+    ): IProduct[] =>
       groupProducts.filter((groupProduct: IProduct): boolean => {
         const found = unitProducts.filter(
           (unitProduct: IProduct): boolean =>
@@ -174,7 +185,11 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (groupProducts: IProduct[], unitProducts: IProduct[], productCategoryId: string): IProduct[] => {
+    (
+      groupProducts: IProduct[],
+      unitProducts: IProduct[],
+      productCategoryId: string
+    ): IProduct[] => {
       return unitProducts
         .map(
           (unitProduct: IProduct): IProduct => {
@@ -218,9 +233,7 @@ export const getAllGeneratedUnitProductCount = generatedUnitProductsAdapter.getS
   generatedUnitProductListSelector
 ).selectTotal;
 
-export const getGeneratedProductImageById = (
-  id: string
-) => {
+export const getGeneratedProductImageById = (id: string) => {
   return createSelector(
     getAllGeneratedUnitProducts,
     (products: IProduct[]): string =>

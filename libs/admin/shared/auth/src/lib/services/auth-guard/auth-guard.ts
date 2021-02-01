@@ -5,7 +5,12 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+} from '@angular/router';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 
@@ -53,9 +58,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         (user): Observable<IAdminUser | undefined> =>
           user
             ? this._angularFireDatabase
-                .object(
-                  `/adminUsers/${user.uid}`
-                )
+                .object(`/adminUsers/${user.uid}`)
                 .valueChanges()
                 .pipe(take(1))
             : of(undefined)

@@ -5,4 +5,3 @@ export * from './lib/+state/orders.reducer';
 export * from './lib/admin-shared-orders.module';
 export * from './lib/fn';
 export { ordersActions, ordersSelectors };
-

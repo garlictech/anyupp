@@ -7,7 +7,13 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbListModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 

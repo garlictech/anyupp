@@ -20,10 +20,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedChains: IChain[];
 
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
       chainId: [''],

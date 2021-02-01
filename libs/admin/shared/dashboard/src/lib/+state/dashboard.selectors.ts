@@ -1,12 +1,26 @@
-import { getAllActiveOrders, getAllHistoryOrders } from 'libs/admin/shared/orders/src/lib/+state/orders.selectors';
+import {
+  getAllActiveOrders,
+  getAllHistoryOrders,
+} from 'libs/admin/shared/orders/src/lib/+state/orders.selectors';
 
-import { EDashboardListMode, EDashboardSize, EDashboardTicketListType, IOrder } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  EDashboardTicketListType,
+  IOrder,
+} from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { DASHBOARD_FEATURE_KEY, DashboardState, IDashboardSettings } from './dashboard.reducer';
+import {
+  DASHBOARD_FEATURE_KEY,
+  DashboardState,
+  IDashboardSettings,
+} from './dashboard.reducer';
 
 // Lookup the 'Dashboard' feature state managed by NgRx
-export const getDashboardState = createFeatureSelector<DashboardState>(DASHBOARD_FEATURE_KEY);
+export const getDashboardState = createFeatureSelector<DashboardState>(
+  DASHBOARD_FEATURE_KEY
+);
 
 export const getSelectedActiveOrder = () => {
   return createSelector(

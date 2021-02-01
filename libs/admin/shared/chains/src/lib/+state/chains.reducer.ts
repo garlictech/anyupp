@@ -16,11 +16,11 @@ export interface IChainsPartialState {
   readonly [CHAINS_FEATURE_KEY]: IChainsState;
 }
 
-export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<
-  IChain
->({
-  selectId: (item: IChain): string => item._id,
-});
+export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<IChain>(
+  {
+    selectId: (item: IChain): string => item._id,
+  }
+);
 
 export const initialState: IChainsState = chainsAdapter.getInitialState({
   // set initial required properties

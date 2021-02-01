@@ -2,7 +2,14 @@ import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { EPaymentMethod, IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';

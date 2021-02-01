@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-colorized-lane-icon',
   templateUrl: './colorized-lane-icon.component.html',
-  styleUrls: ['./colorized-lane-icon.component.scss']
+  styleUrls: ['./colorized-lane-icon.component.scss'],
 })
 export class ColorizedLaneIconComponent implements OnInit {
   @Input() laneId: string;
