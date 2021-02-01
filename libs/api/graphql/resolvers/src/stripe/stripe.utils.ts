@@ -9,15 +9,15 @@ import { Stripe } from 'stripe';
 export const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   ...pm.card,
   id: pm.id,
-  metadata: Object.entries(pm.metadata).map(mapMetadataToObjectArray),
+  metadata: Object.entries(pm.metadata || {}).map(mapMetadataToObjectArray),
   object: pm.object,
-  brand: CardBrand[pm.card.brand],
-  country: CountryCode[pm.card.country],
-  funding: CardFundingType[pm.card.funding],
+  brand: CardBrand[pm.card?.brand as keyof typeof CardBrand],
+  country: CountryCode[pm.card?.country as keyof typeof CountryCode],
+  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType],
 });
 
 // [key, value] => {key:key, value:value}
-const mapMetadataToObjectArray = ([key, value]) => ({
+const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
   key,
   value,
 });

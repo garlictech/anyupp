@@ -1,10 +1,14 @@
 import { PubSub } from 'graphql-subscriptions';
 
-import { AdminUserInput, AdminUserRoleInput } from '@bgap/api/graphql/schema';
+import { AuthService, DatabaseService } from '@bgap/api/data-access';
+import {
+  AdminUser,
+  AdminUserInput,
+  AdminUserRoleInput,
+} from '@bgap/api/graphql/schema';
 import { EAdminRole } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { DatabaseService, AuthService } from '@bgap/api/data-access';
 
 @Resolver('AdminUser')
 export class AdminUserResolver {
@@ -49,6 +53,10 @@ export class AdminUserResolver {
         );
     };
 
+    if (!newAdminData.email) {
+      throw new Error('Admin email is missing'); // TODO: create better error.
+    }
+
     try {
       const user = await this.authService.auth.createUser({
         email: newAdminData.email,
@@ -65,6 +73,8 @@ export class AdminUserResolver {
         return existingUser ? createInactiveAdminUser(existingUser.uid) : false;
       }
     }
+
+    return false;
   }
 
   @Mutation('updateAdminUser')
