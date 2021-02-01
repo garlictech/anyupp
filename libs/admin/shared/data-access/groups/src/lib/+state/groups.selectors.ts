@@ -51,7 +51,7 @@ export const getSelected = createSelector(
 export const getGroupById = (id: string) => {
   return createSelector(
     getAllGroups,
-    (groups: IGroup[]): IGroup =>
+    (groups: IGroup[]): IGroup | undefined =>
       groups.find((group): boolean => group._id === id)
   );
 };
@@ -75,7 +75,7 @@ export const getGroupsByChainId = (chainId: string) => {
 export const getSeletedGroup = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllGroups,
-  (userSettings: IAdminUserSettings, groups: IGroup[]): IGroup =>
+  (userSettings: IAdminUserSettings, groups: IGroup[]): IGroup | undefined  =>
     groups.find(
       (group): boolean => group._id === _get(userSettings, 'selectedGroupId')
     )

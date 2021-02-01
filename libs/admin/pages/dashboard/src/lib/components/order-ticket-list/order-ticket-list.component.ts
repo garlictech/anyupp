@@ -22,9 +22,9 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-ticket-list.component.scss'],
 })
 export class OrderTicketListComponent implements OnDestroy {
-  public selectedOrder: IOrder;
-  public dashboardSettings: IDashboardSettings;
-  public buttonSize: ENebularButtonSize;
+  public selectedOrder?: IOrder;
+  public dashboardSettings?: IDashboardSettings;
+  public buttonSize?: ENebularButtonSize;
 
   public EDashboardTicketListType = EDashboardTicketListType;
 
@@ -33,10 +33,10 @@ export class OrderTicketListComponent implements OnDestroy {
   public readyOrders: IOrder[] = [];
   public paymentOrders: IOrder[] = [];
 
-  public uniquePaymentUsersCount: number;
-  public uniqueReadyOrdersCount: number;
+  public uniquePaymentUsersCount: number = 0;
+  public uniqueReadyOrdersCount: number = 0;
 
-  private _orders: IOrder[];
+  private _orders: IOrder[] = [];
 
   constructor(private _store: Store<any>) {
     combineLatest([
@@ -67,7 +67,7 @@ export class OrderTicketListComponent implements OnDestroy {
         select(dashboardSelectors.getSelectedActiveOrder()),
         untilDestroyed(this)
       )
-      .subscribe((selectedOrder: IOrder): void => {
+      .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
       });
 
@@ -112,7 +112,7 @@ export class OrderTicketListComponent implements OnDestroy {
 
   private _refreshPaymentOrders(): void {
     const uniquePaymentUsers = this._orders
-      .filter((o: IOrder): boolean => o.paymentIntention > 0)
+      .filter((o: IOrder): boolean => (o.paymentIntention || 0) > 0)
       .map((o: IOrder): string => o.userId)
       .filter((v, i, a): boolean => a.indexOf(v) === i); // unique filter
 
@@ -143,10 +143,10 @@ export class OrderTicketListComponent implements OnDestroy {
 
     this._store
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
-      .subscribe((selectedOrderId: string): void => {
+      .subscribe((selectedOrderId: string | undefined): void => {
         const found = this.filteredOrders
-          .map((o): string => o._id)
-          .includes(selectedOrderId);
+          .map((o): string => o._id!)
+          .includes(selectedOrderId || '');
 
         if (!found) {
           this.selectOrder(this.filteredOrders[0]);
@@ -167,7 +167,7 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public selectListType(listType: EDashboardTicketListType): void {
-    if (this.dashboardSettings.ticketListType !== listType) {
+    if (this.dashboardSettings?.ticketListType !== listType) {
       this._store.dispatch(dashboardActions.resetSelectedOrderId());
     }
 
@@ -179,6 +179,6 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public trackByFn(index: number, item: IOrder): string {
-    return item._id;
+    return item._id!;
   }
 }

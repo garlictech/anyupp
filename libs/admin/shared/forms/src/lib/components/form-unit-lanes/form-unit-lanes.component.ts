@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./form-unit-lanes.component.scss'],
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray: FormArray;
+  @Input() lanesFormArray!: FormArray;
   public usedLaneIds: string[];
 
   constructor(private _store: Store<any>, private _formsService: FormsService) {

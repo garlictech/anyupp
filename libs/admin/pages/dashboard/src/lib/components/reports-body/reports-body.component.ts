@@ -18,11 +18,9 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject(
-    []
-  );
-  public dailyOrdersSum: IKeyValueObject;
-  public groupCurrency: string;
+  public dailyHistoryOrders$!: BehaviorSubject<IOrder[]>;
+  public dailyOrdersSum: IKeyValueObject = {};
+  public groupCurrency: string = '';
 
   constructor(private _store: Store<any>) {
     this.dateFormControl = new FormControl();
@@ -33,7 +31,7 @@ export class ReportsBodyComponent implements OnDestroy {
         skipWhile((group): boolean => !group),
         untilDestroyed(this)
       )
-      .subscribe((group: IGroup): void => {
+      .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
       });
 
@@ -47,8 +45,8 @@ export class ReportsBodyComponent implements OnDestroy {
         const selectedDayInterval = dayInterval(dateFormValue);
         const dailyHistoryOrders: IOrder[] = historyOrders.filter(
           (o: IOrder): boolean =>
-            o.created >= selectedDayInterval.start &&
-            o.created <= selectedDayInterval.end
+            o.created! >= selectedDayInterval.start &&
+            o.created! <= selectedDayInterval.end
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);

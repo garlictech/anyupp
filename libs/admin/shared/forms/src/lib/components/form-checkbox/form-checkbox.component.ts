@@ -6,6 +6,6 @@ import { FormControl } from '@angular/forms';
   templateUrl: './form-checkbox.component.html',
 })
 export class FormCheckboxComponent {
-  @Input() caption: string; // Language key!!!
-  @Input() control: FormControl;
+  @Input() caption?: string; // Language key!!!
+  @Input() control?: FormControl;
 }

@@ -49,7 +49,7 @@ export const getSelected = createSelector(
 export const getAdminUserById = (id: string) => {
   return createSelector(
     getAllAdminUsers,
-    (adminUsers: IAdminUser[]): IAdminUser =>
+    (adminUsers: IAdminUser[]): IAdminUser | undefined =>
       adminUsers.find((adminUser): boolean => adminUser._id === id)
   );
 };
@@ -57,7 +57,7 @@ export const getAdminUserById = (id: string) => {
 export const getAdminUserByEmail = (email: string) => {
   return createSelector(
     getAllAdminUsers,
-    (adminUsers: IAdminUser[]): IAdminUser =>
+    (adminUsers: IAdminUser[]): IAdminUser | undefined =>
       adminUsers.find((adminUser): boolean => adminUser.email === email)
   );
 };

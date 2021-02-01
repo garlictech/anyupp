@@ -38,7 +38,7 @@ export const getAllChainProductCount = chainProductsAdapter.getSelectors(
 export const getChainProductById = (id: string) => {
   return createSelector(
     getAllChainProducts,
-    (products: IProduct[]): IProduct =>
+    (products: IProduct[]): IProduct | undefined =>
       products.find((product): boolean => product._id === id)
   );
 };
@@ -74,7 +74,7 @@ export const getAllGroupProductCount = groupProductsAdapter.getSelectors(
 export const getGroupProductById = (id: string) => {
   return createSelector(
     getAllGroupProducts,
-    (products: IProduct[]): IProduct =>
+    (products: IProduct[]): IProduct | undefined =>
       products.find((product): boolean => product._id === id)
   );
 };
@@ -151,7 +151,7 @@ export const getAllUnitProductCount = unitProductsAdapter.getSelectors(
 export const getUnitProductById = (id: string) => {
   return createSelector(
     getAllUnitProducts,
-    (products: IProduct[]): IProduct =>
+    (products: IProduct[]): IProduct | undefined =>
       products.find((product): boolean => product._id === id)
   );
 };
@@ -211,7 +211,7 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
 
 export const getUnitProductLaneIds = () => {
   return createSelector(getAllUnitProducts, (products: IProduct[]): string[] =>
-    [...new Set(products.map((product): string => product.laneId))].filter(
+    [...new Set(products.map((product: IProduct): string => product.laneId!))].filter(
       (id): boolean => !!id
     )
   );

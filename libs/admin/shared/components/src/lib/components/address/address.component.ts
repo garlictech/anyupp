@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
   templateUrl: './address.component.html',
 })
 export class AddressComponent {
-  @Input() address: IAddress;
+  @Input() address!: IAddress;
 }

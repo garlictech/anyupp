@@ -12,7 +12,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
   styleUrls: ['./group-list-item.component.scss'],
 })
 export class GroupListItemComponent {
-  @Input() group: IGroup;
+  @Input() group!: IGroup;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

@@ -10,22 +10,7 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import { customNumberCompare, EToasterType, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  customNumberCompare,
-  EToasterType,
-  objectToArray,
-} from '@bgap/admin/shared/utils';
-import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
+  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -38,19 +23,19 @@ import { select, Store } from '@ngrx/store';
 export class ProductExtendFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public product: IProduct;
-  public productLevel: EProductLevel;
+  public product!: IProduct;
+  public productLevel!: EProductLevel;
   public eProductLevel = EProductLevel;
-  public editing: boolean;
-  public currency: string;
+  public editing: boolean = false;
+  public currency!: string;
   public productCategories$: Observable<IProductCategory[]>;
-  public unitLanes: IKeyValue[];
+  public unitLanes: IKeyValue[] = [];
 
   private _store: Store<any>;
   private _formsService: FormsService;
-  private _selectedChainId: string;
-  private _selectedGroupId: string;
-  private _selectedUnitId: string;
+  private _selectedChainId?: string;
+  private _selectedGroupId?: string;
+  private _selectedUnitId?: string;
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -61,9 +46,9 @@ export class ProductExtendFormComponent
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
       .subscribe((userSettings: IAdminUserSettings): void => {
-        this._selectedChainId = userSettings.selectedChainId;
-        this._selectedGroupId = userSettings.selectedGroupId;
-        this._selectedUnitId = userSettings.selectedUnitId;
+        this._selectedChainId = userSettings.selectedChainId!;
+        this._selectedGroupId = userSettings.selectedGroupId!;
+        this._selectedUnitId = userSettings.selectedUnitId!;
       });
 
     this.productCategories$ = this._store.pipe(
@@ -74,11 +59,11 @@ export class ProductExtendFormComponent
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: IUnit): boolean => !unit),
+        skipWhile((unit: IUnit | undefined): boolean => !unit),
         take(1)
       )
-      .subscribe((unit: IUnit): void => {
-        this.unitLanes = objectToArray(unit.lanes).map(
+      .subscribe((unit: IUnit | undefined): void => {
+        this.unitLanes = objectToArray(unit?.lanes || {}).map(
           (lane): IKeyValue => ({
             key: lane._id,
             value: lane.name,
@@ -129,7 +114,7 @@ export class ProductExtendFormComponent
           );
         });
 
-        (this.dialogForm.controls._variantArr as FormArray).push(variantGroup);
+        (this.dialogForm?.controls._variantArr as FormArray).push(variantGroup);
       });
 
       // Sort by "position"
@@ -142,14 +127,14 @@ export class ProductExtendFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       const value = {
-        ...this.dialogForm.value,
+        ...this.dialogForm?.value,
         variants: {},
       };
 
-      value._variantArr.map((variant): void => {
-        value.variants[variant._variantId] = _omit(variant, '_variantId');
+      value._variantArr.map((variant: IProductVariant): void => {
+        value.variants[variant._variantId!] = _omit(variant, '_variantId');
       });
 
       delete value._variantArr;
@@ -165,14 +150,14 @@ export class ProductExtendFormComponent
         switch (this.productLevel) {
           case EProductLevel.GROUP:
             updatePromise = this._dataService.updateGroupProduct(
-              this._selectedGroupId,
+              this._selectedGroupId!,
               this.product._id,
               value
             );
             break;
           case EProductLevel.UNIT:
             updatePromise = this._dataService.updateUnitProduct(
-              this._selectedUnitId,
+              this._selectedUnitId!,
               this.product._id,
               value
             );
@@ -181,19 +166,22 @@ export class ProductExtendFormComponent
             break;
         }
 
-        updatePromise.then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('CHAIN UPDATE ERROR', err);
-          }
-        );
+        if (updatePromise) {
+          updatePromise.then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful'
+              );
+              this.close();
+            },
+            err => {
+              console.error('CHAIN UPDATE ERROR', err);
+            }
+          );
+        }
+
       } else {
         let insertPromise;
 
@@ -203,13 +191,13 @@ export class ProductExtendFormComponent
         switch (this.productLevel) {
           case EProductLevel.GROUP:
             insertPromise = this._dataService.insertGroupProduct(
-              this._selectedGroupId,
+              this._selectedGroupId!,
               value
             );
             break;
           case EProductLevel.UNIT:
             insertPromise = this._dataService.insertUnitProduct(
-              this._selectedUnitId,
+              this._selectedUnitId!,
               value
             );
             break;
@@ -217,30 +205,34 @@ export class ProductExtendFormComponent
             break;
         }
 
-        insertPromise.then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('CHAIN INSERT ERROR', err);
-          }
-        );
+        if (insertPromise) {
+          insertPromise.then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.insertSuccessful'
+              );
+              this.close();
+            },
+            err => {
+              console.error('CHAIN INSERT ERROR', err);
+            }
+          );
+        }
+
       }
     }
   }
 
-  private _generateExtendsPath(): string {
+  private _generateExtendsPath(): string | null {
     switch (this.productLevel) {
       case EProductLevel.GROUP:
         return `products/chains/${this._selectedChainId}/${this.product._id}`;
       case EProductLevel.UNIT:
         return `products/groups/${this._selectedGroupId}/${this.product._id}`;
       default:
+        return null;
         break;
     }
   }

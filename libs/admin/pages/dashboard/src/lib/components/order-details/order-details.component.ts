@@ -24,11 +24,11 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnDestroy {
-  @Input() order: IOrder;
-  public dashboardSettings: IDashboardSettings;
+  @Input() order!: IOrder;
+  public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
   public EOrderStatus = EOrderStatus;
-  public buttonSize: ENebularButtonSize;
+  public buttonSize!: ENebularButtonSize;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 

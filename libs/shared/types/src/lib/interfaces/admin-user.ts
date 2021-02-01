@@ -2,12 +2,12 @@ import { EAdminRole } from '../enums';
 import { IContact } from './contact';
 
 export interface IAdminUserSettings {
-  selectedChainId?: string;
-  selectedGroupId?: string;
-  selectedUnitId?: string;
-  selectedProductCategoryId?: string;
-  selectedLanguage?: string;
-  selectedHistoryDate?: number;
+  selectedChainId?: string | null;
+  selectedGroupId?: string | null;
+  selectedUnitId?: string | null;
+  selectedProductCategoryId?: string | null;
+  selectedLanguage?: string | null;
+  selectedHistoryDate?: number | null;
 }
 
 export interface IAdminRoleEntity {

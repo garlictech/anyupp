@@ -1,8 +1,8 @@
-import { IDayInterval } from '@bgap/shared/types';
+import { IDayInterval, IKeyValue, IKeyValueObject } from '@bgap/shared/types';
 
 export const customNumberCompare = (field: string, desc: boolean = false) => (
-  a: unknown,
-  b: unknown
+  a: IKeyValueObject,
+  b: IKeyValueObject
 ): number => {
   if (+a[field] < +b[field]) {
     return desc ? 1 : -1;
@@ -15,8 +15,8 @@ export const customNumberCompare = (field: string, desc: boolean = false) => (
 };
 
 export const customStringCompare = (field: string, desc: boolean = false) => (
-  a: unknown,
-  b: unknown
+  a: IKeyValueObject,
+  b: IKeyValueObject
 ): number => {
   if (a[field] < b[field]) {
     return desc ? 1 : -1;
@@ -28,17 +28,17 @@ export const customStringCompare = (field: string, desc: boolean = false) => (
   return 0;
 };
 
-export const objectToArray = (obj: unknown, idKey: string = '_id') => {
-  const arr = [];
+export const objectToArray = (obj: IKeyValueObject | unknown, idKey: string = '_id') => {
+  const arr: any[] = [];
 
   if (!obj) {
     return [];
   }
 
-  Object.keys(obj).forEach((key): void => {
+  Object.keys(<IKeyValueObject>obj).forEach((key): void => {
     arr.push({
+      ...(<IKeyValueObject>obj)[key],
       [idKey]: key,
-      ...obj[key],
     });
   });
 
@@ -62,11 +62,11 @@ export const dayInterval = (value: string): IDayInterval => {
   };
 };
 
-export const reducer = (accumulator, currentValue): number =>
+export const reducer = (accumulator: number, currentValue: number): number =>
   accumulator + currentValue;
 
-export const cleanObject = obj => {
-  const finalObj = {};
+export const cleanObject = (obj: IKeyValueObject) => {
+  const finalObj: IKeyValueObject = {};
   Object.keys(obj).forEach(key => {
     if (obj[key] && typeof obj[key] === 'object') {
       const nestedObj = cleanObject(obj[key]);

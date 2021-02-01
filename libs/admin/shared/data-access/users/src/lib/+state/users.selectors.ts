@@ -43,6 +43,6 @@ export const getSelected = createSelector(
 export const getUserById = (id: string) => {
   return createSelector(
     getAllUsers,
-    (users: IUser[]): IUser => users.find((user): boolean => user._id === id)
+    (users: IUser[]): IUser | undefined => users.find((user): boolean => user._id === id)
   );
 };

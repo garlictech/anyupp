@@ -28,14 +28,14 @@ interface IPaymentMethodKV {
   styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnDestroy {
-  @Input() order: IOrder;
+  @Input() order!: IOrder;
   public paymentMethods: IPaymentMethodKV[] = [];
   public EOrderStatus = EOrderStatus;
-  public buttonSize: ENebularButtonSize;
+  public buttonSize?: ENebularButtonSize;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
-  private _adminUser: IAdminUser;
+  private _adminUser?: IAdminUser;
 
   constructor(
     private _store: Store<any>,
@@ -44,10 +44,10 @@ export class OrderEditComponent implements OnDestroy {
   ) {
     this.workingOrderStatus = false;
 
-    Object.keys(EPaymentMethod).forEach((key): void => {
+    Object.keys(EPaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
-        value: EPaymentMethod[key],
+        value: EPaymentMethod[<keyof typeof EPaymentMethod>key],
       });
     });
 
@@ -103,8 +103,8 @@ export class OrderEditComponent implements OnDestroy {
 
   public updateOrderPaymentMethod(method: string): void {
     this._dataService.updateOrderPaymentMode(
-      this._adminUser.settings.selectedChainId,
-      this._adminUser.settings.selectedUnitId,
+      this._adminUser!.settings!.selectedChainId!,
+      this._adminUser!.settings!.selectedUnitId!,
       this.order._id,
       {
         paymentMethod: method,

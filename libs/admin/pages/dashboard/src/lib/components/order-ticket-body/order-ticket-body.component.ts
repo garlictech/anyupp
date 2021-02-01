@@ -19,13 +19,13 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
-  public dashboardSettings: IDashboardSettings;
-  public selectedOrder: IOrder;
-  public buttonSize: ENebularButtonSize;
-  public ordersSum: IOrderSum;
-  public userActiveOrders: IOrder[];
+  public dashboardSettings?: IDashboardSettings;
+  public selectedOrder?: IOrder;
+  public buttonSize?: ENebularButtonSize;
+  public ordersSum?: IOrderSum;
+  public userActiveOrders?: IOrder[];
   public EDashboardListMode = EDashboardListMode;
-  public activeOrdersCount: number;
+  public activeOrdersCount: number = 0;
 
   constructor(
     private _store: Store<any>,
@@ -48,7 +48,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       .pipe(
         select(dashboardSelectors.getListMode),
         switchMap(
-          (listMode: EDashboardListMode): Observable<IOrder> => {
+          (listMode: EDashboardListMode): Observable<IOrder | undefined> => {
             return this._store.pipe(
               select(
                 listMode === EDashboardListMode.CURRENT
@@ -61,7 +61,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         delay(0), // ExpressionChangedAfterItHasBeenCheckedError - trick
         untilDestroyed(this)
       )
-      .subscribe((selectedOrder: IOrder): void => {
+      .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
 
         this._getOrdersInfo();
@@ -103,10 +103,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         .subscribe((userActiveOrders: IOrder[]): void => {
           this.userActiveOrders = userActiveOrders;
 
-          this.ordersSum.all = 0;
+          this.ordersSum!.all = 0;
           this.userActiveOrders.map(
             (o: IOrder): number =>
-              (this.ordersSum.all += o.sumPriceShown.priceSum)
+              (this.ordersSum!.all! += o.sumPriceShown.priceSum)
           );
         });
     }
@@ -115,7 +115,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public editSelectedOrder(): void {
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: !this.dashboardSettings.orderEditing,
+        orderEditing: !this.dashboardSettings?.orderEditing,
       })
     );
   }
@@ -123,7 +123,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public toggleShowAllUserOrders(): void {
     this._store.dispatch(
       dashboardActions.setShowAllUserOrders({
-        showAllUserOrders: !this.dashboardSettings.showAllUserOrders,
+        showAllUserOrders: !this.dashboardSettings?.showAllUserOrders,
       })
     );
   }
@@ -144,9 +144,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = this.dashboardSettings
-      .showAllUserOrders
+    dialog.componentRef.instance.orders = (this.dashboardSettings?.showAllUserOrders
       ? this.userActiveOrders
-      : [this.selectedOrder];
+      : [this.selectedOrder]) as IOrder[];
   }
 }

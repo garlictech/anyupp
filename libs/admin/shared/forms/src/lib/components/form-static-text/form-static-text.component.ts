@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
 export class FormStaticTextComponent {
   @Input() caption?: string; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() value: string;
+  @Input() value?: string;
 }

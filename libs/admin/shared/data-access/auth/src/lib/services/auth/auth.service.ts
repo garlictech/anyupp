@@ -19,14 +19,14 @@ export class AuthService {
     private _dataService: DataService,
     private _toasterService: ToasterService
   ) {
-    this._angularFireAuth.authState.subscribe((user: firebase.User): void => {
+    this._angularFireAuth.authState.subscribe((user: firebase.User | null): void => {
       if (user) {
         this._angularFireDatabase
           .object(`adminUsers/${user.uid}`)
           .valueChanges()
           .pipe(take(1))
           .subscribe(
-            (adminUser: IAdminUser): void => {
+            (adminUser: IAdminUser | unknown): void => {
               if (adminUser) {
                 this._dataService.initDataConnections(user.uid);
               } else {

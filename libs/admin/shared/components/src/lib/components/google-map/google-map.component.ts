@@ -10,7 +10,16 @@ import {
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 
 // eslint-disable-next-line
-declare const google;
+declare const google: any;
+
+interface IMarkerData  {
+  options?: google.maps.MarkerOptions;
+  position?: google.maps.LatLngLiteral | google.maps.LatLng;
+  location?: {
+    lat: number;
+    lng: number;
+  }
+}
 
 @Component({
   selector: 'bgap-google-map',
@@ -18,14 +27,14 @@ declare const google;
   styleUrls: ['./google-map.component.scss'],
 })
 export class GoogleMapComponent implements OnChanges {
-  @Input() markerLocation;
+  @Input() markerLocation = {};
   @Output() positionChange = new EventEmitter();
-  @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
-  @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow;
-  @ViewChild(MapMarker, { static: false }) markerElem: MapMarker;
+  @ViewChild(GoogleMap, { static: false }) map?: GoogleMap;
+  @ViewChild(MapInfoWindow, { static: false }) info?: MapInfoWindow;
+  @ViewChild(MapMarker, { static: false }) markerElem?: MapMarker;
   public zoom = 15;
   public center: google.maps.LatLngLiteral;
-  public markerData;
+  public markerData: IMarkerData;
 
   constructor() {
     this.markerData = {
@@ -55,10 +64,10 @@ export class GoogleMapComponent implements OnChanges {
     }
   }
 
-  public dragEnd($event): void {
+  public dragEnd($event: google.maps.MouseEvent): void {
     this.positionChange.emit({
-      lat: $event.latLng.lat(),
-      lng: $event.latLng.lng(),
+      lat: $event.latLng?.lat(),
+      lng: $event.latLng?.lng(),
     });
   }
 }

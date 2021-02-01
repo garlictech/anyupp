@@ -1,8 +1,8 @@
 <nb-user
-  class="float-left role-border {{ adminUser.roles?.role.toLowerCase() }}"
-  [name]="adminUser.name"
-  [title]="adminUser.email"
-  [picture]="adminUser.profileImage"
+  class="float-left role-border {{ adminUser.roles?.role!.toLowerCase() }}"
+  [name]="adminUser.name!"
+  [title]="adminUser.email!"
+  [picture]="adminUser.profileImage!"
 ></nb-user>
 
 <button
@@ -42,7 +42,7 @@
 
 <div class="pl-5">
   <div class="subtitle-2">
-    {{ 'roles.' + adminUser?.roles?.role | translate }}
+    {{ 'roles.' + adminUser?.roles?.role! | translate }}
   </div>
-  <div class="caption" [innerHTML]="adminUser?.roles | roleEntityNames"></div>
+  <div class="caption" [innerHTML]="adminUser?.roles! | roleEntityNames"></div>
 </div>

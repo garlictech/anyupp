@@ -29,13 +29,13 @@ const laneFilter = (selectedLanes: string[]) => (
   styleUrls: ['./lanes-body.component.scss'],
 })
 export class LanesBodyComponent implements OnDestroy {
-  public placedItems: ILaneOrderItem[];
-  public processingItems: ILaneOrderItem[];
-  public readyItems: ILaneOrderItem[];
-  public buttonSize: ENebularButtonSize;
+  public placedItems: ILaneOrderItem[] = [];
+  public processingItems: ILaneOrderItem[] = [];
+  public readyItems: ILaneOrderItem[] = [];
+  public buttonSize?: ENebularButtonSize;
   public selectedLanes: string[] = [];
-  public unit: IUnit;
-  public unitLanes: IDetailedLane[];
+  public unit?: IUnit;
+  public unitLanes: IDetailedLane[] = [];
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
@@ -60,7 +60,7 @@ export class LanesBodyComponent implements OnDestroy {
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
-        filter((unit: IUnit): boolean => !!unit)
+        filter((unit: IUnit | undefined): boolean => !!unit)
       ),
     ])
       .pipe(debounceTime(100), untilDestroyed(this))
@@ -76,7 +76,7 @@ export class LanesBodyComponent implements OnDestroy {
           ILaneOrderItem[],
           ILaneOrderItem[],
           string[],
-          IUnit
+          IUnit | undefined
         ]): void => {
           this.selectedLanes = selectedLanes;
           this.placedItems = rawPlacedItems.filter(laneFilter(selectedLanes));
@@ -85,7 +85,7 @@ export class LanesBodyComponent implements OnDestroy {
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
           this.unit = unit;
-          this.unitLanes = objectToArray(unit.lanes);
+          this.unitLanes = objectToArray(unit?.lanes || {});
 
           // Unit lanes
           this.unitLanes.forEach((lane: IDetailedLane): void => {

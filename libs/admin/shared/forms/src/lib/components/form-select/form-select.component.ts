@@ -7,11 +7,11 @@ import { IKeyValue } from '@bgap/shared/types';
   templateUrl: './form-select.component.html',
 })
 export class FormSelectComponent {
-  @Input() caption: string; // Language key!!!
-  @Input() options: IKeyValue[];
-  @Input() control: FormControl;
+  @Input() caption?: string; // Language key!!!
+  @Input() options: IKeyValue[] = [];
+  @Input() control?: FormControl;
   @Input() forceShowEmptyOption?: boolean;
-  @Input() localize: boolean;
+  @Input() localize?: boolean;
   @Input() size: string;
   @Output() selectionChange = new EventEmitter();
 

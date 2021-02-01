@@ -19,6 +19,7 @@ import {
   ICustomDailySchedule,
   IGroup,
   IKeyValue,
+  ILane,
   IPaymentMode,
   IUnit,
 } from '@bgap/shared/types';
@@ -33,10 +34,10 @@ import { select, Store } from '@ngrx/store';
 export class UnitFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public unit: IUnit;
+  public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;
-  public groupOptions: IKeyValue[];
-  private groups: IGroup[];
+  public groupOptions: IKeyValue[] = [];
+  private groups: IGroup[] = [];
   private _store: Store<any>;
   private _formsService: FormsService;
 
@@ -132,7 +133,7 @@ export class UnitFormComponent
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          this.dialogForm.controls.openingHours['controls'].override.push(
+          (this.dialogForm?.get('openingHours')!.get('override') as FormArray).push(
             dayGroup
           );
         });
@@ -143,9 +144,9 @@ export class UnitFormComponent
         const laneGroup = this._formsService.createLaneFormGroup();
         laneGroup.patchValue({
           _laneId: key,
-          ...this.unit.lanes[key],
+          ...this.unit.lanes![key],
         });
-        (this.dialogForm.controls._lanesArr as FormArray).push(laneGroup);
+        (this.dialogForm?.controls._lanesArr as FormArray).push(laneGroup);
       });
     } else {
       // Patch ChainId
@@ -153,7 +154,7 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string): void => {
           if (selectedChainId) {
-            this.dialogForm.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
           }
         });
 
@@ -162,7 +163,7 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string): void => {
           if (selectedGroupId) {
-            this.dialogForm.controls.groupId.patchValue(selectedGroupId);
+            this.dialogForm?.controls.groupId.patchValue(selectedGroupId);
           }
         });
 
@@ -171,14 +172,14 @@ export class UnitFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       const value = {
-        ...this.dialogForm.value,
+        ...this.dialogForm?.value,
         lanes: {},
       };
 
-      value._lanesArr.map((lane): void => {
-        value.lanes[lane._laneId] = _omit(lane, '_laneId');
+      value._lanesArr.map((lane: ILane): void => {
+        value.lanes[lane._laneId!] = _omit(lane, '_laneId');
       });
 
       delete value._lanesArr;
@@ -217,14 +218,14 @@ export class UnitFormComponent
 
   public paymentModeIsChecked(paymentMode: IPaymentMode): boolean {
     return (
-      (this.dialogForm.value.paymentModes || [])
-        .map((m): string => m.name)
+      (this.dialogForm?.value.paymentModes || [])
+        .map((m: IPaymentMode): string => m.name)
         .indexOf(paymentMode.name) >= 0
     );
   }
 
   public togglePaymentMode(paymentMode: IPaymentMode): void {
-    const paymentModesArr: IPaymentMode[] = this.dialogForm.value.paymentModes;
+    const paymentModesArr: IPaymentMode[] = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
       .map((m): string => m.name)
       .indexOf(paymentMode.name);
@@ -234,6 +235,6 @@ export class UnitFormComponent
     } else {
       paymentModesArr.splice(idx, 1);
     }
-    this.dialogForm.controls.paymentModes.setValue(paymentModesArr);
+    this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
   }
 }

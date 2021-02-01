@@ -49,7 +49,7 @@ export const getSelected = createSelector(
 export const getChainById = (id: string) => {
   return createSelector(
     getAllChains,
-    (chains: IChain[]): IChain =>
+    (chains: IChain[]): IChain | undefined =>
       chains.find((chain): boolean => chain._id === id)
   );
 };
@@ -57,6 +57,6 @@ export const getChainById = (id: string) => {
 export const getSeletedChain = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllChains,
-  (userSettings: IAdminUserSettings, chains: IChain[]): IChain =>
+  (userSettings: IAdminUserSettings, chains: IChain[]): IChain | undefined =>
     chains.find((chain): boolean => chain._id === userSettings?.selectedChainId)
 );

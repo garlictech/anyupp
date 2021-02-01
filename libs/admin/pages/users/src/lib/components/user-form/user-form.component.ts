@@ -14,7 +14,7 @@ import { IUser } from '@bgap/shared/types';
 export class UserFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public user: IUser;
+  public user: IUser | undefined;
 
   private _authService: AuthService;
 
@@ -25,7 +25,7 @@ export class UserFormComponent
   }
 
   get userImage(): string {
-    return _get(this.user, 'profileImage');
+    return this.user?.profileImage || '';
   }
 
   ngOnInit(): void {
@@ -41,9 +41,9 @@ export class UserFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
-      if (_get(this.user, '_id')) {
-        this._dataService.updateUser(this.user._id, this.dialogForm.value).then(
+    if (this.dialogForm?.valid) {
+      if (this.user?._id) {
+        this._dataService.updateUser(this.user._id, this.dialogForm?.value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,
@@ -58,13 +58,13 @@ export class UserFormComponent
         );
       } else {
         this._authService
-          .createUserWithEmailAndRandomPassword(this.dialogForm.value.email)
+          .createUserWithEmailAndRandomPassword(this.dialogForm?.value.email)
           .then(
             (): void => {
-              this._dataService.insertUser(this.dialogForm.value).then(
+              this._dataService.insertUser(this.dialogForm?.value).then(
                 (): void => {
                   this._authService
-                    .sendPasswordResetEmail(this.dialogForm.value.email)
+                    .sendPasswordResetEmail(this.dialogForm?.value.email)
                     .then(
                       (): void => {
                         this._toasterService.show(

@@ -11,20 +11,20 @@ import { EImageType } from '@bgap/shared/types';
 })
 export class FormClickableImageInputComponent {
   @Input() caption?: string; // Language key!!!
-  @Input() imagePath: string;
-  @Input() maxSize: number;
-  @Input() imageType: EImageType;
-  @Input() uploadFolderPath: string;
+  @Input() imagePath?: string;
+  @Input() maxSize?: number;
+  @Input() imageType?: EImageType;
+  @Input() uploadFolderPath?: string;
 
-  @Input() uploadCallbackFn;
-  @Input() removeCallbackFn;
-  @Input() callbackParam;
+  @Input() uploadCallbackFn!: Function;
+  @Input() removeCallbackFn!: Function;
+  @Input() callbackParam!: Function;
 
-  @Input() width: number;
-  @Input() height: number;
-  @Input() borderRadius: string;
+  @Input() width?: number;
+  @Input() height?: number;
+  @Input() borderRadius?: string;
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
     private _storageService: StorageService,
@@ -43,15 +43,15 @@ export class FormClickableImageInputComponent {
     }
   }
 
-  public fileInputListener($event): void {
-    const file = $event.target.files[0];
+  public fileInputListener($event: any): void {
+    const file = $event.target!.files[0];
 
     if (file) {
       if (file.type === 'image/svg+xml') {
         this._uploadFile(file);
       } else {
         this._imageCompressorService
-          .compress(file, this.imageType, this.maxSize)
+          .compress(file, this.imageType!, this.maxSize)
           .subscribe(
             (_file): void => {
               this._uploadFile(_file);
@@ -65,10 +65,10 @@ export class FormClickableImageInputComponent {
   }
 
   private _uploadFile(file: File): void {
-    this._storageService.uploadFile(this.uploadFolderPath, file).then(
+    this._storageService.uploadFile(this.uploadFolderPath!, file).then(
       (filePath: string): void => {
         this.imagePath = filePath;
-        this.uploadCallbackFn(this.imagePath, this.callbackParam);
+        this.uploadCallbackFn!(this.imagePath!, this.callbackParam!);
       },
       (err): void => {
         console.error('FILE UPLOAD ERROR', err);
@@ -80,7 +80,7 @@ export class FormClickableImageInputComponent {
     if (this.imagePath) {
       this._storageService.removeFile(this.imagePath).then(
         (): void => {
-          delete this.imagePath;
+          this.imagePath = undefined;
           this.removeCallbackFn(this.callbackParam);
         },
         (): void => {

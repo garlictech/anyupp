@@ -10,22 +10,22 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './form-admin-role.component.html',
 })
 export class FormAdminRoleComponent implements OnInit {
-  @Input() roleFormGroup: FormControl;
+  @Input() roleFormGroup!: FormControl;
   public eAdminRole = EAdminRole;
   public roleOptions: IKeyValue[];
 
   constructor(private _translateService: TranslateService) {
     this.roleOptions = Object.keys(EAdminRole).map(
       (key): IKeyValue => ({
-        key: EAdminRole[key],
-        value: this._translateService.instant(`roles.${EAdminRole[key]}`),
+        key: EAdminRole[<keyof typeof EAdminRole>key].toString(),
+        value: this._translateService.instant(`roles.${EAdminRole[<keyof typeof EAdminRole>key]}`),
       })
     );
   }
 
   ngOnInit(): void {
-    this.roleFormGroup['controls'].role.valueChanges.subscribe((): void => {
-      this.roleFormGroup['controls'].entities.patchValue([]);
+    this.roleFormGroup.get('role')!.valueChanges.subscribe((): void => {
+      this.roleFormGroup.get('entities')!.patchValue([]);
     });
   }
 }

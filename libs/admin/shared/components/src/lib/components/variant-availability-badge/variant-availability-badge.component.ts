@@ -9,8 +9,8 @@ import { IAvailability } from '@bgap/shared/types';
   styleUrls: ['./variant-availability-badge.component.scss'],
 })
 export class VariantAvailabilityBadgeComponent {
-  @Input() availability: IAvailability;
-  @Input() currency: string;
+  @Input() availability?: IAvailability;
+  @Input() currency?: string;
 
   public EVariantAvailabilityType = EVariantAvailabilityType;
 }

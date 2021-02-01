@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-declare const ga;
+declare const ga: any;
 
 @Injectable()
 export class AnalyticsService {

@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { GOOGLE_API_KEY } from '@bgap/admin/shared/utils';
 import { ILocation } from '@bgap/shared/types';
 
@@ -16,7 +16,7 @@ interface IGeocodeResponse {
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
-  @Input() contactFormGroup: FormControl;
+  @Input() contactFormGroup?: FormGroup;
 
   constructor(private _httpClient: HttpClient) {}
   public locateAddress(): void {
@@ -30,21 +30,21 @@ export class FormContactGroupComponent {
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
       )
-      .subscribe((response: IGeocodeResponse): void => {
+      .subscribe((response: any): void => {
         if (response.status === 'OK' && response.results[0]) {
           this._patchLocation(_get(response, 'results[0].geometry.location'));
         }
       });
   }
 
-  public markerPositionChange($event): void {
+  public markerPositionChange($event: ILocation): void {
     this._patchLocation($event);
   }
 
   private _patchLocation(location: ILocation): void {
     if (location) {
-      this.contactFormGroup.patchValue({
-        ...this.contactFormGroup.value,
+      this.contactFormGroup?.patchValue({
+        ...this.contactFormGroup?.value,
         address: {
           location,
         },

@@ -19,7 +19,7 @@ export const currentStatus = (status: IStatusLog): EOrderStatus => {
   return _get(lastElement, 'status', 'UNDEFINED');
 };
 
-export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus => {
+export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.PLACED:
       return EOrderStatus.PROCESSING;
@@ -34,7 +34,7 @@ export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus => {
 
 export const getNextOrderItemStatus = (
   currStatus: EOrderStatus
-): EOrderStatus => {
+): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.PLACED:
       return EOrderStatus.PROCESSING;
@@ -49,7 +49,7 @@ export const getNextOrderItemStatus = (
 
 export const getPrevOrderItemStatus = (
   currStatus: EOrderStatus
-): EOrderStatus => {
+): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.SERVED:
       return EOrderStatus.READY;
@@ -118,14 +118,14 @@ export const getOrdersByUser = (
         userId: order.userId,
         orders: [{ ...order }],
         lastOrder: { ...order },
-        hasPaymentIntention: order.paymentIntention > 0,
+        hasPaymentIntention: order.paymentIntention! > 0,
         lowestStatus: currentStatus(order.statusLog),
       };
     } else {
       ordersByUser[order.userId].orders.push({ ...order });
       ordersByUser[order.userId].hasPaymentIntention =
         ordersByUser[order.userId].hasPaymentIntention ||
-        order.paymentIntention > 0;
+        order.paymentIntention! > 0;
 
       if (order.created > ordersByUser[order.userId].lastOrder.created) {
         ordersByUser[order.userId].lastOrder = { ...order };

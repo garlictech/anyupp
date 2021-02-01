@@ -6,26 +6,9 @@ import { FormArray, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { customNumberCompare, EToasterType, objectToArray, multiLangValidator } from '@bgap/admin/shared/utils';
+import { customNumberCompare, EToasterType, multiLangValidator, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  customNumberCompare,
-  EToasterType,
-  objectToArray,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
-import {
-  EImageType,
-  EProductLevel,
-  EProductType,
-  IAdminUserSettings,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -39,15 +22,15 @@ export class ProductFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
-  public product: IProduct;
-  public productLevel: EProductLevel;
-  public productCategories: IKeyValue[];
+  public product!: IProduct;
+  public productLevel!: EProductLevel;
+  public productCategories: IKeyValue[] = [];
   public productTypes: IKeyValue[];
   private _store: Store<any>;
   private _formsService: FormsService;
-  private _selectedChainId: string;
-  private _selectedGroupId: string;
-  private _selectedProductCategoryId: string;
+  private _selectedChainId: string = '';
+  private _selectedGroupId: string = '';
+  private _selectedProductCategoryId: string = '';
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -73,10 +56,10 @@ export class ProductFormComponent
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
       .subscribe((userSettings: IAdminUserSettings): void => {
-        this._selectedChainId = userSettings.selectedChainId;
-        this._selectedGroupId = userSettings.selectedGroupId;
+        this._selectedChainId = userSettings.selectedChainId!;
+        this._selectedGroupId = userSettings.selectedGroupId!;
         this._selectedProductCategoryId =
-          userSettings.selectedProductCategoryId;
+          userSettings.selectedProductCategoryId!;
       });
 
     this._store
@@ -145,7 +128,7 @@ export class ProductFormComponent
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
-        (this.dialogForm.controls._variantArr as FormArray).push(variantGroup);
+        (this.dialogForm?.controls._variantArr as FormArray).push(variantGroup);
       });
     } else {
       // Patch ProductCategoryID
@@ -159,20 +142,20 @@ export class ProductFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       const value = {
-        ...this.dialogForm.value,
+        ...this.dialogForm?.value,
         variants: {},
       };
 
-      value._variantArr.map((variant): void => {
-        value.variants[variant._variantId] = _omit(variant, '_variantId');
+      value._variantArr.map((variant: IProductVariant): void => {
+        value.variants[variant._variantId!] = _omit(variant, '_variantId');
       });
 
       delete value._variantArr;
 
       if (_get(this.product, '_id')) {
-        let updatePromise;
+        let updatePromise: Promise<void> = new Promise(() => {});
 
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
@@ -200,7 +183,7 @@ export class ProductFormComponent
           }
         );
       } else {
-        let insertPromise;
+        let insertPromise: Promise<unknown> = new Promise(() => {});
 
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
@@ -231,7 +214,7 @@ export class ProductFormComponent
   }
 
   public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm.controls.image.setValue(imagePath);
+    this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.product, '_id')) {
@@ -258,7 +241,7 @@ export class ProductFormComponent
   };
 
   public imageRemoveCallback = (): void => {
-    this.dialogForm.controls.image.setValue('');
+    this.dialogForm?.controls.image.setValue('');
 
     if (this.product) {
       _set(this.product, 'image', null);

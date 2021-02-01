@@ -7,8 +7,10 @@ import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import {
   EProductType,
+  IKeyValueObject,
   IOrder,
   IOrderAmount,
+  IOrderItem,
   IProduct,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -23,12 +25,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ReportsHourlyBreakdownComponent
   implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
-  private _amounts: IOrderAmount;
+  private _chart!: Chart;
+  private _amounts: IOrderAmount = {};
 
   constructor(
     private _store: Store<any>,
@@ -37,7 +39,7 @@ export class ReportsHourlyBreakdownComponent
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
+    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
       plugins: [ChartDataLabels],
       data: {
         labels: Array.from(Array(24).keys()),
@@ -114,12 +116,12 @@ export class ReportsHourlyBreakdownComponent
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const label = data.datasets[tooltipItem.datasetIndex].label || '';
+              const label = data.datasets![tooltipItem.datasetIndex!].label || '';
 
               return tooltipItem.datasetIndex === 0
                 ? ` ${label}: ${tooltipItem.value}`
                 : ` ${label}: ${this._currencyFormatter.transform(
-                    tooltipItem.value,
+                    tooltipItem.value!,
                     this.currency
                   )}`;
             },
@@ -161,14 +163,14 @@ export class ReportsHourlyBreakdownComponent
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         this._amounts = this._orderAmounts(products, orders);
 
-        this._chart.data.datasets[0].data = [...this._amounts.ordersCount];
-        this._chart.data.datasets[1].data = [
+        this._chart.data.datasets![0].data = [...this._amounts.ordersCount];
+        this._chart.data.datasets![1].data = [
           ...this._amounts[EProductType.FOOD],
         ];
-        this._chart.data.datasets[2].data = [
+        this._chart.data.datasets![2].data = [
           ...this._amounts[EProductType.DRINK],
         ];
-        this._chart.data.datasets[3].data = [
+        this._chart.data.datasets![3].data = [
           ...this._amounts[EProductType.OTHER],
         ];
 
@@ -178,16 +180,16 @@ export class ReportsHourlyBreakdownComponent
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        this._chart.data.datasets[0].label = this._translateService.instant(
+        this._chart.data.datasets![0].label = this._translateService.instant(
           'dashboard.reports.ordersCount'
         );
-        this._chart.data.datasets[1].label = this._translateService.instant(
+        this._chart.data.datasets![1].label = this._translateService.instant(
           'products.productType.food'
         );
-        this._chart.data.datasets[2].label = this._translateService.instant(
+        this._chart.data.datasets![2].label = this._translateService.instant(
           'products.productType.drink'
         );
-        this._chart.data.datasets[3].label = this._translateService.instant(
+        this._chart.data.datasets![3].label = this._translateService.instant(
           'products.productType.other'
         );
 
@@ -209,15 +211,15 @@ export class ReportsHourlyBreakdownComponent
       sum: new Array(24).fill(0),
     };
 
-    const productTypeMap = {};
+    const productTypeMap: IKeyValueObject = {};
     products.forEach(p => {
-      productTypeMap[p._id] = p.productType;
+      productTypeMap[p._id!] = p.productType;
     });
 
     orders.forEach(o => {
-      const hour = new Date(o.created).getHours();
-      o.items.forEach(i => {
-        amounts[productTypeMap[i.productId]][hour] += i.priceShown.priceSum;
+      const hour = new Date(o.created!).getHours();
+      o.items!.forEach((i: IOrderItem) => {
+        amounts[<EProductType>productTypeMap[i.productId]][hour] += i.priceShown.priceSum;
         amounts['sum'][hour] += i.priceShown.priceSum;
       });
 

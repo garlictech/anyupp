@@ -23,7 +23,7 @@ import { EImageType, IAdminUser } from '@bgap/shared/types';
 export class AdminUserFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public adminUser: IAdminUser;
+  public adminUser!: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;
   private _apollo: Apollo;
@@ -36,7 +36,7 @@ export class AdminUserFormComponent
   }
 
   get userImage(): string {
-    return _get(this.adminUser, 'profileImage');
+    return this.adminUser?.profileImage || '';
   }
 
   ngOnInit(): void {
@@ -50,20 +50,20 @@ export class AdminUserFormComponent
       this.dialogForm.patchValue(this.adminUser);
     } else {
       // Add custom asyncValidator to check existing email
-      this.dialogForm.controls['email'].setAsyncValidators([
-        this._formService.adminExistingEmailValidator,
+      this.dialogForm.get('email')!.setAsyncValidators([
+        this._formService.adminExistingEmailValidator(this.dialogForm.get('email')!),
       ]);
     }
   }
 
   public async submit(): Promise<void> {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       if (this.adminUser?._id) {
         this._apollo
           .mutate({
             mutation: UpdateAdminUser,
             variables: {
-              data: cleanObject(this.dialogForm.value),
+              data: cleanObject(this.dialogForm?.value),
               id: this.adminUser._id,
             },
           })
@@ -85,7 +85,7 @@ export class AdminUserFormComponent
           .mutate({
             mutation: CreateAdminUser,
             variables: {
-              data: cleanObject(this.dialogForm.value),
+              data: cleanObject(this.dialogForm?.value),
             },
           })
           .subscribe(
@@ -106,7 +106,7 @@ export class AdminUserFormComponent
   }
 
   public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm.controls.profileImage.setValue(imagePath);
+    this.dialogForm?.controls.profileImage.setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
@@ -129,7 +129,7 @@ export class AdminUserFormComponent
   };
 
   public imageRemoveCallback = (): void => {
-    this.dialogForm.controls.profileImage.setValue('');
+    this.dialogForm?.controls.profileImage.setValue('');
 
     if (this.adminUser) {
       delete this.adminUser.profileImage;

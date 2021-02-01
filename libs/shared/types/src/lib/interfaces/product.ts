@@ -27,6 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
+  _variantId?: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;

@@ -5,7 +5,7 @@ import { filter, take } from 'rxjs/operators';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { IChain, ICurrencyValue, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
+import { IChain, ICurrencyValue, IKeyValueObject, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -17,14 +17,14 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-print.component.scss'],
 })
 export class OrderPrintComponent implements OnInit, OnChanges {
-  @Input() orders: IOrder[];
-  public unit: IUnit;
-  public chain: IChain;
-  public now: string;
-  public parsedOrders: IOrder[];
-  public parsedVats: IPriceShown[];
-  public sum: ICurrencyValue;
-  public place: IPlace;
+  @Input() orders!: IOrder[];
+  public unit?: IUnit;
+  public chain?: IChain;
+  public now?: string;
+  public parsedOrders: IOrder[] = [];
+  public parsedVats: IPriceShown[] = [];
+  public sum?: ICurrencyValue;
+  public place?: IPlace;
 
   constructor(
     private _store: Store<any>,
@@ -41,7 +41,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         filter((unit): boolean => !!unit),
         take(1)
       ),
-    ]).subscribe(([chain, unit]: [IChain, IUnit]): void => {
+    ]).subscribe(([chain, unit]: [IChain | undefined, IUnit | undefined]): void => {
       this.chain = chain;
       this.unit = unit;
     });
@@ -62,8 +62,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     };
     this.now = new Date().toString();
 
-    const variants = {};
-    const vats = {};
+    const variants: IKeyValueObject = {};
+    const vats: IKeyValueObject  = {};
     let lastOrderTime = 0;
 
     this.orders.forEach((order: IOrder): void => {
@@ -102,8 +102,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         }
 
         // SUM
-        this.sum.value += item.priceShown.priceSum;
-        this.sum.currency = item.priceShown.currency;
+        this.sum!.value += item.priceShown.priceSum;
+        this.sum!.currency = item.priceShown.currency;
       });
     });
 

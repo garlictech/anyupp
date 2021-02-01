@@ -24,9 +24,9 @@ import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.co
   templateUrl: './floor-map-body.component.html',
 })
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
-  @ViewChild('floorMap') floorMapEl: ElementRef;
+  @ViewChild('floorMap') floorMapEl!: ElementRef;
 
-  public unit: IUnit;
+  public unit?: IUnit;
 
   private _allTableOrders: IFloorMapTableOrderObjects = {};
   private _allTableOrders$: BehaviorSubject<
@@ -47,8 +47,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         tap((): void => {
           this.unit = undefined;
         }),
-        filter((unit: IUnit): boolean => !!unit),
-        tap((unit: IUnit): void => {
+        filter((unit: IUnit | undefined): boolean => !!unit),
+        tap((unit: IUnit | undefined): void => {
           this.unit = unit;
         }),
         switchMap(
@@ -60,22 +60,22 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
             )
         ),
         tap((): void => {
-          if (this.unit.floorMap?.objects) {
+          if (this.unit!.floorMap?.objects) {
             registerCanvasEvent('mouse:up', this._onMouseUp);
           }
 
           const padding = 20;
           const clientHeight =
-            document.querySelector('#dashboardMainCardBody').clientHeight -
+            document.querySelector('#dashboardMainCardBody')!.clientHeight -
             2 * padding;
           const clientWidth =
-            document.querySelector('#dashboardMainCardBody').clientWidth -
+            document.querySelector('#dashboardMainCardBody')!.clientWidth -
             2 * padding;
           const scale =
-            this.unit.floorMap.w / this.unit.floorMap.h >
+            this.unit!.floorMap!.w / this.unit!.floorMap!.h >
             clientWidth / clientHeight
-              ? clientWidth / this.unit.floorMap.w
-              : clientHeight / this.unit.floorMap.h;
+              ? clientWidth / this.unit!.floorMap!.w
+              : clientHeight / this.unit!.floorMap!.h;
 
           (<HTMLElement>(
             document.querySelector('#floorMap')
@@ -91,12 +91,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe((orders: IOrder[]): void => {
-        if (this.unit.floorMap?.objects) {
+        if (this.unit!.floorMap?.objects) {
           const floorMapRawObjects: IFloorMapDataObject[] = objectToArray(
-            this.unit.floorMap?.objects,
+            this.unit!.floorMap?.objects,
             'id'
           );
-          const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
+          const tableSeatIds: string[] = getTableSeatIds(this.unit!.floorMap);
           const ordersByUser: IFloorMapUserOrderObjects = getOrdersByUser(
             orders
           );
@@ -108,12 +108,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           // tableOrders contains ALL seats!
           Object.values(this._allTableOrders).forEach(
             (tableOrder: IFloorMapTableOrders): void => {
-              const rawObj: IFloorMapDataObject = floorMapRawObjects.find(
+              const rawObj: IFloorMapDataObject = <IFloorMapDataObject>floorMapRawObjects.find(
                 (o: IFloorMapDataObject): boolean =>
                   getTableSeatId(o) === tableOrder.tsID
               );
 
-              const fabricObj = getObjectById(rawObj?.id);
+              const fabricObj: any = getObjectById(rawObj?.id!);
 
               if (fabricObj) {
                 // Highlight or clear border
@@ -142,10 +142,10 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  private _onMouseUp = (e): void => {
-    if (e.target.type?.indexOf('seat') === 0) {
-      const rawObject: IFloorMapDataObject = this.unit.floorMap.objects[
-        e.target.id
+  private _onMouseUp = (e: any): void => {
+    if (e.target.type.indexOf('seat') === 0) {
+      const rawObject: IFloorMapDataObject = this.unit!.floorMap!.objects[
+        e.target?.id
       ];
 
       if (rawObject) {
@@ -156,8 +156,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           dialogClass: 'floor-map-order-dialog',
         });
 
-        dialog.componentRef.instance.tableId = rawObject.tID;
-        dialog.componentRef.instance.seatId = rawObject.sID;
+        dialog.componentRef.instance.tableId = rawObject.tID!;
+        dialog.componentRef.instance.seatId = rawObject.sID!;
         dialog.componentRef.instance.allTableOrders$ = this._allTableOrders$;
       }
     }

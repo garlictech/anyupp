@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./status-led.component.scss'],
 })
 export class StatusLedComponent {
-  @Input() status: boolean;
+  @Input() status?: boolean;
 }

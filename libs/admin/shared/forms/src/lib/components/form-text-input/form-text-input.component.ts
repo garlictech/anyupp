@@ -8,8 +8,8 @@ import { FormControl } from '@angular/forms';
 export class FormTextInputComponent {
   @Input() caption?: string; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() control: FormControl;
-  @Input() type: string;
+  @Input() control!: FormControl;
+  @Input() type!: string;
   @Input() fieldSize: string;
 
   constructor() {
