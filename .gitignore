@@ -43,3 +43,4 @@ Thumbs.db
 cyreport
 .setup.sh
 .build
+.serverless

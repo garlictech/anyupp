@@ -1,0 +1,21 @@
+type Query {
+  # Admin
+  getAdminUser(id: ID!): AdminUser
+
+  # Stripe
+  getCustomerStripeCards(customerId: ID): [StripeCard]
+}
+
+type Mutation {
+  # Admin
+  createAdminUser(newAdminData: AdminUserInput!): Boolean!
+  updateAdminUser(id: ID!, newAdminData: AdminUserInput!): Boolean!
+  updateAdminUserRole(id: ID!, newAdminRoleData: AdminUserRoleInput!): Boolean!
+
+  # Stripe
+  startStripePayment(chainId: ID!, unitId: ID!, userId: ID!): String!
+}
+
+type Subscription {
+  adminUserChanged(id: ID!): AdminUser
+}
