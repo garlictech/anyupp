@@ -1,9 +1,8 @@
-import { Then } from 'cypress-cucumber-preprocessor/steps';
+import { When } from 'cypress-cucumber-preprocessor/steps';
 
-Then('I should see {string} text', (title: string) => {
-  cy.findAllByText(title).should('exist');
-});
-
-Then('I should see {string} title', (title: string) => {
-  cy.findAllByText(title).should('exist');
-});
+When(
+  'I fill out the {string} input with {string}',
+  (inputLabel: string, value: string) => {
+    cy.findByLabelText(inputLabel).type(value);
+  }
+);

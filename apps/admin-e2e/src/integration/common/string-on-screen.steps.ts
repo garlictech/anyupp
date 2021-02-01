@@ -5,5 +5,5 @@ Then('I should see {string} text', (title: string) => {
 });
 
 Then('I should see {string} title', (title: string) => {
-  cy.findAllByText(title).should('exist');
+  cy.findByTitle(title).should('exist');
 });
