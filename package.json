@@ -112,6 +112,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/tao": "11.0.20",
     "@nrwl/workspace": "11.0.20",
+    "@testing-library/cypress": "^7.0.3",
     "@types/chart.js": "^2.9.29",
     "@types/cypress-cucumber-preprocessor": "^4.0.0",
     "@types/fabric": "^3.6.9",
