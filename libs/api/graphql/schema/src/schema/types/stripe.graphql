@@ -52,16 +52,7 @@ type StripeMetadata {
   value: String!
 }
 
-interface StripeMetadataInterface {
-  metadata: [StripeMetadata!]!
-}
-
-interface NodeInterface {
-  id: ID!
-  object: String!
-}
-
-type StripeCard implements StripeMetadataInterface & NodeInterface {
+type StripeCard {
   brand: CardBrand
   checks: CardChecks
   country: CountryCode

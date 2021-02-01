@@ -145,6 +145,9 @@
     },
     "infrastructure-build-pipeline-stack": {
       "tags": []
+    },
+    "api-graphql-appsync-lambda": {
+      "tags": []
     }
   }
 }

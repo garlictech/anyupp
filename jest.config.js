@@ -46,5 +46,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/current-user',
     '<rootDir>/libs/admin/shared/logged-user',
     '<rootDir>/libs/admin/shared/storage',
+    '<rootDir>/libs/api/graphql/appsync-lambda',
   ],
 };
