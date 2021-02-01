@@ -1,5 +1,3 @@
-import { ILocation } from './unit';
-
 export interface IAddress {
   address: string;
   city: string;
@@ -7,4 +5,9 @@ export interface IAddress {
   title: string;
   postalCode: string;
   location: ILocation;
+}
+
+export interface ILocation {
+  lat: number;
+  lng: number;
 }

@@ -39,7 +39,9 @@
               "@firebase/component",
               "@firebase/database",
               "@firebase/functions",
-              "@angular/common/locales"
+              "@angular/common/locales",
+              "zen-observable",
+              "graphql-tag"
             ],
             "scripts": []
           },
@@ -159,6 +161,7 @@
         }
       }
     },
+
     "admin-e2e": {
       "root": "apps/admin-e2e",
       "sourceRoot": "apps/admin-e2e/src",
@@ -331,6 +334,466 @@
         }
       }
     },
+    "admin-pages-admin-users": {
+      "projectType": "library",
+      "root": "libs/admin/pages/admin-users",
+      "sourceRoot": "libs/admin/pages/admin-users/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/admin-users/tsconfig.lib.json",
+              "libs/admin/pages/admin-users/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/pages/admin-users/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/admin-users"],
+          "options": {
+            "jestConfig": "libs/admin/pages/admin-users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-forms": {
+      "projectType": "library",
+      "root": "libs/admin/shared/forms",
+      "sourceRoot": "libs/admin/shared/forms/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/forms/tsconfig.lib.json",
+              "libs/admin/shared/forms/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/shared/forms/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/forms"],
+          "options": {
+            "jestConfig": "libs/admin/shared/forms/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-components": {
+      "projectType": "library",
+      "root": "libs/admin/shared/components",
+      "sourceRoot": "libs/admin/shared/components/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/components/tsconfig.lib.json",
+              "libs/admin/shared/components/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/shared/components/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/components"],
+          "options": {
+            "jestConfig": "libs/admin/shared/components/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-pipes": {
+      "projectType": "library",
+      "root": "libs/admin/shared/pipes",
+      "sourceRoot": "libs/admin/shared/pipes/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/pipes/tsconfig.lib.json",
+              "libs/admin/shared/pipes/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/shared/pipes/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/pipes"],
+          "options": {
+            "jestConfig": "libs/admin/shared/pipes/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-utils": {
+      "root": "libs/admin/shared/utils",
+      "sourceRoot": "libs/admin/shared/utils/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/utils"],
+          "options": {
+            "jestConfig": "libs/admin/shared/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data": {
+      "root": "libs/admin/shared/data",
+      "sourceRoot": "libs/admin/shared/data/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-auth": {
+      "root": "libs/admin/shared/auth",
+      "sourceRoot": "libs/admin/shared/auth/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/auth"],
+          "options": {
+            "jestConfig": "libs/admin/shared/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-ui-core": {
+      "projectType": "library",
+      "root": "libs/admin/ui/core",
+      "sourceRoot": "libs/admin/ui/core/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/ui/core/tsconfig.lib.json",
+              "libs/admin/ui/core/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/ui/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/ui/core"],
+          "options": {
+            "jestConfig": "libs/admin/ui/core/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-ui-theme": {
+      "projectType": "library",
+      "root": "libs/admin/ui/theme",
+      "sourceRoot": "libs/admin/ui/theme/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/ui/theme/tsconfig.lib.json",
+              "libs/admin/ui/theme/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/ui/theme/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/ui/theme"],
+          "options": {
+            "jestConfig": "libs/admin/ui/theme/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-chains": {
+      "projectType": "library",
+      "root": "libs/admin/pages/chains",
+      "sourceRoot": "libs/admin/pages/chains/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/chains/tsconfig.lib.json",
+              "libs/admin/pages/chains/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/chains/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/chains"],
+          "options": {
+            "jestConfig": "libs/admin/pages/chains/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-groups": {
+      "projectType": "library",
+      "root": "libs/admin/pages/groups",
+      "sourceRoot": "libs/admin/pages/groups/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/groups/tsconfig.lib.json",
+              "libs/admin/pages/groups/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/groups/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/groups"],
+          "options": {
+            "jestConfig": "libs/admin/pages/groups/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-units": {
+      "projectType": "library",
+      "root": "libs/admin/pages/units",
+      "sourceRoot": "libs/admin/pages/units/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/units/tsconfig.lib.json",
+              "libs/admin/pages/units/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/units/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/units"],
+          "options": {
+            "jestConfig": "libs/admin/pages/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-users": {
+      "projectType": "library",
+      "root": "libs/admin/pages/users",
+      "sourceRoot": "libs/admin/pages/users/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/users/tsconfig.lib.json",
+              "libs/admin/pages/users/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/users/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/users"],
+          "options": {
+            "jestConfig": "libs/admin/pages/users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-products": {
+      "projectType": "library",
+      "root": "libs/admin/pages/products",
+      "sourceRoot": "libs/admin/pages/products/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/products/tsconfig.lib.json",
+              "libs/admin/pages/products/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/products/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/products"],
+          "options": {
+            "jestConfig": "libs/admin/pages/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-product-categories": {
+      "projectType": "library",
+      "root": "libs/admin/pages/product-categories",
+      "sourceRoot": "libs/admin/pages/product-categories/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/product-categories/tsconfig.lib.json",
+              "libs/admin/pages/product-categories/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/pages/product-categories/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/product-categories"],
+          "options": {
+            "jestConfig": "libs/admin/pages/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-dashboard": {
+      "projectType": "library",
+      "root": "libs/admin/pages/dashboard",
+      "sourceRoot": "libs/admin/pages/dashboard/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/dashboard/tsconfig.lib.json",
+              "libs/admin/pages/dashboard/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/pages/dashboard/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/dashboard"],
+          "options": {
+            "jestConfig": "libs/admin/pages/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-auth": {
+      "projectType": "library",
+      "root": "libs/admin/pages/auth",
+      "sourceRoot": "libs/admin/pages/auth/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/auth/tsconfig.lib.json",
+              "libs/admin/pages/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/pages/auth/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/auth"],
+          "options": {
+            "jestConfig": "libs/admin/pages/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-config": {
+      "root": "libs/admin/shared/config",
+      "sourceRoot": "libs/admin/shared/config/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/config/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/config"],
+          "options": {
+            "jestConfig": "libs/admin/shared/config/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "api-data-access": {
       "root": "libs/api/data-access",
       "sourceRoot": "libs/api/data-access/src",
@@ -347,6 +810,279 @@
           "outputs": ["coverage/libs/api/data-access"],
           "options": {
             "jestConfig": "libs/api/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-floor-map": {
+      "projectType": "library",
+      "root": "libs/admin/shared/floor-map",
+      "sourceRoot": "libs/admin/shared/floor-map/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/floor-map/tsconfig.lib.json",
+              "libs/admin/shared/floor-map/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/shared/floor-map/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/floor-map"],
+          "options": {
+            "jestConfig": "libs/admin/shared/floor-map/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-orders": {
+      "projectType": "library",
+      "root": "libs/admin/shared/orders",
+      "sourceRoot": "libs/admin/shared/orders/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/orders/tsconfig.lib.json",
+              "libs/admin/shared/orders/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/admin/shared/orders/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/orders"],
+          "options": {
+            "jestConfig": "libs/admin/shared/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-admin-users": {
+      "root": "libs/admin/shared/admin-users",
+      "sourceRoot": "libs/admin/shared/admin-users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/admin-users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/admin-users"],
+          "options": {
+            "jestConfig": "libs/admin/shared/admin-users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-chains": {
+      "root": "libs/admin/shared/chains",
+      "sourceRoot": "libs/admin/shared/chains/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/chains/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/chains"],
+          "options": {
+            "jestConfig": "libs/admin/shared/chains/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-dashboard": {
+      "root": "libs/admin/shared/dashboard",
+      "sourceRoot": "libs/admin/shared/dashboard/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/dashboard/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/dashboard"],
+          "options": {
+            "jestConfig": "libs/admin/shared/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-groups": {
+      "root": "libs/admin/shared/groups",
+      "sourceRoot": "libs/admin/shared/groups/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/groups/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/groups"],
+          "options": {
+            "jestConfig": "libs/admin/shared/groups/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-product-categories": {
+      "root": "libs/admin/shared/product-categories",
+      "sourceRoot": "libs/admin/shared/product-categories/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/product-categories/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/product-categories"],
+          "options": {
+            "jestConfig": "libs/admin/shared/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-products": {
+      "root": "libs/admin/shared/products",
+      "sourceRoot": "libs/admin/shared/products/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/products/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/products"],
+          "options": {
+            "jestConfig": "libs/admin/shared/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-units": {
+      "root": "libs/admin/shared/units",
+      "sourceRoot": "libs/admin/shared/units/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/units/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/units"],
+          "options": {
+            "jestConfig": "libs/admin/shared/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-users": {
+      "root": "libs/admin/shared/users",
+      "sourceRoot": "libs/admin/shared/users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/users"],
+          "options": {
+            "jestConfig": "libs/admin/shared/users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-logged-user": {
+      "projectType": "library",
+      "root": "libs/admin/shared/logged-user",
+      "sourceRoot": "libs/admin/shared/logged-user/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/logged-user/tsconfig.lib.json",
+              "libs/admin/shared/logged-user/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/shared/logged-user/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/logged-user"],
+          "options": {
+            "jestConfig": "libs/admin/shared/logged-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-storage": {
+      "root": "libs/admin/shared/storage",
+      "sourceRoot": "libs/admin/shared/storage/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/storage/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/storage"],
+          "options": {
+            "jestConfig": "libs/admin/shared/storage/jest.config.js",
             "passWithNoTests": true
           }
         }
