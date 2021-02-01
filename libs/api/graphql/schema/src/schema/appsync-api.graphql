@@ -65,6 +65,15 @@ input CreateAdminUserInput {
   profileImage: String
 }
 
+input UpdateAdminUserInput {
+  id: ID!
+  name: String
+  address: AddressInput
+  email: String
+  phone: String
+  profileImage: String
+}
+
 input AdminUserRoleInput {
   role: String!
   entities: [AdminRoleEntityInput]
@@ -87,8 +96,8 @@ type Mutation {
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
-  updateAdminUser(id: ID!, newAdminData: AdminUserInput!): Boolean!
-  deleteAdminUser(newAdminData: AdminUserInput!): Boolean!
+  updateAdminUser(newAdminData: UpdateAdminUserInput!): Boolean!
+  deleteAdminUser(id: ID!): Boolean!
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
