@@ -1,5 +1,3 @@
-# import Address from "common.graphql"
-
 type AdminUser {
   id: ID!
   name: String
@@ -30,8 +28,6 @@ type AdminUserSettings {
   selectedLanguage: String
   selectedHistoryDate: Int
 }
-
-# import AddressInput from "common.graphql"
 
 input AdminUserInput {
   name: String
