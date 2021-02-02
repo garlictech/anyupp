@@ -17,6 +17,10 @@ export class DevBuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
     super(app, id, props);
 
+    new codebuild.GitHubSourceCredentials(this, 'CodeBuildGitHubCreds', {
+      accessToken: props.secretsManager.githubOauthToken.secretValue
+    });
+
     const buildOutput = new codepipeline.Artifact('BuildOutput');
     const sourceOutput = new codepipeline.Artifact('SourceOutput');
 

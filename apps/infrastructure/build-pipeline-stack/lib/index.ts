@@ -4,21 +4,41 @@ import {
   PipelineStackProps
 } from './build-pipeline/pipeline-stack';
 import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
-import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stack';
+import {
+  DevPullRequestBuildStack,
+  DevPullRequestBuildStackProps
+} from './build-pipeline/dev-pull-request-stack';
 
 export { App };
 
 export default function main(app: App): void {
   const secretsManagerStack = new SecretsManagerStack(app, 'secretsmanager');
+  //const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
 
-  const repoConfig: PipelineStackProps = {
+  const commonConfig = {
     repoOwner: 'bgap',
     repoName: 'anyupp',
-    repoBranch: 'dev',
-    secretsManager: secretsManagerStack
+    secretsManager: secretsManagerStack,
+    repoBranch: 'dev'
   };
 
-  new DevBuildPipelineStack(app, 'DevBuildPipelineStack', repoConfig);
+  const devPullRequestConfig: DevPullRequestBuildStackProps = {
+    ...commonConfig
+  };
 
-  new DevPullRequestBuildStack(app, 'DevPullRequestBuildStack', repoConfig);
+  const devBuildPipelineConfig: PipelineStackProps = {
+    ...commonConfig
+  };
+
+  new DevBuildPipelineStack(
+    app,
+    'DevBuildPipelineStack',
+    devBuildPipelineConfig
+  );
+
+  new DevPullRequestBuildStack(
+    app,
+    'DevPullRequestBuildStack',
+    devPullRequestConfig
+  );
 }
