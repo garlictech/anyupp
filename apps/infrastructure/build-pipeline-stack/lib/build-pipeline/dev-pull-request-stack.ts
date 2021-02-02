@@ -5,7 +5,7 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as eventTargets from '@aws-cdk/aws-events-targets';
 
 export interface DevPullRequestBuildStackProps extends sst.StackProps {
-  //  readonly slackChannel: chatbot.ISlackChannelConfiguration;
+  readonly slackChannelSns: sns.ITopic;
   readonly repoName: string;
   readonly repoOwner: string;
   readonly repoBranch: string;
@@ -52,12 +52,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    const topic = sns.Topic.fromTopicArn(
-      this,
-      'SlackNotificationTopic',
-      'arn:aws:sns:eu-west-1:568276182587:CodeStarNotifications-anyupp-cicd-f50b5f6cf3315948882cbd0ba0230163179d510d'
-    );
-    const snsTarget = new eventTargets.SnsTopic(topic);
+    const snsTarget = new eventTargets.SnsTopic(props.slackChannelSns);
 
     project.onBuildStarted('PullRequestBuildStart', {
       target: snsTarget

@@ -8,12 +8,11 @@ import {
   DevPullRequestBuildStack,
   DevPullRequestBuildStackProps
 } from './build-pipeline/dev-pull-request-stack';
-
-export { App };
+import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
 
 export default function main(app: App): void {
   const secretsManagerStack = new SecretsManagerStack(app, 'secretsmanager');
-  //const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
+  const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
 
   const commonConfig = {
     repoOwner: 'bgap',
@@ -23,7 +22,8 @@ export default function main(app: App): void {
   };
 
   const devPullRequestConfig: DevPullRequestBuildStackProps = {
-    ...commonConfig
+    ...commonConfig,
+    slackChannelSns: slackChannel.slackChannelSns
   };
 
   const devBuildPipelineConfig: PipelineStackProps = {

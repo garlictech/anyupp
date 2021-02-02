@@ -1,18 +1,24 @@
 import * as chatbot from '@aws-cdk/aws-chatbot';
 import * as sst from '@serverless-stack/resources';
-
-export type SlackNotificationsStackProps = sst.StackProps;
+import * as sns from '@aws-cdk/aws-sns';
 
 export class SlackNotificationsStack extends sst.Stack {
-  public slackChannel: chatbot.ISlackChannelConfiguration;
+  public slackChannelSns: sns.ITopic;
 
-  constructor(app: sst.App, id: string, props: SlackNotificationsStackProps) {
-    super(app, id, props);
+  constructor(app: sst.App, id: string) {
+    super(app, id);
 
-    this.slackChannel = chatbot.SlackChannelConfiguration.fromSlackChannelConfigurationArn(
+    this.slackChannelSns = new sns.Topic(this, 'SlackNotificationTopic');
+
+    new chatbot.SlackChannelConfiguration(
       this,
-      'SlackChannelConfiguration',
-      'arn:aws:chatbot::568276182587:chat-configuration/slack-channel/anyupp-cicd'
+      'PR build Slack notification channel',
+      {
+        slackChannelId: 'cicd',
+        slackWorkspaceId: 'T2GE2HF7H',
+        slackChannelConfigurationName: 'AnyuppPRBuild',
+        notificationTopics: [this.slackChannelSns]
+      }
     );
   }
 }
