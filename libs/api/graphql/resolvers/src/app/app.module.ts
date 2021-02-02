@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { join } from 'path';
-import { ApiGraphqlResolversModule } from '@bgap/api/graphql/resolvers';
+import { ApiGraphqlResolversModule } from '../lib/api-graphql-resolvers.module';
 
 const SCHEMA_ROOT = join(process.cwd(), 'libs/api/graphql/schema/src');
 

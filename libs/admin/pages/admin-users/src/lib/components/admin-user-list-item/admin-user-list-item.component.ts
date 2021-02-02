@@ -6,7 +6,7 @@ import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 
 import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
-import { AuthService } from '@bgap/admin/shared/auth';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';
@@ -17,7 +17,7 @@ import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-r
   styleUrls: ['./admin-user-list-item.component.scss'],
 })
 export class AdminUserListItemComponent {
-  @Input() adminUser: IAdminUser;
+  @Input() adminUser!: IAdminUser;
 
   constructor(
     private _nbDialogService: NbDialogService,
@@ -52,7 +52,7 @@ export class AdminUserListItemComponent {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._authService.sendPasswordResetEmail(this.adminUser.email).then(
+            this._authService.sendPasswordResetEmail(this.adminUser.email!).then(
               (): void => {
                 this._toasterService.show(
                   EToasterType.SUCCESS,

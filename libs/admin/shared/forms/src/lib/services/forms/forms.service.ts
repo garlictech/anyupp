@@ -4,12 +4,8 @@ import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { adminUsersSelectors } from '@bgap/admin/shared/admin-users';
-import {
-  TIME_FORMAT_PATTERN,
-  multiLangValidator,
-  productAvailabilityValidator,
-} from '@bgap/admin/shared/utils';
+import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
+import { TIME_FORMAT_PATTERN,  multiLangValidator, productAvailabilityValidator } from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IAdminUser } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 

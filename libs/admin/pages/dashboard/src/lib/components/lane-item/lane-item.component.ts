@@ -2,14 +2,11 @@ import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/products';
-import { OrderService } from '@bgap/admin/shared/data';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
-  currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
-  getOrderLaneColor,
-  getPrevOrderItemStatus,
-} from '@bgap/admin/shared/orders';
+  currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
+} from '@bgap/admin/shared/data-access/orders';
 import { objectToArray } from '@bgap/admin/shared/utils';
 import {
   ENebularButtonSize,

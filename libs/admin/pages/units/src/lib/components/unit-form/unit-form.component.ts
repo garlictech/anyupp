@@ -4,12 +4,9 @@ import { take } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   contactFormGroup,
   EToasterType,

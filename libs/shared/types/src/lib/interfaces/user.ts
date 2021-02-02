@@ -18,4 +18,5 @@ export interface IUser extends IContact {
   name: string;
   social: ISocialInfo;
   profileImage: string;
+  stripeCustomerId?: string;
 }

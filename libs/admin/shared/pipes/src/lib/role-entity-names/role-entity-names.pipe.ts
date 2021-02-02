@@ -3,9 +3,9 @@ import { take } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { unitsSelectors } from '@bgap/admin/shared/units';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { IAdminUserRole, IChain, IGroup, IUnit } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 

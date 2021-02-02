@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { getDailyOrdersSum } from '@bgap/admin/shared/orders';
+import { getDailyOrdersSum } from '@bgap/admin/shared/data-access/orders';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
