@@ -21,7 +21,7 @@ export class LocalizePipe implements PipeTransform {
     let selectedLang = undefined;
     this._store
       .pipe(select(loggedUserSelectors.getSelectedLanguage), take(1))
-      .subscribe((lang: string): void => {
+      .subscribe((lang: string | null | undefined): void => {
         selectedLang = (lang || DEFAULT_LANG).substr(0, 2);
       });
 

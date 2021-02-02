@@ -91,36 +91,36 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
-        filter((settings: IAdminUserSettings): boolean => !!settings),
+        filter((settings: IAdminUserSettings | undefined): boolean => !!settings),
         distinctUntilChanged(
           (prev, curr): boolean =>
-            prev.selectedChainId === curr.selectedChainId &&
-            prev.selectedGroupId === curr.selectedGroupId &&
-            prev.selectedUnitId === curr.selectedUnitId
+            prev?.selectedChainId === curr?.selectedChainId &&
+            prev?.selectedGroupId === curr?.selectedGroupId &&
+            prev?.selectedUnitId === curr?.selectedUnitId
         ),
         takeUntil(this._destroyConnection$)
       )
-      .subscribe((adminUserSettings: IAdminUserSettings): void => {
+      .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
-          adminUserSettings.selectedChainId || ''
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedChainProducts(
-          adminUserSettings.selectedChainId || ''
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedGroupProducts(
-          adminUserSettings.selectedGroupId || ''
+          adminUserSettings?.selectedGroupId || ''
         );
         this._subscribeToSelectedUnitProducts(
-          adminUserSettings.selectedUnitId || ''
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToGeneratedUnitProducts(
-          adminUserSettings.selectedUnitId || ''
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToSelectedUnitOrders(
-          adminUserSettings.selectedChainId || '',
-          adminUserSettings.selectedUnitId || ''
+          adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
       });
 
@@ -128,15 +128,15 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserRoles),
-        filter((roles: IAdminUserRole): boolean => !!roles),
+        filter((roles: IAdminUserRole | undefined): boolean => !!roles),
         takeUntil(this._destroyConnection$)
       )
-      .subscribe((adminUserRoles: IAdminUserRole): void => {
+      .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
         this._rolesChanged$.next(true);
 
         // TODO empty chain/group/unit update based on the first role
 
-        switch (adminUserRoles.role) {
+        switch (adminUserRoles?.role) {
           case EAdminRole.SUPERUSER:
             this._subscribeToChainsByRole('*');
             this._subscribeToGroupsByRole('', '*');
@@ -210,7 +210,7 @@ export class DataService {
         select(loggedUserSelectors.getSelectedLanguage),
         takeUntil(this._destroyConnection$)
       )
-      .subscribe((selectedLanguage: string): void => {
+      .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
   }

@@ -18,7 +18,7 @@ export class ProductCategoryFormComponent
   public productCategory!: IProductCategory;
   public eImageType = EImageType;
   private _store: Store<any>;
-  private _selectedChainId: string = '';
+  private _selectedChainId?: string | undefined | null;
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -26,7 +26,7 @@ export class ProductCategoryFormComponent
     this._store = this._injector.get(Store);
     this._store
       .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-      .subscribe((selectedChainId: string): void => {
+      .subscribe((selectedChainId: string | undefined | null): void => {
         this._selectedChainId = selectedChainId;
       });
   }
@@ -66,7 +66,7 @@ export class ProductCategoryFormComponent
       if (_get(this.productCategory, '_id')) {
         this._dataService
           .updateProductCategory(
-            this._selectedChainId,
+            this._selectedChainId!,
             this.productCategory._id,
             this.dialogForm?.value
           )
@@ -85,7 +85,7 @@ export class ProductCategoryFormComponent
           );
       } else {
         this._dataService
-          .insertProductCategory(this._selectedChainId, this.dialogForm?.value)
+          .insertProductCategory(this._selectedChainId!, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -110,7 +110,7 @@ export class ProductCategoryFormComponent
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId,
+          this._selectedChainId!,
           this.productCategory._id,
           imagePath
         )
@@ -141,7 +141,7 @@ export class ProductCategoryFormComponent
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId,
+          this._selectedChainId!,
           this.productCategory._id,
           null
         )

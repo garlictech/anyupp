@@ -77,7 +77,7 @@ export class GroupFormComponent
       // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string): void => {
+        .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
             this.dialogForm?.controls.chainId.patchValue(selectedChainId);
           }

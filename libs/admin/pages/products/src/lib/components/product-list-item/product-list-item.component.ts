@@ -42,20 +42,20 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
         select(loggedUserSelectors.getLoggedUserRoles),
         untilDestroyed(this)
       )
-      .subscribe((adminUserRole: IAdminUserRole): void => {
+      .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE)
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -63,7 +63,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;

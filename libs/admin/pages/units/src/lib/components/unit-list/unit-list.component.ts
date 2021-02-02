@@ -19,7 +19,7 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 })
 export class UnitListComponent implements OnInit, OnDestroy {
   public units: IUnit[] = [];
-  public selectedChainId$!: Observable<string>;
+  public selectedChainId$!: Observable<string | undefined | null>;
 
   constructor(
     private _store: Store<any>,

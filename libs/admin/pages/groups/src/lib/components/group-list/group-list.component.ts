@@ -19,7 +19,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
 export class GroupListComponent implements OnDestroy {
   public groups$: Observable<IGroup[]>;
   public chains$: Observable<IChain[]>;
-  public selectedChainId$: Observable<string>;
+  public selectedChainId$: Observable<string | undefined | null>;
 
   constructor(
     private _store: Store<any>,

@@ -22,40 +22,40 @@ export const getLoggedUser = createSelector(
 
 export const getLoggedUserSettings = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUserSettings => state.loggedUser!.settings!
+  (state: ILoggedUserState): IAdminUserSettings | undefined => state.loggedUser?.settings
 );
 
 export const getLoggedUserRoles = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUserRole => state.loggedUser?.roles!
+  (state: ILoggedUserState): IAdminUserRole | undefined => state.loggedUser?.roles
 );
 
 export const getSelectedChainId = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): string =>
-    state.loggedUser?.settings?.selectedChainId!
+  (state: ILoggedUserState): string | undefined | null =>
+    state.loggedUser?.settings?.selectedChainId
 );
 
 export const getSelectedGroupId = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): string =>
-    state.loggedUser?.settings?.selectedGroupId!
+  (state: ILoggedUserState): string | undefined | null =>
+    state.loggedUser?.settings?.selectedGroupId
 );
 
 export const getSelectedUnitId = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): string =>
-    state.loggedUser?.settings?.selectedUnitId!
+  (state: ILoggedUserState): string | undefined | null =>
+    state.loggedUser?.settings?.selectedUnitId
 );
 
 export const getSelectedProductCategoryId = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): string =>
-    state.loggedUser?.settings?.selectedProductCategoryId!
+  (state: ILoggedUserState): string | undefined | null =>
+    state.loggedUser?.settings?.selectedProductCategoryId
 );
 
 export const getSelectedLanguage = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): string =>
-    state.loggedUser?.settings?.selectedLanguage!
+  (state: ILoggedUserState): string | undefined | null =>
+    state.loggedUser?.settings?.selectedLanguage
 );

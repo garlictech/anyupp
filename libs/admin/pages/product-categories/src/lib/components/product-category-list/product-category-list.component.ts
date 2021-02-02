@@ -24,7 +24,7 @@ import { isUndefined } from 'lodash-es';
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[] = [];
   private _sortedProductCategoryIds: string[] = [];
-  private _selectedChainId: string = '';
+  private _selectedChainId?: string | undefined | null;
 
   constructor(
     private _store: Store<any>,
@@ -53,7 +53,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
         select(loggedUserSelectors.getSelectedChainId),
         untilDestroyed(this)
       )
-      .subscribe((selectedChainId: string): void => {
+      .subscribe((selectedChainId: string | undefined | null): void => {
         this._selectedChainId = selectedChainId;
       });
   }
@@ -93,7 +93,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       this._sortedProductCategoryIds.forEach(
         (productCategoryId: string, pos: number): void => {
           this._dataService.updateProductCategoryPosition(
-            this._selectedChainId,
+            this._selectedChainId!,
             productCategoryId,
             (pos + 1).toString()
           );

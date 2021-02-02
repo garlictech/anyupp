@@ -4,7 +4,10 @@ import { take } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
@@ -61,9 +64,7 @@ export class UnitFormComponent
           })
         );
       });
-  }
 
-  ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       groupId: ['', [Validators.required]],
       chainId: ['', [Validators.required]],
@@ -119,7 +120,9 @@ export class UnitFormComponent
       ),
       _lanesArr: this._formBuilder.array([]), // temp array!
     });
+  }
 
+  ngOnInit(): void {
     if (this.unit) {
       this.dialogForm.patchValue(this.unit);
 
@@ -133,9 +136,9 @@ export class UnitFormComponent
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (this.dialogForm?.get('openingHours')!.get('override') as FormArray)!.push(
-            dayGroup
-          );
+          (this.dialogForm
+            ?.get('openingHours')!
+            .get('override') as FormArray)!.push(dayGroup);
         });
       }
 
@@ -152,7 +155,7 @@ export class UnitFormComponent
       // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string): void => {
+        .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
             this.dialogForm?.controls.chainId.patchValue(selectedChainId);
           }
@@ -161,7 +164,7 @@ export class UnitFormComponent
       // Patch GroupId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
-        .subscribe((selectedGroupId: string): void => {
+        .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
             this.dialogForm?.controls.groupId.patchValue(selectedGroupId);
           }

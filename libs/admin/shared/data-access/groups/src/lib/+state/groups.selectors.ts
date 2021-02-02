@@ -59,7 +59,7 @@ export const getGroupById = (id: string) => {
 export const getSelectedChainGroups = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllGroups,
-  (userSettings: IAdminUserSettings, groups: IGroup[]): IGroup[] =>
+  (userSettings: IAdminUserSettings | undefined, groups: IGroup[]): IGroup[] =>
     groups.filter(
       (group): boolean =>
         group.chainId === _get(userSettings, 'selectedChainId')
@@ -75,7 +75,7 @@ export const getGroupsByChainId = (chainId: string) => {
 export const getSeletedGroup = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllGroups,
-  (userSettings: IAdminUserSettings, groups: IGroup[]): IGroup | undefined  =>
+  (userSettings: IAdminUserSettings | undefined, groups: IGroup[]): IGroup | undefined  =>
     groups.find(
       (group): boolean => group._id === _get(userSettings, 'selectedGroupId')
     )

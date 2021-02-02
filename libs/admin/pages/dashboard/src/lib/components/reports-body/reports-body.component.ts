@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$!: BehaviorSubject<IOrder[]>;
+  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<IOrder[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency: string = '';
 

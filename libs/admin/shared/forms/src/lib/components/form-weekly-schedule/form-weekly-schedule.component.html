@@ -1,4 +1,4 @@
-<fieldset class="form">
+<fieldset class="form" *ngIf="scheduleControl">
   <legend class="label">{{ 'units.openingHours' | translate }}</legend>
   <table>
     <tr *ngFor="let day of dayKeys">
@@ -8,11 +8,11 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl.get('day')!.get('from')! | asFormControl"
+          [formControl]="scheduleControl.get(day)!.get('from')! | asFormControl"
           [status]="
-            scheduleControl.get('day')!.get('from')!.touched &&
-            (scheduleControl.get('day')!.get('from')!.errors?.required ||
-              scheduleControl.get('day')!.get('from')!.invalid)
+            scheduleControl.get(day)?.get('from')?.touched &&
+            (scheduleControl.get(day)?.get('from')?.errors?.required ||
+              scheduleControl.get(day)?.get('from')?.invalid)
               ? 'danger'
               : 'basic'
           "
@@ -24,11 +24,11 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl.get('day')!.get('to')! | asFormControl"
+          [formControl]="scheduleControl.get(day)!.get('to')! | asFormControl"
           [status]="
-            scheduleControl.get('day')!.get('to')!.touched &&
-            (scheduleControl.get('day')!.get('to')!.errors?.required ||
-              scheduleControl.get('day')!.get('to')!.invalid)
+            scheduleControl.get(day)?.get('to')?.touched &&
+            (scheduleControl.get(day)?.get('to')?.errors?.required ||
+              scheduleControl.get(day)?.get('to')?.invalid)
               ? 'danger'
               : 'basic'
           "
@@ -73,9 +73,9 @@
             [placeholder]="'common.hmPlaceholder' | translate"
             [formControl]="customDay.get('from')! | asFormControl"
             [status]="
-            customDay.get('from')!.touched &&
-              (customDay.get('from')!.errors?.required ||
-              customDay.get('from')!.invalid)
+            customDay.get('from')?.touched &&
+              (customDay.get('from')?.errors?.required ||
+              customDay.get('from')?.invalid)
                 ? 'danger'
                 : 'basic'
             "
@@ -89,9 +89,9 @@
             [placeholder]="'common.hmPlaceholder' | translate"
             [formControl]="customDay.get('to')! | asFormControl"
             [status]="
-            customDay.get('to')!.touched &&
-              (customDay.get('to')!.errors?.required ||
-              customDay.get('to')!.invalid)
+            customDay.get('to')?.touched &&
+              (customDay.get('to')?.errors?.required ||
+              customDay.get('to')?.invalid)
                 ? 'danger'
                 : 'basic'
             "

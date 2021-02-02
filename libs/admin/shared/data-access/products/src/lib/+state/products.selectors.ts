@@ -47,7 +47,7 @@ export const getChainProductsOfSelectedCategory = () => {
   return createSelector(
     getAllChainProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (products: IProduct[], productCategoryId: string): IProduct[] =>
+    (products: IProduct[], productCategoryId: string | null | undefined): IProduct[] =>
       products.filter(
         (product): boolean =>
           !!productCategoryId && product.productCategoryId === productCategoryId
@@ -87,7 +87,7 @@ export const getPendingGroupProductsOfSelectedCategory = () =>
     (
       chainProducts: IProduct[],
       groupProducts: IProduct[],
-      productCategoryId: string
+      productCategoryId: string | null | undefined
     ): IProduct[] =>
       chainProducts.filter((chainProduct: IProduct): boolean => {
         const found = groupProducts.filter(
@@ -111,7 +111,7 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
     (
       chainProducts: IProduct[],
       groupProducts: IProduct[],
-      productCategoryId: string
+      productCategoryId: string | null | undefined
     ): IProduct[] => {
       return groupProducts
         .map(
@@ -164,7 +164,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
     (
       groupProducts: IProduct[],
       unitProducts: IProduct[],
-      productCategoryId: string
+      productCategoryId: string | null | undefined
     ): IProduct[] =>
       groupProducts.filter((groupProduct: IProduct): boolean => {
         const found = unitProducts.filter(
@@ -188,7 +188,7 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
     (
       groupProducts: IProduct[],
       unitProducts: IProduct[],
-      productCategoryId: string
+      productCategoryId: string | null | undefined
     ): IProduct[] => {
       return unitProducts
         .map(

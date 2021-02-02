@@ -45,10 +45,10 @@ export class ProductExtendFormComponent
     this._store = this._injector.get(Store);
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings): void => {
-        this._selectedChainId = userSettings.selectedChainId!;
-        this._selectedGroupId = userSettings.selectedGroupId!;
-        this._selectedUnitId = userSettings.selectedUnitId!;
+      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+        this._selectedChainId = userSettings?.selectedChainId || '';
+        this._selectedGroupId = userSettings?.selectedGroupId || '';
+        this._selectedUnitId = userSettings?.selectedUnitId || '';
       });
 
     this.productCategories$ = this._store.pipe(
