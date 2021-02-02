@@ -19,6 +19,7 @@
     "target": "es2015",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -85,7 +86,10 @@
       "@bgap/admin/shared/logged-user": [
         "libs/admin/shared/logged-user/src/index.ts"
       ],
-      "@bgap/admin/shared/storage": ["libs/admin/shared/storage/src/index.ts"]
+      "@bgap/admin/shared/storage": ["libs/admin/shared/storage/src/index.ts"],
+      "@bgap/api/graphql/appsync-lambda": [
+        "libs/api/graphql/appsync-lambda/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

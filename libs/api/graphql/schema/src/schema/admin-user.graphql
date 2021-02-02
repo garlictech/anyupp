@@ -31,3 +31,23 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
+# import AddressInput from "common.graphql"
+
+input AdminUserInput {
+  name: String
+  address: AddressInput
+  email: String
+  phone: String
+  profileImage: String
+}
+
+input AdminUserRoleInput {
+  role: String!
+  entities: [AdminRoleEntityInput]
+}
+
+input AdminRoleEntityInput {
+  chainId: String
+  groupId: String
+  unitId: String
+}

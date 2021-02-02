@@ -1,5 +1,5 @@
 org: anyupp
-service: anyupp-auth
+service: anyupp-backend
 configValidationMode: error
 frameworkVersion: ^2.16.1
 
@@ -17,23 +17,10 @@ custom:
   # commands. Or falls back to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Name of the SST app that's deploying our infrastructure
-  sstApp: ${self:custom.stage}-anyupp
+  sstApp: ${self:custom.stage}-anyupp-backend
   bundle:
     packager: yarn
     linting: false
-  parameters:
-    nodeEnv:
-      dev: development
-      staging: production
-      master: production
-    debug:
-      dev: true
-      staging: true
-      master: true
-
-  nodeEnv: ${self:custom.parameters.nodeEnv.${self:custom.stage}}
-  debug: ${self:custom.parameters.debug.${self:custom.stage}}
-  projectPrefix: '${self:service}-${self:custom.stage}'
   awsAccountId: '#{AWS::AccountId}'
 
   offline:
@@ -46,23 +33,5 @@ provider:
   region: #{AWS::Region}
 
 functions:
-  pre-sign-up:
-    handler: lib/cognito/passwordless-pre-sign-up/index.handler
-
-  define-auth-challenge:
-    handler: lib/cognito/passwordless-define-auth-challenge/index.handler
-
-  create-auth-challenge:
-    handler: lib/cognito/passwordless-create-auth-challenge/index.handler
-
-  verify-auth-challenge-response:
-    handler: lib/cognito/passwordless-verify-auth-challenge-response/index.handler
-
-  pre-authentication:
-    handler: lib/cognito/pre-authentication/index.handler
-
-  pre-token-generation:
-    handler: lib/cognito/pre-token-generation/index.handler
-
   graphql-api:
     handler: lib/appsync/graphql-api/index.handler

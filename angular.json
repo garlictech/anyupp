@@ -225,19 +225,19 @@
       "prefix": "infrastructure-anyupp-backend-stack",
       "architect": {
         "build": {
-          "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "outputPath": "dist/apps/infrastructure/anyupp-backend-stack",
-            "main": "apps/infrastructure/anyupp-backend-stack/src/main.ts",
-            "tsConfig": "apps/infrastructure/anyupp-backend-stack/tsconfig.app.json",
-            "assets": ["apps/infrastructure/anyupp-backend-stack/src/assets"]
+            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "parallel": false,
+            "commands": [
+              {
+                "command": "yarn sls package"
+              }
+            ]
           },
+          "outputs": ["{options.outputPath}"],
           "configurations": {
             "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
               "fileReplacements": [
                 {
                   "replace": "apps/infrastructure/anyupp-backend-stack/src/environments/environment.ts",
@@ -247,10 +247,14 @@
             }
           }
         },
-        "serve": {
-          "builder": "@nrwl/node:execute",
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "buildTarget": "infrastructure-anyupp-backend-stack:build"
+            "commands": [
+              {
+                "command": "cd apps/infrastructure/anyupp-backend-stack && yarn sst deploy"
+              }
+            ]
           }
         },
         "lint": {
@@ -1212,6 +1216,27 @@
           "outputs": ["coverage/libs/api/utils"],
           "options": {
             "jestConfig": "libs/api/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-graphql-appsync-lambda": {
+      "root": "libs/api/graphql/appsync-lambda",
+      "sourceRoot": "libs/api/graphql/appsync-lambda/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/graphql/appsync-lambda/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
+          "options": {
+            "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
             "passWithNoTests": true
           }
         }
