@@ -31,10 +31,10 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public addLane(): void {
-    this.lanesFormArray.push(this._formsService.createLaneFormGroup());
+    (<FormArray>this.lanesFormArray).push(this._formsService.createLaneFormGroup());
   }
 
   public removeLane(idx: number): void {
-    this.lanesFormArray.removeAt(idx);
+    (<FormArray>this.lanesFormArray).removeAt(idx);
   }
 }

@@ -2,7 +2,7 @@ import { EAdminRole } from '@bgap/shared/types';
 import { IKeyValue } from '@bgap/shared/types';
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './form-admin-role.component.html',
 })
 export class FormAdminRoleComponent implements OnInit {
-  @Input() roleFormGroup!: FormControl;
+  @Input() roleFormGroup!: FormGroup;
   public eAdminRole = EAdminRole;
   public roleOptions: IKeyValue[];
 

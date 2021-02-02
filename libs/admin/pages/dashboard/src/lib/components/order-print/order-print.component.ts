@@ -20,16 +20,21 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   @Input() orders!: IOrder[];
   public unit?: IUnit;
   public chain?: IChain;
-  public now?: string;
-  public parsedOrders: IOrder[] = [];
+  public now: string = '';
+  public parsedOrders: IOrderItem[] = [];
   public parsedVats: IPriceShown[] = [];
-  public sum?: ICurrencyValue;
+  public sum: ICurrencyValue;
   public place?: IPlace;
 
   constructor(
     private _store: Store<any>,
     private _nbDialogRef: NbDialogRef<unknown>
   ) {
+    this.sum = {
+      value: 0,
+      currency: '',
+    };
+
     combineLatest([
       this._store.pipe(
         select(chainsSelectors.getSeletedChain),

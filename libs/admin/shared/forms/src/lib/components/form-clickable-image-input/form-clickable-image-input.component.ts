@@ -10,18 +10,18 @@ import { EImageType } from '@bgap/shared/types';
   styleUrls: ['./form-clickable-image-input.component.scss'],
 })
 export class FormClickableImageInputComponent {
-  @Input() caption?: string; // Language key!!!
+  @Input() caption: string = ''; // Language key!!!
   @Input() imagePath?: string;
-  @Input() maxSize?: number;
-  @Input() imageType?: EImageType;
+  @Input() maxSize: number = 400;
+  @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
-  @Input() uploadCallbackFn!: Function;
-  @Input() removeCallbackFn!: Function;
-  @Input() callbackParam!: Function;
+  @Input() uploadCallbackFn!: (imagePath: string, key: string) => void;
+  @Input() removeCallbackFn!: (key: string) => void;
+  @Input() callbackParam: string = '';
 
-  @Input() width?: number;
-  @Input() height?: number;
+  @Input() width: string = '';
+  @Input() height: string = '';
   @Input() borderRadius?: string;
 
   @ViewChild('fileInput') fileInput!: ElementRef;

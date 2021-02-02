@@ -31,7 +31,7 @@ export class OrderEditComponent implements OnDestroy {
   @Input() order!: IOrder;
   public paymentMethods: IPaymentMethodKV[] = [];
   public EOrderStatus = EOrderStatus;
-  public buttonSize?: ENebularButtonSize;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 

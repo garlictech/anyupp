@@ -26,7 +26,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem!: ILaneOrderItem;
-  @Input() buttonSize!: ENebularButtonSize;
+  @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   @Input() unit!: IUnit;
 
   public currentStatus = currentStatusFn;

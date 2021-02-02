@@ -15,7 +15,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-chain-admin-role.component.html',
 })
 export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control!: FormControl;
+  @Input() control!: FormGroup;
   public chainOptions: IKeyValue[] = [];
   public entitySelector: FormGroup;
   public assignedChains: IChain[] = [];

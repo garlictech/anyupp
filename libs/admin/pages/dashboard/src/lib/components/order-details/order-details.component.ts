@@ -28,7 +28,7 @@ export class OrderDetailsComponent implements OnDestroy {
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
   public EOrderStatus = EOrderStatus;
-  public buttonSize!: ENebularButtonSize;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 

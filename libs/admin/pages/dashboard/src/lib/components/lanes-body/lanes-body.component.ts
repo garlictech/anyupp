@@ -32,9 +32,9 @@ export class LanesBodyComponent implements OnDestroy {
   public placedItems: ILaneOrderItem[] = [];
   public processingItems: ILaneOrderItem[] = [];
   public readyItems: ILaneOrderItem[] = [];
-  public buttonSize?: ENebularButtonSize;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedLanes: string[] = [];
-  public unit?: IUnit;
+  public unit!: IUnit;
   public unitLanes: IDetailedLane[] = [];
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
@@ -84,7 +84,7 @@ export class LanesBodyComponent implements OnDestroy {
             laneFilter(selectedLanes)
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
-          this.unit = unit;
+          this.unit = unit!;
           this.unitLanes = objectToArray(unit?.lanes || {});
 
           // Unit lanes

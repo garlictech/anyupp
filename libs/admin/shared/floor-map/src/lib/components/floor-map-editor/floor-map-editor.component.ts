@@ -30,8 +30,8 @@ export class FloorMapEditorComponent
   implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode?: boolean;
   @Input() floorMap?: IFloorMapData;
-  public dimensionForm?: FormGroup;
-  public objectForm?: FormGroup;
+  public dimensionForm!: FormGroup;
+  public objectForm!: FormGroup;
   public EUnitMapObjectType = EUnitMapObjectType;
 
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}

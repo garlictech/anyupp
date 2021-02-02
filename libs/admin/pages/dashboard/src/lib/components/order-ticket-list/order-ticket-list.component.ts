@@ -23,8 +23,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderTicketListComponent implements OnDestroy {
   public selectedOrder?: IOrder;
-  public dashboardSettings?: IDashboardSettings;
-  public buttonSize?: ENebularButtonSize;
+  public dashboardSettings!: IDashboardSettings;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   public EDashboardTicketListType = EDashboardTicketListType;
 
@@ -167,7 +167,7 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public selectListType(listType: EDashboardTicketListType): void {
-    if (this.dashboardSettings?.ticketListType !== listType) {
+    if (this.dashboardSettings.ticketListType !== listType) {
       this._store.dispatch(dashboardActions.resetSelectedOrderId());
     }
 

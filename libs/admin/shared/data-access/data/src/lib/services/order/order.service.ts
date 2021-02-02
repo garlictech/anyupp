@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
-import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct } from '@bgap/shared/types';
+import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IGeneratedProduct } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 import { DataService } from '../data/data.service';
@@ -66,7 +66,7 @@ export class OrderService {
 
   public addProductVariant(
     order: IOrder,
-    product: IProduct,
+    product: IGeneratedProduct,
     variantId: string
   ): void {
     const now = new Date().getTime();

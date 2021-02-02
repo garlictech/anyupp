@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbIconModule } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +15,8 @@ import { FloorMapEditorComponent } from './components/floor-map-editor';
     StoreModule.forFeature(FLOOR_MAP_FEATURE_KEY, floorMapReducer),
     TranslateModule,
     ReactiveFormsModule,
-    NbIconModule
+    NbIconModule,
+    AdminSharedPipesModule
   ],
   declarations: [FloorMapEditorComponent],
   exports: [FloorMapEditorComponent],

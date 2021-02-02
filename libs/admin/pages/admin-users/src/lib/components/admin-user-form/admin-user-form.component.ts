@@ -50,8 +50,8 @@ export class AdminUserFormComponent
       this.dialogForm.patchValue(this.adminUser);
     } else {
       // Add custom asyncValidator to check existing email
-      this.dialogForm.get('email')!.setAsyncValidators([
-        this._formService.adminExistingEmailValidator(this.dialogForm.get('email')!),
+      this.dialogForm.controls.email!.setAsyncValidators([
+        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email!),
       ]);
     }
   }

@@ -26,9 +26,9 @@ import { select, Store } from '@ngrx/store';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
-  public dashboardSettings?: IDashboardSettings;
+  public dashboardSettings!: IDashboardSettings;
   public resized: boolean;
-  public buttonSize?: ENebularButtonSize;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedUnit?: IUnit;
   public toggleFormControl: FormControl;
   public time?: string;
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public selectListMode(listMode: EDashboardListMode): void {
-    if (this.dashboardSettings?.listMode !== listMode) {
+    if (this.dashboardSettings.listMode !== listMode) {
       this._store.dispatch(
         dashboardActions.setListMode({
           listMode,
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this._store.dispatch(
       dashboardActions.setSize({
         size:
-          this.dashboardSettings?.size === EDashboardSize.NORMAL
+          this.dashboardSettings.size === EDashboardSize.NORMAL
             ? EDashboardSize.LARGER
             : EDashboardSize.NORMAL,
       })

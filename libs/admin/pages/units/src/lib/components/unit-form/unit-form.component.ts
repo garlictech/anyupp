@@ -133,7 +133,7 @@ export class UnitFormComponent
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (this.dialogForm?.get('openingHours')!.get('override') as FormArray).push(
+          (this.dialogForm?.get('openingHours')!.get('override') as FormArray)!.push(
             dayGroup
           );
         });

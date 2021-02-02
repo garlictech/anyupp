@@ -1,9 +1,9 @@
 <nb-list-item>
   <div
     class="table-seat font-larger"
-    [ngStyle]="{ backgroundColor: orderItem.laneColor }"
+    [ngStyle]="{ backgroundColor: orderItem.laneColor! }"
   >
-    {{ orderItem.place.table }}<br />{{ orderItem.place.seat }}
+    {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}
   </div>
   <div class="row w-100 p-0 m-0 ml-2 float-right">
     <div
@@ -19,7 +19,7 @@
         class="w-100 ml-4 font-larger"
         [name]="orderItem.productName | localize"
         [title]="orderItem.variantName | localize"
-        [picture]="orderItem.image"
+        [picture]="orderItem.image || ''"
       ></nb-user>
     </div>
     <div

@@ -9,7 +9,7 @@ import { NbDialogRef } from '@nebular/theme';
   template: '',
 })
 export class AbstractFormDialogComponent {
-  public dialogForm?: FormGroup;
+  public dialogForm!: FormGroup;
   protected _dataService: DataService;
   protected _formBuilder: FormBuilder;
   protected _toasterService: ToasterService;

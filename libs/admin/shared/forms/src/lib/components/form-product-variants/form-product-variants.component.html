@@ -3,7 +3,7 @@
   <div class="container">
     <div
       *ngFor="
-        let variant of variantFormArray['controls'];
+        let variant of (variantFormArray | iterableAbstractControls);
         index as i;
         first as isFirst;
         last as isLast
@@ -52,21 +52,21 @@
           <bgap-form-text-input
             caption="products.variantNameHU"
             type="text"
-            [control]="variant.controls.variantName['controls'].hu"
+            [control]="variant.get('variantName')!.get('hu')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="products.variantNameEN"
             type="text"
-            [control]="variant.controls.variantName['controls'].en"
+            [control]="variant.get('variantName')!.get('en')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="products.variantNameDE"
             type="text"
-            [control]="variant.controls.variantName['controls'].de"
+            [control]="variant.get('variantName')!.get('de')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -76,21 +76,21 @@
           <bgap-form-text-input
             caption="products.packSize"
             type="number"
-            [control]="variant.controls.pack['controls'].size"
+            [control]="variant.get('pack')!.get('size')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="products.packUnit"
             type="text"
-            [control]="variant.controls.pack['controls'].unit"
+            [control]="variant.get('pack')!.get('unit')! | asFormControl"
           ></bgap-form-text-input>
         </div>
 
         <div class="col-md-4 pt-4">
           <bgap-form-checkbox
             caption="products.isAvailable"
-            [control]="variant.controls.isAvailable"
+            [control]="variant.get('isAvailable')! | asFormControl"
           ></bgap-form-checkbox>
         </div>
       </div>
@@ -103,13 +103,13 @@
               *ngIf="productLevel === EProductLevel.GROUP"
               caption="products.refPrice"
               type="number"
-              [control]="variant.controls.refGroupPrice"
+              [control]="variant.get('refGroupPrice')! | asFormControl"
             ></bgap-form-text-input>
             <bgap-form-static-text
               *ngIf="productLevel === EProductLevel.UNIT"
               caption="products.refPrice"
               [value]="
-                variant.value.refGroupPrice | currencyFormatter: currency
+                variant.value.refGroupPrice | currencyFormatter: currency!
               "
             >
             </bgap-form-static-text>
@@ -117,7 +117,7 @@
         </div>
 
         <bgap-form-product-availabilities
-          [availabilityFormArray]="variant.controls.availabilities"
+          [availabilityFormArray]="variant.get('availabilities')! | asFormArray"
           [currency]="currency"
         ></bgap-form-product-availabilities>
 

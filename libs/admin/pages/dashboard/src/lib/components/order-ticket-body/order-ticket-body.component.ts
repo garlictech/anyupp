@@ -19,10 +19,10 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
-  public dashboardSettings?: IDashboardSettings;
+  public dashboardSettings!: IDashboardSettings;
   public selectedOrder?: IOrder;
-  public buttonSize?: ENebularButtonSize;
-  public ordersSum?: IOrderSum;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
+  public ordersSum: IOrderSum = {};
   public userActiveOrders?: IOrder[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount: number = 0;
@@ -115,7 +115,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public editSelectedOrder(): void {
     this._store.dispatch(
       dashboardActions.setOrderEditing({
-        orderEditing: !this.dashboardSettings?.orderEditing,
+        orderEditing: !this.dashboardSettings.orderEditing,
       })
     );
   }
@@ -123,7 +123,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public toggleShowAllUserOrders(): void {
     this._store.dispatch(
       dashboardActions.setShowAllUserOrders({
-        showAllUserOrders: !this.dashboardSettings?.showAllUserOrders,
+        showAllUserOrders: !this.dashboardSettings.showAllUserOrders,
       })
     );
   }
@@ -144,7 +144,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = (this.dashboardSettings?.showAllUserOrders
+    dialog.componentRef.instance.orders = (this.dashboardSettings.showAllUserOrders
       ? this.userActiveOrders
       : [this.selectedOrder]) as IOrder[];
   }

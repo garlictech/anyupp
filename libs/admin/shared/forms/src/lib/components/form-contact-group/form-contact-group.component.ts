@@ -16,7 +16,7 @@ interface IGeocodeResponse {
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
-  @Input() contactFormGroup?: FormGroup;
+  @Input() contactFormGroup!: FormGroup;
 
   constructor(private _httpClient: HttpClient) {}
   public locateAddress(): void {

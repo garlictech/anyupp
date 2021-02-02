@@ -11,7 +11,7 @@ import { EProductLevel, IAvailability, IProductVariant } from '@bgap/shared/type
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
-  @Input() variantFormArray?: FormArray;
+  @Input() variantFormArray!: FormArray;
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
@@ -23,7 +23,7 @@ export class FormProductVariantsComponent {
   }
 
   public addVariant(): void {
-    this.variantFormArray?.push(
+    (<FormArray>this.variantFormArray)?.push(
       this._formsService.createProductVariantFormGroup()
     );
   }
@@ -44,7 +44,7 @@ export class FormProductVariantsComponent {
 
       arr.sort(customNumberCompare('position'));
 
-      this.variantFormArray?.controls.forEach(
+      (<FormArray>this.variantFormArray)?.controls.forEach(
         (g: AbstractControl, i: number): void => {
           g.patchValue(arr[i]);
           (g.get('availabilities') as FormArray).clear();

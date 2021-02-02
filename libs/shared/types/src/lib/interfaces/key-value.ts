@@ -1,6 +1,6 @@
 export interface IKeyValue {
   key: string;
-  value: string | unknown;
+  value: string | number | any;
 }
 
 export interface IKeyValueObject {

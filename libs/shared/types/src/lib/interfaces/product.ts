@@ -60,6 +60,18 @@ export interface IProduct {
   productType: EProductType;
 }
 
+export interface IGeneratedProduct {
+  _id: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: string;
+  productType: EProductType;
+  tax: string;
+  variants: IProductVariantsObject;
+  productCategoryId: string;
+}
+
 export interface IProductOrderChangeEvent {
   change: number;
   productId: string;

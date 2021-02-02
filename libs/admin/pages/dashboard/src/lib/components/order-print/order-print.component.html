@@ -42,7 +42,7 @@
         </div-->
 
         <div>Dátum: {{ now | localizedDate: 'short' }}</div>
-        <div>Asztalszám: {{ place.seat }}/{{ place.table }}</div>
+        <div>Asztalszám: {{ place!.seat! }}/{{ place!.table! }}</div>
         <div class="mb-5">Felszolgáló:</div>
 
         <div>{{ 'print.items' | translate }}:</div>
@@ -89,7 +89,7 @@
             {{ 'common.sum' | translate }}:
           </div>
           <div class="col-6 p-0 font-weight-bold text-right">
-            {{ sum.value | currencyFormatter: sum.currency }}
+            {{ sum.value! | currencyFormatter: sum.currency! }}
           </div>
         </div>
 

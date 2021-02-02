@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 export class OrderTicketHistoryListComponent implements OnDestroy {
   public selectedOrder?: IOrder;
   public dailyOrders: IOrder[] = [];
-  public dateFormControl?: FormControl;
+  public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatusFn;
 
   constructor(private _store: Store<any>) {
@@ -48,7 +48,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
         }
       });
 
-    this.dateFormControl?.valueChanges.subscribe((): void => {
+    this.dateFormControl.valueChanges.subscribe((): void => {
       this._store.dispatch(
         dashboardActions.setHistoryDate({
           historyDate: this.dateFormControl?.value,

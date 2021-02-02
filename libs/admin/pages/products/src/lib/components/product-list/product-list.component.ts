@@ -39,7 +39,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public groupProducts$: Observable<IProduct[]>;
   public pendingGroupProducts: IProduct[] = [];
   public pendingUnitProducts: IProduct[] = [];
-  public groupCurrency?: string;
+  public groupCurrency: string = '';
   public unitProducts: IProduct[] = [];
   public EProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
@@ -148,7 +148,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
               take(1)
             )
             .subscribe((group: IGroup | undefined): void => {
-              this.groupCurrency = group?.currency;
+              this.groupCurrency = group?.currency!;
             });
         }
       );

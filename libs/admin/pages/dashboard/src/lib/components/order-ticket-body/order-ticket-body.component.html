@@ -29,9 +29,9 @@
             Σ
             {{
               (dashboardSettings.showAllUserOrders
-                ? ordersSum.all
-                : ordersSum.selected
-              ) | currencyFormatter: ordersSum.currency
+                ? ordersSum.all!
+                : ordersSum.selected!
+              ) | currencyFormatter: ordersSum.currency!
             }}
           </div>
 

@@ -19,6 +19,7 @@ import {
   IOrderItem,
   IProduct,
   IProductCategory,
+  IGeneratedProduct
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -31,11 +32,11 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderProductListComponent {
   @Input() selectedOrder?: IOrder;
-  public generatedUnitProducts: IProduct[];
+  public generatedUnitProducts: IGeneratedProduct[];
   public productCategories: IProductCategory[] = [];
   public selectedProductCategoryId: string = '';
-  public groupCurrency?: string;
-  public buttonSize?: ENebularButtonSize;
+  public groupCurrency: string = '';
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
@@ -46,7 +47,7 @@ export class OrderProductListComponent {
         skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup | undefined): void => {
-        this.groupCurrency = group?.currency;
+        this.groupCurrency = group!.currency!;
       });
 
     this._store
@@ -80,7 +81,7 @@ export class OrderProductListComponent {
             (category: IProductCategory): boolean => {
               return (
                 this.generatedUnitProducts.filter(
-                  (p: IProduct): boolean => p.productCategoryId === category._id
+                  (p: IGeneratedProduct): boolean => p.productCategoryId === category._id
                 ).length > 0
               );
             }
@@ -99,7 +100,7 @@ export class OrderProductListComponent {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(product: IProduct, variantId: string): void {
+  public addProductVariant(product: IGeneratedProduct, variantId: string): void {
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
         orderItem.productId === product._id &&
