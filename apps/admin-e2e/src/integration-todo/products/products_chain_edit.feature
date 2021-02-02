@@ -6,7 +6,7 @@ Feature: Edit the Chain product
     the edited product should display on the product list. These examples 
     do not belong to the variants.
 
-Background: Go to Chain Product Edit page
+Background: Go to Chain Edit Product page
   Given I am logged in as an admin user
   And I am at the "english" language
   And I am at the "products" page
@@ -14,18 +14,19 @@ Background: Go to Chain Product Edit page
   When I click on the first "edit" button
 
 @layout 
-Scenario: Check form dialog title
-  When I click ont the first "edit" button
-  Then the "Edit product" title is displayed
+Scenario: Check form dialog text
+  When I click on the first "edit" button
+  Then the "edit product" text is displayed
+  #background's last step displays here
 
 Scenario: Check hidden dialog
   When I click on the "submit" button
-  Then the "chain products" list displayed
+  Then the "chain products" list is displayed
   And the "Edit product" title is hidden
 
 Scenario: Just close the edit page
   When I close the edit page
-  Then I should see the product on the list
+  Then I should see the chain product list
 
 Scenario: Rename a Chain product
   Given I am on the "Name (EN)" input 
@@ -85,3 +86,4 @@ Scenario: Add an image to the product
   And I pick a picture from my files 
   Then I click on the "submit" button
   And I should see the image on th first product
+  
