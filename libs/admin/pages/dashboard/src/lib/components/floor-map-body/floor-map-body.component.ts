@@ -60,7 +60,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
             )
         ),
         tap((): void => {
-          if (this.unit!.floorMap?.objects) {
+          if (this.unit?.floorMap?.objects) {
             registerCanvasEvent('mouse:up', this._onMouseUp);
           }
 
@@ -91,12 +91,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe((orders: IOrder[]): void => {
-        if (this.unit!.floorMap?.objects) {
+        if (this.unit?.floorMap?.objects) {
           const floorMapRawObjects: IFloorMapDataObject[] = objectToArray(
-            this.unit!.floorMap?.objects,
+            this.unit.floorMap.objects,
             'id'
           );
-          const tableSeatIds: string[] = getTableSeatIds(this.unit!.floorMap);
+          const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
           const ordersByUser: IFloorMapUserOrderObjects = getOrdersByUser(
             orders
           );
