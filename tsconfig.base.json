@@ -36,6 +36,7 @@
       "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
       "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
+      "@bgap/api/utils": ["libs/api/utils/src/index.ts"],
       "@bgap/admin/pages/admin-users": [
         "libs/admin/pages/admin-users/src/index.ts"
       ],

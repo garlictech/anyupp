@@ -50,6 +50,9 @@
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
+    "api-utils": {
+      "tags": ["scope:shared", "type:utils", "platform:nest"]
+    },
     "admin-pages-admin-users": {
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },

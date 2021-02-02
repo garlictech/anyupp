@@ -16,37 +16,72 @@ export interface Scalars {
   Float: number;
 }
 
+export interface AdminUser {
+  __typename?: 'AdminUser';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  profileImage?: Maybe<Scalars['String']>;
+  roles: AdminUserRole;
+  settings?: Maybe<AdminUserSettings>;
+  address?: Maybe<Address>;
+  email?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+}
+
+export interface AdminUserRole {
+  __typename?: 'AdminUserRole';
+  role: Scalars['String'];
+  entities?: Maybe<Array<Maybe<AdminRoleEntity>>>;
+}
+
+export interface AdminRoleEntity {
+  __typename?: 'AdminRoleEntity';
+  chainId?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
+  unitId?: Maybe<Scalars['String']>;
+}
+
+export interface AdminUserSettings {
+  __typename?: 'AdminUserSettings';
+  selectedChainId?: Maybe<Scalars['String']>;
+  selectedGroupId?: Maybe<Scalars['String']>;
+  selectedUnitId?: Maybe<Scalars['String']>;
+  selectedProductCategoryId?: Maybe<Scalars['String']>;
+  selectedLanguage?: Maybe<Scalars['String']>;
+  selectedHistoryDate?: Maybe<Scalars['Int']>;
+}
+
 export interface AdminUserInput {
+  name?: Maybe<Scalars['String']>;
   address?: Maybe<AddressInput>;
   email?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
 }
 
-export interface AddressInput {
-  address?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  location?: Maybe<LocationInput>;
-  postalCode?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-}
-
-export interface LocationInput {
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
-}
-
 export interface AdminUserRoleInput {
-  entities?: Maybe<Array<Maybe<AdminRoleEntityInput>>>;
   role: Scalars['String'];
+  entities?: Maybe<Array<Maybe<AdminRoleEntityInput>>>;
 }
 
 export interface AdminRoleEntityInput {
   chainId?: Maybe<Scalars['String']>;
   groupId?: Maybe<Scalars['String']>;
   unitId?: Maybe<Scalars['String']>;
+}
+
+export interface AddressInput {
+  address?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  postalCode?: Maybe<Scalars['String']>;
+  location?: Maybe<LocationInput>;
+}
+
+export interface LocationInput {
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
 }
 
 export interface Query {
@@ -63,31 +98,16 @@ export interface QueryGetCustomerStripeCardsArgs {
   customerId?: Maybe<Scalars['ID']>;
 }
 
-export interface Subscription {
-  __typename?: 'Subscription';
-  adminUserChanged?: Maybe<AdminUser>;
-}
-
-export interface SubscriptionAdminUserChangedArgs {
-  id: Scalars['ID'];
-}
-
 export interface Mutation {
   __typename?: 'Mutation';
   createAdminUser: Scalars['Boolean'];
-  startStripePayment: Scalars['String'];
   updateAdminUser: Scalars['Boolean'];
   updateAdminUserRole: Scalars['Boolean'];
+  startStripePayment: Scalars['String'];
 }
 
 export interface MutationCreateAdminUserArgs {
   newAdminData: AdminUserInput;
-}
-
-export interface MutationStartStripePaymentArgs {
-  chainId: Scalars['ID'];
-  unitId: Scalars['ID'];
-  userId: Scalars['ID'];
 }
 
 export interface MutationUpdateAdminUserArgs {
@@ -100,55 +120,19 @@ export interface MutationUpdateAdminUserRoleArgs {
   newAdminRoleData: AdminUserRoleInput;
 }
 
-export interface AdminUser {
-  __typename?: 'AdminUser';
-  address?: Maybe<Address>;
-  email?: Maybe<Scalars['String']>;
+export interface MutationStartStripePaymentArgs {
+  chainId: Scalars['ID'];
+  unitId: Scalars['ID'];
+  userId: Scalars['ID'];
+}
+
+export interface Subscription {
+  __typename?: 'Subscription';
+  adminUserChanged?: Maybe<AdminUser>;
+}
+
+export interface SubscriptionAdminUserChangedArgs {
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-  profileImage?: Maybe<Scalars['String']>;
-  roles: AdminUserRole;
-  settings?: Maybe<AdminUserSettings>;
-}
-
-export interface AdminUserRole {
-  __typename?: 'AdminUserRole';
-  entities?: Maybe<Array<Maybe<AdminRoleEntity>>>;
-  role: Scalars['String'];
-}
-
-export interface AdminUserSettings {
-  __typename?: 'AdminUserSettings';
-  selectedChainId?: Maybe<Scalars['String']>;
-  selectedGroupId?: Maybe<Scalars['String']>;
-  selectedHistoryDate?: Maybe<Scalars['Int']>;
-  selectedLanguage?: Maybe<Scalars['String']>;
-  selectedProductCategoryId?: Maybe<Scalars['String']>;
-  selectedUnitId?: Maybe<Scalars['String']>;
-}
-
-export interface Address {
-  __typename?: 'Address';
-  address?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  location?: Maybe<Location>;
-  postalCode?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-}
-
-export interface Location {
-  __typename?: 'Location';
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
-}
-
-export interface AdminRoleEntity {
-  __typename?: 'AdminRoleEntity';
-  chainId?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
-  unitId?: Maybe<Scalars['String']>;
 }
 
 export interface Chain {
@@ -190,6 +174,22 @@ export interface ChainStyleImages {
   __typename?: 'ChainStyleImages';
   header?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
+}
+
+export interface Address {
+  __typename?: 'Address';
+  address?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  location?: Maybe<Location>;
+  postalCode?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+}
+
+export interface Location {
+  __typename?: 'Location';
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
 }
 
 export interface DailySchedule {
@@ -757,16 +757,7 @@ export interface StripeMetadata {
   value: Scalars['String'];
 }
 
-export interface StripeMetadataInterface {
-  metadata: Array<StripeMetadata>;
-}
-
-export interface NodeInterface {
-  id: Scalars['ID'];
-  object: Scalars['String'];
-}
-
-export interface StripeCard extends StripeMetadataInterface, NodeInterface {
+export interface StripeCard {
   __typename?: 'StripeCard';
   brand?: Maybe<CardBrand>;
   checks?: Maybe<CardChecks>;
@@ -883,6 +874,48 @@ export type UpdateAdminUserRoleMutation = { __typename?: 'Mutation' } & Pick<
   'updateAdminUserRole'
 >;
 
+export type GetCustomerStripeCardsQueryVariables = Exact<{
+  customerId: Scalars['ID'];
+}>;
+
+export type GetCustomerStripeCardsQuery = { __typename?: 'Query' } & {
+  getCustomerStripeCards?: Maybe<
+    Array<
+      Maybe<
+        { __typename?: 'StripeCard' } & Pick<
+          StripeCard,
+          | 'brand'
+          | 'id'
+          | 'country'
+          | 'last4'
+          | 'exp_year'
+          | 'exp_month'
+          | 'fingerprint'
+          | 'three_d_secure'
+        > & {
+            metadata: Array<
+              { __typename?: 'StripeMetadata' } & Pick<
+                StripeMetadata,
+                'key' | 'value'
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
+export type StartStripePaymentMutationVariables = Exact<{
+  chainId: Scalars['ID'];
+  unitId: Scalars['ID'];
+  userId: Scalars['ID'];
+}>;
+
+export type StartStripePaymentMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'startStripePayment'
+>;
+
 export const GetAdminUser = gql`
   query GetAdminUser($id: ID!) {
     getAdminUser(id: $id) {
@@ -905,5 +938,28 @@ export const UpdateAdminUser = gql`
 export const UpdateAdminUserRole = gql`
   mutation UpdateAdminUserRole($data: AdminUserRoleInput!, $id: ID!) {
     updateAdminUserRole(newAdminRoleData: $data, id: $id)
+  }
+`;
+export const GetCustomerStripeCards = gql`
+  query GetCustomerStripeCards($customerId: ID!) {
+    getCustomerStripeCards(customerId: $customerId) {
+      brand
+      id
+      country
+      last4
+      exp_year
+      exp_month
+      fingerprint
+      three_d_secure
+      metadata {
+        key
+        value
+      }
+    }
+  }
+`;
+export const StartStripePayment = gql`
+  mutation StartStripePayment($chainId: ID!, $unitId: ID!, $userId: ID!) {
+    startStripePayment(chainId: $chainId, unitId: $unitId, userId: $userId)
   }
 `;
