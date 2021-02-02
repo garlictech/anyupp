@@ -2,7 +2,7 @@ import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { IAdminRoleEntity, IChain, IKeyValue } from '@bgap/shared/types';
 
-import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';

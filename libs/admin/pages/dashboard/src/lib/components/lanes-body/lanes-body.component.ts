@@ -2,12 +2,9 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/dashboard';
-import { ordersSelectors } from '@bgap/admin/shared/orders';
-import { unitsSelectors } from '@bgap/admin/shared/units';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR, objectToArray } from '@bgap/admin/shared/utils';
 import {
   EDashboardSize,

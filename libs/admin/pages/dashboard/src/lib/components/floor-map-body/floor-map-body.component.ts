@@ -1,46 +1,16 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { unitsSelectors } from '@bgap/admin/shared/units';
-import {
-  fabricCanvas,
-  floorMapActions,
-  floorMapSelectors,
-  getObjectById,
-  getStatusBgColor,
-  getTableSeatId,
-  getTableSeatIds,
-  registerCanvasEvent,
-  setBgColor,
-  setBorder,
+  fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
+  registerCanvasEvent, setBgColor, setBorder
 } from '@bgap/admin/shared/floor-map';
-import {
-  getOrdersByUser,
-  getTableOrders,
-  ordersSelectors,
-} from '@bgap/admin/shared/orders';
 import { objectToArray } from '@bgap/admin/shared/utils';
 import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import {
-  IFloorMapDataObject,
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-  IFloorMapUserOrderObjects,
-  IOrder,
-  IUnit,
+  IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

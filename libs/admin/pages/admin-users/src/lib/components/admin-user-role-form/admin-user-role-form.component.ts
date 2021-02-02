@@ -16,7 +16,7 @@ import { IAdminUser } from '@bgap/shared/types';
 export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public adminUser: IAdminUser;
+  public adminUser!: IAdminUser;
   private _apollo: Apollo;
 
   constructor(protected _injector: Injector) {
@@ -25,8 +25,8 @@ export class AdminUserRoleFormComponent
     this._apollo = this._injector.get(Apollo);
   }
 
-  get userImage(): string {
-    return _get(this.adminUser, 'profileImage');
+  get userImage(): string | undefined {
+    return this.adminUser!.profileImage;
   }
 
   ngOnInit(): void {
@@ -72,7 +72,7 @@ export class AdminUserRoleFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
+        .updateAdminUserProfileImagePath(this.adminUser._id!, imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -96,7 +96,7 @@ export class AdminUserRoleFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, null)
+        .updateAdminUserProfileImagePath(this.adminUser._id!, null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,

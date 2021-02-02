@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
 import { IAdminUser } from '@bgap/shared/types';

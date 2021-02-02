@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { AuthService } from '@bgap/admin/shared/auth';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
 import { IUser } from '@bgap/shared/types';

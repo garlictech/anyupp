@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@bgap/admin/shared/auth';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 
 @Component({
   selector: 'bgap-login-form',
@@ -8,7 +8,7 @@ import { AuthService } from '@bgap/admin/shared/auth';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-  @Input() toggleResetForm;
+  @Input() toggleResetForm: unknown;
   public loginForm: FormGroup;
 
   constructor(

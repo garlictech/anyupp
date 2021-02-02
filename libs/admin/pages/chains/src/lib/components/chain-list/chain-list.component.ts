@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

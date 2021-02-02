@@ -45,8 +45,8 @@
       ],
       "@bgap/admin/shared/pipes": ["libs/admin/shared/pipes/src/index.ts"],
       "@bgap/admin/shared/utils": ["libs/admin/shared/utils/src/index.ts"],
-      "@bgap/admin/shared/data": ["libs/admin/shared/data/src/index.ts"],
-      "@bgap/admin/shared/auth": ["libs/admin/shared/auth/src/index.ts"],
+      "@bgap/admin/shared/data-access/data": ["libs/admin/shared/data-access/data/src/index.ts"],
+      "@bgap/admin/shared/data-access/auth": ["libs/admin/shared/data-access/auth/src/index.ts"],
       "@bgap/admin/ui/core": ["libs/admin/ui/core/src/index.ts"],
       "@bgap/admin/ui/theme": ["libs/admin/ui/theme/src/index.ts"],
       "@bgap/admin/pages/chains": ["libs/admin/pages/chains/src/index.ts"],
@@ -65,27 +65,27 @@
       "@bgap/admin/shared/floor-map": [
         "libs/admin/shared/floor-map/src/index.ts"
       ],
-      "@bgap/admin/shared/orders": ["libs/admin/shared/orders/src/index.ts"],
-      "@bgap/admin/shared/admin-users": [
-        "libs/admin/shared/admin-users/src/index.ts"
+      "@bgap/admin/shared/data-access/orders": ["libs/admin/shared/data-access/orders/src/index.ts"],
+      "@bgap/admin/shared/data-access/admin-users": [
+        "libs/admin/shared/data-access/admin-users/src/index.ts"
       ],
-      "@bgap/admin/shared/chains": ["libs/admin/shared/chains/src/index.ts"],
-      "@bgap/admin/shared/dashboard": [
-        "libs/admin/shared/dashboard/src/index.ts"
+      "@bgap/admin/shared/data-access/chains": ["libs/admin/shared/data-access/chains/src/index.ts"],
+      "@bgap/admin/shared/data-access/dashboard": [
+        "libs/admin/shared/data-access/dashboard/src/index.ts"
       ],
-      "@bgap/admin/shared/groups": ["libs/admin/shared/groups/src/index.ts"],
-      "@bgap/admin/shared/product-categories": [
-        "libs/admin/shared/product-categories/src/index.ts"
+      "@bgap/admin/shared/data-access/groups": ["libs/admin/shared/data-access/groups/src/index.ts"],
+      "@bgap/admin/shared/data-access/product-categories": [
+        "libs/admin/shared/data-access/product-categories/src/index.ts"
       ],
-      "@bgap/admin/shared/products": [
-        "libs/admin/shared/products/src/index.ts"
+      "@bgap/admin/shared/data-access/products": [
+        "libs/admin/shared/data-access/products/src/index.ts"
       ],
-      "@bgap/admin/shared/units": ["libs/admin/shared/units/src/index.ts"],
-      "@bgap/admin/shared/users": ["libs/admin/shared/users/src/index.ts"],
-      "@bgap/admin/shared/logged-user": [
-        "libs/admin/shared/logged-user/src/index.ts"
+      "@bgap/admin/shared/data-access/units": ["libs/admin/shared/data-access/units/src/index.ts"],
+      "@bgap/admin/shared/data-access/users": ["libs/admin/shared/data-access/users/src/index.ts"],
+      "@bgap/admin/shared/data-access/logged-user": [
+        "libs/admin/shared/data-access/logged-user/src/index.ts"
       ],
-      "@bgap/admin/shared/storage": ["libs/admin/shared/storage/src/index.ts"],
+      "@bgap/admin/shared/data-access/storage": ["libs/admin/shared/data-access/storage/src/index.ts"],
       "@bgap/api/graphql/appsync-lambda": [
         "libs/api/graphql/appsync-lambda/src/index.ts"
       ]

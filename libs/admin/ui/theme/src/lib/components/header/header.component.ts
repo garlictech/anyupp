@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { AuthService } from '@bgap/admin/shared/auth';
-import { DataService } from '@bgap/admin/shared/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';

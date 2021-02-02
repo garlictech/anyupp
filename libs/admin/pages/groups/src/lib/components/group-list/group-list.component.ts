@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { IChain, IGroup } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
