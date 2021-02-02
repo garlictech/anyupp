@@ -3,9 +3,9 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { DataService } from '@bgap/admin/shared/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { customNumberCompare } from '@bgap/admin/shared/utils';
 import {
   EAdminRole,
@@ -24,7 +24,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { productsSelectors } from '@bgap/admin/shared/products';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 
 @UntilDestroy()
 @Component({

@@ -2,15 +2,8 @@ import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/products';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { reducer } from '@bgap/admin/shared/utils';
 import {

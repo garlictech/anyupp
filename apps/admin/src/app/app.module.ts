@@ -19,18 +19,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/admin-users';
-import { AdminSharedChainsModule } from '@bgap/admin/shared/chains';
+import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
+import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
 import { environment } from '@bgap/admin/shared/config';
-import { AdminSharedDashboardModule } from '@bgap/admin/shared/dashboard';
+import { AdminSharedDashboardModule } from '@bgap/admin/shared/data-access/dashboard';
 import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
-import { AdminSharedGroupsModule } from '@bgap/admin/shared/groups';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/logged-user';
-import { AdminSharedOrdersModule } from '@bgap/admin/shared/orders';
-import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/product-categories';
-import { AdminSharedProductsModule } from '@bgap/admin/shared/products';
-import { AdminSharedUnitsModule } from '@bgap/admin/shared/units';
-import { AdminSharedUsersModule } from '@bgap/admin/shared/users';
+import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
+import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
+import { AdminSharedOrdersModule } from '@bgap/admin/shared/data-access/orders';
+import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/data-access/product-categories';
+import { AdminSharedProductsModule } from '@bgap/admin/shared/data-access/products';
+import { AdminSharedUnitsModule } from '@bgap/admin/shared/data-access/units';
+import { AdminSharedUsersModule } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
@@ -137,7 +137,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     { provide: REGION, useValue: 'europe-west3' },
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
+      useFactory(httpLink: HttpLink): ApolloClientOptions<unknown> {
         // Create an http link:
         const http = httpLink.create({
           uri: environment.gql.http,

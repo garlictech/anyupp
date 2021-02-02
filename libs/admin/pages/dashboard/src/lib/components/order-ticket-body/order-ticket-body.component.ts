@@ -3,19 +3,9 @@ import { delay, switchMap, take } from 'rxjs/operators';
 
 // import * as printJS from 'print-js';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-  IDashboardSettings,
-} from '@bgap/admin/shared/dashboard';
-import { ordersSelectors } from '@bgap/admin/shared/orders';
-import {
-  EDashboardListMode,
-  EDashboardSize,
-  ENebularButtonSize,
-  IOrder,
-  IOrderSum,
-} from '@bgap/shared/types';
+import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IOrder, IOrderSum } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

@@ -3,12 +3,12 @@ import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
-import { productsSelectors } from '@bgap/admin/shared/products';
-import { OrderService } from '@bgap/admin/shared/data';
-import { currentStatus } from '@bgap/admin/shared/orders';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
+import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import {
   EDashboardSize,
   ENebularButtonSize,

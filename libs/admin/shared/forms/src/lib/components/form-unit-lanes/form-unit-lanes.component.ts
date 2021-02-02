@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { productsSelectors } from '@bgap/admin/shared/products';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { FormsService } from '../../services/forms/forms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

@@ -3,8 +3,8 @@ import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   EToasterType,

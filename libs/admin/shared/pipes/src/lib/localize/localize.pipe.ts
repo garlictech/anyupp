@@ -1,7 +1,7 @@
 import { take } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { select, Store } from '@ngrx/store';
 

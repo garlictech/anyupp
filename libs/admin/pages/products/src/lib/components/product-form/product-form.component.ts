@@ -3,8 +3,10 @@ import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { customNumberCompare, EToasterType, objectToArray, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   AbstractFormDialogComponent,
   FormsService,

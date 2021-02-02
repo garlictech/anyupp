@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { usersSelectors } from '@bgap/admin/shared/users';
+import { usersSelectors } from '@bgap/admin/shared/data-access/users';
 import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
