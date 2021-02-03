@@ -92,23 +92,30 @@ type Query {
 
 type Mutation {
   # Admin
-  createAdminUser(newAdminData: CreateAdminUserInput!): Boolean!
+  createAdminUser(input: CreateAdminUserInput!): AdminUser!
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
-  updateAdminUser(newAdminData: UpdateAdminUserInput!): Boolean!
+  updateAdminUser(input: UpdateAdminUserInput!): AdminUser!
   deleteAdminUser(id: ID!): Boolean!
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
-  updateAdminUserRole(id: ID!, newAdminRoleData: AdminUserRoleInput!): Boolean!
+  updateAdminUserRole(id: ID!, input: AdminUserRoleInput!): Boolean!
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
 }
 
 type Subscription {
-  adminUserChanged(id: ID!): AdminUser
+  updatedAdminUser(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_iam
+    @aws_api_key
+    @aws_cognito_user_pools
+
+  createdAdminUser: AdminUser
+    @aws_subscribe(mutations: ["createAdminUser"])
     @aws_iam
     @aws_api_key
     @aws_cognito_user_pools
