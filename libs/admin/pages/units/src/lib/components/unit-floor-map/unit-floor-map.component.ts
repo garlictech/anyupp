@@ -14,8 +14,8 @@ import { Store } from '@ngrx/store';
 export class UnitFloorMapComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public unit: IUnit;
-  public rawForm: FormGroup;
+  public unit!: IUnit;
+  public rawForm!: FormGroup;
 
   private _store: Store<any>;
 

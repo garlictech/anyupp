@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -33,20 +33,20 @@ import { productsSelectors } from '@bgap/admin/shared/data-access/products';
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  @ViewChild('tabset') tabsetEl: NbTabsetComponent;
+  @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts: IProduct[];
+  public chainProducts: IProduct[] = [];
   public groupProducts$: Observable<IProduct[]>;
-  public pendingGroupProducts: IProduct[];
-  public pendingUnitProducts: IProduct[];
-  public groupCurrency: string;
-  public unitProducts: IProduct[];
+  public pendingGroupProducts: IProduct[] = [];
+  public pendingUnitProducts: IProduct[] = [];
+  public groupCurrency: string = '';
+  public unitProducts: IProduct[] = [];
   public EProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
-  public adminUser: IAdminUser;
+  public adminUser?: IAdminUser;
 
-  private _sortedChainProductIds: string[];
-  private _sortedUnitProductIds: string[];
+  private _sortedChainProductIds: string[] = [];
+  private _sortedUnitProductIds: string[] = [];
 
   constructor(
     private _store: Store<any>,
@@ -54,6 +54,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _dataService: DataService
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
+
+    this.groupProducts$ = this._store.pipe(
+      select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
+      untilDestroyed(this)
+    );
   }
 
   get selectedChainId(): string {
@@ -88,10 +93,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         );
       });
 
-    this.groupProducts$ = this._store.pipe(
-      select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
-      untilDestroyed(this)
-    );
+
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
@@ -145,8 +147,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
               skipWhile((group): boolean => !group),
               take(1)
             )
-            .subscribe((group: IGroup): void => {
-              this.groupCurrency = group.currency;
+            .subscribe((group: IGroup | undefined): void => {
+              this.groupCurrency = group?.currency!;
             });
         }
       );
@@ -200,7 +202,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public unitPositionChange($event): void {
+  public unitPositionChange($event: any): void {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (

@@ -7,15 +7,15 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./form-color-picker.component.scss'],
 })
 export class FormColorPickerComponent implements OnInit {
-  @Input() control: FormControl;
-  @Input() caption: string; // Language key!!!
-  public color: string;
+  @Input() control!: FormControl;
+  @Input() caption: string = ''; // Language key!!!
+  public color: string = '';
 
   ngOnInit(): void {
-    this.color = this.control.value || '#fff';
+    this.color = this.control?.value || '#fff';
   }
 
-  public onChange($event: Event): void {
-    this.control.setValue($event);
+  public onChange($event: String): void {
+    this.control?.setValue($event);
   }
 }

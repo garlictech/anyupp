@@ -1,5 +1,5 @@
 import { skipWhile, take } from 'rxjs/operators';
-
+import { get as _get } from 'lodash-es';
 import { Component, Input, OnInit } from '@angular/core';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./colorized-lane-icon.component.scss'],
 })
 export class ColorizedLaneIconComponent implements OnInit {
-  @Input() laneId: string;
+  @Input() laneId!: string;
   public laneColor: string;
 
   constructor(private _store: Store<any>) {
@@ -23,11 +23,11 @@ export class ColorizedLaneIconComponent implements OnInit {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: IUnit): boolean => !unit),
+        skipWhile((unit: IUnit | undefined): boolean => !unit),
         take(1)
       )
-      .subscribe((unit: IUnit): void => {
-        this.laneColor = unit.lanes[this.laneId]?.color || DEFAULT_LANE_COLOR;
+      .subscribe((unit: IUnit | undefined): void => {
+        this.laneColor = _get(unit, `lanes[${this.laneId}].color`, DEFAULT_LANE_COLOR);
       });
   }
 }

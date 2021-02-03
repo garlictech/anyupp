@@ -3,7 +3,7 @@
     class="table-seat font-larger"
     [ngClass]="'bg-' + currentStatus(order.statusLog).toLowerCase()"
   >
-    {{ order?.place?.table }}<br />{{ order?.place?.seat }}
+    {{ order.place?.table }}<br />{{ order.place?.seat }}
   </div>
 
   <div class="float-left ml-4-5">
@@ -14,11 +14,11 @@
       <nb-badge
         class="items-count position-relative"
         status="basic"
-        [text]="order.items.length"
+        [text]="order.items.length.toString()"
       ></nb-badge>
       <span class="caption ml-4 font-larger font-weight-bold">{{
-        order?.sumPriceShown?.priceSum
-          | currencyFormatter: order?.sumPriceShown?.currency
+        order.sumPriceShown.priceSum
+          | currencyFormatter: order.sumPriceShown.currency
       }}</span>
     </div>
   </div>
@@ -28,7 +28,7 @@
       <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
     </div>
 
-    <div class="float-right" *ngIf="order?.paymentIntention > 0">
+    <div class="float-right" *ngIf="(order?.paymentIntention || 0) > 0">
       <nb-icon
         class="smaller-icon"
         status="danger"
@@ -40,7 +40,7 @@
       *ngIf="readyCount > 0"
       class="ready-count position-absolute mt-4 mr-2"
       status="info"
-      [text]="readyCount"
+      [text]="readyCount.toString()"
     ></nb-badge>
     <div class="clearfix"></div>
   </ng-container>

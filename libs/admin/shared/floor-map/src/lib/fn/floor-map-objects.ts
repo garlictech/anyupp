@@ -41,7 +41,7 @@ export const createTableRect = (
     ..._wh(rawObject),
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.TABLE_RECTANGLE,
@@ -59,8 +59,8 @@ export const createTableCircle = (
     stroke: FLOOR_MAP_CONFIG.tableStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, FLOOR_MAP_TEXT_CONFIG);
-  const group = new fabric.Group([bg, caption], <unknown>{
+  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const group = new fabric.Group([bg, caption], <any>{
     left: rawObject.x,
     top: rawObject.y,
     id: rawObject.id,
@@ -83,7 +83,7 @@ export const createSeatRect = (
     ry: FLOOR_MAP_CONFIG.cornerRadius,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.SEAT_RECTANGLE,
@@ -101,8 +101,8 @@ export const createSeatCircle = (
     stroke: FLOOR_MAP_CONFIG.seatStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, FLOOR_MAP_TEXT_CONFIG);
-  const group = new fabric.Group([bg, caption], <unknown>{
+  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const group = new fabric.Group([bg, caption], <any>{
     left: rawObject.x,
     top: rawObject.y,
     id: rawObject.id,
@@ -121,7 +121,7 @@ export const createBar = (rawObject: IFloorMapDataObject): fabric.Group => {
     stroke: FLOOR_MAP_CONFIG.barStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.COUNTER,
@@ -152,7 +152,7 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
     ..._wh(rawObject),
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c, {
+  const caption = new fabric.IText(rawObject.c!, {
     ...FLOOR_MAP_TEXT_CONFIG,
     fill: '#000',
   });
@@ -164,15 +164,15 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-export const getObjectById = (id: string): fabric.Group =>
-  fabricCanvas.getObjects().find((o): boolean => o.id === id);
+export const getObjectById = (id: string): fabric.Object | undefined =>
+  fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
 
 export const setBorder = (
   obj: fabric.Group,
   color: string = FLOOR_MAP_CONFIG.seatStroke,
   strokeWidth: number = FLOOR_MAP_CONFIG.strokeWidth
 ): void => {
-  const bgObj: fabric.Rect | fabric.Circle = getObjectBg(obj);
+  const bgObj: fabric.Rect | fabric.Circle | null = getObjectBg(obj);
 
   if (bgObj) {
     (<fabric.Object>bgObj).set('stroke', color);
@@ -184,7 +184,7 @@ export const setBgColor = (
   obj: fabric.Group,
   color: string = FLOOR_MAP_CONFIG.seatFill
 ): void => {
-  const bgObj: fabric.Rect | fabric.Circle = getObjectBg(obj);
+  const bgObj: fabric.Rect | fabric.Circle | null = getObjectBg(obj);
 
   if (bgObj) {
     (<fabric.Object>bgObj).set('fill', color);

@@ -11,7 +11,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
   templateUrl: './user-list-item.component.html',
 })
 export class UserListItemComponent {
-  @Input() user: IUser;
+  @Input() user!: IUser;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

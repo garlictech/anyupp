@@ -41,12 +41,12 @@ export class AdminUserRoleFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       this._apollo
         .mutate({
           mutation: UpdateAdminUserRole,
           variables: {
-            data: cleanObject(this.dialogForm.value.roles),
+            data: cleanObject(this.dialogForm?.value.roles),
             id: this.adminUser._id,
           },
         })
@@ -67,7 +67,7 @@ export class AdminUserRoleFormComponent
   }
 
   public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm.controls.profileImage.setValue(imagePath);
+    this.dialogForm?.controls.profileImage.setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
@@ -90,7 +90,7 @@ export class AdminUserRoleFormComponent
   };
 
   public imageRemoveCallback = (): void => {
-    this.dialogForm.controls.profileImage.setValue('');
+    this.dialogForm?.controls.profileImage.setValue('');
     delete this.adminUser.profileImage;
 
     // Update existing user's image

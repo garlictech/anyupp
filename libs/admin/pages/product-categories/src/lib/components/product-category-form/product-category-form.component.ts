@@ -15,10 +15,10 @@ import { select, Store } from '@ngrx/store';
 export class ProductCategoryFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public productCategory: IProductCategory;
+  public productCategory!: IProductCategory;
   public eImageType = EImageType;
   private _store: Store<any>;
-  private _selectedChainId: string;
+  private _selectedChainId?: string | undefined | null;
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -26,7 +26,7 @@ export class ProductCategoryFormComponent
     this._store = this._injector.get(Store);
     this._store
       .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-      .subscribe((selectedChainId: string): void => {
+      .subscribe((selectedChainId: string | undefined | null): void => {
         this._selectedChainId = selectedChainId;
       });
   }
@@ -62,13 +62,13 @@ export class ProductCategoryFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       if (_get(this.productCategory, '_id')) {
         this._dataService
           .updateProductCategory(
-            this._selectedChainId,
+            this._selectedChainId!,
             this.productCategory._id,
-            this.dialogForm.value
+            this.dialogForm?.value
           )
           .then(
             (): void => {
@@ -85,7 +85,7 @@ export class ProductCategoryFormComponent
           );
       } else {
         this._dataService
-          .insertProductCategory(this._selectedChainId, this.dialogForm.value)
+          .insertProductCategory(this._selectedChainId!, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -104,13 +104,13 @@ export class ProductCategoryFormComponent
   }
 
   public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm.controls.image.setValue(imagePath);
+    this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId,
+          this._selectedChainId!,
           this.productCategory._id,
           imagePath
         )
@@ -131,7 +131,7 @@ export class ProductCategoryFormComponent
   };
 
   public imageRemoveCallback = (): void => {
-    this.dialogForm.controls.image.setValue('');
+    this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory) {
       _set(this.productCategory, 'image', null);
@@ -141,7 +141,7 @@ export class ProductCategoryFormComponent
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId,
+          this._selectedChainId!,
           this.productCategory._id,
           null
         )

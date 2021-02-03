@@ -15,10 +15,10 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-chain-admin-role.component.html',
 })
 export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control: FormControl;
-  public chainOptions: IKeyValue[];
+  @Input() control!: FormGroup;
+  public chainOptions: IKeyValue[] = [];
   public entitySelector: FormGroup;
-  public assignedChains: IChain[];
+  public assignedChains: IChain[] = [];
 
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.chainOptions = [];
@@ -30,7 +30,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
-      this.control['controls'].entities.valueChanges.pipe(
+      this.control!.get('entities')!.valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -62,7 +62,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     arr.push({
       chainId: this.entitySelector.value.chainId,
     });
-    this.control['controls'].entities.setValue(arr);
+    this.control.get('entities')!.setValue(arr);
 
     this.entitySelector.patchValue({
       chainId: '',
@@ -73,6 +73,6 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     const arr = [...this.control.value.entities];
     arr.splice(idx, 1);
 
-    this.control['controls'].entities.setValue(arr);
+    this.control.get('entities')!.setValue(arr);
   }
 }

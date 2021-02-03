@@ -25,11 +25,11 @@ import { reducer } from '@bgap/admin/shared/utils';
 })
 export class ReportsDailySalesPerPaymentMethodComponent
   implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
+  private _chart!: Chart;
 
   constructor(
     private _currencyFormatter: CurrencyFormatterPipe,
@@ -37,7 +37,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
+    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
       type: 'pie',
       plugins: [ChartDataLabels],
       data: {
@@ -58,9 +58,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const label = data.labels[tooltipItem.index] || '';
+              const label = data.labels![tooltipItem.index!] || '';
               const value: number =
-                <number>data.datasets[0].data[tooltipItem.index] || 0;
+                <number>data.datasets![0].data![tooltipItem.index!] || 0;
 
               return ` ${label}: ${this._currencyFormatter.transform(
                 value,
@@ -80,7 +80,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
               },
             },
             formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(
+              const sum = (ctx.chart.data.datasets![0].data as number[]).reduce(
                 reducer
               );
               const perc = ((value / sum) * 100).toFixed(0);
@@ -96,7 +96,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
       .subscribe((orders: IOrder[]): void => {
         const amounts = this._orderAmounts(orders);
 
-        this._chart.data.datasets[0].data = [
+        this._chart.data.datasets![0].data = [
           amounts[EPaymentMethod.CARD],
           amounts[EPaymentMethod.CASH],
           amounts[EPaymentMethod.INAPP],
@@ -126,7 +126,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
     };
 
     orders.forEach(o => {
-      amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
+      amounts[o.paymentMethod!] += o.sumPriceShown!.priceSum;
     });
 
     return amounts;

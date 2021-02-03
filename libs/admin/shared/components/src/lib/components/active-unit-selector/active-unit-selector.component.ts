@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
 export class ActiveUnitSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public units$: Observable<IUnit[]>;
-  private _adminUser: IAdminUser;
+  private _adminUser!: IAdminUser;
 
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
@@ -48,7 +48,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       _get(this._adminUser, '_id') &&
       unitId !== _get(this._adminUser, 'settings.selectedUnitId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
         ..._get(this._adminUser, 'settings', {}),
         selectedUnitId: unitId,
       });

@@ -5,14 +5,14 @@ import { IOrder } from './order';
 
 export interface IFloorMapDataObject {
   id?: string; // key
-  t: string; // type
+  t?: string; // type
   c?: string; // caption
   w?: number; // width
   h?: number; // height
   r?: number; // radius
   a?: number; // angle
-  x: number; // left
-  y: number; // top
+  x?: number; // left
+  y?: number; // top
   tID?: string; // Table ID
   sID?: string; // Seat Id
   cID?: string; // Seat Id - deprecated

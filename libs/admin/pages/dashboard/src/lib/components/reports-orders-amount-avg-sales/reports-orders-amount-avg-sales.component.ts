@@ -12,7 +12,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-orders-amount-avg-sales.component.scss'],
 })
 export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
-  @Input() orders$: Observable<IOrder[]>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
   public ordersSum = 0;

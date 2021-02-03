@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
 export class ActiveProductCategorySelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public productCategories$: Observable<IProductCategory[]>;
-  private _adminUser: IAdminUser;
+  private _adminUser!: IAdminUser;
 
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
@@ -49,7 +49,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
       productCategoryId !==
         _get(this._adminUser, 'settings.selectedProductCategoryId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
         ..._get(this._adminUser, 'settings', {}),
         selectedProductCategoryId: productCategoryId,
       });

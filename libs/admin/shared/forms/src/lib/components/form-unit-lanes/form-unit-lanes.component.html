@@ -14,12 +14,12 @@
           <bgap-form-text-input
             caption="common.name"
             type="text"
-            [control]="lane.controls.name"
+            [control]="lane.get('name')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-10 col-md-4">
           <bgap-form-color-picker
-            [control]="lane.controls.color"
+            [control]="lane.get('color')! | asFormControl"
             caption="common.color"
           >
           </bgap-form-color-picker>

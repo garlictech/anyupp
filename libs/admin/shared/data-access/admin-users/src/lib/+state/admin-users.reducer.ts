@@ -19,7 +19,7 @@ export interface IAdminUsersPartialState {
 export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
   IAdminUser
 >({
-  selectId: (item: IAdminUser): string => item._id,
+  selectId: (item: IAdminUser): string => item._id!,
 });
 
 export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(

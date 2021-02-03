@@ -9,7 +9,7 @@ import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
   styleUrls: ['./password-reset-form.component.scss'],
 })
 export class PasswordResetFormComponent {
-  @Input() toggleResetForm!: Function;
+  @Input() toggleResetForm!: ($event: Event, showResetForm: boolean) => void;
   public resetForm: FormGroup;
 
   constructor(
@@ -22,7 +22,7 @@ export class PasswordResetFormComponent {
     });
   }
 
-  public resetPassword(): void {
+  public resetPassword($event: Event): void {
     if (this.resetForm.valid) {
       this._authService.sendPasswordResetEmail(this.resetForm.value.email).then(
         (): void => {
@@ -31,7 +31,7 @@ export class PasswordResetFormComponent {
             '',
             'auth.reminderSent'
           );
-          this.toggleResetForm(null, false);
+          this.toggleResetForm($event, false);
         },
         (): void => {
           this._toasterService.show(

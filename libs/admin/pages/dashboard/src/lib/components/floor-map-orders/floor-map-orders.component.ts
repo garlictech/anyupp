@@ -13,10 +13,10 @@ import { NbDialogRef } from '@nebular/theme';
   styleUrls: ['./floor-map-orders.component.scss'],
 })
 export class FloorMapOrdersComponent implements OnInit {
-  public tableId: string;
-  public seatId: string;
-  public allTableOrders$: BehaviorSubject<IFloorMapTableOrderObjects>;
-  public tableOrders: IFloorMapTableOrders;
+  public tableId!: string;
+  public seatId!: string;
+  public allTableOrders$!: BehaviorSubject<IFloorMapTableOrderObjects>;
+  public tableOrders?: IFloorMapTableOrders;
 
   constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 

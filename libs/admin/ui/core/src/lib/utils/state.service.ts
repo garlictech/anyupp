@@ -77,9 +77,11 @@ export class StateService implements OnDestroy {
     endSidebar.icon = endIconClass;
   }
 
+  /*
   public setLayoutState(state): void {
     this.layoutState$.next(state);
   }
+  */
 
   public getLayoutStates(): Observable<ILayoutItem[]> {
     return observableOf(this.layouts);
@@ -89,9 +91,11 @@ export class StateService implements OnDestroy {
     return this.layoutState$.asObservable();
   }
 
+  /*
   public setSidebarState(state): void {
     this.sidebarState$.next(state);
   }
+  */
 
   public getSidebarStates(): Observable<ILayoutItem[]> {
     return observableOf(this.sidebars);

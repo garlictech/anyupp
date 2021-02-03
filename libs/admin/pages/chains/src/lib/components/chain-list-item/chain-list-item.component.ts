@@ -12,7 +12,7 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
   styleUrls: ['./chain-list-item.component.scss'],
 })
 export class ChainListItemComponent {
-  @Input() chain: IChain;
+  @Input() chain!: IChain;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

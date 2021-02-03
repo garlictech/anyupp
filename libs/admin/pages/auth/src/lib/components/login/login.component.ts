@@ -16,7 +16,7 @@ export class LoginComponent {
   public formMode: EFormMode = EFormMode.LOGIN;
   public EFormMode = EFormMode;
 
-  public toggleResetForm = ($event: Event, showResetForm: boolean): void => {
+  public toggleResetForm = ($event: Event, showResetForm: boolean) => {
     $event?.preventDefault();
 
     this.formMode = showResetForm ? EFormMode.RESET : EFormMode.LOGIN;
