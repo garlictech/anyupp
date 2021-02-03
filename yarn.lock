@@ -736,6 +736,14 @@
     "@aws-cdk/core" "1.79.0"
     constructs "^3.2.0"
 
+"@aws-cdk/aws-codestarnotifications@1.79.0":
+  version "1.79.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-codestarnotifications/-/aws-codestarnotifications-1.79.0.tgz#5601e3d1c4ce81ad3195dda846a4ed2b23a56ac5"
+  integrity sha512-/o2kvEEyH5DPkWkuGPnRi7wI5qlkYi4Z/ulLgrcl+1MD6FpOH/pwelgbl1kS5JQtCCEde5iPXUeWznvsjq4n8g==
+  dependencies:
+    "@aws-cdk/core" "1.79.0"
+    constructs "^3.2.0"
+
 "@aws-cdk/aws-cognito@1.79.0":
   version "1.79.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cognito/-/aws-cognito-1.79.0.tgz#b9263085c64415205ec07959ef34db47bbc01d66"

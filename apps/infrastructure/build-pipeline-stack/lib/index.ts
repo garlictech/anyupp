@@ -23,7 +23,7 @@ export default function main(app: App): void {
 
   const devPullRequestConfig: DevPullRequestBuildStackProps = {
     ...commonConfig,
-    slackChannelSns: slackChannel.slackChannelSns
+    chatbot: slackChannel.chatbot
   };
 
   const devBuildPipelineConfig: PipelineStackProps = {

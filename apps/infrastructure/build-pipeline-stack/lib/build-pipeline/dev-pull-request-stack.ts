@@ -1,11 +1,11 @@
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
+import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import { SecretsManagerStack } from './secretsmanager-stack';
-import * as sns from '@aws-cdk/aws-sns';
-import * as eventTargets from '@aws-cdk/aws-events-targets';
+import * as chatbot from '@aws-cdk/aws-chatbot';
 
 export interface DevPullRequestBuildStackProps extends sst.StackProps {
-  readonly slackChannelSns: sns.ITopic;
+  readonly chatbot: chatbot.SlackChannelConfiguration;
   readonly repoName: string;
   readonly repoOwner: string;
   readonly repoBranch: string;
@@ -30,7 +30,8 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ]
     });
 
-    const project = new codebuild.Project(this, 'PullRequestClone', {
+    const project = new codebuild.Project(this, 'AnyUppVerifyPull Request', {
+      projectName: 'AnyUpp_Verify_Pull_Request',
       source: githubPrSource,
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -52,15 +53,25 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    const topic = sns.Topic.fromTopicArn(
+    new codestarnotifications.CfnNotificationRule(
       this,
-      'SlackNotificationTopic',
-      'arn:aws:sns:eu-west-1:568276182587:CodeStarNotifications-anyupp-cicd-f50b5f6cf3315948882cbd0ba0230163179d510d'
+      'PullRequestNotification',
+      {
+        detailType: 'FULL',
+        eventTypeIds: [
+          'codebuild-project-build-state-in-progress',
+          'codebuild-project-build-state-failed',
+          'codebuild-project-build-state-succeeded'
+        ],
+        name: 'AnyUppDevPullRequestNotification',
+        resource: project.projectArn,
+        targets: [
+          {
+            targetAddress: props.chatbot.slackChannelConfigurationArn,
+            targetType: 'AWSChatbotSlack'
+          }
+        ]
+      }
     );
-    const snsTarget = new eventTargets.SnsTopic(topic);
-
-    project.onBuildStarted('PullRequestBuildStart', {
-      target: snsTarget
-    });
   }
 }
