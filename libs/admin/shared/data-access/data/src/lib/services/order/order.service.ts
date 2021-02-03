@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
-import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct } from '@bgap/shared/types';
+import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IGeneratedProduct } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 import { DataService } from '../data/data.service';
@@ -13,8 +13,8 @@ import { DataService } from '../data/data.service';
   providedIn: 'root',
 })
 export class OrderService {
-  private _adminUser: IAdminUser;
-  private _groupCurrency: string;
+  private _adminUser?: IAdminUser;
+  private _groupCurrency?: string;
 
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this._store
@@ -28,7 +28,7 @@ export class OrderService {
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group)
       )
-      .subscribe((group: IGroup): void => {
+      .subscribe((group: IGroup | undefined): void => {
         this._groupCurrency = group?.currency;
       });
   }
@@ -48,8 +48,8 @@ export class OrderService {
 
       this._dataService
         .updateOrderItemQuantityAndPrice(
-          this._adminUser.settings.selectedChainId,
-          this._adminUser.settings.selectedUnitId,
+          this._adminUser!.settings!.selectedChainId!,
+          this._adminUser!.settings!.selectedUnitId!,
           order._id,
           idx,
           order.items[idx]
@@ -66,25 +66,25 @@ export class OrderService {
 
   public addProductVariant(
     order: IOrder,
-    product: IProduct,
+    product: IGeneratedProduct,
     variantId: string
   ): void {
     const now = new Date().getTime();
     const tax = parseInt(product.tax || '0', 10);
 
     this._dataService.addOrderItem(
-      this._adminUser.settings.selectedChainId,
-      this._adminUser.settings.selectedUnitId,
+      this._adminUser!.settings!.selectedChainId!,
+      this._adminUser!.settings!.selectedUnitId!,
       order._id,
       order.items.length,
       {
         created: now,
         priceShown: {
-          currency: this._groupCurrency,
-          pricePerUnit: product.variants[variantId].price,
-          priceSum: product.variants[variantId].price,
+          currency: this._groupCurrency!,
+          pricePerUnit: product.variants[variantId].price!,
+          priceSum: product.variants[variantId].price!,
           tax,
-          taxSum: (product.variants[variantId].price / (100 + tax)) * tax,
+          taxSum: (product.variants[variantId].price! / (100 + tax)) * tax,
         },
         productId: product._id,
         productName: product.name,
@@ -92,7 +92,7 @@ export class OrderService {
         statusLog: {
           [now]: {
             status: EOrderStatus.PLACED,
-            userId: this._adminUser._id,
+            userId: this._adminUser!._id!,
           },
         },
         variantId,
@@ -103,8 +103,8 @@ export class OrderService {
 
   public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
     return this._dataService.insertOrderStatus(
-      this._adminUser.settings.selectedChainId,
-      this._adminUser.settings.selectedUnitId,
+      this._adminUser!.settings!.selectedChainId!,
+      this._adminUser!.settings!.selectedUnitId!,
       order._id,
       status
     );
@@ -116,14 +116,14 @@ export class OrderService {
     idx: number
   ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
-      this._adminUser.settings.selectedChainId,
-      this._adminUser.settings.selectedUnitId,
+      this._adminUser!.settings!.selectedChainId!,
+      this._adminUser!.settings!.selectedUnitId!,
       orderId,
       idx,
       {
         [new Date().valueOf()]: {
           status,
-          userId: this._adminUser._id,
+          userId: this._adminUser!._id!,
         },
       }
     );

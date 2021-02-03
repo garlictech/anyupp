@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-staff-role.component.html',
 })
 export class FormStaffRoleComponent implements OnInit, OnDestroy {
-  @Input() control!: FormControl;
+  @Input() control!: FormGroup;
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public unitOptions: IKeyValue[];
@@ -127,7 +127,7 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
                 if (!entities.map((e): string => e.unitId!).includes(unit._id)) {
                   this.unitOptions.push({
                     key: unit._id,
-                    value: unit.name,
+                    value: unit.name!,
                   });
                 }
               });

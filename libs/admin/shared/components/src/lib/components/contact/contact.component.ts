@@ -8,5 +8,5 @@ import { IChain, IGroup, IUnit } from '@bgap/shared/types';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent {
-  @Input() contact: IChain | IGroup | IUnit;
+  @Input() contact?: IChain | IGroup | IUnit;
 }

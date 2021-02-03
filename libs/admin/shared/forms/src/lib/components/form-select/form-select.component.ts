@@ -1,18 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IKeyValue } from '@bgap/shared/types';
+import { NbComponentSize } from '@nebular/theme';
 
 @Component({
   selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
 })
 export class FormSelectComponent {
-  @Input() caption: string; // Language key!!!
-  @Input() options: IKeyValue[];
-  @Input() control: FormControl;
+  @Input() caption: string = ''; // Language key!!!
+  @Input() options: IKeyValue[] = [];
+  @Input() control!: FormControl;
   @Input() forceShowEmptyOption?: boolean;
-  @Input() localize: boolean;
-  @Input() size: string;
+  @Input() localize?: boolean;
+  @Input() size: NbComponentSize = 'small';
   @Output() selectionChange = new EventEmitter();
 
   constructor() {

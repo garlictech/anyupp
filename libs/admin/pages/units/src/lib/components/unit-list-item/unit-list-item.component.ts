@@ -14,8 +14,8 @@ import { UnitFormComponent } from '../unit-form/unit-form.component';
   styleUrls: ['./unit-list-item.component.scss'],
 })
 export class UnitListItemComponent {
-  @Input() unit: IUnit;
-  public workingGenerateStatus: boolean;
+  @Input() unit!: IUnit;
+  public workingGenerateStatus = false;
 
   constructor(
     private _nbDialogService: NbDialogService,

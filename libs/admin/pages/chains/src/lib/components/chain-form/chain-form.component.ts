@@ -19,22 +19,12 @@ import { EImageType, IChain } from '@bgap/shared/types';
 export class ChainFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public chain: IChain;
+  public chain!: IChain;
   public eImageType = EImageType;
 
   constructor(protected _injector: Injector) {
     super(_injector);
-  }
 
-  get logoFilePath(): string {
-    return _get(this.chain, 'style.images.logo');
-  }
-
-  get headerFilePath(): string {
-    return _get(this.chain, 'style.images.header');
-  }
-
-  ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
       description: this._formBuilder.group(
@@ -65,6 +55,18 @@ export class ChainFormComponent
         }),
       }),
     });
+  }
+
+  get logoFilePath(): string {
+    return _get(this.chain, 'style.images.logo');
+  }
+
+  get headerFilePath(): string {
+    return _get(this.chain, 'style.images.header');
+  }
+
+  ngOnInit(): void {
+
 
     if (this.chain) {
       this.dialogForm.patchValue(this.chain);
@@ -74,10 +76,10 @@ export class ChainFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       if (_get(this.chain, '_id')) {
         this._dataService
-          .updateChain(this.chain._id, this.dialogForm.value)
+          .updateChain(this.chain._id, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -92,7 +94,7 @@ export class ChainFormComponent
             }
           );
       } else {
-        this._dataService.insertChain(this.dialogForm.value).then(
+        this._dataService.insertChain(this.dialogForm?.value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,
@@ -110,7 +112,7 @@ export class ChainFormComponent
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
+    this.dialogForm.get('style')!.get('images')!.get(key)!.setValue(
       imagePath
     );
 
@@ -135,7 +137,7 @@ export class ChainFormComponent
   };
 
   public logoRemoveCallback = (key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
+    this.dialogForm.get('style')!.get('images')!.get(key)!.setValue(
       ''
     );
 

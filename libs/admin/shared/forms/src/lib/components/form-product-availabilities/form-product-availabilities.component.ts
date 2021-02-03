@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, AbstractControl } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './form-product-availabilities.component.html',
 })
 export class FormProductAvailabilitiesComponent {
-  @Input() availabilityFormArray: FormArray;
+  @Input() availabilityFormArray!: FormArray;
   @Input() currency?: string;
   public EVariantAvailabilityType = EVariantAvailabilityType;
   public iterativeAvailabilities: IKeyValue[];
@@ -22,7 +22,7 @@ export class FormProductAvailabilitiesComponent {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
       (key): IKeyValue => ({
         key,
-        value: this._translateService.instant(WEEKLY_VARIANT_AVAILABILITY[key]),
+        value: this._translateService.instant(WEEKLY_VARIANT_AVAILABILITY[<keyof typeof WEEKLY_VARIANT_AVAILABILITY>key]),
       })
     );
   }
@@ -43,24 +43,24 @@ export class FormProductAvailabilitiesComponent {
   ];
 
   public addAvailability(): void {
-    this.availabilityFormArray.push(
+    (<FormArray>this.availabilityFormArray)?.push(
       this._formsService.createProductAvailabilityFormGroup()
     );
   }
 
   public removeAvailability(idx: number): void {
-    this.availabilityFormArray.removeAt(idx);
+    (<FormArray>this.availabilityFormArray)?.removeAt(idx);
   }
 
   public onTypeChange(value: EVariantAvailabilityType, idx: number): void {
     // Clear days
-    this.availabilityFormArray.controls[idx].patchValue({
+    (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
       dayFrom: '',
       dayTo: '',
     });
 
     if (value === EVariantAvailabilityType.ALWAYS) {
-      this.availabilityFormArray.controls[idx].patchValue({
+      (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
         timeFrom: '',
         timeTo: '',
       });

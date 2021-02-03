@@ -14,15 +14,13 @@ import { UserFormComponent } from '../user-form/user-form.component';
   selector: 'bgap-user-list',
   templateUrl: './user-list.component.html',
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnDestroy {
   public users$: Observable<IUser[]>;
 
   constructor(
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.users$ = this._store.pipe(
       select(usersSelectors.getAllUsers),
       untilDestroyed(this)

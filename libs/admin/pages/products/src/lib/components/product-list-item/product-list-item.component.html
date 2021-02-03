@@ -9,7 +9,7 @@
 
 <bgap-colorized-lane-icon
   *ngIf="productLevel === EProductLevel.UNIT"
-  [laneId]="product.laneId"
+  [laneId]="product.laneId!"
 ></bgap-colorized-lane-icon>
 
 <ng-container *ngIf="hasRoleToEdit">

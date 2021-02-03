@@ -23,12 +23,12 @@ import { select, Store } from '@ngrx/store';
 export class GroupFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
-  public group: IGroup;
-  public chainOptions: IKeyValue[];
-  public currencyOptions: IKeyValue[];
+  public group!: IGroup;
+  public chainOptions: IKeyValue[] = [];
+  public currencyOptions: IKeyValue[] = [];
 
   private _store: Store<any>;
-  private chains: IChain[];
+  private chains: IChain[] = [];
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -77,9 +77,9 @@ export class GroupFormComponent
       // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string): void => {
+        .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
           }
         });
     }
@@ -91,10 +91,10 @@ export class GroupFormComponent
   }
 
   public submit(): void {
-    if (this.dialogForm.valid) {
+    if (this.dialogForm?.valid) {
       if (_get(this.group, '_id')) {
         this._dataService
-          .updateGroup(this.group._id, this.dialogForm.value)
+          .updateGroup(this.group._id, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -109,7 +109,7 @@ export class GroupFormComponent
             }
           );
       } else {
-        this._dataService.insertGroup(this.dialogForm.value).then(
+        this._dataService.insertGroup(this.dialogForm?.value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,

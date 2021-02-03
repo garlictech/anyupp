@@ -3,15 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
+import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import {
-  NbButtonModule,
-  NbCardModule,
-  NbIconModule,
-  NbLayoutModule,
-  NbListModule,
-  NbUserModule,
-} from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbIconModule, NbLayoutModule, NbListModule, NbUserModule } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { UserFormComponent } from './components/user-form/user-form.component';
@@ -36,6 +30,7 @@ const NB_MODULES = [
     AdminSharedFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    AdminSharedPipesModule,
     RouterModule.forChild([
       {
         component: UserListComponent,

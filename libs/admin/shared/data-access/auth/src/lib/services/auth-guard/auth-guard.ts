@@ -27,17 +27,21 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
-      switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
+      switchMap(
+        (): Observable<firebase.User | null> => this._angularFireAuth.user
+      ),
       switchMap(
         (user): Observable<IAdminUser | undefined> =>
-          user
-            ? this._angularFireDatabase
-                .object(`/adminUsers/${user.uid}`)
-                .valueChanges()
-                .pipe(take(1))
+          !!user
+            ? <Observable<IAdminUser>>(
+                this._angularFireDatabase
+                  .object(`/adminUsers/${user!.uid}`)
+                  .valueChanges()
+              )
             : of(undefined)
       ),
-      map((adminUser: IAdminUser) => {
+      take(1),
+      map((adminUser: IAdminUser | undefined) => {
         if (!adminUser) {
           this._router.navigate(['auth/login']);
 
@@ -53,17 +57,21 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
-      switchMap((): Observable<firebase.User> => this._angularFireAuth.user),
       switchMap(
-        (user): Observable<IAdminUser | undefined> =>
-          user
-            ? this._angularFireDatabase
-                .object(`/adminUsers/${user.uid}`)
-                .valueChanges()
-                .pipe(take(1))
+        (): Observable<firebase.User | null> => this._angularFireAuth.user
+      ),
+      switchMap(
+        (user: firebase.User | null): Observable<IAdminUser | undefined> =>
+          user !== null
+            ? <Observable<IAdminUser>>(
+                this._angularFireDatabase
+                  .object(`/adminUsers/${user.uid}`)
+                  .valueChanges()
+              )
             : of(undefined)
       ),
-      map((adminUser: IAdminUser) => {
+      take(1),
+      map((adminUser: IAdminUser | undefined) => {
         if (_get(adminUser, 'roles.role') === EAdminRole.INACTIVE) {
           this._angularFireAuth.signOut();
           this._router.navigate(['auth/login']);

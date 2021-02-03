@@ -19,6 +19,7 @@ import {
   IOrderItem,
   IProduct,
   IProductCategory,
+  IGeneratedProduct
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -30,12 +31,12 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-product-list.component.scss'],
 })
 export class OrderProductListComponent {
-  @Input() selectedOrder: IOrder;
-  public generatedUnitProducts: IProduct[];
-  public productCategories: IProductCategory[];
-  public selectedProductCategoryId: string;
-  public groupCurrency: string;
-  public buttonSize: ENebularButtonSize;
+  @Input() selectedOrder?: IOrder;
+  public generatedUnitProducts: IGeneratedProduct[];
+  public productCategories: IProductCategory[] = [];
+  public selectedProductCategoryId: string = '';
+  public groupCurrency: string = '';
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
@@ -45,8 +46,8 @@ export class OrderProductListComponent {
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group)
       )
-      .subscribe((group: IGroup): void => {
-        this.groupCurrency = group.currency;
+      .subscribe((group: IGroup | undefined): void => {
+        this.groupCurrency = group!.currency!;
       });
 
     this._store
@@ -80,7 +81,7 @@ export class OrderProductListComponent {
             (category: IProductCategory): boolean => {
               return (
                 this.generatedUnitProducts.filter(
-                  (p: IProduct): boolean => p.productCategoryId === category._id
+                  (p: IGeneratedProduct): boolean => p.productCategoryId === category._id
                 ).length > 0
               );
             }
@@ -99,35 +100,35 @@ export class OrderProductListComponent {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(product: IProduct, variantId: string): void {
-    const existingVariantOrderIdx = this.selectedOrder.items.findIndex(
+  public addProductVariant(product: IGeneratedProduct, variantId: string): void {
+    const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
         orderItem.productId === product._id &&
         orderItem.variantId === variantId &&
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price
     );
 
-    if (existingVariantOrderIdx >= 0) {
+    if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(this.selectedOrder),
-        existingVariantOrderIdx,
+        _cloneDeep(this.selectedOrder!),
+        existingVariantOrderIdx!,
         1
       );
 
       if (
         currentStatus(
-          this.selectedOrder.items[existingVariantOrderIdx].statusLog
+          this.selectedOrder!.items[existingVariantOrderIdx!].statusLog
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          this.selectedOrder._id,
+          this.selectedOrder!._id,
           EOrderStatus.PLACED,
-          existingVariantOrderIdx
+          existingVariantOrderIdx!
         );
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(this.selectedOrder),
+        _cloneDeep(this.selectedOrder!),
         product,
         variantId
       );

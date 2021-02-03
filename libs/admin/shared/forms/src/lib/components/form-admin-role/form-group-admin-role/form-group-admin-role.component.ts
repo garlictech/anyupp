@@ -16,7 +16,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-group-admin-role.component.html',
 })
 export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control!: FormControl;
+  @Input() control!: FormGroup;
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public entitySelector: FormGroup;

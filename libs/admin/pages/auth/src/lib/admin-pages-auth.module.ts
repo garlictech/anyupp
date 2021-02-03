@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
+import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import {
   NbButtonModule,
   NbCardModule,
@@ -28,6 +29,7 @@ const NEBULAR_MODULES = [
     AdminSharedFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    AdminSharedPipesModule,
     TranslateModule,
     ...NEBULAR_MODULES,
     RouterModule.forChild([

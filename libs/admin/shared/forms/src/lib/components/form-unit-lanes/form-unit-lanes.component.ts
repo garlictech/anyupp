@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./form-unit-lanes.component.scss'],
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray: FormArray;
+  @Input() lanesFormArray!: FormArray;
   public usedLaneIds: string[];
 
   constructor(private _store: Store<any>, private _formsService: FormsService) {
@@ -31,10 +31,10 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public addLane(): void {
-    this.lanesFormArray.push(this._formsService.createLaneFormGroup());
+    (<FormArray>this.lanesFormArray).push(this._formsService.createLaneFormGroup());
   }
 
   public removeLane(idx: number): void {
-    this.lanesFormArray.removeAt(idx);
+    (<FormArray>this.lanesFormArray).removeAt(idx);
   }
 }

@@ -22,6 +22,7 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
+import { AdminSharedFloorMapModule } from 'libs/admin/shared/floor-map/src';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FloorMapBodyComponent } from './components/floor-map-body/floor-map-body.component';
@@ -92,6 +93,7 @@ const NB_MODULES = [
     FormsModule,
     AdminSharedFormsModule,
     AdminSharedPipesModule,
+    AdminSharedFloorMapModule,
     RouterModule.forChild([
       {
         component: DashboardComponent,

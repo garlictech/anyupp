@@ -70,7 +70,7 @@ const menuItems = {
   styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
-  public adminUser: IAdminUser;
+  public adminUser?: IAdminUser;
   public env = environment;
   public menu: NbMenuItem[] = [];
 

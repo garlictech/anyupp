@@ -3,20 +3,7 @@ import { cloneDeep as _cloneDeep } from 'lodash-es';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {
-  EAdminRole,
-  EProductLevel,
-  EVariantAvailabilityType,
-  IAdminUserRole,
-  IProduct,
-  IProductVariant,
+  EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -32,10 +19,10 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   styleUrls: ['./product-list-item.component.scss'],
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
-  @Input() product: IProduct;
-  @Input() pending: boolean;
-  @Input() productLevel: EProductLevel;
-  @Input() currency: string;
+  @Input() product!: IProduct;
+  @Input() pending: boolean = true;
+  @Input() productLevel!: EProductLevel;
+  @Input() currency: string = '';
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();
@@ -55,20 +42,20 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
         select(loggedUserSelectors.getLoggedUserRoles),
         untilDestroyed(this)
       )
-      .subscribe((adminUserRole: IAdminUserRole): void => {
+      .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE)
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -76,7 +63,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;
@@ -106,11 +93,11 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       });
 
       dialog.componentRef.instance.editing = true;
+      dialog.componentRef.instance.currency = this.currency;
     }
 
     dialog.componentRef.instance.product = _cloneDeep(this.product);
     dialog.componentRef.instance.productLevel = this.productLevel;
-    dialog.componentRef.instance.currency = this.currency;
   }
 
   public extendProduct(): void {

@@ -18,14 +18,14 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-6">
           <bgap-form-select
             caption="common.chain"
             [localize]="false"
             [options]="chainOptions"
-            [control]="dialogForm.controls.chainId"
+            [control]="dialogForm.get('chainId')! | asFormControl"
           ></bgap-form-select>
         </div>
         <div class="col-md-6">
@@ -33,7 +33,7 @@
             caption="common.currency"
             [localize]="false"
             [options]="currencyOptions"
-            [control]="dialogForm.controls.currency"
+            [control]="dialogForm.get('currency')! | asFormControl"
           ></bgap-form-select>
         </div>
       </div>
@@ -41,27 +41,27 @@
       <bgap-form-text-input
         caption="common.name"
         type="text"
-        [control]="dialogForm.controls.name"
+        [control]="dialogForm.get('name')! | asFormControl"
       ></bgap-form-text-input>
 
       <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
-        [control]="dialogForm.controls.description['controls'].hu"
+        [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
-        [control]="dialogForm.controls.description['controls'].en"
+        [control]="dialogForm.get('description')!.get('en')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
-        [control]="dialogForm.controls.description['controls'].de"
+        [control]="dialogForm.get('description')!.get('de')! | asFormControl"
       ></bgap-form-text-input>
 
       <bgap-form-contact-group
-        [contactFormGroup]="dialogForm"
+        [contactFormGroup]="dialogForm | asFormGroup"
       ></bgap-form-contact-group>
 
       <div class="mt-20">
