@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-weekly-schedule.component.html',
 })
 export class FormWeeklyScheduleComponent {
-  @Input() scheduleControl: FormControl;
+  @Input() scheduleControl!: FormControl;
   public dayKeys: string[];
 
   constructor(private _formsService: FormsService) {
@@ -15,7 +15,7 @@ export class FormWeeklyScheduleComponent {
   }
 
   public addCustomDate(): void {
-    this.scheduleControl['controls'].override.push(
+    (<FormArray>this.scheduleControl.get('override')).push(
       this._formsService.createCustomDailyScheduleFormGroup()
     );
   }

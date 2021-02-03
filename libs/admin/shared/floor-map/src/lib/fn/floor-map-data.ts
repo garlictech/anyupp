@@ -53,13 +53,13 @@ export const loadRawDataObject = (
 ): void => {
   const { id, ...data } = rawData;
 
-  mapRawData.objects[id] = data;
+  mapRawData.objects[id!] = data;
 
   _drawObject(rawData, setActive);
 };
 
 const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
-  const obj: fabric.Group = createObject(o);
+  const obj: any = createObject(o);
 
   fabricCanvas.add(obj);
 
@@ -68,7 +68,7 @@ const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
   }
 };
 
-export const createObject = (mapObject: IFloorMapDataObject): fabric.Group => {
+export const createObject = (mapObject: IFloorMapDataObject): fabric.Group | undefined => {
   switch (mapObject.t) {
     case EUnitMapObjectType.TABLE_RECTANGLE:
       return createTableRect(mapObject);
@@ -84,11 +84,13 @@ export const createObject = (mapObject: IFloorMapDataObject): fabric.Group => {
       return createWall(mapObject);
     case EUnitMapObjectType.LABEL:
       return createLabel(mapObject);
+    default:
+      return undefined;
   }
 };
 
 export const removeActiveObject = (): void => {
-  const obj = fabricCanvas.getActiveObject();
+  const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
     delete mapRawData.objects[obj.id];
@@ -103,22 +105,22 @@ export const copyActiveObject = (): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
-    const mapObjectRawData = { ...mapRawData.objects[obj.id] };
+    const mapObjectRawData = { ...mapRawData.objects[(<any>obj).id] };
     mapObjectRawData.id = generateId();
-    mapObjectRawData.x += 10;
-    mapObjectRawData.y += 10;
+    mapObjectRawData.x! += 10;
+    mapObjectRawData.y! += 10;
 
     loadRawDataObject(mapObjectRawData, true);
   }
 };
 
 export const setTextToActiveObject = (text: string): void => {
-  const obj = fabricCanvas.getActiveObject();
+  const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
     const textField = obj
       .getObjects()
-      .filter((o): boolean => o instanceof fabric.IText)[0];
+      .filter((o: fabric.Object): boolean => o instanceof fabric.IText)[0];
 
     if (textField) {
       textField.set('text', text);
@@ -128,32 +130,32 @@ export const setTextToActiveObject = (text: string): void => {
   }
 };
 
-export const setRawDataField = (key: string, value: string | number): void => {
+export const setRawDataField = (key: keyof IFloorMapDataObject, value: string | number): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
-    mapRawData.objects[obj.id][key] = value;
+    mapRawData.objects[(<any>obj).id][key] = <any>value;
   }
 };
 
 export const getRawDataField = (
   obj: IFabricGroup,
-  key: string
-): string | number => mapRawData.objects[obj.id][key];
+  key: keyof IFloorMapDataObject
+): string | number => mapRawData.objects[obj.id][key]!;
 
-const _getObjectProperties = (obj): IFabricObjectProperties => ({
+const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
   id: obj.id,
   type: obj.type,
-  width: getObjectBg(obj).width,
-  height: getObjectBg(obj).height,
-  radius: getObjectRadius(obj),
+  width: getObjectBg(obj)!.width!,
+  height: getObjectBg(obj)!.height!,
+  radius: getObjectRadius(obj)!,
   angle: obj.angle,
   left: obj.left,
   top: obj.top,
   caption: getObjectText(obj),
 });
 
-export const updateObjectMapRawData = (e): void => {
+export const updateObjectMapRawData = (e: any): void => {
   const objectProperties: IFabricObjectProperties = _getObjectProperties(
     e.target
   );
@@ -168,7 +170,7 @@ export const updateObjectMapRawData = (e): void => {
       y: Math.round(objectData.top),
       w: objectData.width,
       h: objectData.height,
-      r: objectData.radius ? objectData.radius : null,
+      r: objectData.radius ? objectData.radius : undefined,
       a: objectData.angle ? objectData.angle : 0,
       c: objectData.caption,
     };

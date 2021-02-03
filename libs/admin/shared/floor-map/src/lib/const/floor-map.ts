@@ -64,13 +64,16 @@ export const FLOOR_MAP_CIRCLE_CONTROLS = {
   mt: false,
 };
 
-export const FLOOR_MAP_OBJECT_DEFAULTS = {
-  common: {
+export const FLOOR_MAP_OBJECT_COMMON_DEFAULTS = {
+
     x: 10,
     y: 10,
     c: '',
     a: 0,
-  },
+
+}
+
+export const FLOOR_MAP_OBJECT_DEFAULTS = {
   [EUnitMapObjectType.TABLE_RECTANGLE]: {
     w: 150,
     h: 60,

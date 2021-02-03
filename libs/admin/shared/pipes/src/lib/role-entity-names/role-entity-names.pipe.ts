@@ -19,30 +19,30 @@ export class RoleEntityNamesPipe implements PipeTransform {
   ) {}
 
   transform(roles: IAdminUserRole): unknown {
-    const entityPaths = [];
+    const entityPaths: string[] = [];
 
     _get(roles, 'entities', []).forEach((entity): void => {
-      const entitiesArr = [];
+      const entitiesArr: string[] = [];
 
       if (entity.chainId) {
         this._store
           .pipe(select(chainsSelectors.getChainById(entity.chainId), take(1)))
-          .subscribe((chain: IChain): void => {
-            entitiesArr.push(_get(chain, 'name', ''));
+          .subscribe((chain: IChain | undefined): void => {
+            entitiesArr.push(chain?.name || '');
           });
       }
       if (entity.groupId) {
         this._store
           .pipe(select(groupsSelectors.getGroupById(entity.groupId), take(1)))
-          .subscribe((group: IGroup): void => {
-            entitiesArr.push(_get(group, 'name', ''));
+          .subscribe((group: IGroup | undefined): void => {
+            entitiesArr.push(group?.name || '');
           });
       }
       if (entity.unitId) {
         this._store
           .pipe(select(unitsSelectors.getUnitById(entity.unitId), take(1)))
-          .subscribe((unit: IUnit): void => {
-            entitiesArr.push(_get(unit, 'name', ''));
+          .subscribe((unit: IUnit | undefined): void => {
+            entitiesArr.push(unit?.name || '');
           });
       }
 

@@ -1,16 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NbComponentSize } from '@nebular/theme';
 
 @Component({
   selector: 'bgap-form-text-input',
   templateUrl: './form-text-input.component.html',
 })
 export class FormTextInputComponent {
-  @Input() caption?: string; // Language key!!!
+  @Input() caption: string = ''; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() control: FormControl;
-  @Input() type: string;
-  @Input() fieldSize: string;
+  @Input() control!: FormControl;
+  @Input() type!: string;
+  @Input() fieldSize: NbComponentSize = 'small';
 
   constructor() {
     this.fieldSize = 'small';

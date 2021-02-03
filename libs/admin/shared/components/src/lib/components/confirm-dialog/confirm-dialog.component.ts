@@ -8,11 +8,11 @@ import { NbDialogRef } from '@nebular/theme';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
-  public options: IConfirmOptions;
+  public options?: IConfirmOptions;
 
   constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 
-  public click(callbackFn): void {
+  public click(callbackFn: Function): void {
     if (callbackFn) {
       callbackFn();
     }

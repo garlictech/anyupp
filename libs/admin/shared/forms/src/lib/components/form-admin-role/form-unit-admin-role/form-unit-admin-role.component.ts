@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-unit-admin-role.component.html',
 })
 export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control!: FormControl;
+  @Input() control!: FormGroup;
   public groupOptions: IKeyValue[];
   public chainOptions: IKeyValue[];
   public unitOptions: IKeyValue[];
@@ -130,7 +130,7 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
                 if (!entities.map((e): string => e.unitId!).includes(unit._id)) {
                   this.unitOptions.push({
                     key: unit._id,
-                    value: unit.name,
+                    value: unit.name!,
                   });
                 }
               });

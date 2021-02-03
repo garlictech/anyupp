@@ -12,7 +12,7 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   styleUrls: ['./product-category-list-item.component.scss'],
 })
 export class ProductCategoryListItemComponent {
-  @Input() productCategory: IProductCategory;
+  @Input() productCategory!: IProductCategory;
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();

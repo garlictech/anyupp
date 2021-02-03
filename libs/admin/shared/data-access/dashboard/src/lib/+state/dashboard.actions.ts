@@ -8,7 +8,7 @@ import {
 export const resetDashboard = createAction('[Dashboard] Reset dashboard');
 export const setSelectedOrderId = createAction(
   '[Dashboard] Set selected orderId',
-  props<{ orderId: string }>()
+  props<{ orderId: string | undefined }>()
 );
 export const resetSelectedOrderId = createAction(
   '[Dashboard] Reset selected orderId'

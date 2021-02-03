@@ -7,7 +7,7 @@
           type="number"
           [placeholder]="'common.width' | translate"
           fieldSize="tiny"
-          [formControl]="dimensionForm.controls.width"
+          [formControl]="dimensionForm.get('width')! | asFormControl"
           class="form-control p-1"
         />
       </div>
@@ -17,7 +17,7 @@
           type="number"
           [placeholder]="'common.height' | translate"
           fieldSize="tiny"
-          [formControl]="dimensionForm.controls.height"
+          [formControl]="dimensionForm.get('height')! | asFormControl"
           class="form-control p-1"
         />
       </div>
@@ -25,7 +25,7 @@
         <input
           nbInput
           fieldSize="tiny"
-          [formControl]="objectForm.controls.text"
+          [formControl]="objectForm.get('text')! | asFormControl"
           [placeholder]="'units.label' | translate"
           class="form-control p-1"
         />
@@ -34,7 +34,7 @@
         <input
           nbInput
           fieldSize="tiny"
-          [formControl]="objectForm.controls.tableId"
+          [formControl]="objectForm.get('tableId')! | asFormControl"
           [placeholder]="'units.tableId' | translate"
           class="form-control p-1"
         />
@@ -43,7 +43,7 @@
         <input
           nbInput
           fieldSize="tiny"
-          [formControl]="objectForm.controls.seatId"
+          [formControl]="objectForm.get('seatId')! | asFormControl"
           [placeholder]="'units.seatId' | translate"
           class="form-control p-1"
         />

@@ -15,15 +15,15 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
       <bgap-form-text-input
         caption="common.name"
         type="text"
-        [control]="dialogForm.controls.name"
+        [control]="dialogForm.get('name')! | asFormControl"
       ></bgap-form-text-input>
 
       <bgap-form-contact-group
-        [contactFormGroup]="dialogForm"
+        [contactFormGroup]="dialogForm | asFormGroup"
       ></bgap-form-contact-group>
 
       <div class="mt-20">

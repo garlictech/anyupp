@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -15,15 +15,13 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
   templateUrl: './chain-list.component.html',
   styleUrls: ['./chain-list.component.scss'],
 })
-export class ChainListComponent implements OnInit, OnDestroy {
+export class ChainListComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
 
   constructor(
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
       untilDestroyed(this)

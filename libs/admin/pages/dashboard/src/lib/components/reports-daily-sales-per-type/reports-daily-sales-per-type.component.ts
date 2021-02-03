@@ -8,6 +8,7 @@ import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { reducer } from '@bgap/admin/shared/utils';
 import {
   EProductType,
+  IKeyValueObject,
   IOrder,
   IOrderAmounts,
   IProduct,
@@ -24,11 +25,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ReportsDailySalesPerTypeComponent
   implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
+  private _chart!: Chart;
 
   constructor(
     private _store: Store<any>,
@@ -37,7 +38,7 @@ export class ReportsDailySalesPerTypeComponent
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
+    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
       type: 'pie',
       plugins: [ChartDataLabels],
       data: {
@@ -56,9 +57,9 @@ export class ReportsDailySalesPerTypeComponent
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const label = data.labels[tooltipItem.index] || '';
+              const label = data.labels![tooltipItem.index!] || '';
               const value: number =
-                <number>data.datasets[0].data[tooltipItem.index] || 0;
+                <number>data.datasets![0].data![tooltipItem.index!] || 0;
 
               return ` ${label}: ${this._currencyFormatter.transform(
                 value,
@@ -80,7 +81,7 @@ export class ReportsDailySalesPerTypeComponent
               },
             },
             formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(
+              const sum = (ctx.chart.data.datasets![0].data as number[]).reduce(
                 reducer
               );
               const perc = ((value / sum) * 100).toFixed(0);
@@ -99,7 +100,7 @@ export class ReportsDailySalesPerTypeComponent
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         const amounts = this._orderAmounts(products, orders);
 
-        this._chart.data.datasets[0].data = [
+        this._chart.data.datasets![0].data = [
           amounts[EProductType.FOOD],
           amounts[EProductType.DRINK],
           amounts[EProductType.OTHER],
@@ -128,14 +129,14 @@ export class ReportsDailySalesPerTypeComponent
       [EProductType.OTHER]: 0,
     };
 
-    const productTypeMap = {};
+    const productTypeMap: IKeyValueObject = {};
     products.forEach(p => {
       productTypeMap[p._id] = p.productType;
     });
 
     orders.forEach(o => {
-      o.items.forEach(i => {
-        amounts[productTypeMap[i.productId]] += i.priceShown.priceSum;
+      o.items!.forEach(i => {
+        amounts[<EProductType>productTypeMap[i.productId]] += i.priceShown.priceSum;
       });
     });
 

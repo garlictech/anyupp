@@ -13,6 +13,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { IOrder } from 'libs/shared/types/src';
 
 @UntilDestroy()
 @Component({
@@ -21,11 +22,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./reports-day-history.component.scss'],
 })
 export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
+  private _chart!: Chart;
 
   constructor(
     private _store: Store<any>,
@@ -33,7 +34,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
+    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
       type: 'bar',
       plugins: [ChartDataLabels],
       data: {

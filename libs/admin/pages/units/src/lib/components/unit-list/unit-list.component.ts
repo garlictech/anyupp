@@ -18,8 +18,8 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
   templateUrl: './unit-list.component.html',
 })
 export class UnitListComponent implements OnInit, OnDestroy {
-  public units: IUnit[];
-  public selectedChainId$: Observable<string>;
+  public units: IUnit[] = [];
+  public selectedChainId$!: Observable<string | undefined | null>;
 
   constructor(
     private _store: Store<any>,

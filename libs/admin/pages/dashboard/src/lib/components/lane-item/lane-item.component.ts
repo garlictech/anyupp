@@ -25,9 +25,9 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./lane-item.component.scss'],
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
-  @Input() orderItem: ILaneOrderItem;
-  @Input() buttonSize: ENebularButtonSize;
-  @Input() unit: IUnit;
+  @Input() orderItem!: ILaneOrderItem;
+  @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
+  @Input() unit!: IUnit;
 
   public currentStatus = currentStatusFn;
   public EOrderStatus = EOrderStatus;
@@ -78,17 +78,17 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
   public moveForward(): void {
     this._orderService.updateOrderItemStatus(
-      this.orderItem.orderId,
-      getNextOrderItemStatus(this.orderItem.currentStatus),
-      this.orderItem.idx
+      this.orderItem!.orderId!,
+      getNextOrderItemStatus(this.orderItem!.currentStatus!)!,
+      this.orderItem.idx!
     );
   }
 
   public moveBack(): void {
     this._orderService.updateOrderItemStatus(
-      this.orderItem.orderId,
-      getPrevOrderItemStatus(this.orderItem.currentStatus),
-      this.orderItem.idx
+      this.orderItem!.orderId!,
+      getPrevOrderItemStatus(this.orderItem!.currentStatus!)!,
+      this.orderItem.idx!
     );
   }
 }

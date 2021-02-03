@@ -23,7 +23,7 @@ export const getSelectedActiveOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllActiveOrders,
-    (selectedOrderId: string, activeOrders: IOrder[]): IOrder => {
+    (selectedOrderId: string | undefined, activeOrders: IOrder[]): IOrder | undefined => {
       return activeOrders.find(
         (order): boolean => order._id === selectedOrderId
       );
@@ -35,8 +35,8 @@ export const getSelectedHistoryOrder = () => {
   return createSelector(
     getSelectedOrderId,
     getAllHistoryOrders,
-    (selectedOrderId: string, historyOrders: IOrder[]): IOrder => {
-      return historyOrders.find(
+    (selectedOrderId: string | undefined, historyOrders: IOrder[]): IOrder | undefined => {
+      return historyOrders?.find(
         (order): boolean => order._id === selectedOrderId
       );
     }
@@ -50,7 +50,7 @@ export const getSettings = createSelector(
 
 export const getSelectedOrderId = createSelector(
   getDashboardState,
-  (state: DashboardState): string => state.selectedOrderId
+  (state: DashboardState): string | undefined => state.selectedOrderId
 );
 
 export const getListMode = createSelector(

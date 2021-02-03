@@ -17,7 +17,7 @@ export class ImageCompressorService {
     return new Observable((observer): void => {
       reader.onload = (ev): void => {
         const img = new Image();
-        img.src = <string>ev.target.result;
+        img.src = <string>ev.target!.result;
 
         (img.onload = (): void => {
           const elem = document.createElement('canvas'); // Use Angular's Renderer2 method
@@ -49,7 +49,7 @@ export class ImageCompressorService {
               (blob): void => {
                 observer.next(
                   new File(
-                    [blob],
+                    [blob!],
                     file.name.substr(0, file.name.lastIndexOf('.')) + ext,
                     {
                       type: imageType,

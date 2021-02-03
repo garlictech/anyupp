@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AuthService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -17,7 +17,7 @@ import {
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 interface IMenuItem {
   title: string;
@@ -32,8 +32,8 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public groups$: Observable<IGroup[]>;
-  public adminUser: IAdminUser;
+  public groups$?: Observable<IGroup[]>;
+  public adminUser?: IAdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
@@ -96,19 +96,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.adminUser = adminUser;
       });
 
-    this._translateService.onLangChange.subscribe((event): void => {
+    this._translateService.onLangChange.subscribe((event: EventEmitter<LangChangeEvent>): void => {
       this.selectedLang = _get(event, 'lang', '').split('-')[0];
       this._translateMenuItems();
     });
     this._translateMenuItems();
   }
 
-  get userName(): string {
-    return _get(this.adminUser, 'name');
+  get userName(): string | undefined {
+    return this.adminUser?.name;
   }
 
-  get userImage(): string {
-    return _get(this.adminUser, 'profileImage');
+  get userImage(): string | undefined {
+    return this.adminUser?.profileImage;
   }
 
   ngOnInit(): void {
@@ -170,7 +170,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       lang !== _get(this.adminUser, 'settings.selectedLanguage')
     ) {
       this._dataService.updateAdminUserSeletedLanguage(
-        this.adminUser._id,
+        this.adminUser?._id || '',
         lang
       );
     }

@@ -1,8 +1,8 @@
 <google-map [zoom]="zoom" [center]="center">
   <map-marker
     #markerElem
-    [position]="markerData.position"
-    [options]="markerData.options"
+    [position]="markerData.position!"
+    [options]="markerData.options!"
     (mapDragend)="dragEnd($event)"
   >
   </map-marker>

@@ -1,11 +1,12 @@
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { EVariantAvailabilityType, IDateIntervals } from '@bgap/shared/types';
+import { EVariantAvailabilityType, ICustomDailySchedule, IDateIntervals } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
@@ -25,9 +26,7 @@ export const contactFormGroup = (formBuilder: FormBuilder) => ({
   }),
 });
 
-export const multiLangValidator: ValidatorFn = (
-  control: FormGroup
-): ValidationErrors | null => {
+export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
   const hu = control.get('hu')?.value;
   const en = control.get('en')?.value;
   const de = control.get('de')?.value;
@@ -36,8 +35,8 @@ export const multiLangValidator: ValidatorFn = (
 };
 
 export const productAvailabilityValidator: ValidatorFn = (
-  control: FormGroup
-): ValidationErrors | null => {
+  control: AbstractControl
+) => {
   const type = control.get('type')?.value;
   const dayFrom = control.get('dayFrom')?.value;
   const dayTo = control.get('dayTo')?.value;
@@ -83,13 +82,13 @@ export const productAvailabilityValidator: ValidatorFn = (
 };
 
 export const unitOpeningHoursValidator: ValidatorFn = (
-  control: FormGroup
-): ValidationErrors | null => {
+  control: AbstractControl
+) => {
   let error = null;
 
   Object.keys(control.value).forEach((d: string): void => {
     if (d === 'override') {
-      control.value[d].forEach((day): void => {
+      control.value[d].forEach((day: ICustomDailySchedule): void => {
         if (day.date && day.from && day.to && day.from >= day.to) {
           error = { timeInterval: true };
         }

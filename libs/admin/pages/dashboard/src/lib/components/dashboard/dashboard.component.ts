@@ -26,12 +26,12 @@ import { select, Store } from '@ngrx/store';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
-  public dashboardSettings: IDashboardSettings;
+  public dashboardSettings!: IDashboardSettings;
   public resized: boolean;
-  public buttonSize: ENebularButtonSize;
-  public selectedUnit: IUnit;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
+  public selectedUnit?: IUnit;
   public toggleFormControl: FormControl;
-  public time: string;
+  public time?: string;
 
   constructor(
     private _store: Store<any>,
@@ -58,10 +58,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filter((unit): boolean => !!unit),
         untilDestroyed(this)
       )
-      .subscribe((unit: IUnit): void => {
+      .subscribe((unit: IUnit | undefined): void => {
         this.selectedUnit = unit;
 
-        this.toggleFormControl.setValue(this.selectedUnit.isAcceptingOrders);
+        this.toggleFormControl.setValue(this.selectedUnit?.isAcceptingOrders);
       });
   }
 
@@ -120,15 +120,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialog.componentRef.instance.options = {
-      message: this.selectedUnit.isAcceptingOrders
+      message: this.selectedUnit?.isAcceptingOrders
         ? 'orders.confirmNotAcceptOrder'
         : 'orders.confirmIsAcceptOrder',
       buttons: [
         {
           label: 'common.ok',
           callback: (): void => {
-            this._dataService.updateUnit(this.selectedUnit._id, {
-              isAcceptingOrders: !this.selectedUnit.isAcceptingOrders,
+            this._dataService.updateUnit(this.selectedUnit!._id, {
+              isAcceptingOrders: !this.selectedUnit!.isAcceptingOrders,
             });
           },
           status: 'success',

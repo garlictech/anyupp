@@ -2,12 +2,12 @@
   <bgap-form-text-input
     caption="common.email"
     type="text"
-    [control]="loginForm.controls.email"
+    [control]="loginForm.get('email')! | asFormControl"
   ></bgap-form-text-input>
   <bgap-form-text-input
     caption="auth.password"
     type="password"
-    [control]="loginForm.controls.password"
+    [control]="loginForm.get('password')!  | asFormControl"
   ></bgap-form-text-input>
 
   <div class="mt-20">

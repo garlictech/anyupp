@@ -27,6 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
+  _variantId?: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
@@ -57,6 +58,18 @@ export interface IProduct {
   tax: string; // %
   laneId?: string;
   productType: EProductType;
+}
+
+export interface IGeneratedProduct {
+  _id: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: string;
+  productType: EProductType;
+  tax: string;
+  variants: IProductVariantsObject;
+  productCategoryId: string;
 }
 
 export interface IProductOrderChangeEvent {
