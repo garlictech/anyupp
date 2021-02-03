@@ -20,6 +20,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
   private _adminUser!: IAdminUser;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
@@ -38,7 +39,6 @@ export class ActiveChainSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedChainId');
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -48,7 +48,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
       _get(this._adminUser, '_id') &&
       chainId !== _get(this._adminUser, 'settings.selectedChainId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!

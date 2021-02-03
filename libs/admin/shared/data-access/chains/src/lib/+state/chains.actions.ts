@@ -8,9 +8,4 @@ export const loadChainsSuccess = createAction(
   props<{ chains: IChain[] }>()
 );
 
-export const loadChainsFailure = createAction(
-  '[Chains] Load Chains Failure',
-  props<{ error: any }>()
-);
-
 export const resetChains = createAction('[ChainList] Reset chains');

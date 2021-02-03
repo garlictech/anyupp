@@ -8,23 +8,24 @@ export const generateId = (): string => {
 
 export const fixTextScale = (o: fabric.Object, target: fabric.Object): void => {
   if (o instanceof fabric.IText) {
-    const scaleX = target.width! / target.getScaledWidth();
-    const scaleY = target.height! / target.getScaledHeight();
+    const scaleX = (target.width || 0) / target.getScaledWidth();
+    const scaleY = (target.height || 0) / target.getScaledHeight();
 
     o.scaleX = scaleX;
     o.scaleY = scaleY;
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fixBorderScale = (o: any, target: fabric.Object): void => {
   if (!o.strokeWidthUnscaled && o.strokeWidth) {
     o.strokeWidthUnscaled = o.strokeWidth;
   }
 
   if (o.strokeWidthUnscaled) {
-    o.strokeWidth = o.strokeWidthUnscaled / target.scaleX!;
+    o.strokeWidth = o.strokeWidthUnscaled / (target.scaleX || 1);
     if (o.strokeWidth === o.strokeWidthUnscaled) {
-      o.strokeWidth = o.strokeWidthUnscaled / target.scaleY!;
+      o.strokeWidth = o.strokeWidthUnscaled / (target.scaleY || 1);
     }
   }
 };
@@ -41,7 +42,7 @@ export const getObjectText = (obj: fabric.Group): string => {
       obj.getObjects()?.filter((o): boolean => o instanceof fabric.IText)[0]
     );
 
-    return textField ? textField.text! : '';
+    return textField?.text ? textField.text : '';
   }
 
   return '';
@@ -61,7 +62,7 @@ export const getObjectRadius = (obj: fabric.Group): number | null => {
       obj.getObjects()?.filter((o): boolean => o instanceof fabric.Circle)[0]
     );
 
-    return circleField ? circleField.radius! : null;
+    return circleField ? (circleField.radius || 1) : null;
   }
 
   return null;
@@ -79,7 +80,7 @@ export const isSeat = (obj: fabric.Object): boolean =>
 
 export const getTableSeatIds = (data: IFloorMapData): string[] =>
   Object.values(data?.objects || {})
-    .filter((o: IFloorMapDataObject): boolean => o!.t!.indexOf('seat') === 0)
+    .filter((o: IFloorMapDataObject): boolean => o?.t?.indexOf('seat') === 0)
     .map((o: IFloorMapDataObject): string => getTableSeatId(o));
 
 export const getStatusBgColor = (status: EOrderStatus): string => {

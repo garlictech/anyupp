@@ -8,9 +8,4 @@ export const loadUnitsSuccess = createAction(
   props<{ units: IUnit[] }>()
 );
 
-export const loadUnitsFailure = createAction(
-  '[Units] Load Units Failure',
-  props<{ error: any }>()
-);
-
 export const resetUnits = createAction('[UnitList] Reset units');

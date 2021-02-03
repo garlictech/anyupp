@@ -15,6 +15,7 @@ export class ColorizedLaneIconComponent implements OnInit {
   @Input() laneId!: string;
   public laneColor: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     this.laneColor = DEFAULT_LANE_COLOR;
   }

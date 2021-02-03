@@ -10,18 +10,18 @@ import { EImageType } from '@bgap/shared/types';
   styleUrls: ['./form-clickable-image-input.component.scss'],
 })
 export class FormClickableImageInputComponent {
-  @Input() caption: string = ''; // Language key!!!
+  @Input() caption = ''; // Language key!!!
   @Input() imagePath?: string;
-  @Input() maxSize: number = 400;
+  @Input() maxSize = 400;
   @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
   @Input() uploadCallbackFn!: (imagePath: string, key: string) => void;
   @Input() removeCallbackFn!: (key: string) => void;
-  @Input() callbackParam: string = '';
+  @Input() callbackParam = '';
 
-  @Input() width: string = '';
-  @Input() height: string = '';
+  @Input() width = '';
+  @Input() height = '';
   @Input() borderRadius?: string;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -43,15 +43,15 @@ export class FormClickableImageInputComponent {
     }
   }
 
-  public fileInputListener($event: any): void {
-    const file = $event.target!.files[0];
+  public fileInputListener($event: Event): void {
+    const file = $event.target?.files[0];
 
     if (file) {
       if (file.type === 'image/svg+xml') {
         this._uploadFile(file);
       } else {
         this._imageCompressorService
-          .compress(file, this.imageType!, this.maxSize)
+          .compress(file, this.imageType, this.maxSize)
           .subscribe(
             (_file): void => {
               this._uploadFile(_file);
@@ -65,10 +65,10 @@ export class FormClickableImageInputComponent {
   }
 
   private _uploadFile(file: File): void {
-    this._storageService.uploadFile(this.uploadFolderPath!, file).then(
+    this._storageService.uploadFile(this.uploadFolderPath || '', file).then(
       (filePath: string): void => {
         this.imagePath = filePath;
-        this.uploadCallbackFn!(this.imagePath!, this.callbackParam!);
+        this.uploadCallbackFn(this.imagePath, this.callbackParam);
       },
       (err): void => {
         console.error('FILE UPLOAD ERROR', err);

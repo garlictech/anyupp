@@ -7,10 +7,24 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { customNumberCompare, EToasterType, objectToArray } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant, IUnit
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  customNumberCompare,
+  EToasterType,
+  objectToArray,
+} from '@bgap/admin/shared/utils';
+import {
+  EProductLevel,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+  IUnit,
+  ILane,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -26,11 +40,12 @@ export class ProductExtendFormComponent
   public product!: IProduct;
   public productLevel!: EProductLevel;
   public eProductLevel = EProductLevel;
-  public editing: boolean = false;
+  public editing = false;
   public currency!: string;
   public productCategories$: Observable<IProductCategory[]>;
   public unitLanes: IKeyValue[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
   private _selectedChainId?: string;
@@ -63,9 +78,9 @@ export class ProductExtendFormComponent
         take(1)
       )
       .subscribe((unit: IUnit | undefined): void => {
-        this.unitLanes = objectToArray(unit?.lanes || {}).map(
+        this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
           (lane): IKeyValue => ({
-            key: lane._id,
+            key: lane._id || '',
             value: lane.name,
           })
         );
@@ -97,10 +112,9 @@ export class ProductExtendFormComponent
       this.dialogForm.patchValue(_omit(this.product, 'variants'));
 
       // Parse variants object to temp array
-      const variantsArr = objectToArray(
-        this.product.variants || {},
-        '_variantId'
-      ).sort(customNumberCompare('position'));
+      const variantsArr = (<IProductVariant[]>(
+        objectToArray(this.product.variants || {}, '_variantId')
+      )).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
@@ -134,7 +148,7 @@ export class ProductExtendFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._variantId!] = _omit(variant, '_variantId');
+        value.variants[variant._variantId || ''] = _omit(variant, '_variantId');
       });
 
       delete value._variantArr;
@@ -150,14 +164,14 @@ export class ProductExtendFormComponent
         switch (this.productLevel) {
           case EProductLevel.GROUP:
             updatePromise = this._dataService.updateGroupProduct(
-              this._selectedGroupId!,
+              this._selectedGroupId || '',
               this.product._id,
               value
             );
             break;
           case EProductLevel.UNIT:
             updatePromise = this._dataService.updateUnitProduct(
-              this._selectedUnitId!,
+              this._selectedUnitId || '',
               this.product._id,
               value
             );
@@ -181,7 +195,6 @@ export class ProductExtendFormComponent
             }
           );
         }
-
       } else {
         let insertPromise;
 
@@ -191,13 +204,13 @@ export class ProductExtendFormComponent
         switch (this.productLevel) {
           case EProductLevel.GROUP:
             insertPromise = this._dataService.insertGroupProduct(
-              this._selectedGroupId!,
+              this._selectedGroupId || '',
               value
             );
             break;
           case EProductLevel.UNIT:
             insertPromise = this._dataService.insertUnitProduct(
-              this._selectedUnitId!,
+              this._selectedUnitId || '',
               value
             );
             break;
@@ -220,7 +233,6 @@ export class ProductExtendFormComponent
             }
           );
         }
-
       }
     }
   }

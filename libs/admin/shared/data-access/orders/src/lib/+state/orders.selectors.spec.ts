@@ -1,4 +1,4 @@
-import { State, ordersAdapter, initialState } from './orders.reducer';
+import { ordersAdapter, initialState } from './orders.reducer';
 import * as OrdersSelectors from './orders.selectors';
 
 describe('Orders Selectors', () => {

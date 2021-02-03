@@ -9,9 +9,6 @@ import {
 } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 
-// eslint-disable-next-line
-declare const google: any;
-
 interface IMarkerData  {
   options?: google.maps.MarkerOptions;
   position?: google.maps.LatLngLiteral | google.maps.LatLng;

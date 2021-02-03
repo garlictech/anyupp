@@ -34,10 +34,11 @@ export class OrderProductListComponent {
   @Input() selectedOrder?: IOrder;
   public generatedUnitProducts: IGeneratedProduct[];
   public productCategories: IProductCategory[] = [];
-  public selectedProductCategoryId: string = '';
-  public groupCurrency: string = '';
+  public selectedProductCategoryId = '';
+  public groupCurrency = '';
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
 
@@ -47,7 +48,7 @@ export class OrderProductListComponent {
         skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup | undefined): void => {
-        this.groupCurrency = group!.currency!;
+        this.groupCurrency = group?.currency || '';
       });
 
     this._store
@@ -108,27 +109,27 @@ export class OrderProductListComponent {
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price
     );
 
-    if ((existingVariantOrderIdx || 0) >= 0) {
+    if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(this.selectedOrder!),
-        existingVariantOrderIdx!,
+        _cloneDeep(<IOrder>this.selectedOrder),
+        <number>existingVariantOrderIdx,
         1
       );
 
       if (
         currentStatus(
-          this.selectedOrder!.items[existingVariantOrderIdx!].statusLog
+          (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx].statusLog
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          this.selectedOrder!._id,
+          (<IOrder>this.selectedOrder)._id,
           EOrderStatus.PLACED,
-          existingVariantOrderIdx!
+          <number>existingVariantOrderIdx
         );
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(this.selectedOrder!),
+        _cloneDeep(<IOrder>this.selectedOrder),
         product,
         variantId
       );

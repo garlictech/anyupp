@@ -211,7 +211,7 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
 
 export const getUnitProductLaneIds = () => {
   return createSelector(getAllUnitProducts, (products: IProduct[]): string[] =>
-    [...new Set(products.map((product: IProduct): string => product.laneId!))].filter(
+    [...new Set(products.map((product: IProduct): string => product.laneId || ''))].filter(
       (id): boolean => !!id
     )
   );

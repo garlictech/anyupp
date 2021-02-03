@@ -1,4 +1,4 @@
-import { State, groupsAdapter, initialState } from './groups.reducer';
+import { groupsAdapter, initialState } from './groups.reducer';
 import * as GroupsSelectors from './groups.selectors';
 
 describe('Groups Selectors', () => {

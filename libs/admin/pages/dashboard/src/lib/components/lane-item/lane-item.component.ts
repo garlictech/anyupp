@@ -34,6 +34,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public processingTimer = 0;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService
   ) {}
@@ -55,7 +56,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
     if (this.orderItem.currentStatus === EOrderStatus.PROCESSING) {
-      const processingInfo = objectToArray(this.orderItem.statusLog, 'ts')
+      const processingInfo = (<IStatusLogItem[]>objectToArray(this.orderItem.statusLog, 'ts'))
         .reverse() // <-- Find the LAST processing status
         .find(
           (t: IStatusLogItem): boolean => t.status === EOrderStatus.PROCESSING
@@ -65,30 +66,30 @@ export class LaneItemComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe((): void => {
           this.processingTimer = Math.floor(
-            (new Date().getTime() - parseInt(processingInfo.ts, 10)) * 0.001
+            (new Date().getTime() - parseInt(<string>(<IStatusLogItem>processingInfo).ts, 10)) * 0.001
           );
         });
     }
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
   public moveForward(): void {
     this._orderService.updateOrderItemStatus(
-      this.orderItem!.orderId!,
-      getNextOrderItemStatus(this.orderItem!.currentStatus!)!,
-      this.orderItem.idx!
+      this.orderItem?.orderId || '',
+      <EOrderStatus>getNextOrderItemStatus(<EOrderStatus>this.orderItem?.currentStatus),
+      <number>this.orderItem.idx
     );
   }
 
   public moveBack(): void {
     this._orderService.updateOrderItemStatus(
-      this.orderItem!.orderId!,
-      getPrevOrderItemStatus(this.orderItem!.currentStatus!)!,
-      this.orderItem.idx!
+      <string>(<ILaneOrderItem>this.orderItem).orderId,
+      <EOrderStatus>getPrevOrderItemStatus(<EOrderStatus>this.orderItem?.currentStatus),
+      <number>this.orderItem.idx
     );
   }
 }

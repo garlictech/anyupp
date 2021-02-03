@@ -34,6 +34,7 @@ export class FloorMapEditorComponent
   public objectForm!: FormGroup;
   public EUnitMapObjectType = EUnitMapObjectType;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -71,7 +72,7 @@ export class FloorMapEditorComponent
   }
 
   ngAfterViewInit(): void {
-    floorMapFuncs.initCanvas(this.editMode!);
+    floorMapFuncs.initCanvas(this.editMode || false);
     floorMapFuncs.resizeCanvas(
       this.dimensionForm?.value.width,
       this.dimensionForm?.value.height
@@ -82,6 +83,7 @@ export class FloorMapEditorComponent
         'object:modified',
         floorMapFuncs.updateObjectMapRawData
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       floorMapFuncs.registerCanvasEvent('mouse:up', (e: any): void => {
         if (e.target?.id) {
           this.objectForm?.setValue({
@@ -121,7 +123,6 @@ export class FloorMapEditorComponent
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

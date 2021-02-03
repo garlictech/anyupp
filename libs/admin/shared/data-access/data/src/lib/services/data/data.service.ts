@@ -62,6 +62,7 @@ export class DataService {
   private _rolesChanged$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _angularFireDatabase: AngularFireDatabase,
     private _angularFireFunctions: AngularFireFunctions,
@@ -131,7 +132,7 @@ export class DataService {
         filter((roles: IAdminUserRole | undefined): boolean => !!roles),
         takeUntil(this._destroyConnection$)
       )
-      .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
+      .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
         this._rolesChanged$.next(true);
 
         // TODO empty chain/group/unit update based on the first role
@@ -164,11 +165,11 @@ export class DataService {
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId!)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               'groupId',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId!)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
@@ -178,11 +179,11 @@ export class DataService {
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId!)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId!)
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
@@ -192,11 +193,11 @@ export class DataService {
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId!)
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId!)
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             break;
           default:
@@ -225,7 +226,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           chainsActions.loadChainsSuccess({
-            chains: objectToArray(data).filter((c: IChain): boolean =>
+            chains: (<IChain[]>objectToArray(data)).filter((c: IChain): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(c._id)
@@ -246,7 +247,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           groupsActions.loadGroupsSuccess({
-            groups: objectToArray(data).filter((c: IGroup): boolean =>
+            groups: (<IGroup[]>objectToArray(data)).filter((c: IGroup): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(_get(c, fieldName))
@@ -267,7 +268,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           unitsActions.loadUnitsSuccess({
-            units: objectToArray(data).filter((c: IUnit): boolean =>
+            units: (<IUnit[]>objectToArray(data)).filter((c: IUnit): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
                 : loggedAdminUserEntities.includes(_get(c, fieldName))
@@ -285,7 +286,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           productCategoriesActions.loadProductCategoriesSuccess({
-            productCategories: objectToArray(data),
+            productCategories: <IProductCategory[]>objectToArray(data),
           })
         );
       });
@@ -299,7 +300,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           productsActions.loadChainProductsSuccess({
-            products: objectToArray(data),
+            products: <IProduct[]>objectToArray(data),
           })
         );
       });
@@ -313,7 +314,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           productsActions.loadGroupProductsSuccess({
-            products: objectToArray(data),
+            products: <IProduct[]>objectToArray(data),
           })
         );
       });
@@ -327,7 +328,7 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           productsActions.loadUnitProductsSuccess({
-            products: objectToArray(data),
+            products: <IProduct[]>objectToArray(data),
           })
         );
       });
@@ -378,7 +379,7 @@ export class DataService {
         if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
           this._store.dispatch(
             ordersActions.removeActiveOrder({
-              orderId: data.key!,
+              orderId: data.key || '',
             })
           );
         } else {
@@ -386,7 +387,7 @@ export class DataService {
             ordersActions.upsertActiveOrder({
               order: {
                 ...(<IOrder>data.payload.val()),
-                _id: data.key!,
+                _id: data.key || '',
               },
             })
           );
@@ -421,7 +422,7 @@ export class DataService {
         if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
           this._store.dispatch(
             ordersActions.removeHistoryOrder({
-              orderId: data.key!,
+              orderId: data.key || '',
             })
           );
         } else {
@@ -429,7 +430,7 @@ export class DataService {
             ordersActions.upsertHistoryOrder({
               order: {
                 ...(<IOrder>data.payload.val()),
-                _id: data.key!,
+                _id: data.key || '',
               },
             })
           );
@@ -445,7 +446,7 @@ export class DataService {
       .subscribe((data: IKeyValueObject | unknown): void => {
         this._store.dispatch(
           usersActions.loadUsersSuccess({
-            users: objectToArray(data),
+            users: <IUser[]>objectToArray(data),
           })
         );
       });
@@ -461,10 +462,10 @@ export class DataService {
       .subscribe((_adminUsers): void => {
         switch (loggedAdminRole.role) {
           case EAdminRole.SUPERUSER:
-            adminUsers = objectToArray(_adminUsers);
+            adminUsers = <IAdminUser[]>objectToArray(_adminUsers);
             break;
           case EAdminRole.CHAIN_ADMIN:
-            adminUsers = objectToArray(_adminUsers).filter(
+            adminUsers = (<IAdminUser[]>objectToArray(_adminUsers)).filter(
               (currentAdminUser: IAdminUser): boolean => {
                 const loggedAdminChainIds = (
                   loggedAdminRole?.entities ?? []
@@ -477,7 +478,7 @@ export class DataService {
                   EAdminRole.GROUP_ADMIN,
                   EAdminRole.UNIT_ADMIN,
                   EAdminRole.STAFF,
-                ].includes(currentAdminUser.roles!.role)
+                ].includes(currentAdminUser.roles?.role || EAdminRole.INACTIVE)
                   ? _intersection(loggedAdminChainIds, currentAdminChainIds)
                       .length > 0
                   : false;
@@ -485,18 +486,18 @@ export class DataService {
             );
             break;
           case EAdminRole.GROUP_ADMIN:
-            adminUsers = objectToArray(_adminUsers).filter(
+            adminUsers = (<IAdminUser[]>objectToArray(_adminUsers)).filter(
               (currentAdminUser: IAdminUser): boolean => {
                 const loggedAdminGroupIds = (
                   loggedAdminRole?.entities ?? []
-                ).map((e): string => e.unitId!);
+                ).map((e): string => e.unitId || '');
                 const currentAdminGroupIds = (
                   currentAdminUser?.roles?.entities ?? []
-                ).map((e): string => e.groupId!);
+                ).map((e): string => e.groupId || '');
 
                 // Chain admin shows only the group/unit admins and the staffs of his chains
                 return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
-                  currentAdminUser.roles!.role
+                  currentAdminUser.roles?.role || EAdminRole.INACTIVE
                 )
                   ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
                       .length > 0
@@ -505,17 +506,17 @@ export class DataService {
             );
             break;
           case EAdminRole.UNIT_ADMIN:
-            adminUsers = objectToArray(_adminUsers).filter(
+            adminUsers = (<IAdminUser[]>objectToArray(_adminUsers)).filter(
               (currentAdminUser: IAdminUser): boolean => {
                 const loggedAdminUnitIds = (
                   loggedAdminRole?.entities ?? []
-                ).map((e): string => e.unitId!);
+                ).map((e): string => e.unitId || '');
                 const currentAdminUnitIds = (
                   currentAdminUser?.roles?.entities ?? []
-                ).map((e): string => e.unitId!);
+                ).map((e): string => e.unitId || '');
 
                 // Chain admin shows only the group/unit admins and the staffs of his chains
-                return currentAdminUser.roles!.role === EAdminRole.STAFF
+                return currentAdminUser.roles?.role === EAdminRole.STAFF
                   ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
                       .length > 0
                   : false;

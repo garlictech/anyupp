@@ -1,5 +1,5 @@
 import { LoggedUserEntity } from './logged-user.models';
-import { State, loggedUserAdapter, initialState } from './logged-user.reducer';
+import { loggedUserAdapter, initialState } from './logged-user.reducer';
 import * as LoggedUserSelectors from './logged-user.selectors';
 
 describe('LoggedUser Selectors', () => {

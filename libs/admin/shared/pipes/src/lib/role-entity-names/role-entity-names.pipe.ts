@@ -14,6 +14,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class RoleEntityNamesPipe implements PipeTransform {
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _domSanitizer: DomSanitizer
   ) {}
@@ -28,21 +29,21 @@ export class RoleEntityNamesPipe implements PipeTransform {
         this._store
           .pipe(select(chainsSelectors.getChainById(entity.chainId), take(1)))
           .subscribe((chain: IChain | undefined): void => {
-            entitiesArr.push(chain?.name || '');
+            entitiesArr.push(chain?.name || '');
           });
       }
       if (entity.groupId) {
         this._store
           .pipe(select(groupsSelectors.getGroupById(entity.groupId), take(1)))
           .subscribe((group: IGroup | undefined): void => {
-            entitiesArr.push(group?.name || '');
+            entitiesArr.push(group?.name || '');
           });
       }
       if (entity.unitId) {
         this._store
           .pipe(select(unitsSelectors.getUnitById(entity.unitId), take(1)))
           .subscribe((unit: IUnit | undefined): void => {
-            entitiesArr.push(unit?.name || '');
+            entitiesArr.push(unit?.name || '');
           });
       }
 

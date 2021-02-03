@@ -2,7 +2,7 @@ import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
-import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -39,7 +39,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public groupProducts$: Observable<IProduct[]>;
   public pendingGroupProducts: IProduct[] = [];
   public pendingUnitProducts: IProduct[] = [];
-  public groupCurrency: string = '';
+  public groupCurrency = '';
   public unitProducts: IProduct[] = [];
   public EProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
@@ -49,6 +49,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _dataService: DataService
@@ -148,13 +149,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
               take(1)
             )
             .subscribe((group: IGroup | undefined): void => {
-              this.groupCurrency = group?.currency!;
+              this.groupCurrency = group?.currency || '';
             });
         }
       );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -202,7 +202,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public unitPositionChange($event: any): void {
+  public unitPositionChange($event: IProductOrderChangeEvent): void {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (

@@ -1,4 +1,4 @@
-import { State, usersAdapter, initialState } from './users.reducer';
+import { usersAdapter, initialState } from './users.reducer';
 import * as UsersSelectors from './users.selectors';
 
 describe('Users Selectors', () => {

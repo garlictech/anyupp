@@ -8,11 +8,6 @@ export const loadProductCategoriesSuccess = createAction(
   props<{ productCategories: IProductCategory[] }>()
 );
 
-export const loadProductCategoriesFailure = createAction(
-  '[ProductCategories] Load ProductCategories Failure',
-  props<{ error: any }>()
-);
-
 export const resetProductCategories = createAction(
   '[ProductCategoryList] Reset product categories'
 );

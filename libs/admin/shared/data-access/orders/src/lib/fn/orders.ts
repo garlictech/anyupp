@@ -118,14 +118,14 @@ export const getOrdersByUser = (
         userId: order.userId,
         orders: [{ ...order }],
         lastOrder: { ...order },
-        hasPaymentIntention: order.paymentIntention! > 0,
+        hasPaymentIntention: (order.paymentIntention || 0) > 0,
         lowestStatus: currentStatus(order.statusLog),
       };
     } else {
       ordersByUser[order.userId].orders.push({ ...order });
       ordersByUser[order.userId].hasPaymentIntention =
         ordersByUser[order.userId].hasPaymentIntention ||
-        order.paymentIntention! > 0;
+        (order.paymentIntention || 0) > 0;
 
       if (order.created > ordersByUser[order.userId].lastOrder.created) {
         ordersByUser[order.userId].lastOrder = { ...order };

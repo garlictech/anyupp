@@ -1,4 +1,4 @@
-import { State, dashboardAdapter, initialState } from './dashboard.reducer';
+import { dashboardAdapter, initialState } from './dashboard.reducer';
 import * as DashboardSelectors from './dashboard.selectors';
 
 describe('Dashboard Selectors', () => {

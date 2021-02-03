@@ -20,6 +20,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
   public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatusFn;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     this._store
       .pipe(select(dashboardSelectors.getSelectedHistoryDate), take(1))
@@ -57,7 +58,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

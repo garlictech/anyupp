@@ -2,7 +2,7 @@ import { Apollo } from 'apollo-angular';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import {
   AbstractFormDialogComponent,
   FormsService,
@@ -36,7 +36,7 @@ export class AdminUserFormComponent
   }
 
   get userImage(): string {
-    return this.adminUser?.profileImage || '';
+    return this.adminUser?.profileImage || '';
   }
 
   ngOnInit(): void {
@@ -50,8 +50,8 @@ export class AdminUserFormComponent
       this.dialogForm.patchValue(this.adminUser);
     } else {
       // Add custom asyncValidator to check existing email
-      this.dialogForm.controls.email!.setAsyncValidators([
-        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email!),
+      (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
+        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email || ''),
       ]);
     }
   }
@@ -68,7 +68,7 @@ export class AdminUserFormComponent
             },
           })
           .subscribe(
-            ({ data }) => {
+            () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
@@ -89,7 +89,7 @@ export class AdminUserFormComponent
             },
           })
           .subscribe(
-            ({ data }) => {
+            () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
@@ -111,7 +111,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id!, imagePath)
+        .updateAdminUserProfileImagePath(this.adminUser._id || '', imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -138,7 +138,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id!, null)
+        .updateAdminUserProfileImagePath(this.adminUser._id || '', null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,

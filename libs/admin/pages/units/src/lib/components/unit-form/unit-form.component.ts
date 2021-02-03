@@ -23,6 +23,7 @@ import {
   IGroup,
   IKeyValue,
   ILane,
+  ILanesObject,
   IPaymentMode,
   IUnit,
 } from '@bgap/shared/types';
@@ -40,9 +41,11 @@ export class UnitFormComponent
   public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
-  private groups: IGroup[] = [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
+  private groups: IGroup[] = [];
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -136,9 +139,7 @@ export class UnitFormComponent
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (this.dialogForm
-            ?.get('openingHours')!
-            .get('override') as FormArray)!.push(dayGroup);
+          (<FormArray>this.dialogForm?.get('openingHours')?.get('override')).push(dayGroup);
         });
       }
 
@@ -147,9 +148,9 @@ export class UnitFormComponent
         const laneGroup = this._formsService.createLaneFormGroup();
         laneGroup.patchValue({
           _laneId: key,
-          ...this.unit.lanes![key],
+          ...(<ILanesObject>this.unit.lanes)[key],
         });
-        (this.dialogForm?.controls._lanesArr as FormArray).push(laneGroup);
+        (<FormArray>this.dialogForm?.get('_lanesArr')).push(laneGroup);
       });
     } else {
       // Patch ChainId
@@ -182,7 +183,7 @@ export class UnitFormComponent
       };
 
       value._lanesArr.map((lane: ILane): void => {
-        value.lanes[lane._laneId!] = _omit(lane, '_laneId');
+        value.lanes[lane._laneId || ''] = _omit(lane, '_laneId');
       });
 
       delete value._lanesArr;

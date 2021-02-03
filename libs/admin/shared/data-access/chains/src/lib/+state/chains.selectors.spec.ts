@@ -1,4 +1,4 @@
-import { State, chainsAdapter, initialState } from './chains.reducer';
+import { chainsAdapter, initialState } from './chains.reducer';
 import * as ChainsSelectors from './chains.selectors';
 
 describe('Chains Selectors', () => {

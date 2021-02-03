@@ -75,6 +75,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   public menu: NbMenuItem[] = [];
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService
   ) {}

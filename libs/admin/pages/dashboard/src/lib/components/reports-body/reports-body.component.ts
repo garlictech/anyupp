@@ -20,8 +20,9 @@ export class ReportsBodyComponent implements OnDestroy {
   public dateFormControl: FormControl;
   public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<IOrder[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
-  public groupCurrency: string = '';
+  public groupCurrency = '';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     this.dateFormControl = new FormControl();
 
@@ -45,8 +46,8 @@ export class ReportsBodyComponent implements OnDestroy {
         const selectedDayInterval = dayInterval(dateFormValue);
         const dailyHistoryOrders: IOrder[] = historyOrders.filter(
           (o: IOrder): boolean =>
-            o.created! >= selectedDayInterval.start &&
-            o.created! <= selectedDayInterval.end
+            o.created >= selectedDayInterval.start &&
+            o.created <= selectedDayInterval.end
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);
@@ -55,7 +56,7 @@ export class ReportsBodyComponent implements OnDestroy {
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

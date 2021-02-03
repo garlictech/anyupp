@@ -1,4 +1,4 @@
-import { getAllActiveOrders, getAllHistoryOrders } from 'libs/admin/shared/data-access/orders/src/lib/+state/orders.selectors';
+import { getAllActiveOrders, getAllHistoryOrders } from '@bgap/admin/shared/data-access/orders';
 
 import {
   EDashboardListMode,

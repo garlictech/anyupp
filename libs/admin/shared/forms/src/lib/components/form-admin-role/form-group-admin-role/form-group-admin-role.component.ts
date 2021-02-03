@@ -3,7 +3,7 @@ import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue } from '@bgap/shared/types';
@@ -22,6 +22,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedGroups: IAssignedEntityNames[];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.groupOptions = [];
     this.chainOptions = [];
@@ -36,7 +37,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
       this._store.pipe(select(groupsSelectors.getAllGroups)),
-      this.control.get('entities')!.valueChanges.pipe(
+      (<FormGroup>this.control.get('entities')).valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -75,7 +76,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
     combineLatest([
       this.entitySelector.valueChanges,
-      this.control.get('entities')!.valueChanges.pipe(
+      (<FormGroup>this.control.get('entities')).valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -95,7 +96,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
               groups.forEach((group: IGroup): void => {
                 if (
-                  !entities.map((e): string => e.groupId!).includes(group._id)
+                  !entities.map((e): string => e.groupId || '').includes(group._id)
                 ) {
                   this.groupOptions.push({
                     key: group._id,
@@ -108,7 +109,6 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -119,7 +119,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       chainId: this.entitySelector.value.chainId,
       groupId: this.entitySelector.value.groupId,
     });
-    this.control.get('entities')!.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
 
     this.entitySelector.patchValue({
       chainId: '',
@@ -131,6 +131,6 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
     const arr = [...this.control.value.entities];
     arr.splice(idx, 1);
 
-    this.control.get('entities')!.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
   }
 }

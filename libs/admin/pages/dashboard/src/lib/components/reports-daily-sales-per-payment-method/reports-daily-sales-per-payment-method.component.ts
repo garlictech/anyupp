@@ -37,66 +37,72 @@ export class ReportsDailySalesPerPaymentMethodComponent
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
-      type: 'pie',
-      plugins: [ChartDataLabels],
-      data: {
-        labels: this._translatedLabels(),
-        datasets: [
-          {
-            backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
-            data: [0, 0, 0],
-          },
-        ],
-      },
-      options: {
-        legend: {
-          position: 'bottom',
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        tooltips: {
-          callbacks: {
-            label: (tooltipItem, data) => {
-              const label = data.labels![tooltipItem.index!] || '';
-              const value: number =
-                <number>data.datasets![0].data![tooltipItem.index!] || 0;
-
-              return ` ${label}: ${this._currencyFormatter.transform(
-                value,
-                this.currency
-              )}`;
+    this._chart = new Chart(
+      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
+      {
+        type: 'pie',
+        plugins: [ChartDataLabels],
+        data: {
+          labels: this._translatedLabels(),
+          datasets: [
+            {
+              backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
+              data: [0, 0, 0],
             },
-          },
+          ],
         },
-        plugins: {
-          datalabels: {
-            color: 'white',
-            labels: {
-              title: {
-                font: {
-                  weight: 'bold',
-                },
+        options: {
+          legend: {
+            position: 'bottom',
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            callbacks: {
+              label: (tooltipItem, data) => {
+                const label = (<string[]>data.labels)[tooltipItem.index || 0] || '';
+                const value: number =
+                  <number>(
+                    (<Chart.ChartDataSets[]>(
+                      (<Chart.ChartDataSets[]>data.datasets)[0].data
+                    ))[tooltipItem.index || 0]
+                  ) || 0;
+
+                return ` ${label}: ${this._currencyFormatter.transform(
+                  value,
+                  this.currency
+                )}`;
               },
             },
-            formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets![0].data as number[]).reduce(
-                reducer
-              );
-              const perc = ((value / sum) * 100).toFixed(0);
-              return `${perc}%`;
+          },
+          plugins: {
+            datalabels: {
+              color: 'white',
+              labels: {
+                title: {
+                  font: {
+                    weight: 'bold',
+                  },
+                },
+              },
+              formatter: (value, ctx) => {
+                const sum = ((<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0]
+                  .data as number[]).reduce(reducer);
+                const perc = ((value / sum) * 100).toFixed(0);
+                return `${perc}%`;
+              },
             },
           },
         },
-      },
-    });
+      }
+    );
 
     this.orders$
       .pipe(untilDestroyed(this))
       .subscribe((orders: IOrder[]): void => {
         const amounts = this._orderAmounts(orders);
 
-        this._chart.data.datasets![0].data = [
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           amounts[EPaymentMethod.CARD],
           amounts[EPaymentMethod.CASH],
           amounts[EPaymentMethod.INAPP],
@@ -113,7 +119,6 @@ export class ReportsDailySalesPerPaymentMethodComponent
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -126,7 +131,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
     };
 
     orders.forEach(o => {
-      amounts[o.paymentMethod!] += o.sumPriceShown!.priceSum;
+      amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
     });
 
     return amounts;

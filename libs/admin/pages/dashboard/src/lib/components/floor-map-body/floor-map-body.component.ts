@@ -17,6 +17,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
+import { Group } from 'fabric/fabric-impl';
 
 @UntilDestroy()
 @Component({
@@ -34,6 +35,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   > = new BehaviorSubject({});
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {
@@ -66,16 +68,16 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
           const padding = 20;
           const clientHeight =
-            document.querySelector('#dashboardMainCardBody')!.clientHeight -
+            (<HTMLElement>document.querySelector('#dashboardMainCardBody')).clientHeight -
             2 * padding;
           const clientWidth =
-            document.querySelector('#dashboardMainCardBody')!.clientWidth -
+            (<HTMLElement>document.querySelector('#dashboardMainCardBody')).clientWidth -
             2 * padding;
           const scale =
-            this.unit!.floorMap!.w / this.unit!.floorMap!.h >
+            (this.unit?.floorMap?.w || 1) / (this.unit?.floorMap?.h || 1) >
             clientWidth / clientHeight
-              ? clientWidth / this.unit!.floorMap!.w
-              : clientHeight / this.unit!.floorMap!.h;
+              ? clientWidth / (this.unit?.floorMap?.w || 1)
+              : clientHeight / (this.unit?.floorMap?.h || 1);
 
           (<HTMLElement>(
             document.querySelector('#floorMap')
@@ -92,7 +94,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       )
       .subscribe((orders: IOrder[]): void => {
         if (this.unit?.floorMap?.objects) {
-          const floorMapRawObjects: IFloorMapDataObject[] = objectToArray(
+          const floorMapRawObjects: IFloorMapDataObject[] = <IFloorMapDataObject[]>objectToArray(
             this.unit.floorMap.objects,
             'id'
           );
@@ -113,7 +115,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
                   getTableSeatId(o) === tableOrder.tsID
               );
 
-              const fabricObj: any = getObjectById(rawObj?.id!);
+              const fabricObj: Group = <Group>getObjectById(rawObj?.id || '');
 
               if (fabricObj) {
                 // Highlight or clear border
@@ -137,14 +139,14 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _onMouseUp = (e: any): void => {
     if (e.target.type.indexOf('seat') === 0) {
-      const rawObject: IFloorMapDataObject = this.unit!.floorMap!.objects[
+      const rawObject: IFloorMapDataObject = <IFloorMapDataObject>this.unit?.floorMap?.objects[
         e.target?.id
       ];
 
@@ -156,8 +158,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           dialogClass: 'floor-map-order-dialog',
         });
 
-        dialog.componentRef.instance.tableId = rawObject.tID!;
-        dialog.componentRef.instance.seatId = rawObject.sID!;
+        dialog.componentRef.instance.tableId = rawObject.tID || '';
+        dialog.componentRef.instance.seatId = rawObject.sID || '';
         dialog.componentRef.instance.allTableOrders$ = this._allTableOrders$;
       }
     }

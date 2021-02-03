@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'admin-shared-auth',
-  preset: '../../../../jest.preset.js',
+  displayName: 'admin-shared-data-access-auth',
+  preset: '../../../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/admin/shared/data-access/auth',
+  coverageDirectory: '../../../../../coverage/libs/admin/shared/data-access/auth',
 };

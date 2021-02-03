@@ -1,5 +1,3 @@
-import * as ProductsActions from './products.actions';
-import { State, initialState, reducer } from './products.reducer';
 /*describe('Products Reducer', () => {
   const createProductsEntity = (id: string, name = '') =>
     ({

@@ -33,11 +33,12 @@ export class OrderTicketListComponent implements OnDestroy {
   public readyOrders: IOrder[] = [];
   public paymentOrders: IOrder[] = [];
 
-  public uniquePaymentUsersCount: number = 0;
-  public uniqueReadyOrdersCount: number = 0;
+  public uniquePaymentUsersCount = 0;
+  public uniqueReadyOrdersCount = 0;
 
   private _orders: IOrder[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     combineLatest([
       this._store.pipe(
@@ -83,7 +84,7 @@ export class OrderTicketListComponent implements OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -145,8 +146,8 @@ export class OrderTicketListComponent implements OnDestroy {
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
       .subscribe((selectedOrderId: string | undefined): void => {
         const found = this.filteredOrders
-          .map((o): string => o._id!)
-          .includes(selectedOrderId || '');
+          .map((o): string => o._id)
+          .includes(selectedOrderId || '');
 
         if (!found) {
           this.selectOrder(this.filteredOrders[0]);
@@ -179,6 +180,6 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public trackByFn(index: number, item: IOrder): string {
-    return item._id!;
+    return item._id;
   }
 }

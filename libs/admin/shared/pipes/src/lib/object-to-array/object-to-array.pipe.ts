@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { objectToArray } from '@bgap/admin/shared/utils';
-import { IKeyValue, IKeyValueObject } from 'libs/shared/types/src';
+import { IKeyValueObject } from '@bgap/shared/types';
 
 @Pipe({
   name: 'objectToArray',

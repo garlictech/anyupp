@@ -32,10 +32,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       ),
       switchMap(
         (user): Observable<IAdminUser | undefined> =>
-          !!user
+          user
             ? <Observable<IAdminUser>>(
                 this._angularFireDatabase
-                  .object(`/adminUsers/${user!.uid}`)
+                  .object(`/adminUsers/${user?.uid || ''}`)
                   .valueChanges()
               )
             : of(undefined)

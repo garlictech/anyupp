@@ -39,6 +39,7 @@ export class LanesBodyComponent implements OnDestroy {
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService
   ) {
@@ -84,8 +85,8 @@ export class LanesBodyComponent implements OnDestroy {
             laneFilter(selectedLanes)
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
-          this.unit = unit!;
-          this.unitLanes = objectToArray(unit?.lanes || {});
+          this.unit = <IUnit>unit;
+          this.unitLanes = <IDetailedLane[]>objectToArray(unit?.lanes || {});
 
           // Unit lanes
           this.unitLanes.forEach((lane: IDetailedLane): void => {
@@ -128,7 +129,7 @@ export class LanesBodyComponent implements OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

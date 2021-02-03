@@ -1,7 +1,7 @@
-import { getAllAdminUsers } from 'libs/admin/shared/data-access/admin-users/src/lib/+state/admin-users.selectors';
+import { getAllAdminUsers } from '@bgap/admin/shared/data-access/admin-users';
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -19,6 +19,7 @@ export class AdminUserListComponent implements OnDestroy {
   public adminUsers$: Observable<IAdminUser[]>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {
@@ -28,7 +29,6 @@ export class AdminUserListComponent implements OnDestroy {
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

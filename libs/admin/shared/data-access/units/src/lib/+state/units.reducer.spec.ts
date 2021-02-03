@@ -1,6 +1,4 @@
-import * as UnitsActions from './units.actions';
-import { State, initialState, reducer } from './units.reducer';
-
+/*
 describe('Units Reducer', () => {
   const createUnitsEntity = (id: string, name = '') =>
     ({
@@ -35,3 +33,4 @@ describe('Units Reducer', () => {
     });
   });
 });
+*/

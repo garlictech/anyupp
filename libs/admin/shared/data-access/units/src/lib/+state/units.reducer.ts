@@ -31,10 +31,6 @@ const reducer = createReducer(
   on(UnitsActions.loadUnitsSuccess, (state, { units }) =>
     unitsAdapter.setAll(units, { ...state, loaded: true })
   ),
-  on(UnitsActions.loadUnitsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
   on(UnitsActions.resetUnits, state => unitsAdapter.removeAll(state))
 );
 

@@ -1,6 +1,4 @@
-import * as ChainsActions from './chains.actions';
-import { State, initialState, reducer } from './chains.reducer';
-
+/*
 describe('Chains Reducer', () => {
   const createChainsEntity = (id: string, name = '') =>
     ({
@@ -35,3 +33,4 @@ describe('Chains Reducer', () => {
     });
   });
 });
+*/

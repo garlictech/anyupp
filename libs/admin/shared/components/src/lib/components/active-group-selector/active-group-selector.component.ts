@@ -20,6 +20,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
   public groups$: Observable<IGroup[]>;
   private _adminUser!: IAdminUser;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
@@ -38,7 +39,6 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedGroupId');
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -48,7 +48,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
       _get(this._adminUser, '_id') &&
       groupId !== _get(this._adminUser, 'settings.selectedGroupId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedGroupId: groupId,
         selectedUnitId: null, // Reset unit id!

@@ -20,6 +20,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
   public productCategories$: Observable<IProductCategory[]>;
   private _adminUser!: IAdminUser;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
@@ -38,7 +39,6 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedProductCategoryId');
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -49,7 +49,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
       productCategoryId !==
         _get(this._adminUser, 'settings.selectedProductCategoryId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedProductCategoryId: productCategoryId,
       });

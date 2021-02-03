@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'admin-shared-orders',
-  preset: '../../../../jest.preset.js',
+  displayName: 'admin-shared-data-access-orders',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -14,7 +14,7 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../../coverage/libs/admin/shared/data-access/orders',
+  coverageDirectory: '../../../../../coverage/libs/admin/shared/data-access/orders',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',

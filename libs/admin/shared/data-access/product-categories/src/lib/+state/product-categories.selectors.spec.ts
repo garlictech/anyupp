@@ -1,5 +1,4 @@
 import {
-  State,
   productCategoriesAdapter,
   initialState,
 } from './product-categories.reducer';

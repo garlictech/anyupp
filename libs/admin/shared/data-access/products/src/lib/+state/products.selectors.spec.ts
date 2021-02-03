@@ -1,6 +1,3 @@
-import { IProduct } from '@bgap/shared/types';
-import { State, productsAdapter, initialState } from './products.reducer';
-import * as ProductsSelectors from './products.selectors';
 /*
 describe('Products Selectors', () => {
   const ERROR_MSG = 'No Error Available';

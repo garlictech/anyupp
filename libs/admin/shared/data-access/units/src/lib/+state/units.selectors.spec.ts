@@ -1,4 +1,4 @@
-import { State, unitsAdapter, initialState } from './units.reducer';
+import { unitsAdapter, initialState } from './units.reducer';
 import * as UnitsSelectors from './units.selectors';
 
 describe('Units Selectors', () => {

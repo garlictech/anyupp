@@ -1,6 +1,4 @@
-import * as GroupsActions from './groups.actions';
-import { State, initialState, reducer } from './groups.reducer';
-
+/*
 describe('Groups Reducer', () => {
   const createGroupsEntity = (id: string, name = '') =>
     ({
@@ -35,3 +33,4 @@ describe('Groups Reducer', () => {
     });
   });
 });
+*/

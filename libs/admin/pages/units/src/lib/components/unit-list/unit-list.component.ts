@@ -22,6 +22,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
   public selectedChainId$!: Observable<string | undefined | null>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {}
@@ -50,7 +51,6 @@ export class UnitListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

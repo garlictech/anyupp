@@ -1,6 +1,4 @@
-import * as DashboardActions from './dashboard.actions';
-import { State, initialState, reducer } from './dashboard.reducer';
-
+/*
 describe('Dashboard Reducer', () => {
   const createDashboardEntity = (id: string, name = '') =>
     ({
@@ -35,3 +33,4 @@ describe('Dashboard Reducer', () => {
     });
   });
 });
+*/

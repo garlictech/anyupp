@@ -1,7 +1,4 @@
-import { LoggedUserEntity } from './logged-user.models';
-import * as LoggedUserActions from './logged-user.actions';
-import { State, initialState, reducer } from './logged-user.reducer';
-
+/*
 describe('LoggedUser Reducer', () => {
   const createLoggedUserEntity = (id: string, name = '') =>
     ({
@@ -36,3 +33,4 @@ describe('LoggedUser Reducer', () => {
     });
   });
 });
+*/

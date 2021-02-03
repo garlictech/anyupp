@@ -5,7 +5,7 @@ import { IAdminRoleEntity, IChain, IKeyValue } from '@bgap/shared/types';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -20,6 +20,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   public entitySelector: FormGroup;
   public assignedChains: IChain[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
@@ -30,7 +31,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
-      this.control!.get('entities')!.valueChanges.pipe(
+      (<FormGroup>this.control.get('entities')).valueChanges.pipe(
         startWith(this.control.value.entities)
       ),
     ])
@@ -52,7 +53,6 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -62,7 +62,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     arr.push({
       chainId: this.entitySelector.value.chainId,
     });
-    this.control.get('entities')!.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
 
     this.entitySelector.patchValue({
       chainId: '',
@@ -73,6 +73,6 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     const arr = [...this.control.value.entities];
     arr.splice(idx, 1);
 
-    this.control.get('entities')!.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
   }
 }

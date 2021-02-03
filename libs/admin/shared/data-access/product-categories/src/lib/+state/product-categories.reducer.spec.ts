@@ -1,6 +1,4 @@
-import * as ProductCategoriesActions from './product-categories.actions';
-import { State, initialState, reducer } from './product-categories.reducer';
-
+/*
 describe('ProductCategories Reducer', () => {
   const createProductCategoriesEntity = (id: string, name = '') =>
     ({
@@ -37,3 +35,4 @@ describe('ProductCategories Reducer', () => {
     });
   });
 });
+*/

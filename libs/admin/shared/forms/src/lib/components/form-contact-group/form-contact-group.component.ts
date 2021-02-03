@@ -6,11 +6,6 @@ import { FormGroup } from '@angular/forms';
 import { GOOGLE_API_KEY } from '@bgap/admin/shared/utils';
 import { ILocation } from '@bgap/shared/types';
 
-interface IGeocodeResponse {
-  status: string;
-  results: unknown[];
-}
-
 @Component({
   selector: 'bgap-form-contact-group',
   templateUrl: './form-contact-group.component.html',
@@ -30,6 +25,7 @@ export class FormContactGroupComponent {
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
       )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((response: any): void => {
         if (response.status === 'OK' && response.results[0]) {
           this._patchLocation(_get(response, 'results[0].geometry.location'));

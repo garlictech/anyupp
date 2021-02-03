@@ -1,4 +1,4 @@
-import { State, adminUsersAdapter, initialState } from './admin-users.reducer';
+import { adminUsersAdapter, initialState } from './admin-users.reducer';
 import * as AdminUsersSelectors from './admin-users.selectors';
 
 describe('AdminUsers Selectors', () => {

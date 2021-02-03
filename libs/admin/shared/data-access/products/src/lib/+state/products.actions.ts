@@ -32,22 +32,3 @@ export const loadGeneratedUnitProductsSuccess = createAction(
   '[ProductList] Load Generated Unit Products Success',
   props<{ products: IProduct[] }>()
 );
-
-export const loadChainProductsFailure = createAction(
-  '[Products] Load Chain Products Failure',
-  props<{ error: any }>()
-);
-
-export const loadGroupProductsFailure = createAction(
-  '[Products] Load Group Products Failure',
-  props<{ error: any }>()
-);
-export const loadUnitProductsFailure = createAction(
-  '[Products] Load Unit Products Failure',
-  props<{ error: any }>()
-);
-
-export const loadGeneratedUnitProductsFailure = createAction(
-  '[Products] Load Generated Unit Products Failure',
-  props<{ error: any }>()
-);

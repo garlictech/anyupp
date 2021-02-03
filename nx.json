@@ -68,10 +68,10 @@
     "admin-shared-utils": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-data": {
+    "admin-shared-data-access-data": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-auth": {
+    "admin-shared-data-access-auth": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
     "admin-ui-core": {
@@ -108,39 +108,39 @@
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
     "admin-shared-floor-map": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-data-access-orders": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-orders": {
+    "admin-shared-data-access-admin-users": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-admin-users": {
+    "admin-shared-data-access-chains": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-chains": {
+    "admin-shared-data-access-dashboard": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-dashboard": {
+    "admin-shared-data-access-groups": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-groups": {
+    "admin-shared-data-access-product-categories": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-product-categories": {
+    "admin-shared-data-access-products": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-products": {
+    "admin-shared-data-access-units": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-units": {
+    "admin-shared-data-access-users": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-users": {
+    "admin-shared-data-access-logged-user": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
-    "admin-shared-logged-user": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
-    },
-    "admin-shared-storage": {
+    "admin-shared-data-access-storage": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
     "infrastructure-anyupp-backend-stack": {

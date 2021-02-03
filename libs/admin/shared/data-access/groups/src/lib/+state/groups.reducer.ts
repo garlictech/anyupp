@@ -33,10 +33,6 @@ const reducer = createReducer(
   on(GroupsActions.loadGroupsSuccess, (state, { groups }) =>
     groupsAdapter.setAll(groups, { ...state, loaded: true })
   ),
-  on(GroupsActions.loadGroupsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
   on(GroupsActions.resetGroups, state => groupsAdapter.removeAll(state))
 );
 
