@@ -1,15 +1,9 @@
 import { CognitoStack } from './app/cognito-stack';
-import { DynamoDBStack } from './app/appsync-dynamodb-stack';
-//import { SiteStack } from './app/site-stack';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { App } from '@serverless-stack/resources';
 
 export default function main(app: App): void {
   new CognitoStack(app, 'cognito', {});
-  const dynamoDbStack = new DynamoDBStack(app, 'dynamodb');
   //new SiteStack(app, 'sites');
-  const appsyncStack = new AppsyncAppStack(app, 'appsync', {
-    adminUserTable: dynamoDbStack.adminUserTable
-  });
-  appsyncStack.addDependency(dynamoDbStack);
+  new AppsyncAppStack(app, 'appsync');
 }
