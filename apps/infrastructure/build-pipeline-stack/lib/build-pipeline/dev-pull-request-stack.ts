@@ -3,6 +3,7 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import { SecretsManagerStack } from './secretsmanager-stack';
 import * as chatbot from '@aws-cdk/aws-chatbot';
+import { v1 as uuid } from 'uuid';
 
 export interface DevPullRequestBuildStackProps extends sst.StackProps {
   readonly chatbot: chatbot.SlackChannelConfiguration;
@@ -30,8 +31,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ]
     });
 
-    const project = new codebuild.Project(this, 'AnyUppVerifyPull Request', {
-      projectName: 'AnyUpp_Verify_Pull_Request',
+    const project = new codebuild.Project(this, 'AnyUpp Verify Pull Request', {
       source: githubPrSource,
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -63,7 +63,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           'codebuild-project-build-state-failed',
           'codebuild-project-build-state-succeeded'
         ],
-        name: 'AnyUppDevPullRequestNotification',
+        name: 'AnyUppDevPRNotification-' + uuid(),
         resource: project.projectArn,
         targets: [
           {

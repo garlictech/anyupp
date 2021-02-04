@@ -1,6 +1,6 @@
-import { IDayInterval, IKeyValue, IKeyValueObject } from '@bgap/shared/types';
+import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
 
-export const customNumberCompare = (field: string, desc: boolean = false) => (
+export const customNumberCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
   b: IKeyValueObject
 ): number => {
@@ -14,7 +14,7 @@ export const customNumberCompare = (field: string, desc: boolean = false) => (
   return 0;
 };
 
-export const customStringCompare = (field: string, desc: boolean = false) => (
+export const customStringCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
   b: IKeyValueObject
 ): number => {
@@ -28,7 +28,7 @@ export const customStringCompare = (field: string, desc: boolean = false) => (
   return 0;
 };
 
-export const objectToArray = (obj: IKeyValueObject | unknown, idKey: string = '_id') => {
+export const objectToArray = (obj: IKeyValueObject | unknown, idKey = '_id') => {
   const arr: any[] = [];
 
   if (!obj) {

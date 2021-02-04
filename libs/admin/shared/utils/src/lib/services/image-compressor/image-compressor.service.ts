@@ -9,7 +9,7 @@ export class ImageCompressorService {
   compress(
     file: File,
     imageType: EImageType,
-    targetSize: number = 750
+    targetSize = 750
   ): Observable<File> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
