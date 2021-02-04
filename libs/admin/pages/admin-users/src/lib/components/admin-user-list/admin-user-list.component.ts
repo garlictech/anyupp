@@ -1,4 +1,4 @@
-import { getAllAdminUsers } from '@bgap/admin/shared/data-access/admin-users';
+import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
 import { Observable } from 'rxjs';
 
 import { Component, OnDestroy } from '@angular/core';
@@ -24,7 +24,7 @@ export class AdminUserListComponent implements OnDestroy {
     private _nbDialogService: NbDialogService
   ) {
     this.adminUsers$ = this._store.pipe(
-      select(getAllAdminUsers),
+      select(adminUsersSelectors.getAllAdminUsers),
       untilDestroyed(this)
     );
   }

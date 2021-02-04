@@ -44,7 +44,7 @@ export class FormClickableImageInputComponent {
   }
 
   public fileInputListener($event: Event): void {
-    const file = $event.target?.files[0];
+    const file = (<FileList>$event.target?.files)[0];
 
     if (file) {
       if (file.type === 'image/svg+xml') {
