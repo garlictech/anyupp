@@ -5,7 +5,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { DEFAULT_LANE_COLOR, objectToArray } from '@bgap/admin/shared/utils';
+import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
+import { objectToArray } from '@bgap/shared/utils';
 import {
   EDashboardSize,
   ENebularButtonSize,

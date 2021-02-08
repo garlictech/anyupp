@@ -1,18 +1,12 @@
-import { Apollo } from 'apollo-angular';
+
+import { GraphQLService } from '@bgap/admin/shared/data-access/data';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  cleanObject,
-  EToasterType,
-  contactFormGroup,
-} from '@bgap/admin/shared/utils';
-import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { cleanObject } from '@bgap/shared/utils';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -26,13 +20,13 @@ export class AdminUserFormComponent
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;
-  private _apollo: Apollo;
+  private _graphQLService: GraphQLService;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
-    this._apollo = this._injector.get(Apollo);
     this._formService = this._injector.get(FormsService);
+    this._graphQLService = this._injector.get(GraphQLService);
   }
 
   get userImage(): string {
@@ -59,14 +53,7 @@ export class AdminUserFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       if (this.adminUser?._id) {
-        this._apollo
-          .mutate({
-            mutation: UpdateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm?.value),
-              id: this.adminUser._id,
-            },
-          })
+          this._graphQLService.updateAdminUser(this.adminUser._id, cleanObject(this.dialogForm?.value))
           .subscribe(
             () => {
               this._toasterService.show(
@@ -81,13 +68,7 @@ export class AdminUserFormComponent
             }
           );
       } else {
-        this._apollo
-          .mutate({
-            mutation: CreateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm?.value),
-            },
-          })
+      this._graphQLService.createAdminUser(cleanObject(this.dialogForm?.value))
           .subscribe(
             () => {
               this._toasterService.show(

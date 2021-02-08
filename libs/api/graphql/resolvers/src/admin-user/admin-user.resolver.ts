@@ -1,6 +1,7 @@
 import { PubSub } from 'graphql-subscriptions';
 
 import { AuthService, DatabaseService } from '@bgap/api/data-access';
+import { objectToArray } from '@bgap/shared/utils';
 import {
   AdminUser,
   AdminUserInput,
@@ -27,15 +28,23 @@ export class AdminUserResolver {
   }
 
   @Query('getAdminUser')
-  async get(@Args('id') id: string): Promise<AdminUser> {
+  async getAdminUser(@Args('id') id: string): Promise<AdminUser> {
     return this.databaseService
       .adminUserRef(id)
       .once('value')
       .then(snap => snap.val());
   }
 
+  @Query('getAdminUsers')
+  async getAdminUsers(): Promise<any[]> {
+    return this.databaseService
+      .adminUsersRef()
+      .once('value')
+      .then(snap => objectToArray(snap.val()));
+  }
+
   @Mutation('createAdminUser')
-  async create(
+  async createAdminUser(
     @Args('newAdminData') newAdminData: AdminUserInput
   ): Promise<boolean> {
     const createInactiveAdminUser = (uid: string) => {
@@ -78,7 +87,7 @@ export class AdminUserResolver {
   }
 
   @Mutation('updateAdminUser')
-  async update(
+  async updateAdminUser(
     @Args('newAdminData') newAdminData: AdminUserInput,
     @Args('id') id: string
   ): Promise<boolean> {
@@ -89,7 +98,7 @@ export class AdminUserResolver {
   }
 
   @Mutation('updateAdminUserRole')
-  async updateRole(
+  async updateAdminUserRole(
     @Args('newAdminRoleData') newAdminRoleData: AdminUserRoleInput,
     @Args('id') id: string
   ): Promise<boolean> {

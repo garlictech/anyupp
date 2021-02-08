@@ -18,7 +18,7 @@ export interface Scalars {
 
 export interface AdminUser {
   __typename?: 'AdminUser';
-  id: Scalars['ID'];
+  _id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
   roles: AdminUserRole;
@@ -87,6 +87,7 @@ export interface LocationInput {
 export interface Query {
   __typename?: 'Query';
   getAdminUser?: Maybe<AdminUser>;
+  getAdminUsers?: Maybe<Array<Maybe<AdminUser>>>;
   getCustomerStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
 }
 
@@ -188,8 +189,8 @@ export interface Address {
 
 export interface Location {
   __typename?: 'Location';
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
+  lat?: Maybe<Scalars['String']>;
+  lng?: Maybe<Scalars['String']>;
 }
 
 export interface DailySchedule {
@@ -845,6 +846,47 @@ export type GetAdminUserQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type GetAdminUsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAdminUsersQuery = { __typename?: 'Query' } & {
+  getAdminUsers?: Maybe<
+    Array<
+      Maybe<
+        { __typename?: 'AdminUser' } & Pick<
+          AdminUser,
+          '_id' | 'email' | 'name' | 'phone' | 'profileImage'
+        > & {
+            roles: { __typename?: 'AdminUserRole' } & Pick<
+              AdminUserRole,
+              'role'
+            > & {
+                entities?: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'AdminRoleEntity' } & Pick<
+                        AdminRoleEntity,
+                        'chainId' | 'groupId' | 'unitId'
+                      >
+                    >
+                  >
+                >;
+              };
+            address?: Maybe<
+              { __typename?: 'Address' } & Pick<
+                Address,
+                'address' | 'city' | 'country' | 'postalCode' | 'title'
+              > & {
+                  location?: Maybe<
+                    { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
+                  >;
+                }
+            >;
+          }
+      >
+    >
+  >;
+};
+
 export type CreateAdminUserMutationVariables = Exact<{
   data: AdminUserInput;
 }>;
@@ -922,6 +964,36 @@ export const GetAdminUser = gql`
       email
       name
       phone
+    }
+  }
+`;
+export const GetAdminUsers = gql`
+  query GetAdminUsers {
+    getAdminUsers {
+      _id
+      email
+      name
+      phone
+      profileImage
+      roles {
+        role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
+      }
+      address {
+        address
+        city
+        country
+        location {
+          lat
+          lng
+        }
+        postalCode
+        title
+      }
     }
   }
 `;

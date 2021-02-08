@@ -7,7 +7,7 @@ import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
   currentStatus as currentStatusFn, getNextOrderItemStatus, getOrderLaneColor, getPrevOrderItemStatus
 } from '@bgap/admin/shared/data-access/orders';
-import { objectToArray } from '@bgap/admin/shared/utils';
+import { objectToArray } from '@bgap/shared/utils';
 import {
   ENebularButtonSize,
   EOrderStatus,

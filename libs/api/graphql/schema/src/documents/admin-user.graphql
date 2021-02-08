@@ -6,6 +6,35 @@ query GetAdminUser($id: ID!) {
   }
 }
 
+query GetAdminUsers {
+  getAdminUsers {
+    _id
+    email
+    name
+    phone
+    profileImage
+    roles {
+      role
+      entities {
+        chainId
+        groupId
+        unitId
+      }
+    }
+    address {
+      address
+      city
+      country
+      location {
+        lat
+        lng
+      }
+      postalCode
+      title
+    }
+  }
+}
+
 mutation CreateAdminUser($data: AdminUserInput!) {
   createAdminUser(newAdminData: $data)
 }

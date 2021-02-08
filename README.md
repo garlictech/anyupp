@@ -185,3 +185,7 @@ The generator will collect the new resolver's name
 ### Run lint
 
 `nx run-many --target=lint --all --fix`
+
+### Run test
+
+`nx run-many --target=test --all  --passWithNoTests`

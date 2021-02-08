@@ -19,10 +19,12 @@ import {
   IOrderItem,
   IProduct,
   IProductCategory,
-  IGeneratedProduct
+  IGeneratedProduct,
+  IProductVariant
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { objectToArray } from 'libs/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -77,6 +79,10 @@ export class OrderProductListComponent {
           IProduct[]
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
+
+          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
+            p._variants_arr = <IProductVariant[]>objectToArray(p.variants)
+          })
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {

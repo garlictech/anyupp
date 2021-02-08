@@ -7,7 +7,7 @@ import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { zeroFill } from '@bgap/admin/shared/utils';
+import { zeroFill } from '@bgap/shared/utils';
 import {
   EDashboardListMode,
   EDashboardSize,

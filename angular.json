@@ -890,9 +890,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/orders/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/admin/shared/data-access/orders/**/*.ts"]
           }
         },
         "test": {
@@ -1092,7 +1090,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/logged-user/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/logged-user/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1165,6 +1165,27 @@
           "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
           "options": {
             "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-utils": {
+      "root": "libs/shared/utils",
+      "sourceRoot": "libs/shared/utils/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/utils"],
+          "options": {
+            "jestConfig": "libs/shared/utils/jest.config.js",
             "passWithNoTests": true
           }
         }

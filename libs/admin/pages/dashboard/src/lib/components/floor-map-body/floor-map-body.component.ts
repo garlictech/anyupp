@@ -8,7 +8,7 @@ import {
   fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
   registerCanvasEvent, setBgColor, setBorder
 } from '@bgap/admin/shared/floor-map';
-import { objectToArray } from '@bgap/admin/shared/utils';
+import { objectToArray } from '@bgap/shared/utils';
 import {
   IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
 } from '@bgap/shared/types';

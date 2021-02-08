@@ -30,9 +30,9 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import {
   DEFAULT_LANG,
-  getDayIntervals,
-  objectToArray,
+  getDayIntervals
 } from '@bgap/admin/shared/utils';
+import { objectToArray } from '@bgap/shared/utils';
 import {
   EAdminRole,
   EFirebaseStateEvent,
@@ -455,6 +455,7 @@ export class DataService {
   private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
     let adminUsers: IAdminUser[];
 
+    // getAdminUsers TODO innnen
     this._angularFireDatabase
       .object(`/adminUsers/`)
       .valueChanges()

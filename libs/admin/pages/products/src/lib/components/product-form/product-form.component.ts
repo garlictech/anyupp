@@ -5,26 +5,12 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  customNumberCompare,
-  EToasterType,
-  multiLangValidator,
-  objectToArray,
-} from '@bgap/admin/shared/utils';
-import {
-  EImageType,
-  EProductLevel,
-  EProductType,
-  IAdminUserSettings,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
 } from '@bgap/shared/types';
+import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -137,7 +123,7 @@ export class ProductFormComponent
 
       // Parse variants object to temp array
       const variantsArr = (<IProductVariant[]>(
-        objectToArray(this.product.variants || {}, '_variantId')
+        objectToArray(this.product.variants || {})
       )).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
@@ -165,7 +151,7 @@ export class ProductFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._variantId || ''] = _omit(variant, '_variantId');
+        value.variants[variant._id || ''] = _omit(variant, '_id');
       });
 
       delete value._variantArr;

@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import { customStringCompare, objectToArray } from '@bgap/admin/shared/utils';
+import { customStringCompare, objectToArray } from '@bgap/shared/utils';
 import {
   EUnitMapObjectType,
   IFabricGroup,

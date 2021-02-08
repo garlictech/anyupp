@@ -15,7 +15,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { reducer } from '@bgap/admin/shared/utils';
+import { reducer } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({

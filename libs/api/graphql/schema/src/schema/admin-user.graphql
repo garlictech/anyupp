@@ -1,5 +1,5 @@
 type AdminUser {
-  id: ID!
+  _id: ID!
   name: String
   profileImage: String
   roles: AdminUserRole!

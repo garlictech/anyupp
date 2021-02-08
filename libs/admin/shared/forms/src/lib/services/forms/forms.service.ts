@@ -17,7 +17,7 @@ export class FormsService {
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
-      _variantId: [uuidV1()],
+      _id: [uuidV1()],
       variantName: this._formBuilder.group(
         {
           hu: ['', Validators.maxLength(40)],

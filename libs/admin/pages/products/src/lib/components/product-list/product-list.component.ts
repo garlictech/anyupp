@@ -6,7 +6,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { customNumberCompare } from '@bgap/admin/shared/utils';
+import { customNumberCompare } from '@bgap/shared/utils';
 import {
   EAdminRole,
   EProductLevel,

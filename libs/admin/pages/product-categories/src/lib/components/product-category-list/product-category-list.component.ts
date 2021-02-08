@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { customNumberCompare } from '@bgap/admin/shared/utils';
+import { customNumberCompare } from '@bgap/shared/utils';
 import {
   IProductCategory,
   IProductCategoryOrderChangeEvent,
