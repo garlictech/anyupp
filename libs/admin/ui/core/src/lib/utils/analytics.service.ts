@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const ga: any;
 
 @Injectable()

@@ -10,7 +10,7 @@ import { IAvailability } from '@bgap/shared/types';
 })
 export class VariantAvailabilityBadgeComponent {
   @Input() availability!: IAvailability;
-  @Input() currency: string = '';
+  @Input() currency = '';
 
   public EVariantAvailabilityType = EVariantAvailabilityType;
 }

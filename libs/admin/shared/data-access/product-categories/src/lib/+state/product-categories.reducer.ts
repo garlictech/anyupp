@@ -44,10 +44,6 @@ const reducer = createReducer(
         loaded: true,
       })
   ),
-  on(
-    ProductCategoriesActions.loadProductCategoriesFailure,
-    (state, { error }) => ({ ...state, error })
-  ),
   on(ProductCategoriesActions.resetProductCategories, state =>
     productCategoriesAdapter.removeAll(state)
   )

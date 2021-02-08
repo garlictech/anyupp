@@ -33,10 +33,6 @@ const reducer = createReducer(
   on(ChainsActions.loadChainsSuccess, (state, { chains }) =>
     chainsAdapter.setAll(chains, { ...state, loaded: true })
   ),
-  on(ChainsActions.loadChainsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
   on(ChainsActions.resetChains, state => chainsAdapter.removeAll(state))
 );
 

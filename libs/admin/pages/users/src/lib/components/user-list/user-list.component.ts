@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { usersSelectors } from '@bgap/admin/shared/data-access/users';
 import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -18,6 +18,7 @@ export class UserListComponent implements OnDestroy {
   public users$: Observable<IUser[]>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {
@@ -27,7 +28,6 @@ export class UserListComponent implements OnDestroy {
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

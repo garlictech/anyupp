@@ -27,7 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
-  _variantId?: string;
+  _id?: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
@@ -69,6 +69,7 @@ export interface IGeneratedProduct {
   productType: EProductType;
   tax: string;
   variants: IProductVariantsObject;
+  _variants_arr?: IProductVariant[];
   productCategoryId: string;
 }
 

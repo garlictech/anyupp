@@ -19,6 +19,7 @@ export class ChainListComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {
@@ -28,7 +29,6 @@ export class ChainListComponent implements OnDestroy {
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

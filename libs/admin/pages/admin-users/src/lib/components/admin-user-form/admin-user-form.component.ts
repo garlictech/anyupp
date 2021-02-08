@@ -1,18 +1,12 @@
-import { Apollo } from 'apollo-angular';
+
+import { GraphQLService } from '@bgap/admin/shared/data-access/data';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  cleanObject,
-  EToasterType,
-  contactFormGroup,
-} from '@bgap/admin/shared/utils';
-import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
+import { FormControl, Validators } from '@angular/forms';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { cleanObject } from '@bgap/shared/utils';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -26,17 +20,17 @@ export class AdminUserFormComponent
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;
-  private _apollo: Apollo;
+  private _graphQLService: GraphQLService;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
-    this._apollo = this._injector.get(Apollo);
     this._formService = this._injector.get(FormsService);
+    this._graphQLService = this._injector.get(GraphQLService);
   }
 
   get userImage(): string {
-    return this.adminUser?.profileImage || '';
+    return this.adminUser?.profileImage || '';
   }
 
   ngOnInit(): void {
@@ -50,8 +44,8 @@ export class AdminUserFormComponent
       this.dialogForm.patchValue(this.adminUser);
     } else {
       // Add custom asyncValidator to check existing email
-      this.dialogForm.controls.email!.setAsyncValidators([
-        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email!),
+      (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
+        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email || ''),
       ]);
     }
   }
@@ -59,16 +53,9 @@ export class AdminUserFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       if (this.adminUser?._id) {
-        this._apollo
-          .mutate({
-            mutation: UpdateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm?.value),
-              id: this.adminUser._id,
-            },
-          })
+          this._graphQLService.updateAdminUser(this.adminUser._id, cleanObject(this.dialogForm?.value))
           .subscribe(
-            ({ data }) => {
+            () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
@@ -81,15 +68,9 @@ export class AdminUserFormComponent
             }
           );
       } else {
-        this._apollo
-          .mutate({
-            mutation: CreateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm?.value),
-            },
-          })
+      this._graphQLService.createAdminUser(cleanObject(this.dialogForm?.value))
           .subscribe(
-            ({ data }) => {
+            () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
@@ -111,7 +92,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id!, imagePath)
+        .updateAdminUserProfileImagePath(this.adminUser._id || '', imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -138,7 +119,7 @@ export class AdminUserFormComponent
     // Update existing user's image
     if (_get(this.adminUser, '_id')) {
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id!, null)
+        .updateAdminUserProfileImagePath(this.adminUser._id || '', null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,

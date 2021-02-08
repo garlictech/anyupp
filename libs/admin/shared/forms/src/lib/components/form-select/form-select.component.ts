@@ -8,7 +8,7 @@ import { NbComponentSize } from '@nebular/theme';
   templateUrl: './form-select.component.html',
 })
 export class FormSelectComponent {
-  @Input() caption: string = ''; // Language key!!!
+  @Input() caption = ''; // Language key!!!
   @Input() options: IKeyValue[] = [];
   @Input() control!: FormControl;
   @Input() forceShowEmptyOption?: boolean;

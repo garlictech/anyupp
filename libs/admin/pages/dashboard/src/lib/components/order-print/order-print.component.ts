@@ -20,13 +20,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   @Input() orders!: IOrder[];
   public unit?: IUnit;
   public chain?: IChain;
-  public now: string = '';
+  public now = '';
   public parsedOrders: IOrderItem[] = [];
   public parsedVats: IPriceShown[] = [];
   public sum: ICurrencyValue;
   public place?: IPlace;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogRef: NbDialogRef<unknown>
   ) {
@@ -107,8 +108,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         }
 
         // SUM
-        this.sum!.value += item.priceShown.priceSum;
-        this.sum!.currency = item.priceShown.currency;
+        this.sum.value += item.priceShown.priceSum;
+        this.sum.currency = item.priceShown.currency;
       });
     });
 

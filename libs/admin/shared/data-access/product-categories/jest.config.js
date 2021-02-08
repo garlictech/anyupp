@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'admin-shared-product-categories',
-  preset: '../../../../jest.preset.js',
+  displayName: 'admin-shared-data-access-product-categories',
+  preset: '../../../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory:
-    '../../../../coverage/libs/admin/shared/data-access/product-categories',
+    '../../../../../coverage/libs/admin/shared/data-access/product-categories',
 };

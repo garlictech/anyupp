@@ -21,7 +21,28 @@ mutation UpdateAdminUserRole($data: AdminUserRoleInput!) {
 }
 
 fragment adminUserFragment on AdminUser {
+  id
   email
   name
   phone
+  profileImage
+  roles {
+    role
+    entities {
+      chainId
+      groupId
+      unitId
+    }
+  }
+  address {
+    address
+    city
+    country
+    location {
+      lat
+      lng
+    }
+    postalCode
+    title
+  }
 }

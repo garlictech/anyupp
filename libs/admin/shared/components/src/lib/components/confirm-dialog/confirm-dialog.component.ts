@@ -12,7 +12,7 @@ export class ConfirmDialogComponent {
 
   constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 
-  public click(callbackFn: Function): void {
+  public click(callbackFn: () => void): void {
     if (callbackFn) {
       callbackFn();
     }

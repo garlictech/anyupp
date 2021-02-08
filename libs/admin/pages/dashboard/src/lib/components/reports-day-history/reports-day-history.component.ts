@@ -13,7 +13,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { IOrder } from 'libs/shared/types/src';
+import { IOrder } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +29,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   private _chart!: Chart;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService
   ) {}
@@ -129,7 +130,6 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

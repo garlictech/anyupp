@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import { customStringCompare, objectToArray } from '@bgap/admin/shared/utils';
+import { customStringCompare, objectToArray } from '@bgap/shared/utils';
 import {
   EUnitMapObjectType,
   IFabricGroup,
@@ -39,7 +39,7 @@ export const initRawData = (w: number, h: number): void => {
 export const loadRawData = (data: IFloorMapData): void => {
   mapRawData = Object.assign(mapRawData, data);
 
-  objectToArray(data.objects, 'id')
+  (<IFloorMapDataObject[]>objectToArray(data.objects, 'id'))
     // Sort by type for z-indexing
     .sort(customStringCompare('t', true))
     .forEach((rawData: IFloorMapDataObject): void => {
@@ -53,13 +53,13 @@ export const loadRawDataObject = (
 ): void => {
   const { id, ...data } = rawData;
 
-  mapRawData.objects[id!] = data;
+  mapRawData.objects[id || ''] = data;
 
   _drawObject(rawData, setActive);
 };
 
 const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
-  const obj: any = createObject(o);
+  const obj: fabric.Group = <fabric.Group>createObject(o);
 
   fabricCanvas.add(obj);
 
@@ -90,6 +90,7 @@ export const createObject = (mapObject: IFloorMapDataObject): fabric.Group | und
 };
 
 export const removeActiveObject = (): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
@@ -105,16 +106,18 @@ export const copyActiveObject = (): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mapObjectRawData = { ...mapRawData.objects[(<any>obj).id] };
     mapObjectRawData.id = generateId();
-    mapObjectRawData.x! += 10;
-    mapObjectRawData.y! += 10;
+    mapObjectRawData.x = (mapObjectRawData.x || 0) + 10;
+    mapObjectRawData.y = (mapObjectRawData.y || 0) + 10;
 
     loadRawDataObject(mapObjectRawData, true);
   }
 };
 
 export const setTextToActiveObject = (text: string): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
@@ -134,6 +137,7 @@ export const setRawDataField = (key: keyof IFloorMapDataObject, value: string | 
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mapRawData.objects[(<any>obj).id][key] = <any>value;
   }
 };
@@ -141,20 +145,22 @@ export const setRawDataField = (key: keyof IFloorMapDataObject, value: string | 
 export const getRawDataField = (
   obj: IFabricGroup,
   key: keyof IFloorMapDataObject
-): string | number => mapRawData.objects[obj.id][key]!;
+): string | number => mapRawData.objects[obj.id][key] || '';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
   id: obj.id,
   type: obj.type,
-  width: getObjectBg(obj)!.width!,
-  height: getObjectBg(obj)!.height!,
-  radius: getObjectRadius(obj)!,
+  width: getObjectBg(obj)?.width || 0,
+  height: getObjectBg(obj)?.height || 0,
+  radius: getObjectRadius(obj) || 0,
   angle: obj.angle,
   left: obj.left,
   top: obj.top,
   caption: getObjectText(obj),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateObjectMapRawData = (e: any): void => {
   const objectProperties: IFabricObjectProperties = _getObjectProperties(
     e.target

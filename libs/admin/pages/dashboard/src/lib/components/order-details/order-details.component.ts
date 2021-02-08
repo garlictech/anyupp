@@ -33,6 +33,7 @@ export class OrderDetailsComponent implements OnDestroy {
   public currentStatus = currentStatusFn;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService
@@ -59,7 +60,7 @@ export class OrderDetailsComponent implements OnDestroy {
     return getStatusColor(EOrderStatus.PLACED);
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

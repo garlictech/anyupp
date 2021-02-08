@@ -1,4 +1,4 @@
-import { getAllActiveOrders, getAllHistoryOrders } from 'libs/admin/shared/data-access/orders/src/lib/+state/orders.selectors';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 
 import {
   EDashboardListMode,
@@ -22,7 +22,7 @@ export const getDashboardState = createFeatureSelector<DashboardState>(
 export const getSelectedActiveOrder = () => {
   return createSelector(
     getSelectedOrderId,
-    getAllActiveOrders,
+    ordersSelectors.getAllActiveOrders,
     (selectedOrderId: string | undefined, activeOrders: IOrder[]): IOrder | undefined => {
       return activeOrders.find(
         (order): boolean => order._id === selectedOrderId
@@ -34,7 +34,7 @@ export const getSelectedActiveOrder = () => {
 export const getSelectedHistoryOrder = () => {
   return createSelector(
     getSelectedOrderId,
-    getAllHistoryOrders,
+    ordersSelectors.getAllHistoryOrders,
     (selectedOrderId: string | undefined, historyOrders: IOrder[]): IOrder | undefined => {
       return historyOrders?.find(
         (order): boolean => order._id === selectedOrderId

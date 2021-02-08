@@ -8,14 +8,14 @@ import { FormControl } from '@angular/forms';
 })
 export class FormColorPickerComponent implements OnInit {
   @Input() control!: FormControl;
-  @Input() caption: string = ''; // Language key!!!
-  public color: string = '';
+  @Input() caption = ''; // Language key!!!
+  public color = '';
 
   ngOnInit(): void {
     this.color = this.control?.value || '#fff';
   }
 
-  public onChange($event: String): void {
+  public onChange($event: string): void {
     this.control?.setValue($event);
   }
 }

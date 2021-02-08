@@ -52,7 +52,7 @@ export class AdminUserListItemComponent {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._authService.sendPasswordResetEmail(this.adminUser.email!).then(
+            this._authService.sendPasswordResetEmail(this.adminUser.email || '').then(
               (): void => {
                 this._toasterService.show(
                   EToasterType.SUCCESS,

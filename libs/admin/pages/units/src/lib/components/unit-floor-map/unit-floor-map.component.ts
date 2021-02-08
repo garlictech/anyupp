@@ -17,6 +17,7 @@ export class UnitFloorMapComponent
   public unit!: IUnit;
   public rawForm!: FormGroup;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
 
   constructor(protected _injector: Injector) {

@@ -61,7 +61,7 @@ export interface LocalizedItemInput {
 
 export interface AdminUser {
   __typename?: 'AdminUser';
-  id: Scalars['ID'];
+  _id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
   roles: AdminUserRole;
@@ -130,14 +130,14 @@ export enum CardBrand {
   mastercard = 'mastercard',
   unionpay = 'unionpay',
   visa = 'visa',
-  unknown = 'unknown',
+  unknown = 'unknown'
 }
 
 export enum CardFundingType {
   credit = 'credit',
   debit = 'debit',
   prepaid = 'prepaid',
-  unknown = 'unknown',
+  unknown = 'unknown'
 }
 
 export interface CardChecks {
@@ -915,6 +915,47 @@ export type GetAdminUserQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type GetAdminUsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAdminUsersQuery = { __typename?: 'Query' } & {
+  getAdminUsers?: Maybe<
+    Array<
+      Maybe<
+        { __typename?: 'AdminUser' } & Pick<
+          AdminUser,
+          '_id' | 'email' | 'name' | 'phone' | 'profileImage'
+        > & {
+            roles: { __typename?: 'AdminUserRole' } & Pick<
+              AdminUserRole,
+              'role'
+            > & {
+                entities?: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'AdminRoleEntity' } & Pick<
+                        AdminRoleEntity,
+                        'chainId' | 'groupId' | 'unitId'
+                      >
+                    >
+                  >
+                >;
+              };
+            address?: Maybe<
+              { __typename?: 'Address' } & Pick<
+                Address,
+                'address' | 'city' | 'country' | 'postalCode' | 'title'
+              > & {
+                  location?: Maybe<
+                    { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
+                  >;
+                }
+            >;
+          }
+      >
+    >
+  >;
+};
+
 export type CreateAdminUserMutationVariables = Exact<{
   data: CreateAdminUserInput;
 }>;
@@ -1005,6 +1046,36 @@ export const GetAdminUser = gql`
     }
   }
   ${AdminUserFragment}
+`;
+export const GetAdminUsers = gql`
+  query GetAdminUsers {
+    getAdminUsers {
+      _id
+      email
+      name
+      phone
+      profileImage
+      roles {
+        role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
+      }
+      address {
+        address
+        city
+        country
+        location {
+          lat
+          lng
+        }
+        postalCode
+        title
+      }
+    }
+  }
 `;
 export const CreateAdminUser = gql`
   mutation CreateAdminUser($data: CreateAdminUserInput!) {

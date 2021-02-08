@@ -16,6 +16,7 @@ export class OrderService {
   private _adminUser?: IAdminUser;
   private _groupCurrency?: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
@@ -48,8 +49,8 @@ export class OrderService {
 
       this._dataService
         .updateOrderItemQuantityAndPrice(
-          this._adminUser!.settings!.selectedChainId!,
-          this._adminUser!.settings!.selectedUnitId!,
+          this._adminUser?.settings?.selectedChainId || '',
+          this._adminUser?.settings?.selectedUnitId || '',
           order._id,
           idx,
           order.items[idx]
@@ -73,18 +74,18 @@ export class OrderService {
     const tax = parseInt(product.tax || '0', 10);
 
     this._dataService.addOrderItem(
-      this._adminUser!.settings!.selectedChainId!,
-      this._adminUser!.settings!.selectedUnitId!,
+      this._adminUser?.settings?.selectedChainId || '',
+      this._adminUser?.settings?.selectedUnitId || '',
       order._id,
       order.items.length,
       {
         created: now,
         priceShown: {
-          currency: this._groupCurrency!,
-          pricePerUnit: product.variants[variantId].price!,
-          priceSum: product.variants[variantId].price!,
+          currency: this._groupCurrency || '',
+          pricePerUnit: product.variants[variantId].price || 0,
+          priceSum: product.variants[variantId].price || 0,
           tax,
-          taxSum: (product.variants[variantId].price! / (100 + tax)) * tax,
+          taxSum: ((product.variants[variantId].price || 0) / (100 + tax)) * tax,
         },
         productId: product._id,
         productName: product.name,
@@ -92,7 +93,7 @@ export class OrderService {
         statusLog: {
           [now]: {
             status: EOrderStatus.PLACED,
-            userId: this._adminUser!._id!,
+            userId: this._adminUser?._id || '',
           },
         },
         variantId,
@@ -103,8 +104,8 @@ export class OrderService {
 
   public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
     return this._dataService.insertOrderStatus(
-      this._adminUser!.settings!.selectedChainId!,
-      this._adminUser!.settings!.selectedUnitId!,
+      this._adminUser?.settings?.selectedChainId || '',
+      this._adminUser?.settings?.selectedUnitId || '',
       order._id,
       status
     );
@@ -116,14 +117,14 @@ export class OrderService {
     idx: number
   ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
-      this._adminUser!.settings!.selectedChainId!,
-      this._adminUser!.settings!.selectedUnitId!,
+      this._adminUser?.settings?.selectedChainId || '',
+      this._adminUser?.settings?.selectedUnitId || '',
       orderId,
       idx,
       {
         [new Date().valueOf()]: {
           status,
-          userId: this._adminUser!._id!,
+          userId: this._adminUser?._id || '',
         },
       }
     );

@@ -17,7 +17,7 @@ export const getLoggedUserState = createFeatureSelector<ILoggedUserState>(
 
 export const getLoggedUser = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUser => state.loggedUser!
+  (state: ILoggedUserState): IAdminUser => state.loggedUser || {}
 );
 
 export const getLoggedUserSettings = createSelector(

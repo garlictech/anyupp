@@ -9,7 +9,7 @@ import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
   styleUrls: ['./password-reset-form.component.scss'],
 })
 export class PasswordResetFormComponent {
-  @Input() toggleResetForm!: ($event: Event, showResetForm: boolean) => void;
+  @Input() toggleResetForm!: ($event: Event, showResetForm: boolean) => void;
   public resetForm: FormGroup;
 
   constructor(

@@ -27,6 +27,7 @@ export class GroupFormComponent
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private chains: IChain[] = [];
 
@@ -77,7 +78,7 @@ export class GroupFormComponent
       // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string | undefined | null): void => {
+        .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
             this.dialogForm?.controls.chainId.patchValue(selectedChainId);
           }
@@ -85,7 +86,6 @@ export class GroupFormComponent
     }
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

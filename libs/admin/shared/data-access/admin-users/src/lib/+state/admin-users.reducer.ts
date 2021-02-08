@@ -19,7 +19,7 @@ export interface IAdminUsersPartialState {
 export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
   IAdminUser
 >({
-  selectId: (item: IAdminUser): string => item._id!,
+  selectId: (item: IAdminUser): string => item._id || '',
 });
 
 export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(
@@ -39,10 +39,6 @@ const reducer = createReducer(
   on(AdminUsersActions.loadAdminUsersSuccess, (state, { adminUsers }) =>
     adminUsersAdapter.setAll(adminUsers, { ...state, loaded: true })
   ),
-  on(AdminUsersActions.loadAdminUsersFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
   on(AdminUsersActions.resetAdminUsers, state =>
     adminUsersAdapter.removeAll(state)
   )
