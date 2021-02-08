@@ -3,28 +3,19 @@ import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
-import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IGeneratedProduct,
-  IProductVariant
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IProductVariant
 } from '@bgap/shared/types';
+import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { objectToArray } from 'libs/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -80,7 +71,7 @@ export class OrderProductListComponent {
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
 
-          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
+          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
             p._variants_arr = <IProductVariant[]>objectToArray(p.variants)
           })
 
