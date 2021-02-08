@@ -20,6 +20,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
   public units$: Observable<IUnit[]>;
   private _adminUser!: IAdminUser;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.units$ = this._store.pipe(
@@ -38,7 +39,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
     return _get(this._adminUser, 'settings.selectedUnitId');
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -48,7 +49,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       _get(this._adminUser, '_id') &&
       unitId !== _get(this._adminUser, 'settings.selectedUnitId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id!, {
+      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedUnitId: unitId,
       });

@@ -453,16 +453,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/admin-users/tsconfig.lib.json",
-              "libs/admin/pages/admin-users/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/pages/admin-users/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
           }
         },
         "test": {
@@ -482,13 +475,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/forms/tsconfig.lib.json",
-              "libs/admin/shared/forms/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/shared/forms/**/*"]
+            "lintFilePatterns": ["libs/admin/shared/forms/**/*.ts"]
           }
         },
         "test": {
@@ -508,16 +497,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/components/tsconfig.lib.json",
-              "libs/admin/shared/components/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/components/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/shared/components/**/*.ts"]
           }
         },
         "test": {
@@ -537,13 +519,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/pipes/tsconfig.lib.json",
-              "libs/admin/shared/pipes/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/shared/pipes/**/*"]
+            "lintFilePatterns": ["libs/admin/shared/pipes/**/*.ts"]
           }
         },
         "test": {
@@ -577,7 +555,7 @@
         }
       }
     },
-    "admin-shared-data": {
+    "admin-shared-data-access-data": {
       "root": "libs/admin/shared/data-access/data",
       "sourceRoot": "libs/admin/shared/data-access/data/src",
       "projectType": "library",
@@ -598,7 +576,7 @@
         }
       }
     },
-    "admin-shared-auth": {
+    "admin-shared-data-access-auth": {
       "root": "libs/admin/shared/data-access/auth",
       "sourceRoot": "libs/admin/shared/data-access/auth/src",
       "projectType": "library",
@@ -626,13 +604,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/ui/core/tsconfig.lib.json",
-              "libs/admin/ui/core/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/ui/core/**/*"]
+            "lintFilePatterns": ["libs/admin/ui/core/**/*.ts"]
           }
         },
         "test": {
@@ -652,13 +626,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/ui/theme/tsconfig.lib.json",
-              "libs/admin/ui/theme/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/ui/theme/**/*"]
+            "lintFilePatterns": ["libs/admin/ui/core/**/*.ts"]
           }
         },
         "test": {
@@ -678,13 +648,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/chains/tsconfig.lib.json",
-              "libs/admin/pages/chains/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/chains/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/chains/**/*.ts"]
           }
         },
         "test": {
@@ -704,13 +670,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/groups/tsconfig.lib.json",
-              "libs/admin/pages/groups/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/groups/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/groups/**/*.ts"]
           }
         },
         "test": {
@@ -730,13 +692,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/units/tsconfig.lib.json",
-              "libs/admin/pages/units/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/units/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/units/**/*.ts"]
           }
         },
         "test": {
@@ -756,13 +714,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/users/tsconfig.lib.json",
-              "libs/admin/pages/users/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/users/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/users/**/*.ts"]
           }
         },
         "test": {
@@ -782,13 +736,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/products/tsconfig.lib.json",
-              "libs/admin/pages/products/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/products/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/products/**/*.ts"]
           }
         },
         "test": {
@@ -808,16 +758,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/product-categories/tsconfig.lib.json",
-              "libs/admin/pages/product-categories/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/pages/product-categories/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/pages/product-categories/**/*.ts"]
           }
         },
         "test": {
@@ -837,16 +780,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/dashboard/tsconfig.lib.json",
-              "libs/admin/pages/dashboard/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/pages/dashboard/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/pages/dashboard/**/*.ts"]
           }
         },
         "test": {
@@ -866,13 +802,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/auth/tsconfig.lib.json",
-              "libs/admin/pages/auth/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/pages/auth/**/*"]
+            "lintFilePatterns": ["libs/admin/pages/auth/**/*.ts"]
           }
         },
         "test": {
@@ -934,16 +866,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/floor-map/tsconfig.lib.json",
-              "libs/admin/shared/floor-map/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/floor-map/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/shared/floor-map/**/*.ts"]
           }
         },
         "test": {
@@ -956,20 +881,16 @@
         }
       }
     },
-    "admin-shared-orders": {
+    "admin-shared-data-access-orders": {
       "projectType": "library",
       "root": "libs/admin/shared/data-access/orders",
       "sourceRoot": "libs/admin/shared/data-access/orders/src",
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/data-access/orders/tsconfig.lib.json",
-              "libs/admin/shared/data-access/orders/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/admin/shared/data-access/orders/**/*"]
+            "lintFilePatterns": ["libs/admin/shared/data-access/orders/**/*.ts"]
           }
         },
         "test": {
@@ -982,7 +903,7 @@
         }
       }
     },
-    "admin-shared-admin-users": {
+    "admin-shared-data-access-admin-users": {
       "root": "libs/admin/shared/data-access/admin-users",
       "sourceRoot": "libs/admin/shared/data-access/admin-users/src",
       "projectType": "library",
@@ -990,7 +911,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/admin-users/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/admin-users/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1003,7 +926,7 @@
         }
       }
     },
-    "admin-shared-chains": {
+    "admin-shared-data-access-chains": {
       "root": "libs/admin/shared/data-access/chains",
       "sourceRoot": "libs/admin/shared/data-access/chains/src",
       "projectType": "library",
@@ -1024,7 +947,7 @@
         }
       }
     },
-    "admin-shared-dashboard": {
+    "admin-shared-data-access-dashboard": {
       "root": "libs/admin/shared/data-access/dashboard",
       "sourceRoot": "libs/admin/shared/data-access/dashboard/src",
       "projectType": "library",
@@ -1032,7 +955,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/dashboard/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/dashboard/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1045,7 +970,7 @@
         }
       }
     },
-    "admin-shared-groups": {
+    "admin-shared-data-access-groups": {
       "root": "libs/admin/shared/data-access/groups",
       "sourceRoot": "libs/admin/shared/data-access/groups/src",
       "projectType": "library",
@@ -1066,7 +991,7 @@
         }
       }
     },
-    "admin-shared-product-categories": {
+    "admin-shared-data-access-product-categories": {
       "root": "libs/admin/shared/data-access/product-categories",
       "sourceRoot": "libs/admin/shared/data-access/product-categories/src",
       "projectType": "library",
@@ -1074,12 +999,16 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/product-categories/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/product-categories/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/product-categories"],
+          "outputs": [
+            "coverage/libs/admin/shared/data-access/product-categories"
+          ],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/product-categories/jest.config.js",
             "passWithNoTests": true
@@ -1087,7 +1016,7 @@
         }
       }
     },
-    "admin-shared-products": {
+    "admin-shared-data-access-products": {
       "root": "libs/admin/shared/data-access/products",
       "sourceRoot": "libs/admin/shared/data-access/products/src",
       "projectType": "library",
@@ -1095,7 +1024,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/products/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/products/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1108,7 +1039,7 @@
         }
       }
     },
-    "admin-shared-units": {
+    "admin-shared-data-access-units": {
       "root": "libs/admin/shared/data-access/units",
       "sourceRoot": "libs/admin/shared/data-access/units/src",
       "projectType": "library",
@@ -1129,7 +1060,7 @@
         }
       }
     },
-    "admin-shared-users": {
+    "admin-shared-data-access-users": {
       "root": "libs/admin/shared/data-access/users",
       "sourceRoot": "libs/admin/shared/data-access/users/src",
       "projectType": "library",
@@ -1150,22 +1081,17 @@
         }
       }
     },
-    "admin-shared-logged-user": {
+    "admin-shared-data-access-logged-user": {
       "projectType": "library",
       "root": "libs/admin/shared/data-access/logged-user",
       "sourceRoot": "libs/admin/shared/data-access/logged-user/src",
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/data-access/logged-user/tsconfig.lib.json",
-              "libs/admin/shared/data-access/logged-user/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/data-access/logged-user/**/*"
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/logged-user/**/*.ts"
             ]
           }
         },
@@ -1179,7 +1105,7 @@
         }
       }
     },
-    "admin-shared-storage": {
+    "admin-shared-data-access-storage": {
       "root": "libs/admin/shared/data-access/storage",
       "sourceRoot": "libs/admin/shared/data-access/storage/src",
       "projectType": "library",
@@ -1187,7 +1113,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/storage/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/storage/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1237,6 +1165,27 @@
           "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
           "options": {
             "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-utils": {
+      "root": "libs/shared/utils",
+      "sourceRoot": "libs/shared/utils/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/utils"],
+          "options": {
+            "jestConfig": "libs/shared/utils/jest.config.js",
             "passWithNoTests": true
           }
         }

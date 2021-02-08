@@ -41,7 +41,7 @@ export const createTableRect = (
     ..._wh(rawObject),
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.TABLE_RECTANGLE,
@@ -59,7 +59,8 @@ export const createTableCircle = (
     stroke: FLOOR_MAP_CONFIG.tableStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_CONFIG);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const group = new fabric.Group([bg, caption], <any>{
     left: rawObject.x,
     top: rawObject.y,
@@ -83,7 +84,7 @@ export const createSeatRect = (
     ry: FLOOR_MAP_CONFIG.cornerRadius,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.SEAT_RECTANGLE,
@@ -101,7 +102,8 @@ export const createSeatCircle = (
     stroke: FLOOR_MAP_CONFIG.seatStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_CONFIG);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const group = new fabric.Group([bg, caption], <any>{
     left: rawObject.x,
     top: rawObject.y,
@@ -121,7 +123,7 @@ export const createBar = (rawObject: IFloorMapDataObject): fabric.Group => {
     stroke: FLOOR_MAP_CONFIG.barStroke,
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, FLOOR_MAP_TEXT_CONFIG);
+  const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_CONFIG);
 
   return new fabric.Group([bg, caption], {
     type: EUnitMapObjectType.COUNTER,
@@ -152,7 +154,7 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
     ..._wh(rawObject),
     ...FLOOR_MAP_COMMON_BG_OPTIONS,
   });
-  const caption = new fabric.IText(rawObject.c!, {
+  const caption = new fabric.IText(rawObject.c || '', {
     ...FLOOR_MAP_TEXT_CONFIG,
     fill: '#000',
   });
@@ -164,8 +166,8 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-export const getObjectById = (id: string): fabric.Object | undefined =>
-  fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getObjectById = (id: string): fabric.Object | undefined => fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
 
 export const setBorder = (
   obj: fabric.Group,

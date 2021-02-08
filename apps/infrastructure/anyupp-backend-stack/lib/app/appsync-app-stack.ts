@@ -49,7 +49,7 @@ const createCommonResolvers = (
     )
   });
 
-  lambdaDs.createResolver({
+  tableDs.createResolver({
     typeName: 'Mutation',
     fieldName: 'create' + label,
     requestMappingTemplate: MappingTemplate.fromFile(
@@ -71,16 +71,16 @@ const createCommonResolvers = (
   //  )
   //});
 
-  //lambdaDs.createResolver({
-  //  typeName: 'Mutation',
-  //  fieldName: 'update' + label,
-  //  requestMappingTemplate: MappingTemplate.fromFile(
-  //    `lib/appsync/graphql-api/mapping-templates/update${label}-request-mapping-template.vtl`
-  //  ),
-  //  responseMappingTemplate: MappingTemplate.fromFile(
-  //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-  //  )
-  //});
+  tableDs.createResolver({
+    typeName: 'Mutation',
+    fieldName: 'update' + label,
+    requestMappingTemplate: MappingTemplate.fromFile(
+      `lib/appsync/graphql-api/mapping-templates/common-update-request-mapping-template.vtl`
+    ),
+    responseMappingTemplate: MappingTemplate.fromFile(
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+    )
+  });
 };
 
 export class AppsyncAppStack extends sst.Stack {

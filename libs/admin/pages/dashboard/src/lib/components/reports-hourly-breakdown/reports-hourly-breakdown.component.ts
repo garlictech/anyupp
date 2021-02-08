@@ -33,6 +33,7 @@ export class ReportsHourlyBreakdownComponent
   private _amounts: IOrderAmount = {};
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService
@@ -116,12 +117,12 @@ export class ReportsHourlyBreakdownComponent
         tooltips: {
           callbacks: {
             label: (tooltipItem, data) => {
-              const label = data.datasets![tooltipItem.datasetIndex!].label || '';
+              const label = (<Chart.ChartDataSets[]>data.datasets)[tooltipItem.datasetIndex || 0].label || '';
 
               return tooltipItem.datasetIndex === 0
                 ? ` ${label}: ${tooltipItem.value}`
                 : ` ${label}: ${this._currencyFormatter.transform(
-                    tooltipItem.value!,
+                    tooltipItem.value || '',
                     this.currency
                   )}`;
             },
@@ -163,14 +164,14 @@ export class ReportsHourlyBreakdownComponent
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         this._amounts = this._orderAmounts(products, orders);
 
-        this._chart.data.datasets![0].data = [...this._amounts.ordersCount];
-        this._chart.data.datasets![1].data = [
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [...this._amounts.ordersCount];
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].data = [
           ...this._amounts[EProductType.FOOD],
         ];
-        this._chart.data.datasets![2].data = [
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].data = [
           ...this._amounts[EProductType.DRINK],
         ];
-        this._chart.data.datasets![3].data = [
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].data = [
           ...this._amounts[EProductType.OTHER],
         ];
 
@@ -180,16 +181,16 @@ export class ReportsHourlyBreakdownComponent
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        this._chart.data.datasets![0].label = this._translateService.instant(
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].label = this._translateService.instant(
           'dashboard.reports.ordersCount'
         );
-        this._chart.data.datasets![1].label = this._translateService.instant(
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].label = this._translateService.instant(
           'products.productType.food'
         );
-        this._chart.data.datasets![2].label = this._translateService.instant(
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].label = this._translateService.instant(
           'products.productType.drink'
         );
-        this._chart.data.datasets![3].label = this._translateService.instant(
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].label = this._translateService.instant(
           'products.productType.other'
         );
 
@@ -197,7 +198,7 @@ export class ReportsHourlyBreakdownComponent
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -213,12 +214,12 @@ export class ReportsHourlyBreakdownComponent
 
     const productTypeMap: IKeyValueObject = {};
     products.forEach(p => {
-      productTypeMap[p._id!] = p.productType;
+      productTypeMap[p._id || ''] = p.productType;
     });
 
     orders.forEach(o => {
-      const hour = new Date(o.created!).getHours();
-      o.items!.forEach((i: IOrderItem) => {
+      const hour = new Date(o.created || 0).getHours();
+      o.items?.forEach((i: IOrderItem) => {
         amounts[<EProductType>productTypeMap[i.productId]][hour] += i.priceShown.priceSum;
         amounts['sum'][hour] += i.priceShown.priceSum;
       });

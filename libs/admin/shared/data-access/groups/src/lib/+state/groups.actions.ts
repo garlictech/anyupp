@@ -8,9 +8,4 @@ export const loadGroupsSuccess = createAction(
   props<{ groups: IGroup[] }>()
 );
 
-export const loadGroupsFailure = createAction(
-  '[Groups] Load Groups Failure',
-  props<{ error: any }>()
-);
-
 export const resetGroups = createAction('[GroupList] Reset groups');

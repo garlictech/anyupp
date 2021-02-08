@@ -1,6 +1,7 @@
 type Query {
   # Admin
   getAdminUser(id: ID!): AdminUser
+  getAdminUsers: [AdminUser]
 
   # Stripe
   getCustomerStripeCards(customerId: ID): [StripeCard]

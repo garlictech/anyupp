@@ -6,10 +6,11 @@ import { FormArray, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { customNumberCompare, EToasterType, multiLangValidator, objectToArray } from '@bgap/admin/shared/utils';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
 } from '@bgap/shared/types';
+import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -26,11 +27,13 @@ export class ProductFormComponent
   public productLevel!: EProductLevel;
   public productCategories: IKeyValue[] = [];
   public productTypes: IKeyValue[];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
-  private _selectedChainId: string = '';
-  private _selectedGroupId: string = '';
-  private _selectedProductCategoryId: string = '';
+  private _selectedChainId = '';
+  private _selectedGroupId = '';
+  private _selectedProductCategoryId = '';
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -55,11 +58,11 @@ export class ProductFormComponent
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
-        this._selectedChainId = userSettings?.selectedChainId || '';
-        this._selectedGroupId = userSettings?.selectedGroupId || '';
+      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+        this._selectedChainId = userSettings?.selectedChainId || '';
+        this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedProductCategoryId =
-          userSettings?.selectedProductCategoryId || '';
+          userSettings?.selectedProductCategoryId || '';
       });
 
     this._store
@@ -119,10 +122,9 @@ export class ProductFormComponent
       this.dialogForm.patchValue(_omit(this.product, 'variants'));
 
       // Parse variants object to temp array
-      const variantsArr = objectToArray(
-        this.product.variants || {},
-        '_variantId'
-      ).sort(customNumberCompare('position'));
+      const variantsArr = (<IProductVariant[]>(
+        objectToArray(this.product.variants || {})
+      )).sort(customNumberCompare('position'));
 
       variantsArr.forEach((variant: IProductVariant): void => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
@@ -149,54 +151,29 @@ export class ProductFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._variantId!] = _omit(variant, '_variantId');
+        value.variants[variant._id || ''] = _omit(variant, '_id');
       });
 
       delete value._variantArr;
 
       if (_get(this.product, '_id')) {
-        let updatePromise: Promise<void> = new Promise(() => {});
-
-        switch (this.productLevel) {
-          case EProductLevel.CHAIN:
-            updatePromise = this._dataService.updateChainProduct(
-              this._selectedChainId,
-              this.product._id,
-              value
-            );
-            break;
-          default:
-            break;
-        }
-
-        updatePromise.then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('CHAIN UPDATE ERROR', err);
-          }
-        );
+        this._dataService
+          .updateChainProduct(this._selectedChainId, this.product._id, value)
+          .then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful'
+              );
+              this.close();
+            },
+            err => {
+              console.error('CHAIN UPDATE ERROR', err);
+            }
+          );
       } else {
-        let insertPromise: Promise<unknown> = new Promise(() => {});
-
-        switch (this.productLevel) {
-          case EProductLevel.CHAIN:
-            insertPromise = this._dataService.insertChainProduct(
-              this._selectedChainId,
-              value
-            );
-            break;
-          default:
-            break;
-        }
-
-        insertPromise.then(
+        this._dataService.insertChainProduct(this._selectedChainId, value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,

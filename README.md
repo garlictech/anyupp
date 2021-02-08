@@ -29,7 +29,7 @@ then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
 ### Writing Cucumber/Cypress tests
 
 #### VsCode
-To have Gherkin Syntax highlighting, step suggestions, linting and "Go to definition" support install and configure the 
+To have Gherkin Syntax highlighting, step suggestions, linting and "Go to definition" support install and configure the
 [Cucumber Full Language Support](https://github.com/alexkrechik/VSCucumberAutoComplete#how-to-use) extension
 
 1. Install the `cucumberautocomplete` extension
@@ -181,3 +181,11 @@ The generator will collect the new resolver's name
 ### Start graphql server
 
 `nx serve graphql-server`
+
+### Run lint
+
+`nx run-many --target=lint --all --fix`
+
+### Run test
+
+`nx run-many --target=test --all  --passWithNoTests`

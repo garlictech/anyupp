@@ -7,7 +7,7 @@ import { NbComponentSize } from '@nebular/theme';
   templateUrl: './form-text-input.component.html',
 })
 export class FormTextInputComponent {
-  @Input() caption: string = ''; // Language key!!!
+  @Input() caption = ''; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
   @Input() control!: FormControl;
   @Input() type!: string;

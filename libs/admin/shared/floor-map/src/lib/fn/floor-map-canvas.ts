@@ -3,6 +3,7 @@ import { FLOOR_MAP_CONFIG, FLOOR_MAP_GRID_OPTIONS } from '../const';
 
 import * as utils from './floor-map-utils';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export let fabricCanvas: any;
 export let fabricEditMode: boolean;
 
@@ -28,6 +29,7 @@ export const initCanvas = (editMode: boolean): void => {
   fabricCanvas.on('object:scaled', _onScaled);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const registerCanvasEvent = (event: any, callback: any): void => {
   fabricCanvas.on(event, callback);
 };
@@ -43,13 +45,13 @@ export const resizeCanvas = (w: number, h: number): void => {
 
 const _drawGrid = (): void => {
   // horizontal lines
-  for (let i = 0; i < fabricCanvas.height! / FLOOR_MAP_CONFIG.grid; i++) {
+  for (let i = 0; i < (fabricCanvas.height || 0) / FLOOR_MAP_CONFIG.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
         [
           0,
           i * FLOOR_MAP_CONFIG.grid,
-          fabricCanvas.width!,
+          fabricCanvas.width || 0,
           i * FLOOR_MAP_CONFIG.grid,
         ],
         FLOOR_MAP_GRID_OPTIONS
@@ -58,14 +60,14 @@ const _drawGrid = (): void => {
   }
 
   // vertical lines
-  for (let i = 0; i < fabricCanvas.width! / FLOOR_MAP_CONFIG.grid; i++) {
+  for (let i = 0; i < (fabricCanvas.width || 0) / FLOOR_MAP_CONFIG.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
         [
           i * FLOOR_MAP_CONFIG.grid,
           0,
           i * FLOOR_MAP_CONFIG.grid,
-          fabricCanvas.height!,
+          fabricCanvas.height || 0,
         ],
         FLOOR_MAP_GRID_OPTIONS
       )
@@ -74,6 +76,7 @@ const _drawGrid = (): void => {
 };
 
 const _sendLinesToBack = (): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fabricCanvas.getObjects().map((o: any): void => {
     if (o.type === 'line') {
       fabricCanvas.sendToBack(o);
@@ -81,6 +84,7 @@ const _sendLinesToBack = (): void => {
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _snapToGrid = (e: any): void => {
   _checkBoundingBox(e);
 
@@ -100,6 +104,7 @@ const _snapToGrid = (e: any): void => {
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _checkBoundingBox = (e: any): void => {
   const obj = e.target;
 
@@ -113,12 +118,12 @@ const _checkBoundingBox = (e: any): void => {
     obj.set('top', 0);
     obj.setCoords();
   }
-  if (objBoundingBox.left > fabricCanvas.width! - objBoundingBox.width) {
-    obj.set('left', fabricCanvas.width! - objBoundingBox.width);
+  if (objBoundingBox.left > (fabricCanvas.width || 0) - objBoundingBox.width) {
+    obj.set('left', (fabricCanvas.width || 0) - objBoundingBox.width);
     obj.setCoords();
   }
-  if (objBoundingBox.top > fabricCanvas.height! - objBoundingBox.height) {
-    obj.set('top', fabricCanvas.height! - objBoundingBox.height);
+  if (objBoundingBox.top > (fabricCanvas.height || 0) - objBoundingBox.height) {
+    obj.set('top', (fabricCanvas.height || 0) - objBoundingBox.height);
     obj.setCoords();
   }
   if (objBoundingBox.left < 0) {
@@ -127,7 +132,9 @@ const _checkBoundingBox = (e: any): void => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _onScale = (e: any): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   e.target.getObjects().map((o: any): void => {
     utils.fixTextScale(o, e.target);
     utils.fixBorderScale(o, e.target);
@@ -139,11 +146,13 @@ const _roundScale = (val: number): number =>
     FLOOR_MAP_CONFIG.grid) /
   FLOOR_MAP_CONFIG.gridDivider;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _onScaled = (e: any): void => {
   const target = e.target;
   const bg: fabric.Rect | fabric.Circle | null = utils.getObjectBg(target);
   const textField = target
     .getObjects()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ?.filter((o: any): boolean => o instanceof fabric.IText)[0];
   const commonParams = {
     width: _roundScale(e.target.getScaledWidth()),
@@ -155,7 +164,7 @@ const _onScaled = (e: any): void => {
   // Update radius
   if ((<fabric.Circle>bg).radius) {
     (<fabric.Circle>bg).setRadius(
-      _roundScale((<fabric.Circle>bg).radius! * e.target.scaleX)
+      _roundScale(((<fabric.Circle>bg).radius || 0) * e.target.scaleX)
     );
   }
 

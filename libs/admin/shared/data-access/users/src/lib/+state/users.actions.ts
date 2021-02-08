@@ -8,9 +8,4 @@ export const loadUsersSuccess = createAction(
   props<{ users: IUser[] }>()
 );
 
-export const loadUsersFailure = createAction(
-  '[Users] Load Users Failure',
-  props<{ error: any }>()
-);
-
 export const resetUsers = createAction('[UserList] Reset users');

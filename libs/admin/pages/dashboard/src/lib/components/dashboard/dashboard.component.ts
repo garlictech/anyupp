@@ -7,7 +7,7 @@ import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { zeroFill } from '@bgap/admin/shared/utils';
+import { zeroFill } from '@bgap/shared/utils';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public time?: string;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService
@@ -76,7 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -127,8 +128,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._dataService.updateUnit(this.selectedUnit!._id, {
-              isAcceptingOrders: !this.selectedUnit!.isAcceptingOrders,
+            this._dataService.updateUnit((<IUnit>this.selectedUnit)._id, {
+              isAcceptingOrders: !(<IUnit>this.selectedUnit).isAcceptingOrders,
             });
           },
           status: 'success',

@@ -11,7 +11,7 @@ import {
   IUser,
 } from '@bgap/shared/types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { IOrder } from '../../../../../shared/types/src/lib/interfaces/order';
+import { IOrder } from '@bgap/shared/types';
 
 import {
   amountConversionForStripe,

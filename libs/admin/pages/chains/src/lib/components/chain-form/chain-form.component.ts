@@ -2,7 +2,7 @@ import { get as _get, set as _set } from 'lodash-es';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   EToasterType,
@@ -112,7 +112,7 @@ export class ChainFormComponent
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    this.dialogForm.get('style')!.get('images')!.get(key)!.setValue(
+    (<FormControl>this.dialogForm.get('style')?.get('images')?.get(key)).setValue(
       imagePath
     );
 
@@ -137,7 +137,7 @@ export class ChainFormComponent
   };
 
   public logoRemoveCallback = (key: string): void => {
-    this.dialogForm.get('style')!.get('images')!.get(key)!.setValue(
+    (<FormControl>this.dialogForm.get('style')?.get('images')?.get(key)).setValue(
       ''
     );
 

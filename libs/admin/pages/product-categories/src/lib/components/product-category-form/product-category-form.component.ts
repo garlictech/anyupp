@@ -17,6 +17,8 @@ export class ProductCategoryFormComponent
   implements OnInit {
   public productCategory!: IProductCategory;
   public eImageType = EImageType;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _selectedChainId?: string | undefined | null;
 
@@ -66,7 +68,7 @@ export class ProductCategoryFormComponent
       if (_get(this.productCategory, '_id')) {
         this._dataService
           .updateProductCategory(
-            this._selectedChainId!,
+            this._selectedChainId || '',
             this.productCategory._id,
             this.dialogForm?.value
           )
@@ -85,7 +87,7 @@ export class ProductCategoryFormComponent
           );
       } else {
         this._dataService
-          .insertProductCategory(this._selectedChainId!, this.dialogForm?.value)
+          .insertProductCategory(this._selectedChainId || '', this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -110,7 +112,7 @@ export class ProductCategoryFormComponent
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId!,
+          this._selectedChainId || '',
           this.productCategory._id,
           imagePath
         )
@@ -141,7 +143,7 @@ export class ProductCategoryFormComponent
     if (_get(this.productCategory, '_id')) {
       this._dataService
         .updateProductCategoryImagePath(
-          this._selectedChainId!,
+          this._selectedChainId || '',
           this.productCategory._id,
           null
         )

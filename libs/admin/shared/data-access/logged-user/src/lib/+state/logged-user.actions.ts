@@ -6,11 +6,6 @@ export const loadLoggedUserSuccess = createAction(
   props<{ loggedUser: IAdminUser }>()
 );
 
-export const loadLoggedUserFailure = createAction(
-  '[LoggedUser/API] Load LoggedUser Failure',
-  props<{ error: any }>()
-);
-
 export const resetLoggedUser = createAction(
   '[LoggedUser/API] Reset LoggedUser'
 );

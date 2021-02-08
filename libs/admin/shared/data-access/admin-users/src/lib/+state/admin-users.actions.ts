@@ -8,9 +8,4 @@ export const loadAdminUsersSuccess = createAction(
   props<{ adminUsers: IAdminUser[] }>()
 );
 
-export const loadAdminUsersFailure = createAction(
-  '[AdminUsers] Load AdminUsers Failure',
-  props<{ error: any }>()
-);
-
 export const resetAdminUsers = createAction('[AdminUsers] Reset admin users');

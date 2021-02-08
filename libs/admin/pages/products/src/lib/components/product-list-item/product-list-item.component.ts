@@ -20,9 +20,9 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
   @Input() product!: IProduct;
-  @Input() pending: boolean = true;
+  @Input() pending = true;
   @Input() productLevel!: EProductLevel;
-  @Input() currency: string = '';
+  @Input() currency = '';
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();
@@ -32,8 +32,9 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public EVariantAvailabilityType = EVariantAvailabilityType;
 
   constructor(
-    private _nbDialogService: NbDialogService,
-    private _store: Store<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _nbDialogService: NbDialogService
   ) {}
 
   ngOnInit(): void {
@@ -48,14 +49,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE)
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE)
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -63,7 +64,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;
@@ -71,7 +72,6 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

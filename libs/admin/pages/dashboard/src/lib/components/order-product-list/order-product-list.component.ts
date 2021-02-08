@@ -3,24 +3,17 @@ import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
-import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IGeneratedProduct
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IProductVariant
 } from '@bgap/shared/types';
+import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -34,10 +27,11 @@ export class OrderProductListComponent {
   @Input() selectedOrder?: IOrder;
   public generatedUnitProducts: IGeneratedProduct[];
   public productCategories: IProductCategory[] = [];
-  public selectedProductCategoryId: string = '';
-  public groupCurrency: string = '';
+  public selectedProductCategoryId = '';
+  public groupCurrency = '';
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
 
@@ -47,7 +41,7 @@ export class OrderProductListComponent {
         skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup | undefined): void => {
-        this.groupCurrency = group!.currency!;
+        this.groupCurrency = group?.currency || '';
       });
 
     this._store
@@ -76,6 +70,10 @@ export class OrderProductListComponent {
           IProduct[]
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
+
+          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
+            p._variants_arr = <IProductVariant[]>objectToArray(p.variants)
+          })
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {
@@ -108,27 +106,27 @@ export class OrderProductListComponent {
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price
     );
 
-    if ((existingVariantOrderIdx || 0) >= 0) {
+    if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(this.selectedOrder!),
-        existingVariantOrderIdx!,
+        _cloneDeep(<IOrder>this.selectedOrder),
+        <number>existingVariantOrderIdx,
         1
       );
 
       if (
         currentStatus(
-          this.selectedOrder!.items[existingVariantOrderIdx!].statusLog
+          (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx].statusLog
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          this.selectedOrder!._id,
+          (<IOrder>this.selectedOrder)._id,
           EOrderStatus.PLACED,
-          existingVariantOrderIdx!
+          <number>existingVariantOrderIdx
         );
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(this.selectedOrder!),
+        _cloneDeep(<IOrder>this.selectedOrder),
         product,
         variantId
       );

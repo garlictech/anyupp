@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { customNumberCompare } from '@bgap/admin/shared/utils';
+import { customNumberCompare } from '@bgap/shared/utils';
 import {
   IProductCategory,
   IProductCategoryOrderChangeEvent,
@@ -14,7 +14,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
-import { isUndefined } from 'lodash-es';
 
 @UntilDestroy()
 @Component({
@@ -27,6 +26,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   private _selectedChainId?: string | undefined | null;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _dataService: DataService
@@ -58,7 +58,6 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -93,7 +92,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       this._sortedProductCategoryIds.forEach(
         (productCategoryId: string, pos: number): void => {
           this._dataService.updateProductCategoryPosition(
-            this._selectedChainId!,
+            this._selectedChainId || '',
             productCategoryId,
             (pos + 1).toString()
           );

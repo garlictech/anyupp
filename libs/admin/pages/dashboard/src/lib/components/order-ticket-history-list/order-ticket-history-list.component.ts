@@ -4,7 +4,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { customNumberCompare } from '@bgap/admin/shared/utils';
+import { customNumberCompare } from '@bgap/shared/utils';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -20,6 +20,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
   public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatusFn;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     this._store
       .pipe(select(dashboardSelectors.getSelectedHistoryDate), take(1))
@@ -57,7 +58,7 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

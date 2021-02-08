@@ -52,11 +52,7 @@ const chainProductsReducer = createReducer(
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadChainProductsSuccess, (state, { products }) =>
     chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  ),
-  on(ProductsActions.loadChainProductsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  )
 );
 
 //
@@ -81,11 +77,7 @@ const groupProductsReducer = createReducer(
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadGroupProductsSuccess, (state, { products }) =>
     chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  ),
-  on(ProductsActions.loadGroupProductsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  )
 );
 
 //
@@ -110,11 +102,7 @@ const unitProductsReducer = createReducer(
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadUnitProductsSuccess, (state, { products }) =>
     chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  ),
-  on(ProductsActions.loadUnitProductsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  )
 );
 
 //
@@ -139,11 +127,7 @@ const generatedUnitProductsReducer = createReducer(
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadGeneratedUnitProductsSuccess, (state, { products }) =>
     chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  ),
-  on(ProductsActions.loadGeneratedUnitProductsFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  )
 );
 
 const reducerMap: ActionReducerMap<IProductsState> = {

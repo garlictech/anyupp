@@ -23,10 +23,6 @@ const reducer = createReducer(
   on(LoggedUserActions.loadLoggedUserSuccess, (state, { loggedUser }) => ({
     ...state,
     loggedUser,
-  })),
-  on(LoggedUserActions.loadLoggedUserFailure, (state, { error }) => ({
-    ...state,
-    error,
   }))
 );
 

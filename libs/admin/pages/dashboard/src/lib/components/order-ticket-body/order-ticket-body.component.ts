@@ -25,9 +25,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public ordersSum: IOrderSum = {};
   public userActiveOrders?: IOrder[];
   public EDashboardListMode = EDashboardListMode;
-  public activeOrdersCount: number = 0;
+  public activeOrdersCount = 0;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService
   ) {}
@@ -68,7 +69,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -103,10 +104,12 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         .subscribe((userActiveOrders: IOrder[]): void => {
           this.userActiveOrders = userActiveOrders;
 
-          this.ordersSum!.all = 0;
-          this.userActiveOrders.map(
-            (o: IOrder): number =>
-              (this.ordersSum!.all! += o.sumPriceShown.priceSum)
+          this.ordersSum.all = 0;
+          // TODO map changed to forEach, check this!
+          this.userActiveOrders.forEach(
+            (o: IOrder): void => {
+              this.ordersSum.all = (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum
+            }
           );
         });
     }

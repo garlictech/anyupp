@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormArray, AbstractControl } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';

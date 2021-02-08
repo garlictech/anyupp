@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { zeroFill } from '@bgap/admin/shared/utils';
+import { zeroFill } from '@bgap/shared/utils';
 
 @Pipe({
   name: 'secToHms',

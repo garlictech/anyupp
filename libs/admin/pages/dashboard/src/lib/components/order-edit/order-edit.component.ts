@@ -38,6 +38,7 @@ export class OrderEditComponent implements OnDestroy {
   private _adminUser?: IAdminUser;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
     private _dataService: DataService
@@ -64,7 +65,7 @@ export class OrderEditComponent implements OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -103,8 +104,8 @@ export class OrderEditComponent implements OnDestroy {
 
   public updateOrderPaymentMethod(method: string): void {
     this._dataService.updateOrderPaymentMode(
-      this._adminUser!.settings!.selectedChainId!,
-      this._adminUser!.settings!.selectedUnitId!,
+      this._adminUser?.settings?.selectedChainId || '',
+      this._adminUser?.settings?.selectedUnitId || '',
       this.order._id,
       {
         paymentMethod: method,
