@@ -50,6 +50,14 @@
               {
                 "sourceTag": "type:utils",
                 "onlyDependOnLibsWithTags": ["type:utils"]
+              },
+              {
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": ["type:utils"]
+              },
+              {
+                "sourceTag": "type:server",
+                "onlyDependOnLibsWithTags": ["type:feature"]
               }
             ]
           }

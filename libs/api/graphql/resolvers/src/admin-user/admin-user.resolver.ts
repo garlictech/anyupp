@@ -7,7 +7,7 @@ import {
   AdminUserInput,
   AdminUserRoleInput,
 } from '@bgap/api/graphql/schema';
-import { EAdminRole } from '@bgap/shared/types';
+import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 
@@ -36,11 +36,11 @@ export class AdminUserResolver {
   }
 
   @Query('getAdminUsers')
-  async getAdminUsers(): Promise<any[]> {
+  async getAdminUsers(): Promise<IAdminUser[]> {
     return this.databaseService
       .adminUsersRef()
       .once('value')
-      .then(snap => objectToArray(snap.val()));
+      .then(snap => <IAdminUser[]>objectToArray(snap.val()));
   }
 
   @Mutation('createAdminUser')
