@@ -37,7 +37,6 @@ pipe(
           params,
           pars => pars.Parameters || [],
           fp.map(param => [fp.replace(prefix, '', param.Name), param.Value]),
-          fp.tap(console.log),
           fp.fromPairs,
           fp.tap(console.log),
           fp.tap(config =>
