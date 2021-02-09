@@ -1,3 +1,4 @@
+import * as ssm from '@aws-cdk/aws-ssm';
 import { CfnOutput, Duration } from '@aws-cdk/core';
 import * as cognito from '@aws-cdk/aws-cognito';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
@@ -99,17 +100,35 @@ export class CognitoStack extends Stack {
       value: userPool.userPoolId,
       exportName: app.logicalPrefixedName(userPoolId)
     });
+    new ssm.StringParameter(this, userPoolId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The user pool ID',
+      parameterName: app.logicalPrefixedName(userPoolId),
+      stringValue: userPool.userPoolId
+    });
 
     const userPoolClientId = 'UserPoolClientId';
     new CfnOutput(this, userPoolClientId, {
       value: userPoolClient.userPoolClientId,
       exportName: app.logicalPrefixedName(userPoolClientId)
     });
+    new ssm.StringParameter(this, userPoolClientId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The user pool client ID',
+      parameterName: app.logicalPrefixedName(userPoolClientId),
+      stringValue: userPoolClient.userPoolClientId
+    });
 
     const identityPoolId = 'IdentityPoolId';
     new CfnOutput(this, identityPoolId, {
       value: identityPool.ref,
       exportName: app.logicalPrefixedName(identityPoolId)
+    });
+    new ssm.StringParameter(this, identityPoolId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The identity pool ID',
+      parameterName: app.logicalPrefixedName(identityPoolId),
+      stringValue: identityPool.ref
     });
   }
 }

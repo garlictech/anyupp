@@ -1,3 +1,4 @@
+import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
 import * as appsync from '@aws-cdk/aws-appsync';
@@ -6,8 +7,6 @@ import { GraphqlApi, MappingTemplate } from '@aws-cdk/aws-appsync';
 import { TableConstruct } from './dynamodb-construct';
 
 export class AppsyncAppStack extends sst.Stack {
-  public x: cdk.CfnOutput;
-
   constructor(scope: sst.App, id: string) {
     super(scope, id);
     const app = this.node.root as sst.App;
@@ -51,13 +50,27 @@ export class AppsyncAppStack extends sst.Stack {
       'User'
     ].forEach(objectName => this.createCommonResolvers(api, objectName));
 
+    new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
+      allowedPattern: '.*',
+      description: 'The graphql API endpoint URL',
+      parameterName: app.logicalPrefixedName('GraphqlApiUrl'),
+      stringValue: api.graphqlUrl
+    });
+
+    new ssm.StringParameter(this, 'GraphqlApiKeyParam', {
+      allowedPattern: '.*',
+      description: 'The graphql API key',
+      parameterName: app.logicalPrefixedName('GraphqlApiKey'),
+      stringValue: api.apiKey || ''
+    });
+
     // Prints out the AppSync GraphQL endpoint to the terminal
-    this.x = new cdk.CfnOutput(this, 'GraphQLAPIURL', {
+    new cdk.CfnOutput(this, 'GraphqlApiUrl', {
       value: api.graphqlUrl
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
-    new cdk.CfnOutput(this, 'GraphQLAPIKey', {
+    new cdk.CfnOutput(this, 'GraphqlApiKey', {
       value: api.apiKey || ''
     });
   }
