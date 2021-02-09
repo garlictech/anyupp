@@ -4,7 +4,6 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import { SecretsManagerStack } from './secretsmanager-stack';
 import * as chatbot from '@aws-cdk/aws-chatbot';
-import { v1 as uuid } from 'uuid';
 
 export interface DevPullRequestBuildStackProps extends sst.StackProps {
   readonly chatbot: chatbot.SlackChannelConfiguration;
@@ -85,7 +84,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           'codebuild-project-build-state-failed',
           'codebuild-project-build-state-succeeded'
         ],
-        name: 'AnyUppDevPRNotification-' + uuid(),
+        name: 'AnyUppDevPRNotification',
         resource: project.projectArn,
         targets: [
           {
