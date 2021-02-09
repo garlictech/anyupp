@@ -1,3 +1,4 @@
+import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
@@ -46,7 +47,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             commands: [
               'yarn nx affected:lint --base=dev --with-deps',
               'yarn nx affected:test --base=dev --with-deps',
-              'yarn nx affected:build --base=dev --with-deps'
+              'yarn nx affected:build --base=dev --with-deps --exclude="infrastructure-build-pipeline-stack"'
             ]
           }
         }
@@ -57,6 +58,22 @@ export class DevPullRequestBuildStack extends sst.Stack {
     });
 
     props.secretsManager.anyuppDevSecret.grantRead(project);
+
+    [
+      'UserPoolClientId',
+      'UserPoolId',
+      'IdentityPoolId',
+      'GraphqlApiKey',
+      'GraphqlApiUrl',
+      'googleClientId',
+      'stripePublishableKey'
+    ].forEach(param =>
+      ssm.StringParameter.fromStringParameterName(
+        this,
+        param + 'Param',
+        'dev-anyupp-backend-' + param
+      ).grantRead(project)
+    );
 
     new codestarnotifications.CfnNotificationRule(
       this,
@@ -78,5 +95,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
         ]
       }
     );
+
+    new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
+      allowedPattern: '.*',
+      description: 'ARN of the PR build project',
+      parameterName: app.logicalPrefixedName('DevPullRequestBuildStackArn'),
+      stringValue: project.projectArn
+    });
   }
 }

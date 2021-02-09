@@ -3,6 +3,7 @@ const region = 'eu-west-1';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
 import { pipe } from 'fp-ts/lib/function';
+import { exit } from 'process';
 
 const client = new AWS.SSM({
   region: region
@@ -30,6 +31,7 @@ pipe(
     client.getParameters({ Names: paramNames }, (err, params) => {
       if (err) {
         console.error('Error happened:', JSON.stringify(err, null, 2));
+        exit(1);
       } else {
         pipe(
           params,
