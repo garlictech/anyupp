@@ -46,7 +46,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             commands: [
               'yarn nx affected:lint --base=dev --with-deps',
               'yarn nx affected:test --base=dev --with-deps',
-              'yarn nx ffected:build --base=dev --with-deps'
+              'yarn nx affected:build --base=dev --with-deps'
             ]
           }
         }
