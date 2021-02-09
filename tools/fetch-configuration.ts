@@ -27,18 +27,22 @@ pipe(
   ],
   fp.map(paramName => `${prefix}${paramName}`),
   paramNames =>
-    client.getParameters({ Names: paramNames }, (_, params) =>
-      pipe(
-        params,
-        pars => pars.Parameters || [],
-        fp.map(param => [fp.replace(prefix, '', param.Name), param.Value]),
-        fp.tap(console.log),
-        fp.fromPairs,
-        fp.tap(console.log),
-        fp.tap(config =>
-          fs.writeFileSync(targetFile, JSON.stringify(config, null, 2))
-        ),
-        fp.tap(() => console.log(`Config written to ${targetFile}`))
-      )
-    )
+    client.getParameters({ Names: paramNames }, (err, params) => {
+      if (err) {
+        console.error('Error happened:', JSON.stringify(err, null, 2));
+      } else {
+        pipe(
+          params,
+          pars => pars.Parameters || [],
+          fp.map(param => [fp.replace(prefix, '', param.Name), param.Value]),
+          fp.tap(console.log),
+          fp.fromPairs,
+          fp.tap(console.log),
+          fp.tap(config =>
+            fs.writeFileSync(targetFile, JSON.stringify(config, null, 2))
+          ),
+          fp.tap(() => console.log(`Config written to ${targetFile}`))
+        );
+      }
+    })
 );
