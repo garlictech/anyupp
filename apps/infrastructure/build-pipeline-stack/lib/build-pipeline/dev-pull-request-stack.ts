@@ -1,4 +1,3 @@
-import * as iam from '@aws-cdk/aws-iam';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
@@ -57,17 +56,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    const role = new iam.Role(this, 'CodeBuildRole', {
-      assumedBy: project.grantPrincipal
-    });
-
-    role.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        resources: [props.secretsManager.secretsManagerArn],
-        actions: ['secretsmanager:GetSecretValue']
-      })
-    );
+    props.secretsManager.anyuppDevSecret.grantRead(project);
 
     new codestarnotifications.CfnNotificationRule(
       this,
