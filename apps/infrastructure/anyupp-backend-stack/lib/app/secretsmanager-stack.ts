@@ -5,6 +5,8 @@ import { CfnOutput } from '@aws-cdk/core';
 
 export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
+  public secretsManagerArn =
+    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k';
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -14,8 +16,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'AnyuppSecrets',
       {
-        secretArn:
-          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k'
+        secretArn: this.secretsManagerArn
       }
     );
 

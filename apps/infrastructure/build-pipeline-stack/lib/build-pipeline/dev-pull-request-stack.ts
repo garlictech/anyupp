@@ -64,8 +64,8 @@ export class DevPullRequestBuildStack extends sst.Stack {
     role.addToPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        resources: ['*'],
-        actions: ['*']
+        resources: [props.secretsManager.secretsManagerArn],
+        actions: ['secretsmanager:GetSecretValue']
       })
     );
 
