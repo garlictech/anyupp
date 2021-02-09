@@ -2,6 +2,37 @@
 
 See the official nx docs below, let's start with the Anyupp-specific stuff.
 
+## Configuring the project
+
+Use the `config` build targets for projects requiring configuration. Configuration involves code generation processes as well.
+
+Currently, the following packages can be configured:
+
+**the graphql schema**
+
+`nx config api-graphql-schema`
+
+Whenever the schema changes, execeute the code generation phase for the clients.
+
+**the configs (and secrets)**
+
+`nx config shared-config`
+
+When:
+
+- you clone the github repo
+- the config parameters change in teh AWS Parameter Store or AWS Secret Manager
+- you change the project stage (dev, prod, qa)
+
+The command fetches the config parameters and writes them into files in `libs/shared/config`.
+You need AWS credentials set in your environment with the appropriate access!
+
+**IMPORTANT**
+
+The configs are generated in `/libs/shared/config/src/lib/`. This folder is gitignored. Ensure that
+the configs are NOT checked in to github otherwise you WILL experience differences
+in your local and the remote environments.
+
 ## Executing cucumber/cypress tests
 
 After cloning the repo:
@@ -29,12 +60,14 @@ then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
 ### Writing Cucumber/Cypress tests
 
 #### VsCode
+
 To have Gherkin Syntax highlighting, step suggestions, linting and "Go to definition" support install and configure the
 [Cucumber Full Language Support](https://github.com/alexkrechik/VSCucumberAutoComplete#how-to-use) extension
 
 1. Install the `cucumberautocomplete` extension
 
 1. Set the following configs in your `.vscode/settings.json` file
+
 ```
     "cucumberautocomplete.steps": [
       "apps/admin-e2e/src/integration/**/*.steps.ts",
@@ -188,4 +221,4 @@ The generator will collect the new resolver's name
 
 ### Run test
 
-`nx run-many --target=test --all  --passWithNoTests`
+`nx run-many --target=test --all --passWithNoTests`

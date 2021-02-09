@@ -1,3 +1,4 @@
+import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
@@ -30,8 +31,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ]
     });
 
-    const project = new codebuild.Project(this, 'AnyUppVerifyPull Request', {
-      projectName: 'AnyUpp_Verify_Pull_Request',
+    const project = new codebuild.Project(this, 'AnyUpp Verify Pull Request', {
       source: githubPrSource,
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -39,11 +39,14 @@ export class DevPullRequestBuildStack extends sst.Stack {
           install: {
             commands: ['yarn']
           },
+          pre_build: {
+            commands: ['yarn nx config shared-config']
+          },
           build: {
             commands: [
-              'yarn nx affected:lint --base=dev',
-              'yarn nx affected:test --base=dev',
-              'yarn nx affected:build --base=dev'
+              'yarn nx affected:lint --base=dev --with-deps',
+              'yarn nx affected:test --base=dev --with-deps',
+              'yarn nx affected:build --base=dev --with-deps --exclude="infrastructure-build-pipeline-stack"'
             ]
           }
         }
@@ -52,6 +55,24 @@ export class DevPullRequestBuildStack extends sst.Stack {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
       }
     });
+
+    props.secretsManager.anyuppDevSecret.grantRead(project);
+
+    [
+      'UserPoolClientId',
+      'UserPoolId',
+      'IdentityPoolId',
+      'GraphqlApiKey',
+      'GraphqlApiUrl',
+      'googleClientId',
+      'stripePublishableKey'
+    ].forEach(param =>
+      ssm.StringParameter.fromStringParameterName(
+        this,
+        param + 'Param',
+        'dev-anyupp-backend-' + param
+      ).grantRead(project)
+    );
 
     new codestarnotifications.CfnNotificationRule(
       this,
@@ -63,7 +84,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           'codebuild-project-build-state-failed',
           'codebuild-project-build-state-succeeded'
         ],
-        name: 'AnyUppDevPullRequestNotification',
+        name: 'AnyUppDevPRNotification',
         resource: project.projectArn,
         targets: [
           {
@@ -73,5 +94,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
         ]
       }
     );
+
+    new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
+      allowedPattern: '.*',
+      description: 'ARN of the PR build project',
+      parameterName: app.logicalPrefixedName('DevPullRequestBuildStackArn'),
+      stringValue: project.projectArn
+    });
   }
 }

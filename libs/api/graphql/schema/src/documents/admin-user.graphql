@@ -1,48 +1,54 @@
 query GetAdminUser($id: ID!) {
   getAdminUser(id: $id) {
-    email
-    name
-    phone
+    ...adminUserFragment
   }
 }
 
-query GetAdminUsers {
+query GetAdminUsers($id: ID!) {
   getAdminUsers {
-    _id
-    email
-    name
-    phone
-    profileImage
-    roles {
-      role
-      entities {
-        chainId
-        groupId
-        unitId
-      }
-    }
-    address {
-      address
-      city
-      country
-      location {
-        lat
-        lng
-      }
-      postalCode
-      title
-    }
+    ...adminUserFragment
   }
 }
 
-mutation CreateAdminUser($data: AdminUserInput!) {
-  createAdminUser(newAdminData: $data)
+mutation CreateAdminUser($data: CreateAdminUserInput!) {
+  createAdminUser(input: $data) {
+    ...adminUserFragment
+  }
 }
 
-mutation UpdateAdminUser($data: AdminUserInput!, $id: ID!) {
-  updateAdminUser(newAdminData: $data, id: $id)
+mutation UpdateAdminUser($data: UpdateAdminUserInput!) {
+  updateAdminUser(input: $data) {
+    ...adminUserFragment
+  }
 }
 
-mutation UpdateAdminUserRole($data: AdminUserRoleInput!, $id: ID!) {
-  updateAdminUserRole(newAdminRoleData: $data, id: $id)
+mutation UpdateAdminUserRole($data: AdminUserRoleInput!) {
+  updateAdminUserRole(input: $data)
+}
+
+fragment adminUserFragment on AdminUser {
+  id
+  email
+  name
+  phone
+  profileImage
+  roles {
+    role
+    entities {
+      chainId
+      groupId
+      unitId
+    }
+  }
+  address {
+    address
+    city
+    country
+    location {
+      lat
+      lng
+    }
+    postalCode
+    title
+  }
 }

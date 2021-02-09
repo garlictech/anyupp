@@ -5,9 +5,7 @@ frameworkVersion: ^2.16.1
 
 plugins:
   - serverless-bundle
-  - serverless-offline
   - serverless-dotenv-plugin
-  - serverless-pseudo-parameters
 
 package:
   individually: true
@@ -21,7 +19,6 @@ custom:
   bundle:
     packager: yarn
     linting: false
-  awsAccountId: '#{AWS::AccountId}'
 
   offline:
     useChildProcesses: true

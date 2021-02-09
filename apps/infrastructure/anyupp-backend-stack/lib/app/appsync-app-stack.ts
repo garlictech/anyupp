@@ -1,91 +1,14 @@
-import * as path from 'path';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
 import * as appsync from '@aws-cdk/aws-appsync';
 import { PROJECT_ROOT } from './settings';
-import { commonLambdaProps } from './lambda-common';
-import {
-  GraphqlApi,
-  LambdaDataSource,
-  MappingTemplate
-} from '@aws-cdk/aws-appsync';
-import { Table } from '@aws-cdk/aws-dynamodb';
-
-interface AppsyncAppStackProps extends cdk.StackProps {
-  adminUserTable: Table;
-}
-
-const createCommonResolvers = (
-  api: GraphqlApi,
-  table: Table,
-  lambdaDs: LambdaDataSource,
-  label: string
-): void => {
-  const tableDs = api.addDynamoDbDataSource(
-    label + 'DynamoDbDataSource',
-    table
-  );
-
-  tableDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: 'delete' + label,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-delete-request-mapping-template.vtl'
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
-  });
-
-  tableDs.createResolver({
-    typeName: 'Query',
-    fieldName: 'get' + label,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-get-request-mapping-template.vtl'
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
-  });
-
-  tableDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: 'create' + label,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      `lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl`
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
-  });
-
-  //lambdaDs.createResolver({
-  //  typeName: 'Mutation',
-  //  fieldName: `createMultiple${label}s`,
-  //  requestMappingTemplate: MappingTemplate.fromFile(
-  //    `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
-  //  ),
-  //  responseMappingTemplate: MappingTemplate.fromFile(
-  //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-  //  )
-  //});
-
-  tableDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: 'update' + label,
-    requestMappingTemplate: MappingTemplate.fromFile(
-      `lib/appsync/graphql-api/mapping-templates/common-update-request-mapping-template.vtl`
-    ),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
-  });
-};
+import { GraphqlApi, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { TableConstruct } from './dynamodb-construct';
 
 export class AppsyncAppStack extends sst.Stack {
-  constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
-    super(scope, id, props);
+  constructor(scope: sst.App, id: string) {
+    super(scope, id);
     const app = this.node.root as sst.App;
 
     // Creates the AppSync API
@@ -105,26 +28,116 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true
     });
 
-    const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
-      ...commonLambdaProps,
-      handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/graphql-api.zip')
-      )
+    //const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
+    //  ...commonLambdaProps,
+    //  handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
+    //  code: lambda.Code.fromAsset(
+    //    path.join(__dirname, '../../.serverless/graphql-api.zip')
+    //  )
+    //});
+
+    //const lambdaDs = api.addLambdaDataSource('lambdaDatasource', apiLambda);
+
+    [
+      'AdminUser',
+      'Chain',
+      'Group',
+      'OrderItem',
+      'Order',
+      'ProductCategory',
+      'ChainProduct',
+      'Unit',
+      'User'
+    ].forEach(objectName => this.createCommonResolvers(api, objectName));
+
+    new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
+      allowedPattern: '.*',
+      description: 'The graphql API endpoint URL',
+      parameterName: app.logicalPrefixedName('GraphqlApiUrl'),
+      stringValue: api.graphqlUrl
     });
 
-    const lambdaDs = api.addLambdaDataSource('lambdaDatasource', apiLambda);
-
-    createCommonResolvers(api, props.adminUserTable, lambdaDs, 'AdminUser');
+    new ssm.StringParameter(this, 'GraphqlApiKeyParam', {
+      allowedPattern: '.*',
+      description: 'The graphql API key',
+      parameterName: app.logicalPrefixedName('GraphqlApiKey'),
+      stringValue: api.apiKey || ''
+    });
 
     // Prints out the AppSync GraphQL endpoint to the terminal
-    new cdk.CfnOutput(this, 'GraphQLAPIURL', {
+    new cdk.CfnOutput(this, 'GraphqlApiUrl', {
       value: api.graphqlUrl
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
-    new cdk.CfnOutput(this, 'GraphQLAPIKey', {
+    new cdk.CfnOutput(this, 'GraphqlApiKey', {
       value: api.apiKey || ''
+    });
+  }
+
+  private createCommonResolvers(api: GraphqlApi, label: string): void {
+    const theTable = new TableConstruct(this, label, {
+      isStreamed: true
+    }).theTable;
+
+    const tableDs = api.addDynamoDbDataSource(
+      label + 'DynamoDbDataSource',
+      theTable
+    );
+
+    tableDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'delete' + label,
+      requestMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-delete-request-mapping-template.vtl'
+      ),
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+      )
+    });
+
+    tableDs.createResolver({
+      typeName: 'Query',
+      fieldName: 'get' + label,
+      requestMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-get-request-mapping-template.vtl'
+      ),
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+      )
+    });
+
+    tableDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'create' + label,
+      requestMappingTemplate: MappingTemplate.fromFile(
+        `lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl`
+      ),
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+      )
+    });
+
+    //lambdaDs.createResolver({
+    //  typeName: 'Mutation',
+    //  fieldName: `createMultiple${label}s`,
+    //  requestMappingTemplate: MappingTemplate.fromFile(
+    //    `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
+    //  ),
+    //  responseMappingTemplate: MappingTemplate.fromFile(
+    //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+    //  )
+    //});
+
+    tableDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'update' + label,
+      requestMappingTemplate: MappingTemplate.fromFile(
+        `lib/appsync/graphql-api/mapping-templates/common-update-request-mapping-template.vtl`
+      ),
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+      )
     });
   }
 }

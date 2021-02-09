@@ -28,7 +28,10 @@ export const customStringCompare = (field: string, desc = false) => (
   return 0;
 };
 
-export const objectToArray = (obj: IKeyValueObject | unknown, idKey = '_id') => {
+export const objectToArray = (
+  obj: IKeyValueObject | unknown,
+  idKey = '_id'
+) => {
   const arr: unknown[] = [];
 
   if (!obj) {
@@ -38,7 +41,7 @@ export const objectToArray = (obj: IKeyValueObject | unknown, idKey = '_id') => 
   Object.keys(<IKeyValueObject>obj).forEach((key): void => {
     arr.push({
       ...(<IKeyValueObject>obj)[key],
-      [idKey]: key,
+      [idKey]: key
     });
   });
 
@@ -58,7 +61,7 @@ export const dayInterval = (value: string): IDayInterval => {
 
   return {
     start: start.getTime(),
-    end: end.getTime(),
+    end: end.getTime()
   };
 };
 

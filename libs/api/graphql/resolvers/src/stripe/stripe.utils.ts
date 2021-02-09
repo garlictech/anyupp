@@ -1,8 +1,4 @@
-import {
-  CardBrand,
-  CountryCode,
-  CardFundingType,
-} from '@bgap/api/graphql/schema';
+import { CardBrand, CardFundingType } from '@bgap/api/graphql/schema';
 import { toFixed0Number, toFixed2Number } from '@bgap/api/utils';
 import { Stripe } from 'stripe';
 
@@ -12,14 +8,14 @@ export const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   metadata: Object.entries(pm.metadata || {}).map(mapMetadataToObjectArray),
   object: pm.object,
   brand: CardBrand[pm.card?.brand as keyof typeof CardBrand],
-  country: CountryCode[pm.card?.country as keyof typeof CountryCode],
-  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType],
+  country: pm.card?.country,
+  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType]
 });
 
 // [key, value] => {key:key, value:value}
 const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
   key,
-  value,
+  value
 });
 
 // https://stripe.com/docs/currencies#special-cases

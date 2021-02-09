@@ -26,6 +26,7 @@
   },
   "projects": {
     "admin": {
+      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
     "admin-e2e": {
@@ -33,6 +34,7 @@
       "implicitDependencies": ["admin"]
     },
     "graphql-server": {
+      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "api-graphql-resolvers": {

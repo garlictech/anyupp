@@ -1,29 +1,32 @@
 import Stripe from 'stripe';
-
 import { DatabaseService } from '@bgap/api/data-access';
 import { Scalars, StripeCard } from '@bgap/api/graphql/schema';
 import { getActualStatus, sumOrders } from '@bgap/api/utils';
-import { STRIPE_CONFIG } from '@bgap/shared/config';
 import {
   EOrderStatus,
   EPaymentMethod,
   IOrders,
-  IUser,
+  IUser
 } from '@bgap/shared/types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { IOrder } from '@bgap/shared/types';
 
 import {
   amountConversionForStripe,
-  mapPaymentMethodToCard,
+  mapPaymentMethodToCard
 } from './stripe.utils';
+
+// TODO: integrate the secret key from AWS
+const STRIPE_CONFIG = {
+  stripe_secret_key: 'foobar'
+};
 
 @Resolver('Stripe')
 export class StripeResolver {
   private stripe: Stripe;
   constructor(private dbService: DatabaseService) {
     this.stripe = new Stripe(STRIPE_CONFIG.stripe_secret_key, {
-      apiVersion: '2020-08-27',
+      apiVersion: '2020-08-27'
     });
   }
 
@@ -33,7 +36,7 @@ export class StripeResolver {
   ): Promise<StripeCard[]> {
     const paymentMethods = await this.stripe.paymentMethods.list({
       customer: customerId,
-      type: 'card',
+      type: 'card'
     });
     return paymentMethods.data.map(mapPaymentMethodToCard);
   }
@@ -47,7 +50,7 @@ export class StripeResolver {
     const orders: IOrders = await this.getInappPaymentReadyOrders({
       chainId,
       unitId,
-      userId,
+      userId
     });
 
     // if (!orders) {
@@ -76,7 +79,7 @@ export class StripeResolver {
     const paymentIntentClientSecret = await this.creatStripeIntent({
       amount,
       currency,
-      stripeCustomerId,
+      stripeCustomerId
     });
 
     return paymentIntentClientSecret;
@@ -122,7 +125,7 @@ export class StripeResolver {
   private async creatStripeIntent({
     amount,
     currency,
-    stripeCustomerId,
+    stripeCustomerId
   }: {
     amount: number;
     currency: string;
@@ -131,7 +134,7 @@ export class StripeResolver {
     const intent = await this.stripe.paymentIntents.create({
       amount,
       currency,
-      customer: stripeCustomerId,
+      customer: stripeCustomerId
     });
 
     return intent.client_secret;
@@ -140,7 +143,7 @@ export class StripeResolver {
   private async getInappPaymentReadyOrders({
     chainId,
     unitId,
-    userId,
+    userId
   }: {
     chainId: string;
     unitId: string;
@@ -150,7 +153,7 @@ export class StripeResolver {
       this.dbService.ordersUsersActiveRef({
         chainId,
         unitId,
-        userId,
+        userId
       })
     );
 
@@ -166,7 +169,7 @@ export class StripeResolver {
         ) {
           return {
             ...result,
-            [orderId]: order,
+            [orderId]: order
           };
         }
         return result;
