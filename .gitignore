@@ -38,7 +38,6 @@ testem.log
 Thumbs.db
 
 # libs
-/libs/shared/config/src/lib/config/*
 
 cyreport
 .setup.sh
@@ -46,4 +45,7 @@ cyreport
 .serverless
 /apps/infrastructure/anyupp-backend-stack/build
 /apps/infrastructure/build-pipeline-stack/build
+
+# The config - don't commit!
+/libs/shared/config/src/lib/*
 

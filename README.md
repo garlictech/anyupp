@@ -27,6 +27,12 @@ When:
 The command fetches the config parameters and writes them into files in `libs/shared/config`.
 You need AWS credentials set in your environment with the appropriate access!
 
+**IMPORTANT**
+
+The configs are generated in `/libs/shared/config/src/lib/`. This folder is gitignored. Ensure that
+the configs are NOT checked in to github otherwise you WILL experience differences
+in your local and the remote environments.
+
 ## Executing cucumber/cypress tests
 
 After cloning the repo:
