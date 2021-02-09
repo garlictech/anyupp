@@ -686,6 +686,7 @@ input UpdateUserInput {
 type Query {
   # Admin
   getAdminUser(id: ID!): AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools
+  getAdminUsers: [AdminUser] @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Chain
   getChain(id: ID!): Chain @aws_iam @aws_api_key @aws_cognito_user_pools

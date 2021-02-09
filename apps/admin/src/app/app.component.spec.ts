@@ -4,11 +4,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 
-export class TranslateServiceStub{
-
-	public get(key: any): any {
-		return of(key);
-	}
+export class TranslateServiceStub {
+  public get(key: unknown): unknown {
+    return of(key);
+  }
 }
 
 xdescribe('AppComponent', (): void => {
@@ -16,8 +15,10 @@ xdescribe('AppComponent', (): void => {
     waitForAsync((): void => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule, TranslateModule],
-        providers: [{provide: TranslateService, useClass: TranslateServiceStub}],
-        declarations: [AppComponent],
+        providers: [
+          { provide: TranslateService, useClass: TranslateServiceStub }
+        ],
+        declarations: [AppComponent]
       }).compileComponents();
     })
   );

@@ -1,8 +1,5 @@
-import firebase from './lib/config/firebase.config.json';
-export { firebase as FIREBASE_CONFIG };
+import * as FIREBASE_CONFIG from './lib/firebase.config.json';
+import * as FIREBASE_SERVICE_ACCOUNT from './lib/firebase-service-account-key.json';
+import * as CONFIG from './lib/config.json';
 
-import serviceAccount from './lib/config/service-account-key.json';
-export { serviceAccount as FIREBASE_SERVICE_ACCOUNT };
-
-import stripe from './lib/config/stripe.config.json';
-export { stripe as STRIPE_CONFIG };
+export { FIREBASE_CONFIG, CONFIG, FIREBASE_SERVICE_ACCOUNT };

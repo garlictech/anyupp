@@ -87,10 +87,13 @@ export class CognitoStack extends Stack {
       userPool,
       clientId: props.googleClientId,
       clientSecret: props.googleClientSecret,
+      attributeMapping: {
+        email: cognito.ProviderAttribute.GOOGLE_EMAIL
+      },
       scopes: ['profile', 'email', 'openid']
     });
 
-    // Export values
+    // Exportvalues
     const userPoolId = 'UserPoolId';
     new CfnOutput(this, userPoolId, {
       value: userPool.userPoolId,

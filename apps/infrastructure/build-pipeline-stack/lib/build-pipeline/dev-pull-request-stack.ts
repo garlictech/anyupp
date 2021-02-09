@@ -39,11 +39,14 @@ export class DevPullRequestBuildStack extends sst.Stack {
           install: {
             commands: ['yarn']
           },
+          'pre-build': {
+            commands: ['yarn nx config shared-config']
+          },
           build: {
             commands: [
-              'yarn nx affected:lint --base=dev',
-              'yarn nx affected:test --base=dev',
-              'yarn nx affected:build --base=dev'
+              'yarn nx affected:lint --base=dev --with-deps',
+              'yarn nx affected:test --base=dev --with-deps',
+              'yarn nx ffected:build --base=dev --with-deps'
             ]
           }
         }

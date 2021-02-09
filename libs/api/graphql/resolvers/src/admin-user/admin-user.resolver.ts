@@ -4,8 +4,9 @@ import { AuthService, DatabaseService } from '@bgap/api/data-access';
 import { objectToArray } from '@bgap/shared/utils';
 import {
   AdminUser,
-  AdminUserInput,
+  CreateAdminUserInput,
   AdminUserRoleInput,
+  UpdateAdminUserInput
 } from '@bgap/api/graphql/schema';
 import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
@@ -22,7 +23,7 @@ export class AdminUserResolver {
     // it changes, publishes them to the graphql subscribers.
     this.databaseService.adminUsersRef().on('child_changed', data =>
       this.pubSub.publish('adminUserChanged', {
-        adminUserChanged: { id: data.key, ...data.val() },
+        adminUserChanged: { id: data.key, ...data.val() }
       })
     );
   }
@@ -45,7 +46,7 @@ export class AdminUserResolver {
 
   @Mutation('createAdminUser')
   async createAdminUser(
-    @Args('newAdminData') newAdminData: AdminUserInput
+    @Args('newAdminData') newAdminData: CreateAdminUserInput
   ): Promise<boolean> {
     const createInactiveAdminUser = (uid: string) => {
       return this.databaseService
@@ -53,8 +54,8 @@ export class AdminUserResolver {
         .update({
           ...newAdminData,
           roles: {
-            role: EAdminRole.INACTIVE,
-          },
+            role: EAdminRole.INACTIVE
+          }
         })
         .then(
           () => true,
@@ -69,7 +70,7 @@ export class AdminUserResolver {
     try {
       const user = await this.authService.auth.createUser({
         email: newAdminData.email,
-        password: Math.random().toString(36).substring(2, 10),
+        password: Math.random().toString(36).substring(2, 10)
       });
 
       return user ? createInactiveAdminUser(user.uid) : false;
@@ -88,7 +89,7 @@ export class AdminUserResolver {
 
   @Mutation('updateAdminUser')
   async updateAdminUser(
-    @Args('newAdminData') newAdminData: AdminUserInput,
+    @Args('newAdminData') newAdminData: UpdateAdminUserInput,
     @Args('id') id: string
   ): Promise<boolean> {
     return this.databaseService
@@ -111,8 +112,7 @@ export class AdminUserResolver {
   // TODO: is this filter works, or the subscription in the constructor the one who triggers the changes?
   // Subscribe for the changes of a [articular admin user]
   @Subscription('adminUserChanged', {
-    filter: (payload, variables) =>
-      payload.adminUserChanged.id === variables.id,
+    filter: (payload, variables) => payload.adminUserChanged.id === variables.id
   })
   onChanged() {
     return this.pubSub.asyncIterator('adminUserChanged');

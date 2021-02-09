@@ -1,0 +1,10 @@
+{
+  "UserPoolClientId": "2alhcc9eocnmmbh529ijot339k",
+  "UserPoolId": "eu-west-1_T1UBpCwPw",
+  "IdentityPoolId": "eu-west-1:0f7e2e0a-280e-401f-ac51-b4f3bf4f3d9a",
+  "GraphQLAPIURL": "https://cawoaeztrvh57dp3u3dveipfqm.appsync-api.eu-west-1.amazonaws.com/graphql",
+  "GraphQLAPIKey": "da2-b3upkt5v4bevhj5qomudgl4nfa",
+  "SecretManager": "arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k",
+  "googleClientId": "1016713353610-j3k5ejo1pgo4pcfo3hos8027kkspc5a9.apps.googleusercontent.com",
+  "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDBds"
+}

@@ -49,6 +49,18 @@
             "production": {
               "fileReplacements": [
                 {
+                  "replace": "libs/shared/config/src/lib/config.prod.json",
+                  "width": "libs/shared/config/src/lib/config.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/firebase.config.json",
+                  "width": "libs/shared/config/src/lib/firebase.json"
+                },
+                {
+                  "replace": "libs/shared/config/src/lib/firebase-service-account-key.json",
+                  "width": "libs/shared/config/src/lib/firebase-service-account-key.json"
+                },
+                {
                   "replace": "apps/admin/src/environments/environment.ts",
                   "with": "apps/admin/src/environments/environment.prod.ts"
                 },
@@ -250,9 +262,14 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
+            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "parallel": false,
             "commands": [
               {
-                "command": "cd apps/infrastructure/anyupp-backend-stack && yarn sst deploy"
+                "command": "yarn sst deploy"
+              },
+              {
+                "command": "cd ../../.. && yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev"
               }
             ]
           }
@@ -392,7 +409,7 @@
             "passWithNoTests": true
           }
         },
-        "build": {
+        "config": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
@@ -430,6 +447,15 @@
       "sourceRoot": "libs/shared/config/src",
       "projectType": "library",
       "architect": {
+        "config": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "ts-node ./tools/fetch-configuration.ts anyupp-backend dev",
+              "ts-node ./tools/get-secrets.ts dev"
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {

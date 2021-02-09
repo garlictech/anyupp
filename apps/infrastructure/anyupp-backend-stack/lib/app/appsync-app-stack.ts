@@ -6,6 +6,8 @@ import { GraphqlApi, MappingTemplate } from '@aws-cdk/aws-appsync';
 import { TableConstruct } from './dynamodb-construct';
 
 export class AppsyncAppStack extends sst.Stack {
+  public x: cdk.CfnOutput;
+
   constructor(scope: sst.App, id: string) {
     super(scope, id);
     const app = this.node.root as sst.App;
@@ -50,7 +52,7 @@ export class AppsyncAppStack extends sst.Stack {
     ].forEach(objectName => this.createCommonResolvers(api, objectName));
 
     // Prints out the AppSync GraphQL endpoint to the terminal
-    new cdk.CfnOutput(this, 'GraphQLAPIURL', {
+    this.x = new cdk.CfnOutput(this, 'GraphQLAPIURL', {
       value: api.graphqlUrl
     });
 

@@ -44,3 +44,6 @@ cyreport
 .setup.sh
 .build
 .serverless
+/apps/infrastructure/anyupp-backend-stack/build
+/apps/infrastructure/build-pipeline-stack/build
+

@@ -61,7 +61,7 @@ export interface LocalizedItemInput {
 
 export interface AdminUser {
   __typename?: 'AdminUser';
-  _id: Scalars['ID'];
+  id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
   roles: AdminUserRole;
@@ -130,14 +130,14 @@ export enum CardBrand {
   mastercard = 'mastercard',
   unionpay = 'unionpay',
   visa = 'visa',
-  unknown = 'unknown'
+  unknown = 'unknown',
 }
 
 export enum CardFundingType {
   credit = 'credit',
   debit = 'debit',
   prepaid = 'prepaid',
-  unknown = 'unknown'
+  unknown = 'unknown',
 }
 
 export interface CardChecks {
@@ -693,6 +693,7 @@ export interface UpdateUserInput {
 export interface Query {
   __typename?: 'Query';
   getAdminUser?: Maybe<AdminUser>;
+  getAdminUsers?: Maybe<Array<Maybe<AdminUser>>>;
   getChain?: Maybe<Chain>;
   getGroup?: Maybe<Group>;
   getOrderItem?: Maybe<OrderItem>;
@@ -915,44 +916,13 @@ export type GetAdminUserQuery = { __typename?: 'Query' } & {
   >;
 };
 
-export type GetAdminUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAdminUsersQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
 
 export type GetAdminUsersQuery = { __typename?: 'Query' } & {
   getAdminUsers?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'AdminUser' } & Pick<
-          AdminUser,
-          '_id' | 'email' | 'name' | 'phone' | 'profileImage'
-        > & {
-            roles: { __typename?: 'AdminUserRole' } & Pick<
-              AdminUserRole,
-              'role'
-            > & {
-                entities?: Maybe<
-                  Array<
-                    Maybe<
-                      { __typename?: 'AdminRoleEntity' } & Pick<
-                        AdminRoleEntity,
-                        'chainId' | 'groupId' | 'unitId'
-                      >
-                    >
-                  >
-                >;
-              };
-            address?: Maybe<
-              { __typename?: 'Address' } & Pick<
-                Address,
-                'address' | 'city' | 'country' | 'postalCode' | 'title'
-              > & {
-                  location?: Maybe<
-                    { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
-                  >;
-                }
-            >;
-          }
-      >
-    >
+    Array<Maybe<{ __typename?: 'AdminUser' } & AdminUserFragmentFragment>>
   >;
 };
 
@@ -987,8 +957,31 @@ export type UpdateAdminUserRoleMutation = { __typename?: 'Mutation' } & Pick<
 
 export type AdminUserFragmentFragment = { __typename?: 'AdminUser' } & Pick<
   AdminUser,
-  'email' | 'name' | 'phone'
->;
+  'id' | 'email' | 'name' | 'phone' | 'profileImage'
+> & {
+    roles: { __typename?: 'AdminUserRole' } & Pick<AdminUserRole, 'role'> & {
+        entities?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'AdminRoleEntity' } & Pick<
+                AdminRoleEntity,
+                'chainId' | 'groupId' | 'unitId'
+              >
+            >
+          >
+        >;
+      };
+    address?: Maybe<
+      { __typename?: 'Address' } & Pick<
+        Address,
+        'address' | 'city' | 'country' | 'postalCode' | 'title'
+      > & {
+          location?: Maybe<
+            { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
+          >;
+        }
+    >;
+  };
 
 export type GetCustomerStripeCardsQueryVariables = Exact<{
   customerId: Scalars['ID'];
@@ -1034,9 +1027,30 @@ export type StartStripePaymentMutation = { __typename?: 'Mutation' } & Pick<
 
 export const AdminUserFragment = gql`
   fragment adminUserFragment on AdminUser {
+    id
     email
     name
     phone
+    profileImage
+    roles {
+      role
+      entities {
+        chainId
+        groupId
+        unitId
+      }
+    }
+    address {
+      address
+      city
+      country
+      location {
+        lat
+        lng
+      }
+      postalCode
+      title
+    }
   }
 `;
 export const GetAdminUser = gql`
@@ -1048,34 +1062,12 @@ export const GetAdminUser = gql`
   ${AdminUserFragment}
 `;
 export const GetAdminUsers = gql`
-  query GetAdminUsers {
+  query GetAdminUsers($id: ID!) {
     getAdminUsers {
-      _id
-      email
-      name
-      phone
-      profileImage
-      roles {
-        role
-        entities {
-          chainId
-          groupId
-          unitId
-        }
-      }
-      address {
-        address
-        city
-        country
-        location {
-          lat
-          lng
-        }
-        postalCode
-        title
-      }
+      ...adminUserFragment
     }
   }
+  ${AdminUserFragment}
 `;
 export const CreateAdminUser = gql`
   mutation CreateAdminUser($data: CreateAdminUserInput!) {

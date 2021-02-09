@@ -4,6 +4,12 @@ query GetAdminUser($id: ID!) {
   }
 }
 
+query GetAdminUsers($id: ID!) {
+  getAdminUsers {
+    ...adminUserFragment
+  }
+}
+
 mutation CreateAdminUser($data: CreateAdminUserInput!) {
   createAdminUser(input: $data) {
     ...adminUserFragment
