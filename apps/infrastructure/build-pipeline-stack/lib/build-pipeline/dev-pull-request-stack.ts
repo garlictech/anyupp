@@ -39,7 +39,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           install: {
             commands: ['yarn']
           },
-          'pre-build': {
+          pre_build: {
             commands: ['yarn nx config shared-config']
           },
           build: {
