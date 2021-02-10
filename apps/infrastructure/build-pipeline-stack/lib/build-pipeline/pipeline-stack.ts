@@ -1,3 +1,4 @@
+import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
@@ -27,6 +28,12 @@ export class DevBuildPipelineStack extends sst.Stack {
 
     const sourceOutput = new codepipeline.Artifact('SourceOutput');
 
+    const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
+      this,
+      'AdminSiteUrlParam2',
+      'dev-anyupp-backend-AdminSiteUrl'
+    ).stringValue;
+
     // Build + deploy project
     const deploy = new codebuild.PipelineProject(this, 'Build', {
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -45,7 +52,8 @@ export class DevBuildPipelineStack extends sst.Stack {
           },
           post_build: {
             commands: [
-              'yarn nx run-many --target deploy --projects admin,infrastructure-anyupp-backend-stack'
+              'yarn nx run-many --target deploy --projects admin,infrastructure-anyupp-backend-stack',
+              `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`
             ]
           }
         }

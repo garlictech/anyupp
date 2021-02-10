@@ -17,7 +17,8 @@ export const configurePermissions = (
     'GraphqlApiKey',
     'GraphqlApiUrl',
     'googleClientId',
-    'stripePublishableKey'
+    'stripePublishableKey',
+    'AdminSiteUrl'
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,
