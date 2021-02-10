@@ -4,6 +4,7 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import { SecretsManagerStack } from './secretsmanager-stack';
 import * as chatbot from '@aws-cdk/aws-chatbot';
+import { configurePermissions } from './utils';
 
 export interface DevPullRequestBuildStackProps extends sst.StackProps {
   readonly chatbot: chatbot.SlackChannelConfiguration;
@@ -56,23 +57,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    props.secretsManager.anyuppDevSecret.grantRead(project);
-
-    [
-      'UserPoolClientId',
-      'UserPoolId',
-      'IdentityPoolId',
-      'GraphqlApiKey',
-      'GraphqlApiUrl',
-      'googleClientId',
-      'stripePublishableKey'
-    ].forEach(param =>
-      ssm.StringParameter.fromStringParameterName(
-        this,
-        param + 'Param',
-        'dev-anyupp-backend-' + param
-      ).grantRead(project)
-    );
+    configurePermissions(this, props.secretsManager, project);
 
     new codestarnotifications.CfnNotificationRule(
       this,
