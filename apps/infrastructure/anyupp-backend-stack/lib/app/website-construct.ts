@@ -1,12 +1,12 @@
 import { Construct } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as route53 from '@aws-cdk/aws-route53';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cdk from '@aws-cdk/core';
-import * as targets from '@aws-cdk/aws-route53-targets/lib';
 import * as sst from '@serverless-stack/resources';
+import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as targets from '@aws-cdk/aws-route53-targets';
+import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 
 export interface WebsiteProps {
   domainName: string;
@@ -15,6 +15,8 @@ export interface WebsiteProps {
 }
 
 export class WebsiteConstruct extends Construct {
+  public websiteUrl: string;
+
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
     const app = this.node.root as sst.App;
@@ -23,10 +25,11 @@ export class WebsiteConstruct extends Construct {
       domainName: props.domainName
     });
 
-    const siteDomain = app.logicalPrefixedName(
-      props.siteSubDomain + '.' + props.domainName
-    );
-    new cdk.CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
+    const siteDomain =
+      app.stage + '.' + props.siteSubDomain + '.' + props.domainName;
+
+    this.websiteUrl = 'https://' + siteDomain;
+    new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
     const siteBucket = new s3.Bucket(this, 'SiteBucket', {
@@ -41,7 +44,6 @@ export class WebsiteConstruct extends Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY // NOT recommended for production code
     });
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
-
     // TLS certificate
     const certificateArn = new acm.DnsValidatedCertificate(
       this,
@@ -49,9 +51,10 @@ export class WebsiteConstruct extends Construct {
       {
         domainName: siteDomain,
         hostedZone: zone,
-        region: 'us-east-1' // Cloudfront only checks this region for certificates.
+        region: 'us-east-1'
       }
     ).certificateArn;
+
     new cdk.CfnOutput(this, 'Certificate', { value: certificateArn });
 
     // CloudFront distribution that provides HTTPS

@@ -18,12 +18,12 @@ export default function main(app: App): void {
     repoOwner: 'bgap',
     repoName: 'anyupp',
     secretsManager: secretsManagerStack,
-    repoBranch: 'dev'
+    repoBranch: 'dev',
+    chatbot: slackChannel.chatbot
   };
 
   const devPullRequestConfig: DevPullRequestBuildStackProps = {
-    ...commonConfig,
-    chatbot: slackChannel.chatbot
+    ...commonConfig
   };
 
   const devBuildPipelineConfig: PipelineStackProps = {
