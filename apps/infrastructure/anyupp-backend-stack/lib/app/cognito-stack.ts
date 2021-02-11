@@ -51,6 +51,16 @@ export class CognitoStack extends Stack {
       }
     });
 
+    new cognito.UserPoolIdentityProviderGoogle(this, 'Google', {
+      userPool,
+      clientId: props.googleClientId,
+      clientSecret: props.googleClientSecret,
+      attributeMapping: {
+        email: cognito.ProviderAttribute.GOOGLE_EMAIL
+      },
+      scopes: ['profile', 'email', 'openid']
+    });
+
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool,
       generateSecret: false, // Don't need to generate secret for web app running on browsers
@@ -82,16 +92,6 @@ export class CognitoStack extends Stack {
           providerName: userPool.userPoolProviderName
         }
       ]
-    });
-
-    new cognito.UserPoolIdentityProviderGoogle(this, 'Google', {
-      userPool,
-      clientId: props.googleClientId,
-      clientSecret: props.googleClientSecret,
-      attributeMapping: {
-        email: cognito.ProviderAttribute.GOOGLE_EMAIL
-      },
-      scopes: ['profile', 'email', 'openid']
     });
 
     // Exportvalues
