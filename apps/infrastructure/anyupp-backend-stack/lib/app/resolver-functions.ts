@@ -11,6 +11,7 @@ export interface ResolverFunctions {
   validateLon: AppsyncFunction;
   validateLat: AppsyncFunction;
   validateUrl: AppsyncFunction;
+  validateAddress: AppsyncFunction;
 }
 
 export const createResolverFunctions = (
@@ -40,6 +41,25 @@ export const createResolverFunctions = (
             $util.error("$ctx.stash.lat is not a valid latitude.")
         #end
         {}
+      `),
+    responseMappingTemplate: MappingTemplate.fromFile(
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+    )
+  }),
+
+  validateAddress: noneDs.createFunction({
+    name: 'validateAddress',
+    description: 'Validate an address',
+    requestMappingTemplate: MappingTemplate.fromString(`
+        #set($valid = 
+             ($util.isNull($ctx.stash.address.location.lng) and $util.isNull($ctx.stash.address.location.lat)) or 
+             (($ctx.stash.address.location.lat <= 90.0) and ($ctx.stash.address.location.lat >= -90.0) and
+             ($ctx.stash.address.location.lng <= 180.0) and ($ctx.stash.address.location.lng >= -180.0)
+             ))
+        #if (!$valid)
+            $util.error("$ctx.stash.address is not a valid address")
+        #end
+        {} 
       `),
     responseMappingTemplate: MappingTemplate.fromFile(
       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'

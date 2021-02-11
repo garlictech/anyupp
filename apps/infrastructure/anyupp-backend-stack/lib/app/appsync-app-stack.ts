@@ -79,8 +79,7 @@ export class AppsyncAppStack extends sst.Stack {
     this.resolverFunctions = createResolverFunctions(this.noneDs);
 
     const AdminUserBeforeRequestMappingTemplate = stageValidationProperties([
-      'address.lon',
-      'address.lat'
+      'address'
     ]);
 
     const emptyBeforeRequestMappingTemplate = '{}';
@@ -88,10 +87,7 @@ export class AppsyncAppStack extends sst.Stack {
     [
       {
         label: 'AdminUser',
-        dataValidators: [
-          this.resolverFunctions.validateLon,
-          this.resolverFunctions.validateLat
-        ],
+        dataValidators: [this.resolverFunctions.validateAddress],
         beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate
       },
       {
