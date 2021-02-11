@@ -45,7 +45,8 @@ export class CognitoStack extends Stack {
       accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL
     });
 
-    userPool.addDomain('CognitoDomain', {
+    const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
+      userPool,
       cognitoDomain: {
         domainPrefix: 'anyupp'
       }
@@ -129,6 +130,18 @@ export class CognitoStack extends Stack {
       description: 'The identity pool ID',
       parameterName: app.logicalPrefixedName(identityPoolId),
       stringValue: identityPool.ref
+    });
+
+    const userPoolDomainId = 'UserPoolDomain';
+    new CfnOutput(this, userPoolDomainId, {
+      value: domain.baseUrl(),
+      exportName: app.logicalPrefixedName(userPoolDomainId)
+    });
+    new ssm.StringParameter(this, userPoolDomainId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The user pool domain',
+      parameterName: app.logicalPrefixedName(userPoolDomainId),
+      stringValue: domain.baseUrl()
     });
   }
 }
