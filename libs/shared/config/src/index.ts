@@ -1,12 +1,11 @@
-import * as FIREBASE_CONFIG from './lib/config/firebase.config.json';
+import * as firebaseConfig from './lib/config/firebase.config.json';
+import * as config from './lib/config/config.json';
 import * as FIREBASE_SERVICE_ACCOUNT from './lib/config/firebase-service-account-key.json';
-import * as CONFIG from './lib/config/config.json';
+import { SharedConfig, SharedFirebaseConfig } from './lib/interfaces';
 
-export { FIREBASE_CONFIG, CONFIG, FIREBASE_SERVICE_ACCOUNT };
+const fbConf: SharedFirebaseConfig = firebaseConfig;
+const conf: SharedConfig = config;
+export { fbConf as FIREBASE_CONFIG, conf as CONFIG, FIREBASE_SERVICE_ACCOUNT };
 
 export * from './lib/shared-secrets.module';
-
-export interface SharedSecrets {
-  stripeSecretKey: string;
-  googleClientSecret: string;
-}
+export * from './lib/interfaces';
