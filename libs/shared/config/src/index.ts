@@ -3,3 +3,7 @@ import * as FIREBASE_SERVICE_ACCOUNT from './lib/firebase-service-account-key.js
 import * as CONFIG from './lib/config.json';
 
 export { FIREBASE_CONFIG, CONFIG, FIREBASE_SERVICE_ACCOUNT };
+
+// TODO: remove TEMPORARY solution
+import stripe from './lib/config/stripe.config.json';
+export { stripe as STRIPE_CONFIG };
