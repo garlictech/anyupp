@@ -5,7 +5,6 @@ import {
   StartStripePaymentOutput,
   StripeCard,
 } from '@bgap/api/graphql/schema';
-import { STRIPE_CONFIG } from '@bgap/shared/config';
 import { getActualStatus, sumOrders } from '@bgap/api/utils';
 import {
   EOrderStatus,
@@ -20,17 +19,17 @@ import {
   amountConversionForStripe,
   mapPaymentMethodToCard,
 } from './stripe.utils';
-
-// TODO: integrate the secret key from AWS
-// const STRIPE_CONFIG = {
-//   stripe_secret_key: 'foobar',
-// };
+import { Inject } from '@nestjs/common';
+import { SharedSecrets } from '@bgap/shared/config';
 
 @Resolver('Stripe')
 export class StripeResolver {
   private stripe: Stripe;
-  constructor(private dbService: DatabaseService) {
-    this.stripe = new Stripe(STRIPE_CONFIG.stripe_secret_key, {
+  constructor(
+    private dbService: DatabaseService,
+    @Inject('SHARED_SECRETS') private sharedSecrets: SharedSecrets
+  ) {
+    this.stripe = new Stripe(sharedSecrets.stripeSecretKey, {
       apiVersion: '2020-08-27',
     });
   }

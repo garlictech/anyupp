@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
 import { StripeResolver } from '../stripe/stripe.resolver';
 import { UserResolver } from '../user/user.resolver';
+import { SharedSecretsModule } from '@bgap/shared/config';
 
 @Module({
   controllers: [],
@@ -18,7 +19,7 @@ import { UserResolver } from '../user/user.resolver';
       useValue: new PubSub(),
     },
   ],
-  imports: [ApiDataAccessModule],
+  imports: [ApiDataAccessModule, SharedSecretsModule],
   exports: [],
 })
 export class ApiGraphqlResolversModule {}

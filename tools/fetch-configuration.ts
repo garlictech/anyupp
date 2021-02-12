@@ -14,7 +14,7 @@ const stage = process.argv[3];
 const prefix = `${stage}-${project}-`;
 const filenamePostfix = stage === 'dev' ? '' : stage + '.';
 
-const targetFile = `${__dirname}/../libs/shared/config/src/lib/config.${filenamePostfix}json`;
+const targetFile = `${__dirname}/../libs/shared/config/src/lib/config/config.${filenamePostfix}json`;
 
 pipe(
   [
