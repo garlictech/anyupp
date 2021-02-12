@@ -45,10 +45,21 @@ export class CognitoStack extends Stack {
       accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL
     });
 
-    userPool.addDomain('CognitoDomain', {
+    const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
+      userPool,
       cognitoDomain: {
         domainPrefix: 'anyupp'
       }
+    });
+
+    new cognito.UserPoolIdentityProviderGoogle(this, 'Google', {
+      userPool,
+      clientId: props.googleClientId,
+      clientSecret: props.googleClientSecret,
+      attributeMapping: {
+        email: cognito.ProviderAttribute.GOOGLE_EMAIL
+      },
+      scopes: ['profile', 'email', 'openid']
     });
 
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
@@ -82,16 +93,6 @@ export class CognitoStack extends Stack {
           providerName: userPool.userPoolProviderName
         }
       ]
-    });
-
-    new cognito.UserPoolIdentityProviderGoogle(this, 'Google', {
-      userPool,
-      clientId: props.googleClientId,
-      clientSecret: props.googleClientSecret,
-      attributeMapping: {
-        email: cognito.ProviderAttribute.GOOGLE_EMAIL
-      },
-      scopes: ['profile', 'email', 'openid']
     });
 
     // Exportvalues
@@ -129,6 +130,18 @@ export class CognitoStack extends Stack {
       description: 'The identity pool ID',
       parameterName: app.logicalPrefixedName(identityPoolId),
       stringValue: identityPool.ref
+    });
+
+    const userPoolDomainId = 'UserPoolDomain';
+    new CfnOutput(this, userPoolDomainId, {
+      value: domain.baseUrl(),
+      exportName: app.logicalPrefixedName(userPoolDomainId)
+    });
+    new ssm.StringParameter(this, userPoolDomainId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The user pool domain',
+      parameterName: app.logicalPrefixedName(userPoolDomainId),
+      stringValue: domain.baseUrl()
     });
   }
 }

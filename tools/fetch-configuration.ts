@@ -20,6 +20,7 @@ pipe(
   [
     'UserPoolClientId',
     'UserPoolId',
+    'UserPoolDomain',
     'IdentityPoolId',
     'GraphqlApiKey',
     'GraphqlApiUrl',
