@@ -169,6 +169,19 @@ export interface StripeCard {
   metadata: Array<StripeMetadata>;
 }
 
+export interface StartStripePaymentInput {
+  chainId: Scalars['ID'];
+  unitId: Scalars['ID'];
+  userId: Scalars['ID'];
+  paymentMethodId: Scalars['ID'];
+}
+
+export interface StartStripePaymentOutput {
+  __typename?: 'StartStripePaymentOutput';
+  clientSecret: Scalars['String'];
+  status: Scalars['String'];
+}
+
 export interface Chain {
   __typename?: 'Chain';
   id: Scalars['ID'];
@@ -742,7 +755,7 @@ export interface QueryGetUserArgs {
 }
 
 export interface QueryGetCustomerStripeCardsArgs {
-  customerId?: Maybe<Scalars['ID']>;
+  userId?: Maybe<Scalars['ID']>;
 }
 
 export interface Mutation {
@@ -775,7 +788,7 @@ export interface Mutation {
   createUser?: Maybe<User>;
   updateUser?: Maybe<User>;
   deleteUser: Scalars['Boolean'];
-  startStripePayment: Scalars['String'];
+  startStripePayment: StartStripePaymentOutput;
 }
 
 export interface MutationCreateAdminUserArgs {
@@ -891,9 +904,7 @@ export interface MutationDeleteUserArgs {
 }
 
 export interface MutationStartStripePaymentArgs {
-  chainId: Scalars['ID'];
-  unitId: Scalars['ID'];
-  userId: Scalars['ID'];
+  args: StartStripePaymentInput;
 }
 
 export interface Subscription {
@@ -984,7 +995,7 @@ export type AdminUserFragmentFragment = { __typename?: 'AdminUser' } & Pick<
   };
 
 export type GetCustomerStripeCardsQueryVariables = Exact<{
-  customerId: Scalars['ID'];
+  userId: Scalars['ID'];
 }>;
 
 export type GetCustomerStripeCardsQuery = { __typename?: 'Query' } & {
@@ -1015,15 +1026,15 @@ export type GetCustomerStripeCardsQuery = { __typename?: 'Query' } & {
 };
 
 export type StartStripePaymentMutationVariables = Exact<{
-  chainId: Scalars['ID'];
-  unitId: Scalars['ID'];
-  userId: Scalars['ID'];
+  args: StartStripePaymentInput;
 }>;
 
-export type StartStripePaymentMutation = { __typename?: 'Mutation' } & Pick<
-  Mutation,
-  'startStripePayment'
->;
+export type StartStripePaymentMutation = { __typename?: 'Mutation' } & {
+  startStripePayment: { __typename?: 'StartStripePaymentOutput' } & Pick<
+    StartStripePaymentOutput,
+    'clientSecret' | 'status'
+  >;
+};
 
 export const AdminUserFragment = gql`
   fragment adminUserFragment on AdminUser {
@@ -1091,8 +1102,8 @@ export const UpdateAdminUserRole = gql`
   }
 `;
 export const GetCustomerStripeCards = gql`
-  query GetCustomerStripeCards($customerId: ID!) {
-    getCustomerStripeCards(customerId: $customerId) {
+  query GetCustomerStripeCards($userId: ID!) {
+    getCustomerStripeCards(userId: $userId) {
       brand
       id
       country
@@ -1109,7 +1120,10 @@ export const GetCustomerStripeCards = gql`
   }
 `;
 export const StartStripePayment = gql`
-  mutation StartStripePayment($chainId: ID!, $unitId: ID!, $userId: ID!) {
-    startStripePayment(chainId: $chainId, unitId: $unitId, userId: $userId)
+  mutation StartStripePayment($args: StartStripePaymentInput!) {
+    startStripePayment(args: $args) {
+      clientSecret
+      status
+    }
   }
 `;

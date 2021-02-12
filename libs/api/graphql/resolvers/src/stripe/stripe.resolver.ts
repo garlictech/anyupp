@@ -1,56 +1,61 @@
 import Stripe from 'stripe';
 import { DatabaseService } from '@bgap/api/data-access';
-import { Scalars, StripeCard } from '@bgap/api/graphql/schema';
+import {
+  StartStripePaymentInput,
+  StartStripePaymentOutput,
+  StripeCard,
+} from '@bgap/api/graphql/schema';
+import { STRIPE_CONFIG } from '@bgap/shared/config';
 import { getActualStatus, sumOrders } from '@bgap/api/utils';
 import {
   EOrderStatus,
   EPaymentMethod,
   IOrders,
-  IUser
+  IUser,
 } from '@bgap/shared/types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { IOrder } from '@bgap/shared/types';
 
 import {
   amountConversionForStripe,
-  mapPaymentMethodToCard
+  mapPaymentMethodToCard,
 } from './stripe.utils';
 
 // TODO: integrate the secret key from AWS
-const STRIPE_CONFIG = {
-  stripe_secret_key: 'foobar'
-};
+// const STRIPE_CONFIG = {
+//   stripe_secret_key: 'foobar',
+// };
 
 @Resolver('Stripe')
 export class StripeResolver {
   private stripe: Stripe;
   constructor(private dbService: DatabaseService) {
     this.stripe = new Stripe(STRIPE_CONFIG.stripe_secret_key, {
-      apiVersion: '2020-08-27'
+      apiVersion: '2020-08-27',
     });
   }
 
   @Query('getCustomerStripeCards')
   async getCustomerStripeCards(
-    @Args('customerId') customerId: string
+    @Args('userId') userId: string
   ): Promise<StripeCard[]> {
+    const stripeCustomerId = await this.getStripeCustomerIdForUser({ userId });
     const paymentMethods = await this.stripe.paymentMethods.list({
-      customer: customerId,
-      type: 'card'
+      customer: stripeCustomerId,
+      type: 'card',
     });
     return paymentMethods.data.map(mapPaymentMethodToCard);
   }
 
   @Mutation('startStripePayment')
   async startPayment(
-    @Args('chainId') chainId: Scalars['ID'],
-    @Args('userId') userId: Scalars['ID'],
-    @Args('unitId') unitId: Scalars['ID']
-  ) {
+    @Args('args') args: StartStripePaymentInput
+  ): Promise<StartStripePaymentOutput> {
+    const { chainId, unitId, userId, paymentMethodId } = args;
     const orders: IOrders = await this.getInappPaymentReadyOrders({
       chainId,
       unitId,
-      userId
+      userId,
     });
 
     // if (!orders) {
@@ -62,27 +67,24 @@ export class StripeResolver {
     )[0].sumPriceShown.currency.toUpperCase();
     const amount = amountConversionForStripe(sumOrders(orders), currency);
     // return orders;
-    const userRef = this.dbService.userRef(userId);
-    const user = await this.dbService.getRefValue<IUser>(userRef);
 
-    // if (!user) {
-    //     throw userIsMissingError(); // ERROR
-    // }
+    const stripeCustomerId = await this.getStripeCustomerIdForUser({ userId });
 
-    let stripeCustomerId = user.stripeCustomerId;
-
-    if (!stripeCustomerId) {
-      stripeCustomerId = await this.creatStripeCustomer();
-      userRef.update({ stripeCustomerId });
-    }
-
-    const paymentIntentClientSecret = await this.creatStripeIntent({
+    const paymentIntentClientSecret = await this.createStripeIntent({
       amount,
       currency,
-      stripeCustomerId
+      stripeCustomerId,
+      paymentMethodId: paymentMethodId ? paymentMethodId : undefined,
     });
 
-    return paymentIntentClientSecret;
+    if (!paymentIntentClientSecret.client_secret) {
+      throw new Error('TODOOOOO CLIENT SECRET IS MISSING');
+    }
+
+    return {
+      status: paymentIntentClientSecret.status,
+      clientSecret: paymentIntentClientSecret.client_secret,
+    };
 
     // const transactionId = nanoid();
 
@@ -122,28 +124,31 @@ export class StripeResolver {
     return customer.id;
   }
 
-  private async creatStripeIntent({
+  private async createStripeIntent({
     amount,
     currency,
-    stripeCustomerId
+    stripeCustomerId,
+    paymentMethodId,
   }: {
     amount: number;
     currency: string;
     stripeCustomerId: string;
-  }) {
+    paymentMethodId: string | undefined;
+  }): Promise<Stripe.PaymentIntent> {
     const intent = await this.stripe.paymentIntents.create({
       amount,
       currency,
-      customer: stripeCustomerId
+      customer: stripeCustomerId,
+      payment_method: paymentMethodId,
     });
 
-    return intent.client_secret;
+    return intent;
   }
 
   private async getInappPaymentReadyOrders({
     chainId,
     unitId,
-    userId
+    userId,
   }: {
     chainId: string;
     unitId: string;
@@ -153,7 +158,7 @@ export class StripeResolver {
       this.dbService.ordersUsersActiveRef({
         chainId,
         unitId,
-        userId
+        userId,
       })
     );
 
@@ -169,12 +174,30 @@ export class StripeResolver {
         ) {
           return {
             ...result,
-            [orderId]: order
+            [orderId]: order,
           };
         }
         return result;
       },
       {}
     );
+  }
+
+  private async getStripeCustomerIdForUser({ userId }: { userId: string }) {
+    const userRef = this.dbService.userRef(userId);
+    const user = await this.dbService.getRefValue<IUser>(userRef);
+
+    // if (!user) {
+    //     throw userIsMissingError(); // ERROR
+    // }
+
+    let stripeCustomerId = user.stripeCustomerId;
+
+    if (!stripeCustomerId) {
+      stripeCustomerId = await this.creatStripeCustomer();
+      userRef.update({ stripeCustomerId });
+    }
+
+    return stripeCustomerId;
   }
 }

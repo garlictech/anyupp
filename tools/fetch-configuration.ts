@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { exit } from 'process';
 
 const client = new AWS.SSM({
-  region: region
+  region: region,
 });
 
 const project = process.argv[2];
@@ -24,7 +24,7 @@ pipe(
     'GraphqlApiKey',
     'GraphqlApiUrl',
     'googleClientId',
-    'stripePublishableKey'
+    'stripePublishableKey',
   ],
   fp.map(paramName => `${prefix}${paramName}`),
   paramNames =>

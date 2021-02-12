@@ -172,6 +172,18 @@ type StripeCard {
   metadata: [StripeMetadata!]!
 }
 
+input StartStripePaymentInput {
+  chainId: ID!
+  unitId: ID!
+  userId: ID!
+  paymentMethodId: ID!
+}
+
+type StartStripePaymentOutput {
+  clientSecret: String!
+  status: String!
+}
+
 # Chain
 
 type Chain {
@@ -719,7 +731,7 @@ type Query {
   getUser(id: ID!): User @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Stripe
-  getCustomerStripeCards(customerId: ID): [StripeCard]
+  getCustomerStripeCards(userId: ID): [StripeCard]
 }
 
 type Mutation {
@@ -812,7 +824,7 @@ type Mutation {
   deleteUser(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Stripe
-  startStripePayment(chainId: ID!, unitId: ID!, userId: ID!): String!
+  startStripePayment(args: StartStripePaymentInput!): StartStripePaymentOutput!
 }
 
 type Subscription {
