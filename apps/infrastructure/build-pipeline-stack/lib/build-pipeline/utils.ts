@@ -13,6 +13,7 @@ export const configurePermissions = (
   [
     'UserPoolClientId',
     'UserPoolId',
+    'UserPoolDomain',
     'IdentityPoolId',
     'GraphqlApiKey',
     'GraphqlApiUrl',
