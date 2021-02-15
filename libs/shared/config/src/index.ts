@@ -1,12 +1,16 @@
 import * as firebaseConfig from './lib/config/firebase.config.json';
 import * as config from './lib/config/config.json';
 import * as FIREBASE_SERVICE_ACCOUNT from './lib/config/firebase-service-account-key.json';
+import { isSharedConfig, isSharedFirebaseConfig } from './lib/interface-checks';
 
-// TODO: ok exporting fbConf instead of firebaseConfig we got this error: Error: Can't determine Firebase Database URL.
-// import { SharedConfig, SharedFirebaseConfig } from './lib/interfaces';
+if (!isSharedConfig()) {
+  throw new Error('The shared CONFIG is NOT valid');
+}
 
-// const fbConf: SharedFirebaseConfig = firebaseConfig;
-// const conf: SharedConfig = config;
+if (!isSharedFirebaseConfig()) {
+  throw new Error('The shared FIREBASE_CONFIG is NOT valid');
+}
+
 export {
   firebaseConfig as FIREBASE_CONFIG,
   config as CONFIG,
