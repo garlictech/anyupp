@@ -1,0 +1,9 @@
+export 'bloc/affliliate_bloc.dart';
+export 'bloc/affliliate_event.dart';
+export 'bloc/affliliate_state.dart';
+export 'model/affiliate_model.dart';
+export 'utils/affiliate_utils.dart';
+export 'repository/affiliate_repository.dart';
+export 'providers/affiliate_firebase_provider.dart';
+export 'providers/affiliate_provider_interface.dart';
+export 'widgets/affiliate_card_widget.dart';

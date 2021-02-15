@@ -1,0 +1,39 @@
+import 'package:intl/intl.dart';
+
+// ignore: non_constant_identifier_names
+final DF_SHORT = DateFormat('yyyy.MM.dd HH:mm');
+
+String ellapsedTimeToStringDescription(DateTime date) {
+  DateTime now = DateTime.now();
+  Duration difference = now.difference(date);
+  if (difference.inDays > 0) {
+    return '${difference.inDays} day' + (difference.inDays > 1 ? 's' : '');
+  }
+  if (difference.inHours > 0) {
+    return '${difference.inHours} hour' + (difference.inHours > 1 ? 's' : '');
+  }
+  if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} min' + (difference.inMinutes > 1 ? 's' : '');
+  }
+  return '${difference.inSeconds} sec';
+}
+
+String formatCurrency(dynamic number, String currency) {
+  // if (languageCode == null) {
+  //   languageCode = new Locale('en_US').languageCode;
+  // }
+  return getNumberFormatter(currency).format(number);
+}
+
+NumberFormat getNumberFormatter(String currency) {
+  switch (currency.toLowerCase()) {
+    case 'eur':
+      return new NumberFormat.currency(locale: 'en_US', symbol: '€', decimalDigits: 2); // €1,000.11
+    case 'usd':
+      return new NumberFormat.currency(locale: 'en_US', symbol: '\$', decimalDigits: 2); // $1,000.11
+    case 'huf':
+      return new NumberFormat.currency(locale: 'hu_HU', symbol: 'Ft', decimalDigits: 0); // 1 000,11 Ft
+    default:
+      return new NumberFormat.currency(locale: 'en_US', symbol: currency, decimalDigits: 2);
+  }
+}
