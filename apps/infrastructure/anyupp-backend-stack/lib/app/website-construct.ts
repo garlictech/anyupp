@@ -1,5 +1,4 @@
 import { Construct } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cdk from '@aws-cdk/core';
@@ -7,6 +6,7 @@ import * as sst from '@serverless-stack/resources';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
+import { AutoDeleteBucket } from './auto-delete-bucket';
 
 export interface WebsiteProps {
   domainName: string;
@@ -32,7 +32,7 @@ export class WebsiteConstruct extends Construct {
     new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
-    const siteBucket = new s3.Bucket(this, 'SiteBucket', {
+    const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'error.html',

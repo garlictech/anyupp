@@ -32,3 +32,6 @@ provider:
 functions:
   graphql-api:
     handler: lib/appsync/graphql-api/index.handler
+
+  auto-delete-bucket:
+    handler: lib/lambda/auto-delete-bucket/index.handler
