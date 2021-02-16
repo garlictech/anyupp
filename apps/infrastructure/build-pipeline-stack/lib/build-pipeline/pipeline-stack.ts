@@ -38,6 +38,11 @@ export class DevBuildPipelineStack extends sst.Stack {
     const deploy = new codebuild.PipelineProject(this, 'Build', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
+        env: {
+          variables: {
+            NODE_OPTIONS: '--unhandled-rejections=strict'
+          }
+        },
         phases: {
           install: {
             commands: ['yarn']
