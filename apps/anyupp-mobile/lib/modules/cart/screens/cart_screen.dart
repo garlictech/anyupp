@@ -1,0 +1,289 @@
+import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/place_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/widgets.dart';
+
+import 'package:fa_prev/modules/cart/cart.dart';
+
+class CartScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: theme.background,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        elevation: 0.0,
+        // Only dev and qa builds are show the table and seat in the top right corner
+        title: (DotEnv().env['stage'] == 'dev' || DotEnv().env['stage'] == 'qa')
+            ? FutureBuilder<Place>(
+                future: getPlacePref(),
+                builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
+                  print('placeSnapshot=$placeSnapshot');
+
+                  if (placeSnapshot.hasData) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          trans(context, 'main.menu.cart'),
+                          style: GoogleFonts.poppins(
+                            color: theme.text,
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/table-icon.svg',
+                              width: 20,
+                              height: 20,
+                              color: theme.indicator,
+                            ),
+                            Text(
+                              ' ${placeSnapshot.data.table}',
+                              style: GoogleFonts.poppins(
+                                color: theme.text,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              'assets/icons/chair-icon.svg',
+                              width: 20,
+                              height: 20,
+                              color: theme.indicator,
+                            ),
+                            Text(
+                              '${placeSnapshot.data.seat}',
+                              style: GoogleFonts.poppins(
+                                color: theme.text,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+
+                  return Text(
+                    trans(context, 'main.menu.cart'),
+                    style: GoogleFonts.poppins(
+                      color: theme.text,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                },
+              )
+            : Text(
+                trans(context, 'main.menu.cart'),
+                style: GoogleFonts.poppins(
+                  color: theme.text,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+      ),
+      body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, state) {
+          if (state is UnitSelected) {
+            return StreamBuilder<Cart>(
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.unitId),
+              builder: (context, AsyncSnapshot<Cart> snapshot) {
+                if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                  if (snapshot.data != null) {
+                    return _buildCartListAndTotal(context, state.unit, snapshot.data);
+                  }
+                  return _emptyCart(context);
+                }
+
+                return CenterLoadingWidget();
+              },
+            );
+          }
+          return CenterLoadingWidget();
+        },
+      ),
+    );
+  }
+
+  Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
+    return Column(
+      children: <Widget>[
+        // LIST
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: AnimationLimiter(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  color: theme.disabled.withOpacity(0.3),
+                ),
+                physics: BouncingScrollPhysics(),
+                itemCount: cart.orders.length,
+                itemBuilder: (context, position) {
+                  final Order order = cart.orders[position];
+                  return AnimationConfiguration.staggeredList(
+                    position: position,
+                    duration: const Duration(milliseconds: 375),
+                    child: _buildCartItem(context, unit, order),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+
+        // TOTAL
+        Container(
+          height: 94,
+          padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
+          decoration: BoxDecoration(color: theme.background2),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        trans(context, 'cart.totalCost'),
+                        style: GoogleFonts.poppins(
+                          color: theme.text,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // Display the overall cart price
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          formatCurrency(cart.totalPrice, unit.currency),
+                          style: GoogleFonts.poppins(
+                            color: theme.text,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // NAVIGATE TO PAYMENT BUTTON
+              Container(
+                width: 46,
+                height: 46,
+                child: FlatButton(
+                  padding: EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  onPressed: () => cart.place == null
+                      ? Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
+                      : showSelectPaymentMethodBottomSheet(context),
+                  color: theme.indicator,
+                  textColor: theme.text2,
+                  child: cart.place == null
+                      ? SvgPicture.asset(
+                          'assets/icons/qr_code_scanner.svg',
+                          color: theme.text2,
+                        )
+                      : Icon(
+                          Icons.arrow_forward,
+                          color: theme.text2,
+                          // size: 35,
+                        ),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, Order order) {
+    return SlideAnimation(
+      verticalOffset: 50.0,
+      child: FadeInAnimation(
+        child: Dismissible(
+          key: Key(order.id.toString()),
+          child: CartListItemWidget(
+            unit: unit,
+            order: order,
+          ),
+          onDismissed: (direction) {
+            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.unitId, order));
+          },
+          // Setting the Dismissible background (appears on swipping)
+          background: Container(color: Colors.redAccent),
+        ),
+      ),
+    );
+  }
+
+// In case of empty cart
+  Widget _emptyCart(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/images/no-items-in-cart-icon.png',
+              width: 128.0,
+              fit: BoxFit.fitWidth,
+            ),
+            SizedBox(
+              height: 60.0,
+            ),
+            Text(
+              trans(context, 'cart.emptyCartLine1'),
+              style: GoogleFonts.poppins(
+                color: theme.text,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 6.0,
+            ),
+            Text(
+              trans(context, 'cart.emptyCartLine2'),
+              style: GoogleFonts.poppins(
+                color: theme.text,
+                fontSize: 14.0,
+                fontWeight: FontWeight.normal,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

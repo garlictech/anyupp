@@ -1,0 +1,306 @@
+{
+  "common": {
+    "appTitle": "AnyUpp",
+    "cancel": "Cancel",
+    "piece": "db",
+    "close": "Close",
+    "select": "Select",
+    "ok": "Ok"
+  },
+  "locale": {
+    "EN": "English",
+    "DE": "German",
+    "HU": "Magyar"
+  },
+  "login": {
+    "welcome": "It's time to make the world real",
+    "join": "Wanna join?",
+    "swipeUp": "Swipe up",
+    "continueWith": "Continue with",
+    "signInAnonymously": "Continue anonymously",
+    "accountLink": {
+      "title": "Account link",
+      "description": "You have already used another user with the same e-mail address. Do you want to link them?",
+      "selectAccount": "Select account to link",
+      "linkWith": "Link with {{0}}",
+      "cancelLogin": "Cancel Login"
+    },
+    "accountUnlink": {
+      "title": "Unlink Social Provider",
+      "description": "With this feature you can unlink from your main user with this social provider. Are you sure want to unlink?",
+      "unlink": "Unlink",
+      "cancel": "Cancel"
+    }
+  },
+  "logout": {
+    "title": "Confirm Logout",
+    "description": "Are you sure to want log out?",
+    "cancel": "Cancel",
+    "confirm": "Logout"
+  },
+  "tos": {
+    "acceptionPrefix": "By using this application you agree and consent to the",
+    "aszf": "Privacy Policy"
+  },
+  "dataTransfer": {
+    "title": "Data transfer declaration",
+    "content": "I acknowledge the following personal data stored in the user account of {{0}} ({{1}}) in the user database of {{2}} ({{3}}) will be handed over to OTP Mobil Ltd. and is trusted as data processor. The data transferred by the data controller are the following: \n {{4}} \n\n The nature and purpose of the data processing activity performed by the data processor in the SimplePay Privacy Policy can be found at the following link:"
+  },
+  "onLanding": {
+    "welcomeTo": "Welcome to"
+  },
+  "specialOffer": {
+    "specialOffers": "Special offers"
+  },
+  "barcodeScanner": {
+    "flashOn": "Flash on",
+    "flashOff": "Flash off"
+  },
+  "main": {
+    "menu": {
+      "menu": "Menu",
+      "favorites": "Favorites",
+      "orderStatus": "Order status",
+      "profile": "Profile",
+      "cart": "Cart"
+    },
+    "bottomTitles": {
+      "menu": "Menu",
+      "favorites": "Favorites",
+      "orders": "Orders",
+      "profile": "Profile"
+    },
+    "categoryEmpty": "This category is currently empty.",
+    "noCategories": "This unit has no products yet."
+  },
+  "cart": {
+    "totalCost": "Total cost",
+    "emptyCartLine1": "Your cart is empty",
+    "emptyCartLine2": "Add some products to your cart."
+  },
+  "favorites": {
+    "noFavorites": "No favorites added yet"
+  },
+  "orders": {
+    "tabCurrentOrder": "Orders",
+    "tabOrderHistory": "History",
+    "noActiveOrder": "No active order placed yet",
+    "totalCost": "TOTAL COST",
+    "noOrderHistory": "No order history yet",
+    "status": {
+      "PLACED": "PLACED",
+      "PROCESSING": "PROCESSING",
+      "READY": "READY",
+      "PAID": "PAID",
+      "REJECTED": "REJECTED"
+    },
+    "pay": "I'd like to pay",
+    "waiting": "Please wait for the waiter.",
+    "simplepay": "Pay with SimplePay"
+  },
+  "payment": {
+    "title": "PAY",
+    "choose": "Please select a payment method",
+    "method": {
+      "cash": "Cash at register",
+      "creditCard": "Credit card at register",
+      "inAppPayment": "Pay by Card via SimplePay (preferred)"
+    },
+    "sendOrder": "PLACE ORDER",
+    "orderPlaced": "Order successfully received.",
+    "paymentInfo": {
+      "simplePay": {
+        "prefix": "By selecting this payment method I indicate that I agree to the contents of the following documents.",
+        "paymentInfo": "Payment information"
+      }
+    },
+    "simplePayStatus": {
+      "cancelled": {
+        "title": "Payment cancelled",
+        "description": "Your payment has been cancelled"
+      },
+      "failed": {
+        "title": "Transaction failed",
+        "description": "SimplePay transaction ID: {{0}} \n\n Please check that the information provided during the transaction is correct. If you have entered all the information correctly, please contact your card-issuing bank to investigate the possible reasons for the rejected transaction."
+      },
+      "timeout": {
+        "title": "Timeout",
+        "description": "You have exceeded the timout limit for the transaction."
+      },
+      "finished": {
+        "title": "Transaction successfully completed",
+        "description": "SimplePay transaction ID: {{0}}"
+      }
+    }
+  },
+  "selectUnit": {
+    "welcome": "Welcome {{0}}!",
+    "unknown": "Unknown",
+    "findNearest": "Find the nearest places",
+    "checkAllOnMap": "Check them all on the map",
+    "scanQR": "Click & scan your table to order",
+    "qrConnected": "Connected to",
+    "chair": "Chair #{{0}} at Table #{{1}}",
+    "findingSeat": "Finding your seat...",
+    "tableReserved": {
+      "title": "New Table Reserved!",
+      "description": "Seat #{{1}} reversed at Table #{{0}}"
+    },
+    "qrCodeError": {
+      "title": "QR code invalid!",
+      "description": "Unit not found with the id from the QR code."
+    },
+    "qrUnitsError": {
+      "title": "Unit not found",
+      "description": "Looks like there aren't any restaurants near you. :("
+    },
+    "qrGeneralError": {
+      "title": "Something went wrong",
+      "description": "Something went wrong while searching for restaurants. :("
+    }
+  },
+  "qrScan": {
+    "loading": "Loading QR code information...",
+    "moveCloser": "Move closer to the barcode",
+    "pointCamera": "Point your camera at a barcode",
+    "permission": {
+      "denied": {
+        "title": "Camera permission",
+        "message": "Camera permission is required for scanning QR codes, but you denied it finally.",
+        "cancel": "Deny",
+        "confirm": "Settings"
+      },
+      "notGranted": {
+        "title": "Camera permission",
+        "message": "Camera permission is required for scanning QR codes.",
+        "cancel": "Deny",
+        "confirm": "Retry"
+      }
+    }
+  },
+  "selectUnitMap": {
+    "noNearUnits": "No Near Unit",
+    "notLoaded": "No Not Loaded",
+    "userMarker": {
+      "title": "Your position",
+      "description": "You are here..."
+    },
+    "permission": {
+      "title": "Permission Warning",
+      "description": "In order to make sure you're at the right location and to help you with calculated distances the application requires a location permission.",
+      "closeApp": "Close application",
+      "backToMap": "Back to map"
+    }
+  },
+  "location": {
+    "title": "Current location",
+    "changeLocation": "Change location"
+  },
+  "about": {
+    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Kész vagy, megetted, fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, SimplePay-jel, ahogy kényelmes, aztán fogd magad és sétálj ki! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "licences": "Licences",
+    "version": "Version"
+  },
+  "profile": {
+    "menu": {
+      "contact": "Contact Us",
+      "about": "About",
+      "cards": "Saved cards",
+      "logout": "Logout",
+      "settings": "Settings",
+      "regulations": "Regulations",
+      "language": "Language"
+    }
+  },
+  "affiliate": {
+    "advertisement": "Advertisement"
+  },
+  "error": {
+    "title": "Error",
+    "description": "An error happened during the process!",
+    "ERROR_SIMPLE_PAY": {
+      "title": "SimplePay Error",
+      "description": "The payment transaction could not be initiated!"
+    },
+    "ERROR_SIMPLE_PAY_TRANSACTION_STATUS_UNKNOWN": {
+      "title": "SimplePay Error",
+      "description": "The status of the payment transaction is unknown, please report this problem to the local staff.! \n\n Transaction ID: {{0}}"
+    },
+    "ERROR_UNIT_ORDER_CREATE": {
+      "title": "Sorry, at the moment you are not allowed to proceed with your order.",
+      "description": "If you are still at the selected location during opening hours, please report this problem to the local staff."
+    },
+    "LOGIN_EXCEPTION": {
+      "title": "Bejelentkezési hiba",
+      "description": "Hiba történt a bejelentkezés során! Próbáld meg újra!"
+    },
+    "ERROR_INVALID_CUSTOM_TOKEN": {
+      "title": "Login error",
+      "description": "The custom token format is incorrect. Please check the documentation."
+    },
+    "ERROR_CUSTOM_TOKEN_MISMATCH": {
+      "title": "Login error",
+      "description": "The custom token corresponds to a different audience."
+    },
+    "ERROR_INVALID_CREDENTIAL": {
+      "title": "Login error",
+      "description": "The supplied auth credential is malformed or has expired."
+    },
+    "ERROR_INVALID_EMAIL": {
+      "title": "Login error",
+      "description": "The email address is badly formatted."
+    },
+    "ERROR_WRONG_PASSWORD": {
+      "title": "Login error",
+      "description": "The password is invalid or the user does not have a password."
+    },
+    "ERROR_USER_MISMATCH": {
+      "title": "Login error",
+      "description": "The supplied credentials do not correspond to the previously signed in user."
+    },
+    "ERROR_REQUIRES_RECENT_LOGIN": {
+      "title": "Login error",
+      "description": "This operation is sensitive and requires recent authentication. Log in again before retrying this request."
+    },
+    "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL": {
+      "title": "Login error",
+      "description": "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address."
+    },
+    "ERROR_EMAIL_ALREADY_IN_USE": {
+      "title": "Login error",
+      "description": "The email address is already in use by another account."
+    },
+    "ERROR_CREDENTIAL_ALREADY_IN_USE": {
+      "title": "Login error",
+      "description": "This credential is already associated with a different user account."
+    },
+    "ERROR_USER_DISABLED": {
+      "title": "Login error",
+      "description": "The user account has been disabled by an administrator."
+    },
+    "ERROR_USER_TOKEN_EXPIRED": {
+      "title": "Login error",
+      "description": "The user\\'s credential is no longer valid. The user must sign in again."
+    },
+    "ERROR_USER_NOT_FOUND": {
+      "title": "Login error",
+      "description": "There is no user record corresponding to this identifier. The user may have been deleted."
+    },
+    "ERROR_INVALID_USER_TOKEN": {
+      "title": "Login error",
+      "description": "The user\\'s credential is no longer valid. The user must sign in again."
+    },
+    "ERROR_OPERATION_NOT_ALLOWED": {
+      "title": "Login error",
+      "description": "This operation is not allowed. You must enable this service in the console."
+    },
+    "ERROR_WEAK_PASSWORD": {
+      "title": "Login error",
+      "description": "The given password is invalid."
+    },
+    "ERROR_MISSING_EMAIL": {
+      "title": "Login error",
+      "description": "An email address must be provided."
+    }
+  }
+}
