@@ -48,19 +48,23 @@ export class CognitoStack extends Stack {
     const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
       userPool,
       cognitoDomain: {
-        domainPrefix: 'anyupp'
+        domainPrefix: 'dev-anyupp'
       }
     });
 
-    new cognito.UserPoolIdentityProviderGoogle(this, 'Google', {
-      userPool,
-      clientId: props.googleClientId,
-      clientSecret: props.googleClientSecret,
-      attributeMapping: {
-        email: cognito.ProviderAttribute.GOOGLE_EMAIL
-      },
-      scopes: ['profile', 'email', 'openid']
-    });
+    const googleIdProvider = new cognito.UserPoolIdentityProviderGoogle(
+      this,
+      'Google',
+      {
+        userPool,
+        clientId: props.googleClientId,
+        clientSecret: props.googleClientSecret,
+        attributeMapping: {
+          email: cognito.ProviderAttribute.GOOGLE_EMAIL
+        },
+        scopes: ['profile', 'email', 'openid']
+      }
+    );
 
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool,
@@ -84,6 +88,8 @@ export class CognitoStack extends Stack {
         cognito.UserPoolClientIdentityProvider.COGNITO
       ]
     });
+
+    userPoolClient.node.addDependency(googleIdProvider);
 
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
       allowUnauthenticatedIdentities: false, // Don't allow unathenticated users

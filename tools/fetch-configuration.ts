@@ -5,9 +5,7 @@ import * as fs from 'fs';
 import { pipe } from 'fp-ts/lib/function';
 import { exit } from 'process';
 
-const client = new AWS.SSM({
-  region: region
-});
+const client = new AWS.SSM({ region });
 
 const project = process.argv[2];
 const stage = process.argv[3];

@@ -1,6 +1,3 @@
-import * as ssm from '@aws-cdk/aws-ssm';
-import * as sst from '@serverless-stack/resources';
-import * as cdk from '@aws-cdk/core';
 import * as appsync from '@aws-cdk/aws-appsync';
 import {
   AppsyncFunction,
@@ -9,13 +6,19 @@ import {
   NoneDataSource,
   Resolver
 } from '@aws-cdk/aws-appsync';
-import { PROJECT_ROOT } from './settings';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as ssm from '@aws-cdk/aws-ssm';
+import * as cdk from '@aws-cdk/core';
+import * as sst from '@serverless-stack/resources';
+import { pipe } from 'fp-ts/lib/function';
+import path from 'path';
 import { TableConstruct } from './dynamodb-construct';
 import {
-  ResolverFunctions,
-  createResolverFunctions
+  createResolverFunctions,
+  ResolverFunctions
 } from './resolver-functions';
-import { pipe } from 'fp-ts/lib/function';
+import { PROJECT_ROOT } from './settings';
+import { commonLambdaProps } from './lambda-common';
 
 const stageValidationProperties = (fields: string[]): string =>
   pipe(
@@ -62,15 +65,15 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true
     });
 
-    //const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
-    //  ...commonLambdaProps,
-    //  handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
-    //  code: lambda.Code.fromAsset(
-    //    path.join(__dirname, '../../.serverless/graphql-api.zip')
-    //  )
-    //});
+    const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
+      ...commonLambdaProps,
+      handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
+      code: lambda.Code.fromAsset(
+        path.join(__dirname, '../../.serverless/graphql-api.zip')
+      )
+    });
 
-    //const lambdaDs = api.addLambdaDataSource('lambdaDatasource', apiLambda);
+    this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
 
     this.noneDs = new NoneDataSource(this, 'NoneDataSource', {
       api: this.api
