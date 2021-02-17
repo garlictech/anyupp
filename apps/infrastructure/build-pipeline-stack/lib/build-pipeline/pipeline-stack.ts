@@ -1,3 +1,4 @@
+import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
@@ -57,7 +58,7 @@ export class DevBuildPipelineStack extends sst.Stack {
           },
           post_build: {
             commands: [
-              'yarn nx run-many --target deploy --projects admin,infrastructure-anyupp-backend-stack',
+              'yarn nx run-many --target deploy --projects infrastructure-anyupp-backend-stack',
               `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`
             ]
           }
@@ -103,6 +104,13 @@ export class DevBuildPipelineStack extends sst.Stack {
       ]
     });
 
+    pipeline.role.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: ['*'],
+        actions: ['cloudformation:DescribeStacks']
+      })
+    );
     new codestarnotifications.CfnNotificationRule(
       this,
       'DevBuildNotification',
