@@ -703,6 +703,7 @@ export interface Query {
   getUnit?: Maybe<Unit>;
   getUser?: Maybe<User>;
   getCustomerStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
+  hellobello?: Maybe<Scalars['String']>;
 }
 
 export interface QueryGetAdminUserArgs {
@@ -743,6 +744,10 @@ export interface QueryGetUserArgs {
 
 export interface QueryGetCustomerStripeCardsArgs {
   customerId?: Maybe<Scalars['ID']>;
+}
+
+export interface QueryHellobelloArgs {
+  name: Scalars['String'];
 }
 
 export interface Mutation {
