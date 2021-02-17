@@ -48,7 +48,7 @@ export class CognitoStack extends Stack {
     const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
       userPool,
       cognitoDomain: {
-        domainPrefix: 'dev-anyupp'
+        domainPrefix: app.stage + '-' + app.name
       }
     });
 

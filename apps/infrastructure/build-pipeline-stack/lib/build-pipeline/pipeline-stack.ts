@@ -68,7 +68,12 @@ export class DevBuildPipelineStack extends sst.Stack {
       }
     });
 
-    configurePermissions(this, props.secretsManager, deploy);
+    configurePermissions(
+      this,
+      props.secretsManager,
+      deploy,
+      'dev-anyupp-backend'
+    );
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
       stages: [

@@ -62,7 +62,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    configurePermissions(this, props.secretsManager, project);
+    configurePermissions(
+      this,
+      props.secretsManager,
+      project,
+      'dev-anyupp-backend'
+    );
 
     new codestarnotifications.CfnNotificationRule(
       this,
