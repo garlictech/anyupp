@@ -36,9 +36,7 @@ export const configurePermissions = (
   role.addToPolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
-      resources: [
-        'arn:aws:cloudformation:eu-west-1:568276182587:stack/CDKToolkit/d483a820-70bd-11eb-abf5-06296ae790ff'
-      ],
+      resources: ['*'],
       actions: ['cloudformation:DescribeStacks']
     })
   );
