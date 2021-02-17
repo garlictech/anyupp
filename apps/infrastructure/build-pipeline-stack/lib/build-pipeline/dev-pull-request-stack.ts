@@ -36,6 +36,11 @@ export class DevPullRequestBuildStack extends sst.Stack {
       source: githubPrSource,
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
+        env: {
+          variables: {
+            NODE_OPTIONS: '--unhandled-rejections=strict'
+          }
+        },
         phases: {
           install: {
             commands: ['yarn']
@@ -57,7 +62,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
       }
     });
 
-    configurePermissions(this, props.secretsManager, project);
+    configurePermissions(
+      this,
+      props.secretsManager,
+      project,
+      'dev-anyupp-backend'
+    );
 
     new codestarnotifications.CfnNotificationRule(
       this,
