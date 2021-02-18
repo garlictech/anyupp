@@ -720,6 +720,9 @@ type Query {
 
   # Stripe
   getCustomerStripeCards(customerId: ID): [StripeCard]
+
+  # Hellobello
+  hellobello(name: String!): String
 }
 
 type Mutation {

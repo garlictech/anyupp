@@ -30,8 +30,8 @@ provider:
   region: #{AWS::Region}
 
 functions:
-  graphql-api:
-    handler: lib/appsync/graphql-api/index.handler
+  appsync-lambda:
+    handler: lib/lambda/appsync-lambda/index.handler
 
   auto-delete-bucket:
     handler: lib/lambda/auto-delete-bucket/index.handler
