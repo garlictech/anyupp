@@ -1,5 +1,5 @@
-query GetCustomerStripeCards($customerId: ID!) {
-  getCustomerStripeCards(customerId: $customerId) {
+query GetCustomerStripeCards($userId: ID!) {
+  getCustomerStripeCards(userId: $userId) {
     brand
     id
     country
@@ -15,6 +15,9 @@ query GetCustomerStripeCards($customerId: ID!) {
   }
 }
 
-mutation StartStripePayment($chainId: ID!, $unitId: ID!, $userId: ID!) {
-  startStripePayment(chainId: $chainId, unitId: $unitId, userId: $userId)
+mutation StartStripePayment($args: StartStripePaymentInput!) {
+  startStripePayment(args: $args) {
+    clientSecret
+    status
+  }
 }

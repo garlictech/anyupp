@@ -63,18 +63,6 @@
                 {
                   "replace": "apps/admin/src/environments/environment.ts",
                   "with": "apps/admin/src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
-                  "with": "libs/shared/config/src/lib/config/prod/firebase.config.prod.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
-                  "with": "libs/shared/config/src/lib/config/prod/stripe.config.prod.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
-                  "with": "libs/shared/config/src/lib/config/prod/service-account-key.prod.json"
                 }
               ],
               "optimization": true,
@@ -1339,6 +1327,27 @@
           "options": {
             "command": "flutter build ipa",
             "cwd": "apps/anyupp-mobile"
+          }
+        }
+      }
+    },
+    "shared-secrets": {
+      "root": "libs/shared/secrets",
+      "sourceRoot": "libs/shared/secrets/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/secrets/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/secrets"],
+          "options": {
+            "jestConfig": "libs/shared/secrets/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

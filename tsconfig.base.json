@@ -106,7 +106,8 @@
       "@bgap/api/graphql/appsync-lambda": [
         "libs/api/graphql/appsync-lambda/src/index.ts"
       ],
-      "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"]
+      "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

@@ -10,3 +10,4 @@ export * from './nebular';
 export * from './payment-method';
 export * from './product-level';
 export * from './product-type';
+export * from './transaction-type';

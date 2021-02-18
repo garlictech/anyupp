@@ -1,5 +1,5 @@
 overwrite: true
-schema: libs/api/graphql/schema/src/schema/**/*.graphql
+schema: libs/api/graphql/schema/src/schema/google-schema.graphql
 documents: libs/api/graphql/schema/src/documents/*.graphql
 generates:
   libs/api/graphql/schema/src/lib/api.ts:

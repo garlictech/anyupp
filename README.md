@@ -21,7 +21,7 @@ Whenever the schema changes, execeute the code generation phase for the clients.
 When:
 
 - you clone the github repo
-- the config parameters change in teh AWS Parameter Store or AWS Secret Manager
+- the config parameters change in the AWS Parameter Store or AWS Secret Manager
 - you change the project stage (dev, prod, qa)
 
 The command fetches the config parameters and writes them into files in `libs/shared/config`.

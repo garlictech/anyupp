@@ -6,7 +6,7 @@ import {
   AdminUser,
   CreateAdminUserInput,
   AdminUserRoleInput,
-  UpdateAdminUserInput
+  UpdateAdminUserInput,
 } from '@bgap/api/graphql/schema';
 import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 import { Inject } from '@nestjs/common';
@@ -23,7 +23,7 @@ export class AdminUserResolver {
     // it changes, publishes them to the graphql subscribers.
     this.databaseService.adminUsersRef().on('child_changed', data =>
       this.pubSub.publish('adminUserChanged', {
-        adminUserChanged: { id: data.key, ...data.val() }
+        adminUserChanged: { id: data.key, ...data.val() },
       })
     );
   }
@@ -54,8 +54,8 @@ export class AdminUserResolver {
         .update({
           ...newAdminData,
           roles: {
-            role: EAdminRole.INACTIVE
-          }
+            role: EAdminRole.INACTIVE,
+          },
         })
         .then(
           () => true,
@@ -70,7 +70,7 @@ export class AdminUserResolver {
     try {
       const user = await this.authService.auth.createUser({
         email: newAdminData.email,
-        password: Math.random().toString(36).substring(2, 10)
+        password: Math.random().toString(36).substring(2, 10),
       });
 
       return user ? createInactiveAdminUser(user.uid) : false;
@@ -112,7 +112,8 @@ export class AdminUserResolver {
   // TODO: is this filter works, or the subscription in the constructor the one who triggers the changes?
   // Subscribe for the changes of a [articular admin user]
   @Subscription('adminUserChanged', {
-    filter: (payload, variables) => payload.adminUserChanged.id === variables.id
+    filter: (payload, variables) =>
+      payload.adminUserChanged.id === variables.id,
   })
   onChanged() {
     return this.pubSub.asyncIterator('adminUserChanged');

@@ -1,4 +1,4 @@
-type Address @aws_iam @aws_api_key @aws_cognito_user_pools {
+type Address {
   address: String
   city: String
   country: String
@@ -7,7 +7,7 @@ type Address @aws_iam @aws_api_key @aws_cognito_user_pools {
   location: Location
 }
 
-type Location @aws_iam @aws_api_key @aws_cognito_user_pools {
+type Location {
   lat: Float
   lng: Float
 }
@@ -40,7 +40,7 @@ input LocalizedItemInput {
 
 # AdminUser
 
-type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUser {
   id: ID!
   name: String
   profileImage: String
@@ -51,18 +51,18 @@ type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools {
   phone: String
 }
 
-type AdminUserRole @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUserRole {
   role: String!
   entities: [AdminRoleEntity]
 }
 
-type AdminRoleEntity @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminRoleEntity {
   chainId: String
   groupId: String
   unitId: String
 }
 
-type AdminUserSettings @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUserSettings {
   selectedChainId: String
   selectedGroupId: String
   selectedUnitId: String
@@ -176,7 +176,7 @@ input StartStripePaymentInput {
   chainId: ID!
   unitId: ID!
   userId: ID!
-  paymentMethodId: ID!
+  paymentMethodId: ID
 }
 
 type StartStripePaymentOutput {
@@ -697,134 +697,93 @@ input UpdateUserInput {
 
 type Query {
   # Admin
-  getAdminUser(id: ID!): AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools
-  getAdminUsers: [AdminUser] @aws_iam @aws_api_key @aws_cognito_user_pools
+  getAdminUser(id: ID!): AdminUser
+  getAdminUsers: [AdminUser]
 
   # Chain
-  getChain(id: ID!): Chain @aws_iam @aws_api_key @aws_cognito_user_pools
+  getChain(id: ID!): Chain
 
   # Group
-  getGroup(id: ID!): Group @aws_iam @aws_api_key @aws_cognito_user_pools
+  getGroup(id: ID!): Group
 
   # OrderItem
-  getOrderItem(id: ID!): OrderItem @aws_iam @aws_api_key @aws_cognito_user_pools
+  getOrderItem(id: ID!): OrderItem
 
   # Order
-  getOrder(id: ID!): Order @aws_iam @aws_api_key @aws_cognito_user_pools
+  getOrder(id: ID!): Order
 
   # ProductCategory
   getProductCategory(id: ID!): ProductCategory
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # ChainProduct
   getChainProduct(id: ID!): ChainProduct
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # Unit
-  getUnit(id: ID!): Unit @aws_iam @aws_api_key @aws_cognito_user_pools
+  getUnit(id: ID!): Unit
 
   # User
-  getUser(id: ID!): User @aws_iam @aws_api_key @aws_cognito_user_pools
+  getUser(id: ID!): User
 
   # Stripe
-  getCustomerStripeCards(customerId: ID): [StripeCard]
-
-  # Hellobello
-  hellobello(name: String!): String
+  getCustomerStripeCards(userId: ID): [StripeCard]
 }
 
 type Mutation {
   # AdminUser
   createAdminUser(input: CreateAdminUserInput!): AdminUser
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateAdminUser(input: UpdateAdminUserInput!): AdminUser
   deleteAdminUser(id: ID!): Boolean!
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateAdminUserRole(input: AdminUserRoleInput!): Boolean!
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # Chain
   createChain(input: CreateChainInput!): Chain
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateChain(input: UpdateChainInput!): Chain
-  deleteChain(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
+  deleteChain(id: ID!): Boolean!
 
   # Group
   createGroup(input: CreateGroupInput!): Group
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateGroup(input: UpdateGroupInput!): Group
-  deleteGroup(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
+  deleteGroup(id: ID!): Boolean!
 
   # OrderItem
   createOrderItem(input: CreateOrderItemInput!): OrderItem
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateOrderItem(input: UpdateOrderItemInput!): OrderItem
   deleteOrderItem(id: ID!): Boolean!
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # Order
   createOrder(input: CreateOrderInput!): Order
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateOrder(input: UpdateOrderInput!): Order
-  deleteOrder(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
+  deleteOrder(id: ID!): Boolean!
 
   # ProductCategory
   createProductCategory(input: CreateProductCategoryInput!): ProductCategory
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateProductCategory(input: UpdateProductCategoryInput!): ProductCategory
   deleteProductCategory(id: ID!): Boolean!
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # ChainProduct
   createChainProduct(input: CreateChainProductInput!): ChainProduct
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateChainProduct(input: UpdateChainProductInput!): ChainProduct
   deleteChainProduct(id: ID!): Boolean!
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
 
   # Unit
   createUnit(input: CreateUnitInput!): Unit
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateUnit(input: UpdateUnitInput!): Unit
-  deleteUnit(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
+  deleteUnit(id: ID!): Boolean!
 
   # User
   createUser(input: CreateUserInput!): User
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+
   updateUser(input: UpdateUserInput!): User
-  deleteUser(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
+  deleteUser(id: ID!): Boolean!
 
   # Stripe
   startStripePayment(args: StartStripePaymentInput!): StartStripePaymentOutput!
@@ -832,14 +791,6 @@ type Mutation {
 
 type Subscription {
   updatedAdminUser(id: ID!): AdminUser
-    @aws_subscribe(mutations: ["updateAdminUser"])
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
-
   createdAdminUser: AdminUser
-    @aws_subscribe(mutations: ["createAdminUser"])
-    @aws_iam
-    @aws_api_key
-    @aws_cognito_user_pools
+  adminUserChanged: AdminUser
 }

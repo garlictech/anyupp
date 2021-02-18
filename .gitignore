@@ -47,5 +47,6 @@ cyreport
 /apps/infrastructure/build-pipeline-stack/build
 
 # The config - don't commit!
-/libs/shared/config/src/lib/*
+/libs/shared/config/src/lib/config/*
+
 

@@ -12,6 +12,7 @@ export * from './order';
 export * from './payment';
 export * from './product-category';
 export * from './product';
+export * from './transaction';
 export * from './unit';
 export * from './user';
 export * from './weekly-schedule';

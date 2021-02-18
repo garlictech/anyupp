@@ -1,56 +1,66 @@
+import * as fbAdmin from 'firebase-admin';
 import Stripe from 'stripe';
-import { DatabaseService } from '@bgap/api/data-access';
-import { Scalars, StripeCard } from '@bgap/api/graphql/schema';
+import { v1 as uuidV1 } from 'uuid';
+
+import { DatabaseService, FirestoreService } from '@bgap/api/data-access';
+import {
+  StartStripePaymentInput,
+  StartStripePaymentOutput,
+  StripeCard,
+} from '@bgap/api/graphql/schema';
 import { getActualStatus, sumOrders } from '@bgap/api/utils';
+import { SharedSecrets } from '@bgap/shared/secrets';
 import {
   EOrderStatus,
   EPaymentMethod,
+  ETransactionType,
+  IOrder,
   IOrders,
-  IUser
+  ITransaction,
+  IUser,
 } from '@bgap/shared/types';
+import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { IOrder } from '@bgap/shared/types';
 
 import {
   amountConversionForStripe,
-  mapPaymentMethodToCard
+  mapPaymentMethodToCard,
 } from './stripe.utils';
-
-// TODO: integrate the secret key from AWS
-const STRIPE_CONFIG = {
-  stripe_secret_key: 'foobar'
-};
 
 @Resolver('Stripe')
 export class StripeResolver {
   private stripe: Stripe;
-  constructor(private dbService: DatabaseService) {
-    this.stripe = new Stripe(STRIPE_CONFIG.stripe_secret_key, {
-      apiVersion: '2020-08-27'
+  constructor(
+    private dbService: DatabaseService,
+    private firestoreService: FirestoreService,
+    @Inject('SHARED_SECRETS') private sharedSecrets: SharedSecrets
+  ) {
+    this.stripe = new Stripe(sharedSecrets.stripeSecretKey, {
+      apiVersion: '2020-08-27',
     });
   }
 
   @Query('getCustomerStripeCards')
   async getCustomerStripeCards(
-    @Args('customerId') customerId: string
+    @Args('userId') userId: string
   ): Promise<StripeCard[]> {
+    const stripeCustomerId = await this.getStripeCustomerIdForUser({ userId });
     const paymentMethods = await this.stripe.paymentMethods.list({
-      customer: customerId,
-      type: 'card'
+      customer: stripeCustomerId,
+      type: 'card',
     });
     return paymentMethods.data.map(mapPaymentMethodToCard);
   }
 
   @Mutation('startStripePayment')
   async startPayment(
-    @Args('chainId') chainId: Scalars['ID'],
-    @Args('userId') userId: Scalars['ID'],
-    @Args('unitId') unitId: Scalars['ID']
-  ) {
+    @Args('args') args: StartStripePaymentInput
+  ): Promise<StartStripePaymentOutput> {
+    const { chainId, unitId, userId, paymentMethodId } = args;
     const orders: IOrders = await this.getInappPaymentReadyOrders({
       chainId,
       unitId,
-      userId
+      userId,
     });
 
     // if (!orders) {
@@ -60,60 +70,43 @@ export class StripeResolver {
     const currency = Object.values(
       orders
     )[0].sumPriceShown.currency.toUpperCase();
-    const amount = amountConversionForStripe(sumOrders(orders), currency);
+    const orderSum = sumOrders(orders);
+    const amount = amountConversionForStripe(orderSum, currency);
     // return orders;
-    const userRef = this.dbService.userRef(userId);
-    const user = await this.dbService.getRefValue<IUser>(userRef);
 
-    // if (!user) {
-    //     throw userIsMissingError(); // ERROR
-    // }
+    const stripeCustomerId = await this.getStripeCustomerIdForUser({ userId });
 
-    let stripeCustomerId = user.stripeCustomerId;
-
-    if (!stripeCustomerId) {
-      stripeCustomerId = await this.creatStripeCustomer();
-      userRef.update({ stripeCustomerId });
-    }
-
-    const paymentIntentClientSecret = await this.creatStripeIntent({
+    const paymentIntent = await this.createStripeIntent({
       amount,
       currency,
-      stripeCustomerId
+      stripeCustomerId,
+      paymentMethodId: paymentMethodId ? paymentMethodId : undefined,
     });
 
-    return paymentIntentClientSecret;
+    if (!paymentIntent.client_secret) {
+      throw new Error('TODOOOOO CLIENT SECRET IS MISSING');
+    }
 
-    // const transactionId = nanoid();
+    const transactionId = uuidV1();
+    const externalTransactionId = paymentIntent.id;
 
-    // const paymentData = getRequestBody({ currency, user, total, orderRef: transactionId });
-    // const simpleResponse = await callSimpleApi(http)(paymentData);
-    // console.log("###: SimplePayStartResponse", JSON.stringify(simpleResponse));
-    // checkSimpleError(simpleResponse);
-    // checkSignature(simpleResponse.headers.signature, simpleResponse.bodyPlainText);
+    // Create transaction with the external transactionId and status from the request
+    await this.createTransaction({
+      transactionId,
+      chainId,
+      unitId,
+      userId,
+      total: orderSum,
+      currency,
+      orders,
+      externalTransactionId,
+      status: paymentIntent.status,
+    });
 
-    // const externalTransactionId = simpleResponse.body.transactionId;
-    // const paymentUrl = simpleResponse.body.paymentUrl;
-
-    // // Create transaction with the external transactionId and status from the simple request
-    // await createTransaction({
-    //     fContext,
-    //     transactionId,
-    //     chainId,
-    //     unitId,
-    //     userId,
-    //     total,
-    //     currency,
-    //     orders,
-    //     externalTransactionId,
-    //     status: ESimplePaymentStatus.INIT,
-    // });
-
-    // return {
-    //   transactionId,
-    //   paymentUrl,
-    //   paymentUrl,
-    // };
+    return {
+      status: paymentIntent.status,
+      clientSecret: paymentIntent.client_secret,
+    };
   }
 
   private async creatStripeCustomer() {
@@ -122,28 +115,31 @@ export class StripeResolver {
     return customer.id;
   }
 
-  private async creatStripeIntent({
+  private async createStripeIntent({
     amount,
     currency,
-    stripeCustomerId
+    stripeCustomerId,
+    paymentMethodId,
   }: {
     amount: number;
     currency: string;
     stripeCustomerId: string;
-  }) {
+    paymentMethodId: string | undefined;
+  }): Promise<Stripe.PaymentIntent> {
     const intent = await this.stripe.paymentIntents.create({
       amount,
       currency,
-      customer: stripeCustomerId
+      customer: stripeCustomerId,
+      payment_method: paymentMethodId,
     });
 
-    return intent.client_secret;
+    return intent;
   }
 
   private async getInappPaymentReadyOrders({
     chainId,
     unitId,
-    userId
+    userId,
   }: {
     chainId: string;
     unitId: string;
@@ -153,7 +149,7 @@ export class StripeResolver {
       this.dbService.ordersUsersActiveRef({
         chainId,
         unitId,
-        userId
+        userId,
       })
     );
 
@@ -169,12 +165,69 @@ export class StripeResolver {
         ) {
           return {
             ...result,
-            [orderId]: order
+            [orderId]: order,
           };
         }
         return result;
       },
       {}
     );
+  }
+
+  private async getStripeCustomerIdForUser({ userId }: { userId: string }) {
+    const userRef = this.dbService.userRef(userId);
+    const user = await this.dbService.getRefValue<IUser>(userRef);
+
+    // if (!user) {
+    //     throw userIsMissingError(); // ERROR
+    // }
+
+    let stripeCustomerId = user.stripeCustomerId;
+
+    if (!stripeCustomerId) {
+      stripeCustomerId = await this.creatStripeCustomer();
+      userRef.update({ stripeCustomerId });
+    }
+
+    return stripeCustomerId;
+  }
+
+  private async createTransaction({
+    transactionId,
+    chainId,
+    unitId,
+    userId,
+    total,
+    currency,
+    orders,
+    status,
+    externalTransactionId,
+  }: {
+    transactionId: string;
+    chainId: string;
+    unitId: string;
+    userId: string;
+    total: number;
+    currency: string;
+    orders: IOrders;
+    status: string;
+    externalTransactionId: string;
+  }): Promise<void> {
+    const transaction: ITransaction = {
+      createdAt: fbAdmin.firestore.Timestamp.now(),
+      chainId,
+      unitId,
+      userId,
+      type: ETransactionType.STRIPE,
+      orders: Object.keys(orders),
+      total,
+      currency,
+      status, // TODO ??? create status log like the order.status?
+      externalTransactionId,
+    };
+    await this.firestoreService
+      .transactionsRef()
+      .doc(transactionId)
+      .set(transaction);
   }
 }

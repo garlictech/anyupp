@@ -9,13 +9,13 @@ export const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   object: pm.object,
   brand: CardBrand[pm.card?.brand as keyof typeof CardBrand],
   country: pm.card?.country,
-  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType]
+  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType],
 });
 
 // [key, value] => {key:key, value:value}
 const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
   key,
-  value
+  value,
 });
 
 // https://stripe.com/docs/currencies#special-cases
@@ -29,6 +29,17 @@ export const amountConversionForStripe = (value: number, currency: string) => {
       return toFixed2Number(value);
   }
 };
+
+// export const amountConversionFromStripe = (value: number, currency: string) => {
+//   switch (currency) {
+//     case 'HUF':
+//       return value / 100; // Stripe treats the Hungarian Forint (HUF) as a zero-decimal currency
+//     case 'EUR':
+//     case 'USD':
+//     default:
+//       return value;
+//   }
+// };
 
 // const toFixedByCurrency = (value: number, currency: string) => {
 //   switch (currency) {
