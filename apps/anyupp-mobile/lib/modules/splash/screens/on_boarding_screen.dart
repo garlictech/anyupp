@@ -20,7 +20,6 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return NetworkConnectionWrapperWidget(
-      // child: LoginScreen(),
       child: StreamBuilder<String>(
         stream: _authRepository
             .getAuthenticatedUserProfileStream()
