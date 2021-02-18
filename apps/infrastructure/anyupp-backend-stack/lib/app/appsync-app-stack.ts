@@ -65,16 +65,6 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true
     });
 
-    const apiLambda = new lambda.Function(this, 'AppSyncAnyuppHandler', {
-      ...commonLambdaProps,
-      handler: 'lib/api/graphql/appsync-lambda/src/index.handler',
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/graphql-api.zip')
-      )
-    });
-
-    this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
-
     this.noneDs = new NoneDataSource(this, 'NoneDataSource', {
       api: this.api
     });
@@ -157,6 +147,54 @@ export class AppsyncAppStack extends sst.Stack {
     // Prints out the AppSync GraphQL API key to the terminal
     new cdk.CfnOutput(this, 'GraphqlApiKey', {
       value: this.api.apiKey || ''
+    });
+
+    // for testing and edication purposes :)
+    this.configureTestLambdaDataSource();
+  }
+
+  private configureTestLambdaDataSource(): void {
+    // Create the lambda first. Mind, that we have to build appsync-lambda.zip
+    // with serverless bundle, in the build step! So, you have to declare the lambda
+    // in serverless.xml as well (see the example)
+    const apiLambda = new lambda.Function(this, 'AppsyncLambda', {
+      ...commonLambdaProps,
+      // It must be relative to the serverless.yml file
+      handler: 'lib/lambda/appsync-lambda/index.handler',
+      code: lambda.Code.fromAsset(
+        path.join(__dirname, '../../.serverless/appsync-lambda.zip')
+      )
+    });
+
+    // Ok, we have the lambda resource. Now, we turn it into a data source.
+    // Graphql resolvers need data sources, they are the bridge between the
+    // resolver and the resource.
+    const lambdaDataSource = this.api.addLambdaDataSource(
+      'lambdaDatasource',
+      apiLambda
+    );
+
+    // Cool, we have a data source. Now, let's hook a resolver for a query to it.
+    lambdaDataSource.createResolver({
+      // Define the graphql type from the schema (Query)
+      typeName: 'Query',
+      // the field of the type
+      fieldName: 'hellobello',
+      // This is a simple example, so we just pass the one-and-only name parameter as is
+      // This is how we map the graphql requests to lambda event documents.
+      requestMappingTemplate: MappingTemplate.fromString(
+        `
+        {
+          "version" : "2017-02-28",
+          "operation" : "Invoke",
+          "payload": "$context.arguments.name"
+        }
+        `
+      ),
+      // ... and we return what the lambda returns as is.
+      responseMappingTemplate: MappingTemplate.fromString(
+        '$util.toJson($context.result)'
+      )
     });
   }
 
