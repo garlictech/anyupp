@@ -9,7 +9,7 @@ import {
   StripeCard,
 } from '@bgap/api/graphql/schema';
 import { getActualStatus, sumOrders } from '@bgap/api/utils';
-import { SharedSecrets } from '@bgap/shared/config';
+import { SharedSecrets } from '@bgap/shared/secrets';
 import {
   EOrderStatus,
   EPaymentMethod,

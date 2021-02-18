@@ -1,8 +1,3 @@
-export interface SharedSecrets {
-  stripeSecretKey: string;
-  googleClientSecret: string;
-}
-
 export interface SharedConfig {
   GraphqlApiKey: string;
   GraphqlApiUrl: string;

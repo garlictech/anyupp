@@ -1330,6 +1330,27 @@
           }
         }
       }
+    },
+    "shared-secrets": {
+      "root": "libs/shared/secrets",
+      "sourceRoot": "libs/shared/secrets/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/secrets/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/secrets"],
+          "options": {
+            "jestConfig": "libs/shared/secrets/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

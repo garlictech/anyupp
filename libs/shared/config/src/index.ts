@@ -17,5 +17,4 @@ export {
   FIREBASE_SERVICE_ACCOUNT,
 };
 
-export * from './lib/shared-secrets.module';
 export * from './lib/interfaces';
