@@ -21,7 +21,7 @@ class Menu extends StatelessWidget {
       child: BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
         print('Menu.ProductCategoriesBloc.state=$state');
         if (state is ProductCategoriesLoaded) {
-          if (state.productCategories != null && state.productCategories.length > 0) {
+          if (state.productCategories != null && state.productCategories.isNotEmpty) {
             return _buildTabBar(context, state.productCategories);
           } else {
             return _noCategoriesWidget(context);
@@ -103,7 +103,7 @@ class Menu extends StatelessWidget {
       ),
 
       // centerTitle: true,
-      bottom: productCategories.length > 0
+      bottom: productCategories.isNotEmpty
           ? ColoredTabBar(
               color: theme.background2,
               tabBar: TabBar(

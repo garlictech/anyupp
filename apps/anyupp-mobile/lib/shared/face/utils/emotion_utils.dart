@@ -37,7 +37,7 @@ class EmotionHandler {
 
     final int now = DateTime.now().millisecondsSinceEpoch;
 
-    if (faces == null || faces.length == 0) {
+    if (faces == null || faces.isEmpty) {
       if (_emotion != null) {
         _dirty = true;
       }

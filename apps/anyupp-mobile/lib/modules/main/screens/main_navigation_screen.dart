@@ -21,7 +21,7 @@ class MainNavigation extends StatefulWidget {
 
   const MainNavigation({Key key, this.pageIndex = 0, this.animateCartIcon = true}) : super(key: key);
 
-  _MainNavigationState createState() => new _MainNavigationState();
+  _MainNavigationState createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {

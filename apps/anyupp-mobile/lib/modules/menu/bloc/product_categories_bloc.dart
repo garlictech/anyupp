@@ -25,7 +25,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
         (_unitSelectBloc.state as UnitSelected).unit.unitId,
       ));
     }
-    _unitSelectSubscription = _unitSelectBloc.listen((state) {
+    _unitSelectSubscription = _unitSelectBloc.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
         add(LoadProductCategories(state.unit.chainId, state.unit.unitId));
       }
@@ -54,7 +54,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     yield ProductCategoriesLoading();
     await _productCategoriesSubscription?.cancel();
     _productCategoriesSubscription =
-        _productRepository.getProductCategoryList(event.chainId, event.unitId).listen((event) {
+        _productRepository.getProductCategoryList(event.chainId, event.unitId).asBroadcastStream().listen((event) {
       add(ProductCategoriesUpdated(event));
     });
   }

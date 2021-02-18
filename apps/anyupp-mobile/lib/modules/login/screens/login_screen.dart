@@ -426,25 +426,25 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     )))),
                         Container(
                           padding: EdgeInsets.all(8.0),
-                          child: new RichText(
+                          child: RichText(
                             textAlign: TextAlign.center,
-                            text: new TextSpan(
+                            text: TextSpan(
                               children: [
-                                new TextSpan(
+                                TextSpan(
                                   text: trans('tos.acceptionPrefix') + ' ',
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.0,
                                     color: Color(0x993C2F2F),
                                   ),
                                 ),
-                                new TextSpan(
+                                TextSpan(
                                   text: trans('tos.aszf'),
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.0,
                                     decoration: TextDecoration.underline,
                                     color: Color(0x993C2F2F),
                                   ),
-                                  recognizer: new TapGestureRecognizer()
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       // TODO: we could use remoteConfig to aquire this value independent of the app version
                                       // or the firebase storage getDownloadUrl method in case we need the latest documents for all the app versions

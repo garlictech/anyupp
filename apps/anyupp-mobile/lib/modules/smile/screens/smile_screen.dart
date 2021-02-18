@@ -81,7 +81,7 @@ class _SmileScreenState extends State<SmileScreen> with TickerProviderStateMixin
     await _camera.initialize();
     _isRunning = true;
 
-    _camera.startImageStream((CameraImage image) {
+    await _camera.startImageStream((CameraImage image) {
       if (!mounted || _isDetecting || !_isRunning) return;
 
       _isDetecting = true;

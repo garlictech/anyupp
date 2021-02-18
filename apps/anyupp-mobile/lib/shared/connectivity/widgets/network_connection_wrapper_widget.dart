@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fa_prev/shared/connectivity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef ConnectivityCallback = Function(ConnectivityResult);
 
@@ -22,42 +23,47 @@ class NetworkConnectionWrapperWidget extends StatefulWidget {
 }
 
 class _NetworkConnectionWrapperWidgetState extends State<NetworkConnectionWrapperWidget> {
-  bool isOnline;
-  StreamSubscription<ConnectivityResult> _subscription;
+  // bool isOnline;
+  // StreamSubscription<ConnectivityResult> _subscription;
 
   @override
   void initState() {
-    isOnline = true;
+    // isOnline = true;
 
-    // TODO ezt majd ki kellene vinni BloC-ba
-    _subscription = Connectivity().onConnectivityChanged.listen((result) {
-      print('NetworkConnectionWrapperWidget.state=$result');
-      if (widget.onConnectionChanged != null) {
-        widget.onConnectionChanged(result);
-      }
-      setState(() {
-        if (result == ConnectivityResult.none) {
-          isOnline = false;
-        } else {
-          isOnline = true;
-        }
-      });
-    });
+    // if (_subscription == null) {
+    //   _subscription = Connectivity().onConnectivityChanged.listen((result) {
+    //     print('NetworkConnectionWrapperWidget.state=$result');
+    //     if (widget.onConnectionChanged != null) {
+    //       widget.onConnectionChanged(result);
+    //     }
+    //     setState(() {
+    //       if (result == ConnectivityResult.none) {
+    //         isOnline = false;
+    //       } else {
+    //         isOnline = true;
+    //       }
+    //     });
+    //   });
+    // }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return isOnline ? widget.child : NoNetworkScreen();
+    //return isOnline ? widget.child : NoNetworkScreen();
+    return BlocBuilder<NetworkStatusBloc, NetworkState>(
+        builder: (context, state) {
+          return state.showDialog == true ? NoNetworkScreen() : widget.child;
+        });
   }
 
   @override
   void dispose() {
-    try {
-      _subscription?.cancel();
-    } on PlatformException catch (e) {
-      print('**** NetworkHandler error: $e');
-    }
+    // try {
+    //   _subscription?.cancel();
+    // } on PlatformException catch (e) {
+    //   print('**** NetworkHandler error: $e');
+    // }
     super.dispose();
   }
 }

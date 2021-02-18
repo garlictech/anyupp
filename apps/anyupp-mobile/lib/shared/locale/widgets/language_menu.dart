@@ -25,19 +25,19 @@ class _LanguageMenuState extends State<LanguageMenu> {
   @override
   Widget build(BuildContext context) {
     final List<LangChoice> languageOptions = <LangChoice>[
-      new LangChoice(
+      LangChoice(
         title: trans('locale.DE'),
         language: 'de',
         country: 'DE',
         flag: Flag('DE', height: 20, width: 20),
       ),
-      new LangChoice(
+      LangChoice(
         title: trans('locale.EN'),
         language: 'en',
         country: 'EN',
         flag: Flag('GB', height: 20, width: 20),
       ),
-      new LangChoice(
+      LangChoice(
         title: trans('locale.HU'),
         language: 'hu',
         country: 'HU',

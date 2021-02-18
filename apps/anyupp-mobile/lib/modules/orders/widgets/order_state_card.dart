@@ -43,23 +43,23 @@ class OrderStateCardState extends State<OrderStateCard>
     // Every animation has slightly different interval values so that they create a feeling of being independent of each other
     // Also, we pass the parameter to ElasticOutCurve which is the actual curve of texts’ animations
     // We do it to decrease the bouncing effect
-    _animationController = new AnimationController(
+    _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 600));
-    _cardSizeAnimation = new CurvedAnimation(
+    _cardSizeAnimation = CurvedAnimation(
         parent: _animationController,
-        curve: new Interval(0.0, 0.9, curve: new ElasticOutCurve(0.8)));
-    _datePositionAnimation = new CurvedAnimation(
+        curve: Interval(0.0, 0.9, curve: ElasticOutCurve(0.8)));
+    _datePositionAnimation = CurvedAnimation(
         parent: _animationController,
-        curve: new Interval(0.05, 0.95, curve: new ElasticOutCurve(0.95)));
-    _statePositionAnimation = new CurvedAnimation(
+        curve: Interval(0.05, 0.95, curve: ElasticOutCurve(0.95)));
+    _statePositionAnimation = CurvedAnimation(
         parent: _animationController,
-        curve: new Interval(0.0, 0.9, curve: new ElasticOutCurve(0.95)));
-    _fromToPositionAnimation = new CurvedAnimation(
+        curve: Interval(0.0, 0.9, curve: ElasticOutCurve(0.95)));
+    _fromToPositionAnimation = CurvedAnimation(
         parent: _animationController,
-        curve: new Interval(0.1, 0.95, curve: new ElasticOutCurve(0.95)));
-    _lineAnimation = new CurvedAnimation(
+        curve: Interval(0.1, 0.95, curve: ElasticOutCurve(0.95)));
+    _lineAnimation = CurvedAnimation(
         parent: _animationController,
-        curve: new Interval(0.0, 0.2, curve: Curves.linear));
+        curve: Interval(0.0, 0.2, curve: Curves.linear));
     runAnimation();
   }
 
@@ -75,7 +75,7 @@ class OrderStateCardState extends State<OrderStateCard>
       height: OrderStateCard.height,
       child: AnimatedBuilder(
         animation: _animationController,
-        builder: (context, child) => new Stack(
+        builder: (context, child) => Stack(
           alignment: Alignment.centerLeft,
           children: <Widget>[
             buildLine(),
@@ -105,7 +105,7 @@ class OrderStateCardState extends State<OrderStateCard>
       child: Text(
         // '!!!orderState.date',
         '${widget.orderState.quantity} ${trans('common.piece')} ${widget.orderState.productName}',
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: 10.0 * animationValue, //<--- Animate fontsize
           color: Colors.grey,
         ),
@@ -123,7 +123,7 @@ class OrderStateCardState extends State<OrderStateCard>
         child: Text(
           "${widget.orderState.statusLog[widget.orderState.statusLog.keys.last]}",
           key: ValueKey<String>(widget.orderState.statusLog[widget.orderState.statusLog.keys.last].status),
-          style: new TextStyle(
+          style: TextStyle(
             fontSize: 16.0 * animationValue,
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -142,7 +142,7 @@ class OrderStateCardState extends State<OrderStateCard>
       child: Text(
         _dateFormat.format(DateTime.fromMillisecondsSinceEpoch(
             int.parse(widget.orderState.statusLog.keys.first))),
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: 12.0 * animationValue,
           color: Colors.grey,
           fontWeight: FontWeight.w500,
@@ -177,7 +177,7 @@ class OrderStateCardState extends State<OrderStateCard>
         child: Container(
           width: OrderStateCard.width,
           height: OrderStateCard.height,
-          child: new Card(
+          child: Card(
             color: Colors.grey.shade100,
           ),
         ),

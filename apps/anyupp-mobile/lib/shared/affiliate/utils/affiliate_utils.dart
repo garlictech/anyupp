@@ -26,7 +26,7 @@ class AffiliateUtils {
       }
     }
 
-    if (matchedAds.length == 0) {
+    if (matchedAds.isEmpty) {
       // TODO mi legyen akkor, ha nincs reklám? Most random visszaadunkvalamit
       int index = _random.nextInt(ads.length);
       return ads[index];
@@ -40,7 +40,7 @@ class AffiliateUtils {
 
   static bool _matchTag(List<AdTag> tags, String attribute, String value) {
     // print('_matchTag=$value with $attribute=$value');
-    if (tags == null || tags.length == 0 || value == null || attribute == null) {
+    if (tags == null || tags.isEmpty || value == null || attribute == null) {
       return true;
     }
 

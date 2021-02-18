@@ -7,31 +7,54 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseSocialLoginProvider implements ISocialLoginProvider {
-
   // TODO ezt kivinni ENV-be
   static const String FACEBOOK_API_ROOT = 'https://graph.facebook.com/v2.12/me';
   static const String FACEBOOK_FIELDS = 'name,first_name,last_name,email,picture';
 
   final IUserProvider _firebaseUserProvider;
+  final FirebaseCommonLoginProvider _firebaseCommonProvider;
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final FacebookLogin _facebookLogin;
 
-  FirebaseSocialLoginProvider(
-      this._firebaseAuth, this._googleSignIn, this._facebookLogin, this._firebaseUserProvider);
+  FirebaseSocialLoginProvider(this._firebaseAuth, this._googleSignIn, this._facebookLogin, this._firebaseUserProvider,
+      this._firebaseCommonProvider);
+
   @override
   Future<ProviderLoginResponse> signInWithProvider(LoginMethod method) async {
+    ProviderLoginResponse response;
     if (method == LoginMethod.FACEBOOK) {
-      return signInWithFacebook();
+      response = await signInWithFacebook();
     } else if (method == LoginMethod.GOOGLE) {
-      return signInWithGoogle();
+      response = await signInWithGoogle();
     } else if (method == LoginMethod.APPLE) {
-      return signInWithApple();
+      response = await signInWithApple();
     }
-    throw LoginException(
-        code: LoginException.CODE,
-        subCode: LoginException.ERROR_LOGIN_INVALID_PROVIDER,
-        message: 'The given provider($method) is not a Social provider!');
+    if (response == null) {
+      throw LoginException(
+          code: LoginException.CODE,
+          subCode: LoginException.ERROR_LOGIN_INVALID_PROVIDER,
+          message: 'The given provider($method) is not a Social provider!');
+    }
+
+    try {
+      await _firebaseCommonProvider.signInWithCredentialAndUpdateFirebaseUser(response.credential, response.user);
+    } on LoginException catch (le) {
+      print('*** FirebaseSocialLoginProvider().federated.loginexception=${le.subCode}');
+      // --- Handle Account linking!
+      if (le.subCode == LoginException.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL) {
+        final existingMethods = await fetchSignInMethodsForEmail(response.user.email);
+        print('*** FirebaseSocialLoginProvider().federated.existingMethods=$existingMethods');
+        // yield NeedAccountLinking(loginResponse.credential, existingMethods);
+        return response;
+      }
+      rethrow;
+    } on Exception catch (e) {
+      print('*** FirebaseSocialLoginProvider().federated.exception=$e');
+       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    }
+
+    return response;
   }
 
   @override
@@ -188,7 +211,6 @@ class FirebaseSocialLoginProvider implements ISocialLoginProvider {
     }
   }
 
-  
   /// Get all the  used sign in methods in the firebase for the user (list of facebook.com, google.com, apple.com etc...)
   @override
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) async {

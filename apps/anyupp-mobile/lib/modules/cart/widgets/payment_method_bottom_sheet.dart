@@ -269,8 +269,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
       child: SimpleDialog(
         children: <Widget>[
           Padding(
-            padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-            child: new Column(
+            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 SizedBox(

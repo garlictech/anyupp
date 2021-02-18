@@ -22,7 +22,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      key: new PageStorageKey('history'),
+      key: PageStorageKey('history'),
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
@@ -31,7 +31,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
               stream: _orderService.getOrderHistory(unit.chainId, unit.unitId),
               builder: (context, AsyncSnapshot<List<PlacedOrder>> historySnapshot) {
                 if (historySnapshot.hasData) {
-                  if (historySnapshot.data.length == 0) {
+                  if (historySnapshot.data.isEmpty) {
                     return _noOrderHistory();
                   }
 

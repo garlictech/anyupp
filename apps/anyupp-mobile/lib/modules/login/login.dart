@@ -18,6 +18,7 @@ export 'providers/common_login_provider_interface.dart';
 export 'providers/firebase_common_login_provider.dart';
 export 'providers/email_login_provider_interface.dart';
 export 'providers/firebase_email_login_provider.dart';
+export 'providers/aws_social_login_provider.dart';
 export 'widgets/logout_confirm_dialog.dart';
 export 'widgets/social_login_button_widget.dart';
 export 'widgets/phone_login_dialog.dart';

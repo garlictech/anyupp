@@ -314,10 +314,10 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     try {
       LatLng userLocation = await getIt<LocationRepository>().getUserCurrentLocation();
       print('_determineUserPositionAndLoadUnits().location=$userLocation');
-      _animateMapToLocation(userLocation);
+      await _animateMapToLocation(userLocation);
       _loadNearUnits(userLocation);
     } on Exception {
-      _showLocationPermissionRejectedAlertDialog(context);
+      await _showLocationPermissionRejectedAlertDialog(context);
     }
   }
 
@@ -334,7 +334,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       trans('selectUnitMap.userMarker.description'),
     );
     if (mounted) {
-      _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
+      await _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
     }
   }
 

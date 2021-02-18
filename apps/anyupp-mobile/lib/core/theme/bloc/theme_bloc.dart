@@ -18,7 +18,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   StreamSubscription _unitSelectSubscription;
 
   ThemeBloc(this._unitSelectBloc) : super(ThemeState(theme: ThemeAnyUpp())) {
-    _unitSelectSubscription = _unitSelectBloc.listen((unitSelectedState) {
+    _unitSelectSubscription = _unitSelectBloc.asBroadcastStream().listen((unitSelectedState) {
       if (unitSelectedState is UnitSelected) {
         add(ThemeSelected(theme: unitThemeToThemeChainData(unitSelectedState.unit)));
       }

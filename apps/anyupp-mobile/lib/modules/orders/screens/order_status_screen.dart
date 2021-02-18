@@ -15,7 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 
 class OrderStatusScreen extends StatefulWidget {
-  // final ChromeSafariBrowser browser = new MyChromeSafariBrowser(new MyInAppBrowser());
+  // final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
 
   @override
   _OrderStatusScreenState createState() => _OrderStatusScreenState();
@@ -39,7 +39,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
             stream: _orderRepository.getCurrentOrders(unit.chainId, unit.unitId),
             builder: (context, AsyncSnapshot<List<PlacedOrder>> orderState) {
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
-                if (orderState.data == null || orderState.data.length == 0) {
+                if (orderState.data == null || orderState.data.isEmpty) {
                   return _noOrder();
                 }
 

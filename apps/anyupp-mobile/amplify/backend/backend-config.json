@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "anyuppmobilece112a55": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

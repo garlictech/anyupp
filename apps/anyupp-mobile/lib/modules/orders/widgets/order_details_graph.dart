@@ -61,7 +61,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
     _initFabAnimationController();
 
     // Adding the global key for each state
-    widget.orderStates.forEach((state) => _stateKeys.add(new GlobalKey<OrderStateCardState>()));
+    widget.orderStates.forEach((state) => _stateKeys.add(GlobalKey<OrderStateCardState>()));
 
     // Start the animation
     _orderSizeAnimationController.forward();
@@ -204,13 +204,13 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
       final end = start + slideDurationInterval;
 
       double finalMarginTop = minMarginTop + i * (0.8 * OrderStateCard.height);
-      Animation<double> animation = new Tween(
+      Animation<double> animation = Tween(
         begin: startingMarginTop,
         end: finalMarginTop,
       ).animate(
-        new CurvedAnimation(
+        CurvedAnimation(
           parent: _dotsAnimationController,
-          curve: new Interval(start, end, curve: Curves.easeOut),
+          curve: Interval(start, end, curve: Curves.easeOut),
         ),
       );
       _dotPositions.add(animation);
@@ -219,7 +219,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
 
   // Responsible for starting the animation of each card, then the animation of the payment button
   void _initDotAnimationController() {
-    _dotsAnimationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+    _dotsAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animateOrderStateCards().then((_) => _animateFab());
@@ -230,7 +230,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   // Responsible for starting the animation of each card
   Future _animateOrderStateCards() async {
     return Future.forEach(_stateKeys, (GlobalKey<OrderStateCardState> stateKey) {
-      return new Future.delayed(Duration(milliseconds: 250), () {
+      return Future.delayed(Duration(milliseconds: 250), () {
         stateKey.currentState?.runAnimation();
       });
     });
@@ -238,7 +238,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
 
   // Responsible for controlling the animation of the payment button
   void _initFabAnimationController() {
-    _fabAnimationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _fabAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   _animateFab() {

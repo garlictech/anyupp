@@ -35,7 +35,7 @@ class FavoritesScreen extends StatelessWidget {
         stream: _repository.getFavoritesList(unit.chainId, unit.unitId),
         builder: (context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data.length > 0) {
+            if (snapshot.data.isNotEmpty) {
               return _buildList(unit, snapshot.data);
             }
             return _buildEmptyList(context);

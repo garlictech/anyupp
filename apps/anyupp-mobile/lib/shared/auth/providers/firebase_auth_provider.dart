@@ -11,11 +11,6 @@ class FirebaseAuthProvider implements IAuthProvider {
 
   FirebaseAuthProvider(this._firebaseAuth, this._db);
 
-  Stream<AuthenticatedUser> get authenticatedUser {
-    // TODO FirebaseModelMapper-t szetvagni
-    return _firebaseAuth.onAuthStateChanged.map(FirebaseModelMapper.firebaseUsertoAuthenticatedUser);
-  }
-
   Stream<User> getAuthenticatedUserProfileStream() {
      return _firebaseAuth.currentUser().asStream().where((firebaseUser) => firebaseUser != null).switchMap((firebaseUser) => _db
         .reference()
@@ -39,5 +34,10 @@ class FirebaseAuthProvider implements IAuthProvider {
       return user;
     }
     return Future.value(null);
+  }
+
+  @override
+  Future<void> cancel() async {
+    // Nothing 
   }
 }

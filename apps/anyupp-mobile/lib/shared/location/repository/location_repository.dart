@@ -28,7 +28,7 @@ class LocationRepository {
             Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best, timeLimit: Duration(seconds: 20));
             // print("***** location.getCurrentPosition().position=$position");
             return LatLng(position.latitude, position.longitude);
-          } on Exception catch (e) {
+          } on Exception {
             // print('***** location.error getting location=$e');
             Position position = await Geolocator.getLastKnownPosition();
             // print("***** location.getLastKnownPosition().position=$position");

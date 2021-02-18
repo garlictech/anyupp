@@ -62,7 +62,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
 
   void _initCameraAndScanner() async {
     print('_initCameraAndScanner().getCamera()');
-    ScannerUtils.getCamera(CameraLensDirection.back).then(
+    await ScannerUtils.getCamera(CameraLensDirection.back).then(
       (CameraDescription camera) async {
         print('_initCameraAndScanner()._openCamera()');
         await _openCamera(camera);
@@ -160,7 +160,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
     if (!await Permission.camera.request().isGranted) {
       if (await Permission.camera.isPermanentlyDenied) {
         print('_checkCameraPermissions().PermanentlyDenied!');
-        showConfirmDialog(
+        await showConfirmDialog(
           context,
           title: trans('qrScan.permission.denied.title'),
           message: trans('qrScan.permission.denied.message'),
@@ -181,7 +181,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
         );
       } else {
         print('_checkCameraPermissions().notGranted!');
-        showConfirmDialog(
+        await showConfirmDialog(
           context,
           title: trans('qrScan.permission.notGranted.title'),
           message: trans('qrScan.permission.notGranted.message'),
@@ -224,7 +224,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
 
     this._streaming = true;
 
-    _cameraController.startImageStream((CameraImage image) {
+    await _cameraController.startImageStream((CameraImage image) {
       if (isDetecting) {
         return;
       }

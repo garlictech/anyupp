@@ -3,18 +3,18 @@ import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 
 ParticleOptions particleOptionsHappy = ParticleOptions(
-    image: Image.asset('assets/icons/emoji-smile-01.png'),
-    baseColor: Colors.blue,
-    spawnOpacity: 0.2,
-    opacityChangeRate: 0.25,
-    minOpacity: 0.5,
-    maxOpacity: 1.0,
-    spawnMinSpeed: 80.0,
-    spawnMaxSpeed: 180.0,
-    spawnMinRadius: 22.0,
-    spawnMaxRadius: 55.0,
-    particleCount: 30,
-  );
+  image: Image.asset('assets/icons/emoji-smile-01.png'),
+  baseColor: Colors.blue,
+  spawnOpacity: 0.2,
+  opacityChangeRate: 0.25,
+  minOpacity: 0.5,
+  maxOpacity: 1.0,
+  spawnMinSpeed: 80.0,
+  spawnMaxSpeed: 180.0,
+  spawnMinRadius: 22.0,
+  spawnMaxRadius: 55.0,
+  particleCount: 30,
+);
 
 ParticleOptions particleOptionsSad = ParticleOptions(
   image: Image.asset('assets/icons/emoji-sad-01.png'),
@@ -37,10 +37,7 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
   bool reverse;
 
   RainParticleBehaviour(
-      {ParticleOptions options = const ParticleOptions(),
-      Paint paint,
-      this.enabled = true,
-      this.reverse = false})
+      {ParticleOptions options = const ParticleOptions(), Paint paint, this.enabled = true, this.reverse = false})
       : assert(options != null),
         super(options: options, paint: paint);
 
@@ -50,16 +47,18 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
 
     // FROM-UP-TO-DOWN
     if (reverse) {
-      if (p.cy == 0.0)
+      if (p.cy == 0.0) {
         p.cy = random.nextDouble() * size.height;
-      else
+      } else {
         p.cy = random.nextDouble() * size.width * 0.2;
+      }
     } else {
       // FROM-DOWN-TO-TOP
-      if (p.cy == size.height)
+      if (p.cy == size.height) {
         p.cy = size.height;
-      else
+      } else {
         p.cy = size.height - random.nextDouble() * size.height * 0.30;
+      }
     }
   }
 
@@ -79,19 +78,13 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
   }
 
   @override
-  Widget builder(
-      BuildContext context, BoxConstraints constraints, Widget child) {
+  Widget builder(BuildContext context, BoxConstraints constraints, Widget child) {
     return GestureDetector(
-      onPanUpdate: enabled
-          ? (details) => _updateParticles(context, details.globalPosition)
-          : null,
-      onTapDown: enabled
-          ? (details) => _updateParticles(context, details.globalPosition)
-          : null,
+      onPanUpdate: enabled ? (details) => _updateParticles(context, details.globalPosition) : null,
+      onTapDown: enabled ? (details) => _updateParticles(context, details.globalPosition) : null,
       child: ConstrainedBox(
         // necessary to force gesture detector to cover screen
-        constraints: BoxConstraints(
-            minHeight: double.infinity, minWidth: double.infinity),
+        constraints: BoxConstraints(minHeight: double.infinity, minWidth: double.infinity),
         child: super.builder(context, constraints, child),
       ),
     );
@@ -106,8 +99,7 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
         var speed = particle.speed;
         var mag = delta.distance;
         speed *= (70 - mag) / 70.0 * 2.0 + 0.5;
-        speed = math.max(
-            options.spawnMinSpeed, math.min(options.spawnMaxSpeed, speed));
+        speed = math.max(options.spawnMinSpeed, math.min(options.spawnMaxSpeed, speed));
         particle.dx = delta.dx / mag * speed;
         particle.dy = delta.dy / mag * speed;
       }

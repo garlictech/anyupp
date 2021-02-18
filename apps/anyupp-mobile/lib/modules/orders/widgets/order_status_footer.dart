@@ -161,7 +161,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
               ),
             ),
             builder: (BuildContext context, Widget _widget) {
-              return new Transform.rotate(
+              return Transform.rotate(
                 angle: controller.value * 6.3,
                 child: _widget,
               );

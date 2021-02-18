@@ -57,11 +57,11 @@ class Locally {
   }) {
     /// initializationSettingAndroid declared above is assigned
     /// to AndroidInitializationSettings.
-    initializationSettingAndroid = new AndroidInitializationSettings(this.appIcon);
+    initializationSettingAndroid = AndroidInitializationSettings(this.appIcon);
 
     /// initializationSettingIos declared above is assigned
     /// to IOSInitializationSettings.
-    initializationSettingIos = new IOSInitializationSettings(
+    initializationSettingIos = IOSInitializationSettings(
         requestSoundPermission: iosRequestSoundPermission,
         requestBadgePermission: iosRequestBadgePermission,
         requestAlertPermission: iosRequestAlertPermission,
@@ -70,7 +70,7 @@ class Locally {
     /// initializationSetting declared above is here assigned
     /// to InitializationSetting, which comes from flutter_local_notification
     /// package.
-    initializationSetting = new InitializationSettings(initializationSettingAndroid, initializationSettingIos);
+    initializationSetting = InitializationSettings(initializationSettingAndroid, initializationSettingIos);
 
     /// localNotificationPlugin is initialized here finally
     localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
@@ -183,7 +183,7 @@ class Locally {
   /// cancels all pending notification
   ///
   Future cancelAll() async {
-    localNotificationsPlugin.cancelAll();
+    await localNotificationsPlugin.cancelAll();
   }
 
   /// The getDetailsIfAppWasLaunchedViaNotification

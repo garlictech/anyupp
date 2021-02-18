@@ -42,7 +42,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
               stream: _productRepository.getProductList(unit.unitId, widget.categoryId),
               builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                 if (snapshot.hasData) {
-                  if (snapshot.data.length == 0) {
+                  if (snapshot.data.isEmpty) {
                     return _buildEmptyList(context);
                   }
 

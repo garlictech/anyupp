@@ -1,0 +1,130 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/shared/auth/model/authenticated_user.dart';
+
+import 'package:fa_prev/shared/auth/model/user.dart';
+
+import 'auth_provider_interface.dart';
+
+class AwsAuthProvider implements IAuthProvider {
+  StreamController<User> _userController = StreamController<User>();
+  // StreamSubscription _subscription;
+  User _user;
+
+  AwsAuthProvider() {
+    print('AwsAuthProvider().constructor()');
+    //_userController.add(null);
+    getAuthenticatedUserProfile();
+    // if (_subscription == null) {
+    //   _subscription = Amplify.Hub.listen([HubChannel.Auth], (hubEvent) async {
+    //     print('AwsAuthProvider().Amplify.Hub.listen=$hubEvent, eventName=${hubEvent.eventName}');
+    //     switch (hubEvent.eventName) {
+    //       case 'SIGNED_IN':
+    //         {
+    //           print('AwsAuthProvider().USER IS SIGNED IN');
+    //           AuthUser cognitoUser = await Amplify.Auth.getCurrentUser();
+    //           List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
+    //           print('AwsAuthProvider().userAttributes:');
+    //           if (attributes != null) {
+    //             for (int i = 0; i < attributes.length; i++) {
+    //               AuthUserAttribute a = attributes[i];
+    //               print('\t attr[${a.userAttributeKey}]=${a.value}');
+    //               // if (a.userAttributeKey == 'email') {
+
+    //               // }
+    //             }
+    //           }
+    //           _authController.add(AuthenticatedUser(id: cognitoUser.userId, displayName: cognitoUser.username));
+    //           _userController.add(User(id: cognitoUser.userId, name: cognitoUser.username));
+    //         }
+    //         break;
+    //       case 'SIGNED_OUT':
+    //         {
+    //           print('AwsAuthProvider().USER IS SIGNED OUT');
+    //           _authController.add(null);
+    //           _userController.add(null);
+    //         }
+    //         break;
+    //       case 'SESSION_EXPIRED':
+    //         {
+    //           print('AwsAuthProvider().USER IS SIGNED IN');
+    //           _authController.add(null);
+    //           _userController.add(null);
+    //         }
+    //         break;
+    //     }
+    //   });
+    // }
+  }
+
+  @override
+  Future<User> getAuthenticatedUserProfile() async {
+    print('getAuthenticatedUserProfile()');
+    try {
+      CognitoAuthSession session =
+          await Amplify.Auth.fetchAuthSession(options: CognitoSessionOptions(getAWSCredentials: false));
+      print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
+      print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
+      print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
+      print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
+      print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
+      if (!session.isSignedIn) {
+        _userController.add(null);
+        return null;
+      }
+      if (_user == null) {
+        List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
+        _user = await _userFromAttributes(attributes);
+        _userController.add(_user);
+      }
+      print('getAuthenticatedUserProfile().user=$_user');
+      return _user;
+    } on Exception catch (e) {
+      print('getAuthenticatedUserProfile().exception=$e');
+      return null; 
+    } on Error catch (e) {
+      print('getAuthenticatedUserProfile().error=$e');
+      return null; 
+    }
+  }
+
+  @override
+  Stream<User> getAuthenticatedUserProfileStream() => _userController.stream;
+
+  @override
+  Future<void> cancel() async {
+    // await _subscription.cancel();
+    await _userController.close();
+  }
+
+  Future<void> triggerSingInSuccess() async {
+    await getAuthenticatedUserProfile();
+  }
+
+  User _userFromAttributes(List<AuthUserAttribute> attributes) {
+    User user = User();
+    for (int i = 0; i < attributes.length; i++) {
+      AuthUserAttribute a = attributes[i];
+      //print('\t attr[${a.userAttributeKey}]=${a.value}');
+      if (a.userAttributeKey == 'email') {
+        user.email = a.value;
+        user.name = user.email.split('@').first;
+        continue;
+      }
+      if (a.userAttributeKey == 'sub') {
+        user.id = a.value;
+        continue;
+      }
+      if (a.userAttributeKey == 'identities') {
+        List<dynamic> json = jsonDecode(a.value);
+        user.login = LoginMethodUtils.stringToMethod(json[0]['providerType']);
+        continue;
+      }
+    }
+    return user;
+  }
+}

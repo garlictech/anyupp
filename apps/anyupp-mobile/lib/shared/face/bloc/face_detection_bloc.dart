@@ -22,7 +22,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
     print('**** FaceDetectionBloc.mapEventToState=$event');
     try {
       if (event is StopFaceRecognition) {
-        _faceRepository.stopDetection();
+        await _faceRepository.stopDetection();
         return;
       }
 
@@ -43,7 +43,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
         );
 
         yield FaceDetectionCurrentState(DetectionStates.DetectingGender);
-        _faceRepository.startDetection(
+        await _faceRepository.startDetection(
           snapshotIntervallMs: 500, // Check snapshot every 1 sec
           modelPath: 'assets/models/zenbojunior_gender.tflite', // Tensor model to use for detection
           labelPath:
@@ -54,7 +54,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
               _counter.addRecognitionResultList(recognitions);
               if (_counter.isPassed) {
                 print('***** FaceDetectionBloc.GENDER_FOUND=${_counter.passed}');
-                FacePreferences.setGender(_counter.passed.label);
+                await FacePreferences.setGender(_counter.passed.label);
                 await _faceRepository.stopDetection();
                 // yield FaceDetectionCurrentState(DetectionStates.DetectingGenderFinished);
                 add(StartAgeDetection());
@@ -71,7 +71,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
           minConfidenceToIncCount: 0.8, // ...at least 80% percent confidence
         );
         yield FaceDetectionCurrentState(DetectionStates.DetectingAge);
-        _faceRepository.startDetection(
+        await _faceRepository.startDetection(
           snapshotIntervallMs: 250,
           modelPath: 'assets/models/zenbojunior_age.tflite',
           labelPath: 'assets/models/zenbojunior_age.txt',
@@ -81,7 +81,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
               _counter.addRecognitionResultList(recognitions);
               if (_counter.isPassed) {
                 print('***** FaceDetectionBloc.AGE_FOUND=${_counter.passed}');
-                FacePreferences.setAge(_counter.passed.label);
+                await FacePreferences.setAge(_counter.passed.label);
                 await _faceRepository.stopDetection();
                 await _faceRepository.dispose();
                 // yield FaceDetectionCurrentState(DetectionStates.DetectingAgeFinished);

@@ -10,7 +10,6 @@ import 'package:stripe_sdk/stripe_sdk_ui.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/orders/model/placed_order.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 

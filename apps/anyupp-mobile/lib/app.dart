@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
@@ -32,12 +34,13 @@ import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
 
+import 'amplifyconfiguration.dart'; 
+
 void runAppByStage({String stage = 'dev'}) {
   runZoned(() async {
     print('main().stage=$stage');
     await DotEnv().load('env/.env.$stage');
     initDependencyInjection();
-    // BlocSupervisor.delegate = SimpleBlocDelegate();
     // WidgetsFlutterBinding.ensureInitialized();
     configureCatcherAndRunZonedApp(MyApp());
     // runApp(MyApp());
@@ -58,6 +61,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _initAmplify();
     _initDeepLinks();
   }
 
@@ -72,26 +76,40 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     print('didChangeAppLifecycleState()=$state');
-    if (state == AppLifecycleState.resumed) {
-      final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
-      print('didChangeAppLifecycleState().PendingDynamicLinkData=$data');
-      if (data?.link != null) {
-        handleLink(data?.link);
-      }
-      FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData dynamicLink) async {
-        final Uri deepLink = dynamicLink?.link;
-        print('didChangeAppLifecycleState().onLink.deepLink=$deepLink');
-        handleLink(deepLink);
-      }, onError: (OnLinkErrorException e) async {
-        print('onLinkError');
-        print(e.message);
-      });
+    // if (state == AppLifecycleState.resumed) {
+    //   final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+    //   print('didChangeAppLifecycleState().PendingDynamicLinkData=$data');
+    //   if (data?.link != null) {
+    //     handleLink(data?.link);
+    //   }
+    //   FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData dynamicLink) async {
+    //     final Uri deepLink = dynamicLink?.link;
+    //     print('didChangeAppLifecycleState().onLink.deepLink=$deepLink');
+    //     handleLink(deepLink);
+    //   }, onError: (OnLinkErrorException e) async {
+    //     print('onLinkError');
+    //     print(e.message);
+    //   });
+    // }
+  }
+
+  void _initAmplify() async {
+    print('_initAmplify().start()');
+    await Amplify.addPlugins([AmplifyAuthCognito()]);
+
+    try {
+      await Amplify.configure(amplifyconfig);
+      print('_initAmplify().Amplify initialized successfully...');
+    } on AmplifyAlreadyConfiguredException {
+      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    } on Exception catch (e) {
+      print('_initAmplify().Error initializing Amplify: $e');
     }
   }
 
   void handleLink(Uri link) async {
     print('handleLink()=$link');
-     _handleEmailLoginLink(link);
+     await _handleEmailLoginLink(link);
   }
 
   Future<void> _initDeepLinks() async {
@@ -99,17 +117,17 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       Uri uri = await getInitialUri();
       print('_initDeepLinks().uri=$uri');
 
-      _handleEmailLoginLink(uri);
+      await _handleEmailLoginLink(uri);
 
       if (isValidUrl(uri)) {
-        handleUrl(uri);
+        await handleUrl(uri);
       }
     } on Exception catch (e) {
       print('***** _initDeepLinks().exception=$e');
     }
 
     // try to listen
-    _deeplinkSubscription = getUriLinksStream().listen((Uri uri) {
+    _deeplinkSubscription = getUriLinksStream().asBroadcastStream().listen((Uri uri) {
       print('_initDeepLinks().stream().uri=$uri');
       _handleEmailLoginLink(uri);
 

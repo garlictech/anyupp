@@ -3,7 +3,7 @@ description: Cyberg's 3FA project app
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,13 +18,16 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.34+1034
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  amazon_cognito_identity_dart_2: ^0.1.25+1
+  amplify_auth_cognito: <1.0.0
+  amplify_flutter: <1.0.0
   animated_background: ^1.0.5
   apple_sign_in: ^0.1.0
   awesome_card: ^1.1.0
@@ -59,14 +62,14 @@ dependencies:
   google_fonts: ^1.1.0
   google_maps_flutter: ^0.5.28+1
   google_sign_in: ^4.4.6
-  gql: ">=0.7.3 <1.0.0"
+  gql: '>=0.7.3 <1.0.0'
   graphql_flutter: ^3.1.0
   intl: ^0.16.1
   json_serializable: ^3.0.0
   lottie: ^0.7.0+1
   mask_text_input_formatter: ^1.0.7
-  meta: ">=1.0.0 <2.0.0"
-  package_info: ">=0.4.3 <2.0.0"
+  meta: '>=1.0.0 <2.0.0'
+  package_info: '>=0.4.3 <2.0.0'
   permission_handler: ^5.0.1+1
   rxdart: ^0.24.1
   shared_preferences: ^0.5.8
@@ -82,13 +85,14 @@ dev_dependencies:
   artemis: ^5.1.0 # to generate dart classes from graphql queries
   build_runner: ^1.5.0 # required by artemis
   flutter_launcher_icons: ^0.8.0
+  effective_dart: ^1.0.0
 
 flutter_icons:
-  android: "launcher_icon"
+  android: 'launcher_icon'
   ios: true
-  image_path: "assets/launcher_icon/anyupp_black.png"
-  adaptive_icon_background: "#000000"
-  adaptive_icon_foreground: "assets/launcher_icon/ic_launcher_foreground.png"
+  image_path: 'assets/launcher_icon/anyupp_black.png'
+  adaptive_icon_background: '#000000'
+  adaptive_icon_foreground: 'assets/launcher_icon/ic_launcher_foreground.png'
 
 # The following section is specific to Flutter.
 flutter:

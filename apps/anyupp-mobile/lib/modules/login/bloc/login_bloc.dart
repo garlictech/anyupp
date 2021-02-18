@@ -28,28 +28,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           // --- Get provider specific auth Credential from the given provider
           ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.method);
           print('*** LoginBloc().federated.loginResponse=$loginResponse');
+          yield LoginSuccess();
 
           // --- Try to log into Firebase with this credential and update the user's profile
-          try {
-            await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
-            yield LoginSuccess();
-          } on LoginException catch (le) {
-            print('*** LoginBloc().federated.loginexception=${le.subCode}');
-            // --- Handle Account linking!
-            if (le.subCode == LoginException.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL) {
-              final existingMethods = await _repository.fetchSignInMethodsForEmail(loginResponse.user.email);
-              print('*** LoginBloc().federated.existingMethods=$existingMethods');
-              yield NeedAccountLinking(loginResponse.credential, existingMethods);
-              return;
-            }
+          // try {
+          //   await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
+          //   yield LoginSuccess();
+          // } on LoginException catch (le) {
+          //   print('*** LoginBloc().federated.loginexception=${le.subCode}');
+          //   // --- Handle Account linking!
+          //   if (le.subCode == LoginException.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL) {
+          //     final existingMethods = await _repository.fetchSignInMethodsForEmail(loginResponse.user.email);
+          //     print('*** LoginBloc().federated.existingMethods=$existingMethods');
+          //     yield NeedAccountLinking(loginResponse.credential, existingMethods);
+          //     return;
+          //   }
 
-            getIt<ExceptionBloc>().add(ShowException(le));
-            yield LoginError(le.subCode, le.message);
-          } on Exception catch (e) {
-            print('*** LoginBloc().federated.exception=$e');
-            getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
-            yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
-          }
+          //   getIt<ExceptionBloc>().add(ShowException(le));
+          //   yield LoginError(le.subCode, le.message);
+          // } on Exception catch (e) {
+          //   print('*** LoginBloc().federated.exception=$e');
+          //   getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
+          //   yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
+          // }
         } else {
           // --- Handle not Federated logins (PHONE, Anonymous)
           yield LoginInProgress();
@@ -163,7 +164,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle send password reset to email
       if (event is SendPasswordResetEmail) {
         yield LoginInProgress();
-        _repository.sendPasswordResetEmail(event.email);
+        await _repository.sendPasswordResetEmail(event.email);
         yield PasswordResetEmailSent(event.email);
       }
 
