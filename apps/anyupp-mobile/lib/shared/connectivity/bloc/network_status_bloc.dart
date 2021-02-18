@@ -29,15 +29,7 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
             hide = true;
           }
         }
-
-        // if (result == ConnectivityResult.none && _showingDialog != true) {
-        //   _showingDialog = true;
-        // } else if (_showingDialog != false) {
-        //   _showingDialog = false;
-        // }
-
         add(NetworkConnectionChangedEvent(result, show, hide));
-
         _lastState = result;
       },
     );

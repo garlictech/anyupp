@@ -30,11 +30,13 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<void> logout() async {
     print('***** AwsSocialLoginProvider.logout()');
-    return Future.wait([
+    await Future.wait([
       Amplify.Auth.signOut(),
       _googleSignIn.signOut(),
       _facebookLogin.logOut(),
     ]);
+    await _authProvider.getAuthenticatedUserProfile();
+    return;
   }
 
   @override

@@ -7,11 +7,12 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/model/authenticated_user.dart';
 
 import 'package:fa_prev/shared/auth/model/user.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'auth_provider_interface.dart';
 
 class AwsAuthProvider implements IAuthProvider {
-  StreamController<User> _userController = StreamController<User>();
+  StreamController<User> _userController = BehaviorSubject<User>();
   // StreamSubscription _subscription;
   User _user;
 
@@ -63,32 +64,37 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> getAuthenticatedUserProfile() async {
-    print('getAuthenticatedUserProfile()');
+    print('getAuthenticatedUserProfile().user=$_user');
     try {
-      CognitoAuthSession session =
-          await Amplify.Auth.fetchAuthSession(options: CognitoSessionOptions(getAWSCredentials: false));
+      _user = null;
+      CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
+        options: CognitoSessionOptions(getAWSCredentials: false),
+      );
       print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
+      if (session.isSignedIn) {
+        session = await Amplify.Auth.fetchAuthSession(
+          options: CognitoSessionOptions(getAWSCredentials: true),
+        );
+      }
       print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
       print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
       print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
       print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
       if (!session.isSignedIn) {
-        _userController.add(null);
-        return null;
-      }
-      if (_user == null) {
+        _user = null;
+      } else {
         List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
-        _user = await _userFromAttributes(attributes);
-        _userController.add(_user);
+        _user = _userFromAttributes(attributes);
       }
+      _userController.add(_user);
       print('getAuthenticatedUserProfile().user=$_user');
       return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
-      return null; 
+      return null;
     } on Error catch (e) {
       print('getAuthenticatedUserProfile().error=$e');
-      return null; 
+      return null;
     }
   }
 
