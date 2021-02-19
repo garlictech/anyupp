@@ -55,9 +55,9 @@ export class DevBuildPipelineStack extends sst.Stack {
               'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
             ],
           },
-          artifacts: {
-            files: ['apps/infrastructure/anyupp-backend-stack/cdk.out'],
-          },
+        },
+        artifacts: {
+          files: ['apps/infrastructure/anyupp-backend-stack/cdk.out'],
         },
       }),
       environment: {
