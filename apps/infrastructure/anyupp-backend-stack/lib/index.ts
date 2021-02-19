@@ -13,7 +13,7 @@ export default function main(app: App): void {
   new CognitoStack(app, 'cognito', {
     adminSiteUrl: sites.adminSiteUrl,
     googleClientId: paramsStack.googleClientId,
-    googleClientSecret: secretManager.googleClientSecret
+    googleClientSecret: secretManager.googleClientSecret,
   });
   new AppsyncAppStack(app, 'appsync');
 }

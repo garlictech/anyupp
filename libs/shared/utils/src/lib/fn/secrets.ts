@@ -34,7 +34,7 @@ export const getSecret = (key?: string) => {
             }
 
             resolutionFunc(requestedSecret);
-          })
+          }),
         );
       }
     });

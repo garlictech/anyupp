@@ -1,12 +1,12 @@
 import { App } from '@serverless-stack/resources';
 import {
   DevBuildPipelineStack,
-  PipelineStackProps
+  PipelineStackProps,
 } from './build-pipeline/pipeline-stack';
 import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
 import {
   DevPullRequestBuildStack,
-  DevPullRequestBuildStackProps
+  DevPullRequestBuildStackProps,
 } from './build-pipeline/dev-pull-request-stack';
 import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
 
@@ -19,26 +19,26 @@ export default function main(app: App): void {
     repoName: 'anyupp',
     secretsManager: secretsManagerStack,
     repoBranch: 'dev',
-    chatbot: slackChannel.chatbot
+    chatbot: slackChannel.chatbot,
   };
 
   const devPullRequestConfig: DevPullRequestBuildStackProps = {
-    ...commonConfig
+    ...commonConfig,
   };
 
   const devBuildPipelineConfig: PipelineStackProps = {
-    ...commonConfig
+    ...commonConfig,
   };
 
   new DevBuildPipelineStack(
     app,
     'DevBuildPipelineStack',
-    devBuildPipelineConfig
+    devBuildPipelineConfig,
   );
 
   new DevPullRequestBuildStack(
     app,
     'DevPullRequestBuildStack',
-    devPullRequestConfig
+    devPullRequestConfig,
   );
 }

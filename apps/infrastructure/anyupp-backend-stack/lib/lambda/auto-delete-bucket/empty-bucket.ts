@@ -10,7 +10,7 @@ export const emptyBucket = async (bucketName: string) => {
 
   // nothing left - we're done!
   const contents = (listedObjects.Versions || []).concat(
-    listedObjects.DeleteMarkers || []
+    listedObjects.DeleteMarkers || [],
   );
   if (contents.length === 0) return;
 

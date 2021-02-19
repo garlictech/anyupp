@@ -16,19 +16,19 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'AnyuppSecrets',
       {
-        secretArn: this.secretsManagerArn
-      }
+        secretArn: this.secretsManagerArn,
+      },
     );
 
     const googleClientSecret = secretManager.secretValueFromJson(
-      'googleClientSecret'
+      'googleClientSecret',
     );
 
     this.googleClientSecret = googleClientSecret.toString();
 
     new CfnOutput(this, 'SecretManager', {
       value: secretManager.secretArn,
-      exportName: app.logicalPrefixedName('SecretManager')
+      exportName: app.logicalPrefixedName('SecretManager'),
     });
   }
 }

@@ -33,7 +33,7 @@ export class StripeResolver {
   constructor(
     private dbService: DatabaseService,
     private firestoreService: FirestoreService,
-    @Inject('SHARED_SECRETS') private sharedSecrets: SharedSecrets
+    @Inject('SHARED_SECRETS') private sharedSecrets: SharedSecrets,
   ) {
     this.stripe = new Stripe(sharedSecrets.stripeSecretKey, {
       apiVersion: '2020-08-27',
@@ -42,7 +42,7 @@ export class StripeResolver {
 
   @Query('getCustomerStripeCards')
   async getCustomerStripeCards(
-    @Args('userId') userId: string
+    @Args('userId') userId: string,
   ): Promise<StripeCard[]> {
     const stripeCustomerId = await this.getStripeCustomerIdForUser({ userId });
     const paymentMethods = await this.stripe.paymentMethods.list({
@@ -54,7 +54,7 @@ export class StripeResolver {
 
   @Mutation('startStripePayment')
   async startPayment(
-    @Args('args') args: StartStripePaymentInput
+    @Args('args') args: StartStripePaymentInput,
   ): Promise<StartStripePaymentOutput> {
     const { chainId, unitId, userId, paymentMethodId } = args;
     const orders: IOrders = await this.getInappPaymentReadyOrders({
@@ -68,7 +68,7 @@ export class StripeResolver {
     // }
 
     const currency = Object.values(
-      orders
+      orders,
     )[0].sumPriceShown.currency.toUpperCase();
     const orderSum = sumOrders(orders);
     const amount = amountConversionForStripe(orderSum, currency);
@@ -150,7 +150,7 @@ export class StripeResolver {
         chainId,
         unitId,
         userId,
-      })
+      }),
     );
 
     // if (!activeOrders) {
@@ -170,7 +170,7 @@ export class StripeResolver {
         }
         return result;
       },
-      {}
+      {},
     );
   }
 

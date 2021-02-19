@@ -15,7 +15,7 @@ stage=dev
 region=europe-west3
 qr-origin=https://dev.anyupp.com
 ```
-   
+
 ## Set up your project
 
 1. Add `google-services.json` to your `android/app` directory.
@@ -54,6 +54,7 @@ Finaly, make sure your iOS developer and device(s) are included in the team prov
 Ask to be included in the App Center tester group to get updates on your phone.
 
 ## Build the application
+
 1. for iOS: `fvm flutter build ios -t ./lib/main_{stageName}.dart`
 1. for Android: `fvm build apk --release --split-per-abi -t ./lib/main_{stageName}.dart` - it will generate 3 apks.
 
@@ -68,16 +69,18 @@ Solution: run `pub global activate fvm` again
 ## Build GraphQL schema
 
 1. Copy GraphQL schema to the root folder of the app (schema.graphql)
-   1.a Or copy it from the endpoint: `get-graphql-schema http://localhost:3333/graphql  > schema.graphql`
+   1.a Or copy it from the endpoint: `get-graphql-schema http://localhost:3333/graphql > schema.graphql`
 2. Copy query, mutation and subscription client side definitions to {root}/graphql in SEPARATED FILES!
    Like:
-    `
-    Directory: .\fa-prev\graphql
+   `
+   Directory: .\fa-prev\graphql
 
-    Mode                LastWriteTime         Length Name
-    ----                -------------         ------ ----
-    -a----    2021. 02. 04.     13:07            164 GetCustomerStripeCards.graphql
-    -a----    2021. 02. 04.     13:07            149 StartStripePayment.graphql`
+   Mode LastWriteTime Length Name
 
-1. Optional: if you want to clean the generated classes: `flutter pub run build_runner clean`
-2. run in command line: `flutter pub run build_runner build --delete-conflicting-outputs`
+   ***
+
+   -a---- 2021. 02. 04. 13:07 164 GetCustomerStripeCards.graphql
+   -a---- 2021. 02. 04. 13:07 149 StartStripePayment.graphql`
+
+3. Optional: if you want to clean the generated classes: `flutter pub run build_runner clean`
+4. run in command line: `flutter pub run build_runner build --delete-conflicting-outputs`

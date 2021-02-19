@@ -11,7 +11,7 @@ xdescribe('FormSelectComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormSelectComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

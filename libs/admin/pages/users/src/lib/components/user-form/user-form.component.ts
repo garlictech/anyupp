@@ -1,4 +1,3 @@
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AuthService } from '@bgap/admin/shared/data-access/auth';
@@ -42,19 +41,21 @@ export class UserFormComponent
   public submit(): void {
     if (this.dialogForm?.valid) {
       if (this.user?._id) {
-        this._dataService.updateUser(this.user._id, this.dialogForm?.value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('USER UPDATE ERROR', err);
-          }
-        );
+        this._dataService
+          .updateUser(this.user._id, this.dialogForm?.value)
+          .then(
+            (): void => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.updateSuccessful',
+              );
+              this.close();
+            },
+            err => {
+              console.error('USER UPDATE ERROR', err);
+            },
+          );
       } else {
         this._authService
           .createUserWithEmailAndRandomPassword(this.dialogForm?.value.email)
@@ -69,23 +70,23 @@ export class UserFormComponent
                         this._toasterService.show(
                           EToasterType.SUCCESS,
                           '',
-                          'common.insertSuccessful'
+                          'common.insertSuccessful',
                         );
                         this.close();
                       },
                       err => {
                         console.error('PASSW RESET ERROR', err);
-                      }
+                      },
                     );
                 },
                 err => {
                   console.error('USER INSERT ERROR', err);
-                }
+                },
               );
             },
             err => {
               console.error('AUTH USER CRATE ERROR', err);
-            }
+            },
           );
       }
     }

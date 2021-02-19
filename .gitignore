@@ -48,5 +48,6 @@ cyreport
 
 # The config - don't commit!
 /libs/shared/config/src/lib/config/*
+cdk-out
 
 

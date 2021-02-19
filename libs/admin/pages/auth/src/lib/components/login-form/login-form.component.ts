@@ -13,7 +13,7 @@ export class LoginFormComponent {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _authService: AuthService
+    private _authService: AuthService,
   ) {
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -25,7 +25,7 @@ export class LoginFormComponent {
     if (this.loginForm.valid) {
       this._authService.signIn(
         this.loginForm.value.email,
-        this.loginForm.value.password
+        this.loginForm.value.password,
       );
     }
   }

@@ -29,9 +29,9 @@ const reducer = createReducer(
   initialState,
   on(UnitsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(UnitsActions.loadUnitsSuccess, (state, { units }) =>
-    unitsAdapter.setAll(units, { ...state, loaded: true })
+    unitsAdapter.setAll(units, { ...state, loaded: true }),
   ),
-  on(UnitsActions.resetUnits, state => unitsAdapter.removeAll(state))
+  on(UnitsActions.resetUnits, state => unitsAdapter.removeAll(state)),
 );
 
 export function unitsReducer(state: IUnitsState | undefined, action: Action) {

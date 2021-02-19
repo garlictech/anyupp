@@ -15,7 +15,11 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <bgap-form-text-input
         caption="common.name"
         type="text"

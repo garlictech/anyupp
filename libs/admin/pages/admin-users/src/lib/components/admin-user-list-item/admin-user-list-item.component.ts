@@ -22,7 +22,7 @@ export class AdminUserListItemComponent {
   constructor(
     private _nbDialogService: NbDialogService,
     private _authService: AuthService,
-    private _toasterService: ToasterService
+    private _toasterService: ToasterService,
   ) {}
 
   editAdminUser(): void {
@@ -52,22 +52,24 @@ export class AdminUserListItemComponent {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._authService.sendPasswordResetEmail(this.adminUser.email || '').then(
-              (): void => {
-                this._toasterService.show(
-                  EToasterType.SUCCESS,
-                  '',
-                  'auth.reminderSent'
-                );
-              },
-              (): void => {
-                this._toasterService.show(
-                  EToasterType.DANGER,
-                  '',
-                  'auth.reminderError'
-                );
-              }
-            );
+            this._authService
+              .sendPasswordResetEmail(this.adminUser.email || '')
+              .then(
+                (): void => {
+                  this._toasterService.show(
+                    EToasterType.SUCCESS,
+                    '',
+                    'auth.reminderSent',
+                  );
+                },
+                (): void => {
+                  this._toasterService.show(
+                    EToasterType.DANGER,
+                    '',
+                    'auth.reminderError',
+                  );
+                },
+              );
           },
           status: 'success',
         },

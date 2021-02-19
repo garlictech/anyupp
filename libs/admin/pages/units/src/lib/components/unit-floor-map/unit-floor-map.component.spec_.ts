@@ -11,7 +11,7 @@ xdescribe('UnitFloorMapComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [UnitFloorMapComponent],
       }).compileComponents();
-    }
+    },
   );
 
   beforeEach((): void => {

@@ -29,9 +29,9 @@ const reducer = createReducer(
   initialState,
   on(UsersActions.init, state => ({ ...state, loaded: false, error: null })),
   on(UsersActions.loadUsersSuccess, (state, { users }) =>
-    usersAdapter.setAll(users, { ...state, loaded: true })
+    usersAdapter.setAll(users, { ...state, loaded: true }),
   ),
-  on(UsersActions.resetUsers, state => usersAdapter.removeAll(state))
+  on(UsersActions.resetUsers, state => usersAdapter.removeAll(state)),
 );
 
 export function usersReducer(state: IUsersState | undefined, action: Action) {

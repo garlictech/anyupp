@@ -17,13 +17,17 @@ export class FormProductAvailabilitiesComponent {
 
   constructor(
     private _formsService: FormsService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
   ) {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
       (key): IKeyValue => ({
         key,
-        value: this._translateService.instant(WEEKLY_VARIANT_AVAILABILITY[<keyof typeof WEEKLY_VARIANT_AVAILABILITY>key]),
-      })
+        value: this._translateService.instant(
+          WEEKLY_VARIANT_AVAILABILITY[
+            <keyof typeof WEEKLY_VARIANT_AVAILABILITY>key
+          ],
+        ),
+      }),
     );
   }
 
@@ -44,7 +48,7 @@ export class FormProductAvailabilitiesComponent {
 
   public addAvailability(): void {
     (<FormArray>this.availabilityFormArray)?.push(
-      this._formsService.createProductAvailabilityFormGroup()
+      this._formsService.createProductAvailabilityFormGroup(),
     );
   }
 

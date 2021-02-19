@@ -11,7 +11,7 @@ xdescribe('AddressComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [AddressComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

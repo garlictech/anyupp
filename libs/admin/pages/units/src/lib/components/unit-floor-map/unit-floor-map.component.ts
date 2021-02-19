@@ -47,13 +47,13 @@ export class UnitFloorMapComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.updateSuccessful'
+            'common.updateSuccessful',
           );
           this.close();
         },
         err => {
           console.error('GROUP UPDATE ERROR', err);
-        }
+        },
       );
   }
 

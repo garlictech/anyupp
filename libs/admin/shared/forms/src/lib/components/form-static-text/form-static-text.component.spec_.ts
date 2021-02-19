@@ -11,7 +11,7 @@ xdescribe('FormStaticTextComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormStaticTextComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

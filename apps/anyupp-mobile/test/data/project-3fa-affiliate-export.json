@@ -1,129 +1,145 @@
 {
-  "ads" : [ {
-    "display" : {
-      "backgroundColor" : "#ffffff",
-      "border" : 1,
-      "borderColor" : "#333333",
-      "color" : "#222222",
-      "elevation" : 2
+  "ads": [
+    {
+      "display": {
+        "backgroundColor": "#ffffff",
+        "border": 1,
+        "borderColor": "#333333",
+        "color": "#222222",
+        "elevation": 2
+      },
+      "product": {
+        "currency": "Ft",
+        "description": "Mobiltelefon, 5,4-es kijelző, 2340 × 1080, OLED kijelző, 6 magos Apple A14 Bionic processzor, 64 GB belső tárhely",
+        "image": "https://cdn.alza.hu/Foto/f3/RI/RI033b2.jpg",
+        "name": "iPhone 12 Mini 64GB fekete",
+        "price": 299990,
+        "url": "https://www.alza.hu/iphone-12-mini-64gb-fekete-d6216451.htm"
+      },
+      "tags": [
+        {
+          "affinity": 10,
+          "attribute": "gender",
+          "id": "maleAndfemale",
+          "match": "female",
+          "type": "discrete"
+        }
+      ]
     },
-    "product" : {
-      "currency" : "Ft",
-      "description" : "Mobiltelefon, 5,4-es kijelző, 2340 × 1080, OLED kijelző, 6 magos Apple A14 Bionic processzor, 64 GB belső tárhely",
-      "image" : "https://cdn.alza.hu/Foto/f3/RI/RI033b2.jpg",
-      "name" : "iPhone 12 Mini 64GB fekete",
-      "price" : 299990,
-      "url" : "https://www.alza.hu/iphone-12-mini-64gb-fekete-d6216451.htm"
+    {
+      "display": {
+        "backgroundColor": "#ffffff",
+        "border": 1,
+        "borderColor": "#333333",
+        "color": "#222222",
+        "elevation": 2
+      },
+      "product": {
+        "currency": "Ft",
+        "description": "LEGO - fiúknak és lányoknak, ajánlott: 18 éves kortól, 1271 darabos, megjelenési év: 2020",
+        "discount": "24%",
+        "discountPrice": 41590,
+        "image": "https://cdn.alza.hu/ImgW.ashx?fd=f3&cd=LO10277",
+        "name": "LEGO Creator 10277 Krokodil lokomotív",
+        "price": 54490,
+        "url": "https://www.alza.hu/jatekok/lego-creator-10277-krokodil-lokomotiv-d5849895.htm"
+      },
+      "tags": [
+        {
+          "affinity": 10,
+          "attribute": "gender",
+          "id": "maleAndfemale",
+          "match": "male,female",
+          "type": "discrete"
+        }
+      ]
     },
-    "tags" : [ {
-      "affinity" : 10,
-      "attribute" : "gender",
-      "id" : "maleAndfemale",
-      "match" : "female",
-      "type" : "discrete"
-    } ]
-  }, {
-    "display" : {
-      "backgroundColor" : "#ffffff",
-      "border" : 1,
-      "borderColor" : "#333333",
-      "color" : "#222222",
-      "elevation" : 2
+    {
+      "display": {
+        "backgroundColor": "#ffffff",
+        "border": 1,
+        "borderColor": "#333333",
+        "color": "#222222",
+        "elevation": 2
+      },
+      "product": {
+        "currency": "Ft",
+        "description": "Ütvefúró - 1300 W, két sebességfokozatú, 0-900 / 0-3000 fordulat/perc, 0-15300 / 0-51000 ütésszám/perc, maximális forgatónyomaték 43 Nm, 13 mm-es fúrótokmány, 2.9 kg tömeg",
+        "discount": "11%",
+        "discountPrice": 65490,
+        "image": "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=BOFAC10f8&i=1.jpg",
+        "name": "BOSCH GSB 21-2 RCT",
+        "price": 73690,
+        "url": "https://www.alza.hu/barkacs/bosch-gsb-21-2-rct-d5573892.htm"
+      },
+      "tags": [
+        {
+          "affinity": 10,
+          "attribute": "gender",
+          "id": "maleAndfemale",
+          "match": "male",
+          "type": "discrete"
+        }
+      ]
     },
-    "product" : {
-      "currency" : "Ft",
-      "description" : "LEGO - fiúknak és lányoknak, ajánlott: 18 éves kortól, 1271 darabos, megjelenési év: 2020",
-      "discount" : "24%",
-      "discountPrice" : 41590,
-      "image" : "https://cdn.alza.hu/ImgW.ashx?fd=f3&cd=LO10277",
-      "name" : "LEGO Creator 10277 Krokodil lokomotív",
-      "price" : 54490,
-      "url" : "https://www.alza.hu/jatekok/lego-creator-10277-krokodil-lokomotiv-d5849895.htm"
+    {
+      "display": {
+        "backgroundColor": "#ffffff",
+        "border": 1,
+        "borderColor": "#333333",
+        "color": "#222222",
+        "elevation": 2
+      },
+      "product": {
+        "currency": "Ft",
+        "description": "Sífutócipő - NNN (Prolink) kötés, férfi, technika: kombinált, EU méret: 44, tömege: 1,55",
+        "image": "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=SPTfis0633&i=1.jpg",
+        "name": "Fischer RC3 Combi 2020/21, méret: 44 EU",
+        "price": 57490,
+        "url": "https://www.alza.hu/sport/fischer-rc3-combi-2020-21-meret-44-eu-d5693336.htm"
+      },
+      "tags": [
+        {
+          "affinity": 10,
+          "attribute": "gender",
+          "id": "maleAndfemale",
+          "match": "male",
+          "type": "discrete"
+        }
+      ]
     },
-    "tags" : [ {
-      "affinity" : 10,
-      "attribute" : "gender",
-      "id" : "maleAndfemale",
-      "match" : "male,female",
-      "type" : "discrete"
-    } ]
-  }, {
-    "display" : {
-      "backgroundColor" : "#ffffff",
-      "border" : 1,
-      "borderColor" : "#333333",
-      "color" : "#222222",
-      "elevation" : 2
-    },
-    "product" : {
-      "currency" : "Ft",
-      "description" : "Ütvefúró - 1300 W, két sebességfokozatú, 0-900 / 0-3000 fordulat/perc, 0-15300 / 0-51000 ütésszám/perc, maximális forgatónyomaték 43 Nm, 13 mm-es fúrótokmány, 2.9 kg tömeg",
-      "discount" : "11%",
-      "discountPrice" : 65490,
-      "image" : "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=BOFAC10f8&i=1.jpg",
-      "name" : "BOSCH GSB 21-2 RCT",
-      "price" : 73690,
-      "url" : "https://www.alza.hu/barkacs/bosch-gsb-21-2-rct-d5573892.htm"
-    },
-    "tags" : [ {
-      "affinity" : 10,
-      "attribute" : "gender",
-      "id" : "maleAndfemale",
-      "match" : "male",
-      "type" : "discrete"
-    } ]
-  }, {
-    "display" : {
-      "backgroundColor" : "#ffffff",
-      "border" : 1,
-      "borderColor" : "#333333",
-      "color" : "#222222",
-      "elevation" : 2
-    },
-    "product" : {
-      "currency" : "Ft",
-      "description" : "Sífutócipő - NNN (Prolink) kötés, férfi, technika: kombinált, EU méret: 44, tömege: 1,55",
-      "image" : "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=SPTfis0633&i=1.jpg",
-      "name" : "Fischer RC3 Combi 2020/21, méret: 44 EU",
-      "price" : 57490,
-      "url" : "https://www.alza.hu/sport/fischer-rc3-combi-2020-21-meret-44-eu-d5693336.htm"
-    },
-    "tags" : [ {
-      "affinity" : 10,
-      "attribute" : "gender",
-      "id" : "maleAndfemale",
-      "match" : "male",
-      "type" : "discrete"
-    } ]
-  }, {
-    "display" : {
-      "backgroundColor" : "#ffffff",
-      "border" : 1,
-      "borderColor" : "#333333",
-      "color" : "#222222",
-      "elevation" : 2
-    },
-    "product" : {
-      "currency" : "Ft",
-      "description" : "Toalettvíz - női",
-      "discount" : "52%",
-      "discountPrice" : 4890,
-      "image" : "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=KPFF834&i=1.jpg",
-      "name" : "BEYONCE Heat Rush EdT 100 ml",
-      "price" : 10090,
-      "url" : "https://www.alza.hu/beauty/beyonce-heat-rush-edt-100-ml-d269868.htm"
-    },
-    "tags" : [ {
-      "affinity" : 10,
-      "attribute" : "gender",
-      "id" : "maleAndfemale",
-      "match" : "female",
-      "type" : "discrete"
-    } ]
-  } ],
-  "description" : "Negyedéves kampány leírása...",
-  "endDate" : "????",
-  "intervall" : 30,
-  "startDate" : "????",
-  "title" : "Negyedéves kampány"
+    {
+      "display": {
+        "backgroundColor": "#ffffff",
+        "border": 1,
+        "borderColor": "#333333",
+        "color": "#222222",
+        "elevation": 2
+      },
+      "product": {
+        "currency": "Ft",
+        "description": "Toalettvíz - női",
+        "discount": "52%",
+        "discountPrice": 4890,
+        "image": "https://cdn.alza.hu/ImgW.ashx?fd=f4&cd=KPFF834&i=1.jpg",
+        "name": "BEYONCE Heat Rush EdT 100 ml",
+        "price": 10090,
+        "url": "https://www.alza.hu/beauty/beyonce-heat-rush-edt-100-ml-d269868.htm"
+      },
+      "tags": [
+        {
+          "affinity": 10,
+          "attribute": "gender",
+          "id": "maleAndfemale",
+          "match": "female",
+          "type": "discrete"
+        }
+      ]
+    }
+  ],
+  "description": "Negyedéves kampány leírása...",
+  "endDate": "????",
+  "intervall": 30,
+  "startDate": "????",
+  "title": "Negyedéves kampány"
 }

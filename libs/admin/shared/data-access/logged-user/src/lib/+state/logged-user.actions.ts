@@ -3,9 +3,9 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadLoggedUserSuccess = createAction(
   '[LoggedUser/API] Load LoggedUser Success',
-  props<{ loggedUser: IAdminUser }>()
+  props<{ loggedUser: IAdminUser }>(),
 );
 
 export const resetLoggedUser = createAction(
-  '[LoggedUser/API] Reset LoggedUser'
+  '[LoggedUser/API] Reset LoggedUser',
 );

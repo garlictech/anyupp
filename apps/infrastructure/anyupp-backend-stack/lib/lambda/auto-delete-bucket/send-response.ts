@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 /**
  * See the AWS documentation for more information on what needs to be contained in the
@@ -13,14 +13,14 @@ export const sendResponse = async props => {
     PhysicalResourceId: props.physicalResourceId,
     StackId: props.stackId,
     RequestId: props.requestId,
-    LogicalResourceId: props.logicalResourceId
-  }
+    LogicalResourceId: props.logicalResourceId,
+  };
 
-  const responseBody = JSON.stringify(body)
-  console.log({ responseBody })
+  const responseBody = JSON.stringify(body);
+  console.log({ responseBody });
 
   await axios.put(props.responseUrl, responseBody, {
     data: responseBody,
-    headers: { 'content-type': '', 'content-length': responseBody.length }
-  })
-}
+    headers: { 'content-type': '', 'content-length': responseBody.length },
+  });
+};

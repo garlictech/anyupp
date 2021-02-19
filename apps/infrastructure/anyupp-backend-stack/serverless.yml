@@ -19,6 +19,8 @@ custom:
   bundle:
     packager: yarn
     linting: false
+    sourcemaps: true
+    caching: true
 
   offline:
     useChildProcesses: true

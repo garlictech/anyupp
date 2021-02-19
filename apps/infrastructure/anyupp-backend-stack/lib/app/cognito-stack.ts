@@ -24,15 +24,15 @@ export class CognitoStack extends Stack {
           'Hello {username}, Thanks for signing up to AnyUpp! Your verification code is {####}',
         emailStyle: cognito.VerificationEmailStyle.CODE,
         smsMessage:
-          'Hello {username}, Thanks for signing up to AnyUpp! Your verification code is {####}'
+          'Hello {username}, Thanks for signing up to AnyUpp! Your verification code is {####}',
       },
       signInAliases: {
-        email: true
+        email: true,
       },
       mfa: cognito.Mfa.OPTIONAL,
       mfaSecondFactor: {
         sms: true,
-        otp: true
+        otp: true,
       },
       passwordPolicy: {
         minLength: 12,
@@ -40,16 +40,16 @@ export class CognitoStack extends Stack {
         requireUppercase: true,
         requireDigits: true,
         requireSymbols: false,
-        tempPasswordValidity: Duration.days(3)
+        tempPasswordValidity: Duration.days(3),
       },
-      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL
+      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
     });
 
     const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
       userPool,
       cognitoDomain: {
-        domainPrefix: app.stage + '-' + app.name
-      }
+        domainPrefix: app.stage + '-' + app.name,
+      },
     });
 
     const googleIdProvider = new cognito.UserPoolIdentityProviderGoogle(
@@ -60,10 +60,10 @@ export class CognitoStack extends Stack {
         clientId: props.googleClientId,
         clientSecret: props.googleClientSecret,
         attributeMapping: {
-          email: cognito.ProviderAttribute.GOOGLE_EMAIL
+          email: cognito.ProviderAttribute.GOOGLE_EMAIL,
         },
-        scopes: ['profile', 'email', 'openid']
-      }
+        scopes: ['profile', 'email', 'openid'],
+      },
     );
 
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
@@ -72,21 +72,21 @@ export class CognitoStack extends Stack {
       preventUserExistenceErrors: true,
       authFlows: {
         userPassword: true,
-        userSrp: true
+        userSrp: true,
       },
       oAuth: {
         flows: {
-          authorizationCodeGrant: true
+          authorizationCodeGrant: true,
         },
         scopes: [cognito.OAuthScope.OPENID],
         callbackUrls: [props.adminSiteUrl],
-        logoutUrls: [props.adminSiteUrl]
+        logoutUrls: [props.adminSiteUrl],
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,
         //cognito.UserPoolClientIdentityProvider.FACEBOOK,
-        cognito.UserPoolClientIdentityProvider.COGNITO
-      ]
+        cognito.UserPoolClientIdentityProvider.COGNITO,
+      ],
     });
 
     userPoolClient.node.addDependency(googleIdProvider);
@@ -96,58 +96,58 @@ export class CognitoStack extends Stack {
       cognitoIdentityProviders: [
         {
           clientId: userPoolClient.userPoolClientId,
-          providerName: userPool.userPoolProviderName
-        }
-      ]
+          providerName: userPool.userPoolProviderName,
+        },
+      ],
     });
 
     // Exportvalues
     const userPoolId = 'UserPoolId';
     new CfnOutput(this, userPoolId, {
       value: userPool.userPoolId,
-      exportName: app.logicalPrefixedName(userPoolId)
+      exportName: app.logicalPrefixedName(userPoolId),
     });
     new ssm.StringParameter(this, userPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool ID',
       parameterName: app.logicalPrefixedName(userPoolId),
-      stringValue: userPool.userPoolId
+      stringValue: userPool.userPoolId,
     });
 
     const userPoolClientId = 'UserPoolClientId';
     new CfnOutput(this, userPoolClientId, {
       value: userPoolClient.userPoolClientId,
-      exportName: app.logicalPrefixedName(userPoolClientId)
+      exportName: app.logicalPrefixedName(userPoolClientId),
     });
     new ssm.StringParameter(this, userPoolClientId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool client ID',
       parameterName: app.logicalPrefixedName(userPoolClientId),
-      stringValue: userPoolClient.userPoolClientId
+      stringValue: userPoolClient.userPoolClientId,
     });
 
     const identityPoolId = 'IdentityPoolId';
     new CfnOutput(this, identityPoolId, {
       value: identityPool.ref,
-      exportName: app.logicalPrefixedName(identityPoolId)
+      exportName: app.logicalPrefixedName(identityPoolId),
     });
     new ssm.StringParameter(this, identityPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The identity pool ID',
       parameterName: app.logicalPrefixedName(identityPoolId),
-      stringValue: identityPool.ref
+      stringValue: identityPool.ref,
     });
 
     const userPoolDomainId = 'UserPoolDomain';
     new CfnOutput(this, userPoolDomainId, {
       value: domain.baseUrl(),
-      exportName: app.logicalPrefixedName(userPoolDomainId)
+      exportName: app.logicalPrefixedName(userPoolDomainId),
     });
     new ssm.StringParameter(this, userPoolDomainId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool domain',
       parameterName: app.logicalPrefixedName(userPoolDomainId),
-      stringValue: domain.baseUrl()
+      stringValue: domain.baseUrl(),
     });
   }
 }

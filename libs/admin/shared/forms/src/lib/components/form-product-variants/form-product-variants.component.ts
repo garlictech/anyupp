@@ -4,7 +4,11 @@ import { Component, Input } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
-import { EProductLevel, IAvailability, IProductVariant } from '@bgap/shared/types';
+import {
+  EProductLevel,
+  IAvailability,
+  IProductVariant,
+} from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-form-product-variants',
@@ -24,7 +28,7 @@ export class FormProductVariantsComponent {
 
   public addVariant(): void {
     (<FormArray>this.variantFormArray)?.push(
-      this._formsService.createProductVariantFormGroup()
+      this._formsService.createProductVariantFormGroup(),
     );
   }
 
@@ -49,13 +53,15 @@ export class FormProductVariantsComponent {
           g.patchValue(arr[i]);
           (g.get('availabilities') as FormArray).clear();
 
-          _get(arr[i], 'availabilities', []).forEach((availability: IAvailability): void => {
-            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-            availabilityGroup.patchValue(availability);
+          _get(arr[i], 'availabilities', []).forEach(
+            (availability: IAvailability): void => {
+              const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
+              availabilityGroup.patchValue(availability);
 
-            (g.get('availabilities') as FormArray).push(availabilityGroup);
-          });
-        }
+              (g.get('availabilities') as FormArray).push(availabilityGroup);
+            },
+          );
+        },
       );
     }
   }

@@ -21,11 +21,11 @@ export class AdminUserListComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {
     this.adminUsers$ = this._store.pipe(
       select(adminUsersSelectors.getAllAdminUsers),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
   }
 
