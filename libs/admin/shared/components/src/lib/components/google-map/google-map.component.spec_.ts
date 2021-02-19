@@ -11,7 +11,7 @@ xdescribe('GoogleMapComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [GoogleMapComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

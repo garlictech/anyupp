@@ -17,14 +17,14 @@ export class AdminUserResolver {
   constructor(
     @Inject('PUB_SUB') private pubSub: PubSub,
     private databaseService: DatabaseService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     // Subscribing to the admin list element changes, whenever
     // it changes, publishes them to the graphql subscribers.
     this.databaseService.adminUsersRef().on('child_changed', data =>
       this.pubSub.publish('adminUserChanged', {
         adminUserChanged: { id: data.key, ...data.val() },
-      })
+      }),
     );
   }
 
@@ -46,7 +46,7 @@ export class AdminUserResolver {
 
   @Mutation('createAdminUser')
   async createAdminUser(
-    @Args('newAdminData') newAdminData: CreateAdminUserInput
+    @Args('newAdminData') newAdminData: CreateAdminUserInput,
   ): Promise<boolean> {
     const createInactiveAdminUser = (uid: string) => {
       return this.databaseService
@@ -59,7 +59,7 @@ export class AdminUserResolver {
         })
         .then(
           () => true,
-          () => false
+          () => false,
         );
     };
 
@@ -77,7 +77,7 @@ export class AdminUserResolver {
     } catch (err) {
       if (err.code === 'auth/email-already-exists') {
         const existingUser = await this.authService.auth.getUserByEmail(
-          newAdminData.email
+          newAdminData.email,
         );
 
         return existingUser ? createInactiveAdminUser(existingUser.uid) : false;
@@ -90,7 +90,7 @@ export class AdminUserResolver {
   @Mutation('updateAdminUser')
   async updateAdminUser(
     @Args('newAdminData') newAdminData: UpdateAdminUserInput,
-    @Args('id') id: string
+    @Args('id') id: string,
   ): Promise<boolean> {
     return this.databaseService
       .adminUserRef(id)
@@ -101,7 +101,7 @@ export class AdminUserResolver {
   @Mutation('updateAdminUserRole')
   async updateAdminUserRole(
     @Args('newAdminRoleData') newAdminRoleData: AdminUserRoleInput,
-    @Args('id') id: string
+    @Args('id') id: string,
   ): Promise<boolean> {
     return this.databaseService
       .adminUserRolesRef(id)

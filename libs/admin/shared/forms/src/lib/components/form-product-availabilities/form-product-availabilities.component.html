@@ -1,7 +1,7 @@
 <div class="container">
   <ng-container
     *ngFor="
-      let availability of (availabilityFormArray | iterableAbstractControls);
+      let availability of availabilityFormArray | iterableAbstractControls;
       index as i;
       first as isFirst;
       last as isLast
@@ -22,7 +22,9 @@
 
       <div class="col-md-4">
         <bgap-form-text-input
-          [staticCaption]="('products.price' | translate) + ' (' + currency! + ')'"
+          [staticCaption]="
+            ('products.price' | translate) + ' (' + currency! + ')'
+          "
           type="number"
           [control]="availability.get('price')! | asFormControl"
         ></bgap-form-text-input>

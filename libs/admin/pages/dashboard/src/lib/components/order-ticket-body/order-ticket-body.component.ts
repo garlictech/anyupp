@@ -3,9 +3,19 @@ import { delay, switchMap, take } from 'rxjs/operators';
 
 // import * as printJS from 'print-js';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IOrder, IOrderSum } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IOrder,
+  IOrderSum,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -30,7 +40,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -54,13 +64,13 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
               select(
                 listMode === EDashboardListMode.CURRENT
                   ? dashboardSelectors.getSelectedActiveOrder()
-                  : dashboardSelectors.getSelectedHistoryOrder()
-              )
+                  : dashboardSelectors.getSelectedHistoryOrder(),
+              ),
             );
-          }
+          },
         ),
         delay(0), // ExpressionChangedAfterItHasBeenCheckedError - trick
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
@@ -68,7 +78,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         this._getOrdersInfo();
       });
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
@@ -85,10 +94,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         .pipe(
           select(
             ordersSelectors.getActiveOrdersCountByUserId(
-              this.selectedOrder.userId
-            )
+              this.selectedOrder.userId,
+            ),
           ),
-          take(1)
+          take(1),
         )
         .subscribe((activeOrdersCount: number): void => {
           this.activeOrdersCount = activeOrdersCount;
@@ -97,20 +106,19 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       this._store
         .pipe(
           select(
-            ordersSelectors.getActiveOrdersByUserId(this.selectedOrder.userId)
+            ordersSelectors.getActiveOrdersByUserId(this.selectedOrder.userId),
           ),
-          take(1)
+          take(1),
         )
         .subscribe((userActiveOrders: IOrder[]): void => {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
           // TODO map changed to forEach, check this!
-          this.userActiveOrders.forEach(
-            (o: IOrder): void => {
-              this.ordersSum.all = (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum
-            }
-          );
+          this.userActiveOrders.forEach((o: IOrder): void => {
+            this.ordersSum.all =
+              (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;
+          });
         });
     }
   }
@@ -119,7 +127,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     this._store.dispatch(
       dashboardActions.setOrderEditing({
         orderEditing: !this.dashboardSettings.orderEditing,
-      })
+      }),
     );
   }
 
@@ -127,7 +135,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     this._store.dispatch(
       dashboardActions.setShowAllUserOrders({
         showAllUserOrders: !this.dashboardSettings.showAllUserOrders,
-      })
+      }),
     );
   }
 
@@ -147,7 +155,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = (this.dashboardSettings.showAllUserOrders
+    dialog.componentRef.instance.orders = (this.dashboardSettings
+      .showAllUserOrders
       ? this.userActiveOrders
       : [this.selectedOrder]) as IOrder[];
   }

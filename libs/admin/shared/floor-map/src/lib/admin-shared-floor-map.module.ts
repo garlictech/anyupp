@@ -6,7 +6,10 @@ import { NbIconModule } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FLOOR_MAP_FEATURE_KEY, floorMapReducer } from './+state/floor-map.reducer';
+import {
+  FLOOR_MAP_FEATURE_KEY,
+  floorMapReducer,
+} from './+state/floor-map.reducer';
 import { FloorMapEditorComponent } from './components/floor-map-editor';
 
 @NgModule({
@@ -16,7 +19,7 @@ import { FloorMapEditorComponent } from './components/floor-map-editor';
     TranslateModule,
     ReactiveFormsModule,
     NbIconModule,
-    AdminSharedPipesModule
+    AdminSharedPipesModule,
   ],
   declarations: [FloorMapEditorComponent],
   exports: [FloorMapEditorComponent],

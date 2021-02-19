@@ -5,7 +5,16 @@ import { filter, take } from 'rxjs/operators';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { IChain, ICurrencyValue, IKeyValueObject, IOrder, IOrderItem, IPlace, IPriceShown, IUnit } from '@bgap/shared/types';
+import {
+  IChain,
+  ICurrencyValue,
+  IKeyValueObject,
+  IOrder,
+  IOrderItem,
+  IPlace,
+  IPriceShown,
+  IUnit,
+} from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -29,7 +38,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogRef: NbDialogRef<unknown>
+    private _nbDialogRef: NbDialogRef<unknown>,
   ) {
     this.sum = {
       value: 0,
@@ -40,17 +49,19 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       this._store.pipe(
         select(chainsSelectors.getSeletedChain),
         filter((chain): boolean => !!chain),
-        take(1)
+        take(1),
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
         filter((unit): boolean => !!unit),
-        take(1)
+        take(1),
       ),
-    ]).subscribe(([chain, unit]: [IChain | undefined, IUnit | undefined]): void => {
-      this.chain = chain;
-      this.unit = unit;
-    });
+    ]).subscribe(
+      ([chain, unit]: [IChain | undefined, IUnit | undefined]): void => {
+        this.chain = chain;
+        this.unit = unit;
+      },
+    );
   }
 
   ngOnInit(): void {
@@ -69,7 +80,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     this.now = new Date().toString();
 
     const variants: IKeyValueObject = {};
-    const vats: IKeyValueObject  = {};
+    const vats: IKeyValueObject = {};
     let lastOrderTime = 0;
 
     this.orders.forEach((order: IOrder): void => {

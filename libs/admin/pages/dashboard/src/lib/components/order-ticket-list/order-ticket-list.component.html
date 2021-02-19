@@ -3,7 +3,9 @@
     <nb-actions [size]="buttonSize" class="pb-2 pt-2" fullWidth>
       <nb-action
         icon="clock-outline"
-        [badgeText]="(placedOrders.length || 0) > 0 ? placedOrders.length.toString() : ''"
+        [badgeText]="
+          (placedOrders.length || 0) > 0 ? placedOrders.length.toString() : ''
+        "
         badgePosition="bottom right"
         badgeStatus="warning"
         [ngClass]="
@@ -15,7 +17,11 @@
       ></nb-action>
       <nb-action
         icon="checkmark-circle-2-outline"
-        [badgeText]="(uniqueReadyOrdersCount || 0) > 0 ? uniqueReadyOrdersCount.toString() : ''"
+        [badgeText]="
+          (uniqueReadyOrdersCount || 0) > 0
+            ? uniqueReadyOrdersCount.toString()
+            : ''
+        "
         badgePosition="bottom right"
         badgeStatus="info"
         [ngClass]="
@@ -27,7 +33,11 @@
       ></nb-action>
       <nb-action
         icon="alert-circle-outline"
-        [badgeText]="(uniquePaymentUsersCount || 0) > 0 ? uniquePaymentUsersCount.toString() : ''"
+        [badgeText]="
+          (uniquePaymentUsersCount || 0) > 0
+            ? uniquePaymentUsersCount.toString()
+            : ''
+        "
         badgePosition="bottom right"
         badgeStatus="danger"
         [ngClass]="

@@ -17,8 +17,8 @@ export class SlackNotificationsStack extends sst.Stack {
         slackChannelId: 'cicd',
         slackWorkspaceId: 'T2GE2HF7H',
         slackChannelConfigurationName: 'AnyuppPRBuild',
-        notificationTopics: [slackChannelSns]
-      }
+        notificationTopics: [slackChannelSns],
+      },
     );
   }
 }

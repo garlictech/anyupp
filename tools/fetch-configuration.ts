@@ -39,10 +39,10 @@ pipe(
           fp.fromPairs,
           fp.tap(console.log),
           fp.tap(config =>
-            fs.writeFileSync(targetFile, JSON.stringify(config, null, 2))
+            fs.writeFileSync(targetFile, JSON.stringify(config, null, 2)),
           ),
-          fp.tap(() => console.log(`Config written to ${targetFile}`))
+          fp.tap(() => console.log(`Config written to ${targetFile}`)),
         );
       }
-    })
+    }),
 );

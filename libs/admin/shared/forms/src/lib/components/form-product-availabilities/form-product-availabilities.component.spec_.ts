@@ -11,7 +11,7 @@ xdescribe('FormProductAvailabilitiesComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormProductAvailabilitiesComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

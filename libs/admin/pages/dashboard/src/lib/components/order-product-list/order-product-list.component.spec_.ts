@@ -11,7 +11,7 @@ xdescribe('OrderProductListComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [OrderProductListComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

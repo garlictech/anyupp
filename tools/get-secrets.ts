@@ -26,19 +26,19 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
         // Firebase CONFIG
         fs.writeFileSync(
           firebaseConfigTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2)
+          JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2),
         );
         console.log(`Config written to ${firebaseConfigTargetFile}`);
 
         // FB service account Key
         fs.writeFileSync(
           firebaseServiceAccountKeyTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2)
+          JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2),
         );
       }),
       fp.tap(() =>
-        console.log(`Config written to ${firebaseServiceAccountKeyTargetFile}`)
-      )
+        console.log(`Config written to ${firebaseServiceAccountKeyTargetFile}`),
+      ),
     );
   }
 });

@@ -17,32 +17,34 @@ export class AuthService {
     private _angularFireDatabase: AngularFireDatabase,
     private _router: Router,
     private _dataService: DataService,
-    private _toasterService: ToasterService
+    private _toasterService: ToasterService,
   ) {
-    this._angularFireAuth.authState.subscribe((user: firebase.User | null): void => {
-      if (user) {
-        this._angularFireDatabase
-          .object(`adminUsers/${user.uid}`)
-          .valueChanges()
-          .pipe(take(1))
-          .subscribe(
-            (adminUser: IAdminUser | unknown): void => {
-              if (adminUser) {
-                this._dataService.initDataConnections(user.uid);
-              } else {
-                this._dataService.destroyDataConnection();
-                localStorage.removeItem('user');
-              }
-            },
-            (err): void => {
-              console.error('authstate err', err);
-            }
-          );
-      } else {
-        this._dataService.destroyDataConnection();
-        localStorage.removeItem('user');
-      }
-    });
+    this._angularFireAuth.authState.subscribe(
+      (user: firebase.User | null): void => {
+        if (user) {
+          this._angularFireDatabase
+            .object(`adminUsers/${user.uid}`)
+            .valueChanges()
+            .pipe(take(1))
+            .subscribe(
+              (adminUser: IAdminUser | unknown): void => {
+                if (adminUser) {
+                  this._dataService.initDataConnections(user.uid);
+                } else {
+                  this._dataService.destroyDataConnection();
+                  localStorage.removeItem('user');
+                }
+              },
+              (err): void => {
+                console.error('authstate err', err);
+              },
+            );
+        } else {
+          this._dataService.destroyDataConnection();
+          localStorage.removeItem('user');
+        }
+      },
+    );
   }
 
   public async signIn(email: string, password: string): Promise<void> {
@@ -57,7 +59,7 @@ export class AuthService {
         (err): void => {
           console.error('err', err);
           this._toasterService.show(EToasterType.DANGER, '', 'auth.authFailed');
-        }
+        },
       );
     } catch (err) {
       console.error('TODO ERROR HANDLING', err);
@@ -78,13 +80,13 @@ export class AuthService {
   }
 
   public createUserWithEmailAndRandomPassword(
-    email: string
+    email: string,
   ): Promise<firebase.auth.UserCredential> {
     const password = Math.random().toString(36).substring(2, 10);
 
     return this._angularFireAuth.createUserWithEmailAndPassword(
       email,
-      password
+      password,
     );
   }
 

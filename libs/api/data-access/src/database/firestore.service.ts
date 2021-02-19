@@ -12,7 +12,7 @@ export class FirestoreService {
   }
 
   getRefValue = async <T>(
-    ref: FirebaseFirestore.DocumentReference
+    ref: FirebaseFirestore.DocumentReference,
   ): Promise<T | undefined> => {
     const doc = await ref.get();
     if (doc.exists) {

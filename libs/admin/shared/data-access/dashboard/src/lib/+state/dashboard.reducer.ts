@@ -101,12 +101,12 @@ const reducer = createReducer(
       ...state.settings,
       historyDate,
     },
-  }))
+  })),
 );
 
 export function dashboardReducer(
   state: DashboardState | undefined,
-  action: Action
+  action: Action,
 ) {
   return reducer(state, action);
 }

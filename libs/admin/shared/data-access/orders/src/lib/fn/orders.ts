@@ -19,7 +19,9 @@ export const currentStatus = (status: IStatusLog): EOrderStatus => {
   return _get(lastElement, 'status', 'UNDEFINED');
 };
 
-export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus | undefined => {
+export const getNextOrderStatus = (
+  currStatus: EOrderStatus,
+): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.PLACED:
       return EOrderStatus.PROCESSING;
@@ -33,7 +35,7 @@ export const getNextOrderStatus = (currStatus: EOrderStatus): EOrderStatus | und
 };
 
 export const getNextOrderItemStatus = (
-  currStatus: EOrderStatus
+  currStatus: EOrderStatus,
 ): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.PLACED:
@@ -48,7 +50,7 @@ export const getNextOrderItemStatus = (
 };
 
 export const getPrevOrderItemStatus = (
-  currStatus: EOrderStatus
+  currStatus: EOrderStatus,
 ): EOrderStatus | undefined => {
   switch (currStatus) {
     case EOrderStatus.SERVED:
@@ -64,7 +66,7 @@ export const getPrevOrderItemStatus = (
 
 export const getOrderLaneColor = (
   orderItem: ILaneOrderItem,
-  unit: IUnit
+  unit: IUnit,
 ): string => {
   return unit?.lanes && orderItem.laneId
     ? unit.lanes[orderItem.laneId].color || DEFAULT_LANE_COLOR
@@ -108,7 +110,7 @@ export const getLowestStatus = (statuses: EOrderStatus[]): EOrderStatus => {
 };
 
 export const getOrdersByUser = (
-  orders: IOrder[]
+  orders: IOrder[],
 ): IFloorMapUserOrderObjects => {
   const ordersByUser: IFloorMapUserOrderObjects = {};
 
@@ -143,7 +145,7 @@ export const getOrdersByUser = (
 
 export const getTableOrders = (
   tableSeatIds: string[],
-  ordersByUser: IFloorMapUserOrderObjects
+  ordersByUser: IFloorMapUserOrderObjects,
 ): IFloorMapTableOrderObjects => {
   const tableOrders: IFloorMapTableOrderObjects = {};
 
@@ -151,7 +153,7 @@ export const getTableOrders = (
     const userOrders = Object.values(ordersByUser).filter(
       (userOrder: IFloorMapUserOrders): boolean =>
         `${userOrder.lastOrder.place.table}.${userOrder.lastOrder.place.seat}` ===
-        tsID
+        tsID,
     );
 
     tableOrders[tsID] = {
@@ -161,7 +163,7 @@ export const getTableOrders = (
         .map((o): boolean => o.hasPaymentIntention)
         .some((i): boolean => !!i),
       lowestStatus: getLowestStatus(
-        userOrders.map((o): EOrderStatus => o.lowestStatus)
+        userOrders.map((o): EOrderStatus => o.lowestStatus),
       ),
     };
   });

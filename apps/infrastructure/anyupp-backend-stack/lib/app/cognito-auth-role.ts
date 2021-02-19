@@ -11,7 +11,7 @@ export default class CognitoAuthRole extends cdk.Construct {
     id: string,
     props: {
       identityPool: cognito.CfnIdentityPool;
-    }
+    },
   ) {
     super(scope, id);
 
@@ -23,14 +23,14 @@ export default class CognitoAuthRole extends cdk.Construct {
         'cognito-identity.amazonaws.com',
         {
           StringEquals: {
-            'cognito-identity.amazonaws.com:aud': identityPool.ref
+            'cognito-identity.amazonaws.com:aud': identityPool.ref,
           },
           'ForAnyValue:StringLike': {
-            'cognito-identity.amazonaws.com:amr': 'authenticated'
-          }
+            'cognito-identity.amazonaws.com:amr': 'authenticated',
+          },
         },
-        'sts:AssumeRoleWithWebIdentity'
-      )
+        'sts:AssumeRoleWithWebIdentity',
+      ),
     });
     this.role.addToPolicy(
       new iam.PolicyStatement({
@@ -38,10 +38,10 @@ export default class CognitoAuthRole extends cdk.Construct {
         actions: [
           'mobileanalytics:PutEvents',
           'cognito-sync:*',
-          'cognito-identity:*'
+          'cognito-identity:*',
         ],
-        resources: ['*']
-      })
+        resources: ['*'],
+      }),
     );
 
     new cognito.CfnIdentityPoolRoleAttachment(
@@ -49,8 +49,8 @@ export default class CognitoAuthRole extends cdk.Construct {
       'IdentityPoolRoleAttachment',
       {
         identityPoolId: identityPool.ref,
-        roles: { authenticated: this.role.roleArn }
-      }
+        roles: { authenticated: this.role.roleArn },
+      },
     );
   }
 }

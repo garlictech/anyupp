@@ -22,13 +22,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     private _toasterService: ToasterService,
     private _router: Router,
     private _angularFireDatabase: AngularFireDatabase,
-    private _angularFireAuth: AngularFireAuth
+    private _angularFireAuth: AngularFireAuth,
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap(
-        (): Observable<firebase.User | null> => this._angularFireAuth.user
+        (): Observable<firebase.User | null> => this._angularFireAuth.user,
       ),
       switchMap(
         (user): Observable<IAdminUser | undefined> =>
@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                   .object(`/adminUsers/${user?.uid || ''}`)
                   .valueChanges()
               )
-            : of(undefined)
+            : of(undefined),
       ),
       take(1),
       map((adminUser: IAdminUser | undefined) => {
@@ -49,16 +49,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
 
         return true;
-      })
+      }),
     );
   }
 
   canActivateChild(
-    next: ActivatedRouteSnapshot
+    next: ActivatedRouteSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     return of('guard').pipe(
       switchMap(
-        (): Observable<firebase.User | null> => this._angularFireAuth.user
+        (): Observable<firebase.User | null> => this._angularFireAuth.user,
       ),
       switchMap(
         (user: firebase.User | null): Observable<IAdminUser | undefined> =>
@@ -68,7 +68,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                   .object(`/adminUsers/${user.uid}`)
                   .valueChanges()
               )
-            : of(undefined)
+            : of(undefined),
       ),
       take(1),
       map((adminUser: IAdminUser | undefined) => {
@@ -85,7 +85,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
 
         return true;
-      })
+      }),
     );
   }
 }

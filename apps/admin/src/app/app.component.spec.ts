@@ -16,11 +16,11 @@ xdescribe('AppComponent', (): void => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule, TranslateModule],
         providers: [
-          { provide: TranslateService, useClass: TranslateServiceStub }
+          { provide: TranslateService, useClass: TranslateServiceStub },
         ],
-        declarations: [AppComponent]
+        declarations: [AppComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   it('should create the app', (): void => {
@@ -40,7 +40,7 @@ xdescribe('AppComponent', (): void => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'fa-admin app is running!'
+      'fa-admin app is running!',
     );
   });
 });

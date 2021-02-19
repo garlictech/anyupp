@@ -13,7 +13,11 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <bgap-floor-map-editor
         [editMode]="true"
         [floorMap]="unit.floorMap"

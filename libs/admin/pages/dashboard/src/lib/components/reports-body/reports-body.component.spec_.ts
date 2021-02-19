@@ -11,7 +11,7 @@ xdescribe('ReportsBodyComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [ReportsBodyComponent],
       }).compileComponents();
-    }
+    },
   );
 
   beforeEach((): void => {

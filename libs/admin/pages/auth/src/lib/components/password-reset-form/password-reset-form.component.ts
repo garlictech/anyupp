@@ -15,7 +15,7 @@ export class PasswordResetFormComponent {
   constructor(
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
-    private _toasterService: ToasterService
+    private _toasterService: ToasterService,
   ) {
     this.resetForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,7 +29,7 @@ export class PasswordResetFormComponent {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'auth.reminderSent'
+            'auth.reminderSent',
           );
           this.toggleResetForm($event, false);
         },
@@ -37,9 +37,9 @@ export class PasswordResetFormComponent {
           this._toasterService.show(
             EToasterType.DANGER,
             '',
-            'auth.reminderError'
+            'auth.reminderError',
           );
-        }
+        },
       );
     }
   }

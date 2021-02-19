@@ -1,4 +1,3 @@
-import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
@@ -24,16 +23,44 @@ export class DevBuildPipelineStack extends sst.Stack {
     super(app, id, props);
 
     new codebuild.GitHubSourceCredentials(this, 'CodeBuildGitHubCreds', {
-      accessToken: props.secretsManager.githubOauthToken.secretValue
+      accessToken: props.secretsManager.githubOauthToken.secretValue,
     });
 
-    const sourceOutput = new codepipeline.Artifact('SourceOutput');
+    const sourceOutput = new codepipeline.Artifact();
+    const buildOutput = new codepipeline.Artifact();
 
     const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
       this,
       'AdminSiteUrlParam2',
-      'dev-anyupp-backend-AdminSiteUrl'
+      'dev-anyupp-backend-AdminSiteUrl',
     ).stringValue;
+
+    const build = new codebuild.PipelineProject(this, 'Build', {
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        env: {
+          variables: {
+            NODE_OPTIONS: '--unhandled-rejections=strict',
+          },
+        },
+        phases: {
+          install: {
+            commands: ['yarn'],
+          },
+          pre_build: {
+            commands: ['yarn nx config shared-config'],
+          },
+          build: {
+            commands: [
+              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
+            ],
+          },
+        },
+      }),
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      },
+    });
 
     // Build + deploy project
     const deploy = new codebuild.PipelineProject(this, 'Build', {
@@ -41,39 +68,39 @@ export class DevBuildPipelineStack extends sst.Stack {
         version: '0.2',
         env: {
           variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict'
-          }
+            NODE_OPTIONS: '--unhandled-rejections=strict',
+          },
         },
         phases: {
           install: {
-            commands: ['yarn']
+            commands: ['yarn'],
           },
           pre_build: {
-            commands: ['yarn nx config shared-config']
+            commands: ['yarn nx config shared-config'],
           },
           build: {
             commands: [
-              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack'
-            ]
+              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
+              'yarn nx target deploy --projects infrastructure-anyupp-backend-stack',
+            ],
           },
           post_build: {
             commands: [
-              'yarn nx run-many --target deploy --projects infrastructure-anyupp-backend-stack',
-              `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`
-            ]
-          }
-        }
+              `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+            ],
+          },
+        },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
-      }
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      },
     });
 
     configurePermissions(
       this,
       props.secretsManager,
       deploy,
-      'dev-anyupp-backend'
+      'dev-anyupp-backend',
     );
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
@@ -87,9 +114,24 @@ export class DevBuildPipelineStack extends sst.Stack {
               output: sourceOutput,
               owner: props.repoOwner,
               repo: props.repoName,
-              branch: props.repoBranch
-            })
-          ]
+              branch: props.repoBranch,
+            }),
+          ],
+        },
+        // deploy test stack
+        // test the test stack
+        // create change set
+        // deploy
+        {
+          stageName: 'Build',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'Deploy',
+              project: deploy,
+              input: sourceOutput,
+              outputs: [buildOutput],
+            }),
+          ],
         },
         {
           stageName: 'Deploy',
@@ -97,20 +139,13 @@ export class DevBuildPipelineStack extends sst.Stack {
             new codepipeline_actions.CodeBuildAction({
               actionName: 'Deploy',
               project: deploy,
-              input: sourceOutput
-            })
-          ]
-        }
-      ]
+              input: buildOutput,
+            }),
+          ],
+        },
+      ],
     });
 
-    pipeline.role.addToPrincipalPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        resources: ['*'],
-        actions: ['cloudformation:DescribeStacks']
-      })
-    );
     new codestarnotifications.CfnNotificationRule(
       this,
       'DevBuildNotification',
@@ -120,17 +155,17 @@ export class DevBuildPipelineStack extends sst.Stack {
           'codepipeline-pipeline-action-execution-failed',
           'codepipeline-pipeline-action-execution-succeeded',
           'codepipeline-pipeline-action-execution-started',
-          'codepipeline-pipeline-action-execution-canceled'
+          'codepipeline-pipeline-action-execution-canceled',
         ],
         name: 'AnyUppDevBuildNotification',
         resource: pipeline.pipelineArn,
         targets: [
           {
             targetAddress: props.chatbot.slackChannelConfigurationArn,
-            targetType: 'AWSChatbotSlack'
-          }
-        ]
-      }
+            targetType: 'AWSChatbotSlack',
+          },
+        ],
+      },
     );
   }
 }

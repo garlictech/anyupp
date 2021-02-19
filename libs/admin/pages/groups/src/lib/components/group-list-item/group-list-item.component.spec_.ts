@@ -11,7 +11,7 @@ xdescribe('GroupListItemComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [GroupListItemComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

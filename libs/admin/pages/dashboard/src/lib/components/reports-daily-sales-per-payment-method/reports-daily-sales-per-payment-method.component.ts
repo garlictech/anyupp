@@ -33,7 +33,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
   constructor(
     private _currencyFormatter: CurrencyFormatterPipe,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -60,7 +60,8 @@ export class ReportsDailySalesPerPaymentMethodComponent
           tooltips: {
             callbacks: {
               label: (tooltipItem, data) => {
-                const label = (<string[]>data.labels)[tooltipItem.index || 0] || '';
+                const label =
+                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
                 const value: number =
                   <number>(
                     (<Chart.ChartDataSets[]>(
@@ -70,7 +71,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
                 return ` ${label}: ${this._currencyFormatter.transform(
                   value,
-                  this.currency
+                  this.currency,
                 )}`;
               },
             },
@@ -94,7 +95,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
             },
           },
         },
-      }
+      },
     );
 
     this.orders$

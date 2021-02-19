@@ -6,6 +6,6 @@ import { AbstractControl, FormArray } from '@angular/forms';
 })
 export class AsFormArrayPipe implements PipeTransform {
   transform(control: AbstractControl): FormArray {
-      return control as FormArray;
+    return control as FormArray;
   }
 }

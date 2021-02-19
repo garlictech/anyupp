@@ -7,7 +7,7 @@ export const configurePermissions = (
   stack: sst.Stack,
   secretsManager: SecretsManagerStack,
   resource: iam.IGrantable,
-  prefix: string
+  prefix: string,
 ) => {
   secretsManager.anyuppDevSecret.grantRead(resource);
 
@@ -20,24 +20,24 @@ export const configurePermissions = (
     'GraphqlApiUrl',
     'googleClientId',
     'stripePublishableKey',
-    'AdminSiteUrl'
+    'AdminSiteUrl',
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,
       param + 'Param',
-      prefix + '-' + param
-    ).grantRead(resource)
+      prefix + '-' + param,
+    ).grantRead(resource),
   );
 
   const role = new iam.Role(stack, 'StackManipulationRole', {
-    assumedBy: resource.grantPrincipal // required
+    assumedBy: resource.grantPrincipal, // required
   });
 
   role.addToPolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       resources: ['*'],
-      actions: ['cloudformation:DescribeStacks']
-    })
+      actions: ['cloudformation:DescribeStacks'],
+    }),
   );
 };

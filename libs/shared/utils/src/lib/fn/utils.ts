@@ -2,7 +2,7 @@ import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
 
 export const customNumberCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
-  b: IKeyValueObject
+  b: IKeyValueObject,
 ): number => {
   if (+a[field] < +b[field]) {
     return desc ? 1 : -1;
@@ -16,7 +16,7 @@ export const customNumberCompare = (field: string, desc = false) => (
 
 export const customStringCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
-  b: IKeyValueObject
+  b: IKeyValueObject,
 ): number => {
   if (a[field] < b[field]) {
     return desc ? 1 : -1;
@@ -30,7 +30,7 @@ export const customStringCompare = (field: string, desc = false) => (
 
 export const objectToArray = (
   obj: IKeyValueObject | unknown,
-  idKey = '_id'
+  idKey = '_id',
 ) => {
   const arr: unknown[] = [];
 
@@ -41,7 +41,7 @@ export const objectToArray = (
   Object.keys(<IKeyValueObject>obj).forEach((key): void => {
     arr.push({
       ...(<IKeyValueObject>obj)[key],
-      [idKey]: key
+      [idKey]: key,
     });
   });
 
@@ -61,7 +61,7 @@ export const dayInterval = (value: string): IDayInterval => {
 
   return {
     start: start.getTime(),
-    end: end.getTime()
+    end: end.getTime(),
   };
 };
 

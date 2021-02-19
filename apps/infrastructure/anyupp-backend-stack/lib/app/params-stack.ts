@@ -14,26 +14,26 @@ export class ParamsStack extends sst.Stack {
       this,
       'googleClientIdParam',
       {
-        parameterName: app.logicalPrefixedName('googleClientId')
-      }
+        parameterName: app.logicalPrefixedName('googleClientId'),
+      },
     ).stringValue;
 
     new CfnOutput(this, 'googleClientId', {
       value: this.googleClientId,
-      exportName: app.logicalPrefixedName('googleClientId')
+      exportName: app.logicalPrefixedName('googleClientId'),
     });
 
     this.stripePublishableKey = ssm.StringParameter.fromStringParameterAttributes(
       this,
       'stripePublishableKeyParam',
       {
-        parameterName: app.logicalPrefixedName('stripePublishableKey')
-      }
+        parameterName: app.logicalPrefixedName('stripePublishableKey'),
+      },
     ).stringValue;
 
     new CfnOutput(this, 'stripePublishableKey', {
       value: this.stripePublishableKey,
-      exportName: app.logicalPrefixedName('stripePublishableKey')
+      exportName: app.logicalPrefixedName('stripePublishableKey'),
     });
   }
 }

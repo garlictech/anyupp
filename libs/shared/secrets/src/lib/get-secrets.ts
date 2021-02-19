@@ -31,7 +31,7 @@ export const getSecrets = () => {
               return rejectionFunc('The requested Config is missing');
             }
             resolutionFunc(secret);
-          })
+          }),
         );
       }
     });

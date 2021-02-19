@@ -32,16 +32,13 @@
 
         <div class="clearfix"></div>
 
-        <div
-          class="row"
-          *ngFor="let variant of product._variants_arr"
-        >
+        <div class="row" *ngFor="let variant of product._variants_arr">
           <div class="caption col-5 pt-2 m-auto font-larger">
-            {{ (variant.variantName || {}) | localize }}
+            {{ variant.variantName || {} | localize }}
           </div>
 
           <div class="caption col-4 pt-2 m-auto font-larger">
-            {{ (variant.price || 0) | currencyFormatter: groupCurrency }}
+            {{ variant.price || 0 | currencyFormatter: groupCurrency }}
           </div>
 
           <div class="col-3 pt-2">

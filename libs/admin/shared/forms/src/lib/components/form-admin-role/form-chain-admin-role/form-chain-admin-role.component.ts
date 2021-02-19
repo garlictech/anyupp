@@ -32,7 +32,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
       (<FormGroup>this.control.get('entities')).valueChanges.pipe(
-        startWith(this.control.value.entities)
+        startWith(this.control.value.entities),
       ),
     ])
       .pipe(untilDestroyed(this))

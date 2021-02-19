@@ -33,7 +33,7 @@ export class ChainFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       isActive: ['', [Validators.required]],
       ...contactFormGroup(this._formBuilder),
@@ -66,8 +66,6 @@ export class ChainFormComponent
   }
 
   ngOnInit(): void {
-
-
     if (this.chain) {
       this.dialogForm.patchValue(this.chain);
     } else {
@@ -85,13 +83,13 @@ export class ChainFormComponent
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN UPDATE ERROR', err);
-            }
+            },
           );
       } else {
         this._dataService.insertChain(this.dialogForm?.value).then(
@@ -99,22 +97,22 @@ export class ChainFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.insertSuccessful'
+              'common.insertSuccessful',
             );
             this.close();
           },
           err => {
             console.error('CHAIN INSERT ERROR', err);
-          }
+          },
         );
       }
     }
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    (<FormControl>this.dialogForm.get('style')?.get('images')?.get(key)).setValue(
-      imagePath
-    );
+    (<FormControl>(
+      this.dialogForm.get('style')?.get('images')?.get(key)
+    )).setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.chain, '_id')) {
@@ -124,22 +122,22 @@ export class ChainFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
 
   public logoRemoveCallback = (key: string): void => {
-    (<FormControl>this.dialogForm.get('style')?.get('images')?.get(key)).setValue(
-      ''
-    );
+    (<FormControl>(
+      this.dialogForm.get('style')?.get('images')?.get(key)
+    )).setValue('');
 
     if (this.chain) {
       _set(this.chain, `style.images.${key}`, null);
@@ -153,14 +151,14 @@ export class ChainFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

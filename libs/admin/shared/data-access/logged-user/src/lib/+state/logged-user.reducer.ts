@@ -23,12 +23,12 @@ const reducer = createReducer(
   on(LoggedUserActions.loadLoggedUserSuccess, (state, { loggedUser }) => ({
     ...state,
     loggedUser,
-  }))
+  })),
 );
 
 export function loggedUserReducer(
   state: ILoggedUserState | undefined,
-  action: Action
+  action: Action,
 ) {
   return reducer(state, action);
 }

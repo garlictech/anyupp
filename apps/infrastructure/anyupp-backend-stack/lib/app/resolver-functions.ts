@@ -1,7 +1,7 @@
 import {
   AppsyncFunction,
   MappingTemplate,
-  NoneDataSource
+  NoneDataSource,
 } from '@aws-cdk/aws-appsync';
 
 const urlValidator =
@@ -15,7 +15,7 @@ export interface ResolverFunctions {
 }
 
 export const createResolverFunctions = (
-  noneDs: NoneDataSource
+  noneDs: NoneDataSource,
 ): ResolverFunctions => ({
   validateLon: noneDs.createFunction({
     name: 'validateLon',
@@ -28,8 +28,8 @@ export const createResolverFunctions = (
         {}
       `),
     responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    ),
   }),
 
   validateLat: noneDs.createFunction({
@@ -43,8 +43,8 @@ export const createResolverFunctions = (
         {}
       `),
     responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    ),
   }),
 
   validateAddress: noneDs.createFunction({
@@ -62,8 +62,8 @@ export const createResolverFunctions = (
         {} 
       `),
     responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    ),
   }),
 
   validateUrl: noneDs.createFunction({
@@ -77,7 +77,7 @@ export const createResolverFunctions = (
         {}
       `),
     responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    )
-  })
+      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    ),
+  }),
 });
