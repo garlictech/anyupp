@@ -55,6 +55,9 @@ export class DevBuildPipelineStack extends sst.Stack {
               'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
             ],
           },
+          artifacts: {
+            files: ['apps/infrastructure/anyupp-backend-stack/cdk.out'],
+          },
         },
       }),
       environment: {
@@ -63,14 +66,9 @@ export class DevBuildPipelineStack extends sst.Stack {
     });
 
     // Build + deploy project
-    const deploy = new codebuild.PipelineProject(this, 'Build', {
+    const deploy = new codebuild.PipelineProject(this, 'Deploy', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
-        env: {
-          variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict',
-          },
-        },
         phases: {
           install: {
             commands: ['yarn'],
@@ -126,8 +124,8 @@ export class DevBuildPipelineStack extends sst.Stack {
           stageName: 'Build',
           actions: [
             new codepipeline_actions.CodeBuildAction({
-              actionName: 'Deploy',
-              project: deploy,
+              actionName: 'Build',
+              project: build,
               input: sourceOutput,
               outputs: [buildOutput],
             }),
@@ -136,10 +134,14 @@ export class DevBuildPipelineStack extends sst.Stack {
         {
           stageName: 'Deploy',
           actions: [
-            new codepipeline_actions.CodeBuildAction({
-              actionName: 'Deploy',
-              project: deploy,
-              input: buildOutput,
+            new codepipeline_actions.CloudFormationCreateUpdateStackAction({
+              actionName: 'ParamsStackDeploy',
+              templatePath: buildOutput.atPath(
+                'dev-anyupp-backend-ParamsStack.template.json',
+              ),
+              stackName: 'ParamsStack',
+              adminPermissions: true,
+              extraInputs: [buildOutput],
             }),
           ],
         },

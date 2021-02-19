@@ -1,0 +1,276 @@
+{
+  "appTitle": "AnyUpp",
+  "common": {
+    "name": "Name",
+    "nameEN": "Name (EN)",
+    "nameDE": "Name (DE)",
+    "nameHU": "Name (HU)",
+    "edit": "Edit",
+    "color": "Color",
+    "description": "Description",
+    "descriptionEN": "Description (EN)",
+    "descriptionDE": "Description (DE)",
+    "descriptionHU": "Description (HU)",
+    "isActive": "Active",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "email": "Email",
+    "chain": "Chain",
+    "image": "Image",
+    "title": "Title",
+    "group": "Group",
+    "unit": "Unit",
+    "currency": "Currency",
+    "taxPercent": "Tax (%)",
+    "from": "From",
+    "to": "To",
+    "language": "Language",
+    "type": "Type",
+    "lang": {
+      "english": "English",
+      "german": "German",
+      "hungarian": "Hungarian"
+    },
+    "productCategory": "Product category",
+    "productType": "Product type",
+    "contact": {
+      "contact": "Contact",
+      "country": "Country",
+      "postalCode": "Postal code",
+      "city": "City",
+      "address": "Address",
+      "locationLat": "Location (lat)",
+      "locationLng": "Location (lng)"
+    },
+    "submit": "Submit",
+    "imageUploadSuccess": "Image uploaded successfully",
+    "imageRemoveSuccess": "Image removed successfully",
+    "insertSuccessful": "Insert successful",
+    "updateSuccessful": "Update successful",
+    "days": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "custom": "Custom dates"
+    },
+    "hmPlaceholder": "hh:mm",
+    "paymentModes": {
+      "title": "Payment modes",
+      "inapp": "Online",
+      "cash": "Cash",
+      "card": "Card"
+    },
+    "sum": "Sum",
+    "width": "width",
+    "height": "height"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "productCategories": "Product categories",
+    "units": "Units",
+    "groups": "Groups",
+    "chains": "Chains",
+    "users": "Users",
+    "admins": "Admins"
+  },
+  "header": {
+    "profile": "Profile",
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "listTitle": "Dashboard",
+    "isAcceptingOrders": "Is accepting orders",
+    "defaultLane": "Default",
+    "reports": {
+      "salesPerType": "Product types",
+      "salesPerPaymentMethod": "Payment methods",
+      "uniqueUsers": "Unique users",
+      "ordersAmount": "Orders amount",
+      "ordersCount": "Orders count",
+      "dayHistory": "Day history",
+      "historyToday": "Today",
+      "history1W": "1W",
+      "history1Y": "1Y",
+      "hourlyBreakdown": "Hourly breakdown"
+    }
+  },
+  "chains": {
+    "listTitle": "Chains",
+    "editChain": "Edit chain",
+    "newChain": "New chain",
+    "style": {
+      "style": "Style",
+      "colors": {
+        "textDark": "Text (dark)",
+        "textLight": "Text (light)",
+        "backgroundDark": "Background (dark)",
+        "backgroundLight": "Background (light)",
+        "borderDark": "Border (dark)",
+        "borderLight": "Border (light)",
+        "highlight": "Highlight",
+        "indicator": "Indicator",
+        "disabled": "Disabled"
+      },
+      "images": {
+        "logo": "Logo",
+        "header": "Header"
+      }
+    }
+  },
+  "products": {
+    "listTitle": "Products",
+    "chainProducts": "Chain products",
+    "groupProducts": "Group products",
+    "unitProducts": "Unit products",
+    "editProduct": "Edit product",
+    "extendProduct": "Extend product",
+    "newProduct": "New product",
+    "availability": "Availability (mask)",
+    "isAvailable": "Is available",
+    "isVisible": "Is visible",
+    "position": "Position",
+    "contains": "Contains",
+    "allergens": {
+      "title": "Allergens",
+      "lactose": "Lactose",
+      "nuts": "Nuts"
+    },
+    "ingredients": {
+      "title": "Ingredients"
+    },
+    "variants": "Variants",
+    "packSize": "Pack size",
+    "packUnit": "Pack unit",
+    "refPrice": "Reference price",
+    "price": "Price",
+    "variantName": "Variant name",
+    "variantNameEN": "Variant name (EN)",
+    "variantNameDE": "Variant name (DE)",
+    "variantNameHU": "Variant name (HU)",
+    "basicInfo": "Basic info",
+    "always": "Always",
+    "weekly": "Weekly",
+    "seasonal": "Seasonal",
+    "dayFrom": "Day from",
+    "dayTo": "Day to",
+    "timeFrom": "Time from",
+    "timeTo": "Time to",
+    "addVariant": "Add variant",
+    "addAvailability": "Add availability",
+    "moveDown": "Move down",
+    "moveUp": "Move up",
+    "lane": "Lane",
+    "productType": {
+      "drink": "Drink",
+      "food": "Food",
+      "other": "Other"
+    },
+    "takeaway": "Takeaway"
+  },
+  "productCategories": {
+    "listTitle": "Product categories (EN)",
+    "editProductCategory": "Edit product category",
+    "newProductCategory": "New product category"
+  },
+  "groups": {
+    "listTitle": "Groups",
+    "editGroup": "Edit group",
+    "newGroup": "New group"
+  },
+  "units": {
+    "listTitle": "Units",
+    "editUnit": "Edit unit",
+    "newUnit": "New unit",
+    "open": "Open",
+    "openFrom": "Open from",
+    "openTo": "Open to",
+    "openingHours": "Opening hours",
+    "locateOnMap": "Locate on map",
+    "lanes": "Lanes",
+    "addLane": "Add lane",
+    "regenerateMenu": "Regenerate menu",
+    "editFloorMap": "Edit floor map",
+    "table": "Table",
+    "seat": "Seat",
+    "counter": "Counter",
+    "wall": "Wall",
+    "label": "Label",
+    "tableId": "Table ID",
+    "seatId": "Seat ID"
+  },
+  "users": {
+    "listTitle": "Users",
+    "editUser": "Edit user",
+    "newUser": "New user"
+  },
+  "adminUsers": {
+    "listTitle": "Admin users",
+    "editAdminUser": "Edit admin user",
+    "newAdminUser": "New admin user",
+    "editAdminUserRole": "Edit admin user role"
+  },
+  "orders": {
+    "listTitle": "Orders",
+    "ordersAccepted": "Orders accepted",
+    "ordersBlocked": "Orders blocked",
+    "orderDetails": "Order details",
+    "confirmIsAcceptOrder": "Are you sure you accept orders?",
+    "confirmNotAcceptOrder": "Are you sure you block orders?",
+    "confirmResetOrderItemStatus": "Are you sure you reset the status?",
+    "userOrdersCount": "{{ count }} order(s)",
+    "status": {
+      "PLACED": "Placed",
+      "PROCESSING": "Processing",
+      "READY": "Ready",
+      "SERVED": "Served",
+      "WAITING_FOR_PAYMENT": "Waiting for payment",
+      "PAID": "Paid",
+      "FAILED": "Failed",
+      "REJECTED": "Rejected"
+    }
+  },
+  "auth": {
+    "login": "Log in",
+    "password": "Password",
+    "authFailed": "Authentication failed",
+    "forgottenPassword": "Forgotten password",
+    "sendResetEmail": "Send password reset mail",
+    "reminderSent": "Reminder sent",
+    "reminderError": "Reminder error"
+  },
+  "print": {
+    "items": "Items",
+    "vatDetails": "VAT details"
+  },
+  "roles": {
+    "role": "Role",
+    "roles": "Roles",
+    "editRoles": "Edit roles",
+    "superuser": "Superuser",
+    "chainAdmin": "Chain admin",
+    "groupAdmin": "Group admin",
+    "unitAdmin": "Unit admin",
+    "staff": "Staff",
+    "inactive": "Inactive",
+    "addChain": "Add chain",
+    "selectChain": "Select chain",
+    "assignedChains": "Assigned chains",
+    "selectGroup": "Select group",
+    "assignedGroups": "Assigned groups",
+    "selectUnit": "Select unit",
+    "assignedUnits": "Assigned units",
+    "assign": "Assign"
+  },
+  "errors": {
+    "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",
+    "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!"
+  }
+}

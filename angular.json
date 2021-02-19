@@ -229,11 +229,7 @@
           "options": {
             "cwd": "apps/infrastructure/anyupp-backend-stack",
             "parallel": false,
-            "commands": [
-              {
-                "command": "yarn sls package"
-              }
-            ]
+            "commands": ["yarn sls package", "yarn sst cdk synth"]
           },
           "outputs": ["{options.outputPath}"],
           "configurations": {
