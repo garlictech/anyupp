@@ -29,6 +29,8 @@ export class DevBuildPipelineStack extends sst.Stack {
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
 
+    const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
+
     const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
       this,
       'AdminSiteUrlParam2',
@@ -52,52 +54,54 @@ export class DevBuildPipelineStack extends sst.Stack {
           },
           build: {
             commands: [
-              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
+              'yarn nx build admin',
+              'yarn nx build infrastructure-anyupp-backend-stack',
             ],
           },
         },
         artifacts: {
-          files: ['apps/infrastructure/anyupp-backend-stack/cdk.out'],
+          files: ['apps/infrastructure/anyupp-backend-stack/cdk.out/**/*'],
         },
       }),
+      cache,
       environment: {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
       },
     });
 
     // Build + deploy project
-    const deploy = new codebuild.PipelineProject(this, 'Deploy', {
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          install: {
-            commands: ['yarn'],
-          },
-          pre_build: {
-            commands: ['yarn nx config shared-config'],
-          },
-          build: {
-            commands: [
-              'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
-              'yarn nx target deploy --projects infrastructure-anyupp-backend-stack',
-            ],
-          },
-          post_build: {
-            commands: [
-              `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-            ],
-          },
-        },
-      }),
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
-    });
+    //new codebuild.PipelineProject(this, 'Deploy', {
+    //  buildSpec: codebuild.BuildSpec.fromObject({
+    //    version: '0.2',
+    //    phases: {
+    //      install: {
+    //        commands: ['yarn'],
+    //      },
+    //      pre_build: {
+    //        commands: ['yarn nx config shared-config'],
+    //      },
+    //      build: {
+    //        commands: [
+    //          'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
+    //          'yarn nx target deploy --projects infrastructure-anyupp-backend-stack',
+    //        ],
+    //      },
+    //      post_build: {
+    //        commands: [
+    //          `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+    //        ],
+    //      },
+    //    },
+    //  }),
+    //  environment: {
+    //    buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+    //  },
+    //});
 
     configurePermissions(
       this,
       props.secretsManager,
-      deploy,
+      build,
       'dev-anyupp-backend',
     );
 
