@@ -1,6 +1,7 @@
 import * as sst from '@serverless-stack/resources';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 
+// TODO: use stage dependent secrets ARN
 export class SecretsManagerStack extends sst.Stack {
   public githubOauthToken: sm.ISecret;
   public anyuppDevSecret: sm.ISecret;
