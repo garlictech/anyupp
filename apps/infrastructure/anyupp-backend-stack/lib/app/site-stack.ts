@@ -11,8 +11,8 @@ export class SiteStack extends sst.Stack {
 
     const adminSite = new WebsiteConstruct(this, 'Admin', {
       domainName: 'anyupp.com',
-      siteSubDomain: 'admin',
-      distDir: __dirname + '../../../../../../dist/apps/admin'
+      siteSubDomain: 'admin.' + app.name, // TODO: exception in prod stage, use external config or ???
+      distDir: __dirname + '../../../../../../dist/apps/admin',
     });
 
     this.adminSiteUrl = adminSite.websiteUrl;
@@ -21,7 +21,7 @@ export class SiteStack extends sst.Stack {
       allowedPattern: '.*',
       description: 'The URL of the admin site',
       parameterName: app.logicalPrefixedName('AdminSiteUrl'),
-      stringValue: this.adminSiteUrl
+      stringValue: this.adminSiteUrl,
     });
   }
 }
