@@ -141,7 +141,7 @@ export class DevBuildPipelineStack extends sst.Stack {
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: 'ParamsStackDeploy',
               templatePath: buildOutput.atPath(
-                'dev-anyupp-backend-ParamsStack.template.json',
+                'apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-ParamsStack.template.json',
               ),
               stackName: 'ParamsStack',
               adminPermissions: true,

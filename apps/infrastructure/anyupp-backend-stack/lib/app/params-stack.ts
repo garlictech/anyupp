@@ -23,13 +23,6 @@ export class ParamsStack extends sst.Stack {
       exportName: app.logicalPrefixedName('googleClientId'),
     });
 
-    new ssm.StringParameter(this, 'googleClientId', {
-      allowedPattern: '.*',
-      description: 'The Google client ID',
-      parameterName: app.logicalPrefixedName('googleClientId'),
-      stringValue: this.googleClientId || '',
-    });
-
     this.stripePublishableKey = ssm.StringParameter.fromStringParameterAttributes(
       this,
       'stripePublishableKeyParam',
@@ -37,13 +30,6 @@ export class ParamsStack extends sst.Stack {
         parameterName: app.stage + '-anyupp-backend-stripePublishableKey', // TODO: configurable "root" app name
       },
     ).stringValue;
-
-    new ssm.StringParameter(this, 'stripePublishableKey', {
-      allowedPattern: '.*',
-      description: 'The Stripe Publishable Key',
-      parameterName: app.logicalPrefixedName('stripePublishableKey'),
-      stringValue: this.stripePublishableKey || '',
-    });
 
     new CfnOutput(this, 'stripePublishableKeyOutput', {
       value: this.stripePublishableKey,

@@ -28,16 +28,4 @@ export const configurePermissions = (
       prefix + '-' + param,
     ).grantRead(resource),
   );
-
-  const role = new iam.Role(stack, 'StackManipulationRole', {
-    assumedBy: resource.grantPrincipal, // required
-  });
-
-  role.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      resources: ['*'],
-      actions: ['cloudformation:DescribeStacks'],
-    }),
-  );
 };
