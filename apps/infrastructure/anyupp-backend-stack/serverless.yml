@@ -19,7 +19,7 @@ custom:
     packager: yarn
     linting: true
     sourcemaps: true
-    caching: false
+    caching: true
 
   offline:
     useChildProcesses: true
@@ -30,3 +30,9 @@ provider:
 functions:
   auto-delete-bucket:
     handler: lib/lambda/auto-delete-bucket/index.handler
+
+  appsync-lambda:
+    handler: lib/lambda/appsync-lambda/index.handler
+
+  stripe-webhook:
+    handler: lib/lambda/stripe-webhook/index.handler

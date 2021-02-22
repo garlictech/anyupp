@@ -18,7 +18,7 @@ export const emptyBucket = async (bucketName: string) => {
 
   // make a list of objects to delete
   for (const record of contents) {
-    records.push({ Key: record.Key, VersionId: record.VersionId });
+    records.push({ Key: record.Key || '', VersionId: record.VersionId || '' });
   }
 
   await s3

@@ -14,28 +14,19 @@ export interface StripeWebhookResponse {
 interface HttpLambdaEvent {
   queryStringParameters: StripeWebhookRequest;
 }
-lofasz;
+
 export const handler: Handler = async (
   event: HttpLambdaEvent,
   context: Context,
-): Promise<unknown> => {
+) => {
   console.log('Stripe webhook called with ', event);
   // Validate the request, then...
   const param =
     event?.queryStringParameters?.param ||
     'https://media.giphy.com/media/20k1punZ5bpmM/giphy-downsized.gif';
 
-  console.log('***1', param);
-
-  console.log('*****2', {
+  return {
     body: JSON.stringify({ status: `All good for ${param}` }),
-    bodyEncoding: 'text',
-    statusCode: '200',
-  });
-
-  return Promise.resolve({
-    body: JSON.stringify({ status: `All good for ${param}` }),
-    bodyEncoding: 'text',
     statusCode: 200,
-  });
+  };
 };
