@@ -4,6 +4,7 @@ import { App } from '@serverless-stack/resources';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { ParamsStack } from './app/params-stack';
 import { SiteStack } from './app/site-stack';
+import { StripeStack } from './app/stripe-stack';
 
 export default function main(app: App): void {
   const sites = new SiteStack(app, 'sites');
@@ -16,4 +17,5 @@ export default function main(app: App): void {
     googleClientSecret: secretManager.googleClientSecret,
   });
   new AppsyncAppStack(app, 'appsync');
+  new StripeStack(app, 'stripe');
 }

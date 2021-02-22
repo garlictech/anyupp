@@ -143,7 +143,7 @@ export class DevBuildPipelineStack extends sst.Stack {
               templatePath: buildOutput.atPath(
                 'apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-ParamsStack.template.json',
               ),
-              stackName: 'ParamsStack',
+              stackName: 'dev-anyupp-backend-ParamsStack',
               adminPermissions: true,
               extraInputs: [buildOutput],
             }),

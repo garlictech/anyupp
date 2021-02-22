@@ -10,7 +10,7 @@ export const handler = async event => {
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
   const bucketName = event.ResourceProperties.BucketName;
-
+  lofasz;
   let status = 'SUCCESS';
   let reason = '';
 

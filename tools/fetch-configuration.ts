@@ -22,6 +22,7 @@ pipe(
     'IdentityPoolId',
     'GraphqlApiKey',
     'GraphqlApiUrl',
+    'StripeWebhookEndpoint',
     'googleClientId',
     'stripePublishableKey',
   ],
