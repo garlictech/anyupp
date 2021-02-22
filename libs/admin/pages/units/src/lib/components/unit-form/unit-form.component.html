@@ -15,11 +15,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-6">
           <bgap-form-text-input
@@ -42,9 +38,7 @@
           <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('hu')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -53,9 +47,7 @@
           <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('en')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('en')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -64,9 +56,7 @@
           <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('de')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('de')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </div>

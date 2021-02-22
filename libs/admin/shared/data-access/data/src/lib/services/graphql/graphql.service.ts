@@ -2,11 +2,7 @@ import { Apollo } from 'apollo-angular';
 import { IKeyValueObject } from '@bgap/shared/types';
 
 import { Injectable } from '@angular/core';
-import {
-  CreateAdminUser,
-  UpdateAdminUser,
-  GetAdminUsers,
-} from '@bgap/api/graphql/schema';
+import { CreateAdminUser, UpdateAdminUser, GetAdminUsers } from '@bgap/api/graphql/schema';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +16,7 @@ export class GraphQLService {
 
   public getAdminUsers() {
     return this._apollo.query({
-      query: GetAdminUsers,
+      query: GetAdminUsers
     });
   }
 

@@ -162,6 +162,12 @@
     },
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
+    "admin-shared-data-access-graphql-client": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "shared-graphql-api-client": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     }
   }
 }

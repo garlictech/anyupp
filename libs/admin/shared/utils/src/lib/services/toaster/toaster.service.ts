@@ -9,19 +9,19 @@ import { EToasterType } from '../../enums';
 export class ToasterService {
   constructor(
     private _nbToastrService: NbToastrService,
-    private _translateService: TranslateService,
+    private _translateService: TranslateService
   ) {}
 
   public show(
     type: EToasterType,
     message: string,
     title?: string,
-    config?: Partial<NbToastrConfig>,
+    config?: Partial<NbToastrConfig>
   ): void {
     this._nbToastrService[type](
       message ? this._translateService.instant(message) : '',
       title ? this._translateService.instant(title) : '',
-      config,
+      config
     );
   }
 }

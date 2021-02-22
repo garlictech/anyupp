@@ -24,7 +24,7 @@ export class FormUnitLanesComponent implements OnInit {
     this._store
       .pipe(
         select(productsSelectors.getUnitProductLaneIds()),
-        untilDestroyed(this),
+        untilDestroyed(this)
       )
       .subscribe((laneIds: string[]): void => {
         this.usedLaneIds = laneIds;
@@ -32,9 +32,7 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public addLane(): void {
-    (<FormArray>this.lanesFormArray).push(
-      this._formsService.createLaneFormGroup(),
-    );
+    (<FormArray>this.lanesFormArray).push(this._formsService.createLaneFormGroup());
   }
 
   public removeLane(idx: number): void {

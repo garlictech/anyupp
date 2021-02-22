@@ -5,9 +5,9 @@ export const init = createAction('[ProductCategories Page] Init');
 
 export const loadProductCategoriesSuccess = createAction(
   '[ProductCategories] Load ProductCategories Success',
-  props<{ productCategories: IProductCategory[] }>(),
+  props<{ productCategories: IProductCategory[] }>()
 );
 
 export const resetProductCategories = createAction(
-  '[ProductCategoryList] Reset product categories',
+  '[ProductCategoryList] Reset product categories'
 );

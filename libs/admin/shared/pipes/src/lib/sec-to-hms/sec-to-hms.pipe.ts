@@ -13,7 +13,7 @@ export class SecToHmsPipe implements PipeTransform {
     const seconds = totalSeconds % 60;
 
     return `${hours > 0 ? zeroFill(hours) + ':' : ''}${zeroFill(
-      minutes,
+      minutes
     )}:${zeroFill(seconds)}`;
   }
 }

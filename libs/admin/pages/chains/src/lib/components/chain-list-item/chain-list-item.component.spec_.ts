@@ -11,7 +11,7 @@ xdescribe('ChainListItemComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ChainListItemComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

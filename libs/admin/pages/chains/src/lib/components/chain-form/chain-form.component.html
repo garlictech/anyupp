@@ -18,11 +18,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="row">
         <div class="col-md-9">
           <bgap-form-text-input
@@ -65,10 +61,7 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('backgroundLight')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('backgroundLight')! | asFormControl"
               [caption]="'chains.style.colors.backgroundLight'"
             >
             </bgap-form-color-picker>
@@ -76,29 +69,20 @@
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
               [caption]="'chains.style.colors.backgroundDark'"
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('backgroundDark')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('backgroundDark')! | asFormControl"
             >
             </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('textLight')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('textLight')! | asFormControl"
               [caption]="'chains.style.colors.textLight'"
             >
             </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('textDark')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('textDark')! | asFormControl"
               [caption]="'chains.style.colors.textDark'"
             >
             </bgap-form-color-picker>
@@ -108,40 +92,28 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('borderLight')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('borderLight')! | asFormControl"
               [caption]="'chains.style.colors.borderLight'"
             >
             </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('borderDark')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('borderDark')! | asFormControl"
               [caption]="'chains.style.colors.borderDark'"
             >
             </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('highlight')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('highlight')! | asFormControl"
               [caption]="'chains.style.colors.highlight'"
             >
             </bgap-form-color-picker>
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('indicator')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('indicator')! | asFormControl"
               [caption]="'chains.style.colors.indicator'"
             >
             </bgap-form-color-picker>
@@ -151,10 +123,7 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
-              [control]="
-                dialogForm.get('style')!.get('colors')!.get('disabled')!
-                  | asFormControl
-              "
+              [control]="dialogForm.get('style')!.get('colors')!.get('disabled')! | asFormControl"
               [caption]="'chains.style.colors.disabled'"
             >
             </bgap-form-color-picker>

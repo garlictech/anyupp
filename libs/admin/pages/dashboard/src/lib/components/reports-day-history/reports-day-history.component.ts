@@ -31,68 +31,65 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _translateService: TranslateService,
+    private _translateService: TranslateService
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(
-      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
-      {
-        type: 'bar',
-        plugins: [ChartDataLabels],
-        data: {
-          labels: this._translatedLabels(),
-          datasets: [
+    this._chart = new Chart(<CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'), {
+      type: 'bar',
+      plugins: [ChartDataLabels],
+      data: {
+        labels: this._translatedLabels(),
+        datasets: [
+          {
+            data: [4234, 1456, undefined],
+            backgroundColor: ['#ffc107', '#3e95cd', '#8e5ea2'],
+          },
+        ],
+      },
+      options: {
+        legend: {
+          display: false,
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        tooltips: {
+          callbacks: {
+            label: () => {
+              return ''; //tooltipItem.yLabel;
+            },
+          },
+        },
+        scales: {
+          yAxes: [
             {
-              data: [4234, 1456, undefined],
-              backgroundColor: ['#ffc107', '#3e95cd', '#8e5ea2'],
+              ticks: {
+                beginAtZero: true,
+              },
             },
           ],
         },
-        options: {
-          legend: {
-            display: false,
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: () => {
-                return ''; //tooltipItem.yLabel;
+        plugins: {
+          datalabels: {
+            color: 'white',
+            labels: {
+              title: {
+                font: {
+                  weight: 'bold',
+                },
               },
             },
-          },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-          plugins: {
-            datalabels: {
-              color: 'white',
-              labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
-                },
-              },
-              /* formatter: (value, ctx) => {
+            /* formatter: (value, ctx) => {
               console.error('value', value);
               console.error('ctx', ctx);
               const label = ctx.chart.data.datasets[ctx.datasetIndex].label;
 
               return label
             },*/
-            },
           },
         },
       },
-    );
+    });
 
     /*
     this.orders$.pipe(untilDestroyed(this)).subscribe((orders: IOrder[]): void => {

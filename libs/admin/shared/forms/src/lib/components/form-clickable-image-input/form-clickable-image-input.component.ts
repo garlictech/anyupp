@@ -28,7 +28,7 @@ export class FormClickableImageInputComponent {
 
   constructor(
     private _storageService: StorageService,
-    private _imageCompressorService: ImageCompressorService,
+    private _imageCompressorService: ImageCompressorService
   ) {
     this.caption = '';
   }
@@ -44,7 +44,7 @@ export class FormClickableImageInputComponent {
   }
 
   public fileInputListener($event: Event): void {
-    const target = $event.target as HTMLInputElement;
+    const target= $event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
 
     if (file) {
@@ -59,7 +59,7 @@ export class FormClickableImageInputComponent {
             },
             (err): void => {
               console.error('Compress error', err);
-            },
+            }
           );
       }
     }
@@ -73,7 +73,7 @@ export class FormClickableImageInputComponent {
       },
       (err): void => {
         console.error('FILE UPLOAD ERROR', err);
-      },
+      }
     );
   }
 
@@ -86,7 +86,7 @@ export class FormClickableImageInputComponent {
         },
         (): void => {
           this.removeCallbackFn(this.callbackParam);
-        },
+        }
       );
     }
   }

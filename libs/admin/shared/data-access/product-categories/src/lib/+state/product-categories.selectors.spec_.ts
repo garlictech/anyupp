@@ -1,4 +1,5 @@
-/*
+
+  /*
 import {
   productCategoriesAdapter,
   initialState,

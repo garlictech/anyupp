@@ -11,7 +11,7 @@ xdescribe('ColorizedLaneIconComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [ColorizedLaneIconComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

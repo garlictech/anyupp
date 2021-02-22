@@ -11,7 +11,7 @@ xdescribe('LaneItemComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [LaneItemComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

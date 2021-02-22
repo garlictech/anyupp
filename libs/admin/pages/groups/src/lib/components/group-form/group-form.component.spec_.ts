@@ -11,7 +11,7 @@ xdescribe('GroupFormComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [GroupFormComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

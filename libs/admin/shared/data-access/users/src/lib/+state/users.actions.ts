@@ -5,7 +5,7 @@ export const init = createAction('[Users Page] Init');
 
 export const loadUsersSuccess = createAction(
   '[Users] Load Users Success',
-  props<{ users: IUser[] }>(),
+  props<{ users: IUser[] }>()
 );
 
 export const resetUsers = createAction('[UserList] Reset users');

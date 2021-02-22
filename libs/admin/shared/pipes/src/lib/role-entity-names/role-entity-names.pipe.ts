@@ -16,7 +16,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _domSanitizer: DomSanitizer,
+    private _domSanitizer: DomSanitizer
   ) {}
 
   transform(roles: IAdminUserRole): unknown {
@@ -48,7 +48,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
       }
 
       entityPaths.push(
-        `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`,
+        `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`
       );
     });
 

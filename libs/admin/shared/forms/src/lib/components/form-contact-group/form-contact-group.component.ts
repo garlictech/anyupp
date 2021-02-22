@@ -23,7 +23,7 @@ export class FormContactGroupComponent {
 
     this._httpClient
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`,
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((response: any): void => {

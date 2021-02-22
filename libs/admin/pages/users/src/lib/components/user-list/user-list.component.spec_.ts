@@ -11,7 +11,7 @@ xdescribe('UserListComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [UserListComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

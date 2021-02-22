@@ -56,13 +56,13 @@ export class AdminUserRoleFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.updateSuccessful',
+              'common.updateSuccessful'
             );
             this.close();
           },
           error => {
             console.error('there was an error sending the query', error);
-          },
+          }
         );
     }
   }
@@ -78,14 +78,14 @@ export class AdminUserRoleFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess',
+            'common.imageUploadSuccess'
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess',
+        'common.imageUploadSuccess'
       );
     }
   };
@@ -102,14 +102,14 @@ export class AdminUserRoleFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess',
+            'common.imageRemoveSuccess'
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess',
+        'common.imageRemoveSuccess'
       );
     }
   };

@@ -15,11 +15,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
       <div class="subtitle">{{ adminUser.name }}</div>
 
       <bgap-form-admin-role

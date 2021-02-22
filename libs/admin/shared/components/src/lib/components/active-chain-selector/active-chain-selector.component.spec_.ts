@@ -11,7 +11,7 @@ xdescribe('ActiveChainSelectorComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ActiveChainSelectorComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

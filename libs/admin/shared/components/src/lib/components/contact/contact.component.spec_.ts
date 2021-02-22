@@ -11,7 +11,7 @@ xdescribe('ContactComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ContactComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

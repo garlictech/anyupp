@@ -2,19 +2,9 @@ import { map, take } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import {
-  TIME_FORMAT_PATTERN,
-  multiLangValidator,
-  productAvailabilityValidator,
-} from '@bgap/admin/shared/utils';
+import { TIME_FORMAT_PATTERN,  multiLangValidator, productAvailabilityValidator } from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IAdminUser } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
@@ -34,7 +24,7 @@ export class FormsService {
           en: ['', Validators.maxLength(40)],
           de: ['', Validators.maxLength(40)],
         },
-        { validators: multiLangValidator },
+        { validators: multiLangValidator }
       ),
       pack: this._formBuilder.group({
         size: [''],
@@ -59,7 +49,7 @@ export class FormsService {
         timeTo: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
         price: ['', [Validators.required]],
       },
-      { validators: productAvailabilityValidator },
+      { validators: productAvailabilityValidator }
     );
   };
 
@@ -82,17 +72,15 @@ export class FormsService {
     });
   };
 
-  public adminExistingEmailValidator(
-    control: AbstractControl,
-  ): AsyncValidatorFn {
+  public adminExistingEmailValidator(control: AbstractControl): AsyncValidatorFn {
     return () => {
       return this._store.pipe(
         select(adminUsersSelectors.getAdminUserByEmail(control.value)),
         take(1),
         map((adminUser: IAdminUser | undefined) => {
           return adminUser ? { err: 'ADMIN_USER_EXISTS' } : null;
-        }),
-      );
+        })
+      )
     };
   }
 }

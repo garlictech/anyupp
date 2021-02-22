@@ -8,19 +8,8 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbActionsModule,
-  NbBadgeModule,
-  NbButtonModule,
-  NbCardModule,
-  NbCheckboxModule,
-  NbDialogModule,
-  NbIconModule,
-  NbInputModule,
-  NbLayoutModule,
-  NbListModule,
-  NbSelectModule,
-  NbSpinnerModule,
-  NbUserModule,
+  NbActionsModule, NbBadgeModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule,
+  NbInputModule, NbLayoutModule, NbListModule, NbSelectModule, NbSpinnerModule, NbUserModule
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -34,16 +23,28 @@ import { OrderEditComponent } from './components/order-edit/order-edit.component
 import { OrderPrintComponent } from './components/order-print/order-print.component';
 import { OrderProductListComponent } from './components/order-product-list/order-product-list.component';
 import { OrderTicketBodyComponent } from './components/order-ticket-body/order-ticket-body.component';
-import { OrderTicketHistoryListComponent } from './components/order-ticket-history-list/order-ticket-history-list.component';
+import {
+  OrderTicketHistoryListComponent
+} from './components/order-ticket-history-list/order-ticket-history-list.component';
 import { OrderTicketListItemComponent } from './components/order-ticket-list-item/order-ticket-list-item.component';
 import { OrderTicketListComponent } from './components/order-ticket-list/order-ticket-list.component';
 import { ReportsBodyComponent } from './components/reports-body/reports-body.component';
-import { ReportsDailySalesPerPaymentMethodComponent } from './components/reports-daily-sales-per-payment-method/reports-daily-sales-per-payment-method.component';
-import { ReportsDailySalesPerTypeComponent } from './components/reports-daily-sales-per-type/reports-daily-sales-per-type.component';
+import {
+  ReportsDailySalesPerPaymentMethodComponent
+} from './components/reports-daily-sales-per-payment-method/reports-daily-sales-per-payment-method.component';
+import {
+  ReportsDailySalesPerTypeComponent
+} from './components/reports-daily-sales-per-type/reports-daily-sales-per-type.component';
 import { ReportsDayHistoryComponent } from './components/reports-day-history/reports-day-history.component';
-import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
-import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
-import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
+import {
+  ReportsHourlyBreakdownComponent
+} from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
+import {
+  ReportsOrdersAmountAvgSalesComponent
+} from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
+import {
+  ReportsUniqueGuestAvgSalesComponent
+} from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
 
 const NB_MODULES = [
   NbLayoutModule,

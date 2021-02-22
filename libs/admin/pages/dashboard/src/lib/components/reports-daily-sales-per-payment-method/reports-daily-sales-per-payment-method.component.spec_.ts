@@ -14,7 +14,7 @@ xdescribe('ReportsDailySalesPerPaymentMethodComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(
-      ReportsDailySalesPerPaymentMethodComponent,
+      ReportsDailySalesPerPaymentMethodComponent
     );
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -11,7 +11,7 @@ xdescribe('ProductCategoryFormComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ProductCategoryFormComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

@@ -26,9 +26,7 @@
   <bgap-form-text-input
     caption="common.contact.postalCode"
     type="text"
-    [control]="
-      contactFormGroup.get('address')!.get('postalCode')! | asFormControl
-    "
+    [control]="contactFormGroup.get('address')!.get('postalCode')! | asFormControl"
   ></bgap-form-text-input>
   <bgap-form-text-input
     caption="common.contact.city"
@@ -46,20 +44,14 @@
       <bgap-form-text-input
         caption="common.contact.locationLat"
         type="text"
-        [control]="
-          contactFormGroup.get('address')!.get('location')!.get('lat')!
-            | asFormControl
-        "
+        [control]="contactFormGroup.get('address')!.get('location')!.get('lat')! | asFormControl"
       ></bgap-form-text-input>
     </div>
     <div class="col-md-6">
       <bgap-form-text-input
         caption="common.contact.locationLng"
         type="text"
-        [control]="
-          contactFormGroup.get('address')!.get('location')!.get('lng')!
-            | asFormControl
-        "
+        [control]="contactFormGroup.get('address')!.get('location')!.get('lng')! | asFormControl"
       ></bgap-form-text-input>
     </div>
   </div>

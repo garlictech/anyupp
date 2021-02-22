@@ -5,7 +5,7 @@ export const init = createAction('[Units Page] Init');
 
 export const loadUnitsSuccess = createAction(
   '[Units] Load Units Success',
-  props<{ units: IUnit[] }>(),
+  props<{ units: IUnit[] }>()
 );
 
 export const resetUnits = createAction('[UnitList] Reset units');

@@ -2,10 +2,7 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
@@ -23,7 +20,7 @@ import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 const laneFilter = (selectedLanes: string[]) => (
-  orderItem: ILaneOrderItem,
+  orderItem: ILaneOrderItem
 ): boolean => selectedLanes.includes(orderItem.laneId || 'default');
 
 @UntilDestroy()
@@ -45,27 +42,27 @@ export class LanesBodyComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _translateService: TranslateService,
+    private _translateService: TranslateService
   ) {
     combineLatest([
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)),
+        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED))
       ),
       this._store.pipe(
         select(
-          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING),
-        ),
+          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING)
+        )
       ),
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY)),
+        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY))
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),
-        filter((l): boolean => !!l),
+        filter((l): boolean => !!l)
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
-        filter((unit: IUnit | undefined): boolean => !!unit),
+        filter((unit: IUnit | undefined): boolean => !!unit)
       ),
     ])
       .pipe(debounceTime(100), untilDestroyed(this))
@@ -81,12 +78,12 @@ export class LanesBodyComponent implements OnDestroy {
           ILaneOrderItem[],
           ILaneOrderItem[],
           string[],
-          IUnit | undefined,
+          IUnit | undefined
         ]): void => {
           this.selectedLanes = selectedLanes;
           this.placedItems = rawPlacedItems.filter(laneFilter(selectedLanes));
           this.processingItems = rawProcessingItems.filter(
-            laneFilter(selectedLanes),
+            laneFilter(selectedLanes)
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
           this.unit = <IUnit>unit;
@@ -95,13 +92,13 @@ export class LanesBodyComponent implements OnDestroy {
           // Unit lanes
           this.unitLanes.forEach((lane: IDetailedLane): void => {
             lane.placedCount = rawPlacedItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane._id
             ).length;
             lane.processingCount = rawProcessingItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane._id
             ).length;
             lane.readyCount = rawReadyItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane._id
             ).length;
           });
 
@@ -111,16 +108,16 @@ export class LanesBodyComponent implements OnDestroy {
             name: this._translateService.instant('dashboard.defaultLane'),
             color: DEFAULT_LANE_COLOR,
             placedCount: rawPlacedItems.filter(
-              (i): boolean => typeof i.laneId === 'undefined',
+              (i): boolean => typeof i.laneId === 'undefined'
             ).length,
             processingCount: rawProcessingItems.filter(
-              (i): boolean => typeof i.laneId === 'undefined',
+              (i): boolean => typeof i.laneId === 'undefined'
             ).length,
             readyCount: rawReadyItems.filter(
-              (i): boolean => typeof i.laneId === 'undefined',
+              (i): boolean => typeof i.laneId === 'undefined'
             ).length,
           });
-        },
+        }
       );
 
     this._store
@@ -133,6 +130,7 @@ export class LanesBodyComponent implements OnDestroy {
       });
   }
 
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -142,15 +140,15 @@ export class LanesBodyComponent implements OnDestroy {
       this._store.dispatch(
         dashboardActions.setSelectedLanes({
           selectedLanes: this.selectedLanes.filter(
-            (id: string): boolean => id !== laneId,
+            (id: string): boolean => id !== laneId
           ),
-        }),
+        })
       );
     } else {
       this._store.dispatch(
         dashboardActions.setSelectedLanes({
           selectedLanes: this.selectedLanes.concat(laneId),
-        }),
+        })
       );
     }
   }

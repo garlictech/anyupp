@@ -11,7 +11,7 @@ xdescribe('FloorMapBodyComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [FloorMapBodyComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

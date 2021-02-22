@@ -1,3 +1,4 @@
+
 /*
 xdescribe('FloorMap Reducer', () => {
   const createFloorMapEntity = (id: string, name = '') =>

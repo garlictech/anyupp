@@ -24,19 +24,19 @@ export class GroupListComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {
     this.groups$ = this._store.pipe(
       select(groupsSelectors.getAllGroups),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
     this.selectedChainId$ = this._store.pipe(
       select(loggedUserSelectors.getSelectedChainId),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
   }
 

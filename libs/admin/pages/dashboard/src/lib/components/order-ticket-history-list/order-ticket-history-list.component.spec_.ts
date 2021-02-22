@@ -11,7 +11,7 @@ xdescribe('OrderTicketHistoryListComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [OrderTicketHistoryListComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

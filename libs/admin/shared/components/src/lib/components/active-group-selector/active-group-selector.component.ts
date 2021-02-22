@@ -25,7 +25,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
 
     this._store

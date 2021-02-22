@@ -21,11 +21,11 @@ export class ChainListComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
   }
 

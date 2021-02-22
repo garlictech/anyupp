@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 
-interface IMarkerData {
+interface IMarkerData  {
   options?: google.maps.MarkerOptions;
   position?: google.maps.LatLngLiteral | google.maps.LatLng;
   location?: {
     lat: number;
     lng: number;
-  };
+  }
 }
 
 @Component({

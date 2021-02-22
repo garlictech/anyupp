@@ -15,31 +15,31 @@ const { selectAll, selectEntities } = productCategoriesAdapter.getSelectors();
 
 export const getProductCategoriesLoaded = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => state.loaded,
+  (state: IProductCategoriesState) => state.loaded
 );
 
 export const getProductCategoriesError = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => state.error,
+  (state: IProductCategoriesState) => state.error
 );
 
 export const getAllProductCategories = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => selectAll(state),
+  (state: IProductCategoriesState) => selectAll(state)
 );
 
 export const getProductCategoriesEntities = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => selectEntities(state),
+  (state: IProductCategoriesState) => selectEntities(state)
 );
 
 export const getSelectedId = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => state.selectedId,
+  (state: IProductCategoriesState) => state.selectedId
 );
 
 export const getSelected = createSelector(
   getProductCategoriesEntities,
   getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
+  (entities, selectedId) => selectedId && entities[selectedId]
 );

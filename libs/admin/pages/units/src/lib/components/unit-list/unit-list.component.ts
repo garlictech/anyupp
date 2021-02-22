@@ -24,23 +24,23 @@ export class UnitListComponent implements OnInit, OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {}
 
   ngOnInit(): void {
     this.selectedChainId$ = this._store.pipe(
       select(loggedUserSelectors.getSelectedChainId),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
 
     combineLatest([
       this._store.pipe(
         select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
+        untilDestroyed(this)
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedGroupUnits),
-        untilDestroyed(this),
+        untilDestroyed(this)
       ),
     ]).subscribe(([groups, units]: [IGroup[], IUnit[]]): void => {
       this.units = _cloneDeep(units);

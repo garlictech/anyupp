@@ -12,7 +12,7 @@ import {
     CommonModule,
     StoreModule.forFeature(
       PRODUCT_CATEGORIES_FEATURE_KEY,
-      productCategoriesReducer,
+      productCategoriesReducer
     ),
   ],
 })

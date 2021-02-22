@@ -19,7 +19,7 @@ export interface IChainsPartialState {
 export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<IChain>(
   {
     selectId: (item: IChain): string => item._id,
-  },
+  }
 );
 
 export const initialState: IChainsState = chainsAdapter.getInitialState({
@@ -31,9 +31,9 @@ const reducer = createReducer(
   initialState,
   on(ChainsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ChainsActions.loadChainsSuccess, (state, { chains }) =>
-    chainsAdapter.setAll(chains, { ...state, loaded: true }),
+    chainsAdapter.setAll(chains, { ...state, loaded: true })
   ),
-  on(ChainsActions.resetChains, state => chainsAdapter.removeAll(state)),
+  on(ChainsActions.resetChains, state => chainsAdapter.removeAll(state))
 );
 
 export function chainsReducer(state: IChainsState | undefined, action: Action) {

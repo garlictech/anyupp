@@ -20,7 +20,7 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: () =>
           import('@bgap/admin/pages/dashboard').then(
-            m => m.AdminPagesDashboardModule,
+            m => m.AdminPagesDashboardModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -31,7 +31,7 @@ const routes: Routes = [
         path: 'products',
         loadChildren: () =>
           import('@bgap/admin/pages/products').then(
-            m => m.AdminPagesProductsModule,
+            m => m.AdminPagesProductsModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -42,7 +42,7 @@ const routes: Routes = [
         path: 'product-categories',
         loadChildren: () =>
           import('@bgap/admin/pages/product-categories').then(
-            m => m.AdminPagesProductCategoriesModule,
+            m => m.AdminPagesProductCategoriesModule
           ),
         canActivateChild: [AuthGuard],
         data: {
@@ -53,9 +53,9 @@ const routes: Routes = [
         path: 'groups',
         loadChildren: () =>
           import('@bgap/admin/pages/groups').then(
-            m => m.AdminPagesGroupsModule,
+            m => m.AdminPagesGroupsModule
           ),
-        canActivateChild: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.GROUPS,
         },
@@ -64,7 +64,7 @@ const routes: Routes = [
         path: 'units',
         loadChildren: () =>
           import('@bgap/admin/pages/units').then(m => m.AdminPagesUnitsModule),
-        canActivateChild: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.UNITS,
         },
@@ -73,9 +73,9 @@ const routes: Routes = [
         path: 'chains',
         loadChildren: () =>
           import('@bgap/admin/pages/chains').then(
-            m => m.AdminPagesChainsModule,
+            m => m.AdminPagesChainsModule
           ),
-        canActivateChild: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.CHAINS,
         },
@@ -84,7 +84,7 @@ const routes: Routes = [
         path: 'users',
         loadChildren: () =>
           import('@bgap/admin/pages/users').then(m => m.AdminPagesUsersModule),
-        canActivateChild: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.USERS,
         },
@@ -93,9 +93,9 @@ const routes: Routes = [
         path: 'admins',
         loadChildren: () =>
           import('@bgap/admin/pages/admin-users').then(
-            m => m.AdminPagesAdminUsersModule,
+            m => m.AdminPagesAdminUsersModule
           ),
-        canActivateChild: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         data: {
           roles: MENU_ROLES.ADMINS,
         },

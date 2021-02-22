@@ -11,7 +11,7 @@ xdescribe('VariantAvailabilityBadgeComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [VariantAvailabilityBadgeComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

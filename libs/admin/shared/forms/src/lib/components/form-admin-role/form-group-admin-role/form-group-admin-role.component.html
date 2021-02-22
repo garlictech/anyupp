@@ -41,10 +41,7 @@
       <label class="caption">{{ 'roles.selectGroup' | translate }}</label>
     </div>
 
-    <nb-select
-      size="small"
-      [formControl]="entitySelector.get('groupId')! | asFormControl"
-    >
+    <nb-select size="small" [formControl]="entitySelector.get('groupId')! | asFormControl">
       <nb-option value="">-</nb-option>
       <nb-option *ngFor="let option of groupOptions" [value]="option.key">{{
         option.value

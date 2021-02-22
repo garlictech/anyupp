@@ -42,7 +42,7 @@ export class ReportsDailySalesPerTypeComponent
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
-    private _currencyFormatter: CurrencyFormatterPipe,
+    private _currencyFormatter: CurrencyFormatterPipe
   ) {}
 
   ngAfterViewInit(): void {
@@ -67,8 +67,7 @@ export class ReportsDailySalesPerTypeComponent
           tooltips: {
             callbacks: {
               label: (tooltipItem, data) => {
-                const label =
-                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
+                const label = (<string[]>data.labels)[tooltipItem.index || 0] || '';
                 const value: number =
                   <number>(
                     (<Chart.ChartDataSets[]>(
@@ -78,7 +77,7 @@ export class ReportsDailySalesPerTypeComponent
 
                 return ` ${label}: ${this._currencyFormatter.transform(
                   value,
-                  this.currency,
+                  this.currency
                 )}`;
               },
             },
@@ -104,7 +103,7 @@ export class ReportsDailySalesPerTypeComponent
             },
           },
         },
-      },
+      }
     );
 
     combineLatest([

@@ -11,7 +11,7 @@ xdescribe('FormCheckboxComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormCheckboxComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

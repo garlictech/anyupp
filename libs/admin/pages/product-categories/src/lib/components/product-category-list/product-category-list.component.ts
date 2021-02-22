@@ -29,7 +29,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
+    private _dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -37,21 +37,21 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       .pipe(
         select(productCategoriesSelectors.getAllProductCategories),
         map((products): IProductCategory[] =>
-          products.sort(customNumberCompare('position')),
+          products.sort(customNumberCompare('position'))
         ),
-        untilDestroyed(this),
+        untilDestroyed(this)
       )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories;
         this._sortedProductCategoryIds = this.productCategories.map(
-          (p): string => p._id,
+          (p): string => p._id
         );
       });
 
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedChainId),
-        untilDestroyed(this),
+        untilDestroyed(this)
       )
       .subscribe((selectedChainId: string | undefined | null): void => {
         this._selectedChainId = selectedChainId;
@@ -73,7 +73,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
 
   public positionChange($event: IProductCategoryOrderChangeEvent): void {
     const idx = this._sortedProductCategoryIds.indexOf(
-      $event.productCategoryId,
+      $event.productCategoryId
     );
 
     if (
@@ -86,7 +86,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       this._sortedProductCategoryIds.splice(
         idx + $event.change,
         0,
-        $event.productCategoryId,
+        $event.productCategoryId
       );
 
       this._sortedProductCategoryIds.forEach(
@@ -94,9 +94,9 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
           this._dataService.updateProductCategoryPosition(
             this._selectedChainId || '',
             productCategoryId,
-            (pos + 1).toString(),
+            (pos + 1).toString()
           );
-        },
+        }
       );
     }
   }

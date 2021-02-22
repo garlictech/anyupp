@@ -16,6 +16,7 @@ const targetFile = `${__dirname}/../libs/shared/config/src/lib/config/config.${f
 
 pipe(
   [
+    'AdminSiteUrl',
     'UserPoolClientId',
     'UserPoolId',
     'UserPoolDomain',

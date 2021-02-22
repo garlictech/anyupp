@@ -5,7 +5,7 @@ export const init = createAction('[AdminUsers Page] Init');
 
 export const loadAdminUsersSuccess = createAction(
   '[AdminUsers] Load AdminUsers Success',
-  props<{ adminUsers: IAdminUser[] }>(),
+  props<{ adminUsers: IAdminUser[] }>()
 );
 
 export const resetAdminUsers = createAction('[AdminUsers] Reset admin users');

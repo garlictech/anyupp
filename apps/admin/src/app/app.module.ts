@@ -51,6 +51,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -91,6 +93,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AmplifyAngularModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -113,13 +116,18 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
           strictActionImmutability: true,
           strictStateImmutability: true,
         },
-      },
+      }
     ),
     !environment.production
       ? StoreDevtoolsModule.instrument({
           maxAge: 25,
         })
       : [],
+    LoggerModule.forRoot({
+      serverLoggingUrl: '/api/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.ERROR,
+    }),
     // Store modules
     AdminSharedAdminUsersModule,
     AdminSharedChainsModule,
@@ -134,6 +142,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     AdminSharedUsersModule,
   ],
   providers: [
+    AmplifyService,
     { provide: REGION, useValue: 'europe-west3' },
     {
       provide: APOLLO_OPTIONS,
@@ -157,14 +166,14 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
           // split based on operation type
           ({ query }) => {
             const { kind, operation } = getMainDefinition(
-              query,
+              query
             ) as OperationDefinitionNode;
             return (
               kind === 'OperationDefinition' && operation === 'subscription'
             );
           },
           ws,
-          http,
+          http
         );
 
         return {

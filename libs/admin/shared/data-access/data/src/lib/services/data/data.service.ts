@@ -1,54 +1,27 @@
 import { get as _get, intersection as _intersection } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { DEFAULT_LANG, getDayIntervals } from '@bgap/admin/shared/utils';
-import { objectToArray } from '@bgap/shared/utils';
+import { getDayIntervals } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole,
-  EFirebaseStateEvent,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserRole,
-  IAdminUserSettings,
-  IChain,
-  IDateIntervals,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IUnit,
-  IUser,
+  EAdminRole, EFirebaseStateEvent, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals,
+  IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory, IUnit, IUser
 } from '@bgap/shared/types';
+import { objectToArray } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -62,12 +35,14 @@ export class DataService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _angularFireDatabase: AngularFireDatabase,
-    private _angularFireFunctions: AngularFireFunctions,
-    private _translateService: TranslateService,
+    private _angularFireFunctions: AngularFireFunctions
   ) {}
 
-  public initDataConnections(userId: string): void {
+  public initDataConnections(/*userId: string*/): void {
+
     // Load user data
+    console.error('TODO SUBSCRIBE TO ADMINS');
+    /*
     this._angularFireDatabase
       .object(`adminUsers/${userId}`)
       .valueChanges()
@@ -77,50 +52,49 @@ export class DataService {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
-                ...(<IAdminUser>adminUser),
+                ...<IAdminUser>adminUser,
                 _id: userId,
               },
-            }),
+            })
           );
         }
-      });
+      });*Ŗ
 
+    /*
     // Get user settings
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
-        filter(
-          (settings: IAdminUserSettings | undefined): boolean => !!settings,
-        ),
+        filter((settings: IAdminUserSettings | undefined): boolean => !!settings),
         distinctUntilChanged(
           (prev, curr): boolean =>
             prev?.selectedChainId === curr?.selectedChainId &&
             prev?.selectedGroupId === curr?.selectedGroupId &&
-            prev?.selectedUnitId === curr?.selectedUnitId,
+            prev?.selectedUnitId === curr?.selectedUnitId
         ),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
-          adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedChainProducts(
-          adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedGroupProducts(
-          adminUserSettings?.selectedGroupId || '',
+          adminUserSettings?.selectedGroupId || ''
         );
         this._subscribeToSelectedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToGeneratedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToSelectedUnitOrders(
           adminUserSettings?.selectedChainId || '',
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
       });
 
@@ -129,7 +103,7 @@ export class DataService {
       .pipe(
         select(loggedUserSelectors.getLoggedUserRoles),
         filter((roles: IAdminUserRole | undefined): boolean => !!roles),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
         this._rolesChanged$.next(true);
@@ -146,57 +120,57 @@ export class DataService {
             break;
           case EAdminRole.CHAIN_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToUnitsByRole(
               'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.GROUP_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               'groupId',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.UNIT_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.STAFF:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             break;
           default:
@@ -208,15 +182,16 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
+    */
   }
 
   private _subscribeToChainsByRole(
-    loggedAdminUserEntities: string | string[],
+    loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
       .object(`/chains/`) // TODO list?
@@ -225,21 +200,19 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           chainsActions.loadChainsSuccess({
-            chains: (<IChain[]>(
-              objectToArray(data)
-            )).filter((c: IChain): boolean =>
+            chains: (<IChain[]>objectToArray(data)).filter((c: IChain): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
-                : loggedAdminUserEntities.includes(c._id),
+                : loggedAdminUserEntities.includes(c._id)
             ),
-          }),
+          })
         );
       });
   }
 
   private _subscribeToGroupsByRole(
     fieldName: string,
-    loggedAdminUserEntities: string | string[],
+    loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
       .object(`/groups/`) // TODO list?
@@ -248,21 +221,19 @@ export class DataService {
       .subscribe((data): void => {
         this._store.dispatch(
           groupsActions.loadGroupsSuccess({
-            groups: (<IGroup[]>(
-              objectToArray(data)
-            )).filter((c: IGroup): boolean =>
+            groups: (<IGroup[]>objectToArray(data)).filter((c: IGroup): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
-                : loggedAdminUserEntities.includes(_get(c, fieldName)),
+                : loggedAdminUserEntities.includes(_get(c, fieldName))
             ),
-          }),
+          })
         );
       });
   }
 
   private _subscribeToUnitsByRole(
     fieldName: string,
-    loggedAdminUserEntities: string | string[],
+    loggedAdminUserEntities: string | string[]
   ): void {
     this._angularFireDatabase
       .object(`/units/`) // TODO list??
@@ -274,9 +245,9 @@ export class DataService {
             units: (<IUnit[]>objectToArray(data)).filter((c: IUnit): boolean =>
               loggedAdminUserEntities === '*'
                 ? true
-                : loggedAdminUserEntities.includes(_get(c, fieldName)),
+                : loggedAdminUserEntities.includes(_get(c, fieldName))
             ),
-          }),
+          })
         );
       });
   }
@@ -290,7 +261,7 @@ export class DataService {
         this._store.dispatch(
           productCategoriesActions.loadProductCategoriesSuccess({
             productCategories: <IProductCategory[]>objectToArray(data),
-          }),
+          })
         );
       });
   }
@@ -304,7 +275,7 @@ export class DataService {
         this._store.dispatch(
           productsActions.loadChainProductsSuccess({
             products: <IProduct[]>objectToArray(data),
-          }),
+          })
         );
       });
   }
@@ -318,7 +289,7 @@ export class DataService {
         this._store.dispatch(
           productsActions.loadGroupProductsSuccess({
             products: <IProduct[]>objectToArray(data),
-          }),
+          })
         );
       });
   }
@@ -332,7 +303,7 @@ export class DataService {
         this._store.dispatch(
           productsActions.loadUnitProductsSuccess({
             products: <IProduct[]>objectToArray(data),
-          }),
+          })
         );
       });
   }
@@ -358,21 +329,21 @@ export class DataService {
                   productCategoryId,
                 });
               });
-            },
+            }
           );
         }
 
         this._store.dispatch(
           productsActions.loadGeneratedUnitProductsSuccess({
             products,
-          }),
+          })
         );
       });
   }
 
   private _subscribeToSelectedUnitOrders(
     chainId: string,
-    unitId: string,
+    unitId: string
   ): void {
     this._angularFireDatabase
       .list(`/orders/chains/${chainId}/units/${unitId}/active`)
@@ -383,7 +354,7 @@ export class DataService {
           this._store.dispatch(
             ordersActions.removeActiveOrder({
               orderId: data.key || '',
-            }),
+            })
           );
         } else {
           this._store.dispatch(
@@ -392,7 +363,7 @@ export class DataService {
                 ...(<IOrder>data.payload.val()),
                 _id: data.key || '',
               },
-            }),
+            })
           );
         }
       });
@@ -404,7 +375,7 @@ export class DataService {
           this._store.dispatch(
             ordersActions.setAllHistoryOrders({
               orders: [],
-            }),
+            })
           );
         }),
         switchMap((historyDate: number) => {
@@ -415,18 +386,18 @@ export class DataService {
               ref
                 .orderByChild('created')
                 .startAt(dayIntervals.from)
-                .endAt(dayIntervals.to),
+                .endAt(dayIntervals.to)
             )
             .stateChanges();
         }),
-        takeUntil(this._settingsChanged$),
+        takeUntil(this._settingsChanged$)
       )
       .subscribe((data): void => {
         if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
           this._store.dispatch(
             ordersActions.removeHistoryOrder({
               orderId: data.key || '',
-            }),
+            })
           );
         } else {
           this._store.dispatch(
@@ -435,7 +406,7 @@ export class DataService {
                 ...(<IOrder>data.payload.val()),
                 _id: data.key || '',
               },
-            }),
+            })
           );
         }
       });
@@ -450,7 +421,7 @@ export class DataService {
         this._store.dispatch(
           usersActions.loadUsersSuccess({
             users: <IUser[]>objectToArray(data),
-          }),
+          })
         );
       });
   }
@@ -486,7 +457,7 @@ export class DataService {
                   ? _intersection(loggedAdminChainIds, currentAdminChainIds)
                       .length > 0
                   : false;
-              },
+              }
             );
             break;
           case EAdminRole.GROUP_ADMIN:
@@ -501,12 +472,12 @@ export class DataService {
 
                 // Chain admin shows only the group/unit admins and the staffs of his chains
                 return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
-                  currentAdminUser.roles?.role || EAdminRole.INACTIVE,
+                  currentAdminUser.roles?.role || EAdminRole.INACTIVE
                 )
                   ? _intersection(loggedAdminGroupIds, currentAdminGroupIds)
                       .length > 0
                   : false;
-              },
+              }
             );
             break;
           case EAdminRole.UNIT_ADMIN:
@@ -524,7 +495,7 @@ export class DataService {
                   ? _intersection(loggedAdminUnitIds, currentAdminUnitIds)
                       .length > 0
                   : false;
-              },
+              }
             );
             break;
           default:
@@ -534,7 +505,7 @@ export class DataService {
         this._store.dispatch(
           adminUsersActions.loadAdminUsersSuccess({
             adminUsers,
-          }),
+          })
         );
       });
   }
@@ -577,7 +548,7 @@ export class DataService {
   public updateChainImagePath(
     chainId: string,
     key: string,
-    imagePath: string | null,
+    imagePath: string | null
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/chains/${chainId}/style/images`)
@@ -612,7 +583,7 @@ export class DataService {
 
   public regenerateUnitData(unitId: string): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
-      `regenerateUnitData`,
+      `regenerateUnitData`
     );
 
     return callable({
@@ -626,7 +597,7 @@ export class DataService {
 
   public insertProductCategory(
     chainId: string,
-    value: IProductCategory,
+    value: IProductCategory
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
       .list(`/productCategories/chains/${chainId}`)
@@ -636,7 +607,7 @@ export class DataService {
   public updateProductCategory(
     chainId: string,
     productCategoryId: string,
-    value: IProductCategory,
+    value: IProductCategory
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
@@ -646,7 +617,7 @@ export class DataService {
   public updateProductCategoryImagePath(
     chainId: string,
     productCategoryId: string,
-    imagePath: string | null,
+    imagePath: string | null
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
@@ -658,7 +629,7 @@ export class DataService {
   public updateProductCategoryPosition(
     chainId: string,
     productCategoryId: string,
-    value: string,
+    value: string
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
@@ -673,7 +644,7 @@ export class DataService {
 
   public insertChainProduct(
     chainId: string,
-    value: IProduct,
+    value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
       .list(`/products/chains/${chainId}`)
@@ -682,7 +653,7 @@ export class DataService {
 
   public insertGroupProduct(
     groupId: string,
-    value: IProduct,
+    value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
       .list(`/products/groups/${groupId}`)
@@ -691,7 +662,7 @@ export class DataService {
 
   public insertUnitProduct(
     unitId: string,
-    value: IProduct,
+    value: IProduct
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase
       .list(`/products/units/${unitId}`)
@@ -701,7 +672,7 @@ export class DataService {
   public updateChainProduct(
     chainId: string,
     productId: string,
-    value: IProduct,
+    value: IProduct
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/products/chains/${chainId}/${productId}`)
@@ -711,7 +682,7 @@ export class DataService {
   public updateChainProductPosition(
     chainId: string,
     productId: string,
-    value: string,
+    value: string
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/products/chains/${chainId}/${productId}`)
@@ -723,7 +694,7 @@ export class DataService {
   public updateGroupProduct(
     groupId: string,
     productId: string,
-    value: IGroup,
+    value: IGroup
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/products/groups/${groupId}/${productId}`)
@@ -733,7 +704,7 @@ export class DataService {
   public updateUnitProduct(
     unitId: string,
     productId: string,
-    value: IProduct,
+    value: IProduct
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/products/units/${unitId}/${productId}`)
@@ -743,7 +714,7 @@ export class DataService {
   public updateUnitProductPosition(
     unitId: string,
     productId: string,
-    value: string,
+    value: string
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/products/units/${unitId}/${productId}`)
@@ -759,7 +730,7 @@ export class DataService {
   public getActiveOrder$(
     chainId: string,
     unitId: string,
-    orderId: string,
+    orderId: string
   ): Observable<unknown> {
     return this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
@@ -771,10 +742,10 @@ export class DataService {
     chainId: string,
     unitId: string,
     orderId: string,
-    status: EOrderStatus,
+    status: EOrderStatus
   ): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
-      `setNewOrderStatus`,
+      `setNewOrderStatus`
     );
 
     return callable({
@@ -789,7 +760,7 @@ export class DataService {
     chainId: string,
     unitId: string,
     orderId: string,
-    value: IOrder | IKeyValueObject,
+    value: IOrder | IKeyValueObject
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
@@ -801,11 +772,11 @@ export class DataService {
     unitId: string,
     orderId: string,
     idx: number,
-    value: IKeyValueObject,
+    value: IKeyValueObject
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`
       )
       .update(value);
   }
@@ -815,11 +786,11 @@ export class DataService {
     unitId: string,
     orderId: string,
     idx: number,
-    value: IKeyValueObject,
+    value: IKeyValueObject
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -829,11 +800,11 @@ export class DataService {
     unitId: string,
     orderId: string,
     idx: number,
-    value: IKeyValueObject,
+    value: IKeyValueObject
   ): Promise<void> {
     return this._angularFireDatabase
       .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
+        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`
       )
       .update(value);
   }
@@ -855,7 +826,7 @@ export class DataService {
   //
 
   public insertAdminUser(
-    value: IAdminUser,
+    value: IAdminUser
   ): firebase.database.ThenableReference {
     return this._angularFireDatabase.list(`/adminUsers`).push(value);
   }
@@ -868,7 +839,7 @@ export class DataService {
 
   public updateAdminUserRoles(
     userId: string,
-    value: IAdminUserRole,
+    value: IAdminUserRole
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/adminUsers/${userId}/roles`)
@@ -877,7 +848,7 @@ export class DataService {
 
   public updateAdminUserSettings(
     userId: string,
-    value: IAdminUserSettings,
+    value: IAdminUserSettings
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/adminUsers/${userId}/settings`)
@@ -886,7 +857,7 @@ export class DataService {
 
   public updateAdminUserSeletedLanguage(
     userId: string,
-    language: string,
+    language: string
   ): Promise<void> {
     return this._angularFireDatabase
       .object(`/adminUsers/${userId}/settings`)
@@ -897,7 +868,7 @@ export class DataService {
 
   public updateAdminUserProfileImagePath(
     userId: string,
-    imagePath: string | null,
+    imagePath: string | null
   ): Promise<void> {
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
       profileImage: imagePath,

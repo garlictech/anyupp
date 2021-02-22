@@ -4,14 +4,7 @@ import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
-import {
-  EOrderStatus,
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IGeneratedProduct,
-} from '@bgap/shared/types';
+import { EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IGeneratedProduct } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 import { DataService } from '../data/data.service';
@@ -34,7 +27,7 @@ export class OrderService {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
+        skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup | undefined): void => {
         this._groupCurrency = group?.currency;
@@ -60,7 +53,7 @@ export class OrderService {
           this._adminUser?.settings?.selectedUnitId || '',
           order._id,
           idx,
-          order.items[idx],
+          order.items[idx]
         )
         .then((): void => {
           if (
@@ -75,7 +68,7 @@ export class OrderService {
   public addProductVariant(
     order: IOrder,
     product: IGeneratedProduct,
-    variantId: string,
+    variantId: string
   ): void {
     const now = new Date().getTime();
     const tax = parseInt(product.tax || '0', 10);
@@ -92,8 +85,7 @@ export class OrderService {
           pricePerUnit: product.variants[variantId].price || 0,
           priceSum: product.variants[variantId].price || 0,
           tax,
-          taxSum:
-            ((product.variants[variantId].price || 0) / (100 + tax)) * tax,
+          taxSum: ((product.variants[variantId].price || 0) / (100 + tax)) * tax,
         },
         productId: product._id,
         productName: product.name,
@@ -106,7 +98,7 @@ export class OrderService {
         },
         variantId,
         variantName: product.variants[variantId].variantName,
-      },
+      }
     );
   }
 
@@ -115,14 +107,14 @@ export class OrderService {
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
       order._id,
-      status,
+      status
     );
   }
 
   public updateOrderItemStatus(
     orderId: string,
     status: EOrderStatus,
-    idx: number,
+    idx: number
   ): Promise<void> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser?.settings?.selectedChainId || '',
@@ -134,7 +126,7 @@ export class OrderService {
           status,
           userId: this._adminUser?._id || '',
         },
-      },
+      }
     );
   }
 }

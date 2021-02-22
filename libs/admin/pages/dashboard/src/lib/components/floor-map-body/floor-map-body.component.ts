@@ -1,39 +1,16 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import {
-  getOrdersByUser,
-  getTableOrders,
-  ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { getOrdersByUser, getTableOrders, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
-  fabricCanvas,
-  floorMapActions,
-  floorMapSelectors,
-  getObjectById,
-  getStatusBgColor,
-  getTableSeatId,
-  getTableSeatIds,
-  registerCanvasEvent,
-  setBgColor,
-  setBorder,
+  fabricCanvas, floorMapActions, floorMapSelectors, getObjectById, getStatusBgColor, getTableSeatId, getTableSeatIds,
+  registerCanvasEvent, setBgColor, setBorder
 } from '@bgap/admin/shared/floor-map';
 import { objectToArray } from '@bgap/shared/utils';
 import {
-  IFloorMapDataObject,
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-  IFloorMapUserOrderObjects,
-  IOrder,
-  IUnit,
+  IFloorMapDataObject, IFloorMapTableOrderObjects, IFloorMapTableOrders, IFloorMapUserOrderObjects, IOrder, IUnit
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -60,7 +37,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {
     this._store.dispatch(floorMapActions.resetFloorMap());
   }
@@ -81,8 +58,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
             this._store.pipe(
               select(floorMapSelectors.getInitialized),
               filter((initialized): boolean => !!initialized),
-              take(1),
-            ),
+              take(1)
+            )
         ),
         tap((): void => {
           if (this.unit?.floorMap?.objects) {
@@ -91,12 +68,10 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
           const padding = 20;
           const clientHeight =
-            (<HTMLElement>document.querySelector('#dashboardMainCardBody'))
-              .clientHeight -
+            (<HTMLElement>document.querySelector('#dashboardMainCardBody')).clientHeight -
             2 * padding;
           const clientWidth =
-            (<HTMLElement>document.querySelector('#dashboardMainCardBody'))
-              .clientWidth -
+            (<HTMLElement>document.querySelector('#dashboardMainCardBody')).clientWidth -
             2 * padding;
           const scale =
             (this.unit?.floorMap?.w || 1) / (this.unit?.floorMap?.h || 1) >
@@ -113,18 +88,19 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         }),
         switchMap(
           (): Observable<IOrder[]> =>
-            this._store.pipe(select(ordersSelectors.getAllActiveOrders)),
+            this._store.pipe(select(ordersSelectors.getAllActiveOrders))
         ),
-        untilDestroyed(this),
+        untilDestroyed(this)
       )
       .subscribe((orders: IOrder[]): void => {
         if (this.unit?.floorMap?.objects) {
-          const floorMapRawObjects: IFloorMapDataObject[] = <
-            IFloorMapDataObject[]
-          >objectToArray(this.unit.floorMap.objects, 'id');
+          const floorMapRawObjects: IFloorMapDataObject[] = <IFloorMapDataObject[]>objectToArray(
+            this.unit.floorMap.objects,
+            'id'
+          );
           const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
           const ordersByUser: IFloorMapUserOrderObjects = getOrdersByUser(
-            orders,
+            orders
           );
           this._allTableOrders = getTableOrders(tableSeatIds, ordersByUser);
 
@@ -134,11 +110,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           // tableOrders contains ALL seats!
           Object.values(this._allTableOrders).forEach(
             (tableOrder: IFloorMapTableOrders): void => {
-              const rawObj: IFloorMapDataObject = <IFloorMapDataObject>(
-                floorMapRawObjects.find(
-                  (o: IFloorMapDataObject): boolean =>
-                    getTableSeatId(o) === tableOrder.tsID,
-                )
+              const rawObj: IFloorMapDataObject = <IFloorMapDataObject>floorMapRawObjects.find(
+                (o: IFloorMapDataObject): boolean =>
+                  getTableSeatId(o) === tableOrder.tsID
               );
 
               const fabricObj: Group = <Group>getObjectById(rawObj?.id || '');
@@ -148,16 +122,16 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
                 setBorder(
                   fabricObj,
                   tableOrder.hasPaymentIntention ? '#ff0000' : undefined,
-                  tableOrder.hasPaymentIntention ? 5 : undefined,
+                  tableOrder.hasPaymentIntention ? 5 : undefined
                 );
 
                 // Repaint or clear bg
                 setBgColor(
                   fabricObj,
-                  getStatusBgColor(tableOrder.lowestStatus),
+                  getStatusBgColor(tableOrder.lowestStatus)
                 );
               }
-            },
+            }
           );
 
           fabricCanvas.renderAll();
@@ -172,9 +146,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _onMouseUp = (e: any): void => {
     if (e.target.type.indexOf('seat') === 0) {
-      const rawObject: IFloorMapDataObject = <IFloorMapDataObject>(
-        this.unit?.floorMap?.objects[e.target?.id]
-      );
+      const rawObject: IFloorMapDataObject = <IFloorMapDataObject>this.unit?.floorMap?.objects[
+        e.target?.id
+      ];
 
       if (rawObject) {
         const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {

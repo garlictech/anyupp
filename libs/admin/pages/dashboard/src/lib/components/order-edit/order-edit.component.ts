@@ -41,7 +41,7 @@ export class OrderEditComponent implements OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
-    private _dataService: DataService,
+    private _dataService: DataService
   ) {
     this.workingOrderStatus = false;
 
@@ -65,6 +65,7 @@ export class OrderEditComponent implements OnDestroy {
       });
   }
 
+
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -83,13 +84,13 @@ export class OrderEditComponent implements OnDestroy {
         (err): void => {
           console.error(err);
           this.workingOrderStatus = false;
-        },
+        }
       );
 
     this._store.dispatch(
       dashboardActions.setOrderEditing({
         orderEditing: false,
-      }),
+      })
     );
   }
 
@@ -97,7 +98,7 @@ export class OrderEditComponent implements OnDestroy {
     this._orderService.updateOrderItemStatus(
       this.order._id,
       EOrderStatus.REJECTED,
-      idx,
+      idx
     );
   }
 
@@ -108,7 +109,7 @@ export class OrderEditComponent implements OnDestroy {
       this.order._id,
       {
         paymentMethod: method,
-      },
+      }
     );
   }
 }

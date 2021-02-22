@@ -25,7 +25,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
-      untilDestroyed(this),
+      untilDestroyed(this)
     );
 
     this._store

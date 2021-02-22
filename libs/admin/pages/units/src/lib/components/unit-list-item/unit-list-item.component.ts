@@ -19,7 +19,7 @@ export class UnitListItemComponent {
 
   constructor(
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
+    private _dataService: DataService
   ) {}
 
   public editUnit(): void {

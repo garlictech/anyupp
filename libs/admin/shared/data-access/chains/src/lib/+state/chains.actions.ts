@@ -5,7 +5,7 @@ export const init = createAction('[Chains Page] Init');
 
 export const loadChainsSuccess = createAction(
   '[Chains] Load Chains Success',
-  props<{ chains: IChain[] }>(),
+  props<{ chains: IChain[] }>()
 );
 
 export const resetChains = createAction('[ChainList] Reset chains');

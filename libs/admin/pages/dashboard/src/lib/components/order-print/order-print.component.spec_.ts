@@ -11,7 +11,7 @@ xdescribe('OrderPrintComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [OrderPrintComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

@@ -11,7 +11,7 @@ xdescribe('StatusLedComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [StatusLedComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

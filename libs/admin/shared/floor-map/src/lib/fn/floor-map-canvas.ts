@@ -54,8 +54,8 @@ const _drawGrid = (): void => {
           fabricCanvas.width || 0,
           i * FLOOR_MAP_CONFIG.grid,
         ],
-        FLOOR_MAP_GRID_OPTIONS,
-      ),
+        FLOOR_MAP_GRID_OPTIONS
+      )
     );
   }
 
@@ -69,8 +69,8 @@ const _drawGrid = (): void => {
           i * FLOOR_MAP_CONFIG.grid,
           fabricCanvas.height || 0,
         ],
-        FLOOR_MAP_GRID_OPTIONS,
-      ),
+        FLOOR_MAP_GRID_OPTIONS
+      )
     );
   }
 };
@@ -91,13 +91,13 @@ const _snapToGrid = (e: any): void => {
   e.target.set({
     left:
       (Math.round(
-        e.target.left / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider),
+        e.target.left / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)
       ) *
         FLOOR_MAP_CONFIG.grid) /
       FLOOR_MAP_CONFIG.gridDivider,
     top:
       (Math.round(
-        e.target.top / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider),
+        e.target.top / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)
       ) *
         FLOOR_MAP_CONFIG.grid) /
       FLOOR_MAP_CONFIG.gridDivider,
@@ -164,7 +164,7 @@ const _onScaled = (e: any): void => {
   // Update radius
   if ((<fabric.Circle>bg).radius) {
     (<fabric.Circle>bg).setRadius(
-      _roundScale(((<fabric.Circle>bg).radius || 0) * e.target.scaleX),
+      _roundScale(((<fabric.Circle>bg).radius || 0) * e.target.scaleX)
     );
   }
 

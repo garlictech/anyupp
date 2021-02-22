@@ -11,7 +11,7 @@ xdescribe('DashboardComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [DashboardComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

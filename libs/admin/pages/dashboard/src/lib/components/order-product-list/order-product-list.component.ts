@@ -10,17 +10,8 @@ import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IGeneratedProduct,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -47,7 +38,7 @@ export class OrderProductListComponent {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
+        skipWhile((group): boolean => !group)
       )
       .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
@@ -65,42 +56,41 @@ export class OrderProductListComponent {
     combineLatest([
       this._store.pipe(
         select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this),
+        untilDestroyed(this)
       ),
       this._store.pipe(
         select(productsSelectors.getAllGeneratedUnitProducts),
-        untilDestroyed(this),
+        untilDestroyed(this)
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
         ([productCategories, generatedUnitProducts]: [
           IProductCategory[],
-          IProduct[],
+          IProduct[]
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
 
           this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
-            p._variants_arr = <IProductVariant[]>objectToArray(p.variants);
-          });
+            p._variants_arr = <IProductVariant[]>objectToArray(p.variants)
+          })
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {
               return (
                 this.generatedUnitProducts.filter(
-                  (p: IGeneratedProduct): boolean =>
-                    p.productCategoryId === category._id,
+                  (p: IGeneratedProduct): boolean => p.productCategoryId === category._id
                 ).length > 0
               );
-            },
+            }
           );
 
           this.selectedProductCategoryId = _get(
             this.productCategories,
             '[0]._id',
-            undefined,
+            undefined
           );
-        },
+        }
       );
   }
 
@@ -108,41 +98,37 @@ export class OrderProductListComponent {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(
-    product: IGeneratedProduct,
-    variantId: string,
-  ): void {
+  public addProductVariant(product: IGeneratedProduct, variantId: string): void {
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
         orderItem.productId === product._id &&
         orderItem.variantId === variantId &&
-        orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
+        orderItem.priceShown.pricePerUnit === product.variants[variantId].price
     );
 
     if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
         _cloneDeep(<IOrder>this.selectedOrder),
         <number>existingVariantOrderIdx,
-        1,
+        1
       );
 
       if (
         currentStatus(
-          (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx]
-            .statusLog,
+          (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx].statusLog
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
           (<IOrder>this.selectedOrder)._id,
           EOrderStatus.PLACED,
-          <number>existingVariantOrderIdx,
+          <number>existingVariantOrderIdx
         );
       }
     } else {
       this._orderService.addProductVariant(
         _cloneDeep(<IOrder>this.selectedOrder),
         product,
-        variantId,
+        variantId
       );
     }
   }

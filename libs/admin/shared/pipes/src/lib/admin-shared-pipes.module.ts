@@ -22,7 +22,7 @@ const PIPES = [
   AsFormControlPipe,
   AsFormArrayPipe,
   AsFormGroupPipe,
-  IterableAbstractControlsPipe,
+  IterableAbstractControlsPipe
 ];
 
 @NgModule({

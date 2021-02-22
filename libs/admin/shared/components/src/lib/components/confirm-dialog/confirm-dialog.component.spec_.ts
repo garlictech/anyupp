@@ -11,7 +11,7 @@ xdescribe('ConfirmDialogComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [ConfirmDialogComponent],
       }).compileComponents();
-    },
+    }
   );
 
   beforeEach((): void => {

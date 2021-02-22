@@ -11,7 +11,7 @@ xdescribe('FormStaffRoleComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormStaffRoleComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

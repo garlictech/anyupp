@@ -50,27 +50,21 @@
           <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('hu')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('en')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('en')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
-            [control]="
-              dialogForm.get('description')!.get('de')! | asFormControl
-            "
+            [control]="dialogForm.get('description')!.get('de')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -124,19 +118,13 @@
             <div class="col-md-3">
               <bgap-form-checkbox
                 caption="products.allergens.lactose"
-                [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('lactose')!
-                    | asFormControl
-                "
+                [control]="dialogForm.get('contains')!.get('allergens')!.get('lactose')! | asFormControl"
               ></bgap-form-checkbox>
             </div>
             <div class="col-md-3">
               <bgap-form-checkbox
                 caption="products.allergens.nuts"
-                [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('nuts')!
-                    | asFormControl
-                "
+                [control]="dialogForm.get('contains')!.get('allergens')!.get('nuts')! | asFormControl"
               ></bgap-form-checkbox>
             </div>
           </div>

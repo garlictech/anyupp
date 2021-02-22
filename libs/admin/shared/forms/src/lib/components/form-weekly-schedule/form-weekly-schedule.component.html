@@ -56,11 +56,7 @@
 
     <table>
       <tr
-        *ngFor="
-          let customDay of scheduleControl.get('override')!
-            | iterableAbstractControls;
-          index as i
-        "
+        *ngFor="let customDay of (scheduleControl.get('override')! | iterableAbstractControls); index as i"
       >
         <td>
           <input
@@ -77,9 +73,9 @@
             [placeholder]="'common.hmPlaceholder' | translate"
             [formControl]="customDay.get('from')! | asFormControl"
             [status]="
-              customDay.get('from')?.touched &&
+            customDay.get('from')?.touched &&
               (customDay.get('from')?.errors?.required ||
-                customDay.get('from')?.invalid)
+              customDay.get('from')?.invalid)
                 ? 'danger'
                 : 'basic'
             "
@@ -93,9 +89,9 @@
             [placeholder]="'common.hmPlaceholder' | translate"
             [formControl]="customDay.get('to')! | asFormControl"
             [status]="
-              customDay.get('to')?.touched &&
+            customDay.get('to')?.touched &&
               (customDay.get('to')?.errors?.required ||
-                customDay.get('to')?.invalid)
+              customDay.get('to')?.invalid)
                 ? 'danger'
                 : 'basic'
             "

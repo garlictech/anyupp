@@ -1,21 +1,9 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
-  EAdminRole,
-  EProductLevel,
-  EVariantAvailabilityType,
-  IAdminUserRole,
-  IProduct,
-  IProductVariant,
+  EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -46,14 +34,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {}
 
   ngOnInit(): void {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserRoles),
-        untilDestroyed(this),
+        untilDestroyed(this)
       )
       .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
         switch (this.productLevel) {
@@ -61,7 +49,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE)
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [

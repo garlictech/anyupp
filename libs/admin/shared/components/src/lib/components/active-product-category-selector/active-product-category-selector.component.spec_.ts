@@ -11,7 +11,7 @@ xdescribe('ActiveProductCategorySelectorComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ActiveProductCategorySelectorComponent],
       }).compileComponents();
-    }),
+    })
   );
 
   beforeEach((): void => {

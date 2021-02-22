@@ -17,47 +17,47 @@ const { selectAll, selectEntities } = adminUsersAdapter.getSelectors();
 
 export const getAdminUsersLoaded = createSelector(
   getAdminUsersState,
-  (state: IAdminUsersState) => state.loaded,
+  (state: IAdminUsersState) => state.loaded
 );
 
 export const getAdminUsersError = createSelector(
   getAdminUsersState,
-  (state: IAdminUsersState) => state.error,
+  (state: IAdminUsersState) => state.error
 );
 
 export const getAllAdminUsers = createSelector(
   getAdminUsersState,
-  (state: IAdminUsersState) => selectAll(state),
+  (state: IAdminUsersState) => selectAll(state)
 );
 
 export const getAdminUsersEntities = createSelector(
   getAdminUsersState,
-  (state: IAdminUsersState) => selectEntities(state),
+  (state: IAdminUsersState) => selectEntities(state)
 );
 
 export const getSelectedId = createSelector(
   getAdminUsersState,
-  (state: IAdminUsersState) => state.selectedId,
+  (state: IAdminUsersState) => state.selectedId
 );
 
 export const getSelected = createSelector(
   getAdminUsersEntities,
   getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
+  (entities, selectedId) => selectedId && entities[selectedId]
 );
 
 export const getAdminUserById = (id: string) => {
-  return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
-    | IAdminUser
-    | undefined =>
-    adminUsers.find((adminUser): boolean => adminUser._id === id),
+  return createSelector(
+    getAllAdminUsers,
+    (adminUsers: IAdminUser[]): IAdminUser | undefined =>
+      adminUsers.find((adminUser): boolean => adminUser._id === id)
   );
 };
 
 export const getAdminUserByEmail = (email: string) => {
-  return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
-    | IAdminUser
-    | undefined =>
-    adminUsers.find((adminUser): boolean => adminUser.email === email),
+  return createSelector(
+    getAllAdminUsers,
+    (adminUsers: IAdminUser[]): IAdminUser | undefined =>
+      adminUsers.find((adminUser): boolean => adminUser.email === email)
   );
 };

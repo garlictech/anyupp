@@ -25,7 +25,7 @@ export class ProductCategoryListItemComponent {
     });
 
     dialog.componentRef.instance.productCategory = _cloneDeep(
-      this.productCategory,
+      this.productCategory
     );
   }
 
