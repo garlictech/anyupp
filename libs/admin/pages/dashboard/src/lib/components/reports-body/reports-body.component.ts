@@ -18,7 +18,9 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<IOrder[]>([]);
+  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<
+    IOrder[]
+  >([]);
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
@@ -30,7 +32,7 @@ export class ReportsBodyComponent implements OnDestroy {
       .pipe(
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
@@ -47,7 +49,7 @@ export class ReportsBodyComponent implements OnDestroy {
         const dailyHistoryOrders: IOrder[] = historyOrders.filter(
           (o: IOrder): boolean =>
             o.created >= selectedDayInterval.start &&
-            o.created <= selectedDayInterval.end
+            o.created <= selectedDayInterval.end,
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);
@@ -55,7 +57,6 @@ export class ReportsBodyComponent implements OnDestroy {
 
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.

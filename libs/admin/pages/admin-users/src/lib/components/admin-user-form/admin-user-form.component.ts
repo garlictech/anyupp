@@ -1,10 +1,12 @@
-
 import { GraphQLService } from '@bgap/admin/shared/data-access/data';
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { cleanObject } from '@bgap/shared/utils';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
@@ -14,8 +16,7 @@ import { EImageType, IAdminUser } from '@bgap/shared/types';
   templateUrl: './admin-user-form.component.html',
   styleUrls: ['./admin-user-form.component.scss'],
 })
-export class AdminUserFormComponent
-  extends AbstractFormDialogComponent
+export class AdminUserFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
@@ -45,7 +46,9 @@ export class AdminUserFormComponent
     } else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
-        this._formService.adminExistingEmailValidator(this.dialogForm.controls.email || ''),
+        this._formService.adminExistingEmailValidator(
+          this.dialogForm.controls.email || '',
+        ),
       ]);
     }
   }
@@ -53,34 +56,39 @@ export class AdminUserFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       if (this.adminUser?._id) {
-          this._graphQLService.updateAdminUser(this.adminUser._id, cleanObject(this.dialogForm?.value))
+        this._graphQLService
+          .updateAdminUser(
+            this.adminUser._id,
+            cleanObject(this.dialogForm?.value),
+          )
           .subscribe(
             () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             error => {
               console.error('there was an error sending the query', error);
-            }
+            },
           );
       } else {
-      this._graphQLService.createAdminUser(cleanObject(this.dialogForm?.value))
+        this._graphQLService
+          .createAdminUser(cleanObject(this.dialogForm?.value))
           .subscribe(
             () => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.insertSuccessful'
+                'common.insertSuccessful',
               );
               this.close();
             },
             error => {
               console.error('there was an error sending the query', error);
-            }
+            },
           );
       }
     }
@@ -97,14 +105,14 @@ export class AdminUserFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
@@ -124,14 +132,14 @@ export class AdminUserFormComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

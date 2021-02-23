@@ -4,7 +4,10 @@ import { map } from 'rxjs/operators';
 
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AuthService, CognitoService } from '@bgap/admin/shared/data-access/auth';
+import {
+  AuthService,
+  CognitoService,
+} from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
@@ -50,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _authService: AuthService,
     private _dataService: DataService,
     private _cognitoService: CognitoService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
 
@@ -99,10 +102,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.adminUser = adminUser;
       });
 
-    this._translateService.onLangChange.subscribe((event: EventEmitter<LangChangeEvent>): void => {
-      this.selectedLang = _get(event, 'lang', '').split('-')[0];
-      this._translateMenuItems();
-    });
+    this._translateService.onLangChange.subscribe(
+      (event: EventEmitter<LangChangeEvent>): void => {
+        this.selectedLang = _get(event, 'lang', '').split('-')[0];
+        this._translateMenuItems();
+      },
+    );
     this._translateMenuItems();
   }
 
@@ -120,11 +125,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .onMediaQueryChange()
       .pipe(
         map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe(
         (isLessThanXl: boolean): boolean =>
-          (this.userPictureOnly = isLessThanXl)
+          (this.userPictureOnly = isLessThanXl),
       );
 
     this._menuService
@@ -174,7 +179,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) {
       this._dataService.updateAdminUserSeletedLanguage(
         this.adminUser?._id || '',
-        lang
+        lang,
       );
     }
   }

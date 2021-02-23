@@ -6,7 +6,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { IAdminRoleEntity, IAssignedEntityNames, IChain, IGroup, IKeyValue } from '@bgap/shared/types';
+import {
+  IAdminRoleEntity,
+  IAssignedEntityNames,
+  IChain,
+  IGroup,
+  IKeyValue,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -38,7 +44,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
       this._store.pipe(select(chainsSelectors.getAllChains)),
       this._store.pipe(select(groupsSelectors.getAllGroups)),
       (<FormGroup>this.control.get('entities')).valueChanges.pipe(
-        startWith(this.control.value.entities)
+        startWith(this.control.value.entities),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -46,7 +52,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
         ([chains, groups, entities]: [
           IChain[],
           IGroup[],
-          IAdminRoleEntity[]
+          IAdminRoleEntity[],
         ]): void => {
           // Fill the chain list
           this.chainOptions = [];
@@ -63,32 +69,32 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
             this.assignedGroups.push({
               chainName: _get(
                 chains.find((c): boolean => c._id === entity.chainId),
-                'name'
+                'name',
               ),
               groupName: _get(
                 groups.find((g): boolean => g._id === entity.groupId),
-                'name'
+                'name',
               ),
             });
           });
-        }
+        },
       );
 
     combineLatest([
       this.entitySelector.valueChanges,
       (<FormGroup>this.control.get('entities')).valueChanges.pipe(
-        startWith(this.control.value.entities)
+        startWith(this.control.value.entities),
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
         ([selectorValue, entities]: [
           IAdminRoleEntity,
-          IAdminRoleEntity[]
+          IAdminRoleEntity[],
         ]): void => {
           this._store
             .pipe(
-              select(groupsSelectors.getGroupsByChainId(selectorValue.chainId))
+              select(groupsSelectors.getGroupsByChainId(selectorValue.chainId)),
             )
             .pipe(take(1))
             .subscribe((groups): void => {
@@ -96,7 +102,9 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
 
               groups.forEach((group: IGroup): void => {
                 if (
-                  !entities.map((e): string => e.groupId || '').includes(group._id)
+                  !entities
+                    .map((e): string => e.groupId || '')
+                    .includes(group._id)
                 ) {
                   this.groupOptions.push({
                     key: group._id,
@@ -105,7 +113,7 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
                 }
               });
             });
-        }
+        },
       );
   }
 

@@ -49,7 +49,7 @@ export const loadRawData = (data: IFloorMapData): void => {
 
 export const loadRawDataObject = (
   rawData: IFloorMapDataObject,
-  setActive: boolean
+  setActive: boolean,
 ): void => {
   const { id, ...data } = rawData;
 
@@ -68,7 +68,9 @@ const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
   }
 };
 
-export const createObject = (mapObject: IFloorMapDataObject): fabric.Group | undefined => {
+export const createObject = (
+  mapObject: IFloorMapDataObject,
+): fabric.Group | undefined => {
   switch (mapObject.t) {
     case EUnitMapObjectType.TABLE_RECTANGLE:
       return createTableRect(mapObject);
@@ -133,7 +135,10 @@ export const setTextToActiveObject = (text: string): void => {
   }
 };
 
-export const setRawDataField = (key: keyof IFloorMapDataObject, value: string | number): void => {
+export const setRawDataField = (
+  key: keyof IFloorMapDataObject,
+  value: string | number,
+): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
@@ -144,7 +149,7 @@ export const setRawDataField = (key: keyof IFloorMapDataObject, value: string | 
 
 export const getRawDataField = (
   obj: IFabricGroup,
-  key: keyof IFloorMapDataObject
+  key: keyof IFloorMapDataObject,
 ): string | number => mapRawData.objects[obj.id][key] || '';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -163,7 +168,7 @@ const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateObjectMapRawData = (e: any): void => {
   const objectProperties: IFabricObjectProperties = _getObjectProperties(
-    e.target
+    e.target,
   );
 
   if (objectProperties) {

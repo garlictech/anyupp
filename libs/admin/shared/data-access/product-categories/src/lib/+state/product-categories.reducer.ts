@@ -26,7 +26,7 @@ export const initialState: IProductCategoriesState = productCategoriesAdapter.ge
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const reducer = createReducer(
@@ -42,16 +42,16 @@ const reducer = createReducer(
       productCategoriesAdapter.setAll(productCategories, {
         ...state,
         loaded: true,
-      })
+      }),
   ),
   on(ProductCategoriesActions.resetProductCategories, state =>
-    productCategoriesAdapter.removeAll(state)
-  )
+    productCategoriesAdapter.removeAll(state),
+  ),
 );
 
 export function productCategoriesReducer(
   state: IProductCategoriesState | undefined,
-  action: Action
+  action: Action,
 ) {
   return reducer(state, action);
 }

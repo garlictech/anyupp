@@ -17,7 +17,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
 import * as floorMapActions from '../../+state/floor-map.actions';
-import { FLOOR_MAP_OBJECT_DEFAULTS, FLOOR_MAP_OBJECT_COMMON_DEFAULTS } from '../../const';
+import {
+  FLOOR_MAP_OBJECT_DEFAULTS,
+  FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
+} from '../../const';
 import * as floorMapFuncs from '../../fn';
 
 @UntilDestroy()
@@ -75,13 +78,13 @@ export class FloorMapEditorComponent
     floorMapFuncs.initCanvas(this.editMode || false);
     floorMapFuncs.resizeCanvas(
       this.dimensionForm?.value.width,
-      this.dimensionForm?.value.height
+      this.dimensionForm?.value.height,
     );
 
     if (this.editMode) {
       floorMapFuncs.registerCanvasEvent(
         'object:modified',
-        floorMapFuncs.updateObjectMapRawData
+        floorMapFuncs.updateObjectMapRawData,
       );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       floorMapFuncs.registerCanvasEvent('mouse:up', (e: any): void => {
@@ -119,7 +122,7 @@ export class FloorMapEditorComponent
     }
 
     this._store.dispatch(
-      floorMapActions.floorMapInitialized({ initialized: true })
+      floorMapActions.floorMapInitialized({ initialized: true }),
     );
   }
 

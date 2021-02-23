@@ -4,10 +4,19 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+} from '@angular/router';
 import { GraphqlClientService } from '@bgap/admin/shared/data-access/graphql-client';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { EAdminRole, IAdminUser, IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import {
+  EAdminRole,
+  IAdminUser,
+  IAuthenticatedCognitoUser,
+} from '@bgap/shared/types';
 import { CognitoService } from '../cognito/cognito.service';
 
 @Injectable({
@@ -18,7 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     private _toasterService: ToasterService,
     private _router: Router,
     private _cognitoService: CognitoService,
-    private _graphqlClientService: GraphqlClientService
+    private _graphqlClientService: GraphqlClientService,
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
@@ -31,12 +40,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
 
         return true;
-      })
+      }),
     );
   }
 
   canActivateChild(
-    next: ActivatedRouteSnapshot
+    next: ActivatedRouteSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this._getAdminUser().pipe(
       map((adminUser: IAdminUser | undefined) => {
@@ -53,27 +62,29 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
 
         return true;
-      })
+      }),
     );
   }
 
-  private _getAdminUser(): Observable<IAdminUser | undefined>  {
+  private _getAdminUser(): Observable<IAdminUser | undefined> {
     return of('guard').pipe(
       switchMap(
         (): Observable<IAuthenticatedCognitoUser | undefined> =>
-          this._cognitoService.getAuth()
+          this._cognitoService.getAuth(),
       ),
       switchMap(
         (cognitoUser): Observable<IAdminUser | undefined> => {
-          return cognitoUser ? this._graphqlClientService.adminClient
-            .query(GetAdminUser, {
-              id: cognitoUser?.user?.id,
-            })
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .pipe(map((data: any) => data?.data?.getAdminUser || undefined)) : of(undefined);
-        }
+          return cognitoUser
+            ? this._graphqlClientService.adminClient
+                .query(GetAdminUser, {
+                  id: cognitoUser?.user?.id,
+                })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .pipe(map((data: any) => data?.data?.getAdminUser || undefined))
+            : of(undefined);
+        },
       ),
-      take(1)
+      take(1),
     );
   }
 }

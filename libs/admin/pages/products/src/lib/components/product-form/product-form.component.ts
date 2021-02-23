@@ -5,10 +5,20 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
 } from '@bgap/shared/types';
 import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -19,8 +29,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-product-form',
   templateUrl: './product-form.component.html',
 })
-export class ProductFormComponent
-  extends AbstractFormDialogComponent
+export class ProductFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
   public product!: IProduct;
@@ -68,14 +77,14 @@ export class ProductFormComponent
     this._store
       .pipe(
         select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories.map(
           (productCategory): IKeyValue => ({
             key: productCategory._id,
             value: productCategory.name,
-          })
+          }),
         );
       });
   }
@@ -93,7 +102,7 @@ export class ProductFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       description: this._formBuilder.group(
         {
@@ -101,7 +110,7 @@ export class ProductFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       productCategoryId: ['', [Validators.required]],
       productType: ['', [Validators.required]],
@@ -136,7 +145,7 @@ export class ProductFormComponent
       // Patch ProductCategoryID
       if (this._selectedProductCategoryId) {
         this.dialogForm.controls.productCategoryId.patchValue(
-          this._selectedProductCategoryId
+          this._selectedProductCategoryId,
         );
       }
       this.dialogForm.controls.isVisible.patchValue(true);
@@ -164,13 +173,13 @@ export class ProductFormComponent
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN UPDATE ERROR', err);
-            }
+            },
           );
       } else {
         this._dataService.insertChainProduct(this._selectedChainId, value).then(
@@ -178,13 +187,13 @@ export class ProductFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.insertSuccessful'
+              'common.insertSuccessful',
             );
             this.close();
           },
           err => {
             console.error('CHAIN INSERT ERROR', err);
-          }
+          },
         );
       }
     }
@@ -199,20 +208,20 @@ export class ProductFormComponent
         .updateProductCategoryImagePath(
           this._selectedGroupId,
           this.product._id,
-          imagePath
+          imagePath,
         )
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
@@ -230,20 +239,20 @@ export class ProductFormComponent
         .updateProductCategoryImagePath(
           this._selectedGroupId,
           this.product._id,
-          null
+          null,
         )
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

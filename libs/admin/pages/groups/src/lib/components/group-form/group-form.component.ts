@@ -20,8 +20,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
-export class GroupFormComponent
-  extends AbstractFormDialogComponent
+export class GroupFormComponent extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
   public group!: IGroup;
   public chainOptions: IKeyValue[] = [];
@@ -44,7 +43,7 @@ export class GroupFormComponent
           (chain): IKeyValue => ({
             key: chain._id,
             value: chain.name,
-          })
+          }),
         );
       });
 
@@ -52,7 +51,7 @@ export class GroupFormComponent
       (currency): IKeyValue => ({
         key: currency,
         value: currency,
-      })
+      }),
     );
   }
 
@@ -66,7 +65,7 @@ export class GroupFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       currency: ['', [Validators.required]],
       ...contactFormGroup(this._formBuilder),
@@ -100,13 +99,13 @@ export class GroupFormComponent
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             err => {
               console.error('GROUP UPDATE ERROR', err);
-            }
+            },
           );
       } else {
         this._dataService.insertGroup(this.dialogForm?.value).then(
@@ -114,13 +113,13 @@ export class GroupFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.insertSuccessful'
+              'common.insertSuccessful',
             );
             this.close();
           },
           err => {
             console.error('GROUP INSERT ERROR', err);
-          }
+          },
         );
       }
     }

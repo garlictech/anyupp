@@ -11,8 +11,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './unit-floor-map.component.html',
   styleUrls: ['./unit-floor-map.component.scss'],
 })
-export class UnitFloorMapComponent
-  extends AbstractFormDialogComponent
+export class UnitFloorMapComponent extends AbstractFormDialogComponent
   implements OnInit {
   public unit!: IUnit;
   public rawForm!: FormGroup;
@@ -47,13 +46,13 @@ export class UnitFloorMapComponent
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.updateSuccessful'
+            'common.updateSuccessful',
           );
           this.close();
         },
         err => {
           console.error('GROUP UPDATE ERROR', err);
-        }
+        },
       );
   }
 

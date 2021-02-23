@@ -25,7 +25,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
 
     this._store

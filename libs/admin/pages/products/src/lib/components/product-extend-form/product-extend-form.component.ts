@@ -7,10 +7,20 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel, IAdminUserSettings, IKeyValue, ILane, IProduct, IProductCategory, IProductVariant, IUnit
+  EProductLevel,
+  IAdminUserSettings,
+  IKeyValue,
+  ILane,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+  IUnit,
 } from '@bgap/shared/types';
 import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -21,8 +31,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
-export class ProductExtendFormComponent
-  extends AbstractFormDialogComponent
+export class ProductExtendFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public product!: IProduct;
   public productLevel!: EProductLevel;
@@ -55,21 +64,21 @@ export class ProductExtendFormComponent
 
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
 
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),
         skipWhile((unit: IUnit | undefined): boolean => !unit),
-        take(1)
+        take(1),
       )
       .subscribe((unit: IUnit | undefined): void => {
         this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
           (lane): IKeyValue => ({
             key: lane._id || '',
             value: lane.name,
-          })
+          }),
         );
       });
   }
@@ -87,7 +96,7 @@ export class ProductExtendFormComponent
     if (this.productLevel === EProductLevel.GROUP) {
       this.dialogForm.addControl(
         'tax',
-        new FormControl('', Validators.required)
+        new FormControl('', Validators.required),
       );
     }
     if (this.productLevel === EProductLevel.UNIT) {
@@ -111,7 +120,7 @@ export class ProductExtendFormComponent
           const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
           availabilityGroup.patchValue(availability);
           (variantGroup.controls.availabilities as FormArray).push(
-            availabilityGroup
+            availabilityGroup,
           );
         });
 
@@ -153,14 +162,14 @@ export class ProductExtendFormComponent
             updatePromise = this._dataService.updateGroupProduct(
               this._selectedGroupId || '',
               this.product._id,
-              value
+              value,
             );
             break;
           case EProductLevel.UNIT:
             updatePromise = this._dataService.updateUnitProduct(
               this._selectedUnitId || '',
               this.product._id,
-              value
+              value,
             );
             break;
           default:
@@ -173,13 +182,13 @@ export class ProductExtendFormComponent
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN UPDATE ERROR', err);
-            }
+            },
           );
         }
       } else {
@@ -192,13 +201,13 @@ export class ProductExtendFormComponent
           case EProductLevel.GROUP:
             insertPromise = this._dataService.insertGroupProduct(
               this._selectedGroupId || '',
-              value
+              value,
             );
             break;
           case EProductLevel.UNIT:
             insertPromise = this._dataService.insertUnitProduct(
               this._selectedUnitId || '',
-              value
+              value,
             );
             break;
           default:
@@ -211,13 +220,13 @@ export class ProductExtendFormComponent
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.insertSuccessful'
+                'common.insertSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN INSERT ERROR', err);
-            }
+            },
           );
         }
       }

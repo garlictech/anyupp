@@ -35,8 +35,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-unit-form',
   templateUrl: './unit-form.component.html',
 })
-export class UnitFormComponent
-  extends AbstractFormDialogComponent
+export class UnitFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;
@@ -55,7 +54,7 @@ export class UnitFormComponent
     this._store
       .pipe(
         select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((groups: IGroup[]): void => {
         this.groups = groups;
@@ -64,7 +63,7 @@ export class UnitFormComponent
           (group: IGroup): IKeyValue => ({
             key: group._id,
             value: group.name,
-          })
+          }),
         );
       });
 
@@ -79,7 +78,7 @@ export class UnitFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       paymentModes: [[]],
       ...contactFormGroup(this._formBuilder),
@@ -119,7 +118,7 @@ export class UnitFormComponent
           }),
           override: this._formBuilder.array([]),
         },
-        { validators: unitOpeningHoursValidator }
+        { validators: unitOpeningHoursValidator },
       ),
       _lanesArr: this._formBuilder.array([]), // temp array!
     });
@@ -132,14 +131,16 @@ export class UnitFormComponent
       // Parse openingHours object to temp array
       const override: ICustomDailySchedule[] = _get(
         this.unit,
-        'openingHours.override'
+        'openingHours.override',
       );
       if (override) {
         override.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (<FormArray>this.dialogForm?.get('openingHours')?.get('override')).push(dayGroup);
+          (<FormArray>(
+            this.dialogForm?.get('openingHours')?.get('override')
+          )).push(dayGroup);
         });
       }
 
@@ -194,13 +195,13 @@ export class UnitFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.updateSuccessful'
+              'common.updateSuccessful',
             );
             this.close();
           },
           err => {
             console.error('GROUP UPDATE ERROR', err);
-          }
+          },
         );
       } else {
         this._dataService.insertUnit(value).then(
@@ -208,13 +209,13 @@ export class UnitFormComponent
             this._toasterService.show(
               EToasterType.SUCCESS,
               '',
-              'common.insertSuccessful'
+              'common.insertSuccessful',
             );
             this.close();
           },
           err => {
             console.error('GROUP INSERT ERROR', err);
-          }
+          },
         );
       }
     }

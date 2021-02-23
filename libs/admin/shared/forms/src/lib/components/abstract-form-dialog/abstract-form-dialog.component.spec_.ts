@@ -11,7 +11,7 @@ xdescribe('AbstractFormDialogComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [AbstractFormDialogComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

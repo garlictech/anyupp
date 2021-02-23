@@ -1,4 +1,3 @@
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AuthService } from '@bgap/admin/shared/data-access/auth';
@@ -10,8 +9,7 @@ import { IUser } from '@bgap/shared/types';
   selector: 'bgap-user-form',
   templateUrl: './user-form.component.html',
 })
-export class UserFormComponent
-  extends AbstractFormDialogComponent
+export class UserFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public user: IUser | undefined;
 

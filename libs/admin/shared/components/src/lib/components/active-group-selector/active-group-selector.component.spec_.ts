@@ -11,7 +11,7 @@ xdescribe('ActiveGroupSelectorComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ActiveGroupSelectorComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

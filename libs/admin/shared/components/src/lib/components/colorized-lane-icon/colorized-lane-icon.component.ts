@@ -25,10 +25,14 @@ export class ColorizedLaneIconComponent implements OnInit {
       .pipe(
         select(unitsSelectors.getSelectedUnit),
         skipWhile((unit: IUnit | undefined): boolean => !unit),
-        take(1)
+        take(1),
       )
       .subscribe((unit: IUnit | undefined): void => {
-        this.laneColor = _get(unit, `lanes[${this.laneId}].color`, DEFAULT_LANE_COLOR);
+        this.laneColor = _get(
+          unit,
+          `lanes[${this.laneId}].color`,
+          DEFAULT_LANE_COLOR,
+        );
       });
   }
 }

@@ -28,7 +28,6 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
       });
   }
 
-
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

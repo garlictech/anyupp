@@ -4,7 +4,11 @@ import { filter } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { zeroFill } from '@bgap/shared/utils';
@@ -37,7 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _dataService: DataService,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {
     this.resized = false;
     this.toggleFormControl = new FormControl(false);
@@ -57,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .pipe(
         select(unitsSelectors.getSelectedUnit),
         filter((unit): boolean => !!unit),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((unit: IUnit | undefined): void => {
         this.selectedUnit = unit;
@@ -72,11 +76,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe((): void => {
         const date = new Date();
         this.time = `${zeroFill(date.getHours())}:${zeroFill(
-          date.getMinutes()
+          date.getMinutes(),
         )}:${zeroFill(date.getSeconds())}`;
       });
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
@@ -87,7 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this._store.dispatch(
         dashboardActions.setListMode({
           listMode,
-        })
+        }),
       );
 
       this._store.dispatch(dashboardActions.resetSelectedOrderId());
@@ -96,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._store.dispatch(
           dashboardActions.setOrderEditing({
             orderEditing: false,
-          })
+          }),
         );
       }
     }
@@ -109,7 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.dashboardSettings.size === EDashboardSize.NORMAL
             ? EDashboardSize.LARGER
             : EDashboardSize.NORMAL,
-      })
+      }),
     );
   }
 

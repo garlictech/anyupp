@@ -12,8 +12,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-product-category-form',
   templateUrl: './product-category-form.component.html',
 })
-export class ProductCategoryFormComponent
-  extends AbstractFormDialogComponent
+export class ProductCategoryFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public productCategory!: IProductCategory;
   public eImageType = EImageType;
@@ -45,7 +44,7 @@ export class ProductCategoryFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       description: this._formBuilder.group(
         {
@@ -53,7 +52,7 @@ export class ProductCategoryFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       image: [''],
     });
@@ -70,36 +69,39 @@ export class ProductCategoryFormComponent
           .updateProductCategory(
             this._selectedChainId || '',
             this.productCategory._id,
-            this.dialogForm?.value
+            this.dialogForm?.value,
           )
           .then(
             (): void => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.updateSuccessful'
+                'common.updateSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN UPDATE ERROR', err);
-            }
+            },
           );
       } else {
         this._dataService
-          .insertProductCategory(this._selectedChainId || '', this.dialogForm?.value)
+          .insertProductCategory(
+            this._selectedChainId || '',
+            this.dialogForm?.value,
+          )
           .then(
             (): void => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
                 '',
-                'common.insertSuccessful'
+                'common.insertSuccessful',
               );
               this.close();
             },
             err => {
               console.error('CHAIN INSERT ERROR', err);
-            }
+            },
           );
       }
     }
@@ -114,20 +116,20 @@ export class ProductCategoryFormComponent
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
           this.productCategory._id,
-          imagePath
+          imagePath,
         )
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
@@ -145,20 +147,20 @@ export class ProductCategoryFormComponent
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
           this.productCategory._id,
-          null
+          null,
         )
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

@@ -19,7 +19,7 @@ export interface IGroupsPartialState {
 export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<IGroup>(
   {
     selectId: (item: IGroup): string => item._id,
-  }
+  },
 );
 
 export const initialState: IGroupsState = groupsAdapter.getInitialState({
@@ -31,9 +31,9 @@ const reducer = createReducer(
   initialState,
   on(GroupsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(GroupsActions.loadGroupsSuccess, (state, { groups }) =>
-    groupsAdapter.setAll(groups, { ...state, loaded: true })
+    groupsAdapter.setAll(groups, { ...state, loaded: true }),
   ),
-  on(GroupsActions.resetGroups, state => groupsAdapter.removeAll(state))
+  on(GroupsActions.resetGroups, state => groupsAdapter.removeAll(state)),
 );
 
 export function groupsReducer(state: IGroupsState | undefined, action: Action) {

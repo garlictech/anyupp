@@ -44,15 +44,15 @@ export const initialChainProductState: IProductEntityState = chainProductsAdapte
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const chainProductsReducer = createReducer(
   initialChainProductState,
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadChainProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  )
+    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  ),
 );
 
 //
@@ -69,15 +69,15 @@ export const initialGroupProductState: IProductEntityState = groupProductsAdapte
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const groupProductsReducer = createReducer(
   initialGroupProductState,
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadGroupProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  )
+    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  ),
 );
 
 //
@@ -94,15 +94,15 @@ export const initialUnitProductState: IProductEntityState = unitProductsAdapter.
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const unitProductsReducer = createReducer(
   initialUnitProductState,
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadUnitProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  )
+    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  ),
 );
 
 //
@@ -119,15 +119,15 @@ export const initialGeneratedUnitProductState: IProductEntityState = generatedUn
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const generatedUnitProductsReducer = createReducer(
   initialGeneratedUnitProductState,
   on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
   on(ProductsActions.loadGeneratedUnitProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true })
-  )
+    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  ),
 );
 
 const reducerMap: ActionReducerMap<IProductsState> = {
@@ -138,12 +138,12 @@ const reducerMap: ActionReducerMap<IProductsState> = {
 };
 
 const combinedReducer: ActionReducer<IProductsState> = combineReducers(
-  reducerMap
+  reducerMap,
 );
 
 export function productsReducer(
   state: IProductsState | undefined,
-  action: Action
+  action: Action,
 ): IProductsState {
   return combinedReducer(state, action);
 }

@@ -31,7 +31,10 @@ export class CognitoService {
   }): void {
     if (payload.event === 'signIn') {
       this._onSignInCallback?.();
-    } else if (payload.event === 'signOut' || payload.event === 'oAuthSignOut') {
+    } else if (
+      payload.event === 'signOut' ||
+      payload.event === 'oAuthSignOut'
+    ) {
       this._onSignOutCallback?.();
     }
   }
@@ -57,7 +60,7 @@ export class CognitoService {
   public isAuthenticated(): Observable<boolean> {
     return from(Auth.currentAuthenticatedUser()).pipe(
       mapTo(true),
-      catchError(() => of(false))
+      catchError(() => of(false)),
     );
   }
 
@@ -75,7 +78,7 @@ export class CognitoService {
           },
         };
       }),
-      catchError(() => of(undefined))
+      catchError(() => of(undefined)),
     );
   }
 

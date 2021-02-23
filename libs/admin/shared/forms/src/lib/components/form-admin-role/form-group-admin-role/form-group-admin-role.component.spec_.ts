@@ -11,7 +11,7 @@ xdescribe('FormGroupAdminRoleComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormGroupAdminRoleComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

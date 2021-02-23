@@ -11,7 +11,7 @@ xdescribe('ActiveUnitSelectorComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ActiveUnitSelectorComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

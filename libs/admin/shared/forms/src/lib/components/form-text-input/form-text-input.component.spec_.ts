@@ -11,7 +11,7 @@ xdescribe('TextInputComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormTextInputComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

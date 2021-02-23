@@ -4,5 +4,5 @@ export const environment = {
   production: true,
   id: 'prod',
   name: '',
-  config: CONFIG
+  config: CONFIG,
 };

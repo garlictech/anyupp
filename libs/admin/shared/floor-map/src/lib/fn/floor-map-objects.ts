@@ -31,7 +31,7 @@ const _commonGroupOptions = () =>
     : FLOOR_MAP_DISABLED_GROUP_OPTIONS;
 
 export const createTableRect = (
-  rawObject: IFloorMapDataObject
+  rawObject: IFloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Rect({
     fill: FLOOR_MAP_CONFIG.tableFill,
@@ -51,7 +51,7 @@ export const createTableRect = (
 };
 
 export const createTableCircle = (
-  rawObject: IFloorMapDataObject
+  rawObject: IFloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Circle({
     radius: rawObject.r,
@@ -74,7 +74,7 @@ export const createTableCircle = (
 };
 
 export const createSeatRect = (
-  rawObject: IFloorMapDataObject
+  rawObject: IFloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Rect({
     ..._wh(rawObject),
@@ -94,7 +94,7 @@ export const createSeatRect = (
 };
 
 export const createSeatCircle = (
-  rawObject: IFloorMapDataObject
+  rawObject: IFloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Circle({
     radius: rawObject.r,
@@ -167,12 +167,13 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getObjectById = (id: string): fabric.Object | undefined => fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
+export const getObjectById = (id: string): fabric.Object | undefined =>
+  fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
 
 export const setBorder = (
   obj: fabric.Group,
   color: string = FLOOR_MAP_CONFIG.seatStroke,
-  strokeWidth: number = FLOOR_MAP_CONFIG.strokeWidth
+  strokeWidth: number = FLOOR_MAP_CONFIG.strokeWidth,
 ): void => {
   const bgObj: fabric.Rect | fabric.Circle | null = getObjectBg(obj);
 
@@ -184,7 +185,7 @@ export const setBorder = (
 
 export const setBgColor = (
   obj: fabric.Group,
-  color: string = FLOOR_MAP_CONFIG.seatFill
+  color: string = FLOOR_MAP_CONFIG.seatFill,
 ): void => {
   const bgObj: fabric.Rect | fabric.Circle | null = getObjectBg(obj);
 

@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private _dataService: DataService,
     private _cognitoService: CognitoService,
-    private _amplifyService: AmplifyService
+    private _amplifyService: AmplifyService,
   ) {
     this._amplifyService.authStateChange$.subscribe((authState: AuthState) => {
       if (authState.user) {

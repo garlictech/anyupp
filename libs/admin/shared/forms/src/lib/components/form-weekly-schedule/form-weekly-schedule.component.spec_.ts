@@ -11,7 +11,7 @@ xdescribe('FormWeeklyScheduleComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormWeeklyScheduleComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

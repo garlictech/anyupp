@@ -52,13 +52,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService
+    private _dataService: DataService,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
 
     this.groupProducts$ = this._store.pipe(
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
   }
 
@@ -83,45 +83,44 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .pipe(
         select(productsSelectors.getChainProductsOfSelectedCategory()),
         map((products): IProduct[] =>
-          products.sort(customNumberCompare('position'))
+          products.sort(customNumberCompare('position')),
         ),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
         this._sortedChainProductIds = this.chainProducts.map(
-          (p): string => p._id
+          (p): string => p._id,
         );
       });
-
 
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
         map((products): IProduct[] =>
-          products.sort(customNumberCompare('position'))
+          products.sort(customNumberCompare('position')),
         ),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map(
-          (p): string => p._id
+          (p): string => p._id,
         );
       });
 
     combineLatest([
       this._store.pipe(
         select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(loggedUserSelectors.getLoggedUser),
-        skipWhile((adminUser): boolean => !adminUser)
+        skipWhile((adminUser): boolean => !adminUser),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -129,7 +128,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         ([pendingGroupProducts, pendingUnitProducts, adminUser]: [
           IProduct[],
           IProduct[],
-          IAdminUser
+          IAdminUser,
         ]): void => {
           this.adminUser = adminUser;
 
@@ -146,12 +145,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
             .pipe(
               select(groupsSelectors.getSeletedGroup),
               skipWhile((group): boolean => !group),
-              take(1)
+              take(1),
             )
             .subscribe((group: IGroup | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
-        }
+        },
       );
   }
 
@@ -187,7 +186,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this._sortedChainProductIds.splice(
         idx + $event.change,
         0,
-        $event.productId
+        $event.productId,
       );
 
       this._sortedChainProductIds.forEach(
@@ -195,9 +194,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
           this._dataService.updateChainProductPosition(
             this.selectedChainId,
             productId,
-            (pos + 1).toString()
+            (pos + 1).toString(),
           );
-        }
+        },
       );
     }
   }
@@ -215,7 +214,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this._sortedUnitProductIds.splice(
         idx + $event.change,
         0,
-        $event.productId
+        $event.productId,
       );
 
       this._sortedUnitProductIds.forEach(
@@ -223,9 +222,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
           this._dataService.updateUnitProductPosition(
             this.selectedUnitId,
             productId,
-            (pos + 1).toString()
+            (pos + 1).toString(),
           );
-        }
+        },
       );
     }
   }

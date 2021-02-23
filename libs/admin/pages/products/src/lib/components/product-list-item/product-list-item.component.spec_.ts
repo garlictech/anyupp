@@ -11,7 +11,7 @@ xdescribe('ProductListItemComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ProductListItemComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

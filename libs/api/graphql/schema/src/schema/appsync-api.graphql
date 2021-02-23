@@ -40,7 +40,7 @@ input LocalizedItemInput {
 
 # AdminUser
 
-type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools @model {
   id: ID!
   name: String
   profileImage: String
@@ -50,18 +50,18 @@ type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools {
   phone: String
 }
 
-type AdminUserRole @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUserRole @aws_iam @aws_api_key @aws_cognito_user_pools @model {
   role: String!
   entities: [AdminRoleEntity]
 }
 
-type AdminRoleEntity @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminRoleEntity @aws_iam @aws_api_key @aws_cognito_user_pools @model {
   chainId: String
   groupId: String
   unitId: String
 }
 
-type AdminUserSettings @aws_iam @aws_api_key @aws_cognito_user_pools {
+type AdminUserSettings @aws_iam @aws_api_key @aws_cognito_user_pools @model {
   selectedChainId: String
   selectedGroupId: String
   selectedUnitId: String

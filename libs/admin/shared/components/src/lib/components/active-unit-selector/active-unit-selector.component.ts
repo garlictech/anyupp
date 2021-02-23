@@ -25,7 +25,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
     this.showIcon = false;
     this.units$ = this._store.pipe(
       select(unitsSelectors.getSelectedGroupUnits),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
 
     this._store
@@ -38,7 +38,6 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
   get selectedUnitId(): string {
     return _get(this._adminUser, 'settings.selectedUnitId');
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.

@@ -3,7 +3,9 @@ import { EOrderStatus } from '@bgap/shared/types';
 import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
 
 export const generateId = (): string => {
-  return Math.random().toString(36).substr(2, 16);
+  return Math.random()
+    .toString(36)
+    .substr(2, 16);
 };
 
 export const fixTextScale = (o: fabric.Object, target: fabric.Object): void => {
@@ -48,7 +50,9 @@ export const getObjectText = (obj: fabric.Group): string => {
   return '';
 };
 
-export const getObjectBg = (obj: fabric.Group): fabric.Rect | fabric.Circle | null => {
+export const getObjectBg = (
+  obj: fabric.Group,
+): fabric.Rect | fabric.Circle | null => {
   if (obj?.getObjects) {
     return obj.getObjects()?.filter((o): boolean => o.type === 'bg')[0];
   }
@@ -62,7 +66,7 @@ export const getObjectRadius = (obj: fabric.Group): number | null => {
       obj.getObjects()?.filter((o): boolean => o instanceof fabric.Circle)[0]
     );
 
-    return circleField ? (circleField.radius || 1) : null;
+    return circleField ? circleField.radius || 1 : null;
   }
 
   return null;

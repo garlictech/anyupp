@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
-import { NbButtonModule, NbCardModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbInputModule,
+  NbLayoutModule,
+} from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { LoginComponent } from './components/login/login.component';
@@ -30,8 +35,6 @@ const NEBULAR_MODULES = [
       },
     ]),
   ],
-  declarations: [
-    LoginComponent
-  ],
+  declarations: [LoginComponent],
 })
 export class AdminPagesAuthModule {}

@@ -15,9 +15,7 @@ import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-r
 export class AdminUserListItemComponent {
   @Input() adminUser!: IAdminUser;
 
-  constructor(
-    private _nbDialogService: NbDialogService
-  ) {}
+  constructor(private _nbDialogService: NbDialogService) {}
 
   editAdminUser(): void {
     const dialog = this._nbDialogService.open(AdminUserFormComponent, {

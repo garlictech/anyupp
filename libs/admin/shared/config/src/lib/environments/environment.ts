@@ -2,7 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { PETROT_CONFIG } from '@bgap/shared/config';
+import { CONFIG } from '@bgap/shared/config';
 
 export const environment = {
   production: false,
@@ -14,7 +14,7 @@ export const environment = {
     // uri: `wss://graphql-inmg2ygdca-uc.a.run.app/graphql`,
     ws: 'ws://localhost:3333/graphql',
   },
-  config: PETROT_CONFIG // CONFIG
+  config: CONFIG
 };
 
 /*

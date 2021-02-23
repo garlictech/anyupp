@@ -116,7 +116,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
           strictActionImmutability: true,
           strictStateImmutability: true,
         },
-      }
+      },
     ),
     !environment.production
       ? StoreDevtoolsModule.instrument({
@@ -166,14 +166,14 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
           // split based on operation type
           ({ query }) => {
             const { kind, operation } = getMainDefinition(
-              query
+              query,
             ) as OperationDefinitionNode;
             return (
               kind === 'OperationDefinition' && operation === 'subscription'
             );
           },
           ws,
-          http
+          http,
         );
 
         return {

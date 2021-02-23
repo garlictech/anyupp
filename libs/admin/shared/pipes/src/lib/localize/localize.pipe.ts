@@ -26,8 +26,12 @@ export class LocalizePipe implements PipeTransform {
         selectedLang = (lang || DEFAULT_LANG).substr(0, 2);
       });
 
-    return selectedLang ? value[selectedLang] : (value.en ? value.en : Object.values(value).filter(
-      (v: string): boolean => typeof v === 'string' && v.length > 0
-    )[0] || '');
+    return selectedLang
+      ? value[selectedLang]
+      : value.en
+      ? value.en
+      : Object.values(value).filter(
+          (v: string): boolean => typeof v === 'string' && v.length > 0,
+        )[0] || '';
   }
 }

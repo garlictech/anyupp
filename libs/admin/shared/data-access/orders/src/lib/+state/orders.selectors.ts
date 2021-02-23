@@ -17,36 +17,34 @@ import {
 
 // Lookup the 'Orders' feature state managed by NgRx
 export const getOrdersState = createFeatureSelector<IOrdersState>(
-  ORDERS_FEATURE_KEY
+  ORDERS_FEATURE_KEY,
 );
 
 // ACTIVE
 
 const activeOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.active
+  (state: IOrdersState): IOrderEntityState => state.active,
 );
 export const getAllActiveOrders = activeOrdersAdapter.getSelectors(
-  activeOrderListSelector
+  activeOrderListSelector,
 ).selectAll;
 export const getAllActiveOrderIds = activeOrdersAdapter.getSelectors(
-  activeOrderListSelector
+  activeOrderListSelector,
 ).selectIds;
 export const getAllActiveOrderCount = activeOrdersAdapter.getSelectors(
-  activeOrderListSelector
+  activeOrderListSelector,
 ).selectTotal;
 
 export const getActiveOrderById = (id: string) => {
-  return createSelector(
-    getAllActiveOrders,
-    (orders: IOrder[]): IOrder | undefined =>
-      orders.find((order): boolean => order._id === id)
-  );
+  return createSelector(getAllActiveOrders, (orders: IOrder[]):
+    | IOrder
+    | undefined => orders.find((order): boolean => order._id === id));
 };
 
 export const getActiveOrdersByUserId = (userId: string) => {
   return createSelector(getAllActiveOrders, (orders: IOrder[]): IOrder[] =>
-    orders.filter((order): boolean => order.userId === userId)
+    orders.filter((order): boolean => order.userId === userId),
   );
 };
 
@@ -54,7 +52,7 @@ export const getActiveOrdersCountByUserId = (userId: string) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): number =>
-      (orders.filter((order): boolean => order.userId === userId) || []).length
+      (orders.filter((order): boolean => order.userId === userId) || []).length,
   );
 };
 
@@ -72,11 +70,11 @@ export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
               (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
                 ...orderItem,
                 idx,
-              })
+              }),
             )
             .filter(
               (orderItem: IOrderItem): boolean =>
-                currentStatusFn(orderItem.statusLog) === status
+                currentStatusFn(orderItem.statusLog) === status,
             )
             .map(
               (orderItem: IOrderItem): ILaneOrderItem => ({
@@ -85,13 +83,13 @@ export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
                 userId: order.userId,
                 place: order.place,
                 currentStatus: status,
-              })
-            )
+              }),
+            ),
         );
       });
 
       return laneOrderItems;
-    }
+    },
   );
 };
 
@@ -99,22 +97,20 @@ export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
 
 const historyOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.history
+  (state: IOrdersState): IOrderEntityState => state.history,
 );
 export const getAllHistoryOrders = historyOrdersAdapter.getSelectors(
-  historyOrderListSelector
+  historyOrderListSelector,
 ).selectAll;
 export const getAllHistoryOrderIds = historyOrdersAdapter.getSelectors(
-  historyOrderListSelector
+  historyOrderListSelector,
 ).selectIds;
 export const getAllHistoryOrderCount = historyOrdersAdapter.getSelectors(
-  historyOrderListSelector
+  historyOrderListSelector,
 ).selectTotal;
 
 export const getHistoryOrderById = (id: string) => {
-  return createSelector(
-    getAllHistoryOrders,
-    (orders: IOrder[]): IOrder | undefined =>
-      orders.find((order): boolean => order._id === id)
-  );
+  return createSelector(getAllHistoryOrders, (orders: IOrder[]):
+    | IOrder
+    | undefined => orders.find((order): boolean => order._id === id));
 };
