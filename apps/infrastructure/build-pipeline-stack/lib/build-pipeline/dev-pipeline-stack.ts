@@ -13,10 +13,6 @@ export class DevBuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
     super(app, id, props);
 
-    new codebuild.GitHubSourceCredentials(this, 'CodeBuildGitHubCreds', {
-      accessToken: props.secretsManager.githubOauthToken.secretValue,
-    });
-
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
@@ -30,11 +26,6 @@ export class DevBuildPipelineStack extends sst.Stack {
     const build = new codebuild.PipelineProject(this, 'Build', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
-        env: {
-          variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict',
-          },
-        },
         phases: {
           install: {
             commands: ['yarn'],
@@ -74,13 +65,13 @@ export class DevBuildPipelineStack extends sst.Stack {
           build: {
             commands: [
               `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-              'yarn cucumber:report',
             ],
           },
         },
         reports: {
           cypressReports: {
-            files: ['cyreport/**/*'],
+            files: ['cyreport/cucumber-json/**/*'],
+            'file-format': 'CUCUMBERJSON',
           },
           cypressMedia: {
             files: ['dist/cypress/**/*'],

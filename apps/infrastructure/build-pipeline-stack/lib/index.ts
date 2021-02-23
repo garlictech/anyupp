@@ -4,6 +4,7 @@ import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
 import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stack';
 import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
 import { PipelineStackProps } from './build-pipeline/utils';
+import * as codebuild from '@aws-cdk/aws-codebuild';
 
 export default function main(app: App): void {
   const secretsManagerStack = new SecretsManagerStack(app, 'secretsmanager');
@@ -25,6 +26,10 @@ export default function main(app: App): void {
     repoBranch: 'dev',
     ...commonConfig,
   };
+
+  new codebuild.GitHubSourceCredentials(app, 'CodeBuildGitHubCreds', {
+    accessToken: secretsManagerStack.githubOauthToken.secretValue,
+  });
 
   new DevBuildPipelineStack(
     app,

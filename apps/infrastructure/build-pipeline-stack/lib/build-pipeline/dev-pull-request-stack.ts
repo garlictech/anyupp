@@ -22,40 +22,45 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ],
     });
 
-    const project = new codebuild.Project(this, 'AnyUpp Verify Pull Request', {
-      source: githubPrSource,
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        env: {
-          variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict',
+    const project = new codebuild.Project(
+      this,
+      'AnyUpp:DEV Verify Pull Request',
+      {
+        source: githubPrSource,
+        buildSpec: codebuild.BuildSpec.fromObject({
+          version: '0.2',
+          env: {
+            variables: {
+              NODE_OPTIONS: '--unhandled-rejections=strict',
+            },
           },
+          phases: {
+            install: {
+              commands: ['yarn'],
+            },
+            pre_build: {
+              commands: ['yarn nx config shared-config'],
+            },
+            build: {
+              commands: [
+                'yarn nx affected:lint --base=dev --with-deps',
+                'yarn nx affected:test --base=dev --with-deps --exclude="anyupp-mobile" --codeCoverage --coverageReporters=clover',
+                'yarn nx affected:build --base=dev --with-deps --exclude="infrastructure-build-pipeline-stack"',
+              ],
+            },
+          },
+          reports: {
+            coverage: {
+              files: ['coverage/**/*'],
+              'file-format': 'CLOVERXML',
+            },
+          },
+        }),
+        environment: {
+          buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
         },
-        phases: {
-          install: {
-            commands: ['yarn'],
-          },
-          pre_build: {
-            commands: ['yarn nx config shared-config'],
-          },
-          build: {
-            commands: [
-              'yarn nx affected:lint --base=dev --with-deps',
-              'yarn nx affected:test --base=dev --with-deps --exclude="anyupp-mobile" --codeCoverage',
-              'yarn nx affected:build --base=dev --with-deps --exclude="infrastructure-build-pipeline-stack"',
-            ],
-          },
-        },
-        reports: {
-          coverage: {
-            files: ['coverage/**/*'],
-          },
-        },
-      }),
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
       },
-    });
+    );
 
     configurePermissions(
       this,
