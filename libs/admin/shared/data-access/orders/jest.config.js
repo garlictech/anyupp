@@ -14,7 +14,8 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../../../coverage/libs/admin/shared/data-access/orders',
+  coverageDirectory:
+    '../../../../../coverage/libs/admin/shared/data-access/orders',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',
