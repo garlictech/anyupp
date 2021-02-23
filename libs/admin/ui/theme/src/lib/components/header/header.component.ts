@@ -4,7 +4,10 @@ import { map } from 'rxjs/operators';
 
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AuthService } from '@bgap/admin/shared/data-access/auth';
+import {
+  AuthService,
+  CognitoService,
+} from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
@@ -49,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _breakpointService: NbMediaBreakpointsService,
     private _authService: AuthService,
     private _dataService: DataService,
+    private _cognitoService: CognitoService,
     private _translateService: TranslateService,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
@@ -62,7 +66,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
-          this._authService.signOut();
+          // this._authService.signOut();
+          this._cognitoService.signOut();
         },
       },
     ];

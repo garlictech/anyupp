@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '@bgap/admin/shared/config';
-
-enum EFormMode {
-  LOGIN = 'login',
-  RESET = 'reset',
-}
+import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 
 @Component({
   selector: 'bgap-login',
@@ -13,12 +9,10 @@ enum EFormMode {
 })
 export class LoginComponent {
   public env = environment;
-  public formMode: EFormMode = EFormMode.LOGIN;
-  public EFormMode = EFormMode;
 
-  public toggleResetForm = ($event: Event, showResetForm: boolean) => {
-    $event?.preventDefault();
+  constructor(private _cognitoService: CognitoService) {}
 
-    this.formMode = showResetForm ? EFormMode.RESET : EFormMode.LOGIN;
-  };
+  public openLoginUI(): void {
+    this._cognitoService.signIn();
+  }
 }

@@ -118,7 +118,10 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
           (groupProduct: IProduct): IProduct => {
             const chainProduct = chainProducts.find(
               (p: IProduct): boolean =>
-                p._id === _get(groupProduct, 'extends', '').split('/').pop(),
+                p._id ===
+                _get(groupProduct, 'extends', '')
+                  .split('/')
+                  .pop(),
             );
 
             return Object.assign({}, chainProduct, groupProduct);
@@ -193,7 +196,10 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
           (unitProduct: IProduct): IProduct => {
             const groupProduct = groupProducts.find(
               (p: IProduct): boolean =>
-                p._id === _get(unitProduct, 'extends', '').split('/').pop(),
+                p._id ===
+                _get(unitProduct, 'extends', '')
+                  .split('/')
+                  .pop(),
             );
 
             return Object.assign({}, groupProduct || {}, unitProduct);

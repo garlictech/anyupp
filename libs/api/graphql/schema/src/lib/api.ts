@@ -173,7 +173,7 @@ export interface StartStripePaymentInput {
   chainId: Scalars['ID'];
   unitId: Scalars['ID'];
   userId: Scalars['ID'];
-  paymentMethodId: Scalars['ID'];
+  paymentMethodId?: Maybe<Scalars['ID']>;
 }
 
 export interface StartStripePaymentOutput {
@@ -716,7 +716,6 @@ export interface Query {
   getUnit?: Maybe<Unit>;
   getUser?: Maybe<User>;
   getCustomerStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
-  hellobello?: Maybe<Scalars['String']>;
 }
 
 export interface QueryGetAdminUserArgs {
@@ -757,10 +756,6 @@ export interface QueryGetUserArgs {
 
 export interface QueryGetCustomerStripeCardsArgs {
   userId?: Maybe<Scalars['ID']>;
-}
-
-export interface QueryHellobelloArgs {
-  name: Scalars['String'];
 }
 
 export interface Mutation {
@@ -916,6 +911,7 @@ export interface Subscription {
   __typename?: 'Subscription';
   updatedAdminUser?: Maybe<AdminUser>;
   createdAdminUser?: Maybe<AdminUser>;
+  adminUserChanged?: Maybe<AdminUser>;
 }
 
 export interface SubscriptionUpdatedAdminUserArgs {
@@ -987,16 +983,6 @@ export type AdminUserFragmentFragment = { __typename?: 'AdminUser' } & Pick<
           >
         >;
       };
-    address?: Maybe<
-      { __typename?: 'Address' } & Pick<
-        Address,
-        'address' | 'city' | 'country' | 'postalCode' | 'title'
-      > & {
-          location?: Maybe<
-            { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
-          >;
-        }
-    >;
   };
 
 export type GetCustomerStripeCardsQueryVariables = Exact<{
@@ -1055,17 +1041,6 @@ export const AdminUserFragment = gql`
         groupId
         unitId
       }
-    }
-    address {
-      address
-      city
-      country
-      location {
-        lat
-        lng
-      }
-      postalCode
-      title
     }
   }
 `;

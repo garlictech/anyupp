@@ -31,8 +31,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
-export class ProductExtendFormComponent
-  extends AbstractFormDialogComponent
+export class ProductExtendFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public product!: IProduct;
   public productLevel!: EProductLevel;
