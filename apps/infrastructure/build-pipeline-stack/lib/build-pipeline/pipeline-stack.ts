@@ -138,24 +138,16 @@ export class DevBuildPipelineStack extends sst.Stack {
         {
           stageName: 'Deploy',
           actions: [
-            'ParamsStack',
-            'SecretsManagerStack',
-            'stripe',
-            'sites',
-            'cognito',
-            'appsync',
-          ].map(
-            stackName =>
-              new codepipeline_actions.CloudFormationCreateUpdateStackAction({
-                actionName: `${stackName}Deploy`,
-                templatePath: buildOutput.atPath(
-                  `apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-${stackName}.template.json`,
-                ),
-                stackName: `dev-anyupp-backend-${stackName}`,
-                adminPermissions: true,
-                extraInputs: [buildOutput],
-              }),
-          ),
+            new codepipeline_actions.CloudFormationCreateUpdateStackAction({
+              actionName: `AnyuppDeploy`,
+              templatePath: buildOutput.atPath(
+                `apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-anyupp.template.json`,
+              ),
+              stackName: `dev-anyupp-backend-anyupp`,
+              adminPermissions: true,
+              extraInputs: [buildOutput],
+            }),
+          ],
         },
       ],
     });
