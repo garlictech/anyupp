@@ -16,17 +16,17 @@ export const buildRetryLogic = <T>({
     retryWhen(errors =>
       errors.pipe(
         tap(error =>
-          logger?.warn(`Error happened... ${JSON.stringify(error, null, 2)}`)
+          logger?.warn(`Error happened... ${JSON.stringify(error, null, 2)}`),
         ),
         switchMap(error =>
           retryable(error)
             ? of(retryDelayInMillisec(error)).pipe(
                 tap(delayValue => logger?.warn(`Retry in ${delayValue} ms...`)),
-                delayWhen(delayValue => interval(delayValue).pipe(take(1)))
+                delayWhen(delayValue => interval(delayValue).pipe(take(1))),
               )
-            : throwError(error)
+            : throwError(error),
         ),
-        take(3)
-      )
-    )
+        take(3),
+      ),
+    ),
   );

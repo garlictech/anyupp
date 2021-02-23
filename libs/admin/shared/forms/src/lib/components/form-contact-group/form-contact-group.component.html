@@ -47,10 +47,8 @@
         caption="common.contact.locationLat"
         type="text"
         [control]="
-          contactFormGroup
-            .get('address')!
-            .get('location')!
-            .get('lat')! | asFormControl
+          contactFormGroup.get('address')!.get('location')!.get('lat')!
+            | asFormControl
         "
       ></bgap-form-text-input>
     </div>
@@ -59,10 +57,8 @@
         caption="common.contact.locationLng"
         type="text"
         [control]="
-          contactFormGroup
-            .get('address')!
-            .get('location')!
-            .get('lng')! | asFormControl
+          contactFormGroup.get('address')!.get('location')!.get('lng')!
+            | asFormControl
         "
       ></bgap-form-text-input>
     </div>

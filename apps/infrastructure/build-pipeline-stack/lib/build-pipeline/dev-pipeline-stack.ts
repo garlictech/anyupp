@@ -5,18 +5,9 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { SecretsManagerStack } from './secretsmanager-stack';
-import * as chatbot from '@aws-cdk/aws-chatbot';
-import { configurePermissions } from './utils';
+import { configurePermissions, PipelineStackProps } from './utils';
 
 export { SecretsManagerStack };
-
-export interface PipelineStackProps extends sst.StackProps {
-  readonly chatbot: chatbot.SlackChannelConfiguration;
-  readonly secretsManager: SecretsManagerStack;
-  readonly repoName: string;
-  readonly repoOwner: string;
-  readonly repoBranch: string;
-}
 
 export class DevBuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
@@ -83,13 +74,16 @@ export class DevBuildPipelineStack extends sst.Stack {
           build: {
             commands: [
               `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+              'yarn cucumber:report',
             ],
           },
         },
         reports: {
           cypressReports: {
             files: ['cyreport/**/*'],
-            'file-format': 'CUCUMBERJSON',
+          },
+          cypressMedia: {
+            files: ['dist/cypress/**/*'],
           },
         },
       }),

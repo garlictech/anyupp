@@ -2,10 +2,20 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
-import { configurePermissions, PipelineStackProps } from './utils';
+import { SecretsManagerStack } from './secretsmanager-stack';
+import * as chatbot from '@aws-cdk/aws-chatbot';
+import { configurePermissions } from './utils';
+
+export interface DevPullRequestBuildStackProps extends sst.StackProps {
+  readonly chatbot: chatbot.SlackChannelConfiguration;
+  readonly repoName: string;
+  readonly repoOwner: string;
+  readonly repoBranch: string;
+  readonly secretsManager: SecretsManagerStack;
+}
 
 export class DevPullRequestBuildStack extends sst.Stack {
-  constructor(app: sst.App, id: string, props: PipelineStackProps) {
+  constructor(app: sst.App, id: string, props: DevPullRequestBuildStackProps) {
     super(app, id, props);
 
     const githubPrSource = codebuild.Source.gitHub({

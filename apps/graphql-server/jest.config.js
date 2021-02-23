@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {

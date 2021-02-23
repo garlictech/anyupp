@@ -20,7 +20,8 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
-export class GroupFormComponent extends AbstractFormDialogComponent
+export class GroupFormComponent
+  extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
   public group!: IGroup;
   public chainOptions: IKeyValue[] = [];

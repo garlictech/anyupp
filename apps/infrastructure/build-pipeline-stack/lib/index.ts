@@ -1,14 +1,9 @@
 import { App } from '@serverless-stack/resources';
-import {
-  DevBuildPipelineStack,
-  PipelineStackProps,
-} from './build-pipeline/dev-pipeline-stack';
+import { DevBuildPipelineStack } from './build-pipeline/dev-pipeline-stack';
 import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
-import {
-  DevPullRequestBuildStack,
-  DevPullRequestBuildStackProps,
-} from './build-pipeline/dev-pull-request-stack';
+import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stack';
 import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
+import { PipelineStackProps } from './build-pipeline/utils';
 
 export default function main(app: App): void {
   const secretsManagerStack = new SecretsManagerStack(app, 'secretsmanager');
@@ -21,7 +16,7 @@ export default function main(app: App): void {
     chatbot: slackChannel.chatbot,
   };
 
-  const devPullRequestConfig: DevPullRequestBuildStackProps = {
+  const devPullRequestConfig: PipelineStackProps = {
     repoBranch: 'dev',
     ...commonConfig,
   };

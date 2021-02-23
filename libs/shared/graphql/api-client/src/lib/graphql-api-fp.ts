@@ -9,7 +9,7 @@ export class GraphqlApiFp {
   static createAuthenticatedClient(
     config: IAmplifyApiConfig,
     logger: ILogger,
-    disableOffline: boolean
+    disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(
       config,
@@ -25,14 +25,14 @@ export class GraphqlApiFp {
         },
         disableOffline,
       },
-      logger
+      logger,
     );
   }
 
   static createPublicClient(
     config: IAmplifyApiConfig,
     logger: ILogger,
-    disableOffline: boolean
+    disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(
       config,
@@ -46,14 +46,14 @@ export class GraphqlApiFp {
         },
         disableOffline,
       },
-      logger
+      logger,
     );
   }
 
   static createAdminClient(
     config: IAmplifyApiConfig,
     logger: ILogger,
-    disableOffline: boolean
+    disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(
       config,
@@ -67,7 +67,7 @@ export class GraphqlApiFp {
         },
         disableOffline,
       },
-      logger
+      logger,
     );
   }
 
@@ -75,7 +75,7 @@ export class GraphqlApiFp {
     config: IAmplifyApiConfig,
     accessKeyId: string,
     secretAccessKey: string,
-    logger: ILogger
+    logger: ILogger,
   ): GraphqlApiClient {
     return new GraphqlApiClient(
       config,
@@ -91,7 +91,7 @@ export class GraphqlApiFp {
         },
         disableOffline: true,
       },
-      logger
+      logger,
     );
   }
 }
