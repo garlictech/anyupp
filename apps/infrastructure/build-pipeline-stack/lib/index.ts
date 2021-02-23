@@ -2,7 +2,7 @@ import { App } from '@serverless-stack/resources';
 import {
   DevBuildPipelineStack,
   PipelineStackProps,
-} from './build-pipeline/pipeline-stack';
+} from './build-pipeline/dev-pipeline-stack';
 import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
 import {
   DevPullRequestBuildStack,
@@ -18,15 +18,16 @@ export default function main(app: App): void {
     repoOwner: 'bgap',
     repoName: 'anyupp',
     secretsManager: secretsManagerStack,
-    repoBranch: 'dev',
     chatbot: slackChannel.chatbot,
   };
 
   const devPullRequestConfig: DevPullRequestBuildStackProps = {
+    repoBranch: 'dev',
     ...commonConfig,
   };
 
   const devBuildPipelineConfig: PipelineStackProps = {
+    repoBranch: 'dev',
     ...commonConfig,
   };
 

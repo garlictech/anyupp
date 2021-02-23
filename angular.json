@@ -294,6 +294,13 @@
             }
           }
         },
+        "e2e-remote": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/admin-e2e/cypress.json",
+            "tsConfig": "apps/admin-e2e/tsconfig.e2e.json"
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {

@@ -28,10 +28,9 @@ export class DevBuildPipelineStack extends sst.Stack {
 
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
-
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-    ssm.StringParameter.fromStringParameterName(
+    const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
       this,
       'AdminSiteUrlParamDev',
       'dev-anyupp-backend-AdminSiteUrl',
@@ -69,34 +68,36 @@ export class DevBuildPipelineStack extends sst.Stack {
       },
     });
 
-    // Build + deploy project
-    //new codebuild.PipelineProject(this, 'Deploy', {
-    //  buildSpec: codebuild.BuildSpec.fromObject({
-    //    version: '0.2',
-    //    phases: {
-    //      install: {
-    //        commands: ['yarn'],
-    //      },
-    //      pre_build: {
-    //        commands: ['yarn nx config shared-config'],
-    //      },
-    //      build: {
-    //        commands: [
-    //          'yarn nx run-many --target build --projects admin,infrastructure-anyupp-backend-stack',
-    //          'yarn nx target deploy --projects infrastructure-anyupp-backend-stack',
-    //        ],
-    //      },
-    //      post_build: {
-    //        commands: [
-    //          `yarn nx e2e admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-    //        ],
-    //      },
-    //    },
-    //  }),
-    //  environment: {
-    //    buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    //  },
-    //});
+    const e2eTest = new codebuild.PipelineProject(this, 'e2eTest', {
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        env: {
+          variables: {
+            NODE_OPTIONS: '--unhandled-rejections=strict',
+          },
+        },
+        phases: {
+          install: {
+            commands: ['yarn'],
+          },
+          build: {
+            commands: [
+              `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+            ],
+          },
+        },
+        reports: {
+          cypressReports: {
+            files: ['cyreport/**/*'],
+            'file-format': 'CUCUMBERJSON',
+          },
+        },
+      }),
+      cache,
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      },
+    });
 
     configurePermissions(
       this,
@@ -120,10 +121,6 @@ export class DevBuildPipelineStack extends sst.Stack {
             }),
           ],
         },
-        // deploy test stack
-        // test the test stack
-        // create change set
-        // deploy
         {
           stageName: 'Build',
           actions: [
@@ -136,16 +133,27 @@ export class DevBuildPipelineStack extends sst.Stack {
           ],
         },
         {
-          stageName: 'Deploy',
+          stageName: 'StackCreation',
           actions: [
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
-              actionName: `AnyuppDeploy`,
+              actionName: `CreateStack`,
               templatePath: buildOutput.atPath(
                 `apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-anyupp.template.json`,
               ),
               stackName: `dev-anyupp-backend-anyupp`,
               adminPermissions: true,
               extraInputs: [buildOutput],
+              replaceOnFailure: true,
+            }),
+          ],
+        },
+        {
+          stageName: 'e2eTest',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'e2eTest',
+              project: e2eTest,
+              input: sourceOutput,
             }),
           ],
         },
