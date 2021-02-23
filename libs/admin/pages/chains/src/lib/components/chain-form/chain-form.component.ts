@@ -16,8 +16,7 @@ import { EImageType, IChain } from '@bgap/shared/types';
   templateUrl: './chain-form.component.html',
   styleUrls: ['./chain-form.component.scss'],
 })
-export class ChainFormComponent
-  extends AbstractFormDialogComponent
+export class ChainFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public chain!: IChain;
   public eImageType = EImageType;
@@ -110,9 +109,10 @@ export class ChainFormComponent
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(key)
-    )).setValue(imagePath);
+    (<FormControl>this.dialogForm
+      .get('style')
+      ?.get('images')
+      ?.get(key)).setValue(imagePath);
 
     // Update existing user's image
     if (_get(this.chain, '_id')) {
@@ -135,9 +135,10 @@ export class ChainFormComponent
   };
 
   public logoRemoveCallback = (key: string): void => {
-    (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(key)
-    )).setValue('');
+    (<FormControl>this.dialogForm
+      .get('style')
+      ?.get('images')
+      ?.get(key)).setValue('');
 
     if (this.chain) {
       _set(this.chain, `style.images.${key}`, null);

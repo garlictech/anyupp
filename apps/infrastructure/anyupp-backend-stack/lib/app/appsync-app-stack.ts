@@ -37,6 +37,8 @@ interface ApiDesc {
   label: string;
   beforeRequestMappingTemplate: string;
   dataValidators: AppsyncFunction[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createFunction?: any;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -65,6 +67,18 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createAdminUserFunction: any = {
+      name: 'createAdminUserFunction',
+      description: 'createAdminUserFunction TODO',
+      requestMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/create-admin-user-request-mapping-template.vtl'
+      ),
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+      ),
+    };
+
     this.noneDs = new NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
     });
@@ -82,6 +96,7 @@ export class AppsyncAppStack extends sst.Stack {
         label: 'AdminUser',
         dataValidators: [this.resolverFunctions.validateAddress],
         beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
+        createFunction: createAdminUserFunction
       },
       {
         label: 'Chain',
@@ -213,7 +228,7 @@ export class AppsyncAppStack extends sst.Stack {
       theTable,
     );
 
-    const createFunction = tableDs.createFunction({
+    const createFunction = tableDs.createFunction(apiDesc.createFunction ? apiDesc.createFunction :{
       name: 'create' + label,
       description: 'Create a ' + label,
       requestMappingTemplate: MappingTemplate.fromFile(

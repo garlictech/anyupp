@@ -46,7 +46,6 @@ type AdminUser @aws_iam @aws_api_key @aws_cognito_user_pools {
   profileImage: String
   roles: AdminUserRole!
   settings: AdminUserSettings
-  address: Address
   email: String
   phone: String
 }
@@ -73,7 +72,6 @@ type AdminUserSettings @aws_iam @aws_api_key @aws_cognito_user_pools {
 
 input CreateAdminUserInput {
   name: String!
-  address: AddressInput
   email: String!
   phone: String
   profileImage: String
@@ -82,7 +80,6 @@ input CreateAdminUserInput {
 input UpdateAdminUserInput {
   id: ID!
   name: String
-  address: AddressInput
   email: String
   phone: String
   profileImage: String
@@ -667,7 +664,6 @@ input LaneInput {
 type User {
   id: ID!
   name: String
-  address: Address
   email: String
   phone: String
   profileImage: String
@@ -676,7 +672,6 @@ type User {
 
 input CreateUserInput {
   name: String
-  address: AddressInput
   email: String
   phone: String
   profileImage: String
@@ -686,7 +681,6 @@ input CreateUserInput {
 input UpdateUserInput {
   id: ID!
   name: String
-  address: AddressInput
   email: String
   phone: String
   profileImage: String

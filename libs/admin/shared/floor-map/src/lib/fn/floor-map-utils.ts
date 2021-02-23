@@ -3,7 +3,9 @@ import { EOrderStatus } from '@bgap/shared/types';
 import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
 
 export const generateId = (): string => {
-  return Math.random().toString(36).substr(2, 16);
+  return Math.random()
+    .toString(36)
+    .substr(2, 16);
 };
 
 export const fixTextScale = (o: fabric.Object, target: fabric.Object): void => {

@@ -203,10 +203,6 @@ nx g @nrwl/nest:lib api/graphql/resolvers
 The generator will collect the new resolver's name
 `nx g @nrwl/nest:resolver -p api-graphql-resolvers`
 
-### Generate graphql schemas
-
-`nx build api-graphql-schema`
-
 ### Start admin
 
 `nx serve admin`
@@ -222,3 +218,14 @@ The generator will collect the new resolver's name
 ### Run test
 
 `nx run-many --target=test --all --passWithNoTests`
+
+### Update own backend stack
+
+1. Set stage name in apps/infrastructure/anyupp-backend-stack/sst.json (e.g. dev-petrot)
+
+2. Download own config:
+`yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
+
+3. Build & deploy
+nx build infrastructure-anyupp-backend-stack
+nx deploy infrastructure-anyupp-backend-stack

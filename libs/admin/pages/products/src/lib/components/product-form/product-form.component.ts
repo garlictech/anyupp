@@ -29,8 +29,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-product-form',
   templateUrl: './product-form.component.html',
 })
-export class ProductFormComponent
-  extends AbstractFormDialogComponent
+export class ProductFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
   public product!: IProduct;

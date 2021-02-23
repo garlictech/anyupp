@@ -1,13 +1,6 @@
 import { get as _get, intersection as _intersection } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -19,17 +12,13 @@ import {
   dashboardSelectors,
 } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { DEFAULT_LANG, getDayIntervals } from '@bgap/admin/shared/utils';
-import { objectToArray } from '@bgap/shared/utils';
+import { getDayIntervals } from '@bgap/admin/shared/utils';
 import {
   EAdminRole,
   EFirebaseStateEvent,
@@ -47,8 +36,8 @@ import {
   IUnit,
   IUser,
 } from '@bgap/shared/types';
+import { objectToArray } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -63,11 +52,12 @@ export class DataService {
     private _store: Store<any>,
     private _angularFireDatabase: AngularFireDatabase,
     private _angularFireFunctions: AngularFireFunctions,
-    private _translateService: TranslateService,
   ) {}
 
-  public initDataConnections(userId: string): void {
+  public initDataConnections(/*userId: string*/): void {
     // Load user data
+    console.error('TODO SUBSCRIBE TO ADMINS');
+    /*
     this._angularFireDatabase
       .object(`adminUsers/${userId}`)
       .valueChanges()
@@ -77,50 +67,49 @@ export class DataService {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
-                ...(<IAdminUser>adminUser),
+                ...<IAdminUser>adminUser,
                 _id: userId,
               },
-            }),
+            })
           );
         }
-      });
+      });*Ŗ
 
+    /*
     // Get user settings
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
-        filter(
-          (settings: IAdminUserSettings | undefined): boolean => !!settings,
-        ),
+        filter((settings: IAdminUserSettings | undefined): boolean => !!settings),
         distinctUntilChanged(
           (prev, curr): boolean =>
             prev?.selectedChainId === curr?.selectedChainId &&
             prev?.selectedGroupId === curr?.selectedGroupId &&
-            prev?.selectedUnitId === curr?.selectedUnitId,
+            prev?.selectedUnitId === curr?.selectedUnitId
         ),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
-          adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedChainProducts(
-          adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedChainId || ''
         );
         this._subscribeToSelectedGroupProducts(
-          adminUserSettings?.selectedGroupId || '',
+          adminUserSettings?.selectedGroupId || ''
         );
         this._subscribeToSelectedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToGeneratedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
         this._subscribeToSelectedUnitOrders(
           adminUserSettings?.selectedChainId || '',
-          adminUserSettings?.selectedUnitId || '',
+          adminUserSettings?.selectedUnitId || ''
         );
       });
 
@@ -129,7 +118,7 @@ export class DataService {
       .pipe(
         select(loggedUserSelectors.getLoggedUserRoles),
         filter((roles: IAdminUserRole | undefined): boolean => !!roles),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
         this._rolesChanged$.next(true);
@@ -146,57 +135,57 @@ export class DataService {
             break;
           case EAdminRole.CHAIN_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToUnitsByRole(
               'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.GROUP_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               'groupId',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.UNIT_ADMIN:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             this._subscribeToAdminUsers(adminUserRoles);
             break;
           case EAdminRole.STAFF:
             this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
+              (adminUserRoles?.entities ?? []).map(e => e.chainId)
             );
             this._subscribeToGroupsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.groupId || '')
             );
             this._subscribeToUnitsByRole(
               '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+              (adminUserRoles?.entities ?? []).map(e => e.unitId || '')
             );
             break;
           default:
@@ -208,11 +197,12 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
-        takeUntil(this._destroyConnection$),
+        takeUntil(this._destroyConnection$)
       )
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
+    */
   }
 
   private _subscribeToChainsByRole(

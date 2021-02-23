@@ -125,8 +125,10 @@
               <bgap-form-checkbox
                 caption="products.allergens.lactose"
                 [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('lactose')!
-                    | asFormControl
+                  dialogForm
+                    .get('contains')!
+                    .get('allergens')!
+                    .get('lactose')! | asFormControl
                 "
               ></bgap-form-checkbox>
             </div>
@@ -134,8 +136,10 @@
               <bgap-form-checkbox
                 caption="products.allergens.nuts"
                 [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('nuts')!
-                    | asFormControl
+                  dialogForm
+                    .get('contains')!
+                    .get('allergens')!
+                    .get('nuts')! | asFormControl
                 "
               ></bgap-form-checkbox>
             </div>

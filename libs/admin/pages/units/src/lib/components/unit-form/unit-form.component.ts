@@ -35,8 +35,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'bgap-unit-form',
   templateUrl: './unit-form.component.html',
 })
-export class UnitFormComponent
-  extends AbstractFormDialogComponent
+export class UnitFormComponent extends AbstractFormDialogComponent
   implements OnInit {
   public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;

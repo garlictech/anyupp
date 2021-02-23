@@ -40,15 +40,4 @@ fragment adminUserFragment on AdminUser {
       unitId
     }
   }
-  address {
-    address
-    city
-    country
-    location {
-      lat
-      lng
-    }
-    postalCode
-    title
-  }
 }
