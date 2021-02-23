@@ -31,9 +31,9 @@ export class DevBuildPipelineStack extends sst.Stack {
 
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-    const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
+    ssm.StringParameter.fromStringParameterName(
       this,
-      'AdminSiteUrlParam2',
+      'AdminSiteUrlParamDev',
       'dev-anyupp-backend-AdminSiteUrl',
     ).stringValue;
 
@@ -139,11 +139,11 @@ export class DevBuildPipelineStack extends sst.Stack {
           stageName: 'Deploy',
           actions: [
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
-              actionName: 'ParamsStackDeploy',
+              actionName: `AnyuppDeploy`,
               templatePath: buildOutput.atPath(
-                'apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-ParamsStack.template.json',
+                `apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-anyupp.template.json`,
               ),
-              stackName: 'ParamsStack',
+              stackName: `dev-anyupp-backend-anyupp`,
               adminPermissions: true,
               extraInputs: [buildOutput],
             }),

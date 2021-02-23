@@ -21,6 +21,7 @@ export const configurePermissions = (
     'googleClientId',
     'stripePublishableKey',
     'AdminSiteUrl',
+    'StripeWebhookEndpoint',
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,

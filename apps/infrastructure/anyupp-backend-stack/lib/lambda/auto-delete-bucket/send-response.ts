@@ -6,7 +6,7 @@ import axios from 'axios';
  *
  * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-responses.html
  */
-export const sendResponse = async props => {
+export const sendResponse = async (props: any) => {
   const body = {
     Status: props.status,
     Reason: props.reason,

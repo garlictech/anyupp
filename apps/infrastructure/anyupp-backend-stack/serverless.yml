@@ -5,7 +5,6 @@ frameworkVersion: ^2.16.1
 
 plugins:
   - serverless-bundle
-  - serverless-dotenv-plugin
 
 package:
   individually: true
@@ -18,7 +17,7 @@ custom:
   sstApp: ${self:custom.stage}-anyupp-backend
   bundle:
     packager: yarn
-    linting: false
+    linting: true
     sourcemaps: true
     caching: true
 
@@ -27,13 +26,13 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  stage: dev
-  region: #{AWS::Region}
 
 functions:
+  auto-delete-bucket:
+    handler: lib/lambda/auto-delete-bucket/index.handler
+
   appsync-lambda:
     handler: lib/lambda/appsync-lambda/index.handler
 
-  auto-delete-bucket:
-    handler: lib/lambda/auto-delete-bucket/index.handler
+  stripe-webhook:
+    handler: lib/lambda/stripe-webhook/index.handler

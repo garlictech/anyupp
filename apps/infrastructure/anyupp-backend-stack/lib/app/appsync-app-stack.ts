@@ -202,7 +202,10 @@ export class AppsyncAppStack extends sst.Stack {
         {
           "version" : "2017-02-28",
           "operation" : "Invoke",
-          "payload": "$context.arguments.name"
+          "payload": {
+            "fieldName": "hellobello",
+            "payload": $util.toJson($context.arguments)
+          }
         }
         `,
       ),

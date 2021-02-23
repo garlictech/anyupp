@@ -1,7 +1,8 @@
 import { sendResponse } from './send-response';
 import { emptyBucket } from './empty-bucket';
+import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 
-export const handler = async event => {
+export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log(JSON.stringify(event, null, 2));
 
   /**
@@ -10,7 +11,6 @@ export const handler = async event => {
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
   const bucketName = event.ResourceProperties.BucketName;
-
   let status = 'SUCCESS';
   let reason = '';
 
