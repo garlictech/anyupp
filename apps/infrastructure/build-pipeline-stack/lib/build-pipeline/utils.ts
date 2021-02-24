@@ -52,6 +52,7 @@ export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
   stage: string,
+  referenceBranch: string,
 ): codebuild.PipelineProject =>
   new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -67,8 +68,8 @@ export const createBuildProject = (
         },
         build: {
           commands: [
-            `yarn nx build admin --configuration=${stage}`,
-            `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage}`,
+            `yarn nx affected:build --base=${referenceBranch} --with-deps --exclude="infrastructure-*" --stage=${stage} --app=${appConfig.name} --configuration=${stage}`,
+            `yarn nx build infrastructure-anyupp-backend-stack" --stage=${stage} --app=${appConfig.name}`,
           ],
         },
       },
@@ -167,7 +168,7 @@ export const configurePRNotifications = (
       'codebuild-project-build-state-failed',
       'codebuild-project-build-state-succeeded',
     ],
-    name: `AnyUppPRNotificationPR${stage}`,
+    name: `AnyUppPRNotification${stage}`,
     resource: resourceArn,
     targets: [
       {

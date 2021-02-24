@@ -54,7 +54,8 @@ export class QAPullRequestBuildStack extends sst.Stack {
             },
             build: {
               commands: [
-                `yarn nx affected:build --base=${stage} --with-deps --exclude="infrastructure-build-pipeline-stack" --stage=${stage} --app=${utils.appConfig.name} --configuration=${stage}`,
+                `yarn nx affected:build --base=${stage} --with-deps --exclude="infrastructure-*" --stage=${stage} --app=${utils.appConfig.name} --configuration=${stage}`,
+                `yarn nx build infrastructure-anyupp-backend-stack" --stage=${stage} --app=${utils.appConfig.name}`,
                 `yarn nx deploy infrastructure-anyupp-backend-stack --stage="${testStage}"`,
                 `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
               ],

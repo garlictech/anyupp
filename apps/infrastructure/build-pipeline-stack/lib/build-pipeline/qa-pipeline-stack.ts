@@ -14,7 +14,7 @@ export class QABuildPipelineStack extends sst.Stack {
 
     const stage = 'qa';
     const { adminSiteUrl } = utils.configurePipeline(this, stage);
-    const build = utils.createBuildProject(this, cache, stage);
+    const build = utils.createBuildProject(this, cache, stage, 'master');
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
     const prefix = utils.projectPrefix(stage);
 

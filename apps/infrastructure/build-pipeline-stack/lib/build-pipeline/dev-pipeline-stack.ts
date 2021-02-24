@@ -14,7 +14,7 @@ export class DevBuildPipelineStack extends sst.Stack {
 
     const stage = 'dev';
     const { adminSiteUrl } = utils.configurePipeline(this, stage);
-    const build = utils.createBuildProject(this, cache, stage);
+    const build = utils.createBuildProject(this, cache, stage, 'qa');
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
     const prefix = utils.projectPrefix(stage);
 
