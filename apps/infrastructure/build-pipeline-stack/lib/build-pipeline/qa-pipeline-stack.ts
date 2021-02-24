@@ -4,7 +4,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as utils from './utils';
 
-export class DevBuildPipelineStack extends sst.Stack {
+export class QABuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: utils.PipelineStackProps) {
     super(app, id, props);
 
@@ -12,7 +12,7 @@ export class DevBuildPipelineStack extends sst.Stack {
     const buildOutput = new codepipeline.Artifact();
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-    const stage = 'dev';
+    const stage = 'qa';
     const { adminSiteUrl } = utils.configurePipeline(this, stage);
     const build = utils.createBuildProject(this, cache, stage);
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);

@@ -1,0 +1,12 @@
+{
+  "AdminSiteUrl": "https://qa.admin.anyupp-backend.anyupp.com",
+  "GraphqlApiKey": "da2-l53zfhlj5zewthcbqau4rluck4",
+  "GraphqlApiUrl": "https://2mxctogvljc6lic5iicedn7oze.appsync-api.eu-west-1.amazonaws.com/graphql",
+  "IdentityPoolId": "eu-west-1:27859534-3575-4c37-85c4-59ed43f0969d",
+  "StripeWebhookEndpoint": "https://96b7bukdwb.execute-api.eu-west-1.amazonaws.com/qa/",
+  "UserPoolClientId": "kemkp48ujl5t17bqdpah1ebbr",
+  "UserPoolDomain": "https://qa-anyupp-backend.auth.eu-west-1.amazoncognito.com",
+  "UserPoolId": "eu-west-1_FkkIabQlu",
+  "googleClientId": "1016713353610-j3k5ejo1pgo4pcfo3hos8027kkspc5a9.apps.googleusercontent.com",
+  "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDB"
+}
