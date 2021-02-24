@@ -83,10 +83,12 @@ export class QAPullRequestBuildStack extends sst.Stack {
     );
 
     utils.configurePermissions(this, props.secretsManager, project, prefix);
-    utils.configurePipelineNotifications(
+
+    utils.configurePRNotifications(
       this,
       project.projectArn,
       props.chatbot,
+      stage,
     );
   }
 }

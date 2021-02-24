@@ -26,7 +26,7 @@ export const configurePermissions = (
   resource: iam.IGrantable,
   prefix: string,
 ) => {
-  secretsManager.anyuppDevSecret.grantRead(resource);
+  secretsManager.secrets.grantRead(resource);
 
   [
     'UserPoolClientId',
@@ -133,6 +133,7 @@ export const configurePipelineNotifications = (
   stack: sst.Stack,
   resourceArn: string,
   chatbot: chatbot.SlackChannelConfiguration,
+  stage: string,
 ): void => {
   new codestarnotifications.CfnNotificationRule(stack, 'BuildNotification', {
     detailType: 'FULL',
@@ -142,7 +143,31 @@ export const configurePipelineNotifications = (
       'codepipeline-pipeline-action-execution-started',
       'codepipeline-pipeline-action-execution-canceled',
     ],
-    name: 'AnyUppDevBuildNotification',
+    name: `AnyUppBuildNotification${stage}`,
+    resource: resourceArn,
+    targets: [
+      {
+        targetAddress: chatbot.slackChannelConfigurationArn,
+        targetType: 'AWSChatbotSlack',
+      },
+    ],
+  });
+};
+
+export const configurePRNotifications = (
+  stack: sst.Stack,
+  resourceArn: string,
+  chatbot: chatbot.SlackChannelConfiguration,
+  stage: string,
+): void => {
+  new codestarnotifications.CfnNotificationRule(stack, 'BuildNotification', {
+    detailType: 'FULL',
+    eventTypeIds: [
+      'codebuild-project-build-state-in-progress',
+      'codebuild-project-build-state-failed',
+      'codebuild-project-build-state-succeeded',
+    ],
+    name: `AnyUppPRNotificationPR${stage}`,
     resource: resourceArn,
     targets: [
       {
@@ -159,13 +184,13 @@ export const copyParameter = (
   toStage: string,
   stack: sst.Stack,
 ) => {
-  const paramNameParam = `${paramName}Param`;
+  const paramNameParam = `${toStage}${paramName}Param`;
 
   const param = ssm.StringParameter.fromStringParameterAttributes(
     stack,
-    `${paramNameParam}`,
+    `${paramNameParam}From`,
     {
-      parameterName: `${projectPrefix(fromStage)}-${paramName}`,
+      parameterName: `${fromStage}-${appConfig.name}-${paramName}`,
     },
   ).stringValue;
 

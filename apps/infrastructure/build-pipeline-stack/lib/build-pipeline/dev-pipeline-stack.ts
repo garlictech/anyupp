@@ -78,6 +78,7 @@ export class DevBuildPipelineStack extends sst.Stack {
       this,
       pipeline.pipelineArn,
       props.chatbot,
+      stage,
     );
   }
 }

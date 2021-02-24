@@ -20,7 +20,7 @@ export default function main(app: App): void {
 
   const qaSecretsManagerStack = new SecretsManagerStack(
     app,
-    'devsecretsmanager',
+    'qasecretsmanager',
     {
       secretsManagerArn:
         'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',

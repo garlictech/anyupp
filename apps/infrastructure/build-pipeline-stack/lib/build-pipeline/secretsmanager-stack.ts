@@ -5,10 +5,9 @@ export interface SecretsManagerStackProps extends sst.StackProps {
   secretsManagerArn: string;
 }
 
-// TODO: use stage dependent secrets ARN
 export class SecretsManagerStack extends sst.Stack {
   public githubOauthToken: sm.ISecret;
-  public anyuppDevSecret: sm.ISecret;
+  public secrets: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props: SecretsManagerStackProps) {
     super(scope, id, props);
@@ -22,7 +21,7 @@ export class SecretsManagerStack extends sst.Stack {
       },
     );
 
-    this.anyuppDevSecret = sm.Secret.fromSecretAttributes(this, 'Secret', {
+    this.secrets = sm.Secret.fromSecretAttributes(this, 'Secrets', {
       secretArn: props.secretsManagerArn,
     });
   }

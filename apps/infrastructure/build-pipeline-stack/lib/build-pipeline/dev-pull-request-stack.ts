@@ -1,4 +1,3 @@
-import * as ssm from '@aws-cdk/aws-ssm';
 import * as utils from './utils';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
@@ -23,21 +22,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
           codebuild.EventAction.PULL_REQUEST_UPDATED,
         ).andBaseBranchIs(stage),
       ],
-    });
-
-    const googleClientId = ssm.StringParameter.fromStringParameterAttributes(
-      this,
-      'googleClientIdParam',
-      {
-        parameterName: stage + '-anyupp-backend-googleClientId',
-      },
-    ).stringValue;
-
-    new ssm.StringParameter(this, 'googleClientIdParam', {
-      allowedPattern: '.*',
-      description: 'The google client key',
-      parameterName: `${prefix}-googleClientId`,
-      stringValue: googleClientId,
     });
 
     const project = new codebuild.Project(
@@ -79,10 +63,11 @@ export class DevPullRequestBuildStack extends sst.Stack {
 
     utils.configurePermissions(this, props.secretsManager, project, prefix);
 
-    utils.configurePipelineNotifications(
+    utils.configurePRNotifications(
       this,
       project.projectArn,
       props.chatbot,
+      stage,
     );
     //new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
     //  allowedPattern: '.*',
