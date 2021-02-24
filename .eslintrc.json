@@ -57,7 +57,7 @@
               },
               {
                 "sourceTag": "type:server",
-                "onlyDependOnLibsWithTags": ["type:feature"]
+                "onlyDependOnLibsWithTags": ["type:feature", "type:utils"]
               }
             ]
           }

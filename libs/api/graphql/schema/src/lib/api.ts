@@ -173,7 +173,7 @@ export interface StartStripePaymentInput {
   chainId: Scalars['ID'];
   unitId: Scalars['ID'];
   userId: Scalars['ID'];
-  paymentMethodId: Scalars['ID'];
+  paymentMethodId?: Maybe<Scalars['ID']>;
 }
 
 export interface StartStripePaymentOutput {
@@ -716,7 +716,6 @@ export interface Query {
   getUnit?: Maybe<Unit>;
   getUser?: Maybe<User>;
   getCustomerStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
-  hellobello?: Maybe<Scalars['String']>;
 }
 
 export interface QueryGetAdminUserArgs {
@@ -757,10 +756,6 @@ export interface QueryGetUserArgs {
 
 export interface QueryGetCustomerStripeCardsArgs {
   userId?: Maybe<Scalars['ID']>;
-}
-
-export interface QueryHellobelloArgs {
-  name: Scalars['String'];
 }
 
 export interface Mutation {
@@ -916,6 +911,7 @@ export interface Subscription {
   __typename?: 'Subscription';
   updatedAdminUser?: Maybe<AdminUser>;
   createdAdminUser?: Maybe<AdminUser>;
+  adminUserChanged?: Maybe<AdminUser>;
 }
 
 export interface SubscriptionUpdatedAdminUserArgs {

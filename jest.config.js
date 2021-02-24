@@ -49,5 +49,6 @@ module.exports = {
     '<rootDir>/libs/api/graphql/appsync-lambda',
     '<rootDir>/libs/admin/shared/test',
     '<rootDir>/libs/shared/secrets',
+    '<rootDir>/libs/stripe',
   ],
 };

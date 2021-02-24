@@ -731,7 +731,7 @@ type Query {
   getUser(id: ID!): User @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Stripe
-  getCustomerStripeCards(customerId: ID): [StripeCard]
+  getCustomerStripeCards(userId: ID): [StripeCard]
 
   # Hellobello
   hellobello(name: String!): String

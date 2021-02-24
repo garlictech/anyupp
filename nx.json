@@ -162,6 +162,9 @@
     },
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
+    "stripe": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     }
   }
 }
