@@ -1,6 +1,6 @@
-import * as firebaseConfig from './lib/config/firebase.config.json';
-import * as config from './lib/config/config.json';
-import * as FIREBASE_SERVICE_ACCOUNT from './lib/config/firebase-service-account-key.json';
+import * as firebaseConfig from './lib/firebase.config.json';
+import * as config from './lib/config.json';
+import * as FIREBASE_SERVICE_ACCOUNT from './lib/firebase-service-account-key.json';
 import { isSharedConfig, isSharedFirebaseConfig } from './lib/interface-checks';
 
 if (!isSharedConfig()) {

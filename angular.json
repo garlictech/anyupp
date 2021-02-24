@@ -46,24 +46,16 @@
             "scripts": [],
             "fileReplacements": [
               {
-                "replace": "apps/admin/src/environments/environment.ts",
-                "with": "apps/admin/src/environments/environment.dev.ts"
+                "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
               },
               {
-                "replace": "libs/shared/config/src/lib/firebase.config.json",
-                "with": "libs/shared/config/src/lib/dev/firebase.config.json"
+                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
               },
               {
-                "replace": "libs/shared/config/src/lib/stripe.config.json",
-                "with": "libs/shared/config/src/lib/dev/stripe.config.json"
-              },
-              {
-                "replace": "libs/shared/config/src/lib/service-account-key.json",
-                "with": "libs/shared/config/src/lib/dev/service-account-key.json"
-              },
-              {
-                "replace": "libs/shared/config/src/lib/config.json",
-                "width": "libs/shared/config/src/lib/dev/config.json"
+                "replace": "./libs/shared/config/src/lib/config.json",
+                "with": "./libs/shared/config/src/lib/dev/config.json"
               }
             ]
           },
@@ -71,24 +63,16 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.production.ts"
+                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/firebase.config.json",
-                  "with": "libs/shared/config/src/lib/production/firebase.config.json"
+                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/stripe.config.json",
-                  "with": "libs/shared/config/src/lib/production/stripe.config.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/service-account-key.json",
-                  "with": "libs/shared/config/src/lib/production/service-account-key.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config.json",
-                  "width": "libs/shared/config/src/lib/production/config.json"
+                  "replace": "./libs/shared/config/src/lib/config.json",
+                  "with": "./libs/shared/config/src/lib/production/config.json"
                 }
               ],
               "optimization": true,
@@ -133,24 +117,16 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.qa.ts"
+                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/firebase.config.json",
-                  "with": "libs/shared/config/src/lib/qa/firebase.config.json"
+                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/stripe.config.json",
-                  "with": "libs/shared/config/src/lib/qa/stripe.config.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/service-account-key.json",
-                  "with": "libs/shared/config/src/lib/qa/service-account-key.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config.json",
-                  "width": "libs/shared/config/src/lib/qa/config.json"
+                  "replace": "./libs/shared/config/src/lib/config.json",
+                  "with": "./libs/shared/config/src/lib/qa/config.json"
                 }
               ]
             }
