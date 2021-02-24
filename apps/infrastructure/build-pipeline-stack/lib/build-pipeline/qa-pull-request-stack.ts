@@ -38,7 +38,7 @@ export class QAPullRequestBuildStack extends sst.Stack {
 
     const project = new codebuild.Project(
       this,
-      'AnyUpp:PR Verify Pull Request',
+      'AnyUpp:QA Verify Pull Request',
       {
         source: githubPrSource,
         buildSpec: codebuild.BuildSpec.fromObject({

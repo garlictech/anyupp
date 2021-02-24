@@ -66,6 +66,17 @@ export class CognitoStack extends Stack {
       },
     );
 
+    let callbackUrls = [props.adminSiteUrl];
+    let logoutUrls = [props.adminSiteUrl];
+
+    if (app.stage === 'dev') {
+      callbackUrls.push('http://localhost:4200');
+      logoutUrls.push('http://localhost:4200');
+    }
+
+    callbackUrls = callbackUrls.map(url => `${url}/admin/dashboard`);
+    logoutUrls = logoutUrls.map(url => `${url}/auth/logout`);
+
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool,
       generateSecret: false, // Don't need to generate secret for web app running on browsers
@@ -79,8 +90,8 @@ export class CognitoStack extends Stack {
           authorizationCodeGrant: true,
         },
         scopes: [cognito.OAuthScope.OPENID],
-        callbackUrls: [props.adminSiteUrl],
-        logoutUrls: [props.adminSiteUrl],
+        callbackUrls,
+        logoutUrls,
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,

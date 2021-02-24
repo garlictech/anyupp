@@ -73,6 +73,10 @@
                 {
                   "replace": "./libs/shared/config/src/lib/config.json",
                   "with": "./libs/shared/config/src/lib/production/config.json"
+                },
+                {
+                  "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+                  "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
                 }
               ],
               "optimization": true,
@@ -127,6 +131,10 @@
                 {
                   "replace": "./libs/shared/config/src/lib/config.json",
                   "with": "./libs/shared/config/src/lib/qa/config.json"
+                },
+                {
+                  "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+                  "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
                 }
               ]
             }
