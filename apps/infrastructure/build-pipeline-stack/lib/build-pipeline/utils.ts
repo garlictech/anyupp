@@ -52,8 +52,10 @@ export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
   stage: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'Build', {
+): codebuild.PipelineProject => {
+  const adminConfig = stage === 'dev' ? '' : `--configuration=${stage}`;
+
+  return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
       version: '0.2',
       phases: {
@@ -67,7 +69,7 @@ export const createBuildProject = (
         },
         build: {
           commands: [
-            `yarn nx build admin --configuration=${stage}`,
+            `yarn nx build admin ${adminConfig}`,
             `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${appConfig.name}`,
           ],
         },
@@ -81,6 +83,7 @@ export const createBuildProject = (
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
+};
 
 export const createE2eTestProject = (
   stack: sst.Stack,
