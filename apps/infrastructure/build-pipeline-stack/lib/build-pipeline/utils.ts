@@ -97,6 +97,8 @@ export const createE2eTestProject = (
         build: {
           commands: [
             `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+            'yarn cucumber:report',
+            'yarn cypress:generate:html:report',
           ],
         },
       },
@@ -108,6 +110,9 @@ export const createE2eTestProject = (
         cypressMedia: {
           files: ['dist/cypress/**/*'],
         },
+      },
+      artifacts: {
+        files: ['cyreport/**/*'],
       },
     }),
     cache,
