@@ -1,5 +1,5 @@
-import * as config from '../lib/config/config.json';
-import * as firebaseConfig from '../lib/config/firebase.config.json';
+import * as config from './config.json';
+import * as firebaseConfig from './firebase.config.json';
 import { SharedConfig, SharedFirebaseConfig } from './interfaces';
 
 export const isSharedConfig = (): boolean => {
