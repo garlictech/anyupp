@@ -1,19 +1,25 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-anyuppmobile-dev-104752-authRole",
-      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppmobile-dev-104752-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppmobile-dev-104752-authRole",
+      "AuthRoleName": "amplify-anyuppmobile-dev-160907-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppmobile-dev-160907-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppmobile-dev-160907-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-anyuppmobile-dev-104752-deployment",
-      "UnauthRoleName": "amplify-anyuppmobile-dev-104752-unauthRole",
-      "StackName": "amplify-anyuppmobile-dev-104752",
-      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppmobile-dev-104752/0b8e5cc0-703c-11eb-9b63-06c31b364fbd",
-      "AmplifyAppId": "dp8vzbap78qos"
+      "DeploymentBucketName": "amplify-anyuppmobile-dev-160907-deployment",
+      "UnauthRoleName": "amplify-anyuppmobile-dev-160907-unauthRole",
+      "StackName": "amplify-anyuppmobile-dev-160907",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppmobile-dev-160907/ea8039c0-751f-11eb-9862-064f5ba6ab99",
+      "AmplifyAppId": "dmnkvge1vqiiz"
     },
     "categories": {
+      "function": {
+        "AdminQueries80cc9a5a": {
+          "deploymentBucketName": "amplify-anyuppmobile-dev-160907-deployment",
+          "s3Key": "amplify-builds/AdminQueries80cc9a5a-6c447a74304f4d4c5a73-build.zip"
+        }
+      },
       "auth": {
-        "anyuppmobilece112a55": {}
+        "anyuppmobile243cb5a1": {}
       }
     }
   }

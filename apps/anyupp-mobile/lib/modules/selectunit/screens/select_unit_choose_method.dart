@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/demo-datastore/demo-datastore.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -124,7 +125,9 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                 height: 22.0,
               ),
               onPressed: () {
-                showConfirmLogoutDialog(context, false);
+                Nav.to(DataStoreDemoScreen());
+                // TODO!!! KIVETTEM AZ AMPLIFY DATASTORE DEMO MIATT!!!
+                // showConfirmLogoutDialog(context, false);
               },
             ),
           ),

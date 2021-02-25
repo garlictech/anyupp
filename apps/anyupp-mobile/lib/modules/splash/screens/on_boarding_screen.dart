@@ -26,7 +26,7 @@ class _OnBoardingState extends State<OnBoarding> {
             .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
             .delay(Duration(seconds: 2)),
         builder: (context, snapshot) {
-          print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');
+          // print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');
           if (snapshot.hasData) {
             if (snapshot.data == 'AUTHENTICATED') {
 

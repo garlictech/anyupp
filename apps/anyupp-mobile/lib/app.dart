@@ -5,14 +5,11 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:uni_links/uni_links.dart';
-
-// import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -24,15 +21,16 @@ import 'package:fa_prev/shared/widgets.dart';
 
 import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/exception/exception.dart';
-// import 'core/simple_bloc_delegate.dart';
 import 'core/theme/theme.dart';
-// import 'core/units/units.dart';
+import 'models/ModelProvider.dart';
 import 'modules/cart/cart.dart';
+import 'modules/demo-datastore/demo-datastore.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 
 import 'amplifyconfiguration.dart'; 
 
@@ -40,6 +38,7 @@ void runAppByStage({String stage = 'dev'}) {
   runZoned(() async {
     print('main().stage=$stage');
     await DotEnv().load('env/.env.$stage');
+    await _initAmplify();
     initDependencyInjection();
     // WidgetsFlutterBinding.ensureInitialized();
     configureCatcherAndRunZonedApp(MyApp());
@@ -48,6 +47,20 @@ void runAppByStage({String stage = 'dev'}) {
     Catcher.reportCheckedError(error, stackTrace);
   });
 }
+
+  void _initAmplify() async {
+    print('_initAmplify().start()');
+    await Amplify.addPlugins([AmplifyAuthCognito()]);
+    await Amplify.addPlugin(AmplifyDataStore(modelProvider: ModelProvider.instance));
+    try {
+      await Amplify.configure(amplifyconfig);
+      print('_initAmplify().Amplify initialized successfully...');
+    } on AmplifyAlreadyConfiguredException {
+      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    } on Exception catch (e) {
+      print('_initAmplify().Error initializing Amplify: $e');
+    }
+  }
 
 class MyApp extends StatefulWidget {
   @override
@@ -61,7 +74,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _initAmplify();
+    
     _initDeepLinks();
   }
 
@@ -91,20 +104,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     //     print(e.message);
     //   });
     // }
-  }
-
-  void _initAmplify() async {
-    print('_initAmplify().start()');
-    await Amplify.addPlugins([AmplifyAuthCognito()]);
-
-    try {
-      await Amplify.configure(amplifyconfig);
-      print('_initAmplify().Amplify initialized successfully...');
-    } on AmplifyAlreadyConfiguredException {
-      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    } on Exception catch (e) {
-      print('_initAmplify().Error initializing Amplify: $e');
-    }
   }
 
   void handleLink(Uri link) async {
@@ -170,6 +169,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider<FaceDetectionBloc>(create: (BuildContext context) => getIt<FaceDetectionBloc>()),
         BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
         BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<AmplifyUnitBloc>(create: (BuildContext context) => getIt<AmplifyUnitBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {

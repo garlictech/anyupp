@@ -64,22 +64,22 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> getAuthenticatedUserProfile() async {
-    print('getAuthenticatedUserProfile().user=$_user');
+    // print('getAuthenticatedUserProfile().user=$_user');
     try {
       _user = null;
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: false),
       );
-      print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
+      // print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
       if (session.isSignedIn) {
         session = await Amplify.Auth.fetchAuthSession(
           options: CognitoSessionOptions(getAWSCredentials: true),
         );
       }
-      print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
-      print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
-      print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
-      print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
+      // print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
+      // print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
+      // print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
+      // print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
       if (!session.isSignedIn) {
         _user = null;
       } else {
@@ -87,7 +87,7 @@ class AwsAuthProvider implements IAuthProvider {
         _user = _userFromAttributes(attributes);
       }
       _userController.add(_user);
-      print('getAuthenticatedUserProfile().user=$_user');
+      // print('getAuthenticatedUserProfile().user=$_user');
       return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');

@@ -1,8 +1,6 @@
 {
-    "identityPoolName": "anyuppmobilece112a55_identitypool_ce112a55",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "anyuppce112a55",
-    "userPoolName": "anyuppmobilece112a55_userpool_ce112a55",
+    "resourceNameTruncated": "anyupp243cb5a1",
+    "userPoolName": "anyuppmobile243cb5a1_userpool_243cb5a1",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -21,18 +19,18 @@
         "email"
     ],
     "userpoolClientGenerateSecret": false,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "365",
     "userpoolClientWriteAttributes": [
         "email"
     ],
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "anyuppce112a55_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "anyupp243cb5a1_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ce112a55",
-    "resourceName": "anyuppmobilece112a55",
-    "authSelections": "identityPoolAndUserPool",
+    "sharedId": "243cb5a1",
+    "resourceName": "anyuppmobile243cb5a1",
+    "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -45,10 +43,10 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "hostedUI": true,
     "usernameAttributes": [
-        "email"
+        "email, phone_number"
     ],
     "triggers": "{}",
     "hostedUIDomainName": "anyuppmobile",
@@ -57,13 +55,18 @@
         "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"anyupp://signin/\"],\"LogoutURLs\":[\"anyupp://signout/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
+    "verificationBucketName": "anyuppmobile243cb5a1verificationbucket",
     "usernameCaseSensitive": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "adminQueryGroup": "admins",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"anyupp://signin/\",\"anyupp://signin/\"],\"LogoutURLs\":[\"anyupp://signout/\",\"anyupp://signout/\"]}",
+    "authProviders": []
 }

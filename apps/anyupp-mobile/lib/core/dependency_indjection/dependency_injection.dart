@@ -2,6 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql_client.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/demo-datastore/demo-datastore.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
@@ -129,6 +130,10 @@ void _initRepositories() {
   getIt.registerLazySingleton<FaceRepository>(() => FaceRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<ICartProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
+
+  // TODO!!! AZ AMPLIFY DATASTORE DEMO MIATT!!!
+  getIt.registerLazySingleton<AmplifyUnitRepository>(() => AmplifyUnitRepository());
+  
 }
 
 void _initBlocs() {
@@ -149,4 +154,8 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
+
+  // TODO!!! AZ AMPLIFY DATASTORE DEMO MIATT!!!
+  getIt.registerLazySingleton(() => AmplifyUnitBloc(getIt<AmplifyUnitRepository>()));
+ 
 }
