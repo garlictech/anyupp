@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-pages-auth',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
@@ -14,6 +15,7 @@ module.exports = {
       },
     },
   },
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   coverageDirectory: '../../../../coverage/libs/admin/pages/auth',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',

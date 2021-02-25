@@ -1,110 +1,24 @@
-import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import { SecretsManagerStack } from './secretsmanager-stack';
-import * as chatbot from '@aws-cdk/aws-chatbot';
-import { configurePermissions } from './utils';
-
-export { SecretsManagerStack };
-
-export interface PipelineStackProps extends sst.StackProps {
-  readonly chatbot: chatbot.SlackChannelConfiguration;
-  readonly secretsManager: SecretsManagerStack;
-  readonly repoName: string;
-  readonly repoOwner: string;
-  readonly repoBranch: string;
-}
+import * as utils from './utils';
 
 export class DevBuildPipelineStack extends sst.Stack {
-  constructor(app: sst.App, id: string, props: PipelineStackProps) {
+  constructor(app: sst.App, id: string, props: utils.PipelineStackProps) {
     super(app, id, props);
-
-    new codebuild.GitHubSourceCredentials(this, 'CodeBuildGitHubCreds', {
-      accessToken: props.secretsManager.githubOauthToken.secretValue,
-    });
 
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-    const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
-      this,
-      'AdminSiteUrlParamDev',
-      'dev-anyupp-backend-AdminSiteUrl',
-    ).stringValue;
+    const stage = 'dev';
+    const { adminSiteUrl } = utils.configurePipeline(this, stage);
+    const build = utils.createBuildProject(this, cache, stage);
+    const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
+    const prefix = utils.projectPrefix(stage);
 
-    const build = new codebuild.PipelineProject(this, 'Build', {
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        env: {
-          variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict',
-          },
-        },
-        phases: {
-          install: {
-            commands: ['yarn'],
-          },
-          pre_build: {
-            commands: ['yarn nx config shared-config'],
-          },
-          build: {
-            commands: [
-              'yarn nx build admin',
-              'yarn nx build infrastructure-anyupp-backend-stack',
-            ],
-          },
-        },
-        artifacts: {
-          files: ['apps/infrastructure/anyupp-backend-stack/cdk.out/**/*'],
-        },
-      }),
-      cache,
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
-    });
-
-    const e2eTest = new codebuild.PipelineProject(this, 'e2eTest', {
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        env: {
-          variables: {
-            NODE_OPTIONS: '--unhandled-rejections=strict',
-          },
-        },
-        phases: {
-          install: {
-            commands: ['yarn'],
-          },
-          build: {
-            commands: [
-              `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-            ],
-          },
-        },
-        reports: {
-          cypressReports: {
-            files: ['cyreport/**/*'],
-            'file-format': 'CUCUMBERJSON',
-          },
-        },
-      }),
-      cache,
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-      },
-    });
-
-    configurePermissions(
-      this,
-      props.secretsManager,
-      build,
-      'dev-anyupp-backend',
-    );
+    utils.configurePermissions(this, props.secretsManager, build, prefix);
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
       stages: [
@@ -138,9 +52,9 @@ export class DevBuildPipelineStack extends sst.Stack {
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: `CreateStack`,
               templatePath: buildOutput.atPath(
-                `apps/infrastructure/anyupp-backend-stack/cdk.out/dev-anyupp-backend-anyupp.template.json`,
+                `apps/infrastructure/anyupp-backend-stack/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
               ),
-              stackName: `dev-anyupp-backend-anyupp`,
+              stackName: `${utils.projectPrefix}-anyupp`,
               adminPermissions: true,
               extraInputs: [buildOutput],
               replaceOnFailure: true,
@@ -160,26 +74,11 @@ export class DevBuildPipelineStack extends sst.Stack {
       ],
     });
 
-    new codestarnotifications.CfnNotificationRule(
+    utils.configurePipelineNotifications(
       this,
-      'DevBuildNotification',
-      {
-        detailType: 'FULL',
-        eventTypeIds: [
-          'codepipeline-pipeline-action-execution-failed',
-          'codepipeline-pipeline-action-execution-succeeded',
-          'codepipeline-pipeline-action-execution-started',
-          'codepipeline-pipeline-action-execution-canceled',
-        ],
-        name: 'AnyUppDevBuildNotification',
-        resource: pipeline.pipelineArn,
-        targets: [
-          {
-            targetAddress: props.chatbot.slackChannelConfigurationArn,
-            targetType: 'AWSChatbotSlack',
-          },
-        ],
-      },
+      pipeline.pipelineArn,
+      props.chatbot,
+      stage,
     );
   }
 }

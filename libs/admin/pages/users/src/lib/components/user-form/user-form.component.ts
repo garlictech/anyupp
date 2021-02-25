@@ -9,7 +9,8 @@ import { IUser } from '@bgap/shared/types';
   selector: 'bgap-user-form',
   templateUrl: './user-form.component.html',
 })
-export class UserFormComponent extends AbstractFormDialogComponent
+export class UserFormComponent
+  extends AbstractFormDialogComponent
   implements OnInit {
   public user: IUser | undefined;
 

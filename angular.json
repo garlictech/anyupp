@@ -43,26 +43,40 @@
               "zen-observable",
               "graphql-tag"
             ],
-            "scripts": []
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
+              },
+              {
+                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
+              },
+              {
+                "replace": "./libs/shared/config/src/lib/config.json",
+                "with": "./libs/shared/config/src/lib/dev/config.json"
+              }
+            ]
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "libs/shared/config/src/lib/config.prod.json",
-                  "width": "libs/shared/config/src/lib/config.json"
+                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/firebase.config.json",
-                  "width": "libs/shared/config/src/lib/firebase.json"
+                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "width": "libs/shared/config/src/lib/firebase-service-account-key.json"
+                  "replace": "./libs/shared/config/src/lib/config.json",
+                  "with": "./libs/shared/config/src/lib/production/config.json"
                 },
                 {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.prod.ts"
+                  "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+                  "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
                 }
               ],
               "optimization": true,
@@ -86,42 +100,41 @@
               ]
             },
             "qa": {
-              "fileReplacements": [
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
                 {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.qa.ts"
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
-                  "with": "libs/shared/config/src/lib/config/qa/firebase.config.qa.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
-                  "with": "libs/shared/config/src/lib/config/qa/stripe.config.qa.json"
-                },
-                {
-                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
-                  "with": "libs/shared/config/src/lib/config/qa/service-account-key.qa.json"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
-              ]
-            },
-            "staging": {
+              ],
               "fileReplacements": [
                 {
-                  "replace": "apps/admin/src/environments/environment.ts",
-                  "with": "apps/admin/src/environments/environment.staging.ts"
+                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
+                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/config/firebase.config.json",
-                  "with": "libs/shared/config/src/lib/config/staging/firebase.config.staging.json"
+                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
+                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/config/stripe.config.json",
-                  "with": "libs/shared/config/src/lib/config/staging/stripe.config.staging.json"
+                  "replace": "./libs/shared/config/src/lib/config.json",
+                  "with": "./libs/shared/config/src/lib/qa/config.json"
                 },
                 {
-                  "replace": "libs/shared/config/src/lib/config/service-account-key.json",
-                  "with": "libs/shared/config/src/lib/config/staging/service-account-key.staging.json"
+                  "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+                  "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
                 }
               ]
             }
@@ -175,19 +188,6 @@
             "main": "apps/infrastructure/build-pipeline-stack/src/main.ts",
             "tsConfig": "apps/infrastructure/build-pipeline-stack/tsconfig.app.json",
             "assets": ["apps/infrastructure/build-pipeline-stack/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/infrastructure/build-pipeline-stack/src/environments/environment.ts",
-                  "with": "apps/infrastructure/build-pipeline-stack/src/environments/environment.prod.ts"
-                }
-              ]
-            }
           }
         },
         "deploy": {
@@ -229,19 +229,12 @@
           "options": {
             "cwd": "apps/infrastructure/anyupp-backend-stack",
             "parallel": false,
-            "commands": ["yarn sls package", "yarn sst cdk synth"]
+            "commands": [
+              "yarn sls package --stage='{args.stage}'",
+              "yarn sst cdk synth"
+            ]
           },
-          "outputs": ["{options.outputPath}"],
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/infrastructure/anyupp-backend-stack/src/environments/environment.ts",
-                  "with": "apps/infrastructure/anyupp-backend-stack/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
+          "outputs": ["{options.outputPath}"]
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
@@ -250,10 +243,10 @@
             "parallel": false,
             "commands": [
               {
-                "command": "yarn sst deploy"
+                "command": "yarn sst deploy --stage='{args.stage}'"
               },
               {
-                "command": "cd ../../.. && yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev"
+                "command": "cd ../../.. && yarn ts-node ./tools/fetch-configuration.ts --app='{args.app}' --stage='{args.stage}'"
               }
             ]
           }
@@ -331,7 +324,7 @@
               "fileReplacements": [
                 {
                   "replace": "apps/graphql-server/src/environments/environment.ts",
-                  "with": "apps/graphql-server/src/environments/environment.prod.ts"
+                  "with": "apps/graphql-server/src/environments/environment.production.ts"
                 }
               ]
             }
@@ -442,8 +435,8 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "ts-node ./tools/fetch-configuration.ts anyupp-backend dev",
-              "ts-node ./tools/get-secrets.ts dev"
+              "ts-node ./tools/fetch-configuration.ts '{args.app}' '{args.stage}'",
+              "ts-node ./tools/get-secrets.ts '{args.app}' '{args.stage}'"
             ]
           }
         },

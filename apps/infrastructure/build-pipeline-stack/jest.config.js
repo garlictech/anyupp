@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'infrastructure-build-pipeline-stack',
   preset: '../../../jest.preset.js',
   globals: {

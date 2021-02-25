@@ -14,7 +14,8 @@ import { IAdminUser } from '@bgap/shared/types';
   templateUrl: './admin-user-role-form.component.html',
   styleUrls: ['./admin-user-role-form.component.scss'],
 })
-export class AdminUserRoleFormComponent extends AbstractFormDialogComponent
+export class AdminUserRoleFormComponent
+  extends AbstractFormDialogComponent
   implements OnInit {
   public adminUser!: IAdminUser;
   private _apollo: Apollo;

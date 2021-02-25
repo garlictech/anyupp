@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'infrastructure-anyupp-backend-stack',
   preset: '../../../jest.preset.js',
   globals: {

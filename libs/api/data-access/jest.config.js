@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'api-data-access',
   preset: '../../../jest.preset.js',
   globals: {

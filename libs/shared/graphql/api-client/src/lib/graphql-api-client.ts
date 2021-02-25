@@ -16,18 +16,18 @@ export class GraphqlApiClient {
   constructor(
     genericConfig: IAmplifyApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
-    private logger: ILogger
+    private logger: ILogger,
   ) {
     API.configure(genericConfig);
 
     const parser = fp.memoize((error: unknown) =>
-      JSON.parse(fp.get('graphQLErrors[0].message', error))
+      JSON.parse(fp.get('graphQLErrors[0].message', error)),
     );
     const retryable = (error: unknown) => {
       try {
         return fp.flow(
           err => parser(err).retryable,
-          retryable => (fp.isBoolean(retryable) ? retryable : true)
+          retryable => (fp.isBoolean(retryable) ? retryable : true),
         )(error);
       } catch (_err) {
         return true;
@@ -37,7 +37,7 @@ export class GraphqlApiClient {
       try {
         return fp.flow(
           err => parser(err).retryDelay,
-          retryable => (fp.isNumber(retryable) ? retryable * 1000 : 2000)
+          retryable => (fp.isNumber(retryable) ? retryable * 1000 : 2000),
         )(error);
       } catch (_err) {
         return 2000;
@@ -56,34 +56,34 @@ export class GraphqlApiClient {
   }
   query<T = unknown>(
     document: DocumentNode,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
   ): Observable<ApolloQueryResult<T>> {
     this.logger.debug(
       `Query ${JSON.stringify(document)} called with variables ${JSON.stringify(
         variables,
         null,
-        2
-      )}`
+        2,
+      )}`,
     );
     return from(
       this._client.query({
         query: document,
         variables,
-      })
+      }),
     ).pipe(
       this._graphqlRetryLogic,
-      map(x => x as ApolloQueryResult<T>)
+      map(x => x as ApolloQueryResult<T>),
     );
   }
   mutate(
     document: DocumentNode,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
   ): Observable<unknown> {
     return from(
       this._client.mutate({
         mutation: document,
         variables,
-      })
+      }),
     ).pipe(this._graphqlRetryLogic);
   }
 }
