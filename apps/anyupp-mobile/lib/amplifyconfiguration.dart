@@ -1,24 +1,6 @@
 const amplifyconfig = ''' {
     "UserAgent": "aws-amplify-cli/2.0",
     "Version": "1.0",
-    "api": {
-        "plugins": {
-            "awsAPIPlugin": {
-                "AdminQueries": {
-                    "endpointType": "REST",
-                    "endpoint": "https://9t94q9zapf.execute-api.eu-west-1.amazonaws.com/dev",
-                    "region": "eu-west-1",
-                    "authorizationType": "AWS_IAM"
-                },
-                "anyuppmobile": {
-                    "endpointType": "GraphQL",
-                    "endpoint": "https://vqawgl3psjf5vcq4ee2ugzvwbq.appsync-api.eu-west-1.amazonaws.com/graphql",
-                    "region": "eu-west-1",
-                    "authorizationType": "AMAZON_COGNITO_USER_POOLS"
-                }
-            }
-        }
-    },
     "auth": {
         "plugins": {
             "awsCognitoAuthPlugin": {
@@ -30,15 +12,15 @@ const amplifyconfig = ''' {
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "eu-west-1:395f2f88-88de-4515-bfe2-427d35edfb6c",
+                            "PoolId": "eu-west-1:1d002f41-baf6-4367-b7ef-dad91dc27f11",
                             "Region": "eu-west-1"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "eu-west-1_4MLlR0MFF",
-                        "AppClientId": "18gfhqv1b4u7a2e6tqlqnmmhaj",
+                        "PoolId": "eu-west-1_5w63biNwf",
+                        "AppClientId": "3sgg10momualg5g3qc81ibk7h0",
                         "Region": "eu-west-1"
                     }
                 },
@@ -46,7 +28,7 @@ const amplifyconfig = ''' {
                     "Default": {
                         "OAuth": {
                             "WebDomain": "anyuppmobile-dev.auth.eu-west-1.amazoncognito.com",
-                            "AppClientId": "18gfhqv1b4u7a2e6tqlqnmmhaj",
+                            "AppClientId": "3sgg10momualg5g3qc81ibk7h0",
                             "SignInRedirectURI": "anyupp://signin/",
                             "SignOutRedirectURI": "anyupp://signout/",
                             "Scopes": [
@@ -62,11 +44,25 @@ const amplifyconfig = ''' {
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "https://vqawgl3psjf5vcq4ee2ugzvwbq.appsync-api.eu-west-1.amazonaws.com/graphql",
+                        "ApiUrl": "https://ihbhzn4yw5boflnpan6jemqyiy.appsync-api.eu-west-1.amazonaws.com/graphql",
                         "Region": "eu-west-1",
-                        "AuthMode": "AMAZON_COGNITO_USER_POOLS",
-                        "ClientDatabasePrefix": "anyuppmobile_AMAZON_COGNITO_USER_POOLS"
+                        "AuthMode": "API_KEY",
+                        "ApiKey": "da2-5ddni46di5csnkytqfnwoagr7e",
+                        "ClientDatabasePrefix": "anyuppmobile_API_KEY"
                     }
+                }
+            }
+        }
+    },
+    "api": {
+        "plugins": {
+            "awsAPIPlugin": {
+                "anyuppmobile": {
+                    "endpointType": "GraphQL",
+                    "endpoint": "https://ihbhzn4yw5boflnpan6jemqyiy.appsync-api.eu-west-1.amazonaws.com/graphql",
+                    "region": "eu-west-1",
+                    "authorizationType": "API_KEY",
+                    "apiKey": "da2-5ddni46di5csnkytqfnwoagr7e"
                 }
             }
         }

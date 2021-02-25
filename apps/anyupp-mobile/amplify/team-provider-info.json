@@ -12,14 +12,8 @@
       "AmplifyAppId": "dmnkvge1vqiiz"
     },
     "categories": {
-      "function": {
-        "AdminQueries80cc9a5a": {
-          "deploymentBucketName": "amplify-anyuppmobile-dev-160907-deployment",
-          "s3Key": "amplify-builds/AdminQueries80cc9a5a-6c447a74304f4d4c5a73-build.zip"
-        }
-      },
       "auth": {
-        "anyuppmobile243cb5a1": {}
+        "anyuppmobile448593a0": {}
       }
     }
   }
