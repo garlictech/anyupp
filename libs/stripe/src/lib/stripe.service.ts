@@ -1,23 +1,11 @@
 import Stripe from 'stripe';
 import { StripeCard } from '@bgap/api/graphql/schema';
 import { mapPaymentMethodToCard } from './stripe.utils';
-import {
-  SharedSecrets,
-  sharedSecretsPromise,
-  getSecrets,
-} from '@bgap/shared/secrets';
+import { sharedSecretsPromise } from '@bgap/shared/secrets';
 
 export const stripeService = {
-  async getCustomerStripeCards(
-    // sharedSecrets: SharedSecrets,
-    userId: string,
-  ): Promise<StripeCard[]> {
-    const secrets = await getSecrets();
-    // const secrets = await sharedSecretsPromise;
-    console.log(
-      '### ~ file: stripe.service.ts ~ line 12 ~ secrets',
-      Object.keys(secrets),
-    );
+  async getCustomerStripeCards(userId: string): Promise<StripeCard[]> {
+    const secrets = await sharedSecretsPromise;
     const stripe = new Stripe(secrets.stripeSecretKey, {
       apiVersion: '2020-08-27',
     });
