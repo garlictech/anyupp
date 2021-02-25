@@ -251,6 +251,18 @@
             ]
           }
         },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "parallel": false,
+            "commands": [
+              {
+                "command": "yarn sst remove --stage='{args.stage}'"
+              }
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
