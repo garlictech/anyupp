@@ -13,12 +13,14 @@ export class AnyUppStack extends Stack {
     const secretManager = new SecretsManagerStack(scope, 'SecretsManagerStack');
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
-    new CognitoStack(scope, 'cognito', {
+    const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretManager.googleClientSecret,
     });
-    new AppsyncAppStack(scope, 'appsync');
+    new AppsyncAppStack(scope, 'appsync', {
+      cognitoUserPool: cognitoStack.userPool,
+    });
     new StripeStack(scope, 'stripe');
   }
 }

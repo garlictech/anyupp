@@ -19,6 +19,16 @@ import {
 } from './resolver-functions';
 import { PROJECT_ROOT } from './settings';
 import { commonLambdaProps } from './lambda-common';
+import { StackProps } from '@aws-cdk/core';
+import * as cognito from '@aws-cdk/aws-cognito';
+
+// import * as iam from '@aws-cdk/aws-iam';
+// import { ManagedPolicy } from '@aws-cdk/aws-iam';
+
+// export const lambdaExecutionRoleId =
+//   'arn:aws:iam::568276182587:role/dev-anyupp-gyuri-appsync-AppsyncLambdaService';
+// export const lambdaExecutionRoleId = 'arn:aws:iam::568276182587:role/dev-anyupp-gyuri-appsync-AppsyncLambdaServiceRole9-1G61CAP2JQPL5'
+// export const lambdaExecutionRoleId = 'arn:aws:iam::568276182587:role/dev-petrot-anyupp-backend-ApilambdaDatasourceServi-1WZ8V66OMM3VU'
 
 const stageValidationProperties = (fields: string[]): string =>
   pipe(
@@ -39,13 +49,17 @@ interface ApiDesc {
   dataValidators: AppsyncFunction[];
 }
 
+export interface AppsyncAppStackProps extends StackProps {
+  cognitoUserPool: cognito.UserPool;
+}
+
 export class AppsyncAppStack extends sst.Stack {
   private resolverFunctions: ResolverFunctions;
   private noneDs: NoneDataSource;
   private api: GraphqlApi;
 
-  constructor(scope: sst.App, id: string) {
-    super(scope, id);
+  constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
+    super(scope, id, props);
     const app = this.node.root as sst.App;
 
     // Creates the AppSync API
@@ -61,6 +75,14 @@ export class AppsyncAppStack extends sst.Stack {
             expires: cdk.Expiration.after(cdk.Duration.days(365)),
           },
         },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.USER_POOL,
+            userPoolConfig: {
+              userPool: props.cognitoUserPool,
+            },
+          },
+        ],
       },
       xrayEnabled: true,
     });
@@ -154,6 +176,15 @@ export class AppsyncAppStack extends sst.Stack {
   }
 
   private configureTestLambdaDataSource(): void {
+    // const lambdaExecutionRole = new iam.Role(this, lambdaExecutionRoleId, {
+    //   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+    // });
+    // lambdaExecutionRole.addManagedPolicy(
+    //   ManagedPolicy.fromAwsManagedPolicyName(
+    //     'service-role/AWSLambdaBasicExecutionRole',
+    //   ),
+    // );
+
     // Create the lambda first. Mind, that we have to build appsync-lambda.zip
     // with serverless bundle, in the build step! So, you have to declare the lambda
     // in serverless.xml as well (see the example)
@@ -164,6 +195,7 @@ export class AppsyncAppStack extends sst.Stack {
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
+      // role: lambdaExecutionRole,
     });
 
     // Ok, we have the lambda resource. Now, we turn it into a data source.
@@ -175,11 +207,46 @@ export class AppsyncAppStack extends sst.Stack {
     );
 
     // Cool, we have a data source. Now, let's hook a resolver for a query to it.
+    // lambdaDataSource.createResolver({
+    //   // Define the graphql type from the schema (Query)
+    //   typeName: 'Query',
+    //   // the field of the type
+    //   fieldName: 'hellobello',
+    //   // This is a simple example, so we just pass the one-and-only name parameter as is
+    //   // This is how we map the graphql requests to lambda event documents.
+    //   requestMappingTemplate: MappingTemplate.fromString(
+    //     `
+    //     {
+    //       "version" : "2017-02-28",
+    //       "operation" : "Invoke",
+    //       "payload": {
+    //         "fieldName": "hellobello",
+    //         "payload": $util.toJson($context.arguments)
+    //       }
+    //     }
+    //     `,
+    //   ),
+    //   // ... and we return what the lambda returns as is.
+    //   responseMappingTemplate: MappingTemplate.fromString(
+    //     '$util.toJson($context.result)',
+    //   ),
+    // });
+
+    // const theTable = new TableConstruct(this, , {
+    //   isStreamed: true,
+    // }).theTable;
+
+    // const tableDs = this.api.addDynamoDbDataSource(
+    //   label + 'DynamoDbDataSource',
+    //   theTable,
+    // );
+
+    // Cool, we have a data source. Now, let's hook a resolver for a query to it.
     lambdaDataSource.createResolver({
       // Define the graphql type from the schema (Query)
       typeName: 'Query',
       // the field of the type
-      fieldName: 'hellobello',
+      fieldName: 'getMyCustomerStripeCards',
       // This is a simple example, so we just pass the one-and-only name parameter as is
       // This is how we map the graphql requests to lambda event documents.
       requestMappingTemplate: MappingTemplate.fromString(
@@ -188,12 +255,15 @@ export class AppsyncAppStack extends sst.Stack {
           "version" : "2017-02-28",
           "operation" : "Invoke",
           "payload": {
-            "fieldName": "hellobello",
-            "payload": $util.toJson($context.arguments)
+            "fieldName": "getMyCustomerStripeCards",
+            "payload": {
+                "userId": $context.identity.cognitoIdentityId
+              }
           }
         }
         `,
       ),
+      // pipelineConfig: [],
       // ... and we return what the lambda returns as is.
       responseMappingTemplate: MappingTemplate.fromString(
         '$util.toJson($context.result)',

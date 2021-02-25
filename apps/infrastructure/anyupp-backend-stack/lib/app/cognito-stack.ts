@@ -10,11 +10,12 @@ export interface CognitoStackProps extends StackProps {
 }
 
 export class CognitoStack extends Stack {
+  public userPool: cognito.UserPool;
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
 
-    const userPool = new cognito.UserPool(this, 'UserPool', {
+    this.userPool = new cognito.UserPool(this, 'UserPool', {
       userPoolName: app.logicalPrefixedName('user-pool'),
       selfSignUpEnabled: true, // Allow users to sign up
       autoVerify: { email: true }, // Verify email addresses by sending a verification code
@@ -46,7 +47,7 @@ export class CognitoStack extends Stack {
     });
 
     const domain = new cognito.UserPoolDomain(this, 'CognitoDomain', {
-      userPool,
+      userPool: this.userPool,
       cognitoDomain: {
         domainPrefix: app.stage + '-' + app.name,
       },
@@ -56,7 +57,7 @@ export class CognitoStack extends Stack {
       this,
       'Google',
       {
-        userPool,
+        userPool: this.userPool,
         clientId: props.googleClientId,
         clientSecret: props.googleClientSecret,
         attributeMapping: {
@@ -67,7 +68,7 @@ export class CognitoStack extends Stack {
     );
 
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
-      userPool,
+      userPool: this.userPool,
       generateSecret: false, // Don't need to generate secret for web app running on browsers
       preventUserExistenceErrors: true,
       authFlows: {
@@ -96,7 +97,7 @@ export class CognitoStack extends Stack {
       cognitoIdentityProviders: [
         {
           clientId: userPoolClient.userPoolClientId,
-          providerName: userPool.userPoolProviderName,
+          providerName: this.userPool.userPoolProviderName,
         },
       ],
     });
@@ -104,14 +105,14 @@ export class CognitoStack extends Stack {
     // Exportvalues
     const userPoolId = 'UserPoolId';
     new CfnOutput(this, userPoolId, {
-      value: userPool.userPoolId,
+      value: this.userPool.userPoolId,
       exportName: app.logicalPrefixedName(userPoolId),
     });
     new ssm.StringParameter(this, userPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool ID',
       parameterName: app.logicalPrefixedName(userPoolId),
-      stringValue: userPool.userPoolId,
+      stringValue: this.userPool.userPoolId,
     });
 
     const userPoolClientId = 'UserPoolClientId';
