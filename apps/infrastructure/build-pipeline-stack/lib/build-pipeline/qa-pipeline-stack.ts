@@ -10,6 +10,7 @@ export class QABuildPipelineStack extends sst.Stack {
 
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
+    const e2eOutput = new codepipeline.Artifact();
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
     const stage = 'qa';
@@ -54,7 +55,7 @@ export class QABuildPipelineStack extends sst.Stack {
               templatePath: buildOutput.atPath(
                 `apps/infrastructure/anyupp-backend-stack/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
               ),
-              stackName: `${utils.projectPrefix}-anyupp`,
+              stackName: `${utils.projectPrefix(stage)}-anyupp`,
               adminPermissions: true,
               extraInputs: [buildOutput],
               replaceOnFailure: true,
@@ -68,6 +69,7 @@ export class QABuildPipelineStack extends sst.Stack {
               actionName: 'e2eTest',
               project: e2eTest,
               input: sourceOutput,
+              outputs: [e2eOutput],
             }),
           ],
         },

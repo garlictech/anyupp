@@ -110,9 +110,6 @@ export const createE2eTestProject = (
           files: ['cyreport/cucumber-json/**/*'],
           'file-format': 'CUCUMBERJSON',
         },
-        cypressMedia: {
-          files: ['dist/cypress/**/*'],
-        },
       },
       artifacts: {
         files: ['cyreport/**/*'],
