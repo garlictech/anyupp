@@ -57,6 +57,25 @@ you WILL experience differences in your local and the remote environments.
 
 Check the invoked scripts for their internals and parameters!
 
+## Create private stack
+
+Unfortunately, the tools do not support app name parametrization, so:
+
+- in `apps/infrastructure/anyupp-backend-stack/sst.json`, write your app name
+  to the "name" field
+- in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
+  in the `service` field
+- build and deploy the stack to the desired stage (it will use the stage-related
+  parameters, secrets, etc:)
+
+```
+nx build infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+nx deploy infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+nx remove infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+```
+
+**Be careful** and do NOT check in the mentioned two config files!
+
 ## Building the project
 
 Like the config stage, we have to tell the system which stack (app) and stage you
