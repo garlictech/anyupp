@@ -1,3 +1,4 @@
+import * as cognito from '@aws-cdk/aws-cognito';
 import * as appsync from '@aws-cdk/aws-appsync';
 import {
   AppsyncFunction,
@@ -41,12 +42,16 @@ interface ApiDesc {
   createFunction?: any;
 }
 
+export interface AppsyncAppStackParams extends sst.StackProps {
+  userPool: cognito.UserPool;
+}
+
 export class AppsyncAppStack extends sst.Stack {
   private resolverFunctions: ResolverFunctions;
   private noneDs: NoneDataSource;
   private api: GraphqlApi;
 
-  constructor(scope: sst.App, id: string) {
+  constructor(scope: sst.App, id: string, props: AppsyncAppStackParams) {
     super(scope, id);
     const app = this.node.root as sst.App;
 
@@ -63,6 +68,14 @@ export class AppsyncAppStack extends sst.Stack {
             expires: cdk.Expiration.after(cdk.Duration.days(365)),
           },
         },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.USER_POOL,
+            userPoolConfig: {
+              userPool: props.userPool,
+            },
+          },
+        ],
       },
       xrayEnabled: true,
     });

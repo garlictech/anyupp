@@ -27,7 +27,6 @@ pipe(
     'GraphqlApiUrl',
     'StripeWebhookEndpoint',
     'googleClientId',
-    'facebookAppId',
     'stripePublishableKey',
   ],
   fp.map(paramName => `${prefix}${paramName}`),

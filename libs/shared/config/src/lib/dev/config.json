@@ -1,12 +1,12 @@
 {
   "AdminSiteUrl": "https://dev.admin.anyupp-backend.anyupp.com",
-  "GraphqlApiKey": "da2-e3wbumuvtvbgpmoosdktxrp25y",
-  "GraphqlApiUrl": "https://yx4bzwhaljf4npsufxtv7jg43u.appsync-api.eu-west-1.amazonaws.com/graphql",
-  "IdentityPoolId": "eu-west-1:13f08baa-4494-401e-a305-34a43e0885f3",
-  "StripeWebhookEndpoint": "https://tsqjgf2z43.execute-api.eu-west-1.amazonaws.com/dev/",
-  "UserPoolClientId": "28q21gd0hm9np49aoioojv765t",
+  "GraphqlApiKey": "da2-dyxfkyej3beafkf7uo23o5l36m",
+  "GraphqlApiUrl": "https://27vjj7qzqjgrddn2ngvtvhbgbu.appsync-api.eu-west-1.amazonaws.com/graphql",
+  "IdentityPoolId": "eu-west-1:00fdc7ac-fc0d-43c6-b581-965cb5c329d4",
+  "StripeWebhookEndpoint": "https://mi2udz498j.execute-api.eu-west-1.amazonaws.com/dev/",
+  "UserPoolClientId": "7f29bks08rln1i072b8gl5c7h7",
   "UserPoolDomain": "https://dev-anyupp-backend.auth.eu-west-1.amazoncognito.com",
-  "UserPoolId": "eu-west-1_iHucfADXQ",
+  "UserPoolId": "eu-west-1_8u0cM6fGn",
   "googleClientId": "1016713353610-j3k5ejo1pgo4pcfo3hos8027kkspc5a9.apps.googleusercontent.com",
   "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDBds"
 }
