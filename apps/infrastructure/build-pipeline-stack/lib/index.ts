@@ -5,7 +5,6 @@ import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stac
 import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
 import { PipelineStackProps } from './build-pipeline/utils';
 import { CiStack } from './build-pipeline/ci-stack';
-import { QAPullRequestBuildStack } from './build-pipeline/qa-pull-request-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
 
 export default function main(app: App): void {
@@ -61,12 +60,12 @@ export default function main(app: App): void {
     devPullRequestConfig,
   );
 
-  new QAPullRequestBuildStack(app, 'QAPullRequestBuildStack', {
+  /*new QAPullRequestBuildStack(app, 'QAPullRequestBuildStack', {
     repoBranch: 'qa',
     secretsManager: qaSecretsManagerStack,
     ...commonConfig,
   });
-
+*/
   new QABuildPipelineStack(app, 'QABuildStack', {
     repoBranch: 'qa',
     secretsManager: qaSecretsManagerStack,
