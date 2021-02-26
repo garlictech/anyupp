@@ -36,6 +36,7 @@ export const configurePermissions = (
     'GraphqlApiKey',
     'GraphqlApiUrl',
     'googleClientId',
+    'facebookAppId',
     'stripePublishableKey',
     'AdminSiteUrl',
     'StripeWebhookEndpoint',

@@ -7,6 +7,8 @@ export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
   googleClientId: string;
   googleClientSecret: string;
+  facebookClientId: string;
+  facebookClientSecret: string;
 }
 
 export class CognitoStack extends Stack {
@@ -66,6 +68,20 @@ export class CognitoStack extends Stack {
       },
     );
 
+    const facebookIdProvider = new cognito.UserPoolIdentityProviderFacebook(
+      this,
+      'Facebook',
+      {
+        userPool,
+        clientId: props.facebookClientId,
+        clientSecret: props.facebookClientSecret,
+        attributeMapping: {
+          email: cognito.ProviderAttribute.FACEBOOK_EMAIL,
+        },
+        scopes: ['public_profile', 'email', 'openid'],
+      },
+    );
+
     let callbackUrls = [props.adminSiteUrl];
     let logoutUrls = [props.adminSiteUrl];
 
@@ -95,12 +111,13 @@ export class CognitoStack extends Stack {
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,
-        //cognito.UserPoolClientIdentityProvider.FACEBOOK,
+        cognito.UserPoolClientIdentityProvider.FACEBOOK,
         cognito.UserPoolClientIdentityProvider.COGNITO,
       ],
     });
 
     userPoolClient.node.addDependency(googleIdProvider);
+    userPoolClient.node.addDependency(facebookIdProvider);
 
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
       allowUnauthenticatedIdentities: false, // Don't allow unathenticated users

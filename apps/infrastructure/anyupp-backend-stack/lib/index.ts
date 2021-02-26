@@ -17,6 +17,8 @@ export class AnyUppStack extends Stack {
       adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretManager.googleClientSecret,
+      facebookClientId: paramsStack.facebookAppId,
+      facebookClientSecret: secretManager.facebookAppSecret,
     });
     new AppsyncAppStack(scope, 'appsync');
     new StripeStack(scope, 'stripe');
