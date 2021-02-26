@@ -120,6 +120,12 @@ yarn cucumber:report
 
 then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
 
+To get a super-cool report, with failure screenshots embedded:
+
+`yarn cypress:generate:html:report`
+
+then open `cyreport/cypress-tests-report.html` file with the browser.
+
 ### Writing Cucumber/Cypress tests
 
 #### VsCode
