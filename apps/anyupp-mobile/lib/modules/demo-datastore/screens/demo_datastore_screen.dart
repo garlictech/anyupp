@@ -13,14 +13,14 @@ class DataStoreDemoScreen extends StatefulWidget {
 }
 
 class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
-
-
   @override
   void initState() {
     super.initState();
-    getIt<AmplifyUnitBloc>().add(AmplifyListUnits());
+    // getIt<AmplifyUnitBloc>().add(AmplifyListUnits());
+    getIt<AmplifyUnitBloc>().add(AmplifyListLocalizations());
+    // getIt<AmplifyUnitBloc>().add(AmplifyListGroups());
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +28,21 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
       backgroundColor: theme.background2,
       body: BlocBuilder<AmplifyUnitBloc, AmplifyUnitState>(
         builder: (context, state) {
+          print('DataStoreDemoScreen.state=$state');
           if (state is AmplifyUnitListLoaded) {
-            return _buildUnitList(context, state.units);
+            return _buildList(context, state.units);
+          }
+
+          if (state is AmplifyLocalizationListLoaded) {
+            return _buildList(context, state.items);
+          }
+
+          if (state is AmplifyGroupListLoaded) {
+            return _buildList(context, state.groups);
+          }
+
+          if (state is AmplifyUnitError) {
+            return _buildError(context, state.error);
           }
 
           return CenterLoadingWidget();
@@ -38,8 +51,16 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
     );
   }
 
-  Widget _buildUnitList(BuildContext context, List<Unit> list) {
-    
+  Widget _buildError(BuildContext context, String error) {
+    return Container(
+      child: Center(
+        child: Text(error),
+      ),
+    );
+  }
+
+  Widget _buildList<T>(BuildContext context, List<T> list) {
+    print('DataStoreDemoScreen._buildList().list=$list, type=$T');
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,
@@ -52,7 +73,7 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
-                child: _buildUnitCard(list[position]),
+                child: _buildCard<T>(list[position]),
               ),
             ),
           );
@@ -61,11 +82,43 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
     );
   }
 
+  Widget _buildCard<T>(T data) {
+    if (data is Unit) {
+      return _buildUnitCard(data);
+    }
+    if (data is LocalizedItem) {
+      return _buildLocalizationCard(data);
+    }
+    if (data is Group) {
+      return _buildGroupCard(data);
+    }
+
+    return Container();
+  }
+
+  Widget _buildGroupCard(Group group) {
+    return Container(
+      height: 60.0,
+      child: Card(
+        child: Text(group?.name),
+      ),
+    );
+  }
+
   Widget _buildUnitCard(Unit unit) {
     return Container(
       height: 60.0,
       child: Card(
-        child: Text(unit.name),
+        child: Text(unit?.name),
+      ),
+    );
+  }
+
+  Widget _buildLocalizationCard(LocalizedItem item) {
+    return Container(
+      height: 60.0,
+      child: Card(
+        child: Text(item?.en),
       ),
     );
   }

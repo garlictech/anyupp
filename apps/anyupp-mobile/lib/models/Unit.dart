@@ -31,10 +31,7 @@ class Unit extends Model {
   final String name;
   final LocalizedItem description;
   final List<PaymentMode> paymentModes;
-  final FloorMapData floorMap;
   final List<Lane> lanes;
-  final DailySchedule open;
-  final WeeklySchedule openingHours;
 
   @override
   getInstanceType() => classType;
@@ -52,10 +49,7 @@ class Unit extends Model {
       this.name,
       this.description,
       this.paymentModes,
-      this.floorMap,
-      this.lanes,
-      this.open,
-      this.openingHours});
+      this.lanes});
 
   factory Unit(
       {String id,
@@ -65,10 +59,7 @@ class Unit extends Model {
       String name,
       LocalizedItem description,
       List<PaymentMode> paymentModes,
-      FloorMapData floorMap,
-      List<Lane> lanes,
-      DailySchedule open,
-      WeeklySchedule openingHours}) {
+      List<Lane> lanes}) {
     return Unit._internal(
         id: id == null ? UUID.getUUID() : id,
         groupId: groupId,
@@ -79,10 +70,7 @@ class Unit extends Model {
         paymentModes: paymentModes != null
             ? List.unmodifiable(paymentModes)
             : paymentModes,
-        floorMap: floorMap,
-        lanes: lanes != null ? List.unmodifiable(lanes) : lanes,
-        open: open,
-        openingHours: openingHours);
+        lanes: lanes != null ? List.unmodifiable(lanes) : lanes);
   }
 
   bool equals(Object other) {
@@ -100,10 +88,7 @@ class Unit extends Model {
         name == other.name &&
         description == other.description &&
         DeepCollectionEquality().equals(paymentModes, other.paymentModes) &&
-        floorMap == other.floorMap &&
-        DeepCollectionEquality().equals(lanes, other.lanes) &&
-        open == other.open &&
-        openingHours == other.openingHours;
+        DeepCollectionEquality().equals(lanes, other.lanes);
   }
 
   @override
@@ -123,13 +108,7 @@ class Unit extends Model {
         ", ");
     buffer.write("name=" + name + ", ");
     buffer.write("description=" +
-        (description != null ? description.toString() : "null") +
-        ", ");
-    buffer.write(
-        "floorMap=" + (floorMap != null ? floorMap.toString() : "null") + ", ");
-    buffer.write("open=" + (open != null ? open.toString() : "null") + ", ");
-    buffer.write("openingHours=" +
-        (openingHours != null ? openingHours.toString() : "null"));
+        (description != null ? description.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -143,10 +122,7 @@ class Unit extends Model {
       String name,
       LocalizedItem description,
       List<PaymentMode> paymentModes,
-      FloorMapData floorMap,
-      List<Lane> lanes,
-      DailySchedule open,
-      WeeklySchedule openingHours}) {
+      List<Lane> lanes}) {
     return Unit(
         id: id ?? this.id,
         groupId: groupId ?? this.groupId,
@@ -155,10 +131,7 @@ class Unit extends Model {
         name: name ?? this.name,
         description: description ?? this.description,
         paymentModes: paymentModes ?? this.paymentModes,
-        floorMap: floorMap ?? this.floorMap,
-        lanes: lanes ?? this.lanes,
-        open: open ?? this.open,
-        openingHours: openingHours ?? this.openingHours);
+        lanes: lanes ?? this.lanes);
   }
 
   Unit.fromJson(Map<String, dynamic> json)
@@ -177,22 +150,10 @@ class Unit extends Model {
                     PaymentMode.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        floorMap = json['floorMap'] != null
-            ? FloorMapData.fromJson(
-                new Map<String, dynamic>.from(json['floorMap']))
-            : null,
         lanes = json['lanes'] is List
             ? (json['lanes'] as List)
                 .map((e) => Lane.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
-            : null,
-        open = json['open'] != null
-            ? DailySchedule.fromJson(
-                new Map<String, dynamic>.from(json['open']))
-            : null,
-        openingHours = json['openingHours'] != null
-            ? WeeklySchedule.fromJson(
-                new Map<String, dynamic>.from(json['openingHours']))
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -202,11 +163,8 @@ class Unit extends Model {
         'isAcceptingOrders': isAcceptingOrders,
         'name': name,
         'description': description?.toJson(),
-        'paymentModes': paymentModes?.map((e) => e?.toJson()).toList(),
-        'floorMap': floorMap?.toJson(),
-        'lanes': lanes?.map((e) => e?.toJson()).toList(),
-        'open': open?.toJson(),
-        'openingHours': openingHours?.toJson()
+        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList(),
+        'lanes': lanes?.map((e) => e?.toJson())?.toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "unit.id");
@@ -223,22 +181,10 @@ class Unit extends Model {
       fieldName: "paymentModes",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (PaymentMode).toString()));
-  static final QueryField FLOORMAP = QueryField(
-      fieldName: "floorMap",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (FloorMapData).toString()));
   static final QueryField LANES = QueryField(
       fieldName: "lanes",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (Lane).toString()));
-  static final QueryField OPEN = QueryField(
-      fieldName: "open",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (DailySchedule).toString()));
-  static final QueryField OPENINGHOURS = QueryField(
-      fieldName: "openingHours",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (WeeklySchedule).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Unit";
@@ -278,29 +224,11 @@ class Unit extends Model {
         ofModelName: (PaymentMode).toString(),
         associatedKey: PaymentMode.UNITPAYMENTMODESID));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Unit.FLOORMAP,
-        isRequired: false,
-        targetName: "unitFloorMapId",
-        ofModelName: (FloorMapData).toString()));
-
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
         key: Unit.LANES,
         isRequired: false,
         ofModelName: (Lane).toString(),
         associatedKey: Lane.UNITLANESID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Unit.OPEN,
-        isRequired: false,
-        targetName: "unitOpenId",
-        ofModelName: (DailySchedule).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Unit.OPENINGHOURS,
-        isRequired: false,
-        targetName: "unitOpeningHoursId",
-        ofModelName: (WeeklySchedule).toString()));
   });
 }
 

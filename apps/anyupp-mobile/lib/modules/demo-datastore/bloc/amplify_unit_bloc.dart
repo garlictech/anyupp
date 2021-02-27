@@ -24,6 +24,18 @@ class AmplifyUnitBloc extends Bloc<AmplifyUnitEvent, AmplifyUnitState> {
         Unit unit = await _repository.getUnitById(event.id);
         yield AmplifyUnitLoaded(unit);
       }
+
+      if (event is AmplifyListLocalizations) {
+        yield AmplifyUnitsLoading();
+        List<LocalizedItem> items = await _repository.listLocalizations();
+        yield AmplifyLocalizationListLoaded(items);
+      }
+
+      if (event is AmplifyListGroups) {
+        yield AmplifyUnitsLoading();
+        List<Group> groups = await _repository.listGroups();
+        yield AmplifyGroupListLoaded(groups);
+      }
     } on Exception catch (e) {
       yield AmplifyUnitError('AMPLIFY_UNIT_ERROR', e.toString());
     }

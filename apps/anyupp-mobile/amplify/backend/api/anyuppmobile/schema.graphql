@@ -1,4 +1,4 @@
-type Address @model(queries: null, subscriptions: null){
+type Address @model {
   address: String
   city: String
   country: String
@@ -7,12 +7,12 @@ type Address @model(queries: null, subscriptions: null){
   location: Location @connection
 }
 
-type Location @model(queries: null, subscriptions: null) {
+type Location @model {
   lat: Float
   lng: Float
 }
 
-type LocalizedItem @model(queries: null, subscriptions: null) {
+type LocalizedItem @model {
   en: String
   de: String
   hu: String
@@ -20,7 +20,7 @@ type LocalizedItem @model(queries: null, subscriptions: null) {
 
 # AdminUser
 
-type AdminUser @model(queries: null, subscriptions: null){
+type AdminUser @model {
   id: ID!
   name: String
   profileImage: String
@@ -30,18 +30,18 @@ type AdminUser @model(queries: null, subscriptions: null){
   phone: String
 }
 
-type AdminUserRole @model(queries: null, subscriptions: null) {
+type AdminUserRole @model {
   role: String!
   entities: [AdminRoleEntity] @connection
 }
 
-type AdminRoleEntity @model(queries: null, subscriptions: null) {
+type AdminRoleEntity @model {
   chainId: String
   groupId: String
   unitId: String
 }
 
-type AdminUserSettings @model(queries: null, subscriptions: null) {
+type AdminUserSettings @model {
   selectedChainId: String
   selectedGroupId: String
   selectedUnitId: String
@@ -76,7 +76,7 @@ enum CardFundingType {
   unknown
 }
 
-type CardChecks @model(queries: null, subscriptions: null) {
+type CardChecks @model {
   address_line1_check: String
   address_postal_code_check: String
   cvc_check: String
@@ -84,7 +84,7 @@ type CardChecks @model(queries: null, subscriptions: null) {
 
 # https://stripe.com/docs/api/metadata?lang=node
 # Updateable Stripe objects
-type StripeMetadata @model(queries: null, subscriptions: null) {
+type StripeMetadata @model {
   key: String!
   value: String!
 }
@@ -116,12 +116,12 @@ type Chain @model(subscriptions: null) {
   isActive: Boolean
 }
 
-type ChainStyle @model(queries: null, subscriptions: null) {
+type ChainStyle @model {
   colors: ChainStyleColors @connection
   images: ChainStyleImages @connection
 }
 
-type ChainStyleColors @model(queries: null, subscriptions: null) {
+type ChainStyleColors @model {
   backgroundLight: String
   backgroundDark: String
   borderLight: String
@@ -133,7 +133,7 @@ type ChainStyleColors @model(queries: null, subscriptions: null) {
   textDark: String
 }
 
-type ChainStyleImages @model(queries: null, subscriptions: null) {
+type ChainStyleImages @model {
   header: String
   logo: String
 }
@@ -151,13 +151,13 @@ type Group @model(subscriptions: null) {
 }
 
 # OrderItem
-type StatusLog @model(queries: null, subscriptions: null) {
+type StatusLog @model {
   userId: ID
   status: String
   ts: Int
 }
 
-type PriceShown @model(queries: null, subscriptions: null) {
+type PriceShown @model {
   currency: String
   pricePerUnit: Float
   priceSum: Float
@@ -165,7 +165,7 @@ type PriceShown @model(queries: null, subscriptions: null) {
   taxSum: Float
 }
 
-type OrderItem @model(queries: null, subscriptions: null) {
+type OrderItem @model {
   id: ID!
   created: Int
   productName: LocalizedItem @connection
@@ -193,7 +193,7 @@ type Order @model {
   paymentIntention: Int
 }
 
-type Place @model(queries: null, subscriptions: null) {
+type Place @model {
   seat: String
   table: String
 }
@@ -225,7 +225,7 @@ type ChainProduct @model {
   variants: [ProductVariant] @connection
 }
 
-type ProductVariant @model(queries: null, subscriptions: null) {
+type ProductVariant @model {
   variantName: LocalizedItem @connection
   pack: ProductVariantPack @connection
   refGroupPrice: Float
@@ -236,12 +236,12 @@ type ProductVariant @model(queries: null, subscriptions: null) {
   position: String
 }
 
-type ProductVariantPack @model(queries: null, subscriptions: null){
+type ProductVariantPack @model {
   size: Float
   unit: String
 }
 
-type Availability @model(queries: null, subscriptions: null) {
+type Availability @model {
   type: String
   dayFrom: String
   dayTo: String
@@ -259,61 +259,17 @@ type Unit @model {
   name: String
   description: LocalizedItem @connection
   paymentModes: [PaymentMode] @connection
-  floorMap: FloorMapData @connection
   lanes: [Lane] @connection
-  open: DailySchedule @connection
-  openingHours: WeeklySchedule @connection
 }
 
-type DailySchedule @model(queries: null, subscriptions: null) {
-  from: String
-  to: String
-}
 
-type CustomDailySchedule @model(queries: null, subscriptions: null) {
-  date: String
-  from: String
-  to: String
-}
-
-type WeeklySchedule @model(queries: null, subscriptions: null) {
-  mon: DailySchedule @connection
-  tue: DailySchedule @connection
-  wed: DailySchedule @connection
-  thu: DailySchedule @connection
-  fri: DailySchedule @connection
-  sat: DailySchedule @connection
-  sun: DailySchedule @connection
-  overrides: [CustomDailySchedule] @connection
-}
-
-type PaymentMode @model(queries: null, subscriptions: null) {
+type PaymentMode @model {
   name: String!
   caption: String
   method: String!
 }
 
-type FloorMapData @model(queries: null, subscriptions: null) {
-  w: Int
-  h: Int
-  objects: [FloorMapDataObject] @connection
-}
-
-type FloorMapDataObject @model(queries: null, subscriptions: null) {
-  id: ID!
-  t: String!
-  c: String
-  w: Int
-  h: Int
-  r: Int
-  a: Int
-  x: Int!
-  y: Int!
-  tID: String # Table ID
-  sID: String # Seat Id
-}
-
-type Lane @model(queries: null, subscriptions: null) {
+type Lane @model {
   id: ID
   name: String
   color: String

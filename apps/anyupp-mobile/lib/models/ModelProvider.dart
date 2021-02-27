@@ -28,11 +28,7 @@ import 'ChainProduct.dart';
 import 'ChainStyle.dart';
 import 'ChainStyleColors.dart';
 import 'ChainStyleImages.dart';
-import 'CustomDailySchedule.dart';
-import 'DailySchedule.dart';
 import 'FavoriteProduct.dart';
-import 'FloorMapData.dart';
-import 'FloorMapDataObject.dart';
 import 'Group.dart';
 import 'Lane.dart';
 import 'LocalizedItem.dart';
@@ -50,7 +46,6 @@ import 'StripeCard.dart';
 import 'StripeMetadata.dart';
 import 'Unit.dart';
 import 'User.dart';
-import 'WeeklySchedule.dart';
 
 export 'Address.dart';
 export 'AdminRoleEntity.dart';
@@ -66,11 +61,7 @@ export 'ChainProduct.dart';
 export 'ChainStyle.dart';
 export 'ChainStyleColors.dart';
 export 'ChainStyleImages.dart';
-export 'CustomDailySchedule.dart';
-export 'DailySchedule.dart';
 export 'FavoriteProduct.dart';
-export 'FloorMapData.dart';
-export 'FloorMapDataObject.dart';
 export 'Group.dart';
 export 'Lane.dart';
 export 'LocalizedItem.dart';
@@ -88,11 +79,10 @@ export 'StripeCard.dart';
 export 'StripeMetadata.dart';
 export 'Unit.dart';
 export 'User.dart';
-export 'WeeklySchedule.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "1659c35c9b666902e9b99bfc2fd21482";
+  String version = "e05cf115b3949092b6b0c8689e29adcc";
   @override
   List<ModelSchema> modelSchemas = [
     Address.schema,
@@ -107,11 +97,7 @@ class ModelProvider implements ModelProviderInterface {
     ChainStyle.schema,
     ChainStyleColors.schema,
     ChainStyleImages.schema,
-    CustomDailySchedule.schema,
-    DailySchedule.schema,
     FavoriteProduct.schema,
-    FloorMapData.schema,
-    FloorMapDataObject.schema,
     Group.schema,
     Lane.schema,
     LocalizedItem.schema,
@@ -128,8 +114,7 @@ class ModelProvider implements ModelProviderInterface {
     StripeCard.schema,
     StripeMetadata.schema,
     Unit.schema,
-    User.schema,
-    WeeklySchedule.schema
+    User.schema
   ];
   static final ModelProvider _instance = ModelProvider();
 
@@ -197,29 +182,9 @@ class ModelProvider implements ModelProviderInterface {
           return ChainStyleImages.classType;
         }
         break;
-      case "CustomDailySchedule":
-        {
-          return CustomDailySchedule.classType;
-        }
-        break;
-      case "DailySchedule":
-        {
-          return DailySchedule.classType;
-        }
-        break;
       case "FavoriteProduct":
         {
           return FavoriteProduct.classType;
-        }
-        break;
-      case "FloorMapData":
-        {
-          return FloorMapData.classType;
-        }
-        break;
-      case "FloorMapDataObject":
-        {
-          return FloorMapDataObject.classType;
         }
         break;
       case "Group":
@@ -305,11 +270,6 @@ class ModelProvider implements ModelProviderInterface {
       case "User":
         {
           return User.classType;
-        }
-        break;
-      case "WeeklySchedule":
-        {
-          return WeeklySchedule.classType;
         }
         break;
       default:
