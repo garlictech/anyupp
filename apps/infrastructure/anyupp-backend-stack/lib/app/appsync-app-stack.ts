@@ -1,6 +1,5 @@
 import * as appsync from '@aws-cdk/aws-appsync';
 import {
-  AppsyncFunction,
   GraphqlApi,
   MappingTemplate,
   NoneDataSource,
@@ -10,7 +9,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import * as sst from '@serverless-stack/resources';
-import { pipe } from 'fp-ts/lib/function';
+import * as sm from '@aws-cdk/aws-secretsmanager';
 import path from 'path';
 import { TableConstruct } from './dynamodb-construct';
 import {
@@ -25,32 +24,28 @@ import * as cognito from '@aws-cdk/aws-cognito';
 // import * as iam from '@aws-cdk/aws-iam';
 // import { ManagedPolicy } from '@aws-cdk/aws-iam';
 
-// export const lambdaExecutionRoleId =
-//   'arn:aws:iam::568276182587:role/dev-anyupp-gyuri-appsync-AppsyncLambdaService';
-// export const lambdaExecutionRoleId = 'arn:aws:iam::568276182587:role/dev-anyupp-gyuri-appsync-AppsyncLambdaServiceRole9-1G61CAP2JQPL5'
-// export const lambdaExecutionRoleId = 'arn:aws:iam::568276182587:role/dev-petrot-anyupp-backend-ApilambdaDatasourceServi-1WZ8V66OMM3VU'
+// const stageValidationProperties = (fields: string[]): string =>
+//   pipe(
+//     fields,
+//     (fields: string[]) =>
+//       fields.reduce(
+//         (acc, field) =>
+//           acc +
+//           `$util.qr($ctx.stash.put("${field}", $ctx.args.input.${field}))\n`,
+//         '',
+//       ),
+//     res => res + '\n{}',
+//   );
 
-const stageValidationProperties = (fields: string[]): string =>
-  pipe(
-    fields,
-    (fields: string[]) =>
-      fields.reduce(
-        (acc, field) =>
-          acc +
-          `$util.qr($ctx.stash.put("${field}", $ctx.args.input.${field}))\n`,
-        '',
-      ),
-    res => res + '\n{}',
-  );
-
-interface ApiDesc {
-  label: string;
-  beforeRequestMappingTemplate: string;
-  dataValidators: AppsyncFunction[];
-}
+// interface ApiDesc {
+//   label: string;
+//   beforeRequestMappingTemplate: string;
+//   dataValidators: AppsyncFunction[];
+// }
 
 export interface AppsyncAppStackProps extends StackProps {
   cognitoUserPool: cognito.UserPool;
+  secretManager: sm.ISecret;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -93,59 +88,59 @@ export class AppsyncAppStack extends sst.Stack {
 
     this.resolverFunctions = createResolverFunctions(this.noneDs);
 
-    const AdminUserBeforeRequestMappingTemplate = stageValidationProperties([
-      'address',
-    ]);
+    // const AdminUserBeforeRequestMappingTemplate = stageValidationProperties([
+    //   'address',
+    // ]);
 
-    const emptyBeforeRequestMappingTemplate = '{}';
+    // const emptyBeforeRequestMappingTemplate = '{}';
 
-    [
-      {
-        label: 'AdminUser',
-        dataValidators: [this.resolverFunctions.validateAddress],
-        beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'Chain',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'Group',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'OrderItem',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'Order',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'ProductCategory',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'ChainProduct',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'Unit',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-      {
-        label: 'User',
-        dataValidators: [],
-        beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
-      },
-    ].forEach((apiDesc: ApiDesc) => this.createCommonResolvers(apiDesc));
+    // [
+    //   {
+    //     label: 'AdminUser',
+    //     dataValidators: [this.resolverFunctions.validateAddress],
+    //     beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'Chain',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'Group',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'OrderItem',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'Order',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'ProductCategory',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'ChainProduct',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'Unit',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    //   {
+    //     label: 'User',
+    //     dataValidators: [],
+    //     beforeRequestMappingTemplate: emptyBeforeRequestMappingTemplate,
+    //   },
+    // ].forEach((apiDesc: ApiDesc) => this.createCommonResolvers(apiDesc));
 
     new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -172,19 +167,10 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     // for testing and edication purposes :)
-    this.configureTestLambdaDataSource();
+    this.configureTestLambdaDataSource(props.secretManager);
   }
 
-  private configureTestLambdaDataSource(): void {
-    // const lambdaExecutionRole = new iam.Role(this, lambdaExecutionRoleId, {
-    //   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-    // });
-    // lambdaExecutionRole.addManagedPolicy(
-    //   ManagedPolicy.fromAwsManagedPolicyName(
-    //     'service-role/AWSLambdaBasicExecutionRole',
-    //   ),
-    // );
-
+  private configureTestLambdaDataSource(secretsManager: sm.ISecret): void {
     // Create the lambda first. Mind, that we have to build appsync-lambda.zip
     // with serverless bundle, in the build step! So, you have to declare the lambda
     // in serverless.xml as well (see the example)
@@ -195,8 +181,9 @@ export class AppsyncAppStack extends sst.Stack {
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
-      // role: lambdaExecutionRole,
     });
+
+    secretsManager.grantRead(apiLambda);
 
     // Ok, we have the lambda resource. Now, we turn it into a data source.
     // Graphql resolvers need data sources, they are the bridge between the
@@ -241,29 +228,97 @@ export class AppsyncAppStack extends sst.Stack {
     //   theTable,
     // );
 
+    const theTable = new TableConstruct(this, 'User', {
+      isStreamed: true,
+    }).theTable;
+
+    const tableDs = this.api.addDynamoDbDataSource(
+      'UserDynamoDbDataSource',
+      theTable,
+    );
+
+    const getStripeCustomerIdFunction = tableDs.createFunction({
+      name: 'getStripeCustomeridForAuthenticatedUser',
+      description:
+        'get the stripe customer id for the currently authenticated user',
+      requestMappingTemplate: MappingTemplate.fromString(
+        `
+        {
+          "operation": "GetItem",
+          "key": {
+              "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub),
+          }
+         }
+        `,
+      ),
+      responseMappingTemplate: MappingTemplate.fromString(
+        '$util.toJson($ctx.result.stripeCustomerId)',
+      ),
+    });
+
+    const getStripeCardsForStripeCustomerFunction = lambdaDataSource.createFunction(
+      {
+        name: 'getStripeCardsForCustomer',
+        description: 'get the Stripe cards for the given Stripe customerId',
+        requestMappingTemplate: MappingTemplate.fromString(
+          `
+        {
+          "version" : "2017-02-28",
+          "operation" : "Invoke",
+          "payload": {
+            "handler": "getStripeCardsForCustomer",
+            "payload": {
+              "stripeCustomerId": $util.toJson($ctx.prev.result)
+            }
+          }
+        }
+        `,
+        ),
+        // requestMappingTemplate: MappingTemplate.fromString(
+        //   `
+        //   {
+        //     "operation": "GetItem",
+        //     "key": {
+        //         "id": $util.dynamodb.toDynamoDBJson($ctx.args.userId),
+        //     }
+        //    }
+        //   `,
+        // ),
+        // responseMappingTemplate: MappingTemplate.fromFile(
+        //   'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+        // ),
+      },
+    );
+
     // Cool, we have a data source. Now, let's hook a resolver for a query to it.
-    lambdaDataSource.createResolver({
+    new Resolver(this, 'getMyCustomerStripeCards', {
+      api: this.api,
       // Define the graphql type from the schema (Query)
       typeName: 'Query',
       // the field of the type
       fieldName: 'getMyCustomerStripeCards',
       // This is a simple example, so we just pass the one-and-only name parameter as is
       // This is how we map the graphql requests to lambda event documents.
-      requestMappingTemplate: MappingTemplate.fromString(
-        `
-        {
-          "version" : "2017-02-28",
-          "operation" : "Invoke",
-          "payload": {
-            "fieldName": "getMyCustomerStripeCards",
-            "payload": {
-                "userId": $context.identity.cognitoIdentityId
-              }
-          }
-        }
-        `,
-      ),
-      // pipelineConfig: [],
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      // requestMappingTemplate: MappingTemplate.fromString(
+      //   `
+      //   {
+      //     "version" : "2017-02-28",
+      //     "operation" : "Invoke",
+      //     "payload": {
+      //       "fieldName": $util.toJson($ctx.info.fieldName),
+      //     }
+      //   }
+      //   `,
+      //   // "payload": {
+      //   //   "userId": $util.toJson($ctx.identity.sub)
+      //   // }
+      // ),
+      pipelineConfig: [
+        // this.resolverFunctions.getAuthenticatedUserId,
+        getStripeCustomerIdFunction,
+        getStripeCardsForStripeCustomerFunction,
+      ],
       // ... and we return what the lambda returns as is.
       responseMappingTemplate: MappingTemplate.fromString(
         '$util.toJson($context.result)',
@@ -271,84 +326,84 @@ export class AppsyncAppStack extends sst.Stack {
     });
   }
 
-  private createCommonResolvers(apiDesc: ApiDesc): void {
-    const { label, dataValidators, beforeRequestMappingTemplate } = apiDesc;
+  // private createCommonResolvers(apiDesc: ApiDesc): void {
+  //   const { label, dataValidators, beforeRequestMappingTemplate } = apiDesc;
 
-    const theTable = new TableConstruct(this, label, {
-      isStreamed: true,
-    }).theTable;
+  //   const theTable = new TableConstruct(this, label, {
+  //     isStreamed: true,
+  //   }).theTable;
 
-    const tableDs = this.api.addDynamoDbDataSource(
-      label + 'DynamoDbDataSource',
-      theTable,
-    );
+  //   const tableDs = this.api.addDynamoDbDataSource(
+  //     label + 'DynamoDbDataSource',
+  //     theTable,
+  //   );
 
-    const createFunction = tableDs.createFunction({
-      name: 'create' + label,
-      description: 'Create a ' + label,
-      requestMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
-      ),
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
+  //   const createFunction = tableDs.createFunction({
+  //     name: 'create' + label,
+  //     description: 'Create a ' + label,
+  //     requestMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
+  //     ),
+  //     responseMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //     ),
+  //   });
 
-    new Resolver(this, 'create' + label, {
-      api: this.api,
-      typeName: 'Mutation',
-      fieldName: 'create' + label,
-      requestMappingTemplate: MappingTemplate.fromString(
-        beforeRequestMappingTemplate,
-      ),
-      pipelineConfig: [...dataValidators, createFunction],
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
+  //   new Resolver(this, 'create' + label, {
+  //     api: this.api,
+  //     typeName: 'Mutation',
+  //     fieldName: 'create' + label,
+  //     requestMappingTemplate: MappingTemplate.fromString(
+  //       beforeRequestMappingTemplate,
+  //     ),
+  //     pipelineConfig: [...dataValidators, createFunction],
+  //     responseMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //     ),
+  //   });
 
-    tableDs.createResolver({
-      typeName: 'Mutation',
-      fieldName: 'delete' + label,
-      requestMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-delete-request-mapping-template.vtl',
-      ),
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
+  //   tableDs.createResolver({
+  //     typeName: 'Mutation',
+  //     fieldName: 'delete' + label,
+  //     requestMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-delete-request-mapping-template.vtl',
+  //     ),
+  //     responseMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //     ),
+  //   });
 
-    tableDs.createResolver({
-      typeName: 'Query',
-      fieldName: 'get' + label,
-      requestMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-get-request-mapping-template.vtl',
-      ),
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
+  //   tableDs.createResolver({
+  //     typeName: 'Query',
+  //     fieldName: 'get' + label,
+  //     requestMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-get-request-mapping-template.vtl',
+  //     ),
+  //     responseMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //     ),
+  //   });
 
-    //lambdaDs.createResolver({
-    //  typeName: 'Mutation',
-    //  fieldName: `createMultiple${label}s`,
-    //  requestMappingTemplate: MappingTemplate.fromFile(
-    //    `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
-    //  ),
-    //  responseMappingTemplate: MappingTemplate.fromFile(
-    //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
-    //  )
-    //});
+  //   //lambdaDs.createResolver({
+  //   //  typeName: 'Mutation',
+  //   //  fieldName: `createMultiple${label}s`,
+  //   //  requestMappingTemplate: MappingTemplate.fromFile(
+  //   //    `lib/appsync/graphql-api/mapping-templates/createMultiple${label}s-request-mapping-template.vtl`
+  //   //  ),
+  //   //  responseMappingTemplate: MappingTemplate.fromFile(
+  //   //    'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+  //   //  )
+  //   //});
 
-    tableDs.createResolver({
-      typeName: 'Mutation',
-      fieldName: 'update' + label,
-      requestMappingTemplate: MappingTemplate.fromFile(
-        `lib/appsync/graphql-api/mapping-templates/common-update-request-mapping-template.vtl`,
-      ),
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
-  }
+  //   tableDs.createResolver({
+  //     typeName: 'Mutation',
+  //     fieldName: 'update' + label,
+  //     requestMappingTemplate: MappingTemplate.fromFile(
+  //       `lib/appsync/graphql-api/mapping-templates/common-update-request-mapping-template.vtl`,
+  //     ),
+  //     responseMappingTemplate: MappingTemplate.fromFile(
+  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //     ),
+  //   });
+  // }
 }

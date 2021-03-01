@@ -155,7 +155,7 @@ type StripeMetadata {
   value: String!
 }
 
-type StripeCard {
+type StripeCard @aws_cognito_user_pools {
   brand: CardBrand
   checks: CardChecks
   country: String
@@ -731,10 +731,7 @@ type Query {
   getUser(id: ID!): User @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Stripe
-  getCustomerStripeCards(userId: ID): [StripeCard]
-
-  # Hellobello
-  hellobello(name: String!): String
+  getMyCustomerStripeCards: [StripeCard] @aws_cognito_user_pools
 }
 
 type Mutation {

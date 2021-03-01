@@ -7,27 +7,24 @@ export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
   public secretsManagerArn =
     'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k';
+  public secretManager: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
 
-    const secretManager = sm.Secret.fromSecretAttributes(
-      this,
-      'AnyuppSecrets',
-      {
-        secretArn: this.secretsManagerArn,
-      },
-    );
+    this.secretManager = sm.Secret.fromSecretAttributes(this, 'AnyuppSecrets', {
+      secretArn: this.secretsManagerArn,
+    });
 
-    const googleClientSecret = secretManager.secretValueFromJson(
+    const googleClientSecret = this.secretManager.secretValueFromJson(
       'googleClientSecret',
     );
 
     this.googleClientSecret = googleClientSecret.toString();
 
     new CfnOutput(this, 'SecretManager', {
-      value: secretManager.secretArn,
+      value: this.secretManager.secretArn,
       exportName: app.logicalPrefixedName('SecretManager'),
     });
   }
