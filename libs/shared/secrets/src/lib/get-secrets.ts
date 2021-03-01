@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
+import { SharedSecrets } from './interfaces';
 
 const region = 'eu-west-1';
 // const stage = process.argv[2];
@@ -11,8 +12,7 @@ const client = new AWS.SecretsManager({
   region: region,
 });
 
-export const getSecrets = () => {
-  client.getSecretValue;
+export const getSecrets = (): Promise<SharedSecrets> => {
   return new Promise((resolutionFunc, rejectionFunc) => {
     client.getSecretValue({ SecretId: secretName }, function (err, data) {
       if (err) {
@@ -27,9 +27,13 @@ export const getSecrets = () => {
           JSON.parse,
           fp.tap(secret => {
             if (!secret) {
-              console.log(`The requested Config is missing`);
-              return rejectionFunc('The requested Config is missing');
+              console.log(`The requested Secret is missing`);
+              return rejectionFunc('The requested Secret is missing');
             }
+            console.log(
+              '### ~ file: get-secrets.ts ~ line 21 ~ data',
+              Object.keys(secret),
+            );
             resolutionFunc(secret);
           }),
         );

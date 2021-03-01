@@ -13,7 +13,6 @@ export interface CognitoStackProps extends StackProps {
 
 export class CognitoStack extends Stack {
   public userPool: cognito.UserPool;
-
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;

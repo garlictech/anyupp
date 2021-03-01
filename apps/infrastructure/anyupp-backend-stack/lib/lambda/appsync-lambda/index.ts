@@ -1,36 +1,41 @@
-import { Observable, of } from 'rxjs';
 import { Context, Handler } from 'aws-lambda';
+import { stripeService } from '@bgap/stripe';
 
-console.log('Starting hellobello lambda');
-
-export interface HellobelloRequest {
-  name: string;
+export interface GetStripeCardsCustomerRequest {
+  stripeCustomerId: string;
 }
 
 export interface AnyuppRequest {
-  fieldName: string;
+  handler: string;
   payload: unknown;
 }
 
-const hellobelloService = {
-  getGreetings(request: HellobelloRequest): Observable<string> {
-    return of(`Hellobello, ${request.name}`);
-  },
-};
-
 export const handler: Handler<AnyuppRequest, unknown> = async (
   event: AnyuppRequest,
-  _: Context,
+  context: Context,
 ): Promise<unknown> => {
-  console.log('**** Executing hellobello lambda with event', event);
+  console.log(
+    '**** Executing lambda with event',
+    JSON.stringify(event, null, 2),
+  );
 
-  switch (event.fieldName) {
-    case 'hellobello': {
-      console.log('Handling hellobello');
+  console.log(
+    '**** Executing lambda with context',
+    JSON.stringify(context, null, 2),
+  );
 
-      return hellobelloService
-        .getGreetings(event.payload as HellobelloRequest)
-        .toPromise();
+  switch (event.handler) {
+    case 'getStripeCardsForCustomer': {
+      console.log('Handling getStripeCardsForCustomer');
+      const stripeCustomerId = (event.payload as GetStripeCardsCustomerRequest)
+        .stripeCustomerId;
+
+      if (!stripeCustomerId) {
+        // throw 'missing stripeCustomerId';
+        return [];
+      }
+
+      return stripeService.getStripeCardsForCustomer(stripeCustomerId);
     }
     default:
       throw 'up';
