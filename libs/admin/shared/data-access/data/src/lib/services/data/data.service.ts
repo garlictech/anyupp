@@ -5,12 +5,10 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { DataStore } from '@aws-amplify/datastore';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserActions } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
@@ -19,22 +17,10 @@ import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
+import { AdminUser } from '@bgap/api/graphql/schema';
 import {
-  EAdminRole,
-  EFirebaseStateEvent,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserRole,
-  IAdminUserSettings,
-  IChain,
-  IDateIntervals,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IUnit,
-  IUser,
+  EAdminRole, EFirebaseStateEvent, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IDateIntervals,
+  IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory, IUnit, IUser
 } from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
@@ -54,9 +40,17 @@ export class DataService {
     private _angularFireFunctions: AngularFireFunctions,
   ) {}
 
-  public initDataConnections(/*userId: string*/): void {
+  public async initDataConnections(/*userId: string*/): Promise<void> {
     // Load user data
-    console.error('TODO SUBSCRIBE TO ADMINS');
+
+    DataStore.query(AdminUser).then(data => {
+      console.error('Query works:', data);
+    });
+
+    DataStore.observe(AdminUser).subscribe(subi => {
+      console.error('Subscription works:', subi);
+    })
+
     /*
     this._angularFireDatabase
       .object(`adminUsers/${userId}`)

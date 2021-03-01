@@ -1,0 +1,16 @@
+projects:
+  anyupp:
+    schemaPath: libs/api/graphql/schema/src/lib/schema.json
+    includes:
+      - libs/api/graphql/schema/src/lib/documents/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: libs/api/graphql/schema/src/lib/amplify-api.ts
+        docsFilePath: libs/api/graphql/schema/src/lib/documents
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3

@@ -5,8 +5,6 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import { cleanObject } from '@bgap/shared/utils';
-import { UpdateAdminUserRole } from '@bgap/api/graphql/schema';
 import { IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -41,6 +39,7 @@ export class AdminUserRoleFormComponent extends AbstractFormDialogComponent
   }
 
   public submit(): void {
+    /*
     if (this.dialogForm?.valid) {
       this._apollo
         .mutate({
@@ -63,7 +62,7 @@ export class AdminUserRoleFormComponent extends AbstractFormDialogComponent
             console.error('there was an error sending the query', error);
           },
         );
-    }
+    }*/
   }
 
   public imageUploadCallback = (imagePath: string): void => {

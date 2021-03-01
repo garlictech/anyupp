@@ -1,10 +1,11 @@
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import  { Auth } from '@aws-amplify/auth';
+import  { Hub } from '@aws-amplify/core';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, mapTo } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { CognitoUser } from '@aws-amplify/auth';
-import { AWS_CONFIG } from '@bgap/admin/shared/config';
+
 import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class CognitoService {
   private _onSignOutCallback?: () => void;
 
   constructor() {
-    Amplify.configure(AWS_CONFIG);
+
 
     Hub.listen('auth', data => {
       const { payload } = data;
