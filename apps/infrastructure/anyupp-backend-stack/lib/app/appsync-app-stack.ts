@@ -1,4 +1,5 @@
 import * as appsync from '@aws-cdk/aws-appsync';
+import * as cognito from '@aws-cdk/aws-cognito';
 import {
   GraphqlApi,
   MappingTemplate,
@@ -18,8 +19,6 @@ import {
 } from './resolver-functions';
 import { PROJECT_ROOT } from './settings';
 import { commonLambdaProps } from './lambda-common';
-import { StackProps } from '@aws-cdk/core';
-import * as cognito from '@aws-cdk/aws-cognito';
 
 // import * as iam from '@aws-cdk/aws-iam';
 // import { ManagedPolicy } from '@aws-cdk/aws-iam';
@@ -43,8 +42,16 @@ import * as cognito from '@aws-cdk/aws-cognito';
 //   dataValidators: AppsyncFunction[];
 // }
 
-export interface AppsyncAppStackProps extends StackProps {
-  cognitoUserPool: cognito.UserPool;
+// interface ApiDesc {
+//   label: string;
+//   beforeRequestMappingTemplate: string;
+//   dataValidators: AppsyncFunction[];
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   createFunction?: any;
+// }
+
+export interface AppsyncAppStackProps extends sst.StackProps {
+  userPool: cognito.UserPool;
   secretManager: sm.ISecret;
 }
 
@@ -54,7 +61,7 @@ export class AppsyncAppStack extends sst.Stack {
   private api: GraphqlApi;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
-    super(scope, id, props);
+    super(scope, id);
     const app = this.node.root as sst.App;
 
     // Creates the AppSync API
@@ -74,13 +81,25 @@ export class AppsyncAppStack extends sst.Stack {
           {
             authorizationType: appsync.AuthorizationType.USER_POOL,
             userPoolConfig: {
-              userPool: props.cognitoUserPool,
+              userPool: props.userPool,
             },
           },
         ],
       },
       xrayEnabled: true,
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // const createAdminUserFunction: any = {
+    //   name: 'createAdminUserFunction',
+    //   description: 'createAdminUserFunction TODO',
+    //   requestMappingTemplate: MappingTemplate.fromFile(
+    //     'lib/appsync/graphql-api/mapping-templates/create-admin-user-request-mapping-template.vtl',
+    //   ),
+    //   responseMappingTemplate: MappingTemplate.fromFile(
+    //     'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    //   ),
+    // };
 
     this.noneDs = new NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
@@ -99,6 +118,7 @@ export class AppsyncAppStack extends sst.Stack {
     //     label: 'AdminUser',
     //     dataValidators: [this.resolverFunctions.validateAddress],
     //     beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
+    //     createFunction: createAdminUserFunction,
     //   },
     //   {
     //     label: 'Chain',
@@ -338,16 +358,20 @@ export class AppsyncAppStack extends sst.Stack {
   //     theTable,
   //   );
 
-  //   const createFunction = tableDs.createFunction({
-  //     name: 'create' + label,
-  //     description: 'Create a ' + label,
-  //     requestMappingTemplate: MappingTemplate.fromFile(
-  //       'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
-  //     ),
-  //     responseMappingTemplate: MappingTemplate.fromFile(
-  //       'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-  //     ),
-  //   });
+  // const createFunction = tableDs.createFunction(
+  //   apiDesc.createFunction
+  //     ? apiDesc.createFunction
+  //     : {
+  //         name: 'create' + label,
+  //         description: 'Create a ' + label,
+  //         requestMappingTemplate: MappingTemplate.fromFile(
+  //           'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
+  //         ),
+  //         responseMappingTemplate: MappingTemplate.fromFile(
+  //           'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+  //         ),
+  //       },
+  // );
 
   //   new Resolver(this, 'create' + label, {
   //     api: this.api,

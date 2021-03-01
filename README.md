@@ -2,9 +2,27 @@
 
 See the official nx docs below, let's start with the Anyupp-specific stuff.
 
+## General knowledge
+
+The system supports building and deploying separate stacks for development and
+testing purposes. You have to configure and build these stacks, according to the
+sections below. The configuration and build commands generally support `app` and
+`stage` flags. The `app` is an unique identification of your stack. The stage is
+important as the app uses some stage-dependent externally configured resources
+(like secrets). The stage specifies which resource set is used.
+There are three stages: `dev`, `qa`, `producton`.
+
+Production is not yet available!
+
+You should almost always use the `dev` stage.
+
+The app name for production is currently `anyupp-backend`. Don't overwrite it
+please :)
+
 ## Configuring the project
 
-Use the `config` build targets for projects requiring configuration. Configuration involves code generation processes as well.
+Use the `config` build targets for projects requiring configuration.
+Configuration involves code generation processes as well.
 
 Currently, the following packages can be configured:
 
@@ -12,26 +30,71 @@ Currently, the following packages can be configured:
 
 `nx config api-graphql-schema`
 
-Whenever the schema changes, execeute the code generation phase for the clients.
+Whenever the schema changes, you must execute the code generation phase for the
+clients.
 
 **the configs (and secrets)**
 
-`nx config shared-config`
+`nx config shared-config --app=my-backend --stage=dev`
+
+Always add the parameters, there are no defaults supported!
 
 When:
 
 - you clone the github repo
 - the config parameters change in the AWS Parameter Store or AWS Secret Manager
-- you change the project stage (dev, prod, qa)
+- you change the project stage (dev, production, qa)
 
-The command fetches the config parameters and writes them into files in `libs/shared/config`.
-You need AWS credentials set in your environment with the appropriate access!
+The command fetches the config parameters and writes them into files in
+`libs/shared/config`. You need AWS credentials set in your environment with the
+appropriate access!
 
 **IMPORTANT**
 
-The configs are generated in `/libs/shared/config/src/lib/`. This folder is gitignored. Ensure that
-the configs are NOT checked in to github otherwise you WILL experience differences
-in your local and the remote environments.
+The configs are generated in `/libs/shared/config/src/lib/<stage>`. This folder
+is gitignored. Ensure that the configs are NOT checked in to github otherwise
+you WILL experience differences in your local and the remote environments.
+
+Check the invoked scripts for their internals and parameters!
+
+## Create private stack
+
+Unfortunately, the tools do not support app name parametrization, so:
+
+- in `apps/infrastructure/anyupp-backend-stack/sst.json`, write your app name
+  to the "name" field
+- in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
+  in the `service` field
+- build and deploy the stack to the desired stage (it will use the stage-related
+  parameters, secrets, etc:)
+
+```
+nx build infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+nx deploy infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+nx remove infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+```
+
+**Be careful** and do NOT check in the mentioned two config files!
+
+## Building the project
+
+Like the config stage, we have to tell the system which stack (app) and stage you
+are working with. So the build/deploy commands support the `app` and `stage`
+parameters.
+
+Or, they should support it if needed, we have to add this support gradually. For
+some samples, see the build targets belonging to the examples in the
+`angular.json`.
+
+To build the admin site for a given configuration:
+
+Building the stack:
+
+`nx build infrastructure-anyupp-backend-stack --app=my-backend --stage=dev`
+
+Deploying the stack:
+
+`nx deploy infrastructure-anyupp-backend-stack --app=my-backend --stage=dev`
 
 ## Executing cucumber/cypress tests
 
@@ -56,6 +119,12 @@ yarn cucumber:report
 ```
 
 then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
+
+To get a super-cool report, with failure screenshots embedded:
+
+`yarn cypress:generate:html:report`
+
+then open `cyreport/cypress-tests-report.html` file with the browser.
 
 ### Writing Cucumber/Cypress tests
 
@@ -203,10 +272,6 @@ nx g @nrwl/nest:lib api/graphql/resolvers
 The generator will collect the new resolver's name
 `nx g @nrwl/nest:resolver -p api-graphql-resolvers`
 
-### Generate graphql schemas
-
-`nx build api-graphql-schema`
-
 ### Start admin
 
 `nx serve admin`
@@ -222,3 +287,14 @@ The generator will collect the new resolver's name
 ### Run test
 
 `nx run-many --target=test --all --passWithNoTests`
+
+### Update own backend stack
+
+1. Set stage name in apps/infrastructure/anyupp-backend-stack/sst.json (e.g. dev-petrot)
+
+2. Download own config:
+   `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
+
+3. Build & deploy
+   nx build infrastructure-anyupp-backend-stack
+   nx deploy infrastructure-anyupp-backend-stack

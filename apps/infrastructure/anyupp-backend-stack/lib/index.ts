@@ -20,6 +20,8 @@ export class AnyUppStack extends Stack {
       adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretManagerStack.googleClientSecret,
+      facebookClientId: paramsStack.facebookAppId,
+      facebookClientSecret: secretManagerStack.facebookAppSecret,
     });
     new AppsyncAppStack(scope, 'appsync', {
       cognitoUserPool: cognitoStack.userPool,

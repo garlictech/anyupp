@@ -983,16 +983,6 @@ export type AdminUserFragmentFragment = { __typename?: 'AdminUser' } & Pick<
           >
         >;
       };
-    address?: Maybe<
-      { __typename?: 'Address' } & Pick<
-        Address,
-        'address' | 'city' | 'country' | 'postalCode' | 'title'
-      > & {
-          location?: Maybe<
-            { __typename?: 'Location' } & Pick<Location, 'lat' | 'lng'>
-          >;
-        }
-    >;
   };
 
 export type GetCustomerStripeCardsQueryVariables = Exact<{
@@ -1051,17 +1041,6 @@ export const AdminUserFragment = gql`
         groupId
         unitId
       }
-    }
-    address {
-      address
-      city
-      country
-      location {
-        lat
-        lng
-      }
-      postalCode
-      title
     }
   }
 `;

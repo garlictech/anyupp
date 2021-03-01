@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'api-graphql-appsync-lambda',
   preset: '../../../../jest.preset.js',
   globals: {

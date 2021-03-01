@@ -1,12 +1,8 @@
 import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IAdminUser } from '@bgap/shared/types';
-import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-
-import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 
 import { Component, Input } from '@angular/core';
+import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { AuthService } from '@bgap/admin/shared/data-access/auth';
 
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';
@@ -19,11 +15,7 @@ import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-r
 export class AdminUserListItemComponent {
   @Input() adminUser!: IAdminUser;
 
-  constructor(
-    private _nbDialogService: NbDialogService,
-    private _authService: AuthService,
-    private _toasterService: ToasterService,
-  ) {}
+  constructor(private _nbDialogService: NbDialogService) {}
 
   editAdminUser(): void {
     const dialog = this._nbDialogService.open(AdminUserFormComponent, {
@@ -42,6 +34,7 @@ export class AdminUserListItemComponent {
   }
 
   public resetEmail(): void {
+    /*
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
       dialogClass: 'form-dialog',
     });
@@ -52,35 +45,34 @@ export class AdminUserListItemComponent {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._authService
-              .sendPasswordResetEmail(this.adminUser.email || '')
-              .then(
-                (): void => {
-                  this._toasterService.show(
-                    EToasterType.SUCCESS,
-                    '',
-                    'auth.reminderSent',
-                  );
-                },
-                (): void => {
-                  this._toasterService.show(
-                    EToasterType.DANGER,
-                    '',
-                    'auth.reminderError',
-                  );
-                },
-              );
+            this._authService.sendPasswordResetEmail(this.adminUser.email || '').then(
+              (): void => {
+                this._toasterService.show(
+                  EToasterType.SUCCESS,
+                  '',
+                  'auth.reminderSent'
+                );
+              },
+              (): void => {
+                this._toasterService.show(
+                  EToasterType.DANGER,
+                  '',
+                  'auth.reminderError'
+                );
+              }
+            );
           },
           status: 'success',
         },
         {
           label: 'common.cancel',
           callback: () => {
-            /**/
+
           },
           status: 'basic',
         },
       ],
     };
+    */
   }
 }

@@ -50,5 +50,7 @@ module.exports = {
     '<rootDir>/libs/admin/shared/test',
     '<rootDir>/libs/shared/secrets',
     '<rootDir>/libs/stripe',
+    '<rootDir>/libs/admin/shared/data-access/graphql-client',
+    '<rootDir>/libs/shared/graphql/api-client',
   ],
 };

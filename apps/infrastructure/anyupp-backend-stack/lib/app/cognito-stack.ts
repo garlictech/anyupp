@@ -7,6 +7,8 @@ export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
   googleClientId: string;
   googleClientSecret: string;
+  facebookClientId: string;
+  facebookClientSecret: string;
 }
 
 export class CognitoStack extends Stack {
@@ -28,6 +30,7 @@ export class CognitoStack extends Stack {
           'Hello {username}, Thanks for signing up to AnyUpp! Your verification code is {####}',
       },
       signInAliases: {
+        phone: true,
         email: true,
       },
       mfa: cognito.Mfa.OPTIONAL,
@@ -67,6 +70,31 @@ export class CognitoStack extends Stack {
       },
     );
 
+    const facebookIdProvider = new cognito.UserPoolIdentityProviderFacebook(
+      this,
+      'Facebook',
+      {
+        userPool: this.userPool,
+        clientId: props.facebookClientId,
+        clientSecret: props.facebookClientSecret,
+        attributeMapping: {
+          email: cognito.ProviderAttribute.FACEBOOK_EMAIL,
+        },
+        scopes: ['public_profile', 'email', 'openid'],
+      },
+    );
+
+    let callbackUrls = [props.adminSiteUrl];
+    let logoutUrls = [props.adminSiteUrl];
+
+    if (app.stage === 'dev') {
+      callbackUrls.push('http://localhost:4200');
+      logoutUrls.push('http://localhost:4200');
+    }
+
+    callbackUrls = callbackUrls.map(url => `${url}/admin/dashboard`);
+    logoutUrls = logoutUrls.map(url => `${url}/auth/logout`);
+
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool: this.userPool,
       generateSecret: false, // Don't need to generate secret for web app running on browsers
@@ -80,17 +108,18 @@ export class CognitoStack extends Stack {
           authorizationCodeGrant: true,
         },
         scopes: [cognito.OAuthScope.OPENID],
-        callbackUrls: [props.adminSiteUrl],
-        logoutUrls: [props.adminSiteUrl],
+        callbackUrls,
+        logoutUrls,
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,
-        //cognito.UserPoolClientIdentityProvider.FACEBOOK,
+        cognito.UserPoolClientIdentityProvider.FACEBOOK,
         cognito.UserPoolClientIdentityProvider.COGNITO,
       ],
     });
 
     userPoolClient.node.addDependency(googleIdProvider);
+    userPoolClient.node.addDependency(facebookIdProvider);
 
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
       allowUnauthenticatedIdentities: false, // Don't allow unathenticated users

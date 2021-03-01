@@ -10,12 +10,15 @@ const client = new AWS.SSM({ region });
 const project = process.argv[2];
 const stage = process.argv[3];
 const prefix = `${stage}-${project}-`;
-const filenamePostfix = stage === 'dev' ? '' : stage + '.';
 
-const targetFile = `${__dirname}/../libs/shared/config/src/lib/config/config.${filenamePostfix}json`;
+const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
+const targetFile = `${targetDir}/config.json`;
+
+fs.mkdirSync(targetDir, { recursive: true });
 
 pipe(
   [
+    'AdminSiteUrl',
     'UserPoolClientId',
     'UserPoolId',
     'UserPoolDomain',
