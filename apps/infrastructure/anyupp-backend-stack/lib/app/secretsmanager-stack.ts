@@ -12,6 +12,7 @@ const secretsManagerArns: Record<string, string> = {
 
 export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
+  public facebookAppSecret: string;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -33,6 +34,12 @@ export class SecretsManagerStack extends sst.Stack {
     );
 
     this.googleClientSecret = googleClientSecret.toString();
+
+    const facebookAppSecret = secretManager.secretValueFromJson(
+      'facebookAppSecret',
+    );
+
+    this.facebookAppSecret = facebookAppSecret.toString();
 
     new CfnOutput(this, 'SecretManager', {
       value: secretManager.secretArn,
