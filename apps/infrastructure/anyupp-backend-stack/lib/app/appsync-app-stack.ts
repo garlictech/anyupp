@@ -1,3 +1,4 @@
+import * as cognito from '@aws-cdk/aws-cognito';
 import * as appsync from '@aws-cdk/aws-appsync';
 import {
   AppsyncFunction,
@@ -41,12 +42,16 @@ interface ApiDesc {
   createFunction?: any;
 }
 
+export interface AppsyncAppStackParams extends sst.StackProps {
+  userPool: cognito.UserPool;
+}
+
 export class AppsyncAppStack extends sst.Stack {
   private resolverFunctions: ResolverFunctions;
   private noneDs: NoneDataSource;
   private api: GraphqlApi;
 
-  constructor(scope: sst.App, id: string) {
+  constructor(scope: sst.App, id: string, props: AppsyncAppStackParams) {
     super(scope, id);
     const app = this.node.root as sst.App;
 
@@ -63,6 +68,14 @@ export class AppsyncAppStack extends sst.Stack {
             expires: cdk.Expiration.after(cdk.Duration.days(365)),
           },
         },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.USER_POOL,
+            userPoolConfig: {
+              userPool: props.userPool,
+            },
+          },
+        ],
       },
       xrayEnabled: true,
     });
@@ -72,10 +85,10 @@ export class AppsyncAppStack extends sst.Stack {
       name: 'createAdminUserFunction',
       description: 'createAdminUserFunction TODO',
       requestMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/create-admin-user-request-mapping-template.vtl'
+        'lib/appsync/graphql-api/mapping-templates/create-admin-user-request-mapping-template.vtl',
       ),
       responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl'
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
       ),
     };
 
@@ -96,7 +109,7 @@ export class AppsyncAppStack extends sst.Stack {
         label: 'AdminUser',
         dataValidators: [this.resolverFunctions.validateAddress],
         beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
-        createFunction: createAdminUserFunction
+        createFunction: createAdminUserFunction,
       },
       {
         label: 'Chain',
@@ -228,16 +241,20 @@ export class AppsyncAppStack extends sst.Stack {
       theTable,
     );
 
-    const createFunction = tableDs.createFunction(apiDesc.createFunction ? apiDesc.createFunction :{
-      name: 'create' + label,
-      description: 'Create a ' + label,
-      requestMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
-      ),
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-      ),
-    });
+    const createFunction = tableDs.createFunction(
+      apiDesc.createFunction
+        ? apiDesc.createFunction
+        : {
+            name: 'create' + label,
+            description: 'Create a ' + label,
+            requestMappingTemplate: MappingTemplate.fromFile(
+              'lib/appsync/graphql-api/mapping-templates/common-create-request-mapping-template.vtl',
+            ),
+            responseMappingTemplate: MappingTemplate.fromFile(
+              'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+            ),
+          },
+    );
 
     new Resolver(this, 'create' + label, {
       api: this.api,

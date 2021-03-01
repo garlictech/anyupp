@@ -15,7 +15,8 @@ import { EImageType, IAdminUser } from '@bgap/shared/types';
   templateUrl: './admin-user-form.component.html',
   styleUrls: ['./admin-user-form.component.scss'],
 })
-export class AdminUserFormComponent extends AbstractFormDialogComponent
+export class AdminUserFormComponent
+  extends AbstractFormDialogComponent
   implements OnInit {
   public adminUser!: IAdminUser;
   public eImageType = EImageType;

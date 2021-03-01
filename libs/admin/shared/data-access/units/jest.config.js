@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-data-access-units',
   preset: '../../../../../jest.preset.js',
   globals: {

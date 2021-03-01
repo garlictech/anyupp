@@ -47,7 +47,7 @@ cyreport
 /apps/infrastructure/build-pipeline-stack/build
 
 # The config - don't commit!
-/libs/shared/config/src/lib/config/*
+/libs/shared/config/src/lib/*/*
 cdk.out
 
 #amplify

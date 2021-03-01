@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'shared-config',
   preset: '../../../jest.preset.js',
   globals: {
