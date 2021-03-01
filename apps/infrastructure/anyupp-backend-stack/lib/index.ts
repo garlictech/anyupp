@@ -24,7 +24,7 @@ export class AnyUppStack extends Stack {
       facebookClientSecret: secretManagerStack.facebookAppSecret,
     });
     new AppsyncAppStack(scope, 'appsync', {
-      cognitoUserPool: cognitoStack.userPool,
+      userPool: cognitoStack.userPool,
       secretManager: secretManagerStack.secretManager,
     });
     new StripeStack(scope, 'stripe');

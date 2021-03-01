@@ -1,11 +1,6 @@
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
-import {
-  GraphqlApi,
-  MappingTemplate,
-  NoneDataSource,
-  Resolver,
-} from '@aws-cdk/aws-appsync';
+import { GraphqlApi, MappingTemplate, Resolver } from '@aws-cdk/aws-appsync';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
@@ -13,12 +8,12 @@ import * as sst from '@serverless-stack/resources';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import path from 'path';
 import { TableConstruct } from './dynamodb-construct';
-import {
-  createResolverFunctions,
-  ResolverFunctions,
-} from './resolver-functions';
 import { PROJECT_ROOT } from './settings';
 import { commonLambdaProps } from './lambda-common';
+import {
+  createStripeResolverFunctions,
+  StripeResolverFunctions,
+} from './resolver-functions';
 
 // import * as iam from '@aws-cdk/aws-iam';
 // import { ManagedPolicy } from '@aws-cdk/aws-iam';
@@ -56,8 +51,10 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
-  private resolverFunctions: ResolverFunctions;
-  private noneDs: NoneDataSource;
+  // private validatorResolverFunctions: ValidatorResolverFunctions;
+  private noneDs!: appsync.NoneDataSource;
+  private userTableDDDs!: appsync.DynamoDbDataSource;
+  private lambdaDs!: appsync.LambdaDataSource;
   private api: GraphqlApi;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
@@ -89,23 +86,10 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // const createAdminUserFunction: any = {
-    //   name: 'createAdminUserFunction',
-    //   description: 'createAdminUserFunction TODO',
-    //   requestMappingTemplate: MappingTemplate.fromFile(
-    //     'lib/appsync/graphql-api/mapping-templates/create-admin-user-request-mapping-template.vtl',
-    //   ),
-    //   responseMappingTemplate: MappingTemplate.fromFile(
-    //     'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-    //   ),
-    // };
+    this.createDatasources(props.secretManager);
+    this.createStripeResolvers();
 
-    this.noneDs = new NoneDataSource(this, 'NoneDataSource', {
-      api: this.api,
-    });
-
-    this.resolverFunctions = createResolverFunctions(this.noneDs);
+    // this.validatorvalidatorResolverFunctions = createValidatorvalidatorResolverFunctions(this.noneDs);
 
     // const AdminUserBeforeRequestMappingTemplate = stageValidationProperties([
     //   'address',
@@ -116,7 +100,7 @@ export class AppsyncAppStack extends sst.Stack {
     // [
     //   {
     //     label: 'AdminUser',
-    //     dataValidators: [this.resolverFunctions.validateAddress],
+    //     dataValidators: [this.validatorResolverFunctions.validateAddress],
     //     beforeRequestMappingTemplate: AdminUserBeforeRequestMappingTemplate,
     //     createFunction: createAdminUserFunction,
     //   },
@@ -185,12 +169,23 @@ export class AppsyncAppStack extends sst.Stack {
     new cdk.CfnOutput(this, 'GraphqlApiKey', {
       value: this.api.apiKey || '',
     });
-
-    // for testing and edication purposes :)
-    this.configureTestLambdaDataSource(props.secretManager);
   }
 
-  private configureTestLambdaDataSource(secretsManager: sm.ISecret): void {
+  private createDatasources(secretsManager: sm.ISecret) {
+    // NO DATA SOURCE
+    this.noneDs = new appsync.NoneDataSource(this, 'NoneDataSource', {
+      api: this.api,
+    });
+
+    // DATABASE DATA SOURCES
+    this.userTableDDDs = this.api.addDynamoDbDataSource(
+      'UserDynamoDbDataSource',
+      new TableConstruct(this, 'User', {
+        isStreamed: true,
+      }).theTable,
+    );
+
+    // LAMBDA DATA SOURCES
     // Create the lambda first. Mind, that we have to build appsync-lambda.zip
     // with serverless bundle, in the build step! So, you have to declare the lambda
     // in serverless.xml as well (see the example)
@@ -204,144 +199,29 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     secretsManager.grantRead(apiLambda);
+    this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
+  }
 
-    // Ok, we have the lambda resource. Now, we turn it into a data source.
-    // Graphql resolvers need data sources, they are the bridge between the
-    // resolver and the resource.
-    const lambdaDataSource = this.api.addLambdaDataSource(
-      'lambdaDatasource',
-      apiLambda,
-    );
-
-    // Cool, we have a data source. Now, let's hook a resolver for a query to it.
-    // lambdaDataSource.createResolver({
-    //   // Define the graphql type from the schema (Query)
-    //   typeName: 'Query',
-    //   // the field of the type
-    //   fieldName: 'hellobello',
-    //   // This is a simple example, so we just pass the one-and-only name parameter as is
-    //   // This is how we map the graphql requests to lambda event documents.
-    //   requestMappingTemplate: MappingTemplate.fromString(
-    //     `
-    //     {
-    //       "version" : "2017-02-28",
-    //       "operation" : "Invoke",
-    //       "payload": {
-    //         "fieldName": "hellobello",
-    //         "payload": $util.toJson($context.arguments)
-    //       }
-    //     }
-    //     `,
-    //   ),
-    //   // ... and we return what the lambda returns as is.
-    //   responseMappingTemplate: MappingTemplate.fromString(
-    //     '$util.toJson($context.result)',
-    //   ),
-    // });
-
-    // const theTable = new TableConstruct(this, , {
-    //   isStreamed: true,
-    // }).theTable;
-
-    // const tableDs = this.api.addDynamoDbDataSource(
-    //   label + 'DynamoDbDataSource',
-    //   theTable,
-    // );
-
-    const theTable = new TableConstruct(this, 'User', {
-      isStreamed: true,
-    }).theTable;
-
-    const tableDs = this.api.addDynamoDbDataSource(
-      'UserDynamoDbDataSource',
-      theTable,
-    );
-
-    const getStripeCustomerIdFunction = tableDs.createFunction({
-      name: 'getStripeCustomeridForAuthenticatedUser',
-      description:
-        'get the stripe customer id for the currently authenticated user',
-      requestMappingTemplate: MappingTemplate.fromString(
-        `
-        {
-          "operation": "GetItem",
-          "key": {
-              "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub),
-          }
-         }
-        `,
-      ),
-      responseMappingTemplate: MappingTemplate.fromString(
-        '$util.toJson($ctx.result.stripeCustomerId)',
-      ),
-    });
-
-    const getStripeCardsForStripeCustomerFunction = lambdaDataSource.createFunction(
+  private createStripeResolvers(): void {
+    const stripeResolverFunctions: StripeResolverFunctions = createStripeResolverFunctions(
       {
-        name: 'getStripeCardsForCustomer',
-        description: 'get the Stripe cards for the given Stripe customerId',
-        requestMappingTemplate: MappingTemplate.fromString(
-          `
-        {
-          "version" : "2017-02-28",
-          "operation" : "Invoke",
-          "payload": {
-            "handler": "getStripeCardsForCustomer",
-            "payload": {
-              "stripeCustomerId": $util.toJson($ctx.prev.result)
-            }
-          }
-        }
-        `,
-        ),
-        // requestMappingTemplate: MappingTemplate.fromString(
-        //   `
-        //   {
-        //     "operation": "GetItem",
-        //     "key": {
-        //         "id": $util.dynamodb.toDynamoDBJson($ctx.args.userId),
-        //     }
-        //    }
-        //   `,
-        // ),
-        // responseMappingTemplate: MappingTemplate.fromFile(
-        //   'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
-        // ),
+        noneDs: this.noneDs,
+        userTableDDDs: this.userTableDDDs,
+        lambdaDs: this.lambdaDs,
       },
     );
 
-    // Cool, we have a data source. Now, let's hook a resolver for a query to it.
     new Resolver(this, 'getMyCustomerStripeCards', {
       api: this.api,
-      // Define the graphql type from the schema (Query)
       typeName: 'Query',
-      // the field of the type
       fieldName: 'getMyCustomerStripeCards',
-      // This is a simple example, so we just pass the one-and-only name parameter as is
-      // This is how we map the graphql requests to lambda event documents.
       requestMappingTemplate: MappingTemplate.fromString('{}'),
-      // requestMappingTemplate: MappingTemplate.fromString(
-      //   `
-      //   {
-      //     "version" : "2017-02-28",
-      //     "operation" : "Invoke",
-      //     "payload": {
-      //       "fieldName": $util.toJson($ctx.info.fieldName),
-      //     }
-      //   }
-      //   `,
-      //   // "payload": {
-      //   //   "userId": $util.toJson($ctx.identity.sub)
-      //   // }
-      // ),
       pipelineConfig: [
-        // this.resolverFunctions.getAuthenticatedUserId,
-        getStripeCustomerIdFunction,
-        getStripeCardsForStripeCustomerFunction,
+        stripeResolverFunctions.getStripeCustomerId,
+        stripeResolverFunctions.getStripeCardsForStripeCustomer,
       ],
-      // ... and we return what the lambda returns as is.
-      responseMappingTemplate: MappingTemplate.fromString(
-        '$util.toJson($context.result)',
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
       ),
     });
   }
