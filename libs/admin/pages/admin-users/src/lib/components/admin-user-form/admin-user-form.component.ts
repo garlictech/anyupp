@@ -1,4 +1,4 @@
-import { GraphQLService } from '@bgap/admin/shared/data-access/data';
+
 import { get as _get } from 'lodash-es';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -8,7 +8,6 @@ import {
   FormsService,
 } from '@bgap/admin/shared/forms';
 import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
-import { cleanObject } from '@bgap/shared/utils';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -22,13 +21,11 @@ export class AdminUserFormComponent
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;
-  private _graphQLService: GraphQLService;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
     this._formService = this._injector.get(FormsService);
-    this._graphQLService = this._injector.get(GraphQLService);
   }
 
   get userImage(): string {
@@ -55,6 +52,7 @@ export class AdminUserFormComponent
   }
 
   public async submit(): Promise<void> {
+    /*
     if (this.dialogForm?.valid) {
       if (this.adminUser?._id) {
         this._graphQLService
@@ -93,7 +91,9 @@ export class AdminUserFormComponent
           );
       }
     }
+      */
   }
+
 
   public imageUploadCallback = (imagePath: string): void => {
     this.dialogForm?.controls.profileImage.setValue(imagePath);

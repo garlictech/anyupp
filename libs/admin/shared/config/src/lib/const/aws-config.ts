@@ -3,6 +3,7 @@ import { environment } from '../environments/environment';
 export const AWS_CONFIG = {
   aws_appsync_graphqlEndpoint: environment.config.GraphqlApiUrl,
   api_key: environment.config.GraphqlApiKey,
+  aws_appsync_apiKey: environment.config.GraphqlApiKey,
   aws_appsync_region: 'eu-west-1',
   aws_project_region: 'eu-west-1',
   aws_cognito_region: 'eu-west-1',
@@ -16,6 +17,6 @@ export const AWS_CONFIG = {
     redirectSignOut: `${environment.config.AdminSiteUrl}/auth/login`,
     responseType: 'code',
   },
-  // aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+  aws_appsync_authenticationType: 'API_KEY',
   // federationTarget: 'COGNITO_USER_AND_IDENTITY_POOLS', ???
 };

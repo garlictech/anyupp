@@ -15,6 +15,7 @@ export class AuthService {
     private _cognitoService: CognitoService,
     private _amplifyService: AmplifyService,
   ) {
+
     this._amplifyService.authStateChange$.subscribe((authState: AuthState) => {
       if (authState.user) {
         this._dataService.initDataConnections(/*authState.user.username*/);
