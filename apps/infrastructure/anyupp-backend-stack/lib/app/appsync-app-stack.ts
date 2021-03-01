@@ -47,7 +47,7 @@ import {
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   userPool: cognito.UserPool;
-  secretManager: sm.ISecret;
+  secretsManager: sm.ISecret;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -86,7 +86,7 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
-    this.createDatasources(props.secretManager);
+    this.createDatasources(props.secretsManager);
     this.createStripeResolvers();
 
     // this.validatorvalidatorResolverFunctions = createValidatorvalidatorResolverFunctions(this.noneDs);

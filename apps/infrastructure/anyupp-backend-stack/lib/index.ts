@@ -10,7 +10,7 @@ export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
     const sites = new SiteStack(scope, 'sites');
-    const secretManagerStack = new SecretsManagerStack(
+    const secretsManagerStack = new SecretsManagerStack(
       scope,
       'SecretsManagerStack',
     );
@@ -19,13 +19,13 @@ export class AnyUppStack extends Stack {
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
-      googleClientSecret: secretManagerStack.googleClientSecret,
+      googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,
-      facebookClientSecret: secretManagerStack.facebookAppSecret,
+      facebookClientSecret: secretsManagerStack.facebookAppSecret,
     });
     new AppsyncAppStack(scope, 'appsync', {
       userPool: cognitoStack.userPool,
-      secretManager: secretManagerStack.secretManager,
+      secretsManager: secretsManagerStack.secretsManager,
     });
     new StripeStack(scope, 'stripe');
   }

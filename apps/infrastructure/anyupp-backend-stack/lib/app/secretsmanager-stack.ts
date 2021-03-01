@@ -13,7 +13,7 @@ const secretsManagerArns: Record<string, string> = {
 export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
   public facebookAppSecret: string;
-  public secretManager: sm.ISecret;
+  public secretsManager: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -22,25 +22,29 @@ export class SecretsManagerStack extends sst.Stack {
     const secretsManagerArn =
       secretsManagerArns[scope.stage] || secretsManagerArns.dev;
 
-    this.secretManager = sm.Secret.fromSecretAttributes(this, 'AnyuppSecrets', {
-      secretArn: secretsManagerArn,
-    });
+    this.secretsManager = sm.Secret.fromSecretAttributes(
+      this,
+      'AnyuppSecrets',
+      {
+        secretArn: secretsManagerArn,
+      },
+    );
 
-    const googleClientSecret = this.secretManager.secretValueFromJson(
+    const googleClientSecret = this.secretsManager.secretValueFromJson(
       'googleClientSecret',
     );
 
     this.googleClientSecret = googleClientSecret.toString();
 
-    const facebookAppSecret = this.secretManager.secretValueFromJson(
+    const facebookAppSecret = this.secretsManager.secretValueFromJson(
       'facebookAppSecret',
     );
 
     this.facebookAppSecret = facebookAppSecret.toString();
 
-    new CfnOutput(this, 'SecretManager', {
-      value: this.secretManager.secretArn,
-      exportName: app.logicalPrefixedName('SecretManager'),
+    new CfnOutput(this, 'SecretsManager', {
+      value: this.secretsManager.secretArn,
+      exportName: app.logicalPrefixedName('SecretsManager'),
     });
   }
 }
