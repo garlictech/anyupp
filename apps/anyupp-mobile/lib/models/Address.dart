@@ -29,6 +29,7 @@ class Address extends Model {
   final String country;
   final String title;
   final String postalCode;
+  final String locationId;
   final Location location;
 
   @override
@@ -46,6 +47,7 @@ class Address extends Model {
       this.country,
       this.title,
       this.postalCode,
+      this.locationId,
       this.location});
 
   factory Address(
@@ -55,6 +57,7 @@ class Address extends Model {
       String country,
       String title,
       String postalCode,
+      String locationId,
       Location location}) {
     return Address._internal(
         id: id == null ? UUID.getUUID() : id,
@@ -63,6 +66,7 @@ class Address extends Model {
         country: country,
         title: title,
         postalCode: postalCode,
+        locationId: locationId,
         location: location);
   }
 
@@ -80,6 +84,7 @@ class Address extends Model {
         country == other.country &&
         title == other.title &&
         postalCode == other.postalCode &&
+        locationId == other.locationId &&
         location == other.location;
   }
 
@@ -91,14 +96,13 @@ class Address extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("Address {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("address=" + address + ", ");
-    buffer.write("city=" + city + ", ");
-    buffer.write("country=" + country + ", ");
-    buffer.write("title=" + title + ", ");
-    buffer.write("postalCode=" + postalCode + ", ");
-    buffer
-        .write("location=" + (location != null ? location.toString() : "null"));
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("address=" + "$address" + ", ");
+    buffer.write("city=" + "$city" + ", ");
+    buffer.write("country=" + "$country" + ", ");
+    buffer.write("title=" + "$title" + ", ");
+    buffer.write("postalCode=" + "$postalCode" + ", ");
+    buffer.write("locationId=" + "$locationId");
     buffer.write("}");
 
     return buffer.toString();
@@ -111,6 +115,7 @@ class Address extends Model {
       String country,
       String title,
       String postalCode,
+      String locationId,
       Location location}) {
     return Address(
         id: id ?? this.id,
@@ -119,6 +124,7 @@ class Address extends Model {
         country: country ?? this.country,
         title: title ?? this.title,
         postalCode: postalCode ?? this.postalCode,
+        locationId: locationId ?? this.locationId,
         location: location ?? this.location);
   }
 
@@ -129,6 +135,7 @@ class Address extends Model {
         country = json['country'],
         title = json['title'],
         postalCode = json['postalCode'],
+        locationId = json['locationId'],
         location = json['location'] != null
             ? Location.fromJson(new Map<String, dynamic>.from(json['location']))
             : null;
@@ -140,6 +147,7 @@ class Address extends Model {
         'country': country,
         'title': title,
         'postalCode': postalCode,
+        'locationId': locationId,
         'location': location?.toJson()
       };
 
@@ -149,6 +157,7 @@ class Address extends Model {
   static final QueryField COUNTRY = QueryField(fieldName: "country");
   static final QueryField TITLE = QueryField(fieldName: "title");
   static final QueryField POSTALCODE = QueryField(fieldName: "postalCode");
+  static final QueryField LOCATIONID = QueryField(fieldName: "locationId");
   static final QueryField LOCATION = QueryField(
       fieldName: "location",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -185,11 +194,16 @@ class Address extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Address.LOCATIONID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
         key: Address.LOCATION,
         isRequired: false,
-        targetName: "addressLocationId",
-        ofModelName: (Location).toString()));
+        ofModelName: (Location).toString(),
+        associatedKey: Location.ID));
   });
 }
 

@@ -64,10 +64,10 @@ class LocalizedItem extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("LocalizedItem {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("en=" + en + ", ");
-    buffer.write("de=" + de + ", ");
-    buffer.write("hu=" + hu);
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("en=" + "$en" + ", ");
+    buffer.write("de=" + "$de" + ", ");
+    buffer.write("hu=" + "$hu");
     buffer.write("}");
 
     return buffer.toString();

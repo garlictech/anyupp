@@ -23,10 +23,10 @@ import 'package:flutter/foundation.dart';
 class PaymentMode extends Model {
   static const classType = const PaymentModeType();
   final String id;
+  final String unitId;
   final String name;
   final String caption;
   final String method;
-  final String unitPaymentModesId;
 
   @override
   getInstanceType() => classType;
@@ -38,23 +38,23 @@ class PaymentMode extends Model {
 
   const PaymentMode._internal(
       {@required this.id,
+      @required this.unitId,
       @required this.name,
       this.caption,
-      @required this.method,
-      this.unitPaymentModesId});
+      @required this.method});
 
   factory PaymentMode(
       {String id,
+      @required String unitId,
       @required String name,
       String caption,
-      @required String method,
-      String unitPaymentModesId}) {
+      @required String method}) {
     return PaymentMode._internal(
         id: id == null ? UUID.getUUID() : id,
+        unitId: unitId,
         name: name,
         caption: caption,
-        method: method,
-        unitPaymentModesId: unitPaymentModesId);
+        method: method);
   }
 
   bool equals(Object other) {
@@ -66,10 +66,10 @@ class PaymentMode extends Model {
     if (identical(other, this)) return true;
     return other is PaymentMode &&
         id == other.id &&
+        unitId == other.unitId &&
         name == other.name &&
         caption == other.caption &&
-        method == other.method &&
-        unitPaymentModesId == other.unitPaymentModesId;
+        method == other.method;
   }
 
   @override
@@ -80,57 +80,57 @@ class PaymentMode extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("PaymentMode {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("name=" + name + ", ");
-    buffer.write("caption=" + caption + ", ");
-    buffer.write("method=" + method + ", ");
-    buffer.write("unitPaymentModesId=" + unitPaymentModesId);
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("unitId=" + "$unitId" + ", ");
+    buffer.write("name=" + "$name" + ", ");
+    buffer.write("caption=" + "$caption" + ", ");
+    buffer.write("method=" + "$method");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   PaymentMode copyWith(
-      {String id,
-      String name,
-      String caption,
-      String method,
-      String unitPaymentModesId}) {
+      {String id, String unitId, String name, String caption, String method}) {
     return PaymentMode(
         id: id ?? this.id,
+        unitId: unitId ?? this.unitId,
         name: name ?? this.name,
         caption: caption ?? this.caption,
-        method: method ?? this.method,
-        unitPaymentModesId: unitPaymentModesId ?? this.unitPaymentModesId);
+        method: method ?? this.method);
   }
 
   PaymentMode.fromJson(Map<String, dynamic> json)
       : id = json['id'],
+        unitId = json['unitId'],
         name = json['name'],
         caption = json['caption'],
-        method = json['method'],
-        unitPaymentModesId = json['unitPaymentModesId'];
+        method = json['method'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'unitId': unitId,
         'name': name,
         'caption': caption,
-        'method': method,
-        'unitPaymentModesId': unitPaymentModesId
+        'method': method
       };
 
   static final QueryField ID = QueryField(fieldName: "paymentMode.id");
+  static final QueryField UNITID = QueryField(fieldName: "unitId");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField CAPTION = QueryField(fieldName: "caption");
   static final QueryField METHOD = QueryField(fieldName: "method");
-  static final QueryField UNITPAYMENTMODESID =
-      QueryField(fieldName: "unitPaymentModesId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "PaymentMode";
     modelSchemaDefinition.pluralName = "PaymentModes";
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: PaymentMode.UNITID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: PaymentMode.NAME,
@@ -145,11 +145,6 @@ class PaymentMode extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: PaymentMode.METHOD,
         isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.UNITPAYMENTMODESID,
-        isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }

@@ -1,0 +1,302 @@
+type Address @model {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location @connection
+}
+
+type Location @model {
+  lat: Float
+  lng: Float
+}
+
+type LocalizedItem @model {
+  en: String
+  de: String
+  hu: String
+}
+
+# AdminUser
+
+type AdminUser @model {
+  id: ID!
+  name: String
+  profileImage: String
+  roles: AdminUserRole! @connection
+  settings: AdminUserSettings @connection
+  email: String
+  phone: String
+}
+
+type AdminUserRole @model {
+  role: String!
+  entities: [AdminRoleEntity] @connection
+}
+
+type AdminRoleEntity @model {
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+type AdminUserSettings @model {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+# Stripe
+
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+# https://stripe.com/docs/api/cards/object?lang=node
+# Card brand
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+# Card funding type
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+type CardChecks @model {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+# https://stripe.com/docs/api/metadata?lang=node
+# Updateable Stripe objects
+type StripeMetadata @model {
+  key: String!
+  value: String!
+}
+
+type StripeCard @model(subscriptions: null) {
+  brand: CardBrand
+  checks: CardChecks @connection
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  # wallet: String # to do
+  # IMPLEMENTED INTERFACES
+  id: ID!
+  object: String!
+  metadata: [StripeMetadata!]! @connection
+}
+
+# Chain
+
+type Chain @model(subscriptions: null) {
+  id: ID!
+  name: String
+  description: LocalizedItem @connection
+  style: ChainStyle @connection
+  isActive: Boolean
+}
+
+type ChainStyle @model {
+  colors: ChainStyleColors @connection
+  images: ChainStyleImages @connection
+}
+
+type ChainStyleColors @model {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+type ChainStyleImages @model {
+  header: String
+  logo: String
+}
+
+# Group
+type Group @model(subscriptions: null) {
+  id: ID!
+  chainId: ID!
+  name: String
+  description: LocalizedItem @connection
+  currency: String
+  address: Address @connection
+  email: String
+  phone: String
+}
+
+# OrderItem
+type StatusLog @model {
+  userId: ID
+  status: String
+  ts: Int
+}
+
+type PriceShown @model {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type OrderItem @model {
+  id: ID!
+  created: Int
+  productName: LocalizedItem @connection
+  priceShown: PriceShown @connection
+  productId: ID
+  quantity: Int
+  statusLog: [StatusLog] @connection
+  variantId: ID
+  variantName: LocalizedItem @connection
+  laneId: ID
+}
+
+# Order
+type Order @model {
+  id: ID!
+  created: Int
+  items: [OrderItem] @connection
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLog] @connection
+  sumPriceShown: PriceShown @connection
+  takeAway: Boolean
+  userId: ID
+  place: Place @connection
+  paymentIntention: Int
+}
+
+type Place @model {
+  seat: String
+  table: String
+}
+
+# ProductCategory
+type ProductCategory @model {
+  id: ID!
+  description: LocalizedItem @connection
+  image: String
+  name: LocalizedItem @connection
+  position: String
+}
+
+# ChainProduct
+type ChainProduct @model {
+  id: ID!
+  # contains
+  description: LocalizedItem @connection
+  extending: String
+  image: String
+  # ingredients
+  isVisible: Boolean
+  tax: Int
+  name: LocalizedItem @connection
+  position: String
+  productCategoryId: ID
+  laneId: ID
+  productType: String
+  variants: [ProductVariant] @connection
+}
+
+type ProductVariant @model {
+  variantName: LocalizedItem @connection
+  pack: ProductVariantPack @connection
+  refGroupPrice: Float
+  isAvailable: Boolean
+  price: Float
+  availabilities: [Availability] @connection
+  availableFrom: String
+  position: String
+}
+
+type ProductVariantPack @model {
+  size: Float
+  unit: String
+}
+
+type Availability @model {
+  type: String
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float
+}
+
+# Unit
+type Unit @model {
+  id: ID!
+  groupId: ID!
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItem @connection
+  paymentModes: [PaymentMode] @connection
+  lanes: [Lane] @connection
+}
+
+
+type PaymentMode @model {
+  name: String!
+  caption: String
+  method: String!
+}
+
+type Lane @model {
+  id: ID
+  name: String
+  color: String
+}
+
+# User
+type User @model {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  login: String
+}
+
+#Favorites
+type FavoriteProduct @model(subscriptions: null)
+@key(name: "byUserAndChain", fields: ["userID", "chainID"])
+@key(name: "byUserAndUnit", fields: ["userID", "unitID"], queryField:"favoritesByUserAndUnit")
+{
+  id: ID!
+  userID: ID!
+  chainID: ID!
+  unitID: ID!
+  product: ChainProduct @connection
+}
+
+type Subscription {
+  onAdminUserChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+}

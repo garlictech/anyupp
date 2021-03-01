@@ -105,16 +105,16 @@ class ChainStyleColors extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("ChainStyleColors {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("backgroundLight=" + backgroundLight + ", ");
-    buffer.write("backgroundDark=" + backgroundDark + ", ");
-    buffer.write("borderLight=" + borderLight + ", ");
-    buffer.write("borderDark=" + borderDark + ", ");
-    buffer.write("disabled=" + disabled + ", ");
-    buffer.write("highlight=" + highlight + ", ");
-    buffer.write("indicator=" + indicator + ", ");
-    buffer.write("textLight=" + textLight + ", ");
-    buffer.write("textDark=" + textDark);
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("backgroundLight=" + "$backgroundLight" + ", ");
+    buffer.write("backgroundDark=" + "$backgroundDark" + ", ");
+    buffer.write("borderLight=" + "$borderLight" + ", ");
+    buffer.write("borderDark=" + "$borderDark" + ", ");
+    buffer.write("disabled=" + "$disabled" + ", ");
+    buffer.write("highlight=" + "$highlight" + ", ");
+    buffer.write("indicator=" + "$indicator" + ", ");
+    buffer.write("textLight=" + "$textLight" + ", ");
+    buffer.write("textDark=" + "$textDark");
     buffer.write("}");
 
     return buffer.toString();

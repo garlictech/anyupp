@@ -16,8 +16,8 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
   @override
   void initState() {
     super.initState();
-    // getIt<AmplifyUnitBloc>().add(AmplifyListUnits());
-    getIt<AmplifyUnitBloc>().add(AmplifyListLocalizations());
+    getIt<AmplifyUnitBloc>().add(AmplifyListUnits());
+    // getIt<AmplifyUnitBloc>().add(AmplifyListLocalizations());
     // getIt<AmplifyUnitBloc>().add(AmplifyListGroups());
   }
 

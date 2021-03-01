@@ -25,7 +25,11 @@ class Chain extends Model {
   static const classType = const ChainType();
   final String id;
   final String name;
+  final String groupId;
+  final Group group;
+  final String descriptionId;
   final LocalizedItem description;
+  final String styleId;
   final ChainStyle style;
   final bool isActive;
 
@@ -40,20 +44,32 @@ class Chain extends Model {
   const Chain._internal(
       {@required this.id,
       this.name,
+      @required this.groupId,
+      this.group,
+      this.descriptionId,
       this.description,
+      this.styleId,
       this.style,
       this.isActive});
 
   factory Chain(
       {String id,
       String name,
+      @required String groupId,
+      Group group,
+      String descriptionId,
       LocalizedItem description,
+      String styleId,
       ChainStyle style,
       bool isActive}) {
     return Chain._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
+        groupId: groupId,
+        group: group,
+        descriptionId: descriptionId,
         description: description,
+        styleId: styleId,
         style: style,
         isActive: isActive);
   }
@@ -68,7 +84,11 @@ class Chain extends Model {
     return other is Chain &&
         id == other.id &&
         name == other.name &&
+        groupId == other.groupId &&
+        group == other.group &&
+        descriptionId == other.descriptionId &&
         description == other.description &&
+        styleId == other.styleId &&
         style == other.style &&
         isActive == other.isActive;
   }
@@ -81,12 +101,11 @@ class Chain extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("Chain {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("name=" + name + ", ");
-    buffer.write("description=" +
-        (description != null ? description.toString() : "null") +
-        ", ");
-    buffer.write("style=" + (style != null ? style.toString() : "null") + ", ");
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("name=" + "$name" + ", ");
+    buffer.write("groupId=" + "$groupId" + ", ");
+    buffer.write("descriptionId=" + "$descriptionId" + ", ");
+    buffer.write("styleId=" + "$styleId" + ", ");
     buffer
         .write("isActive=" + (isActive != null ? isActive.toString() : "null"));
     buffer.write("}");
@@ -97,13 +116,21 @@ class Chain extends Model {
   Chain copyWith(
       {String id,
       String name,
+      String groupId,
+      Group group,
+      String descriptionId,
       LocalizedItem description,
+      String styleId,
       ChainStyle style,
       bool isActive}) {
     return Chain(
         id: id ?? this.id,
         name: name ?? this.name,
+        groupId: groupId ?? this.groupId,
+        group: group ?? this.group,
+        descriptionId: descriptionId ?? this.descriptionId,
         description: description ?? this.description,
+        styleId: styleId ?? this.styleId,
         style: style ?? this.style,
         isActive: isActive ?? this.isActive);
   }
@@ -111,10 +138,16 @@ class Chain extends Model {
   Chain.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
+        groupId = json['groupId'],
+        group = json['group'] != null
+            ? Group.fromJson(new Map<String, dynamic>.from(json['group']))
+            : null,
+        descriptionId = json['descriptionId'],
         description = json['description'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
             : null,
+        styleId = json['styleId'],
         style = json['style'] != null
             ? ChainStyle.fromJson(new Map<String, dynamic>.from(json['style']))
             : null,
@@ -123,17 +156,29 @@ class Chain extends Model {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'groupId': groupId,
+        'group': group?.toJson(),
+        'descriptionId': descriptionId,
         'description': description?.toJson(),
+        'styleId': styleId,
         'style': style?.toJson(),
         'isActive': isActive
       };
 
   static final QueryField ID = QueryField(fieldName: "chain.id");
   static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField GROUPID = QueryField(fieldName: "groupId");
+  static final QueryField GROUP = QueryField(
+      fieldName: "group",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Group).toString()));
+  static final QueryField DESCRIPTIONID =
+      QueryField(fieldName: "descriptionId");
   static final QueryField DESCRIPTION = QueryField(
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
+  static final QueryField STYLEID = QueryField(fieldName: "styleId");
   static final QueryField STYLE = QueryField(
       fieldName: "style",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -151,17 +196,38 @@ class Chain extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Chain.GROUPID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Chain.GROUP,
+        isRequired: false,
+        ofModelName: (Group).toString(),
+        associatedKey: Group.ID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Chain.DESCRIPTIONID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
         key: Chain.DESCRIPTION,
         isRequired: false,
-        targetName: "chainDescriptionId",
-        ofModelName: (LocalizedItem).toString()));
+        ofModelName: (LocalizedItem).toString(),
+        associatedKey: LocalizedItem.ID));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Chain.STYLEID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
         key: Chain.STYLE,
         isRequired: false,
-        targetName: "chainStyleId",
-        ofModelName: (ChainStyle).toString()));
+        ofModelName: (ChainStyle).toString(),
+        associatedKey: ChainStyle.ID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Chain.ISACTIVE,

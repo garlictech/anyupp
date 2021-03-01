@@ -26,12 +26,15 @@ class Unit extends Model {
   static const classType = const UnitType();
   final String id;
   final String groupId;
+  final Group group;
+  final String chainId;
+  final Chain chain;
+  final String name;
+  final String descriptionId;
+  final LocalizedItem description;
   final bool isActive;
   final bool isAcceptingOrders;
-  final String name;
-  final LocalizedItem description;
   final List<PaymentMode> paymentModes;
-  final List<Lane> lanes;
 
   @override
   getInstanceType() => classType;
@@ -44,33 +47,42 @@ class Unit extends Model {
   const Unit._internal(
       {@required this.id,
       @required this.groupId,
+      this.group,
+      @required this.chainId,
+      this.chain,
+      this.name,
+      this.descriptionId,
+      this.description,
       this.isActive,
       this.isAcceptingOrders,
-      this.name,
-      this.description,
-      this.paymentModes,
-      this.lanes});
+      this.paymentModes});
 
   factory Unit(
       {String id,
       @required String groupId,
+      Group group,
+      @required String chainId,
+      Chain chain,
+      String name,
+      String descriptionId,
+      LocalizedItem description,
       bool isActive,
       bool isAcceptingOrders,
-      String name,
-      LocalizedItem description,
-      List<PaymentMode> paymentModes,
-      List<Lane> lanes}) {
+      List<PaymentMode> paymentModes}) {
     return Unit._internal(
         id: id == null ? UUID.getUUID() : id,
         groupId: groupId,
+        group: group,
+        chainId: chainId,
+        chain: chain,
+        name: name,
+        descriptionId: descriptionId,
+        description: description,
         isActive: isActive,
         isAcceptingOrders: isAcceptingOrders,
-        name: name,
-        description: description,
         paymentModes: paymentModes != null
             ? List.unmodifiable(paymentModes)
-            : paymentModes,
-        lanes: lanes != null ? List.unmodifiable(lanes) : lanes);
+            : paymentModes);
   }
 
   bool equals(Object other) {
@@ -83,12 +95,15 @@ class Unit extends Model {
     return other is Unit &&
         id == other.id &&
         groupId == other.groupId &&
+        group == other.group &&
+        chainId == other.chainId &&
+        chain == other.chain &&
+        name == other.name &&
+        descriptionId == other.descriptionId &&
+        description == other.description &&
         isActive == other.isActive &&
         isAcceptingOrders == other.isAcceptingOrders &&
-        name == other.name &&
-        description == other.description &&
-        DeepCollectionEquality().equals(paymentModes, other.paymentModes) &&
-        DeepCollectionEquality().equals(lanes, other.lanes);
+        DeepCollectionEquality().equals(paymentModes, other.paymentModes);
   }
 
   @override
@@ -99,16 +114,15 @@ class Unit extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("Unit {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("groupId=" + groupId + ", ");
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("groupId=" + "$groupId" + ", ");
+    buffer.write("chainId=" + "$chainId" + ", ");
+    buffer.write("name=" + "$name" + ", ");
+    buffer.write("descriptionId=" + "$descriptionId" + ", ");
     buffer.write(
         "isActive=" + (isActive != null ? isActive.toString() : "null") + ", ");
     buffer.write("isAcceptingOrders=" +
-        (isAcceptingOrders != null ? isAcceptingOrders.toString() : "null") +
-        ", ");
-    buffer.write("name=" + name + ", ");
-    buffer.write("description=" +
-        (description != null ? description.toString() : "null"));
+        (isAcceptingOrders != null ? isAcceptingOrders.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -117,74 +131,93 @@ class Unit extends Model {
   Unit copyWith(
       {String id,
       String groupId,
+      Group group,
+      String chainId,
+      Chain chain,
+      String name,
+      String descriptionId,
+      LocalizedItem description,
       bool isActive,
       bool isAcceptingOrders,
-      String name,
-      LocalizedItem description,
-      List<PaymentMode> paymentModes,
-      List<Lane> lanes}) {
+      List<PaymentMode> paymentModes}) {
     return Unit(
         id: id ?? this.id,
         groupId: groupId ?? this.groupId,
+        group: group ?? this.group,
+        chainId: chainId ?? this.chainId,
+        chain: chain ?? this.chain,
+        name: name ?? this.name,
+        descriptionId: descriptionId ?? this.descriptionId,
+        description: description ?? this.description,
         isActive: isActive ?? this.isActive,
         isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        paymentModes: paymentModes ?? this.paymentModes,
-        lanes: lanes ?? this.lanes);
+        paymentModes: paymentModes ?? this.paymentModes);
   }
 
   Unit.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         groupId = json['groupId'],
-        isActive = json['isActive'],
-        isAcceptingOrders = json['isAcceptingOrders'],
+        group = json['group'] != null
+            ? Group.fromJson(new Map<String, dynamic>.from(json['group']))
+            : null,
+        chainId = json['chainId'],
+        chain = json['chain'] != null
+            ? Chain.fromJson(new Map<String, dynamic>.from(json['chain']))
+            : null,
         name = json['name'],
+        descriptionId = json['descriptionId'],
         description = json['description'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
             : null,
+        isActive = json['isActive'],
+        isAcceptingOrders = json['isAcceptingOrders'],
         paymentModes = json['paymentModes'] is List
             ? (json['paymentModes'] as List)
                 .map((e) =>
                     PaymentMode.fromJson(new Map<String, dynamic>.from(e)))
-                .toList()
-            : null,
-        lanes = json['lanes'] is List
-            ? (json['lanes'] as List)
-                .map((e) => Lane.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'groupId': groupId,
+        'group': group?.toJson(),
+        'chainId': chainId,
+        'chain': chain?.toJson(),
+        'name': name,
+        'descriptionId': descriptionId,
+        'description': description?.toJson(),
         'isActive': isActive,
         'isAcceptingOrders': isAcceptingOrders,
-        'name': name,
-        'description': description?.toJson(),
-        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList(),
-        'lanes': lanes?.map((e) => e?.toJson())?.toList()
+        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "unit.id");
   static final QueryField GROUPID = QueryField(fieldName: "groupId");
-  static final QueryField ISACTIVE = QueryField(fieldName: "isActive");
-  static final QueryField ISACCEPTINGORDERS =
-      QueryField(fieldName: "isAcceptingOrders");
+  static final QueryField GROUP = QueryField(
+      fieldName: "group",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Group).toString()));
+  static final QueryField CHAINID = QueryField(fieldName: "chainId");
+  static final QueryField CHAIN = QueryField(
+      fieldName: "chain",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Chain).toString()));
   static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField DESCRIPTIONID =
+      QueryField(fieldName: "descriptionId");
   static final QueryField DESCRIPTION = QueryField(
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
+  static final QueryField ISACTIVE = QueryField(fieldName: "isActive");
+  static final QueryField ISACCEPTINGORDERS =
+      QueryField(fieldName: "isAcceptingOrders");
   static final QueryField PAYMENTMODES = QueryField(
       fieldName: "paymentModes",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (PaymentMode).toString()));
-  static final QueryField LANES = QueryField(
-      fieldName: "lanes",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Lane).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Unit";
@@ -197,6 +230,39 @@ class Unit extends Model {
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Unit.GROUP,
+        isRequired: false,
+        ofModelName: (Group).toString(),
+        associatedKey: Group.ID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.CHAINID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Unit.CHAIN,
+        isRequired: false,
+        ofModelName: (Chain).toString(),
+        associatedKey: Chain.ID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.NAME,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.DESCRIPTIONID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Unit.DESCRIPTION,
+        isRequired: false,
+        ofModelName: (LocalizedItem).toString(),
+        associatedKey: LocalizedItem.ID));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Unit.ISACTIVE,
         isRequired: false,
@@ -207,28 +273,11 @@ class Unit extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Unit.NAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Unit.DESCRIPTION,
-        isRequired: false,
-        targetName: "unitDescriptionId",
-        ofModelName: (LocalizedItem).toString()));
-
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
         key: Unit.PAYMENTMODES,
-        isRequired: false,
+        isRequired: true,
         ofModelName: (PaymentMode).toString(),
-        associatedKey: PaymentMode.UNITPAYMENTMODESID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Unit.LANES,
-        isRequired: false,
-        ofModelName: (Lane).toString(),
-        associatedKey: Lane.UNITLANESID));
+        associatedKey: PaymentMode.UNITID));
   });
 }
 

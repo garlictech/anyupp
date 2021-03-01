@@ -62,7 +62,7 @@ class Location extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("Location {");
-    buffer.write("id=" + id + ", ");
+    buffer.write("id=" + "$id" + ", ");
     buffer.write("lat=" + (lat != null ? lat.toString() : "null") + ", ");
     buffer.write("lng=" + (lng != null ? lng.toString() : "null"));
     buffer.write("}");

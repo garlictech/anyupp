@@ -24,10 +24,11 @@ import 'package:flutter/foundation.dart';
 class Group extends Model {
   static const classType = const GroupType();
   final String id;
-  final String chainId;
   final String name;
+  final String descriptionId;
   final LocalizedItem description;
   final String currency;
+  final String addressId;
   final Address address;
   final String email;
   final String phone;
@@ -42,29 +43,32 @@ class Group extends Model {
 
   const Group._internal(
       {@required this.id,
-      @required this.chainId,
       this.name,
+      this.descriptionId,
       this.description,
       this.currency,
+      this.addressId,
       this.address,
       this.email,
       this.phone});
 
   factory Group(
       {String id,
-      @required String chainId,
       String name,
+      String descriptionId,
       LocalizedItem description,
       String currency,
+      String addressId,
       Address address,
       String email,
       String phone}) {
     return Group._internal(
         id: id == null ? UUID.getUUID() : id,
-        chainId: chainId,
         name: name,
+        descriptionId: descriptionId,
         description: description,
         currency: currency,
+        addressId: addressId,
         address: address,
         email: email,
         phone: phone);
@@ -79,10 +83,11 @@ class Group extends Model {
     if (identical(other, this)) return true;
     return other is Group &&
         id == other.id &&
-        chainId == other.chainId &&
         name == other.name &&
+        descriptionId == other.descriptionId &&
         description == other.description &&
         currency == other.currency &&
+        addressId == other.addressId &&
         address == other.address &&
         email == other.email &&
         phone == other.phone;
@@ -96,17 +101,13 @@ class Group extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("Group {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("chainId=" + chainId + ", ");
-    buffer.write("name=" + name + ", ");
-    buffer.write("description=" +
-        (description != null ? description.toString() : "null") +
-        ", ");
-    buffer.write("currency=" + currency + ", ");
-    buffer.write(
-        "address=" + (address != null ? address.toString() : "null") + ", ");
-    buffer.write("email=" + email + ", ");
-    buffer.write("phone=" + phone);
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("name=" + "$name" + ", ");
+    buffer.write("descriptionId=" + "$descriptionId" + ", ");
+    buffer.write("currency=" + "$currency" + ", ");
+    buffer.write("addressId=" + "$addressId" + ", ");
+    buffer.write("email=" + "$email" + ", ");
+    buffer.write("phone=" + "$phone");
     buffer.write("}");
 
     return buffer.toString();
@@ -114,19 +115,21 @@ class Group extends Model {
 
   Group copyWith(
       {String id,
-      String chainId,
       String name,
+      String descriptionId,
       LocalizedItem description,
       String currency,
+      String addressId,
       Address address,
       String email,
       String phone}) {
     return Group(
         id: id ?? this.id,
-        chainId: chainId ?? this.chainId,
         name: name ?? this.name,
+        descriptionId: descriptionId ?? this.descriptionId,
         description: description ?? this.description,
         currency: currency ?? this.currency,
+        addressId: addressId ?? this.addressId,
         address: address ?? this.address,
         email: email ?? this.email,
         phone: phone ?? this.phone);
@@ -134,13 +137,14 @@ class Group extends Model {
 
   Group.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        chainId = json['chainId'],
         name = json['name'],
+        descriptionId = json['descriptionId'],
         description = json['description'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
             : null,
         currency = json['currency'],
+        addressId = json['addressId'],
         address = json['address'] != null
             ? Address.fromJson(new Map<String, dynamic>.from(json['address']))
             : null,
@@ -149,23 +153,26 @@ class Group extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'chainId': chainId,
         'name': name,
+        'descriptionId': descriptionId,
         'description': description?.toJson(),
         'currency': currency,
+        'addressId': addressId,
         'address': address?.toJson(),
         'email': email,
         'phone': phone
       };
 
   static final QueryField ID = QueryField(fieldName: "group.id");
-  static final QueryField CHAINID = QueryField(fieldName: "chainId");
   static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField DESCRIPTIONID =
+      QueryField(fieldName: "descriptionId");
   static final QueryField DESCRIPTION = QueryField(
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
   static final QueryField CURRENCY = QueryField(fieldName: "currency");
+  static final QueryField ADDRESSID = QueryField(fieldName: "addressId");
   static final QueryField ADDRESS = QueryField(
       fieldName: "address",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -180,31 +187,36 @@ class Group extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Group.CHAINID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Group.NAME,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Group.DESCRIPTIONID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
         key: Group.DESCRIPTION,
         isRequired: false,
-        targetName: "groupDescriptionId",
-        ofModelName: (LocalizedItem).toString()));
+        ofModelName: (LocalizedItem).toString(),
+        associatedKey: LocalizedItem.ID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Group.CURRENCY,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Group.ADDRESSID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
         key: Group.ADDRESS,
         isRequired: false,
-        targetName: "groupAddressId",
-        ofModelName: (Address).toString()));
+        ofModelName: (Address).toString(),
+        associatedKey: Address.ID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Group.EMAIL,

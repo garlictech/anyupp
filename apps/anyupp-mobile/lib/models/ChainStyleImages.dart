@@ -62,9 +62,9 @@ class ChainStyleImages extends Model {
     var buffer = new StringBuffer();
 
     buffer.write("ChainStyleImages {");
-    buffer.write("id=" + id + ", ");
-    buffer.write("header=" + header + ", ");
-    buffer.write("logo=" + logo);
+    buffer.write("id=" + "$id" + ", ");
+    buffer.write("header=" + "$header" + ", ");
+    buffer.write("logo=" + "$logo");
     buffer.write("}");
 
     return buffer.toString();
