@@ -1,5 +1,5 @@
 import * as firebaseConfig from './lib/firebase.config.json';
-import * as config from './lib/config/config.json';
+import * as config from './lib/config/config.dev-petrot.json';
 import * as FIREBASE_SERVICE_ACCOUNT from './lib/firebase-service-account-key.json';
 import { isSharedConfig, isSharedFirebaseConfig } from './lib/interface-checks';
 
