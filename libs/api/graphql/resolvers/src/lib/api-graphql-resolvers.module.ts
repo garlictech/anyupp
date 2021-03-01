@@ -1,7 +1,7 @@
 import { PubSub } from 'graphql-subscriptions';
 
 import { ApiDataAccessModule } from '@bgap/api/data-access';
-import { SharedSecretsModule } from '@bgap/shared/secrets';
+// import { SharedSecretsModule } from '@bgap/shared/secrets';
 import { Module } from '@nestjs/common';
 
 import { AdminUserResolver } from '../admin-user/admin-user.resolver';
@@ -19,7 +19,7 @@ import { UserResolver } from '../user/user.resolver';
       useValue: new PubSub(),
     },
   ],
-  imports: [ApiDataAccessModule, SharedSecretsModule],
+  imports: [ApiDataAccessModule /* SharedSecretsModule */],
   exports: [],
 })
 export class ApiGraphqlResolversModule {}

@@ -754,7 +754,7 @@ export interface QueryGetUserArgs {
   id: Scalars['ID'];
 }
 
-export interface QueryGetCustomerStripeCardsArgs {
+export interface QuerygetMyCustomerStripeCardsArgs {
   userId?: Maybe<Scalars['ID']>;
 }
 
