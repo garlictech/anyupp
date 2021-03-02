@@ -45,11 +45,11 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
 
   public onProductCategorySelected(productCategoryId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
+      this._adminUser?.id &&
       productCategoryId !==
-        _get(this._adminUser, 'settings.selectedProductCategoryId')
+        this._adminUser?.settings?.selectedProductCategoryId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedProductCategoryId: productCategoryId,
       });

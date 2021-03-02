@@ -101,7 +101,7 @@ export class OrderService {
         statusLog: {
           [now]: {
             status: EOrderStatus.PLACED,
-            userId: this._adminUser?._id || '',
+            userId: this._adminUser?.id || '',
           },
         },
         variantId,
@@ -132,7 +132,7 @@ export class OrderService {
       {
         [new Date().valueOf()]: {
           status,
-          userId: this._adminUser?._id || '',
+          userId: this._adminUser?.id || '',
         },
       },
     );

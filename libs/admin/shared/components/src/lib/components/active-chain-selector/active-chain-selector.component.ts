@@ -45,10 +45,10 @@ export class ActiveChainSelectorComponent implements OnDestroy {
 
   public onChainSelected(chainId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
-      chainId !== _get(this._adminUser, 'settings.selectedChainId')
+      this._adminUser?.id &&
+      chainId !==  this._adminUser?.settings?.selectedChainId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!

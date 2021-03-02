@@ -34,9 +34,7 @@ export interface OrdersPartialState {
 
 export const activeOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
   IOrder
->({
-  selectId: (item: IOrder): string => item._id,
-});
+>();
 
 export const initialActiveOrdersState: IOrderEntityState = activeOrdersAdapter.getInitialState(
   {
@@ -65,9 +63,7 @@ const activeOrdersReducer = createReducer(
 
 export const historyOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
   IOrder
->({
-  selectId: (item: IOrder): string => item._id,
-});
+>();
 
 export const initialHistoryOrdersState: IOrderEntityState = historyOrdersAdapter.getInitialState(
   {

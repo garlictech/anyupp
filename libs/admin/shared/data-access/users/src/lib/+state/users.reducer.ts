@@ -16,9 +16,7 @@ export interface IUsersPartialState {
   readonly [USERS_FEATURE_KEY]: IUsersState;
 }
 
-export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>({
-  selectId: (item: IUser): string => item._id,
-});
+export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
 
 export const initialState: IUsersState = usersAdapter.getInitialState({
   // set initial required properties

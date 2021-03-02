@@ -16,11 +16,7 @@ export interface IGroupsPartialState {
   readonly [GROUPS_FEATURE_KEY]: IGroupsState;
 }
 
-export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<IGroup>(
-  {
-    selectId: (item: IGroup): string => item._id,
-  },
-);
+export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<IGroup>();
 
 export const initialState: IGroupsState = groupsAdapter.getInitialState({
   // set initial required properties

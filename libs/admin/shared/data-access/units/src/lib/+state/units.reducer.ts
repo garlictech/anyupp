@@ -16,9 +16,7 @@ export interface IUnitsPartialState {
   readonly [UNITS_FEATURE_KEY]: IUnitsState;
 }
 
-export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<IUnit>({
-  selectId: (item: IUnit): string => item._id,
-});
+export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<IUnit>();
 
 export const initialState: IUnitsState = unitsAdapter.getInitialState({
   // set initial required properties

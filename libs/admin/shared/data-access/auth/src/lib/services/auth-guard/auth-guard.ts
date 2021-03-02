@@ -3,11 +3,20 @@ import { from, Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+} from '@angular/router';
 import { DataStore } from '@aws-amplify/datastore';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
-import { EAdminRole, IAdminUser, IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import {
+  EAdminRole,
+  IAdminUser,
+  IAuthenticatedCognitoUser,
+} from '@bgap/shared/types';
 
 import { CognitoService } from '../cognito/cognito.service';
 
@@ -63,17 +72,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         (): Observable<IAuthenticatedCognitoUser | undefined> =>
           this._cognitoService.getAuth(),
       ),
-
       switchMap(
-        (cognitoUser): Observable<IAdminUser | undefined> =>
-          cognitoUser
+        (cognitoUser): Observable<IAdminUser | undefined> => {
+          return cognitoUser
             ? from(
                 DataStore.query(AdminUser, <string>cognitoUser?.user?.id),
               ).pipe(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                map((data: any) => data || undefined),
+                map((data: any) => {
+                  return data || undefined;
+                }),
               )
-            : of(undefined),
+            : of(undefined);
+        },
       ),
       take(1),
     );

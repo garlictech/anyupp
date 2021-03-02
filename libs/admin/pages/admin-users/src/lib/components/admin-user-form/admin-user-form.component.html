@@ -2,7 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (adminUser && adminUser._id
+        (adminUser && adminUser.id
           ? 'adminUsers.editAdminUser'
           : 'adminUsers.newAdminUser'
         ) | translate

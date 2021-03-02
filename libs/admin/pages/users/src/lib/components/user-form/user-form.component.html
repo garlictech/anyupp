@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (user && user._id ? 'users.editUser' : 'users.newUser') | translate }}
+      {{ (user && user.id ? 'users.editUser' : 'users.newUser') | translate }}
     </div>
     <button
       nbButton

@@ -174,11 +174,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private _onLanguageSelected(lang: string): void {
     if (
-      _get(this.adminUser, '_id') &&
-      lang !== _get(this.adminUser, 'settings.selectedLanguage')
+      this.adminUser?.id &&
+      lang !== this.adminUser?.settings?.selectedLanguage
     ) {
       this._dataService.updateAdminUserSeletedLanguage(
-        this.adminUser?._id || '',
+        this.adminUser?.id || '',
         lang,
       );
     }

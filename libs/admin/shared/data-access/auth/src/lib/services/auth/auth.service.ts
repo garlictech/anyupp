@@ -18,7 +18,7 @@ export class AuthService {
 
     this._amplifyService.authStateChange$.subscribe((authState: AuthState) => {
       if (authState.user) {
-        this._dataService.initDataConnections(/*authState.user.username*/);
+        this._dataService.initDataConnections(authState.user.username);
       } else {
         this._dataService.destroyDataConnection();
       }

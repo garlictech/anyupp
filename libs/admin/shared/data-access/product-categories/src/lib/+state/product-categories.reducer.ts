@@ -18,9 +18,7 @@ export interface ProductCategoriesPartialState {
 
 export const productCategoriesAdapter: EntityAdapter<IProductCategory> = createEntityAdapter<
   IProductCategory
->({
-  selectId: (item: IProductCategory): string => item._id,
-});
+>();
 
 export const initialState: IProductCategoriesState = productCategoriesAdapter.getInitialState(
   {

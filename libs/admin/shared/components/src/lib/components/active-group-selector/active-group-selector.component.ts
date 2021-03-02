@@ -48,7 +48,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
       _get(this._adminUser, '_id') &&
       groupId !== _get(this._adminUser, 'settings.selectedGroupId')
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ..._get(this._adminUser, 'settings', {}),
         selectedGroupId: groupId,
         selectedUnitId: null, // Reset unit id!
