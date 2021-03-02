@@ -1,14 +1,18 @@
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// TODO AWS remove
+// import 'package:fa_prev/models.dart';
+// import 'package:fa_prev/modules/login/login.dart';
+// ignore: unused_import
+// import 'package:fa_prev/shared/auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class ICommonLoginProvider {
+// abstract class ICommonLoginProvider {
   
-  Future<User> signInWithCredentialAndUpdateFirebaseUser(AuthCredential credential, User user);
+//   Future<User> signInWithCredentialAndUpdateFirebaseUser(AuthCredential credential, User user);
 
-  Future<void> linkAccountToFirebaseUser(String email, AuthCredential credential);
+//   Future<void> linkAccountToFirebaseUser(String email, AuthCredential credential);
 
-  Future<void> linkCredentialsToFirebaseUser(AuthCredential credential, User user);
+//   Future<void> linkCredentialsToFirebaseUser(AuthCredential credential, User user);
 
-  Future<void> unlinkProviderToFirebaseUser(LoginMethod method);
-}
+//   Future<void> unlinkProviderToFirebaseUser(LoginMethod method);
+// }
+// //

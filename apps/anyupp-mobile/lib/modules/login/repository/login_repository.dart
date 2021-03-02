@@ -1,19 +1,16 @@
-import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
 
-class LoginRepository implements ICommonLoginProvider, IPhoneLoginProvider, ISocialLoginProvider, IEmailLoginProvider {
-  final IUserProvider _userProvider;
-  final ICommonLoginProvider _commonLoginProvider;
+class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEmailLoginProvider {
+  // final IUserProvider _userProvider;
+  // final ICommonLoginProvider _commonLoginProvider;
   final ISocialLoginProvider _socialLoginProvider;
   final IPhoneLoginProvider _phoneLoginProvider;
   final IEmailLoginProvider _emailLoginProvider;
 
   LoginRepository(
-    this._userProvider,
-    this._commonLoginProvider,
+    // this._userProvider,
+    // this._commonLoginProvider,
     this._socialLoginProvider,
     this._emailLoginProvider,
     this._phoneLoginProvider,
@@ -66,26 +63,6 @@ class LoginRepository implements ICommonLoginProvider, IPhoneLoginProvider, ISoc
   }
 
   @override
-  Future<User> signInWithCredentialAndUpdateFirebaseUser(Object credential, User user) {
-    return _commonLoginProvider.signInWithCredentialAndUpdateFirebaseUser(credential, user);
-  }
-
-  @override
-  Future<void> linkAccountToFirebaseUser(String email, AuthCredential credential) {
-    return _commonLoginProvider.linkAccountToFirebaseUser(email, credential);
-  }
-
-  @override
-  Future<void> linkCredentialsToFirebaseUser(AuthCredential credential, User user) {
-    return _commonLoginProvider.linkCredentialsToFirebaseUser(credential, user);
-  }
-
-  @override
-  Future<void> unlinkProviderToFirebaseUser(LoginMethod method) {
-    return _commonLoginProvider.unlinkProviderToFirebaseUser(method);
-  }
-
-  @override
   Future<String> get email => _emailLoginProvider.email;
 
   @override
@@ -117,7 +94,8 @@ class LoginRepository implements ICommonLoginProvider, IPhoneLoginProvider, ISoc
   Future<void> logout() async {
     return Future.wait([
       (await SharedPreferences.getInstance()).clear(),
-      _userProvider.logoutUser(),
+      // TODO !!!! AWS
+      //_userProvider.logoutUser(),
       _socialLoginProvider.logout(),
     ]);
   }

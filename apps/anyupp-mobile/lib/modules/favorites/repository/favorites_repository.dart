@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 class FavoritesRepository {
   final IFavoritesProvider _provider;

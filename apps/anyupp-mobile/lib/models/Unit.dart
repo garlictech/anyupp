@@ -32,9 +32,16 @@ class Unit extends Model {
   final String name;
   final String descriptionId;
   final LocalizedItem description;
+  final String addressId;
+  final Address address;
+  final List<PaymentMode> paymentModes;
   final bool isActive;
   final bool isAcceptingOrders;
-  final List<PaymentMode> paymentModes;
+  final String email;
+  final String phone;
+  final String openId;
+  final DailySchedule open;
+  final List<WeeklySchedule> openingHours;
 
   @override
   getInstanceType() => classType;
@@ -53,9 +60,16 @@ class Unit extends Model {
       this.name,
       this.descriptionId,
       this.description,
+      this.addressId,
+      this.address,
+      this.paymentModes,
       this.isActive,
       this.isAcceptingOrders,
-      this.paymentModes});
+      this.email,
+      this.phone,
+      this.openId,
+      this.open,
+      this.openingHours});
 
   factory Unit(
       {String id,
@@ -66,9 +80,16 @@ class Unit extends Model {
       String name,
       String descriptionId,
       LocalizedItem description,
+      String addressId,
+      Address address,
+      List<PaymentMode> paymentModes,
       bool isActive,
       bool isAcceptingOrders,
-      List<PaymentMode> paymentModes}) {
+      String email,
+      String phone,
+      String openId,
+      DailySchedule open,
+      List<WeeklySchedule> openingHours}) {
     return Unit._internal(
         id: id == null ? UUID.getUUID() : id,
         groupId: groupId,
@@ -78,11 +99,20 @@ class Unit extends Model {
         name: name,
         descriptionId: descriptionId,
         description: description,
-        isActive: isActive,
-        isAcceptingOrders: isAcceptingOrders,
+        addressId: addressId,
+        address: address,
         paymentModes: paymentModes != null
             ? List.unmodifiable(paymentModes)
-            : paymentModes);
+            : paymentModes,
+        isActive: isActive,
+        isAcceptingOrders: isAcceptingOrders,
+        email: email,
+        phone: phone,
+        openId: openId,
+        open: open,
+        openingHours: openingHours != null
+            ? List.unmodifiable(openingHours)
+            : openingHours);
   }
 
   bool equals(Object other) {
@@ -101,9 +131,16 @@ class Unit extends Model {
         name == other.name &&
         descriptionId == other.descriptionId &&
         description == other.description &&
+        addressId == other.addressId &&
+        address == other.address &&
+        DeepCollectionEquality().equals(paymentModes, other.paymentModes) &&
         isActive == other.isActive &&
         isAcceptingOrders == other.isAcceptingOrders &&
-        DeepCollectionEquality().equals(paymentModes, other.paymentModes);
+        email == other.email &&
+        phone == other.phone &&
+        openId == other.openId &&
+        open == other.open &&
+        DeepCollectionEquality().equals(openingHours, other.openingHours);
   }
 
   @override
@@ -119,10 +156,15 @@ class Unit extends Model {
     buffer.write("chainId=" + "$chainId" + ", ");
     buffer.write("name=" + "$name" + ", ");
     buffer.write("descriptionId=" + "$descriptionId" + ", ");
+    buffer.write("addressId=" + "$addressId" + ", ");
     buffer.write(
         "isActive=" + (isActive != null ? isActive.toString() : "null") + ", ");
     buffer.write("isAcceptingOrders=" +
-        (isAcceptingOrders != null ? isAcceptingOrders.toString() : "null"));
+        (isAcceptingOrders != null ? isAcceptingOrders.toString() : "null") +
+        ", ");
+    buffer.write("email=" + "$email" + ", ");
+    buffer.write("phone=" + "$phone" + ", ");
+    buffer.write("openId=" + "$openId");
     buffer.write("}");
 
     return buffer.toString();
@@ -137,9 +179,16 @@ class Unit extends Model {
       String name,
       String descriptionId,
       LocalizedItem description,
+      String addressId,
+      Address address,
+      List<PaymentMode> paymentModes,
       bool isActive,
       bool isAcceptingOrders,
-      List<PaymentMode> paymentModes}) {
+      String email,
+      String phone,
+      String openId,
+      DailySchedule open,
+      List<WeeklySchedule> openingHours}) {
     return Unit(
         id: id ?? this.id,
         groupId: groupId ?? this.groupId,
@@ -149,9 +198,16 @@ class Unit extends Model {
         name: name ?? this.name,
         descriptionId: descriptionId ?? this.descriptionId,
         description: description ?? this.description,
+        addressId: addressId ?? this.addressId,
+        address: address ?? this.address,
+        paymentModes: paymentModes ?? this.paymentModes,
         isActive: isActive ?? this.isActive,
         isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
-        paymentModes: paymentModes ?? this.paymentModes);
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        openId: openId ?? this.openId,
+        open: open ?? this.open,
+        openingHours: openingHours ?? this.openingHours);
   }
 
   Unit.fromJson(Map<String, dynamic> json)
@@ -170,12 +226,29 @@ class Unit extends Model {
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
             : null,
-        isActive = json['isActive'],
-        isAcceptingOrders = json['isAcceptingOrders'],
+        addressId = json['addressId'],
+        address = json['address'] != null
+            ? Address.fromJson(new Map<String, dynamic>.from(json['address']))
+            : null,
         paymentModes = json['paymentModes'] is List
             ? (json['paymentModes'] as List)
                 .map((e) =>
                     PaymentMode.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
+        isActive = json['isActive'],
+        isAcceptingOrders = json['isAcceptingOrders'],
+        email = json['email'],
+        phone = json['phone'],
+        openId = json['openId'],
+        open = json['open'] != null
+            ? DailySchedule.fromJson(
+                new Map<String, dynamic>.from(json['open']))
+            : null,
+        openingHours = json['openingHours'] is List
+            ? (json['openingHours'] as List)
+                .map((e) =>
+                    WeeklySchedule.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null;
 
@@ -188,9 +261,16 @@ class Unit extends Model {
         'name': name,
         'descriptionId': descriptionId,
         'description': description?.toJson(),
+        'addressId': addressId,
+        'address': address?.toJson(),
+        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList(),
         'isActive': isActive,
         'isAcceptingOrders': isAcceptingOrders,
-        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList()
+        'email': email,
+        'phone': phone,
+        'openId': openId,
+        'open': open?.toJson(),
+        'openingHours': openingHours?.map((e) => e?.toJson())?.toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "unit.id");
@@ -211,13 +291,29 @@ class Unit extends Model {
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField ISACTIVE = QueryField(fieldName: "isActive");
-  static final QueryField ISACCEPTINGORDERS =
-      QueryField(fieldName: "isAcceptingOrders");
+  static final QueryField ADDRESSID = QueryField(fieldName: "addressId");
+  static final QueryField ADDRESS = QueryField(
+      fieldName: "address",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Address).toString()));
   static final QueryField PAYMENTMODES = QueryField(
       fieldName: "paymentModes",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (PaymentMode).toString()));
+  static final QueryField ISACTIVE = QueryField(fieldName: "isActive");
+  static final QueryField ISACCEPTINGORDERS =
+      QueryField(fieldName: "isAcceptingOrders");
+  static final QueryField EMAIL = QueryField(fieldName: "email");
+  static final QueryField PHONE = QueryField(fieldName: "phone");
+  static final QueryField OPENID = QueryField(fieldName: "openId");
+  static final QueryField OPEN = QueryField(
+      fieldName: "open",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (DailySchedule).toString()));
+  static final QueryField OPENINGHOURS = QueryField(
+      fieldName: "openingHours",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (WeeklySchedule).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Unit";
@@ -264,6 +360,23 @@ class Unit extends Model {
         associatedKey: LocalizedItem.ID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.ADDRESSID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Unit.ADDRESS,
+        isRequired: false,
+        ofModelName: (Address).toString(),
+        associatedKey: Address.ID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: Unit.PAYMENTMODES,
+        isRequired: true,
+        ofModelName: (PaymentMode).toString(),
+        associatedKey: PaymentMode.UNITID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Unit.ISACTIVE,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
@@ -273,11 +386,32 @@ class Unit extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
 
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.EMAIL,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.PHONE,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Unit.OPENID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+        key: Unit.OPEN,
+        isRequired: false,
+        ofModelName: (DailySchedule).toString(),
+        associatedKey: DailySchedule.ID));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Unit.PAYMENTMODES,
+        key: Unit.OPENINGHOURS,
         isRequired: true,
-        ofModelName: (PaymentMode).toString(),
-        associatedKey: PaymentMode.UNITID));
+        ofModelName: (WeeklySchedule).toString(),
+        associatedKey: WeeklySchedule.UNITID));
   });
 }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/model/authenticated_user.dart';
 
@@ -112,25 +113,35 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   User _userFromAttributes(List<AuthUserAttribute> attributes) {
-    User user = User();
+    String email; 
+    String name;
+    String subId;
+    String loginMethod;
     for (int i = 0; i < attributes.length; i++) {
       AuthUserAttribute a = attributes[i];
-      //print('\t attr[${a.userAttributeKey}]=${a.value}');
+      // print('\t attr[${a.userAttributeKey}]=${a.value}');
       if (a.userAttributeKey == 'email') {
-        user.email = a.value;
-        user.name = user.email.split('@').first;
+        email = a.value;
+        name = email.split('@').first;
         continue;
       }
       if (a.userAttributeKey == 'sub') {
-        user.id = a.value;
+        // TODO
+        subId = a.value;
         continue;
       }
       if (a.userAttributeKey == 'identities') {
         List<dynamic> json = jsonDecode(a.value);
-        user.login = LoginMethodUtils.stringToMethod(json[0]['providerType']);
+        loginMethod = json.isNotEmpty ? json[0]['providerType'] : 'UNKNOWN';//LoginMethodUtils.stringToMethod(json[0]['providerType']);
         continue;
       }
     }
+    User user = User(
+      email: email,
+      loginMethod: loginMethod,
+      name: name,
+      id: subId
+    );
     return user;
   }
 }

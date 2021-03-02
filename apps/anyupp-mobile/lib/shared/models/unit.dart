@@ -1,64 +1,66 @@
 import 'dart:convert';
 
-import 'address.dart';
-import 'payment.dart';
-import 'product.dart';
+import 'package:fa_prev/models.dart';
 
-class Unit {
-  // TODO: do we use these?
-  String name;
-  String email;
-  String phone;
-  Address address;
-  Map<String, Payment> payment;
-  String description;
-  Product products;
-  Map<String, bool> services;
-  Map<String, String> schedule;
-  String image;
-  Map<String, Table> tables;
-  Map<String, QueueOrder> queue;
+// import 'address.dart';
+// import 'payment.dart';
+// import 'product.dart';
 
-  Unit({
-    this.email,
-    this.phone,
-    this.address,
-    this.payment,
-    this.description,
-    this.products,
-    this.services,
-    this.schedule,
-    this.image,
-    this.tables,
-    this.queue,
-  });
-}
+// class Unit {
+//   // TODO: do we use these?
+//   String name;
+//   String email;
+//   String phone;
+//   Address address;
+//   Map<String, Payment> payment;
+//   String description;
+//   Product products;
+//   Map<String, bool> services;
+//   Map<String, String> schedule;
+//   String image;
+//   Map<String, Table> tables;
+//   Map<String, QueueOrder> queue;
 
-class Table {
-  String id;
-  Map<String, Seat> seats;
-}
+//   Unit({
+//     this.email,
+//     this.phone,
+//     this.address,
+//     this.payment,
+//     this.description,
+//     this.products,
+//     this.services,
+//     this.schedule,
+//     this.image,
+//     this.tables,
+//     this.queue,
+//   });
+// }
 
-class Seat {
-  String id;
-  Map<String, Order> orders;
-  String user;
+// class Table {
+//   String id;
+//   Map<String, Seat> seats;
+// }
 
-  Seat({this.orders, this.user});
-}
+// class Seat {
+//   String id;
+//   Map<String, Order> orders;
+//   String user;
 
-class QueueOrder {
-  String id;
-  Map<String, Order> orders;
-  String user;
+//   Seat({this.orders, this.user});
+// }
 
-  QueueOrder({this.orders, this.user});
-}
+// class QueueOrder {
+//   String id;
+//   Map<String, Order> orders;
+//   String user;
+
+//   QueueOrder({this.orders, this.user});
+// }
 
 class Order {
   String id;
   Product product;
-  Variant variant;
+  ProductVariant variant;
   int quantity = 1;
   Order(
     this.id,
@@ -71,7 +73,7 @@ class Order {
   Order copyWith({
     String id,
     Product product,
-    Variant variant,
+    ProductVariant variant,
     int quantity,
   }) {
     return Order(
@@ -85,8 +87,8 @@ class Order {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'product': product?.toMap(),
-      'variant': variant?.toMap(),
+      'product': product?.toJson(),
+      'variant': variant?.toJson(),
       'quantity': quantity,
     };
   }
@@ -95,8 +97,8 @@ class Order {
     if (map == null) return null;
     return Order(
       map['id'].toString(),
-      Product.fromMap(Map<String, dynamic>.from(map['product'])),
-      Variant.fromMap(Map<String, dynamic>.from(map['variant'])),
+      Product.fromJson(Map<String, dynamic>.from(map['product'])),
+      ProductVariant.fromJson(Map<String, dynamic>.from(map['variant'])),
       map['quantity'],
     );
   }

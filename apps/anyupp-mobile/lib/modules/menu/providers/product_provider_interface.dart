@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 abstract class IProductProvider {
   

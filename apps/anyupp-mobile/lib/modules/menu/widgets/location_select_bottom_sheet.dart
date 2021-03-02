@@ -80,7 +80,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    unit.address.toAddressString(),
+                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text,

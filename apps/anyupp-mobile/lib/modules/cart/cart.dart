@@ -3,6 +3,7 @@ export 'bloc/cart_event.dart';
 export 'bloc/cart_state.dart';
 export 'models/cart.dart';
 export 'models/cart_exception.dart';
+export 'providers/aws_cart_provider.dart';
 export 'providers/firebase_cart_provider.dart';
 export 'providers/cart_provider_interface.dart';
 export 'repository/cart_repository.dart';

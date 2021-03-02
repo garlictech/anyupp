@@ -2,7 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

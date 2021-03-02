@@ -246,7 +246,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    unit.address.toAddressString(),
+                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),
@@ -371,8 +371,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: unit.address.location,
-        infoWindow: InfoWindow(title: unit.name, snippet: unit.address.toAddressString()),
+        position: LatLng( unit.address.location.lat, unit.address.location.lng),
+        infoWindow: InfoWindow(title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);
         },

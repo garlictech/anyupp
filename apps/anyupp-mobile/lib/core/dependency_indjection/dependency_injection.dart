@@ -1,4 +1,4 @@
-import 'package:cloud_functions/cloud_functions.dart';
+// import 'package:cloud_functions/cloud_functions.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql_client.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -17,10 +17,10 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
-import 'package:fa_prev/shared/providers.dart';
-import 'package:fa_prev/shared/providers/function_provider_interface.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+// import 'package:fa_prev/shared/providers.dart';
+// import 'package:fa_prev/shared/providers/function_provider_interface.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get_it/get_it.dart';
@@ -40,9 +40,9 @@ void initDependencyInjection() {
 }
 
 void _initCommon() {
-  FirebaseDatabase database = FirebaseDatabase.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  CloudFunctions functions = CloudFunctions(region: dotEnv.env['region']);
+  // FirebaseDatabase database = FirebaseDatabase.instance;
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // CloudFunctions functions = CloudFunctions(region: dotEnv.env['region']);
   GraphQLClient graphQLClient = getGraphQLClient(url: dotEnv.env['graphql-url']);
   final Stripe stripe = Stripe(
     dotEnv.env['stripe_pulblishable_key'],
@@ -52,9 +52,9 @@ void _initCommon() {
 
   // database.setPersistenceEnabled(true);
 
-  getIt.registerLazySingleton<DatabaseReference>(() => database.reference());
-  getIt.registerLazySingleton<FirebaseAuth>(() => auth);
-  getIt.registerLazySingleton<CloudFunctions>(() => functions);
+  // getIt.registerLazySingleton<DatabaseReference>(() => database.reference());
+  // getIt.registerLazySingleton<FirebaseAuth>(() => auth);
+  // getIt.registerLazySingleton<CloudFunctions>(() => functions);
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
   getIt.registerLazySingleton<GraphQLClient>(() => graphQLClient);
@@ -63,27 +63,27 @@ void _initCommon() {
 
 void _initProviders() {
   // Providers
-  getIt.registerLazySingleton<IUserProvider>(() => FirebaseUserProvider());
+  // getIt.registerLazySingleton<IUserProvider>(() => AwsUserProvider());
   // getIt.registerLazySingleton<IAuthProvider>(
   //     () => FirebaseAuthProvider(getIt<FirebaseAuth>(), getIt<DatabaseReference>()));
   getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider());
-  getIt.registerLazySingleton<IFunctionProvider>(() => FirebaseFunctionsProvider(getIt<CloudFunctions>()));
+  // getIt.registerLazySingleton<IFunctionProvider>(() => FirebaseFunctionsProvider(getIt<CloudFunctions>()));
   getIt.registerLazySingleton<IFavoritesProvider>(
-      () => FirebaseFavoritesProvider(getIt<DatabaseReference>(), getIt<IAuthProvider>()));
+      () => AwsFavoritesProvider());
   getIt.registerLazySingleton<IOrdersProvider>(
-      () => FirebaseOrderProvider(getIt<DatabaseReference>(), getIt<IAuthProvider>(), getIt<IFunctionProvider>()));
-  getIt.registerLazySingleton<IProductProvider>(() => FirebaseProductProvider(getIt<DatabaseReference>()));
-  getIt.registerLazySingleton<IUnitProvider>(() => FirebaseUnitProvider(getIt<IFunctionProvider>()));
+      () => AwsOrderProvider());
+  getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
+  getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(() => GraphQLStripePaymentProvider(getIt<GraphQLClient>(), getIt<Stripe>()));
-  getIt.registerLazySingleton<ISimplePayProvider>(() => FirebaseSimplepayProvider(getIt<IFunctionProvider>()));
+  getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
   getIt.registerLazySingleton<ICartProvider>(
-      () => FirebaseCartProvider(getIt<DatabaseReference>(), getIt<IAuthProvider>(), getIt<IFunctionProvider>()));
+      () => AwsCartProvider());
 
   // Login providers
-  getIt.registerLazySingleton<ICommonLoginProvider>(() => FirebaseCommonLoginProvider(
-        getIt<FirebaseAuth>(),
-        getIt<IUserProvider>(),
-      ));
+  // getIt.registerLazySingleton<ICommonLoginProvider>(() => FirebaseCommonLoginProvider(
+  //       getIt<FirebaseAuth>(),
+  //       getIt<IUserProvider>(),
+  //     ));
   // getIt.registerLazySingleton<ISocialLoginProvider>(() => FirebaseSocialLoginProvider(
   //       getIt<FirebaseAuth>(),
   //       getIt<GoogleSignIn>(),
@@ -91,27 +91,20 @@ void _initProviders() {
   //       getIt<IUserProvider>(),
   //       getIt<ICommonLoginProvider>(),
   //     ));
-  getIt.registerLazySingleton<IPhoneLoginProvider>(() => FirebasePhoneLoginProvider(
-        getIt<FirebaseAuth>(),
-        getIt<IUserProvider>(),
-        getIt<ICommonLoginProvider>(),
-      ));
-  getIt.registerLazySingleton<IEmailLoginProvider>(() => FirebaseEmailLoginProvider(
-        getIt<FirebaseAuth>(),
-        getIt<IUserProvider>(),
+  getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
+  getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
+        getIt<IAuthProvider>(),
       ));
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(
       () => AwsSocialLoginProvider(getIt<GoogleSignIn>(), getIt<FacebookLogin>(), getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<IAffiliateProvider>(() => AffiliateFirebaseProvider(getIt<DatabaseReference>()));
+  getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
 }
 
 void _initRepositories() {
   // Login Repository
   getIt.registerLazySingleton<LoginRepository>(() => LoginRepository(
-        getIt<IUserProvider>(),
-        getIt<ICommonLoginProvider>(),
         getIt<ISocialLoginProvider>(),
         getIt<IEmailLoginProvider>(),
         getIt<IPhoneLoginProvider>(),

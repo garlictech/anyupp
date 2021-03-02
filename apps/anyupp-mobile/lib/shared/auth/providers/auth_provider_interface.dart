@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/auth.dart';
+import 'package:fa_prev/models.dart';
 
 abstract class IAuthProvider {
   Stream<User> getAuthenticatedUserProfileStream();

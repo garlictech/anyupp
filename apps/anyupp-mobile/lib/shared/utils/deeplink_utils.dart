@@ -2,9 +2,8 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/nav.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DeeplinkType {
@@ -56,12 +55,13 @@ Future<bool> handleUrlQR(Uri uri) async {
     return false;
   }
 
+    AuthRepository auth = getIt<AuthRepository>();
+
   // --- check authentication
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  User user = await auth.getAuthenticatedUserProfile();
 
   // Not authenticated
   if (user == null) {
-    AuthRepository auth = getIt<AuthRepository>();
     auth.nextPageAfterLogin = page;
     await Future.delayed(Duration(seconds: 3));
     print('***** handleUrlQR().login()');
@@ -90,7 +90,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   final unitId = uri.pathSegments[0];
   final table = uri.pathSegments[1];
   final seat = uri.pathSegments[2];
-  final Place place = Place(table, seat);
+  final Place place = Place(table: table, seat: seat);
   print('***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
   return UnitFoundByQRCodeScreen(
     place: place,

@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
@@ -6,7 +7,6 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -19,8 +19,9 @@ import 'package:fa_prev/shared/nav.dart';
 class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
+  final User user;
   final Product item;
-  ProductDetailsScreen({Key key, this.item, this.heroId, this.unit}) : super(key: key);
+  ProductDetailsScreen({Key key, this.user, this.item, this.heroId, this.unit}) : super(key: key);
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -214,7 +215,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildVariantsList(Cart cart, List<Variant> list) {
+  Widget _buildVariantsList(Cart cart, List<ProductVariant> list) {
     if (list == null) {
       return Container();
     }
@@ -227,7 +228,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildVariantItem(BuildContext context, Cart cart, Variant variant, GeoUnit unit) {
+  Widget _buildVariantItem(BuildContext context, Cart cart, ProductVariant variant, GeoUnit unit) {
     final int variantCountInCart = cart == null ? 0 : cart.variantCount(widget.item, variant);
 
     return Container(
@@ -347,8 +348,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  void _addOrder(Variant variant) {
+  void _addOrder(ProductVariant variant) {
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
+      widget.user, 
       widget.unit,
       widget.item,
       variant,

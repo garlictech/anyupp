@@ -1,5 +1,5 @@
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
@@ -140,9 +140,9 @@ class CartScreen extends StatelessWidget {
                   color: theme.disabled.withOpacity(0.3),
                 ),
                 physics: BouncingScrollPhysics(),
-                itemCount: cart.orders.length,
+                itemCount: cart.order?.items?.length ?? 0,
                 itemBuilder: (context, position) {
-                  final Order order = cart.orders[position];
+                  final OrderItem order = cart.order.items[position];
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 375),
@@ -226,7 +226,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, Order order) {
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

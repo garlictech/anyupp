@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/firebase_conversion_utils.dart';
 
 import 'unit_style.dart';
@@ -40,11 +40,11 @@ class GeoUnit {
       'name': name,
       'style': style,
       'distance': distance,
-      'address': address?.toMap(),
+      'address': address?.toJson(),
       'openingHours': openingHours,
       'currency': currency,
       'paymentModes': paymentModes,
-      'place': place?.toMap(),
+      'place': place?.toJson(),
     };
   }
 
@@ -58,11 +58,11 @@ class GeoUnit {
       name: map['name'],
       style: UnitStyle.fromMap(map['style']),
       distance: getIntFromFirebaseValue(map['distance']),
-      address: Address.fromMap(map['address']),
+      address: Address.fromJson(map['address']),
       openingHours: map['openingHours'],
       currency: map['currency'],
       paymentModes: List<String>.from(map['paymentModes']),
-      place: Place.fromMap(map['place']),
+      place: Place.fromJson(map['place']),
     );
   }
 

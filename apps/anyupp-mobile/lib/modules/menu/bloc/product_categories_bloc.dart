@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 

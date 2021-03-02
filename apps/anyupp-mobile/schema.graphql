@@ -42,9 +42,32 @@ type Unit @model
   name: String
   descriptionId: ID
   description: LocalizedItem @connection(fields: ["descriptionId"])
+  addressId: ID
+  address: Address @connection(fields: ["addressId"])
+  paymentModes: [PaymentMode!] @connection(keyName: "paymentsByUnit", fields: ["id"])
   isActive: Boolean
   isAcceptingOrders: Boolean
-  paymentModes: [PaymentMode!] @connection(keyName: "paymentsByUnit", fields: ["id"])
+  email: String
+  phone: String
+  openId: ID
+  open: DailySchedule @connection(fields: ["openId"])
+  openingHours: [WeeklySchedule!] @connection(keyName: "scheduleByUnit", fields: ["id"])
+}
+
+type WeeklySchedule @model 
+@key(name: "scheduleByUnit", fields: ["unitId"])
+{
+  id: ID!
+  unitId: ID!
+  day: String
+  scheduleId: ID!
+  schedule: DailySchedule @connection(fields: ["scheduleId"])
+}
+
+type DailySchedule @model {
+  id: ID!
+  from: String
+  to: String
 }
 
 type Address @model {
@@ -106,4 +129,144 @@ type PaymentMode @model
   name: String!
   caption: String
   method: String!
+}
+
+type User @model {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  loginMethod: String
+}
+
+type Product @model 
+@key(name: "productsByUnit", fields: ["unitId"])
+@key(name: "productsByUnitAndCategory", fields: ["unitId", "productCategoryId"])
+{
+  id: ID!
+  unitId: ID!
+  nameId: ID!
+  name: LocalizedItem @connection(fields: ["descriptionId"])
+  descriptionId: ID
+  description: LocalizedItem @connection(fields: ["descriptionId"])
+  productCategoryId: ID!
+  productCategory: ProductCategory @connection(fields: ["productCategoryId"])
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  extending: String
+  isVisible: Boolean
+  variants: [ProductVariant!] @connection(keyName: "variantsByProduct", fields: ["id"])
+}
+
+type ProductCategory @model {
+  id: ID!
+  nameId: ID!
+  name: LocalizedItem @connection(fields: ["descriptionId"])
+  descriptionId: ID
+  description: LocalizedItem @connection(fields: ["descriptionId"])
+  image: String
+  position: Int
+}
+
+type ProductVariant @model 
+@key(name: "variantsByProduct", fields: ["productId"])
+{
+  id: ID!
+  productId: ID!
+  variantNameId: ID
+  variantName: LocalizedItem @connection(fields: ["variantNameId"])
+  packId: ID
+  pack: ProductVariantPack @connection(fields: ["packId"])
+  isAvailable: Boolean
+  price: Float
+  position: Int
+}
+
+type ProductVariantPack @model 
+@key(name: "variantsByProduct", fields: ["productId"])
+{
+  id: ID!
+  productId: ID!
+  size: Float
+  unit: String
+}
+
+type FavoriteProduct @model(subscriptions: null)
+@key(name: "favoritesByUserAndChain", fields: ["userID", "chainID"])
+@key(name: "favoritesByUserAndUnit", fields: ["userID", "unitID"])
+{
+  id: ID!
+  userID: ID!
+  chainID: ID!
+  unitID: ID!
+  productId: ID!
+  product: Product @connection(fields: ["productId"])
+}
+
+type Order @model 
+@key(name: "ordersByUser", fields: ["userId"])
+@key(name: "ordersByUserAndUnit", fields: ["userId", "unitId"])
+{
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  created: Int
+  items: [OrderItem] @connection(keyName: "itemsByOrder", fields: ["id"])
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLog] @connection(keyName: "logsByOrder", fields: ["id"])
+  sumPriceShownId: ID
+  sumPriceShown: PriceShown @connection(fields: ["sumPriceShownId"])
+  takeAway: Boolean
+  placeId: ID
+  place: Place @connection(fields: ["placeId"]) 
+  paymentIntention: Int
+}
+
+type OrderItem @model 
+@key(name: "itemsByOrder", fields: ["orderId"])
+{
+  id: ID!
+  orderId: ID!
+  productId: ID
+  productNameId: ID
+  productName: LocalizedItem @connection(fields: ["productNameId"])
+  priceShownId: ID
+  priceShown: PriceShown @connection(fields: ["priceShownId"])
+  quantity: Int
+  statusLog: [StatusLog] @connection(keyName: "logsByOrderAndItem", fields: ["id", "orderId"])
+  variantId: ID
+  variantName: LocalizedItem @connection(fields: ["variantId"])
+  created: Int
+  laneId: ID
+  takeAway: Boolean
+}
+
+type Place @model {
+  id: ID!
+  seat: String
+  table: String
+}
+
+type PriceShown @model {
+  id: ID!
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type StatusLog @model 
+@key(name: "logsByOrder", fields: ["orderId"])
+@key(name: "logsByOrderAndItem", fields: ["orderId", "orderItemId"])
+{
+  userId: ID!
+  orderId: ID
+  orderItemId: ID
+  status: String
+  ts: Int
 }

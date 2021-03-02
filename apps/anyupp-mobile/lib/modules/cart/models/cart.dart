@@ -1,45 +1,46 @@
 import 'dart:convert';
 
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 class Cart {
   // Attributes
-  final List<Order> orders;
+  final Order order;
+  // final List<OrderItem> orders;
 
   // Customer's place in the Unit (Table + Seat)
   Place place;
 
   // Constructor
   Cart({
-    this.orders,
+    this.order,
     this.place,
   });
 
-  int get orderCount => orders != null ? orders.length : 0;
+  int get orderCount => order?.items?.length ?? 0;
 
   int get totalCount {
     int count = 0;
-    orders.forEach((order) => count += order.quantity);
+    order.items.forEach((order) => count += order.quantity);
     return count;
   }
 
   double get totalPrice {
     double value = 0;
-    orders.forEach((order) => value += order.price);
+    order.items.forEach((order) => value += order.priceShown.pricePerUnit);
     return value;
   }
 
-  int variantCount(Product item, Variant variant) {
-    int index = orders == null
+  int variantCount(Product item, ProductVariant variant) {
+    int index = order?.items == null
         ? -1
-        : orders.indexWhere((order) => order.product.id == item.id && order.variant.id == variant.id);
-    return index != -1 ? orders[index].quantity : 0;
+        : order.items.indexWhere((order) => order.productId == item.id && order.variantId == variant.id);
+    return index != -1 ? order.items[index].quantity : 0;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'orders': orders?.map((x) => x?.toMap())?.toList(),
-      'place': place?.toMap(),
+      'orders': order.items?.map((x) => x?.toJson())?.toList(),
+      'place': place?.toJson(),
     };
   }
 
@@ -47,11 +48,8 @@ class Cart {
     if (map == null || map['orders'] == null) return null;
 
     return Cart(
-      orders: List<dynamic>.from(map['orders']).map((e) => Order.fromMap(Map<String, dynamic>.from(e))).toList(),
-      place: map['place'] != null ? Place.fromMap(Map<String, dynamic>.from(map['place'])) : null,
-      // place: map['place'] != null
-      //     ? Place.fromMap(Map<String, dynamic>.from(map['place']))
-      //     : Place('00', '00'), // default place
+      order: map['order'] != null ? Order.fromJson(Map<String, dynamic>.from(map['order'])): null,
+      place: map['place'] != null ? Place.fromJson(Map<String, dynamic>.from(map['place'])) : null,
     );
   }
 
@@ -60,5 +58,5 @@ class Cart {
   static Cart fromJson(String source) => fromMap(json.decode(source));
 
   @override
-  String toString() => 'Cart(orders: $orders, place: $place)';
+  String toString() => 'Cart(order: $order, items: ${order?.items}, place: $place)';
 }

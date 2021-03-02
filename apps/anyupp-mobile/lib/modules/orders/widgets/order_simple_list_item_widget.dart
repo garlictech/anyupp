@@ -31,7 +31,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                getLocalizedText(context, orderItem.productName),
+                getLocalizedTextFromMap(context, orderItem.productName),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,
@@ -39,7 +39,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
+                '${getLocalizedTextFromMap(context, orderItem.variantName)} x ${orderItem.quantity}',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,

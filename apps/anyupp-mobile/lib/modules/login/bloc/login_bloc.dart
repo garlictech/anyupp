@@ -65,40 +65,42 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
 
+      // TODO AWS remove
       // --- Handle account linking when logging in
-      if (event is LinkLoginWithProvider) {
-        yield LoginInProgress();
+      // if (event is LinkLoginWithProvider) {
+      //   yield LoginInProgress();
 
-        // Try to login with the new provider
-        ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
+      //   // Try to login with the new provider
+      //   ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
 
-        // Update firebase user if login success
-        await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
+      //   // Update firebase user if login success
+      //   await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
 
-        // Link the account with this existing account
-        await _repository.linkAccountToFirebaseUser(loginResponse.user.email, event.providerCredentials);
+      //   // Link the account with this existing account
+      //   await _repository.linkAccountToFirebaseUser(loginResponse.user.email, event.providerCredentials);
 
-        yield LoginSuccess();
-      }
+      //   yield LoginSuccess();
+      // }
 
+      // TODO AWS remove
       // --- Handle account linking when already logged in
-      if (event is LinkCurrentAccountWithProvider) {
-        // Try to login with the new provider
-        ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
+      // if (event is LinkCurrentAccountWithProvider) {
+      //   // Try to login with the new provider
+      //   ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
 
-        // Link the account with this existing account
-        await _repository.linkCredentialsToFirebaseUser(loginResponse.credential, loginResponse.user);
+      //   // Link the account with this existing account
+      //   await _repository.linkCredentialsToFirebaseUser(loginResponse.credential, loginResponse.user);
 
-        yield AccountLinked(event.providerToBeLinked, true);
-      }
+      //   yield AccountLinked(event.providerToBeLinked, true);
+      // }
 
-      // --- Handle account unlinking when already logged in
-      if (event is UnlinkCurrentAccountFromProvider) {
-        // Unlink the account from base account
-        await _repository.unlinkProviderToFirebaseUser(event.providerToBeUnlinked);
+      // // --- Handle account unlinking when already logged in
+      // if (event is UnlinkCurrentAccountFromProvider) {
+      //   // Unlink the account from base account
+      //   await _repository.unlinkProviderToFirebaseUser(event.providerToBeUnlinked);
 
-        yield AccountLinked(event.providerToBeUnlinked, false);
-      }
+      //   yield AccountLinked(event.providerToBeUnlinked, false);
+      // }
 
       // --- Handle phone login (Require SMS code)
       if (event is LoginWithPhoneRequireSMSCode) {

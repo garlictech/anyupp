@@ -1,8 +1,8 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +151,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, Product item, String
   );
 }
 
-Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<Variant> variants, String currency) {
+Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
   if (variants == null) {
     return Container();
   }

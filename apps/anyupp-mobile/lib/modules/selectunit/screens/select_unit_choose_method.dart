@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/demo-datastore/demo-datastore.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -309,7 +310,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                       ),
                     ),
                     Text(
-                      units[index].address?.address,
+                      units[index].address?.address ?? '',
                       maxLines: 2,
                       style: GoogleFonts.poppins(
                         fontSize: 12.0,

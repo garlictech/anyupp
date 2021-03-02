@@ -1,5 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -16,8 +17,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   Future<String> get email async => (await SharedPreferences.getInstance()).getString('auth_email');
 
   @override
-  Future<bool> isSignInWithEmailLink(String emailLink) {
-    throw UnimplementedError();
+  Future<bool> isSignInWithEmailLink(String emailLink) async {
+    return false;
   }
 
   @override

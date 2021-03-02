@@ -3,7 +3,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/local_notifications_util.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
