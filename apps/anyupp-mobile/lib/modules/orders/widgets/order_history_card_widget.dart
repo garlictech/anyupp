@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -8,7 +9,7 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'order_simple_list_item_widget.dart';
 
 class OrderHistoryCard extends StatelessWidget {
-  final PlacedOrder order;
+  final Order order;
 
   const OrderHistoryCard({Key key, this.order}) : super(key: key);
 
@@ -53,14 +54,13 @@ class OrderHistoryCard extends StatelessWidget {
   }
 
   Widget _buildOrderHeader(BuildContext context) {
-    var statusKeys = order.statusLog.keys.toList()..sort();
-    String status = order.statusLog[statusKeys.last].status;
+    String status = order.statusLog[order.statusLog.length - 1].status;
 
     return ClipRect(
       child: Banner(
         message: trans(context, 'orders.status.$status'),
         location: BannerLocation.topEnd,
-        color: status == OrderStatus.REJECTED ? Colors.red : Colors.green,
+        color: status == 'REJECTED' ? Colors.red : Colors.green,
         textStyle: GoogleFonts.poppins(
           color: Colors.white,
           fontSize: 13.0,
@@ -93,7 +93,7 @@ class OrderHistoryCard extends StatelessWidget {
                   right: 20.0,
                 ),
                 child: Text(
-                  DF_SHORT.format(order.created),
+                  DF_SHORT.format(DateTime.fromMillisecondsSinceEpoch(order.created)),
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: theme.text,
@@ -110,7 +110,7 @@ class OrderHistoryCard extends StatelessWidget {
   List<Widget> _buildOrderItemList(BuildContext context) {
     List<Widget> results = [];
     for (var i = 0; i < order.items.length; i++) {
-      Item orderItem = order.items[i];
+      OrderItem orderItem = order.items[i];
       results.add(
         OrderSimpleListItemWidget(orderItem: orderItem),
       );

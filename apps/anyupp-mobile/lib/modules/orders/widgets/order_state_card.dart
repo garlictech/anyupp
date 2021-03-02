@@ -1,12 +1,12 @@
+import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:fa_prev/shared/locale.dart';
 
-import 'package:fa_prev/modules/orders/orders.dart';
 class OrderStateCard extends StatefulWidget {
   // Contains all your order states
-  final Item orderState;
+  final OrderItem orderState;
 
   // Flag for determining whether this card will be placed left or right
   final bool isLeft;
@@ -121,8 +121,8 @@ class OrderStateCardState extends State<OrderStateCard>
       child: AnimatedSwitcher(
         duration: const Duration(seconds: 1),
         child: Text(
-          "${widget.orderState.statusLog[widget.orderState.statusLog.keys.last]}",
-          key: ValueKey<String>(widget.orderState.statusLog[widget.orderState.statusLog.keys.last].status),
+          "${widget.orderState.statusLog[widget.orderState.statusLog.length - 1]}",
+          key: ValueKey<String>(widget.orderState.statusLog[widget.orderState.statusLog.length - 1].status),
           style: TextStyle(
             fontSize: 16.0 * animationValue,
             color: Colors.black,
@@ -140,8 +140,7 @@ class OrderStateCardState extends State<OrderStateCard>
       left: getMarginLeft(animationValue),
       bottom: getMarginBottom(animationValue),
       child: Text(
-        _dateFormat.format(DateTime.fromMillisecondsSinceEpoch(
-            int.parse(widget.orderState.statusLog.keys.first))),
+        _dateFormat.format(DateTime.fromMillisecondsSinceEpoch(widget.orderState.statusLog[0].ts)),
         style: TextStyle(
           fontSize: 12.0 * animationValue,
           color: Colors.grey,

@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -27,9 +28,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
         builder: (context, state) {
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
-            return StreamBuilder<List<PlacedOrder>>(
+            return StreamBuilder<List<Order>>(
               stream: _orderService.getOrderHistory(unit.chainId, unit.unitId),
-              builder: (context, AsyncSnapshot<List<PlacedOrder>> historySnapshot) {
+              builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
                 if (historySnapshot.hasData) {
                   if (historySnapshot.data.isEmpty) {
                     return _noOrderHistory();
@@ -54,7 +55,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
     );
   }
 
-  Widget _buildList(List<PlacedOrder> list) {
+  Widget _buildList(List<Order> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,

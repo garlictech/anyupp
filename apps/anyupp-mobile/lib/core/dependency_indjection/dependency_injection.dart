@@ -76,8 +76,6 @@ void _initProviders() {
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(() => GraphQLStripePaymentProvider(getIt<GraphQLClient>(), getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
-  getIt.registerLazySingleton<ICartProvider>(
-      () => AwsCartProvider());
 
   // Login providers
   // getIt.registerLazySingleton<ICommonLoginProvider>(() => FirebaseCommonLoginProvider(
@@ -121,7 +119,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<FaceRepository>(() => FaceRepository());
-  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<ICartProvider>()));
+  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
 
   // TODO!!! AZ AMPLIFY DATASTORE DEMO MIATT!!!

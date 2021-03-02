@@ -103,15 +103,15 @@
 //     return products;
 //   }
 
-//   static List<PlacedOrder> snapshotToPlacedOrders(DataSnapshot ds) {
+//   static List<Order> snapshotToPlacedOrders(DataSnapshot ds) {
 //     if (ds.value == null) {
-//       return List<PlacedOrder>();
+//       return List<Order>();
 //     }
 
-//     final List<PlacedOrder> orders = [];
+//     final List<Order> orders = [];
 
 //     Map<String, dynamic>.from(ds.value).forEach((key, value) {
-//       PlacedOrder order = PlacedOrder.fromMap(value);
+//       Order order = Order.fromMap(value);
 //       order.id = key;
 //       orders.add(order);
 //     });

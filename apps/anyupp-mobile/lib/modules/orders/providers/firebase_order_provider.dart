@@ -84,7 +84,7 @@
 //   }
 
 //   @override
-//   Stream<List<PlacedOrder>> getCurrentOrders(String chainId, String unitId) {
+//   Stream<List<Order>> getCurrentOrders(String chainId, String unitId) {
 //     return _authProvider.getAuthenticatedUserProfileStream().switchMap((user) => _dbRef
 //         .child('orders')
 //         .child('chains')
@@ -100,7 +100,7 @@
 //   }
 
 //   @override
-//   Stream<List<PlacedOrder>> getOrderHistory(String chainId, String unitId) {
+//   Stream<List<Order>> getOrderHistory(String chainId, String unitId) {
 //     return _authProvider.getAuthenticatedUserProfileStream().switchMap((user) => _dbRef
 //         .child('orders')
 //         .child('chains')

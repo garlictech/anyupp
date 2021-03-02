@@ -36,9 +36,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
       builder: (context, state) {
         if (state is UnitSelected) {
           final GeoUnit unit = state.unit;
-          return StreamBuilder<List<PlacedOrder>>(
+          return StreamBuilder<List<Order>>(
             stream: _orderRepository.getCurrentOrders(unit.chainId, unit.unitId),
-            builder: (context, AsyncSnapshot<List<PlacedOrder>> orderState) {
+            builder: (context, AsyncSnapshot<List<Order>> orderState) {
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
                 if (orderState.data == null || orderState.data.isEmpty) {
                   return _noOrder();
@@ -65,7 +65,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildList(GeoUnit unit, List<PlacedOrder> list) {
+  Widget _buildList(GeoUnit unit, List<Order> list) {
     int cashOrderCount = 0;
     double cashOrderSum = 0.0;
 
@@ -75,12 +75,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     int waitingForCashPaymentCount = 0;
     double waitingForCashPaymentSum = 0.0;
 
-    List<PlacedOrder> cashOrders = [];
-    List<PlacedOrder> onlineOrders = [];
+    List<Order> cashOrders = [];
+    List<Order> onlineOrders = [];
     list.forEach((order) {
-      var statusKeys = order.statusLog.keys.toList()..sort();
-      String status = order.statusLog[statusKeys.last].status;
-      if (status == OrderStatus.READY) {
+      String status = order.statusLog[order.statusLog.length - 1].status;
+      if (status == 'READY') {
         if (order.paymentMethod == 'CARD' || order.paymentMethod == 'CASH') {
           // --- Payable
           if (order.paymentIntention == null) {
@@ -163,7 +162,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildStripePayButtonWidget(BuildContext context, PlacedOrder order, double sum) {
+  Widget _buildStripePayButtonWidget(BuildContext context, Order order, double sum) {
     return StreamBuilder<User>(
         stream: getIt<AuthRepository>().getAuthenticatedUserProfileStream(),
         builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
@@ -214,7 +213,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
         });
   }
 
-  Widget _buildSimplePayButtonWidget(BuildContext context, PlacedOrder order, double sum) {
+  Widget _buildSimplePayButtonWidget(BuildContext context, Order order, double sum) {
     return BlocListener<SimplePayBloc, SimplePayState>(
       listener: (BuildContext context, SimplePayState state) {
         if (state is SimplePayWebStarted) {
@@ -299,7 +298,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
   }
 
   Widget _buildCallWaiterButtonWidget(
-      BuildContext context, GeoUnit unit, double price, String currency, List<PlacedOrder> orders) {
+      BuildContext context, GeoUnit unit, double price, String currency, List<Order> orders) {
     return SizedBox(
       width: double.infinity,
       height: 50.0,
@@ -337,7 +336,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildOrderList(List<PlacedOrder> list) {
+  Widget _buildOrderList(List<Order> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,

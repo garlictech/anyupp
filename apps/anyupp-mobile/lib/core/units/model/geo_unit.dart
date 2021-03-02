@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/firebase_conversion_utils.dart';
 
-import 'unit_style.dart';
-
 class GeoUnit {
   String chainId;
   String groupId;
   String unitId;
   String name;
-  UnitStyle style;
+  ChainStyle style;
   int distance;
   Address address;
   String openingHours;
@@ -38,7 +36,7 @@ class GeoUnit {
       'groupId': groupId,
       'unitId': unitId,
       'name': name,
-      'style': style,
+      'style': style?.toJson(),
       'distance': distance,
       'address': address?.toJson(),
       'openingHours': openingHours,
@@ -56,7 +54,7 @@ class GeoUnit {
       groupId: map['groupId'],
       unitId: map['unitId'],
       name: map['name'],
-      style: UnitStyle.fromMap(map['style']),
+      style: ChainStyle.fromJson(map['style']),
       distance: getIntFromFirebaseValue(map['distance']),
       address: Address.fromJson(map['address']),
       openingHours: map['openingHours'],

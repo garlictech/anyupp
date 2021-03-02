@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -11,9 +11,9 @@ class NoOrderState extends BaseOrderState {
 }
 
 class CurrentOrderState extends BaseOrderState {
-  final PlacedOrder _order;
+  final Order _order;
 
   const CurrentOrderState(this._order);
 
-  PlacedOrder get order => _order;
+  Order get order => _order;
 }

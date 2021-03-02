@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 
 class OrderSimpleListItemWidget extends StatelessWidget {
-  final Item orderItem;
+  final OrderItem orderItem;
 
   const OrderSimpleListItemWidget({
     Key key,
@@ -31,7 +32,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                getLocalizedTextFromMap(context, orderItem.productName),
+                getLocalizedText(context, orderItem.productName),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,
@@ -39,7 +40,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                '${getLocalizedTextFromMap(context, orderItem.variantName)} x ${orderItem.quantity}',
+                '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,

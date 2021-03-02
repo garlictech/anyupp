@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'dart:async';
 
@@ -25,11 +26,11 @@ class OrderRepository {
     return _provider.clearCart(chainId, unitId);
   }
 
-  Stream<List<PlacedOrder>> getCurrentOrders(String chainId, String unitId) {
+  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) {
     return _provider.getCurrentOrders(chainId, unitId);
   }
 
-  Stream<List<PlacedOrder>> getOrderHistory(String chainId, String unitId) {
+  Stream<List<Order>> getOrderHistory(String chainId, String unitId) {
     return _provider.getOrderHistory(chainId, unitId);
   }
 

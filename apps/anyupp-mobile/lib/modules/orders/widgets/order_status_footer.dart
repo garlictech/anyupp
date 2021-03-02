@@ -1,9 +1,9 @@
+import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 
-import 'package:fa_prev/modules/orders/orders.dart';
 class OrderStatusItem {
   final String text;
   final IconData icon;
@@ -14,7 +14,7 @@ class OrderStatusItem {
 }
 
 class OrderStatusFooter extends StatefulWidget {
-  final PlacedOrder order;
+  final Order order;
 
   const OrderStatusFooter({Key key, this.order}) : super(key: key);
   @override
@@ -51,8 +51,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    var statusKeys = widget.order.statusLog.keys.toList()..sort();
-    String status = widget.order.statusLog[statusKeys.last].status;
+    String status = widget.order.statusLog[widget.order.statusLog.length - 1].status;
     int progressPosition = statusList.indexOf(statusList.firstWhere((element) => element.toUpperCase() == status));
     // print('***** status=$status, progressPosition=$progressPosition');
 

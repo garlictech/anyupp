@@ -6,8 +6,6 @@ import 'package:fa_prev/models.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 
 class AwsUnitProvider implements IUnitProvider {
-
-
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     //  List<Unit> result = await _list<Unit>(Unit.classType);
     List<Unit> units = await Amplify.DataStore.query<Unit>(Unit.classType);
@@ -19,28 +17,57 @@ class AwsUnitProvider implements IUnitProvider {
     List<GeoUnit> results = [];
     for (int i = 0; i < units.length; i++) {
       Unit unit = units[i];
-      Address address; 
-      if (unit.address == null && unit.addressId != null) {
-        address = (await Amplify.DataStore.query<Address>(Address.classType, where: Address.ID.eq(unit.addressId)))[0];
-        print('***** AWS.searchUnitsNearLocation().address=$address');
+      GeoUnit geo = await _loadUnitData(unit);
+      print('***** AWS.searchUnitsNearLocation().geo=$geo');
+      results.add(geo);
+    }
+    return results;
+  }
+
+  Future<GeoUnit> _loadUnitData(Unit unit) async {
+    Address address;
+    if (unit.address == null && unit.addressId != null) {
+      address = await _loadById(Address.classType, Address.ID.eq(unit.addressId));
+      print('***** AWS.searchUnitsNearLocation().address=$address');
+    }
+
+    ChainStyle unitStyle;
+    Chain chain;
+    if (unit.chain == null && unit.chainId != null) {
+      chain = await _loadById(Chain.classType,Chain.ID.eq(unit.chainId));
+      if (chain != null) {
+        ChainStyle style = await _loadById(ChainStyle.classType, ChainStyle.ID.eq(chain.styleId));
+        ChainStyleColors colors = await _loadById(ChainStyleColors.classType, ChainStyleColors.ID.eq(style.colorsId));
+        ChainStyleImages images = await _loadById(ChainStyleImages.classType, ChainStyleImages.ID.eq(style.imagesId));
+
+        unitStyle = ChainStyle(
+          colors: colors,
+          images: images
+        );
       }
-      GeoUnit geo = GeoUnit(
+    }
+
+    return GeoUnit(
         name: unit.name,
         chainId: unit.chainId,
         groupId: unit.groupId,
         unitId: unit.id,
         paymentModes: unit.paymentModes == null ? null : unit.paymentModes.map((mode) => mode.method).toList(),
         distance: 100,
-        address: address
-      );
-
-      results.add(geo);
-    }
-     return results;
+        address: address,
+        style: unitStyle,
+        openingHours: unit.openingHours?.toString(),
+        currency: "HUF" // TODO AWS!
+        );
   }
 
   Future<List<Unit>> listUnits() async {
     return _list<Unit>(Unit.classType);
+  }
+
+  Future<T> _loadById<T extends Model>(ModelType<T> type, QueryPredicate where) async {
+    T data = (await Amplify.DataStore.query<T>(type, where: where))[0];
+    return data;
   }
 
   Future<List<T>> _list<T extends Model>(ModelType<T> type) async {

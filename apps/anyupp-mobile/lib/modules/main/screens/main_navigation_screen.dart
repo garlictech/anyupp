@@ -1,6 +1,7 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -210,9 +211,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
       if (state is UnitSelected) {
         final GeoUnit unit = state.unit;
-        return StreamBuilder<List<PlacedOrder>>(
+        return StreamBuilder<List<Order>>(
             stream: getIt<OrderRepository>().getCurrentOrders(unit.chainId, unit.unitId),
-            builder: (context, AsyncSnapshot<List<PlacedOrder>> orderState) {
+            builder: (context, AsyncSnapshot<List<Order>> orderState) {
               int orderCount = orderState?.data?.length ?? 0;
               return _createBottomBarIconWithText(
                   2, Icons.receipt, 'main.bottomTitles.orders', orderCount > 0 ? orderCount.toString() : null);

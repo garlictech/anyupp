@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -10,7 +11,7 @@ import 'order_state_card.dart';
 // Responsible for the whole graph that appears in the order tracking system
 class CartDetailsGraph extends StatefulWidget {
   // Contains all your order states
-  final List<Item> orderStates;
+  final List<OrderItem> orderStates;
   final double height;
 
   // IntrinsicHeight so that our view will fill as much space as it can and we will be able to render it in ScrollView
@@ -83,7 +84,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   }
 
   // Responsible for building the order state cards
-  Widget _buildStateCard(Item state) {
+  Widget _buildStateCard(OrderItem state) {
     int index = widget.orderStates.indexOf(state);
     double topMargin = _dotPositions[index].value - 0.5 * (OrderStateCard.height - AnimatedDot.size);
     bool isLeft = index.isOdd;
@@ -111,9 +112,9 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   }
 
   // Determining the color of dots depending on the state of each phase
-  Widget _mapOrderStateToDot(Item state) {
+  Widget _mapOrderStateToDot(OrderItem state) {
     int index = widget.orderStates.indexOf(state);
-    bool isDoneOrNot = (state.statusLog[state.statusLog.keys.first].status.toLowerCase() == "Ok".toLowerCase());
+    bool isDoneOrNot = (state.statusLog[state.statusLog.length - 1].status.toLowerCase() == "Ok".toLowerCase());
     Color color = isDoneOrNot ? Colors.green : Colors.red;
 
     return AnimatedDot(

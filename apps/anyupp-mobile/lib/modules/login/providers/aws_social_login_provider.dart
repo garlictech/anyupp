@@ -17,9 +17,10 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   Future<bool> get appleSignInAvailable => Future.value(false);
 
   @override
-  Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) {
+  Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) async {
     print('***** AwsSocialLoginProvider.fetchSignInMethodsForEmail()=$email');
-    throw UnimplementedError();
+    // TODO AWS
+    return [];
   }
 
   @override

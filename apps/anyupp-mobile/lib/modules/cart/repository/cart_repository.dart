@@ -3,15 +3,16 @@ import 'dart:async';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 
 class CartRepository {
-  final ICartProvider _cartProvider;
+  final IOrdersProvider _ordersProvider;
 
-  CartRepository(this._cartProvider);
+  CartRepository(this._ordersProvider);
 
   Future<Cart> addProductToCart(User user, GeoUnit unit, Product product, ProductVariant variant) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.chainId, unit.unitId);
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.unitId);
     if (_cart == null || _cart.order == null || _cart.order.items == null) {
       _cart = Cart(
           order: Order(
@@ -39,12 +40,12 @@ class CartRepository {
       _cart.order.items.add(order);
     }
 
-    await _cartProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    await _ordersProvider.updateCart(unit.chainId, unit.unitId, _cart);
     return _cart;
   }
 
   Future<Cart> removeProductFromCart(String chainId, String unitId, Product product, ProductVariant variant) async {
-    Cart _cart = await _cartProvider.getCurrentCart(chainId, unitId);
+    Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       return null;
     }
@@ -60,45 +61,45 @@ class CartRepository {
       }
     }
 
-    await _cartProvider.updateCart(chainId, unitId, _cart);
+    await _ordersProvider.updateCart(chainId, unitId, _cart);
     return _cart;
   }
 
   Future<Cart> removeOrderFromCart(String chainId, String unitId, OrderItem order) async {
-    Cart _cart = await _cartProvider.getCurrentCart(chainId, unitId);
+    Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       return null;
     }
 
     _cart.order.items.removeWhere((o) => o.id == order.id);
-    await _cartProvider.updateCart(chainId, unitId, _cart);
+    await _ordersProvider.updateCart(chainId, unitId, _cart);
     return _cart;
   }
 
   Future<Cart> updatePlaceInCart(GeoUnit unit) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.chainId, unit.unitId);
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.unitId);
     if (_cart == null || _cart.order == null || _cart.order.items == null) {
       return null;
     }
     _cart.place = unit.place;
-    await _cartProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    await _ordersProvider.updateCart(unit.chainId, unit.unitId, _cart);
     return _cart;
   }
 
   Future<Cart> getCurrentCart(String chainId, String unitId) {
-    return _cartProvider.getCurrentCart(chainId, unitId);
+    return _ordersProvider.getCurrentCart(chainId, unitId);
   }
 
   Stream<Cart> getCurrentCartStream(String chainId, String unitId) {
-    return _cartProvider.getCurrentCartStream(chainId, unitId);
+    return _ordersProvider.getCurrentCartStream(chainId, unitId);
   }
 
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    await _cartProvider.createAndSendOrderFromCart(unit, paymentMethod);
+    await _ordersProvider.createAndSendOrderFromCart(unit, paymentMethod);
   }
 
   Future<Cart> clearCart(User user, GeoUnit unit) async {
-    await _cartProvider.clearCart(unit.chainId, unit.unitId);
+    await _ordersProvider.clearCart(unit.chainId, unit.unitId);
     return Cart(
         order: Order(
           unitId: unit.unitId,
@@ -112,7 +113,7 @@ class CartRepository {
     Cart cart = await getCurrentCart(unit.chainId, unit.unitId);
     if (cart != null) {
       cart.place = null;
-      await _cartProvider.updateCart(unit.chainId, unit.unitId, cart);
+      await _ordersProvider.updateCart(unit.chainId, unit.unitId, cart);
     }
     return cart;
   }
