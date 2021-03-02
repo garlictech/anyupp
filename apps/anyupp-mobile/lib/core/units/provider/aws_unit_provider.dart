@@ -9,31 +9,34 @@ class AwsUnitProvider implements IUnitProvider {
 
 
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
-     List<Unit> result = await _list<Unit>(Unit.classType);
-     
-    return result == null ? null : result.map((unit) {
-      return GeoUnit(
+    //  List<Unit> result = await _list<Unit>(Unit.classType);
+    List<Unit> units = await Amplify.DataStore.query<Unit>(Unit.classType);
+    print('***** AWS.searchUnitsNearLocation()=$units');
+    if (units == null || units.isEmpty) {
+      return [];
+    }
+
+    List<GeoUnit> results = [];
+    for (int i = 0; i < units.length; i++) {
+      Unit unit = units[i];
+      Address address; 
+      if (unit.address == null && unit.addressId != null) {
+        address = (await Amplify.DataStore.query<Address>(Address.classType, where: Address.ID.eq(unit.addressId)))[0];
+        print('***** AWS.searchUnitsNearLocation().address=$address');
+      }
+      GeoUnit geo = GeoUnit(
         name: unit.name,
         chainId: unit.chainId,
         groupId: unit.groupId,
         unitId: unit.id,
         paymentModes: unit.paymentModes == null ? null : unit.paymentModes.map((mode) => mode.method).toList(),
         distance: 100,
-        address: unit.group?.address != null ? Address(
-          address: unit.group.address.address,
-          city: unit.group.address.city,
-          country: unit.group.address.country,
-          id: unit.group.address.id,
-          location: unit.group.address.location != null ? Location(
-            id: unit.group.address.location.id,
-            lat: unit.group.address.location.lat,
-            lng: unit.group.address.location.lng,
-          ) : null,
-          postalCode: unit.group.address.postalCode,
-          title: unit.group.address.title
-        ) : null,
+        address: address
       );
-    }).toList();
+
+      results.add(geo);
+    }
+     return results;
   }
 
   Future<List<Unit>> listUnits() async {

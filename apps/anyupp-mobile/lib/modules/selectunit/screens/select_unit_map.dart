@@ -288,7 +288,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    unit.openingHours,
+                    unit.openingHours ?? '',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),

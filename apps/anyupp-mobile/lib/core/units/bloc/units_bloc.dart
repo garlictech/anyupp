@@ -14,7 +14,7 @@ part 'units_state.dart';
 String geoFirePathToReference = "generated/unitsGeo";
 
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
-  final FirebaseUnitRepository _unitRepository;
+  final UnitRepository _unitRepository;
   final LocationRepository _locationService;
 
   UnitsBloc(this._unitRepository, this._locationService) : super(UnitsInitial());

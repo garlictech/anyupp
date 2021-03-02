@@ -111,7 +111,7 @@ void _initRepositories() {
       ));
   getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<IProductProvider>()));
   getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
-  getIt.registerLazySingleton<FirebaseUnitRepository>(() => FirebaseUnitRepository(getIt<IUnitProvider>()));
+  getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
 
@@ -134,7 +134,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AuthBloc(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ExceptionBloc());
   getIt.registerLazySingleton(() => UnitSelectBloc());
-  getIt.registerLazySingleton(() => UnitsBloc(getIt<FirebaseUnitRepository>(), getIt<LocationRepository>()));
+  getIt.registerLazySingleton(() => UnitsBloc(getIt<UnitRepository>(), getIt<LocationRepository>()));
   getIt.registerLazySingleton(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));
   getIt.registerLazySingleton(() => LocaleBloc());

@@ -119,6 +119,26 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
             child: IconButton(
+              icon: Icon(Icons.refresh_outlined,
+                color: Colors.black,
+                size: 22.0,
+              ),
+              onPressed: () {
+                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+              },
+            ),
+          ),
+          Container(
+            width: 46.0,
+            height: 46.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 1.5,
+                color: Color(0x33857C18),
+              ),
+            ),
+            child: IconButton(
               icon: SvgPicture.asset(
                 'assets/icons/login.svg',
                 color: Colors.black,
