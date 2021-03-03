@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AmplifyService } from '@bgap/admin/shared/data-access/data';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
@@ -18,13 +18,13 @@ export class AdminUserFormComponent
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
   private _formService: FormsService;
-  private _amplifyService: AmplifyService;
+  private _amplifyDataService: AmplifyDataService;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
     this._formService = this._injector.get(FormsService);
-    this._amplifyService = this._injector.get(AmplifyService);
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
   get userImage(): string {
@@ -54,7 +54,7 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          this._amplifyService.update(
+          this._amplifyDataService.update(
             AdminUser,
             this.adminUser?.id || '',
             (updated: any) => {
@@ -78,7 +78,7 @@ export class AdminUserFormComponent
         }
       } else {
         try {
-          this._amplifyService.create(AdminUser, {
+          this._amplifyDataService.create(AdminUser, {
             ...(<any>cleanObject(this.dialogForm?.value)),
             roles: {
               role: EAdminRole.INACTIVE,

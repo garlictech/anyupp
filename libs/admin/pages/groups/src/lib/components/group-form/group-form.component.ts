@@ -42,7 +42,7 @@ export class GroupFormComponent
 
         this.chainOptions = this.chains.map(
           (chain): IKeyValue => ({
-            key: chain._id,
+            key: chain.id,
             value: chain.name,
           }),
         );
@@ -92,9 +92,9 @@ export class GroupFormComponent
 
   public submit(): void {
     if (this.dialogForm?.valid) {
-      if (_get(this.group, '_id')) {
+      if (_get(this.group, 'id')) {
         this._dataService
-          .updateGroup(this.group._id, this.dialogForm?.value)
+          .updateGroup(this.group.id, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(

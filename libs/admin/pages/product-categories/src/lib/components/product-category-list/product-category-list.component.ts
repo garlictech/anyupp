@@ -43,9 +43,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories;
-        this._sortedProductCategoryIds = this.productCategories.map(
-          (p): string => p._id,
-        );
+        this._sortedProductCategoryIds = this.productCategories.map(p => p.id);
       });
 
     this._store

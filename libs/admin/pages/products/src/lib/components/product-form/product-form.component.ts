@@ -83,7 +83,7 @@ export class ProductFormComponent
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories.map(
           (productCategory): IKeyValue => ({
-            key: productCategory._id,
+            key: productCategory.id,
             value: productCategory.name,
           }),
         );
@@ -161,14 +161,14 @@ export class ProductFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._id || ''] = _omit(variant, '_id');
+        value.variants[variant.id || ''] = _omit(variant, 'id');
       });
 
       delete value._variantArr;
 
-      if (_get(this.product, '_id')) {
+      if (_get(this.product, 'id')) {
         this._dataService
-          .updateChainProduct(this._selectedChainId, this.product._id, value)
+          .updateChainProduct(this._selectedChainId, this.product.id, value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -204,11 +204,11 @@ export class ProductFormComponent
     this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.product, '_id')) {
+    if (_get(this.product, 'id')) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedGroupId,
-          this.product._id,
+          this.product.id,
           imagePath,
         )
         .then((): void => {
@@ -235,11 +235,11 @@ export class ProductFormComponent
     }
 
     // Update existing user's image
-    if (_get(this.product, '_id')) {
+    if (_get(this.product, 'id')) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedGroupId,
-          this.product._id,
+          this.product.id,
           null,
         )
         .then((): void => {

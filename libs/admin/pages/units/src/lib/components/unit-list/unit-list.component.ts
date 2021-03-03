@@ -46,7 +46,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
       this.units = _cloneDeep(units);
 
       this.units.map((unit): void => {
-        unit._group = groups.find((r): boolean => r._id === unit.groupId);
+        unit._group = groups.find((g): boolean => g.id === unit.groupId);
       });
     });
   }

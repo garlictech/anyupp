@@ -26,8 +26,8 @@ export const initialState: IUnitsState = unitsAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(UnitsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(UnitsActions.loadUnitsSuccess, (state, { units }) =>
-    unitsAdapter.setAll(units, { ...state, loaded: true }),
+  on(UnitsActions.upsertUnit, (state, { unit }) =>
+    unitsAdapter.upsertOne(unit, state),
   ),
   on(UnitsActions.resetUnits, state => unitsAdapter.removeAll(state)),
 );

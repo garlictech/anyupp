@@ -75,9 +75,9 @@ export class ChainFormComponent
 
   public submit(): void {
     if (this.dialogForm?.valid) {
-      if (_get(this.chain, '_id')) {
+      if (_get(this.chain, 'id')) {
         this._dataService
-          .updateChain(this.chain._id, this.dialogForm?.value)
+          .updateChain(this.chain.id, this.dialogForm?.value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -115,9 +115,9 @@ export class ChainFormComponent
     )).setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.chain, '_id')) {
+    if (_get(this.chain, 'id')) {
       this._dataService
-        .updateChainImagePath(this.chain._id, key, imagePath)
+        .updateChainImagePath(this.chain.id, key, imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -144,9 +144,9 @@ export class ChainFormComponent
     }
 
     // Update existing user's image
-    if (_get(this.chain, '_id')) {
+    if (_get(this.chain, 'id')) {
       this._dataService
-        .updateChainImagePath(this.chain._id, key, null)
+        .updateChainImagePath(this.chain.id, key, null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,

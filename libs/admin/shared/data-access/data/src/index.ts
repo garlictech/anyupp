@@ -1,5 +1,5 @@
 import { DataService } from './lib/services/data/data.service';
 import { OrderService } from './lib/services/order/order.service';
-import { AmplifyService } from './lib/services/amplify/amplify.service';
+import { AmplifyDataService } from './lib/services/amplify-data/amplify-data.service';
 
-export { DataService, OrderService, AmplifyService };
+export { DataService, OrderService, AmplifyDataService };

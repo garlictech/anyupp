@@ -11,7 +11,7 @@ export interface IUnitSeat {
 }
 
 export interface ILane {
-  _id?: string;
+  id?: string;
   _laneId?: string;
   name: string;
   color: string;
@@ -28,7 +28,7 @@ export interface ILanesObject {
 }
 
 export interface IUnit extends IContact {
-  _id: string;
+  id: string;
   _group?: IGroup;
   groupId: string;
   isActive?: boolean;

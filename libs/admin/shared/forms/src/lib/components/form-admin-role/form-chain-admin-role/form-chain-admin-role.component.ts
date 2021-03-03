@@ -41,9 +41,9 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
         this.assignedChains = [];
 
         chains.forEach((chain: IChain): void => {
-          if (!entities.map((e): string => e.chainId).includes(chain._id)) {
+          if (!entities.map((e): string => e.chainId).includes(chain.id)) {
             this.chainOptions.push({
-              key: chain._id,
+              key: chain.id,
               value: chain.name,
             });
           } else {

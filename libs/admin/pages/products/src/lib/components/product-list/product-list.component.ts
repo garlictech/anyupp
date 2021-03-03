@@ -90,7 +90,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
         this._sortedChainProductIds = this.chainProducts.map(
-          (p): string => p._id,
+          (p): string => p.id,
         );
       });
 
@@ -105,7 +105,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map(
-          (p): string => p._id,
+          (p): string => p.id,
         );
       });
 

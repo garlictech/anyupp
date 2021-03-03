@@ -32,14 +32,14 @@ export class ProductCategoryListItemComponent {
   public moveUp(): void {
     this.positionChange.emit({
       change: -1,
-      productCategoryId: this.productCategory._id,
+      productCategoryId: this.productCategory.id,
     });
   }
 
   public moveDown(): void {
     this.positionChange.emit({
       change: 1,
-      productCategoryId: this.productCategory._id,
+      productCategoryId: this.productCategory.id,
     });
   }
 }

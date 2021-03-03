@@ -89,7 +89,7 @@ export class OrderProductListComponent {
               return (
                 this.generatedUnitProducts.filter(
                   (p: IGeneratedProduct): boolean =>
-                    p.productCategoryId === category._id,
+                    p.productCategoryId === category.id,
                 ).length > 0
               );
             },
@@ -97,7 +97,7 @@ export class OrderProductListComponent {
 
           this.selectedProductCategoryId = _get(
             this.productCategories,
-            '[0]._id',
+            '[0].id',
             undefined,
           );
         },
@@ -114,7 +114,7 @@ export class OrderProductListComponent {
   ): void {
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
-        orderItem.productId === product._id &&
+        orderItem.productId === product.id &&
         orderItem.variantId === variantId &&
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
     );
@@ -133,7 +133,7 @@ export class OrderProductListComponent {
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          (<IOrder>this.selectedOrder)._id,
+          (<IOrder>this.selectedOrder).id,
           EOrderStatus.PLACED,
           <number>existingVariantOrderIdx,
         );

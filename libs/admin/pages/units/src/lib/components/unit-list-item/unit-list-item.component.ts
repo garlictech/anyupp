@@ -40,7 +40,7 @@ export class UnitListItemComponent {
 
   public regenerateData(): void {
     this.workingGenerateStatus = true;
-    this._dataService.regenerateUnitData(this.unit._id).then((): void => {
+    this._dataService.regenerateUnitData(this.unit.id).then((): void => {
       this.workingGenerateStatus = false;
     });
   }

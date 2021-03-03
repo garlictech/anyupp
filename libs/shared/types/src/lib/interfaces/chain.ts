@@ -20,7 +20,7 @@ export interface IChainStyle {
 }
 
 export interface IChain extends IContact {
-  _id: string;
+  id: string;
   name: string;
   description: ILocalizedItem<string>;
   style: IChainStyle;

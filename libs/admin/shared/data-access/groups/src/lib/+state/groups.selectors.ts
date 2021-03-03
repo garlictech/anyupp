@@ -50,7 +50,7 @@ export const getSelected = createSelector(
 
 export const getGroupById = (id: string) => {
   return createSelector(getAllGroups, (groups: IGroup[]): IGroup | undefined =>
-    groups.find((group): boolean => group._id === id),
+    groups.find((group): boolean => group.id === id),
   );
 };
 
@@ -78,6 +78,6 @@ export const getSeletedGroup = createSelector(
     groups: IGroup[],
   ): IGroup | undefined =>
     groups.find(
-      (group): boolean => group._id === _get(userSettings, 'selectedGroupId'),
+      (group): boolean => group.id === _get(userSettings, 'selectedGroupId'),
     ),
 );

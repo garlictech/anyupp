@@ -4,7 +4,7 @@ import { DataStore } from '@aws-amplify/datastore';
 @Injectable({
   providedIn: 'root',
 })
-export class AmplifyService {
+export class AmplifyDataService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async snapshotChanges<T>(
     model: any,

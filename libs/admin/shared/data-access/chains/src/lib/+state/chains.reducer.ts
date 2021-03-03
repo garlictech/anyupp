@@ -16,7 +16,9 @@ export interface IChainsPartialState {
   readonly [CHAINS_FEATURE_KEY]: IChainsState;
 }
 
-export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<IChain>();
+export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<
+  IChain
+>();
 
 export const initialState: IChainsState = chainsAdapter.getInitialState({
   // set initial required properties
@@ -26,8 +28,8 @@ export const initialState: IChainsState = chainsAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(ChainsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(ChainsActions.loadChainsSuccess, (state, { chains }) =>
-    chainsAdapter.setAll(chains, { ...state, loaded: true }),
+  on(ChainsActions.upsertChain, (state, { chain }) =>
+    chainsAdapter.upsertOne(chain, state),
   ),
   on(ChainsActions.resetChains, state => chainsAdapter.removeAll(state)),
 );

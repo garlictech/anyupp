@@ -16,7 +16,9 @@ export interface IAdminUsersPartialState {
   readonly [ADMIN_USERS_FEATURE_KEY]: IAdminUsersState;
 }
 
-export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<IAdminUser>();
+export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
+  IAdminUser
+>();
 
 export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(
   {
@@ -33,13 +35,8 @@ const reducer = createReducer(
     error: null,
   })),
   on(AdminUsersActions.upsertAdminUser, (state, { adminUser }) =>
-  adminUsersAdapter.upsertOne(adminUser, state),
+    adminUsersAdapter.upsertOne(adminUser, state),
   ),
-  /*
-  on(AdminUsersActions.loadAdminUsersSuccess, (state, { adminUsers }) =>
-    adminUsersAdapter.setAll(adminUsers, { ...state, loaded: true }),
-  ),
-  */
   on(AdminUsersActions.resetAdminUsers, state =>
     adminUsersAdapter.removeAll(state),
   ),

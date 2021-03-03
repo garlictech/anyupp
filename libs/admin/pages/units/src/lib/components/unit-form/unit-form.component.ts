@@ -62,7 +62,7 @@ export class UnitFormComponent
 
         this.groupOptions = this.groups.map(
           (group: IGroup): IKeyValue => ({
-            key: group._id,
+            key: group.id,
             value: group.name,
           }),
         );
@@ -190,8 +190,8 @@ export class UnitFormComponent
 
       delete value._lanesArr;
 
-      if (_get(this.unit, '_id')) {
-        this._dataService.updateUnit(this.unit._id, value).then(
+      if (_get(this.unit, 'id')) {
+        this._dataService.updateUnit(this.unit.id, value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,

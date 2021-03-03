@@ -4,7 +4,7 @@ import { cleanObject } from 'libs/shared/utils/src';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { AmplifyService } from '@bgap/admin/shared/data-access/data';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { IAdminUser } from '@bgap/shared/types';
 
@@ -17,12 +17,12 @@ export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public adminUser!: IAdminUser;
-  private _amplifyService: AmplifyService;
+  private _amplifyDataService: AmplifyDataService;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
-    this._amplifyService = this._injector.get(AmplifyService);
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
   get userImage(): string | undefined {
@@ -43,7 +43,7 @@ export class AdminUserRoleFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       try {
-        this._amplifyService.update(
+        this._amplifyDataService.update(
           AdminUser,
           this.adminUser?.id || '',
           (updated: any) => {

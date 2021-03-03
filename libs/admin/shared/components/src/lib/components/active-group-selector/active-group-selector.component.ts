@@ -45,7 +45,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
 
   public onGroupSelected(groupId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
+      _get(this._adminUser, 'id') &&
       groupId !== _get(this._adminUser, 'settings.selectedGroupId')
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser.id || '', {

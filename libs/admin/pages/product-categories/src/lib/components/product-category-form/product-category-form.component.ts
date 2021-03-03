@@ -65,11 +65,11 @@ export class ProductCategoryFormComponent
 
   public submit(): void {
     if (this.dialogForm?.valid) {
-      if (_get(this.productCategory, '_id')) {
+      if (_get(this.productCategory, 'id')) {
         this._dataService
           .updateProductCategory(
             this._selectedChainId || '',
-            this.productCategory._id,
+            this.productCategory.id,
             this.dialogForm?.value,
           )
           .then(
@@ -112,11 +112,11 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.productCategory, '_id')) {
+    if (_get(this.productCategory, 'id')) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
-          this.productCategory._id,
+          this.productCategory.id,
           imagePath,
         )
         .then((): void => {
@@ -143,11 +143,11 @@ export class ProductCategoryFormComponent
     }
 
     // Update existing user's image
-    if (_get(this.productCategory, '_id')) {
+    if (_get(this.productCategory, 'id')) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
-          this.productCategory._id,
+          this.productCategory.id,
           null,
         )
         .then((): void => {

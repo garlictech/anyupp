@@ -2,7 +2,7 @@ import { IContact } from './contact';
 import { ILocalizedItem } from './localized-item';
 
 export interface IGroup extends IContact {
-  _id: string;
+  id: string;
   chainId: string;
   name: string;
   description: ILocalizedItem<string>;

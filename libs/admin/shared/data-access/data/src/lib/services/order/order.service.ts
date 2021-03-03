@@ -58,7 +58,7 @@ export class OrderService {
         .updateOrderItemQuantityAndPrice(
           this._adminUser?.settings?.selectedChainId || '',
           this._adminUser?.settings?.selectedUnitId || '',
-          order._id,
+          order.id,
           idx,
           order.items[idx],
         )
@@ -66,7 +66,7 @@ export class OrderService {
           if (
             currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED
           ) {
-            this.updateOrderItemStatus(order._id, EOrderStatus.PLACED, idx);
+            this.updateOrderItemStatus(order.id, EOrderStatus.PLACED, idx);
           }
         });
     }
@@ -83,7 +83,7 @@ export class OrderService {
     this._dataService.addOrderItem(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
-      order._id,
+      order.id,
       order.items.length,
       {
         created: now,
@@ -95,7 +95,7 @@ export class OrderService {
           taxSum:
             ((product.variants[variantId].price || 0) / (100 + tax)) * tax,
         },
-        productId: product._id,
+        productId: product.id,
         productName: product.name,
         quantity: 1,
         statusLog: {
@@ -114,7 +114,7 @@ export class OrderService {
     return this._dataService.insertOrderStatus(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
-      order._id,
+      order.id,
       status,
     );
   }

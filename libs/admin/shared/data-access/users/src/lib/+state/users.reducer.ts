@@ -26,9 +26,9 @@ export const initialState: IUsersState = usersAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(UsersActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(UsersActions.loadUsersSuccess, (state, { users }) =>
-    usersAdapter.setAll(users, { ...state, loaded: true }),
-  ),
+  on(UsersActions.upsertUser, (state, { user }) =>
+  usersAdapter.upsertOne(user, state),
+),
   on(UsersActions.resetUsers, state => usersAdapter.removeAll(state)),
 );
 

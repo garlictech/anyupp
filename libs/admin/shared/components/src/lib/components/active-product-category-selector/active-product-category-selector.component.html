@@ -13,7 +13,7 @@
 >
   <nb-option
     *ngFor="let option of productCategories$ | async"
-    [value]="option._id"
+    [value]="option.id"
     >{{ option.name | localize }}</nb-option
   >
 </nb-select>

@@ -3052,6 +3052,144 @@ export type OnAdminUserChangeSubscription = {
   } | null,
 };
 
+export type OnChainChangeSubscription = {
+  onChainChange?:  {
+    __typename: "Chain",
+    id: string,
+    name?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    isActive?: boolean | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnGroupChangeSubscription = {
+  onGroupChange?:  {
+    __typename: "Group",
+    id: string,
+    chainId: string,
+    name?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    currency?: string | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUnitChangeSubscription = {
+  onUnitChange?:  {
+    __typename: "Unit",
+    id: string,
+    groupId: string,
+    isActive?: boolean | null,
+    isAcceptingOrders?: boolean | null,
+    name?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    paymentModes?:  Array< {
+      __typename: "PaymentMode",
+      name: string,
+      caption?: string | null,
+      method: string,
+    } | null > | null,
+    floorMap?:  {
+      __typename: "FloorMapData",
+      w?: number | null,
+      h?: number | null,
+    } | null,
+    lanes?:  Array< {
+      __typename: "Lane",
+      id?: string | null,
+      name?: string | null,
+      color?: string | null,
+    } | null > | null,
+    open?:  {
+      __typename: "DailySchedule",
+      from?: string | null,
+      to?: string | null,
+    } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUserChangeSubscription = {
+  onUserChange?:  {
+    __typename: "User",
+    id: string,
+    name?: string | null,
+    email?: string | null,
+    phone?: string | null,
+    profileImage?: string | null,
+    login?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnProductCategoryChangeSubscription = {
+  onProductCategoryChange?:  {
+    __typename: "ProductCategory",
+    id: string,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    image?: string | null,
+    name?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    position?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateAdminUserSubscription = {
   onCreateAdminUser?:  {
     __typename: "AdminUser",

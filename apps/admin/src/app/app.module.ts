@@ -144,45 +144,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   providers: [
     AmplifyService,
     { provide: REGION, useValue: 'europe-west3' },
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink): ApolloClientOptions<unknown> {
-        // Create an http link:
-        const http = httpLink.create({
-          uri: environment.gql.http,
-        });
 
-        // Create a WebSocket link:
-        const ws = new WebSocketLink({
-          uri: environment.gql.ws,
-          options: {
-            reconnect: true,
-          },
-        });
-
-        // using the ability to split links, you can send data to each link
-        // depending on what kind of operation is being sent
-        const link = split(
-          // split based on operation type
-          ({ query }) => {
-            const { kind, operation } = getMainDefinition(
-              query,
-            ) as OperationDefinitionNode;
-            return (
-              kind === 'OperationDefinition' && operation === 'subscription'
-            );
-          },
-          ws,
-          http,
-        );
-
-        return {
-          link,
-          cache: new InMemoryCache(),
-        };
-      },
-      deps: [HttpLink],
-    },
   ],
   bootstrap: [AppComponent],
 })

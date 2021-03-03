@@ -70,12 +70,12 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
 
   public selectOrder(order: IOrder): void {
     const selectedOrder = this.dailyOrders.find(
-      (o): boolean => o._id === order?._id,
+      (o): boolean => o.id === order?.id,
     );
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({
-        orderId: selectedOrder ? selectedOrder._id : undefined,
+        orderId: selectedOrder ? selectedOrder.id : undefined,
       }),
     );
   }

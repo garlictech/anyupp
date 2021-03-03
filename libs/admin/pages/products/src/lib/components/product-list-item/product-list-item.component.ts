@@ -126,14 +126,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public moveUp(): void {
     this.positionChange.emit({
       change: -1,
-      productId: this.product._id,
+      productId: this.product.id,
     });
   }
 
   public moveDown(): void {
     this.positionChange.emit({
       change: 1,
-      productId: this.product._id,
+      productId: this.product.id,
     });
   }
 }

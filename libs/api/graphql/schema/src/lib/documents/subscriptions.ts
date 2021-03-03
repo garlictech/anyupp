@@ -29,6 +29,134 @@ export const onAdminUserChange = /* GraphQL */ `
     }
   }
 `;
+export const onChainChange = /* GraphQL */ `
+  subscription OnChainChange {
+    onChainChange {
+      id
+      name
+      description {
+        en
+        de
+        hu
+      }
+      isActive
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onGroupChange = /* GraphQL */ `
+  subscription OnGroupChange {
+    onGroupChange {
+      id
+      chainId
+      name
+      description {
+        en
+        de
+        hu
+      }
+      currency
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+      }
+      email
+      phone
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUnitChange = /* GraphQL */ `
+  subscription OnUnitChange {
+    onUnitChange {
+      id
+      groupId
+      isActive
+      isAcceptingOrders
+      name
+      description {
+        en
+        de
+        hu
+      }
+      paymentModes {
+        name
+        caption
+        method
+      }
+      floorMap {
+        w
+        h
+      }
+      lanes {
+        id
+        name
+        color
+      }
+      open {
+        from
+        to
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUserChange = /* GraphQL */ `
+  subscription OnUserChange {
+    onUserChange {
+      id
+      name
+      email
+      phone
+      profileImage
+      login
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onProductCategoryChange = /* GraphQL */ `
+  subscription OnProductCategoryChange {
+    onProductCategoryChange {
+      id
+      description {
+        en
+        de
+        hu
+      }
+      image
+      name {
+        en
+        de
+        hu
+      }
+      position
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateAdminUser = /* GraphQL */ `
   subscription OnCreateAdminUser {
     onCreateAdminUser {

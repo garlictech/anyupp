@@ -1,7 +1,7 @@
-import { intersection as _intersection } from 'lodash-es';
+import { get as _get } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
-import { DataStore } from '@aws-amplify/datastore';
+
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
@@ -9,38 +9,23 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-
+import { AdminUser, Chain, Group, Unit, User } from '@bgap/api/graphql/schema';
 import {
-  EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserRole,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IUnit,
-  IUser,
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder,
+  IProduct, IProductCategory, IUnit, IUser
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AmplifyService } from '../amplify/amplify.service';
-import { AdminUser } from 'libs/api/graphql/schema/src';
 import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
+import { AmplifyDataService } from '../amplify-data/amplify-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -55,12 +40,12 @@ export class DataService {
     private _store: Store<any>,
     private _angularFireDatabase: AngularFireDatabase,
     private _angularFireFunctions: AngularFireFunctions,
-    private _amplifyService: AmplifyService,
+    private _amplifyDataService: AmplifyDataService,
     private _translateService: TranslateService,
   ) {}
 
   public async initDataConnections(userId: string): Promise<void> {
-    this._amplifyService.snapshotChanges<IAdminUser>(
+    this._amplifyDataService.snapshotChanges<IAdminUser>(
       AdminUser,
       userId,
       (loggedUser: IAdminUser) => {
@@ -119,70 +104,21 @@ export class DataService {
       .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
         this._rolesChanged$.next(true);
 
-        // TODO empty chain/group/unit update based on the first role
-
         switch (adminUserRoles?.role) {
           case EAdminRole.SUPERUSER:
-            this._subscribeToChainsByRole('*');
-            this._subscribeToGroupsByRole('', '*');
-            this._subscribeToUnitsByRole('', '*');
-            this._subscribeToUsers();
-            this._subscribeToAdminUsers(adminUserRoles);
+            this._createSuperuserSubscriptions(adminUserRoles);
             break;
           case EAdminRole.CHAIN_ADMIN:
-            this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToGroupsByRole(
-              'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToUnitsByRole(
-              'chainId',
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToAdminUsers(adminUserRoles);
+            this._createChainAdminSubscriptions(adminUserRoles);
             break;
           case EAdminRole.GROUP_ADMIN:
-            this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToGroupsByRole(
-              '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-            );
-            this._subscribeToUnitsByRole(
-              'groupId',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-            );
-            this._subscribeToAdminUsers(adminUserRoles);
+            this._createGroupAdminSubscriptions(adminUserRoles);
             break;
           case EAdminRole.UNIT_ADMIN:
-            this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToGroupsByRole(
-              '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-            );
-            this._subscribeToUnitsByRole(
-              '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-            );
-            this._subscribeToAdminUsers(adminUserRoles);
+            this._createUnitAdminSubscriptions(adminUserRoles);
             break;
           case EAdminRole.STAFF:
-            this._subscribeToChainsByRole(
-              (adminUserRoles?.entities ?? []).map(e => e.chainId),
-            );
-            this._subscribeToGroupsByRole(
-              '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-            );
-            this._subscribeToUnitsByRole(
-              '_id',
-              (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-            );
+            this._createStaffSubscriptions(adminUserRoles);
             break;
           default:
             break;
@@ -200,79 +136,160 @@ export class DataService {
       });
   }
 
+  private _createSuperuserSubscriptions(adminUserRoles: IAdminUserRole): void {
+    this._subscribeToChainsByRole('*');
+    this._subscribeToGroupsByRole('', '*');
+    this._subscribeToUnitsByRole('', '*');
+    this._subscribeToUsers();
+    this._subscribeToAdminUsers(adminUserRoles);
+  }
+
+  private _createChainAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
+    this._subscribeToChainsByRole(
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToGroupsByRole(
+      'chainId',
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToUnitsByRole(
+      'chainId',
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToAdminUsers(adminUserRoles);
+  }
+
+  private _createGroupAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
+    this._subscribeToChainsByRole(
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToGroupsByRole(
+      'id',
+      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+    );
+    this._subscribeToUnitsByRole(
+      'groupId',
+      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+    );
+    this._subscribeToAdminUsers(adminUserRoles);
+  }
+
+  private _createUnitAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
+    this._subscribeToChainsByRole(
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToGroupsByRole(
+      'id',
+      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+    );
+    this._subscribeToUnitsByRole(
+      'id',
+      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+    );
+    this._subscribeToAdminUsers(adminUserRoles);
+  }
+
+  private _createStaffSubscriptions(adminUserRoles: IAdminUserRole): void {
+    this._subscribeToChainsByRole(
+      (adminUserRoles?.entities ?? []).map(e => e.chainId),
+    );
+    this._subscribeToGroupsByRole(
+      'id',
+      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
+    );
+    this._subscribeToUnitsByRole(
+      'id',
+      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
+    );
+  }
+
   private _subscribeToChainsByRole(
     loggedAdminUserEntities: string | string[],
   ): void {
-    /*
-    this._angularFireDatabase
-      .object(`/chains/`) // TODO list?
-      .valueChanges()
-      .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          chainsActions.loadChainsSuccess({
-            chains: (<IChain[]>(
-              objectToArray(data)
-            )).filter((c: IChain): boolean =>
-              loggedAdminUserEntities === '*'
-                ? true
-                : loggedAdminUserEntities.includes(c._id),
-            ),
-          }),
-        );
-      });
-      */
+    const allowUpsert = (chain: IChain): boolean =>
+      loggedAdminUserEntities === '*'
+        ? true
+        : loggedAdminUserEntities.includes(chain.id);
+
+    this._amplifyDataService.snapshotChanges<IChain>(
+      Chain,
+      undefined,
+      (chain: IChain): void => {
+        if (allowUpsert(chain)) {
+          this._store.dispatch(
+            chainsActions.upsertChain({
+              chain,
+            }),
+          );
+        }
+      },
+    );
   }
 
   private _subscribeToGroupsByRole(
     fieldName: string,
     loggedAdminUserEntities: string | string[],
   ): void {
-    /*
-    this._angularFireDatabase
-      .object(`/groups/`) // TODO list?
-      .valueChanges()
-      .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          groupsActions.loadGroupsSuccess({
-            groups: (<IGroup[]>(
-              objectToArray(data)
-            )).filter((c: IGroup): boolean =>
-              loggedAdminUserEntities === '*'
-                ? true
-                : loggedAdminUserEntities.includes(_get(c, fieldName)),
-            ),
-          }),
-        );
-      });
-      */
+    const allowUpsert = (group: IGroup): boolean =>
+      loggedAdminUserEntities === '*'
+        ? true
+        : loggedAdminUserEntities.includes(_get(group, fieldName));
+
+    this._amplifyDataService.snapshotChanges<IGroup>(
+      Group,
+      undefined,
+      (group: IGroup): void => {
+        if (allowUpsert(group)) {
+          this._store.dispatch(
+            groupsActions.upsertGroup({
+              group,
+            }),
+          );
+        }
+      },
+    );
   }
 
   private _subscribeToUnitsByRole(
     fieldName: string,
     loggedAdminUserEntities: string | string[],
   ): void {
-    /*
-    this._angularFireDatabase
-      .object(`/units/`) // TODO list??
-      .valueChanges()
-      .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          unitsActions.loadUnitsSuccess({
-            units: (<IUnit[]>objectToArray(data)).filter((c: IUnit): boolean =>
-              loggedAdminUserEntities === '*'
-                ? true
-                : loggedAdminUserEntities.includes(_get(c, fieldName)),
-            ),
-          }),
-        );
-      });
-      */
+    const allowUpsert = (unit: IUnit): boolean =>
+      loggedAdminUserEntities === '*'
+        ? true
+        : loggedAdminUserEntities.includes(_get(unit, fieldName));
+
+    this._amplifyDataService.snapshotChanges<IUnit>(
+      Unit,
+      undefined,
+      (unit: IUnit): void => {
+        if (allowUpsert(unit)) {
+          this._store.dispatch(
+            unitsActions.upsertUnit({
+              unit,
+            }),
+          );
+        }
+      },
+    );
   }
 
   private _subscribeToChainProductCategories(chainId: string): void {
+    /*
+    this._amplifyDataService.snapshotChanges<IProductCategory>(
+      ProductCategory,
+      undefined,
+      (productCategory: IProductCategory): void => {
+        if (allowUpsert(unit)) {
+          this._store.dispatch(
+            unitsActions.upsertUnit({
+              unit,
+            }),
+          );
+        }
+      },
+    );
+      */
     /*
     this._angularFireDatabase
       .object(`/productCategories/chains/${chainId}`) // TODO list?
@@ -354,7 +371,7 @@ export class DataService {
               Object.keys(categoryValue).forEach((productId: string): void => {
                 products.push({
                   ...categoryValue[productId],
-                  _id: productId,
+                  id: productId,
                   productCategoryId,
                 });
               });
@@ -392,7 +409,7 @@ export class DataService {
             ordersActions.upsertActiveOrder({
               order: {
                 ...(<IOrder>data.payload.val()),
-                _id: data.key || '',
+                id: data.key || '',
               },
             }),
           );
@@ -435,7 +452,7 @@ export class DataService {
             ordersActions.upsertHistoryOrder({
               order: {
                 ...(<IOrder>data.payload.val()),
-                _id: data.key || '',
+                id: data.key || '',
               },
             }),
           );
@@ -444,19 +461,17 @@ export class DataService {
   }
 
   private _subscribeToUsers(): void {
-    /*
-    this._angularFireDatabase
-      .object(`/users/`)
-      .valueChanges()
-      .pipe(takeUntil(this._rolesChanged$))
-      .subscribe((data: IKeyValueObject | unknown): void => {
+    this._amplifyDataService.snapshotChanges<IUser>(
+      User,
+      undefined,
+      (user: IUser): void => {
         this._store.dispatch(
-          usersActions.loadUsersSuccess({
-            users: <IUser[]>objectToArray(data),
+          usersActions.upsertUser({
+            user,
           }),
         );
-      });
-      */
+      },
+    );
   }
 
   private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
@@ -475,7 +490,7 @@ export class DataService {
       }
     };
 
-    this._amplifyService.snapshotChanges<IAdminUser>(
+    this._amplifyDataService.snapshotChanges<IAdminUser>(
       AdminUser,
       undefined,
       (adminUser: IAdminUser): void => {
@@ -816,7 +831,7 @@ export class DataService {
     userId: string,
     language: string,
   ): Promise<void> {
-    this._amplifyService.update(AdminUser, userId, (updated: IAdminUser) => {
+    this._amplifyDataService.update(AdminUser, userId, (updated: IAdminUser) => {
       updated.settings = {
         ...updated.settings,
         selectedLanguage: language,

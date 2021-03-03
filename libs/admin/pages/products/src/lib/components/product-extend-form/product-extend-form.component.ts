@@ -77,7 +77,7 @@ export class ProductExtendFormComponent
       .subscribe((unit: IUnit | undefined): void => {
         this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
           (lane): IKeyValue => ({
-            key: lane._id || '',
+            key: lane.id || '',
             value: lane.name,
           }),
         );
@@ -145,7 +145,7 @@ export class ProductExtendFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._id || ''] = _omit(variant, '_id');
+        value.variants[variant.id || ''] = _omit(variant, 'id');
       });
 
       delete value._variantArr;
@@ -162,14 +162,14 @@ export class ProductExtendFormComponent
           case EProductLevel.GROUP:
             updatePromise = this._dataService.updateGroupProduct(
               this._selectedGroupId || '',
-              this.product._id,
+              this.product.id,
               value,
             );
             break;
           case EProductLevel.UNIT:
             updatePromise = this._dataService.updateUnitProduct(
               this._selectedUnitId || '',
-              this.product._id,
+              this.product.id,
               value,
             );
             break;
@@ -237,9 +237,9 @@ export class ProductExtendFormComponent
   private _generateExtendsPath(): string | null {
     switch (this.productLevel) {
       case EProductLevel.GROUP:
-        return `products/chains/${this._selectedChainId}/${this.product._id}`;
+        return `products/chains/${this._selectedChainId}/${this.product.id}`;
       case EProductLevel.UNIT:
-        return `products/groups/${this._selectedGroupId}/${this.product._id}`;
+        return `products/groups/${this._selectedGroupId}/${this.product.id}`;
       default:
         return null;
         break;
