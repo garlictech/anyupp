@@ -1,9 +1,14 @@
 import { Context, Handler } from 'aws-lambda';
 import { stripeService } from '@bgap/stripe';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
-export interface GetStripeCardsCustomerRequest {
+interface WithStripeCustomer {
   stripeCustomerId: string;
 }
+
+export interface UpdateStripeCardRequest
+  extends WithStripeCustomer,
+    AppsyncApi.MutationUpdateMyStripeCardArgs {}
 
 export interface AnyuppRequest {
   handler: string;
@@ -27,8 +32,7 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
   switch (event.handler) {
     case 'getStripeCardsForCustomer': {
       console.log('Handling getStripeCardsForCustomer');
-      const stripeCustomerId = (event.payload as GetStripeCardsCustomerRequest)
-        .stripeCustomerId;
+      const { stripeCustomerId } = event.payload as WithStripeCustomer;
 
       if (!stripeCustomerId) {
         // throw 'missing stripeCustomerId';
@@ -37,7 +41,28 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
 
       return stripeService.getStripeCardsForCustomer(stripeCustomerId);
     }
+    case 'updateStripeCard': {
+      console.log('Handling updateStripeCard');
+      const {
+        stripeCustomerId,
+        input,
+      } = event.payload as UpdateStripeCardRequest;
+
+      if (!stripeCustomerId) {
+        throw 'missing stripeCustomerId';
+      }
+
+      return stripeService.updateStripeCard(stripeCustomerId, input);
+    }
     default:
       throw 'up';
   }
 };
+
+// const getStripeCustomerIdFromPayloadOrThrow = (payload: WithStripeCustomer) => {
+//   const {stripeCustomerId} = (payload as UpdateStripeCardRequest);
+
+//   if (!stripeCustomerId) {
+//     throw 'missing stripeCustomerId';
+//   }
+// }

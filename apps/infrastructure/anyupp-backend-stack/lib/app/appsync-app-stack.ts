@@ -211,14 +211,54 @@ export class AppsyncAppStack extends sst.Stack {
       },
     );
 
-    new Resolver(this, 'getMyCustomerStripeCards', {
+    new Resolver(this, 'getMyStripeCards', {
       api: this.api,
       typeName: 'Query',
-      fieldName: 'getMyCustomerStripeCards',
+      fieldName: 'getMyStripeCards',
       requestMappingTemplate: MappingTemplate.fromString('{}'),
       pipelineConfig: [
         stripeResolverFunctions.getStripeCustomerId,
         stripeResolverFunctions.getStripeCardsForStripeCustomer,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+      ),
+    });
+
+    new Resolver(this, 'updateMyStripeCard', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'updateMyStripeCard',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        stripeResolverFunctions.updateStripeCard,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+      ),
+    });
+    new Resolver(this, 'deleteMyStripeCard', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'deleteMyStripeCard',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        // stripeResolverFunctions.getStripeCardsForStripeCustomer,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+      ),
+    });
+    new Resolver(this, 'startStripePayment', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'startStripePayment',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        // stripeResolverFunctions.getStripeCardsForStripeCustomer,
       ],
       responseMappingTemplate: MappingTemplate.fromFile(
         'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',

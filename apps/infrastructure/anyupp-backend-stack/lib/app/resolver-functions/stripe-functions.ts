@@ -9,6 +9,9 @@ import {
 export interface StripeResolverFunctions {
   getStripeCustomerId: AppsyncFunction;
   getStripeCardsForStripeCustomer: AppsyncFunction;
+  updateStripeCard: AppsyncFunction;
+  deleteStripeCard: AppsyncFunction;
+  startStripePayment: AppsyncFunction;
 }
 
 export const createStripeResolverFunctions = ({
@@ -39,6 +42,7 @@ export const createStripeResolverFunctions = ({
       '$util.toJson($ctx.result.stripeCustomerId)',
     ),
   }),
+
   getStripeCardsForStripeCustomer: lambdaDs.createFunction({
     name: 'getStripeCardsForCustomer',
     description: 'get the Stripe cards for the given Stripe customerId',
@@ -51,6 +55,66 @@ export const createStripeResolverFunctions = ({
           "handler": "getStripeCardsForCustomer",
           "payload": {
             "stripeCustomerId": $util.toJson($ctx.prev.result)
+          }
+        }
+      }
+      `,
+    ),
+  }),
+
+  updateStripeCard: lambdaDs.createFunction({
+    name: 'updateStripeCard',
+    description: 'update a Stripe card for the given Stripe customerId',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "updateStripeCard",
+          "payload": {
+            "stripeCustomerId": $util.toJson($ctx.prev.result),
+            "input": $util.toJson($ctx.arguments.input)
+          }
+        }
+      }
+      `,
+    ),
+  }),
+
+  deleteStripeCard: lambdaDs.createFunction({
+    name: 'deleteStripeCard',
+    description: 'delete a Stripe card for the given Stripe customerId',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "getStripeCardsForCustomer",
+          "payload": {
+            "stripeCustomerId": $util.toJson($ctx.prev.result),
+            "args": $util.toJson($ctx.arguments)
+          }
+        }
+      }
+      `,
+    ),
+  }),
+
+  startStripePayment: lambdaDs.createFunction({
+    name: 'startStripePayment',
+    description: 'get the Stripe cards for the given Stripe customerId',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "getStripeCardsForCustomer",
+          "payload": {
+            "stripeCustomerId": $util.toJson($ctx.prev.result),
+            "args": $util.toJson($ctx.arguments)
           }
         }
       }
