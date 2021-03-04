@@ -12,6 +12,8 @@
     "descriptionDE": "Leírás (DE)",
     "descriptionHU": "Leírás (HU)",
     "isActive": "Aktív",
+    "active": "Aktív",
+    "inactive": "Inaktív",
     "confirm": "Megerősítés",
     "cancel": "Mégse",
     "ok": "OK",
