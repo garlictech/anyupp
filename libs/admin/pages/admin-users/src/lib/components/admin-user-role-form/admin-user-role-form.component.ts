@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
+import { clearDbProperties, EToasterType, amplifyObjectUpdater } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
 import { IAdminUser } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -45,10 +45,9 @@ export class AdminUserRoleFormComponent
         this._amplifyDataService.update(
           AdminUser,
           this.adminUser?.id || '',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (updated: any) => {
-            updated.roles = cleanObject(this.dialogForm?.value.roles);
-          },
+          amplifyObjectUpdater({
+            roles: cleanObject(this.dialogForm?.value.roles)
+          }),
         );
 
         this._toasterService.show(

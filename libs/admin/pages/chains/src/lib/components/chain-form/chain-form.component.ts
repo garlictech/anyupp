@@ -7,7 +7,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties, contactFormGroup, EToasterType, multiLangValidator, simpleAmplifyUpdater
+  clearDbProperties,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  amplifyObjectUpdater,
 } from '@bgap/admin/shared/utils';
 import { Chain } from '@bgap/api/graphql/schema';
 import { EImageType, IChain } from '@bgap/shared/types';
@@ -88,7 +92,7 @@ export class ChainFormComponent
           this._amplifyDataService.update(
             Chain,
             this.chain.id || '',
-            simpleAmplifyUpdater(this.dialogForm?.value),
+            amplifyObjectUpdater(this.dialogForm?.value),
           );
 
           this._toasterService.show(
@@ -105,16 +109,16 @@ export class ChainFormComponent
           this._amplifyDataService.create(Chain, {
             ...cleanObject(this.dialogForm?.value),
           });
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
         } catch (error) {
           this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
         }
-
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.insertSuccessful',
-        );
-        this.close();
       }
     }
   }

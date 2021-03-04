@@ -820,17 +820,19 @@ export class DataService {
   public updateAdminUserSettings(
     userId: string,
     value: IAdminUserSettings,
-  ): Promise<void> {
-    console.error('TODO updateAdminUserSettings');
-    return this._angularFireDatabase
-      .object(`/adminUsers/${userId}/settings`)
-      .update(value);
+  ): void {
+    this._amplifyDataService.update(AdminUser, userId, (updated: IAdminUser) => {
+      updated.settings = {
+        ...updated.settings,
+        ...value,
+      };
+    });
   }
 
-  public async updateAdminUserSeletedLanguage(
+  public updateAdminUserSeletedLanguage(
     userId: string,
     language: string,
-  ): Promise<void> {
+  ): void {
     this._amplifyDataService.update(AdminUser, userId, (updated: IAdminUser) => {
       updated.settings = {
         ...updated.settings,

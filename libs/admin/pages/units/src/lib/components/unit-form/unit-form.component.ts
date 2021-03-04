@@ -11,10 +11,12 @@ import {
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
+  clearDbProperties,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
   PAYMENT_MODES,
+  amplifyObjectUpdater,
   TIME_FORMAT_PATTERN,
   unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
@@ -29,6 +31,10 @@ import {
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { NGXLogger } from 'ngx-logger';
+import { Unit } from 'libs/api/graphql/schema/src';
+import { cleanObject } from 'libs/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -45,10 +51,28 @@ export class UnitFormComponent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
-  private groups: IGroup[] = [];
+  private _groups: IGroup[] = [];
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    const test = {
+      val1: 'izé',
+      val2: 'izé2',
+      _deleted: 1,
+      _lastChangedAt: 0,
+      _version: 100
+    };
+    console.error('test', test);
+
+    const test2 = clearDbProperties(test);
+    console.error('test2', test2);
+
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this._store = this._injector.get(Store);
     this._formsService = this._injector.get(FormsService);
@@ -58,9 +82,9 @@ export class UnitFormComponent
         untilDestroyed(this),
       )
       .subscribe((groups: IGroup[]): void => {
-        this.groups = groups;
+        this._groups = groups;
 
-        this.groupOptions = this.groups.map(
+        this.groupOptions = this._groups.map(
           (group: IGroup): IKeyValue => ({
             key: group.id,
             value: group.name,
@@ -127,7 +151,7 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(this.unit);
+      this.dialogForm.patchValue(clearDbProperties<IUnit>(this.unit));
 
       // Parse openingHours object to temp array
       const override: ICustomDailySchedule[] = _get(
@@ -191,33 +215,37 @@ export class UnitFormComponent
       delete value._lanesArr;
 
       if (_get(this.unit, 'id')) {
-        this._dataService.updateUnit(this.unit.id, value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP UPDATE ERROR', err);
-          },
-        );
+        try {
+          this._amplifyDataService.update(
+            Unit,
+            this.unit.id || '',
+            amplifyObjectUpdater(this.dialogForm?.value),
+          );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertUnit(value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP INSERT ERROR', err);
-          },
-        );
+        try {
+          this._amplifyDataService.create(Unit, {
+            ...cleanObject(this.dialogForm?.value),
+          });
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`UNIT INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }

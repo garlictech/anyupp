@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Auth } from '@aws-amplify/auth';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { clearDbProperties, contactFormGroup, EToasterType, simpleAmplifyUpdater } from '@bgap/admin/shared/utils';
+import { clearDbProperties, contactFormGroup, EToasterType, amplifyObjectUpdater } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -63,7 +63,7 @@ export class AdminUserFormComponent
           this._amplifyDataService.update(
             AdminUser,
             this.adminUser?.id || '',
-            simpleAmplifyUpdater(this.dialogForm?.value),
+            amplifyObjectUpdater(this.dialogForm?.value),
           );
 
           this._toasterService.show(

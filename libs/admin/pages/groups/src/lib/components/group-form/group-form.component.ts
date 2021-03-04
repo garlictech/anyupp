@@ -10,10 +10,16 @@ import {
   EToasterType,
   multiLangValidator,
   contactFormGroup,
+  clearDbProperties,
+  amplifyObjectUpdater,
 } from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { NGXLogger } from 'ngx-logger';
+import { Group } from 'libs/api/graphql/schema/src';
+import { cleanObject } from 'libs/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -27,12 +33,18 @@ export class GroupFormComponent
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private chains: IChain[] = [];
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this._store = this._injector.get(Store);
     this._store
@@ -73,7 +85,7 @@ export class GroupFormComponent
     });
 
     if (this.group) {
-      this.dialogForm.patchValue(this.group);
+      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
     } else {
       // Patch ChainId
       this._store
@@ -93,35 +105,37 @@ export class GroupFormComponent
   public submit(): void {
     if (this.dialogForm?.valid) {
       if (_get(this.group, 'id')) {
-        this._dataService
-          .updateGroup(this.group.id, this.dialogForm?.value)
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful',
-              );
-              this.close();
-            },
-            err => {
-              console.error('GROUP UPDATE ERROR', err);
-            },
+        try {
+          this._amplifyDataService.update(
+            Group,
+            this.group.id || '',
+            amplifyObjectUpdater(this.dialogForm?.value),
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`GROUP UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertGroup(this.dialogForm?.value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP INSERT ERROR', err);
-          },
-        );
+        try {
+          this._amplifyDataService.create(Group, {
+            ...cleanObject(this.dialogForm?.value),
+          });
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`GROUP INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }

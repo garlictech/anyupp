@@ -21,7 +21,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
   transform(roles: IAdminUserRole): unknown {
     const entityPaths: string[] = [];
 
-    (roles?.entities || []).forEach((entity): void => {
+    Object.values(roles?.entities || {}).forEach((entity): void => {
       const entitiesArr: string[] = [];
 
       if (entity.chainId) {
