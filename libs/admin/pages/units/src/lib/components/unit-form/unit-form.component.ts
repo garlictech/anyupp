@@ -1,40 +1,23 @@
 import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
+import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-  PAYMENT_MODES,
-  amplifyObjectUpdater,
-  TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator,
+  amplifyObjectUpdater, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES,
+  TIME_FORMAT_PATTERN, unitOpeningHoursValidator
 } from '@bgap/admin/shared/utils';
-import {
-  ICustomDailySchedule,
-  IGroup,
-  IKeyValue,
-  ILane,
-  ILanesObject,
-  IPaymentMode,
-  IUnit,
-} from '@bgap/shared/types';
+import { Unit } from '@bgap/api/graphql/schema';
+import { ICustomDailySchedule, IGroup, IKeyValue, ILane, ILanesObject, IPaymentMode, IUnit } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { NGXLogger } from 'ngx-logger';
-import { Unit } from 'libs/api/graphql/schema/src';
-import { cleanObject } from 'libs/shared/utils/src';
 
 @UntilDestroy()
 @Component({
