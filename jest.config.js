@@ -52,5 +52,7 @@ module.exports = {
     '<rootDir>/libs/stripe',
     '<rootDir>/libs/admin/shared/data-access/graphql-client',
     '<rootDir>/libs/shared/graphql/api-client',
+    '<rootDir>/apps/amplify-admin',
+    '<rootDir>/libs/admin/amplify',
   ],
 };

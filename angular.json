@@ -1380,6 +1380,78 @@
           }
         }
       }
+    },
+    "amplify-admin": {
+      "root": "apps/amplify-admin",
+      "sourceRoot": "apps/amplify-admin/src",
+      "projectType": "application",
+      "prefix": "amplify-admin",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/amplify-admin",
+            "main": "apps/amplify-admin/src/main.ts",
+            "tsConfig": "apps/amplify-admin/tsconfig.app.json",
+            "assets": ["apps/amplify-admin/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/amplify-admin/src/environments/environment.ts",
+                  "with": "apps/amplify-admin/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "amplify-admin:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/amplify-admin/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/amplify-admin"],
+          "options": {
+            "jestConfig": "apps/amplify-admin/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-amplify": {
+      "root": "libs/admin/amplify",
+      "sourceRoot": "libs/admin/amplify/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/amplify/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/amplify"],
+          "options": {
+            "jestConfig": "libs/admin/amplify/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

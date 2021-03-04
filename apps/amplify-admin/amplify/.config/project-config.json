@@ -1,0 +1,17 @@
+{
+  "projectName": "amplifyadmin",
+  "version": "3.0",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "none",
+    "config": {
+      "SourceDir": "../../libs/admin/amplify/src/lib",
+      "DistributionDir": "dist",
+      "BuildCommand": "nx build admin",
+      "StartCommand": "nx serve admin"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}

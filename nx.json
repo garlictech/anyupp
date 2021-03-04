@@ -165,6 +165,12 @@
     },
     "stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "amplify-admin": {
+      "tags": []
+    },
+    "admin-amplify": {
+      "tags": []
     }
   }
 }
