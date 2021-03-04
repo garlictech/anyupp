@@ -17,6 +17,7 @@ import {
 
 // import * as iam from '@aws-cdk/aws-iam';
 // import { ManagedPolicy } from '@aws-cdk/aws-iam';
+import { Duration } from '@aws-cdk/core';
 
 // const stageValidationProperties = (fields: string[]): string =>
 //   pipe(
@@ -193,6 +194,7 @@ export class AppsyncAppStack extends sst.Stack {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/appsync-lambda/index.handler',
+      timeout: Duration.seconds(10),
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
@@ -211,17 +213,59 @@ export class AppsyncAppStack extends sst.Stack {
       },
     );
 
-    new Resolver(this, 'getMyCustomerStripeCards', {
+    new Resolver(this, 'getMyStripeCards', {
       api: this.api,
       typeName: 'Query',
-      fieldName: 'getMyCustomerStripeCards',
+      fieldName: 'getMyStripeCards',
       requestMappingTemplate: MappingTemplate.fromString('{}'),
       pipelineConfig: [
         stripeResolverFunctions.getStripeCustomerId,
         stripeResolverFunctions.getStripeCardsForStripeCustomer,
       ],
       responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+      ),
+    });
+
+    new Resolver(this, 'updateMyStripeCard', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'updateMyStripeCard',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        stripeResolverFunctions.updateStripeCard,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+      ),
+    });
+
+    new Resolver(this, 'deleteMyStripeCard', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'deleteMyStripeCard',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        stripeResolverFunctions.deleteStripeCard,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+      ),
+    });
+
+    new Resolver(this, 'startStripePayment', {
+      api: this.api,
+      typeName: 'Mutation',
+      fieldName: 'startStripePayment',
+      requestMappingTemplate: MappingTemplate.fromString('{}'),
+      pipelineConfig: [
+        stripeResolverFunctions.getStripeCustomerId,
+        // stripeResolverFunctions.getStripeCardsForStripeCustomer,
+      ],
+      responseMappingTemplate: MappingTemplate.fromFile(
+        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
       ),
     });
   }
