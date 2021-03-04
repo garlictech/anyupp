@@ -70,6 +70,7 @@ export const reducer = (accumulator: number, currentValue: number): number =>
 
 export const cleanObject = (obj: IKeyValueObject) => {
   const finalObj: IKeyValueObject = {};
+
   Object.keys(obj).forEach(key => {
     if (obj[key] && typeof obj[key] === 'object') {
       const nestedObj = cleanObject(obj[key]);
@@ -80,5 +81,6 @@ export const cleanObject = (obj: IKeyValueObject) => {
       finalObj[key] = obj[key];
     }
   });
+
   return finalObj;
 };

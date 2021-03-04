@@ -71,27 +71,27 @@ export class DataService {
         ),
         takeUntil(this._destroyConnection$),
       )
-      .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
+      .subscribe((/*adminUserSettings: IAdminUserSettings | undefined*/): void => {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
-          adminUserSettings?.selectedChainId || '',
+          // adminUserSettings?.selectedChainId || '',
         );
         this._subscribeToSelectedChainProducts(
-          adminUserSettings?.selectedChainId || '',
+          // adminUserSettings?.selectedChainId || '',
         );
         this._subscribeToSelectedGroupProducts(
-          adminUserSettings?.selectedGroupId || '',
+          // adminUserSettings?.selectedGroupId || '',
         );
         this._subscribeToSelectedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          // adminUserSettings?.selectedUnitId || '',
         );
         this._subscribeToGeneratedUnitProducts(
-          adminUserSettings?.selectedUnitId || '',
+          // adminUserSettings?.selectedUnitId || '',
         );
         this._subscribeToSelectedUnitOrders(
-          adminUserSettings?.selectedChainId || '',
-          adminUserSettings?.selectedUnitId || '',
+          // adminUserSettings?.selectedChainId || '',
+          // adminUserSettings?.selectedUnitId || '',
         );
       });
 
@@ -274,7 +274,7 @@ export class DataService {
     );
   }
 
-  private _subscribeToChainProductCategories(chainId: string): void {
+  private _subscribeToChainProductCategories(/*chainId: string*/): void {
     /*
     this._amplifyDataService.snapshotChanges<IProductCategory>(
       ProductCategory,
@@ -305,7 +305,7 @@ export class DataService {
       */
   }
 
-  private _subscribeToSelectedChainProducts(chainId: string): void {
+  private _subscribeToSelectedChainProducts(/*chainId: string*/): void {
     /*
     this._angularFireDatabase
       .object(`/products/chains/${chainId}`) // TODO list?
@@ -321,7 +321,7 @@ export class DataService {
       */
   }
 
-  private _subscribeToSelectedGroupProducts(groupId: string): void {
+  private _subscribeToSelectedGroupProducts(/*groupId: string*/): void {
     /*
     this._angularFireDatabase
       .object(`/products/groups/${groupId}`) // TODO list?
@@ -337,7 +337,7 @@ export class DataService {
       */
   }
 
-  private _subscribeToSelectedUnitProducts(unitId: string): void {
+  private _subscribeToSelectedUnitProducts(/*unitId: string*/): void {
     /*
     this._angularFireDatabase
       .object(`/products/units/${unitId}`) // TODO list?
@@ -353,7 +353,7 @@ export class DataService {
       */
   }
 
-  private _subscribeToGeneratedUnitProducts(unitId: string): void {
+  private _subscribeToGeneratedUnitProducts(/*unitId: string*/): void {
     /*
     this._angularFireDatabase
       .object(`/generated/productList/units/${unitId}/productCategories`) // TODO list?
@@ -389,8 +389,8 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitOrders(
-    chainId: string,
-    unitId: string,
+    /*chainId: string,
+    unitId: string,*/
   ): void {
     /*
     this._angularFireDatabase
@@ -840,8 +840,8 @@ export class DataService {
   }
 
   public updateAdminUserProfileImagePath(
-    userId: string,
-    imagePath: string | null,
+    // userId: string,
+    // imagePath: string | null,
   ): void {
     console.error('TODO implement AWS');
     /*

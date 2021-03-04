@@ -1,15 +1,17 @@
 import { get as _get, set as _set } from 'lodash-es';
+import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  EToasterType,
-  contactFormGroup,
-  multiLangValidator,
+  clearDbProperties, contactFormGroup, EToasterType, multiLangValidator, simpleAmplifyUpdater
 } from '@bgap/admin/shared/utils';
+import { Chain } from '@bgap/api/graphql/schema';
 import { EImageType, IChain } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   selector: 'bgap-chain-form',
@@ -22,8 +24,14 @@ export class ChainFormComponent
   public chain!: IChain;
   public eImageType = EImageType;
 
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
+
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
@@ -67,7 +75,7 @@ export class ChainFormComponent
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(this.chain);
+      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
@@ -76,35 +84,37 @@ export class ChainFormComponent
   public submit(): void {
     if (this.dialogForm?.valid) {
       if (_get(this.chain, 'id')) {
-        this._dataService
-          .updateChain(this.chain.id, this.dialogForm?.value)
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful',
-              );
-              this.close();
-            },
-            err => {
-              console.error('CHAIN UPDATE ERROR', err);
-            },
+        try {
+          this._amplifyDataService.update(
+            Chain,
+            this.chain.id || '',
+            simpleAmplifyUpdater(this.dialogForm?.value),
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertChain(this.dialogForm?.value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          },
-          err => {
-            console.error('CHAIN INSERT ERROR', err);
-          },
+        try {
+          this._amplifyDataService.create(Chain, {
+            ...cleanObject(this.dialogForm?.value),
+          });
+        } catch (error) {
+          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
+        }
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.insertSuccessful',
         );
+        this.close();
       }
     }
   }

@@ -5,10 +5,12 @@ import { DataStore } from '@aws-amplify/datastore';
   providedIn: 'root',
 })
 export class AmplifyDataService {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async snapshotChanges<T>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     model: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     param: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: any,
   ): Promise<void> {
     const data = await (param
@@ -30,12 +32,14 @@ export class AmplifyDataService {
       });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create(model: any, data: any) {
     await DataStore.save(
       new model(data)
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update(model: any, id: string, callback: any) {
     const original = await DataStore.query(model, id);
 

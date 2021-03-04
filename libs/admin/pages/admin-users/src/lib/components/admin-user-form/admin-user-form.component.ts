@@ -1,18 +1,14 @@
+import { NGXLogger } from 'ngx-logger';
+
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Auth } from '@aws-amplify/auth';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { clearDbProperties, contactFormGroup, EToasterType, simpleAmplifyUpdater } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
-import { Auth } from '@aws-amplify/auth';
-
-import { API } from '@aws-amplify/api';
-import * as AWS from 'aws-sdk';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -24,13 +20,16 @@ export class AdminUserFormComponent
   implements OnInit {
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
+
   private _formService: FormsService;
   private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
     this._formService = this._injector.get(FormsService);
+    this._logger = this._injector.get(NGXLogger);
     this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
@@ -46,7 +45,7 @@ export class AdminUserFormComponent
     });
 
     if (this.adminUser) {
-      this.dialogForm.patchValue(this.adminUser);
+      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     } else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
@@ -64,13 +63,7 @@ export class AdminUserFormComponent
           this._amplifyDataService.update(
             AdminUser,
             this.adminUser?.id || '',
-            (updated: any) => {
-              const updateObj = cleanObject(this.dialogForm?.value);
-
-              Object.keys(updateObj).forEach(k => {
-                updated[k] = updateObj[k];
-              });
-            },
+            simpleAmplifyUpdater(this.dialogForm?.value),
           );
 
           this._toasterService.show(
@@ -81,21 +74,21 @@ export class AdminUserFormComponent
 
           this.close();
         } catch (error) {
-          console.error('there was an error sending the query', error);
+          this._logger.error(`ADMIN USER UPDATE ERROR: ${JSON.stringify(error)}`);
         }
       } else {
         try {
           const email = this.dialogForm.controls['email'].value;
           const user = await Auth.signUp({
             username: email,
-            password: 'tempAdfd12',
+            password: 'tempAdfd12TODO',
             attributes: {
               email
             }
           });
 
           this._amplifyDataService.create(AdminUser, {
-            ...(<any>cleanObject(this.dialogForm?.value)),
+            ...(cleanObject(this.dialogForm?.value)),
             id: user.userSub,
             roles: {
               role: EAdminRole.INACTIVE,
@@ -110,7 +103,7 @@ export class AdminUserFormComponent
 
           this.close();
         } catch (error) {
-          console.error('there was an error sending the query', error);
+          this._logger.error(`ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`);
         }
       }
     }

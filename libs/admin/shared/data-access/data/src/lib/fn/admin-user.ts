@@ -1,4 +1,4 @@
-import { EAdminRole, IAdminUser, IAdminUserRole } from 'libs/shared/types/src';
+import { EAdminRole, IAdminUser, IAdminUserRole } from '@bgap/shared/types';
 import { intersection as _intersection } from 'lodash-es';
 
 export const chainAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: IAdminUserRole): boolean => {

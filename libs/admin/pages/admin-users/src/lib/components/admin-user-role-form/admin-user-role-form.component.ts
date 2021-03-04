@@ -1,12 +1,11 @@
-import { EToasterType } from 'libs/admin/shared/utils/src';
-import { AdminUser } from 'libs/api/graphql/schema/src';
-import { cleanObject } from 'libs/shared/utils/src';
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
+import { AdminUser } from '@bgap/api/graphql/schema';
 import { IAdminUser } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   selector: 'bgap-admin-user-role-form',
@@ -37,7 +36,7 @@ export class AdminUserRoleFormComponent
       }),
     });
 
-    this.dialogForm.patchValue(this.adminUser);
+    this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
   }
 
   public async submit(): Promise<void> {
@@ -46,6 +45,7 @@ export class AdminUserRoleFormComponent
         this._amplifyDataService.update(
           AdminUser,
           this.adminUser?.id || '',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (updated: any) => {
             updated.roles = cleanObject(this.dialogForm?.value.roles);
           },

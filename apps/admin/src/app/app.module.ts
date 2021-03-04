@@ -1,6 +1,3 @@
-import { APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { OperationDefinitionNode } from 'graphql';
 
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -16,9 +13,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
 import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
 import { environment } from '@bgap/admin/shared/config';
