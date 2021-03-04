@@ -41,7 +41,7 @@ export const createStripeResolverFunctions = ({
     responseMappingTemplate: MappingTemplate.fromString(
       `
       $util.qr($ctx.stash.put("stripeCustomerId", $ctx.result.stripeCustomerId))
-      {}
+      {} ## make sure you add this at the end to prevent the empty template response error
       `,
     ),
   }),
