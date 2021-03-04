@@ -6,9 +6,11 @@ interface WithStripeCustomer {
   stripeCustomerId: string;
 }
 
-export interface UpdateStripeCardRequest
-  extends WithStripeCustomer,
-    AppsyncApi.MutationUpdateMyStripeCardArgs {}
+type UpdateStripeCardRequest = WithStripeCustomer &
+  AppsyncApi.MutationUpdateMyStripeCardArgs;
+
+type DeleteStripeCardRequest = WithStripeCustomer &
+  AppsyncApi.MutationDeleteMyStripeCardArgs;
 
 export interface AnyuppRequest {
   handler: string;
@@ -17,6 +19,7 @@ export interface AnyuppRequest {
 
 export const handler: Handler<AnyuppRequest, unknown> = async (
   event: AnyuppRequest,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: Context,
 ): Promise<unknown> => {
   console.log(
@@ -35,7 +38,6 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
       const { stripeCustomerId } = event.payload as WithStripeCustomer;
 
       if (!stripeCustomerId) {
-        // throw 'missing stripeCustomerId';
         return [];
       }
 
@@ -54,15 +56,20 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
 
       return stripeService.updateStripeCard(stripeCustomerId, input);
     }
+    case 'deleteStripeCard': {
+      console.log('Handling deleteStripeCard');
+      const {
+        stripeCustomerId,
+        input,
+      } = event.payload as DeleteStripeCardRequest;
+
+      if (!stripeCustomerId) {
+        throw 'missing stripeCustomerId';
+      }
+
+      return stripeService.deleteStripeCard(stripeCustomerId, input);
+    }
     default:
-      throw 'up';
+      throw 'missing handler';
   }
 };
-
-// const getStripeCustomerIdFromPayloadOrThrow = (payload: WithStripeCustomer) => {
-//   const {stripeCustomerId} = (payload as UpdateStripeCardRequest);
-
-//   if (!stripeCustomerId) {
-//     throw 'missing stripeCustomerId';
-//   }
-// }

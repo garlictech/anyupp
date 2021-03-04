@@ -39,7 +39,10 @@ export const createStripeResolverFunctions = ({
       `,
     ),
     responseMappingTemplate: MappingTemplate.fromString(
-      '$util.toJson($ctx.result.stripeCustomerId)',
+      `
+      $util.qr($ctx.stash.put("stripeCustomerId", $ctx.result.stripeCustomerId))
+      {}
+      `,
     ),
   }),
 
@@ -54,7 +57,7 @@ export const createStripeResolverFunctions = ({
         "payload": {
           "handler": "getStripeCardsForCustomer",
           "payload": {
-            "stripeCustomerId": $util.toJson($ctx.prev.result)
+            "stripeCustomerId": $util.toJson($ctx.stash.stripeCustomerId)
           }
         }
       }
@@ -73,7 +76,7 @@ export const createStripeResolverFunctions = ({
         "payload": {
           "handler": "updateStripeCard",
           "payload": {
-            "stripeCustomerId": $util.toJson($ctx.prev.result),
+            "stripeCustomerId": $util.toJson($ctx.stash.stripeCustomerId),
             "input": $util.toJson($ctx.arguments.input)
           }
         }
@@ -91,10 +94,10 @@ export const createStripeResolverFunctions = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "getStripeCardsForCustomer",
+          "handler": "deleteStripeCard",
           "payload": {
-            "stripeCustomerId": $util.toJson($ctx.prev.result),
-            "args": $util.toJson($ctx.arguments)
+            "stripeCustomerId": $util.toJson($ctx.stash.stripeCustomerId),
+            "input": $util.toJson($ctx.arguments.input)
           }
         }
       }
@@ -113,8 +116,8 @@ export const createStripeResolverFunctions = ({
         "payload": {
           "handler": "getStripeCardsForCustomer",
           "payload": {
-            "stripeCustomerId": $util.toJson($ctx.prev.result),
-            "args": $util.toJson($ctx.arguments)
+            "stripeCustomerId": $util.toJson($ctx.stash.stripeCustomerId),
+            "input": $util.toJson($ctx.arguments.input)
           }
         }
       }

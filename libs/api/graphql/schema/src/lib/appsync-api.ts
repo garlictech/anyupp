@@ -85,6 +85,10 @@ export interface StripeCardUpdateInput {
   name?: Maybe<Scalars['String']>;
 }
 
+export interface StripeCardDeleteInput {
+  id: Scalars['ID'];
+}
+
 export interface Query {
   __typename?: 'Query';
   getMyStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
@@ -92,9 +96,9 @@ export interface Query {
 
 export interface Mutation {
   __typename?: 'Mutation';
-  startStripePayment: StartStripePaymentOutput;
-  updateMyStripeCard: StripeCard;
-  deleteMyStripeCard: Scalars['Boolean'];
+  startStripePayment?: Maybe<StartStripePaymentOutput>;
+  updateMyStripeCard?: Maybe<StripeCard>;
+  deleteMyStripeCard?: Maybe<Scalars['Boolean']>;
 }
 
 export interface MutationStartStripePaymentArgs {
@@ -106,7 +110,7 @@ export interface MutationUpdateMyStripeCardArgs {
 }
 
 export interface MutationDeleteMyStripeCardArgs {
-  paymentMethodId: Scalars['ID'];
+  input: StripeCardDeleteInput;
 }
 
 export type GetMyStripeCardsQueryVariables = Exact<{ [key: string]: never }>;
@@ -144,25 +148,27 @@ export type UpdateMyStripeCardMutationVariables = Exact<{
 }>;
 
 export type UpdateMyStripeCardMutation = { __typename?: 'Mutation' } & {
-  updateMyStripeCard: { __typename?: 'StripeCard' } & Pick<
-    StripeCard,
-    | 'brand'
-    | 'id'
-    | 'country'
-    | 'last4'
-    | 'exp_year'
-    | 'exp_month'
-    | 'fingerprint'
-    | 'three_d_secure'
-    | 'name'
-  > & {
-      metadata: Array<
-        { __typename?: 'StripeMetadata' } & Pick<
-          StripeMetadata,
-          'key' | 'value'
-        >
-      >;
-    };
+  updateMyStripeCard?: Maybe<
+    { __typename?: 'StripeCard' } & Pick<
+      StripeCard,
+      | 'brand'
+      | 'id'
+      | 'country'
+      | 'last4'
+      | 'exp_year'
+      | 'exp_month'
+      | 'fingerprint'
+      | 'three_d_secure'
+      | 'name'
+    > & {
+        metadata: Array<
+          { __typename?: 'StripeMetadata' } & Pick<
+            StripeMetadata,
+            'key' | 'value'
+          >
+        >;
+      }
+  >;
 };
 
 export type StartStripePaymentMutationVariables = Exact<{
@@ -170,9 +176,11 @@ export type StartStripePaymentMutationVariables = Exact<{
 }>;
 
 export type StartStripePaymentMutation = { __typename?: 'Mutation' } & {
-  startStripePayment: { __typename?: 'StartStripePaymentOutput' } & Pick<
-    StartStripePaymentOutput,
-    'clientSecret' | 'status'
+  startStripePayment?: Maybe<
+    { __typename?: 'StartStripePaymentOutput' } & Pick<
+      StartStripePaymentOutput,
+      'clientSecret' | 'status'
+    >
   >;
 };
 

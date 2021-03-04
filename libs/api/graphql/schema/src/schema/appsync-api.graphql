@@ -191,6 +191,10 @@ input StripeCardUpdateInput {
   name: String
 }
 
+input StripeCardDeleteInput {
+  id: ID!
+}
+
 # Chain
 
 # type Chain {
@@ -828,12 +832,12 @@ type Mutation {
   # deleteUser(id: ID!): Boolean! @aws_iam @aws_api_key @aws_cognito_user_pools
 
   # Stripe
-  startStripePayment(
-    input: StartStripePaymentInput!
-  ): StartStripePaymentOutput! @aws_cognito_user_pools
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
-  deleteMyStripeCard(paymentMethodId: ID!): Boolean! @aws_cognito_user_pools
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
+    @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+    @aws_cognito_user_pools
 }
 
 # type Subscription {
