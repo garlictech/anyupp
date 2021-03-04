@@ -1,11 +1,18 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { AdminUser } from '@bgap/api/graphql/schema';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+import { Auth } from '@aws-amplify/auth';
+
+import { API } from '@aws-amplify/api';
+import * as AWS from 'aws-sdk';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -78,8 +85,18 @@ export class AdminUserFormComponent
         }
       } else {
         try {
+          const email = this.dialogForm.controls['email'].value;
+          const user = await Auth.signUp({
+            username: email,
+            password: 'tempAdfd12',
+            attributes: {
+              email
+            }
+          });
+
           this._amplifyDataService.create(AdminUser, {
             ...(<any>cleanObject(this.dialogForm?.value)),
+            id: user.userSub,
             roles: {
               role: EAdminRole.INACTIVE,
             },

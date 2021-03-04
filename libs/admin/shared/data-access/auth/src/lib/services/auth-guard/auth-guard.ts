@@ -74,14 +74,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       ),
       switchMap(
         (cognitoUser): Observable<IAdminUser | undefined> => {
-          console.error('cognitoUser', cognitoUser);
           return cognitoUser
             ? from(
                 DataStore.query(AdminUser, <string>cognitoUser?.user?.id),
               ).pipe(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 map((data: any) => {
-                  console.error('cognitoUser data', data);
                   return data || undefined;
                 }),
               )
