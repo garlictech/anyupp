@@ -1,5 +1,4 @@
 import {
-  NoneDataSource,
   MappingTemplate,
   AppsyncFunction,
   DynamoDbDataSource,
@@ -15,12 +14,9 @@ export interface StripeResolverFunctions {
 }
 
 export const createStripeResolverFunctions = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  noneDs,
   userTableDDDs,
   lambdaDs,
 }: {
-  noneDs: NoneDataSource;
   userTableDDDs: DynamoDbDataSource;
   lambdaDs: LambdaDataSource;
 }): StripeResolverFunctions => ({
