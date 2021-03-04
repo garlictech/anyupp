@@ -1,9 +1,16 @@
 import { Context, Handler } from 'aws-lambda';
 import { stripeService } from '@bgap/stripe';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
-export interface GetStripeCardsCustomerRequest {
+interface WithStripeCustomer {
   stripeCustomerId: string;
 }
+
+type UpdateStripeCardRequest = WithStripeCustomer &
+  AppsyncApi.MutationUpdateMyStripeCardArgs;
+
+type DeleteStripeCardRequest = WithStripeCustomer &
+  AppsyncApi.MutationDeleteMyStripeCardArgs;
 
 export interface AnyuppRequest {
   handler: string;
@@ -12,6 +19,7 @@ export interface AnyuppRequest {
 
 export const handler: Handler<AnyuppRequest, unknown> = async (
   event: AnyuppRequest,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: Context,
 ): Promise<unknown> => {
   console.log(
@@ -27,17 +35,41 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
   switch (event.handler) {
     case 'getStripeCardsForCustomer': {
       console.log('Handling getStripeCardsForCustomer');
-      const stripeCustomerId = (event.payload as GetStripeCardsCustomerRequest)
-        .stripeCustomerId;
+      const { stripeCustomerId } = event.payload as WithStripeCustomer;
 
       if (!stripeCustomerId) {
-        // throw 'missing stripeCustomerId';
         return [];
       }
 
       return stripeService.getStripeCardsForCustomer(stripeCustomerId);
     }
+    case 'updateStripeCard': {
+      console.log('Handling updateStripeCard');
+      const {
+        stripeCustomerId,
+        input,
+      } = event.payload as UpdateStripeCardRequest;
+
+      if (!stripeCustomerId) {
+        throw 'missing stripeCustomerId';
+      }
+
+      return stripeService.updateStripeCard(stripeCustomerId, input);
+    }
+    case 'deleteStripeCard': {
+      console.log('Handling deleteStripeCard');
+      const {
+        stripeCustomerId,
+        input,
+      } = event.payload as DeleteStripeCardRequest;
+
+      if (!stripeCustomerId) {
+        throw 'missing stripeCustomerId';
+      }
+
+      return stripeService.deleteStripeCard(stripeCustomerId, input);
+    }
     default:
-      throw 'up';
+      throw 'missing handler';
   }
 };

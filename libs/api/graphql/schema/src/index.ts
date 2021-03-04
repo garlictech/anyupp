@@ -1,4 +1,6 @@
-// export * from './lib/amplify-api';
+import * as AppsyncApi from './lib/appsync-api';
+
+export { AppsyncApi };
 export * from './lib/models/index.js';
 import * as Mutations from './lib/documents/mutations';
 import * as Queries from './lib/documents/queries';
