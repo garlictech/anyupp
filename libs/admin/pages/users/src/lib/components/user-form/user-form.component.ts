@@ -97,7 +97,7 @@ export class UserFormComponent
     this.dialogForm.controls.profileImage.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.user, 'id')) {
+    if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, imagePath).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
       });
@@ -111,7 +111,7 @@ export class UserFormComponent
     delete this.user.profileImage;
 
     // Update existing user's image
-    if (_get(this.user, 'id')) {
+    if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, null).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
       });

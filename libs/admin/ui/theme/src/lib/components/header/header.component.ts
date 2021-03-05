@@ -1,23 +1,14 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import {
-  AuthService,
-  CognitoService,
-} from '@bgap/admin/shared/data-access/auth';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
-import {
-  NbMediaBreakpointsService,
-  NbMenuService,
-  NbSidebarService,
-  NbThemeService,
-} from '@nebular/theme';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -50,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _themeService: NbThemeService,
     private _layoutService: LayoutService,
     private _breakpointService: NbMediaBreakpointsService,
-    private _authService: AuthService,
+
     private _dataService: DataService,
     private _cognitoService: CognitoService,
     private _translateService: TranslateService,
@@ -103,8 +94,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
 
     this._translateService.onLangChange.subscribe(
-      (event: EventEmitter<LangChangeEvent>): void => {
-        this.selectedLang = _get(event, 'lang', '').split('-')[0];
+      (event: LangChangeEvent): void => {
+        this.selectedLang = (event.lang || '').split('-')[0];
         this._translateMenuItems();
       },
     );

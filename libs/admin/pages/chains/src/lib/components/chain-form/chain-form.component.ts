@@ -1,21 +1,17 @@
-import { get as _get, set as _set } from 'lodash-es';
+import * as fp from 'lodash/fp';
+
 import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Mutations } from '@bgap/admin/amplify';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-  amplifyObjectUpdater,
+  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
 } from '@bgap/admin/shared/utils';
-import { Chain } from '@bgap/api/graphql/schema';
 import { EImageType, IChain } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   selector: 'bgap-chain-form',
@@ -49,6 +45,7 @@ export class ChainFormComponent
       ),
       isActive: ['', [Validators.required]],
       ...contactFormGroup(this._formBuilder),
+      ...addressFormGroup(this._formBuilder),
       style: this._formBuilder.group({
         colors: this._formBuilder.group({
           backgroundLight: [''],
@@ -70,29 +67,28 @@ export class ChainFormComponent
   }
 
   get logoFilePath(): string {
-    return _get(this.chain, 'style.images.logo');
+    return this.chain?.style?.images?.logo;
   }
 
   get headerFilePath(): string {
-    return _get(this.chain, 'style.images.header');
+    return this.chain?.style?.images?.header;
   }
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
+      this.dialogForm.patchValue(clearDbProperties(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      if (_get(this.chain, 'id')) {
+      if (this.chain?.id) {
         try {
-          this._amplifyDataService.update(
-            Chain,
-            this.chain.id || '',
-            amplifyObjectUpdater(this.dialogForm?.value),
+          await this._amplifyDataService.update('getChain', 'updateChain',
+            this.chain.id,
+            () => this.dialogForm.value
           );
 
           this._toasterService.show(
@@ -106,9 +102,7 @@ export class ChainFormComponent
         }
       } else {
         try {
-          this._amplifyDataService.create(Chain, {
-            ...cleanObject(this.dialogForm?.value),
-          });
+          await this._amplifyDataService.create(Mutations.createChain, this.dialogForm?.value);
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -129,7 +123,7 @@ export class ChainFormComponent
     )).setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.chain, 'id')) {
+    if (this.chain?.id) {
       this._dataService
         .updateChainImagePath(this.chain.id, key, imagePath)
         .then((): void => {
@@ -154,11 +148,11 @@ export class ChainFormComponent
     )).setValue('');
 
     if (this.chain) {
-      _set(this.chain, `style.images.${key}`, null);
+      fp.set(`style.images.${key}`, null, this.chain);
     }
 
     // Update existing user's image
-    if (_get(this.chain, 'id')) {
+    if (this.chain?.id) {
       this._dataService
         .updateChainImagePath(this.chain.id, key, null)
         .then((): void => {

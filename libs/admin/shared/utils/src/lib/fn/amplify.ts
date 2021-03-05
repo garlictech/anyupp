@@ -1,17 +1,13 @@
-import { cleanObject } from '@bgap/shared/utils';
+import * as fp from 'lodash/fp';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const amplifyObjectUpdater = (value: any) => (updated: any) => {
-  const updateObj = cleanObject(value);
-
-  Object.keys(updateObj).forEach(k => {
-    updated[k] = updateObj[k];
-  });
-}
+export const fpMerge = (original: any, values: any) => {
+  return fp.merge(original, values);
+};
 
 export const clearDbProperties = <T>(value: T): T => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { _deleted, _lastChangedAt, _version, ...cleaned } = <any>value;
+  const { createdAt, updatedAt, ...cleaned } = <any>(value);
+
   return cleaned;
 }
-

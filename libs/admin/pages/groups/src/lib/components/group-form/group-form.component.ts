@@ -1,19 +1,17 @@
-import { get as _get } from 'lodash-es';
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { Mutations } from '@bgap/admin/amplify';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  amplifyObjectUpdater, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
+  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
 } from '@bgap/admin/shared/utils';
-import { Group } from '@bgap/api/graphql/schema';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -78,10 +76,11 @@ export class GroupFormComponent
       ),
       currency: ['', [Validators.required]],
       ...contactFormGroup(this._formBuilder),
+      ...addressFormGroup(this._formBuilder),
     });
 
     if (this.group) {
-      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
+      this.dialogForm.patchValue(clearDbProperties(this.group));
     } else {
       // Patch ChainId
       this._store
@@ -98,14 +97,13 @@ export class GroupFormComponent
     // untilDestroyed uses it.
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      if (_get(this.group, 'id')) {
+      if (this.group?.id) {
         try {
-          this._amplifyDataService.update(
-            Group,
-            this.group.id || '',
-            amplifyObjectUpdater(this.dialogForm?.value),
+          await this._amplifyDataService.update('getGroup', 'updateGroup',
+            this.group.id,
+            () => this.dialogForm.value
           );
 
           this._toasterService.show(
@@ -113,15 +111,14 @@ export class GroupFormComponent
             '',
             'common.updateSuccessful',
           );
+
           this.close();
         } catch (error) {
           this._logger.error(`GROUP UPDATE ERROR: ${JSON.stringify(error)}`);
         }
       } else {
         try {
-          this._amplifyDataService.create(Group, {
-            ...cleanObject(this.dialogForm?.value),
-          });
+          await this._amplifyDataService.create(Mutations.createGroup, this.dialogForm?.value);
 
           this._toasterService.show(
             EToasterType.SUCCESS,
