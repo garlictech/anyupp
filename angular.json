@@ -1452,6 +1452,27 @@
           }
         }
       }
+    },
+    "integration-tests": {
+      "root": "libs/integration-tests",
+      "sourceRoot": "libs/integration-tests/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/integration-tests/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests"],
+          "options": {
+            "jestConfig": "libs/integration-tests/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

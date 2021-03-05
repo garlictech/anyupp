@@ -171,6 +171,9 @@
     },
     "admin-amplify": {
       "tags": []
+    },
+    "integration-tests": {
+      "tags": []
     }
   }
 }

@@ -10,6 +10,16 @@
       "StackName": "amplify-amplifyadmin-dev-185445",
       "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-amplifyadmin-dev-185445/8b1a5e30-7c49-11eb-9b2b-02fc2b510c55",
       "AmplifyAppId": "d36xbiz9orrfkh"
+    },
+    "categories": {
+      "auth": {
+        "amplifyadminc8170203": {
+          "userPoolId": "eu-west-1_uQinis9TS",
+          "userPoolName": "dev-anyupp-backend-admin-user-pool",
+          "webClientId": "4hq082sd8sngpd5ei6gueh2h7s",
+          "nativeClientId": "4te6am9eoaq6e3ve904e3ftft3"
+        }
+      }
     }
   }
 }

@@ -16,5 +16,14 @@
         }
       }
     }
+  },
+  "auth": {
+    "amplifyadminc8170203": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
   }
 }

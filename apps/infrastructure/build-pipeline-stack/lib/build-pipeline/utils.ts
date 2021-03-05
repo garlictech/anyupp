@@ -29,17 +29,20 @@ export const configurePermissions = (
   secretsManager.secrets.grantRead(resource);
 
   [
-    'UserPoolClientId',
-    'UserPoolId',
-    'UserPoolDomain',
+    'consumerUserPoolClientId',
+    'consumerUserPoolId',
+    'consumerUserPoolDomain',
     'IdentityPoolId',
     'GraphqlApiKey',
     'GraphqlApiUrl',
-    'googleClientId',
-    'facebookAppId',
-    'stripePublishableKey',
-    'AdminSiteUrl',
     'StripeWebhookEndpoint',
+    'googleClientId',
+    'stripePublishableKey',
+    'facebookAppId',
+    'AdminSiteUrl',
+    'adminUserPoolClientId',
+    'adminUserPoolId',
+    'adminUserPoolDomain',
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,

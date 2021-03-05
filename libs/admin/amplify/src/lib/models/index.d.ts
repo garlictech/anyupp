@@ -1,4 +1,4 @@
-import { ModelInit, MutableModel } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
 export enum CardBrand {
   AMEX = "amex",
@@ -251,6 +251,9 @@ export declare class Chain {
   readonly description?: LocalizedItem;
   readonly style?: ChainStyle;
   readonly isActive?: boolean;
+  readonly address?: Address;
+  readonly email?: string;
+  readonly phone?: string;
   constructor(init: ModelInit<Chain>);
   static copyOf(source: Chain, mutator: (draft: MutableModel<Chain>) => MutableModel<Chain> | void): Chain;
 }
@@ -271,10 +274,14 @@ export declare class Group {
 export declare class Unit {
   readonly id: string;
   readonly groupId: string;
+  readonly chainId: string;
   readonly isActive?: boolean;
   readonly isAcceptingOrders?: boolean;
   readonly name?: string;
   readonly description?: LocalizedItem;
+  readonly address?: Address;
+  readonly email?: string;
+  readonly phone?: string;
   readonly paymentModes?: (PaymentMode | null)[];
   readonly floorMap?: FloorMapData;
   readonly lanes?: (Lane | null)[];
