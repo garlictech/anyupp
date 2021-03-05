@@ -7,7 +7,7 @@ export const mapPaymentMethodToCard = (
 ): AppsyncApi.StripeCard => ({
   ...pm.card,
   id: pm.id,
-  metadata: convertMetadata(pm.metadata),
+  metadata: convertCardMetadata(pm.metadata),
   object: pm.object,
   brand: convertBrand(pm.card),
   funding: convertFunding(pm.card),
@@ -24,7 +24,7 @@ export const mapStripeCardToCard = (
 ): AppsyncApi.StripeCard => ({
   ...card,
   // id: card.id,
-  metadata: convertMetadata(card.metadata),
+  metadata: convertCardMetadata(card.metadata),
   // object: card.object,
   // brand: AppsyncApi.CardBrand[card.brand as keyof typeof AppsyncApi.CardBrand],
   // country: card.country,
@@ -39,7 +39,7 @@ export const mapStripeCardToCard = (
   // exp_month: card.exp_month,
 });
 
-const convertMetadata = (metadata: Stripe.Metadata | null) =>
+const convertCardMetadata = (metadata: Stripe.Metadata | null) =>
   Object.entries(metadata || {}).map(mapMetadataToObjectArray);
 
 const convertBrand = (
