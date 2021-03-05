@@ -1,4 +1,5 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
+import { missingParametersError } from './errors';
 
 export const customNumberCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
@@ -104,3 +105,11 @@ export const isOfType = <T>(
   propertyValueToCheck === undefined
     ? true
     : (varToBeChecked as T)[propertyToCheckFor] === propertyValueToCheck;
+
+export const missingParametersCheck = (data: any, paramNames: string[]) => {
+  for (const paramName of paramNames) {
+    if (!data || data[paramName] === undefined) {
+      throw missingParametersError(paramName);
+    }
+  }
+};

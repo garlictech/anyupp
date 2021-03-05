@@ -1,15 +1,16 @@
 import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { missingParametersCheck } from '@bgap/shared/utils';
 import * as stripeService from './stripe.service';
 
 interface WithStripeCustomer {
   stripeCustomerId: string;
 }
-
 type UpdateStripeCardRequest = WithStripeCustomer &
   AppsyncApi.MutationUpdateMyStripeCardArgs;
-
 type DeleteStripeCardRequest = WithStripeCustomer &
   AppsyncApi.MutationDeleteMyStripeCardArgs;
+type StartStripePaymentRequest = WithStripeCustomer &
+  AppsyncApi.MutationStartStripePaymentArgs;
 
 export const stripeRequestHandler = {
   getStripeCardsForCustomer(
@@ -29,9 +30,8 @@ export const stripeRequestHandler = {
       input,
     } = requestPayload as UpdateStripeCardRequest;
 
-    if (!stripeCustomerId) {
-      throw 'missing stripeCustomerId';
-    }
+    missingParametersCheck(requestPayload, ['stripeCustomerId']);
+    missingParametersCheck(input, ['id']);
 
     return stripeService.updateStripeCard(stripeCustomerId, input);
   },
@@ -41,10 +41,25 @@ export const stripeRequestHandler = {
       input,
     } = requestPayload as DeleteStripeCardRequest;
 
-    if (!stripeCustomerId) {
-      throw 'missing stripeCustomerId';
-    }
+    missingParametersCheck(requestPayload, ['stripeCustomerId']);
+    missingParametersCheck(input, ['id']);
 
     return stripeService.deleteStripeCard(stripeCustomerId, input);
+  },
+  startStripePayment(requestPayload: unknown) {
+    const {
+      stripeCustomerId,
+      input,
+    } = requestPayload as StartStripePaymentRequest;
+
+    missingParametersCheck(requestPayload, ['stripeCustomerId']);
+    missingParametersCheck(input, [
+      'chainId',
+      'unitId',
+      'paymentMethod',
+      'userLocation',
+    ]);
+
+    return stripeService.startStripePayment(stripeCustomerId, input);
   },
 };

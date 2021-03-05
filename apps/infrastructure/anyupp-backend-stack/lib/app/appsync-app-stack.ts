@@ -51,6 +51,7 @@ export class AppsyncAppStack extends sst.Stack {
   // private validatorResolverFunctions: ValidatorResolverFunctions;
   private noneDs!: appsync.NoneDataSource;
   private userTableDDDs!: appsync.DynamoDbDataSource;
+  private orderTableDDDs!: appsync.DynamoDbDataSource;
   private lambdaDs!: appsync.LambdaDataSource;
   private api: GraphqlApi;
 
@@ -89,6 +90,7 @@ export class AppsyncAppStack extends sst.Stack {
       api: this.api,
       scope: this,
       userTableDDDs: this.userTableDDDs,
+      orderTableDDDs: this.orderTableDDDs,
       lambdaDs: this.lambdaDs,
     });
 
@@ -184,6 +186,12 @@ export class AppsyncAppStack extends sst.Stack {
     this.userTableDDDs = this.api.addDynamoDbDataSource(
       'UserDynamoDbDataSource',
       new TableConstruct(this, 'User', {
+        isStreamed: true,
+      }).theTable,
+    );
+    this.orderTableDDDs = this.api.addDynamoDbDataSource(
+      'OrderDynamoDbDataSource',
+      new TableConstruct(this, 'Order', {
         isStreamed: true,
       }).theTable,
     );

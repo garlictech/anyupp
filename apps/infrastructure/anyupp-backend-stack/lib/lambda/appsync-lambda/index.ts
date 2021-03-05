@@ -34,6 +34,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
       console.log('Handling deleteStripeCard');
       return stripeRequestHandler.deleteStripeCard(event.payload);
     }
+    case 'startStripePayment': {
+      console.log('Handling startStripePayment');
+      return stripeRequestHandler.startStripePayment(event.payload);
+    }
     default:
       throw 'missing handler';
   }

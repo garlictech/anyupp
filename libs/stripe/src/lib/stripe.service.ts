@@ -61,6 +61,28 @@ export const deleteStripeCard = async (
     .catch(handleStripeErrors);
 };
 
+export const startStripePayment = async (
+  stripeCustomerId: string,
+  input: AppsyncApi.StartStripePaymentInput,
+): Promise<AppsyncApi.StartStripePaymentOutput> => {
+  // const stripe = await initStripe();
+
+  // const { chainId, unitId, userId, paymentMethodId } = input;
+  console.log('### ~ file: stripe.service.ts ~ line 71 ~ input', input);
+
+  return Promise.resolve({ clientSecret: 'clientSecret', status: 'status' });
+
+  // return stripe.customers
+  //   .deleteSource(stripeCustomerId, input.id)
+  //   .then(response => {
+  //     if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
+  //       throw 'unknown Stripe response';
+  //     }
+  //     return response.deleted;
+  //   })
+  //   .catch(handleStripeErrors);
+};
+
 // TODO
 const handleStripeErrors = (error: Stripe.StripeError) => {
   switch (error.type) {

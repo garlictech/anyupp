@@ -1,5 +1,10 @@
-import * as appsync from '@aws-cdk/aws-appsync';
-import { GraphqlApi, MappingTemplate, Resolver } from '@aws-cdk/aws-appsync';
+import {
+  GraphqlApi,
+  MappingTemplate,
+  Resolver,
+  DynamoDbDataSource,
+  LambdaDataSource,
+} from '@aws-cdk/aws-appsync';
 import { Construct } from '@aws-cdk/core';
 import {
   StripeResolverFunctions,
@@ -14,16 +19,19 @@ export const createStripeResolvers = ({
   scope,
   api,
   userTableDDDs,
+  orderTableDDDs,
   lambdaDs,
 }: {
   scope: Construct;
   api: GraphqlApi;
-  userTableDDDs: appsync.DynamoDbDataSource;
-  lambdaDs: appsync.LambdaDataSource;
+  userTableDDDs: DynamoDbDataSource;
+  orderTableDDDs: DynamoDbDataSource;
+  lambdaDs: LambdaDataSource;
 }): void => {
   const stripeResolverFunctions: StripeResolverFunctions = createStripeResolverFunctions(
     {
       userTableDDDs,
+      orderTableDDDs,
       lambdaDs,
     },
   );

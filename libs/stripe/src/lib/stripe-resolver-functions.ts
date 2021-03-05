@@ -7,6 +7,7 @@ import {
 
 export interface StripeResolverFunctions {
   getStripeCustomerId: AppsyncFunction;
+  getInappPaymentReadyOrders: AppsyncFunction;
   getStripeCardsForStripeCustomer: AppsyncFunction;
   updateStripeCard: AppsyncFunction;
   deleteStripeCard: AppsyncFunction;
@@ -15,15 +16,38 @@ export interface StripeResolverFunctions {
 
 export const createStripeResolverFunctions = ({
   userTableDDDs,
+  orderTableDDDs,
   lambdaDs,
 }: {
   userTableDDDs: DynamoDbDataSource;
+  orderTableDDDs: DynamoDbDataSource;
   lambdaDs: LambdaDataSource;
 }): StripeResolverFunctions => ({
   getStripeCustomerId: userTableDDDs.createFunction({
     name: 'getStripeCustomeridForAuthenticatedUser',
     description:
       'get the stripe customer id for the currently authenticated user',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "operation": "GetItem",
+        "key": {
+            "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub),
+        }
+       }
+      `,
+    ),
+    responseMappingTemplate: MappingTemplate.fromString(
+      `
+      $util.qr($ctx.stash.put("stripeCustomerId", $ctx.result.stripeCustomerId))
+      {} ## make sure you add this at the end to prevent the empty template response error
+      `,
+    ),
+  }),
+  getInappPaymentReadyOrders: orderTableDDDs.createFunction({
+    name: 'getInappPaymentReadyOrders',
+    description:
+      'get orders for a user in a given unit that with inapp payment and ready state',
     requestMappingTemplate: MappingTemplate.fromString(
       `
       {
