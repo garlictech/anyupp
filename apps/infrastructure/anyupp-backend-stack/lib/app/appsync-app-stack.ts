@@ -1,22 +1,18 @@
+import path from 'path';
+
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
-import { GraphqlApi, MappingTemplate, Resolver } from '@aws-cdk/aws-appsync';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
+import { createStripeResolvers } from '@bgap/stripe';
 import * as sst from '@serverless-stack/resources';
-import * as sm from '@aws-cdk/aws-secretsmanager';
-import path from 'path';
-import { TableConstruct } from './dynamodb-construct';
-import { PROJECT_ROOT } from './settings';
-import { commonLambdaProps } from './lambda-common';
-import {
-  createStripeResolverFunctions,
-  StripeResolverFunctions,
-} from './resolver-functions';
 
-// import * as iam from '@aws-cdk/aws-iam';
-// import { ManagedPolicy } from '@aws-cdk/aws-iam';
+import { TableConstruct } from './dynamodb-construct';
+import { commonLambdaProps } from './lambda-common';
+import { PROJECT_ROOT } from './settings';
+import { GraphqlApi } from '@aws-cdk/aws-appsync';
 import { Duration } from '@aws-cdk/core';
 
 // const stageValidationProperties = (fields: string[]): string =>
@@ -88,7 +84,13 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     this.createDatasources(props.secretsManager);
-    this.createStripeResolvers();
+
+    createStripeResolvers({
+      api: this.api,
+      scope: this,
+      userTableDDDs: this.userTableDDDs,
+      lambdaDs: this.lambdaDs,
+    });
 
     // this.validatorvalidatorResolverFunctions = createValidatorvalidatorResolverFunctions(this.noneDs);
 
@@ -194,7 +196,8 @@ export class AppsyncAppStack extends sst.Stack {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/appsync-lambda/index.handler',
-      timeout: Duration.seconds(10),
+      timeout: Duration.seconds(5),
+      memorySize: 256,
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
@@ -202,72 +205,6 @@ export class AppsyncAppStack extends sst.Stack {
 
     secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
-  }
-
-  private createStripeResolvers(): void {
-    const stripeResolverFunctions: StripeResolverFunctions = createStripeResolverFunctions(
-      {
-        noneDs: this.noneDs,
-        userTableDDDs: this.userTableDDDs,
-        lambdaDs: this.lambdaDs,
-      },
-    );
-
-    new Resolver(this, 'getMyStripeCards', {
-      api: this.api,
-      typeName: 'Query',
-      fieldName: 'getMyStripeCards',
-      requestMappingTemplate: MappingTemplate.fromString('{}'),
-      pipelineConfig: [
-        stripeResolverFunctions.getStripeCustomerId,
-        stripeResolverFunctions.getStripeCardsForStripeCustomer,
-      ],
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
-      ),
-    });
-
-    new Resolver(this, 'updateMyStripeCard', {
-      api: this.api,
-      typeName: 'Mutation',
-      fieldName: 'updateMyStripeCard',
-      requestMappingTemplate: MappingTemplate.fromString('{}'),
-      pipelineConfig: [
-        stripeResolverFunctions.getStripeCustomerId,
-        stripeResolverFunctions.updateStripeCard,
-      ],
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
-      ),
-    });
-
-    new Resolver(this, 'deleteMyStripeCard', {
-      api: this.api,
-      typeName: 'Mutation',
-      fieldName: 'deleteMyStripeCard',
-      requestMappingTemplate: MappingTemplate.fromString('{}'),
-      pipelineConfig: [
-        stripeResolverFunctions.getStripeCustomerId,
-        stripeResolverFunctions.deleteStripeCard,
-      ],
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
-      ),
-    });
-
-    new Resolver(this, 'startStripePayment', {
-      api: this.api,
-      typeName: 'Mutation',
-      fieldName: 'startStripePayment',
-      requestMappingTemplate: MappingTemplate.fromString('{}'),
-      pipelineConfig: [
-        stripeResolverFunctions.getStripeCustomerId,
-        // stripeResolverFunctions.getStripeCardsForStripeCustomer,
-      ],
-      responseMappingTemplate: MappingTemplate.fromFile(
-        'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
-      ),
-    });
   }
 
   // private createCommonResolvers(apiDesc: ApiDesc): void {

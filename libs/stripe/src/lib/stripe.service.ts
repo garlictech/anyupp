@@ -4,67 +4,61 @@ import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { SharedSecrets, sharedSecretsPromise } from '@bgap/shared/secrets';
 import { isOfType } from '@bgap/shared/utils';
 
-import { mapPaymentMethodToCard, mapStripeCardToCard } from './stripe.utils';
+import { mapStripeCardToCard, mapPaymentMethodToCard } from './stripe.utils';
 
-export const stripeService = {
-  async getStripeCardsForCustomer(
-    stripeCustomerId: string,
-  ): Promise<AppsyncApi.StripeCard[]> {
-    const secrets: SharedSecrets = await sharedSecretsPromise;
-    const stripe = new Stripe(secrets.stripeSecretKey, {
-      apiVersion: '2020-08-27',
-    });
-    // TODO: use stripe.customers.listSources https://stripe.com/docs/api/cards/list?lang=node
-    const paymentMethods = await stripe.paymentMethods.list({
+// TODO: use stripe.customers.listSources https://stripe.com/docs/api/cards/list?lang=node
+export const getStripeCardsForCustomer = async (
+  stripeCustomerId: string,
+): Promise<AppsyncApi.StripeCard[]> => {
+  const stripe = await initStripe();
+
+  return stripe.paymentMethods
+    .list({
       customer: stripeCustomerId,
       type: 'card',
-    });
-    return paymentMethods.data.map(mapPaymentMethodToCard);
-  },
+    })
+    .then(paymentMethods => {
+      return paymentMethods.data.map(mapPaymentMethodToCard);
+    })
+    .catch(handleStripeErrors);
+};
 
-  async updateStripeCard(
-    stripeCustomerId: string,
-    input: AppsyncApi.StripeCardUpdateInput,
-  ): Promise<AppsyncApi.StripeCard> {
-    const secrets: SharedSecrets = await sharedSecretsPromise;
-    const stripe = new Stripe(secrets.stripeSecretKey, {
-      apiVersion: '2020-08-27',
-    });
+export const updateStripeCard = async (
+  stripeCustomerId: string,
+  input: AppsyncApi.StripeCardUpdateInput,
+): Promise<AppsyncApi.StripeCard> => {
+  const stripe = await initStripe();
 
-    return stripe.customers
-      .updateSource(stripeCustomerId, input.id, {
-        exp_month: input.exp_month || undefined,
-        exp_year: input.exp_year || undefined,
-        name: input.name || undefined,
-      })
-      .then(updatedCard => {
-        if (!isOfType<Stripe.Card>(updatedCard, 'object', 'card')) {
-          throw 'unknown Stripe response';
-        }
-        return mapStripeCardToCard(updatedCard);
-      })
-      .catch(handleStripeErrors);
-  },
+  return stripe.customers
+    .updateSource(stripeCustomerId, input.id, {
+      exp_month: input.exp_month || undefined,
+      exp_year: input.exp_year || undefined,
+      name: input.name || undefined,
+    })
+    .then(updatedCard => {
+      if (!isOfType<Stripe.Card>(updatedCard, 'object', 'card')) {
+        throw 'unknown Stripe response';
+      }
+      return mapStripeCardToCard(updatedCard);
+    })
+    .catch(handleStripeErrors);
+};
 
-  async deleteStripeCard(
-    stripeCustomerId: string,
-    input: AppsyncApi.StripeCardDeleteInput,
-  ): Promise<boolean> {
-    const secrets: SharedSecrets = await sharedSecretsPromise;
-    const stripe = new Stripe(secrets.stripeSecretKey, {
-      apiVersion: '2020-08-27',
-    });
+export const deleteStripeCard = async (
+  stripeCustomerId: string,
+  input: AppsyncApi.StripeCardDeleteInput,
+): Promise<boolean> => {
+  const stripe = await initStripe();
 
-    return stripe.customers
-      .deleteSource(stripeCustomerId, input.id)
-      .then(response => {
-        if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
-          throw 'unknown Stripe response';
-        }
-        return response.deleted;
-      })
-      .catch(handleStripeErrors);
-  },
+  return stripe.customers
+    .deleteSource(stripeCustomerId, input.id)
+    .then(response => {
+      if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
+        throw 'unknown Stripe response';
+      }
+      return response.deleted;
+    })
+    .catch(handleStripeErrors);
 };
 
 // TODO
@@ -119,3 +113,10 @@ const handleStripeErrors = (error: Stripe.StripeError) => {
 // };
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
+
+const initStripe = async () => {
+  const secrets: SharedSecrets = await sharedSecretsPromise;
+  return new Stripe(secrets.stripeSecretKey, {
+    apiVersion: '2020-08-27',
+  });
+};
