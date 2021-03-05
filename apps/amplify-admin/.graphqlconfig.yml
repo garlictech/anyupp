@@ -1,16 +1,16 @@
 projects:
   amplifyadmin:
     schemaPath: >-
-      Users/tomi/Dev/web/localhost/bitgap/cyberg/anyupp/libs/admin/amplify/src/lib/graphql/schema.json
+      Users/tomi/Dev/web/localhost/bitgap/cyberg/anyupp/libs/admin/amplify/src/lib/documents/schema.json
     includes:
-      - ../../libs/admin/amplify/src/lib/graphql/**/*.ts
+      - ../../libs/admin/amplify/src/lib/documents/**/*.ts
     excludes:
       - ./amplify/**
     extensions:
       amplify:
         codeGenTarget: typescript
         generatedFileName: ../../libs/admin/amplify/src/lib/api.ts
-        docsFilePath: ../../libs/admin/amplify/src/lib/graphql
+        docsFilePath: ../../libs/admin/amplify/src/lib/documents
 extensions:
   amplify:
     version: 3

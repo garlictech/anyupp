@@ -10,7 +10,6 @@ export type CreateAdminUserInput = {
   settings?: AdminUserSettingsInput | null,
   email?: string | null,
   phone?: string | null,
-  _version?: number | null,
 };
 
 export type AdminUserRoleInput = {
@@ -92,9 +91,6 @@ export type AdminUser = {
   settings?: AdminUserSettings,
   email?: string | null,
   phone?: string | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -130,12 +126,10 @@ export type UpdateAdminUserInput = {
   settings?: AdminUserSettingsInput | null,
   email?: string | null,
   phone?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteAdminUserInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateStripeCardInput = {
@@ -151,7 +145,6 @@ export type CreateStripeCardInput = {
   id?: string | null,
   object: string,
   metadata: Array< StripeMetadataInput >,
-  _version?: number | null,
 };
 
 export enum CardBrand {
@@ -236,9 +229,6 @@ export type StripeCard = {
   id?: string,
   object?: string,
   metadata?:  Array<StripeMetadata >,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -269,12 +259,10 @@ export type UpdateStripeCardInput = {
   id: string,
   object?: string | null,
   metadata?: Array< StripeMetadataInput > | null,
-  _version?: number | null,
 };
 
 export type DeleteStripeCardInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateChainInput = {
@@ -283,7 +271,9 @@ export type CreateChainInput = {
   description?: LocalizedItemInput | null,
   style?: ChainStyleInput | null,
   isActive?: boolean | null,
-  _version?: number | null,
+  address?: AddressInput | null,
+  email?: string | null,
+  phone?: string | null,
 };
 
 export type LocalizedItemInput = {
@@ -314,9 +304,25 @@ export type ChainStyleImagesInput = {
   logo?: string | null,
 };
 
+export type AddressInput = {
+  address?: string | null,
+  city?: string | null,
+  country?: string | null,
+  title?: string | null,
+  postalCode?: string | null,
+  location?: LocationInput | null,
+};
+
+export type LocationInput = {
+  lat?: string | null,
+  lng?: string | null,
+};
+
 export type ModelChainConditionInput = {
   name?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
+  email?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
   and?: Array< ModelChainConditionInput | null > | null,
   or?: Array< ModelChainConditionInput | null > | null,
   not?: ModelChainConditionInput | null,
@@ -336,9 +342,9 @@ export type Chain = {
   description?: LocalizedItem,
   style?: ChainStyle,
   isActive?: boolean | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
+  address?: Address,
+  email?: string | null,
+  phone?: string | null,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -375,18 +381,35 @@ export type ChainStyleImages = {
   logo?: string | null,
 };
 
+export type Address = {
+  __typename: "Address",
+  address?: string | null,
+  city?: string | null,
+  country?: string | null,
+  title?: string | null,
+  postalCode?: string | null,
+  location?: Location,
+};
+
+export type Location = {
+  __typename: "Location",
+  lat?: string | null,
+  lng?: string | null,
+};
+
 export type UpdateChainInput = {
   id: string,
   name?: string | null,
   description?: LocalizedItemInput | null,
   style?: ChainStyleInput | null,
   isActive?: boolean | null,
-  _version?: number | null,
+  address?: AddressInput | null,
+  email?: string | null,
+  phone?: string | null,
 };
 
 export type DeleteChainInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateGroupInput = {
@@ -398,21 +421,6 @@ export type CreateGroupInput = {
   address?: AddressInput | null,
   email?: string | null,
   phone?: string | null,
-  _version?: number | null,
-};
-
-export type AddressInput = {
-  address?: string | null,
-  city?: string | null,
-  country?: string | null,
-  title?: string | null,
-  postalCode?: string | null,
-  location?: LocationInput | null,
-};
-
-export type LocationInput = {
-  lat?: number | null,
-  lng?: number | null,
 };
 
 export type ModelGroupConditionInput = {
@@ -452,27 +460,8 @@ export type Group = {
   address?: Address,
   email?: string | null,
   phone?: string | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
-};
-
-export type Address = {
-  __typename: "Address",
-  address?: string | null,
-  city?: string | null,
-  country?: string | null,
-  title?: string | null,
-  postalCode?: string | null,
-  location?: Location,
-};
-
-export type Location = {
-  __typename: "Location",
-  lat?: number | null,
-  lng?: number | null,
 };
 
 export type UpdateGroupInput = {
@@ -484,12 +473,10 @@ export type UpdateGroupInput = {
   address?: AddressInput | null,
   email?: string | null,
   phone?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteGroupInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateOrderInput = {
@@ -504,7 +491,6 @@ export type CreateOrderInput = {
   userId?: string | null,
   place?: PlaceInput | null,
   paymentIntention?: number | null,
-  _version?: number | null,
 };
 
 export type OrderItemInput = {
@@ -564,9 +550,6 @@ export type Order = {
   userId?: string | null,
   place?: Place,
   paymentIntention?: number | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -619,12 +602,10 @@ export type UpdateOrderInput = {
   userId?: string | null,
   place?: PlaceInput | null,
   paymentIntention?: number | null,
-  _version?: number | null,
 };
 
 export type DeleteOrderInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateProductCategoryInput = {
@@ -633,7 +614,6 @@ export type CreateProductCategoryInput = {
   image?: string | null,
   name?: LocalizedItemInput | null,
   position?: string | null,
-  _version?: number | null,
 };
 
 export type ModelProductCategoryConditionInput = {
@@ -651,9 +631,6 @@ export type ProductCategory = {
   image?: string | null,
   name?: LocalizedItem,
   position?: string | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -664,12 +641,10 @@ export type UpdateProductCategoryInput = {
   image?: string | null,
   name?: LocalizedItemInput | null,
   position?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteProductCategoryInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateChainProductInput = {
@@ -685,7 +660,6 @@ export type CreateChainProductInput = {
   laneId?: string | null,
   productType?: string | null,
   variants?: Array< ProductVariantInput | null > | null,
-  _version?: number | null,
 };
 
 export type ProductVariantInput = {
@@ -741,9 +715,6 @@ export type ChainProduct = {
   laneId?: string | null,
   productType?: string | null,
   variants?:  Array<ProductVariant | null > | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -789,27 +760,28 @@ export type UpdateChainProductInput = {
   laneId?: string | null,
   productType?: string | null,
   variants?: Array< ProductVariantInput | null > | null,
-  _version?: number | null,
 };
 
 export type DeleteChainProductInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateUnitInput = {
   id?: string | null,
   groupId: string,
+  chainId: string,
   isActive?: boolean | null,
   isAcceptingOrders?: boolean | null,
   name?: string | null,
   description?: LocalizedItemInput | null,
+  address?: AddressInput | null,
+  email?: string | null,
+  phone?: string | null,
   paymentModes?: Array< PaymentModeInput | null > | null,
   floorMap?: FloorMapDataInput | null,
   lanes?: Array< LaneInput | null > | null,
   open?: DailyScheduleInput | null,
   openingHours?: WeeklyScheduleInput | null,
-  _version?: number | null,
 };
 
 export type PaymentModeInput = {
@@ -868,9 +840,12 @@ export type CustomDailyScheduleInput = {
 
 export type ModelUnitConditionInput = {
   groupId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
   isActive?: ModelBooleanInput | null,
   isAcceptingOrders?: ModelBooleanInput | null,
   name?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
   and?: Array< ModelUnitConditionInput | null > | null,
   or?: Array< ModelUnitConditionInput | null > | null,
   not?: ModelUnitConditionInput | null,
@@ -880,18 +855,19 @@ export type Unit = {
   __typename: "Unit",
   id?: string,
   groupId?: string,
+  chainId?: string,
   isActive?: boolean | null,
   isAcceptingOrders?: boolean | null,
   name?: string | null,
   description?: LocalizedItem,
+  address?: Address,
+  email?: string | null,
+  phone?: string | null,
   paymentModes?:  Array<PaymentMode | null > | null,
   floorMap?: FloorMapData,
   lanes?:  Array<Lane | null > | null,
   open?: DailySchedule,
   openingHours?: WeeklySchedule,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -960,21 +936,23 @@ export type CustomDailySchedule = {
 export type UpdateUnitInput = {
   id: string,
   groupId?: string | null,
+  chainId?: string | null,
   isActive?: boolean | null,
   isAcceptingOrders?: boolean | null,
   name?: string | null,
   description?: LocalizedItemInput | null,
+  address?: AddressInput | null,
+  email?: string | null,
+  phone?: string | null,
   paymentModes?: Array< PaymentModeInput | null > | null,
   floorMap?: FloorMapDataInput | null,
   lanes?: Array< LaneInput | null > | null,
   open?: DailyScheduleInput | null,
   openingHours?: WeeklyScheduleInput | null,
-  _version?: number | null,
 };
 
 export type DeleteUnitInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type CreateUserInput = {
@@ -984,7 +962,6 @@ export type CreateUserInput = {
   phone?: string | null,
   profileImage?: string | null,
   login?: string | null,
-  _version?: number | null,
 };
 
 export type ModelUserConditionInput = {
@@ -1006,9 +983,6 @@ export type User = {
   phone?: string | null,
   profileImage?: string | null,
   login?: string | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
 };
@@ -1020,12 +994,10 @@ export type UpdateUserInput = {
   phone?: string | null,
   profileImage?: string | null,
   login?: string | null,
-  _version?: number | null,
 };
 
 export type DeleteUserInput = {
   id?: string | null,
-  _version?: number | null,
 };
 
 export type ModelAdminUserFilterInput = {
@@ -1043,7 +1015,6 @@ export type ModelAdminUserConnection = {
   __typename: "ModelAdminUserConnection",
   items?:  Array<AdminUser | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelStripeCardFilterInput = {
@@ -1066,13 +1037,14 @@ export type ModelStripeCardConnection = {
   __typename: "ModelStripeCardConnection",
   items?:  Array<StripeCard | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelChainFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
+  email?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
   and?: Array< ModelChainFilterInput | null > | null,
   or?: Array< ModelChainFilterInput | null > | null,
   not?: ModelChainFilterInput | null,
@@ -1082,7 +1054,6 @@ export type ModelChainConnection = {
   __typename: "ModelChainConnection",
   items?:  Array<Chain | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelGroupFilterInput = {
@@ -1101,7 +1072,6 @@ export type ModelGroupConnection = {
   __typename: "ModelGroupConnection",
   items?:  Array<Group | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelOrderFilterInput = {
@@ -1121,7 +1091,6 @@ export type ModelOrderConnection = {
   __typename: "ModelOrderConnection",
   items?:  Array<Order | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelProductCategoryFilterInput = {
@@ -1137,7 +1106,6 @@ export type ModelProductCategoryConnection = {
   __typename: "ModelProductCategoryConnection",
   items?:  Array<ProductCategory | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelChainProductFilterInput = {
@@ -1159,15 +1127,17 @@ export type ModelChainProductConnection = {
   __typename: "ModelChainProductConnection",
   items?:  Array<ChainProduct | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelUnitFilterInput = {
   id?: ModelIDInput | null,
   groupId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
   isActive?: ModelBooleanInput | null,
   isAcceptingOrders?: ModelBooleanInput | null,
   name?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
   and?: Array< ModelUnitFilterInput | null > | null,
   or?: Array< ModelUnitFilterInput | null > | null,
   not?: ModelUnitFilterInput | null,
@@ -1177,7 +1147,6 @@ export type ModelUnitConnection = {
   __typename: "ModelUnitConnection",
   items?:  Array<Unit | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type ModelUserFilterInput = {
@@ -1196,7 +1165,6 @@ export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items?:  Array<User | null > | null,
   nextToken?: string | null,
-  startedAt?: number | null,
 };
 
 export type CreateAdminUserMutationVariables = {
@@ -1231,9 +1199,6 @@ export type CreateAdminUserMutation = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1271,9 +1236,6 @@ export type UpdateAdminUserMutation = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1311,9 +1273,6 @@ export type DeleteAdminUserMutation = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1348,9 +1307,6 @@ export type CreateStripeCardMutation = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1385,9 +1341,6 @@ export type UpdateStripeCardMutation = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1422,9 +1375,6 @@ export type DeleteStripeCardMutation = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1467,9 +1417,21 @@ export type CreateChainMutation = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1512,9 +1474,21 @@ export type UpdateChainMutation = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1557,9 +1531,21 @@ export type DeleteChainMutation = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1592,15 +1578,12 @@ export type CreateGroupMutation = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1633,15 +1616,12 @@ export type UpdateGroupMutation = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1674,15 +1654,12 @@ export type DeleteGroupMutation = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1757,9 +1734,6 @@ export type CreateOrderMutation = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1834,9 +1808,6 @@ export type UpdateOrderMutation = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1911,9 +1882,6 @@ export type DeleteOrderMutation = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1942,9 +1910,6 @@ export type CreateProductCategoryMutation = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1973,9 +1938,6 @@ export type UpdateProductCategoryMutation = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2004,9 +1966,6 @@ export type DeleteProductCategoryMutation = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2069,9 +2028,6 @@ export type CreateChainProductMutation = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2134,9 +2090,6 @@ export type UpdateChainProductMutation = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2199,9 +2152,6 @@ export type DeleteChainProductMutation = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2217,6 +2167,7 @@ export type CreateUnitMutation = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -2226,6 +2177,21 @@ export type CreateUnitMutation = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -2306,9 +2272,6 @@ export type CreateUnitMutation = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2324,6 +2287,7 @@ export type UpdateUnitMutation = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -2333,6 +2297,21 @@ export type UpdateUnitMutation = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -2413,9 +2392,6 @@ export type UpdateUnitMutation = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2431,6 +2407,7 @@ export type DeleteUnitMutation = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -2440,6 +2417,21 @@ export type DeleteUnitMutation = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -2520,9 +2512,6 @@ export type DeleteUnitMutation = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2542,9 +2531,6 @@ export type CreateUserMutation = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2564,9 +2550,6 @@ export type UpdateUserMutation = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2586,52 +2569,8 @@ export type DeleteUserMutation = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type SyncAdminUsersQueryVariables = {
-  filter?: ModelAdminUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncAdminUsersQuery = {
-  syncAdminUsers?:  {
-    __typename: "ModelAdminUserConnection",
-    items?:  Array< {
-      __typename: "AdminUser",
-      id: string,
-      name?: string | null,
-      profileImage?: string | null,
-      roles:  {
-        __typename: "AdminUserRole",
-        role: string,
-      },
-      settings?:  {
-        __typename: "AdminUserSettings",
-        selectedChainId?: string | null,
-        selectedGroupId?: string | null,
-        selectedUnitId?: string | null,
-        selectedProductCategoryId?: string | null,
-        selectedLanguage?: string | null,
-        selectedHistoryDate?: number | null,
-      } | null,
-      email?: string | null,
-      phone?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -2666,9 +2605,6 @@ export type GetAdminUserQuery = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2703,58 +2639,10 @@ export type ListAdminUsersQuery = {
       } | null,
       email?: string | null,
       phone?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncStripeCardsQueryVariables = {
-  filter?: ModelStripeCardFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncStripeCardsQuery = {
-  syncStripeCards?:  {
-    __typename: "ModelStripeCardConnection",
-    items?:  Array< {
-      __typename: "StripeCard",
-      brand?: CardBrand | null,
-      checks?:  {
-        __typename: "CardChecks",
-        address_line1_check?: string | null,
-        address_postal_code_check?: string | null,
-        cvc_check?: string | null,
-      } | null,
-      country?: string | null,
-      last4?: string | null,
-      exp_month?: number | null,
-      exp_year?: number | null,
-      fingerprint?: string | null,
-      funding?: CardFundingType | null,
-      three_d_secure?: string | null,
-      id: string,
-      object: string,
-      metadata:  Array< {
-        __typename: "StripeMetadata",
-        key: string,
-        value: string,
-      } >,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -2786,9 +2674,6 @@ export type GetStripeCardQuery = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2826,46 +2711,10 @@ export type ListStripeCardsQuery = {
         key: string,
         value: string,
       } >,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncChainsQueryVariables = {
-  filter?: ModelChainFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncChainsQuery = {
-  syncChains?:  {
-    __typename: "ModelChainConnection",
-    items?:  Array< {
-      __typename: "Chain",
-      id: string,
-      name?: string | null,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      isActive?: boolean | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -2905,9 +2754,21 @@ export type GetChainQuery = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2933,39 +2794,6 @@ export type ListChainsQuery = {
         hu?: string | null,
       } | null,
       isActive?: boolean | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncGroupsQueryVariables = {
-  filter?: ModelGroupFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncGroupsQuery = {
-  syncGroups?:  {
-    __typename: "ModelGroupConnection",
-    items?:  Array< {
-      __typename: "Group",
-      id: string,
-      chainId: string,
-      name?: string | null,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      currency?: string | null,
       address?:  {
         __typename: "Address",
         address?: string | null,
@@ -2976,14 +2804,10 @@ export type SyncGroupsQuery = {
       } | null,
       email?: string | null,
       phone?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3013,15 +2837,12 @@ export type GetGroupQuery = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3058,72 +2879,10 @@ export type ListGroupsQuery = {
       } | null,
       email?: string | null,
       phone?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncOrdersQueryVariables = {
-  filter?: ModelOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncOrdersQuery = {
-  syncOrders?:  {
-    __typename: "ModelOrderConnection",
-    items?:  Array< {
-      __typename: "Order",
-      id: string,
-      created?: number | null,
-      items?:  Array< {
-        __typename: "OrderItem",
-        id: string,
-        created?: number | null,
-        productId?: string | null,
-        quantity?: number | null,
-        variantId?: string | null,
-        laneId?: string | null,
-      } | null > | null,
-      paymentMethod?: string | null,
-      staffId?: string | null,
-      statusLog?:  Array< {
-        __typename: "StatusLog",
-        userId?: string | null,
-        status?: string | null,
-        ts?: number | null,
-      } | null > | null,
-      sumPriceShown?:  {
-        __typename: "PriceShown",
-        currency?: string | null,
-        pricePerUnit?: number | null,
-        priceSum?: number | null,
-        tax?: number | null,
-        taxSum?: number | null,
-      } | null,
-      takeAway?: boolean | null,
-      userId?: string | null,
-      place?:  {
-        __typename: "Place",
-        seat?: string | null,
-        table?: string | null,
-      } | null,
-      paymentIntention?: number | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3195,9 +2954,6 @@ export type GetOrderQuery = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3249,52 +3005,10 @@ export type ListOrdersQuery = {
         table?: string | null,
       } | null,
       paymentIntention?: number | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncProductCategoriesQueryVariables = {
-  filter?: ModelProductCategoryFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncProductCategoriesQuery = {
-  syncProductCategories?:  {
-    __typename: "ModelProductCategoryConnection",
-    items?:  Array< {
-      __typename: "ProductCategory",
-      id: string,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      image?: string | null,
-      name?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      position?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3320,9 +3034,6 @@ export type GetProductCategoryQuery = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3354,66 +3065,10 @@ export type ListProductCategorysQuery = {
         hu?: string | null,
       } | null,
       position?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncChainProductsQueryVariables = {
-  filter?: ModelChainProductFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncChainProductsQuery = {
-  syncChainProducts?:  {
-    __typename: "ModelChainProductConnection",
-    items?:  Array< {
-      __typename: "ChainProduct",
-      id: string,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      extends?: string | null,
-      image?: string | null,
-      isVisible?: boolean | null,
-      tax?: number | null,
-      name?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      position?: string | null,
-      productCategoryId?: string | null,
-      laneId?: string | null,
-      productType?: string | null,
-      variants?:  Array< {
-        __typename: "ProductVariant",
-        refGroupPrice?: number | null,
-        isAvailable?: boolean | null,
-        price?: number | null,
-        availableFrom?: string | null,
-        position?: string | null,
-      } | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3473,9 +3128,6 @@ export type GetChainProductQuery = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3521,70 +3173,10 @@ export type ListChainProductsQuery = {
         availableFrom?: string | null,
         position?: string | null,
       } | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncUnitsQueryVariables = {
-  filter?: ModelUnitFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncUnitsQuery = {
-  syncUnits?:  {
-    __typename: "ModelUnitConnection",
-    items?:  Array< {
-      __typename: "Unit",
-      id: string,
-      groupId: string,
-      isActive?: boolean | null,
-      isAcceptingOrders?: boolean | null,
-      name?: string | null,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      paymentModes?:  Array< {
-        __typename: "PaymentMode",
-        name: string,
-        caption?: string | null,
-        method: string,
-      } | null > | null,
-      floorMap?:  {
-        __typename: "FloorMapData",
-        w?: number | null,
-        h?: number | null,
-      } | null,
-      lanes?:  Array< {
-        __typename: "Lane",
-        id?: string | null,
-        name?: string | null,
-        color?: string | null,
-      } | null > | null,
-      open?:  {
-        __typename: "DailySchedule",
-        from?: string | null,
-        to?: string | null,
-      } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3597,6 +3189,7 @@ export type GetUnitQuery = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -3606,6 +3199,21 @@ export type GetUnitQuery = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -3686,9 +3294,6 @@ export type GetUnitQuery = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3707,6 +3312,7 @@ export type ListUnitsQuery = {
       __typename: "Unit",
       id: string,
       groupId: string,
+      chainId: string,
       isActive?: boolean | null,
       isAcceptingOrders?: boolean | null,
       name?: string | null,
@@ -3716,6 +3322,16 @@ export type ListUnitsQuery = {
         de?: string | null,
         hu?: string | null,
       } | null,
+      address?:  {
+        __typename: "Address",
+        address?: string | null,
+        city?: string | null,
+        country?: string | null,
+        title?: string | null,
+        postalCode?: string | null,
+      } | null,
+      email?: string | null,
+      phone?: string | null,
       paymentModes?:  Array< {
         __typename: "PaymentMode",
         name: string,
@@ -3738,43 +3354,10 @@ export type ListUnitsQuery = {
         from?: string | null,
         to?: string | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncUsersQueryVariables = {
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncUsersQuery = {
-  syncUsers?:  {
-    __typename: "ModelUserConnection",
-    items?:  Array< {
-      __typename: "User",
-      id: string,
-      name?: string | null,
-      email?: string | null,
-      phone?: string | null,
-      profileImage?: string | null,
-      login?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -3791,9 +3374,6 @@ export type GetUserQuery = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3816,15 +3396,15 @@ export type ListUsersQuery = {
       phone?: string | null,
       profileImage?: string | null,
       login?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
+};
+
+export type OnAdminUserChangeSubscriptionVariables = {
+  id?: string,
 };
 
 export type OnAdminUserChangeSubscription = {
@@ -3854,16 +3434,45 @@ export type OnAdminUserChangeSubscription = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnChainChangeSubscription = {
-  onChainChange?:  {
+export type OnAdminUsersChangeSubscription = {
+  onAdminUsersChange?:  {
+    __typename: "AdminUser",
+    id: string,
+    name?: string | null,
+    profileImage?: string | null,
+    roles:  {
+      __typename: "AdminUserRole",
+      role: string,
+      entities?:  Array< {
+        __typename: "AdminRoleEntity",
+        chainId?: string | null,
+        groupId?: string | null,
+        unitId?: string | null,
+      } | null > | null,
+    },
+    settings?:  {
+      __typename: "AdminUserSettings",
+      selectedChainId?: string | null,
+      selectedGroupId?: string | null,
+      selectedUnitId?: string | null,
+      selectedProductCategoryId?: string | null,
+      selectedLanguage?: string | null,
+      selectedHistoryDate?: number | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnChainsChangeSubscription = {
+  onChainsChange?:  {
     __typename: "Chain",
     id: string,
     name?: string | null,
@@ -3894,16 +3503,28 @@ export type OnChainChangeSubscription = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnGroupChangeSubscription = {
-  onGroupChange?:  {
+export type OnGroupsChangeSubscription = {
+  onGroupsChange?:  {
     __typename: "Group",
     id: string,
     chainId: string,
@@ -3924,25 +3545,23 @@ export type OnGroupChangeSubscription = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUnitChangeSubscription = {
-  onUnitChange?:  {
+export type OnUnitsChangeSubscription = {
+  onUnitsChange?:  {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -3952,6 +3571,21 @@ export type OnUnitChangeSubscription = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -4032,16 +3666,13 @@ export type OnUnitChangeSubscription = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUserChangeSubscription = {
-  onUserChange?:  {
+export type OnUsersChangeSubscription = {
+  onUsersChange?:  {
     __typename: "User",
     id: string,
     name?: string | null,
@@ -4049,9 +3680,6 @@ export type OnUserChangeSubscription = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4084,9 +3712,6 @@ export type OnCreateAdminUserSubscription = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4119,9 +3744,6 @@ export type OnUpdateAdminUserSubscription = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4154,9 +3776,6 @@ export type OnDeleteAdminUserSubscription = {
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4186,9 +3805,6 @@ export type OnCreateStripeCardSubscription = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4218,9 +3834,6 @@ export type OnUpdateStripeCardSubscription = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4250,9 +3863,6 @@ export type OnDeleteStripeCardSubscription = {
       key: string,
       value: string,
     } >,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4290,9 +3900,21 @@ export type OnCreateChainSubscription = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4330,9 +3952,21 @@ export type OnUpdateChainSubscription = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4370,9 +4004,21 @@ export type OnDeleteChainSubscription = {
       } | null,
     } | null,
     isActive?: boolean | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4400,15 +4046,12 @@ export type OnCreateGroupSubscription = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4436,15 +4079,12 @@ export type OnUpdateGroupSubscription = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4472,15 +4112,12 @@ export type OnDeleteGroupSubscription = {
       postalCode?: string | null,
       location?:  {
         __typename: "Location",
-        lat?: number | null,
-        lng?: number | null,
+        lat?: string | null,
+        lng?: string | null,
       } | null,
     } | null,
     email?: string | null,
     phone?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4550,9 +4187,6 @@ export type OnCreateOrderSubscription = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4622,9 +4256,6 @@ export type OnUpdateOrderSubscription = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4694,9 +4325,6 @@ export type OnDeleteOrderSubscription = {
       table?: string | null,
     } | null,
     paymentIntention?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4720,9 +4348,6 @@ export type OnCreateProductCategorySubscription = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4746,9 +4371,6 @@ export type OnUpdateProductCategorySubscription = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4772,9 +4394,6 @@ export type OnDeleteProductCategorySubscription = {
       hu?: string | null,
     } | null,
     position?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4832,9 +4451,6 @@ export type OnCreateChainProductSubscription = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4892,9 +4508,6 @@ export type OnUpdateChainProductSubscription = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4952,9 +4565,6 @@ export type OnDeleteChainProductSubscription = {
       availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4965,6 +4575,7 @@ export type OnCreateUnitSubscription = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -4974,6 +4585,21 @@ export type OnCreateUnitSubscription = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -5054,9 +4680,6 @@ export type OnCreateUnitSubscription = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5067,6 +4690,7 @@ export type OnUpdateUnitSubscription = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -5076,6 +4700,21 @@ export type OnUpdateUnitSubscription = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -5156,9 +4795,6 @@ export type OnUpdateUnitSubscription = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5169,6 +4805,7 @@ export type OnDeleteUnitSubscription = {
     __typename: "Unit",
     id: string,
     groupId: string,
+    chainId: string,
     isActive?: boolean | null,
     isAcceptingOrders?: boolean | null,
     name?: string | null,
@@ -5178,6 +4815,21 @@ export type OnDeleteUnitSubscription = {
       de?: string | null,
       hu?: string | null,
     } | null,
+    address?:  {
+      __typename: "Address",
+      address?: string | null,
+      city?: string | null,
+      country?: string | null,
+      title?: string | null,
+      postalCode?: string | null,
+      location?:  {
+        __typename: "Location",
+        lat?: string | null,
+        lng?: string | null,
+      } | null,
+    } | null,
+    email?: string | null,
+    phone?: string | null,
     paymentModes?:  Array< {
       __typename: "PaymentMode",
       name: string,
@@ -5258,9 +4910,6 @@ export type OnDeleteUnitSubscription = {
         to?: string | null,
       } | null > | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5275,9 +4924,6 @@ export type OnCreateUserSubscription = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5292,9 +4938,6 @@ export type OnUpdateUserSubscription = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5309,9 +4952,6 @@ export type OnDeleteUserSubscription = {
     phone?: string | null,
     profileImage?: string | null,
     login?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
   } | null,

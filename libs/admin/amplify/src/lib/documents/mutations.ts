@@ -29,9 +29,6 @@ export const createAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -64,9 +61,6 @@ export const updateAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -99,9 +93,6 @@ export const deleteAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -132,9 +123,6 @@ export const createStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -165,9 +153,6 @@ export const updateStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -198,9 +183,6 @@ export const deleteStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -237,9 +219,19 @@ export const createChain = /* GraphQL */ `
         }
       }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -276,9 +268,19 @@ export const updateChain = /* GraphQL */ `
         }
       }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -315,9 +317,19 @@ export const deleteChain = /* GraphQL */ `
         }
       }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -351,9 +363,6 @@ export const createGroup = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -387,9 +396,6 @@ export const updateGroup = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -423,9 +429,6 @@ export const deleteGroup = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -490,9 +493,6 @@ export const createOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -557,9 +557,6 @@ export const updateOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -624,9 +621,6 @@ export const deleteOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -651,9 +645,6 @@ export const createProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -678,9 +669,6 @@ export const updateProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -705,9 +693,6 @@ export const deleteProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -762,9 +747,6 @@ export const createChainProduct = /* GraphQL */ `
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -819,9 +801,6 @@ export const updateChainProduct = /* GraphQL */ `
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -876,9 +855,6 @@ export const deleteChainProduct = /* GraphQL */ `
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -892,6 +868,7 @@ export const createUnit = /* GraphQL */ `
     createUnit(input: $input, condition: $condition) {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -900,6 +877,19 @@ export const createUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -966,9 +956,6 @@ export const createUnit = /* GraphQL */ `
           to
         }
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -982,6 +969,7 @@ export const updateUnit = /* GraphQL */ `
     updateUnit(input: $input, condition: $condition) {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -990,6 +978,19 @@ export const updateUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -1056,9 +1057,6 @@ export const updateUnit = /* GraphQL */ `
           to
         }
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -1072,6 +1070,7 @@ export const deleteUnit = /* GraphQL */ `
     deleteUnit(input: $input, condition: $condition) {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -1080,6 +1079,19 @@ export const deleteUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -1146,9 +1158,6 @@ export const deleteUnit = /* GraphQL */ `
           to
         }
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -1166,9 +1175,6 @@ export const createUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -1186,9 +1192,6 @@ export const updateUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -1206,9 +1209,6 @@ export const deleteUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }

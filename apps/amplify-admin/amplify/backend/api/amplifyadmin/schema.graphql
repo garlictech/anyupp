@@ -8,8 +8,8 @@ type Address {
 }
 
 type Location {
-  lat: Float
-  lng: Float
+  lat: String
+  lng: String
 }
 
 type LocalizedItem {
@@ -136,6 +136,9 @@ type Chain @model @auth(rules: [{ allow: public }]) {
   description: LocalizedItem
   style: ChainStyle
   isActive: Boolean
+  address: Address
+  email: String
+  phone: String
 }
 
 type ChainStyle {
@@ -276,10 +279,14 @@ type Availability {
 type Unit @model @auth(rules: [{ allow: public }]) {
   id: ID!
   groupId: ID!
+  chainId: ID!
   isActive: Boolean
   isAcceptingOrders: Boolean
   name: String
   description: LocalizedItem
+  address: Address
+  email: String
+  phone: String
   paymentModes: [PaymentMode]
   floorMap: FloorMapData
   lanes: [Lane]
@@ -352,10 +359,12 @@ type User @model @auth(rules: [{ allow: public }]) {
 }
 
 type Subscription {
-  onAdminUserChange: AdminUser
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+  onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
-  onChainChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"])
-  onGroupChange: Group @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-  onUnitChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
-  onUserChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"])
+  onGroupsChange: Group @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+  onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
 }

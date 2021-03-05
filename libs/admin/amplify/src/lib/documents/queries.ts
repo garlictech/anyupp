@@ -2,47 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncAdminUsers = /* GraphQL */ `
-  query SyncAdminUsers(
-    $filter: ModelAdminUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAdminUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        profileImage
-        roles {
-          role
-        }
-        settings {
-          selectedChainId
-          selectedGroupId
-          selectedUnitId
-          selectedProductCategoryId
-          selectedLanguage
-          selectedHistoryDate
-        }
-        email
-        phone
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getAdminUser = /* GraphQL */ `
   query GetAdminUser($id: ID!) {
     getAdminUser(id: $id) {
@@ -67,9 +26,6 @@ export const getAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -99,58 +55,10 @@ export const listAdminUsers = /* GraphQL */ `
         }
         email
         phone
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncStripeCards = /* GraphQL */ `
-  query SyncStripeCards(
-    $filter: ModelStripeCardFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncStripeCards(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        brand
-        checks {
-          address_line1_check
-          address_postal_code_check
-          cvc_check
-        }
-        country
-        last4
-        exp_month
-        exp_year
-        fingerprint
-        funding
-        three_d_secure
-        id
-        object
-        metadata {
-          key
-          value
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -176,9 +84,6 @@ export const getStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -211,47 +116,10 @@ export const listStripeCards = /* GraphQL */ `
           key
           value
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncChains = /* GraphQL */ `
-  query SyncChains(
-    $filter: ModelChainFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncChains(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        description {
-          en
-          de
-          hu
-        }
-        isActive
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -283,9 +151,19 @@ export const getChain = /* GraphQL */ `
         }
       }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -307,40 +185,6 @@ export const listChains = /* GraphQL */ `
           hu
         }
         isActive
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncGroups = /* GraphQL */ `
-  query SyncGroups(
-    $filter: ModelGroupFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncGroups(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        chainId
-        name
-        description {
-          en
-          de
-          hu
-        }
-        currency
         address {
           address
           city
@@ -350,14 +194,10 @@ export const syncGroups = /* GraphQL */ `
         }
         email
         phone
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -386,9 +226,6 @@ export const getGroup = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -420,70 +257,10 @@ export const listGroups = /* GraphQL */ `
         }
         email
         phone
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncOrders = /* GraphQL */ `
-  query SyncOrders(
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncOrders(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        created
-        items {
-          id
-          created
-          productId
-          quantity
-          variantId
-          laneId
-        }
-        paymentMethod
-        staffId
-        statusLog {
-          userId
-          status
-          ts
-        }
-        sumPriceShown {
-          currency
-          pricePerUnit
-          priceSum
-          tax
-          taxSum
-        }
-        takeAway
-        userId
-        place {
-          seat
-          table
-        }
-        paymentIntention
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -543,9 +320,6 @@ export const getOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -590,52 +364,10 @@ export const listOrders = /* GraphQL */ `
           table
         }
         paymentIntention
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncProductCategories = /* GraphQL */ `
-  query SyncProductCategories(
-    $filter: ModelProductCategoryFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncProductCategories(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        description {
-          en
-          de
-          hu
-        }
-        image
-        name {
-          en
-          de
-          hu
-        }
-        position
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -655,9 +387,6 @@ export const getProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -688,65 +417,10 @@ export const listProductCategorys = /* GraphQL */ `
           hu
         }
         position
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncChainProducts = /* GraphQL */ `
-  query SyncChainProducts(
-    $filter: ModelChainProductFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncChainProducts(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        description {
-          en
-          de
-          hu
-        }
-        extends
-        image
-        isVisible
-        tax
-        name {
-          en
-          de
-          hu
-        }
-        position
-        productCategoryId
-        laneId
-        productType
-        variants {
-          refGroupPrice
-          isAvailable
-          price
-          availableFrom
-          position
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -796,9 +470,6 @@ export const getChainProduct = /* GraphQL */ `
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -838,67 +509,10 @@ export const listChainProducts = /* GraphQL */ `
           availableFrom
           position
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUnits = /* GraphQL */ `
-  query SyncUnits(
-    $filter: ModelUnitFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUnits(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        groupId
-        isActive
-        isAcceptingOrders
-        name
-        description {
-          en
-          de
-          hu
-        }
-        paymentModes {
-          name
-          caption
-          method
-        }
-        floorMap {
-          w
-          h
-        }
-        lanes {
-          id
-          name
-          color
-        }
-        open {
-          from
-          to
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -907,6 +521,7 @@ export const getUnit = /* GraphQL */ `
     getUnit(id: $id) {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -915,6 +530,19 @@ export const getUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -981,9 +609,6 @@ export const getUnit = /* GraphQL */ `
           to
         }
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -999,6 +624,7 @@ export const listUnits = /* GraphQL */ `
       items {
         id
         groupId
+        chainId
         isActive
         isAcceptingOrders
         name
@@ -1007,6 +633,15 @@ export const listUnits = /* GraphQL */ `
           de
           hu
         }
+        address {
+          address
+          city
+          country
+          title
+          postalCode
+        }
+        email
+        phone
         paymentModes {
           name
           caption
@@ -1025,45 +660,10 @@ export const listUnits = /* GraphQL */ `
           from
           to
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        email
-        phone
-        profileImage
-        login
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -1076,9 +676,6 @@ export const getUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -1098,14 +695,10 @@ export const listUsers = /* GraphQL */ `
         phone
         profileImage
         login
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;

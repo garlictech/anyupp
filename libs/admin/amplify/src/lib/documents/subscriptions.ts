@@ -3,13 +3,18 @@
 // this is an auto generated file. This will be overwritten
 
 export const onAdminUserChange = /* GraphQL */ `
-  subscription OnAdminUserChange {
-    onAdminUserChange {
+  subscription OnAdminUserChange($id: ID!) {
+    onAdminUserChange(id: $id) {
       id
       name
       profileImage
       roles {
         role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
       }
       settings {
         selectedChainId
@@ -21,17 +26,43 @@ export const onAdminUserChange = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
   }
 `;
-export const onChainChange = /* GraphQL */ `
-  subscription OnChainChange {
-    onChainChange {
+export const onAdminUsersChange = /* GraphQL */ `
+  subscription OnAdminUsersChange {
+    onAdminUsersChange {
+      id
+      name
+      profileImage
+      roles {
+        role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
+      }
+      settings {
+        selectedChainId
+        selectedGroupId
+        selectedUnitId
+        selectedProductCategoryId
+        selectedLanguage
+        selectedHistoryDate
+      }
+      email
+      phone
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onChainsChange = /* GraphQL */ `
+  subscription OnChainsChange {
+    onChainsChange {
       id
       name
       description {
@@ -39,18 +70,45 @@ export const onChainChange = /* GraphQL */ `
         de
         hu
       }
+      style {
+        colors {
+          backgroundLight
+          backgroundDark
+          borderLight
+          borderDark
+          disabled
+          highlight
+          indicator
+          textLight
+          textDark
+        }
+        images {
+          header
+          logo
+        }
+      }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
   }
 `;
-export const onGroupChange = /* GraphQL */ `
-  subscription OnGroupChange {
-    onGroupChange {
+export const onGroupsChange = /* GraphQL */ `
+  subscription OnGroupsChange {
+    onGroupsChange {
       id
       chainId
       name
@@ -66,22 +124,24 @@ export const onGroupChange = /* GraphQL */ `
         country
         title
         postalCode
+        location {
+          lat
+          lng
+        }
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
   }
 `;
-export const onUnitChange = /* GraphQL */ `
-  subscription OnUnitChange {
-    onUnitChange {
+export const onUnitsChange = /* GraphQL */ `
+  subscription OnUnitsChange {
+    onUnitsChange {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -90,6 +150,19 @@ export const onUnitChange = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -98,6 +171,19 @@ export const onUnitChange = /* GraphQL */ `
       floorMap {
         w
         h
+        objects {
+          id
+          t
+          c
+          w
+          h
+          r
+          a
+          x
+          y
+          tID
+          sID
+        }
       }
       lanes {
         id
@@ -108,50 +194,55 @@ export const onUnitChange = /* GraphQL */ `
         from
         to
       }
-      _version
-      _deleted
-      _lastChangedAt
+      openingHours {
+        mon {
+          from
+          to
+        }
+        tue {
+          from
+          to
+        }
+        wed {
+          from
+          to
+        }
+        thu {
+          from
+          to
+        }
+        fri {
+          from
+          to
+        }
+        sat {
+          from
+          to
+        }
+        sun {
+          from
+          to
+        }
+        override {
+          date
+          from
+          to
+        }
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onUserChange = /* GraphQL */ `
-  subscription OnUserChange {
-    onUserChange {
+export const onUsersChange = /* GraphQL */ `
+  subscription OnUsersChange {
+    onUsersChange {
       id
       name
       email
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onProductCategoryChange = /* GraphQL */ `
-  subscription OnProductCategoryChange {
-    onProductCategoryChange {
-      id
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -165,6 +256,11 @@ export const onCreateAdminUser = /* GraphQL */ `
       profileImage
       roles {
         role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
       }
       settings {
         selectedChainId
@@ -176,9 +272,6 @@ export const onCreateAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -192,6 +285,11 @@ export const onUpdateAdminUser = /* GraphQL */ `
       profileImage
       roles {
         role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
       }
       settings {
         selectedChainId
@@ -203,9 +301,6 @@ export const onUpdateAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -219,6 +314,11 @@ export const onDeleteAdminUser = /* GraphQL */ `
       profileImage
       roles {
         role
+        entities {
+          chainId
+          groupId
+          unitId
+        }
       }
       settings {
         selectedChainId
@@ -230,9 +330,6 @@ export const onDeleteAdminUser = /* GraphQL */ `
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -260,9 +357,6 @@ export const onCreateStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -290,9 +384,6 @@ export const onUpdateStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -320,9 +411,6 @@ export const onDeleteStripeCard = /* GraphQL */ `
         key
         value
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -338,10 +426,37 @@ export const onCreateChain = /* GraphQL */ `
         de
         hu
       }
+      style {
+        colors {
+          backgroundLight
+          backgroundDark
+          borderLight
+          borderDark
+          disabled
+          highlight
+          indicator
+          textLight
+          textDark
+        }
+        images {
+          header
+          logo
+        }
+      }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -357,10 +472,37 @@ export const onUpdateChain = /* GraphQL */ `
         de
         hu
       }
+      style {
+        colors {
+          backgroundLight
+          backgroundDark
+          borderLight
+          borderDark
+          disabled
+          highlight
+          indicator
+          textLight
+          textDark
+        }
+        images {
+          header
+          logo
+        }
+      }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -376,10 +518,37 @@ export const onDeleteChain = /* GraphQL */ `
         de
         hu
       }
+      style {
+        colors {
+          backgroundLight
+          backgroundDark
+          borderLight
+          borderDark
+          disabled
+          highlight
+          indicator
+          textLight
+          textDark
+        }
+        images {
+          header
+          logo
+        }
+      }
       isActive
-      _version
-      _deleted
-      _lastChangedAt
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       createdAt
       updatedAt
     }
@@ -403,12 +572,13 @@ export const onCreateGroup = /* GraphQL */ `
         country
         title
         postalCode
+        location {
+          lat
+          lng
+        }
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -432,12 +602,13 @@ export const onUpdateGroup = /* GraphQL */ `
         country
         title
         postalCode
+        location {
+          lat
+          lng
+        }
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -461,12 +632,13 @@ export const onDeleteGroup = /* GraphQL */ `
         country
         title
         postalCode
+        location {
+          lat
+          lng
+        }
       }
       email
       phone
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -480,9 +652,31 @@ export const onCreateOrder = /* GraphQL */ `
       items {
         id
         created
+        productName {
+          en
+          de
+          hu
+        }
+        priceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
         productId
         quantity
+        statusLog {
+          userId
+          status
+          ts
+        }
         variantId
+        variantName {
+          en
+          de
+          hu
+        }
         laneId
       }
       paymentMethod
@@ -506,9 +700,6 @@ export const onCreateOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -522,9 +713,31 @@ export const onUpdateOrder = /* GraphQL */ `
       items {
         id
         created
+        productName {
+          en
+          de
+          hu
+        }
+        priceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
         productId
         quantity
+        statusLog {
+          userId
+          status
+          ts
+        }
         variantId
+        variantName {
+          en
+          de
+          hu
+        }
         laneId
       }
       paymentMethod
@@ -548,9 +761,6 @@ export const onUpdateOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -564,9 +774,31 @@ export const onDeleteOrder = /* GraphQL */ `
       items {
         id
         created
+        productName {
+          en
+          de
+          hu
+        }
+        priceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
         productId
         quantity
+        statusLog {
+          userId
+          status
+          ts
+        }
         variantId
+        variantName {
+          en
+          de
+          hu
+        }
         laneId
       }
       paymentMethod
@@ -590,9 +822,6 @@ export const onDeleteOrder = /* GraphQL */ `
         table
       }
       paymentIntention
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -614,9 +843,6 @@ export const onCreateProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -638,9 +864,6 @@ export const onUpdateProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -662,9 +885,6 @@ export const onDeleteProductCategory = /* GraphQL */ `
         hu
       }
       position
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -693,15 +913,29 @@ export const onCreateChainProduct = /* GraphQL */ `
       laneId
       productType
       variants {
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
         refGroupPrice
         isAvailable
         price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -730,15 +964,29 @@ export const onUpdateChainProduct = /* GraphQL */ `
       laneId
       productType
       variants {
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
         refGroupPrice
         isAvailable
         price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -767,15 +1015,29 @@ export const onDeleteChainProduct = /* GraphQL */ `
       laneId
       productType
       variants {
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
         refGroupPrice
         isAvailable
         price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
         availableFrom
         position
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -786,6 +1048,7 @@ export const onCreateUnit = /* GraphQL */ `
     onCreateUnit {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -794,6 +1057,19 @@ export const onCreateUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -802,6 +1078,19 @@ export const onCreateUnit = /* GraphQL */ `
       floorMap {
         w
         h
+        objects {
+          id
+          t
+          c
+          w
+          h
+          r
+          a
+          x
+          y
+          tID
+          sID
+        }
       }
       lanes {
         id
@@ -812,9 +1101,41 @@ export const onCreateUnit = /* GraphQL */ `
         from
         to
       }
-      _version
-      _deleted
-      _lastChangedAt
+      openingHours {
+        mon {
+          from
+          to
+        }
+        tue {
+          from
+          to
+        }
+        wed {
+          from
+          to
+        }
+        thu {
+          from
+          to
+        }
+        fri {
+          from
+          to
+        }
+        sat {
+          from
+          to
+        }
+        sun {
+          from
+          to
+        }
+        override {
+          date
+          from
+          to
+        }
+      }
       createdAt
       updatedAt
     }
@@ -825,6 +1146,7 @@ export const onUpdateUnit = /* GraphQL */ `
     onUpdateUnit {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -833,6 +1155,19 @@ export const onUpdateUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -841,6 +1176,19 @@ export const onUpdateUnit = /* GraphQL */ `
       floorMap {
         w
         h
+        objects {
+          id
+          t
+          c
+          w
+          h
+          r
+          a
+          x
+          y
+          tID
+          sID
+        }
       }
       lanes {
         id
@@ -851,9 +1199,41 @@ export const onUpdateUnit = /* GraphQL */ `
         from
         to
       }
-      _version
-      _deleted
-      _lastChangedAt
+      openingHours {
+        mon {
+          from
+          to
+        }
+        tue {
+          from
+          to
+        }
+        wed {
+          from
+          to
+        }
+        thu {
+          from
+          to
+        }
+        fri {
+          from
+          to
+        }
+        sat {
+          from
+          to
+        }
+        sun {
+          from
+          to
+        }
+        override {
+          date
+          from
+          to
+        }
+      }
       createdAt
       updatedAt
     }
@@ -864,6 +1244,7 @@ export const onDeleteUnit = /* GraphQL */ `
     onDeleteUnit {
       id
       groupId
+      chainId
       isActive
       isAcceptingOrders
       name
@@ -872,6 +1253,19 @@ export const onDeleteUnit = /* GraphQL */ `
         de
         hu
       }
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      email
+      phone
       paymentModes {
         name
         caption
@@ -880,6 +1274,19 @@ export const onDeleteUnit = /* GraphQL */ `
       floorMap {
         w
         h
+        objects {
+          id
+          t
+          c
+          w
+          h
+          r
+          a
+          x
+          y
+          tID
+          sID
+        }
       }
       lanes {
         id
@@ -890,9 +1297,41 @@ export const onDeleteUnit = /* GraphQL */ `
         from
         to
       }
-      _version
-      _deleted
-      _lastChangedAt
+      openingHours {
+        mon {
+          from
+          to
+        }
+        tue {
+          from
+          to
+        }
+        wed {
+          from
+          to
+        }
+        thu {
+          from
+          to
+        }
+        fri {
+          from
+          to
+        }
+        sat {
+          from
+          to
+        }
+        sun {
+          from
+          to
+        }
+        override {
+          date
+          from
+          to
+        }
+      }
       createdAt
       updatedAt
     }
@@ -907,9 +1346,6 @@ export const onCreateUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -924,9 +1360,6 @@ export const onUpdateUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -941,9 +1374,6 @@ export const onDeleteUser = /* GraphQL */ `
       phone
       profileImage
       login
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }

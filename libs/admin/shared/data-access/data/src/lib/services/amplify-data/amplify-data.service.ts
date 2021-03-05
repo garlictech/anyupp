@@ -1,53 +1,129 @@
+import { NGXLogger } from 'ngx-logger';
+import { from, Observable } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import { DataStore } from '@aws-amplify/datastore';
+import { API, GraphQLResult } from '@aws-amplify/api';
+import { ListAdminUsersQuery, Mutations, Queries, Subscriptions } from '@bgap/admin/amplify';
+
+interface IQueryResult<T> {
+  data?: ListAdminUsersQuery
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AmplifyDataService {
-  public async snapshotChanges<T>(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    model: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    param: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: any,
-  ): Promise<void> {
-    const data = await (param
-      ? DataStore.query(model, param)
-      : DataStore.query(model));
+  constructor(private _logger: NGXLogger) {}
 
-    if (Array.isArray(data)) {
-      (<T[]>data).forEach((d: T) => {
-        callback(<T>d);
-      });
-    } else {
-      callback(<T>data);
-    }
-
-    (param ? DataStore.observe(model, param) : DataStore.observe(model))
+  public snapshotChanges$<callbackT>(
+    queryName: string,
+    variables: object | undefined,
+    subscriptionName: string,
+    callback: (data: callbackT) => void,
+  ): Observable<unknown> {
+    return from(
+      <Promise<GraphQLResult>>API.graphql({
+        query: (<any>Queries)[queryName],
+        variables,
+      }),
+    ).pipe(
+      take(1),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .subscribe((msg: any) => {
-        callback(<T>msg.element);
-      });
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async create(model: any, data: any) {
-    await DataStore.save(
-      new model(data)
+      tap((data: any) => {
+        if (data.data?.[queryName]?.items) {
+          (data.data[queryName].items || []).forEach((d: any) => {
+            callback(d);
+          });
+        } else {
+          callback(data?.data?.[queryName]);
+        }
+      }),
+      switchMap(
+        () => <any>API.graphql({
+            query: (<any>Subscriptions)[subscriptionName],
+            variables,
+          }),
+      ),
+      tap({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        next: (data: any) => {
+          callback(data.value.data[subscriptionName]);
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        error: (error: any) =>
+          this._logger.error(`Subscription error ${JSON.stringify(error)}`),
+      }),
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async update(model: any, id: string, callback: any) {
-    const original = await DataStore.query(model, id);
+  /*
+  public async snapshotChanges<T>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryName: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    variables: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    subscriptionName: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    callback: any,
+  ): Promise<void> {
+    const data: any = await API.graphql({
+      query: (<any>Queries)[queryName],
+      variables,
+    });
 
-    if (original) {
-      await DataStore.save(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        model.copyOf(original, callback),
-      );
+    if (data?.data[queryName]?.items) {
+      (data?.data[queryName].items).forEach((d: T) => {
+        callback(d);
+      });
+    } else {
+      callback(data?.data[queryName]);
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (<any>(
+      API.graphql(
+        {
+          query: (<any>Subscriptions)[subscriptionName],
+          variables,
+        }
+      )
+    )).subscribe({
+      next: (data: any) => {
+        callback(<T>data.value.data[subscriptionName]);
+      },
+      error: (error: any) =>
+        this._logger.error(`Subscription error ${JSON.stringify(error)}`),
+    });
+  }
+  */
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async create(mutation: any, value: any) {
+    return API.graphql({ query: mutation, variables: { input: value } });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async update(
+    queryName: string,
+    mutationName: string,
+    id: any,
+    updaterFn: any,
+  ) {
+    const data: any = await API.graphql({
+      query: (<any>Queries)[queryName],
+      variables: { id },
+    });
+
+    const { createdAt, updatedAt, ...modified } = <any>{
+      ...updaterFn(data.data[queryName]),
+      id,
+    };
+
+    return API.graphql({
+      query: (<any>Mutations)[mutationName],
+      variables: { input: modified },
+    });
   }
 }

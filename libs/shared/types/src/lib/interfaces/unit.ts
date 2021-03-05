@@ -1,3 +1,4 @@
+import { IAddressInfo } from './address';
 import { IContact } from './contact';
 import { IFloorMapData } from './floor-map';
 import { IGroup } from './group';
@@ -23,21 +24,18 @@ export interface IDetailedLane extends ILane {
   readyCount?: number;
 }
 
-export interface ILanesObject {
-  [id: string]: ILane;
-}
-
-export interface IUnit extends IContact {
+export interface IUnit extends IContact, IAddressInfo {
   id: string;
   _group?: IGroup;
   groupId: string;
+  chainId: string;
   isActive?: boolean;
   isAcceptingOrders?: boolean;
   name?: string;
   description?: ILocalizedItem<string>;
   open?: IDailySchedule;
   openingHours?: IWeeklySchedule;
-  lanes?: ILanesObject;
+  lanes?: [ILane];
   floorMap?: IFloorMapData;
   paymentModes?: IPaymentMode[];
 }

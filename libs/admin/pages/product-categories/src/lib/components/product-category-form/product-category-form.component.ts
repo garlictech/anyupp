@@ -1,4 +1,4 @@
-import { get as _get, set as _set } from 'lodash-es';
+import * as fp from 'lodash/fp';
 import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -34,7 +34,7 @@ export class ProductCategoryFormComponent
   }
 
   get imagePath(): string {
-    return _get(this.productCategory, 'image');
+    return this.productCategory?.image;
   }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class ProductCategoryFormComponent
 
   public submit(): void {
     if (this.dialogForm?.valid) {
-      if (_get(this.productCategory, 'id')) {
+      if (this.productCategory?.id) {
         this._dataService
           .updateProductCategory(
             this._selectedChainId || '',
@@ -112,7 +112,7 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.productCategory, 'id')) {
+    if (this.productCategory?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
@@ -139,11 +139,11 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory) {
-      _set(this.productCategory, 'image', null);
+      fp.set('image', null, this.productCategory);
     }
 
     // Update existing user's image
-    if (_get(this.productCategory, 'id')) {
+    if (this.productCategory?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',

@@ -1,21 +1,9 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
-  EAdminRole,
-  EProductLevel,
-  EVariantAvailabilityType,
-  IAdminUserRole,
-  IProduct,
-  IProductVariant,
+  EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -108,7 +96,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       dialog.componentRef.instance.currency = this.currency;
     }
 
-    dialog.componentRef.instance.product = _cloneDeep(this.product);
+    dialog.componentRef.instance.product = fp.cloneDeep(this.product);
     dialog.componentRef.instance.productLevel = this.productLevel;
   }
 
