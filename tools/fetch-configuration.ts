@@ -23,22 +23,23 @@ const targetFile = `${targetDir}/config.json`;
 fs.mkdirSync(targetDir, { recursive: true });
 
 pipe(
-  // We need to do this because the stuff can query max 10 parameters in one request
   [
-    [
-      'AdminSiteUrl',
-      'consumerUserPoolClientId',
-      'consumerUserPoolId',
-      'consumerUserPoolDomain',
-      'IdentityPoolId',
-      'GraphqlApiKey',
-      'GraphqlApiUrl',
-      'StripeWebhookEndpoint',
-      'googleClientId',
-      'stripePublishableKey',
-    ],
-    ['adminUserPoolClientId', 'adminUserPoolId', 'adminUserPoolDomain'],
+    'AdminSiteUrl',
+    'consumerUserPoolClientId',
+    'consumerUserPoolId',
+    'consumerUserPoolDomain',
+    'IdentityPoolId',
+    'GraphqlApiKey',
+    'GraphqlApiUrl',
+    'StripeWebhookEndpoint',
+    'googleClientId',
+    'stripePublishableKey',
+    'adminUserPoolClientId',
+    'adminUserPoolId',
+    'adminUserPoolDomain',
   ],
+  // We need to do this because the stuff can query max 10 parameters in one request
+  fp.chunk(10),
   fp.map(
     flow(
       fp.map(paramName => `${prefix}${paramName}`),
