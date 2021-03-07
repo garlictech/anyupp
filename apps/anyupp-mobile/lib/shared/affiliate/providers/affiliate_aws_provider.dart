@@ -5,8 +5,9 @@ import 'affiliate_provider_interface.dart';
 
 class AwsAffiliateProvider implements IAffiliateProvider {
   @override
-  Stream<Affiliate> getCurrentAffiliateStream() {
+  Stream<Affiliate> getCurrentAffiliateStream() async* {
     // TODO AWS
-    return AwsDummyUtils.single<Affiliate>();
+    // return null;// AwsDummyUtils.single<Affiliate>();
+    yield null;
   }
 }

@@ -25,9 +25,8 @@ class FavoriteProduct extends Model {
   static const classType = const FavoriteProductType();
   final String id;
   final String userID;
-  final String chainID;
   final String unitID;
-  final Product product;
+  final GeneratedProduct product;
 
   @override
   getInstanceType() => classType;
@@ -40,20 +39,17 @@ class FavoriteProduct extends Model {
   const FavoriteProduct._internal(
       {@required this.id,
       @required this.userID,
-      @required this.chainID,
       @required this.unitID,
       this.product});
 
   factory FavoriteProduct(
       {String id,
       @required String userID,
-      @required String chainID,
       @required String unitID,
-      Product product}) {
+      GeneratedProduct product}) {
     return FavoriteProduct._internal(
         id: id == null ? UUID.getUUID() : id,
         userID: userID,
-        chainID: chainID,
         unitID: unitID,
         product: product);
   }
@@ -68,7 +64,6 @@ class FavoriteProduct extends Model {
     return other is FavoriteProduct &&
         id == other.id &&
         userID == other.userID &&
-        chainID == other.chainID &&
         unitID == other.unitID &&
         product == other.product;
   }
@@ -83,7 +78,6 @@ class FavoriteProduct extends Model {
     buffer.write("FavoriteProduct {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userID=" + "$userID" + ", ");
-    buffer.write("chainID=" + "$chainID" + ", ");
     buffer.write("unitID=" + "$unitID" + ", ");
     buffer.write("product=" + (product != null ? product.toString() : "null"));
     buffer.write("}");
@@ -92,15 +86,10 @@ class FavoriteProduct extends Model {
   }
 
   FavoriteProduct copyWith(
-      {String id,
-      String userID,
-      String chainID,
-      String unitID,
-      Product product}) {
+      {String id, String userID, String unitID, GeneratedProduct product}) {
     return FavoriteProduct(
         id: id ?? this.id,
         userID: userID ?? this.userID,
-        chainID: chainID ?? this.chainID,
         unitID: unitID ?? this.unitID,
         product: product ?? this.product);
   }
@@ -108,28 +97,26 @@ class FavoriteProduct extends Model {
   FavoriteProduct.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userID = json['userID'],
-        chainID = json['chainID'],
         unitID = json['unitID'],
         product = json['product'] != null
-            ? Product.fromJson(new Map<String, dynamic>.from(json['product']))
+            ? GeneratedProduct.fromJson(
+                new Map<String, dynamic>.from(json['product']))
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'userID': userID,
-        'chainID': chainID,
         'unitID': unitID,
         'product': product?.toJson()
       };
 
   static final QueryField ID = QueryField(fieldName: "favoriteProduct.id");
   static final QueryField USERID = QueryField(fieldName: "userID");
-  static final QueryField CHAINID = QueryField(fieldName: "chainID");
   static final QueryField UNITID = QueryField(fieldName: "unitID");
   static final QueryField PRODUCT = QueryField(
       fieldName: "product",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Product).toString()));
+          ofModelName: (GeneratedProduct).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "FavoriteProduct";
@@ -143,11 +130,6 @@ class FavoriteProduct extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FavoriteProduct.CHAINID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: FavoriteProduct.UNITID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
@@ -155,8 +137,8 @@ class FavoriteProduct extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: FavoriteProduct.PRODUCT,
         isRequired: false,
-        targetName: "productId",
-        ofModelName: (Product).toString()));
+        targetName: "favoriteProductProductId",
+        ofModelName: (GeneratedProduct).toString()));
   });
 }
 

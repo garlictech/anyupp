@@ -38,9 +38,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         builder: (context, state) {
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
-            return StreamBuilder<List<Product>>(
-              stream: _productRepository.getProductList(unit.unitId, widget.categoryId),
-              builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+            return StreamBuilder<List<GeneratedProduct>>(
+              stream: _productRepository.getProductList(unit.id, widget.categoryId),
+              builder: (context, AsyncSnapshot<List<GeneratedProduct>> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.isEmpty) {
                     return _buildEmptyList(context);
@@ -65,7 +65,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     );
   }
 
-  Widget _buildList(GeoUnit unit, List<Product> list) {
+  Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length + 1,

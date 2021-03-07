@@ -32,7 +32,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
       builder: (context, state) {
         if (state is UnitSelected) {
           return StreamBuilder<Cart>(
-            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.unitId),
+            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
             builder: (context, AsyncSnapshot<Cart> snapshot) {
               if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                 if (snapshot.data != null) {

@@ -37,7 +37,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
         if (state is UnitSelected) {
           final GeoUnit unit = state.unit;
           return StreamBuilder<List<Order>>(
-            stream: _orderRepository.getCurrentOrders(unit.chainId, unit.unitId),
+            stream: _orderRepository.getCurrentOrders(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
                 if (orderState.data == null || orderState.data.isEmpty) {
@@ -187,13 +187,13 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                     ),
                     onPressed: () => Nav.to(StripePaymentScreen(
                               chainId: unit.chainId,
-                              unitId: unit.unitId,
+                              unitId: unit.id,
                               userId: userSnapshot.data.id,
                               order: order,
                               sum: sum,
                             )),
                     // onPressed: () => !(state is StripePaymentLoading)
-                    //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.unitId, userSnapshot.data.id))
+                    //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.id, userSnapshot.data.id))
                     //     : null,
                     color: theme.indicator,
                     textColor: theme.text2,

@@ -11,12 +11,12 @@ class CartRepository {
 
   CartRepository(this._ordersProvider);
 
-  Future<Cart> addProductToCart(User user, GeoUnit unit, Product product, ProductVariant variant) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.unitId);
+  Future<Cart> addProductToCart(User user, GeoUnit unit, GeneratedProduct product, ProductVariant variant) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
     if (_cart == null || _cart.order == null || _cart.order.items == null) {
       _cart = Cart(
           order: Order(
-            unitId: unit.unitId,
+            unitId: unit.id,
             userId: user.id, // TODO AWS!!!
             items: List<OrderItem>(),
           ),
@@ -31,7 +31,6 @@ class CartRepository {
       existingOrder = OrderItem.fromJson(data);
     } else {
       OrderItem order = OrderItem(
-          orderId: '',
           id: (_cart.order.items.length + 1).toString(),
           productId: product.id,
           variantId: variant.id,
@@ -40,11 +39,11 @@ class CartRepository {
       _cart.order.items.add(order);
     }
 
-    await _ordersProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
     return _cart;
   }
 
-  Future<Cart> removeProductFromCart(String chainId, String unitId, Product product, ProductVariant variant) async {
+  Future<Cart> removeProductFromCart(String chainId, String unitId, GeneratedProduct product, ProductVariant variant) async {
     Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       return null;
@@ -77,12 +76,12 @@ class CartRepository {
   }
 
   Future<Cart> updatePlaceInCart(GeoUnit unit) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.unitId);
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
     if (_cart == null || _cart.order == null || _cart.order.items == null) {
       return null;
     }
     _cart.place = unit.place;
-    await _ordersProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
     return _cart;
   }
 
@@ -99,10 +98,10 @@ class CartRepository {
   }
 
   Future<Cart> clearCart(User user, GeoUnit unit) async {
-    await _ordersProvider.clearCart(unit.chainId, unit.unitId);
+    await _ordersProvider.clearCart(unit.chainId, unit.id);
     return Cart(
         order: Order(
-          unitId: unit.unitId,
+          unitId: unit.id,
           userId: user.id, // TODO AWS!!!
           items: List<OrderItem>(),
         ),
@@ -110,10 +109,10 @@ class CartRepository {
   }
 
   Future<Cart> clearPlaceInCart(GeoUnit unit) async {
-    Cart cart = await getCurrentCart(unit.chainId, unit.unitId);
+    Cart cart = await getCurrentCart(unit.chainId, unit.id);
     if (cart != null) {
       cart.place = null;
-      await _ordersProvider.updateCart(unit.chainId, unit.unitId, cart);
+      await _ordersProvider.updateCart(unit.chainId, unit.id, cart);
     }
     return cart;
   }

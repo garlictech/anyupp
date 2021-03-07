@@ -65,14 +65,14 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> getAuthenticatedUserProfile() async {
-    // print('getAuthenticatedUserProfile().user=$_user');
+    print('getAuthenticatedUserProfile().user=$_user');
     try {
-      _user = null;
+      // _user = null;
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: false),
       );
-      // print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
-      if (session.isSignedIn) {
+      print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
+      if (session.isSignedIn && _user == null) {
         session = await Amplify.Auth.fetchAuthSession(
           options: CognitoSessionOptions(getAWSCredentials: true),
         );
@@ -84,17 +84,23 @@ class AwsAuthProvider implements IAuthProvider {
       if (!session.isSignedIn) {
         _user = null;
       } else {
+        if (_user != null) {
+          // _userController.add(_user);
+          return _user;
+        }
         List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
         _user = _userFromAttributes(attributes);
       }
-      _userController.add(_user);
-      // print('getAuthenticatedUserProfile().user=$_user');
+      print('getAuthenticatedUserProfile().final.user=$_user');
+        _userController.add(_user);
       return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
+      _userController.add(null);
       return null;
     } on Error catch (e) {
       print('getAuthenticatedUserProfile().error=$e');
+      _userController.add(null);
       return null;
     }
   }

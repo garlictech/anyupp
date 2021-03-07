@@ -12,7 +12,7 @@ import 'package:fa_prev/shared/nav.dart';
 // Representing each sandwich in menu list (Menu page)
 class ProductMenuItem extends StatelessWidget {
   final GeoUnit unit;
-  final Product item;
+  final GeneratedProduct item;
   final String heroPrefix;
 
   ProductMenuItem({Key key, this.item, this.heroPrefix, this.unit}) : super(key: key);
@@ -22,7 +22,7 @@ class ProductMenuItem extends StatelessWidget {
   }
 }
 
-Widget buildProductItem(BuildContext context, GeoUnit unit, Product item, String heroPrefix, ThemeChainData theme) {
+Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;

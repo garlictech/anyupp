@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -366,7 +367,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     Map<MarkerId, Marker> unitMarkers = <MarkerId, Marker>{};
 
     units.forEach((unit) {
-      final MarkerId markerId = MarkerId(unit.unitId);
+      final MarkerId markerId = MarkerId(unit.id);
 
       unitMarkers[markerId] = Marker(
         markerId: markerId,

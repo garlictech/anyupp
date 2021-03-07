@@ -20,7 +20,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
   final User user;
-  final Product item;
+  final GeneratedProduct item;
   ProductDetailsScreen({Key key, this.user, this.item, this.heroId, this.unit}) : super(key: key);
 
   @override
@@ -186,7 +186,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           StreamBuilder<Cart>(
-            stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.unitId),
+            stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<Cart> snapshot) {
               if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                 return _buildVariantsList(snapshot.data, widget.item.variants);
@@ -216,6 +216,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildVariantsList(Cart cart, List<ProductVariant> list) {
+    print('***** _buildVariantsList.cart=$cart, variants=$list');
     if (list == null) {
       return Container();
     }

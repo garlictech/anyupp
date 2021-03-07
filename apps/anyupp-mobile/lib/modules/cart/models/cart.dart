@@ -30,7 +30,7 @@ class Cart {
     return value;
   }
 
-  int variantCount(Product item, ProductVariant variant) {
+  int variantCount(GeneratedProduct item, ProductVariant variant) {
     int index = order?.items == null
         ? -1
         : order.items.indexWhere((order) => order.productId == item.id && order.variantId == variant.id);

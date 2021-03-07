@@ -43,7 +43,7 @@
 //   }
 
 //   @override
-//   Stream<List<Product>> getProductList(String unitId, String categoryId) {
+//   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) {
 //     return _dbRef
 //         .child('generated')
 //         .child('productList')

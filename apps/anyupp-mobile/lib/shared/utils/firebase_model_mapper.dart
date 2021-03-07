@@ -90,11 +90,11 @@
 //     return FavoriteProduct.fromMap(ds.value);
 //   }
 
-//   static List<Product> snapshotToProducts(String categoryId, DataSnapshot ds) {
+//   static List<GeneratedProduct> snapshotToProducts(String categoryId, DataSnapshot ds) {
 //     if (ds.value == null) {
-//       return List<Product>();
+//       return List<GeneratedProduct>();
 //     }
-//     List<Product> products =
+//     List<GeneratedProduct> products =
 //         Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToProduct).toList();
 //     products.sort((a, b) => a.position - b.position);
 //     products.forEach((element) {
@@ -120,8 +120,8 @@
 //     return orders;
 //   }
 
-//   static Product snapshotToProduct(dynamic ds) {
-//     Product product = Product(
+//   static GeneratedProduct snapshotToProduct(dynamic ds) {
+//     GeneratedProduct product = GeneratedProduct(
 //         id: ds.key,
 //         name: Map<String, String>.from(missingCheckOnMap(ds.value['name'])),
 //         description: Map<String, String>.from(missingCheckOnMap(ds.value['description'])),

@@ -108,7 +108,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.unitId),
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null) {
@@ -237,7 +237,7 @@ class CartScreen extends StatelessWidget {
             order: order,
           ),
           onDismissed: (direction) {
-            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.unitId, order));
+            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.id, order));
           },
           // Setting the Dismissible background (appears on swipping)
           background: Container(color: Colors.redAccent),

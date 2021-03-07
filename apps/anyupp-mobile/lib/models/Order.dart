@@ -27,17 +27,15 @@ class Order extends Model {
   final String id;
   final String userId;
   final String unitId;
-  final int created;
   final List<OrderItem> items;
   final String paymentMethod;
   final String staffId;
-  final List<StatusLog> statusLog;
-  final String sumPriceShownId;
   final PriceShown sumPriceShown;
   final bool takeAway;
-  final String placeId;
   final Place place;
   final int paymentIntention;
+  final List<StatusLog> statusLog;
+  final int created;
 
   @override
   getInstanceType() => classType;
@@ -51,48 +49,42 @@ class Order extends Model {
       {@required this.id,
       @required this.userId,
       @required this.unitId,
-      this.created,
       this.items,
       this.paymentMethod,
       this.staffId,
-      this.statusLog,
-      this.sumPriceShownId,
       this.sumPriceShown,
       this.takeAway,
-      this.placeId,
       this.place,
-      this.paymentIntention});
+      this.paymentIntention,
+      this.statusLog,
+      this.created});
 
   factory Order(
       {String id,
       @required String userId,
       @required String unitId,
-      int created,
       List<OrderItem> items,
       String paymentMethod,
       String staffId,
-      List<StatusLog> statusLog,
-      String sumPriceShownId,
       PriceShown sumPriceShown,
       bool takeAway,
-      String placeId,
       Place place,
-      int paymentIntention}) {
+      int paymentIntention,
+      List<StatusLog> statusLog,
+      int created}) {
     return Order._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
         unitId: unitId,
-        created: created,
         items: items != null ? List.unmodifiable(items) : items,
         paymentMethod: paymentMethod,
         staffId: staffId,
-        statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
-        sumPriceShownId: sumPriceShownId,
         sumPriceShown: sumPriceShown,
         takeAway: takeAway,
-        placeId: placeId,
         place: place,
-        paymentIntention: paymentIntention);
+        paymentIntention: paymentIntention,
+        statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
+        created: created);
   }
 
   bool equals(Object other) {
@@ -106,17 +98,15 @@ class Order extends Model {
         id == other.id &&
         userId == other.userId &&
         unitId == other.unitId &&
-        created == other.created &&
         DeepCollectionEquality().equals(items, other.items) &&
         paymentMethod == other.paymentMethod &&
         staffId == other.staffId &&
-        DeepCollectionEquality().equals(statusLog, other.statusLog) &&
-        sumPriceShownId == other.sumPriceShownId &&
         sumPriceShown == other.sumPriceShown &&
         takeAway == other.takeAway &&
-        placeId == other.placeId &&
         place == other.place &&
-        paymentIntention == other.paymentIntention;
+        paymentIntention == other.paymentIntention &&
+        DeepCollectionEquality().equals(statusLog, other.statusLog) &&
+        created == other.created;
   }
 
   @override
@@ -130,16 +120,18 @@ class Order extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write(
-        "created=" + (created != null ? created.toString() : "null") + ", ");
     buffer.write("paymentMethod=" + "$paymentMethod" + ", ");
     buffer.write("staffId=" + "$staffId" + ", ");
-    buffer.write("sumPriceShownId=" + "$sumPriceShownId" + ", ");
+    buffer.write("sumPriceShown=" +
+        (sumPriceShown != null ? sumPriceShown.toString() : "null") +
+        ", ");
     buffer.write(
         "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
-    buffer.write("placeId=" + "$placeId" + ", ");
+    buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
     buffer.write("paymentIntention=" +
-        (paymentIntention != null ? paymentIntention.toString() : "null"));
+        (paymentIntention != null ? paymentIntention.toString() : "null") +
+        ", ");
+    buffer.write("created=" + (created != null ? created.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -149,39 +141,34 @@ class Order extends Model {
       {String id,
       String userId,
       String unitId,
-      int created,
       List<OrderItem> items,
       String paymentMethod,
       String staffId,
-      List<StatusLog> statusLog,
-      String sumPriceShownId,
       PriceShown sumPriceShown,
       bool takeAway,
-      String placeId,
       Place place,
-      int paymentIntention}) {
+      int paymentIntention,
+      List<StatusLog> statusLog,
+      int created}) {
     return Order(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
-        created: created ?? this.created,
         items: items ?? this.items,
         paymentMethod: paymentMethod ?? this.paymentMethod,
         staffId: staffId ?? this.staffId,
-        statusLog: statusLog ?? this.statusLog,
-        sumPriceShownId: sumPriceShownId ?? this.sumPriceShownId,
         sumPriceShown: sumPriceShown ?? this.sumPriceShown,
         takeAway: takeAway ?? this.takeAway,
-        placeId: placeId ?? this.placeId,
         place: place ?? this.place,
-        paymentIntention: paymentIntention ?? this.paymentIntention);
+        paymentIntention: paymentIntention ?? this.paymentIntention,
+        statusLog: statusLog ?? this.statusLog,
+        created: created ?? this.created);
   }
 
   Order.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userId = json['userId'],
         unitId = json['unitId'],
-        created = json['created'],
         items = json['items'] is List
             ? (json['items'] as List)
                 .map(
@@ -190,45 +177,41 @@ class Order extends Model {
             : null,
         paymentMethod = json['paymentMethod'],
         staffId = json['staffId'],
+        sumPriceShown = json['sumPriceShown'] != null
+            ? PriceShown.fromJson(
+                new Map<String, dynamic>.from(json['sumPriceShown']))
+            : null,
+        takeAway = json['takeAway'],
+        place = json['place'] != null
+            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
+            : null,
+        paymentIntention = json['paymentIntention'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List)
                 .map(
                     (e) => StatusLog.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        sumPriceShownId = json['sumPriceShownId'],
-        sumPriceShown = json['sumPriceShown'] != null
-            ? PriceShown.fromJson(
-                new Map<String, dynamic>.from(json['sumPriceShown']))
-            : null,
-        takeAway = json['takeAway'],
-        placeId = json['placeId'],
-        place = json['place'] != null
-            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
-            : null,
-        paymentIntention = json['paymentIntention'];
+        created = json['created'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,
         'unitId': unitId,
-        'created': created,
         'items': items?.map((e) => e?.toJson())?.toList(),
         'paymentMethod': paymentMethod,
         'staffId': staffId,
-        'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
-        'sumPriceShownId': sumPriceShownId,
         'sumPriceShown': sumPriceShown?.toJson(),
         'takeAway': takeAway,
-        'placeId': placeId,
         'place': place?.toJson(),
-        'paymentIntention': paymentIntention
+        'paymentIntention': paymentIntention,
+        'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
+        'created': created
       };
 
   static final QueryField ID = QueryField(fieldName: "order.id");
   static final QueryField USERID = QueryField(fieldName: "userId");
   static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField CREATED = QueryField(fieldName: "created");
   static final QueryField ITEMS = QueryField(
       fieldName: "items",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -236,24 +219,22 @@ class Order extends Model {
   static final QueryField PAYMENTMETHOD =
       QueryField(fieldName: "paymentMethod");
   static final QueryField STAFFID = QueryField(fieldName: "staffId");
-  static final QueryField STATUSLOG = QueryField(
-      fieldName: "statusLog",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (StatusLog).toString()));
-  static final QueryField SUMPRICESHOWNID =
-      QueryField(fieldName: "sumPriceShownId");
   static final QueryField SUMPRICESHOWN = QueryField(
       fieldName: "sumPriceShown",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (PriceShown).toString()));
   static final QueryField TAKEAWAY = QueryField(fieldName: "takeAway");
-  static final QueryField PLACEID = QueryField(fieldName: "placeId");
   static final QueryField PLACE = QueryField(
       fieldName: "place",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (Place).toString()));
   static final QueryField PAYMENTINTENTION =
       QueryField(fieldName: "paymentIntention");
+  static final QueryField STATUSLOG = QueryField(
+      fieldName: "statusLog",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (StatusLog).toString()));
+  static final QueryField CREATED = QueryField(fieldName: "created");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Order";
@@ -271,16 +252,11 @@ class Order extends Model {
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.CREATED,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
         key: Order.ITEMS,
         isRequired: false,
         ofModelName: (OrderItem).toString(),
-        associatedKey: OrderItem.ORDERID));
+        associatedKey: OrderItem.ORDERITEMSID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Order.PAYMENTMETHOD,
@@ -292,41 +268,36 @@ class Order extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Order.STATUSLOG,
-        isRequired: false,
-        ofModelName: (StatusLog).toString(),
-        associatedKey: StatusLog.ORDERID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.SUMPRICESHOWNID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: Order.SUMPRICESHOWN,
         isRequired: false,
-        ofModelName: (PriceShown).toString(),
-        associatedKey: PriceShown.ID));
+        targetName: "orderSumPriceShownId",
+        ofModelName: (PriceShown).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Order.TAKEAWAY,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.PLACEID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: Order.PLACE,
         isRequired: false,
-        ofModelName: (Place).toString(),
-        associatedKey: Place.ID));
+        targetName: "orderPlaceId",
+        ofModelName: (Place).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Order.PAYMENTINTENTION,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: Order.STATUSLOG,
+        isRequired: false,
+        ofModelName: (StatusLog).toString(),
+        associatedKey: StatusLog.ORDERSTATUSLOGID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Order.CREATED,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
   });

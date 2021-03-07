@@ -25,9 +25,9 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<Cart> getCurrentCartStream(String chainId, String unitId) {
+  Stream<Cart> getCurrentCartStream(String chainId, String unitId) async* {
     // TODO AWS
-    return AwsDummyUtils.single(_cart);
+    yield _cart;
   }
 
   @override

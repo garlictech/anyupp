@@ -14,7 +14,7 @@ import 'package:fa_prev/models.dart';
 //   Address address;
 //   Map<String, Payment> payment;
 //   String description;
-//   Product products;
+//   GeneratedProduct products;
 //   Map<String, bool> services;
 //   Map<String, String> schedule;
 //   String image;
@@ -59,7 +59,7 @@ import 'package:fa_prev/models.dart';
 
 class Order {
   String id;
-  Product product;
+  GeneratedProduct product;
   ProductVariant variant;
   int quantity = 1;
   Order(
@@ -72,7 +72,7 @@ class Order {
 
   Order copyWith({
     String id,
-    Product product,
+    GeneratedProduct product,
     ProductVariant variant,
     int quantity,
   }) {
@@ -97,7 +97,7 @@ class Order {
     if (map == null) return null;
     return Order(
       map['id'].toString(),
-      Product.fromJson(Map<String, dynamic>.from(map['product'])),
+      GeneratedProduct.fromJson(Map<String, dynamic>.from(map['product'])),
       ProductVariant.fromJson(Map<String, dynamic>.from(map['variant'])),
       map['quantity'],
     );

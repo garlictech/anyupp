@@ -11,8 +11,8 @@ class SimplePayRepository {
   SimplePayRepository(this._functionsProvider);
 
   Future<SimplePayStartResponse> startPayment(GeoUnit unit, Order order) async {
-    print('***** startPayment(${unit.chainId}, ${unit.unitId}, ${order.id})');
-    return this._functionsProvider.startSimplePayPayment(unit.chainId, unit.unitId, order.id);
+    print('***** startPayment(${unit.chainId}, ${unit.id}, ${order.id})');
+    return this._functionsProvider.startSimplePayPayment(unit.chainId, unit.id, order.id);
   }
 
   Stream<SimplePayPaymentResult> collectPaymentTransactionStatus(String transactionId) {

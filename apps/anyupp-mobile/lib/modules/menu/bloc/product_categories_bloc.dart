@@ -22,12 +22,12 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     if (_unitSelectBloc.state is UnitSelected) {
       add(LoadProductCategories(
         (_unitSelectBloc.state as UnitSelected).unit.chainId,
-        (_unitSelectBloc.state as UnitSelected).unit.unitId,
+        (_unitSelectBloc.state as UnitSelected).unit.id,
       ));
     }
     _unitSelectSubscription = _unitSelectBloc.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
-        add(LoadProductCategories(state.unit.chainId, state.unit.unitId));
+        add(LoadProductCategories(state.unit.chainId, state.unit.id));
       }
     });
   }
@@ -54,7 +54,8 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     yield ProductCategoriesLoading();
     await _productCategoriesSubscription?.cancel();
     _productCategoriesSubscription =
-        _productRepository.getProductCategoryList(event.chainId, event.unitId).asBroadcastStream().listen((event) {
+        _productRepository.getProductCategoryList(event.chainId, event.unitId).listen((event) {
+          print('productCategory._mapLoadProductCategoriesToState().event=$event');
       add(ProductCategoriesUpdated(event));
     });
   }

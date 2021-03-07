@@ -4,7 +4,5 @@ abstract class IProductProvider {
   
   Stream<List<ProductCategory>> getProductCategoryList(String chainId, String unitId);
 
-  Stream<List<String>> getNotEmptyProductCategoryList(String unitId);
-  
-  Stream<List<Product>> getProductList(String unitId, String categoryId);
+  Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId);
 }

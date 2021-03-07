@@ -3,7 +3,7 @@
 // import 'package:fa_prev/shared/utils/firebase_conversion_utils.dart';
 
 
-// class Product {
+// class GeneratedProduct {
 //   String id;
 //   Map<String, String> name;
 //   Map<String, String> description;
@@ -17,7 +17,7 @@
 //   bool isVisible;
 //   // TODO: ingredients
 
-//   Product({
+//   GeneratedProduct({
 //     this.id,
 //     this.name,
 //     this.description,
@@ -31,7 +31,7 @@
 //     this.isVisible,
 //   });
 
-//   Product copyWith({
+//   GeneratedProduct copyWith({
 //     String id,
 //     Map<String, String> name,
 //     Map<String, String> description,
@@ -45,7 +45,7 @@
 //     bool isVisible,
 //     int order,
 //   }) {
-//     return Product(
+//     return GeneratedProduct(
 //       id: id ?? this.id,
 //       name: name ?? this.name,
 //       description: description ?? this.description,
@@ -76,10 +76,10 @@
 //     };
 //   }
 
-//   static Product fromMap(Map<String, dynamic> map) {
+//   static GeneratedProduct fromMap(Map<String, dynamic> map) {
 //     if (map == null) return null;
 
-//     return Product(
+//     return GeneratedProduct(
 //       id: map['id'],
 //       name: Map<String, String>.from(map['name']),
 //       description: Map<String, String>.from(map['description']),
@@ -97,11 +97,11 @@
 
 //   String toJson() => json.encode(toMap());
 
-//   static Product fromJson(String source) => fromMap(json.decode(source));
+//   static GeneratedProduct fromJson(String source) => fromMap(json.decode(source));
 
 //   @override
 //   String toString() {
-//     return 'Product(id: $id, name: $name, description: $description, image: $image, position: $position, contains: $contains, tax: $tax, variants: $variants, isVisible: $isVisible)';
+//     return 'GeneratedProduct(id: $id, name: $name, description: $description, image: $image, position: $position, contains: $contains, tax: $tax, variants: $variants, isVisible: $isVisible)';
 //   }
 // }
 

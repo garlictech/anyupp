@@ -24,7 +24,7 @@ class GetCurrentCartAction extends BaseCartAction {
 class AddProductToCartAction extends BaseCartAction {
   final User user;
   final GeoUnit unit;
-  final Product product;
+  final GeneratedProduct product;
   final ProductVariant variant;
 
   const AddProductToCartAction(this.user, this.unit, this.product, this.variant);
@@ -36,7 +36,7 @@ class AddProductToCartAction extends BaseCartAction {
 class RemoveProductFromCartAction extends BaseCartAction {
   final String chainId;
   final String unitId;
-  final Product product;
+  final GeneratedProduct product;
   final ProductVariant variant;
 
   const RemoveProductFromCartAction(this.chainId, this.unitId, this.product, this.variant);
@@ -48,7 +48,7 @@ class RemoveProductFromCartAction extends BaseCartAction {
 class UpdateProductInCartAction extends BaseCartAction {
   final String chainId;
   final String unitId;
-  final Product product;
+  final GeneratedProduct product;
   final ProductVariant variant;
   final int quantity;
 

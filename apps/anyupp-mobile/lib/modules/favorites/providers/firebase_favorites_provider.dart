@@ -16,7 +16,7 @@
 //   FirebaseFavoritesProvider(this._dbRef, this._authProvider);
 
 //   @override
-//   Stream<List<Product>> getFavoritesList(String chainId, String unitId) {
+//   Stream<List<GeneratedProduct>> getFavoritesList(String chainId, String unitId) {
 //     return _authProvider.getAuthenticatedUserProfile().asStream().switchMap((user) => _dbRef
 //         .child('favorites')
 //         .child('chains')
@@ -35,19 +35,19 @@
 //     //.switchMap((List<dynamic> keys) => _createProductLoadStream(chainId, unitId, keys)));
 //   }
 
-//   Stream<List<Product>> _createProductLoadStream(String chainId, String unitId, List<FavoriteProduct> products) {
+//   Stream<List<GeneratedProduct>> _createProductLoadStream(String chainId, String unitId, List<FavoriteProduct> products) {
 //     if (products == null) {
-//       return Stream.value(List<Product>());
+//       return Stream.value(List<GeneratedProduct>());
 //     }
 
-//     List<Future<Product>> futures = [];
+//     List<Future<GeneratedProduct>> futures = [];
 //     for (var product in products) {
 //       futures.add(_createProductLoadFuture(chainId, unitId, product));
 //     }
 //     return Future.wait(futures).asStream();
 //   }
 
-//   Future<Product> _createProductLoadFuture(String chainId, String unitId, FavoriteProduct favorite) async {
+//   Future<GeneratedProduct> _createProductLoadFuture(String chainId, String unitId, FavoriteProduct favorite) async {
 //     DataSnapshot snapshot = await _dbRef
 //         .child('generated')
 //         .child('productList')
@@ -58,7 +58,7 @@
 //         .child('products')
 //         .child(favorite.productId)
 //         .once();
-//     Product product = FirebaseModelMapper.snapshotToProduct(snapshot);
+//     GeneratedProduct product = FirebaseModelMapper.snapshotToProduct(snapshot);
 //     product.productCategoryId = favorite.categoryId;
 //     return product;
 //   }

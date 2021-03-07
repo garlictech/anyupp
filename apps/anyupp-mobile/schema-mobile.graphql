@@ -1,0 +1,180 @@
+# FONTOS!!!! EZT CSAK MOBIL OLDALON SZABAD GENERALTATNI!!!!
+# CSAK A 'amplify codegen models' parancsara jo!
+# Az 'amplify api gql-compile' parancsra a schema.graphql KELL!!!!
+type GeoUnit @model
+{
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String
+  address: Address @connection
+  style: ChainStyle @connection
+  paymentModes: [PaymentMode!] @connection
+  distance: Int
+  openingHours: String
+  currency: String
+  place: Place @connection
+}
+
+type Address @model {
+  id: ID!
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location @connection
+}
+
+type Location @model {
+  id: ID!
+  lat: Float
+  lng: Float
+}
+
+type LocalizedItem @model {
+  id: ID!
+  en: String
+  de: String
+  hu: String
+}
+
+type ChainStyle @model {
+  id: ID!
+  colors: ChainStyleColors @connection
+  images: ChainStyleImages @connection
+}
+
+type ChainStyleColors @model {
+  id: ID!
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+type ChainStyleImages @model {
+  id: ID!
+  header: String
+  logo: String
+}
+
+type PaymentMode @model {
+  id: ID!
+  unitId: ID!
+  name: String!
+  caption: String
+  method: String!
+}
+
+type User @model {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  loginMethod: String
+}
+
+type GeneratedProduct @model
+{
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem @connection
+  description: LocalizedItem @connection
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  variants: [ProductVariant!] @connection
+}
+
+type ProductCategory @model
+{
+  id: ID!
+  unitId: ID!
+  name: LocalizedItem @connection
+  description: LocalizedItem @connection
+  image: String
+  position: Int
+}
+
+type ProductVariant @model {
+  id: ID!
+  variantName: LocalizedItem @connection
+  pack: ProductVariantPack @connection
+  isAvailable: Boolean
+  price: Float
+  position: Int
+}
+
+type ProductVariantPack @model {
+  id: ID!
+  size: Float
+  unit: String
+}
+
+type FavoriteProduct @model
+{
+  id: ID!
+  userID: ID!
+  unitID: ID!
+  product: GeneratedProduct @connection
+}
+
+type Order @model 
+{
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  items: [OrderItem] @connection
+  paymentMethod: String
+  staffId: String
+  sumPriceShown: PriceShown @connection
+  takeAway: Boolean
+  place: Place @connection
+  paymentIntention: Int
+  statusLog: [StatusLog] @connection
+  created: Int
+}
+
+type OrderItem @model {
+  id: ID!
+  productId: ID!
+  variantId: ID!
+  productName: LocalizedItem @connection
+  priceShown: PriceShown @connection
+  quantity: Int
+  statusLog: [StatusLog] @connection
+  variantName: LocalizedItem @connection
+  created: Int
+  takeAway: Boolean
+}
+
+type Place @model {
+  id: ID!
+  seat: String
+  table: String
+}
+
+type PriceShown @model {
+  id: ID!
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type StatusLog @model {
+  id: ID!
+  userId: ID!
+  status: String
+  ts: Int
+}

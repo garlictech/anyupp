@@ -23,7 +23,6 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/exception/exception.dart';
 import 'core/theme/theme.dart';
-import 'models/ModelProvider.dart';
 import 'modules/cart/cart.dart';
 import 'modules/demo-datastore/demo-datastore.dart';
 import 'modules/favorites/favorites.dart';
@@ -31,10 +30,16 @@ import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
+//import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:amplify_core/amplify_core.dart';
+//import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'amplifyconfiguration.dart';
+
+// extension on AmplifyClass {
+//   bool hasConfiguredAuth() => AuthCategory.plugins.isNotEmpty;
+// }
 
 void runAppByStage({String stage = 'dev'}) {
   runZoned(() async {
@@ -50,23 +55,23 @@ void runAppByStage({String stage = 'dev'}) {
   });
 }
 
-void _initAmplify() async {
-  print('_initAmplify().start()');
-  try {
-    await Amplify.addPlugins([
-      AmplifyDataStore(modelProvider: ModelProvider.instance),
-      AmplifyAPI(),
-      AmplifyAuthCognito(),
-    ]);
-    await Amplify.configure(amplifyconfig);
-    print('_initAmplify().Amplify initialized successfully...');
-  } on AmplifyAlreadyConfiguredException catch (e) {
-    print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-  } on Exception catch (e) {
-    print('_initAmplify().Error initializing Amplify: $e');
-  }
-}
 
+  void _initAmplify() async {
+    print('_initAmplify().start()');
+    try {
+      await Amplify.addPlugins([
+        AmplifyAuthCognito(),
+        // AmplifyDataStore(modelProvider: ModelProvider.instance),
+        AmplifyAPI(),
+      ]);
+      await Amplify.configure(amplifyconfig);
+      print('_initAmplify().Amplify initialized successfully...');
+    } on AmplifyAlreadyConfiguredException catch (e) {
+      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    } on Exception catch (e) {
+      print('_initAmplify().Error initializing Amplify: $e');
+    }
+  }
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -74,14 +79,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamSubscription _deeplinkSubscription;
+  StreamSubscription _amplifySubscription;
   bool _amplifyInitialized = true;
   String _amplifyError;
 
   @override
   void initState() {
     super.initState();
-    // _initAmplify();
-    _initDeepLinks();
+    _init();
   }
 
   @override
@@ -89,38 +94,46 @@ class _MyAppState extends State<MyApp> {
     if (_deeplinkSubscription != null) {
       _deeplinkSubscription.cancel();
     }
+    if (_amplifySubscription != null) {
+      _amplifySubscription.cancel();
+    }
     super.dispose();
   }
 
-  void _initAmplify() async {
-    print('_initAmplify().start()');
-    try {
-      if (!_amplifyInitialized) {
-        await Amplify.addPlugins([
-          AmplifyDataStore(modelProvider: ModelProvider.instance),
-          AmplifyAuthCognito(),
-        ]);
-        await Amplify.configure(amplifyconfig);
-        print('_initAmplify().Amplify initialized successfully...');
-        setState(() {
-          _amplifyInitialized = true;
-          _amplifyError = null;
-        });
-      }
-    } on AmplifyAlreadyConfiguredException catch (e) {
-      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-      setState(() {
-        _amplifyInitialized = false;
-        _amplifyError = e.message;
-      });
-    } on Exception catch (e) {
-      print('_initAmplify().Error initializing Amplify: $e');
-      setState(() {
-        _amplifyInitialized = false;
-        _amplifyError = e.toString();
-      });
-    }
+  Future<void> _init() async {
+    print('_init().start()');
+    // await _initAmplify();
+    // await _initAmplifyDataStore();
+    // await initDependencyInjection();
+    await _initDeepLinks();
+    print('_init().end()');
   }
+
+
+  // void _initAmplifyDataStore() async {
+  //   print('_initAmplifyDataStore().start()');
+  //   try {
+  //     _amplifySubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
+  //       final dsEvent = event as DataStoreHubEvent;
+  //       print('_initAmplifyDataStore().event=${dsEvent?.eventName}');
+  //       print('_initAmplifyDataStore().event.payload=${dsEvent?.payload}');
+  //       if (dsEvent.eventName == 'networkStatus') {
+  //         // TODO AWS!!!!
+  //       }
+  //     });
+  //     print('_initAmplifyDataStore().initialized()');
+  //     setState(() {
+  //       _amplifyInitialized = true;
+  //       _amplifyError = null;
+  //     });
+  //   } on Exception catch (e) {
+  //     print('_initAmplify().Error initializing Amplify: $e');
+  //     setState(() {
+  //       _amplifyInitialized = false;
+  //       _amplifyError = e.toString();
+  //     });
+  //   }
+  // }
 
   void handleLink(Uri link) async {
     print('handleLink()=$link');

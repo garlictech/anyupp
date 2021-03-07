@@ -17,13 +17,12 @@
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'Address.dart';
-import 'Chain.dart';
 import 'ChainStyle.dart';
 import 'ChainStyleColors.dart';
 import 'ChainStyleImages.dart';
-import 'DailySchedule.dart';
 import 'FavoriteProduct.dart';
-import 'Group.dart';
+import 'GeneratedProduct.dart';
+import 'GeoUnit.dart';
 import 'LocalizedItem.dart';
 import 'Location.dart';
 import 'Order.dart';
@@ -31,23 +30,19 @@ import 'OrderItem.dart';
 import 'PaymentMode.dart';
 import 'Place.dart';
 import 'PriceShown.dart';
-import 'Product.dart';
 import 'ProductCategory.dart';
 import 'ProductVariant.dart';
 import 'ProductVariantPack.dart';
 import 'StatusLog.dart';
-import 'Unit.dart';
 import 'User.dart';
-import 'WeeklySchedule.dart';
 
 export 'Address.dart';
-export 'Chain.dart';
 export 'ChainStyle.dart';
 export 'ChainStyleColors.dart';
 export 'ChainStyleImages.dart';
-export 'DailySchedule.dart';
 export 'FavoriteProduct.dart';
-export 'Group.dart';
+export 'GeneratedProduct.dart';
+export 'GeoUnit.dart';
 export 'LocalizedItem.dart';
 export 'Location.dart';
 export 'Order.dart';
@@ -55,28 +50,24 @@ export 'OrderItem.dart';
 export 'PaymentMode.dart';
 export 'Place.dart';
 export 'PriceShown.dart';
-export 'Product.dart';
 export 'ProductCategory.dart';
 export 'ProductVariant.dart';
 export 'ProductVariantPack.dart';
 export 'StatusLog.dart';
-export 'Unit.dart';
 export 'User.dart';
-export 'WeeklySchedule.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "411b2aaee962bcef6a8474f91321e821";
+  String version = "47fcb25a3d97eea387b127100fbbe5da";
   @override
   List<ModelSchema> modelSchemas = [
     Address.schema,
-    Chain.schema,
     ChainStyle.schema,
     ChainStyleColors.schema,
     ChainStyleImages.schema,
-    DailySchedule.schema,
     FavoriteProduct.schema,
-    Group.schema,
+    GeneratedProduct.schema,
+    GeoUnit.schema,
     LocalizedItem.schema,
     Location.schema,
     Order.schema,
@@ -84,14 +75,11 @@ class ModelProvider implements ModelProviderInterface {
     PaymentMode.schema,
     Place.schema,
     PriceShown.schema,
-    Product.schema,
     ProductCategory.schema,
     ProductVariant.schema,
     ProductVariantPack.schema,
     StatusLog.schema,
-    Unit.schema,
-    User.schema,
-    WeeklySchedule.schema
+    User.schema
   ];
   static final ModelProvider _instance = ModelProvider();
 
@@ -102,11 +90,6 @@ class ModelProvider implements ModelProviderInterface {
       case "Address":
         {
           return Address.classType;
-        }
-        break;
-      case "Chain":
-        {
-          return Chain.classType;
         }
         break;
       case "ChainStyle":
@@ -124,19 +107,19 @@ class ModelProvider implements ModelProviderInterface {
           return ChainStyleImages.classType;
         }
         break;
-      case "DailySchedule":
-        {
-          return DailySchedule.classType;
-        }
-        break;
       case "FavoriteProduct":
         {
           return FavoriteProduct.classType;
         }
         break;
-      case "Group":
+      case "GeneratedProduct":
         {
-          return Group.classType;
+          return GeneratedProduct.classType;
+        }
+        break;
+      case "GeoUnit":
+        {
+          return GeoUnit.classType;
         }
         break;
       case "LocalizedItem":
@@ -174,11 +157,6 @@ class ModelProvider implements ModelProviderInterface {
           return PriceShown.classType;
         }
         break;
-      case "Product":
-        {
-          return Product.classType;
-        }
-        break;
       case "ProductCategory":
         {
           return ProductCategory.classType;
@@ -199,19 +177,9 @@ class ModelProvider implements ModelProviderInterface {
           return StatusLog.classType;
         }
         break;
-      case "Unit":
-        {
-          return Unit.classType;
-        }
-        break;
       case "User":
         {
           return User.classType;
-        }
-        break;
-      case "WeeklySchedule":
-        {
-          return WeeklySchedule.classType;
         }
         break;
       default:

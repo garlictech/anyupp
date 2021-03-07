@@ -24,14 +24,12 @@ import 'package:flutter/foundation.dart';
 class ProductVariant extends Model {
   static const classType = const ProductVariantType();
   final String id;
-  final String productId;
-  final String variantNameId;
   final LocalizedItem variantName;
-  final String packId;
   final ProductVariantPack pack;
   final bool isAvailable;
   final double price;
   final int position;
+  final String generatedProductVariantsId;
 
   @override
   getInstanceType() => classType;
@@ -43,35 +41,29 @@ class ProductVariant extends Model {
 
   const ProductVariant._internal(
       {@required this.id,
-      @required this.productId,
-      this.variantNameId,
       this.variantName,
-      this.packId,
       this.pack,
       this.isAvailable,
       this.price,
-      this.position});
+      this.position,
+      this.generatedProductVariantsId});
 
   factory ProductVariant(
       {String id,
-      @required String productId,
-      String variantNameId,
       LocalizedItem variantName,
-      String packId,
       ProductVariantPack pack,
       bool isAvailable,
       double price,
-      int position}) {
+      int position,
+      String generatedProductVariantsId}) {
     return ProductVariant._internal(
         id: id == null ? UUID.getUUID() : id,
-        productId: productId,
-        variantNameId: variantNameId,
         variantName: variantName,
-        packId: packId,
         pack: pack,
         isAvailable: isAvailable,
         price: price,
-        position: position);
+        position: position,
+        generatedProductVariantsId: generatedProductVariantsId);
   }
 
   bool equals(Object other) {
@@ -83,14 +75,12 @@ class ProductVariant extends Model {
     if (identical(other, this)) return true;
     return other is ProductVariant &&
         id == other.id &&
-        productId == other.productId &&
-        variantNameId == other.variantNameId &&
         variantName == other.variantName &&
-        packId == other.packId &&
         pack == other.pack &&
         isAvailable == other.isAvailable &&
         price == other.price &&
-        position == other.position;
+        position == other.position &&
+        generatedProductVariantsId == other.generatedProductVariantsId;
   }
 
   @override
@@ -102,15 +92,17 @@ class ProductVariant extends Model {
 
     buffer.write("ProductVariant {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("productId=" + "$productId" + ", ");
-    buffer.write("variantNameId=" + "$variantNameId" + ", ");
-    buffer.write("packId=" + "$packId" + ", ");
+    buffer.write("variantName=" +
+        (variantName != null ? variantName.toString() : "null") +
+        ", ");
+    buffer.write("pack=" + (pack != null ? pack.toString() : "null") + ", ");
     buffer.write("isAvailable=" +
         (isAvailable != null ? isAvailable.toString() : "null") +
         ", ");
     buffer.write("price=" + (price != null ? price.toString() : "null") + ", ");
-    buffer
-        .write("position=" + (position != null ? position.toString() : "null"));
+    buffer.write(
+        "position=" + (position != null ? position.toString() : "null") + ", ");
+    buffer.write("generatedProductVariantsId=" + "$generatedProductVariantsId");
     buffer.write("}");
 
     return buffer.toString();
@@ -118,64 +110,53 @@ class ProductVariant extends Model {
 
   ProductVariant copyWith(
       {String id,
-      String productId,
-      String variantNameId,
       LocalizedItem variantName,
-      String packId,
       ProductVariantPack pack,
       bool isAvailable,
       double price,
-      int position}) {
+      int position,
+      String generatedProductVariantsId}) {
     return ProductVariant(
         id: id ?? this.id,
-        productId: productId ?? this.productId,
-        variantNameId: variantNameId ?? this.variantNameId,
         variantName: variantName ?? this.variantName,
-        packId: packId ?? this.packId,
         pack: pack ?? this.pack,
         isAvailable: isAvailable ?? this.isAvailable,
         price: price ?? this.price,
-        position: position ?? this.position);
+        position: position ?? this.position,
+        generatedProductVariantsId:
+            generatedProductVariantsId ?? this.generatedProductVariantsId);
   }
 
   ProductVariant.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        productId = json['productId'],
-        variantNameId = json['variantNameId'],
         variantName = json['variantName'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['variantName']))
             : null,
-        packId = json['packId'],
         pack = json['pack'] != null
             ? ProductVariantPack.fromJson(
                 new Map<String, dynamic>.from(json['pack']))
             : null,
         isAvailable = json['isAvailable'],
         price = json['price'],
-        position = json['position'];
+        position = json['position'],
+        generatedProductVariantsId = json['generatedProductVariantsId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'productId': productId,
-        'variantNameId': variantNameId,
         'variantName': variantName?.toJson(),
-        'packId': packId,
         'pack': pack?.toJson(),
         'isAvailable': isAvailable,
         'price': price,
-        'position': position
+        'position': position,
+        'generatedProductVariantsId': generatedProductVariantsId
       };
 
   static final QueryField ID = QueryField(fieldName: "productVariant.id");
-  static final QueryField PRODUCTID = QueryField(fieldName: "productId");
-  static final QueryField VARIANTNAMEID =
-      QueryField(fieldName: "variantNameId");
   static final QueryField VARIANTNAME = QueryField(
       fieldName: "variantName",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField PACKID = QueryField(fieldName: "packId");
   static final QueryField PACK = QueryField(
       fieldName: "pack",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -183,6 +164,8 @@ class ProductVariant extends Model {
   static final QueryField ISAVAILABLE = QueryField(fieldName: "isAvailable");
   static final QueryField PRICE = QueryField(fieldName: "price");
   static final QueryField POSITION = QueryField(fieldName: "position");
+  static final QueryField GENERATEDPRODUCTVARIANTSID =
+      QueryField(fieldName: "generatedProductVariantsId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ProductVariant";
@@ -190,32 +173,17 @@ class ProductVariant extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.PRODUCTID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.VARIANTNAMEID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: ProductVariant.VARIANTNAME,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "productVariantVariantNameId",
+        ofModelName: (LocalizedItem).toString()));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.PACKID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: ProductVariant.PACK,
         isRequired: false,
-        ofModelName: (ProductVariantPack).toString(),
-        associatedKey: ProductVariantPack.ID));
+        targetName: "productVariantPackId",
+        ofModelName: (ProductVariantPack).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: ProductVariant.ISAVAILABLE,
@@ -231,6 +199,11 @@ class ProductVariant extends Model {
         key: ProductVariant.POSITION,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: ProductVariant.GENERATEDPRODUCTVARIANTSID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }
 

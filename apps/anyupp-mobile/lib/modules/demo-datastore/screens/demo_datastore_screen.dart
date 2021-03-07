@@ -37,10 +37,6 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
             return _buildList(context, state.items);
           }
 
-          if (state is AmplifyGroupListLoaded) {
-            return _buildList(context, state.groups);
-          }
-
           if (state is AmplifyUnitError) {
             return _buildError(context, state.error);
           }
@@ -83,29 +79,18 @@ class _DataStoreDemoScreenState extends State<DataStoreDemoScreen> {
   }
 
   Widget _buildCard<T>(T data) {
-    if (data is Unit) {
+    if (data is GeoUnit) {
       return _buildUnitCard(data);
     }
     if (data is LocalizedItem) {
       return _buildLocalizationCard(data);
     }
-    if (data is Group) {
-      return _buildGroupCard(data);
-    }
 
     return Container();
   }
 
-  Widget _buildGroupCard(Group group) {
-    return Container(
-      height: 60.0,
-      child: Card(
-        child: Text(group?.name),
-      ),
-    );
-  }
 
-  Widget _buildUnitCard(Unit unit) {
+  Widget _buildUnitCard(GeoUnit unit) {
     return Container(
       height: 60.0,
       child: Card(

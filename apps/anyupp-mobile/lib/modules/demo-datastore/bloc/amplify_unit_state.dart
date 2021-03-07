@@ -14,7 +14,7 @@ class AmplifyNoUnitLoaded extends AmplifyUnitState {
 }
 
 class AmplifyUnitListLoaded extends AmplifyUnitState {
-  final List<Unit> units;
+  final List<GeoUnit> units;
 
   const AmplifyUnitListLoaded(this.units);
 
@@ -26,7 +26,7 @@ class AmplifyUnitsLoading extends AmplifyUnitState {
 }
 
 class AmplifyUnitLoaded extends AmplifyUnitState {
-  final Unit unit;
+  final GeoUnit unit;
 
   const AmplifyUnitLoaded(this.unit);
 
@@ -51,15 +51,6 @@ class AmplifyLocalizationListLoaded extends AmplifyUnitState {
 
   @override
   List<Object> get props => [items];
-}
-
-class AmplifyGroupListLoaded extends AmplifyUnitState {
-  final List<Group> groups;
-
-  const AmplifyGroupListLoaded(this.groups);
-
-  @override
-  List<Object> get props => [groups];
 }
 
 class AmplifyCommonListLoaded extends AmplifyUnitState {

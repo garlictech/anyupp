@@ -5,6 +5,7 @@ import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/color.dart';
 import 'package:flutter/material.dart';
 

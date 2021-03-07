@@ -25,19 +25,16 @@ import 'package:flutter/foundation.dart';
 class OrderItem extends Model {
   static const classType = const OrderItemType();
   final String id;
-  final String orderId;
   final String productId;
-  final String productNameId;
+  final String variantId;
   final LocalizedItem productName;
-  final String priceShownId;
   final PriceShown priceShown;
   final int quantity;
   final List<StatusLog> statusLog;
-  final String variantId;
   final LocalizedItem variantName;
   final int created;
-  final String laneId;
   final bool takeAway;
+  final String orderItemsId;
 
   @override
   getInstanceType() => classType;
@@ -49,50 +46,41 @@ class OrderItem extends Model {
 
   const OrderItem._internal(
       {@required this.id,
-      @required this.orderId,
-      this.productId,
-      this.productNameId,
+      @required this.productId,
+      @required this.variantId,
       this.productName,
-      this.priceShownId,
       this.priceShown,
       this.quantity,
       this.statusLog,
-      this.variantId,
       this.variantName,
       this.created,
-      this.laneId,
-      this.takeAway});
+      this.takeAway,
+      this.orderItemsId});
 
   factory OrderItem(
       {String id,
-      @required String orderId,
-      String productId,
-      String productNameId,
+      @required String productId,
+      @required String variantId,
       LocalizedItem productName,
-      String priceShownId,
       PriceShown priceShown,
       int quantity,
       List<StatusLog> statusLog,
-      String variantId,
       LocalizedItem variantName,
       int created,
-      String laneId,
-      bool takeAway}) {
+      bool takeAway,
+      String orderItemsId}) {
     return OrderItem._internal(
         id: id == null ? UUID.getUUID() : id,
-        orderId: orderId,
         productId: productId,
-        productNameId: productNameId,
+        variantId: variantId,
         productName: productName,
-        priceShownId: priceShownId,
         priceShown: priceShown,
         quantity: quantity,
         statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
-        variantId: variantId,
         variantName: variantName,
         created: created,
-        laneId: laneId,
-        takeAway: takeAway);
+        takeAway: takeAway,
+        orderItemsId: orderItemsId);
   }
 
   bool equals(Object other) {
@@ -104,19 +92,16 @@ class OrderItem extends Model {
     if (identical(other, this)) return true;
     return other is OrderItem &&
         id == other.id &&
-        orderId == other.orderId &&
         productId == other.productId &&
-        productNameId == other.productNameId &&
+        variantId == other.variantId &&
         productName == other.productName &&
-        priceShownId == other.priceShownId &&
         priceShown == other.priceShown &&
         quantity == other.quantity &&
         DeepCollectionEquality().equals(statusLog, other.statusLog) &&
-        variantId == other.variantId &&
         variantName == other.variantName &&
         created == other.created &&
-        laneId == other.laneId &&
-        takeAway == other.takeAway;
+        takeAway == other.takeAway &&
+        orderItemsId == other.orderItemsId;
   }
 
   @override
@@ -128,18 +113,24 @@ class OrderItem extends Model {
 
     buffer.write("OrderItem {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("orderId=" + "$orderId" + ", ");
     buffer.write("productId=" + "$productId" + ", ");
-    buffer.write("productNameId=" + "$productNameId" + ", ");
-    buffer.write("priceShownId=" + "$priceShownId" + ", ");
+    buffer.write("variantId=" + "$variantId" + ", ");
+    buffer.write("productName=" +
+        (productName != null ? productName.toString() : "null") +
+        ", ");
+    buffer.write("priceShown=" +
+        (priceShown != null ? priceShown.toString() : "null") +
+        ", ");
     buffer.write(
         "quantity=" + (quantity != null ? quantity.toString() : "null") + ", ");
-    buffer.write("variantId=" + "$variantId" + ", ");
+    buffer.write("variantName=" +
+        (variantName != null ? variantName.toString() : "null") +
+        ", ");
     buffer.write(
         "created=" + (created != null ? created.toString() : "null") + ", ");
-    buffer.write("laneId=" + "$laneId" + ", ");
-    buffer
-        .write("takeAway=" + (takeAway != null ? takeAway.toString() : "null"));
+    buffer.write(
+        "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
+    buffer.write("orderItemsId=" + "$orderItemsId");
     buffer.write("}");
 
     return buffer.toString();
@@ -147,46 +138,38 @@ class OrderItem extends Model {
 
   OrderItem copyWith(
       {String id,
-      String orderId,
       String productId,
-      String productNameId,
+      String variantId,
       LocalizedItem productName,
-      String priceShownId,
       PriceShown priceShown,
       int quantity,
       List<StatusLog> statusLog,
-      String variantId,
       LocalizedItem variantName,
       int created,
-      String laneId,
-      bool takeAway}) {
+      bool takeAway,
+      String orderItemsId}) {
     return OrderItem(
         id: id ?? this.id,
-        orderId: orderId ?? this.orderId,
         productId: productId ?? this.productId,
-        productNameId: productNameId ?? this.productNameId,
+        variantId: variantId ?? this.variantId,
         productName: productName ?? this.productName,
-        priceShownId: priceShownId ?? this.priceShownId,
         priceShown: priceShown ?? this.priceShown,
         quantity: quantity ?? this.quantity,
         statusLog: statusLog ?? this.statusLog,
-        variantId: variantId ?? this.variantId,
         variantName: variantName ?? this.variantName,
         created: created ?? this.created,
-        laneId: laneId ?? this.laneId,
-        takeAway: takeAway ?? this.takeAway);
+        takeAway: takeAway ?? this.takeAway,
+        orderItemsId: orderItemsId ?? this.orderItemsId);
   }
 
   OrderItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        orderId = json['orderId'],
         productId = json['productId'],
-        productNameId = json['productNameId'],
+        variantId = json['variantId'],
         productName = json['productName'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['productName']))
             : null,
-        priceShownId = json['priceShownId'],
         priceShown = json['priceShown'] != null
             ? PriceShown.fromJson(
                 new Map<String, dynamic>.from(json['priceShown']))
@@ -198,42 +181,35 @@ class OrderItem extends Model {
                     (e) => StatusLog.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        variantId = json['variantId'],
         variantName = json['variantName'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['variantName']))
             : null,
         created = json['created'],
-        laneId = json['laneId'],
-        takeAway = json['takeAway'];
+        takeAway = json['takeAway'],
+        orderItemsId = json['orderItemsId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'orderId': orderId,
         'productId': productId,
-        'productNameId': productNameId,
+        'variantId': variantId,
         'productName': productName?.toJson(),
-        'priceShownId': priceShownId,
         'priceShown': priceShown?.toJson(),
         'quantity': quantity,
         'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
-        'variantId': variantId,
         'variantName': variantName?.toJson(),
         'created': created,
-        'laneId': laneId,
-        'takeAway': takeAway
+        'takeAway': takeAway,
+        'orderItemsId': orderItemsId
       };
 
   static final QueryField ID = QueryField(fieldName: "orderItem.id");
-  static final QueryField ORDERID = QueryField(fieldName: "orderId");
   static final QueryField PRODUCTID = QueryField(fieldName: "productId");
-  static final QueryField PRODUCTNAMEID =
-      QueryField(fieldName: "productNameId");
+  static final QueryField VARIANTID = QueryField(fieldName: "variantId");
   static final QueryField PRODUCTNAME = QueryField(
       fieldName: "productName",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField PRICESHOWNID = QueryField(fieldName: "priceShownId");
   static final QueryField PRICESHOWN = QueryField(
       fieldName: "priceShown",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -243,14 +219,13 @@ class OrderItem extends Model {
       fieldName: "statusLog",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (StatusLog).toString()));
-  static final QueryField VARIANTID = QueryField(fieldName: "variantId");
   static final QueryField VARIANTNAME = QueryField(
       fieldName: "variantName",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
   static final QueryField CREATED = QueryField(fieldName: "created");
-  static final QueryField LANEID = QueryField(fieldName: "laneId");
   static final QueryField TAKEAWAY = QueryField(fieldName: "takeAway");
+  static final QueryField ORDERITEMSID = QueryField(fieldName: "orderItemsId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "OrderItem";
@@ -259,36 +234,26 @@ class OrderItem extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.ORDERID,
+        key: OrderItem.PRODUCTID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.PRODUCTID,
-        isRequired: false,
+        key: OrderItem.VARIANTID,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.PRODUCTNAMEID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: OrderItem.PRODUCTNAME,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "orderItemProductNameId",
+        ofModelName: (LocalizedItem).toString()));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.PRICESHOWNID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: OrderItem.PRICESHOWN,
         isRequired: false,
-        ofModelName: (PriceShown).toString(),
-        associatedKey: PriceShown.ID));
+        targetName: "orderItemPriceShownId",
+        ofModelName: (PriceShown).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: OrderItem.QUANTITY,
@@ -299,18 +264,13 @@ class OrderItem extends Model {
         key: OrderItem.STATUSLOG,
         isRequired: false,
         ofModelName: (StatusLog).toString(),
-        associatedKey: StatusLog.ORDERID));
+        associatedKey: StatusLog.ORDERITEMSTATUSLOGID));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.VARIANTID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: OrderItem.VARIANTNAME,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "orderItemVariantNameId",
+        ofModelName: (LocalizedItem).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: OrderItem.CREATED,
@@ -318,14 +278,14 @@ class OrderItem extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: OrderItem.LANEID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: OrderItem.TAKEAWAY,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: OrderItem.ORDERITEMSID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }
 

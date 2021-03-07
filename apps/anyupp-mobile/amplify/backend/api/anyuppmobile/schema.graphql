@@ -1,109 +1,48 @@
-# Group
-type Group @model {
-  id: ID!
-#  chains: [Chain]! @connection(keyName: "chainsByGroup", fields: ["id"])
-#  units: [Unit]! @connection(keyName: "unitsByGroup", fields: ["id"])
-  name: String
-  descriptionId: ID
-  description: LocalizedItem @connection(fields: ["descriptionId"])
-  currency: String
-  addressId: ID
-  address: Address @connection(fields: ["addressId"])
-  email: String
-  phone: String
-}
-
-# Chain
-type Chain @model 
-@key(name: "chainsByGroup", fields: ["groupId"])
-{
-  id: ID!
-  name: String
-  groupId: ID!
-  group: Group @connection(fields: ["groupId"])
-  # units: [Unit!] @connection(keyName: "unitsByChain", fields: ["id"])
-  descriptionId: ID
-  description: LocalizedItem @connection(fields: ["descriptionId"])
-  styleId: ID
-  style: ChainStyle @connection(fields: ["styleId"])
-  isActive: Boolean
-}
-
-# Unit
-type Unit @model 
+# FONTOS!!!! EZT CSAK A BACKEND OLDALHOZ SZABAD GENERALTATNI!!!!
+# 'amplify api gql-compile' KELL!!!!
+type GeoUnit @model 
 @key(name: "unitsByChain", fields: ["chainId"])
 @key(name: "unitsByGroup", fields: ["groupId"])
 {
   id: ID!
   groupId: ID!
-  group: Group @connection(fields: ["groupId"])
   chainId: ID!
-  chain: Chain @connection(fields: ["chainId"])
   name: String
-  descriptionId: ID
-  description: LocalizedItem @connection(fields: ["descriptionId"])
-  addressId: ID
-  address: Address @connection(fields: ["addressId"])
-  paymentModes: [PaymentMode!] @connection(keyName: "paymentsByUnit", fields: ["id"])
-  isActive: Boolean
-  isAcceptingOrders: Boolean
-  email: String
-  phone: String
-  openId: ID
-  open: DailySchedule @connection(fields: ["openId"])
-  openingHours: [WeeklySchedule!] @connection(keyName: "scheduleByUnit", fields: ["id"])
+  address: Address
+  style: ChainStyle
+  paymentModes: [PaymentMode!]
+  distance: Int
+  openingHours: String
+  currency: String
+  place: Place
 }
 
-type WeeklySchedule @model 
-@key(name: "scheduleByUnit", fields: ["unitId"])
-{
-  id: ID!
-  unitId: ID!
-  day: String
-  scheduleId: ID!
-  schedule: DailySchedule @connection(fields: ["scheduleId"])
-}
-
-type DailySchedule @model {
-  id: ID!
-  from: String
-  to: String
-}
-
-type Address @model {
-  id: ID!
+type Address {
   address: String
   city: String
   country: String
   title: String
   postalCode: String
-  locationId: ID
-  location: Location @connection(fields: ["locationId"])
+  location: Location
 }
 
-type Location @model {
-  id: ID!
+type Location {
   lat: Float
   lng: Float
 }
 
-type LocalizedItem @model {
-  id: ID!
+type LocalizedItem {
   en: String
   de: String
   hu: String
 }
 
-type ChainStyle @model {
-  id: ID!
-  colorsId: ID
-  colors: ChainStyleColors @connection(fields: ["colorsId"])
-  imagesId: ID
-  images: ChainStyleImages @connection(fields: ["imagesId"])
+type ChainStyle {
+  colors: ChainStyleColors
+  images: ChainStyleImages
 }
 
-type ChainStyleColors @model {
-  id: ID!
+type ChainStyleColors {
   backgroundLight: String
   backgroundDark: String
   borderLight: String
@@ -115,24 +54,18 @@ type ChainStyleColors @model {
   textDark: String
 }
 
-type ChainStyleImages @model {
-  id: ID!
+type ChainStyleImages {
   header: String
   logo: String
 }
 
-type PaymentMode @model 
-@key(name: "paymentsByUnit", fields: ["unitId"])
-{
-  id: ID!
-  unitId: ID!
+type PaymentMode {
   name: String!
   caption: String
   method: String!
 }
 
-type User @model {
-  id: ID!
+type User {
   name: String
   email: String
   phone: String
@@ -140,70 +73,53 @@ type User @model {
   loginMethod: String
 }
 
-type Product @model 
+type GeneratedProduct @model
 @key(name: "productsByUnit", fields: ["unitId"])
 @key(name: "productsByUnitAndCategory", fields: ["unitId", "productCategoryId"])
 {
   id: ID!
   unitId: ID!
-  nameId: ID!
-  name: LocalizedItem @connection(fields: ["descriptionId"])
-  descriptionId: ID
-  description: LocalizedItem @connection(fields: ["descriptionId"])
   productCategoryId: ID!
-  productCategory: ProductCategory @connection(fields: ["productCategoryId"])
+  name: LocalizedItem
+  description: LocalizedItem
   productType: String
   tax: Int
   position: Int
   image: String
-  extending: String
-  isVisible: Boolean
-  variants: [ProductVariant!] @connection(keyName: "variantsByProduct", fields: ["id"])
+  variants: [ProductVariant!]
 }
 
-type ProductCategory @model {
+type ProductCategory @model
+@key(name: "byUnit", fields: ["unitId"])
+{
   id: ID!
-  nameId: ID!
-  name: LocalizedItem @connection(fields: ["descriptionId"])
-  descriptionId: ID
-  description: LocalizedItem @connection(fields: ["descriptionId"])
+  unitId: ID!
+  name: LocalizedItem
+  description: LocalizedItem
   image: String
   position: Int
 }
 
-type ProductVariant @model 
-@key(name: "variantsByProduct", fields: ["productId"])
-{
-  id: ID!
-  productId: ID!
-  variantNameId: ID
-  variantName: LocalizedItem @connection(fields: ["variantNameId"])
-  packId: ID
-  pack: ProductVariantPack @connection(fields: ["packId"])
+type ProductVariant {
+  variantName: LocalizedItem
+  pack: ProductVariantPack
   isAvailable: Boolean
   price: Float
   position: Int
 }
 
-type ProductVariantPack @model 
-@key(name: "variantsByProduct", fields: ["productId"])
-{
-  id: ID!
-  productId: ID!
+type ProductVariantPack {
   size: Float
   unit: String
 }
 
 type FavoriteProduct @model
-@key(name: "favoritesByUserAndChain", fields: ["userID", "chainID"])
 @key(name: "favoritesByUserAndUnit", fields: ["userID", "unitID"])
 {
   id: ID!
   userID: ID!
-  chainID: ID!
   unitID: ID!
-  productId: ID!
-  product: Product @connection(fields: ["productId"])
+  product: GeneratedProduct @connection
 }
 
 type Order @model 
@@ -213,46 +129,35 @@ type Order @model
   id: ID!
   userId: ID!
   unitId: ID!
-  created: Int
-  items: [OrderItem] @connection(keyName: "itemsByOrder", fields: ["id"])
+  items: [OrderItem]
   paymentMethod: String
-  staffId: ID
-  statusLog: [StatusLog] @connection(keyName: "logsByOrder", fields: ["id"])
-  sumPriceShownId: ID
-  sumPriceShown: PriceShown @connection(fields: ["sumPriceShownId"])
+  staffId: String
+  sumPriceShown: PriceShown
   takeAway: Boolean
-  placeId: ID
-  place: Place @connection(fields: ["placeId"]) 
+  place: Place
   paymentIntention: Int
+  statusLog: [StatusLog]
+  created: Int
 }
 
-type OrderItem @model 
-@key(name: "itemsByOrder", fields: ["orderId"])
-{
-  id: ID!
-  orderId: ID!
-  productId: ID
-  productNameId: ID
-  productName: LocalizedItem @connection(fields: ["productNameId"])
-  priceShownId: ID
-  priceShown: PriceShown @connection(fields: ["priceShownId"])
+type OrderItem {
+  productId: ID!
+  variantId: ID!
+  productName: LocalizedItem
+  priceShown: PriceShown
   quantity: Int
-  statusLog: [StatusLog] @connection(keyName: "logsByOrderAndItem", fields: ["id", "orderId"])
-  variantId: ID
-  variantName: LocalizedItem @connection(fields: ["variantId"])
+  statusLog: [StatusLog]
+  variantName: LocalizedItem
   created: Int
-  laneId: ID
   takeAway: Boolean
 }
 
-type Place @model {
-  id: ID!
+type Place {
   seat: String
   table: String
 }
 
-type PriceShown @model {
-  id: ID!
+type PriceShown {
   currency: String
   pricePerUnit: Float
   priceSum: Float
@@ -260,13 +165,13 @@ type PriceShown @model {
   taxSum: Float
 }
 
-type StatusLog @model 
-@key(name: "logsByOrder", fields: ["orderId"])
-@key(name: "logsByOrderAndItem", fields: ["orderId", "orderItemId"])
-{
+type StatusLog {
   userId: ID!
-  orderId: ID
-  orderItemId: ID
   status: String
   ts: Int
+}
+
+type Subscription {
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"])
+  onOrderChanged(userId: String, unitId: String): Order @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
 }

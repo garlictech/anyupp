@@ -15,7 +15,7 @@ class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final User user;
   final OrderItem order;
-  final Product product;
+  final GeneratedProduct product;
   final ProductVariant variant;
   CartListItemWidget({Key key, this.user, this.unit, this.order, this.product, this.variant}) : super(key: key);
 
@@ -173,6 +173,6 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _removeOrder() {
     BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(
-        widget.unit.chainId, widget.unit.unitId, widget.product, widget.variant));
+        widget.unit.chainId, widget.unit.id, widget.product, widget.variant));
   }
 }

@@ -132,7 +132,7 @@
 //   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
 //     await this._firebaseFunctionsProvider.createOrderFromCart({
 //       'chainId': unit.chainId,
-//       'unitId': unit.unitId,
+//       'unitId': unit.id,
 //       'paymentMethod': paymentMethod,
 //       'userLocation': {
 //         'lat': unit

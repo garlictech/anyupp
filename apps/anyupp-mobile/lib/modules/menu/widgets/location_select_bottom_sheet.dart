@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';

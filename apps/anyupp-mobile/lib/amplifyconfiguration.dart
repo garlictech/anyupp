@@ -44,10 +44,10 @@ const amplifyconfig = ''' {
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "https://fltxh32x2neuhgi44pygezwo7m.appsync-api.eu-west-1.amazonaws.com/graphql",
+                        "ApiUrl": "https://v4xdzrcninfu7c3hj3zyaxagku.appsync-api.eu-west-1.amazonaws.com/graphql",
                         "Region": "eu-west-1",
                         "AuthMode": "API_KEY",
-                        "ApiKey": "da2-26ege7p3ozb3neusl4xs7cbv2q",
+                        "ApiKey": "da2-ixcbaypi75fadgwmsna46kboze",
                         "ClientDatabasePrefix": "anyuppmobile_API_KEY"
                     }
                 }
@@ -59,10 +59,10 @@ const amplifyconfig = ''' {
             "awsAPIPlugin": {
                 "anyuppmobile": {
                     "endpointType": "GraphQL",
-                    "endpoint": "https://fltxh32x2neuhgi44pygezwo7m.appsync-api.eu-west-1.amazonaws.com/graphql",
+                    "endpoint": "https://v4xdzrcninfu7c3hj3zyaxagku.appsync-api.eu-west-1.amazonaws.com/graphql",
                     "region": "eu-west-1",
                     "authorizationType": "API_KEY",
-                    "apiKey": "da2-26ege7p3ozb3neusl4xs7cbv2q"
+                    "apiKey": "da2-ixcbaypi75fadgwmsna46kboze"
                 }
             }
         }

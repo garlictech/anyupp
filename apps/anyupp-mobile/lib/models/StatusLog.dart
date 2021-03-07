@@ -24,10 +24,10 @@ class StatusLog extends Model {
   static const classType = const StatusLogType();
   final String id;
   final String userId;
-  final String orderId;
-  final String orderItemId;
   final String status;
   final int ts;
+  final String orderStatusLogId;
+  final String orderItemStatusLogId;
 
   @override
   getInstanceType() => classType;
@@ -40,25 +40,25 @@ class StatusLog extends Model {
   const StatusLog._internal(
       {@required this.id,
       @required this.userId,
-      this.orderId,
-      this.orderItemId,
       this.status,
-      this.ts});
+      this.ts,
+      this.orderStatusLogId,
+      this.orderItemStatusLogId});
 
   factory StatusLog(
       {String id,
       @required String userId,
-      String orderId,
-      String orderItemId,
       String status,
-      int ts}) {
+      int ts,
+      String orderStatusLogId,
+      String orderItemStatusLogId}) {
     return StatusLog._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
-        orderId: orderId,
-        orderItemId: orderItemId,
         status: status,
-        ts: ts);
+        ts: ts,
+        orderStatusLogId: orderStatusLogId,
+        orderItemStatusLogId: orderItemStatusLogId);
   }
 
   bool equals(Object other) {
@@ -71,10 +71,10 @@ class StatusLog extends Model {
     return other is StatusLog &&
         id == other.id &&
         userId == other.userId &&
-        orderId == other.orderId &&
-        orderItemId == other.orderItemId &&
         status == other.status &&
-        ts == other.ts;
+        ts == other.ts &&
+        orderStatusLogId == other.orderStatusLogId &&
+        orderItemStatusLogId == other.orderItemStatusLogId;
   }
 
   @override
@@ -87,10 +87,10 @@ class StatusLog extends Model {
     buffer.write("StatusLog {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
-    buffer.write("orderId=" + "$orderId" + ", ");
-    buffer.write("orderItemId=" + "$orderItemId" + ", ");
     buffer.write("status=" + "$status" + ", ");
-    buffer.write("ts=" + (ts != null ? ts.toString() : "null"));
+    buffer.write("ts=" + (ts != null ? ts.toString() : "null") + ", ");
+    buffer.write("orderStatusLogId=" + "$orderStatusLogId" + ", ");
+    buffer.write("orderItemStatusLogId=" + "$orderItemStatusLogId");
     buffer.write("}");
 
     return buffer.toString();
@@ -99,42 +99,45 @@ class StatusLog extends Model {
   StatusLog copyWith(
       {String id,
       String userId,
-      String orderId,
-      String orderItemId,
       String status,
-      int ts}) {
+      int ts,
+      String orderStatusLogId,
+      String orderItemStatusLogId}) {
     return StatusLog(
         id: id ?? this.id,
         userId: userId ?? this.userId,
-        orderId: orderId ?? this.orderId,
-        orderItemId: orderItemId ?? this.orderItemId,
         status: status ?? this.status,
-        ts: ts ?? this.ts);
+        ts: ts ?? this.ts,
+        orderStatusLogId: orderStatusLogId ?? this.orderStatusLogId,
+        orderItemStatusLogId:
+            orderItemStatusLogId ?? this.orderItemStatusLogId);
   }
 
   StatusLog.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userId = json['userId'],
-        orderId = json['orderId'],
-        orderItemId = json['orderItemId'],
         status = json['status'],
-        ts = json['ts'];
+        ts = json['ts'],
+        orderStatusLogId = json['orderStatusLogId'],
+        orderItemStatusLogId = json['orderItemStatusLogId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,
-        'orderId': orderId,
-        'orderItemId': orderItemId,
         'status': status,
-        'ts': ts
+        'ts': ts,
+        'orderStatusLogId': orderStatusLogId,
+        'orderItemStatusLogId': orderItemStatusLogId
       };
 
   static final QueryField ID = QueryField(fieldName: "statusLog.id");
   static final QueryField USERID = QueryField(fieldName: "userId");
-  static final QueryField ORDERID = QueryField(fieldName: "orderId");
-  static final QueryField ORDERITEMID = QueryField(fieldName: "orderItemId");
   static final QueryField STATUS = QueryField(fieldName: "status");
   static final QueryField TS = QueryField(fieldName: "ts");
+  static final QueryField ORDERSTATUSLOGID =
+      QueryField(fieldName: "orderStatusLogId");
+  static final QueryField ORDERITEMSTATUSLOGID =
+      QueryField(fieldName: "orderItemStatusLogId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "StatusLog";
@@ -148,16 +151,6 @@ class StatusLog extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: StatusLog.ORDERID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: StatusLog.ORDERITEMID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: StatusLog.STATUS,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
@@ -166,6 +159,16 @@ class StatusLog extends Model {
         key: StatusLog.TS,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: StatusLog.ORDERSTATUSLOGID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: StatusLog.ORDERITEMSTATUSLOGID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }
 

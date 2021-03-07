@@ -1,6 +1,6 @@
 class AwsDummyUtils {
 
-  static const Duration _duration = Duration(minutes: 1);
+  static const Duration _duration = Duration(seconds: 1);
 
   static Stream<List<T>> list<T>() {
     return Stream.periodic(_duration, (x) => []);

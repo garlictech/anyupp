@@ -27,6 +27,7 @@ class PaymentMode extends Model {
   final String name;
   final String caption;
   final String method;
+  final String geoUnitPaymentModesId;
 
   @override
   getInstanceType() => classType;
@@ -41,20 +42,23 @@ class PaymentMode extends Model {
       @required this.unitId,
       @required this.name,
       this.caption,
-      @required this.method});
+      @required this.method,
+      this.geoUnitPaymentModesId});
 
   factory PaymentMode(
       {String id,
       @required String unitId,
       @required String name,
       String caption,
-      @required String method}) {
+      @required String method,
+      String geoUnitPaymentModesId}) {
     return PaymentMode._internal(
         id: id == null ? UUID.getUUID() : id,
         unitId: unitId,
         name: name,
         caption: caption,
-        method: method);
+        method: method,
+        geoUnitPaymentModesId: geoUnitPaymentModesId);
   }
 
   bool equals(Object other) {
@@ -69,7 +73,8 @@ class PaymentMode extends Model {
         unitId == other.unitId &&
         name == other.name &&
         caption == other.caption &&
-        method == other.method;
+        method == other.method &&
+        geoUnitPaymentModesId == other.geoUnitPaymentModesId;
   }
 
   @override
@@ -84,20 +89,28 @@ class PaymentMode extends Model {
     buffer.write("unitId=" + "$unitId" + ", ");
     buffer.write("name=" + "$name" + ", ");
     buffer.write("caption=" + "$caption" + ", ");
-    buffer.write("method=" + "$method");
+    buffer.write("method=" + "$method" + ", ");
+    buffer.write("geoUnitPaymentModesId=" + "$geoUnitPaymentModesId");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   PaymentMode copyWith(
-      {String id, String unitId, String name, String caption, String method}) {
+      {String id,
+      String unitId,
+      String name,
+      String caption,
+      String method,
+      String geoUnitPaymentModesId}) {
     return PaymentMode(
         id: id ?? this.id,
         unitId: unitId ?? this.unitId,
         name: name ?? this.name,
         caption: caption ?? this.caption,
-        method: method ?? this.method);
+        method: method ?? this.method,
+        geoUnitPaymentModesId:
+            geoUnitPaymentModesId ?? this.geoUnitPaymentModesId);
   }
 
   PaymentMode.fromJson(Map<String, dynamic> json)
@@ -105,14 +118,16 @@ class PaymentMode extends Model {
         unitId = json['unitId'],
         name = json['name'],
         caption = json['caption'],
-        method = json['method'];
+        method = json['method'],
+        geoUnitPaymentModesId = json['geoUnitPaymentModesId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'unitId': unitId,
         'name': name,
         'caption': caption,
-        'method': method
+        'method': method,
+        'geoUnitPaymentModesId': geoUnitPaymentModesId
       };
 
   static final QueryField ID = QueryField(fieldName: "paymentMode.id");
@@ -120,6 +135,8 @@ class PaymentMode extends Model {
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField CAPTION = QueryField(fieldName: "caption");
   static final QueryField METHOD = QueryField(fieldName: "method");
+  static final QueryField GEOUNITPAYMENTMODESID =
+      QueryField(fieldName: "geoUnitPaymentModesId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "PaymentMode";
@@ -145,6 +162,11 @@ class PaymentMode extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: PaymentMode.METHOD,
         isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: PaymentMode.GEOUNITPAYMENTMODESID,
+        isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }

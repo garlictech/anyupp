@@ -18,7 +18,7 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "description": "AnyUpp Mobile API Key"
+              "description": "AnyUpp Mobile API key"
             }
           },
           "additionalAuthenticationProviders": []

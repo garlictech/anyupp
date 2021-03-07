@@ -45,9 +45,9 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
           listener: (BuildContext context, UnitsState state) {
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
-              GeoUnit unit = state.units.firstWhere((unit) => unit.unitId == widget.unitId, orElse: () => null);
+              GeoUnit unit = state.units.firstWhere((unit) => unit.id == widget.unitId, orElse: () => null);
               if (unit != null) {
-                unit.place = widget.place;
+                unit = unit.copyWith(place: widget.place);
                 // print('***************** UNITS FOUND=$unit');
                 setPlacePref(widget.place);
                 _flipCardState.currentState.toggleCard();

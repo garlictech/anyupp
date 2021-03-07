@@ -1,4 +1,4 @@
-import 'package:fa_prev/models/Product.dart';
+import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/shared/affiliate/utils/aws_dummy_utils.dart';
 
 import 'favorites_provider_interface.dart';
@@ -17,8 +17,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   @override
-  Stream<List<Product>> getFavoritesList(String chainId, String unitId) {
+  Stream<List<GeneratedProduct>> getFavoritesList(String chainId, String unitId) {
     // TODO AWS
-    return AwsDummyUtils.list<Product>();
+    return AwsDummyUtils.list<GeneratedProduct>();
   }
 }

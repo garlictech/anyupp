@@ -24,9 +24,8 @@ import 'package:flutter/foundation.dart';
 class ProductCategory extends Model {
   static const classType = const ProductCategoryType();
   final String id;
-  final String nameId;
+  final String unitId;
   final LocalizedItem name;
-  final String descriptionId;
   final LocalizedItem description;
   final String image;
   final int position;
@@ -41,26 +40,23 @@ class ProductCategory extends Model {
 
   const ProductCategory._internal(
       {@required this.id,
-      @required this.nameId,
+      @required this.unitId,
       this.name,
-      this.descriptionId,
       this.description,
       this.image,
       this.position});
 
   factory ProductCategory(
       {String id,
-      @required String nameId,
+      @required String unitId,
       LocalizedItem name,
-      String descriptionId,
       LocalizedItem description,
       String image,
       int position}) {
     return ProductCategory._internal(
         id: id == null ? UUID.getUUID() : id,
-        nameId: nameId,
+        unitId: unitId,
         name: name,
-        descriptionId: descriptionId,
         description: description,
         image: image,
         position: position);
@@ -75,9 +71,8 @@ class ProductCategory extends Model {
     if (identical(other, this)) return true;
     return other is ProductCategory &&
         id == other.id &&
-        nameId == other.nameId &&
+        unitId == other.unitId &&
         name == other.name &&
-        descriptionId == other.descriptionId &&
         description == other.description &&
         image == other.image &&
         position == other.position;
@@ -92,8 +87,11 @@ class ProductCategory extends Model {
 
     buffer.write("ProductCategory {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("nameId=" + "$nameId" + ", ");
-    buffer.write("descriptionId=" + "$descriptionId" + ", ");
+    buffer.write("unitId=" + "$unitId" + ", ");
+    buffer.write("name=" + (name != null ? name.toString() : "null") + ", ");
+    buffer.write("description=" +
+        (description != null ? description.toString() : "null") +
+        ", ");
     buffer.write("image=" + "$image" + ", ");
     buffer
         .write("position=" + (position != null ? position.toString() : "null"));
@@ -104,17 +102,15 @@ class ProductCategory extends Model {
 
   ProductCategory copyWith(
       {String id,
-      String nameId,
+      String unitId,
       LocalizedItem name,
-      String descriptionId,
       LocalizedItem description,
       String image,
       int position}) {
     return ProductCategory(
         id: id ?? this.id,
-        nameId: nameId ?? this.nameId,
+        unitId: unitId ?? this.unitId,
         name: name ?? this.name,
-        descriptionId: descriptionId ?? this.descriptionId,
         description: description ?? this.description,
         image: image ?? this.image,
         position: position ?? this.position);
@@ -122,12 +118,11 @@ class ProductCategory extends Model {
 
   ProductCategory.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        nameId = json['nameId'],
+        unitId = json['unitId'],
         name = json['name'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['name']))
             : null,
-        descriptionId = json['descriptionId'],
         description = json['description'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
@@ -137,22 +132,19 @@ class ProductCategory extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'nameId': nameId,
+        'unitId': unitId,
         'name': name?.toJson(),
-        'descriptionId': descriptionId,
         'description': description?.toJson(),
         'image': image,
         'position': position
       };
 
   static final QueryField ID = QueryField(fieldName: "productCategory.id");
-  static final QueryField NAMEID = QueryField(fieldName: "nameId");
+  static final QueryField UNITID = QueryField(fieldName: "unitId");
   static final QueryField NAME = QueryField(
       fieldName: "name",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField DESCRIPTIONID =
-      QueryField(fieldName: "descriptionId");
   static final QueryField DESCRIPTION = QueryField(
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
@@ -167,26 +159,21 @@ class ProductCategory extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductCategory.NAMEID,
+        key: ProductCategory.UNITID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: ProductCategory.NAME,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "productCategoryNameId",
+        ofModelName: (LocalizedItem).toString()));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductCategory.DESCRIPTIONID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: ProductCategory.DESCRIPTION,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "productCategoryDescriptionId",
+        ofModelName: (LocalizedItem).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: ProductCategory.IMAGE,

@@ -31,9 +31,9 @@ class FavoritesScreen extends StatelessWidget {
 
   Widget _buildFavorites(BuildContext context, GeoUnit unit) {
     FavoritesRepository _repository = getIt<FavoritesRepository>();
-    return StreamBuilder<List<Product>>(
-        stream: _repository.getFavoritesList(unit.chainId, unit.unitId),
-        builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+    return StreamBuilder<List<GeneratedProduct>>(
+        stream: _repository.getFavoritesList(unit.chainId, unit.id),
+        builder: (context, AsyncSnapshot<List<GeneratedProduct>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isNotEmpty) {
               return _buildList(unit, snapshot.data);
@@ -56,7 +56,7 @@ class FavoritesScreen extends StatelessWidget {
         });
   }
 
-  Widget _buildList(GeoUnit unit, List<Product> list) {
+  Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,

@@ -29,7 +29,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
             return StreamBuilder<List<Order>>(
-              stream: _orderService.getOrderHistory(unit.chainId, unit.unitId),
+              stream: _orderService.getOrderHistory(unit.chainId, unit.id),
               builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
                 if (historySnapshot.hasData) {
                   if (historySnapshot.data.isEmpty) {

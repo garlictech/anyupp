@@ -19,8 +19,9 @@ class Menu extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => getIt<ProductCategoriesBloc>(),
       child: BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
-        print('Menu.ProductCategoriesBloc.state=$state');
+        // print('Menu.ProductCategoriesBloc.state=$state');
         if (state is ProductCategoriesLoaded) {
+          // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
           if (state.productCategories != null && state.productCategories.isNotEmpty) {
             return _buildTabBar(context, state.productCategories);
           } else {

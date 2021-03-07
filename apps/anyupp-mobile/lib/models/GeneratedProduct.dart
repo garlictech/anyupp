@@ -20,24 +20,19 @@ import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_inte
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the Product type in your schema. */
+/** This is an auto generated class representing the GeneratedProduct type in your schema. */
 @immutable
-class Product extends Model {
-  static const classType = const ProductType();
+class GeneratedProduct extends Model {
+  static const classType = const GeneratedProductType();
   final String id;
   final String unitId;
-  final String nameId;
-  final LocalizedItem name;
-  final String descriptionId;
-  final LocalizedItem description;
   final String productCategoryId;
-  final ProductCategory productCategory;
+  final LocalizedItem name;
+  final LocalizedItem description;
   final String productType;
   final int tax;
   final int position;
   final String image;
-  final String extending;
-  final bool isVisible;
   final List<ProductVariant> variants;
 
   @override
@@ -48,54 +43,39 @@ class Product extends Model {
     return id;
   }
 
-  const Product._internal(
+  const GeneratedProduct._internal(
       {@required this.id,
       @required this.unitId,
-      @required this.nameId,
-      this.name,
-      this.descriptionId,
-      this.description,
       @required this.productCategoryId,
-      this.productCategory,
+      this.name,
+      this.description,
       this.productType,
       this.tax,
       this.position,
       this.image,
-      this.extending,
-      this.isVisible,
       this.variants});
 
-  factory Product(
+  factory GeneratedProduct(
       {String id,
       @required String unitId,
-      @required String nameId,
-      LocalizedItem name,
-      String descriptionId,
-      LocalizedItem description,
       @required String productCategoryId,
-      ProductCategory productCategory,
+      LocalizedItem name,
+      LocalizedItem description,
       String productType,
       int tax,
       int position,
       String image,
-      String extending,
-      bool isVisible,
       List<ProductVariant> variants}) {
-    return Product._internal(
+    return GeneratedProduct._internal(
         id: id == null ? UUID.getUUID() : id,
         unitId: unitId,
-        nameId: nameId,
-        name: name,
-        descriptionId: descriptionId,
-        description: description,
         productCategoryId: productCategoryId,
-        productCategory: productCategory,
+        name: name,
+        description: description,
         productType: productType,
         tax: tax,
         position: position,
         image: image,
-        extending: extending,
-        isVisible: isVisible,
         variants: variants != null ? List.unmodifiable(variants) : variants);
   }
 
@@ -106,21 +86,16 @@ class Product extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Product &&
+    return other is GeneratedProduct &&
         id == other.id &&
         unitId == other.unitId &&
-        nameId == other.nameId &&
-        name == other.name &&
-        descriptionId == other.descriptionId &&
-        description == other.description &&
         productCategoryId == other.productCategoryId &&
-        productCategory == other.productCategory &&
+        name == other.name &&
+        description == other.description &&
         productType == other.productType &&
         tax == other.tax &&
         position == other.position &&
         image == other.image &&
-        extending == other.extending &&
-        isVisible == other.isVisible &&
         DeepCollectionEquality().equals(variants, other.variants);
   }
 
@@ -131,83 +106,64 @@ class Product extends Model {
   String toString() {
     var buffer = new StringBuffer();
 
-    buffer.write("Product {");
+    buffer.write("GeneratedProduct {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("nameId=" + "$nameId" + ", ");
-    buffer.write("descriptionId=" + "$descriptionId" + ", ");
     buffer.write("productCategoryId=" + "$productCategoryId" + ", ");
+    buffer.write("name=" + (name != null ? name.toString() : "null") + ", ");
+    buffer.write("description=" +
+        (description != null ? description.toString() : "null") +
+        ", ");
     buffer.write("productType=" + "$productType" + ", ");
     buffer.write("tax=" + (tax != null ? tax.toString() : "null") + ", ");
     buffer.write(
         "position=" + (position != null ? position.toString() : "null") + ", ");
-    buffer.write("image=" + "$image" + ", ");
-    buffer.write("extending=" + "$extending" + ", ");
-    buffer.write(
-        "isVisible=" + (isVisible != null ? isVisible.toString() : "null"));
+    buffer.write("image=" + "$image");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  Product copyWith(
+  GeneratedProduct copyWith(
       {String id,
       String unitId,
-      String nameId,
-      LocalizedItem name,
-      String descriptionId,
-      LocalizedItem description,
       String productCategoryId,
-      ProductCategory productCategory,
+      LocalizedItem name,
+      LocalizedItem description,
       String productType,
       int tax,
       int position,
       String image,
-      String extending,
-      bool isVisible,
       List<ProductVariant> variants}) {
-    return Product(
+    return GeneratedProduct(
         id: id ?? this.id,
         unitId: unitId ?? this.unitId,
-        nameId: nameId ?? this.nameId,
-        name: name ?? this.name,
-        descriptionId: descriptionId ?? this.descriptionId,
-        description: description ?? this.description,
         productCategoryId: productCategoryId ?? this.productCategoryId,
-        productCategory: productCategory ?? this.productCategory,
+        name: name ?? this.name,
+        description: description ?? this.description,
         productType: productType ?? this.productType,
         tax: tax ?? this.tax,
         position: position ?? this.position,
         image: image ?? this.image,
-        extending: extending ?? this.extending,
-        isVisible: isVisible ?? this.isVisible,
         variants: variants ?? this.variants);
   }
 
-  Product.fromJson(Map<String, dynamic> json)
+  GeneratedProduct.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         unitId = json['unitId'],
-        nameId = json['nameId'],
+        productCategoryId = json['productCategoryId'],
         name = json['name'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['name']))
             : null,
-        descriptionId = json['descriptionId'],
         description = json['description'] != null
             ? LocalizedItem.fromJson(
                 new Map<String, dynamic>.from(json['description']))
-            : null,
-        productCategoryId = json['productCategoryId'],
-        productCategory = json['productCategory'] != null
-            ? ProductCategory.fromJson(
-                new Map<String, dynamic>.from(json['productCategory']))
             : null,
         productType = json['productType'],
         tax = json['tax'],
         position = json['position'],
         image = json['image'],
-        extending = json['extending'],
-        isVisible = json['isVisible'],
         variants = json['variants'] is List
             ? (json['variants'] as List)
                 .map((e) =>
@@ -218,138 +174,98 @@ class Product extends Model {
   Map<String, dynamic> toJson() => {
         'id': id,
         'unitId': unitId,
-        'nameId': nameId,
-        'name': name?.toJson(),
-        'descriptionId': descriptionId,
-        'description': description?.toJson(),
         'productCategoryId': productCategoryId,
-        'productCategory': productCategory?.toJson(),
+        'name': name?.toJson(),
+        'description': description?.toJson(),
         'productType': productType,
         'tax': tax,
         'position': position,
         'image': image,
-        'extending': extending,
-        'isVisible': isVisible,
         'variants': variants?.map((e) => e?.toJson())?.toList()
       };
 
-  static final QueryField ID = QueryField(fieldName: "product.id");
+  static final QueryField ID = QueryField(fieldName: "generatedProduct.id");
   static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField NAMEID = QueryField(fieldName: "nameId");
+  static final QueryField PRODUCTCATEGORYID =
+      QueryField(fieldName: "productCategoryId");
   static final QueryField NAME = QueryField(
       fieldName: "name",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField DESCRIPTIONID =
-      QueryField(fieldName: "descriptionId");
   static final QueryField DESCRIPTION = QueryField(
       fieldName: "description",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (LocalizedItem).toString()));
-  static final QueryField PRODUCTCATEGORYID =
-      QueryField(fieldName: "productCategoryId");
-  static final QueryField PRODUCTCATEGORY = QueryField(
-      fieldName: "productCategory",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ProductCategory).toString()));
   static final QueryField PRODUCTTYPE = QueryField(fieldName: "productType");
   static final QueryField TAX = QueryField(fieldName: "tax");
   static final QueryField POSITION = QueryField(fieldName: "position");
   static final QueryField IMAGE = QueryField(fieldName: "image");
-  static final QueryField EXTENDING = QueryField(fieldName: "extending");
-  static final QueryField ISVISIBLE = QueryField(fieldName: "isVisible");
   static final QueryField VARIANTS = QueryField(
       fieldName: "variants",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (ProductVariant).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Product";
-    modelSchemaDefinition.pluralName = "Products";
+    modelSchemaDefinition.name = "GeneratedProduct";
+    modelSchemaDefinition.pluralName = "GeneratedProducts";
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.UNITID,
+        key: GeneratedProduct.UNITID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.NAMEID,
+        key: GeneratedProduct.PRODUCTCATEGORYID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-        key: Product.NAME,
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: GeneratedProduct.NAME,
         isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
+        targetName: "generatedProductNameId",
+        ofModelName: (LocalizedItem).toString()));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: GeneratedProduct.DESCRIPTION,
+        isRequired: false,
+        targetName: "generatedProductDescriptionId",
+        ofModelName: (LocalizedItem).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.DESCRIPTIONID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-        key: Product.DESCRIPTION,
-        isRequired: false,
-        ofModelName: (LocalizedItem).toString(),
-        associatedKey: LocalizedItem.ID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.PRODUCTCATEGORYID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-        key: Product.PRODUCTCATEGORY,
-        isRequired: false,
-        ofModelName: (ProductCategory).toString(),
-        associatedKey: ProductCategory.ID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.PRODUCTTYPE,
+        key: GeneratedProduct.PRODUCTTYPE,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.TAX,
+        key: GeneratedProduct.TAX,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.POSITION,
+        key: GeneratedProduct.POSITION,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.IMAGE,
+        key: GeneratedProduct.IMAGE,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.EXTENDING,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Product.ISVISIBLE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Product.VARIANTS,
+        key: GeneratedProduct.VARIANTS,
         isRequired: true,
         ofModelName: (ProductVariant).toString(),
-        associatedKey: ProductVariant.PRODUCTID));
+        associatedKey: ProductVariant.GENERATEDPRODUCTVARIANTSID));
   });
 }
 
-class ProductType extends ModelType<Product> {
-  const ProductType();
+class GeneratedProductType extends ModelType<GeneratedProduct> {
+  const GeneratedProductType();
 
   @override
-  Product fromJson(Map<String, dynamic> jsonData) {
-    return Product.fromJson(jsonData);
+  GeneratedProduct fromJson(Map<String, dynamic> jsonData) {
+    return GeneratedProduct.fromJson(jsonData);
   }
 }

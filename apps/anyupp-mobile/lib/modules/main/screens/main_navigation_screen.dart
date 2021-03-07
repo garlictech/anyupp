@@ -212,7 +212,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       if (state is UnitSelected) {
         final GeoUnit unit = state.unit;
         return StreamBuilder<List<Order>>(
-            stream: getIt<OrderRepository>().getCurrentOrders(unit.chainId, unit.unitId),
+            stream: getIt<OrderRepository>().getCurrentOrders(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
               int orderCount = orderState?.data?.length ?? 0;
               return _createBottomBarIconWithText(

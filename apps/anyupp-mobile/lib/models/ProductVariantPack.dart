@@ -23,7 +23,6 @@ import 'package:flutter/foundation.dart';
 class ProductVariantPack extends Model {
   static const classType = const ProductVariantPackType();
   final String id;
-  final String productId;
   final double size;
   final String unit;
 
@@ -35,16 +34,11 @@ class ProductVariantPack extends Model {
     return id;
   }
 
-  const ProductVariantPack._internal(
-      {@required this.id, @required this.productId, this.size, this.unit});
+  const ProductVariantPack._internal({@required this.id, this.size, this.unit});
 
-  factory ProductVariantPack(
-      {String id, @required String productId, double size, String unit}) {
+  factory ProductVariantPack({String id, double size, String unit}) {
     return ProductVariantPack._internal(
-        id: id == null ? UUID.getUUID() : id,
-        productId: productId,
-        size: size,
-        unit: unit);
+        id: id == null ? UUID.getUUID() : id, size: size, unit: unit);
   }
 
   bool equals(Object other) {
@@ -56,7 +50,6 @@ class ProductVariantPack extends Model {
     if (identical(other, this)) return true;
     return other is ProductVariantPack &&
         id == other.id &&
-        productId == other.productId &&
         size == other.size &&
         unit == other.unit;
   }
@@ -70,7 +63,6 @@ class ProductVariantPack extends Model {
 
     buffer.write("ProductVariantPack {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("productId=" + "$productId" + ", ");
     buffer.write("size=" + (size != null ? size.toString() : "null") + ", ");
     buffer.write("unit=" + "$unit");
     buffer.write("}");
@@ -78,26 +70,19 @@ class ProductVariantPack extends Model {
     return buffer.toString();
   }
 
-  ProductVariantPack copyWith(
-      {String id, String productId, double size, String unit}) {
+  ProductVariantPack copyWith({String id, double size, String unit}) {
     return ProductVariantPack(
-        id: id ?? this.id,
-        productId: productId ?? this.productId,
-        size: size ?? this.size,
-        unit: unit ?? this.unit);
+        id: id ?? this.id, size: size ?? this.size, unit: unit ?? this.unit);
   }
 
   ProductVariantPack.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        productId = json['productId'],
         size = json['size'],
         unit = json['unit'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'productId': productId, 'size': size, 'unit': unit};
+  Map<String, dynamic> toJson() => {'id': id, 'size': size, 'unit': unit};
 
   static final QueryField ID = QueryField(fieldName: "productVariantPack.id");
-  static final QueryField PRODUCTID = QueryField(fieldName: "productId");
   static final QueryField SIZE = QueryField(fieldName: "size");
   static final QueryField UNIT = QueryField(fieldName: "unit");
   static var schema =
@@ -106,11 +91,6 @@ class ProductVariantPack extends Model {
     modelSchemaDefinition.pluralName = "ProductVariantPacks";
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariantPack.PRODUCTID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: ProductVariantPack.SIZE,
