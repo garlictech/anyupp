@@ -179,5 +179,20 @@
     "apps/graphql-server",
     "apps/infrastructure/build-pipeline-stack",
     "apps/infrastructure/anyupp-backend-stack"
-  ]
+  ],
+  "resolutions": {
+    "@aws-cdk/aws-chatbot": "1.91.0",
+    "@aws-cdk/aws-sns": "1.91.0",
+    "@aws-cdk/aws-events": "1.91.0",
+    "@aws-cdk/aws-events-targets": "1.91.0",
+    "@aws-cdk/aws-codebuild": "1.91.0",
+    "@aws-cdk/aws-codestarnotifications": "1.91.0",
+    "@aws-cdk/aws-codecommit": "1.91.0",
+    "@aws-cdk/aws-codedeploy": "1.91.0",
+    "@aws-cdk/aws-codepipeline": "1.91.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.91.0",
+    "@aws-cdk/aws-secretsmanager": "1.91.0",
+    "@aws-cdk/custom-resources": "1.91.0",
+    "@aws-cdk/core": "1.91.0"
+  }
 }

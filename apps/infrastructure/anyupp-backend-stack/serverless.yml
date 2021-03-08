@@ -1,5 +1,5 @@
 org: anyupp
-service: anyupp-backend
+service: anyupp
 configValidationMode: error
 frameworkVersion: ^2.16.1
 
@@ -36,3 +36,6 @@ functions:
 
   stripe-webhook:
     handler: lib/lambda/stripe-webhook/index.handler
+
+  dynamodb-seeder:
+    handler: lib/lambda/dynamodb-seeder/index.handler
