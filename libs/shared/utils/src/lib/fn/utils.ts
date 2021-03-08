@@ -106,6 +106,7 @@ export const isOfType = <T>(
     ? true
     : (varToBeChecked as T)[propertyToCheckFor] === propertyValueToCheck;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const missingParametersCheck = (data: any, paramNames: string[]) => {
   for (const paramName of paramNames) {
     if (!data || data[paramName] === undefined) {

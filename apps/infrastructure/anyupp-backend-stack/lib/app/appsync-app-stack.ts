@@ -9,11 +9,11 @@ import * as cdk from '@aws-cdk/core';
 import { createStripeResolvers } from '@bgap/stripe';
 import * as sst from '@serverless-stack/resources';
 
-import { TableConstruct } from './dynamodb-construct';
 import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { GraphqlApi } from '@aws-cdk/aws-appsync';
 import { Duration } from '@aws-cdk/core';
+import { DynamoDBStack } from './appsync-dynamodb-stack';
 
 // const stageValidationProperties = (fields: string[]): string =>
 //   pipe(
@@ -45,6 +45,7 @@ import { Duration } from '@aws-cdk/core';
 export interface AppsyncAppStackProps extends sst.StackProps {
   userPool: cognito.UserPool;
   secretsManager: sm.ISecret;
+  dynamoDBStack: DynamoDBStack;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -84,7 +85,7 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
-    this.createDatasources(props.secretsManager);
+    this.createDatasources(props.secretsManager, props.dynamoDBStack);
 
     createStripeResolvers({
       api: this.api,
@@ -176,7 +177,10 @@ export class AppsyncAppStack extends sst.Stack {
     });
   }
 
-  private createDatasources(secretsManager: sm.ISecret) {
+  private createDatasources(
+    secretsManager: sm.ISecret,
+    dynamoDBStack: DynamoDBStack,
+  ) {
     // NO DATA SOURCE
     this.noneDs = new appsync.NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
@@ -185,15 +189,11 @@ export class AppsyncAppStack extends sst.Stack {
     // DATABASE DATA SOURCES
     this.userTableDDDs = this.api.addDynamoDbDataSource(
       'UserDynamoDbDataSource',
-      new TableConstruct(this, 'User', {
-        isStreamed: true,
-      }).theTable,
+      dynamoDBStack.userTable,
     );
     this.orderTableDDDs = this.api.addDynamoDbDataSource(
       'OrderDynamoDbDataSource',
-      new TableConstruct(this, 'Order', {
-        isStreamed: true,
-      }).theTable,
+      dynamoDBStack.orderTable,
     );
 
     // LAMBDA DATA SOURCES
