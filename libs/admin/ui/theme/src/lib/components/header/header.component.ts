@@ -57,7 +57,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
-          // this._authService.signOut();
           this._cognitoService.signOut();
         },
       },

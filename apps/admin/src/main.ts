@@ -1,11 +1,12 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import Amplify  from '@aws-amplify/core';
-import { AppModule } from './app/app.module';
+import Amplify from '@aws-amplify/core';
+import { awsmobile } from '@bgap/admin/amplify';
 import { environment } from '@bgap/admin/shared/config';
-import { AWS_CONFIG } from '@bgap/admin/shared/config';
 
-Amplify.configure(AWS_CONFIG);
+import { AppModule } from './app/app.module';
+
+Amplify.configure(awsmobile);
 
 if (environment.production) {
   enableProdMode();

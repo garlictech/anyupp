@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { AuthService } from '@bgap/admin/shared/data-access/auth';
 
 @Component({
   selector: 'bgap-root',
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent {
-  constructor(private _translateService: TranslateService) {
+  constructor(private _translateService: TranslateService, private _authService: AuthService) {
+    this._authService.init();
+
     // This language will be used as a fallback when a translation isn't found in the current language
     this._translateService.setDefaultLang(DEFAULT_LANG);
 
