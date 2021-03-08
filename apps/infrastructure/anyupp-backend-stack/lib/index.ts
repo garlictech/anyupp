@@ -5,6 +5,8 @@ import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { ParamsStack } from './app/params-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
+import { DynamoDBStack } from './app/appsync-dynamodb-stack';
+import { DynamoDBSeederStack } from './app/seeder/dynamodb-seeder-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -15,6 +17,7 @@ export class AnyUppStack extends Stack {
       'SecretsManagerStack',
     );
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
+    const dynamoDBStack = new DynamoDBStack(scope, 'dynamoDB');
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
@@ -26,8 +29,13 @@ export class AnyUppStack extends Stack {
     new AppsyncAppStack(scope, 'appsync', {
       userPool: cognitoStack.userPool,
       secretsManager: secretsManagerStack.secretsManager,
+      dynamoDBStack,
     });
     new StripeStack(scope, 'stripe');
+    new DynamoDBSeederStack(scope, 'dynamoDBSeeder', {
+      dynamoDBStack,
+      userPool: cognitoStack.userPool,
+    });
   }
 }
 
