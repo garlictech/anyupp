@@ -255,9 +255,13 @@ TIP: use `--dry-run` to check your idea. It shows what will be generated without
 
 `nx g @nrwl/workspace:lib shared/config`
 
-### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
+### [Remove an app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
 
 `nx g @nrwl/workspace:rm shared-config-firebase`
+
+### [Move an app or lib](https://nx.dev/latest/angular/workspace/move)
+
+`nx g @nrwl/workspace:move --project projectName new/path`
 
 ### Generate a nest lib
 

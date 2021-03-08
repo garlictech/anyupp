@@ -165,6 +165,9 @@
     },
     "stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "api-order": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     }
   }
 }
