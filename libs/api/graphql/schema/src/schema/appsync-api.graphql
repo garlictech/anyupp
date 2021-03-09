@@ -26,17 +26,17 @@
 #   lng: Float
 # }
 
-# type LocalizedItem {
-#   en: String
-#   de: String
-#   hu: String
-# }
+type LocalizedItem {
+  en: String
+  de: String
+  hu: String
+}
 
-# input LocalizedItemInput {
-#   en: String
-#   de: String
-#   hu: String
-# }
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
 
 # # AdminUser
 
@@ -297,20 +297,54 @@ input StripeCardDeleteInput {
 #   phone: String
 # }
 
-# # OrderItem
-# type StatusLog {
-#   userId: ID
-#   status: String
-#   ts: Int
+### CART
+# type CartItem {
+#     orders: CartItem[]
+#     place: Place
 # }
 
-# type PriceShown {
-#   currency: String
-#   pricePerUnit: Float
-#   priceSum: Float
-#   tax: Int
-#   taxSum: Float
-# }
+input CartItemInput {
+  product: CartItemProductInput
+  quantity: Int
+  variant: CartItemProductVariantInput
+}
+
+input CartItemProductInput {
+  id: ID!
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  image: String
+  tax: Int
+  # variants: [CartItemVariantInput]
+  # productType: String
+}
+
+input PackInput {
+  size: Int
+  unit: String
+}
+
+input CartItemProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  price: Int
+  pack: PackInput
+}
+
+### OrderItem
+type StatusLog {
+  userId: ID
+  status: String
+  ts: Int
+}
+
+type PriceShown {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
 
 # input PriceShownInput {
 #   currency: String
@@ -319,7 +353,24 @@ input StripeCardDeleteInput {
 #   tax: Int
 #   taxSum: Float
 # }
-
+# type OrderItem @model
+# @key(name: "itemsByOrder", fields: ["orderId"])
+type OrderItem {
+  id: ID!
+  orderId: ID!
+  productId: ID
+  productNameId: ID
+  productName: LocalizedItem
+  priceShownId: ID
+  priceShown: PriceShown
+  quantity: Int
+  statusLog: [StatusLog]
+  variantId: ID
+  variantName: LocalizedItem
+  created: Int
+  laneId: ID
+  takeAway: Boolean
+}
 # type OrderItem {
 #   id: ID!
 #   created: Int
@@ -354,30 +405,39 @@ input StripeCardDeleteInput {
 #   laneId: ID
 # }
 
-# # Order
-# type Order {
-#   id: ID!
-#   created: Int
-#   items: [OrderItem]
-#   paymentMethod: String
-#   staffId: ID
-#   statusLog: [StatusLog]
-#   sumPriceShown: PriceShown
-#   takeAway: Boolean
-#   userId: ID
-#   place: Place
-#   paymentIntention: Int
-# }
+### ORDER
+# type Order @model @auth(rules: [{ allow: public }]) {
+type Order {
+  id: ID!
+  created: Int
+  items: [OrderItem]
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLog]
+  sumPriceShown: PriceShown
+  takeAway: Boolean
+  userId: ID
+  place: Place
+  paymentIntention: Int
+}
 
-# type Place {
-#   seat: String
-#   table: String
-# }
+input CreateOrderFromCartInput {
+  unitId: ID!
+  paymentMethod: String!
+  # userLocation: ??
+  place: PlaceInput!
+  cartItems: [CartItemInput!]!
+}
 
-# input PlaceInput {
-#   seat: String
-#   table: String
-# }
+type Place {
+  seat: String
+  table: String
+}
+
+input PlaceInput {
+  seat: String
+  table: String
+}
 
 # input CreateOrderInput {
 #   orderItems: [ID]
@@ -524,6 +584,13 @@ input StripeCardDeleteInput {
 #   timeTo: String
 #   price: Float
 # }
+
+### UNIT_PRODUCT
+type UnitProduct {
+  id: ID!
+  laneId: ID
+}
+
 # Unit
 # type Unit {
 #   id: ID!
@@ -837,6 +904,8 @@ type Mutation {
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
     @aws_cognito_user_pools
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+    @aws_cognito_user_pools
+  createOrderFromCart(input: CreateOrderFromCartInput!): Boolean
     @aws_cognito_user_pools
 }
 

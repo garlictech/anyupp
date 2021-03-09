@@ -7,6 +7,7 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import { createStripeResolvers } from '@bgap/stripe';
+import { createOrderResolvers } from '@bgap/api/order';
 import * as sst from '@serverless-stack/resources';
 
 import { commonLambdaProps } from './lambda-common';
@@ -87,12 +88,19 @@ export class AppsyncAppStack extends sst.Stack {
 
     this.createDatasources(props.secretsManager, props.dynamoDBStack);
 
-    createStripeResolvers({
+    const baseResolverInputParams = {
       api: this.api,
       scope: this,
       userTableDDDs: this.userTableDDDs,
       orderTableDDDs: this.orderTableDDDs,
       lambdaDs: this.lambdaDs,
+    };
+
+    createStripeResolvers({
+      ...baseResolverInputParams,
+    });
+    createOrderResolvers({
+      ...baseResolverInputParams,
     });
 
     // this.validatorvalidatorResolverFunctions = createValidatorvalidatorResolverFunctions(this.noneDs);

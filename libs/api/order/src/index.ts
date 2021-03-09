@@ -1,1 +1,5 @@
-export * from './lib/order';
+export * from './lib/order.service';
+export * from './lib/order.utils';
+export * from './lib/order-resolver-functions';
+export * from './lib/order-resolvers';
+export * from './lib/order-request-handler';

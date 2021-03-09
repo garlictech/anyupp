@@ -16,6 +16,19 @@ export interface Scalars {
   Float: number;
 }
 
+export interface LocalizedItem {
+  __typename?: 'LocalizedItem';
+  en?: Maybe<Scalars['String']>;
+  de?: Maybe<Scalars['String']>;
+  hu?: Maybe<Scalars['String']>;
+}
+
+export interface LocalizedItemInput {
+  en?: Maybe<Scalars['String']>;
+  de?: Maybe<Scalars['String']>;
+  hu?: Maybe<Scalars['String']>;
+}
+
 export enum CardBrand {
   amex = 'amex',
   diners = 'diners',
@@ -89,6 +102,105 @@ export interface StripeCardDeleteInput {
   id: Scalars['ID'];
 }
 
+export interface CartItemInput {
+  product?: Maybe<CartItemProductInput>;
+  quantity?: Maybe<Scalars['Int']>;
+  variant?: Maybe<CartItemProductVariantInput>;
+}
+
+export interface CartItemProductInput {
+  id: Scalars['ID'];
+  name?: Maybe<LocalizedItemInput>;
+  description?: Maybe<LocalizedItemInput>;
+  image?: Maybe<Scalars['String']>;
+  tax?: Maybe<Scalars['Int']>;
+}
+
+export interface PackInput {
+  size?: Maybe<Scalars['Int']>;
+  unit?: Maybe<Scalars['String']>;
+}
+
+export interface CartItemProductVariantInput {
+  id: Scalars['ID'];
+  variantName?: Maybe<LocalizedItemInput>;
+  price?: Maybe<Scalars['Int']>;
+  pack?: Maybe<PackInput>;
+}
+
+export interface StatusLog {
+  __typename?: 'StatusLog';
+  userId?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  ts?: Maybe<Scalars['Int']>;
+}
+
+export interface PriceShown {
+  __typename?: 'PriceShown';
+  currency?: Maybe<Scalars['String']>;
+  pricePerUnit?: Maybe<Scalars['Float']>;
+  priceSum?: Maybe<Scalars['Float']>;
+  tax?: Maybe<Scalars['Int']>;
+  taxSum?: Maybe<Scalars['Float']>;
+}
+
+export interface OrderItem {
+  __typename?: 'OrderItem';
+  id: Scalars['ID'];
+  orderId: Scalars['ID'];
+  productId?: Maybe<Scalars['ID']>;
+  productNameId?: Maybe<Scalars['ID']>;
+  productName?: Maybe<LocalizedItem>;
+  priceShownId?: Maybe<Scalars['ID']>;
+  priceShown?: Maybe<PriceShown>;
+  quantity?: Maybe<Scalars['Int']>;
+  statusLog?: Maybe<Array<Maybe<StatusLog>>>;
+  variantId?: Maybe<Scalars['ID']>;
+  variantName?: Maybe<LocalizedItem>;
+  created?: Maybe<Scalars['Int']>;
+  laneId?: Maybe<Scalars['ID']>;
+  takeAway?: Maybe<Scalars['Boolean']>;
+}
+
+export interface Order {
+  __typename?: 'Order';
+  id: Scalars['ID'];
+  created?: Maybe<Scalars['Int']>;
+  items?: Maybe<Array<Maybe<OrderItem>>>;
+  paymentMethod?: Maybe<Scalars['String']>;
+  staffId?: Maybe<Scalars['ID']>;
+  statusLog?: Maybe<Array<Maybe<StatusLog>>>;
+  sumPriceShown?: Maybe<PriceShown>;
+  takeAway?: Maybe<Scalars['Boolean']>;
+  userId?: Maybe<Scalars['ID']>;
+  place?: Maybe<Place>;
+  paymentIntention?: Maybe<Scalars['Int']>;
+}
+
+export interface CreateOrderFromCartInput {
+  unitId: Scalars['ID'];
+  paymentMethod: Scalars['String'];
+  place: PlaceInput;
+  cartItems: Array<CartItemInput>;
+}
+
+export interface Place {
+  __typename?: 'Place';
+  seat?: Maybe<Scalars['String']>;
+  table?: Maybe<Scalars['String']>;
+}
+
+export interface PlaceInput {
+  seat?: Maybe<Scalars['String']>;
+  table?: Maybe<Scalars['String']>;
+}
+
+export interface UnitProduct {
+  __typename?: 'UnitProduct';
+  id: Scalars['ID'];
+  laneId?: Maybe<Scalars['ID']>;
+}
+
 export interface Query {
   __typename?: 'Query';
   getMyStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
@@ -99,6 +211,7 @@ export interface Mutation {
   startStripePayment?: Maybe<StartStripePaymentOutput>;
   updateMyStripeCard?: Maybe<StripeCard>;
   deleteMyStripeCard?: Maybe<Scalars['Boolean']>;
+  createOrderFromCart?: Maybe<Scalars['Boolean']>;
 }
 
 export interface MutationStartStripePaymentArgs {
@@ -111,6 +224,10 @@ export interface MutationUpdateMyStripeCardArgs {
 
 export interface MutationDeleteMyStripeCardArgs {
   input: StripeCardDeleteInput;
+}
+
+export interface MutationCreateOrderFromCartArgs {
+  input: CreateOrderFromCartInput;
 }
 
 export type GetMyStripeCardsQueryVariables = Exact<{ [key: string]: never }>;

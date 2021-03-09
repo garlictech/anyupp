@@ -1,5 +1,6 @@
 import { Context, Handler } from 'aws-lambda';
 import { stripeRequestHandler } from '@bgap/stripe';
+import { orderRequestHandler } from '@bgap/api/order';
 
 export interface AnyuppRequest {
   handler: string;
@@ -37,6 +38,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     case 'startStripePayment': {
       console.log('Handling startStripePayment');
       return stripeRequestHandler.startStripePayment(event.payload);
+    }
+    case 'createOrderFromCart': {
+      console.log('Handling createOrderFromCart');
+      return orderRequestHandler.createOrderFromCart(event.payload);
     }
     default:
       throw 'missing handler';
