@@ -30,6 +30,7 @@ export const configurePermissions = (
 
   [
     'consumerUserPoolClientId',
+    'consumerNativeUserPoolId',
     'consumerUserPoolId',
     'consumerUserPoolDomain',
     'IdentityPoolId',
@@ -40,7 +41,8 @@ export const configurePermissions = (
     'stripePublishableKey',
     'facebookAppId',
     'AdminSiteUrl',
-    'adminUserPoolClientId',
+    'adminWebUserPoolClientId',
+    'adminNativeUserPoolClientId',
     'adminUserPoolId',
     'adminUserPoolDomain',
   ].forEach(param =>
@@ -74,13 +76,20 @@ export const createBuildProject = (
         },
         build: {
           commands: [
+            `yarn nx build admin-amplify-app`,
             `yarn nx build admin ${adminConfig}`,
             `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${appConfig.name}`,
           ],
         },
+        post_build: {
+          commands: [`yarn nx deploy admin-amplify-app`],
+        },
       },
       artifacts: {
-        files: ['apps/infrastructure/anyupp-backend-stack/cdk.out/**/*'],
+        files: [
+          'apps/infrastructure/anyupp-backend-stack/cdk.out/**/*',
+          'apps/admin-amplify-app/amplify/**/*',
+        ],
       },
     }),
     cache,

@@ -1449,32 +1449,19 @@
           }
         },
         "build": {
-          "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "outputPath": "dist/apps/admin-amplify-app",
-            "main": "apps/admin-amplify-app/src/main.ts",
-            "tsConfig": "apps/admin-amplify-app/tsconfig.app.json",
-            "assets": ["apps/admin-amplify-app/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/admin-amplify-app/src/environments/environment.ts",
-                  "with": "apps/admin-amplify-app/src/environments/environment.prod.ts"
-                }
-              ]
-            }
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["amplify codegen", "amplify codegen models"]
           }
         },
-        "serve": {
-          "builder": "@nrwl/node:execute",
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "buildTarget": "admin-amplify-app:build"
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["amplify push"]
           }
         },
         "test": {

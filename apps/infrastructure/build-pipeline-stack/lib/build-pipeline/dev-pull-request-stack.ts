@@ -38,6 +38,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             pre_build: {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
               ],
             },
             build: {

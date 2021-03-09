@@ -1,0 +1,71 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-dev-192945-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-192945-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-192945-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-dev-192945-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-dev-192945-unauthRole",
+      "StackName": "amplify-anyuppbackend-dev-192945",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-dev-192945/6d0de9a0-8105-11eb-af5b-0a25630f3e59",
+      "AmplifyAppId": "dhfijmaeffw1m"
+    }
+  },
+  "auth": {
+    "anyuppbackenddcc4a4f6": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "output": {
+        "UserPoolId": "eu-west-1_uQinis9TS",
+        "UserPoolName": "dev-anyupp-backend-admin-user-pool",
+        "AppClientID": "4te6am9eoaq6e3ve904e3ftft3",
+        "AppClientSecret": "1fo57loa55svc15j5pn5n54ucu1g3bph3esfi0f65o22q7iibr2k",
+        "AppClientIDWeb": "4hq082sd8sngpd5ei6gueh2h7s",
+        "HostedUIDomain": "dev-anyupp-backend-admin",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"openid\"],\"CallbackURLs\":[\"http://localhost:4200/admin/dashboard\",\"https://dev.admin.anyupp-backend.anyupp.com/admin/dashboard\"],\"LogoutURLs\":[\"http://localhost:4200/auth/logout\",\"https://dev.admin.anyupp-backend.anyupp.com/auth/logout\"]}"
+      },
+      "lastPushTimeStamp": "2021-03-09T18:41:34.181Z"
+    }
+  },
+  "api": {
+    "anyuppbackend": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "description": "DEV api key"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authanyuppbackenddcc4a4f6"
+              }
+            },
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "s2zkxdbdf5dujf3krxnt3h5j3i",
+        "GraphQLAPIEndpointOutput": "https://ygzl3hlvujcrvlmmnhnhjvlpiu.appsync-api.eu-west-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-z7merrmw6reg3kppjre3e3dngy"
+      },
+      "lastPushTimeStamp": "2021-03-09T21:39:51.581Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-anyuppbackend-dev-192945-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apianyuppbackend"
+      },
+      "lastPushDirHash": "GhCzF+m/NYJSXhYSw9tu8V2XJoY="
+    }
+  }
+}
