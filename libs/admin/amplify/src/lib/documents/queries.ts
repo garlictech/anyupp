@@ -44,6 +44,11 @@ export const listAdminUsers = /* GraphQL */ `
         profileImage
         roles {
           role
+          entities {
+            chainId
+            groupId
+            unitId
+          }
         }
         settings {
           selectedChainId
@@ -184,6 +189,23 @@ export const listChains = /* GraphQL */ `
           de
           hu
         }
+        style {
+          colors {
+            backgroundLight
+            backgroundDark
+            borderLight
+            borderDark
+            disabled
+            highlight
+            indicator
+            textLight
+            textDark
+          }
+          images {
+            header
+            logo
+          }
+        }
         isActive
         address {
           address
@@ -191,6 +213,10 @@ export const listChains = /* GraphQL */ `
           country
           title
           postalCode
+          location {
+            lat
+            lng
+          }
         }
         email
         phone
@@ -254,6 +280,10 @@ export const listGroups = /* GraphQL */ `
           country
           title
           postalCode
+          location {
+            lat
+            lng
+          }
         }
         email
         phone
@@ -338,9 +368,31 @@ export const listOrders = /* GraphQL */ `
         items {
           id
           created
+          productName {
+            en
+            de
+            hu
+          }
+          priceShown {
+            currency
+            pricePerUnit
+            priceSum
+            tax
+            taxSum
+          }
           productId
           quantity
+          statusLog {
+            userId
+            status
+            ts
+          }
           variantId
+          variantName {
+            en
+            de
+            hu
+          }
           laneId
         }
         paymentMethod
@@ -503,9 +555,26 @@ export const listChainProducts = /* GraphQL */ `
         laneId
         productType
         variants {
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
           refGroupPrice
           isAvailable
           price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
           availableFrom
           position
         }
@@ -639,6 +708,10 @@ export const listUnits = /* GraphQL */ `
           country
           title
           postalCode
+          location {
+            lat
+            lng
+          }
         }
         email
         phone
@@ -650,6 +723,19 @@ export const listUnits = /* GraphQL */ `
         floorMap {
           w
           h
+          objects {
+            id
+            t
+            c
+            w
+            h
+            r
+            a
+            x
+            y
+            tID
+            sID
+          }
         }
         lanes {
           id
@@ -659,6 +745,41 @@ export const listUnits = /* GraphQL */ `
         open {
           from
           to
+        }
+        openingHours {
+          mon {
+            from
+            to
+          }
+          tue {
+            from
+            to
+          }
+          wed {
+            from
+            to
+          }
+          thu {
+            from
+            to
+          }
+          fri {
+            from
+            to
+          }
+          sat {
+            from
+            to
+          }
+          sun {
+            from
+            to
+          }
+          override {
+            date
+            from
+            to
+          }
         }
         createdAt
         updatedAt

@@ -123,6 +123,29 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
+                },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Address"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "phone": {
+                    "name": "phone",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -256,6 +279,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "chainId": {
+                    "name": "chainId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "isActive": {
                     "name": "isActive",
                     "isArray": false,
@@ -283,6 +313,29 @@ export const schema = {
                     "type": {
                         "nonModel": "LocalizedItem"
                     },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Address"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "phone": {
+                    "name": "phone",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1168,14 +1221,14 @@ export const schema = {
                 "lat": {
                     "name": "lat",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
                 "lng": {
                     "name": "lng",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -1835,5 +1888,5 @@ export const schema = {
             }
         }
     },
-    "version": "501d0539b2ad1085316db494cd880162"
+    "version": "4bacda1bfad0f23443722d9a38d6cac1"
 };
