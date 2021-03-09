@@ -68,6 +68,7 @@ export const createBuildProject = (
         },
         pre_build: {
           commands: [
+            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
           ],
         },

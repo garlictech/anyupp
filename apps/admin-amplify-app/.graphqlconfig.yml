@@ -1,16 +1,17 @@
 projects:
-  amplifyadmin:
-    schemaPath: >-
-      Users/tomi/Dev/web/localhost/bitgap/cyberg/anyupp/libs/admin/amplify/src/lib/graphql/schema.json
+  anyuppbackend:
+    schemaPath: amplify/backend/api/anyuppbackend/build/schema.graphql
     includes:
-      - ../..libs/admin/amplify/src/lib/graphql/**/*.js
+      - ../../libs/admin/amplify-api/src/lib/graphql/**/*.graphql
     excludes:
       - ./amplify/**
     extensions:
       amplify:
         codeGenTarget: angular
-        generatedFileName: ../../libs/admin/amplify/src/lib/api.service.ts
-        docsFilePath: ../..libs/admin/amplify/src/lib/graphql
+        generatedFileName: ../../libs/admin/amplify-api/src/lib/generated/api.ts
+        docsFilePath: ../../libs/admin/amplify-api/src/lib/generated/graphql
+        region: eu-west-1
+        apiId: null
         maxDepth: 10
 extensions:
   amplify:

@@ -70,26 +70,22 @@ export class CognitoStack extends Stack {
     this.createUserPoolOutputs(
       app,
       this.consumerUserPool,
-      consumerUserPoolClient,
       consumerDomain,
       'consumer',
     );
 
+    this.createUserPoolClientOutput(app, consumerUserPoolClient, 'consumer');
+
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
     const adminDomain = this.createDomain(app, 'admin', this.adminUserPool);
-    const adminUserPoolClient = this.createAdminUserPoolClient(
+    const adminUserPoolClient = this.createAdminUserPoolClients(
+      app,
       this.adminUserPool,
       props.adminSiteUrl,
     );
 
-    this.createUserPoolOutputs(
-      app,
-      this.adminUserPool,
-      adminUserPoolClient,
-      adminDomain,
-      'admin',
-    );
+    this.createUserPoolOutputs(app, this.adminUserPool, adminDomain, 'admin');
 
     // The common identity pool
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
@@ -124,7 +120,6 @@ export class CognitoStack extends Stack {
   private createUserPoolOutputs(
     app: App,
     userPool: cognito.UserPool,
-    userPoolClient: cognito.UserPoolClient,
     domain: cognito.UserPoolDomain,
     label: poolLabel,
   ) {
@@ -140,18 +135,6 @@ export class CognitoStack extends Stack {
       stringValue: userPool.userPoolId,
     });
 
-    const userPoolClientId = label + 'UserPoolClientId';
-    new CfnOutput(this, userPoolClientId, {
-      value: userPoolClient.userPoolClientId,
-      exportName: app.logicalPrefixedName(userPoolClientId),
-    });
-    new ssm.StringParameter(this, userPoolClientId + 'Param', {
-      allowedPattern: '.*',
-      description: 'The user pool client ID for ' + label,
-      parameterName: app.logicalPrefixedName(userPoolClientId),
-      stringValue: userPoolClient.userPoolClientId,
-    });
-
     const userPoolDomainId = label + 'UserPoolDomain';
     new CfnOutput(this, userPoolDomainId, {
       value: domain.baseUrl(),
@@ -162,6 +145,26 @@ export class CognitoStack extends Stack {
       description: 'The user pool domain for ' + label,
       parameterName: app.logicalPrefixedName(userPoolDomainId),
       stringValue: domain.baseUrl(),
+    });
+  }
+
+  private createUserPoolClientOutput(
+    app: App,
+    userPoolClient: cognito.UserPoolClient,
+    label: string,
+  ) {
+    const userPoolClientId = label + 'UserPoolClientId';
+
+    new CfnOutput(this, userPoolClientId, {
+      value: userPoolClient.userPoolClientId,
+      exportName: app.logicalPrefixedName(userPoolClientId),
+    });
+
+    new ssm.StringParameter(this, userPoolClientId + 'Param', {
+      allowedPattern: '.*',
+      description: 'The user pool client ID for ' + label,
+      parameterName: app.logicalPrefixedName(userPoolClientId),
+      stringValue: userPoolClient.userPoolClientId,
     });
   }
 
@@ -183,13 +186,20 @@ export class CognitoStack extends Stack {
     };
   }
 
-  private createAdminUserPoolClient(
+  private createAdminUserPoolClients(
+    app: App,
     userPool: cognito.UserPool,
     adminSiteUrl: string,
   ) {
     const callbackUrls = [`${adminSiteUrl}/admin/dashboard`];
     const logoutUrls = [`${adminSiteUrl}/auth/logout`];
-    const commonProps = {
+
+    if (app.stage === 'dev') {
+      callbackUrls.push(`http://localhost:4200/admin/dashboard`);
+      logoutUrls.push(`http://localhost:4200/auth/logout`);
+    }
+
+    const commonProps = (callbackUrls: string[], logoutUrls: string[]) => ({
       oAuth: {
         flows: {
           authorizationCodeGrant: true,
@@ -201,18 +211,64 @@ export class CognitoStack extends Stack {
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.COGNITO,
       ],
-    };
+    });
 
     // We need both native and web clients, see https://docs.amplify.aws/cli/auth/import#import-an-existing-cognito-user-pool
-    new cognito.UserPoolClient(this, 'AdminUserPoolClientNative', {
-      ...this.commonUserPoolProps(userPool, true),
-      ...commonProps,
-    });
+    const nativeClient = new cognito.UserPoolClient(
+      this,
+      'AdminUserPoolClientNative',
+      {
+        ...this.commonUserPoolProps(userPool, true),
+        ...commonProps(callbackUrls, logoutUrls),
+      },
+    );
 
-    return new cognito.UserPoolClient(this, 'AdminUserPoolClientWeb', {
-      ...this.commonUserPoolProps(userPool, false),
-      ...commonProps,
-    });
+    this.createUserPoolClientOutput(app, nativeClient, 'adminNative');
+
+    const webClient = new cognito.UserPoolClient(
+      this,
+      'AdminUserPoolClientWeb',
+      {
+        ...this.commonUserPoolProps(userPool, false),
+        ...commonProps(callbackUrls, logoutUrls),
+      },
+    );
+
+    this.createUserPoolClientOutput(app, webClient, 'adminWeb');
+
+    // Clients for local development (callbacks are localhost)
+    //if (app.stage === 'dev') {
+    //  const localCallbackUrl = `http://localhost:4200/admin/dashboard`;
+    //  const localLogoutUrl = `http://localhost:4200/auth/logout`;
+
+    //  const webLocalClient = new cognito.UserPoolClient(
+    //    this,
+    //    'AdminUserPoolClientWebLocal',
+    //    {
+    //      ...this.commonUserPoolProps(userPool, false),
+    //      ...commonProps(localCallbackUrl, localLogoutUrl),
+    //    },
+    //  );
+
+    //  this.createUserPoolClientOutput(app, webLocalClient, 'adminWebLocal');
+
+    //  const nativeLocalClient = new cognito.UserPoolClient(
+    //    this,
+    //    'AdminUserPoolClientNativeLocal',
+    //    {
+    //      ...this.commonUserPoolProps(userPool, true),
+    //      ...commonProps(callbackUrl, logoutUrl),
+    //    },
+    //  );
+
+    //  this.createUserPoolClientOutput(
+    //    app,
+    //    nativeLocalClient,
+    //    'adminNativeLocal',
+    //  );
+    //}
+
+    return webClient;
   }
 
   private createConsumerUserPoolClient(userPool: cognito.UserPool) {

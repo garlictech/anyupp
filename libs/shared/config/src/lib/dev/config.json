@@ -9,7 +9,6 @@
   "consumerUserPoolId": "eu-west-1_VfEK0xPj4",
   "googleClientId": "1016713353610-j3k5ejo1pgo4pcfo3hos8027kkspc5a9.apps.googleusercontent.com",
   "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDBds",
-  "adminUserPoolClientId": "4hq082sd8sngpd5ei6gueh2h7s",
   "adminUserPoolDomain": "https://dev-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
   "adminUserPoolId": "eu-west-1_uQinis9TS"
 }

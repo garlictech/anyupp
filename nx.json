@@ -173,7 +173,7 @@
       "tags": []
     },
     "admin-amplify-api": {
-      "tags": []
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     }
   }
 }

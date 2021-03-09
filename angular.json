@@ -1415,7 +1415,36 @@
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
             "commands": [
-              "sh ./tools/pull-amplify-admin.sh '{args.app}' '{args.stage}'"
+              "sh ../../tools/pull-amplify-admin.sh '{args.app}' '{args.stage}'"
+            ]
+          }
+        },
+        "init": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": [
+              "sh ../../tools/init-amplify-admin.sh '{args.app}' '{args.stage}'"
+            ]
+          }
+        },
+        "reconfig": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["sh ../../tools/reconfig-amplify-admin.sh"]
+          }
+        },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": [
+              "amplify delete --force",
+              "aws ssm delete-parameter --name '{args.stage}-{args.app}-AdminAmplifyAppId'"
             ]
           }
         },
@@ -1446,12 +1475,6 @@
           "builder": "@nrwl/node:execute",
           "options": {
             "buildTarget": "admin-amplify-app:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/admin-amplify-app/**/*.ts"]
           }
         },
         "test": {
