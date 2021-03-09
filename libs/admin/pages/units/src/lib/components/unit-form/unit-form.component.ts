@@ -1,21 +1,36 @@
-import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
+import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { Mutations } from '@bgap/admin/amplify';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  amplifyObjectUpdater, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES,
-  TIME_FORMAT_PATTERN, unitOpeningHoursValidator
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  addressFormGroup,
+  clearDbProperties,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { Unit } from '@bgap/api/graphql/schema';
-import { ICustomDailySchedule, IGroup, IKeyValue, ILane, ILanesObject, IPaymentMode, IUnit } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  ILane,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -40,19 +55,6 @@ export class UnitFormComponent
 
   constructor(protected _injector: Injector) {
     super(_injector);
-
-    const test = {
-      val1: 'izé',
-      val2: 'izé2',
-      _deleted: 1,
-      _lastChangedAt: 0,
-      _version: 100
-    };
-    console.error('test', test);
-
-    const test2 = clearDbProperties(test);
-    console.error('test2', test2);
-
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);
     this._logger = this._injector.get(NGXLogger);
@@ -90,6 +92,7 @@ export class UnitFormComponent
       ),
       paymentModes: [[]],
       ...contactFormGroup(this._formBuilder),
+      ...addressFormGroup(this._formBuilder),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -128,19 +131,20 @@ export class UnitFormComponent
         },
         { validators: unitOpeningHoursValidator },
       ),
-      _lanesArr: this._formBuilder.array([]), // temp array!
+      lanes: this._formBuilder.array([]),
     });
   }
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(clearDbProperties<IUnit>(this.unit));
+      this.dialogForm.patchValue(
+        clearDbProperties(fp.omit(['lanes'], this.unit)),
+      );
 
       // Parse openingHours object to temp array
-      const override: ICustomDailySchedule[] = _get(
-        this.unit,
-        'openingHours.override',
-      );
+      const override: ICustomDailySchedule[] | undefined = this.unit
+        ?.openingHours?.override;
+
       if (override) {
         override.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
@@ -152,14 +156,11 @@ export class UnitFormComponent
         });
       }
 
-      // Parse lanes object to temp array
-      Object.keys(this.unit.lanes || {}).forEach((key: string): void => {
+      // Patch lanes array
+      (this.unit.lanes || []).forEach((lane: ILane): void => {
         const laneGroup = this._formsService.createLaneFormGroup();
-        laneGroup.patchValue({
-          _laneId: key,
-          ...(<ILanesObject>this.unit.lanes)[key],
-        });
-        (<FormArray>this.dialogForm?.get('_lanesArr')).push(laneGroup);
+        laneGroup.patchValue(lane);
+        (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
       });
     } else {
       // Patch ChainId
@@ -184,25 +185,15 @@ export class UnitFormComponent
     }
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      const value = {
-        ...this.dialogForm?.value,
-        lanes: {},
-      };
-
-      value._lanesArr.map((lane: ILane): void => {
-        value.lanes[lane._laneId || ''] = _omit(lane, '_laneId');
-      });
-
-      delete value._lanesArr;
-
-      if (_get(this.unit, 'id')) {
+      if (this.unit?.id) {
         try {
-          this._amplifyDataService.update(
-            Unit,
-            this.unit.id || '',
-            amplifyObjectUpdater(this.dialogForm?.value),
+          await this._amplifyDataService.update(
+            'getUnit',
+            'updateUnit',
+            this.unit.id,
+            () => this.dialogForm?.value,
           );
 
           this._toasterService.show(
@@ -216,9 +207,10 @@ export class UnitFormComponent
         }
       } else {
         try {
-          this._amplifyDataService.create(Unit, {
-            ...cleanObject(this.dialogForm?.value),
-          });
+          await this._amplifyDataService.create(
+            'createUnit',
+            this.dialogForm?.value,
+          );
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -248,7 +240,7 @@ export class UnitFormComponent
       .indexOf(paymentMode.name);
 
     if (idx < 0) {
-      paymentModesArr.push(_pick(paymentMode, ['name', 'method']));
+      paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }

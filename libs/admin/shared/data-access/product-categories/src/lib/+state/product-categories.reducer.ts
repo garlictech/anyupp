@@ -35,12 +35,9 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductCategoriesActions.loadProductCategoriesSuccess,
-    (state, { productCategories }) =>
-      productCategoriesAdapter.setAll(productCategories, {
-        ...state,
-        loaded: true,
-      }),
+    ProductCategoriesActions.upsertProductCategory,
+    (state, { productCategory }) =>
+      productCategoriesAdapter.upsertOne(productCategory, state),
   ),
   on(ProductCategoriesActions.resetProductCategories, state =>
     productCategoriesAdapter.removeAll(state),

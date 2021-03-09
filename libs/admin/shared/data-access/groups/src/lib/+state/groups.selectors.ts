@@ -1,5 +1,3 @@
-import { get as _get } from 'lodash-es';
-
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { IAdminUserSettings, IGroup } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
@@ -59,8 +57,7 @@ export const getSelectedChainGroups = createSelector(
   getAllGroups,
   (userSettings: IAdminUserSettings | undefined, groups: IGroup[]): IGroup[] =>
     groups.filter(
-      (group): boolean =>
-        group.chainId === _get(userSettings, 'selectedChainId'),
+      (group): boolean => group.chainId === userSettings?.selectedChainId,
     ),
 );
 
@@ -77,7 +74,5 @@ export const getSeletedGroup = createSelector(
     userSettings: IAdminUserSettings | undefined,
     groups: IGroup[],
   ): IGroup | undefined =>
-    groups.find(
-      (group): boolean => group.id === _get(userSettings, 'selectedGroupId'),
-    ),
+    groups.find((group): boolean => group.id === userSettings?.selectedGroupId),
 );

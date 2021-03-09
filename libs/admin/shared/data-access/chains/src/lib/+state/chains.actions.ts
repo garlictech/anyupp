@@ -8,4 +8,4 @@ export const upsertChain = createAction(
   props<{ chain: IChain }>(),
 );
 
-export const resetChains = createAction('[ChainList] Reset chains');
+export const resetChains = createAction('[Chains] Reset chains');

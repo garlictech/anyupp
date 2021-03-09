@@ -1,26 +1,17 @@
-import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
+import { dashboardSelectors } from 'libs/admin/shared/data-access/dashboard/src';
+import * as fp from 'lodash/fp';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IGeneratedProduct,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -54,10 +45,10 @@ export class OrderProductListComponent {
       });
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
+      .subscribe((size: EDashboardSize): void => {
         this.buttonSize =
-          _get(adminUser, 'settings.dashboardSize') === EDashboardSize.LARGER
+          size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
       });
@@ -95,11 +86,7 @@ export class OrderProductListComponent {
             },
           );
 
-          this.selectedProductCategoryId = _get(
-            this.productCategories,
-            '[0].id',
-            undefined,
-          );
+          this.selectedProductCategoryId = this.productCategories?.[0]?.id;
         },
       );
   }
@@ -121,7 +108,7 @@ export class OrderProductListComponent {
 
     if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(<IOrder>this.selectedOrder),
+        fp.cloneDeep(<IOrder>this.selectedOrder),
         <number>existingVariantOrderIdx,
         1,
       );
@@ -140,7 +127,7 @@ export class OrderProductListComponent {
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(<IOrder>this.selectedOrder),
+        fp.cloneDeep(<IOrder>this.selectedOrder),
         product,
         variantId,
       );

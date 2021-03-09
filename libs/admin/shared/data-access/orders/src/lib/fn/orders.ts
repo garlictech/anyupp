@@ -1,22 +1,15 @@
-import { get as _get } from 'lodash-es';
 
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  EOrderStatus,
-  IFloorMapTableOrderObjects,
-  IFloorMapUserOrderObjects,
-  IFloorMapUserOrders,
-  ILaneOrderItem,
-  IOrder,
-  IStatusLog,
-  IUnit,
+  EOrderStatus, IFloorMapTableOrderObjects, IFloorMapUserOrderObjects, IFloorMapUserOrders, ILaneOrderItem, IOrder,
+  IStatusLog, IUnit
 } from '@bgap/shared/types';
 
 export const currentStatus = (status: IStatusLog): EOrderStatus => {
   const statusArr = Object.values(status || {});
   const lastElement = statusArr[statusArr.length - 1];
 
-  return _get(lastElement, 'status', 'UNDEFINED');
+  return lastElement?.status || 'UNDEFINED';
 };
 
 export const getNextOrderStatus = (
@@ -69,7 +62,7 @@ export const getOrderLaneColor = (
   unit: IUnit,
 ): string => {
   return unit?.lanes && orderItem.laneId
-    ? unit.lanes[orderItem.laneId].color || DEFAULT_LANE_COLOR
+    ? unit.lanes.find(l => l.id === orderItem.laneId)?.color || DEFAULT_LANE_COLOR
     : DEFAULT_LANE_COLOR;
 };
 

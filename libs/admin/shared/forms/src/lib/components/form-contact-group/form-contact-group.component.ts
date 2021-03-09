@@ -1,5 +1,3 @@
-import { get as _get } from 'lodash-es';
-
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -12,13 +10,15 @@ import { ILocation } from '@bgap/shared/types';
 })
 export class FormContactGroupComponent {
   @Input() contactFormGroup!: FormGroup;
+  @Input() showAddressForm?: boolean = true;
 
   constructor(private _httpClient: HttpClient) {}
+
   public locateAddress(): void {
-    const a = _get(this.contactFormGroup, 'value.address.address');
-    const ci = _get(this.contactFormGroup, 'value.address.city');
-    const co = _get(this.contactFormGroup, 'value.address.country');
-    const p = _get(this.contactFormGroup, 'value.address.postalCode');
+    const a = this.contactFormGroup?.value?.address?.address;
+    const ci = this.contactFormGroup?.value?.address?.city;
+    const co = this.contactFormGroup?.value?.address?.country;
+    const p = this.contactFormGroup?.value?.address?.postalCode;
     const query = encodeURI(`${co} ${p} ${ci} ${a}`);
 
     this._httpClient
@@ -28,7 +28,7 @@ export class FormContactGroupComponent {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((response: any): void => {
         if (response.status === 'OK' && response.results[0]) {
-          this._patchLocation(_get(response, 'results[0].geometry.location'));
+          this._patchLocation(response?.results?.[0]?.geometry?.location);
         }
       });
   }

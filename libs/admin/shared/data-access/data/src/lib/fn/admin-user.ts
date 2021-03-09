@@ -1,5 +1,6 @@
+import * as fp from 'lodash/fp';
+
 import { EAdminRole, IAdminUser, IAdminUserRole } from '@bgap/shared/types';
-import { intersection as _intersection } from 'lodash-es';
 
 export const chainAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: IAdminUserRole): boolean => {
   const loggedAdminChainIds = (loggedAdminRole?.entities ?? []).map(
@@ -14,7 +15,7 @@ export const chainAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: 
     EAdminRole.UNIT_ADMIN,
     EAdminRole.STAFF,
   ].includes(checkedAdminUser.roles?.role || EAdminRole.INACTIVE)
-    ? _intersection(loggedAdminChainIds, currentAdminChainIds).length > 0
+    ? fp.intersection(loggedAdminChainIds, currentAdminChainIds).length > 0
     : false;
 };
 
@@ -30,7 +31,7 @@ export const groupAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: 
   return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
     checkedAdminUser.roles?.role || EAdminRole.INACTIVE,
   )
-    ? _intersection(loggedAdminGroupIds, currentAdminGroupIds).length > 0
+    ? fp.intersection(loggedAdminGroupIds, currentAdminGroupIds).length > 0
     : false;
 };
 
@@ -44,6 +45,6 @@ export const unitAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: I
 
   // Unit admin shows only the group/unit admins and the staffs of his chains
   return checkedAdminUser.roles?.role === EAdminRole.STAFF
-    ? _intersection(loggedAdminUnitIds, currentAdminUnitIds).length > 0
+    ? fp.intersection(loggedAdminUnitIds, currentAdminUnitIds).length > 0
     : false;
 };

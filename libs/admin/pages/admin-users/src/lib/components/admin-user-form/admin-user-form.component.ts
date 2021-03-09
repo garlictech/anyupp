@@ -1,3 +1,4 @@
+import { Mutations } from 'libs/admin/amplify/src';
 import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -5,10 +6,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { Auth } from '@aws-amplify/auth';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { clearDbProperties, contactFormGroup, EToasterType, amplifyObjectUpdater } from '@bgap/admin/shared/utils';
-import { AdminUser } from '@bgap/api/graphql/schema';
+import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -45,7 +44,7 @@ export class AdminUserFormComponent
     });
 
     if (this.adminUser) {
-      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
+      this.dialogForm.patchValue(clearDbProperties(this.adminUser));
     } else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
@@ -60,10 +59,9 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          this._amplifyDataService.update(
-            AdminUser,
-            this.adminUser?.id || '',
-            amplifyObjectUpdater(this.dialogForm?.value),
+          await this._amplifyDataService.update('getAdminUser', 'updateAdminUser',
+            this.adminUser.id,
+            () => this.dialogForm.value
           );
 
           this._toasterService.show(
@@ -87,8 +85,8 @@ export class AdminUserFormComponent
             }
           });
 
-          this._amplifyDataService.create(AdminUser, {
-            ...(cleanObject(this.dialogForm?.value)),
+          await this._amplifyDataService.create('createAdminUser', {
+            ...this.dialogForm?.value,
             id: user.userSub,
             roles: {
               role: EAdminRole.INACTIVE,

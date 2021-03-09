@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
 
@@ -9,23 +8,37 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import {
+  loggedUserActions,
+  loggedUserSelectors,
+} from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { AdminUser, Chain, Group, Unit, User } from '@bgap/api/graphql/schema';
 import {
-  EAdminRole, EOrderStatus, IAdminUser, IAdminUserRole, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder,
-  IProduct, IProductCategory, IUnit, IUser
+  EAdminRole,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserRole,
+  IAdminUserSettings,
+  IChain,
+  IGroup,
+  IKeyValueObject,
+  IOrder,
+  IProduct,
+  IProductCategory,
+  IUnit,
+  IUser,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+import { ListAdminUsersQuery } from 'libs/admin/amplify/src';
 
 @Injectable({
   providedIn: 'root',
@@ -44,18 +57,21 @@ export class DataService {
     private _translateService: TranslateService,
   ) {}
 
-  public async initDataConnections(userId: string): Promise<void> {
-    this._amplifyDataService.snapshotChanges<IAdminUser>(
-      AdminUser,
-      userId,
-      (loggedUser: IAdminUser) => {
-        this._store.dispatch(
-          loggedUserActions.loadLoggedUserSuccess({
-            loggedUser,
-          }),
-        );
-      },
-    );
+  public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'getAdminUser',
+        subscriptionName: 'onAdminUserChange',
+        variables: { id: userId },
+        upsertFn: (loggedUser: unknown) => {
+          this._store.dispatch(
+            loggedUserActions.loadLoggedUserSuccess({
+              loggedUser: <IAdminUser>loggedUser,
+            }),
+          );
+        },
+      })
+      .subscribe();
 
     this._store
       .pipe(
@@ -71,28 +87,34 @@ export class DataService {
         ),
         takeUntil(this._destroyConnection$),
       )
-      .subscribe((/*adminUserSettings: IAdminUserSettings | undefined*/): void => {
+      .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
+        console.error('adminUserSettings', adminUserSettings);
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
-          // adminUserSettings?.selectedChainId || '',
+          adminUserSettings?.selectedChainId || '',
         );
-        this._subscribeToSelectedChainProducts(
+        this
+          ._subscribeToSelectedChainProducts
           // adminUserSettings?.selectedChainId || '',
-        );
-        this._subscribeToSelectedGroupProducts(
+          ();
+        this
+          ._subscribeToSelectedGroupProducts
           // adminUserSettings?.selectedGroupId || '',
-        );
-        this._subscribeToSelectedUnitProducts(
+          ();
+        this
+          ._subscribeToSelectedUnitProducts
           // adminUserSettings?.selectedUnitId || '',
-        );
-        this._subscribeToGeneratedUnitProducts(
+          ();
+        this
+          ._subscribeToGeneratedUnitProducts
           // adminUserSettings?.selectedUnitId || '',
-        );
-        this._subscribeToSelectedUnitOrders(
+          ();
+        this
+          ._subscribeToSelectedUnitOrders
           // adminUserSettings?.selectedChainId || '',
           // adminUserSettings?.selectedUnitId || '',
-        );
+          ();
       });
 
     this._store
@@ -138,8 +160,8 @@ export class DataService {
 
   private _createSuperuserSubscriptions(adminUserRoles: IAdminUserRole): void {
     this._subscribeToChainsByRole('*');
-    this._subscribeToGroupsByRole('', '*');
-    this._subscribeToUnitsByRole('', '*');
+    this._subscribeToGroupsByRole('id', '*');
+    this._subscribeToUnitsByRole('id', '*');
     this._subscribeToUsers();
     this._subscribeToAdminUsers(adminUserRoles);
   }
@@ -211,98 +233,108 @@ export class DataService {
         ? true
         : loggedAdminUserEntities.includes(chain.id);
 
-    this._amplifyDataService.snapshotChanges<IChain>(
-      Chain,
-      undefined,
-      (chain: IChain): void => {
-        if (allowUpsert(chain)) {
-          this._store.dispatch(
-            chainsActions.upsertChain({
-              chain,
-            }),
-          );
-        }
-      },
-    );
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listChains',
+        subscriptionName: 'onChainsChange',
+        resetFn: () => {
+          this._store.dispatch(chainsActions.resetChains());
+        },
+        upsertFn: (chain: unknown): void => {
+          if (allowUpsert(<IChain>chain)) {
+            this._store.dispatch(
+              chainsActions.upsertChain({
+                chain: <IChain>chain,
+              }),
+            );
+          }
+        },
+      })
+      .subscribe();
   }
 
   private _subscribeToGroupsByRole(
-    fieldName: string,
+    fieldName: keyof IGroup,
     loggedAdminUserEntities: string | string[],
   ): void {
-    const allowUpsert = (group: IGroup): boolean =>
-      loggedAdminUserEntities === '*'
+    const allowUpsert = (group: IGroup): boolean => {
+      return loggedAdminUserEntities === '*'
         ? true
-        : loggedAdminUserEntities.includes(_get(group, fieldName));
+        : loggedAdminUserEntities.includes(<string>group[fieldName]);
+    };
 
-    this._amplifyDataService.snapshotChanges<IGroup>(
-      Group,
-      undefined,
-      (group: IGroup): void => {
-        if (allowUpsert(group)) {
-          this._store.dispatch(
-            groupsActions.upsertGroup({
-              group,
-            }),
-          );
-        }
-      },
-    );
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listGroups',
+        subscriptionName: 'onGroupsChange',
+        resetFn: () => {
+          this._store.dispatch(groupsActions.resetGroups());
+        },
+        upsertFn: (group: unknown): void => {
+          if (allowUpsert(<IGroup>group)) {
+            this._store.dispatch(
+              groupsActions.upsertGroup({
+                group: <IGroup>group,
+              }),
+            );
+          }
+        },
+      })
+      .subscribe();
   }
 
   private _subscribeToUnitsByRole(
-    fieldName: string,
+    fieldName: keyof IUnit,
     loggedAdminUserEntities: string | string[],
   ): void {
     const allowUpsert = (unit: IUnit): boolean =>
       loggedAdminUserEntities === '*'
         ? true
-        : loggedAdminUserEntities.includes(_get(unit, fieldName));
+        : loggedAdminUserEntities.includes(<string>unit[fieldName]);
 
-    this._amplifyDataService.snapshotChanges<IUnit>(
-      Unit,
-      undefined,
-      (unit: IUnit): void => {
-        if (allowUpsert(unit)) {
-          this._store.dispatch(
-            unitsActions.upsertUnit({
-              unit,
-            }),
-          );
-        }
-      },
-    );
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listUnits',
+        subscriptionName: 'onUnitsChange',
+        resetFn: () => {
+          this._store.dispatch(unitsActions.resetUnits());
+        },
+        upsertFn: (unit: unknown): void => {
+          if (allowUpsert(<IUnit>unit)) {
+            this._store.dispatch(
+              unitsActions.upsertUnit({
+                unit: <IUnit>unit,
+              }),
+            );
+          }
+        },
+      })
+      .subscribe();
   }
 
-  private _subscribeToChainProductCategories(/*chainId: string*/): void {
-    /*
-    this._amplifyDataService.snapshotChanges<IProductCategory>(
-      ProductCategory,
-      undefined,
-      (productCategory: IProductCategory): void => {
-        if (allowUpsert(unit)) {
+  private _subscribeToChainProductCategories(chainId: string): void {
+    this._store.dispatch(productCategoriesActions.resetProductCategories());
+
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listProductCategorys',
+        subscriptionName: 'onProductCategoriesChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productCategoriesActions.resetProductCategories());
+        },
+        upsertFn: (productCategory: unknown): void => {
           this._store.dispatch(
-            unitsActions.upsertUnit({
-              unit,
+            productCategoriesActions.upsertProductCategory({
+              productCategory: <IProductCategory>productCategory,
             }),
           );
-        }
-      },
-    );
-      */
-    /*
-    this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}`) // TODO list?
-      .valueChanges()
+        },
+      })
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          productCategoriesActions.loadProductCategoriesSuccess({
-            productCategories: <IProductCategory[]>objectToArray(data),
-          }),
-        );
-      });
-      */
+      .subscribe();
   }
 
   private _subscribeToSelectedChainProducts(/*chainId: string*/): void {
@@ -388,10 +420,9 @@ export class DataService {
       */
   }
 
-  private _subscribeToSelectedUnitOrders(
-    /*chainId: string,
+  private _subscribeToSelectedUnitOrders(): /*chainId: string,
     unitId: string,*/
-  ): void {
+  void {
     /*
     this._angularFireDatabase
       .list(`/orders/chains/${chainId}/units/${unitId}/active`)
@@ -461,20 +492,28 @@ export class DataService {
   }
 
   private _subscribeToUsers(): void {
-    this._amplifyDataService.snapshotChanges<IUser>(
-      User,
-      undefined,
-      (user: IUser): void => {
-        this._store.dispatch(
-          usersActions.upsertUser({
-            user,
-          }),
-        );
-      },
-    );
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listUsers',
+        subscriptionName: 'onUsersChange',
+        resetFn: () => {
+          this._store.dispatch(usersActions.resetUsers());
+        },
+        upsertFn: (user: unknown): void => {
+          this._store.dispatch(
+            usersActions.upsertUser({
+              user: <IUser>user,
+            }),
+          );
+        },
+      })
+      .subscribe();
   }
 
-  private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
+  // todo remove async
+  private async _subscribeToAdminUsers(
+    loggedAdminRole: IAdminUserRole,
+  ): Promise<void> {
     const allowUpsert = (adminUser: IAdminUser): boolean => {
       switch (loggedAdminRole.role) {
         case EAdminRole.SUPERUSER:
@@ -490,19 +529,24 @@ export class DataService {
       }
     };
 
-    this._amplifyDataService.snapshotChanges<IAdminUser>(
-      AdminUser,
-      undefined,
-      (adminUser: IAdminUser): void => {
-        if (allowUpsert(adminUser)) {
-          this._store.dispatch(
-            adminUsersActions.upsertAdminUser({
-              adminUser,
-            }),
-          );
-        }
-      },
-    );
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listAdminUsers',
+        subscriptionName: 'onAdminUsersChange',
+        resetFn: () => {
+          this._store.dispatch(adminUsersActions.resetAdminUsers());
+        },
+        upsertFn: (adminUser: unknown): void => {
+          if (allowUpsert(<IAdminUser>adminUser)) {
+            this._store.dispatch(
+              adminUsersActions.upsertAdminUser({
+                adminUser: <IAdminUser>adminUser,
+              }),
+            );
+          }
+        },
+      })
+      .subscribe();
   }
 
   public destroyDataConnection(): void {
@@ -572,8 +616,21 @@ export class DataService {
     return this._angularFireDatabase.list(`/units`).push(value);
   }
 
-  public updateUnit(unitId: string, value: IKeyValueObject): Promise<void> {
-    return this._angularFireDatabase.object(`/units/${unitId}`).update(value);
+  public async updateUnit(
+    unitId: string,
+    value: IKeyValueObject,
+  ): Promise<void> {
+    await this._amplifyDataService.update(
+      'getUnit',
+      'updateUnit',
+      unitId,
+      (unit: unknown) => {
+        return {
+          ...(<IUnit>unit),
+          ...value,
+        };
+      },
+    );
   }
 
   public regenerateUnitData(unitId: string): Promise<void> {
@@ -589,25 +646,6 @@ export class DataService {
   //
   // Product category
   //
-
-  public insertProductCategory(
-    chainId: string,
-    value: IProductCategory,
-  ): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/productCategories/chains/${chainId}`)
-      .push(value);
-  }
-
-  public updateProductCategory(
-    chainId: string,
-    productCategoryId: string,
-    value: IProductCategory,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
-      .update(value);
-  }
 
   public updateProductCategoryImagePath(
     chainId: string,
@@ -817,34 +855,47 @@ export class DataService {
       .update(value);
   }
 
-  public updateAdminUserSettings(
+  public async updateAdminUserSettings(
     userId: string,
     value: IAdminUserSettings,
-  ): void {
-    this._amplifyDataService.update(AdminUser, userId, (updated: IAdminUser) => {
-      updated.settings = {
-        ...updated.settings,
-        ...value,
-      };
-    });
+  ): Promise<void> {
+    await this._amplifyDataService.update(
+      'getAdminUser',
+      'updateAdminUser',
+      userId,
+      (adminUser: unknown) => {
+        (<IAdminUser>adminUser).settings = {
+          ...(<IAdminUser>adminUser).settings,
+          ...value,
+        };
+
+        return <IAdminUser>adminUser;
+      },
+    );
   }
 
-  public updateAdminUserSeletedLanguage(
+  public async updateAdminUserSeletedLanguage(
     userId: string,
     language: string,
-  ): void {
-    this._amplifyDataService.update(AdminUser, userId, (updated: IAdminUser) => {
-      updated.settings = {
-        ...updated.settings,
-        selectedLanguage: language,
-      };
-    });
+  ): Promise<void> {
+    await this._amplifyDataService.update(
+      'getAdminUser',
+      'updateAdminUser',
+      userId,
+      (adminUser: unknown) => {
+        (<IAdminUser>adminUser).settings = {
+          ...(<IAdminUser>adminUser).settings,
+          selectedLanguage: language,
+        };
+
+        return <IAdminUser>adminUser;
+      },
+    );
   }
 
-  public updateAdminUserProfileImagePath(
-    // userId: string,
-    // imagePath: string | null,
-  ): void {
+  public updateAdminUserProfileImagePath(): // userId: string,
+  // imagePath: string | null,
+  void {
     console.error('TODO implement AWS');
     /*
     return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({

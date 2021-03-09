@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
@@ -67,14 +66,10 @@ export class FormGroupAdminRoleComponent implements OnInit, OnDestroy {
           this.assignedGroups = [];
           entities.forEach((entity: IAdminRoleEntity): void => {
             this.assignedGroups.push({
-              chainName: _get(
-                chains.find((c): boolean => c.id === entity.chainId),
-                'name',
-              ),
-              groupName: _get(
-                groups.find((g): boolean => g.id === entity.groupId),
-                'name',
-              ),
+              chainName: chains.find((c): boolean => c.id === entity.chainId)
+                ?.name,
+              groupName: groups.find((g): boolean => g.id === entity.groupId)
+                ?.name,
             });
           });
         },

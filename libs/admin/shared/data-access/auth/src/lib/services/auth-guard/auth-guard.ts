@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { from, Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
@@ -9,9 +8,9 @@ import {
   CanActivateChild,
   Router,
 } from '@angular/router';
-import { DataStore } from '@aws-amplify/datastore';
+import { API } from '@aws-amplify/api';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { AdminUser } from '@bgap/api/graphql/schema';
+import { Queries } from '@bgap/admin/amplify';
 import {
   EAdminRole,
   IAdminUser,
@@ -49,12 +48,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this._getAdminUser().pipe(
       map((adminUser: IAdminUser | undefined) => {
-        if (_get(adminUser, 'roles.role') === EAdminRole.INACTIVE) {
+        if (adminUser?.roles?.role === EAdminRole.INACTIVE) {
           this._cognitoService.signOut();
           this._router.navigate(['auth/login']);
         } else {
-          const adminRole: EAdminRole = _get(adminUser, 'roles.role', '');
-          const routeRoles: EAdminRole[] = _get(next, 'data.roles', []);
+          const adminRole: EAdminRole =
+            adminUser?.roles?.role || EAdminRole.INACTIVE;
+          const routeRoles: EAdminRole[] = next?.data?.roles || [];
 
           if (!routeRoles.includes(adminRole)) {
             this._router.navigate(['admin/dashboard']);
@@ -73,18 +73,21 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           this._cognitoService.getAuth(),
       ),
       switchMap(
-        (cognitoUser): Observable<IAdminUser | undefined> => {
-          return cognitoUser
+        (cognitoUser): Observable<IAdminUser | undefined> =>
+          cognitoUser
             ? from(
-                DataStore.query(AdminUser, <string>cognitoUser?.user?.id),
+                <any>API.graphql({
+                  query: Queries.getAdminUser,
+                  variables: { id: <string>cognitoUser?.user?.id },
+                }),
+                // DataStore.query(AdminUser, <string>cognitoUser?.user?.id),
               ).pipe(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 map((data: any) => {
-                  return data || undefined;
+                  return data?.data?.getAdminUser || undefined;
                 }),
               )
-            : of(undefined);
-        },
+            : of(undefined),
       ),
       take(1),
     );

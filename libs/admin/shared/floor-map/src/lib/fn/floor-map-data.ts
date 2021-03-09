@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import { customStringCompare, objectToArray } from '@bgap/shared/utils';
+import { customStringCompare } from '@bgap/shared/utils';
 import {
   EUnitMapObjectType,
   IFabricGroup,
@@ -32,14 +32,14 @@ export const initRawData = (w: number, h: number): void => {
   mapRawData = {
     w,
     h,
-    objects: {},
+    objects: [],
   };
 };
 
 export const loadRawData = (data: IFloorMapData): void => {
   mapRawData = Object.assign(mapRawData, data);
 
-  (<IFloorMapDataObject[]>objectToArray(data.objects, 'id'))
+  (<IFloorMapDataObject[]>data.objects)
     // Sort by type for z-indexing
     .sort(customStringCompare('t', true))
     .forEach((rawData: IFloorMapDataObject): void => {
@@ -51,9 +51,13 @@ export const loadRawDataObject = (
   rawData: IFloorMapDataObject,
   setActive: boolean,
 ): void => {
-  const { id, ...data } = rawData;
+  const dataIdx = mapRawData.objects.map(d => d.id).indexOf(rawData.id);
 
-  mapRawData.objects[id || ''] = data;
+  if (dataIdx < 0) {
+    mapRawData.objects.push(rawData);
+  } else {
+    mapRawData.objects[dataIdx] = rawData;
+  }
 
   _drawObject(rawData, setActive);
 };
@@ -96,7 +100,12 @@ export const removeActiveObject = (): void => {
   const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
-    delete mapRawData.objects[obj.id];
+    const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
+
+    if (objectIdx >= 0) {
+      mapRawData.objects.splice(objectIdx, 1);
+    }
+
     obj.remove();
     fabricCanvas.remove(obj);
     fabricCanvas.discardActiveObject();
@@ -108,13 +117,17 @@ export const copyActiveObject = (): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mapObjectRawData = { ...mapRawData.objects[(<any>obj).id] };
-    mapObjectRawData.id = generateId();
-    mapObjectRawData.x = (mapObjectRawData.x || 0) + 10;
-    mapObjectRawData.y = (mapObjectRawData.y || 0) + 10;
+    const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
 
-    loadRawDataObject(mapObjectRawData, true);
+    if (objectIdx >= 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapObjectRawData = { ...mapRawData.objects[objectIdx] };
+      mapObjectRawData.id = generateId();
+      mapObjectRawData.x = (mapObjectRawData.x || 0) + 10;
+      mapObjectRawData.y = (mapObjectRawData.y || 0) + 10;
+
+      loadRawDataObject(mapObjectRawData, true);
+    }
   }
 };
 
@@ -142,15 +155,20 @@ export const setRawDataField = (
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mapRawData.objects[(<any>obj).id][key] = <any>value;
+    const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
+
+    if (objectIdx >= 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mapRawData.objects[objectIdx][key] = <any>value;
+    }
   }
 };
 
 export const getRawDataField = (
   obj: IFabricGroup,
   key: keyof IFloorMapDataObject,
-): string | number => mapRawData.objects[obj.id][key] || '';
+): string | number =>
+  mapRawData.objects.find(o => o.id === obj.id)?.[key] || '';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
@@ -172,18 +190,20 @@ export const updateObjectMapRawData = (e: any): void => {
   );
 
   if (objectProperties) {
-    const { id, ...objectData } = objectProperties;
+    const objectIdx = mapRawData.objects
+      .map(o => o.id)
+      .indexOf(objectProperties.id);
 
-    mapRawData.objects[id] = {
-      ...mapRawData.objects[id],
-      t: objectData.type,
-      x: Math.round(objectData.left),
-      y: Math.round(objectData.top),
-      w: objectData.width,
-      h: objectData.height,
-      r: objectData.radius ? objectData.radius : undefined,
-      a: objectData.angle ? objectData.angle : 0,
-      c: objectData.caption,
+    mapRawData.objects[objectIdx] = {
+      ...mapRawData.objects[objectIdx],
+      t: objectProperties.type,
+      x: Math.round(objectProperties.left),
+      y: Math.round(objectProperties.top),
+      w: objectProperties.width,
+      h: objectProperties.height,
+      r: objectProperties.radius ? objectProperties.radius : undefined,
+      a: objectProperties.angle ? objectProperties.angle : 0,
+      c: objectProperties.caption,
     };
   }
 };

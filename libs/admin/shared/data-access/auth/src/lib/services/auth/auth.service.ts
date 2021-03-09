@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 
 import { CognitoService } from '../cognito/cognito.service';
+import { take } from 'rxjs/operators';
+import { IAuthenticatedCognitoUser } from 'libs/shared/types/src';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +16,17 @@ export class AuthService {
     private _dataService: DataService,
     private _cognitoService: CognitoService,
     private _amplifyService: AmplifyService,
-  ) {
+  ) {}
+
+  public init() {
     this._amplifyService.authStateChange$.subscribe((authState: AuthState) => {
-      if (authState.user) {
-        this._dataService.initDataConnections(authState.user.username);
+      if (authState.state === 'signedIn') {
+        this._cognitoService
+          .getAuth()
+          .pipe(take(1))
+          .subscribe((cognitoUser: IAuthenticatedCognitoUser | undefined) => {
+            this._dataService.initDataConnections(cognitoUser?.user?.id || '');
+          });
       } else {
         this._dataService.destroyDataConnection();
       }

@@ -2,6 +2,7 @@ import { ILocalizedItem } from './localized-item';
 
 export interface IProductCategory {
   id: string;
+  chainId: string;
   description: ILocalizedItem<string>;
   image: string;
   name: ILocalizedItem<string>;

@@ -76,7 +76,7 @@ export class FormsService {
 
   public createLaneFormGroup = (): FormGroup => {
     return this._formBuilder.group({
-      _laneId: [uuidV1()],
+      id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#fff', [Validators.required]],
     });

@@ -1,5 +1,3 @@
-import { get as _get } from 'lodash-es';
-
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
@@ -53,7 +51,7 @@ export class FormProductVariantsComponent {
           g.patchValue(arr[i]);
           (g.get('availabilities') as FormArray).clear();
 
-          _get(arr[i], 'availabilities', []).forEach(
+          (arr[i]?.availabilities || []).forEach(
             (availability: IAvailability): void => {
               const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);

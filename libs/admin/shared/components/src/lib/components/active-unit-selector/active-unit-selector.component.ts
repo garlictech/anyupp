@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
@@ -35,8 +34,8 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       });
   }
 
-  get selectedUnitId(): string {
-    return _get(this._adminUser, 'settings.selectedUnitId');
+  get selectedUnitId(): string | null | undefined {
+    return this._adminUser?.settings?.selectedUnitId;
   }
 
   ngOnDestroy(): void {
@@ -49,7 +48,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       unitId !==  this._adminUser?.settings?.selectedUnitId
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
-        ..._get(this._adminUser, 'settings', {}),
+        ...(this._adminUser?.settings || {}),
         selectedUnitId: unitId,
       });
     }

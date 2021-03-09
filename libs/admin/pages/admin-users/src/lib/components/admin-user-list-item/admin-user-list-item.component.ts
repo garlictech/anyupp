@@ -1,4 +1,4 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
 import { Component, Input } from '@angular/core';
 import { IAdminUser } from '@bgap/shared/types';
@@ -22,7 +22,7 @@ export class AdminUserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUser = _cloneDeep(this.adminUser);
+    dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
   }
 
   editAdminUserRoles(): void {
@@ -30,7 +30,7 @@ export class AdminUserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUser = _cloneDeep(this.adminUser);
+    dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
   }
 
   public resetEmail(): void {
