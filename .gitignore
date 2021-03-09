@@ -49,3 +49,5 @@ cyreport
 # The config - don't commit!
 /libs/shared/config/src/lib/*/*
 cdk.out
+
+/libs/admin/amplify/src/lib/aws-exports.js

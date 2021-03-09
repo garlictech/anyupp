@@ -38,6 +38,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+import { ListAdminUsersQuery } from 'libs/admin/amplify/src';
 
 @Injectable({
   providedIn: 'root',
@@ -56,19 +57,19 @@ export class DataService {
     private _translateService: TranslateService,
   ) {}
 
-  public async initDataConnections(userId: string): Promise<void> {
+  public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
     this._amplifyDataService
       .snapshotChanges$(
         'getAdminUser',
-        { id: userId },
         'onAdminUserChange',
-        (loggedUser: IAdminUser) => {
+        (loggedUser: unknown) => {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
-              loggedUser,
+              loggedUser: <IAdminUser>loggedUser,
             }),
           );
         },
+        { id: userId },
       )
       .subscribe();
 
@@ -235,15 +236,14 @@ export class DataService {
         : loggedAdminUserEntities.includes(chain.id);
 
     this._amplifyDataService
-      .snapshotChanges$<IChain>(
+      .snapshotChanges$(
         'listChains',
-        undefined,
         'onChainsChange',
-        (chain: IChain): void => {
-          if (allowUpsert(chain)) {
+        (chain: unknown): void => {
+          if (allowUpsert(<IChain>chain)) {
             this._store.dispatch(
               chainsActions.upsertChain({
-                chain,
+                chain: <IChain>chain,
               }),
             );
           }
@@ -264,15 +264,14 @@ export class DataService {
     }
 
     this._amplifyDataService
-      .snapshotChanges$<IGroup>(
+      .snapshotChanges$(
         'listGroups',
-        undefined,
         'onGroupsChange',
-        (group: IGroup): void => {
-          if (allowUpsert(group)) {
+        (group: unknown): void => {
+          if (allowUpsert(<IGroup>group)) {
             this._store.dispatch(
               groupsActions.upsertGroup({
-                group,
+                group: <IGroup>group,
               }),
             );
           }
@@ -291,15 +290,15 @@ export class DataService {
         : loggedAdminUserEntities.includes(<string>unit[fieldName]);
 
     this._amplifyDataService
-      .snapshotChanges$<IUnit>(
+      .snapshotChanges$(
         'listUnits',
-        undefined,
         'onUnitsChange',
-        (unit: IUnit): void => {
-          if (allowUpsert(unit)) {
+        (unit: unknown): void => {
+          if (allowUpsert(<IUnit>unit)) {
+            console.error('store ', unit);
             this._store.dispatch(
               unitsActions.upsertUnit({
-                unit,
+                unit: <IUnit>unit
               }),
             );
           }
@@ -495,14 +494,13 @@ export class DataService {
 
   private _subscribeToUsers(): void {
     this._amplifyDataService
-      .snapshotChanges$<IUser>(
+      .snapshotChanges$(
         'listUsers',
-        undefined,
         'onUsersChange',
-        (user: IUser): void => {
+        (user: unknown): void => {
           this._store.dispatch(
             usersActions.upsertUser({
-              user,
+              user: <IUser>user,
             }),
           );
         },
@@ -530,15 +528,14 @@ export class DataService {
     };
 
     this._amplifyDataService
-      .snapshotChanges$<IAdminUser>(
+      .snapshotChanges$(
         'listAdminUsers',
-        undefined,
         'onAdminUsersChange',
-        (adminUser: IAdminUser): void => {
-          if (allowUpsert(adminUser)) {
+        (adminUser: unknown): void => {
+          if (allowUpsert(<IAdminUser>adminUser)) {
             this._store.dispatch(
               adminUsersActions.upsertAdminUser({
-                adminUser,
+                adminUser: <IAdminUser>adminUser,
               }),
             );
           }
@@ -867,13 +864,13 @@ export class DataService {
       'getAdminUser',
       'updateAdminUser',
       userId,
-      (adminUser: IAdminUser) => {
-        adminUser.settings = {
-          ...adminUser.settings,
+      (adminUser: unknown) => {
+        (<IAdminUser>adminUser).settings = {
+          ...(<IAdminUser>adminUser).settings,
           ...value,
         };
 
-        return adminUser;
+        return <IAdminUser>adminUser;
       },
     );
   }
@@ -886,13 +883,13 @@ export class DataService {
       'getAdminUser',
       'updateAdminUser',
       userId,
-      (adminUser: IAdminUser) => {
-        adminUser.settings = {
-          ...adminUser.settings,
+      (adminUser: unknown) => {
+        (<IAdminUser>adminUser).settings = {
+          ...(<IAdminUser>adminUser).settings,
           selectedLanguage: language,
         };
 
-        return adminUser;
+        return <IAdminUser>adminUser;
       },
     );
   }

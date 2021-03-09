@@ -13,7 +13,6 @@ export interface IUnitSeat {
 
 export interface ILane {
   id?: string;
-  _laneId?: string;
   name: string;
   color: string;
 }

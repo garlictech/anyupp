@@ -85,7 +85,7 @@ export class AdminUserFormComponent
             }
           });
 
-          await this._amplifyDataService.create(Mutations.createAdminUser, {
+          await this._amplifyDataService.create('createAdminUser', {
             ...this.dialogForm?.value,
             id: user.userSub,
             roles: {

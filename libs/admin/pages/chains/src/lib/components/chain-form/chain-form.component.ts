@@ -102,7 +102,7 @@ export class ChainFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(Mutations.createChain, this.dialogForm?.value);
+          await this._amplifyDataService.create('createChain', this.dialogForm?.value);
 
           this._toasterService.show(
             EToasterType.SUCCESS,

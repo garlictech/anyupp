@@ -118,7 +118,7 @@ export class GroupFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(Mutations.createGroup, this.dialogForm?.value);
+          await this._amplifyDataService.create('createGroup', this.dialogForm?.value);
 
           this._toasterService.show(
             EToasterType.SUCCESS,

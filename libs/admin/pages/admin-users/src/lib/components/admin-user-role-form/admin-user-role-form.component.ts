@@ -43,7 +43,7 @@ export class AdminUserRoleFormComponent
         await this._amplifyDataService.update(
           'getAdminUser',
           'updateAdminUser',
-          this.adminUser.id,
+          this.adminUser.id || '',
           () => this.dialogForm.value
         );
 

@@ -1,128 +1,89 @@
-import { NGXLogger } from 'ngx-logger';
-import { from, Observable } from 'rxjs';
+import { IAmplifyModel } from 'libs/shared/types/src';
+import { from, Observable, ObservableInput } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import { ListAdminUsersQuery, Mutations, Queries, Subscriptions } from '@bgap/admin/amplify';
+import {
+  GetAdminUserQuery, GetChainProductQuery, GetChainQuery, GetGroupQuery, GetOrderQuery, GetProductCategoryQuery, GetUnitQuery, GetUserQuery, ListAdminUsersQuery, ListChainProductsQuery, ListChainsQuery, ListGroupsQuery, ListOrdersQuery, ListProductCategorysQuery, ListUnitsQuery, ListUsersQuery, Mutations, OnAdminUserChangeSubscription,
+  OnChainsChangeSubscription,
+  OnGroupsChangeSubscription,
+  OnUnitsChangeSubscription,
+  OnUsersChangeSubscription,
+  Queries, Subscriptions
+} from '@bgap/admin/amplify';
 
-interface IQueryResult<T> {
-  data?: ListAdminUsersQuery
+type queryTypes = GetAdminUserQuery & GetChainQuery & GetGroupQuery & GetUnitQuery & GetOrderQuery & GetProductCategoryQuery & GetChainProductQuery & GetUserQuery;
+type listTypes = ListAdminUsersQuery & ListChainsQuery & ListGroupsQuery & ListUnitsQuery & ListOrdersQuery & ListProductCategorysQuery & ListChainProductsQuery & ListUsersQuery;
+type apiQueryTypes = queryTypes & listTypes;
+type subscriptionTypes = OnAdminUserChangeSubscription & OnChainsChangeSubscription & OnGroupsChangeSubscription & OnUnitsChangeSubscription & OnUsersChangeSubscription;
+
+interface ISubscriptionResult {
+  value?: {
+    data: subscriptionTypes
+  }
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AmplifyDataService {
-  constructor(private _logger: NGXLogger) {}
-
-  public snapshotChanges$<callbackT>(
-    queryName: string,
-    variables: object | undefined,
-    subscriptionName: string,
-    callback: (data: callbackT) => void,
+  public snapshotChanges$(
+    queryName: keyof typeof Queries,
+    subscriptionName: keyof typeof Subscriptions,
+    callback: (data: unknown) => void,
+    variables?: object,
   ): Observable<unknown> {
     return from(
-      <Promise<GraphQLResult>>API.graphql({
-        query: (<any>Queries)[queryName],
+      <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
+        query: Queries[queryName],
         variables,
       }),
     ).pipe(
       take(1),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      tap((data: any) => {
-        if (data.data?.[queryName]?.items) {
-          (data.data[queryName].items || []).forEach((d: any) => {
+      tap((data) => {
+        if (data.data?.[<keyof listTypes>queryName]?.items) {
+          (data.data?.[<keyof listTypes>queryName]?.items || []) .forEach((d: unknown) => {
             callback(d);
           });
-        } else {
-          callback(data?.data?.[queryName]);
+        } else if (data?.data?.[<keyof queryTypes>queryName]) {
+          callback(data?.data?.[<keyof queryTypes>queryName]);
         }
       }),
       switchMap(
-        () => <any>API.graphql({
-            query: (<any>Subscriptions)[subscriptionName],
+        () => <ObservableInput<ISubscriptionResult>> API.graphql({
+            query: Subscriptions[subscriptionName],
             variables,
           }),
       ),
-      tap({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (data: any) => {
-          callback(data.value.data[subscriptionName]);
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        error: (error: any) =>
-          this._logger.error(`Subscription error ${JSON.stringify(error)}`),
+      tap( (data: ISubscriptionResult) => {
+        callback(data?.value?.data?.[<keyof subscriptionTypes>subscriptionName]);
       }),
     );
   }
 
-  /*
-  public async snapshotChanges<T>(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryName: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    variables: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    subscriptionName: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: any,
-  ): Promise<void> {
-    const data: any = await API.graphql({
-      query: (<any>Queries)[queryName],
-      variables,
-    });
-
-    if (data?.data[queryName]?.items) {
-      (data?.data[queryName].items).forEach((d: T) => {
-        callback(d);
-      });
-    } else {
-      callback(data?.data[queryName]);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (<any>(
-      API.graphql(
-        {
-          query: (<any>Subscriptions)[subscriptionName],
-          variables,
-        }
-      )
-    )).subscribe({
-      next: (data: any) => {
-        callback(<T>data.value.data[subscriptionName]);
-      },
-      error: (error: any) =>
-        this._logger.error(`Subscription error ${JSON.stringify(error)}`),
-    });
-  }
-  */
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async create(mutation: any, value: any) {
-    return API.graphql({ query: mutation, variables: { input: value } });
+  public async create(mutationName: keyof typeof Mutations, value: unknown) {
+    return API.graphql({ query: Mutations[mutationName], variables: { input: value } });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update(
-    queryName: string,
-    mutationName: string,
-    id: any,
-    updaterFn: any,
+    queryName: keyof typeof Queries,
+    mutationName: keyof typeof Mutations,
+    id: string,
+    updaterFn: (data: unknown) => {},
   ) {
-    const data: any = await API.graphql({
-      query: (<any>Queries)[queryName],
+    const data: GraphQLResult<queryTypes> = await <Promise<GraphQLResult<queryTypes>>>API.graphql({
+      query: Queries[<keyof queryTypes>queryName],
       variables: { id },
     });
 
-    const { createdAt, updatedAt, ...modified } = <any>{
-      ...updaterFn(data.data[queryName]),
+    const { createdAt, updatedAt, ...modified } = <IAmplifyModel>{
+      ...updaterFn(data?.data?.[<keyof queryTypes>queryName]),
       id,
     };
 
     return API.graphql({
-      query: (<any>Mutations)[mutationName],
+      query: Mutations[mutationName],
       variables: { input: modified },
     });
   }

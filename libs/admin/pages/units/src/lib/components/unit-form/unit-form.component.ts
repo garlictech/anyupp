@@ -9,12 +9,28 @@ import { Mutations } from '@bgap/admin/amplify';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES,
-  TIME_FORMAT_PATTERN, unitOpeningHoursValidator
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  addressFormGroup,
+  clearDbProperties,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  ILane,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -121,10 +137,13 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(clearDbProperties(fp.omit(['lanes'], this.unit)));
+      this.dialogForm.patchValue(
+        clearDbProperties(fp.omit(['lanes'], this.unit)),
+      );
 
       // Parse openingHours object to temp array
-      const override: ICustomDailySchedule[] | undefined = this.unit?.openingHours?.override;
+      const override: ICustomDailySchedule[] | undefined = this.unit
+        ?.openingHours?.override;
 
       if (override) {
         override.forEach((day: ICustomDailySchedule): void => {
@@ -137,16 +156,12 @@ export class UnitFormComponent
         });
       }
 
-      // Parse lanes object to temp array
-      /*
-      Object.keys(this.unit.lanes || {}).forEach((key: string): void => {
+      // Patch lanes array
+      (this.unit.lanes || []).forEach((lane: ILane): void => {
         const laneGroup = this._formsService.createLaneFormGroup();
-        laneGroup.patchValue({
-          _laneId: key,
-          ...(<ILanesObject>this.unit.lanes)[key],
-        });
-        (<FormArray>this.dialogForm?.get('_lanesArr')).push(laneGroup);
-      });*/
+        laneGroup.patchValue(lane);
+        (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+      });
     } else {
       // Patch ChainId
       this._store
@@ -172,14 +187,13 @@ export class UnitFormComponent
 
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-
-      console.error('UNIT VAL', this.dialogForm?.value);
-
       if (this.unit?.id) {
         try {
-          await this._amplifyDataService.update('getUnit', 'updateUnit',
+          await this._amplifyDataService.update(
+            'getUnit',
+            'updateUnit',
             this.unit.id,
-            () => this.dialogForm?.value
+            () => this.dialogForm?.value,
           );
 
           this._toasterService.show(
@@ -193,7 +207,10 @@ export class UnitFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(Mutations.createUnit, this.dialogForm?.value);
+          await this._amplifyDataService.create(
+            'createUnit',
+            this.dialogForm?.value,
+          );
 
           this._toasterService.show(
             EToasterType.SUCCESS,
