@@ -295,7 +295,6 @@ export class DataService {
         'onUnitsChange',
         (unit: unknown): void => {
           if (allowUpsert(<IUnit>unit)) {
-            console.error('store ', unit);
             this._store.dispatch(
               unitsActions.upsertUnit({
                 unit: <IUnit>unit
@@ -611,8 +610,18 @@ export class DataService {
     return this._angularFireDatabase.list(`/units`).push(value);
   }
 
-  public updateUnit(unitId: string, value: IKeyValueObject): Promise<void> {
-    return this._angularFireDatabase.object(`/units/${unitId}`).update(value);
+  public async updateUnit(unitId: string, value: IKeyValueObject): Promise<void> {
+    await this._amplifyDataService.update(
+      'getUnit',
+      'updateUnit',
+      unitId,
+      (unit: unknown) => {
+        return {
+          ...<IUnit>unit,
+          ...value
+        };
+      },
+    );
   }
 
   public regenerateUnitData(unitId: string): Promise<void> {
