@@ -59,18 +59,18 @@ export class DataService {
 
   public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
     this._amplifyDataService
-      .snapshotChanges$(
-        'getAdminUser',
-        'onAdminUserChange',
-        (loggedUser: unknown) => {
+      .snapshotChanges$({
+        queryName: 'getAdminUser',
+        subscriptionName: 'onAdminUserChange',
+        variables: { id: userId },
+        upsertFn: (loggedUser: unknown) => {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: <IAdminUser>loggedUser,
             }),
           );
         },
-        { id: userId },
-      )
+      })
       .subscribe();
 
     this._store
@@ -87,37 +87,35 @@ export class DataService {
         ),
         takeUntil(this._destroyConnection$),
       )
-      .subscribe(
-        (/*adminUserSettings: IAdminUserSettings | undefined*/): void => {
-          this._settingsChanged$.next(true);
+      .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
+        console.error('adminUserSettings', adminUserSettings);
+        this._settingsChanged$.next(true);
 
-          this
-            ._subscribeToChainProductCategories
-            // adminUserSettings?.selectedChainId || '',
-            ();
-          this
-            ._subscribeToSelectedChainProducts
-            // adminUserSettings?.selectedChainId || '',
-            ();
-          this
-            ._subscribeToSelectedGroupProducts
-            // adminUserSettings?.selectedGroupId || '',
-            ();
-          this
-            ._subscribeToSelectedUnitProducts
-            // adminUserSettings?.selectedUnitId || '',
-            ();
-          this
-            ._subscribeToGeneratedUnitProducts
-            // adminUserSettings?.selectedUnitId || '',
-            ();
-          this
-            ._subscribeToSelectedUnitOrders
-            // adminUserSettings?.selectedChainId || '',
-            // adminUserSettings?.selectedUnitId || '',
-            ();
-        },
-      );
+        this._subscribeToChainProductCategories(
+          adminUserSettings?.selectedChainId || '',
+        );
+        this
+          ._subscribeToSelectedChainProducts
+          // adminUserSettings?.selectedChainId || '',
+          ();
+        this
+          ._subscribeToSelectedGroupProducts
+          // adminUserSettings?.selectedGroupId || '',
+          ();
+        this
+          ._subscribeToSelectedUnitProducts
+          // adminUserSettings?.selectedUnitId || '',
+          ();
+        this
+          ._subscribeToGeneratedUnitProducts
+          // adminUserSettings?.selectedUnitId || '',
+          ();
+        this
+          ._subscribeToSelectedUnitOrders
+          // adminUserSettings?.selectedChainId || '',
+          // adminUserSettings?.selectedUnitId || '',
+          ();
+      });
 
     this._store
       .pipe(
@@ -236,10 +234,13 @@ export class DataService {
         : loggedAdminUserEntities.includes(chain.id);
 
     this._amplifyDataService
-      .snapshotChanges$(
-        'listChains',
-        'onChainsChange',
-        (chain: unknown): void => {
+      .snapshotChanges$({
+        queryName: 'listChains',
+        subscriptionName: 'onChainsChange',
+        resetFn: () => {
+          this._store.dispatch(chainsActions.resetChains());
+        },
+        upsertFn: (chain: unknown): void => {
           if (allowUpsert(<IChain>chain)) {
             this._store.dispatch(
               chainsActions.upsertChain({
@@ -248,7 +249,7 @@ export class DataService {
             );
           }
         },
-      )
+      })
       .subscribe();
   }
 
@@ -259,15 +260,17 @@ export class DataService {
     const allowUpsert = (group: IGroup): boolean => {
       return loggedAdminUserEntities === '*'
         ? true
-         : loggedAdminUserEntities.includes(<string>group[fieldName]);
-
-    }
+        : loggedAdminUserEntities.includes(<string>group[fieldName]);
+    };
 
     this._amplifyDataService
-      .snapshotChanges$(
-        'listGroups',
-        'onGroupsChange',
-        (group: unknown): void => {
+      .snapshotChanges$({
+        queryName: 'listGroups',
+        subscriptionName: 'onGroupsChange',
+        resetFn: () => {
+          this._store.dispatch(groupsActions.resetGroups());
+        },
+        upsertFn: (group: unknown): void => {
           if (allowUpsert(<IGroup>group)) {
             this._store.dispatch(
               groupsActions.upsertGroup({
@@ -276,7 +279,7 @@ export class DataService {
             );
           }
         },
-      )
+      })
       .subscribe();
   }
 
@@ -290,51 +293,48 @@ export class DataService {
         : loggedAdminUserEntities.includes(<string>unit[fieldName]);
 
     this._amplifyDataService
-      .snapshotChanges$(
-        'listUnits',
-        'onUnitsChange',
-        (unit: unknown): void => {
+      .snapshotChanges$({
+        queryName: 'listUnits',
+        subscriptionName: 'onUnitsChange',
+        resetFn: () => {
+          this._store.dispatch(unitsActions.resetUnits());
+        },
+        upsertFn: (unit: unknown): void => {
           if (allowUpsert(<IUnit>unit)) {
             this._store.dispatch(
               unitsActions.upsertUnit({
-                unit: <IUnit>unit
+                unit: <IUnit>unit,
               }),
             );
           }
         },
-      )
+      })
       .subscribe();
   }
 
-  private _subscribeToChainProductCategories(/*chainId: string*/): void {
-    /*
-    this._amplifyDataService.snapshotChanges<IProductCategory>(
-      ProductCategory,
-      undefined,
-      (productCategory: IProductCategory): void => {
-        if (allowUpsert(unit)) {
+  private _subscribeToChainProductCategories(chainId: string): void {
+    this._store.dispatch(productCategoriesActions.resetProductCategories());
+
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listProductCategorys',
+        subscriptionName: 'onProductCategoriesChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productCategoriesActions.resetProductCategories());
+        },
+        upsertFn: (productCategory: unknown): void => {
           this._store.dispatch(
-            unitsActions.upsertUnit({
-              unit,
+            productCategoriesActions.upsertProductCategory({
+              productCategory: <IProductCategory>productCategory,
             }),
           );
-        }
-      },
-    );
-      */
-    /*
-    this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}`) // TODO list?
-      .valueChanges()
+        },
+      })
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          productCategoriesActions.loadProductCategoriesSuccess({
-            productCategories: <IProductCategory[]>objectToArray(data),
-          }),
-        );
-      });
-      */
+      .subscribe();
   }
 
   private _subscribeToSelectedChainProducts(/*chainId: string*/): void {
@@ -493,17 +493,20 @@ export class DataService {
 
   private _subscribeToUsers(): void {
     this._amplifyDataService
-      .snapshotChanges$(
-        'listUsers',
-        'onUsersChange',
-        (user: unknown): void => {
+      .snapshotChanges$({
+        queryName: 'listUsers',
+        subscriptionName: 'onUsersChange',
+        resetFn: () => {
+          this._store.dispatch(usersActions.resetUsers());
+        },
+        upsertFn: (user: unknown): void => {
           this._store.dispatch(
             usersActions.upsertUser({
               user: <IUser>user,
             }),
           );
         },
-      )
+      })
       .subscribe();
   }
 
@@ -527,10 +530,13 @@ export class DataService {
     };
 
     this._amplifyDataService
-      .snapshotChanges$(
-        'listAdminUsers',
-        'onAdminUsersChange',
-        (adminUser: unknown): void => {
+      .snapshotChanges$({
+        queryName: 'listAdminUsers',
+        subscriptionName: 'onAdminUsersChange',
+        resetFn: () => {
+          this._store.dispatch(adminUsersActions.resetAdminUsers());
+        },
+        upsertFn: (adminUser: unknown): void => {
           if (allowUpsert(<IAdminUser>adminUser)) {
             this._store.dispatch(
               adminUsersActions.upsertAdminUser({
@@ -539,7 +545,7 @@ export class DataService {
             );
           }
         },
-      )
+      })
       .subscribe();
   }
 
@@ -610,15 +616,18 @@ export class DataService {
     return this._angularFireDatabase.list(`/units`).push(value);
   }
 
-  public async updateUnit(unitId: string, value: IKeyValueObject): Promise<void> {
+  public async updateUnit(
+    unitId: string,
+    value: IKeyValueObject,
+  ): Promise<void> {
     await this._amplifyDataService.update(
       'getUnit',
       'updateUnit',
       unitId,
       (unit: unknown) => {
         return {
-          ...<IUnit>unit,
-          ...value
+          ...(<IUnit>unit),
+          ...value,
         };
       },
     );
@@ -637,25 +646,6 @@ export class DataService {
   //
   // Product category
   //
-
-  public insertProductCategory(
-    chainId: string,
-    value: IProductCategory,
-  ): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/productCategories/chains/${chainId}`)
-      .push(value);
-  }
-
-  public updateProductCategory(
-    chainId: string,
-    productCategoryId: string,
-    value: IProductCategory,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
-      .update(value);
-  }
 
   public updateProductCategoryImagePath(
     chainId: string,

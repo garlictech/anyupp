@@ -610,6 +610,7 @@ export type DeleteOrderInput = {
 
 export type CreateProductCategoryInput = {
   id?: string | null,
+  chainId: string,
   description?: LocalizedItemInput | null,
   image?: string | null,
   name?: LocalizedItemInput | null,
@@ -617,6 +618,7 @@ export type CreateProductCategoryInput = {
 };
 
 export type ModelProductCategoryConditionInput = {
+  chainId?: ModelIDInput | null,
   image?: ModelStringInput | null,
   position?: ModelStringInput | null,
   and?: Array< ModelProductCategoryConditionInput | null > | null,
@@ -627,6 +629,7 @@ export type ModelProductCategoryConditionInput = {
 export type ProductCategory = {
   __typename: "ProductCategory",
   id?: string,
+  chainId?: string,
   description?: LocalizedItem,
   image?: string | null,
   name?: LocalizedItem,
@@ -637,6 +640,7 @@ export type ProductCategory = {
 
 export type UpdateProductCategoryInput = {
   id: string,
+  chainId?: string | null,
   description?: LocalizedItemInput | null,
   image?: string | null,
   name?: LocalizedItemInput | null,
@@ -1095,6 +1099,7 @@ export type ModelOrderConnection = {
 
 export type ModelProductCategoryFilterInput = {
   id?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
   image?: ModelStringInput | null,
   position?: ModelStringInput | null,
   and?: Array< ModelProductCategoryFilterInput | null > | null,
@@ -1896,6 +1901,7 @@ export type CreateProductCategoryMutation = {
   createProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -1924,6 +1930,7 @@ export type UpdateProductCategoryMutation = {
   updateProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -1952,6 +1959,7 @@ export type DeleteProductCategoryMutation = {
   deleteProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -3082,6 +3090,7 @@ export type GetProductCategoryQuery = {
   getProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -3113,6 +3122,7 @@ export type ListProductCategorysQuery = {
     items?:  Array< {
       __typename: "ProductCategory",
       id: string,
+      chainId: string,
       description?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -3830,6 +3840,30 @@ export type OnUsersChangeSubscription = {
   } | null,
 };
 
+export type OnProductCategoriesChangeSubscription = {
+  onProductCategoriesChange?:  {
+    __typename: "ProductCategory",
+    id: string,
+    chainId: string,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    image?: string | null,
+    name?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    position?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateAdminUserSubscription = {
   onCreateAdminUser?:  {
     __typename: "AdminUser",
@@ -4479,6 +4513,7 @@ export type OnCreateProductCategorySubscription = {
   onCreateProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -4502,6 +4537,7 @@ export type OnUpdateProductCategorySubscription = {
   onUpdateProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,
@@ -4525,6 +4561,7 @@ export type OnDeleteProductCategorySubscription = {
   onDeleteProductCategory?:  {
     __typename: "ProductCategory",
     id: string,
+    chainId: string,
     description?:  {
       __typename: "LocalizedItem",
       en?: string | null,

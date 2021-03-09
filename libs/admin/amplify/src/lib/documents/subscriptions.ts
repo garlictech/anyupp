@@ -248,6 +248,28 @@ export const onUsersChange = /* GraphQL */ `
     }
   }
 `;
+export const onProductCategoriesChange = /* GraphQL */ `
+  subscription OnProductCategoriesChange {
+    onProductCategoriesChange {
+      id
+      chainId
+      description {
+        en
+        de
+        hu
+      }
+      image
+      name {
+        en
+        de
+        hu
+      }
+      position
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateAdminUser = /* GraphQL */ `
   subscription OnCreateAdminUser {
     onCreateAdminUser {
@@ -831,6 +853,7 @@ export const onCreateProductCategory = /* GraphQL */ `
   subscription OnCreateProductCategory {
     onCreateProductCategory {
       id
+      chainId
       description {
         en
         de
@@ -852,6 +875,7 @@ export const onUpdateProductCategory = /* GraphQL */ `
   subscription OnUpdateProductCategory {
     onUpdateProductCategory {
       id
+      chainId
       description {
         en
         de
@@ -873,6 +897,7 @@ export const onDeleteProductCategory = /* GraphQL */ `
   subscription OnDeleteProductCategory {
     onDeleteProductCategory {
       id
+      chainId
       description {
         en
         de

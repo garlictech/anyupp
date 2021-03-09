@@ -8,4 +8,4 @@ export const upsertGroup = createAction(
   props<{ group: IGroup }>(),
 );
 
-export const resetGroups = createAction('[GroupList] Reset groups');
+export const resetGroups = createAction('[Groups] Reset groups');

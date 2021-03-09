@@ -633,6 +633,7 @@ export const createProductCategory = /* GraphQL */ `
   ) {
     createProductCategory(input: $input, condition: $condition) {
       id
+      chainId
       description {
         en
         de
@@ -657,6 +658,7 @@ export const updateProductCategory = /* GraphQL */ `
   ) {
     updateProductCategory(input: $input, condition: $condition) {
       id
+      chainId
       description {
         en
         de
@@ -681,6 +683,7 @@ export const deleteProductCategory = /* GraphQL */ `
   ) {
     deleteProductCategory(input: $input, condition: $condition) {
       id
+      chainId
       description {
         en
         de

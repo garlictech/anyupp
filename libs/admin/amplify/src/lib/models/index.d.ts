@@ -302,6 +302,17 @@ export declare class User {
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }
 
+export declare class ProductCategory {
+  readonly id: string;
+  readonly chainId: string;
+  readonly description?: LocalizedItem;
+  readonly image?: string;
+  readonly name?: LocalizedItem;
+  readonly position?: string;
+  constructor(init: ModelInit<ProductCategory>);
+  static copyOf(source: ProductCategory, mutator: (draft: MutableModel<ProductCategory>) => MutableModel<ProductCategory> | void): ProductCategory;
+}
+
 export declare class StripeCard {
   readonly id: string;
   readonly brand?: CardBrand | keyof typeof CardBrand;
@@ -333,16 +344,6 @@ export declare class Order {
   readonly paymentIntention?: number;
   constructor(init: ModelInit<Order>);
   static copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
-}
-
-export declare class ProductCategory {
-  readonly id: string;
-  readonly description?: LocalizedItem;
-  readonly image?: string;
-  readonly name?: LocalizedItem;
-  readonly position?: string;
-  constructor(init: ModelInit<ProductCategory>);
-  static copyOf(source: ProductCategory, mutator: (draft: MutableModel<ProductCategory>) => MutableModel<ProductCategory> | void): ProductCategory;
 }
 
 export declare class ChainProduct {

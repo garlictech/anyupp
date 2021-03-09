@@ -167,10 +167,10 @@
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "amplify-admin": {
-      "tags": []
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "admin-amplify": {
-      "tags": []
+      "tags": ["scope:bgap", "type:server", "platform:angular"]
     }
   }
 }

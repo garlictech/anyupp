@@ -8,4 +8,4 @@ export const upsertUnit = createAction(
   props<{ unit: IUnit }>(),
 );
 
-export const resetUnits = createAction('[UnitList] Reset units');
+export const resetUnits = createAction('[Units] Reset units');

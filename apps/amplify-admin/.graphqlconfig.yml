@@ -2,7 +2,7 @@ projects:
   amplifyadmin:
     schemaPath: amplify/backend/api/amplifyadmin/build/schema.graphql
     includes:
-      - ../../libs/admin/amplify/src/lib/graphql/**/*.ts
+      - ../../libs/admin/amplify/src/lib/documents/**/*.ts
     excludes:
       - ./amplify/**
     extensions:

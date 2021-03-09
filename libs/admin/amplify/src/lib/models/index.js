@@ -20,7 +20,7 @@ const CardFundingType = {
   "UNKNOWN": "unknown"
 };
 
-const { AdminUser, Chain, Group, Unit, User, StripeCard, Order, ProductCategory, ChainProduct, AdminUserRole, AdminRoleEntity, AdminUserSettings, LocalizedItem, ChainStyle, ChainStyleColors, ChainStyleImages, Address, Location, PaymentMode, FloorMapData, FloorMapDataObject, Lane, DailySchedule, WeeklySchedule, CustomDailySchedule, CardChecks, StripeMetadata, StartStripePaymentOutput, StatusLog, PriceShown, OrderItem, Place, ProductVariant, ProductVariantPack, Availability } = initSchema(schema);
+const { AdminUser, Chain, Group, Unit, User, ProductCategory, StripeCard, Order, ChainProduct, AdminUserRole, AdminRoleEntity, AdminUserSettings, LocalizedItem, ChainStyle, ChainStyleColors, ChainStyleImages, Address, Location, PaymentMode, FloorMapData, FloorMapDataObject, Lane, DailySchedule, WeeklySchedule, CustomDailySchedule, CardChecks, StripeMetadata, StartStripePaymentOutput, StatusLog, PriceShown, OrderItem, Place, ProductVariant, ProductVariantPack, Availability } = initSchema(schema);
 
 export {
   AdminUser,
@@ -28,9 +28,9 @@ export {
   Group,
   Unit,
   User,
+  ProductCategory,
   StripeCard,
   Order,
-  ProductCategory,
   ChainProduct,
   CardBrand,
   CardFundingType,

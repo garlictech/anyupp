@@ -427,6 +427,7 @@ export const getProductCategory = /* GraphQL */ `
   query GetProductCategory($id: ID!) {
     getProductCategory(id: $id) {
       id
+      chainId
       description {
         en
         de
@@ -457,6 +458,7 @@ export const listProductCategorys = /* GraphQL */ `
     ) {
       items {
         id
+        chainId
         description {
           en
           de
