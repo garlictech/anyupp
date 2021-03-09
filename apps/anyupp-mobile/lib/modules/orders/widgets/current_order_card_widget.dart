@@ -70,14 +70,14 @@ class CurrentOrderCardWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${order.id}',
+            '${order.id.split("-").last}',
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: theme.text,
             ),
           ),
           Text(
-            DF_SHORT.format(DateTime.fromMillisecondsSinceEpoch(order.created)),
+            DF_SHORT.format(order.created != null ? DateTime.fromMillisecondsSinceEpoch(order.created) : DateTime.now()),
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: theme.text,

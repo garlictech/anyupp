@@ -28,9 +28,9 @@ class AwsProductProvider implements IProductProvider {
 
       var response = await operation.response;
       var data = response.data;
-      print('***** getProductCategoryList().data=$data');
+      //print('***** getProductCategoryList().data=$data');
       Map<String, dynamic> json = jsonDecode(data);
-      print('***** getProductCategoryList().json=$json');
+      // print('***** getProductCategoryList().json=$json');
 
       List<dynamic> items = json['listProductCategorys']['items'];
       //print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
@@ -71,11 +71,7 @@ class AwsProductProvider implements IProductProvider {
       List<GeneratedProduct> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          try {
           results.add(GeneratedProduct.fromJson(Map<String, dynamic>.from(items[i])));
-          } on Exception catch(e) {
-            print('***** getProductList().error=$e');
-          }
           // Map<String, dynamic> jsonProd = Map<String, dynamic>.from(items[i]);
           // // print('***** getProductList().json[variants] is List=${(jsonProd["variants"] is List)} type=${jsonProd["variants"]}');
           // GeneratedProduct product = GeneratedProduct.fromJson(jsonProd);

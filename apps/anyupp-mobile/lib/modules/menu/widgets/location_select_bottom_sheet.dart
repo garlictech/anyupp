@@ -121,7 +121,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                '${unit.openingHours}',
+                '${unit.openingHours ?? ""}',
                 //'Nyitva: 09:00 - 22:00',
                 style: GoogleFonts.poppins(
                   fontSize: 16,

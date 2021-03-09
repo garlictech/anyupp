@@ -69,9 +69,9 @@ void _initProviders() {
   getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider());
   // getIt.registerLazySingleton<IFunctionProvider>(() => FirebaseFunctionsProvider(getIt<CloudFunctions>()));
   getIt.registerLazySingleton<IFavoritesProvider>(
-      () => AwsFavoritesProvider());
+      () => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IOrdersProvider>(
-      () => AwsOrderProvider());
+      () => AwsOrderProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(() => GraphQLStripePaymentProvider(getIt<GraphQLClient>(), getIt<Stripe>()));

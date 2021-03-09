@@ -4,10 +4,7 @@ import 'dart:convert';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth/model/authenticated_user.dart';
 
-import 'package:fa_prev/shared/auth/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'auth_provider_interface.dart';

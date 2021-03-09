@@ -19,7 +19,7 @@ class FaceDetectionBloc extends Bloc<FaceDetectionEvent, FaceDetectionState> {
 
   @override
   Stream<FaceDetectionState> mapEventToState(FaceDetectionEvent event) async* {
-    print('**** FaceDetectionBloc.mapEventToState=$event');
+    // print('**** FaceDetectionBloc.mapEventToState=$event');
     try {
       if (event is StopFaceRecognition) {
         await _faceRepository.stopDetection();

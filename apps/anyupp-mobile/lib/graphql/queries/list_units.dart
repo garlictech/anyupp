@@ -7,6 +7,7 @@ query SearchUnitsQuery {
       chainId
       name
       distance
+      openingHours
       currency
       address {
         address

@@ -13,9 +13,10 @@ class AwsUnitProvider implements IUnitProvider {
     print('***** searchUnitsNearLocation().start()');
     try {
       var operation = Amplify.API.query(
-          request: GraphQLRequest<String>(
-        document: QUERY_SEARCH_UNITS,
-      ));
+        request: GraphQLRequest<String>(
+          document: QUERY_SEARCH_UNITS,
+        ),
+      );
 
       var response = await operation.response;
       var data = response.data;
@@ -29,7 +30,7 @@ class AwsUnitProvider implements IUnitProvider {
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           GeoUnit unit = GeoUnit.fromJson(Map<String, dynamic>.from(items[i]));
-          print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.address}');
+          print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.openingHours} ${unit.address}');
           results.add(unit);
         }
       }
