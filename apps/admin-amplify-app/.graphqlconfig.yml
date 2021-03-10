@@ -2,12 +2,12 @@ projects:
   anyuppbackend:
     schemaPath: amplify/backend/api/anyuppbackend/build/schema.graphql
     includes:
-      - ../../libs/admin/amplify-api/src/lib/graphql/**/*.graphql
+      - ../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.ts
     excludes:
       - ./amplify/**
     extensions:
       amplify:
-        codeGenTarget: angular
+        codeGenTarget: typescript
         generatedFileName: ../../libs/admin/amplify-api/src/lib/generated/api.ts
         docsFilePath: ../../libs/admin/amplify-api/src/lib/generated/graphql
         region: eu-west-1

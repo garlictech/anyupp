@@ -30,7 +30,7 @@ import {
   OnUsersChangeSubscription,
   Queries,
   Subscriptions,
-} from '@bgap/admin/amplify';
+} from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
 type queryTypes = GetAdminUserQuery &

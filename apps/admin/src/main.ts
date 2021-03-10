@@ -5,6 +5,9 @@ import { AppModule } from './app/app.module';
 import { environment } from '@bgap/admin/shared/config';
 import { awsConfig } from '@bgap/admin/amplify-api';
 
+awsConfig.oauth.redirectSignIn = `${window.location.origin}/admin/dashboard`;
+awsConfig.oauth.redirectSignOut = `${window.location.origin}/auth/logout`;
+
 Amplify.configure(awsConfig);
 
 if (environment.production) {
