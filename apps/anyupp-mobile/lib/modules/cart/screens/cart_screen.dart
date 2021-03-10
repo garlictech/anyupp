@@ -202,12 +202,12 @@ class CartScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  onPressed: () => cart.place == null
+                  onPressed: () => cart.order?.place == null
                       ? Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
                       : showSelectPaymentMethodBottomSheet(context),
                   color: theme.indicator,
                   textColor: theme.text2,
-                  child: cart.place == null
+                  child: cart.order?.place == null
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',
                           color: theme.text2,

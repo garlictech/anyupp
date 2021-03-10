@@ -1,10 +1,10 @@
 const QUERY_LIST_FAVORITES = '''
 query ListFavoriteProductsQuery(\$userId: ID!, \$unitId: ID!) {
-  listFavoriteProducts(filter: {userID: {eq: \$userId}, unitID: {eq: \$unitId}}) {
+  listFavoriteProducts(filter: {userId: {eq: \$userId}, unitId: {eq: \$unitId}}) {
     items {
       id
-      unitID
-      userID
+      unitId
+      userId
       product {
         id
         image

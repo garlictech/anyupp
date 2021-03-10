@@ -28,7 +28,7 @@ class Order extends Model {
   final String userId;
   final String unitId;
   final List<OrderItem> items;
-  final String paymentMethod;
+  final PaymentMode paymentMethod;
   final String staffId;
   final PriceShown sumPriceShown;
   final bool takeAway;
@@ -36,6 +36,7 @@ class Order extends Model {
   final int paymentIntention;
   final List<StatusLog> statusLog;
   final int created;
+  final OrderSatus status;
 
   @override
   getInstanceType() => classType;
@@ -57,21 +58,23 @@ class Order extends Model {
       this.place,
       this.paymentIntention,
       this.statusLog,
-      this.created});
+      this.created,
+      this.status});
 
   factory Order(
       {String id,
       @required String userId,
       @required String unitId,
       List<OrderItem> items,
-      String paymentMethod,
+      PaymentMode paymentMethod,
       String staffId,
       PriceShown sumPriceShown,
       bool takeAway,
       Place place,
       int paymentIntention,
       List<StatusLog> statusLog,
-      int created}) {
+      int created,
+      OrderSatus status}) {
     return Order._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
@@ -84,7 +87,8 @@ class Order extends Model {
         place: place,
         paymentIntention: paymentIntention,
         statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
-        created: created);
+        created: created,
+        status: status);
   }
 
   bool equals(Object other) {
@@ -106,7 +110,8 @@ class Order extends Model {
         place == other.place &&
         paymentIntention == other.paymentIntention &&
         DeepCollectionEquality().equals(statusLog, other.statusLog) &&
-        created == other.created;
+        created == other.created &&
+        status == other.status;
   }
 
   @override
@@ -120,7 +125,9 @@ class Order extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("paymentMethod=" + "$paymentMethod" + ", ");
+    buffer.write("paymentMethod=" +
+        (paymentMethod != null ? paymentMethod.toString() : "null") +
+        ", ");
     buffer.write("staffId=" + "$staffId" + ", ");
     buffer.write("sumPriceShown=" +
         (sumPriceShown != null ? sumPriceShown.toString() : "null") +
@@ -131,7 +138,9 @@ class Order extends Model {
     buffer.write("paymentIntention=" +
         (paymentIntention != null ? paymentIntention.toString() : "null") +
         ", ");
-    buffer.write("created=" + (created != null ? created.toString() : "null"));
+    buffer.write(
+        "created=" + (created != null ? created.toString() : "null") + ", ");
+    buffer.write("status=" + (status != null ? enumToString(status) : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -142,14 +151,15 @@ class Order extends Model {
       String userId,
       String unitId,
       List<OrderItem> items,
-      String paymentMethod,
+      PaymentMode paymentMethod,
       String staffId,
       PriceShown sumPriceShown,
       bool takeAway,
       Place place,
       int paymentIntention,
       List<StatusLog> statusLog,
-      int created}) {
+      int created,
+      OrderSatus status}) {
     return Order(
         id: id ?? this.id,
         userId: userId ?? this.userId,
@@ -162,7 +172,8 @@ class Order extends Model {
         place: place ?? this.place,
         paymentIntention: paymentIntention ?? this.paymentIntention,
         statusLog: statusLog ?? this.statusLog,
-        created: created ?? this.created);
+        created: created ?? this.created,
+        status: status ?? this.status);
   }
 
   Order.fromJson(Map<String, dynamic> json)
@@ -175,7 +186,10 @@ class Order extends Model {
                     (e) => OrderItem.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        paymentMethod = json['paymentMethod'],
+        paymentMethod = json['paymentMethod'] != null
+            ? PaymentMode.fromJson(
+                new Map<String, dynamic>.from(json['paymentMethod']))
+            : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null
             ? PriceShown.fromJson(
@@ -192,21 +206,23 @@ class Order extends Model {
                     (e) => StatusLog.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        created = json['created'];
+        created = json['created'],
+        status = enumFromString<OrderSatus>(json['status'], OrderSatus.values);
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,
         'unitId': unitId,
         'items': items?.map((e) => e?.toJson())?.toList(),
-        'paymentMethod': paymentMethod,
+        'paymentMethod': paymentMethod?.toJson(),
         'staffId': staffId,
         'sumPriceShown': sumPriceShown?.toJson(),
         'takeAway': takeAway,
         'place': place?.toJson(),
         'paymentIntention': paymentIntention,
         'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
-        'created': created
+        'created': created,
+        'status': enumToString(status)
       };
 
   static final QueryField ID = QueryField(fieldName: "order.id");
@@ -216,8 +232,10 @@ class Order extends Model {
       fieldName: "items",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (OrderItem).toString()));
-  static final QueryField PAYMENTMETHOD =
-      QueryField(fieldName: "paymentMethod");
+  static final QueryField PAYMENTMETHOD = QueryField(
+      fieldName: "paymentMethod",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (PaymentMode).toString()));
   static final QueryField STAFFID = QueryField(fieldName: "staffId");
   static final QueryField SUMPRICESHOWN = QueryField(
       fieldName: "sumPriceShown",
@@ -235,6 +253,7 @@ class Order extends Model {
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (StatusLog).toString()));
   static final QueryField CREATED = QueryField(fieldName: "created");
+  static final QueryField STATUS = QueryField(fieldName: "status");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Order";
@@ -258,10 +277,11 @@ class Order extends Model {
         ofModelName: (OrderItem).toString(),
         associatedKey: OrderItem.ORDERITEMSID));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
         key: Order.PAYMENTMETHOD,
         isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+        targetName: "orderPaymentMethodId",
+        ofModelName: (PaymentMode).toString()));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Order.STAFFID,
@@ -300,6 +320,11 @@ class Order extends Model {
         key: Order.CREATED,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Order.STATUS,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
   });
 }
 

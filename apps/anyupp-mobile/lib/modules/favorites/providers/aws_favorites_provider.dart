@@ -16,7 +16,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
   AwsFavoritesProvider(this._authProvider);
 
-  // StreamController<List<GeneratedProduct>> _favoritesController = BehaviorSubject<List<GeneratedProduct>>();
+  StreamController<List<FavoriteProduct>> _favoritesController = BehaviorSubject<List<FavoriteProduct>>();
   List<FavoriteProduct> _favorites;
 
   @override
@@ -30,7 +30,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       await _addFavoriteProduct(chainId, unitId, productId);
     } else {
       // Remove from favorites
-      FavoriteProduct product = _favorites.firstWhere((product) => product.product.id == productId);
+      FavoriteProduct product = await _favorites.firstWhere((product) => product.product.id == productId);
       await _deleteFavoriteProduct(product.id);
     }
     _favorites = await _getFavorites(chainId, unitId);
@@ -51,17 +51,25 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   @override
-  Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId) async* {
-    try {
-      _favorites = await _getFavorites(chainId, unitId);
-      yield _favorites;
-    } on ApiException catch (e) {
-      print('AwsFavoritesProvider.getFavoritesList.ApiException: $e');
-      rethrow;
-    } on Exception catch (e) {
-      print('AwsFavoritesProvider.getFavoritesList.Exception: $e');
-      rethrow;
-    }
+  Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId) {
+    _getFavorites(chainId, unitId).then((favorites) {
+      print('***** getFavoritesList().then()=$favorites');
+      _favorites = favorites ?? [];
+      _favoritesController.add(_favorites);
+    });
+    return _favoritesController.stream;
+
+    // try {
+    //   _favorites = await _getFavorites(chainId, unitId);
+    //   yield _favorites;
+    //   // _favoritesController.add(_favorites);
+    // } on ApiException catch (e) {
+    //   print('AwsFavoritesProvider.getFavoritesList.ApiException: $e');
+    //   rethrow;
+    // } on Exception catch (e) {
+    //   print('AwsFavoritesProvider.getFavoritesList.Exception: $e');
+    //   rethrow;
+    // }
   }
 
   Future<List<FavoriteProduct>> _getFavorites(String chainId, String unitId) async {
@@ -81,7 +89,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
       List<dynamic> items = json['listFavoriteProducts']['items'];
       if (items == null || items.isEmpty) {
-        return null;
+        _favoritesController.add([]);
+        return [];
       }
 
       List<FavoriteProduct> favorites = [];
@@ -90,6 +99,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       }
 
       print('***** getFavoritesList().favorites=$favorites');
+      _favoritesController.add(favorites);
       return favorites;
     } on ApiException catch (e) {
       print('AwsFavoritesProvider.getFavoritesList.ApiException: $e');
@@ -118,7 +128,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       print('_deleteFavoriteProduct().response=$json');
       // TODO AWS ERROR HANDLING?
       return response.errors?.isEmpty ?? true;
-
     } on ApiException catch (e) {
       print('AwsFavoritesProvider._deleteFavoriteProduct.ApiException: $e');
       rethrow;
@@ -134,12 +143,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       var operation = Amplify.API.mutate(
         request: GraphQLRequest<String>(
           document: MUTATION_ADD_FAVORITE_PRODUCT,
-          variables: {
-            'userId': user.id,
-            'chainId': chainId,
-            'unitId': unitId,
-            'productId': productId
-          },
+          variables: {'userId': user.id, 'chainId': chainId, 'unitId': unitId, 'productId': productId},
         ),
       );
 
@@ -148,7 +152,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       Map<String, dynamic> json = jsonDecode(data);
       print('_addFavoriteProduct().response=$json');
       return response.errors?.isEmpty ?? true;
-
     } on ApiException catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.ApiException: $e');
       rethrow;

@@ -1,13 +1,13 @@
-const QUERY_LIST_ACTIVE_ORDERS = '''
-query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
+const QUERY_LIST_ORDER_HISTORY = '''
+query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId},
-    and: [
-      { status: { ne: PAID }},
-      { status: { ne: REJECTED }},
+    or: [
+      { status: { eq: PAID }},
+      { status: { eq: REJECTED }},
     ]
-  }) {
+  }) {      
     items {
       id
       paymentMethod {

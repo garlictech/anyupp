@@ -19,14 +19,14 @@ import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the FavoriteProduct type in your schema. */
+/** This is an auto generated class representing the Cart type in your schema. */
 @immutable
-class FavoriteProduct extends Model {
-  static const classType = const FavoriteProductType();
+class Cart extends Model {
+  static const classType = const CartType();
   final String id;
   final String userId;
   final String unitId;
-  final GeneratedProduct product;
+  final Order order;
 
   @override
   getInstanceType() => classType;
@@ -36,22 +36,22 @@ class FavoriteProduct extends Model {
     return id;
   }
 
-  const FavoriteProduct._internal(
+  const Cart._internal(
       {@required this.id,
       @required this.userId,
       @required this.unitId,
-      this.product});
+      this.order});
 
-  factory FavoriteProduct(
+  factory Cart(
       {String id,
       @required String userId,
       @required String unitId,
-      GeneratedProduct product}) {
-    return FavoriteProduct._internal(
+      Order order}) {
+    return Cart._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
         unitId: unitId,
-        product: product);
+        order: order);
   }
 
   bool equals(Object other) {
@@ -61,11 +61,11 @@ class FavoriteProduct extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FavoriteProduct &&
+    return other is Cart &&
         id == other.id &&
         userId == other.userId &&
         unitId == other.unitId &&
-        product == other.product;
+        order == other.order;
   }
 
   @override
@@ -75,78 +75,72 @@ class FavoriteProduct extends Model {
   String toString() {
     var buffer = new StringBuffer();
 
-    buffer.write("FavoriteProduct {");
+    buffer.write("Cart {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("product=" + (product != null ? product.toString() : "null"));
+    buffer.write("order=" + (order != null ? order.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  FavoriteProduct copyWith(
-      {String id, String userId, String unitId, GeneratedProduct product}) {
-    return FavoriteProduct(
+  Cart copyWith({String id, String userId, String unitId, Order order}) {
+    return Cart(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
-        product: product ?? this.product);
+        order: order ?? this.order);
   }
 
-  FavoriteProduct.fromJson(Map<String, dynamic> json)
+  Cart.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userId = json['userId'],
         unitId = json['unitId'],
-        product = json['product'] != null
-            ? GeneratedProduct.fromJson(
-                new Map<String, dynamic>.from(json['product']))
+        order = json['order'] != null
+            ? Order.fromJson(new Map<String, dynamic>.from(json['order']))
             : null;
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'userId': userId,
-        'unitId': unitId,
-        'product': product?.toJson()
-      };
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'userId': userId, 'unitId': unitId, 'order': order?.toJson()};
 
-  static final QueryField ID = QueryField(fieldName: "favoriteProduct.id");
+  static final QueryField ID = QueryField(fieldName: "cart.id");
   static final QueryField USERID = QueryField(fieldName: "userId");
   static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField PRODUCT = QueryField(
-      fieldName: "product",
+  static final QueryField ORDER = QueryField(
+      fieldName: "order",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (GeneratedProduct).toString()));
+          ofModelName: (Order).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "FavoriteProduct";
-    modelSchemaDefinition.pluralName = "FavoriteProducts";
+    modelSchemaDefinition.name = "Cart";
+    modelSchemaDefinition.pluralName = "Carts";
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FavoriteProduct.USERID,
+        key: Cart.USERID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FavoriteProduct.UNITID,
+        key: Cart.UNITID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: FavoriteProduct.PRODUCT,
+        key: Cart.ORDER,
         isRequired: false,
-        targetName: "favoriteProductProductId",
-        ofModelName: (GeneratedProduct).toString()));
+        targetName: "cartOrderId",
+        ofModelName: (Order).toString()));
   });
 }
 
-class FavoriteProductType extends ModelType<FavoriteProduct> {
-  const FavoriteProductType();
+class CartType extends ModelType<Cart> {
+  const CartType();
 
   @override
-  FavoriteProduct fromJson(Map<String, dynamic> jsonData) {
-    return FavoriteProduct.fromJson(jsonData);
+  Cart fromJson(Map<String, dynamic> jsonData) {
+    return Cart.fromJson(jsonData);
   }
 }

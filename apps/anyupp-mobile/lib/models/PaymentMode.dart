@@ -23,7 +23,6 @@ import 'package:flutter/foundation.dart';
 class PaymentMode extends Model {
   static const classType = const PaymentModeType();
   final String id;
-  final String unitId;
   final String name;
   final String caption;
   final String method;
@@ -39,7 +38,6 @@ class PaymentMode extends Model {
 
   const PaymentMode._internal(
       {@required this.id,
-      @required this.unitId,
       @required this.name,
       this.caption,
       @required this.method,
@@ -47,14 +45,12 @@ class PaymentMode extends Model {
 
   factory PaymentMode(
       {String id,
-      @required String unitId,
       @required String name,
       String caption,
       @required String method,
       String geoUnitPaymentModesId}) {
     return PaymentMode._internal(
         id: id == null ? UUID.getUUID() : id,
-        unitId: unitId,
         name: name,
         caption: caption,
         method: method,
@@ -70,7 +66,6 @@ class PaymentMode extends Model {
     if (identical(other, this)) return true;
     return other is PaymentMode &&
         id == other.id &&
-        unitId == other.unitId &&
         name == other.name &&
         caption == other.caption &&
         method == other.method &&
@@ -86,7 +81,6 @@ class PaymentMode extends Model {
 
     buffer.write("PaymentMode {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("unitId=" + "$unitId" + ", ");
     buffer.write("name=" + "$name" + ", ");
     buffer.write("caption=" + "$caption" + ", ");
     buffer.write("method=" + "$method" + ", ");
@@ -98,14 +92,12 @@ class PaymentMode extends Model {
 
   PaymentMode copyWith(
       {String id,
-      String unitId,
       String name,
       String caption,
       String method,
       String geoUnitPaymentModesId}) {
     return PaymentMode(
         id: id ?? this.id,
-        unitId: unitId ?? this.unitId,
         name: name ?? this.name,
         caption: caption ?? this.caption,
         method: method ?? this.method,
@@ -115,7 +107,6 @@ class PaymentMode extends Model {
 
   PaymentMode.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        unitId = json['unitId'],
         name = json['name'],
         caption = json['caption'],
         method = json['method'],
@@ -123,7 +114,6 @@ class PaymentMode extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'unitId': unitId,
         'name': name,
         'caption': caption,
         'method': method,
@@ -131,7 +121,6 @@ class PaymentMode extends Model {
       };
 
   static final QueryField ID = QueryField(fieldName: "paymentMode.id");
-  static final QueryField UNITID = QueryField(fieldName: "unitId");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField CAPTION = QueryField(fieldName: "caption");
   static final QueryField METHOD = QueryField(fieldName: "method");
@@ -143,11 +132,6 @@ class PaymentMode extends Model {
     modelSchemaDefinition.pluralName = "PaymentModes";
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.UNITID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: PaymentMode.NAME,

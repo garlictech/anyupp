@@ -146,9 +146,8 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                 height: 22.0,
               ),
               onPressed: () {
-                Nav.to(DataStoreDemoScreen());
-                // TODO!!! KIVETTEM AZ AMPLIFY DATASTORE DEMO MIATT!!!
-                // showConfirmLogoutDialog(context, false);
+                // Nav.to(DataStoreDemoScreen());
+                showConfirmLogoutDialog(context, false);
               },
             ),
           ),

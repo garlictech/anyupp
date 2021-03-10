@@ -65,7 +65,8 @@ type PaymentMode {
   method: String!
 }
 
-type User {
+type User @model {
+  id: ID!
   name: String
   email: String
   phone: String
@@ -114,11 +115,11 @@ type ProductVariantPack {
 }
 
 type FavoriteProduct @model
-@key(name: "favoritesByUserAndUnit", fields: ["userID", "unitID"])
+@key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"])
 {
   id: ID!
-  userID: ID!
-  unitID: ID!
+  userId: ID!
+  unitId: ID!
   product: GeneratedProduct @connection
 }
 
@@ -130,7 +131,7 @@ type Order @model
   userId: ID!
   unitId: ID!
   items: [OrderItem]
-  paymentMethod: String
+  paymentMethod: PaymentMode
   staffId: String
   sumPriceShown: PriceShown
   takeAway: Boolean
@@ -138,6 +139,15 @@ type Order @model
   paymentIntention: Int
   statusLog: [StatusLog]
   created: Int
+  status: OrderSatus
+}
+
+enum OrderSatus {
+  PLACED,
+  PROCESSING,
+  READY,
+  PAID,
+  REJECTED
 }
 
 type OrderItem {
@@ -150,6 +160,13 @@ type OrderItem {
   variantName: LocalizedItem
   created: Int
   takeAway: Boolean
+}
+
+type Cart @model {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  order: Order @connection
 }
 
 type Place {

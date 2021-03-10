@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/exception.dart';

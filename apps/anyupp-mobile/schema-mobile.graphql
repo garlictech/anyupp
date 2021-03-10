@@ -17,7 +17,6 @@ type GeoUnit @model
 }
 
 type Address @model {
-  id: ID!
   address: String
   city: String
   country: String
@@ -27,26 +26,22 @@ type Address @model {
 }
 
 type Location @model {
-  id: ID!
   lat: Float
   lng: Float
 }
 
 type LocalizedItem @model {
-  id: ID!
   en: String
   de: String
   hu: String
 }
 
 type ChainStyle @model {
-  id: ID!
   colors: ChainStyleColors @connection
   images: ChainStyleImages @connection
 }
 
 type ChainStyleColors @model {
-  id: ID!
   backgroundLight: String
   backgroundDark: String
   borderLight: String
@@ -59,14 +54,11 @@ type ChainStyleColors @model {
 }
 
 type ChainStyleImages @model {
-  id: ID!
   header: String
   logo: String
 }
 
 type PaymentMode @model {
-  id: ID!
-  unitId: ID!
   name: String!
   caption: String
   method: String!
@@ -106,7 +98,6 @@ type ProductCategory @model
 }
 
 type ProductVariant @model {
-  id: ID!
   variantName: LocalizedItem @connection
   pack: ProductVariantPack @connection
   isAvailable: Boolean
@@ -115,16 +106,14 @@ type ProductVariant @model {
 }
 
 type ProductVariantPack @model {
-  id: ID!
   size: Float
   unit: String
 }
 
 type FavoriteProduct @model
 {
-  id: ID!
-  userID: ID!
-  unitID: ID!
+  userId: ID!
+  unitId: ID!
   product: GeneratedProduct @connection
 }
 
@@ -134,7 +123,7 @@ type Order @model
   userId: ID!
   unitId: ID!
   items: [OrderItem] @connection
-  paymentMethod: String
+  paymentMethod: PaymentMode @connection
   staffId: String
   sumPriceShown: PriceShown @connection
   takeAway: Boolean
@@ -142,10 +131,18 @@ type Order @model
   paymentIntention: Int
   statusLog: [StatusLog] @connection
   created: Int
+  status: OrderSatus
+}
+
+enum OrderSatus {
+  PLACED,
+  PROCESSING,
+  READY,
+  PAID,
+  REJECTED
 }
 
 type OrderItem @model {
-  id: ID!
   productId: ID!
   variantId: ID!
   productName: LocalizedItem @connection
@@ -157,14 +154,19 @@ type OrderItem @model {
   takeAway: Boolean
 }
 
-type Place @model {
+type Cart @model {
   id: ID!
+  userId: ID!
+  unitId: ID!
+  order: Order @connection
+}
+
+type Place @model {
   seat: String
   table: String
 }
 
 type PriceShown @model {
-  id: ID!
   currency: String
   pricePerUnit: Float
   priceSum: Float
@@ -173,7 +175,6 @@ type PriceShown @model {
 }
 
 type StatusLog @model {
-  id: ID!
   userId: ID!
   status: String
   ts: Int

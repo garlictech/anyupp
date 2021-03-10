@@ -82,7 +82,7 @@ class OrderHistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${order.id}',
+                '${order.id.split("-").last}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
@@ -93,7 +93,7 @@ class OrderHistoryCard extends StatelessWidget {
                   right: 20.0,
                 ),
                 child: Text(
-                  DF_SHORT.format(DateTime.fromMillisecondsSinceEpoch(order.created)),
+                  DF_SHORT.format(order.created != null ? DateTime.fromMillisecondsSinceEpoch(order.created) : DateTime.now()),
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: theme.text,

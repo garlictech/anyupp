@@ -17,6 +17,7 @@
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'Address.dart';
+import 'Cart.dart';
 import 'ChainStyle.dart';
 import 'ChainStyleColors.dart';
 import 'ChainStyleImages.dart';
@@ -37,6 +38,7 @@ import 'StatusLog.dart';
 import 'User.dart';
 
 export 'Address.dart';
+export 'Cart.dart';
 export 'ChainStyle.dart';
 export 'ChainStyleColors.dart';
 export 'ChainStyleImages.dart';
@@ -47,6 +49,7 @@ export 'LocalizedItem.dart';
 export 'Location.dart';
 export 'Order.dart';
 export 'OrderItem.dart';
+export 'OrderSatus.dart';
 export 'PaymentMode.dart';
 export 'Place.dart';
 export 'PriceShown.dart';
@@ -58,10 +61,11 @@ export 'User.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "47fcb25a3d97eea387b127100fbbe5da";
+  String version = "02b2536dd509ffdcf266fd889acc7473";
   @override
   List<ModelSchema> modelSchemas = [
     Address.schema,
+    Cart.schema,
     ChainStyle.schema,
     ChainStyleColors.schema,
     ChainStyleImages.schema,
@@ -90,6 +94,11 @@ class ModelProvider implements ModelProviderInterface {
       case "Address":
         {
           return Address.classType;
+        }
+        break;
+      case "Cart":
+        {
+          return Cart.classType;
         }
         break;
       case "ChainStyle":

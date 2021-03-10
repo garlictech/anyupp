@@ -64,7 +64,7 @@ class AwsProductProvider implements IProductProvider {
 
       var response = await operation.response;
       var data = response.data;
-      print('***** getProductList().data=$data');
+      // print('***** getProductList().data=$data');
       Map<String, dynamic> json = jsonDecode(data);
 
       List<dynamic> items = json['listGeneratedProducts']['items'];
