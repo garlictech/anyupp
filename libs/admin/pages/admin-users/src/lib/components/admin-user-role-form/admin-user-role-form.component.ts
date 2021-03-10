@@ -3,7 +3,7 @@ import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
-import { IAdminUser } from '@bgap/shared/types';
+import { IAdminUser, IAdminUserRole } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-admin-user-role-form',
@@ -34,13 +34,13 @@ export class AdminUserRoleFormComponent
       }),
     });
 
-    this.dialogForm.patchValue(clearDbProperties(this.adminUser));
+    this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
   }
 
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       try {
-        await this._amplifyDataService.update(
+        await this._amplifyDataService.update<IAdminUserRole>(
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id || '',

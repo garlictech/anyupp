@@ -7,15 +7,10 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   NbButtonModule,
-  NbCardModule,
   NbCheckboxModule,
-  NbDialogModule,
   NbIconModule,
   NbInputModule,
   NbLayoutModule,
-  NbListModule,
-  NbSelectModule,
-  NbUserModule,
 } from '@nebular/theme';
 import {
   FLOOR_MAP_FEATURE_KEY,

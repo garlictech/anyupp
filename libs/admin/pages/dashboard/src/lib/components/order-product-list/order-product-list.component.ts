@@ -1,4 +1,4 @@
-import { dashboardSelectors } from 'libs/admin/shared/data-access/dashboard/src';
+import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import * as fp from 'lodash/fp';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';

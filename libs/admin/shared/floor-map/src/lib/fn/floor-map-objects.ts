@@ -166,8 +166,8 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getObjectById = (id: string): fabric.Object | undefined =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fabricCanvas.getObjects().find((o: any): boolean => o.id === id);
 
 export const setBorder = (

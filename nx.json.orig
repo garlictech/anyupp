@@ -166,30 +166,22 @@
     "stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-<<<<<<< HEAD
     "integration-tests": {
       "tags": []
-||||||| bf46e46
-    "amplify-admin": {
-      "tags": []
-=======
-    "amplify-admin": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
->>>>>>> 22292223374c89007a7c9cb550f23d3c02a51a22
     },
-<<<<<<< HEAD
     "admin-amplify-app": {
       "tags": []
     },
+<<<<<<< HEAD
     "admin-amplify-api": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
-||||||| bf46e46
-    "admin-amplify": {
-      "tags": []
-=======
+||||||| 2229222
     "admin-amplify": {
       "tags": ["scope:bgap", "type:server", "platform:angular"]
->>>>>>> 22292223374c89007a7c9cb550f23d3c02a51a22
+=======
+    "admin-amplify": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+>>>>>>> a685cd7ba2aef135f50491f70c310b38b1a11f16
     }
   }
 }

@@ -1,4 +1,3 @@
-import { Mutations } from 'libs/admin/amplify/src';
 import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -44,7 +43,7 @@ export class AdminUserFormComponent
     });
 
     if (this.adminUser) {
-      this.dialogForm.patchValue(clearDbProperties(this.adminUser));
+      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     } else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
@@ -59,7 +58,7 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          await this._amplifyDataService.update('getAdminUser', 'updateAdminUser',
+          await this._amplifyDataService.update<IAdminUser>('getAdminUser', 'updateAdminUser',
             this.adminUser.id,
             () => this.dialogForm.value
           );

@@ -8,9 +8,9 @@ import {
   CanActivateChild,
   Router,
 } from '@angular/router';
-import { API } from '@aws-amplify/api';
+import { API, GraphQLResult } from '@aws-amplify/api';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { Queries } from '@bgap/admin/amplify';
+import { GetAdminUserQuery, Queries } from '@bgap/admin/amplify';
 import {
   EAdminRole,
   IAdminUser,
@@ -18,6 +18,12 @@ import {
 } from '@bgap/shared/types';
 
 import { CognitoService } from '../cognito/cognito.service';
+
+interface IAuthAdminResult {
+  data?: {
+    getAdminUser?: IAdminUser;
+  };
+}
 
 @Injectable({
   providedIn: 'root',
@@ -76,16 +82,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         (cognitoUser): Observable<IAdminUser | undefined> =>
           cognitoUser
             ? from(
-                <any>API.graphql({
+                <Promise<GraphQLResult<GetAdminUserQuery>>>API.graphql({
                   query: Queries.getAdminUser,
                   variables: { id: <string>cognitoUser?.user?.id },
                 }),
-                // DataStore.query(AdminUser, <string>cognitoUser?.user?.id),
               ).pipe(
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                map((data: any) => {
-                  return data?.data?.getAdminUser || undefined;
-                }),
+                map(
+                  (data) => (<IAuthAdminResult>data).data?.getAdminUser,
+                ),
               )
             : of(undefined),
       ),

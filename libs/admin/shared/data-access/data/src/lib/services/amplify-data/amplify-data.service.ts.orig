@@ -1,10 +1,44 @@
+<<<<<<< HEAD
+import { IAmplifyModel } from '@bgap/shared/types';
+||||||| 2229222
+import { IAmplifyModel } from 'libs/shared/types/src';
+=======
 import * as fp from 'lodash/fp';
+>>>>>>> a685cd7ba2aef135f50491f70c310b38b1a11f16
 import { from, Observable, ObservableInput } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
 import {
+<<<<<<< HEAD
+  GetAdminUserQuery,
+  GetChainProductQuery,
+  GetChainQuery,
+  GetGroupQuery,
+  GetOrderQuery,
+  GetProductCategoryQuery,
+  GetUnitQuery,
+  GetUserQuery,
+  ListAdminUsersQuery,
+  ListChainProductsQuery,
+  ListChainsQuery,
+  ListGroupsQuery,
+  ListOrdersQuery,
+  ListProductCategorysQuery,
+  ListUnitsQuery,
+  ListUsersQuery,
+  Mutations,
+  OnAdminUserChangeSubscription,
+  OnChainsChangeSubscription,
+  OnGroupsChangeSubscription,
+  OnProductCategoriesChangeSubscription,
+  OnUnitsChangeSubscription,
+  OnUsersChangeSubscription,
+  Queries,
+  Subscriptions,
+} from '@bgap/admin/amplify-api';
+||||||| 2229222
   GetAdminUserQuery,
   GetChainProductQuery,
   GetChainQuery,
@@ -31,7 +65,15 @@ import {
   Queries,
   Subscriptions,
 } from '@bgap/admin/amplify';
+=======
+  GetAdminUserQuery, GetChainProductQuery, GetChainQuery, GetGroupQuery, GetOrderQuery, GetProductCategoryQuery,
+  GetUnitQuery, GetUserQuery, ListAdminUsersQuery, ListChainProductsQuery, ListChainsQuery, ListGroupsQuery,
+  ListOrdersQuery, ListProductCategorysQuery, ListUnitsQuery, ListUsersQuery, Mutations, OnAdminUserChangeSubscription,
+  OnChainsChangeSubscription, OnGroupsChangeSubscription, OnProductCategoriesChangeSubscription,
+  OnUnitsChangeSubscription, OnUsersChangeSubscription, Queries, Subscriptions
+} from '@bgap/admin/amplify';
 import { IAmplifyModel } from '@bgap/shared/types';
+>>>>>>> a685cd7ba2aef135f50491f70c310b38b1a11f16
 
 type queryTypes = GetAdminUserQuery &
   GetChainQuery &

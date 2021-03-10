@@ -5,7 +5,6 @@ import { NGXLogger } from 'ngx-logger';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Mutations } from '@bgap/admin/amplify';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
@@ -76,7 +75,7 @@ export class ChainFormComponent
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(clearDbProperties(this.chain));
+      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
@@ -86,7 +85,7 @@ export class ChainFormComponent
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
         try {
-          await this._amplifyDataService.update('getChain', 'updateChain',
+          await this._amplifyDataService.update<IChain>('getChain', 'updateChain',
             this.chain.id,
             () => this.dialogForm.value
           );
