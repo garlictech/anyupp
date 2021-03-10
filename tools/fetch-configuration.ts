@@ -4,11 +4,7 @@ import * as fp from 'lodash/fp';
 import * as fs from 'fs';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { map } from 'rxjs/operators';
-import {
-  GetParameterRequest,
-  GetParametersRequest,
-  GetParametersResult,
-} from 'aws-sdk/clients/ssm';
+import { GetParametersRequest, GetParametersResult } from 'aws-sdk/clients/ssm';
 import { bindNodeCallback, Observable, combineLatest } from 'rxjs';
 
 const client = new AWS.SSM({ region });
@@ -23,21 +19,7 @@ const targetFile = `${targetDir}/config.json`;
 fs.mkdirSync(targetDir, { recursive: true });
 
 pipe(
-  [
-    'AdminSiteUrl',
-    'consumerUserPoolClientId',
-    'consumerUserPoolId',
-    'consumerUserPoolDomain',
-    'IdentityPoolId',
-    'GraphqlApiKey',
-    'GraphqlApiUrl',
-    'StripeWebhookEndpoint',
-    'googleClientId',
-    'stripePublishableKey',
-    'adminUserPoolClientId',
-    'adminUserPoolId',
-    'adminUserPoolDomain',
-  ],
+  ['GraphqlApiKey', 'GraphqlApiUrl', 'stripePublishableKey'],
   // We need to do this because the stuff can query max 10 parameters in one request
   fp.chunk(10),
   fp.map(

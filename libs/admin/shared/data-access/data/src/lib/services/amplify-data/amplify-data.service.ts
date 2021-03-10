@@ -1,4 +1,4 @@
-import { IAmplifyModel } from 'libs/shared/types/src';
+import { IAmplifyModel } from '@bgap/shared/types';
 import { from, Observable, ObservableInput } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
@@ -30,7 +30,7 @@ import {
   OnUsersChangeSubscription,
   Queries,
   Subscriptions,
-} from '@bgap/admin/amplify';
+} from '@bgap/admin/amplify-api';
 
 type queryTypes = GetAdminUserQuery &
   GetChainQuery &
@@ -95,9 +95,7 @@ export class AmplifyDataService {
             },
           );
         } else if (data?.data?.[<keyof queryTypes>params.queryName]) {
-          params.upsertFn(
-            data?.data?.[<keyof queryTypes>params.queryName],
-          );
+          params.upsertFn(data?.data?.[<keyof queryTypes>params.queryName]);
         }
       }),
       switchMap(
