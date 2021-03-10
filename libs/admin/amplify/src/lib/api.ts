@@ -494,7 +494,6 @@ export type CreateOrderInput = {
 };
 
 export type OrderItemInput = {
-  id: string,
   created?: number | null,
   productName?: LocalizedItemInput | null,
   priceShown?: PriceShownInput | null,
@@ -556,7 +555,6 @@ export type Order = {
 
 export type OrderItem = {
   __typename: "OrderItem",
-  id?: string,
   created?: number | null,
   productName?: LocalizedItem,
   priceShown?: PriceShown,
@@ -653,27 +651,25 @@ export type DeleteProductCategoryInput = {
 
 export type CreateChainProductInput = {
   id?: string | null,
-  description?: LocalizedItemInput | null,
-  extends?: string | null,
-  image?: string | null,
-  isVisible?: boolean | null,
-  tax?: number | null,
+  chainId: string,
   name?: LocalizedItemInput | null,
-  position?: string | null,
+  description?: LocalizedItemInput | null,
   productCategoryId?: string | null,
-  laneId?: string | null,
   productType?: string | null,
+  isVisible?: boolean | null,
+  position?: string | null,
+  image?: string | null,
   variants?: Array< ProductVariantInput | null > | null,
 };
 
 export type ProductVariantInput = {
+  id: string,
   variantName?: LocalizedItemInput | null,
   pack?: ProductVariantPackInput | null,
   refGroupPrice?: number | null,
   isAvailable?: boolean | null,
   price?: number | null,
   availabilities?: Array< AvailabilityInput | null > | null,
-  availableFrom?: string | null,
   position?: string | null,
 };
 
@@ -692,14 +688,12 @@ export type AvailabilityInput = {
 };
 
 export type ModelChainProductConditionInput = {
-  extends?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  isVisible?: ModelBooleanInput | null,
-  tax?: ModelIntInput | null,
-  position?: ModelStringInput | null,
+  chainId?: ModelIDInput | null,
   productCategoryId?: ModelIDInput | null,
-  laneId?: ModelIDInput | null,
   productType?: ModelStringInput | null,
+  isVisible?: ModelBooleanInput | null,
+  position?: ModelStringInput | null,
+  image?: ModelStringInput | null,
   and?: Array< ModelChainProductConditionInput | null > | null,
   or?: Array< ModelChainProductConditionInput | null > | null,
   not?: ModelChainProductConditionInput | null,
@@ -708,16 +702,14 @@ export type ModelChainProductConditionInput = {
 export type ChainProduct = {
   __typename: "ChainProduct",
   id?: string,
-  description?: LocalizedItem,
-  extends?: string | null,
-  image?: string | null,
-  isVisible?: boolean | null,
-  tax?: number | null,
+  chainId?: string,
   name?: LocalizedItem,
-  position?: string | null,
+  description?: LocalizedItem,
   productCategoryId?: string | null,
-  laneId?: string | null,
   productType?: string | null,
+  isVisible?: boolean | null,
+  position?: string | null,
+  image?: string | null,
   variants?:  Array<ProductVariant | null > | null,
   createdAt?: string,
   updatedAt?: string,
@@ -725,13 +717,13 @@ export type ChainProduct = {
 
 export type ProductVariant = {
   __typename: "ProductVariant",
+  id?: string,
   variantName?: LocalizedItem,
   pack?: ProductVariantPack,
   refGroupPrice?: number | null,
   isAvailable?: boolean | null,
   price?: number | null,
   availabilities?:  Array<Availability | null > | null,
-  availableFrom?: string | null,
   position?: string | null,
 };
 
@@ -753,16 +745,14 @@ export type Availability = {
 
 export type UpdateChainProductInput = {
   id: string,
-  description?: LocalizedItemInput | null,
-  extends?: string | null,
-  image?: string | null,
-  isVisible?: boolean | null,
-  tax?: number | null,
+  chainId?: string | null,
   name?: LocalizedItemInput | null,
-  position?: string | null,
+  description?: LocalizedItemInput | null,
   productCategoryId?: string | null,
-  laneId?: string | null,
   productType?: string | null,
+  isVisible?: boolean | null,
+  position?: string | null,
+  image?: string | null,
   variants?: Array< ProductVariantInput | null > | null,
 };
 
@@ -1115,14 +1105,12 @@ export type ModelProductCategoryConnection = {
 
 export type ModelChainProductFilterInput = {
   id?: ModelIDInput | null,
-  extends?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  isVisible?: ModelBooleanInput | null,
-  tax?: ModelIntInput | null,
-  position?: ModelStringInput | null,
+  chainId?: ModelIDInput | null,
   productCategoryId?: ModelIDInput | null,
-  laneId?: ModelIDInput | null,
   productType?: ModelStringInput | null,
+  isVisible?: ModelBooleanInput | null,
+  position?: ModelStringInput | null,
+  image?: ModelStringInput | null,
   and?: Array< ModelChainProductFilterInput | null > | null,
   or?: Array< ModelChainProductFilterInput | null > | null,
   not?: ModelChainProductFilterInput | null,
@@ -1682,7 +1670,6 @@ export type CreateOrderMutation = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -1756,7 +1743,6 @@ export type UpdateOrderMutation = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -1830,7 +1816,6 @@ export type DeleteOrderMutation = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -1988,28 +1973,27 @@ export type CreateChainProductMutation = {
   createChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -2033,7 +2017,6 @@ export type CreateChainProductMutation = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -2050,28 +2033,27 @@ export type UpdateChainProductMutation = {
   updateChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -2095,7 +2077,6 @@ export type UpdateChainProductMutation = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -2112,28 +2093,27 @@ export type DeleteChainProductMutation = {
   deleteChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -2157,7 +2137,6 @@ export type DeleteChainProductMutation = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -2941,7 +2920,6 @@ export type GetOrderQuery = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -3018,7 +2996,6 @@ export type ListOrdersQuery = {
       created?: number | null,
       items?:  Array< {
         __typename: "OrderItem",
-        id: string,
         created?: number | null,
         productName?:  {
           __typename: "LocalizedItem",
@@ -3152,28 +3129,27 @@ export type GetChainProductQuery = {
   getChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -3197,7 +3173,6 @@ export type GetChainProductQuery = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -3217,28 +3192,27 @@ export type ListChainProductsQuery = {
     items?:  Array< {
       __typename: "ChainProduct",
       id: string,
-      description?:  {
-        __typename: "LocalizedItem",
-        en?: string | null,
-        de?: string | null,
-        hu?: string | null,
-      } | null,
-      extends?: string | null,
-      image?: string | null,
-      isVisible?: boolean | null,
-      tax?: number | null,
+      chainId: string,
       name?:  {
         __typename: "LocalizedItem",
         en?: string | null,
         de?: string | null,
         hu?: string | null,
       } | null,
-      position?: string | null,
+      description?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
       productCategoryId?: string | null,
-      laneId?: string | null,
       productType?: string | null,
+      isVisible?: boolean | null,
+      position?: string | null,
+      image?: string | null,
       variants?:  Array< {
         __typename: "ProductVariant",
+        id: string,
         variantName?:  {
           __typename: "LocalizedItem",
           en?: string | null,
@@ -3262,7 +3236,6 @@ export type ListChainProductsQuery = {
           timeTo?: string | null,
           price?: number | null,
         } | null > | null,
-        availableFrom?: string | null,
         position?: string | null,
       } | null > | null,
       createdAt: string,
@@ -3864,6 +3837,61 @@ export type OnProductCategoriesChangeSubscription = {
   } | null,
 };
 
+export type OnChainProductChangeSubscription = {
+  onChainProductChange?:  {
+    __typename: "ChainProduct",
+    id: string,
+    chainId: string,
+    name?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
+    productCategoryId?: string | null,
+    productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateAdminUserSubscription = {
   onCreateAdminUser?:  {
     __typename: "AdminUser",
@@ -4309,7 +4337,6 @@ export type OnCreateOrderSubscription = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -4378,7 +4405,6 @@ export type OnUpdateOrderSubscription = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -4447,7 +4473,6 @@ export type OnDeleteOrderSubscription = {
     created?: number | null,
     items?:  Array< {
       __typename: "OrderItem",
-      id: string,
       created?: number | null,
       productName?:  {
         __typename: "LocalizedItem",
@@ -4585,28 +4610,27 @@ export type OnCreateChainProductSubscription = {
   onCreateChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -4630,7 +4654,6 @@ export type OnCreateChainProductSubscription = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -4642,28 +4665,27 @@ export type OnUpdateChainProductSubscription = {
   onUpdateChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -4687,7 +4709,6 @@ export type OnUpdateChainProductSubscription = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,
@@ -4699,28 +4720,27 @@ export type OnDeleteChainProductSubscription = {
   onDeleteChainProduct?:  {
     __typename: "ChainProduct",
     id: string,
-    description?:  {
-      __typename: "LocalizedItem",
-      en?: string | null,
-      de?: string | null,
-      hu?: string | null,
-    } | null,
-    extends?: string | null,
-    image?: string | null,
-    isVisible?: boolean | null,
-    tax?: number | null,
+    chainId: string,
     name?:  {
       __typename: "LocalizedItem",
       en?: string | null,
       de?: string | null,
       hu?: string | null,
     } | null,
-    position?: string | null,
+    description?:  {
+      __typename: "LocalizedItem",
+      en?: string | null,
+      de?: string | null,
+      hu?: string | null,
+    } | null,
     productCategoryId?: string | null,
-    laneId?: string | null,
     productType?: string | null,
+    isVisible?: boolean | null,
+    position?: string | null,
+    image?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
+      id: string,
       variantName?:  {
         __typename: "LocalizedItem",
         en?: string | null,
@@ -4744,7 +4764,6 @@ export type OnDeleteChainProductSubscription = {
         timeTo?: string | null,
         price?: number | null,
       } | null > | null,
-      availableFrom?: string | null,
       position?: string | null,
     } | null > | null,
     createdAt: string,

@@ -270,6 +270,55 @@ export const onProductCategoriesChange = /* GraphQL */ `
     }
   }
 `;
+export const onChainProductChange = /* GraphQL */ `
+  subscription OnChainProductChange {
+    onChainProductChange {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      position
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateAdminUser = /* GraphQL */ `
   subscription OnCreateAdminUser {
     onCreateAdminUser {
@@ -672,7 +721,6 @@ export const onCreateOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -733,7 +781,6 @@ export const onUpdateOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -794,7 +841,6 @@ export const onDeleteOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -919,25 +965,24 @@ export const onCreateChainProduct = /* GraphQL */ `
   subscription OnCreateChainProduct {
     onCreateChainProduct {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -958,7 +1003,6 @@ export const onCreateChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt
@@ -970,25 +1014,24 @@ export const onUpdateChainProduct = /* GraphQL */ `
   subscription OnUpdateChainProduct {
     onUpdateChainProduct {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -1009,7 +1052,6 @@ export const onUpdateChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt
@@ -1021,25 +1063,24 @@ export const onDeleteChainProduct = /* GraphQL */ `
   subscription OnDeleteChainProduct {
     onDeleteChainProduct {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -1060,7 +1101,6 @@ export const onDeleteChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt

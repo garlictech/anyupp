@@ -37,13 +37,13 @@ export class FormsService {
         { validators: multiLangValidator },
       ),
       pack: this._formBuilder.group({
-        size: [''],
+        size: [0],
         unit: [''],
       }),
       isAvailable: [true],
       availabilities: this._formBuilder.array([]),
       position: [''],
-      refGroupPrice: [''],
+      refGroupPrice: [0],
     };
 
     return this._formBuilder.group(groupConfig);

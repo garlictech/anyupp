@@ -38,10 +38,6 @@ export interface IProductVariant {
   position: string;
 }
 
-export interface IProductVariantsObject {
-  [key: string]: IProductVariant;
-}
-
 export interface IProduct {
   id: string;
   extends?: string;
@@ -52,7 +48,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   // contains: any; // TODO interface
   position: string;
-  variants: IProductVariantsObject;
+  variants: IProductVariant[];
   // alwaysAvailableOnOpen: boolean; // TODO
   // ingredients: IProductIngredients; // TODO later...
   tax: string; // %
@@ -68,8 +64,7 @@ export interface IGeneratedProduct {
   position: string;
   productType: EProductType;
   tax: string;
-  variants: IProductVariantsObject;
-  _variants_arr?: IProductVariant[];
+  variants: IProductVariant[];
   productCategoryId: string;
 }
 

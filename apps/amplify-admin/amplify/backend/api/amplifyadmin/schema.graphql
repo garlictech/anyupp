@@ -179,7 +179,7 @@ type Group @model @auth(rules: [{ allow: public }]) {
 type StatusLog {
   userId: ID
   status: String
-  ts: Int
+  ts: Float
 }
 
 type PriceShown {
@@ -191,7 +191,6 @@ type PriceShown {
 }
 
 type OrderItem {
-  id: ID!
   created: Int
   productName: LocalizedItem
   priceShown: PriceShown
@@ -236,29 +235,30 @@ type ProductCategory @model @auth(rules: [{ allow: public }]) {
 # ChainProduct
 type ChainProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  # contains
-  description: LocalizedItem
-  extends: String
-  image: String
-  # ingredients
-  isVisible: Boolean
-  tax: Int
+  chainId: ID!
   name: LocalizedItem
-  position: String
+  description: LocalizedItem
   productCategoryId: ID
-  laneId: ID
   productType: String
+  isVisible: Boolean
+  position: String
+  image: String
   variants: [ProductVariant]
+  # extends: String
+  # ingredients
+  # tax: Int
+  # laneId: ID
 }
 
 type ProductVariant {
+  id: ID!
   variantName: LocalizedItem
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean
   price: Float
   availabilities: [Availability]
-  availableFrom: String
+  # availableFrom: String
   position: String
 }
 
@@ -382,4 +382,6 @@ type Subscription {
         "deleteProductCategory"
       ]
     )
+  onChainProductChange: ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct", "deleteChainProduct"])
 }

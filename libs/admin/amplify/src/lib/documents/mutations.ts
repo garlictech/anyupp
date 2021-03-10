@@ -443,7 +443,6 @@ export const createOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -507,7 +506,6 @@ export const updateOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -571,7 +569,6 @@ export const deleteOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -708,25 +705,24 @@ export const createChainProduct = /* GraphQL */ `
   ) {
     createChainProduct(input: $input, condition: $condition) {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -747,7 +743,6 @@ export const createChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt
@@ -762,25 +757,24 @@ export const updateChainProduct = /* GraphQL */ `
   ) {
     updateChainProduct(input: $input, condition: $condition) {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -801,7 +795,6 @@ export const updateChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt
@@ -816,25 +809,24 @@ export const deleteChainProduct = /* GraphQL */ `
   ) {
     deleteChainProduct(input: $input, condition: $condition) {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -855,7 +847,6 @@ export const deleteChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt

@@ -94,9 +94,7 @@ export class DataService {
           adminUserSettings?.selectedChainId || '',
         );
         this
-          ._subscribeToSelectedChainProducts
-          // adminUserSettings?.selectedChainId || '',
-          ();
+          ._subscribeToSelectedChainProducts(adminUserSettings?.selectedChainId || '');
         this
           ._subscribeToSelectedGroupProducts
           // adminUserSettings?.selectedGroupId || '',
@@ -312,8 +310,6 @@ export class DataService {
   }
 
   private _subscribeToChainProductCategories(chainId: string): void {
-    this._store.dispatch(productCategoriesActions.resetProductCategories());
-
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listProductCategorys',
@@ -336,7 +332,28 @@ export class DataService {
       .subscribe();
   }
 
-  private _subscribeToSelectedChainProducts(/*chainId: string*/): void {
+  private _subscribeToSelectedChainProducts(chainId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listChainProducts',
+        subscriptionName: 'onChainProductChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productsActions.resetChainProducts());
+        },
+        upsertFn: (product: unknown): void => {
+          this._store.dispatch(
+            productsActions.upsertChainProduct({
+              product: <IProduct>product,
+            }),
+          );
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
+
     /*
     this._angularFireDatabase
       .object(`/products/chains/${chainId}`) // TODO list?
@@ -674,14 +691,7 @@ export class DataService {
   // Product
   //
 
-  public insertChainProduct(
-    chainId: string,
-    value: IProduct,
-  ): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/products/chains/${chainId}`)
-      .push(value);
-  }
+
 
   public insertGroupProduct(
     groupId: string,

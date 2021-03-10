@@ -38,7 +38,7 @@ export class AdminUserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 

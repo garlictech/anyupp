@@ -43,7 +43,7 @@ export class ChainFormComponent
         { validators: multiLangValidator },
       ),
       isActive: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder),
       style: this._formBuilder.group({
         colors: this._formBuilder.group({

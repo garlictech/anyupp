@@ -300,7 +300,6 @@ export const getOrder = /* GraphQL */ `
       id
       created
       items {
-        id
         created
         productName {
           en
@@ -366,7 +365,6 @@ export const listOrders = /* GraphQL */ `
         id
         created
         items {
-          id
           created
           productName {
             en
@@ -482,25 +480,24 @@ export const getChainProduct = /* GraphQL */ `
   query GetChainProduct($id: ID!) {
     getChainProduct(id: $id) {
       id
-      description {
-        en
-        de
-        hu
-      }
-      extends
-      image
-      isVisible
-      tax
+      chainId
       name {
         en
         de
         hu
       }
-      position
+      description {
+        en
+        de
+        hu
+      }
       productCategoryId
-      laneId
       productType
+      isVisible
+      position
+      image
       variants {
+        id
         variantName {
           en
           de
@@ -521,7 +518,6 @@ export const getChainProduct = /* GraphQL */ `
           timeTo
           price
         }
-        availableFrom
         position
       }
       createdAt
@@ -538,25 +534,24 @@ export const listChainProducts = /* GraphQL */ `
     listChainProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        description {
-          en
-          de
-          hu
-        }
-        extends
-        image
-        isVisible
-        tax
+        chainId
         name {
           en
           de
           hu
         }
-        position
+        description {
+          en
+          de
+          hu
+        }
         productCategoryId
-        laneId
         productType
+        isVisible
+        position
+        image
         variants {
+          id
           variantName {
             en
             de
@@ -577,7 +572,6 @@ export const listChainProducts = /* GraphQL */ `
             timeTo
             price
           }
-          availableFrom
           position
         }
         createdAt

@@ -79,7 +79,9 @@ export class OrderService {
   ): void {
     const now = new Date().getTime();
     const tax = parseInt(product.tax || '0', 10);
+    console.error('addProductVariant', order, product, variantId);
 
+    /* TODO variant fix
     this._dataService.addOrderItem(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
@@ -107,7 +109,7 @@ export class OrderService {
         variantId,
         variantName: product.variants[variantId].variantName,
       },
-    );
+    );*/
   }
 
   public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
