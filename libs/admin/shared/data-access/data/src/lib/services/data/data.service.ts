@@ -38,7 +38,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
-import { ListAdminUsersQuery } from 'libs/admin/amplify/src';
 
 @Injectable({
   providedIn: 'root',
@@ -620,7 +619,7 @@ export class DataService {
     unitId: string,
     value: IKeyValueObject,
   ): Promise<void> {
-    await this._amplifyDataService.update(
+    await this._amplifyDataService.update<IUnit>(
       'getUnit',
       'updateUnit',
       unitId,
@@ -859,7 +858,7 @@ export class DataService {
     userId: string,
     value: IAdminUserSettings,
   ): Promise<void> {
-    await this._amplifyDataService.update(
+    await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',
       userId,
@@ -878,7 +877,7 @@ export class DataService {
     userId: string,
     language: string,
   ): Promise<void> {
-    await this._amplifyDataService.update(
+    await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',
       userId,

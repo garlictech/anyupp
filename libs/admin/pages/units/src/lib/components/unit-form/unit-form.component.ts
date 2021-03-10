@@ -5,7 +5,6 @@ import { take } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { Mutations } from '@bgap/admin/amplify';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -138,7 +137,7 @@ export class UnitFormComponent
   ngOnInit(): void {
     if (this.unit) {
       this.dialogForm.patchValue(
-        clearDbProperties(fp.omit(['lanes'], this.unit)),
+        clearDbProperties<IUnit>(fp.omit(['lanes'], this.unit)),
       );
 
       // Parse openingHours object to temp array
@@ -189,7 +188,7 @@ export class UnitFormComponent
     if (this.dialogForm?.valid) {
       if (this.unit?.id) {
         try {
-          await this._amplifyDataService.update(
+          await this._amplifyDataService.update<IUnit>(
             'getUnit',
             'updateUnit',
             this.unit.id,

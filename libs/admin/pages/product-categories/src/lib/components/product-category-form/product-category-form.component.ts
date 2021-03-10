@@ -7,7 +7,7 @@ import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { EImageType, IProductCategory } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
-import { AmplifyDataService } from 'libs/admin/shared/data-access/data/src';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 
 @Component({
   selector: 'bgap-product-category-form',
@@ -78,7 +78,7 @@ export class ProductCategoryFormComponent
 
       if (this.productCategory?.id) {
         try {
-          await this._amplifyDataService.update(
+          await this._amplifyDataService.update<IProductCategory>(
             'getProductCategory',
             'updateProductCategory',
             this.productCategory.id,

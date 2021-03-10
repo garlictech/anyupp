@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 
 @Pipe({
   name: 'iterableAbstractControls',

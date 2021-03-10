@@ -6,7 +6,7 @@ import { DataService } from '@bgap/admin/shared/data-access/data';
 
 import { CognitoService } from '../cognito/cognito.service';
 import { take } from 'rxjs/operators';
-import { IAuthenticatedCognitoUser } from 'libs/shared/types/src';
+import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',

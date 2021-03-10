@@ -3,7 +3,6 @@ import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Mutations } from '@bgap/admin/amplify';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -80,7 +79,7 @@ export class GroupFormComponent
     });
 
     if (this.group) {
-      this.dialogForm.patchValue(clearDbProperties(this.group));
+      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
     } else {
       // Patch ChainId
       this._store
@@ -101,7 +100,7 @@ export class GroupFormComponent
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
         try {
-          await this._amplifyDataService.update('getGroup', 'updateGroup',
+          await this._amplifyDataService.update<IGroup>('getGroup', 'updateGroup',
             this.group.id,
             () => this.dialogForm.value
           );

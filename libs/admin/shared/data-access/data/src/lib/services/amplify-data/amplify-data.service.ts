@@ -1,36 +1,17 @@
-import { IAmplifyModel } from 'libs/shared/types/src';
+import * as fp from 'lodash/fp';
 import { from, Observable, ObservableInput } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
 import {
-  GetAdminUserQuery,
-  GetChainProductQuery,
-  GetChainQuery,
-  GetGroupQuery,
-  GetOrderQuery,
-  GetProductCategoryQuery,
-  GetUnitQuery,
-  GetUserQuery,
-  ListAdminUsersQuery,
-  ListChainProductsQuery,
-  ListChainsQuery,
-  ListGroupsQuery,
-  ListOrdersQuery,
-  ListProductCategorysQuery,
-  ListUnitsQuery,
-  ListUsersQuery,
-  Mutations,
-  OnAdminUserChangeSubscription,
-  OnChainsChangeSubscription,
-  OnGroupsChangeSubscription,
-  OnProductCategoriesChangeSubscription,
-  OnUnitsChangeSubscription,
-  OnUsersChangeSubscription,
-  Queries,
-  Subscriptions,
+  GetAdminUserQuery, GetChainProductQuery, GetChainQuery, GetGroupQuery, GetOrderQuery, GetProductCategoryQuery,
+  GetUnitQuery, GetUserQuery, ListAdminUsersQuery, ListChainProductsQuery, ListChainsQuery, ListGroupsQuery,
+  ListOrdersQuery, ListProductCategorysQuery, ListUnitsQuery, ListUsersQuery, Mutations, OnAdminUserChangeSubscription,
+  OnChainsChangeSubscription, OnGroupsChangeSubscription, OnProductCategoriesChangeSubscription,
+  OnUnitsChangeSubscription, OnUsersChangeSubscription, Queries, Subscriptions
 } from '@bgap/admin/amplify';
+import { IAmplifyModel } from '@bgap/shared/types';
 
 type queryTypes = GetAdminUserQuery &
   GetChainQuery &
@@ -67,7 +48,7 @@ interface ISnapshotParams {
   subscriptionName: keyof typeof Subscriptions;
   resetFn?: () => void;
   upsertFn: (data: unknown) => void;
-  variables?: object;
+  variables?: Record<string, unknown>;
 }
 
 @Injectable({
@@ -83,7 +64,6 @@ export class AmplifyDataService {
     ).pipe(
       take(1),
       tap(data => {
-        console.error(`${params.queryName} QUERY DATA`, data);
         if (params.resetFn) {
           params.resetFn();
         }
@@ -95,9 +75,7 @@ export class AmplifyDataService {
             },
           );
         } else if (data?.data?.[<keyof queryTypes>params.queryName]) {
-          params.upsertFn(
-            data?.data?.[<keyof queryTypes>params.queryName],
-          );
+          params.upsertFn(data?.data?.[<keyof queryTypes>params.queryName]);
         }
       }),
       switchMap(
@@ -116,19 +94,17 @@ export class AmplifyDataService {
   }
 
   public async create(mutationName: keyof typeof Mutations, value: unknown) {
-    console.error('mutationName', mutationName);
-    console.error('value', value);
     return API.graphql({
       query: Mutations[mutationName],
       variables: { input: value },
     });
   }
 
-  public async update(
+  public async update<T>(
     queryName: keyof typeof Queries,
     mutationName: keyof typeof Mutations,
     id: string,
-    updaterFn: (data: unknown) => {},
+    updaterFn: (data: unknown) => T,
   ) {
     const data: GraphQLResult<queryTypes> = await (<
       Promise<GraphQLResult<queryTypes>>
@@ -137,10 +113,10 @@ export class AmplifyDataService {
       variables: { id },
     }));
 
-    const { createdAt, updatedAt, ...modified } = <IAmplifyModel>{
+    const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
       ...updaterFn(data?.data?.[<keyof queryTypes>queryName]),
       id,
-    };
+    });
 
     return API.graphql({
       query: Mutations[mutationName],
