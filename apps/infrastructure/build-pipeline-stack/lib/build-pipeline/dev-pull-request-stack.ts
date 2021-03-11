@@ -31,7 +31,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
         source: githubPrSource,
         buildSpec: codebuild.BuildSpec.fromObject({
           version: '0.2',
-          onFailure: 'ABORT',
           phases: {
             install: {
               commands: ['yarn', 'npm install -g @aws-amplify/cli'],
@@ -59,7 +58,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
           },
           env: {
-            AWS_PROFILE: 'default',
+            variables: {
+              AWS_PROFILE: 'default',
+            },
           },
         }),
         environment: {
