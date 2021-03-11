@@ -33,7 +33,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           version: '0.2',
           phases: {
             install: {
-              commands: ['yarn'],
+              commands: ['yarn', 'yarn global add @aws-amplify/cli'],
             },
             pre_build: {
               commands: [
@@ -71,11 +71,5 @@ export class DevPullRequestBuildStack extends sst.Stack {
       props.chatbot,
       stage,
     );
-    //new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
-    //  allowedPattern: '.*',
-    //  description: 'ARN of the PR build project',
-    //  parameterName: app.logicalPrefixedName('DevPullRequestBuildStackArn'),
-    //  stringValue: project.projectArn,
-    //});
   }
 }

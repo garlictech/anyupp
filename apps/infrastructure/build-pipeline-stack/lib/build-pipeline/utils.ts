@@ -44,6 +44,7 @@ export const configurePermissions = (
     'adminNativeUserPoolClientId',
     'adminUserPoolId',
     'adminUserPoolDomain',
+    'AdminAmplifyAppId',
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,
@@ -65,7 +66,7 @@ export const createBuildProject = (
       version: '0.2',
       phases: {
         install: {
-          commands: ['yarn'],
+          commands: ['yarn', 'yarn global add @aws-amplify/cli'],
         },
         pre_build: {
           commands: [
