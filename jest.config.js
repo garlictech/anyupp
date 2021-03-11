@@ -53,5 +53,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/graphql-client',
     '<rootDir>/libs/shared/graphql/api-client',
     '<rootDir>/libs/api/order',
+    '<rootDir>/libs/api/graphql/resolver-mapping-templates',
   ],
 };

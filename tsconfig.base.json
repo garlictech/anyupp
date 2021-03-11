@@ -112,6 +112,9 @@
       "@bgap/api/order": ["libs/api/order/src/index.ts"],
       "@bgap/shared/graphql/api-client": [
         "libs/shared/graphql/api-client/src/index.ts"
+      ],
+      "@bgap/api/graphql/resolver-mapping-templates": [
+        "libs/api/graphql/resolver-mapping-templates/src/index.ts"
       ]
     }
   },

@@ -1,3 +1,4 @@
+export const commonUpdateRequestMappingTemplate = `
 {
   "version": "2017-02-28",
   "operation": "UpdateItem",
@@ -17,59 +18,59 @@
     #if( $util.isNull($entry.value) )
       ## If the argument is set to "null", then remove that attribute from the item in DynamoDB **
 
-      #set( $discard = ${expRemove.add("#${entry.key}")} )
-      $!{expNames.put("#${entry.key}", "${entry.key}")}
+      #set( $discard = \${expRemove.add("#\${entry.key}")} )
+      $!{expNames.put("#\${entry.key}", "\${entry.key}")}
     #else
       ## Otherwise set (or update) the attribute on the item in DynamoDB **
 
-      $!{expSet.put("#${entry.key}", ":${entry.key}")}
-      $!{expNames.put("#${entry.key}", "${entry.key}")}
-      $!{expValues.put(":${entry.key}", $util.dynamodb.toDynamoDB($entry.value))}
+      $!{expSet.put("#\${entry.key}", ":\${entry.key}")}
+      $!{expNames.put("#\${entry.key}", "\${entry.key}")}
+      $!{expValues.put(":\${entry.key}", $util.dynamodb.toDynamoDB($entry.value))}
     #end
   #end
 
   ## Start building the update expression, starting with attributes we're going to SET **
   #set( $expression = "" )
-  #if( !${expSet.isEmpty()} )
+  #if( !\${expSet.isEmpty()} )
     #set( $expression = "SET" )
     #foreach( $entry in $expSet.entrySet() )
-      #set( $expression = "${expression} ${entry.key} = ${entry.value}" )
+      #set( $expression = "\${expression} \${entry.key} = \${entry.value}" )
       #if ( $foreach.hasNext )
-        #set( $expression = "${expression}," )
+        #set( $expression = "\${expression}," )
       #end
     #end
   #end
 
   ## Continue building the update expression, adding attributes we're going to ADD **
-  #if( !${expAdd.isEmpty()} )
-    #set( $expression = "${expression} ADD" )
+  #if( !\${expAdd.isEmpty()} )
+    #set( $expression = "\${expression} ADD" )
     #foreach( $entry in $expAdd.entrySet() )
-      #set( $expression = "${expression} ${entry.key} ${entry.value}" )
+      #set( $expression = "\${expression} \${entry.key} \${entry.value}" )
       #if ( $foreach.hasNext )
-        #set( $expression = "${expression}," )
+        #set( $expression = "\${expression}," )
       #end
     #end
   #end
 
   ## Continue building the update expression, adding attributes we're going to REMOVE **
-  #if( !${expRemove.isEmpty()} )
-    #set( $expression = "${expression} REMOVE" )
+  #if( !\${expRemove.isEmpty()} )
+    #set( $expression = "\${expression} REMOVE" )
 
     #foreach( $entry in $expRemove )
-      #set( $expression = "${expression} ${entry}" )
+      #set( $expression = "\${expression} \${entry}" )
       #if ( $foreach.hasNext )
-        #set( $expression = "${expression}," )
+        #set( $expression = "\${expression}," )
       #end
     #end
   #end
 
   ## Finally, write the update expression into the document, along with any expressionNames and expressionValues **
   "update": {
-    "expression": "${expression}",
-    #if( !${expNames.isEmpty()} )
+    "expression": "\${expression}",
+    #if( !\${expNames.isEmpty()} )
       "expressionNames": $utils.toJson($expNames),
     #end
-    #if( !${expValues.isEmpty()} )
+    #if( !\${expValues.isEmpty()} )
       "expressionValues": $utils.toJson($expValues),
     #end
   },
@@ -81,3 +82,4 @@
     },
   }
 }
+`;

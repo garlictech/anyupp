@@ -9,6 +9,7 @@ import {
   createOrderResolverFunctions,
   OrderResolverFunctions,
 } from './order-resolver-functions';
+import * as vtl from '@bgap/api/graphql/resolver-mapping-templates';
 
 /**
  *
@@ -40,8 +41,8 @@ export const createOrderResolvers = ({
     fieldName: 'createOrderFromCart',
     requestMappingTemplate: MappingTemplate.fromString('{}'),
     pipelineConfig: [orderResolverFunctions.createOrderFromCart],
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplateWithErrorPassthrough,
     ),
   });
 };

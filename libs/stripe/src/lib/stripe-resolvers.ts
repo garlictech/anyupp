@@ -10,6 +10,7 @@ import {
   StripeResolverFunctions,
   createStripeResolverFunctions,
 } from './stripe-resolver-functions';
+import * as vtl from '@bgap/api/graphql/resolver-mapping-templates';
 
 /**
  *
@@ -45,8 +46,8 @@ export const createStripeResolvers = ({
       stripeResolverFunctions.getStripeCustomerId,
       stripeResolverFunctions.getStripeCardsForStripeCustomer,
     ],
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplateWithErrorPassthrough,
     ),
   });
 
@@ -59,8 +60,8 @@ export const createStripeResolvers = ({
       stripeResolverFunctions.getStripeCustomerId,
       stripeResolverFunctions.updateStripeCard,
     ],
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplateWithErrorPassthrough,
     ),
   });
 
@@ -73,8 +74,8 @@ export const createStripeResolvers = ({
       stripeResolverFunctions.getStripeCustomerId,
       stripeResolverFunctions.deleteStripeCard,
     ],
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplateWithErrorPassthrough,
     ),
   });
 
@@ -87,8 +88,8 @@ export const createStripeResolvers = ({
       stripeResolverFunctions.getStripeCustomerId,
       // stripeResolverFunctions.getStripeCardsForStripeCustomer,
     ],
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mappint-template-with-error-passthrough.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplateWithErrorPassthrough,
     ),
   });
 };

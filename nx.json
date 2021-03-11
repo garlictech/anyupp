@@ -171,6 +171,9 @@
     },
     "shared-graphql-api-client": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
+    "api-graphql-resolver-mapping-templates": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
     }
   }
 }
