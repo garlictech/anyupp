@@ -64,6 +64,14 @@ export class DevPullRequestBuildStack extends sst.Stack {
           },
         }),
         environment: {
+          //buildImage: codebuild.LinuxBuildImage.fromAsset(
+          //  this,
+          //  'LinuxBuildImage',
+          //  {
+          //    directory: `../build-pipeline-stack/lib/build-pipeline/docker-env`,
+          //  },
+          //),
+
           buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
         },
       },
