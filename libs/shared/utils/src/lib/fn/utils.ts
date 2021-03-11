@@ -106,11 +106,15 @@ export const isOfType = <T>(
     ? true
     : (varToBeChecked as T)[propertyToCheckFor] === propertyValueToCheck;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const missingParametersCheck = (data: any, paramNames: string[]) => {
+export const missingParametersCheck = <T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  varToBeChecked: any,
+  paramNames: (keyof T)[],
+): varToBeChecked is T => {
   for (const paramName of paramNames) {
-    if (!data || data[paramName] === undefined) {
-      throw missingParametersError(paramName);
+    if (!isOfType<T>(varToBeChecked, paramName)) {
+      throw missingParametersError(paramName as string);
     }
   }
+  return true;
 };

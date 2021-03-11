@@ -1,6 +1,6 @@
 // import { PubSub } from 'graphql-subscriptions';
 
-// import { AuthService, DatabaseService } from '@bgap/api/data-access';
+// import { AuthService, DatabaseService } from '@bgap/api/shared/data-access';
 // import { objectToArray } from '@bgap/shared/utils';
 // import {
 //   AdminUser,

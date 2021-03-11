@@ -1,10 +1,16 @@
-import { AppsyncApi, AmplifyApi } from '@bgap/api/graphql/schema';
+import { AmplifyApi, AppsyncApi } from '@bgap/api/graphql/schema';
+import { toFixed2Number } from '@bgap/api/utils';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import { IPlace } from '@bgap/shared/types';
+// import * as AWS from 'aws-sdk';
+import gql from 'graphql-tag';
 // import { EOrderStatus } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 import { calculateOrderSumPrice } from './order.utils';
-import { toFixed2Number } from '@bgap/api/utils';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
-import gql from 'graphql-tag';
+
+// const documentClient = new AWS.DynamoDB.DocumentClient({
+//   convertEmptyValues: true,
+// });
 // TODO: relocate in the graphql/documents folder, but which OrderInput should I use? The one that is in the Amplify graphql or the appsync one???
 const createOrderMutation = gql`
   mutation CreateOrderMutation($input: CreateOrderInput!) {
@@ -16,21 +22,25 @@ const createOrderMutation = gql`
 
 export const createOrderFromCart = async ({
   userId,
-  input,
+  unitId,
+  paymentMethod,
+  cartItems,
+  place,
+  currency,
   graphqlApiClient,
 }: {
   userId: string;
-  input: AppsyncApi.CreateOrderFromCartInput;
+  unitId: string;
+  paymentMethod: string;
+  cartItems: AppsyncApi.CartItemInput[];
+  place: IPlace;
+  currency: string;
   graphqlApiClient: GraphqlApiClient;
 }): Promise<boolean> => {
-  console.log('### ~ file: order.service.ts ~ line 7 ~ userId', userId);
-  console.log('### ~ file: order.service.ts ~ line 8 ~ input', input);
   // console.log(
   //   '### ~ file: order.service.ts ~ line 3 ~ EOrderStatus',
   //   EOrderStatus,
   // );
-
-  const { unitId, paymentMethod, cartItems, place } = input;
 
   // TODO: re enable these checks
   // if (unit.isAcceptingOrders === false) {
@@ -46,8 +56,9 @@ export const createOrderFromCart = async ({
   //   console.log('###: User is too far from the UNIT error should be thrown');
   // }
 
-  // TODO: use a vtl to get the GROUP currency const currency = await getGroupCurrency(unit.groupId);
-  const currency = 'HUF';
+  // TODO: use a vtl to get the GROUP currency
+  // const currency = await getGroupCurrency(unit.groupId);
+  // const currency = 'HUF';
   const staffId = await getStaffId(unitId);
   // TODO: do we need laneId??? const items = await getLaneIdForOrdersItems(convertCartOrdersToOrderItems(userId, cart.orders, currency));
   const items = convertCartOrdersToOrderItems(userId, cartItems, currency);

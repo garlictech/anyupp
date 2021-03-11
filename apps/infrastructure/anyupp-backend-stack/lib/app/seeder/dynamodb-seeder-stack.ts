@@ -23,6 +23,9 @@ export interface SeederLambdaInvokeArgs {
   tableNames: {
     order: string;
     user: string;
+    group: string;
+    unit: string;
+    unitProduct: string;
   };
   userPoolId: string;
 }
@@ -69,13 +72,16 @@ export class DynamoDBSeederStack extends sst.Stack {
       tableNames: {
         user: props.dynamoDBStack.userTable.tableName,
         order: props.dynamoDBStack.orderTable.tableName,
+        unit: props.dynamoDBStack.unitTable.tableName,
+        group: props.dynamoDBStack.groupTable.tableName,
+        unitProduct: props.dynamoDBStack.unitProductTable.tableName,
       },
       userPoolId: props.userPool.userPoolId,
     };
 
     const onEvent = new AwsCustomResource(this, 'on-event', {
       onCreate: {
-        ...this.callLambdaOptions(props.dynamoDBStack.userTable.tableArn),
+        ...this.callLambdaOptions(),
         parameters: {
           FunctionName: handlerLambda.functionArn,
           InvokeArgs: JSON.stringify(lambdaInvokeArgs),
@@ -93,7 +99,7 @@ export class DynamoDBSeederStack extends sst.Stack {
       // },
       // TODO: update somehowe not gets triggered
       onUpdate: {
-        ...this.callLambdaOptions(props.dynamoDBStack.userTable.tableArn),
+        ...this.callLambdaOptions(),
         parameters: {
           FunctionName: handlerLambda.functionArn,
           InvokeArgs: JSON.stringify({
@@ -109,13 +115,13 @@ export class DynamoDBSeederStack extends sst.Stack {
     handlerLambda.grantInvoke(onEvent);
   }
 
-  private callLambdaOptions(tableArn: string): AwsSdkCall {
+  private callLambdaOptions(): AwsSdkCall {
     return {
       service: 'Lambda',
       action: 'invokeAsync',
       apiVersion: '2015-03-31',
       physicalResourceId: {
-        id: `${tableArn}-seeder`,
+        id: `seeder`,
       },
     };
   }

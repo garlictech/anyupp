@@ -4,7 +4,13 @@ import {
   Item,
   SeederLambdaInvokeArgs,
 } from '../../app/seeder/dynamodb-seeder-stack';
-import { getOrderSeed, getUserSeed } from './seeds';
+import {
+  getOrderSeed,
+  getUserSeed,
+  getUnitSeed,
+  getGroupSeed,
+  getUnitProductSeed,
+} from './seeds';
 
 console.log('function loaded');
 
@@ -75,15 +81,38 @@ async function seedDatabase(
     convertEmptyValues: true,
   });
   console.log('sending data to dynamodb');
+  // USER
   await executeBatchWriteRequestItems({
     seed: getUserSeed(userId),
     tableName: props.tableNames.user,
     action,
     documentClient,
   });
+  // ORDER
   await executeBatchWriteRequestItems({
     seed: getOrderSeed(),
     tableName: props.tableNames.order,
+    action,
+    documentClient,
+  });
+  // UNIT
+  await executeBatchWriteRequestItems({
+    seed: getUnitSeed(),
+    tableName: props.tableNames.unit,
+    action,
+    documentClient,
+  });
+  // GROUP
+  await executeBatchWriteRequestItems({
+    seed: getGroupSeed(),
+    tableName: props.tableNames.group,
+    action,
+    documentClient,
+  });
+  // UNIT_PRODUCT
+  await executeBatchWriteRequestItems({
+    seed: getUnitProductSeed(),
+    tableName: props.tableNames.unitProduct,
     action,
     documentClient,
   });

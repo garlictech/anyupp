@@ -54,6 +54,8 @@ export class AppsyncAppStack extends sst.Stack {
   private noneDs!: appsync.NoneDataSource;
   private userTableDDDs!: appsync.DynamoDbDataSource;
   private orderTableDDDs!: appsync.DynamoDbDataSource;
+  private unitTableDDDs!: appsync.DynamoDbDataSource;
+  private groupTableDDDs!: appsync.DynamoDbDataSource;
   private lambdaDs!: appsync.LambdaDataSource;
   private api: GraphqlApi;
 
@@ -93,6 +95,8 @@ export class AppsyncAppStack extends sst.Stack {
       scope: this,
       userTableDDDs: this.userTableDDDs,
       orderTableDDDs: this.orderTableDDDs,
+      unitTableDDDs: this.unitTableDDDs,
+      groupTableDDDs: this.groupTableDDDs,
       lambdaDs: this.lambdaDs,
     };
 
@@ -202,6 +206,14 @@ export class AppsyncAppStack extends sst.Stack {
     this.orderTableDDDs = this.api.addDynamoDbDataSource(
       'OrderDynamoDbDataSource',
       dynamoDBStack.orderTable,
+    );
+    this.unitTableDDDs = this.api.addDynamoDbDataSource(
+      'UnitDynamoDbDataSource',
+      dynamoDBStack.unitTable,
+    );
+    this.groupTableDDDs = this.api.addDynamoDbDataSource(
+      'GroupDynamoDbDataSource',
+      dynamoDBStack.groupTable,
     );
 
     // LAMBDA DATA SOURCES

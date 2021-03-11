@@ -436,8 +436,8 @@ type Place {
 }
 
 input PlaceInput {
-  seat: String
-  table: String
+  seat: String!
+  table: String!
 }
 
 # input CreateOrderInput {

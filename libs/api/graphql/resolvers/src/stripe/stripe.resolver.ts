@@ -2,7 +2,7 @@
 // import Stripe from 'stripe';
 // import { v1 as uuidV1 } from 'uuid';
 
-// import { DatabaseService, FirestoreService } from '@bgap/api/data-access';
+// import { DatabaseService, FirestoreService } from '@bgap/api/shared/data-access';
 // import {
 //   StartStripePaymentOutput,
 //   StripeCard,

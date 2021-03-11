@@ -1,6 +1,6 @@
 import { PubSub } from 'graphql-subscriptions';
 
-import { ApiDataAccessModule } from '@bgap/api/data-access';
+import { ApiDataAccessModule } from '@bgap/api/shared/data-access';
 // import { SharedSecretsModule } from '@bgap/shared/secrets';
 import { Module } from '@nestjs/common';
 

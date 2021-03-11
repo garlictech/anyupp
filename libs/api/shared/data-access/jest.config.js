@@ -1,7 +1,7 @@
 module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
-  displayName: 'api-data-access',
-  preset: '../../../jest.preset.js',
+  displayName: 'api-shared-data-access',
+  preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -12,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/api/data-access',
+  coverageDirectory: '../../../../coverage/libs/api/shared/data-access',
 };

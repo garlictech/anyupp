@@ -860,27 +860,6 @@
         }
       }
     },
-    "api-data-access": {
-      "root": "libs/api/data-access",
-      "sourceRoot": "libs/api/data-access/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/data-access/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/data-access"],
-          "options": {
-            "jestConfig": "libs/api/data-access/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-shared-floor-map": {
       "projectType": "library",
       "root": "libs/admin/shared/floor-map",
@@ -1441,6 +1420,27 @@
           "outputs": ["coverage/libs/api/graphql/resolver-mapping-templates"],
           "options": {
             "jestConfig": "libs/api/graphql/resolver-mapping-templates/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-shared-data-access": {
+      "root": "libs/api/shared/data-access",
+      "sourceRoot": "libs/api/shared/data-access/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/shared/data-access/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/shared/data-access"],
+          "options": {
+            "jestConfig": "libs/api/shared/data-access/jest.config.js",
             "passWithNoTests": true
           }
         }

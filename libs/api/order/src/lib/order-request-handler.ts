@@ -1,32 +1,38 @@
 import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { missingParametersCheck } from '@bgap/shared/utils';
 import * as orderService from './order.service';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 interface WithAuthenticatedUser {
   userId: string;
 }
-type CreateOrderFromCartRequest = WithAuthenticatedUser &
-  AppsyncApi.MutationCreateOrderFromCartArgs;
+export type CreateOrderFromCartRequest = WithAuthenticatedUser &
+  AppsyncApi.MutationCreateOrderFromCartArgs & {
+    currency: string;
+  };
 
 export const orderRequestHandler = {
   createOrderFromCart(
-    requestPayload: unknown,
+    requestPayload: CreateOrderFromCartRequest,
     graphqlApiClient: GraphqlApiClient,
   ) {
-    const { userId, input } = requestPayload as CreateOrderFromCartRequest;
-
-    missingParametersCheck(requestPayload, ['userId']);
-    missingParametersCheck(input, [
-      'unitId',
-      'paymentMethod',
-      'place',
-      'cartItems',
+    missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
+      'userId',
+      'currency',
+      'input',
+    ]);
+    missingParametersCheck<AppsyncApi.CreateOrderFromCartInput>(
+      requestPayload.input,
+      ['unitId', 'paymentMethod', 'place', 'cartItems'],
+    );
+    missingParametersCheck<AppsyncApi.PlaceInput>(requestPayload.input.place, [
+      'seat',
+      'table',
     ]);
 
     return orderService.createOrderFromCart({
-      userId,
-      input,
+      ...requestPayload,
+      ...requestPayload.input,
       graphqlApiClient,
     });
   },

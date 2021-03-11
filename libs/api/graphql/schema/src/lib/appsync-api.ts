@@ -146,10 +146,7 @@ export interface PriceShown {
 
 export interface OrderItem {
   __typename?: 'OrderItem';
-  id: Scalars['ID'];
-  orderId: Scalars['ID'];
   productId?: Maybe<Scalars['ID']>;
-  productNameId?: Maybe<Scalars['ID']>;
   productName?: Maybe<LocalizedItem>;
   priceShownId?: Maybe<Scalars['ID']>;
   priceShown?: Maybe<PriceShown>;
@@ -157,7 +154,6 @@ export interface OrderItem {
   statusLog?: Maybe<Array<Maybe<StatusLog>>>;
   variantId?: Maybe<Scalars['ID']>;
   variantName?: Maybe<LocalizedItem>;
-  created?: Maybe<Scalars['Int']>;
   laneId?: Maybe<Scalars['ID']>;
   takeAway?: Maybe<Scalars['Boolean']>;
 }
@@ -165,14 +161,14 @@ export interface OrderItem {
 export interface Order {
   __typename?: 'Order';
   id: Scalars['ID'];
-  created?: Maybe<Scalars['Int']>;
+  userId: Scalars['ID'];
+  unitId: Scalars['ID'];
   items?: Maybe<Array<Maybe<OrderItem>>>;
   paymentMethod?: Maybe<Scalars['String']>;
   staffId?: Maybe<Scalars['ID']>;
   statusLog?: Maybe<Array<Maybe<StatusLog>>>;
   sumPriceShown?: Maybe<PriceShown>;
   takeAway?: Maybe<Scalars['Boolean']>;
-  userId?: Maybe<Scalars['ID']>;
   place?: Maybe<Place>;
   paymentIntention?: Maybe<Scalars['Int']>;
 }
@@ -191,8 +187,8 @@ export interface Place {
 }
 
 export interface PlaceInput {
-  seat?: Maybe<Scalars['String']>;
-  table?: Maybe<Scalars['String']>;
+  seat: Scalars['String'];
+  table: Scalars['String'];
 }
 
 export interface UnitProduct {

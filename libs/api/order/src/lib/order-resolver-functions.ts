@@ -28,6 +28,7 @@ export const createOrderResolverFunctions = ({
           "handler": "createOrderFromCart",
           "payload": {
             "userId": $util.toJson($ctx.identity.sub),
+            "currency": $util.toJson($ctx.stash.group.currency),
             "input": $util.toJson($ctx.arguments.input)
           }
         }

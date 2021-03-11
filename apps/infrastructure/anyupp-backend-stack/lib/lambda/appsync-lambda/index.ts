@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Context, Handler } from 'aws-lambda';
 import { stripeRequestHandler } from '@bgap/stripe';
 import { orderRequestHandler } from '@bgap/api/order';
@@ -61,7 +62,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     case 'createOrderFromCart': {
       console.log('Handling createOrderFromCart');
       return orderRequestHandler.createOrderFromCart(
-        event.payload,
+        event.payload as any,
         backendGraphQlClient,
       );
     }
