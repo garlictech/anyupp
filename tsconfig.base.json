@@ -109,7 +109,10 @@
       "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
       "@bgap/stripe": ["libs/stripe/src/index.ts"],
-      "@bgap/api/order": ["libs/api/order/src/index.ts"]
+      "@bgap/api/order": ["libs/api/order/src/index.ts"],
+      "@bgap/shared/graphql/api-client": [
+        "libs/shared/graphql/api-client/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

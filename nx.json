@@ -168,6 +168,9 @@
     },
     "api-order": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "shared-graphql-api-client": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
     }
   }
 }
