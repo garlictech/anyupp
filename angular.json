@@ -1453,7 +1453,7 @@
           "options": {
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
-            "commands": ["amplify api gql-compile", "amplify codegen"]
+            "commands": ["sh ../../tools/build-amplify-admin.sh {args.stage}"]
           }
         },
         "deploy": {
@@ -1461,10 +1461,7 @@
           "options": {
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
-            "commands": [
-              "amplify push",
-              "cp amplify/backend/api/anyuppbackend/schema.graphql ../../libs/api/graphql/schema/src/schema/admin-api.graphql "
-            ]
+            "commands": ["amplify push --yes"]
           }
         },
         "test": {

@@ -53,3 +53,4 @@ generated
 cdk.out
 
 /libs/admin/amplify/src/lib/aws-exports.js
+/apps/admin-amplify-app/amplify

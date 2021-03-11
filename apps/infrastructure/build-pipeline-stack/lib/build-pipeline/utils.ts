@@ -29,9 +29,8 @@ export const configurePermissions = (
   secretsManager.secrets.grantRead(resource);
 
   [
-    'consumerUserPoolClientId',
-    'consumerNativeUserPoolId',
-    'consumerUserPoolId',
+    'consumerWebUserPoolClientId',
+    'consumerNativeUserPoolClientId',
     'consumerUserPoolDomain',
     'IdentityPoolId',
     'GraphqlApiKey',
@@ -76,7 +75,7 @@ export const createBuildProject = (
         },
         build: {
           commands: [
-            `yarn nx build admin-amplify-app`,
+            `yarn nx build admin-amplify-app --stage=${stage}`,
             `yarn nx build admin ${adminConfig}`,
             `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${appConfig.name}`,
           ],

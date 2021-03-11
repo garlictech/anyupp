@@ -60,6 +60,7 @@ export class CognitoStack extends Stack {
     );
 
     const consumerUserPoolClient = this.createConsumerUserPoolClient(
+      app,
       this.consumerUserPool,
     );
 
@@ -73,8 +74,6 @@ export class CognitoStack extends Stack {
       consumerDomain,
       'consumer',
     );
-
-    this.createUserPoolClientOutput(app, consumerUserPoolClient, 'consumer');
 
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
@@ -236,42 +235,10 @@ export class CognitoStack extends Stack {
 
     this.createUserPoolClientOutput(app, webClient, 'adminWeb');
 
-    // Clients for local development (callbacks are localhost)
-    //if (app.stage === 'dev') {
-    //  const localCallbackUrl = `http://localhost:4200/admin/dashboard`;
-    //  const localLogoutUrl = `http://localhost:4200/auth/logout`;
-
-    //  const webLocalClient = new cognito.UserPoolClient(
-    //    this,
-    //    'AdminUserPoolClientWebLocal',
-    //    {
-    //      ...this.commonUserPoolProps(userPool, false),
-    //      ...commonProps(localCallbackUrl, localLogoutUrl),
-    //    },
-    //  );
-
-    //  this.createUserPoolClientOutput(app, webLocalClient, 'adminWebLocal');
-
-    //  const nativeLocalClient = new cognito.UserPoolClient(
-    //    this,
-    //    'AdminUserPoolClientNativeLocal',
-    //    {
-    //      ...this.commonUserPoolProps(userPool, true),
-    //      ...commonProps(callbackUrl, logoutUrl),
-    //    },
-    //  );
-
-    //  this.createUserPoolClientOutput(
-    //    app,
-    //    nativeLocalClient,
-    //    'adminNativeLocal',
-    //  );
-    //}
-
     return webClient;
   }
 
-  private createConsumerUserPoolClient(userPool: cognito.UserPool) {
+  private createConsumerUserPoolClient(app: App, userPool: cognito.UserPool) {
     const commonProps = {
       oAuth: {
         flows: {
@@ -289,15 +256,28 @@ export class CognitoStack extends Stack {
     };
 
     // We need both native and web clients, see https://docs.amplify.aws/cli/auth/import#import-an-existing-cognito-user-pool
-    new cognito.UserPoolClient(this, 'ConsumerUserPoolClientWeb', {
-      ...this.commonUserPoolProps(userPool, false),
-      ...commonProps,
-    });
+    const webClient = new cognito.UserPoolClient(
+      this,
+      'ConsumerUserPoolClientWeb',
+      {
+        ...this.commonUserPoolProps(userPool, false),
+        ...commonProps,
+      },
+    );
 
-    return new cognito.UserPoolClient(this, 'ConsumerUserPoolClientNative', {
-      ...this.commonUserPoolProps(userPool, true),
-      ...commonProps,
-    });
+    this.createUserPoolClientOutput(app, webClient, 'consumerWeb');
+
+    const nativeClient = new cognito.UserPoolClient(
+      this,
+      'ConsumerUserPoolClientNative',
+      {
+        ...this.commonUserPoolProps(userPool, true),
+        ...commonProps,
+      },
+    );
+    this.createUserPoolClientOutput(app, nativeClient, 'consumerNative');
+
+    return nativeClient;
   }
 
   private createDomain(app: App, label: poolLabel, userPool: cognito.UserPool) {
