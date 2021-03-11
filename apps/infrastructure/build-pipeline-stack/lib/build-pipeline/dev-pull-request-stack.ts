@@ -33,7 +33,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           version: '0.2',
           phases: {
             install: {
-              commands: ['yarn', 'yarn global add @aws-amplify/cli'],
+              commands: ['yarn', 'npm install -g @aws-amplify/cli'],
             },
             pre_build: {
               commands: [
