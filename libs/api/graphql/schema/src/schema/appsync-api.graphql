@@ -356,10 +356,10 @@ type PriceShown {
 # type OrderItem @model
 # @key(name: "itemsByOrder", fields: ["orderId"])
 type OrderItem {
-  id: ID!
-  orderId: ID!
+  # id: ID!
+  # orderId: ID!
   productId: ID
-  productNameId: ID
+  # productNameId: ID
   productName: LocalizedItem
   priceShownId: ID
   priceShown: PriceShown
@@ -367,7 +367,7 @@ type OrderItem {
   statusLog: [StatusLog]
   variantId: ID
   variantName: LocalizedItem
-  created: Int
+  # created: Int
   laneId: ID
   takeAway: Boolean
 }
@@ -409,14 +409,15 @@ type OrderItem {
 # type Order @model @auth(rules: [{ allow: public }]) {
 type Order {
   id: ID!
-  created: Int
+  userId: ID!
+  unitId: ID!
+  # created: Int
   items: [OrderItem]
   paymentMethod: String
   staffId: ID
   statusLog: [StatusLog]
   sumPriceShown: PriceShown
   takeAway: Boolean
-  userId: ID
   place: Place
   paymentIntention: Int
 }

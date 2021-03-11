@@ -3,9 +3,9 @@ import { ILocalizedItem } from './localized-item';
 
 export interface IPriceShown {
   currency: string;
-  pricePerUnit?: number;
+  pricePerUnit: number;
   priceSum: number;
-  tax?: number;
+  tax: number;
   taxSum: number;
 }
 

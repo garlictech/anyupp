@@ -6,40 +6,48 @@ import {
   IStatusLogItem,
   // EOrderStatus,
   IOrders,
-  IOrder,
+  IOrderItem,
   IPriceShown,
 } from '@bgap/shared/types';
+import { AmplifyApi } from '@bgap/api/graphql/schema';
 
-export const calculateOrderSumPrice = (order: IOrder): IPriceShown =>
-  roundSums(sumItems(order));
+export const calculateOrderSumPrice = (
+  items: IOrderItem[] | AmplifyApi.OrderItemInput[],
+): IPriceShown => roundSums(sumItems(items as IOrderItem[]));
 
-const sumItems = (order: IOrder): IPriceShown =>
-  order.items.reduce(
-    (sum, item) => {
-      const [key, lastStatus] = getActualStatusLogItem(item.statusLog);
+const sumItems = (items: IOrderItem[]): IPriceShown => {
+  const empty: IPriceShown = {
+    currency: '',
+    priceSum: 0,
+    pricePerUnit: 0,
+    tax: 0,
+    taxSum: 0,
+  };
+  if (!items) {
+    return empty;
+  }
+  return items.reduce((sum, item) => {
+    const [key, lastStatus] = getActualStatusLogItem(item.statusLog);
 
-      // TODO: if (!key || lastStatus?.status === EOrderStatus.REJECTED) {
-      if (!key || lastStatus?.status === 'REJECTED') {
-        return sum;
-      }
-      return {
-        priceSum: sum.priceSum + item.priceShown.priceSum,
-        taxSum: sum.taxSum + item.priceShown.taxSum,
-        currency: item.priceShown.currency,
-      };
-    },
-    {
-      currency: '',
-      priceSum: 0,
-      taxSum: 0,
-    },
-  );
+    // TODO: if (!key || lastStatus?.status === EOrderStatus.REJECTED) {
+    if (!key || lastStatus?.status === 'REJECTED') {
+      return sum;
+    }
+    return {
+      priceSum: sum.priceSum + item.priceShown.priceSum,
+      taxSum: sum.taxSum + item.priceShown.taxSum,
+      currency: item.priceShown.currency,
+      tax: item.priceShown.tax,
+      pricePerUnit: item.priceShown.pricePerUnit,
+    };
+  }, empty);
+};
 
-const roundSums = ({ currency, priceSum, taxSum }: IPriceShown) => {
+const roundSums = (price: IPriceShown) => {
   return {
-    currency,
-    priceSum: toFixed2Number(priceSum),
-    taxSum: toFixed2Number(taxSum),
+    ...price,
+    priceSum: toFixed2Number(price.priceSum),
+    taxSum: toFixed2Number(price.taxSum),
   };
 };
 

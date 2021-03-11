@@ -1,11 +1,30 @@
 import { Context, Handler } from 'aws-lambda';
 import { stripeRequestHandler } from '@bgap/stripe';
 import { orderRequestHandler } from '@bgap/api/order';
+import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
+import { IAmplifyApiConfig } from '@bgap/shared/types';
+import { CONFIG } from '@bgap/shared/config';
 
 export interface AnyuppRequest {
   handler: string;
   payload: unknown;
 }
+
+export const AWS_CONFIG: IAmplifyApiConfig = {
+  aws_appsync_graphqlEndpoint: CONFIG.GraphqlApiUrlAmplify,
+  api_key: CONFIG.GraphqlApiKeyAmplify,
+  aws_appsync_region: 'eu-west-1',
+  aws_project_region: 'eu-west-1',
+  aws_cognito_region: 'eu-west-1',
+  aws_user_pools_id: CONFIG.UserPoolId,
+  aws_user_pools_web_client_id: CONFIG.UserPoolClientId,
+};
+
+export const backendGraphQlClient = GraphqlApiFp.createPublicClient(
+  AWS_CONFIG,
+  console,
+  true,
+);
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -41,7 +60,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     }
     case 'createOrderFromCart': {
       console.log('Handling createOrderFromCart');
-      return orderRequestHandler.createOrderFromCart(event.payload);
+      return orderRequestHandler.createOrderFromCart(
+        event.payload,
+        backendGraphQlClient,
+      );
     }
     default:
       throw 'missing handler';

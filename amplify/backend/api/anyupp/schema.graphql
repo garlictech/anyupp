@@ -8,8 +8,8 @@ type Address {
 }
 
 type Location {
-  lat: Float
-  lng: Float
+  lat: String
+  lng: String
 }
 
 type LocalizedItem {
@@ -20,7 +20,7 @@ type LocalizedItem {
 
 # AdminUser
 
-type AdminUser @model {
+type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   profileImage: String
@@ -106,7 +106,7 @@ type StripeMetadata {
   value: String!
 }
 
-type StripeCard @model {
+type StripeCard @model @auth(rules: [{ allow: public }]) {
   brand: CardBrand
   checks: CardChecks
   country: String
@@ -130,12 +130,15 @@ type StartStripePaymentOutput {
 
 # Chain
 
-type Chain @model {
+type Chain @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   description: LocalizedItem
   style: ChainStyle
   isActive: Boolean
+  address: Address
+  email: String
+  phone: String
 }
 
 type ChainStyle {
@@ -161,7 +164,7 @@ type ChainStyleImages {
 }
 
 # Group
-type Group @model {
+type Group @model @auth(rules: [{ allow: public }]) {
   id: ID!
   chainId: ID!
   name: String
@@ -201,7 +204,7 @@ type OrderItem {
 }
 
 # Order
-type Order @model {
+type Order @model @auth(rules: [{ allow: public }]) {
   id: ID!
   created: Int
   items: [OrderItem]
@@ -221,8 +224,9 @@ type Place {
 }
 
 # ProductCategory
-type ProductCategory @model {
+type ProductCategory @model @auth(rules: [{ allow: public }]) {
   id: ID!
+  chainId: ID!
   description: LocalizedItem
   image: String
   name: LocalizedItem
@@ -230,7 +234,7 @@ type ProductCategory @model {
 }
 
 # ChainProduct
-type ChainProduct @model {
+type ChainProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
   # contains
   description: LocalizedItem
@@ -273,13 +277,17 @@ type Availability {
 }
 
 # Unit
-type Unit @model {
+type Unit @model @auth(rules: [{ allow: public }]) {
   id: ID!
   groupId: ID!
+  chainId: ID!
   isActive: Boolean
   isAcceptingOrders: Boolean
   name: String
   description: LocalizedItem
+  address: Address
+  email: String
+  phone: String
   paymentModes: [PaymentMode]
   floorMap: FloorMapData
   lanes: [Lane]
@@ -342,7 +350,7 @@ type Lane {
 }
 
 # User
-type User @model {
+type User @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   email: String
@@ -352,5 +360,26 @@ type User @model {
 }
 
 type Subscription {
-  onAdminUserChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+  onAdminUsersChange: AdminUser
+    @aws_subscribe(
+      mutations: ["createAdminUser", "updateAdminUser", "deleteAdminUser"]
+    )
+  onChainsChange: Chain
+    @aws_subscribe(mutations: ["createChain", "updateChain", "deleteChain"])
+  onGroupsChange: Group
+    @aws_subscribe(mutations: ["createGroup", "updateGroup", "deleteGroup"])
+  onUnitsChange: Unit
+    @aws_subscribe(mutations: ["createUnit", "updateUnit", "deleteUnit"])
+  onUsersChange: User
+    @aws_subscribe(mutations: ["createUser", "updateUser", "deleteUser"])
+  onProductCategoriesChange: ProductCategory
+    @aws_subscribe(
+      mutations: [
+        "createProductCategory"
+        "updateProductCategory"
+        "deleteProductCategory"
+      ]
+    )
 }

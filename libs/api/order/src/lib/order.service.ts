@@ -1,15 +1,34 @@
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AppsyncApi, AmplifyApi } from '@bgap/api/graphql/schema';
 // import { EOrderStatus } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 import { calculateOrderSumPrice } from './order.utils';
 import { toFixed2Number } from '@bgap/api/utils';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import gql from 'graphql-tag';
+// TODO: relocate in the graphql/documents folder, but which OrderInput should I use? The one that is in the Amplify graphql or the appsync one???
+const createOrderMutation = gql`
+  mutation CreateOrderMutation($input: CreateOrderInput!) {
+    createOrder(input: $input) {
+      id
+    }
+  }
+`;
 
-export const createOrderFromCart = async (
-  userId: string,
-  input: AppsyncApi.CreateOrderFromCartInput,
-): Promise<boolean> => {
+export const createOrderFromCart = async ({
+  userId,
+  input,
+  graphqlApiClient,
+}: {
+  userId: string;
+  input: AppsyncApi.CreateOrderFromCartInput;
+  graphqlApiClient: GraphqlApiClient;
+}): Promise<boolean> => {
   console.log('### ~ file: order.service.ts ~ line 7 ~ userId', userId);
   console.log('### ~ file: order.service.ts ~ line 8 ~ input', input);
+  // console.log(
+  //   '### ~ file: order.service.ts ~ line 3 ~ EOrderStatus',
+  //   EOrderStatus,
+  // );
 
   const { unitId, paymentMethod, cartItems, place } = input;
 
@@ -33,35 +52,51 @@ export const createOrderFromCart = async (
   // TODO: do we need laneId??? const items = await getLaneIdForOrdersItems(convertCartOrdersToOrderItems(userId, cart.orders, currency));
   const items = convertCartOrdersToOrderItems(userId, cartItems, currency);
 
-  // TODO: const order: IOrder = {
-  const order: any = {
+  const order: AmplifyApi.CreateOrderInput = {
     userId,
     takeAway: false,
     paymentMethod: paymentMethod,
     // created: DateTime.utc().toMillis(),
     items,
     staffId,
-    // statusLog: createStatusLog(userId),
-    sumPriceShown: {},
+    // TODO: do we need this?? statusLog: createStatusLog(userId),
+    sumPriceShown: calculateOrderSumPrice(items),
     place,
   };
 
-  order.sumPriceShown = calculateOrderSumPrice(order);
-  console.log('### ~ file: order.service.ts ~ line 49 ~ order', order);
+  console.log(
+    '### ~ file: order.service.ts ~ line 49 ~ order',
+    JSON.stringify(order, undefined, 2),
+  );
   // await newOrderRef.set(order);
   // Remove the cart from the db after the order has been created successfully
   // await cartRef.remove();
 
   // return newOrderRef.key;
 
-  return Promise.resolve(true);
+  try {
+    const orderCreateResult = await graphqlApiClient
+      .mutate<AmplifyApi.CreateOrderMutation>(createOrderMutation, {
+        input: order,
+      })
+      .toPromise();
+
+    console.log(
+      '### ~ file: order.service.ts ~ line 67 ~ orderCreateResult',
+      orderCreateResult,
+    );
+    return !!orderCreateResult.data.createOrder?.id;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 const convertCartOrdersToOrderItems = (
   userId: string,
   cartItems: any[],
   currency: string,
-): any[] => {
+): AmplifyApi.OrderItemInput[] => {
   // TODO: const convertCartOrdersToOrderItems = (
   //   userId: string,
   //   cartItems: AppsyncApi.CartItemInput[],
@@ -70,7 +105,7 @@ const convertCartOrdersToOrderItems = (
 
   return cartItems.map(cartItem => {
     return {
-      created: DateTime.utc().toMillis(),
+      // created: DateTime.utc().toMillis(),
       productName: cartItem.product.name,
       priceShown: {
         currency,
@@ -110,10 +145,9 @@ export const createStatusLog = (
   userId: string,
   // TODO: status: EOrderStatus = EOrderStatus.PLACED,
   status = 'PLACED',
-) => ({
-  // [DateTime.utc().toMillis()]: { userId, status },
-  [DateTime.utc().toMillis()]: { userId, status },
-});
+): Array<AmplifyApi.StatusLogInput> => [
+  { userId, status, ts: DateTime.utc().toMillis() },
+];
 
 // const getGroupCurrency = async (groupId: string): Promise<string> => {
 //   const group = await db(fContext).getRefValue<Group>(db(fContext).groupsGroupRef(groupId));
