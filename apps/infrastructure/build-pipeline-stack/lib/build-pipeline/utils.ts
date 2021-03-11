@@ -64,6 +64,7 @@ export const createBuildProject = (
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
       version: '0.2',
+      onFailure: 'ABORT',
       phases: {
         install: {
           commands: ['yarn', 'npm install -g @aws-amplify/cli'],
@@ -91,6 +92,9 @@ export const createBuildProject = (
           'apps/infrastructure/anyupp-backend-stack/cdk.out/**/*',
           'apps/admin-amplify-app/amplify/**/*',
         ],
+      },
+      env: {
+        AWS_PROFILE: 'default',
       },
     }),
     cache,
