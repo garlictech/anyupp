@@ -232,7 +232,7 @@ type ProductCategory @model @auth(rules: [{ allow: public }]) {
   position: String
 }
 
-# ChainProduct
+# Product
 type ChainProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
   chainId: ID!
@@ -248,6 +248,30 @@ type ChainProduct @model @auth(rules: [{ allow: public }]) {
   # ingredients
   # tax: Int
   # laneId: ID
+}
+
+type GroupProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean
+  tax: Int
+  position: String
+  variants: [ProductVariant]
+}
+
+type UnitProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: String
+  variants: [ProductVariant]
 }
 
 type ProductVariant {
@@ -364,24 +388,27 @@ type Subscription {
     @aws_subscribe(mutations: ["updateAdminUser"])
   onAdminUsersChange: AdminUser
     @aws_subscribe(
-      mutations: ["createAdminUser", "updateAdminUser", "deleteAdminUser"]
+      mutations: ["createAdminUser", "updateAdminUser"]
     )
   onChainsChange: Chain
-    @aws_subscribe(mutations: ["createChain", "updateChain", "deleteChain"])
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
-    @aws_subscribe(mutations: ["createGroup", "updateGroup", "deleteGroup"])
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
   onUnitsChange: Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit", "deleteUnit"])
+    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
   onUsersChange: User
-    @aws_subscribe(mutations: ["createUser", "updateUser", "deleteUser"])
+    @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
       mutations: [
         "createProductCategory"
         "updateProductCategory"
-        "deleteProductCategory"
       ]
     )
   onChainProductChange: ChainProduct
-    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct", "deleteChainProduct"])
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+  onGroupProductChange: GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+  onUnitProductChange: UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
 }

@@ -40,6 +40,10 @@ export interface IProductVariant {
 
 export interface IProduct {
   id: string;
+  parentId?: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId?: string;
+  unitId?: string;
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;

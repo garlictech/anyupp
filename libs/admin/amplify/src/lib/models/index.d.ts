@@ -150,6 +150,34 @@ export declare class CustomDailySchedule {
   constructor(init: ModelInit<CustomDailySchedule>);
 }
 
+export declare class ProductVariant {
+  readonly id: string;
+  readonly variantName?: LocalizedItem;
+  readonly pack?: ProductVariantPack;
+  readonly refGroupPrice?: number;
+  readonly isAvailable?: boolean;
+  readonly price?: number;
+  readonly availabilities?: (Availability | null)[];
+  readonly position?: string;
+  constructor(init: ModelInit<ProductVariant>);
+}
+
+export declare class ProductVariantPack {
+  readonly size?: number;
+  readonly unit?: string;
+  constructor(init: ModelInit<ProductVariantPack>);
+}
+
+export declare class Availability {
+  readonly type?: string;
+  readonly dayFrom?: string;
+  readonly dayTo?: string;
+  readonly timeFrom?: string;
+  readonly timeTo?: string;
+  readonly price?: number;
+  constructor(init: ModelInit<Availability>);
+}
+
 export declare class CardChecks {
   readonly address_line1_check?: string;
   readonly address_postal_code_check?: string;
@@ -186,7 +214,6 @@ export declare class PriceShown {
 }
 
 export declare class OrderItem {
-  readonly id: string;
   readonly created?: number;
   readonly productName?: LocalizedItem;
   readonly priceShown?: PriceShown;
@@ -203,34 +230,6 @@ export declare class Place {
   readonly seat?: string;
   readonly table?: string;
   constructor(init: ModelInit<Place>);
-}
-
-export declare class ProductVariant {
-  readonly variantName?: LocalizedItem;
-  readonly pack?: ProductVariantPack;
-  readonly refGroupPrice?: number;
-  readonly isAvailable?: boolean;
-  readonly price?: number;
-  readonly availabilities?: (Availability | null)[];
-  readonly availableFrom?: string;
-  readonly position?: string;
-  constructor(init: ModelInit<ProductVariant>);
-}
-
-export declare class ProductVariantPack {
-  readonly size?: number;
-  readonly unit?: string;
-  constructor(init: ModelInit<ProductVariantPack>);
-}
-
-export declare class Availability {
-  readonly type?: string;
-  readonly dayFrom?: string;
-  readonly dayTo?: string;
-  readonly timeFrom?: string;
-  readonly timeTo?: string;
-  readonly price?: number;
-  constructor(init: ModelInit<Availability>);
 }
 
 export declare class AdminUser {
@@ -313,6 +312,45 @@ export declare class ProductCategory {
   static copyOf(source: ProductCategory, mutator: (draft: MutableModel<ProductCategory>) => MutableModel<ProductCategory> | void): ProductCategory;
 }
 
+export declare class ChainProduct {
+  readonly id: string;
+  readonly chainId: string;
+  readonly name?: LocalizedItem;
+  readonly description?: LocalizedItem;
+  readonly productCategoryId?: string;
+  readonly productType?: string;
+  readonly isVisible?: boolean;
+  readonly position?: string;
+  readonly image?: string;
+  readonly variants?: (ProductVariant | null)[];
+  constructor(init: ModelInit<ChainProduct>);
+  static copyOf(source: ChainProduct, mutator: (draft: MutableModel<ChainProduct>) => MutableModel<ChainProduct> | void): ChainProduct;
+}
+
+export declare class GroupProduct {
+  readonly id: string;
+  readonly chainId: string;
+  readonly groupId: string;
+  readonly isVisible?: boolean;
+  readonly tax?: number;
+  readonly position?: string;
+  readonly variants?: (ProductVariant | null)[];
+  constructor(init: ModelInit<GroupProduct>);
+  static copyOf(source: GroupProduct, mutator: (draft: MutableModel<GroupProduct>) => MutableModel<GroupProduct> | void): GroupProduct;
+}
+
+export declare class UnitProduct {
+  readonly id: string;
+  readonly chainId: string;
+  readonly groupId: string;
+  readonly isVisible?: boolean;
+  readonly tax?: number;
+  readonly position?: string;
+  readonly variants?: (ProductVariant | null)[];
+  constructor(init: ModelInit<UnitProduct>);
+  static copyOf(source: UnitProduct, mutator: (draft: MutableModel<UnitProduct>) => MutableModel<UnitProduct> | void): UnitProduct;
+}
+
 export declare class StripeCard {
   readonly id: string;
   readonly brand?: CardBrand | keyof typeof CardBrand;
@@ -344,21 +382,4 @@ export declare class Order {
   readonly paymentIntention?: number;
   constructor(init: ModelInit<Order>);
   static copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
-}
-
-export declare class ChainProduct {
-  readonly id: string;
-  readonly description?: LocalizedItem;
-  readonly extends?: string;
-  readonly image?: string;
-  readonly isVisible?: boolean;
-  readonly tax?: number;
-  readonly name?: LocalizedItem;
-  readonly position?: string;
-  readonly productCategoryId?: string;
-  readonly laneId?: string;
-  readonly productType?: string;
-  readonly variants?: (ProductVariant | null)[];
-  constructor(init: ModelInit<ChainProduct>);
-  static copyOf(source: ChainProduct, mutator: (draft: MutableModel<ChainProduct>) => MutableModel<ChainProduct> | void): ChainProduct;
 }

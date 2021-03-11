@@ -87,22 +87,20 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
-        console.error('adminUserSettings', adminUserSettings);
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
           adminUserSettings?.selectedChainId || '',
         );
-        this
-          ._subscribeToSelectedChainProducts(adminUserSettings?.selectedChainId || '');
-        this
-          ._subscribeToSelectedGroupProducts
-          // adminUserSettings?.selectedGroupId || '',
-          ();
-        this
-          ._subscribeToSelectedUnitProducts
-          // adminUserSettings?.selectedUnitId || '',
-          ();
+        this._subscribeToSelectedChainProducts(
+          adminUserSettings?.selectedChainId || '',
+        );
+        this._subscribeToSelectedGroupProducts(
+          adminUserSettings?.selectedGroupId || '',
+        );
+        this._subscribeToSelectedUnitProducts(
+          adminUserSettings?.selectedUnitId || '',
+        );
         this
           ._subscribeToGeneratedUnitProducts
           // adminUserSettings?.selectedUnitId || '',
@@ -318,7 +316,9 @@ export class DataService {
           filter: { chainId: { eq: chainId } },
         },
         resetFn: () => {
-          this._store.dispatch(productCategoriesActions.resetProductCategories());
+          this._store.dispatch(
+            productCategoriesActions.resetProductCategories(),
+          );
         },
         upsertFn: (productCategory: unknown): void => {
           this._store.dispatch(
@@ -353,54 +353,55 @@ export class DataService {
       })
       .pipe(takeUntil(this._settingsChanged$))
       .subscribe();
-
-    /*
-    this._angularFireDatabase
-      .object(`/products/chains/${chainId}`) // TODO list?
-      .valueChanges()
-      .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          productsActions.loadChainProductsSuccess({
-            products: <IProduct[]>objectToArray(data),
-          }),
-        );
-      });
-      */
   }
 
-  private _subscribeToSelectedGroupProducts(/*groupId: string*/): void {
-    /*
-    this._angularFireDatabase
-      .object(`/products/groups/${groupId}`) // TODO list?
-      .valueChanges()
+  private _subscribeToSelectedGroupProducts(groupId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listGroupProducts',
+        subscriptionName: 'onGroupProductChange',
+        variables: {
+          filter: { groupId: { eq: groupId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productsActions.resetGroupProducts());
+        },
+        upsertFn: (product: unknown): void => {
+          this._store.dispatch(
+            productsActions.upsertGroupProduct({
+              product: <IProduct>product,
+            }),
+          );
+        },
+      })
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          productsActions.loadGroupProductsSuccess({
-            products: <IProduct[]>objectToArray(data),
-          }),
-        );
-      });
-      */
+      .subscribe();
   }
 
-  private _subscribeToSelectedUnitProducts(/*unitId: string*/): void {
-    /*
-    this._angularFireDatabase
-      .object(`/products/units/${unitId}`) // TODO list?
-      .valueChanges()
+  private _subscribeToSelectedUnitProducts(unitId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listUnitProducts',
+        subscriptionName: 'onUnitProductChange',
+        variables: {
+          filter: { unitId: { eq: unitId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productsActions.resetUnitProducts());
+        },
+        upsertFn: (product: unknown): void => {
+          this._store.dispatch(
+            productsActions.upsertUnitProduct({
+              product: <IProduct>product,
+            }),
+          );
+        },
+      })
       .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        this._store.dispatch(
-          productsActions.loadUnitProductsSuccess({
-            products: <IProduct[]>objectToArray(data),
-          }),
-        );
-      });
-      */
+      .subscribe();
   }
 
+  // TODO refactor
   private _subscribeToGeneratedUnitProducts(/*unitId: string*/): void {
     /*
     this._angularFireDatabase
@@ -436,6 +437,7 @@ export class DataService {
       */
   }
 
+  // TODO refactor
   private _subscribeToSelectedUnitOrders(): /*chainId: string,
     unitId: string,*/
   void {
@@ -526,10 +528,7 @@ export class DataService {
       .subscribe();
   }
 
-  // todo remove async
-  private async _subscribeToAdminUsers(
-    loggedAdminRole: IAdminUserRole,
-  ): Promise<void> {
+  private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
     const allowUpsert = (adminUser: IAdminUser): boolean => {
       switch (loggedAdminRole.role) {
         case EAdminRole.SUPERUSER:
@@ -592,14 +591,7 @@ export class DataService {
   // Chain
   //
 
-  public insertChain(value: IChain): firebase.database.ThenableReference {
-    return this._angularFireDatabase.list(`/chains`).push(value);
-  }
-
-  public updateChain(chainId: string, value: IChain): Promise<void> {
-    return this._angularFireDatabase.object(`/chains/${chainId}`).update(value);
-  }
-
+  // TODO refactor
   public updateChainImagePath(
     chainId: string,
     key: string,
@@ -613,24 +605,8 @@ export class DataService {
   }
 
   //
-  // Group
-  //
-
-  public insertGroup(value: IGroup): firebase.database.ThenableReference {
-    return this._angularFireDatabase.list(`/groups`).push(value);
-  }
-
-  public updateGroup(groupId: string, value: IGroup): Promise<void> {
-    return this._angularFireDatabase.object(`/groups/${groupId}`).update(value);
-  }
-
-  //
   // Unit
   //
-
-  public insertUnit(value: IUnit): firebase.database.ThenableReference {
-    return this._angularFireDatabase.list(`/units`).push(value);
-  }
 
   public async updateUnit(
     unitId: string,
@@ -649,6 +625,7 @@ export class DataService {
     );
   }
 
+  // TODO refactor
   public regenerateUnitData(unitId: string): Promise<void> {
     const callable = this._angularFireFunctions.httpsCallable(
       `regenerateUnitData`,
@@ -663,6 +640,7 @@ export class DataService {
   // Product category
   //
 
+  // TODO refactor
   public updateProductCategoryImagePath(
     chainId: string,
     productCategoryId: string,
@@ -675,6 +653,7 @@ export class DataService {
       });
   }
 
+  // TODO refactor
   public updateProductCategoryPosition(
     chainId: string,
     productCategoryId: string,
@@ -691,36 +670,7 @@ export class DataService {
   // Product
   //
 
-
-
-  public insertGroupProduct(
-    groupId: string,
-    value: IProduct,
-  ): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/products/groups/${groupId}`)
-      .push(value);
-  }
-
-  public insertUnitProduct(
-    unitId: string,
-    value: IProduct,
-  ): firebase.database.ThenableReference {
-    return this._angularFireDatabase
-      .list(`/products/units/${unitId}`)
-      .push(value);
-  }
-
-  public updateChainProduct(
-    chainId: string,
-    productId: string,
-    value: IProduct,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/products/chains/${chainId}/${productId}`)
-      .update(value);
-  }
-
+  // TODO refactor
   public updateChainProductPosition(
     chainId: string,
     productId: string,
@@ -733,26 +683,7 @@ export class DataService {
       });
   }
 
-  public updateGroupProduct(
-    groupId: string,
-    productId: string,
-    value: IGroup,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/products/groups/${groupId}/${productId}`)
-      .update(value);
-  }
-
-  public updateUnitProduct(
-    unitId: string,
-    productId: string,
-    value: IProduct,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/products/units/${unitId}/${productId}`)
-      .update(value);
-  }
-
+  // TODO refactor
   public updateUnitProductPosition(
     unitId: string,
     productId: string,
@@ -769,6 +700,7 @@ export class DataService {
   // Order
   //
 
+  // TODO refactor
   public getActiveOrder$(
     chainId: string,
     unitId: string,
@@ -779,7 +711,7 @@ export class DataService {
       .valueChanges()
       .pipe(take(1));
   }
-
+  // TODO refactor
   public insertOrderStatus(
     chainId: string,
     unitId: string,
@@ -797,7 +729,7 @@ export class DataService {
       status,
     }).toPromise();
   }
-
+  // TODO refactor
   public updateOrderPaymentMode(
     chainId: string,
     unitId: string,
@@ -808,7 +740,7 @@ export class DataService {
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .update(value);
   }
-
+  // TODO refactor
   public insertOrderItemStatus(
     chainId: string,
     unitId: string,
@@ -822,7 +754,7 @@ export class DataService {
       )
       .update(value);
   }
-
+  // TODO refactor
   public updateOrderItemQuantityAndPrice(
     chainId: string,
     unitId: string,
@@ -836,7 +768,7 @@ export class DataService {
       )
       .update(value);
   }
-
+  // TODO refactor
   public addOrderItem(
     chainId: string,
     unitId: string,
@@ -854,15 +786,6 @@ export class DataService {
   //
   // ADMIN User
   //
-
-  public updateAdminUserRoles(
-    userId: string,
-    value: IAdminUserRole,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/adminUsers/${userId}/roles`)
-      .update(value);
-  }
 
   public async updateAdminUserSettings(
     userId: string,

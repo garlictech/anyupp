@@ -581,6 +581,180 @@ export const listChainProducts = /* GraphQL */ `
     }
   }
 `;
+export const getGroupProduct = /* GraphQL */ `
+  query GetGroupProduct($id: ID!) {
+    getGroupProduct(id: $id) {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listGroupProducts = /* GraphQL */ `
+  query ListGroupProducts(
+    $filter: ModelGroupProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGroupProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        position
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUnitProduct = /* GraphQL */ `
+  query GetUnitProduct($id: ID!) {
+    getUnitProduct(id: $id) {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUnitProducts = /* GraphQL */ `
+  query ListUnitProducts(
+    $filter: ModelUnitProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUnitProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        parentId
+        chainId
+        groupId
+        unitId
+        isVisible
+        takeaway
+        laneId
+        position
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUnit = /* GraphQL */ `
   query GetUnit($id: ID!) {
     getUnit(id: $id) {

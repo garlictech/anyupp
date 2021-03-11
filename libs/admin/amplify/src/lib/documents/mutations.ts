@@ -854,6 +854,264 @@ export const deleteChainProduct = /* GraphQL */ `
     }
   }
 `;
+export const createGroupProduct = /* GraphQL */ `
+  mutation CreateGroupProduct(
+    $input: CreateGroupProductInput!
+    $condition: ModelGroupProductConditionInput
+  ) {
+    createGroupProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGroupProduct = /* GraphQL */ `
+  mutation UpdateGroupProduct(
+    $input: UpdateGroupProductInput!
+    $condition: ModelGroupProductConditionInput
+  ) {
+    updateGroupProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGroupProduct = /* GraphQL */ `
+  mutation DeleteGroupProduct(
+    $input: DeleteGroupProductInput!
+    $condition: ModelGroupProductConditionInput
+  ) {
+    deleteGroupProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUnitProduct = /* GraphQL */ `
+  mutation CreateUnitProduct(
+    $input: CreateUnitProductInput!
+    $condition: ModelUnitProductConditionInput
+  ) {
+    createUnitProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUnitProduct = /* GraphQL */ `
+  mutation UpdateUnitProduct(
+    $input: UpdateUnitProductInput!
+    $condition: ModelUnitProductConditionInput
+  ) {
+    updateUnitProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUnitProduct = /* GraphQL */ `
+  mutation DeleteUnitProduct(
+    $input: DeleteUnitProductInput!
+    $condition: ModelUnitProductConditionInput
+  ) {
+    deleteUnitProduct(input: $input, condition: $condition) {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createUnit = /* GraphQL */ `
   mutation CreateUnit(
     $input: CreateUnitInput!

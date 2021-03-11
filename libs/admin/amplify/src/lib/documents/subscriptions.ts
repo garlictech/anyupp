@@ -319,6 +319,86 @@ export const onChainProductChange = /* GraphQL */ `
     }
   }
 `;
+export const onGroupProductChange = /* GraphQL */ `
+  subscription OnGroupProductChange {
+    onGroupProductChange {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUnitProductChange = /* GraphQL */ `
+  subscription OnUnitProductChange {
+    onUnitProductChange {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateAdminUser = /* GraphQL */ `
   subscription OnCreateAdminUser {
     onCreateAdminUser {
@@ -1079,6 +1159,246 @@ export const onDeleteChainProduct = /* GraphQL */ `
       isVisible
       position
       image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateGroupProduct = /* GraphQL */ `
+  subscription OnCreateGroupProduct {
+    onCreateGroupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGroupProduct = /* GraphQL */ `
+  subscription OnUpdateGroupProduct {
+    onUpdateGroupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGroupProduct = /* GraphQL */ `
+  subscription OnDeleteGroupProduct {
+    onDeleteGroupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUnitProduct = /* GraphQL */ `
+  subscription OnCreateUnitProduct {
+    onCreateUnitProduct {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUnitProduct = /* GraphQL */ `
+  subscription OnUpdateUnitProduct {
+    onUpdateUnitProduct {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUnitProduct = /* GraphQL */ `
+  subscription OnDeleteUnitProduct {
+    onDeleteUnitProduct {
+      id
+      parentId
+      chainId
+      groupId
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
       variants {
         id
         variantName {

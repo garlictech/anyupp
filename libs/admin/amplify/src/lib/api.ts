@@ -760,6 +760,118 @@ export type DeleteChainProductInput = {
   id?: string | null,
 };
 
+export type CreateGroupProductInput = {
+  id?: string | null,
+  parentId: string,
+  chainId: string,
+  groupId: string,
+  isVisible?: boolean | null,
+  tax?: number | null,
+  position?: string | null,
+  variants?: Array< ProductVariantInput | null > | null,
+};
+
+export type ModelGroupProductConditionInput = {
+  parentId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
+  groupId?: ModelIDInput | null,
+  isVisible?: ModelBooleanInput | null,
+  tax?: ModelIntInput | null,
+  position?: ModelStringInput | null,
+  and?: Array< ModelGroupProductConditionInput | null > | null,
+  or?: Array< ModelGroupProductConditionInput | null > | null,
+  not?: ModelGroupProductConditionInput | null,
+};
+
+export type GroupProduct = {
+  __typename: "GroupProduct",
+  id?: string,
+  parentId?: string,
+  chainId?: string,
+  groupId?: string,
+  isVisible?: boolean | null,
+  tax?: number | null,
+  position?: string | null,
+  variants?:  Array<ProductVariant | null > | null,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateGroupProductInput = {
+  id: string,
+  parentId?: string | null,
+  chainId?: string | null,
+  groupId?: string | null,
+  isVisible?: boolean | null,
+  tax?: number | null,
+  position?: string | null,
+  variants?: Array< ProductVariantInput | null > | null,
+};
+
+export type DeleteGroupProductInput = {
+  id?: string | null,
+};
+
+export type CreateUnitProductInput = {
+  id?: string | null,
+  parentId: string,
+  chainId: string,
+  groupId: string,
+  unitId: string,
+  isVisible?: boolean | null,
+  takeaway?: boolean | null,
+  laneId?: string | null,
+  position?: string | null,
+  variants?: Array< ProductVariantInput | null > | null,
+};
+
+export type ModelUnitProductConditionInput = {
+  parentId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
+  groupId?: ModelIDInput | null,
+  unitId?: ModelIDInput | null,
+  isVisible?: ModelBooleanInput | null,
+  takeaway?: ModelBooleanInput | null,
+  laneId?: ModelIDInput | null,
+  position?: ModelStringInput | null,
+  and?: Array< ModelUnitProductConditionInput | null > | null,
+  or?: Array< ModelUnitProductConditionInput | null > | null,
+  not?: ModelUnitProductConditionInput | null,
+};
+
+export type UnitProduct = {
+  __typename: "UnitProduct",
+  id?: string,
+  parentId?: string,
+  chainId?: string,
+  groupId?: string,
+  unitId?: string,
+  isVisible?: boolean | null,
+  takeaway?: boolean | null,
+  laneId?: string | null,
+  position?: string | null,
+  variants?:  Array<ProductVariant | null > | null,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateUnitProductInput = {
+  id: string,
+  parentId?: string | null,
+  chainId?: string | null,
+  groupId?: string | null,
+  unitId?: string | null,
+  isVisible?: boolean | null,
+  takeaway?: boolean | null,
+  laneId?: string | null,
+  position?: string | null,
+  variants?: Array< ProductVariantInput | null > | null,
+};
+
+export type DeleteUnitProductInput = {
+  id?: string | null,
+};
+
 export type CreateUnitInput = {
   id?: string | null,
   groupId: string,
@@ -1119,6 +1231,46 @@ export type ModelChainProductFilterInput = {
 export type ModelChainProductConnection = {
   __typename: "ModelChainProductConnection",
   items?:  Array<ChainProduct | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelGroupProductFilterInput = {
+  id?: ModelIDInput | null,
+  parentId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
+  groupId?: ModelIDInput | null,
+  isVisible?: ModelBooleanInput | null,
+  tax?: ModelIntInput | null,
+  position?: ModelStringInput | null,
+  and?: Array< ModelGroupProductFilterInput | null > | null,
+  or?: Array< ModelGroupProductFilterInput | null > | null,
+  not?: ModelGroupProductFilterInput | null,
+};
+
+export type ModelGroupProductConnection = {
+  __typename: "ModelGroupProductConnection",
+  items?:  Array<GroupProduct | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelUnitProductFilterInput = {
+  id?: ModelIDInput | null,
+  parentId?: ModelIDInput | null,
+  chainId?: ModelIDInput | null,
+  groupId?: ModelIDInput | null,
+  unitId?: ModelIDInput | null,
+  isVisible?: ModelBooleanInput | null,
+  takeaway?: ModelBooleanInput | null,
+  laneId?: ModelIDInput | null,
+  position?: ModelStringInput | null,
+  and?: Array< ModelUnitProductFilterInput | null > | null,
+  or?: Array< ModelUnitProductFilterInput | null > | null,
+  not?: ModelUnitProductFilterInput | null,
+};
+
+export type ModelUnitProductConnection = {
+  __typename: "ModelUnitProductConnection",
+  items?:  Array<UnitProduct | null > | null,
   nextToken?: string | null,
 };
 
@@ -2111,6 +2263,300 @@ export type DeleteChainProductMutation = {
     isVisible?: boolean | null,
     position?: string | null,
     image?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateGroupProductMutationVariables = {
+  input?: CreateGroupProductInput,
+  condition?: ModelGroupProductConditionInput | null,
+};
+
+export type CreateGroupProductMutation = {
+  createGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateGroupProductMutationVariables = {
+  input?: UpdateGroupProductInput,
+  condition?: ModelGroupProductConditionInput | null,
+};
+
+export type UpdateGroupProductMutation = {
+  updateGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteGroupProductMutationVariables = {
+  input?: DeleteGroupProductInput,
+  condition?: ModelGroupProductConditionInput | null,
+};
+
+export type DeleteGroupProductMutation = {
+  deleteGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUnitProductMutationVariables = {
+  input?: CreateUnitProductInput,
+  condition?: ModelUnitProductConditionInput | null,
+};
+
+export type CreateUnitProductMutation = {
+  createUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUnitProductMutationVariables = {
+  input?: UpdateUnitProductInput,
+  condition?: ModelUnitProductConditionInput | null,
+};
+
+export type UpdateUnitProductMutation = {
+  updateUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUnitProductMutationVariables = {
+  input?: DeleteUnitProductInput,
+  condition?: ModelUnitProductConditionInput | null,
+};
+
+export type DeleteUnitProductMutation = {
+  deleteUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
       id: string,
@@ -3245,6 +3691,210 @@ export type ListChainProductsQuery = {
   } | null,
 };
 
+export type GetGroupProductQueryVariables = {
+  id?: string,
+};
+
+export type GetGroupProductQuery = {
+  getGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListGroupProductsQueryVariables = {
+  filter?: ModelGroupProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGroupProductsQuery = {
+  listGroupProducts?:  {
+    __typename: "ModelGroupProductConnection",
+    items?:  Array< {
+      __typename: "GroupProduct",
+      id: string,
+      parentId: string,
+      chainId: string,
+      groupId: string,
+      isVisible?: boolean | null,
+      tax?: number | null,
+      position?: string | null,
+      variants?:  Array< {
+        __typename: "ProductVariant",
+        id: string,
+        variantName?:  {
+          __typename: "LocalizedItem",
+          en?: string | null,
+          de?: string | null,
+          hu?: string | null,
+        } | null,
+        pack?:  {
+          __typename: "ProductVariantPack",
+          size?: number | null,
+          unit?: string | null,
+        } | null,
+        refGroupPrice?: number | null,
+        isAvailable?: boolean | null,
+        price?: number | null,
+        availabilities?:  Array< {
+          __typename: "Availability",
+          type?: string | null,
+          dayFrom?: string | null,
+          dayTo?: string | null,
+          timeFrom?: string | null,
+          timeTo?: string | null,
+          price?: number | null,
+        } | null > | null,
+        position?: string | null,
+      } | null > | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUnitProductQueryVariables = {
+  id?: string,
+};
+
+export type GetUnitProductQuery = {
+  getUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUnitProductsQueryVariables = {
+  filter?: ModelUnitProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUnitProductsQuery = {
+  listUnitProducts?:  {
+    __typename: "ModelUnitProductConnection",
+    items?:  Array< {
+      __typename: "UnitProduct",
+      id: string,
+      parentId: string,
+      chainId: string,
+      groupId: string,
+      unitId: string,
+      isVisible?: boolean | null,
+      takeaway?: boolean | null,
+      laneId?: string | null,
+      position?: string | null,
+      variants?:  Array< {
+        __typename: "ProductVariant",
+        id: string,
+        variantName?:  {
+          __typename: "LocalizedItem",
+          en?: string | null,
+          de?: string | null,
+          hu?: string | null,
+        } | null,
+        pack?:  {
+          __typename: "ProductVariantPack",
+          size?: number | null,
+          unit?: string | null,
+        } | null,
+        refGroupPrice?: number | null,
+        isAvailable?: boolean | null,
+        price?: number | null,
+        availabilities?:  Array< {
+          __typename: "Availability",
+          type?: string | null,
+          dayFrom?: string | null,
+          dayTo?: string | null,
+          timeFrom?: string | null,
+          timeTo?: string | null,
+          price?: number | null,
+        } | null > | null,
+        position?: string | null,
+      } | null > | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetUnitQueryVariables = {
   id?: string,
 };
@@ -3859,6 +4509,94 @@ export type OnChainProductChangeSubscription = {
     isVisible?: boolean | null,
     position?: string | null,
     image?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnGroupProductChangeSubscription = {
+  onGroupProductChange?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUnitProductChangeSubscription = {
+  onUnitProductChange?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
       id: string,
@@ -4738,6 +5476,270 @@ export type OnDeleteChainProductSubscription = {
     isVisible?: boolean | null,
     position?: string | null,
     image?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateGroupProductSubscription = {
+  onCreateGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateGroupProductSubscription = {
+  onUpdateGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteGroupProductSubscription = {
+  onDeleteGroupProduct?:  {
+    __typename: "GroupProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    isVisible?: boolean | null,
+    tax?: number | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUnitProductSubscription = {
+  onCreateUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUnitProductSubscription = {
+  onUpdateUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
+    variants?:  Array< {
+      __typename: "ProductVariant",
+      id: string,
+      variantName?:  {
+        __typename: "LocalizedItem",
+        en?: string | null,
+        de?: string | null,
+        hu?: string | null,
+      } | null,
+      pack?:  {
+        __typename: "ProductVariantPack",
+        size?: number | null,
+        unit?: string | null,
+      } | null,
+      refGroupPrice?: number | null,
+      isAvailable?: boolean | null,
+      price?: number | null,
+      availabilities?:  Array< {
+        __typename: "Availability",
+        type?: string | null,
+        dayFrom?: string | null,
+        dayTo?: string | null,
+        timeFrom?: string | null,
+        timeTo?: string | null,
+        price?: number | null,
+      } | null > | null,
+      position?: string | null,
+    } | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUnitProductSubscription = {
+  onDeleteUnitProduct?:  {
+    __typename: "UnitProduct",
+    id: string,
+    parentId: string,
+    chainId: string,
+    groupId: string,
+    unitId: string,
+    isVisible?: boolean | null,
+    takeaway?: boolean | null,
+    laneId?: string | null,
+    position?: string | null,
     variants?:  Array< {
       __typename: "ProductVariant",
       id: string,

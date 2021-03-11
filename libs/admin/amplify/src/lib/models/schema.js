@@ -558,6 +558,274 @@ export const schema = {
                 }
             ]
         },
+        "ChainProduct": {
+            "name": "ChainProduct",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "chainId": {
+                    "name": "chainId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "LocalizedItem"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "LocalizedItem"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "productCategoryId": {
+                    "name": "productCategoryId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "productType": {
+                    "name": "productType",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isVisible": {
+                    "name": "isVisible",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "position": {
+                    "name": "position",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "variants": {
+                    "name": "variants",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "ProductVariant"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ChainProducts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "GroupProduct": {
+            "name": "GroupProduct",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "chainId": {
+                    "name": "chainId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "groupId": {
+                    "name": "groupId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "isVisible": {
+                    "name": "isVisible",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tax": {
+                    "name": "tax",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "position": {
+                    "name": "position",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "variants": {
+                    "name": "variants",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "ProductVariant"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "GroupProducts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "UnitProduct": {
+            "name": "UnitProduct",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "chainId": {
+                    "name": "chainId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "groupId": {
+                    "name": "groupId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "isVisible": {
+                    "name": "isVisible",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tax": {
+                    "name": "tax",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "position": {
+                    "name": "position",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "variants": {
+                    "name": "variants",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "ProductVariant"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "UnitProducts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "StripeCard": {
             "name": "StripeCard",
             "fields": {
@@ -773,126 +1041,6 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Orders",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "ChainProduct": {
-            "name": "ChainProduct",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "LocalizedItem"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "extends": {
-                    "name": "extends",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "image": {
-                    "name": "image",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "isVisible": {
-                    "name": "isVisible",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "tax": {
-                    "name": "tax",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "LocalizedItem"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "position": {
-                    "name": "position",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "productCategoryId": {
-                    "name": "productCategoryId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "laneId": {
-                    "name": "laneId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "productType": {
-                    "name": "productType",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "variants": {
-                    "name": "variants",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "ProductVariant"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "ChainProducts",
             "attributes": [
                 {
                     "type": "model",
@@ -1527,6 +1675,140 @@ export const schema = {
                 }
             }
         },
+        "ProductVariant": {
+            "name": "ProductVariant",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "variantName": {
+                    "name": "variantName",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "LocalizedItem"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "pack": {
+                    "name": "pack",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "ProductVariantPack"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "refGroupPrice": {
+                    "name": "refGroupPrice",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isAvailable": {
+                    "name": "isAvailable",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "price": {
+                    "name": "price",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "availabilities": {
+                    "name": "availabilities",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Availability"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "position": {
+                    "name": "position",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "ProductVariantPack": {
+            "name": "ProductVariantPack",
+            "fields": {
+                "size": {
+                    "name": "size",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "unit": {
+                    "name": "unit",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Availability": {
+            "name": "Availability",
+            "fields": {
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dayFrom": {
+                    "name": "dayFrom",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dayTo": {
+                    "name": "dayTo",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "timeFrom": {
+                    "name": "timeFrom",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "timeTo": {
+                    "name": "timeTo",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "price": {
+                    "name": "price",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "CardChecks": {
             "name": "CardChecks",
             "fields": {
@@ -1611,7 +1893,7 @@ export const schema = {
                 "ts": {
                     "name": "ts",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "Float",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -1660,13 +1942,6 @@ export const schema = {
         "OrderItem": {
             "name": "OrderItem",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "created": {
                     "name": "created",
                     "isArray": false,
@@ -1759,141 +2034,7 @@ export const schema = {
                     "attributes": []
                 }
             }
-        },
-        "ProductVariant": {
-            "name": "ProductVariant",
-            "fields": {
-                "variantName": {
-                    "name": "variantName",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "LocalizedItem"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "pack": {
-                    "name": "pack",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "ProductVariantPack"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "refGroupPrice": {
-                    "name": "refGroupPrice",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "isAvailable": {
-                    "name": "isAvailable",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "price": {
-                    "name": "price",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "availabilities": {
-                    "name": "availabilities",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Availability"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "availableFrom": {
-                    "name": "availableFrom",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "position": {
-                    "name": "position",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
-        },
-        "ProductVariantPack": {
-            "name": "ProductVariantPack",
-            "fields": {
-                "size": {
-                    "name": "size",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "unit": {
-                    "name": "unit",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
-        },
-        "Availability": {
-            "name": "Availability",
-            "fields": {
-                "type": {
-                    "name": "type",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "dayFrom": {
-                    "name": "dayFrom",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "dayTo": {
-                    "name": "dayTo",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "timeFrom": {
-                    "name": "timeFrom",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "timeTo": {
-                    "name": "timeTo",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "price": {
-                    "name": "price",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
         }
     },
-    "version": "ace8b7f03ece5809b6ed107ebeab6a2b"
+    "version": "8013feb2214c01b514f681c4e09d6074"
 };

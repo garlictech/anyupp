@@ -128,13 +128,6 @@ export class ProductFormComponent
     if (this.product) {
       this.dialogForm.patchValue(fp.omit('variants', this.product));
 
-      // Parse variants object to temp array
-      /*
-      const variantsArr = (<IProductVariant[]>(
-        objectToArray(this.product.variants || {})
-      )).sort(customNumberCompare('position'));
-      */
-
       this.product.variants.forEach((variant: IProductVariant): void => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
@@ -179,6 +172,7 @@ export class ProductFormComponent
         }
       } else {
         try {
+          console.error('insert chain product', value);
           await this._amplifyDataService.create('createChainProduct', value);
 
           this._toasterService.show(

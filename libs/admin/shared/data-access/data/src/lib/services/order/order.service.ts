@@ -77,8 +77,8 @@ export class OrderService {
     product: IGeneratedProduct,
     variantId: string,
   ): void {
-    const now = new Date().getTime();
-    const tax = parseInt(product.tax || '0', 10);
+    // const now = new Date().getTime();
+    // const tax = parseInt(product.tax || '0', 10);
     console.error('addProductVariant', order, product, variantId);
 
     /* TODO variant fix
