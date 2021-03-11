@@ -31,12 +31,14 @@ export class DevPullRequestBuildStack extends sst.Stack {
         source: githubPrSource,
         buildSpec: codebuild.BuildSpec.fromObject({
           version: '0.2',
+          onFailure: 'ABORT',
           phases: {
             install: {
               commands: ['yarn', 'npm install -g @aws-amplify/cli'],
             },
             pre_build: {
               commands: [
+                `sh tools/setup-aws-environment.sh`,
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
               ],
@@ -55,6 +57,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
               files: ['coverage/**/*'],
               'file-format': 'CLOVERXML',
             },
+          },
+          env: {
+            AWS_PROFILE: 'default',
           },
         }),
         environment: {
