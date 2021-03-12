@@ -9,12 +9,16 @@ import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
 import { BuildEnvironmentStack } from './build-pipeline/build-environment';
 
 export default function main(app: App): void {
+  const pipelineSecretsManagerArn =
+    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:codebuild-Z12nwS';
+
   const devSecretsManagerStack = new SecretsManagerStack(
     app,
     'devsecretsmanager',
     {
-      secretsManagerArn:
+      projectSecretsManagerArn:
         'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
+      pipelineSecretsManagerArn,
     },
   );
 
@@ -22,8 +26,9 @@ export default function main(app: App): void {
     app,
     'qasecretsmanager',
     {
-      secretsManagerArn:
+      projectSecretsManagerArn:
         'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
+      pipelineSecretsManagerArn,
     },
   );
 

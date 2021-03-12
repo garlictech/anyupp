@@ -27,7 +27,8 @@ export const configurePermissions = (
   resource: iam.IGrantable,
   prefix: string,
 ) => {
-  secretsManager.secrets.grantRead(resource);
+  secretsManager.pipelineSecrets.grantRead(resource);
+  secretsManager.pipelineSecrets.grantRead(resource);
 
   [
     'consumerWebUserPoolClientId',
