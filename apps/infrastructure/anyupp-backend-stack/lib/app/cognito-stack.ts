@@ -233,6 +233,16 @@ export class CognitoStack extends Stack {
       },
     );
 
+    new cognito.CfnUserPoolUICustomizationAttachment(this, 'AdminUserPoolUI', {
+      clientId: webClient.userPoolClientId,
+      userPoolId: userPool.userPoolId,
+      css: `
+        .banner-customizable {
+          background: linear-gradient(#9940B8, #C27BDB)
+        }
+      `,
+    });
+
     this.createUserPoolClientOutput(app, webClient, 'adminWeb');
 
     return webClient;
