@@ -2,20 +2,10 @@
 set -e
 IFS='|'
 
-echo "***** $AWS_PROFILE"
-echo "***** $AWS_ACCESS_KEY_ID"
-echo "***** $AWS_SECRET_ACCESS_KEY"
-creds=$(aws sts get-session-token)
-
-echo "***** CREDS $creds"
-
-AWS_ACCESS_KEY_ID=$(echo $creds | jq '.Credentials.AccessKeyId')
-AWS_SECRET_ACCESS_KEY=$(echo $creds | jq '.Credentials.SecretAccessKey')
-AWS_SESSION_TOKEN=$(echo $creds | jq '.Credentials.SessionToken')
-
-echo "***** $AWS_PROFILE"
-
 aws configure set region $AWS_REGION
+echo "***** $AWS_PROFILE"
+
+echo "***** $AWS_SECRET_ACCESS_KEY"
 echo "*****1"
 aws configure set output "json"
 echo "*****2"

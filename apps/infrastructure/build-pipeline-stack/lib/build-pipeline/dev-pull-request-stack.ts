@@ -58,8 +58,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
           },
           env: {
-            variables: {
-              AWS_PROFILE: 'default',
+            'parameter-store': {
+              AWS_ACCESS_KEY_ID: 'codebuild-aws_access_key_id',
+              AWS_SECRET_ACCESS_KEY: 'codebuild-aws_secret_access_key',
             },
           },
         }),
