@@ -6,6 +6,7 @@ import { SlackNotificationsStack } from './build-pipeline/slack-notifications-st
 import { PipelineStackProps } from './build-pipeline/utils';
 import { CiStack } from './build-pipeline/ci-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
+import { BuildEnvironmentStack } from './build-pipeline/build-environment';
 
 export default function main(app: App): void {
   const devSecretsManagerStack = new SecretsManagerStack(
@@ -60,15 +61,29 @@ export default function main(app: App): void {
     devPullRequestConfig,
   );
 
-  /*new QAPullRequestBuildStack(app, 'QAPullRequestBuildStack', {
-    repoBranch: 'qa',
-    secretsManager: qaSecretsManagerStack,
-    ...commonConfig,
-  });
-*/
   new QABuildPipelineStack(app, 'QABuildStack', {
     repoBranch: 'qa',
     secretsManager: qaSecretsManagerStack,
     ...commonConfig,
+  });
+
+  new BuildEnvironmentStack(app, 'DockerBuildAWSEnvironment', {
+    repoOwner: 'bgap',
+    repoName: 'aws-codebuild-docker-images',
+    repoBranch: 'master',
+    x86SourceDir: 'al2/x86_64/standard/3.0',
+    armSourceDir: 'al2/aarch64/standard/2.0',
+    imageName: 'aws-codebuild-core',
+    chatbot: slackChannel.chatbot,
+  });
+
+  new BuildEnvironmentStack(app, 'DockerBuildAnyuppEnvironment', {
+    repoOwner: 'bgap',
+    repoName: 'aws-codebuild-docker-images',
+    repoBranch: 'anyupp',
+    x86SourceDir: 'anyupp/x86_64',
+    armSourceDir: 'anyupp/aarch64',
+    imageName: 'anyupp-codebuild',
+    chatbot: slackChannel.chatbot,
   });
 }
