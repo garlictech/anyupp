@@ -3,6 +3,8 @@ set -e
 IFS='|'
 
 echo "***** $AWS_PROFILE"
+echo "***** $AWS_ACCESS_KEY_ID"
+echo "***** $AWS_SECRET_ACCESS_KEY"
 creds=$(aws sts get-session-token)
 
 echo "***** CREDS $creds"
