@@ -5,6 +5,7 @@ import { orderRequestHandler } from '@bgap/api/order';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { IAmplifyApiConfig } from '@bgap/shared/types';
 import { CONFIG } from '@bgap/shared/config';
+import AWS from 'aws-sdk';
 
 export interface AnyuppRequest {
   handler: string;
@@ -26,6 +27,10 @@ export const backendGraphQlClient = GraphqlApiFp.createPublicClient(
   console,
   true,
 );
+
+const documentClient = new AWS.DynamoDB.DocumentClient({
+  convertEmptyValues: true,
+});
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -64,6 +69,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
       return orderRequestHandler.createOrderFromCart(
         event.payload as any,
         backendGraphQlClient,
+        documentClient,
       );
     }
     default:

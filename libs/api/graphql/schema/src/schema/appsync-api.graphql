@@ -304,31 +304,31 @@ input StripeCardDeleteInput {
 # }
 
 input CartItemInput {
-  product: CartItemProductInput
-  quantity: Int
-  variant: CartItemProductVariantInput
+  product: CartItemProductInput!
+  quantity: Int!
+  variant: CartItemProductVariantInput!
 }
 
 input CartItemProductInput {
   id: ID!
-  name: LocalizedItemInput
+  name: LocalizedItemInput!
   description: LocalizedItemInput
   image: String
-  tax: Int
+  tax: Int!
   # variants: [CartItemVariantInput]
   # productType: String
 }
 
 input PackInput {
-  size: Int
-  unit: String
+  size: Int!
+  unit: String!
 }
 
 input CartItemProductVariantInput {
   id: ID!
-  variantName: LocalizedItemInput
-  price: Int
-  pack: PackInput
+  variantName: LocalizedItemInput!
+  price: Int!
+  pack: PackInput!
 }
 
 ### OrderItem

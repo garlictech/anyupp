@@ -2,6 +2,7 @@ import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { missingParametersCheck } from '@bgap/shared/utils';
 import * as orderService from './order.service';
+import AWS from 'aws-sdk';
 
 interface WithAuthenticatedUser {
   userId: string;
@@ -15,6 +16,7 @@ export const orderRequestHandler = {
   createOrderFromCart(
     requestPayload: CreateOrderFromCartRequest,
     graphqlApiClient: GraphqlApiClient,
+    documentClient: AWS.DynamoDB.DocumentClient,
   ) {
     missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
       'userId',
@@ -34,6 +36,7 @@ export const orderRequestHandler = {
       ...requestPayload,
       ...requestPayload.input,
       graphqlApiClient,
+      documentClient,
     });
   },
 };

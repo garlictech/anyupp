@@ -103,29 +103,29 @@ export interface StripeCardDeleteInput {
 }
 
 export interface CartItemInput {
-  product?: Maybe<CartItemProductInput>;
-  quantity?: Maybe<Scalars['Int']>;
-  variant?: Maybe<CartItemProductVariantInput>;
+  product: CartItemProductInput;
+  quantity: Scalars['Int'];
+  variant: CartItemProductVariantInput;
 }
 
 export interface CartItemProductInput {
   id: Scalars['ID'];
-  name?: Maybe<LocalizedItemInput>;
+  name: LocalizedItemInput;
   description?: Maybe<LocalizedItemInput>;
   image?: Maybe<Scalars['String']>;
-  tax?: Maybe<Scalars['Int']>;
+  tax: Scalars['Int'];
 }
 
 export interface PackInput {
-  size?: Maybe<Scalars['Int']>;
-  unit?: Maybe<Scalars['String']>;
+  size: Scalars['Int'];
+  unit: Scalars['String'];
 }
 
 export interface CartItemProductVariantInput {
   id: Scalars['ID'];
-  variantName?: Maybe<LocalizedItemInput>;
-  price?: Maybe<Scalars['Int']>;
-  pack?: Maybe<PackInput>;
+  variantName: LocalizedItemInput;
+  price: Scalars['Int'];
+  pack: PackInput;
 }
 
 export interface StatusLog {

@@ -2,16 +2,14 @@ import { AmplifyApi, AppsyncApi } from '@bgap/api/graphql/schema';
 import { toFixed2Number } from '@bgap/api/utils';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { IPlace } from '@bgap/shared/types';
-// import * as AWS from 'aws-sdk';
 import gql from 'graphql-tag';
 // import { EOrderStatus } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 import { calculateOrderSumPrice } from './order.utils';
+import AWS from 'aws-sdk';
 
-// const documentClient = new AWS.DynamoDB.DocumentClient({
-//   convertEmptyValues: true,
-// });
 // TODO: relocate in the graphql/documents folder, but which OrderInput should I use? The one that is in the Amplify graphql or the appsync one???
+// TODO: add all the fields to the response
 const createOrderMutation = gql`
   mutation CreateOrderMutation($input: CreateOrderInput!) {
     createOrder(input: $input) {
@@ -28,6 +26,7 @@ export const createOrderFromCart = async ({
   place,
   currency,
   graphqlApiClient,
+  documentClient,
 }: {
   userId: string;
   unitId: string;
@@ -36,6 +35,7 @@ export const createOrderFromCart = async ({
   place: IPlace;
   currency: string;
   graphqlApiClient: GraphqlApiClient;
+  documentClient: AWS.DynamoDB.DocumentClient;
 }): Promise<boolean> => {
   // console.log(
   //   '### ~ file: order.service.ts ~ line 3 ~ EOrderStatus',
@@ -60,8 +60,10 @@ export const createOrderFromCart = async ({
   // const currency = await getGroupCurrency(unit.groupId);
   // const currency = 'HUF';
   const staffId = await getStaffId(unitId);
-  // TODO: do we need laneId??? const items = await getLaneIdForOrdersItems(convertCartOrdersToOrderItems(userId, cart.orders, currency));
-  const items = convertCartOrdersToOrderItems(userId, cartItems, currency);
+  const items = await getLaneIdForCartItems(documentClient, cartItems);
+  console.log('### ~ file: order.service.ts ~ line 65 ~ items', items);
+  return true;
+  const items2 = convertCartOrdersToOrderItems(userId, cartItems, currency);
 
   const order: AmplifyApi.CreateOrderInput = {
     userId,
@@ -105,7 +107,7 @@ export const createOrderFromCart = async ({
 
 const convertCartOrdersToOrderItems = (
   userId: string,
-  cartItems: any[],
+  cartItems: AppsyncApi.CartItemInput[],
   currency: string,
 ): AmplifyApi.OrderItemInput[] => {
   // TODO: const convertCartOrdersToOrderItems = (
@@ -138,19 +140,76 @@ const convertCartOrdersToOrderItems = (
   });
 };
 
-// const getLaneIdForOrdersItems = async (orderItems: OrderItem[]): Promise<OrderItem[]> => {
-//   const firestore = firestoreUtil(fContext);
-//   const promises = orderItems.map(async (orderItem) => {
-//       const product = await firestore.getRefValue<MergedProductWithIds>(
-//           firestore.mergedProductsProductRef(orderItem.productId)
-//       );
-//       if (!!product && !!product.laneId) {
-//           return { ...orderItem, laneId: product.laneId };
-//       }
-//       return { ...orderItem };
-//   });
-//   return Promise.all(promises);
-// };
+const getLaneIdForCartItems = async (
+  documentClient: AWS.DynamoDB.DocumentClient,
+  cartItems: AppsyncApi.CartItemInput[],
+): Promise<AppsyncApi.CartItemInput[]> => {
+  if (!process.env.UNIT_PRODUCT_TABLE) {
+    throw 'missing UNIT_PRODUCT_TABLE env';
+  }
+
+  const productIds: AWS.DynamoDB.KeyList = cartItems.map(item => ({
+    id: { S: item.product.id },
+  }));
+
+  // const params = {
+  //   ExpressionAttributeValues: {
+  //    ":ids": {
+  //      SS: productIds
+  //     }
+  //   },
+  //   KeyConditionExpression: "id = :ids",
+  //   ProjectionExpression: "laneId id",
+  //   TableName: process.env.UNIT_PRODUCT_TABLE
+  //  };
+  // const laneIds = await documentClient.query(params);
+
+  // const table = {
+
+  // }
+
+  const params: AWS.DynamoDB.DocumentClient.GetItemInput = {
+    TableName: process.env.UNIT_PRODUCT_TABLE,
+    Key: { id: { S: 'PROD_ID_01' } },
+    // ProjectionExpression: 'laneId, id',
+    // ReturnConsumedCapacity: 'TOTAL',
+  };
+  console.log(
+    '### ~ file: order.service.ts ~ line 190 ~ params',
+    JSON.stringify(params, undefined, 2),
+  );
+
+  const laneIds = await documentClient.get(params).promise();
+  // const params: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
+  //   RequestItems: {
+  //     [process.env.UNIT_PRODUCT_TABLE]: {
+  //       Keys: productIds,
+  //       ProjectionExpression: 'laneId, id',
+  //     },
+  //   },
+  //   ReturnConsumedCapacity: 'TOTAL',
+  // };
+  // console.log(
+  //   '### ~ file: order.service.ts ~ line 190 ~ params',
+  //   JSON.stringify(params, undefined, 2),
+  // );
+
+  // const laneIds = await documentClient.batchGet(params).promise();
+
+  console.log('### ~ file: order.service.ts ~ line 149 ~ laneIds', laneIds);
+  return [];
+  // const firestore = firestoreUtil(fContext);
+  // const promises = cartItems.map(async cartItem => {
+  //   const product = await firestore.getRefValue<MergedProductWithIds>(
+  //     firestore.mergedProductsProductRef(cartItem.productId),
+  //   );
+  //   if (!!product && !!product.laneId) {
+  //     return { ...cartItem, laneId: product.laneId };
+  //   }
+  //   return { ...cartItem };
+  // });
+  // return Promise.all(promises);
+};
 
 export const createStatusLog = (
   userId: string,

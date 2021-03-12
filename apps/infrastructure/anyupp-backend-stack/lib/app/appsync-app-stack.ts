@@ -2,6 +2,7 @@ import path from 'path';
 
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
+import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
@@ -229,10 +230,21 @@ export class AppsyncAppStack extends sst.Stack {
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
+      initialPolicy: [
+        new iam.PolicyStatement({
+          actions: ['dynamodb:*'],
+          resources: ['arn:aws:dynamodb:*:568276182587:table/*'],
+        }),
+      ],
     });
 
     secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
+    // The API LAMBDA should be able to access these tables
+    apiLambda.addEnvironment(
+      'UNIT_PRODUCT_TABLE',
+      dynamoDBStack.unitProductTable.tableName,
+    );
   }
 
   // private createCommonResolvers(apiDesc: ApiDesc): void {
