@@ -2,8 +2,9 @@
 set -e
 IFS='|'
 
-yum install jq -y
 creds=$(aws sts get-session-token)
+
+echo "***** CREDS $creds"
 
 AWS_ACCESS_KEY_ID=$(echo $creds | jq '.Credentials.AccessKeyId')
 AWS_SECRET_ACCESS_KEY=$(echo $creds | jq '.Credentials.SecretAccessKey')
