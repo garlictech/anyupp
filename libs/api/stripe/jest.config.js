@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'stripe',
-  preset: '../../jest.preset.js',
+  displayName: 'api-stripe',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/stripe',
+  coverageDirectory: '../../../coverage/libs/api/stripe',
 };

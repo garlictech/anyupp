@@ -1339,27 +1339,6 @@
         }
       }
     },
-    "stripe": {
-      "root": "libs/stripe",
-      "sourceRoot": "libs/stripe/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/stripe/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/stripe"],
-          "options": {
-            "jestConfig": "libs/stripe/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "api-order": {
       "root": "libs/api/order",
       "sourceRoot": "libs/api/order/src",
@@ -1441,6 +1420,27 @@
           "outputs": ["coverage/libs/api/shared/data-access"],
           "options": {
             "jestConfig": "libs/api/shared/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-stripe": {
+      "root": "libs/api/stripe",
+      "sourceRoot": "libs/api/stripe/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/stripe/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/stripe"],
+          "options": {
+            "jestConfig": "libs/api/stripe/jest.config.js",
             "passWithNoTests": true
           }
         }

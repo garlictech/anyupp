@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Context, Handler } from 'aws-lambda';
-import { stripeRequestHandler } from '@bgap/stripe';
+import { stripeRequestHandler } from '@bgap/api/stripe';
 import { orderRequestHandler } from '@bgap/api/order';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { IAmplifyApiConfig } from '@bgap/shared/types';

@@ -7,7 +7,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
-import { createStripeResolvers } from '@bgap/stripe';
+import { createStripeResolvers } from '@bgap/api/stripe';
 import { createOrderResolvers } from '@bgap/api/order';
 import * as sst from '@serverless-stack/resources';
 
