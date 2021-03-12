@@ -2,7 +2,7 @@
 set -e
 IFS='|'
 
-apt install jq -y
+yum install jq -y
 creds=$(aws sts get-session-token)
 
 AWS_ACCESS_KEY_ID=$(echo $creds | jq '.Credentials.AccessKeyId')
