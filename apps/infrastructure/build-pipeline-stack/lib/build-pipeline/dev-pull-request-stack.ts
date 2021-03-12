@@ -34,8 +34,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
           phases: {
             install: {
               commands: [
-                `pwd`,
-                `ls -l`,
                 `sh ./tools/setup-aws-environment.sh`,
                 'yarn',
                 'npm install -g @aws-amplify/cli',
@@ -67,6 +65,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
               AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
               AWS_SECRET_ACCESS_KEY:
                 'codebuild:codebuild-aws_secret_access_key',
+            },
+            variables: {
+              AWS_PROFILE: 'default',
             },
           },
         }),
