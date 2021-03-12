@@ -94,7 +94,7 @@ export class OrderDetailsComponent implements OnDestroy {
     );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(this.order._id, status, idx);
+      this._orderService.updateOrderItemStatus(this.order.id, status, idx);
     }
   }
 
@@ -110,7 +110,7 @@ export class OrderDetailsComponent implements OnDestroy {
           label: 'common.ok',
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
-              this.order._id,
+              this.order.id,
               EOrderStatus.PLACED,
               idx,
             );

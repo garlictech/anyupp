@@ -1,4 +1,5 @@
 import { EAdminRole } from '../enums';
+import { IAmplifyModel } from './amplify';
 import { IContact } from './contact';
 
 export interface IAdminUserSettings {
@@ -32,8 +33,8 @@ export interface IAdminUserCredential {
   settings?: IAdminUserSettings;
 }
 
-export interface IAdminUser extends IContact, IAdminUserCredential {
-  _id?: string;
+export interface IAdminUser extends IContact, IAdminUserCredential, IAmplifyModel {
+  id?: string;
   name?: string;
   profileImage?: string;
 }

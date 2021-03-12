@@ -2,7 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (product && product._id
+        (product && product.id
           ? 'products.editProduct'
           : 'products.newProduct'
         ) | translate

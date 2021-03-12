@@ -3,9 +3,9 @@ import { createAction, props } from '@ngrx/store';
 
 export const init = createAction('[Units Page] Init');
 
-export const loadUnitsSuccess = createAction(
-  '[Units] Load Units Success',
-  props<{ units: IUnit[] }>(),
+export const upsertUnit = createAction(
+  '[Units] Upsert Unit',
+  props<{ unit: IUnit }>(),
 );
 
-export const resetUnits = createAction('[UnitList] Reset units');
+export const resetUnits = createAction('[Units] Reset units');

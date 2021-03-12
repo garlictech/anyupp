@@ -1,5 +1,4 @@
-import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
-
+import * as fp from 'lodash/fp';
 import { Component, Input } from '@angular/core';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -17,7 +16,7 @@ export class ChainListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   get chainLogo(): string {
-    return _get(this.chain, 'style.logos.logoDarkSizeL', '');
+    return this.chain?.style?.images?.logo || '';
   }
 
   public editChain(): void {
@@ -25,6 +24,6 @@ export class ChainListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.chain = _cloneDeep(this.chain);
+    dialog.componentRef.instance.chain = fp.cloneDeep(this.chain);
   }
 }

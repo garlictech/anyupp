@@ -21,9 +21,7 @@ export interface IFloorMapDataObject {
 export interface IFloorMapData {
   w: number;
   h: number;
-  objects: {
-    [id: string]: IFloorMapDataObject;
-  };
+  objects: IFloorMapDataObject[];
 }
 
 export interface IFloorMapUserOrders {

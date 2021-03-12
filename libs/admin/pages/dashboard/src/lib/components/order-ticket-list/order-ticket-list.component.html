@@ -54,7 +54,7 @@
     <nb-list-item
       *ngFor="let order of filteredOrders; trackBy: trackByFn"
       (click)="selectOrder(order)"
-      [ngClass]="{ selectedOrder: order._id === selectedOrder?._id }"
+      [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
     >
       <bgap-order-ticket-list-item
         class="w-100"

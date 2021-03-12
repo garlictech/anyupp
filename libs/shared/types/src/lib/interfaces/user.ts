@@ -14,7 +14,7 @@ export interface ISocialInfo {
 }
 
 export interface IUser extends IContact {
-  _id: string;
+  id: string;
   name: string;
   social: ISocialInfo;
   profileImage: string;

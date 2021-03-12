@@ -39,7 +39,7 @@ export const getAllActiveOrderCount = activeOrdersAdapter.getSelectors(
 export const getActiveOrderById = (id: string) => {
   return createSelector(getAllActiveOrders, (orders: IOrder[]):
     | IOrder
-    | undefined => orders.find((order): boolean => order._id === id));
+    | undefined => orders.find((order): boolean => order.id === id));
 };
 
 export const getActiveOrdersByUserId = (userId: string) => {
@@ -79,7 +79,7 @@ export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
             .map(
               (orderItem: IOrderItem): ILaneOrderItem => ({
                 ...orderItem,
-                orderId: order._id,
+                orderId: order.id,
                 userId: order.userId,
                 place: order.place,
                 currentStatus: status,
@@ -112,5 +112,5 @@ export const getAllHistoryOrderCount = historyOrdersAdapter.getSelectors(
 export const getHistoryOrderById = (id: string) => {
   return createSelector(getAllHistoryOrders, (orders: IOrder[]):
     | IOrder
-    | undefined => orders.find((order): boolean => order._id === id));
+    | undefined => orders.find((order): boolean => order.id === id));
 };

@@ -1,4 +1,4 @@
-import { CardBrand, CardFundingType } from '@bgap/api/graphql/schema';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { toFixed0Number, toFixed2Number } from '@bgap/api/utils';
 import { Stripe } from 'stripe';
 
@@ -7,9 +7,13 @@ export const mapPaymentMethodToCard = (pm: Stripe.PaymentMethod) => ({
   id: pm.id,
   metadata: Object.entries(pm.metadata || {}).map(mapMetadataToObjectArray),
   object: pm.object,
-  brand: CardBrand[pm.card?.brand as keyof typeof CardBrand],
+  brand:
+    AppsyncApi.CardBrand[pm.card?.brand as keyof typeof AppsyncApi.CardBrand],
   country: pm.card?.country,
-  funding: CardFundingType[pm.card?.funding as keyof typeof CardFundingType],
+  funding:
+    AppsyncApi.CardFundingType[
+      pm.card?.funding as keyof typeof AppsyncApi.CardFundingType
+    ],
 });
 
 // [key, value] => {key:key, value:value}

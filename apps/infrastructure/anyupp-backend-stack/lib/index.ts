@@ -23,10 +23,13 @@ export class AnyUppStack extends Stack {
       facebookClientId: paramsStack.facebookAppId,
       facebookClientSecret: secretsManagerStack.facebookAppSecret,
     });
+
     new AppsyncAppStack(scope, 'appsync', {
-      userPool: cognitoStack.userPool,
+      consumerUserPool: cognitoStack.consumerUserPool,
+      adminUserPool: cognitoStack.adminUserPool,
       secretsManager: secretsManagerStack.secretsManager,
     });
+
     new StripeStack(scope, 'stripe');
   }
 }

@@ -1,5 +1,6 @@
-import { get as _get, omit as _omit, set as _set } from 'lodash-es';
+
 import { take } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
@@ -83,7 +84,7 @@ export class ProductFormComponent
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories.map(
           (productCategory): IKeyValue => ({
-            key: productCategory._id,
+            key: productCategory.id,
             value: productCategory.name,
           }),
         );
@@ -91,7 +92,7 @@ export class ProductFormComponent
   }
 
   get imagePath(): string {
-    return _get(this.product, 'image');
+    return this.product?.image;
   }
 
   ngOnInit(): void {
@@ -129,7 +130,7 @@ export class ProductFormComponent
     });
 
     if (this.product) {
-      this.dialogForm.patchValue(_omit(this.product, 'variants'));
+      this.dialogForm.patchValue(fp.omit('variants', this.product));
 
       // Parse variants object to temp array
       const variantsArr = (<IProductVariant[]>(
@@ -161,14 +162,14 @@ export class ProductFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._id || ''] = _omit(variant, '_id');
+        value.variants[variant.id || ''] = fp.omit('id', variant);
       });
 
       delete value._variantArr;
 
-      if (_get(this.product, '_id')) {
+      if (this.product?.id) {
         this._dataService
-          .updateChainProduct(this._selectedChainId, this.product._id, value)
+          .updateChainProduct(this._selectedChainId, this.product.id, value)
           .then(
             (): void => {
               this._toasterService.show(
@@ -204,11 +205,11 @@ export class ProductFormComponent
     this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.product, '_id')) {
+    if (this.product?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedGroupId,
-          this.product._id,
+          this.product.id,
           imagePath,
         )
         .then((): void => {
@@ -231,15 +232,15 @@ export class ProductFormComponent
     this.dialogForm?.controls.image.setValue('');
 
     if (this.product) {
-      _set(this.product, 'image', null);
+      fp.set('image', null, this.product);
     }
 
     // Update existing user's image
-    if (_get(this.product, '_id')) {
+    if (this.product?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedGroupId,
-          this.product._id,
+          this.product.id,
           null,
         )
         .then((): void => {

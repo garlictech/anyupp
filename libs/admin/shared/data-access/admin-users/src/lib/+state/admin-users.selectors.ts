@@ -50,7 +50,7 @@ export const getAdminUserById = (id: string) => {
   return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
     | IAdminUser
     | undefined =>
-    adminUsers.find((adminUser): boolean => adminUser._id === id),
+    adminUsers.find((adminUser): boolean => adminUser.id === id),
   );
 };
 

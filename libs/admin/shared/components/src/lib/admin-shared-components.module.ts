@@ -43,7 +43,6 @@ const NB_MODULES = [
   NbUserModule,
   NbIconModule,
   NbInputModule,
-  NbEvaIconsModule,
   NbButtonModule,
   NbDialogModule,
   NbSelectModule,

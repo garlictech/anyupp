@@ -12,6 +12,8 @@
     "descriptionDE": "Description (DE)",
     "descriptionHU": "Description (HU)",
     "isActive": "Active",
+    "active": "Active",
+    "inactive": "Inactive",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "ok": "OK",

@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
@@ -22,7 +21,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
   transform(roles: IAdminUserRole): unknown {
     const entityPaths: string[] = [];
 
-    _get(roles, 'entities', []).forEach((entity): void => {
+    Object.values(roles?.entities || {}).forEach((entity): void => {
       const entitiesArr: string[] = [];
 
       if (entity.chainId) {

@@ -28,7 +28,7 @@ export const getSelectedActiveOrder = () => {
       activeOrders: IOrder[],
     ): IOrder | undefined => {
       return activeOrders.find(
-        (order): boolean => order._id === selectedOrderId,
+        (order): boolean => order.id === selectedOrderId,
       );
     },
   );
@@ -43,7 +43,7 @@ export const getSelectedHistoryOrder = () => {
       historyOrders: IOrder[],
     ): IOrder | undefined => {
       return historyOrders?.find(
-        (order): boolean => order._id === selectedOrderId,
+        (order): boolean => order.id === selectedOrderId,
       );
     },
   );

@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (unit?._id ? 'units.editUnit' : 'units.newUnit') | translate }}
+      {{ (unit?.id ? 'units.editUnit' : 'units.newUnit') | translate }}
     </div>
     <button
       nbButton
@@ -119,7 +119,7 @@
       ></bgap-form-weekly-schedule>
 
       <bgap-form-unit-lanes
-        [lanesFormArray]="dialogForm.get('_lanesArr')! | asFormArray"
+        [lanesFormArray]="dialogForm.get('lanes')! | asFormArray"
       ></bgap-form-unit-lanes>
 
       <div class="mt-20">

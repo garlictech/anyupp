@@ -145,7 +145,7 @@ export class ReportsDailySalesPerTypeComponent
 
     const productTypeMap: IKeyValueObject = {};
     products.forEach(p => {
-      productTypeMap[p._id] = p.productType;
+      productTypeMap[p.id] = p.productType;
     });
 
     orders.forEach(o => {

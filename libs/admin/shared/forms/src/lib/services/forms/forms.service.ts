@@ -27,7 +27,7 @@ export class FormsService {
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
-      _id: [uuidV1()],
+      id: [uuidV1()],
       variantName: this._formBuilder.group(
         {
           hu: ['', Validators.maxLength(40)],
@@ -76,7 +76,7 @@ export class FormsService {
 
   public createLaneFormGroup = (): FormGroup => {
     return this._formBuilder.group({
-      _laneId: [uuidV1()],
+      id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#fff', [Validators.required]],
     });

@@ -7,7 +7,7 @@
       *ngFor="let order of dailyOrders"
       (click)="selectOrder(order)"
       class="{{ currentStatus(order.statusLog).toLowerCase() }}"
-      [ngClass]="{ selectedOrder: order._id === selectedOrder?._id }"
+      [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
     >
       <bgap-order-ticket-list-item
         class="w-100"

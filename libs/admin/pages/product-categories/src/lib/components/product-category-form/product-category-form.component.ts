@@ -1,12 +1,13 @@
-import { get as _get, set as _set } from 'lodash-es';
+import * as fp from 'lodash/fp';
 import { take } from 'rxjs/operators';
-
+import { NGXLogger } from 'ngx-logger';
 import { Component, Injector, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { EImageType, IProductCategory } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 
 @Component({
   selector: 'bgap-product-category-form',
@@ -21,9 +22,14 @@ export class ProductCategoryFormComponent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _selectedChainId?: string | undefined | null;
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this._store = this._injector.get(Store);
     this._store
@@ -34,7 +40,7 @@ export class ProductCategoryFormComponent
   }
 
   get imagePath(): string {
-    return _get(this.productCategory, 'image');
+    return this.productCategory?.image;
   }
 
   ngOnInit(): void {
@@ -63,47 +69,44 @@ export class ProductCategoryFormComponent
     }
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      if (_get(this.productCategory, '_id')) {
-        this._dataService
-          .updateProductCategory(
-            this._selectedChainId || '',
-            this.productCategory._id,
-            this.dialogForm?.value,
-          )
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful',
-              );
-              this.close();
-            },
-            err => {
-              console.error('CHAIN UPDATE ERROR', err);
-            },
+      const value = {
+        ...this.dialogForm?.value,
+        chainId: this._selectedChainId,
+      };
+
+      if (this.productCategory?.id) {
+        try {
+          await this._amplifyDataService.update<IProductCategory>(
+            'getProductCategory',
+            'updateProductCategory',
+            this.productCategory.id,
+            () => value,
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService
-          .insertProductCategory(
-            this._selectedChainId || '',
-            this.dialogForm?.value,
-          )
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful',
-              );
-              this.close();
-            },
-            err => {
-              console.error('CHAIN INSERT ERROR', err);
-            },
+        try {
+          await this._amplifyDataService.create('createProductCategory', value);
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
           );
+          this.close();
+        } catch (error) {
+          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }
@@ -112,11 +115,11 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.productCategory, '_id')) {
+    if (this.productCategory?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
-          this.productCategory._id,
+          this.productCategory.id,
           imagePath,
         )
         .then((): void => {
@@ -139,15 +142,15 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory) {
-      _set(this.productCategory, 'image', null);
+      fp.set('image', null, this.productCategory);
     }
 
     // Update existing user's image
-    if (_get(this.productCategory, '_id')) {
+    if (this.productCategory?.id) {
       this._dataService
         .updateProductCategoryImagePath(
           this._selectedChainId || '',
-          this.productCategory._id,
+          this.productCategory.id,
           null,
         )
         .then((): void => {

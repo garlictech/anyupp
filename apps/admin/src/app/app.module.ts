@@ -1,6 +1,3 @@
-import { APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { OperationDefinitionNode } from 'graphql';
 
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -16,9 +13,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
 import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
 import { environment } from '@bgap/admin/shared/config';
@@ -144,45 +138,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   providers: [
     AmplifyService,
     { provide: REGION, useValue: 'europe-west3' },
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink): ApolloClientOptions<unknown> {
-        // Create an http link:
-        const http = httpLink.create({
-          uri: environment.gql.http,
-        });
 
-        // Create a WebSocket link:
-        const ws = new WebSocketLink({
-          uri: environment.gql.ws,
-          options: {
-            reconnect: true,
-          },
-        });
-
-        // using the ability to split links, you can send data to each link
-        // depending on what kind of operation is being sent
-        const link = split(
-          // split based on operation type
-          ({ query }) => {
-            const { kind, operation } = getMainDefinition(
-              query,
-            ) as OperationDefinitionNode;
-            return (
-              kind === 'OperationDefinition' && operation === 'subscription'
-            );
-          },
-          ws,
-          http,
-        );
-
-        return {
-          link,
-          cache: new InMemoryCache(),
-        };
-      },
-      deps: [HttpLink],
-    },
   ],
   bootstrap: [AppComponent],
 })

@@ -1,4 +1,4 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
 import { Component, Input } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -27,7 +27,7 @@ export class UnitListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.unit = _cloneDeep(this.unit);
+    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }
 
   public editUnitFloorMap(): void {
@@ -35,12 +35,12 @@ export class UnitListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.unit = _cloneDeep(this.unit);
+    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }
 
   public regenerateData(): void {
     this.workingGenerateStatus = true;
-    this._dataService.regenerateUnitData(this.unit._id).then((): void => {
+    this._dataService.regenerateUnitData(this.unit.id).then((): void => {
       this.workingGenerateStatus = false;
     });
   }

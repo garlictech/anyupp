@@ -1,4 +1,4 @@
-import { get as _get, omit as _omit } from 'lodash-es';
+import * as fp from 'lodash/fp';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
@@ -7,20 +7,10 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  ILane,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
+  EProductLevel, IAdminUserSettings, IKeyValue, ILane, IProduct, IProductCategory, IProductVariant, IUnit
 } from '@bgap/shared/types';
 import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -77,7 +67,7 @@ export class ProductExtendFormComponent
       .subscribe((unit: IUnit | undefined): void => {
         this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
           (lane): IKeyValue => ({
-            key: lane._id || '',
+            key: lane.id || '',
             value: lane.name,
           }),
         );
@@ -85,7 +75,7 @@ export class ProductExtendFormComponent
   }
 
   get imagePath(): string {
-    return _get(this.product, 'image');
+    return this.product?.image;
   }
 
   ngOnInit(): void {
@@ -106,7 +96,7 @@ export class ProductExtendFormComponent
     }
 
     if (this.product) {
-      this.dialogForm.patchValue(_omit(this.product, 'variants'));
+      this.dialogForm.patchValue(fp.omit('variants', this.product));
 
       // Parse variants object to temp array
       const variantsArr = (<IProductVariant[]>(
@@ -117,7 +107,7 @@ export class ProductExtendFormComponent
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
-        _get(variant, 'availabilities', []).forEach((availability): void => {
+        (variant?.availabilities || []).forEach((availability): void => {
           const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
           availabilityGroup.patchValue(availability);
           (variantGroup.controls.availabilities as FormArray).push(
@@ -145,7 +135,7 @@ export class ProductExtendFormComponent
       };
 
       value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._id || ''] = _omit(variant, '_id');
+        value.variants[variant.id || ''] = fp.omit('id', variant);
       });
 
       delete value._variantArr;
@@ -162,14 +152,14 @@ export class ProductExtendFormComponent
           case EProductLevel.GROUP:
             updatePromise = this._dataService.updateGroupProduct(
               this._selectedGroupId || '',
-              this.product._id,
+              this.product.id,
               value,
             );
             break;
           case EProductLevel.UNIT:
             updatePromise = this._dataService.updateUnitProduct(
               this._selectedUnitId || '',
-              this.product._id,
+              this.product.id,
               value,
             );
             break;
@@ -237,9 +227,9 @@ export class ProductExtendFormComponent
   private _generateExtendsPath(): string | null {
     switch (this.productLevel) {
       case EProductLevel.GROUP:
-        return `products/chains/${this._selectedChainId}/${this.product._id}`;
+        return `products/chains/${this._selectedChainId}/${this.product.id}`;
       case EProductLevel.UNIT:
-        return `products/groups/${this._selectedGroupId}/${this.product._id}`;
+        return `products/groups/${this._selectedGroupId}/${this.product.id}`;
       default:
         return null;
         break;
