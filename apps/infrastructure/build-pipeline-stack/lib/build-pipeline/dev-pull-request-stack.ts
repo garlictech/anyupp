@@ -66,9 +66,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
               AWS_SECRET_ACCESS_KEY:
                 'codebuild:codebuild-aws_secret_access_key',
             },
-            variables: {
-              AWS_PROFILE: 'default',
-            },
           },
         }),
         environment: {

@@ -99,9 +99,6 @@ export const createBuildProject = (
           AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
           AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
         },
-        variables: {
-          AWS_PROFILE: 'default',
-        },
       },
     }),
     cache,

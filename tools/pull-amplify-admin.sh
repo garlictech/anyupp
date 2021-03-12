@@ -5,6 +5,7 @@ IFS='|'
 APPNAME=$1
 STAGE=$2
 EDITORNAME=${EDITORNAME:-vim}
+AWS_PROFILE=${AWS_PROFILE:-default}
 
 APPID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-AdminAmplifyAppId" | \
   jq -r '.Parameter.Value')
