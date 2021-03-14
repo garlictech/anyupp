@@ -6,6 +6,7 @@ export 'models/country.dart';
 export 'models/login_exception.dart';
 export 'models/login_methods.dart';
 export 'models/provider_login_response.dart';
+export 'providers/aws_common_login_provider.dart';
 export 'providers/aws_email_login_provider.dart';
 export 'providers/aws_phone_login_provider.dart';
 export 'providers/aws_social_login_provider.dart';

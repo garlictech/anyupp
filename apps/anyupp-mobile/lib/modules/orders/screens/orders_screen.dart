@@ -1,7 +1,9 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'order_history_screen.dart';
@@ -51,10 +53,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
           ),
         ),
-        body: TabBarView(physics: BouncingScrollPhysics(), children: [
-          OrderStatusScreen(),
-          OrderHistoryScreen(),
-        ]),
+        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+          if (state is UnitSelected) {
+            return TabBarView(physics: BouncingScrollPhysics(), children: [
+              OrderStatusScreen(unit: state.unit),
+              OrderHistoryScreen(),
+            ]);
+          }
+
+          return CenterLoadingWidget();
+        }),
       ),
     );
   }

@@ -109,8 +109,9 @@ class Locally {
   Future<void> onDidReceiveNotification(id, title, body, payload) async {
     print('***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
-        context: context,
-        child: CupertinoAlertDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
           title: title,
           content: Text(body),
           actions: <Widget>[
@@ -124,7 +125,9 @@ class Locally {
               },
             )
           ],
-        ));
+        );
+      },
+    );
   }
 
   /// The show Method return a notification to the screen

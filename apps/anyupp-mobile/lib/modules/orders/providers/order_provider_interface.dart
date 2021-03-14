@@ -17,4 +17,12 @@ abstract class IOrdersProvider {
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod);
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId);
+
+  Future<void> startOrderListSubscription(String chainId, String unitId);
+
+  Future<void> stopOrderListSubscription();
+
+  Future<void> startOrderHistoryListSubscription(String chainId, String unitId);
+
+  Future<void> stopOrderHistoryListSubscription();
 }

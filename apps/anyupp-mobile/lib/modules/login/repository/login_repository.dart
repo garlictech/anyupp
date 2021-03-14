@@ -2,15 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
 class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEmailLoginProvider {
-  // final IUserProvider _userProvider;
-  // final ICommonLoginProvider _commonLoginProvider;
+
+  final ICommonLoginProvider _commonLoginProvider;
   final ISocialLoginProvider _socialLoginProvider;
   final IPhoneLoginProvider _phoneLoginProvider;
   final IEmailLoginProvider _emailLoginProvider;
 
   LoginRepository(
-    // this._userProvider,
-    // this._commonLoginProvider,
+    this._commonLoginProvider,
     this._socialLoginProvider,
     this._emailLoginProvider,
     this._phoneLoginProvider,
@@ -94,8 +93,7 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   Future<void> logout() async {
     return Future.wait([
       (await SharedPreferences.getInstance()).clear(),
-      // TODO !!!! AWS
-      //_userProvider.logoutUser(),
+      _commonLoginProvider.logoutFromBackend(),
       _socialLoginProvider.logout(),
     ]);
   }

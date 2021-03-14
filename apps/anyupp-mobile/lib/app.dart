@@ -26,6 +26,7 @@ import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
 import 'modules/demo-datastore/demo-datastore.dart';
 import 'modules/favorites/favorites.dart';
+import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
@@ -56,7 +57,7 @@ void runAppByStage({String stage = 'dev'}) {
 }
 
 
-  void _initAmplify() async {
+  Future<void> _initAmplify() async {
     print('_initAmplify().start()');
     try {
       await Amplify.addPlugins([
@@ -188,6 +189,7 @@ class _MyAppState extends State<MyApp> {
               BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
               BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
               BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
+              BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
               BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
               BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
               BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),

@@ -14,7 +14,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   AwsSocialLoginProvider(this._googleSignIn, this._facebookLogin, this._authProvider);
 
   @override
-  Future<bool> get appleSignInAvailable => Future.value(false);
+  Future<bool> get appleSignInAvailable async => false;
 
   @override
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) async {
@@ -33,7 +33,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   Future<void> logout() async {
     print('***** AwsSocialLoginProvider.logout()');
     await Future.wait([
-      Amplify.Auth.signOut(),
       _googleSignIn.signOut(),
       _facebookLogin.logOut(),
     ]);
@@ -44,7 +43,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     print('***** AwsSocialLoginProvider.signInAnonymously()');
-    throw UnimplementedError();
+    // throw UnimplementedError();
   }
 
   @override

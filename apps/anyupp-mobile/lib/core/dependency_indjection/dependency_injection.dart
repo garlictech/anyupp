@@ -17,6 +17,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:fa_prev/shared/providers.dart';
 // import 'package:fa_prev/shared/providers/function_provider_interface.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,7 @@ import 'package:stripe_sdk/stripe_sdk.dart';
 GetIt getIt = GetIt.instance;
 DotEnv dotEnv = DotEnv();
 
-void initDependencyInjection() {
+Future<void> initDependencyInjection() async {
   _initCommon();
   _initProviders();
   _initRepositories();
@@ -43,7 +44,7 @@ void _initCommon() {
   // FirebaseDatabase database = FirebaseDatabase.instance;
   // FirebaseAuth auth = FirebaseAuth.instance;
   // CloudFunctions functions = CloudFunctions(region: dotEnv.env['region']);
-  GraphQLClient graphQLClient = getGraphQLClient(url: dotEnv.env['graphql-url']);
+  ValueNotifier<GraphQLClient> graphQLClient = getGraphQLClient(url: dotEnv.env['graphql-url'], websocketUrl: dotEnv.env['graphql-ws-url'], apiKey: dotEnv.env['graphql-api-key']);
   final Stripe stripe = Stripe(
     dotEnv.env['stripe_pulblishable_key'],
     // stripeAccount: dotEnv.env['stripe_merchant_id'],
@@ -57,7 +58,7 @@ void _initCommon() {
   // getIt.registerLazySingleton<CloudFunctions>(() => functions);
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
-  getIt.registerLazySingleton<GraphQLClient>(() => graphQLClient);
+  getIt.registerLazySingleton<ValueNotifier<GraphQLClient>>(() => graphQLClient);
   getIt.registerLazySingleton<Stripe>(() => stripe);
 }
 
@@ -71,10 +72,10 @@ void _initProviders() {
   getIt.registerLazySingleton<IFavoritesProvider>(
       () => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IOrdersProvider>(
-      () => AwsOrderProvider(getIt<IAuthProvider>()));
+      () => AwsOrderProvider(getIt<IAuthProvider>(), getIt<ValueNotifier<GraphQLClient>>(), ));
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
-  getIt.registerLazySingleton<IStripePaymentProvider>(() => GraphQLStripePaymentProvider(getIt<GraphQLClient>(), getIt<Stripe>()));
+  getIt.registerLazySingleton<IStripePaymentProvider>(() => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   // Login providers
@@ -89,6 +90,7 @@ void _initProviders() {
   //       getIt<IUserProvider>(),
   //       getIt<ICommonLoginProvider>(),
   //     ));
+  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider());
   getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
   getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
         getIt<IAuthProvider>(),
@@ -103,6 +105,7 @@ void _initProviders() {
 void _initRepositories() {
   // Login Repository
   getIt.registerLazySingleton<LoginRepository>(() => LoginRepository(
+        getIt<ICommonLoginProvider>(),
         getIt<ISocialLoginProvider>(),
         getIt<IEmailLoginProvider>(),
         getIt<IPhoneLoginProvider>(),
@@ -145,6 +148,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
+  getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
 
   // TODO!!! AZ AMPLIFY DATASTORE DEMO MIATT!!!
   getIt.registerLazySingleton(() => AmplifyUnitBloc(getIt<AmplifyUnitRepository>()));

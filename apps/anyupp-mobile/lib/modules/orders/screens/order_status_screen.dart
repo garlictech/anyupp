@@ -16,7 +16,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 
 class OrderStatusScreen extends StatefulWidget {
-  // final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
+  final GeoUnit unit;
+
+  const OrderStatusScreen({Key key, @required this.unit}) : super(key: key);
 
   @override
   _OrderStatusScreenState createState() => _OrderStatusScreenState();
@@ -28,6 +30,22 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3)).then(
+      (value) => getIt<OrderBloc>().add(
+        StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    getIt<OrderBloc>().add(StopOrderListSubscription());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,12 +204,12 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                       ),
                     ),
                     onPressed: () => Nav.to(StripePaymentScreen(
-                              chainId: unit.chainId,
-                              unitId: unit.id,
-                              userId: userSnapshot.data.id,
-                              order: order,
-                              sum: sum,
-                            )),
+                      chainId: unit.chainId,
+                      unitId: unit.id,
+                      userId: userSnapshot.data.id,
+                      order: order,
+                      sum: sum,
+                    )),
                     // onPressed: () => !(state is StripePaymentLoading)
                     //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.id, userSnapshot.data.id))
                     //     : null,

@@ -24,10 +24,11 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password) async {
     try {
-      SignInResult signInResult = await Amplify.Auth.signIn(
-        username: email,
-        password: password,
-      );
+      SignInResult signInResult = await Amplify.Auth.signInWithWebUI();
+      // SignInResult signInResult = await Amplify.Auth.signIn(
+      //   username: email,
+      //   password: password,
+      // );
       if (signInResult.isSignedIn) {
         User user = await _authProvider.getAuthenticatedUserProfile();
         return ProviderLoginResponse(

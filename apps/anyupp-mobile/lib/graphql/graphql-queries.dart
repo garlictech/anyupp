@@ -6,3 +6,5 @@ export 'queries/list_orders.dart';
 export 'queries/list_product_categories.dart';
 export 'queries/list_products.dart';
 export 'queries/list_units.dart';
+export 'subscriptions/order_list_subscription.dart';
+export 'subscriptions/order_history_list_subscription.dart';

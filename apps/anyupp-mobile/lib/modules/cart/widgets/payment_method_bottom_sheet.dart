@@ -14,7 +14,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 void showSelectPaymentMethodBottomSheet(BuildContext context) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
@@ -267,38 +266,40 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     showDialog(
       context: context,
       barrierDismissible: true,
-      child: SimpleDialog(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SizedBox(
-                  width: 64.0,
-                  height: 64.0,
+      builder: (context) {
+        return SimpleDialog(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    width: 64.0,
+                    height: 64.0,
 
-                  // Check mark animation
-                  child: SuccessAnimationWidget(),
-                ),
-
-                // Display message to the user
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: Text(
-                    trans('payment.orderPlaced'),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    // Check mark animation
+                    child: SuccessAnimationWidget(),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+
+                  // Display message to the user
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: Text(
+                      trans('payment.orderPlaced'),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 

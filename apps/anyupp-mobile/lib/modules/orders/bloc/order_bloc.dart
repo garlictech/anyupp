@@ -1,19 +1,39 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:fa_prev/modules/orders/orders.dart';
+
 import 'order_event.dart';
 import 'order_state.dart';
 
 class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
-  OrderBloc(BaseOrderState initialState) : super(NoOrderState());
+
+  final OrderRepository _repository;
+
+  OrderBloc(
+    this._repository,
+  ) : super(NoOrdersLoaded());
 
   @override
-  Stream<BaseOrderState> mapEventToState(BaseOrderAction event) {
+  Stream<BaseOrderState> mapEventToState(BaseOrderAction event) async* {
 
-    if (event is RefreshOrderAction) {
-       // TODO how to implement this call? > _orderService.getCurrentOrder('unitId');
+    if (event is StartGetOrderListSubscription) {
+      await _repository.startOrderListSubscription(event.chainId, event.unitId);
+      yield OrderSubscriptionsState('OrderList', true);
     }
 
-    return null;
-  }
+    if (event is StopOrderListSubscription) {
+      await _repository.stopOrderListSubscription();
+      yield OrderSubscriptionsState('OrderList', false);
+    }
 
+    if (event is StartGetOrderHistoryListSubscription) {
+      await _repository.startOrderHistoryListSubscription(event.chainId, event.unitId);
+      yield OrderSubscriptionsState('OrderHistoryList', true);
+    }
+
+    if (event is StopOrderHistoryListSubscription) {
+      await _repository.stopOrderHistoryListSubscription();
+      yield OrderSubscriptionsState('OrderHistoryList', false);
+    }
+  }
 }

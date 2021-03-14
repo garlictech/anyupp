@@ -36,6 +36,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
       takeAway
       unitId
       userId
+      status
       items {
         productId
         productName {

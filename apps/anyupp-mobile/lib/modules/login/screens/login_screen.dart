@@ -487,7 +487,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   if (snapshot.data == true) // has Apple Login
                     _createSocialButtonWidget('apple', LoginMethod.APPLE),
                   _createSocialButtonWidget('email', LoginMethod.EMAIL, theme.indicator),
-                  _createSocialButtonWidget('phone', LoginMethod.PHONE),
+                  // _createSocialButtonWidget('phone', LoginMethod.PHONE),
                 ],
               ),
             ),
@@ -524,7 +524,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);
-              _toggleEmailLoginForm();
+              // _toggleEmailLoginForm();
+              getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
+              
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
             }

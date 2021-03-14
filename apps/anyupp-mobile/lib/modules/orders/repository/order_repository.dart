@@ -1,6 +1,4 @@
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
 import 'dart:async';
 
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -40,5 +38,21 @@ class OrderRepository {
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId) async {
     await _provider.userPaymentIntentionSignal(chainId, unitId);
+  }
+
+  Future<void> startOrderListSubscription(String chainId, String unitId) async {
+    await _provider.startOrderListSubscription(chainId, unitId);
+  }
+
+  Future<void> stopOrderListSubscription() async {
+    await _provider.stopOrderListSubscription();
+  }
+
+    Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
+    await _provider.startOrderHistoryListSubscription(chainId, unitId);
+  }
+
+  Future<void> stopOrderHistoryListSubscription() async {
+    await _provider.stopOrderHistoryListSubscription();
   }
 }
