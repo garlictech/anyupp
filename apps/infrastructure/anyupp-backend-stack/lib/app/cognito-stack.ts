@@ -59,14 +59,16 @@ export class CognitoStack extends Stack {
       },
     );
 
-    const consumerUserPoolClient = this.createConsumerUserPoolClient(
-      app,
-      this.consumerUserPool,
-    );
+    const {
+      consumerWebClient,
+      consumerNativeClient,
+    } = this.createConsumerUserPoolClient(app, this.consumerUserPool);
 
-    consumerUserPoolClient.node.addDependency(googleIdProvider);
-    consumerUserPoolClient.node.addDependency(facebookIdProvider);
-
+    consumerWebClient.node.addDependency(googleIdProvider);
+    consumerWebClient.node.addDependency(facebookIdProvider);
+    consumerNativeClient.node.addDependency(googleIdProvider);
+    consumerNativeClient.node.addDependency(facebookIdProvider);
+    //
     // Export values
     this.createUserPoolOutputs(
       app,
@@ -91,7 +93,7 @@ export class CognitoStack extends Stack {
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
-          clientId: consumerUserPoolClient.userPoolClientId,
+          clientId: consumerNativeClient.userPoolClientId,
           providerName: this.consumerUserPool.userPoolProviderName,
         },
         {
@@ -255,8 +257,8 @@ export class CognitoStack extends Stack {
           authorizationCodeGrant: true,
         },
         scopes: [cognito.OAuthScope.OPENID],
-        callbackUrls: ['anyupp://signin/'],
-        logoutUrls: ['anyupp://signout/'],
+        callbackUrls: ['gtrack://signin/'],
+        logoutUrls: ['gtrack://signout/'],
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,
@@ -266,7 +268,7 @@ export class CognitoStack extends Stack {
     };
 
     // We need both native and web clients, see https://docs.amplify.aws/cli/auth/import#import-an-existing-cognito-user-pool
-    const webClient = new cognito.UserPoolClient(
+    const consumerWebClient = new cognito.UserPoolClient(
       this,
       'ConsumerUserPoolClientWeb',
       {
@@ -275,9 +277,9 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, webClient, 'consumerWeb');
+    this.createUserPoolClientOutput(app, consumerWebClient, 'consumerWeb');
 
-    const nativeClient = new cognito.UserPoolClient(
+    const consumerNativeClient = new cognito.UserPoolClient(
       this,
       'ConsumerUserPoolClientNative',
       {
@@ -285,9 +287,13 @@ export class CognitoStack extends Stack {
         ...commonProps,
       },
     );
-    this.createUserPoolClientOutput(app, nativeClient, 'consumerNative');
+    this.createUserPoolClientOutput(
+      app,
+      consumerNativeClient,
+      'consumerNative',
+    );
 
-    return nativeClient;
+    return { consumerNativeClient, consumerWebClient };
   }
 
   private createDomain(app: App, label: poolLabel, userPool: cognito.UserPool) {
@@ -305,12 +311,12 @@ export class CognitoStack extends Stack {
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       userVerification: {
-        emailSubject: 'Verify your email for AnyUpp',
+        emailSubject: 'Verify your email for AnyUPP',
         emailBody:
-          'Hello, thanks for signing up to AnyUpp! Your verification code is {####}',
+          'Hello, thanks for signing up to AnyUPP! Your verification code is {####}',
         emailStyle: cognito.VerificationEmailStyle.CODE,
         smsMessage:
-          'Hello thanks for signing up to AnyUpp! Your verification code is {####}',
+          'Hello thanks for signing up to AnyUPP! Your verification code is {####}',
       },
       signInAliases: {
         phone: true,
