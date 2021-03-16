@@ -115,7 +115,11 @@ are not yet supported in headless mode :( So fill in the forms if required.
 
 Cognito part:
 
-`nx reconfig admin-amplify-app`
+```
+cd apps/amplify-admin-api
+amplify remove auth
+amplify import auth
+```
 
 - Choose `Cognito User Pool only`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
