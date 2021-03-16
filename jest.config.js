@@ -54,5 +54,8 @@ module.exports = {
     '<rootDir>/libs/shared/graphql/api-client',
     '<rootDir>/libs/api/order',
     '<rootDir>/libs/api/graphql/resolver-mapping-templates',
+    '<rootDir>/apps/amplify-admin',
+    '<rootDir>/libs/admin/amplify',
+    '<rootDir>/libs/integration-tests',
   ],
 };

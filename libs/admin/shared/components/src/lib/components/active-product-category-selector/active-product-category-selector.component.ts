@@ -1,10 +1,9 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { DataService } from '@bgap/admin/shared/data-access/data';
 import { IAdminUser, IProductCategory } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -35,8 +34,8 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
       });
   }
 
-  get selectedProductCategoryId(): string {
-    return _get(this._adminUser, 'settings.selectedProductCategoryId');
+  get selectedProductCategoryId(): string | null | undefined {
+    return this._adminUser?.settings?.selectedProductCategoryId;
   }
 
   ngOnDestroy(): void {
@@ -45,12 +44,12 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
 
   public onProductCategorySelected(productCategoryId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
+      this._adminUser?.id &&
       productCategoryId !==
-        _get(this._adminUser, 'settings.selectedProductCategoryId')
+        this._adminUser?.settings?.selectedProductCategoryId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
-        ..._get(this._adminUser, 'settings', {}),
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
+        ...(this._adminUser?.settings || {}),
         selectedProductCategoryId: productCategoryId,
       });
     }

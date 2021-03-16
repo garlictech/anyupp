@@ -8,8 +8,11 @@ export const buildRetryLogic = <T>({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   retryDelayInMillisec = (_error: unknown) => 1000,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logger?: { warn: (arg0: string) => void };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   retryable?: (error: unknown) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   retryDelayInMillisec?: (error: unknown) => number;
 }) => (source: Observable<T>): Observable<T> =>
   source.pipe(

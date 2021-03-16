@@ -36,9 +36,7 @@ export interface ProductsPartialState {
 
 export const chainProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
   IProduct
->({
-  selectId: (item: IProduct): string => item._id,
-});
+>();
 
 export const initialChainProductState: IProductEntityState = chainProductsAdapter.getInitialState(
   {
@@ -61,9 +59,7 @@ const chainProductsReducer = createReducer(
 
 export const groupProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
   IProduct
->({
-  selectId: (item: IProduct): string => item._id,
-});
+>();
 
 export const initialGroupProductState: IProductEntityState = groupProductsAdapter.getInitialState(
   {
@@ -86,9 +82,7 @@ const groupProductsReducer = createReducer(
 
 export const unitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
   IProduct
->({
-  selectId: (item: IProduct): string => item._id,
-});
+>();
 
 export const initialUnitProductState: IProductEntityState = unitProductsAdapter.getInitialState(
   {
@@ -111,9 +105,7 @@ const unitProductsReducer = createReducer(
 
 export const generatedUnitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
   IProduct
->({
-  selectId: (item: IProduct): string => item._id,
-});
+>();
 
 export const initialGeneratedUnitProductState: IProductEntityState = generatedUnitProductsAdapter.getInitialState(
   {

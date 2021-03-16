@@ -1,10 +1,9 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { DataService } from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { IAdminUser, IChain } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -35,8 +34,8 @@ export class ActiveChainSelectorComponent implements OnDestroy {
       });
   }
 
-  get selectedChainId(): string {
-    return _get(this._adminUser, 'settings.selectedChainId');
+  get selectedChainId(): string | null | undefined {
+    return this._adminUser?.settings?.selectedChainId;
   }
 
   ngOnDestroy(): void {
@@ -45,11 +44,11 @@ export class ActiveChainSelectorComponent implements OnDestroy {
 
   public onChainSelected(chainId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
-      chainId !== _get(this._adminUser, 'settings.selectedChainId')
+      this._adminUser?.id &&
+      chainId !==  this._adminUser?.settings?.selectedChainId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
-        ..._get(this._adminUser, 'settings', {}),
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
+        ...(this._adminUser?.settings || {}),
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!
         selectedUnitId: null, // Reset unit id!

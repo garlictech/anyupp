@@ -193,9 +193,10 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
+            "cwd": "apps/infrastructure/build-pipeline-stack",
             "commands": [
               {
-                "command": "cd apps/infrastructure/build-pipeline-stack && yarn sst deploy"
+                "command": "yarn sst deploy"
               }
             ]
           }
@@ -1441,6 +1442,126 @@
           "outputs": ["coverage/libs/api/stripe"],
           "options": {
             "jestConfig": "libs/api/stripe/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "integration-tests": {
+      "root": "libs/integration-tests",
+      "sourceRoot": "libs/integration-tests/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/integration-tests/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests"],
+          "options": {
+            "jestConfig": "libs/integration-tests/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-amplify-app": {
+      "root": "apps/admin-amplify-app",
+      "sourceRoot": "apps/admin-amplify-app/src",
+      "projectType": "application",
+      "prefix": "amplify-admin",
+      "architect": {
+        "config": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": [
+              "sh ../../tools/pull-amplify-admin.sh '{args.app}' '{args.stage}'"
+            ]
+          }
+        },
+        "init": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": [
+              "sh ../../tools/init-amplify-admin.sh '{args.app}' '{args.stage}'"
+            ]
+          }
+        },
+        "reconfig": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["sh ../../tools/reconfig-amplify-admin.sh"]
+          }
+        },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": [
+              "amplify delete --force",
+              "aws ssm delete-parameter --name '{args.stage}-{args.app}-AdminAmplifyAppId'"
+            ]
+          }
+        },
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["sh ../../tools/build-amplify-admin.sh {args.stage}"]
+          }
+        },
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "parallel": false,
+            "commands": ["amplify push --yes"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/admin-amplify-app"],
+          "options": {
+            "jestConfig": "apps/admin-amplify-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-amplify-api": {
+      "root": "libs/admin/amplify-api",
+      "sourceRoot": "libs/admin/amplify-api/src",
+      "projectType": "library",
+      "architect": {
+        "config": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/admin-amplify-app",
+            "commands": ["amplify codegen", "amplify codegen model"]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/amplify-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/amplify-api"],
+          "options": {
+            "jestConfig": "libs/admin/amplify-api/jest.config.js",
             "passWithNoTests": true
           }
         }

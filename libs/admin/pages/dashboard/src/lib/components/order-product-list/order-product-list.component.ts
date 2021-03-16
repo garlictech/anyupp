@@ -1,26 +1,17 @@
-import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
+import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import * as fp from 'lodash/fp';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IGeneratedProduct,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EDashboardSize, ENebularButtonSize, EOrderStatus, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
+  IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -54,10 +45,10 @@ export class OrderProductListComponent {
       });
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
+      .subscribe((size: EDashboardSize): void => {
         this.buttonSize =
-          _get(adminUser, 'settings.dashboardSize') === EDashboardSize.LARGER
+          size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
       });
@@ -89,17 +80,13 @@ export class OrderProductListComponent {
               return (
                 this.generatedUnitProducts.filter(
                   (p: IGeneratedProduct): boolean =>
-                    p.productCategoryId === category._id,
+                    p.productCategoryId === category.id,
                 ).length > 0
               );
             },
           );
 
-          this.selectedProductCategoryId = _get(
-            this.productCategories,
-            '[0]._id',
-            undefined,
-          );
+          this.selectedProductCategoryId = this.productCategories?.[0]?.id;
         },
       );
   }
@@ -114,14 +101,14 @@ export class OrderProductListComponent {
   ): void {
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
-        orderItem.productId === product._id &&
+        orderItem.productId === product.id &&
         orderItem.variantId === variantId &&
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
     );
 
     if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(<IOrder>this.selectedOrder),
+        fp.cloneDeep(<IOrder>this.selectedOrder),
         <number>existingVariantOrderIdx,
         1,
       );
@@ -133,14 +120,14 @@ export class OrderProductListComponent {
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          (<IOrder>this.selectedOrder)._id,
+          (<IOrder>this.selectedOrder).id,
           EOrderStatus.PLACED,
           <number>existingVariantOrderIdx,
         );
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(<IOrder>this.selectedOrder),
+        fp.cloneDeep(<IOrder>this.selectedOrder),
         product,
         variantId,
       );

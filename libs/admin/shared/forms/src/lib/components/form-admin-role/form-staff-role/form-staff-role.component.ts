@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
@@ -65,7 +64,7 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
           this.chainOptions = [];
           chains.forEach((chain: IChain): void => {
             this.chainOptions.push({
-              key: chain._id,
+              key: chain.id,
               value: chain.name,
             });
           });
@@ -74,18 +73,12 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
           this.assignedUnits = [];
           entities.forEach((entity: IAdminRoleEntity): void => {
             this.assignedUnits.push({
-              chainName: _get(
-                chains.find((c): boolean => c._id === entity.chainId),
-                'name',
-              ),
-              groupName: _get(
-                groups.find((g): boolean => g._id === entity.groupId),
-                'name',
-              ),
-              unitName: _get(
-                units.find((u): boolean => u._id === entity.unitId),
-                'name',
-              ),
+              chainName: chains.find((c): boolean => c.id === entity.chainId)
+                ?.name,
+              groupName: groups.find((g): boolean => g.id === entity.groupId)
+                ?.name,
+              unitName: units.find((u): boolean => u.id === entity.unitId)
+                ?.name,
             });
           });
         },
@@ -115,10 +108,10 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
                 if (
                   !entities
                     .map((e): string => e.groupId || '')
-                    .includes(group._id)
+                    .includes(group.id)
                 ) {
                   this.groupOptions.push({
-                    key: group._id,
+                    key: group.id,
                     value: group.name,
                   });
                 }
@@ -137,12 +130,10 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
 
               units.forEach((unit: IUnit): void => {
                 if (
-                  !entities
-                    .map((e): string => e.unitId || '')
-                    .includes(unit._id)
+                  !entities.map((e): string => e.unitId || '').includes(unit.id)
                 ) {
                   this.unitOptions.push({
-                    key: unit._id,
+                    key: unit.id,
                     value: unit.name || '',
                   });
                 }

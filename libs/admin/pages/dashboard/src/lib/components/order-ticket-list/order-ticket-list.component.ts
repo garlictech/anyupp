@@ -152,7 +152,7 @@ export class OrderTicketListComponent implements OnDestroy {
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
       .subscribe((selectedOrderId: string | undefined): void => {
         const found = this.filteredOrders
-          .map((o): string => o._id)
+          .map((o): string => o.id)
           .includes(selectedOrderId || '');
 
         if (!found) {
@@ -162,13 +162,11 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public selectOrder(order: IOrder): void {
-    const selectedOrder = this._orders.find(
-      (o): boolean => o._id === order?._id,
-    );
+    const selectedOrder = this._orders.find((o): boolean => o.id === order?.id);
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({
-        orderId: selectedOrder ? selectedOrder._id : undefined,
+        orderId: selectedOrder ? selectedOrder.id : undefined,
       }),
     );
   }
@@ -186,6 +184,6 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public trackByFn(index: number, item: IOrder): string {
-    return item._id;
+    return item.id;
   }
 }

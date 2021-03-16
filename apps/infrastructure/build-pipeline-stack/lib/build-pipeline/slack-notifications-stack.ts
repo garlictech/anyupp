@@ -12,11 +12,11 @@ export class SlackNotificationsStack extends sst.Stack {
 
     this.chatbot = new chatbot.SlackChannelConfiguration(
       this,
-      'PR build Slack notification channel',
+      'Build Slack notification channel',
       {
         slackChannelId: 'cicd',
         slackWorkspaceId: 'T2GE2HF7H',
-        slackChannelConfigurationName: 'AnyuppPRBuild',
+        slackChannelConfigurationName: 'AnyuppBuild',
         notificationTopics: [slackChannelSns],
       },
     );

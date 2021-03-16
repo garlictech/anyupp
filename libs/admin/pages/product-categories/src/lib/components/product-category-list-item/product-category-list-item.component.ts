@@ -1,4 +1,4 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IProductCategory } from '@bgap/shared/types';
@@ -24,7 +24,7 @@ export class ProductCategoryListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.productCategory = _cloneDeep(
+    dialog.componentRef.instance.productCategory = fp.cloneDeep(
       this.productCategory,
     );
   }
@@ -32,14 +32,14 @@ export class ProductCategoryListItemComponent {
   public moveUp(): void {
     this.positionChange.emit({
       change: -1,
-      productCategoryId: this.productCategory._id,
+      productCategoryId: this.productCategory.id,
     });
   }
 
   public moveDown(): void {
     this.positionChange.emit({
       change: 1,
-      productCategoryId: this.productCategory._id,
+      productCategoryId: this.productCategory.id,
     });
   }
 }

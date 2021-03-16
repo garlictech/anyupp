@@ -16,9 +16,7 @@ export interface IUsersPartialState {
   readonly [USERS_FEATURE_KEY]: IUsersState;
 }
 
-export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>({
-  selectId: (item: IUser): string => item._id,
-});
+export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
 
 export const initialState: IUsersState = usersAdapter.getInitialState({
   // set initial required properties
@@ -28,9 +26,9 @@ export const initialState: IUsersState = usersAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(UsersActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(UsersActions.loadUsersSuccess, (state, { users }) =>
-    usersAdapter.setAll(users, { ...state, loaded: true }),
-  ),
+  on(UsersActions.upsertUser, (state, { user }) =>
+  usersAdapter.upsertOne(user, state),
+),
   on(UsersActions.resetUsers, state => usersAdapter.removeAll(state)),
 );
 

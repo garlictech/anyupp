@@ -48,7 +48,7 @@ export const getSelected = createSelector(
 
 export const getChainById = (id: string) => {
   return createSelector(getAllChains, (chains: IChain[]): IChain | undefined =>
-    chains.find((chain): boolean => chain._id === id),
+    chains.find((chain): boolean => chain.id === id),
   );
 };
 
@@ -60,6 +60,6 @@ export const getSeletedChain = createSelector(
     chains: IChain[],
   ): IChain | undefined =>
     chains.find(
-      (chain): boolean => chain._id === userSettings?.selectedChainId,
+      (chain): boolean => chain.id === userSettings?.selectedChainId,
     ),
 );

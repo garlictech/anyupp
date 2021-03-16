@@ -1,11 +1,10 @@
-import { get as _get } from 'lodash-es';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
-import { IAdminUser } from '@bgap/shared/types';
+import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -93,7 +92,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (menuItem.roles.includes(_get(this.adminUser, 'roles.role'))) {
+          if (menuItem.roles.includes(this.adminUser?.roles?.role || EAdminRole.INACTIVE)) {
             this.menu.push({
               ...menuItem,
               title: this._translateService.instant(menuItem.title),

@@ -1,18 +1,12 @@
-import { get as _get } from 'lodash-es';
 
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { IProduct } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  chainProductsAdapter,
-  generatedUnitProductsAdapter,
-  groupProductsAdapter,
-  IProductEntityState,
-  unitProductsAdapter,
+  chainProductsAdapter, generatedUnitProductsAdapter, groupProductsAdapter, IProductEntityState, IProductsState,
+  PRODUCTS_FEATURE_KEY, unitProductsAdapter
 } from './products.reducer';
-
-import { IProductsState, PRODUCTS_FEATURE_KEY } from './products.reducer';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 
 // Lookup the 'Products' feature state managed by NgRx
 export const getProductsState = createFeatureSelector<IProductsState>(
@@ -38,7 +32,7 @@ export const getAllChainProductCount = chainProductsAdapter.getSelectors(
 export const getChainProductById = (id: string) => {
   return createSelector(getAllChainProducts, (products: IProduct[]):
     | IProduct
-    | undefined => products.find((product): boolean => product._id === id));
+    | undefined => products.find((product): boolean => product.id === id));
 };
 
 export const getChainProductsOfSelectedCategory = () => {
@@ -76,7 +70,7 @@ export const getAllGroupProductCount = groupProductsAdapter.getSelectors(
 export const getGroupProductById = (id: string) => {
   return createSelector(getAllGroupProducts, (products: IProduct[]):
     | IProduct
-    | undefined => products.find((product): boolean => product._id === id));
+    | undefined => products.find((product): boolean => product.id === id));
 };
 
 export const getPendingGroupProductsOfSelectedCategory = () =>
@@ -92,7 +86,7 @@ export const getPendingGroupProductsOfSelectedCategory = () =>
       chainProducts.filter((chainProduct: IProduct): boolean => {
         const found = groupProducts.filter(
           (groupProduct: IProduct): boolean =>
-            _get(groupProduct, 'extends', '').indexOf(chainProduct._id) > -1,
+            (groupProduct?.extends ||'').indexOf(chainProduct.id) > -1,
         ).length;
 
         return (
@@ -118,7 +112,7 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
           (groupProduct: IProduct): IProduct => {
             const chainProduct = chainProducts.find(
               (p: IProduct): boolean =>
-                p._id === _get(groupProduct, 'extends', '').split('/').pop(),
+                p.id === (groupProduct?.extends || '').split('/').pop(),
             );
 
             return Object.assign({}, chainProduct, groupProduct);
@@ -151,7 +145,7 @@ export const getAllUnitProductCount = unitProductsAdapter.getSelectors(
 export const getUnitProductById = (id: string) => {
   return createSelector(getAllUnitProducts, (products: IProduct[]):
     | IProduct
-    | undefined => products.find((product): boolean => product._id === id));
+    | undefined => products.find((product): boolean => product.id === id));
 };
 
 export const getPendingUnitProductsOfSelectedCategory = () =>
@@ -167,7 +161,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
       groupProducts.filter((groupProduct: IProduct): boolean => {
         const found = unitProducts.filter(
           (unitProduct: IProduct): boolean =>
-            _get(unitProduct, 'extends', '').indexOf(groupProduct._id) > -1,
+            (unitProduct?.extends || '').indexOf(groupProduct.id) > -1,
         ).length;
 
         return (
@@ -193,7 +187,7 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
           (unitProduct: IProduct): IProduct => {
             const groupProduct = groupProducts.find(
               (p: IProduct): boolean =>
-                p._id === _get(unitProduct, 'extends', '').split('/').pop(),
+                p.id === (unitProduct?.extends || '').split('/').pop(),
             );
 
             return Object.assign({}, groupProduct || {}, unitProduct);
@@ -237,6 +231,6 @@ export const getGeneratedProductImageById = (id: string) => {
   return createSelector(
     getAllGeneratedUnitProducts,
     (products: IProduct[]): string =>
-      products.find((product): boolean => product._id === id)?.image || '',
+      products.find((product): boolean => product.id === id)?.image || '',
   );
 };

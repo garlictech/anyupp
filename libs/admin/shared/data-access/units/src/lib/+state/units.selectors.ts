@@ -43,7 +43,7 @@ export const getSelected = createSelector(
 
 export const getUnitById = (id: string) => {
   return createSelector(getAllUnits, (units: IUnit[]): IUnit | undefined =>
-    units.find((unit): boolean => unit._id === id),
+    units.find((unit): boolean => unit.id === id),
   );
 };
 
@@ -69,5 +69,5 @@ export const getSelectedUnit = createSelector(
     userSettings: IAdminUserSettings | undefined,
     units: IUnit[],
   ): IUnit | undefined =>
-    units.find((unit): boolean => unit._id === userSettings?.selectedUnitId),
+    units.find((unit): boolean => unit.id === userSettings?.selectedUnitId),
 );

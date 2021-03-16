@@ -95,19 +95,19 @@ export class LanesBodyComponent implements OnDestroy {
           // Unit lanes
           this.unitLanes.forEach((lane: IDetailedLane): void => {
             lane.placedCount = rawPlacedItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane.id,
             ).length;
             lane.processingCount = rawProcessingItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane.id,
             ).length;
             lane.readyCount = rawReadyItems.filter(
-              (i): boolean => i.laneId === lane._id,
+              (i): boolean => i.laneId === lane.id,
             ).length;
           });
 
           // Default lane first
           this.unitLanes.unshift({
-            _id: 'default',
+            id: 'default',
             name: this._translateService.instant('dashboard.defaultLane'),
             color: DEFAULT_LANE_COLOR,
             placedCount: rawPlacedItems.filter(

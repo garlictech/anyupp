@@ -2,7 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (adminUser && adminUser._id
+        (adminUser && adminUser.id
           ? 'adminUsers.editAdminUser'
           : 'adminUsers.newAdminUser'
         ) | translate
@@ -50,6 +50,7 @@
 
       <bgap-form-contact-group
         [contactFormGroup]="dialogForm | asFormGroup"
+        [showAddressForm]="false"
       ></bgap-form-contact-group>
 
       <div class="mt-20">

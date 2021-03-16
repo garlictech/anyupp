@@ -1,3 +1,4 @@
+import * as ecr from '@aws-cdk/aws-ecr';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
@@ -26,20 +27,26 @@ export const configurePermissions = (
   resource: iam.IGrantable,
   prefix: string,
 ) => {
-  secretsManager.secrets.grantRead(resource);
+  secretsManager.pipelineSecrets.grantRead(resource);
+  secretsManager.pipelineSecrets.grantRead(resource);
 
   [
-    'UserPoolClientId',
-    'UserPoolId',
-    'UserPoolDomain',
+    'consumerWebUserPoolClientId',
+    'consumerNativeUserPoolClientId',
+    'consumerUserPoolDomain',
     'IdentityPoolId',
     'GraphqlApiKey',
     'GraphqlApiUrl',
-    'googleClientId',
-    'facebookAppId',
-    'stripePublishableKey',
-    'AdminSiteUrl',
     'StripeWebhookEndpoint',
+    'googleClientId',
+    'stripePublishableKey',
+    'facebookAppId',
+    'AdminSiteUrl',
+    'adminWebUserPoolClientId',
+    'adminNativeUserPoolClientId',
+    'adminUserPoolId',
+    'adminUserPoolDomain',
+    'AdminAmplifyAppId',
   ].forEach(param =>
     ssm.StringParameter.fromStringParameterName(
       stack,
@@ -61,26 +68,42 @@ export const createBuildProject = (
       version: '0.2',
       phases: {
         install: {
-          commands: ['yarn'],
+          commands: [
+            `sh ./tools/setup-aws-environment.sh`,
+            'yarn',
+            'npm install -g @aws-amplify/cli',
+          ],
         },
         pre_build: {
           commands: [
+            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
           ],
         },
         build: {
           commands: [
+            `yarn nx build admin-amplify-app --stage=${stage}`,
             `yarn nx build admin ${adminConfig}`,
             `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${appConfig.name}`,
           ],
+        },
+        post_build: {
+          commands: [`yarn nx deploy admin-amplify-app`],
         },
       },
       artifacts: {
         files: ['apps/infrastructure/anyupp-backend-stack/cdk.out/**/*'],
       },
+      env: {
+        'secrets-manager': {
+          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
+          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
+        },
+      },
     }),
     cache,
     environment: {
+      //      buildImage: utils.getBuildImage(stack),
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
@@ -184,6 +207,34 @@ export const configurePRNotifications = (
   });
 };
 
+export const configureDockerImageNotifications = (
+  stack: sst.Stack,
+  resourceArn: string,
+  chatbot: chatbot.SlackChannelConfiguration,
+  label: string,
+): void => {
+  new codestarnotifications.CfnNotificationRule(
+    stack,
+    label + 'BuildNotification',
+    {
+      detailType: 'FULL',
+      eventTypeIds: [
+        'codebuild-project-build-state-in-progress',
+        'codebuild-project-build-state-failed',
+        'codebuild-project-build-state-succeeded',
+      ],
+      name: `AnyUppDockerImageNotification${label}`,
+      resource: resourceArn,
+      targets: [
+        {
+          targetAddress: chatbot.slackChannelConfigurationArn,
+          targetType: 'AWSChatbotSlack',
+        },
+      ],
+    },
+  );
+};
+
 export const copyParameter = (
   paramName: string,
   fromStage: string,
@@ -206,4 +257,17 @@ export const copyParameter = (
     parameterName: `${projectPrefix(toStage)}-${paramName}`,
     stringValue: param,
   });
+};
+
+export const getBuildImage = (stack: sst.Stack): codebuild.IBuildImage => {
+  const buildDockerRepo = ecr.Repository.fromRepositoryName(
+    stack,
+    'CodebuildDockerRepo',
+    'aws-codebuild-core',
+  );
+
+  return codebuild.LinuxBuildImage.fromEcrRepository(
+    buildDockerRepo,
+    'latest-amd64',
+  );
 };

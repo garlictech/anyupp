@@ -27,7 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
-  _id?: string;
+  id?: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
@@ -43,7 +43,7 @@ export interface IProductVariantsObject {
 }
 
 export interface IProduct {
-  _id: string;
+  id: string;
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
@@ -61,7 +61,7 @@ export interface IProduct {
 }
 
 export interface IGeneratedProduct {
-  _id: string;
+  id: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
   image: string;

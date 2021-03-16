@@ -41,8 +41,8 @@ export class UserFormComponent
   public submit(): void {
     /*
     if (this.dialogForm?.valid) {
-      if (this.user?._id) {
-        this._dataService.updateUser(this.user._id, this.dialogForm?.value).then(
+      if (this.user?.id) {
+        this._dataService.updateUser(this.user.id, this.dialogForm?.value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,
@@ -97,8 +97,8 @@ export class UserFormComponent
     this.dialogForm.controls.profileImage.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.user, '_id')) {
-      this._dataService.updateUserProfileImagePath(this.user._id, imagePath).then((): void => {
+    if (this.user?.id) {
+      this._dataService.updateUserProfileImagePath(this.user.id, imagePath).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
       });
     } else {
@@ -111,8 +111,8 @@ export class UserFormComponent
     delete this.user.profileImage;
 
     // Update existing user's image
-    if (_get(this.user, '_id')) {
-      this._dataService.updateUserProfileImagePath(this.user._id, null).then((): void => {
+    if (this.user?.id) {
+      this._dataService.updateUserProfileImagePath(this.user.id, null).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
       });
     } else {

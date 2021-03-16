@@ -26,11 +26,14 @@ export class AnyUppStack extends Stack {
       facebookClientId: paramsStack.facebookAppId,
       facebookClientSecret: secretsManagerStack.facebookAppSecret,
     });
+
     new AppsyncAppStack(scope, 'appsync', {
-      userPool: cognitoStack.userPool,
+      consumerUserPool: cognitoStack.consumerUserPool,
+      adminUserPool: cognitoStack.adminUserPool,
       secretsManager: secretsManagerStack.secretsManager,
       dynamoDBStack,
     });
+
     new StripeStack(scope, 'stripe');
     new DynamoDBSeederStack(scope, 'dynamoDBSeeder', {
       dynamoDBStack,

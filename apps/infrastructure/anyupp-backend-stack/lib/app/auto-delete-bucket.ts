@@ -1,6 +1,11 @@
-import { Construct, RemovalPolicy, Duration } from '@aws-cdk/core';
+import {
+  Construct,
+  RemovalPolicy,
+  Duration,
+  CustomResource,
+} from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-
+import { Provider } from '@aws-cdk/custom-resources';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
 import path from 'path';
 
@@ -24,5 +29,17 @@ export class AutoDeleteBucket extends Bucket {
 
     // allow the bucket contents to be read and deleted by the lambda
     this.grantReadWrite(adlambda);
+
+    const provider = new Provider(this, 'ElasticsearchIndexProvider', {
+      onEventHandler: adlambda,
+    });
+
+    new CustomResource(this, 'AutoBucket', {
+      serviceToken: provider.serviceToken,
+      resourceType: 'Custom::AutoDeleteBucket',
+      properties: {
+        bucketName: this.bucketName,
+      },
+    });
   }
 }

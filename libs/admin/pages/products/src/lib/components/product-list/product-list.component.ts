@@ -1,4 +1,4 @@
-import { get as _get } from 'lodash-es';
+
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
@@ -62,20 +62,20 @@ export class ProductListComponent implements OnInit, OnDestroy {
     );
   }
 
-  get selectedChainId(): string {
-    return _get(this.adminUser, 'settings.selectedChainId');
+  get selectedChainId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedChainId;
   }
 
-  get selectedGroupId(): string {
-    return _get(this.adminUser, 'settings.selectedGroupId');
+  get selectedGroupId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedGroupId;
   }
 
-  get selectedUnitId(): string {
-    return _get(this.adminUser, 'settings.selectedUnitId');
+  get selectedUnitId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedUnitId;
   }
 
-  get selectedProductCategoryId(): string {
-    return _get(this.adminUser, 'settings.selectedProductCategoryId');
+  get selectedProductCategoryId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedProductCategoryId;
   }
 
   ngOnInit(): void {
@@ -90,7 +90,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
         this._sortedChainProductIds = this.chainProducts.map(
-          (p): string => p._id,
+          (p): string => p.id,
         );
       });
 
@@ -105,7 +105,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map(
-          (p): string => p._id,
+          (p): string => p.id,
         );
       });
 
@@ -136,7 +136,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             EAdminRole.SUPERUSER,
             EAdminRole.CHAIN_ADMIN,
             EAdminRole.GROUP_ADMIN,
-          ].includes(_get(adminUser, 'roles.role'))
+          ].includes(<EAdminRole>adminUser?.roles?.role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -191,11 +191,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
       this._sortedChainProductIds.forEach(
         (productId: string, pos: number): void => {
-          this._dataService.updateChainProductPosition(
-            this.selectedChainId,
-            productId,
-            (pos + 1).toString(),
-          );
+          if (this.selectedChainId) {
+            this._dataService.updateChainProductPosition(
+              this.selectedChainId,
+              productId,
+              (pos + 1).toString(),
+            );
+          }
         },
       );
     }
@@ -219,11 +221,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
       this._sortedUnitProductIds.forEach(
         (productId: string, pos: number): void => {
-          this._dataService.updateUnitProductPosition(
-            this.selectedUnitId,
-            productId,
-            (pos + 1).toString(),
-          );
+          if (this.selectedUnitId) {
+            this._dataService.updateUnitProductPosition(
+              this.selectedUnitId,
+              productId,
+              (pos + 1).toString(),
+            );
+          }
         },
       );
     }
