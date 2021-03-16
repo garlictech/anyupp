@@ -179,7 +179,7 @@ type Group @model @auth(rules: [{ allow: public }]) {
 type StatusLog {
   userId: ID
   status: String
-  ts: Int
+  ts: Float
 }
 
 type PriceShown {
@@ -191,7 +191,6 @@ type PriceShown {
 }
 
 type OrderItem {
-  id: ID!
   created: Int
   productName: LocalizedItem
   priceShown: PriceShown
@@ -233,32 +232,57 @@ type ProductCategory @model @auth(rules: [{ allow: public }]) {
   position: String
 }
 
-# ChainProduct
+# Product
 type ChainProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  # contains
+  chainId: ID!
+  name: LocalizedItem
   description: LocalizedItem
-  extends: String
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  position: String
   image: String
+  variants: [ProductVariant]
+  # extends: String
   # ingredients
+  # tax: Int
+  # laneId: ID
+}
+
+type GroupProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
   isVisible: Boolean
   tax: Int
-  name: LocalizedItem
   position: String
-  productCategoryId: ID
+  variants: [ProductVariant]
+}
+
+type UnitProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean
+  takeaway: Boolean
   laneId: ID
-  productType: String
+  position: String
   variants: [ProductVariant]
 }
 
 type ProductVariant {
+  id: ID!
   variantName: LocalizedItem
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean
   price: Float
   availabilities: [Availability]
-  availableFrom: String
+  # availableFrom: String
   position: String
 }
 
@@ -363,23 +387,21 @@ type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
   onAdminUsersChange: AdminUser
-    @aws_subscribe(
-      mutations: ["createAdminUser", "updateAdminUser", "deleteAdminUser"]
-    )
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
   onChainsChange: Chain
-    @aws_subscribe(mutations: ["createChain", "updateChain", "deleteChain"])
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
-    @aws_subscribe(mutations: ["createGroup", "updateGroup", "deleteGroup"])
-  onUnitsChange: Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit", "deleteUnit"])
-  onUsersChange: User
-    @aws_subscribe(mutations: ["createUser", "updateUser", "deleteUser"])
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+  onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
-      mutations: [
-        "createProductCategory"
-        "updateProductCategory"
-        "deleteProductCategory"
-      ]
+      mutations: ["createProductCategory", "updateProductCategory"]
     )
+  onChainProductChange: ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+  onGroupProductChange: GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+  onUnitProductChange: UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
 }
