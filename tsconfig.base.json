@@ -159,8 +159,11 @@
       "@bgap/stripe": [
         "libs/stripe/src/index.ts"
       ],
-      "@bgap/shared/amplify": [
-        "libs/shared/amplify/src/index.ts"
+      "@bgap/integration-tests": [
+        "libs/integration-tests/src/index.ts"
+      ],
+      "@bgap/admin/amplify-api": [
+        "libs/admin/amplify-api/src/index.ts"
       ]
     }
   },

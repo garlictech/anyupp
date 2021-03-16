@@ -357,19 +357,14 @@
         "platform:nest"
       ]
     },
-    "amplify-admin": {
-      "tags": [
-        "scope:bgap",
-        "type:server",
-        "platform:nest"
-      ]
+    "integration-tests": {
+      "tags": []
     },
-    "shared-amplify": {
-      "tags": [
-        "scope:bgap",
-        "type:utils",
-        "platform:angular"
-      ]
+    "admin-amplify-app": {
+      "tags": []
+    },
+    "admin-amplify-api": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     }
   }
 }

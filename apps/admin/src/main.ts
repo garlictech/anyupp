@@ -1,12 +1,14 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import Amplify from '@aws-amplify/core';
-import { awsmobile } from '@bgap/shared/amplify';
-import { environment } from '@bgap/admin/shared/config';
-
 import { AppModule } from './app/app.module';
+import { environment } from '@bgap/admin/shared/config';
+import { awsConfig } from '@bgap/admin/amplify-api';
 
-Amplify.configure(awsmobile);
+awsConfig.oauth.redirectSignIn = `${window.location.origin}/admin/dashboard`;
+awsConfig.oauth.redirectSignOut = `${window.location.origin}/auth/logout`;
+
+Amplify.configure(awsConfig);
 
 if (environment.production) {
   enableProdMode();

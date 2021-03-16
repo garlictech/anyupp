@@ -1,0 +1,1388 @@
+type Address {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location
+}
+
+type Location {
+  lat: String
+  lng: String
+}
+
+type LocalizedItem {
+  en: String
+  de: String
+  hu: String
+}
+
+type AdminUser {
+  id: ID!
+  name: String
+  profileImage: String
+  roles: AdminUserRole!
+  settings: AdminUserSettings
+  email: String
+  phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type AdminUserRole {
+  role: String!
+  entities: [AdminRoleEntity]
+}
+
+type AdminRoleEntity {
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+type AdminUserSettings {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+type CardChecks {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+type StripeMetadata {
+  key: String!
+  value: String!
+}
+
+type StripeCard {
+  brand: CardBrand
+  checks: CardChecks
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  id: ID!
+  object: String!
+  metadata: [StripeMetadata!]!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type StartStripePaymentOutput {
+  clientSecret: String!
+  status: String!
+}
+
+type Chain {
+  id: ID!
+  name: String
+  description: LocalizedItem
+  style: ChainStyle
+  isActive: Boolean
+  address: Address
+  email: String
+  phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ChainStyle {
+  colors: ChainStyleColors
+  images: ChainStyleImages
+}
+
+type ChainStyleColors {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
+type Group {
+  id: ID!
+  chainId: ID!
+  name: String
+  description: LocalizedItem
+  currency: String
+  address: Address
+  email: String
+  phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type StatusLog {
+  userId: ID
+  status: String
+  ts: Float
+}
+
+type PriceShown {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type OrderItem {
+  created: Int
+  productName: LocalizedItem
+  priceShown: PriceShown
+  productId: ID
+  quantity: Int
+  statusLog: [StatusLog]
+  variantId: ID
+  variantName: LocalizedItem
+  laneId: ID
+}
+
+type Order {
+  id: ID!
+  created: Int
+  items: [OrderItem]
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLog]
+  sumPriceShown: PriceShown
+  takeAway: Boolean
+  userId: ID
+  place: Place
+  paymentIntention: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Place {
+  seat: String
+  table: String
+}
+
+type ProductCategory {
+  id: ID!
+  chainId: ID!
+  description: LocalizedItem
+  image: String
+  name: LocalizedItem
+  position: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ChainProduct {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem
+  description: LocalizedItem
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  position: String
+  image: String
+  variants: [ProductVariant]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type GroupProduct {
+  id: ID!
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean
+  tax: Int
+  position: String
+  variants: [ProductVariant]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type UnitProduct {
+  id: ID!
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: String
+  variants: [ProductVariant]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean
+  price: Float
+  availabilities: [Availability]
+  position: String
+}
+
+type ProductVariantPack {
+  size: Float
+  unit: String
+}
+
+type Availability {
+  type: String
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float
+}
+
+type Unit {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItem
+  address: Address
+  email: String
+  phone: String
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DailySchedule
+  openingHours: WeeklySchedule
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type DailySchedule {
+  from: String
+  to: String
+}
+
+type CustomDailySchedule {
+  date: String
+  from: String
+  to: String
+}
+
+type WeeklySchedule {
+  mon: DailySchedule
+  tue: DailySchedule
+  wed: DailySchedule
+  thu: DailySchedule
+  fri: DailySchedule
+  sat: DailySchedule
+  sun: DailySchedule
+  override: [CustomDailySchedule]
+}
+
+type PaymentMode {
+  name: String!
+  caption: String
+  method: String!
+}
+
+type FloorMapData {
+  w: Int
+  h: Int
+  objects: [FloorMapDataObject]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: String!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String
+  sID: String
+}
+
+type Lane {
+  id: ID
+  name: String
+  color: String
+}
+
+type User {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  login: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"])
+  onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"])
+  onGroupsChange: Group @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+  onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onProductCategoriesChange: ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"])
+  onChainProductChange: ChainProduct @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+  onGroupProductChange: GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+  onUnitProductChange: UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+  onCreateAdminUser: AdminUser @aws_subscribe(mutations: ["createAdminUser"])
+  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"])
+  onDeleteAdminUser: AdminUser @aws_subscribe(mutations: ["deleteAdminUser"])
+  onCreateStripeCard: StripeCard @aws_subscribe(mutations: ["createStripeCard"])
+  onUpdateStripeCard: StripeCard @aws_subscribe(mutations: ["updateStripeCard"])
+  onDeleteStripeCard: StripeCard @aws_subscribe(mutations: ["deleteStripeCard"])
+  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"])
+  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"])
+  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"])
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"])
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"])
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"])
+  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"])
+  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"])
+  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"])
+  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"])
+  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"])
+  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"])
+  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"])
+  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"])
+  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"])
+  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"])
+  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"])
+  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"])
+  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"])
+  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"])
+  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"])
+  onCreateUnit: Unit @aws_subscribe(mutations: ["createUnit"])
+  onUpdateUnit: Unit @aws_subscribe(mutations: ["updateUnit"])
+  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+}
+
+input AdminUserRoleInput {
+  role: String!
+  entities: [AdminRoleEntityInput]
+}
+
+input AdminRoleEntityInput {
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+input AdminUserSettingsInput {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelAdminUserConnection {
+  items: [AdminUser]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelAdminUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  profileImage: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelAdminUserFilterInput]
+  or: [ModelAdminUserFilterInput]
+  not: ModelAdminUserFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getAdminUser(id: ID!): AdminUser
+  listAdminUsers(filter: ModelAdminUserFilterInput, limit: Int, nextToken: String): ModelAdminUserConnection
+  getStripeCard(id: ID!): StripeCard
+  listStripeCards(filter: ModelStripeCardFilterInput, limit: Int, nextToken: String): ModelStripeCardConnection
+  getChain(id: ID!): Chain
+  listChains(filter: ModelChainFilterInput, limit: Int, nextToken: String): ModelChainConnection
+  getGroup(id: ID!): Group
+  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection
+  getOrder(id: ID!): Order
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection
+  getProductCategory(id: ID!): ProductCategory
+  listProductCategorys(filter: ModelProductCategoryFilterInput, limit: Int, nextToken: String): ModelProductCategoryConnection
+  getChainProduct(id: ID!): ChainProduct
+  listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection
+  getGroupProduct(id: ID!): GroupProduct
+  listGroupProducts(filter: ModelGroupProductFilterInput, limit: Int, nextToken: String): ModelGroupProductConnection
+  getUnitProduct(id: ID!): UnitProduct
+  listUnitProducts(filter: ModelUnitProductFilterInput, limit: Int, nextToken: String): ModelUnitProductConnection
+  getUnit(id: ID!): Unit
+  listUnits(filter: ModelUnitFilterInput, limit: Int, nextToken: String): ModelUnitConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+}
+
+input CreateAdminUserInput {
+  id: ID
+  name: String
+  profileImage: String
+  roles: AdminUserRoleInput!
+  settings: AdminUserSettingsInput
+  email: String
+  phone: String
+}
+
+input UpdateAdminUserInput {
+  id: ID!
+  name: String
+  profileImage: String
+  roles: AdminUserRoleInput
+  settings: AdminUserSettingsInput
+  email: String
+  phone: String
+}
+
+input DeleteAdminUserInput {
+  id: ID
+}
+
+type Mutation {
+  createAdminUser(input: CreateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser
+  updateAdminUser(input: UpdateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser
+  deleteAdminUser(input: DeleteAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser
+  createStripeCard(input: CreateStripeCardInput!, condition: ModelStripeCardConditionInput): StripeCard
+  updateStripeCard(input: UpdateStripeCardInput!, condition: ModelStripeCardConditionInput): StripeCard
+  deleteStripeCard(input: DeleteStripeCardInput!, condition: ModelStripeCardConditionInput): StripeCard
+  createChain(input: CreateChainInput!, condition: ModelChainConditionInput): Chain
+  updateChain(input: UpdateChainInput!, condition: ModelChainConditionInput): Chain
+  deleteChain(input: DeleteChainInput!, condition: ModelChainConditionInput): Chain
+  createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group
+  updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group
+  deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group
+  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order
+  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order
+  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order
+  createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  updateProductCategory(input: UpdateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  deleteProductCategory(input: DeleteProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  createChainProduct(input: CreateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct
+  updateChainProduct(input: UpdateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct
+  deleteChainProduct(input: DeleteChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct
+  createGroupProduct(input: CreateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct
+  updateGroupProduct(input: UpdateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct
+  deleteGroupProduct(input: DeleteGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct
+  createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct
+  updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct
+  deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct
+  createUnit(input: CreateUnitInput!, condition: ModelUnitConditionInput): Unit
+  updateUnit(input: UpdateUnitInput!, condition: ModelUnitConditionInput): Unit
+  deleteUnit(input: DeleteUnitInput!, condition: ModelUnitConditionInput): Unit
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+}
+
+input ModelAdminUserConditionInput {
+  name: ModelStringInput
+  profileImage: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelAdminUserConditionInput]
+  or: [ModelAdminUserConditionInput]
+  not: ModelAdminUserConditionInput
+}
+
+input CardChecksInput {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+input StripeMetadataInput {
+  key: String!
+  value: String!
+}
+
+type ModelStripeCardConnection {
+  items: [StripeCard]
+  nextToken: String
+}
+
+input ModelCardBrandInput {
+  eq: CardBrand
+  ne: CardBrand
+}
+
+input ModelCardFundingTypeInput {
+  eq: CardFundingType
+  ne: CardFundingType
+}
+
+input ModelStripeCardFilterInput {
+  brand: ModelCardBrandInput
+  country: ModelStringInput
+  last4: ModelStringInput
+  exp_month: ModelIntInput
+  exp_year: ModelIntInput
+  fingerprint: ModelStringInput
+  funding: ModelCardFundingTypeInput
+  three_d_secure: ModelStringInput
+  id: ModelIDInput
+  object: ModelStringInput
+  and: [ModelStripeCardFilterInput]
+  or: [ModelStripeCardFilterInput]
+  not: ModelStripeCardFilterInput
+}
+
+input CreateStripeCardInput {
+  brand: CardBrand
+  checks: CardChecksInput
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  id: ID
+  object: String!
+  metadata: [StripeMetadataInput!]!
+}
+
+input UpdateStripeCardInput {
+  brand: CardBrand
+  checks: CardChecksInput
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  id: ID!
+  object: String
+  metadata: [StripeMetadataInput!]
+}
+
+input DeleteStripeCardInput {
+  id: ID
+}
+
+input ModelStripeCardConditionInput {
+  brand: ModelCardBrandInput
+  country: ModelStringInput
+  last4: ModelStringInput
+  exp_month: ModelIntInput
+  exp_year: ModelIntInput
+  fingerprint: ModelStringInput
+  funding: ModelCardFundingTypeInput
+  three_d_secure: ModelStringInput
+  object: ModelStringInput
+  and: [ModelStripeCardConditionInput]
+  or: [ModelStripeCardConditionInput]
+  not: ModelStripeCardConditionInput
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
+}
+
+input AddressInput {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: LocationInput
+}
+
+input LocationInput {
+  lat: String
+  lng: String
+}
+
+type ModelChainConnection {
+  items: [Chain]
+  nextToken: String
+}
+
+input ModelChainFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  isActive: ModelBooleanInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelChainFilterInput]
+  or: [ModelChainFilterInput]
+  not: ModelChainFilterInput
+}
+
+input CreateChainInput {
+  id: ID
+  name: String
+  description: LocalizedItemInput
+  style: ChainStyleInput
+  isActive: Boolean
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input UpdateChainInput {
+  id: ID!
+  name: String
+  description: LocalizedItemInput
+  style: ChainStyleInput
+  isActive: Boolean
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input DeleteChainInput {
+  id: ID
+}
+
+input ModelChainConditionInput {
+  name: ModelStringInput
+  isActive: ModelBooleanInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelChainConditionInput]
+  or: [ModelChainConditionInput]
+  not: ModelChainConditionInput
+}
+
+type ModelGroupConnection {
+  items: [Group]
+  nextToken: String
+}
+
+input ModelGroupFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  name: ModelStringInput
+  currency: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelGroupFilterInput]
+  or: [ModelGroupFilterInput]
+  not: ModelGroupFilterInput
+}
+
+input CreateGroupInput {
+  id: ID
+  chainId: ID!
+  name: String
+  description: LocalizedItemInput
+  currency: String
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input UpdateGroupInput {
+  id: ID!
+  chainId: ID
+  name: String
+  description: LocalizedItemInput
+  currency: String
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input DeleteGroupInput {
+  id: ID
+}
+
+input ModelGroupConditionInput {
+  chainId: ModelIDInput
+  name: ModelStringInput
+  currency: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelGroupConditionInput]
+  or: [ModelGroupConditionInput]
+  not: ModelGroupConditionInput
+}
+
+input OrderItemInput {
+  created: Int
+  productName: LocalizedItemInput
+  priceShown: PriceShownInput
+  productId: ID
+  quantity: Int
+  statusLog: [StatusLogInput]
+  variantId: ID
+  variantName: LocalizedItemInput
+  laneId: ID
+}
+
+input PriceShownInput {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+input StatusLogInput {
+  userId: ID
+  status: String
+  ts: Float
+}
+
+input PlaceInput {
+  seat: String
+  table: String
+}
+
+type ModelOrderConnection {
+  items: [Order]
+  nextToken: String
+}
+
+input ModelOrderFilterInput {
+  id: ModelIDInput
+  created: ModelIntInput
+  paymentMethod: ModelStringInput
+  staffId: ModelIDInput
+  takeAway: ModelBooleanInput
+  userId: ModelIDInput
+  paymentIntention: ModelIntInput
+  and: [ModelOrderFilterInput]
+  or: [ModelOrderFilterInput]
+  not: ModelOrderFilterInput
+}
+
+input CreateOrderInput {
+  id: ID
+  created: Int
+  items: [OrderItemInput]
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLogInput]
+  sumPriceShown: PriceShownInput
+  takeAway: Boolean
+  userId: ID
+  place: PlaceInput
+  paymentIntention: Int
+}
+
+input UpdateOrderInput {
+  id: ID!
+  created: Int
+  items: [OrderItemInput]
+  paymentMethod: String
+  staffId: ID
+  statusLog: [StatusLogInput]
+  sumPriceShown: PriceShownInput
+  takeAway: Boolean
+  userId: ID
+  place: PlaceInput
+  paymentIntention: Int
+}
+
+input DeleteOrderInput {
+  id: ID
+}
+
+input ModelOrderConditionInput {
+  created: ModelIntInput
+  paymentMethod: ModelStringInput
+  staffId: ModelIDInput
+  takeAway: ModelBooleanInput
+  userId: ModelIDInput
+  paymentIntention: ModelIntInput
+  and: [ModelOrderConditionInput]
+  or: [ModelOrderConditionInput]
+  not: ModelOrderConditionInput
+}
+
+type ModelProductCategoryConnection {
+  items: [ProductCategory]
+  nextToken: String
+}
+
+input ModelProductCategoryFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  image: ModelStringInput
+  position: ModelStringInput
+  and: [ModelProductCategoryFilterInput]
+  or: [ModelProductCategoryFilterInput]
+  not: ModelProductCategoryFilterInput
+}
+
+input CreateProductCategoryInput {
+  id: ID
+  chainId: ID!
+  description: LocalizedItemInput
+  image: String
+  name: LocalizedItemInput
+  position: String
+}
+
+input UpdateProductCategoryInput {
+  id: ID!
+  chainId: ID
+  description: LocalizedItemInput
+  image: String
+  name: LocalizedItemInput
+  position: String
+}
+
+input DeleteProductCategoryInput {
+  id: ID
+}
+
+input ModelProductCategoryConditionInput {
+  chainId: ModelIDInput
+  image: ModelStringInput
+  position: ModelStringInput
+  and: [ModelProductCategoryConditionInput]
+  or: [ModelProductCategoryConditionInput]
+  not: ModelProductCategoryConditionInput
+}
+
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean
+  price: Float
+  availabilities: [AvailabilityInput]
+  position: String
+}
+
+input ProductVariantPackInput {
+  size: Float
+  unit: String
+}
+
+input AvailabilityInput {
+  type: String
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float
+}
+
+type ModelChainProductConnection {
+  items: [ChainProduct]
+  nextToken: String
+}
+
+input ModelChainProductFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  isVisible: ModelBooleanInput
+  position: ModelStringInput
+  image: ModelStringInput
+  and: [ModelChainProductFilterInput]
+  or: [ModelChainProductFilterInput]
+  not: ModelChainProductFilterInput
+}
+
+input CreateChainProductInput {
+  id: ID
+  chainId: ID!
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  position: String
+  image: String
+  variants: [ProductVariantInput]
+}
+
+input UpdateChainProductInput {
+  id: ID!
+  chainId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  position: String
+  image: String
+  variants: [ProductVariantInput]
+}
+
+input DeleteChainProductInput {
+  id: ID
+}
+
+input ModelChainProductConditionInput {
+  chainId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  isVisible: ModelBooleanInput
+  position: ModelStringInput
+  image: ModelStringInput
+  and: [ModelChainProductConditionInput]
+  or: [ModelChainProductConditionInput]
+  not: ModelChainProductConditionInput
+}
+
+type ModelGroupProductConnection {
+  items: [GroupProduct]
+  nextToken: String
+}
+
+input ModelGroupProductFilterInput {
+  id: ModelIDInput
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  isVisible: ModelBooleanInput
+  tax: ModelIntInput
+  position: ModelStringInput
+  and: [ModelGroupProductFilterInput]
+  or: [ModelGroupProductFilterInput]
+  not: ModelGroupProductFilterInput
+}
+
+input CreateGroupProductInput {
+  id: ID
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean
+  tax: Int
+  position: String
+  variants: [ProductVariantInput]
+}
+
+input UpdateGroupProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  isVisible: Boolean
+  tax: Int
+  position: String
+  variants: [ProductVariantInput]
+}
+
+input DeleteGroupProductInput {
+  id: ID
+}
+
+input ModelGroupProductConditionInput {
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  isVisible: ModelBooleanInput
+  tax: ModelIntInput
+  position: ModelStringInput
+  and: [ModelGroupProductConditionInput]
+  or: [ModelGroupProductConditionInput]
+  not: ModelGroupProductConditionInput
+}
+
+type ModelUnitProductConnection {
+  items: [UnitProduct]
+  nextToken: String
+}
+
+input ModelUnitProductFilterInput {
+  id: ModelIDInput
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  unitId: ModelIDInput
+  isVisible: ModelBooleanInput
+  takeaway: ModelBooleanInput
+  laneId: ModelIDInput
+  position: ModelStringInput
+  and: [ModelUnitProductFilterInput]
+  or: [ModelUnitProductFilterInput]
+  not: ModelUnitProductFilterInput
+}
+
+input CreateUnitProductInput {
+  id: ID
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: String
+  variants: [ProductVariantInput]
+}
+
+input UpdateUnitProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  unitId: ID
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: String
+  variants: [ProductVariantInput]
+}
+
+input DeleteUnitProductInput {
+  id: ID
+}
+
+input ModelUnitProductConditionInput {
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  unitId: ModelIDInput
+  isVisible: ModelBooleanInput
+  takeaway: ModelBooleanInput
+  laneId: ModelIDInput
+  position: ModelStringInput
+  and: [ModelUnitProductConditionInput]
+  or: [ModelUnitProductConditionInput]
+  not: ModelUnitProductConditionInput
+}
+
+input PaymentModeInput {
+  name: String!
+  caption: String
+  method: String!
+}
+
+input FloorMapDataInput {
+  w: Int
+  h: Int
+  objects: [FloorMapDataObjectInput]
+}
+
+input FloorMapDataObjectInput {
+  id: ID!
+  t: String!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String
+  sID: String
+}
+
+input LaneInput {
+  id: ID
+  name: String
+  color: String
+}
+
+input DailyScheduleInput {
+  from: String
+  to: String
+}
+
+input WeeklyScheduleInput {
+  mon: DailyScheduleInput
+  tue: DailyScheduleInput
+  wed: DailyScheduleInput
+  thu: DailyScheduleInput
+  fri: DailyScheduleInput
+  sat: DailyScheduleInput
+  sun: DailyScheduleInput
+  override: [CustomDailyScheduleInput]
+}
+
+input CustomDailyScheduleInput {
+  date: String
+  from: String
+  to: String
+}
+
+type ModelUnitConnection {
+  items: [Unit]
+  nextToken: String
+}
+
+input ModelUnitFilterInput {
+  id: ModelIDInput
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  isActive: ModelBooleanInput
+  isAcceptingOrders: ModelBooleanInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelUnitFilterInput]
+  or: [ModelUnitFilterInput]
+  not: ModelUnitFilterInput
+}
+
+input CreateUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DailyScheduleInput
+  openingHours: WeeklyScheduleInput
+}
+
+input UpdateUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DailyScheduleInput
+  openingHours: WeeklyScheduleInput
+}
+
+input DeleteUnitInput {
+  id: ID
+}
+
+input ModelUnitConditionInput {
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  isActive: ModelBooleanInput
+  isAcceptingOrders: ModelBooleanInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelUnitConditionInput]
+  or: [ModelUnitConditionInput]
+  not: ModelUnitConditionInput
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  login: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  login: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  login: String
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  login: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}

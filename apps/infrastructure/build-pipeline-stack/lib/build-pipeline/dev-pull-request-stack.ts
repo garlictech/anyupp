@@ -33,17 +33,22 @@ export class DevPullRequestBuildStack extends sst.Stack {
           version: '0.2',
           phases: {
             install: {
-              commands: ['yarn'],
+              commands: [
+                `sh ./tools/setup-aws-environment.sh`,
+                'yarn',
+                'npm install -g @aws-amplify/cli',
+              ],
             },
             pre_build: {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
               ],
             },
             build: {
               commands: [
                 `yarn nx affected:lint --base=${stage} --with-deps`,
-                `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --codeCoverage --coverageReporters=clover`,
+                `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin`,
                 `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${utils.appConfig.name}`,
               ],
@@ -55,9 +60,18 @@ export class DevPullRequestBuildStack extends sst.Stack {
               'file-format': 'CLOVERXML',
             },
           },
+          env: {
+            'secrets-manager': {
+              AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
+              AWS_SECRET_ACCESS_KEY:
+                'codebuild:codebuild-aws_secret_access_key',
+            },
+          },
         }),
         environment: {
           buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+
+          //          buildImage: utils.getBuildImage(this),
         },
       },
     );
@@ -70,11 +84,5 @@ export class DevPullRequestBuildStack extends sst.Stack {
       props.chatbot,
       stage,
     );
-    //new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
-    //  allowedPattern: '.*',
-    //  description: 'ARN of the PR build project',
-    //  parameterName: app.logicalPrefixedName('DevPullRequestBuildStackArn'),
-    //  stringValue: project.projectArn,
-    //});
   }
 }

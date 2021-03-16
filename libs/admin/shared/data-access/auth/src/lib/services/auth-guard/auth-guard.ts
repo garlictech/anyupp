@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { API, GraphQLResult } from '@aws-amplify/api';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { GetAdminUserQuery, Queries } from '@bgap/shared/amplify';
+import { GetAdminUserQuery, Queries } from '@bgap/admin/amplify-api';
 import {
   EAdminRole,
   IAdminUser,
