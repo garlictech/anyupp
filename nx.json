@@ -178,11 +178,8 @@
     "integration-tests": {
       "tags": []
     },
-    "admin-amplify-app": {
-      "tags": []
-    },
     "admin-amplify-api": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }

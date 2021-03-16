@@ -16,7 +16,6 @@ export const orderRequestHandler = {
   createOrderFromCart(
     requestPayload: CreateOrderFromCartRequest,
     graphqlApiClient: GraphqlApiClient,
-    documentClient: AWS.DynamoDB.DocumentClient,
   ) {
     missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
       'userId',
@@ -36,7 +35,6 @@ export const orderRequestHandler = {
       ...requestPayload,
       ...requestPayload.input,
       graphqlApiClient,
-      documentClient,
     });
   },
 };

@@ -52,5 +52,5 @@ generated
 /libs/shared/config/src/lib/*/*
 cdk.out
 
-/libs/admin/amplify/src/lib/aws-exports.js
+/libs/admin/amplify-api/src/lib/aws-exports.js
 /apps/admin-amplify-app/amplify

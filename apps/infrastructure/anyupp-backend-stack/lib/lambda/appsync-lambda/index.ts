@@ -4,8 +4,7 @@ import { stripeRequestHandler } from '@bgap/api/stripe';
 import { orderRequestHandler } from '@bgap/api/order';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { IAmplifyApiConfig } from '@bgap/shared/types';
-import { CONFIG } from '@bgap/shared/config';
-import AWS from 'aws-sdk';
+import { awsConfig } from '@bgap/admin/amplify-api';
 
 export interface AnyuppRequest {
   handler: string;
@@ -13,13 +12,8 @@ export interface AnyuppRequest {
 }
 
 export const AWS_CONFIG: IAmplifyApiConfig = {
-  aws_appsync_graphqlEndpoint: CONFIG.GraphqlApiUrlAmplify,
-  api_key: CONFIG.GraphqlApiKeyAmplify,
-  aws_appsync_region: 'eu-west-1',
-  aws_project_region: 'eu-west-1',
-  aws_cognito_region: 'eu-west-1',
-  aws_user_pools_id: CONFIG.UserPoolId,
-  aws_user_pools_web_client_id: CONFIG.UserPoolClientId,
+  api_key: awsConfig.aws_appsync_apiKey,
+  ...awsConfig,
 };
 
 export const backendGraphQlClient = GraphqlApiFp.createPublicClient(
@@ -27,10 +21,6 @@ export const backendGraphQlClient = GraphqlApiFp.createPublicClient(
   console,
   true,
 );
-
-const documentClient = new AWS.DynamoDB.DocumentClient({
-  convertEmptyValues: true,
-});
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -69,7 +59,6 @@ export const handler: Handler<AnyuppRequest, unknown> = (
       return orderRequestHandler.createOrderFromCart(
         event.payload as any,
         backendGraphQlClient,
-        documentClient,
       );
     }
     default:
