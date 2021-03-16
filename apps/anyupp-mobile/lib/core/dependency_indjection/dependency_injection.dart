@@ -122,7 +122,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<FaceRepository>(() => FaceRepository());
-  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>()));
+  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
 
   // TODO!!! AZ AMPLIFY DATASTORE DEMO MIATT!!!

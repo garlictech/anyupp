@@ -34,7 +34,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3)).then(
+    Future.delayed(Duration(seconds: 1)).then(
       (value) => getIt<OrderBloc>().add(
         StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
       ),

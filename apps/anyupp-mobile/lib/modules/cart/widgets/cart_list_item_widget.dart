@@ -13,11 +13,10 @@ import 'package:fa_prev/modules/cart/cart.dart';
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
-  final User user;
   final OrderItem order;
   final GeneratedProduct product;
   final ProductVariant variant;
-  CartListItemWidget({Key key, this.user, this.unit, this.order, this.product, this.variant}) : super(key: key);
+  CartListItemWidget({Key key, this.unit, this.order, this.product, this.variant}) : super(key: key);
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -168,7 +167,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _addOrder() {
     BlocProvider.of<CartBloc>(context).add(
-        AddProductToCartAction(widget.user, widget.unit, widget.product, widget.variant));
+        AddProductToCartAction(widget.unit, widget.product, widget.variant));
   }
 
   void _removeOrder() {

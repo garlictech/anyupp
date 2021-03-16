@@ -57,7 +57,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           if (state is UnitSelected) {
             return TabBarView(physics: BouncingScrollPhysics(), children: [
               OrderStatusScreen(unit: state.unit),
-              OrderHistoryScreen(),
+              OrderHistoryScreen(unit: state.unit),
             ]);
           }
 

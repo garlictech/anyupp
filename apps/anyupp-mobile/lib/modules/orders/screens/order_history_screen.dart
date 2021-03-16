@@ -9,15 +9,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
+  final GeoUnit unit;
+
+  const OrderHistoryScreen({Key key, @required this.unit}) : super(key: key);
+
   @override
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticKeepAliveClientMixin<OrderHistoryScreen> {
-  OrderRepository _orderService = getIt<OrderRepository>();
+class _OrderHistoryScreenState extends State<OrderHistoryScreen>
+    with AutomaticKeepAliveClientMixin<OrderHistoryScreen> {
+  OrderRepository _repository = getIt<OrderRepository>();
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1)).then(
+      (value) => getIt<OrderBloc>().add(
+        StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    getIt<OrderBloc>().add(StopOrderHistoryListSubscription());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +50,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
             return StreamBuilder<List<Order>>(
-              stream: _orderService.getOrderHistory(unit.chainId, unit.id),
+              stream: _repository.getOrderHistory(unit.chainId, unit.id),
               builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
                 if (historySnapshot.hasData) {
                   if (historySnapshot.data.isEmpty) {
@@ -85,14 +106,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> with AutomaticK
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         // Display cart icon
-       Image.asset(
-                'assets/images/no-items-in-cart-icon.png',
-                width: 128.0,
-                fit: BoxFit.fitWidth,
-              ),
-              SizedBox(
-                height: 60.0,
-              ),
+        Image.asset(
+          'assets/images/no-items-in-cart-icon.png',
+          width: 128.0,
+          fit: BoxFit.fitWidth,
+        ),
+        SizedBox(
+          height: 60.0,
+        ),
         Center(
 
             // Display message to the user

@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 
 class CartRepository {
+  final IAuthProvider _authProvider;
   final IOrdersProvider _ordersProvider;
 
-  CartRepository(this._ordersProvider);
+  CartRepository(this._ordersProvider, this._authProvider);
 
-  Future<Cart> addProductToCart(User user, GeoUnit unit, GeneratedProduct product, ProductVariant variant) async {
+  Future<Cart> addProductToCart(GeoUnit unit, GeneratedProduct product, ProductVariant variant) async {
     Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
+    User user = await _authProvider.getAuthenticatedUserProfile();
     if (_cart == null || _cart.order == null || _cart.order.items == null) {
       _cart = Cart(
         userId: user.id,
@@ -18,7 +21,7 @@ class CartRepository {
         order: Order(
           unitId: unit.id,
           userId: user.id,
-          items: List<OrderItem>(),
+          items: [],
           place: await getPlacePref(),
         ),
       );

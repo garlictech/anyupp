@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:fa_prev/graphql/websocket_link_w_headers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -25,47 +24,18 @@ ValueNotifier<GraphQLClient> getGraphQLClient({
     "x-api-key": apiKey,
     "host": Uri.parse(url).host,
   };
-  print('**** GraphQL Client.headers=$headers');
   final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
-  // WSLink _wsLink = WSLink(
-  //   '$websocketUrl?header=$encodedHeader&payload=e30=',
-  //       config: SocketClientConfig(
-  //         // serializer: AppSyncRequest(authHeader: headers),
-  //         autoReconnect: true,
-  //         delayBetweenReconnectionAttempts: Duration(seconds: 5), // Default
-  //         inactivityTimeout: Duration(seconds: 30), // Default
-  //         queryAndMutationTimeout: Duration(seconds: 10), // Default
-  //       ),
-  //       headers: headers,
-  // );
   final _wsLink = WebSocketLink('$websocketUrl?header=$encodedHeader&payload=e30=',
       config: SocketClientConfig(
         serializer: AppSyncRequest(authHeader: headers),
         autoReconnect: true,
-        delayBetweenReconnectionAttempts: Duration(seconds: 1), // Default
-        inactivityTimeout: Duration(seconds: 30), // Default
-        queryAndMutationTimeout: Duration(seconds: 30), // Default
+        delayBetweenReconnectionAttempts: Duration(seconds: 1), // Default 5
+        inactivityTimeout: Duration(minutes: 30), // Default 30 seconds
+        queryAndMutationTimeout: Duration(seconds: 30), // Default 10
       ));
-  print('**** GraphQL Client.wslink=$_wsLink');
 
   _link = Link.split((request) => request.isSubscription, _wsLink, _link);
-  print('**** GraphQL Client.final_link=$_link');
-
-  // final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
-  // /// subscriptions must be split otherwise `HttpLink` will. swallow them
-  // if (websocketUrl != null) {
-  //   final _wsLink = WebSocketLink(
-  //       '$websocketUrl?header=$encodedHeader&payload=e30=',
-  //       config: SocketClientConfig(
-  //         serializer: AppSyncRequest(authHeader: headers),
-  //         autoReconnect: true,
-  //         delayBetweenReconnectionAttempts: Duration(seconds: 5), // Default
-  //         inactivityTimeout: Duration(seconds: 30), // Default
-  //         queryAndMutationTimeout: Duration(seconds: 10), // Default
-  //       ));
-  //   _link = Link.split((request) => request.isSubscription, _wsLink, _link);
-  // }
 
   return  ValueNotifier(GraphQLClient(
     cache: GraphQLCache(),

@@ -19,9 +19,8 @@ import 'package:fa_prev/shared/nav.dart';
 class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
-  final User user;
   final GeneratedProduct item;
-  ProductDetailsScreen({Key key, this.user, this.item, this.heroId, this.unit}) : super(key: key);
+  ProductDetailsScreen({Key key, @required this.item, @required this.heroId, @required this.unit}) : super(key: key);
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -351,7 +350,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void _addOrder(ProductVariant variant) {
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-      widget.user, 
       widget.unit,
       widget.item,
       variant,

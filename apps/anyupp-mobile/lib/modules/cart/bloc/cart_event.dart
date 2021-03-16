@@ -22,15 +22,14 @@ class GetCurrentCartAction extends BaseCartAction {
 }
 
 class AddProductToCartAction extends BaseCartAction {
-  final User user;
   final GeoUnit unit;
   final GeneratedProduct product;
   final ProductVariant variant;
 
-  const AddProductToCartAction(this.user, this.unit, this.product, this.variant);
+  const AddProductToCartAction(this.unit, this.product, this.variant);
 
   @override
-  List<Object> get props => [user, unit, product, variant];
+  List<Object> get props => [unit, product, variant];
 }
 
 class RemoveProductFromCartAction extends BaseCartAction {
