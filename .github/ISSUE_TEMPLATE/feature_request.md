@@ -1,6 +1,7 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Use this template to help streamline the information you collect from stakeholders
+  who submit requests, enhancements, or product improvements.
 title: ''
 labels: ''
 assignees: ''
