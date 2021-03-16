@@ -13,6 +13,9 @@ APPID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-AdminAmplifyAppId" | \
 USERPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminUserPoolId" | \
   jq -r '.Parameter.Value')
 
+IDENTITYPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-IdentityPoolId" | \
+  jq -r '.Parameter.Value')
+
 WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminWebUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
@@ -28,6 +31,7 @@ ANGULARCONFIG="{\
 
 AUTHCONFIG="{\
 \"userPoolId\":\"$USERPOOLID\",\
+\"identityPoolId\":\"$IDENTITYPOOLID\",\
 \"webClientId\":\"$WEBCLIENTID\",\
 \"nativeClientId\":\"$NATIVECLIENTID\"\
 }"
