@@ -257,8 +257,8 @@ export class CognitoStack extends Stack {
           authorizationCodeGrant: true,
         },
         scopes: [cognito.OAuthScope.OPENID],
-        callbackUrls: ['gtrack://signin/'],
-        logoutUrls: ['gtrack://signout/'],
+        callbackUrls: ['anyupp://signin/'],
+        logoutUrls: ['anyupp://signout/'],
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.GOOGLE,
