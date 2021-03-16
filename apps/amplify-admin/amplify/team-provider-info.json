@@ -13,12 +13,7 @@
     },
     "categories": {
       "auth": {
-        "amplifyadminc8170203": {
-          "userPoolId": "eu-west-1_uQinis9TS",
-          "userPoolName": "dev-anyupp-backend-admin-user-pool",
-          "webClientId": "4hq082sd8sngpd5ei6gueh2h7s",
-          "nativeClientId": "4te6am9eoaq6e3ve904e3ftft3"
-        }
+        "amplifyadmin593bedfb": {}
       }
     }
   }

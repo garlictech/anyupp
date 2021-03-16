@@ -1,10 +1,11 @@
 import { ImageCompressorService } from '@bgap/admin/shared/utils';
 import { StorageService } from '@bgap/admin/shared/data-access/storage';
-
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AmplifyService } from 'aws-amplify-angular';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { EImageType } from '@bgap/shared/types';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-clickable-image-input',
   templateUrl: './form-clickable-image-input.component.html',
   styleUrls: ['./form-clickable-image-input.component.scss'],
@@ -27,8 +28,10 @@ export class FormClickableImageInputComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
+    private _amplifyService: AmplifyService,
     private _storageService: StorageService,
     private _imageCompressorService: ImageCompressorService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.caption = '';
   }
@@ -66,15 +69,23 @@ export class FormClickableImageInputComponent {
   }
 
   private _uploadFile(file: File): void {
-    this._storageService.uploadFile(this.uploadFolderPath || '', file).then(
-      (filePath: string): void => {
+    const key = `${this.uploadFolderPath || ''}/${file.name}`;
+
+    this._amplifyService.storage().put(key, file, {
+      level: 'public',
+      contentType: file.type
+    }).then((success: any) => {
+      console.error('success', success);
+      this._amplifyService.storage().get(success.key).then((filePath: string) => {
         this.imagePath = filePath;
-        this.uploadCallbackFn(this.imagePath, this.callbackParam);
-      },
-      (err): void => {
-        console.error('FILE UPLOAD ERROR', err);
-      },
-    );
+        // this.uploadCallbackFn(success.key, this.callbackParam);
+        this.uploadCallbackFn(filePath, this.callbackParam);
+
+        this._changeDetectorRef.detectChanges();
+      });
+    }).catch((error: any) => {
+      console.error('Upload error', error);
+    });
   }
 
   public remove(): void {

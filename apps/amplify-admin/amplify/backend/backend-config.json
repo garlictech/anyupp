@@ -18,12 +18,17 @@
     }
   },
   "auth": {
-    "amplifyadminc8170203": {
+    "amplifyadmin593bedfb": {
       "service": "Cognito",
-      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false
+    }
+  },
+  "storage": {
+    "s3d741f4a7": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

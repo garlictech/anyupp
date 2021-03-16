@@ -4,7 +4,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import { Mutations, Queries, Subscriptions } from '@bgap/admin/amplify';
+import { Mutations, Queries, Subscriptions } from '@bgap/shared/amplify';
 import { IAmplifyModel } from '@bgap/shared/types';
 
 import {

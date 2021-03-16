@@ -29,12 +29,12 @@
         <div class="col-md-8"></div>
         <div class="col-md-4">
           <bgap-form-clickable-image-input
-            [imagePath]="userImage"
+            [imagePath]="userImageKey"
             [imageType]="eImageType.JPEG"
             [uploadCallbackFn]="imageUploadCallback"
             [removeCallbackFn]="imageRemoveCallback"
             [maxSize]="480"
-            uploadFolderPath="/users/"
+            uploadFolderPath="admin-users"
             width="80px"
             height="80px"
             borderRadius="50%"

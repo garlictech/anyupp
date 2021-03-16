@@ -31,7 +31,7 @@ export class AdminUserFormComponent
     this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
-  get userImage(): string {
+  get userImageKey(): string {
     return this.adminUser?.profileImage || '';
   }
 
@@ -106,9 +106,10 @@ export class AdminUserFormComponent
     }
   }
 
-  public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm?.controls.profileImage.setValue(imagePath);
+  public imageUploadCallback = (storageKey: string): void => {
+    this.dialogForm?.controls.profileImage.setValue(storageKey);
 
+    console.error('imageUploadCallback', storageKey);
     // Update existing user's image
     if (this.adminUser?.id) {
       console.error('TODO implement AWS');

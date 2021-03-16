@@ -7,19 +7,22 @@ const awsmobile = {
     "aws_appsync_region": "eu-west-1",
     "aws_appsync_authenticationType": "API_KEY",
     "aws_appsync_apiKey": "da2-nufi3wftrrblnm5ukf5tn7f6qy",
+    "aws_cognito_identity_pool_id": "eu-west-1:942d39b6-c1f1-4ed9-95f4-6cd9eeef821a",
     "aws_cognito_region": "eu-west-1",
-    "aws_user_pools_id": "eu-west-1_uQinis9TS",
-    "aws_user_pools_web_client_id": "4hq082sd8sngpd5ei6gueh2h7s",
+    "aws_user_pools_id": "eu-west-1_B6tKQTDzc",
+    "aws_user_pools_web_client_id": "3u0u2n4inn1spfep5r9q1p0rk3",
     "oauth": {
-        "domain": "dev-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
+        "domain": "dev-anyupp-backend-with-storage-admin.auth.eu-west-1.amazoncognito.com",
         "scope": [
             "openid"
         ],
-        "redirectSignIn": "https://dev.admin.anyupp-backend.anyupp.com/admin/dashboard",
-        "redirectSignOut": "https://dev.admin.anyupp-backend.anyupp.com/auth/logout",
+        "redirectSignIn": "http://localhost:4200/admin/dashboard",
+        "redirectSignOut": "http://localhost:4200/auth/login",
         "responseType": "code"
     },
-    "federationTarget": "COGNITO_USER_POOLS"
+    "federationTarget": "COGNITO_USER_POOLS",
+    "aws_user_files_s3_bucket": "amplifyadminaac0cb222bde46fb87de97940d38ecc894143-dev",
+    "aws_user_files_s3_bucket_region": "eu-west-1"
 };
 
 
