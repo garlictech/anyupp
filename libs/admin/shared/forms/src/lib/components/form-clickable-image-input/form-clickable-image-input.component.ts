@@ -4,6 +4,10 @@ import { AmplifyService } from 'aws-amplify-angular';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { EImageType } from '@bgap/shared/types';
 
+interface IStorageResponse {
+  key: string;
+}
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-clickable-image-input',
@@ -74,7 +78,7 @@ export class FormClickableImageInputComponent {
     this._amplifyService.storage().put(key, file, {
       level: 'public',
       contentType: file.type
-    }).then((success: any) => {
+    }).then((success: IStorageResponse) => {
       console.error('success', success);
       this._amplifyService.storage().get(success.key).then((filePath: string) => {
         this.imagePath = filePath;
@@ -83,7 +87,7 @@ export class FormClickableImageInputComponent {
 
         this._changeDetectorRef.detectChanges();
       });
-    }).catch((error: any) => {
+    }).catch((error: unknown) => {
       console.error('Upload error', error);
     });
   }
