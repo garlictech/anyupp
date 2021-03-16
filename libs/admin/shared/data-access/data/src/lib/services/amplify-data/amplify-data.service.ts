@@ -4,41 +4,10 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import {
-  GetAdminUserQuery,
-  GetChainProductQuery,
-  GetChainQuery,
-  GetGroupQuery,
-  GetOrderQuery,
-  GetProductCategoryQuery,
-  GetUnitQuery,
-  GetUserQuery,
-  ListAdminUsersQuery,
-  ListChainProductsQuery,
-  ListChainsQuery,
-  ListGroupsQuery,
-  ListOrdersQuery,
-  ListProductCategorysQuery,
-  ListUnitsQuery,
-  ListUsersQuery,
-  Mutations,
-  OnAdminUserChangeSubscription,
-  OnChainsChangeSubscription,
-  OnGroupsChangeSubscription,
-  OnProductCategoriesChangeSubscription,
-  OnUnitsChangeSubscription,
-  OnUsersChangeSubscription,
-  Queries,
-  Subscriptions,
-} from '@bgap/admin/amplify-api';
+import { Mutations, Queries, Subscriptions } from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
-import {
-  apiQueryTypes,
-  listTypes,
-  queryTypes,
-  subscriptionTypes,
-} from './types';
+import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';
 
 interface ISubscriptionResult {
   value?: {

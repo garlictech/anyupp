@@ -23,7 +23,6 @@ type LocalizedItem {
 type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
-  name2: String
   profileImage: String
   roles: AdminUserRole!
   settings: AdminUserSettings

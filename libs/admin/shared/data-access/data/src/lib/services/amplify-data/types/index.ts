@@ -22,7 +22,7 @@ import {
   OnUnitsChangeSubscription,
   OnUsersChangeSubscription,
   OnChainProductChangeSubscription
-} from '@bgap/shared/amplify';
+} from '@bgap/admin/amplify-api';
 
 export type queryTypes = GetAdminUserQuery &
   GetChainQuery &
