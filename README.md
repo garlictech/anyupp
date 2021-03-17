@@ -122,7 +122,7 @@ amplify remove auth
 amplify import auth
 ```
 
-- Choose `Cognito User Pool only`
+- Choose `Cognito User Pool and Identity Pool Cognito User Pool only`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
 
