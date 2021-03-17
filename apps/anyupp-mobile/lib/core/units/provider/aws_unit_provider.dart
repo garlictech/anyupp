@@ -1,30 +1,22 @@
-import 'dart:convert';
-
 import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start()');
     try {
-      var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: QUERY_SEARCH_UNITS,
-        ),
-      );
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_SEARCH_UNITS),
+      ));
 
-      var response = await operation.response;
-      var data = response.data;
-      // print('***** searchUnitsNearLocation().data=$data');
-      Map<String, dynamic> json = jsonDecode(data);
-      //print('***** searchUnitsNearLocation().json=$json');
-
-      List<dynamic> items = json['listGeoUnits']['items'];
+      List<dynamic> items = result.data['listGeoUnits']['items'];
       //print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {

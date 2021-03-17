@@ -11,7 +11,13 @@ ValueNotifier<GraphQLClient> getGraphQLClient({
   String websocketUrl,
 }) {
   print('Initializing GraphQL Client. URL=$url, wsURL=$websocketUrl, key=$apiKey');
-  final HttpLink _httpLink = HttpLink(url);
+  final Map<String, String> headers = {
+    "x-api-key": apiKey,
+    "host": Uri.parse(url).host,
+  };
+  final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
+
+  final HttpLink _httpLink = HttpLink(url, defaultHeaders: headers);
 
   final AuthLink _authLink = AuthLink(
     getToken: () => 'x-api-key: $apiKey',
@@ -20,11 +26,6 @@ ValueNotifier<GraphQLClient> getGraphQLClient({
   // final Link _link = _httpLink;
   Link _link = _authLink.concat(_httpLink);
 
-  final Map<String, dynamic> headers = {
-    "x-api-key": apiKey,
-    "host": Uri.parse(url).host,
-  };
-  final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
   final _wsLink = WebSocketLink('$websocketUrl?header=$encodedHeader&payload=e30=',
       config: SocketClientConfig(
@@ -39,6 +40,6 @@ ValueNotifier<GraphQLClient> getGraphQLClient({
 
   return  ValueNotifier(GraphQLClient(
     cache: GraphQLCache(),
-    link: _wsLink,
+    link: _link,
   ));
 }

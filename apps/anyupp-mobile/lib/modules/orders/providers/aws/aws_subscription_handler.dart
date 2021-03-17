@@ -36,28 +36,29 @@ class AwsSubscription<T extends Model> {
     this.subscriptionNodeName,
     this.modelFromJson,
     this.filterModel,
-  }) :
-  _authProvider = authProvider,
-  _client = client;
+  })  : _authProvider = authProvider,
+        _client = client;
 
   Stream<List<T>> get stream => _listController.stream;
 
   Future<void> startListSubscription({Map<String, dynamic> variables}) async {
     print('**** startListSubscription[$listNodeName].variables=$variables');
     try {
+      if (_listController == null) {
+        _listController = BehaviorSubject<List<T>>();
+      }
+      await _listSubscription?.cancel();
+
       _items = await _getList(variables);
       _listController.add(_items);
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription().userId=${user.id}');
-      _listSubscription = _client.value
-          .subscribe(
+      _listSubscription = _client.value.subscribe(
         SubscriptionOptions(
           document: gql(subscriptionQuery),
-          variables: variables,
-        ),
-      )
-          .listen((QueryResult result) async {
+          variables: variables,),
+      ).listen((QueryResult result) async {
         print('**** startListSubscription().onData=$result');
         // print('**** startListSubscription().onData.context=${result.context}');
         print('**** startListSubscription().onData.hasException=${result.hasException}');
@@ -90,26 +91,15 @@ class AwsSubscription<T extends Model> {
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
     print('_getList[$listNodeName]');
     try {
-      var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: listQuery,
+
+      QueryResult result = await _client.value.query(QueryOptions(
+          document: gql(listQuery),
           variables: variables,
-        ),
-      );
+      ));
+    // print('_getList[$listNodeName].result.data=${result.data}');
+    // print('_getList[$listNodeName].result.exception=${result.exception}');
 
-      var response = await operation.response;
-      var data = response.data;
-      // print('***** _getList().data=$data');
-      // print('***** _getList().errors=${response.errors}');
-      // if (response.errors != null) {
-      //   response.errors.forEach((element) {
-      //     print('***** _getList().error:${element.message}');
-      //   });
-      // }
-      Map<String, dynamic> json = jsonDecode(data);
-      // print('***** _getList().json=$json');
-
-      List<dynamic> items = json[listNodeName]['items'];
+      List<dynamic> items = result.data[listNodeName]['items'];
       // print('***** _getList().items=$items');
       if (items == null || items.isEmpty) {
         return null;
@@ -122,9 +112,6 @@ class AwsSubscription<T extends Model> {
 
       // print('***** _getList().results=$results');
       return results;
-    } on ApiException catch (e) {
-      print('_getList.ApiException: $e');
-      rethrow;
     } on Exception catch (e) {
       print('_getList.Exception: $e');
       rethrow;
@@ -135,5 +122,7 @@ class AwsSubscription<T extends Model> {
     print('**** stopListSubscription()');
     await _listSubscription?.cancel();
     await _listController?.close();
+    _listSubscription = null;
+    _listController = null;
   }
 }

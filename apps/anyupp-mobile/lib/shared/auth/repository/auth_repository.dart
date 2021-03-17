@@ -22,4 +22,9 @@ class AuthRepository implements IAuthProvider {
   Future<void> cancel() {
     return _authProvider.cancel();
   }
+
+  @override
+  Future<String> getAccessToken() {
+    return _authProvider.getAccessToken();
+  }
 }

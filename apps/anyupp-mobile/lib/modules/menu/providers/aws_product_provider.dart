@@ -1,11 +1,11 @@
-import 'dart:convert';
-
-import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 import 'package:amplify_api/amplify_api.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'product_provider_interface.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -19,21 +19,15 @@ class AwsProductProvider implements IProductProvider {
 
   Stream<List<ProductCategory>> _getWithGraphQL(String chainId, String unitId) async* {
     try {
-      var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: QUERY_LIST_PRODUCT_CATEGORIES,
-          variables: {'unitId': unitId},
-        ),
-      );
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_LIST_PRODUCT_CATEGORIES),
+        variables: {
+          'unitId': unitId,
+        },
+      ));
 
-      var response = await operation.response;
-      var data = response.data;
-      //print('***** getProductCategoryList().data=$data');
-      Map<String, dynamic> json = jsonDecode(data);
-      // print('***** getProductCategoryList().json=$json');
-
-      List<dynamic> items = json['listProductCategorys']['items'];
-      //print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      List<dynamic> items = result.data['listProductCategorys']['items'];
       List<ProductCategory> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
@@ -52,32 +46,20 @@ class AwsProductProvider implements IProductProvider {
   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) async* {
     print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
     try {
-      var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: QUERY_LIST_PRODUCTS,
-          variables: {
-            'unitId': unitId,
-            'categoryId': categoryId,
-          },
-        ),
-      );
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_LIST_PRODUCTS),
+        variables: {
+          'unitId': unitId,
+          'categoryId': categoryId,
+        },
+      ));
 
-      var response = await operation.response;
-      var data = response.data;
-      // print('***** getProductList().data=$data');
-      Map<String, dynamic> json = jsonDecode(data);
-
-      List<dynamic> items = json['listGeneratedProducts']['items'];
+      List<dynamic> items = result.data['listGeneratedProducts']['items'];
       List<GeneratedProduct> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           results.add(GeneratedProduct.fromJson(Map<String, dynamic>.from(items[i])));
-          // Map<String, dynamic> jsonProd = Map<String, dynamic>.from(items[i]);
-          // // print('***** getProductList().json[variants] is List=${(jsonProd["variants"] is List)} type=${jsonProd["variants"]}');
-          // GeneratedProduct product = GeneratedProduct.fromJson(jsonProd);
-          // results.add(product);
-          // print('**** GeneratedProduct added:$product');
-          // print('**** GeneratedProduct added.variants:${product.variants}');
         }
       }
 

@@ -3,10 +3,14 @@ import 'dart:convert';
 
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql-queries.dart';
+import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/shared/auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'favorites_provider_interface.dart';
@@ -73,21 +77,22 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   Future<List<FavoriteProduct>> _getFavorites(String chainId, String unitId) async {
+    print('_getFavorites().unitId=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: QUERY_LIST_FAVORITES,
-          variables: {'userId': user.id, 'unitId': unitId},
-        ),
-      );
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_LIST_FAVORITES),
+        variables: {
+          'userId': user.id,
+          'unitId': unitId,
+        },
+        fetchPolicy: FetchPolicy.networkOnly,
+      ));
+      print('_getFavorites().result.data=${result.data}');
+      print('_getFavorites().result.exception=${result.exception}');
 
-      var response = await operation.response;
-      var data = response.data;
-      // print('***** getFavoritesList().data=$data');
-      Map<String, dynamic> json = jsonDecode(data);
-
-      List<dynamic> items = json['listFavoriteProducts']['items'];
+      List<dynamic> items = result.data['listFavoriteProducts']['items'];
       if (items == null || items.isEmpty) {
         _favoritesController.add([]);
         return [];
@@ -113,21 +118,33 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   Future<bool> _deleteFavoriteProduct(String favoriteProductId) async {
     print('_deleteFavoriteProduct().id=$favoriteProductId');
     try {
-      var operation = Amplify.API.mutate(
-        request: GraphQLRequest<String>(
-          document: MUTATION_DELETE_FAVORITE_PRODUCT,
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.mutate(
+        MutationOptions(
+          document: gql(MUTATION_DELETE_FAVORITE_PRODUCT),
           variables: {
             'favoriteProductId': favoriteProductId,
           },
         ),
       );
 
-      var response = await operation.response;
-      var data = response.data;
-      Map<String, dynamic> json = jsonDecode(data);
-      print('_deleteFavoriteProduct().response=$json');
-      // TODO AWS ERROR HANDLING?
-      return response.errors?.isEmpty ?? true;
+      // var operation = Amplify.API.mutate(
+      //   request: GraphQLRequest<String>(
+      //     document: MUTATION_DELETE_FAVORITE_PRODUCT,
+      //     variables: {
+      //       'favoriteProductId': favoriteProductId,
+      //     },
+      //   ),
+      // );
+
+      // var response = await operation.response;
+      // var data = response.data;
+      // Map<String, dynamic> json = jsonDecode(data);
+      // print('_deleteFavoriteProduct().response=$json');
+      // // TODO AWS ERROR HANDLING?
+      // return response.errors?.isEmpty ?? true;
+
+      return result?.exception == null ? true : false;
     } on ApiException catch (e) {
       print('AwsFavoritesProvider._deleteFavoriteProduct.ApiException: $e');
       rethrow;
@@ -138,20 +155,40 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   Future<bool> _addFavoriteProduct(String chainId, String unitId, String productId) async {
+    print('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      var operation = Amplify.API.mutate(
-        request: GraphQLRequest<String>(
-          document: MUTATION_ADD_FAVORITE_PRODUCT,
-          variables: {'userId': user.id, 'chainId': chainId, 'unitId': unitId, 'productId': productId},
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.mutate(
+        MutationOptions(
+          document: gql(MUTATION_ADD_FAVORITE_PRODUCT),
+          variables: {
+            'userId': user.id,
+            'unitId': unitId,
+            'productId': productId,
+          },
         ),
       );
+      print('AwsFavoritesProvider._addFavoriteProduct().result.data=${result.data}');
+      if (result.hasException) {
+        print('AwsFavoritesProvider._addFavoriteProduct().exception=${result.exception}');
+        print('AwsFavoritesProvider._addFavoriteProduct().source=${result.source}');
+      }
 
-      var response = await operation.response;
-      var data = response.data;
-      Map<String, dynamic> json = jsonDecode(data);
-      print('_addFavoriteProduct().response=$json');
-      return response.errors?.isEmpty ?? true;
+      return result?.exception == null ? true : false;
+
+      // var operation = Amplify.API.mutate(
+      //   request: GraphQLRequest<String>(
+      //     document: MUTATION_ADD_FAVORITE_PRODUCT,
+      //     variables: {'userId': user.id, 'chainId': chainId, 'unitId': unitId, 'productId': productId},
+      //   ),
+      // );
+
+      // var response = await operation.response;
+      // var data = response.data;
+      // Map<String, dynamic> json = jsonDecode(data);
+      // print('_addFavoriteProduct().response=$json');
+      // return response.errors?.isEmpty ?? true;
     } on ApiException catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.ApiException: $e');
       rethrow;
