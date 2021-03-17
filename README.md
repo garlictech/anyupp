@@ -23,9 +23,9 @@ please :)
 
 Install the following tools:
 
-- AWS CLI
-- Amplify CLI
-- The following command line tools: `jq`
+- AWS CLI - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+- Amplify CLI - `npm i -g @aws-amplify/cli`
+- The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
 
 ## Configuring the project
 
@@ -43,14 +43,14 @@ clients.
 
 **the configs (and secrets)**
 
-`nx config shared-config --app=my-backend --stage=dev`
+`nx config shared-config --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 Always add the parameters, there are no defaults supported!
 
-When:
+Execute this command when:
 
 - you clone the github repo
-- the config parameters change in the AWS Parameter Store or AWS Secret Manager
+- any config parameters change in the AWS Parameter Store or AWS Secret Manager
 - you change the project stage (dev, production, qa)
 
 The command fetches the config parameters and writes them into files in
@@ -84,7 +84,7 @@ export EDITORNAME=vim
 
 Then, create an amplify app for admin:
 
-`nx init admin-amplify-app --app APPNAME --stage STAGE`
+`nx init admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
 
 The stuff writes the amplify app id to parameter store, CDK will use it to fetch
 the amplify resources.
@@ -101,21 +101,26 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 - build and deploy the stack to the desired stage (it will use the stage-related
   parameters, secrets, etc:)
 
+:exclamation: use your own app name
 ```
-nx build infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
-nx deploy infrastructure-anyupp-backend-stack --app=zsolt-anyupp --stage=dev
+nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 ```
 
 **Be careful** and do NOT check in the mentioned two config files!
 
 Ok, now we have an amplify app and a CDK stack, and they know about each other.
-Finish configuring amplify, by adding teh previously created Cognito resources and
+Finish configuring amplify, by adding the previously created Cognito resources and
 the API. Unfortunately, the procedure is not fully automated, as the add/import commands
 are not yet supported in headless mode :( So fill in the forms if required.
 
 Cognito part:
 
-`nx reconfig admin-amplify-app`
+```
+cd apps/amplify-admin-api
+amplify remove auth
+amplify import auth
+```
 
 - Choose `Cognito User Pool only`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
@@ -123,38 +128,38 @@ Cognito part:
 
 Appsync part:
 
-Follow these:
+Answere these questions
 
-```
-? Please select from one of the below mentioned services: GraphQL
-? Provide API name: anyuppbackend
-? Choose the default authorization type for the API API key
-? Enter a description for the API key: DEV graphql api key
-? After how many days from now the API key should expire (1-365): 365
-? Do you want to configure advanced settings for the GraphQL API Yes, I want to make some additional changes.
-? Configure additional auth types? Yes
-? Choose the additional authorization types you want to configure for the API Amazon Cognito User Pool, IAM
+* ? Please select from one of the below mentioned services: `GraphQL`
+* ? Provide API name: `APPNAME` :exclamation: use your own app name
+* ? Choose the default authorization type for the API: `API key`
+* ? Enter a description for the API key: `DEV graphql api key`
+* ? After how many days from now the API key should expire (1-365): `365`
+* ? Do you want to configure advanced settings for the GraphQL API: `Yes, I want to make some additional changes.`
+* ? Configure additional auth types? `Yes`
+* ? Choose the additional authorization types you want to configure for the API
+  * `Amazon Cognito User Pool`
+  * `IAM` 
+
 Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
-? Enable conflict detection? Yes
-? Select the default resolution strategy Auto Merge
-? Do you have an annotated GraphQL schema? Yes
-? Provide your schema file path: ../../libs/api/graphql/schema/src/schema/admin-api.graphql
-```
+* ? Enable conflict detection? `Yes`
+* ? Select the default resolution strategy `Auto Merge`
+* ? Do you have an annotated GraphQL schema? `Yes`
+* ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
-Then, it pushes teh app, and generates code. Code generation steps:
 
-```
-? Do you want to generate code for your newly created GraphQL API Yes
-? Choose the code generation language target typescript
-? Enter the file name pattern of graphql queries, mutations and subscriptions ../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql
-? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions Yes
-? Enter maximum statement depth [increase from default if your schema is deeply nested] 10
-? Enter the file name for the generated code ../../libs/admin/amplify-api/src/lib/generated/api.ts
-? Do you want to generate code for your newly created GraphQL API Yes
-```
+Then, it pushes the app, and generates code. Code generation steps:
 
-Then, answer yes to the code generation/code overwrite questions.
+* ? Do you want to generate code for your newly created GraphQL API `Yes`
+* ? Choose the code generation language target `typescript`
+* ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql`
+* ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
+* ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
+* ? Enter the file name for the generated code `../../libs/admin/amplify-api/src/lib/generated/api.ts`
+* ? Do you want to generate code for your newly created GraphQL API `Yes`
+
+Then, answer `yes` to the *code generation/code overwrite* questions.
 
 So, for auth, add API key, IAM and user pool options. Select the annotated schema file
 from your source tree.
@@ -167,12 +172,12 @@ as well!
 
 You should use this option when you clone the repo or change app stack and/or stage.
 Mind, that this method assumes that you followed the naming convention in the previous section,
-you you need to configure full arbitrary resources, then you are on your own: check resource id-s
+you need to configure full arbitrary resources, then you are on your own: check resource id-s
 in the AWS console, use the shell scripts behind the angular commands as hints.
 
 First, pull the admin amplify app:
 
-`nx config admin-amplify-app --app APPNAME --stage STAGE`
+`nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
 
 It pull the admin Amplify project and connects it to the actual CDK resources.
 
@@ -190,11 +195,11 @@ To build the admin site for a given configuration:
 
 Building the stack:
 
-`nx build infrastructure-anyupp-backend-stack --app=my-backend --stage=dev`
+`nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 Deploying the stack:
 
-`nx deploy infrastructure-anyupp-backend-stack --app=my-backend --stage=dev`
+`nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 ## Deleting the stack
 

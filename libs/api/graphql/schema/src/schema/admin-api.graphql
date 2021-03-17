@@ -394,6 +394,7 @@ type Subscription {
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+ 
   onUnitsChange: Unit
     @aws_subscribe(mutations: ["createUnit", "updateUnit"])
   onUsersChange: User
