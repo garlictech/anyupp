@@ -189,6 +189,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         $event.productId,
       );
 
+      /* TODO refactor
       this._sortedChainProductIds.forEach(
         (productId: string, pos: number): void => {
           if (this.selectedChainId) {
@@ -200,6 +201,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
           }
         },
       );
+      */
     }
   }
 

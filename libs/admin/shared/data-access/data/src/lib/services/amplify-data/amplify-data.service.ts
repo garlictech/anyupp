@@ -4,58 +4,10 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import {
-  GetAdminUserQuery,
-  GetChainProductQuery,
-  GetChainQuery,
-  GetGroupQuery,
-  GetOrderQuery,
-  GetProductCategoryQuery,
-  GetUnitQuery,
-  GetUserQuery,
-  ListAdminUsersQuery,
-  ListChainProductsQuery,
-  ListChainsQuery,
-  ListGroupsQuery,
-  ListOrdersQuery,
-  ListProductCategorysQuery,
-  ListUnitsQuery,
-  ListUsersQuery,
-  Mutations,
-  OnAdminUserChangeSubscription,
-  OnChainsChangeSubscription,
-  OnGroupsChangeSubscription,
-  OnProductCategoriesChangeSubscription,
-  OnUnitsChangeSubscription,
-  OnUsersChangeSubscription,
-  Queries,
-  Subscriptions,
-} from '@bgap/admin/amplify-api';
+import { Mutations, Queries, Subscriptions } from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
-type queryTypes = GetAdminUserQuery &
-  GetChainQuery &
-  GetGroupQuery &
-  GetUnitQuery &
-  GetOrderQuery &
-  GetProductCategoryQuery &
-  GetChainProductQuery &
-  GetUserQuery;
-type listTypes = ListAdminUsersQuery &
-  ListChainsQuery &
-  ListGroupsQuery &
-  ListUnitsQuery &
-  ListOrdersQuery &
-  ListProductCategorysQuery &
-  ListChainProductsQuery &
-  ListUsersQuery;
-type apiQueryTypes = queryTypes & listTypes;
-type subscriptionTypes = OnAdminUserChangeSubscription &
-  OnChainsChangeSubscription &
-  OnGroupsChangeSubscription &
-  OnUnitsChangeSubscription &
-  OnUsersChangeSubscription &
-  OnProductCategoriesChangeSubscription;
+import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';
 
 interface ISubscriptionResult {
   value?: {
@@ -105,7 +57,7 @@ export class AmplifyDataService {
           }),
       ),
       tap((data: ISubscriptionResult) => {
-        console.error('subi data delete??', data);
+        // TODO delete object???
         params.upsertFn(
           data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
         );

@@ -60,27 +60,17 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
           IUnit[],
           IAdminRoleEntity[],
         ]): void => {
-          // Fill the chain list
-          this.chainOptions = [];
-          chains.forEach((chain: IChain): void => {
-            this.chainOptions.push({
-              key: chain.id,
-              value: chain.name,
-            });
-          });
-
-          // Fill the assigned entity list
-          this.assignedUnits = [];
-          entities.forEach((entity: IAdminRoleEntity): void => {
-            this.assignedUnits.push({
-              chainName: chains.find((c): boolean => c.id === entity.chainId)
-                ?.name,
-              groupName: groups.find((g): boolean => g.id === entity.groupId)
-                ?.name,
-              unitName: units.find((u): boolean => u.id === entity.unitId)
-                ?.name,
-            });
-          });
+          this.chainOptions = chains.map(chain => ({
+            key: chain.id,
+            value: chain.name,
+          }));
+          this.assignedUnits = entities.map(entity => ({
+            chainName: chains.find((c): boolean => c.id === entity.chainId)
+              ?.name,
+            groupName: groups.find((g): boolean => g.id === entity.groupId)
+              ?.name,
+            unitName: units.find((u): boolean => u.id === entity.unitId)?.name,
+          }));
         },
       );
 
@@ -102,20 +92,15 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
             )
             .pipe(take(1))
             .subscribe((groups): void => {
-              this.groupOptions = [];
 
-              groups.forEach((group: IGroup): void => {
-                if (
-                  !entities
-                    .map((e): string => e.groupId || '')
-                    .includes(group.id)
-                ) {
-                  this.groupOptions.push({
-                    key: group.id,
-                    value: group.name,
-                  });
-                }
-              });
+              this.groupOptions = groups
+                .filter(
+                  group =>
+                    !entities
+                      .map((e): string => e.groupId || '')
+                      .includes(group.id),
+                )
+                .map(group => ({ key: group.id, value: group.name }));
             });
 
           this._store
@@ -126,18 +111,14 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
             )
             .pipe(take(1))
             .subscribe((units): void => {
-              this.unitOptions = [];
-
-              units.forEach((unit: IUnit): void => {
-                if (
-                  !entities.map((e): string => e.unitId || '').includes(unit.id)
-                ) {
-                  this.unitOptions.push({
-                    key: unit.id,
-                    value: unit.name || '',
-                  });
-                }
-              });
+              this.unitOptions = units
+                .filter(
+                  unit =>
+                    !entities
+                      .map((e): string => e.unitId || '')
+                      .includes(unit.id),
+                )
+                .map(unit => ({ key: unit.id, value: unit.name }));
             });
         },
       );

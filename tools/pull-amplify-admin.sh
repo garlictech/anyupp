@@ -81,4 +81,3 @@ amplify pull \
 
 amplify codegen
 amplify codegen model
-

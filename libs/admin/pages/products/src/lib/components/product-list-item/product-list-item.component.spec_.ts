@@ -1,3 +1,4 @@
+/*
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProductListItemComponent } from './product-list-item.component';
@@ -24,3 +25,4 @@ xdescribe('ProductListItemComponent', (): void => {
     expect(component).toBeTruthy();
   });
 });
+*/
