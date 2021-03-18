@@ -40,9 +40,6 @@
     "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "api-data-access": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -163,6 +160,12 @@
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
+    "shared-graphql-api-client": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
+    "admin-amplify-app": {
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
+    },
     "stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
@@ -170,13 +173,7 @@
       "tags": []
     },
     "admin-amplify-api": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
-    },
-    "api-order": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "shared-graphql-api-client": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }
