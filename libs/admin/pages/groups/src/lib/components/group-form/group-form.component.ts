@@ -74,7 +74,7 @@ export class GroupFormComponent
         { validators: multiLangValidator },
       ),
       currency: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder),
     });
 

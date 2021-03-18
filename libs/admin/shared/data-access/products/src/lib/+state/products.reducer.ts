@@ -13,11 +13,7 @@ import * as ProductsActions from './products.actions';
 
 export const PRODUCTS_FEATURE_KEY = 'products';
 
-export interface IProductEntityState extends EntityState<IProduct> {
-  selectedId?: string | number; // which Products record has been selected
-  loaded: boolean; // has the Products list been loaded
-  error?: string | null; // last known error (if any)
-}
+export type IProductEntityState = EntityState<IProduct>
 
 export interface IProductsState {
   chainProducts: IProductEntityState;
@@ -39,17 +35,13 @@ export const chainProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter
 >();
 
 export const initialChainProductState: IProductEntityState = chainProductsAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const chainProductsReducer = createReducer(
   initialChainProductState,
-  on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(ProductsActions.loadChainProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  on(ProductsActions.upsertChainProduct, (state, { product }) =>
+    chainProductsAdapter.upsertOne(product, state),
   ),
 );
 
@@ -62,17 +54,13 @@ export const groupProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter
 >();
 
 export const initialGroupProductState: IProductEntityState = groupProductsAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const groupProductsReducer = createReducer(
   initialGroupProductState,
-  on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(ProductsActions.loadGroupProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  on(ProductsActions.upsertGroupProduct, (state, { product }) =>
+    groupProductsAdapter.upsertOne(product, state),
   ),
 );
 
@@ -85,17 +73,13 @@ export const unitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
 >();
 
 export const initialUnitProductState: IProductEntityState = unitProductsAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const unitProductsReducer = createReducer(
   initialUnitProductState,
-  on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(ProductsActions.loadUnitProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  on(ProductsActions.upsertUnitProduct, (state, { product }) =>
+    unitProductsAdapter.upsertOne(product, state),
   ),
 );
 
@@ -108,17 +92,13 @@ export const generatedUnitProductsAdapter: EntityAdapter<IProduct> = createEntit
 >();
 
 export const initialGeneratedUnitProductState: IProductEntityState = generatedUnitProductsAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const generatedUnitProductsReducer = createReducer(
   initialGeneratedUnitProductState,
-  on(ProductsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(ProductsActions.loadGeneratedUnitProductsSuccess, (state, { products }) =>
-    chainProductsAdapter.setAll(products, { ...state, loaded: true }),
+  on(ProductsActions.upsertGeneratedProduct, (state, { product }) =>
+    generatedUnitProductsAdapter.upsertOne(product, state),
   ),
 );
 

@@ -32,7 +32,7 @@ export class UnitFloorMapComponent
       floorMap: [this.unit.floorMap || ''],
     });
 
-    /*
+    /* JUST FOR MANUAL EDIT!!!
     this.rawForm = this._formBuilder.group({
       floorMap: [JSON.stringify(this.unit.floorMap) || {}],
     });

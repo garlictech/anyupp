@@ -3,7 +3,7 @@ import { EVariantAvailabilityType, ICustomDailySchedule, IDateIntervals } from '
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
-export const contactFormGroup = (formBuilder: FormBuilder) => ({
+export const contactFormGroup = () => ({
   email: ['', [Validators.email]],
   phone: [''],
 });
