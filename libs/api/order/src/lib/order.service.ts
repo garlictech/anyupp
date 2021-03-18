@@ -21,26 +21,16 @@ import { pipeDebug } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
 
-const createOrderMutation = gql`
-  mutation CreateOrderMutation($input: CreateOrderInput!) {
-    createOrder(input: $input) {
-      id
-    }
-  }
-`;
-
 export const createOrderFromCart = async ({
   userId,
   unitId,
   paymentMethod,
-  cartItems,
   place,
   graphqlApiClient,
 }: {
   userId: string;
   unitId: string;
   paymentMethod: string;
-  cartItems: AppsyncApi.CartItemInput[];
   place: IPlace;
   graphqlApiClient: GraphqlApiClient;
 }): Promise<string> => {
@@ -49,82 +39,48 @@ export const createOrderFromCart = async ({
     JSON.stringify({
       unitId,
       paymentMethod,
-      cartItems,
       place,
     }),
     undefined,
     2,
   );
-  const query = executeQuery(graphqlApiClient);
-
-  return (
-    // GetCurrency & Unit
-    query<AmplifyApi.GetUnitQuery>(AmplifyApiQueries.getUnit, {
-      id: unitId,
-    })
-      .pipe(
-        // getFieldOrThrowMap('getUnit'),
-        // map(o => getFieldOrThrow(o, 'getUnit')),
-        // pluck<AmplifyApi.GetUnitQuery, AmplifyApi.Unit>('getUnit'),
-        map(o => o.getUnit as AmplifyApi.Unit),
-        pipeDebug('### UNIT'),
-        throwIfEmpty(() => 'Missing Unit'),
-        switchMap(unit =>
-          query<AmplifyApi.GetGroupQuery>(AmplifyApiQueries.getGroup, {
-            id: unit.id,
-          }).pipe(
-            // map(o => getFieldOrThrow<AmplifyApi.GetGroupQuery, 'getGroup'>(o, 'getGroup')),
-            // // getFieldOrThrowMap<AmplifyApi.GetGroupQuery>('getGroup'),
-            // // tap(o => o?.currency),
-            // map(o => getFieldOrThrow<AmplifyApi.Group, 'currency'>(o, 'currency')),
-            // getFieldOrThrowMap<AmplifyApi.Group>('currency'),
-
-            // pluck<AmplifyApi.GetGroupQuery, string>('getGroup', 'currency'),
-            // map(o => fieldPluck<AmplifyApi.GetGroupQuery, AmplifyApi.Group>(o, 'getGroup')),
-            // map(o => fieldPluck<AmplifyApi.GetGroupQuery, 'getGroup', AmplifyApi.Group>(o, 'getGroup')),
-            // map(o => fieldPluck(o, 'currency')),
-            map(o => o.getGroup?.currency as string),
-            throwIfEmpty(() => 'Missing GroupCurrency'),
-            map(currency => ({ currency, unit })), // TODO: currency as string?
-          ),
+  return getUnit(graphqlApiClient, unitId)
+    .pipe(
+      pipeDebug('### UNIT'),
+      switchMap(unit =>
+        getGroupCurrency(graphqlApiClient, unit?.groupId!).pipe(
+          map(currency => ({ currency, unit })),
         ),
-        tap(({ unit }) => {
-          // TODO: re enable these checks
-          // if (unit.isAcceptingOrders === false) {
-          //   throw getUnitIsNotAcceptingOrdersError();
-          // }
-          // if (
-          //   !userLocation ||
-          //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-          //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-          // ) {
-          //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
-          //   console.log('###: User is too far from the UNIT error should be thrown');
-          // }
-        }),
-        switchMap(({ currency }) =>
-          getOrderItems({ graphqlApiClient, userId, currency, cartItems }),
+      ),
+      pipeDebug('### CURRENCY + UNIT'),
+      tap(({ unit }) => {
+        // TODO: re enable these checks
+        // if (unit.isAcceptingOrders === false) {
+        //   throw getUnitIsNotAcceptingOrdersError();
+        // }
+        // if (
+        //   !userLocation ||
+        //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
+        //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
+        // ) {
+        //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
+        //   console.log('###: User is too far from the UNIT error should be thrown');
+        // }
+      }),
+      switchMap(({ currency }) =>
+        getOrderItems({ graphqlApiClient, userId, currency, cartItems }),
+      ),
+      map(items =>
+        toOrderInputFormat({ userId, unitId, paymentMethod, items, place }),
+      ),
+      switchMap(orderInput =>
+        saveOrder({ orderInput, graphqlApiClient }).pipe(
+          map(o => o.createOrder?.id as string),
+          pipeDebug('### Response'),
         ),
-        map(items =>
-          toOrderInputFormat({ userId, unitId, paymentMethod, items, place }),
-        ),
-        switchMap(orderInput =>
-          saveOrder({ orderInput, graphqlApiClient }).pipe(
-            // map(o => o.createOrder),
-            // pluck<AmplifyApi.CreateOrderMutation, string>('createOrder', 'id'),
-            map(o => o.createOrder?.id as string),
-            throwIfEmpty(() => 'Order is not in response'),
-            pipeDebug('### Response'),
-          ),
-        ),
-        // map(o => o.)
-        // getFieldOrThrow<AmplifyApi.CreateOrderMutation>('createOrder'),
-        // map(o => o?.id)
-        // map(order => 'order.id')
-        // mapTo('sfese'),
-      )
-      .toPromise()
-  );
+      ),
+    )
+    .toPromise();
 
   // // await newOrderRef.set(order);
   // // Remove the cart from the db after the order has been created successfully
@@ -248,13 +204,13 @@ const getLaneIdForCartItem = (
     { id },
   ).pipe(
     // getFieldOrThrowMap<AmplifyApi.GetUnitProductQuery>('getUnitProduct'),
-    // map(product => product?.laneId),
-    pluck('getUnitProduct', 'laneId'),
+    map(product => product.getUnitProduct?.laneId),
+    // pluck('getUnitProduct', 'laneId'),
     // throwIfEmpty(() => 'Order is not in response'),
   );
 };
 
-export const createStatusLog = (
+const createStatusLog = (
   userId: string,
   // TODO: status: EOrderStatus = EOrderStatus.PLACED,
   status = 'PLACED',
@@ -279,5 +235,39 @@ const saveOrder = ({
     {
       input: orderInput,
     },
-  );
+  ).pipe(throwIfEmpty(() => 'Order is not in response'));
 };
+
+const getUnit = (
+  graphqlApiClient: GraphqlApiClient,
+  unitId: string,
+): Observable<AmplifyApi.Unit> =>
+  executeQuery(graphqlApiClient)<AmplifyApi.GetUnitQuery>(
+    AmplifyApiQueries.getUnit,
+    {
+      id: unitId,
+    },
+  ).pipe(
+    // getFieldOrThrowMap('getUnit'),
+    // map(o => getFieldOrThrow(o, 'getUnit')),
+    // pluck<AmplifyApi.GetUnitQuery, AmplifyApi.Unit>('getUnit'),
+    map(o => o.getUnit as AmplifyApi.Unit),
+    throwIfEmpty(() => 'Missing Unit'),
+  );
+
+const getGroupCurrency = (
+  graphqlApiClient: GraphqlApiClient,
+  groupId: string,
+) =>
+  executeQuery(graphqlApiClient)<AmplifyApi.GetGroupQuery>(
+    AmplifyApiQueries.getGroupCurrency,
+    {
+      id: groupId,
+    },
+  ).pipe(
+    // getFieldOrThrowMap('getUnit'),
+    // map(o => getFieldOrThrow(o, 'getUnit')),
+    // pluck<AmplifyApi.GetUnitQuery, AmplifyApi.Unit>('getUnit'),
+    map(o => o.getGroup?.currency as string),
+    throwIfEmpty(() => 'Missing GroupCurrency'),
+  );
