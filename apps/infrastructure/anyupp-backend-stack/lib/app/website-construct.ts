@@ -35,7 +35,7 @@ export class WebsiteConstruct extends Construct {
     const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'error.html',
+      websiteErrorDocument: 'index.html',
       publicReadAccess: true,
 
       // The default removal policy is RETAIN, which means that cdk destroy will not attempt to delete
@@ -43,6 +43,7 @@ export class WebsiteConstruct extends Construct {
       // DESTROY, cdk destroy will attempt to delete the bucket, but will error if the bucket is not empty.
       removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
     });
+
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
     // TLS certificate
     const certificateArn = new acm.DnsValidatedCertificate(
@@ -79,6 +80,7 @@ export class WebsiteConstruct extends Construct {
         ],
       },
     );
+
     new cdk.CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId,
     });
@@ -98,6 +100,7 @@ export class WebsiteConstruct extends Construct {
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ['/*'],
+      retainOnDelete: false,
     });
   }
 }

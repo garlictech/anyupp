@@ -80,4 +80,3 @@ amplify pull \
 --yes
 
 amplify codegen
-amplify codegen model

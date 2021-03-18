@@ -123,7 +123,7 @@ amplify remove auth
 amplify import auth
 ```
 
-- Choose `Cognito User Pool only`
+- Choose `Cognito User Pool and Identity Pool Cognito User Pool only`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
 
@@ -180,7 +180,7 @@ First, pull the admin amplify app:
 
 `nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
 
-It pull the admin Amplify project and connects it to the actual CDK resources.
+It pulls the admin Amplify project and connects it to the actual CDK resources.
 
 ## Building the project
 
@@ -191,6 +191,18 @@ parameters.
 Or, they should support it if needed, we have to add this support gradually. For
 some samples, see the build targets belonging to the examples in the
 `angular.json`.
+
+### Build the amplify app
+
+`nx build amplify-admin-api`
+
+The command builds the _current_ configured app / stage.
+
+**IMPORTANT**: the build overwrites the schema with the current github schema!
+
+Deploy the current app/stage:
+
+`nx deploy amplify-admin-api`
 
 To build the admin site for a given configuration:
 

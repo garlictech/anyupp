@@ -1361,6 +1361,27 @@
         }
       }
     },
+    "shared-graphql-api-client": {
+      "root": "libs/shared/graphql/api-client",
+      "sourceRoot": "libs/shared/graphql/api-client/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/graphql/api-client/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/graphql/api-client"],
+          "options": {
+            "jestConfig": "libs/shared/graphql/api-client/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "stripe": {
       "root": "libs/stripe",
       "sourceRoot": "libs/stripe/src",
