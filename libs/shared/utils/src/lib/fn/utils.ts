@@ -1,4 +1,6 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
+import { OperatorFunction, pipe } from 'rxjs';
+import { map, pluck, tap } from 'rxjs/operators';
 import { missingParametersError } from './errors';
 
 export const customNumberCompare = (field: string, desc = false) => (
@@ -129,3 +131,75 @@ export const missingParametersCheck = <T>(
   }
   return true;
 };
+
+// export const fieldPluck = <Type, Response>(
+//   obj: Type,
+//   fieldName: keyof Type,
+// ): OperatorFunction<Type, Response> => {
+//   return pipe(
+//     pluck<Type, Response>(fieldName as string),
+//     map(o => o as Response),
+//   );
+// };
+
+// // export const getFieldOrThrow = <Type, Key extends keyof Type>(obj: Type) =>(fieldName: Key ) =>  {
+// export const getFieldOrThrow = <Type, Key extends keyof Type>(obj: Type | null | undefined, fieldName: Key) => {
+//   // if ((response as T)[fieldName] === undefined) {
+//   //   return ((response as T)[fieldName]);
+//   // }
+//   if (!!obj && obj[fieldName] === undefined) {
+//     return (obj[fieldName]);
+//   }
+//   throw `Missing ${fieldName}`;
+// };
+
+// export function getFieldOrThrowMap<Type, Response, Key extends keyof Type>(fieldName: Key): OperatorFunction<Type, Response> {
+//   return map<Type, Response>(obj => getFieldOrThrow<Type, Key>(obj, fieldName));
+// }
+
+// export function getFieldOrThrowMap<Type, Key extends keyof Type>(fieldName: Key) {
+//   return map<Type, Key>(obj => getFieldOrThrow<Type, Key>(obj, fieldName));
+// }
+
+// export const getFieldOrThrowMap = <T, R>(fieldName: keyof T): OperatorFunction<T, R> => {
+//   return map(value => value);
+//   // return map(value => getFieldOrThrow<T>(fieldName)(value));
+// };
+
+export const pipeDebug = <T>(tag: string) => {
+  return tap<T>({
+    next(value) {
+      console.log(
+        `%c[${tag}: Next]`,
+        'background: #009688; color: #fff; padding: 3px; font-size: 9px;',
+        value,
+      );
+    },
+    error(error) {
+      console.log(
+        `%[${tag}: Error]`,
+        'background: #E91E63; color: #fff; padding: 3px; font-size: 9px;',
+        error,
+      );
+    },
+    complete() {
+      console.log(
+        `%c[${tag}]: Complete`,
+        'background: #00BCD4; color: #fff; padding: 3px; font-size: 9px;',
+      );
+    },
+  });
+};
+
+// if (!(response as any)[fieldName]) {
+// throw new Error(`Missing ${fieldName}`);
+// }
+// if (!isOfType(response, fieldName)) {
+//   throw `Missing ${fieldName}`;
+// }
+
+// (response as T)[fieldName] !== undefined? true: false;
+
+// }
+// // return (response as any)[fieldName];
+// return response[fieldName];

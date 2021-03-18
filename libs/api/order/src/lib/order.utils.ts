@@ -1,15 +1,14 @@
 // import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
+import { AmplifyApi } from '@bgap/admin/amplify-api';
 import { toFixed2Number } from '@bgap/api/utils';
 import {
+  IOrderItem,
+  IOrders,
+  IPriceShown,
   IStatusLog,
   IStatusLogItem,
-  // EOrderStatus,
-  IOrders,
-  IOrderItem,
-  IPriceShown,
 } from '@bgap/shared/types';
-import { AmplifyApi } from '@bgap/api/graphql/schema';
 
 export const calculateOrderSumPrice = (
   items: IOrderItem[] | AmplifyApi.OrderItemInput[],

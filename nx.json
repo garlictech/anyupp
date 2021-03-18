@@ -180,6 +180,9 @@
     },
     "admin-amplify-api": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "admin-amplify-app": {
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
     }
   }
 }

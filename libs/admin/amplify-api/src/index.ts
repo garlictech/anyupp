@@ -1,11 +1,13 @@
-export * from './lib/generated/api';
-export * from './lib/generated/graphql/mutations';
-export * from './lib/generated/graphql/subscriptions';
-export * from './lib/generated/graphql/queries';
+import awsmobile from './lib/aws-exports';
+import * as AmplifyApi from './lib/generated/api';
+import * as AmplifyApiMutations from './lib/generated/graphql/mutations';
+import * as AmplifyApiQueries from './lib/generated/graphql/queries';
+import * as AmplifyApiSubscriptions from './lib/generated/graphql/subscriptions';
 
-import * as Mutations from './lib/generated/graphql/mutations';
-import * as Queries from './lib/generated/graphql/queries';
-import * as Subscriptions from './lib/generated/graphql/subscriptions';
-
-import awsmobile from './lib/generated/aws-exports';
-export { awsmobile as awsConfig, Mutations, Queries, Subscriptions };
+export {
+  awsmobile as awsConfig,
+  AmplifyApi,
+  AmplifyApiMutations,
+  AmplifyApiQueries,
+  AmplifyApiSubscriptions,
+};

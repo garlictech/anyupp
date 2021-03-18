@@ -213,6 +213,7 @@ type Order @model @auth(rules: [{ allow: public }]) {
   sumPriceShown: PriceShown
   takeAway: Boolean
   userId: ID
+  unitId: ID
   place: Place
   paymentIntention: Int
 }

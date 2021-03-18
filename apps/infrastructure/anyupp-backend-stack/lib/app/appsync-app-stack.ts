@@ -2,12 +2,10 @@ import path from 'path';
 
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
-import { createStripeResolvers } from '@bgap/api/stripe';
 import { createOrderResolvers } from '@bgap/api/order';
 import * as sst from '@serverless-stack/resources';
 
@@ -15,21 +13,20 @@ import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { GraphqlApi } from '@aws-cdk/aws-appsync';
 import { Duration } from '@aws-cdk/core';
-import { DynamoDBStack } from './appsync-dynamodb-stack';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
   consumerUserPool: cognito.UserPool;
   secretsManager: sm.ISecret;
-  dynamoDBStack: DynamoDBStack;
+  // dynamoDBStack: DynamoDBStack;
 }
 
 export class AppsyncAppStack extends sst.Stack {
   // private validatorResolverFunctions: ValidatorResolverFunctions;
-  private userTableDDDs!: appsync.DynamoDbDataSource;
-  private orderTableDDDs!: appsync.DynamoDbDataSource;
-  private unitTableDDDs!: appsync.DynamoDbDataSource;
-  private groupTableDDDs!: appsync.DynamoDbDataSource;
+  // private userTableDDDs!: appsync.DynamoDbDataSource;
+  // private orderTableDDDs!: appsync.DynamoDbDataSource;
+  // private unitTableDDDs!: appsync.DynamoDbDataSource;
+  // private groupTableDDDs!: appsync.DynamoDbDataSource;
   private lambdaDs!: appsync.LambdaDataSource;
   private api: GraphqlApi;
 
@@ -68,21 +65,21 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
-    this.createDatasources(props.secretsManager, props.dynamoDBStack);
+    this.createDatasources(props.secretsManager);
 
     const baseResolverInputParams = {
       api: this.api,
       scope: this,
-      userTableDDDs: this.userTableDDDs,
-      orderTableDDDs: this.orderTableDDDs,
-      unitTableDDDs: this.unitTableDDDs,
-      groupTableDDDs: this.groupTableDDDs,
+      // userTableDDDs: this.userTableDDDs,
+      // orderTableDDDs: this.orderTableDDDs,
+      // unitTableDDDs: this.unitTableDDDs,
+      // groupTableDDDs: this.groupTableDDDs,
       lambdaDs: this.lambdaDs,
     };
 
-    createStripeResolvers({
-      ...baseResolverInputParams,
-    });
+    // createStripeResolvers({
+    //   ...baseResolverInputParams,
+    // });
     createOrderResolvers({
       ...baseResolverInputParams,
     });
@@ -114,30 +111,30 @@ export class AppsyncAppStack extends sst.Stack {
 
   private createDatasources(
     secretsManager: sm.ISecret,
-    dynamoDBStack: DynamoDBStack,
+    // dynamoDBStack: DynamoDBStack,
   ) {
     // NO DATA SOURCE
     new appsync.NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
     });
 
-    // DATABASE DATA SOURCES
-    this.userTableDDDs = this.api.addDynamoDbDataSource(
-      'UserDynamoDbDataSource',
-      dynamoDBStack.userTable,
-    );
-    this.orderTableDDDs = this.api.addDynamoDbDataSource(
-      'OrderDynamoDbDataSource',
-      dynamoDBStack.orderTable,
-    );
-    this.unitTableDDDs = this.api.addDynamoDbDataSource(
-      'UnitDynamoDbDataSource',
-      dynamoDBStack.unitTable,
-    );
-    this.groupTableDDDs = this.api.addDynamoDbDataSource(
-      'GroupDynamoDbDataSource',
-      dynamoDBStack.groupTable,
-    );
+    // // DATABASE DATA SOURCES
+    // this.userTableDDDs = this.api.addDynamoDbDataSource(
+    //   'UserDynamoDbDataSource',
+    //   dynamoDBStack.userTable,
+    // );
+    // this.orderTableDDDs = this.api.addDynamoDbDataSource(
+    //   'OrderDynamoDbDataSource',
+    //   dynamoDBStack.orderTable,
+    // );
+    // this.unitTableDDDs = this.api.addDynamoDbDataSource(
+    //   'UnitDynamoDbDataSource',
+    //   dynamoDBStack.unitTable,
+    // );
+    // this.groupTableDDDs = this.api.addDynamoDbDataSource(
+    //   'GroupDynamoDbDataSource',
+    //   dynamoDBStack.groupTable,
+    // );
 
     // LAMBDA DATA SOURCES
     // Create the lambda first. Mind, that we have to build appsync-lambda.zip
@@ -153,19 +150,19 @@ export class AppsyncAppStack extends sst.Stack {
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
       initialPolicy: [
-        new iam.PolicyStatement({
-          actions: ['dynamodb:*'],
-          resources: ['arn:aws:dynamodb:*:568276182587:table/*'],
-        }),
+        // new iam.PolicyStatement({
+        //   actions: ['dynamodb:*'],
+        //   resources: ['arn:aws:dynamodb:*:568276182587:table/*'],
+        // }),
       ],
     });
 
     secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
     // The API LAMBDA should be able to access these tables
-    apiLambda.addEnvironment(
-      'UNIT_PRODUCT_TABLE',
-      dynamoDBStack.unitProductTable.tableName,
-    );
+    // apiLambda.addEnvironment(
+    //   'UNIT_PRODUCT_TABLE',
+    //   dynamoDBStack.unitProductTable.tableName,
+    // );
   }
 }
