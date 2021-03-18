@@ -93,7 +93,7 @@ export class CognitoStack extends Stack {
 
     // The common identity pool
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
-      allowUnauthenticatedIdentities: false,
+      allowUnauthenticatedIdentities: true,
       cognitoIdentityProviders: [
         {
           clientId: consumerNativeClient.userPoolClientId,

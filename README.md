@@ -102,6 +102,7 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
   parameters, secrets, etc:)
 
 :exclamation: use your own app name
+
 ```
 nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
@@ -130,36 +131,36 @@ Appsync part:
 
 Answere these questions
 
-* ? Please select from one of the below mentioned services: `GraphQL`
-* ? Provide API name: `APPNAME` :exclamation: use your own app name
-* ? Choose the default authorization type for the API: `API key`
-* ? Enter a description for the API key: `DEV graphql api key`
-* ? After how many days from now the API key should expire (1-365): `365`
-* ? Do you want to configure advanced settings for the GraphQL API: `Yes, I want to make some additional changes.`
-* ? Configure additional auth types? `Yes`
-* ? Choose the additional authorization types you want to configure for the API
-  * `Amazon Cognito User Pool`
-  * `IAM` 
+- ? Please select from one of the below mentioned services: `GraphQL`
+- ? Provide API name: `APPNAME` :exclamation: use your own app name
+- ? Choose the default authorization type for the API: `API key`
+- ? Enter a description for the API key: `DEV graphql api key`
+- ? After how many days from now the API key should expire (1-365): `365`
+- ? Do you want to configure advanced settings for the GraphQL API: `Yes, I want to make some additional changes.`
+- ? Configure additional auth types? `Yes`
+- ? Choose the additional authorization types you want to configure for the API
+  - `Amazon Cognito User Pool`
+  - `IAM`
 
 Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
-* ? Enable conflict detection? `Yes`
-* ? Select the default resolution strategy `Auto Merge`
-* ? Do you have an annotated GraphQL schema? `Yes`
-* ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
+- ? Enable conflict detection? `Yes`
+- ? Select the default resolution strategy `Auto Merge`
+- ? Do you have an annotated GraphQL schema? `Yes`
+- ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
 Then, it pushes the app, and generates code. Code generation steps:
 
-* ? Do you want to generate code for your newly created GraphQL API `Yes`
-* ? Choose the code generation language target `typescript`
-* ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql`
-* ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
-* ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
-* ? Enter the file name for the generated code `../../libs/admin/amplify-api/src/lib/generated/api.ts`
-* ? Do you want to generate code for your newly created GraphQL API `Yes`
+- ? Do you want to generate code for your newly created GraphQL API `Yes`
+- ? Choose the code generation language target `typescript`
+- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql`
+- ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
+- ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
+- ? Enter the file name for the generated code `../../libs/admin/amplify-api/src/lib/generated/api.ts`
+- ? Do you want to generate code for your newly created GraphQL API `Yes`
 
-Then, answer `yes` to the *code generation/code overwrite* questions.
+Then, answer `yes` to the _code generation/code overwrite_ questions.
 
 So, for auth, add API key, IAM and user pool options. Select the annotated schema file
 from your source tree.
@@ -179,7 +180,7 @@ First, pull the admin amplify app:
 
 `nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
 
-It pull the admin Amplify project and connects it to the actual CDK resources.
+It pulls the admin Amplify project and connects it to the actual CDK resources.
 
 ## Building the project
 
@@ -190,6 +191,18 @@ parameters.
 Or, they should support it if needed, we have to add this support gradually. For
 some samples, see the build targets belonging to the examples in the
 `angular.json`.
+
+### Build the amplify app
+
+`nx build amplify-admin-api`
+
+The command builds the _current_ configured app / stage.
+
+**IMPORTANT**: the build overwrites the schema with the current github schema!
+
+Deploy the current app/stage:
+
+`nx deploy amplify-admin-api`
 
 To build the admin site for a given configuration:
 
