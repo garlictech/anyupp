@@ -1,7 +1,7 @@
+import { AmplifyService } from 'aws-amplify-angular';
+
 import { Injectable } from '@angular/core';
 import { IStorageResponse } from '@bgap/shared/types';
-import { randomString } from '@bgap/shared/utils';
-import { AmplifyService } from 'aws-amplify-angular';
 import { randomString } from '@bgap/shared/utils';
 
 @Injectable({

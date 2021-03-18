@@ -71,7 +71,7 @@ export class OrderProductListComponent {
           IProductCategory[],
           IProduct[],
         ]): void => {
-          // TODO fix this.generatedUnitProducts = generatedUnitProducts;
+          this.generatedUnitProducts = <IGeneratedProduct[]>generatedUnitProducts;
 
           /* TODO fix - remove?
           this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {

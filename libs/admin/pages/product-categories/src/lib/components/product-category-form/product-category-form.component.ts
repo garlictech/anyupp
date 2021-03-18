@@ -41,7 +41,7 @@ export class ProductCategoryFormComponent
   }
 
   get categoryImage(): string {
-    return this.productCategory?.image || '';
+    return this.productCategory?.image || '';
   }
 
   ngOnInit(): void {
