@@ -9,7 +9,10 @@ import { AuthService } from '@bgap/admin/shared/data-access/auth';
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent {
-  constructor(private _translateService: TranslateService, private _authService: AuthService) {
+  constructor(
+    private _translateService: TranslateService,
+    private _authService: AuthService,
+  ) {
     this._authService.init();
 
     // This language will be used as a fallback when a translation isn't found in the current language

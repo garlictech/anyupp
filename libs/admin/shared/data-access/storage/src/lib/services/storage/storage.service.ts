@@ -1,25 +1,36 @@
-import { v1 as uuidV1 } from 'uuid';
-
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { IStorageResponse } from '@bgap/shared/types';
+import { randomString } from '@bgap/shared/utils';
+import { AmplifyService } from 'aws-amplify-angular';
+import { randomString } from '@bgap/shared/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  constructor(private _angularFireStorage: AngularFireStorage) {}
+  constructor(private _amplifyService: AmplifyService) {}
 
   public uploadFile(folderPath: string, file: File): Promise<string> {
-    const uuid = uuidV1();
     const ext = file.name.split('.').pop();
-    const ref = this._angularFireStorage.ref(`${folderPath}${uuid}.${ext}`);
+    const key = `${folderPath}/${randomString(16)}.${ext}`;
 
-    return ref
-      .put(file)
-      .then((): Promise<string> => ref.getDownloadURL().toPromise());
+    return this._amplifyService
+      .storage()
+      .put(key, file, {
+        level: 'public',
+        contentType: file.type,
+      })
+      .then((success: IStorageResponse) => success.key
+        /*
+        this._amplifyService
+          .storage()
+          .get(success.key, { expires: 604800 }) // 1 week
+          .then((filePath: string) => key),
+        */
+      );
   }
 
-  public removeFile(filePath: string): Promise<void> {
-    return this._angularFireStorage.storage.refFromURL(filePath).delete();
+  public removeFile(key: string): Promise<void> {
+    return this._amplifyService.storage().remove(key);
   }
 }

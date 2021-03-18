@@ -8,8 +8,13 @@ import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize, ENebularButtonSize, IGeneratedProduct, IGroup, IOrder, IProduct,
-  IProductCategory
+  EDashboardSize,
+  ENebularButtonSize,
+  IGeneratedProduct,
+  IGroup,
+  IOrder,
+  IProduct,
+  IProductCategory,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -66,7 +71,7 @@ export class OrderProductListComponent {
           IProductCategory[],
           IProduct[],
         ]): void => {
-          this.generatedUnitProducts = generatedUnitProducts;
+          // TODO fix this.generatedUnitProducts = generatedUnitProducts;
 
           /* TODO fix - remove?
           this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {

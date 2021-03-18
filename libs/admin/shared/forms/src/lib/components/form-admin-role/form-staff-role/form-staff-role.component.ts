@@ -92,7 +92,6 @@ export class FormStaffRoleComponent implements OnInit, OnDestroy {
             )
             .pipe(take(1))
             .subscribe((groups): void => {
-
               this.groupOptions = groups
                 .filter(
                   group =>

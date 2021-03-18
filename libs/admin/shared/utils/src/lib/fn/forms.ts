@@ -1,5 +1,14 @@
-import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
-import { EVariantAvailabilityType, ICustomDailySchedule, IDateIntervals } from '@bgap/shared/types';
+import {
+  AbstractControl,
+  FormBuilder,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import {
+  EVariantAvailabilityType,
+  ICustomDailySchedule,
+  IDateIntervals,
+} from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 

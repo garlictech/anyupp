@@ -1,12 +1,20 @@
 import * as fp from 'lodash/fp';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, EPaymentMethod, IAdminUser, IOrder
+  EDashboardSize,
+  ENebularButtonSize,
+  EOrderStatus,
+  EPaymentMethod,
+  IAdminUser,
+  IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
