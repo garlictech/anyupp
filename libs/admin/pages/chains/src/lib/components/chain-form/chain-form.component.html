@@ -2,8 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (chain && chain.id ? 'chains.editChain' : 'chains.newChain')
-          | translate
+        (chain && chain.id ? 'chains.editChain' : 'chains.newChain') | translate
       }}
     </div>
     <button
@@ -164,14 +163,14 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-clickable-image-input
-              [imagePath]="logoFilePath"
+              [image]="logoImage"
               [imageType]="eImageType.PNG"
               [uploadCallbackFn]="logoUploadCallback"
               [removeCallbackFn]="logoRemoveCallback"
               [callbackParam]="'logo'"
               [maxSize]="160"
               caption="chains.style.images.logo"
-              uploadFolderPath="/chains/"
+              uploadFolderPath="chains"
               width="200px"
               height="200px"
               borderRadius="0.25rem"
@@ -182,14 +181,14 @@
         <div class="row">
           <div class="col-12">
             <bgap-form-clickable-image-input
-              [imagePath]="headerFilePath"
+              [image]="headerImage"
               [imageType]="eImageType.PNG"
               [uploadCallbackFn]="logoUploadCallback"
               [removeCallbackFn]="logoRemoveCallback"
               [callbackParam]="'header'"
               [maxSize]="800"
               caption="chains.style.images.header"
-              uploadFolderPath="/chains/"
+              uploadFolderPath="chains"
               width="80%"
               height="100px"
               borderRadius="0.25rem"

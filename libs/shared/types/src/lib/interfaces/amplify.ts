@@ -13,3 +13,7 @@ export interface IAmplifyModel {
   createdAt?: number;
   updatedAt?: number;
 }
+
+export interface IStorageResponse {
+  key: string;
+}
