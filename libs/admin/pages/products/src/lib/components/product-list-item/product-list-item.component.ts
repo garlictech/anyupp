@@ -20,7 +20,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
   @Input() product!: IProduct;
-  @Input() pending = true;
+  @Input() pending = false;
   @Input() productLevel!: EProductLevel;
   @Input() currency = '';
   @Input() isFirst?: boolean;

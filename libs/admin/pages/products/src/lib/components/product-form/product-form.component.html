@@ -107,12 +107,12 @@
       <!-- VARIANTS -->
       <bgap-form-product-variants
         [productLevel]="productLevel"
-        [variantFormArray]="dialogForm.get('_variantArr')! | asFormArray"
+        [variantFormArray]="dialogForm.get('variants')! | asFormArray"
       ></bgap-form-product-variants>
 
       <!-- CONTAINS -->
 
-      <fieldset class="form" formGroupName="contains">
+      <!--fieldset class="form" formGroupName="contains">
         <legend class="label">{{ 'products.contains' | translate }}</legend>
 
         <div formGroupName="allergens">
@@ -146,7 +146,7 @@
           }}</label>
           <div class="col-md-3">...</div>
         </div>
-      </fieldset>
+      </fieldset-->
 
       <bgap-form-clickable-image-input
         [imagePath]="imagePath"
@@ -174,5 +174,6 @@
         </button>
       </div>
     </form>
+    <pre>{{dialogForm.value | json}}</pre>
   </nb-card-body>
 </nb-card>

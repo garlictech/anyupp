@@ -29,7 +29,7 @@ export class UserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 
