@@ -7,31 +7,30 @@ Feature: Create a new Chain
 
 Background: Steps to the New Chain page
   Given I am logged in as an admin user
-  And I am at the "english" language
-  And I am at the "chains" page
+  And I am at the chains page
 
-Scenario Outline: Check form page
-  When I click on the first "<button>" button
-  Then the "<title>" title is displayed
+Scenario: Check form page
+  When I click on the first "Edit" button
+  Then the "Edit Chain" title is displayed
   When I click on the "submit" button
   Then the "chains" page is displayed
-  And the "<title>" title is hidden
 
-  Examples:
-      | button | title      |
-      | Edit   | Edit Chain |
-      | Plus   | New Chain  |
+Scenario: Check form page
+  When I click on the first "Plus" button
+  Then the "New Chain" title is displayed
+  When I click on the "close" button
+  Then the "chains" page is displayed
 
 Scenario: Active Chain
   When I click on the "Active" checkbox
   And I click on the "submit" button
   Then the "chains" page is displayed
-  When I lcik on the same product
+  When I click on the same product
   Then I should see the checkbox checked
 
 Scenario Outline: Fill out the several type of text inputs
-  When I click on the "<text>" input
-  And I fill out with "<name>"
+  Given I am at the "<text>" input
+  When I fill out with "<name>"
   And I click on the "submit" button
   Then I should see the chain with datas
 

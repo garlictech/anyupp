@@ -7,7 +7,7 @@ Background: Go to Unit Product Edit page
   Given I am logged in as an admin user
   And I am at the "english" language
   And I am at the "products" page
-  And I am on the "unit products" list
+  And I am on the unit products list
   When I click on the first "edit" button
 
 @layout 
