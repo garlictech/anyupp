@@ -5,14 +5,14 @@ import { NbDialogRef } from '@nebular/theme';
 @Component({
   selector: 'bgap-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
-  public options: IConfirmOptions;
+  public options?: IConfirmOptions;
 
   constructor(private _nbDialogRef: NbDialogRef<unknown>) {}
 
-  public click(callbackFn): void {
+  public click(callbackFn: () => void): void {
     if (callbackFn) {
       callbackFn();
     }

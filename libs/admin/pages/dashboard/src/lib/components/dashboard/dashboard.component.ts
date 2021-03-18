@@ -4,11 +4,20 @@ import { filter } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/dashboard';
-import { DataService } from '@bgap/admin/shared/data';
-import { unitsSelectors } from '@bgap/admin/shared/units';
-import { zeroFill } from '@bgap/admin/shared/utils';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IUnit } from '@bgap/shared/types';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
+import { DataService } from '@bgap/admin/shared/data-access/data';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { zeroFill } from '@bgap/shared/utils';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IUnit,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -21,17 +30,18 @@ import { select, Store } from '@ngrx/store';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
-  public dashboardSettings: IDashboardSettings;
+  public dashboardSettings!: IDashboardSettings;
   public resized: boolean;
-  public buttonSize: ENebularButtonSize;
-  public selectedUnit: IUnit;
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
+  public selectedUnit?: IUnit;
   public toggleFormControl: FormControl;
-  public time: string;
+  public time?: string;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _dataService: DataService,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {
     this.resized = false;
     this.toggleFormControl = new FormControl(false);
@@ -51,12 +61,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .pipe(
         select(unitsSelectors.getSelectedUnit),
         filter((unit): boolean => !!unit),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
-      .subscribe((unit: IUnit): void => {
+      .subscribe((unit: IUnit | undefined): void => {
         this.selectedUnit = unit;
 
-        this.toggleFormControl.setValue(this.selectedUnit.isAcceptingOrders);
+        this.toggleFormControl.setValue(this.selectedUnit?.isAcceptingOrders);
       });
   }
 
@@ -66,12 +76,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe((): void => {
         const date = new Date();
         this.time = `${zeroFill(date.getHours())}:${zeroFill(
-          date.getMinutes()
+          date.getMinutes(),
         )}:${zeroFill(date.getSeconds())}`;
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -81,7 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this._store.dispatch(
         dashboardActions.setListMode({
           listMode,
-        })
+        }),
       );
 
       this._store.dispatch(dashboardActions.resetSelectedOrderId());
@@ -90,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._store.dispatch(
           dashboardActions.setOrderEditing({
             orderEditing: false,
-          })
+          }),
         );
       }
     }
@@ -103,7 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.dashboardSettings.size === EDashboardSize.NORMAL
             ? EDashboardSize.LARGER
             : EDashboardSize.NORMAL,
-      })
+      }),
     );
   }
 
@@ -115,22 +124,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialog.componentRef.instance.options = {
-      message: this.selectedUnit.isAcceptingOrders
+      message: this.selectedUnit?.isAcceptingOrders
         ? 'orders.confirmNotAcceptOrder'
         : 'orders.confirmIsAcceptOrder',
       buttons: [
         {
           label: 'common.ok',
           callback: (): void => {
-            this._dataService.updateUnit(this.selectedUnit._id, {
-              isAcceptingOrders: !this.selectedUnit.isAcceptingOrders,
+            this._dataService.updateUnit((<IUnit>this.selectedUnit).id, {
+              isAcceptingOrders: !(<IUnit>this.selectedUnit).isAcceptingOrders,
             });
           },
           status: 'success',
         },
         {
           label: 'common.cancel',
-          callback: (): void => {/**/},
+          callback: (): void => {
+            /**/
+          },
           status: 'basic',
         },
       ],

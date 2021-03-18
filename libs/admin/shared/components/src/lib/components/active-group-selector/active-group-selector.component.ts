@@ -1,10 +1,9 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { DataService } from '@bgap/admin/shared/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -18,16 +17,14 @@ import { select, Store } from '@ngrx/store';
 export class ActiveGroupSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public groups$: Observable<IGroup[]>;
-  private _adminUser: IAdminUser;
+  private _adminUser!: IAdminUser;
 
-  constructor(
-    private _store: Store<any>,
-    private _dataService: DataService
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private _store: Store<any>, private _dataService: DataService) {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
 
     this._store
@@ -37,22 +34,21 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
       });
   }
 
-  get selectedGroupId(): string {
-    return _get(this._adminUser, 'settings.selectedGroupId');
+  get selectedGroupId(): string | null | undefined {
+    return this._adminUser?.settings?.selectedGroupId;
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
   public onGroupSelected(groupId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
-      groupId !== _get(this._adminUser, 'settings.selectedGroupId')
+      this._adminUser?.id &&
+      groupId !== this._adminUser?.settings?.selectedGroupId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id, {
-        ..._get(this._adminUser, 'settings', {}),
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
+        ...(this._adminUser?.settings || {}),
         selectedGroupId: groupId,
         selectedUnitId: null, // Reset unit id!
       });

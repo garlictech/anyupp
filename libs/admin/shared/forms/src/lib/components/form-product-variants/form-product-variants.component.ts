@@ -1,19 +1,21 @@
-import { get as _get } from 'lodash-es';
-
 import { Component, Input } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
-import { customNumberCompare } from '@bgap/admin/shared/utils';
-import { EProductLevel, IProductVariant } from '@bgap/shared/types';
+import { customNumberCompare } from '@bgap/shared/utils';
+import {
+  EProductLevel,
+  IAvailability,
+  IProductVariant,
+} from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-form-product-variants',
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
-  @Input() variantFormArray: FormArray;
+  @Input() variantFormArray!: FormArray;
   @Input() allowAddVariant: boolean;
-  @Input() productLevel: EProductLevel;
+  @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
 
   public EProductLevel = EProductLevel;
@@ -23,13 +25,13 @@ export class FormProductVariantsComponent {
   }
 
   public addVariant(): void {
-    this.variantFormArray.push(
-      this._formsService.createProductVariantFormGroup()
+    (<FormArray>this.variantFormArray)?.push(
+      this._formsService.createProductVariantFormGroup(),
     );
   }
 
   public move(idx: number, change: number): void {
-    const arr = this.variantFormArray.value;
+    const arr = this.variantFormArray?.value;
     const movingItem = arr[idx];
 
     if (
@@ -44,18 +46,20 @@ export class FormProductVariantsComponent {
 
       arr.sort(customNumberCompare('position'));
 
-      this.variantFormArray.controls.forEach(
-        (g: FormGroup, i: number): void => {
+      (<FormArray>this.variantFormArray)?.controls.forEach(
+        (g: AbstractControl, i: number): void => {
           g.patchValue(arr[i]);
-          (g.controls.availabilities as FormArray).clear();
+          (g.get('availabilities') as FormArray).clear();
 
-          _get(arr[i], 'availabilities', []).forEach((availability): void => {
-            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-            availabilityGroup.patchValue(availability);
+          (arr[i]?.availabilities || []).forEach(
+            (availability: IAvailability): void => {
+              const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
+              availabilityGroup.patchValue(availability);
 
-            (g.controls.availabilities as FormArray).push(availabilityGroup);
-          });
-        }
+              (g.get('availabilities') as FormArray).push(availabilityGroup);
+            },
+          );
+        },
       );
     }
   }

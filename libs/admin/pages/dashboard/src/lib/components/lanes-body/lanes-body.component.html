@@ -5,9 +5,9 @@
         class="mr-3"
         status="light"
         s
-        [checked]="selectedLanes.includes(lane._id)"
+        [checked]="selectedLanes.includes(lane.id!)"
         *ngFor="let lane of unitLanes"
-        (checkedChange)="toggleLane(lane._id)"
+        (checkedChange)="toggleLane(lane.id!)"
         ><span [ngStyle]="{ color: lane.color }"
           >{{ lane.name }} ({{ lane.placedCount }}/{{ lane.processingCount }}/{{
             lane.readyCount

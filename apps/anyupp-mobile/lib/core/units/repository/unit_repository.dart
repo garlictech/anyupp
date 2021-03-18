@@ -1,0 +1,12 @@
+import 'package:fa_prev/core/core.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+class FirebaseUnitRepository {
+  final IUnitProvider _unitProvider;
+
+  FirebaseUnitRepository(this._unitProvider);
+
+  Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
+    return _unitProvider.searchUnitsNearLocation(location, radius);
+  }
+}

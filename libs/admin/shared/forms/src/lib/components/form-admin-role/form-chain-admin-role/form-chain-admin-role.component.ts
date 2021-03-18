@@ -2,10 +2,10 @@ import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { IAdminRoleEntity, IChain, IKeyValue } from '@bgap/shared/types';
 
-import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -15,15 +15,13 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-chain-admin-role.component.html',
 })
 export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
-  @Input() control: FormControl;
-  public chainOptions: IKeyValue[];
+  @Input() control!: FormGroup;
+  public chainOptions: IKeyValue[] = [];
   public entitySelector: FormGroup;
-  public assignedChains: IChain[];
+  public assignedChains: IChain[] = [];
 
-  constructor(
-    private _store: Store<any>,
-    private _formBuilder: FormBuilder
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {
     this.chainOptions = [];
     this.entitySelector = this._formBuilder.group({
       chainId: [''],
@@ -33,29 +31,24 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(select(chainsSelectors.getAllChains)),
-      this.control['controls'].entities.valueChanges.pipe(
-        startWith(this.control.value.entities)
+      (<FormGroup>this.control.get('entities')).valueChanges.pipe(
+        startWith(this.control.value.entities),
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([chains, entities]: [IChain[], IAdminRoleEntity[]]): void => {
-        this.chainOptions = [];
-        this.assignedChains = [];
+        this.chainOptions = chains
+          .filter(
+            chain => !entities.map((e): string => e.chainId).includes(chain.id),
+          )
+          .map(chain => ({ key: chain.id, value: chain.name }));
 
-        chains.forEach((chain: IChain): void => {
-          if (!entities.map((e): string => e.chainId).includes(chain._id)) {
-            this.chainOptions.push({
-              key: chain._id,
-              value: chain.name,
-            });
-          } else {
-            this.assignedChains.push(chain);
-          }
-        });
+        this.assignedChains = chains.filter(chain =>
+          entities.map((e): string => e.chainId).includes(chain.id),
+        );
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -65,7 +58,7 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     arr.push({
       chainId: this.entitySelector.value.chainId,
     });
-    this.control['controls'].entities.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
 
     this.entitySelector.patchValue({
       chainId: '',
@@ -76,6 +69,6 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     const arr = [...this.control.value.entities];
     arr.splice(idx, 1);
 
-    this.control['controls'].entities.setValue(arr);
+    (<FormGroup>this.control.get('entities')).setValue(arr);
   }
 }

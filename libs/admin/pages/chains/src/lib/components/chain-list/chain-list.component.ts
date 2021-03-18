@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/chains';
+import { Component, OnDestroy } from '@angular/core';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -13,24 +13,22 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
 @Component({
   selector: 'bgap-chain-list',
   templateUrl: './chain-list.component.html',
-  styleUrls: ['./chain-list.component.scss']
+  styleUrls: ['./chain-list.component.scss'],
 })
-export class ChainListComponent implements OnInit, OnDestroy {
+export class ChainListComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService
-  ) {}
-
-  ngOnInit(): void {
+    private _nbDialogService: NbDialogService,
+  ) {
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

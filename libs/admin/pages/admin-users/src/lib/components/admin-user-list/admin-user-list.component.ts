@@ -1,7 +1,7 @@
-import { getAllAdminUsers } from 'libs/admin/shared/admin-users/src/lib/+state/admin-users.selectors';
+import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -13,24 +13,22 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 @Component({
   selector: 'bgap-admin-user-list',
   templateUrl: './admin-user-list.component.html',
-  styleUrls: ['./admin-user-list.component.scss']
+  styleUrls: ['./admin-user-list.component.scss'],
 })
-export class AdminUserListComponent implements OnInit, OnDestroy {
+export class AdminUserListComponent implements OnDestroy {
   public adminUsers$: Observable<IAdminUser[]>;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService
-  ) {}
-
-  ngOnInit(): void {
+    private _nbDialogService: NbDialogService,
+  ) {
     this.adminUsers$ = this._store.pipe(
-      select(getAllAdminUsers),
-      untilDestroyed(this)
+      select(adminUsersSelectors.getAllAdminUsers),
+      untilDestroyed(this),
     );
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

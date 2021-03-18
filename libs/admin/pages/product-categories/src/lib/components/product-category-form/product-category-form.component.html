@@ -2,7 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (productCategory && productCategory._id
+        (productCategory && productCategory.id
           ? 'productCategories.editProductCategory'
           : 'productCategories.newProductCategory'
         ) | translate
@@ -24,32 +24,32 @@
       <bgap-form-text-input
         caption="common.nameHU"
         type="text"
-        [control]="dialogForm.controls.name['controls'].hu"
+        [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameEN"
         type="text"
-        [control]="dialogForm.controls.name['controls'].en"
+        [control]="dialogForm.get('name')!.get('en')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameDE"
         type="text"
-        [control]="dialogForm.controls.name['controls'].de"
+        [control]="dialogForm.get('name')!.get('de')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
-        [control]="dialogForm.controls.description['controls'].hu"
+        [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
-        [control]="dialogForm.controls.description['controls'].en"
+        [control]="dialogForm.get('description')!.get('en')! | asFormControl"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
-        [control]="dialogForm.controls.description['controls'].de"
+        [control]="dialogForm.get('description')!.get('de')! | asFormControl"
       ></bgap-form-text-input>
 
       <bgap-form-clickable-image-input

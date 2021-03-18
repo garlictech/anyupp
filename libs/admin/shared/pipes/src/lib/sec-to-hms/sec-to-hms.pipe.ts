@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { zeroFill } from '@bgap/admin/shared/utils';
+import { zeroFill } from '@bgap/shared/utils';
 
 @Pipe({
   name: 'secToHms',
 })
 export class SecToHmsPipe implements PipeTransform {
-  transform(value: number): unknown {
+  transform(value: number): string {
     let totalSeconds = value;
     const hours = Math.floor(totalSeconds / 3600);
     totalSeconds %= 3600;
@@ -13,7 +13,7 @@ export class SecToHmsPipe implements PipeTransform {
     const seconds = totalSeconds % 60;
 
     return `${hours > 0 ? zeroFill(hours) + ':' : ''}${zeroFill(
-      minutes
+      minutes,
     )}:${zeroFill(seconds)}`;
   }
 }

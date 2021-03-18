@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { productsSelectors } from '@bgap/admin/shared/products';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { FormsService } from '../../services/forms/forms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -12,13 +12,11 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./form-unit-lanes.component.scss'],
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray: FormArray;
+  @Input() lanesFormArray!: FormArray;
   public usedLaneIds: string[];
 
-  constructor(
-    private _store: Store<any>,
-    private _formsService: FormsService
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private _store: Store<any>, private _formsService: FormsService) {
     this.usedLaneIds = [];
   }
 
@@ -26,7 +24,7 @@ export class FormUnitLanesComponent implements OnInit {
     this._store
       .pipe(
         select(productsSelectors.getUnitProductLaneIds()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((laneIds: string[]): void => {
         this.usedLaneIds = laneIds;
@@ -34,10 +32,12 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public addLane(): void {
-    this.lanesFormArray.push(this._formsService.createLaneFormGroup());
+    (<FormArray>this.lanesFormArray).push(
+      this._formsService.createLaneFormGroup(),
+    );
   }
 
   public removeLane(idx: number): void {
-    this.lanesFormArray.removeAt(idx);
+    (<FormArray>this.lanesFormArray).removeAt(idx);
   }
 }

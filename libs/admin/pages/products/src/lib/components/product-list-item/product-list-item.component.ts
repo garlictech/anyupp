@@ -1,7 +1,7 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   EAdminRole, EProductLevel, EVariantAvailabilityType, IAdminUserRole, IProduct, IProductVariant
 } from '@bgap/shared/types';
@@ -19,10 +19,10 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   styleUrls: ['./product-list-item.component.scss'],
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
-  @Input() product: IProduct;
-  @Input() pending: boolean;
-  @Input() productLevel: EProductLevel;
-  @Input() currency: string;
+  @Input() product!: IProduct;
+  @Input() pending = false;
+  @Input() productLevel!: EProductLevel;
+  @Input() currency = '';
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();
@@ -32,30 +32,31 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public EVariantAvailabilityType = EVariantAvailabilityType;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _store: Store<any>
   ) {}
 
   ngOnInit(): void {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserRoles),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
-      .subscribe((adminUserRole: IAdminUserRole): void => {
+      .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -63,7 +64,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole.role);
+            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;
@@ -71,7 +72,6 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -93,11 +93,11 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
       });
 
       dialog.componentRef.instance.editing = true;
+      dialog.componentRef.instance.currency = this.currency;
     }
 
-    dialog.componentRef.instance.product = _cloneDeep(this.product);
+    dialog.componentRef.instance.product = fp.cloneDeep(this.product);
     dialog.componentRef.instance.productLevel = this.productLevel;
-    dialog.componentRef.instance.currency = this.currency;
   }
 
   public extendProduct(): void {
@@ -114,14 +114,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public moveUp(): void {
     this.positionChange.emit({
       change: -1,
-      productId: this.product._id,
+      productId: this.product.id,
     });
   }
 
   public moveDown(): void {
     this.positionChange.emit({
       change: 1,
-      productId: this.product._id,
+      productId: this.product.id,
     });
   }
 }

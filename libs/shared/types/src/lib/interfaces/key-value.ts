@@ -1,8 +1,14 @@
 export interface IKeyValue {
   key: string;
-  value: string | unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: string | number | any;
 }
 
 export interface IKeyValueObject {
-  [key: string]: string | unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: string | number | any;
+}
+
+export interface IDataObject<T> {
+  [key: string]: T;
 }

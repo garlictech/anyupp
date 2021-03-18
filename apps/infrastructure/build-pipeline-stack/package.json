@@ -1,0 +1,29 @@
+{
+  "name": "@bgap/build-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.89.0"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-chatbot": "1.89.0",
+    "@aws-cdk/aws-sns": "1.89.0",
+    "@aws-cdk/aws-events": "1.89.0",
+    "@aws-cdk/aws-events-targets": "1.89.0",
+    "@aws-cdk/aws-codebuild": "1.89.0",
+    "@aws-cdk/aws-codestarnotifications": "1.89.0",
+    "@aws-cdk/aws-codecommit": "1.89.0",
+    "@aws-cdk/aws-codedeploy": "1.89.0",
+    "@aws-cdk/aws-codepipeline": "1.89.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.89.0",
+    "@aws-cdk/aws-secretsmanager": "1.89.0",
+    "@aws-cdk/aws-ecr": "1.89.0",
+    "@aws-cdk/custom-resources": "1.89.0",
+    "@aws-cdk/core": "1.89.0"
+  }
+}

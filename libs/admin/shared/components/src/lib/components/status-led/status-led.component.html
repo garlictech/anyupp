@@ -1,1 +1,4 @@
-<span [ngClass]="{ green: status, red: !status }"></span>
+<span
+  [title]="'common.' + (status ? 'active' : 'inactive') | translate"
+  [ngClass]="{ green: status, red: !status }"
+></span>

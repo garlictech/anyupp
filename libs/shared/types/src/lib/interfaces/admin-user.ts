@@ -1,13 +1,14 @@
 import { EAdminRole } from '../enums';
+import { IAmplifyModel } from './amplify';
 import { IContact } from './contact';
 
 export interface IAdminUserSettings {
-  selectedChainId?: string;
-  selectedGroupId?: string;
-  selectedUnitId?: string;
-  selectedProductCategoryId?: string;
-  selectedLanguage?: string;
-  selectedHistoryDate?: number;
+  selectedChainId?: string | null;
+  selectedGroupId?: string | null;
+  selectedUnitId?: string | null;
+  selectedProductCategoryId?: string | null;
+  selectedLanguage?: string | null;
+  selectedHistoryDate?: number | null;
 }
 
 export interface IAdminRoleEntity {
@@ -32,8 +33,8 @@ export interface IAdminUserCredential {
   settings?: IAdminUserSettings;
 }
 
-export interface IAdminUser extends IContact, IAdminUserCredential {
-  _id?: string;
+export interface IAdminUser extends IContact, IAdminUserCredential, IAmplifyModel {
+  id?: string;
   name?: string;
   profileImage?: string;
 }

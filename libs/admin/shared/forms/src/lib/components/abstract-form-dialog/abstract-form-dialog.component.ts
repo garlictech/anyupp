@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DataService } from '@bgap/admin/shared/data';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { ToasterService } from '@bgap/admin/shared/utils';
 import { NbDialogRef } from '@nebular/theme';
 
@@ -9,7 +9,7 @@ import { NbDialogRef } from '@nebular/theme';
   template: '',
 })
 export class AbstractFormDialogComponent {
-  public dialogForm: FormGroup;
+  public dialogForm!: FormGroup;
   protected _dataService: DataService;
   protected _formBuilder: FormBuilder;
   protected _toasterService: ToasterService;

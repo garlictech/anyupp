@@ -1,8 +1,8 @@
-{{ availability.price | currencyFormatter: currency }}
+{{ availability.price! | currencyFormatter: currency }}
 
-<span *ngIf="availability.type === EVariantAvailabilityType.WEEKLY">
+<span *ngIf="availability.type! === EVariantAvailabilityType.WEEKLY">
   <nb-icon icon="repeat-outline"></nb-icon>
 </span>
-<span *ngIf="availability.type === EVariantAvailabilityType.SEASONAL">
+<span *ngIf="availability.type! === EVariantAvailabilityType.SEASONAL">
   <nb-icon icon="calendar-outline"></nb-icon>
 </span>

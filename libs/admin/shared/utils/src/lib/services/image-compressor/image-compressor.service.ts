@@ -9,7 +9,7 @@ export class ImageCompressorService {
   compress(
     file: File,
     imageType: EImageType,
-    targetSize: number = 750
+    targetSize = 750,
   ): Observable<File> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -17,7 +17,7 @@ export class ImageCompressorService {
     return new Observable((observer): void => {
       reader.onload = (ev): void => {
         const img = new Image();
-        img.src = <string>ev.target.result;
+        img.src = <string>ev.target?.result || '';
 
         (img.onload = (): void => {
           const elem = document.createElement('canvas'); // Use Angular's Renderer2 method
@@ -47,19 +47,21 @@ export class ImageCompressorService {
 
             ctx.canvas.toBlob(
               (blob): void => {
-                observer.next(
-                  new File(
-                    [blob],
-                    file.name.substr(0, file.name.lastIndexOf('.')) + ext,
-                    {
-                      type: imageType,
-                      lastModified: Date.now(),
-                    }
-                  )
-                );
+                if (blob) {
+                  observer.next(
+                    new File(
+                      [blob],
+                      file.name.substr(0, file.name.lastIndexOf('.')) + ext,
+                      {
+                        type: imageType,
+                        lastModified: Date.now(),
+                      },
+                    ),
+                  );
+                }
               },
               imageType,
-              0.8
+              0.8,
             );
           }
         }),

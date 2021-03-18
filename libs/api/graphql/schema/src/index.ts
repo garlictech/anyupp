@@ -1,1 +1,3 @@
-export * from './lib/api';
+import * as AppsyncApi from './lib/appsync-api';
+
+export { AppsyncApi };

@@ -27,6 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
+  id?: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
@@ -37,12 +38,12 @@ export interface IProductVariant {
   position: string;
 }
 
-export interface IProductVariantsObject {
-  [key: string]: IProductVariant;
-}
-
 export interface IProduct {
-  _id: string;
+  id: string;
+  parentId?: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId?: string;
+  unitId?: string;
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
@@ -51,12 +52,24 @@ export interface IProduct {
   isVisible: boolean; // temp
   // contains: any; // TODO interface
   position: string;
-  variants: IProductVariantsObject;
+  variants: IProductVariant[];
   // alwaysAvailableOnOpen: boolean; // TODO
   // ingredients: IProductIngredients; // TODO later...
   tax: string; // %
   laneId?: string;
   productType: EProductType;
+}
+
+export interface IGeneratedProduct {
+  id: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: string;
+  productType: EProductType;
+  tax: string;
+  variants: IProductVariant[];
+  productCategoryId: string;
 }
 
 export interface IProductOrderChangeEvent {

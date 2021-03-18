@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { getDailyOrdersSum } from '@bgap/admin/shared/orders';
+import { getDailyOrdersSum } from '@bgap/admin/shared/data-access/orders';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -12,7 +12,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-unique-guest-avg-sales.component.scss'],
 })
 export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
-  @Input() orders$: Observable<IOrder[]>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
   public uniqueUserCount = 0;
@@ -29,7 +29,6 @@ export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

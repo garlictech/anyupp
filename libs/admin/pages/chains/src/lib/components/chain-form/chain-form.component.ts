@@ -1,10 +1,15 @@
-import { get as _get, set as _set } from 'lodash-es';
+import * as fp from 'lodash/fp';
+
+import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, contactFormGroup, multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
+} from '@bgap/admin/shared/utils';
 import { EImageType, IChain } from '@bgap/shared/types';
 
 @Component({
@@ -15,22 +20,18 @@ import { EImageType, IChain } from '@bgap/shared/types';
 export class ChainFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public chain: IChain;
+  public chain!: IChain;
   public eImageType = EImageType;
+
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
-  }
 
-  get logoFilePath(): string {
-    return _get(this.chain, 'style.images.logo');
-  }
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
-  get headerFilePath(): string {
-    return _get(this.chain, 'style.images.header');
-  }
-
-  ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
       description: this._formBuilder.group(
@@ -39,10 +40,11 @@ export class ChainFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       isActive: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
+      ...addressFormGroup(this._formBuilder),
       style: this._formBuilder.group({
         colors: this._formBuilder.group({
           backgroundLight: [''],
@@ -61,100 +63,109 @@ export class ChainFormComponent
         }),
       }),
     });
+  }
 
+  get logoFilePath(): string {
+    return this.chain?.style?.images?.logo;
+  }
+
+  get headerFilePath(): string {
+    return this.chain?.style?.images?.header;
+  }
+
+  ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(this.chain);
+      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
   }
 
-  public submit(): void {
-    if (this.dialogForm.valid) {
-      if (_get(this.chain, '_id')) {
-        this._dataService
-          .updateChain(this.chain._id, this.dialogForm.value)
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful'
-              );
-              this.close();
-            },
-            (err) => {
-              console.error('CHAIN UPDATE ERROR', err);
-            }
+  public async submit(): Promise<void> {
+    if (this.dialogForm?.valid) {
+      if (this.chain?.id) {
+        try {
+          await this._amplifyDataService.update<IChain>('getChain', 'updateChain',
+            this.chain.id,
+            () => this.dialogForm.value
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertChain(this.dialogForm.value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful'
-            );
-            this.close();
-          },
-          (err) => {
-            console.error('CHAIN INSERT ERROR', err);
-          }
-        );
+        try {
+          await this._amplifyDataService.create('createChain', this.dialogForm?.value);
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }
 
   public logoUploadCallback = (imagePath: string, key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
-      imagePath
-    );
+    (<FormControl>(
+      this.dialogForm.get('style')?.get('images')?.get(key)
+    )).setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.chain, '_id')) {
+    if (this.chain?.id) {
       this._dataService
-        .updateChainImagePath(this.chain._id, key, imagePath)
+        .updateChainImagePath(this.chain.id, key, imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
 
   public logoRemoveCallback = (key: string): void => {
-    this.dialogForm.controls.style['controls'].images['controls'][key].setValue(
-      ''
-    );
+    (<FormControl>(
+      this.dialogForm.get('style')?.get('images')?.get(key)
+    )).setValue('');
 
     if (this.chain) {
-      _set(this.chain, `style.images.${key}`, null);
+      fp.set(`style.images.${key}`, null, this.chain);
     }
 
     // Update existing user's image
-    if (_get(this.chain, '_id')) {
+    if (this.chain?.id) {
       this._dataService
-        .updateChainImagePath(this.chain._id, key, null)
+        .updateChainImagePath(this.chain.id, key, null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

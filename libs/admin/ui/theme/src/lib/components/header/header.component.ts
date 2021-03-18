@@ -1,18 +1,17 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { AuthService } from '@bgap/admin/shared/auth';
-import { DataService } from '@bgap/admin/shared/data';
+import { CognitoService } from '@bgap/admin/shared/data-access/auth';
+import { DataService } from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 interface IMenuItem {
   title: string;
@@ -24,41 +23,43 @@ interface IMenuItem {
 @Component({
   selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public groups$: Observable<IGroup[]>;
-  public adminUser: IAdminUser;
+  public groups$?: Observable<IGroup[]>;
+  public adminUser?: IAdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
   public selectedLang: string;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _sidebarService: NbSidebarService,
     private _menuService: NbMenuService,
     private _themeService: NbThemeService,
     private _layoutService: LayoutService,
     private _breakpointService: NbMediaBreakpointsService,
-    private _authService: AuthService,
+
     private _dataService: DataService,
-    private _translateService: TranslateService
+    private _cognitoService: CognitoService,
+    private _translateService: TranslateService,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
 
     this.userMenu = [
       {
         title: 'Profile',
-        langKey: 'header.profile'
+        langKey: 'header.profile',
       },
       {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
-          this._authService.signOut();
-        }
-      }
+          this._cognitoService.signOut();
+        },
+      },
     ];
 
     this.languageMenu = [
@@ -67,22 +68,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         langKey: 'common.lang.hungarian',
         onClick: (): void => {
           this._onLanguageSelected('hu-HU');
-        }
+        },
       },
       {
         title: 'English',
         langKey: 'common.lang.english',
         onClick: (): void => {
           this._onLanguageSelected('en-US');
-        }
+        },
       },
       {
         title: 'German',
         langKey: 'common.lang.german',
         onClick: (): void => {
           this._onLanguageSelected('de-DE');
-        }
-      }
+        },
+      },
     ];
 
     this._store
@@ -91,19 +92,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.adminUser = adminUser;
       });
 
-    this._translateService.onLangChange.subscribe((event): void => {
-      this.selectedLang = _get(event, 'lang', '').split('-')[0];
-      this._translateMenuItems();
-    });
+    this._translateService.onLangChange.subscribe(
+      (event: LangChangeEvent): void => {
+        this.selectedLang = (event.lang || '').split('-')[0];
+        this._translateMenuItems();
+      },
+    );
     this._translateMenuItems();
   }
 
-  get userName(): string {
-    return _get(this.adminUser, 'name');
+  get userName(): string | undefined {
+    return this.adminUser?.name;
   }
 
-  get userImage(): string {
-    return _get(this.adminUser, 'profileImage');
+  get userImage(): string | undefined {
+    return this.adminUser?.profileImage;
   }
 
   ngOnInit(): void {
@@ -112,11 +115,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .onMediaQueryChange()
       .pipe(
         map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe(
         (isLessThanXl: boolean): boolean =>
-          (this.userPictureOnly = isLessThanXl)
+          (this.userPictureOnly = isLessThanXl),
       );
 
     this._menuService
@@ -161,12 +164,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private _onLanguageSelected(lang: string): void {
     if (
-      _get(this.adminUser, '_id') &&
-      lang !== _get(this.adminUser, 'settings.selectedLanguage')
+      this.adminUser?.id &&
+      lang !== this.adminUser?.settings?.selectedLanguage
     ) {
       this._dataService.updateAdminUserSeletedLanguage(
-        this.adminUser._id,
-        lang
+        this.adminUser?.id || '',
+        lang,
       );
     }
   }

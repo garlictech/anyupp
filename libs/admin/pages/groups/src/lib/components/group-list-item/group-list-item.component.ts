@@ -1,4 +1,4 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
+import * as fp from 'lodash/fp';
 
 import { Component, Input } from '@angular/core';
 import { IGroup } from '@bgap/shared/types';
@@ -12,7 +12,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
   styleUrls: ['./group-list-item.component.scss'],
 })
 export class GroupListItemComponent {
-  @Input() group: IGroup;
+  @Input() group!: IGroup;
 
   constructor(private _nbDialogService: NbDialogService) {}
 
@@ -21,6 +21,6 @@ export class GroupListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.group = _cloneDeep(this.group);
+    dialog.componentRef.instance.group = fp.cloneDeep(this.group);
   }
 }

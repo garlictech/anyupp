@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/orders';
+import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import { EDashboardTicketListType, IOrder } from '@bgap/shared/types';
 
 @Component({
@@ -8,13 +8,13 @@ import { EDashboardTicketListType, IOrder } from '@bgap/shared/types';
   styleUrls: ['./order-ticket-list-item.component.scss'],
 })
 export class OrderTicketListItemComponent {
-  @Input() order: IOrder;
-  @Input() showMarkers: boolean;
+  @Input() order!: IOrder;
+  @Input() showMarkers?: boolean;
   @Input() selectedOrderUserId?: string;
-  @Input() ticketListType: EDashboardTicketListType;
+  @Input() ticketListType?: EDashboardTicketListType;
 
   public currentStatus = currentStatusFn;
-  public readyCount;
+  public readyCount = 0;
 
   /*
   ngOnChanges(): void {

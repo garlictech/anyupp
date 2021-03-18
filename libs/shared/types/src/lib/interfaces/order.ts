@@ -46,8 +46,12 @@ export interface IPlace {
   table: string;
 }
 
+export interface IOrders {
+  [key: string]: IOrder;
+}
+
 export interface IOrder {
-  _id: string;
+  id: string;
   created: number;
   items: IOrderItem[];
   paymentMethod: EPaymentMethod;

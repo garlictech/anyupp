@@ -24,9 +24,12 @@ const reducer = createReducer(
   on(FloorMapActions.floorMapInitialized, (state, { initialized }) => ({
     ...state,
     initialized,
-  }))
+  })),
 );
 
-export function floorMapReducer(state: IFloorMapState | undefined, action: Action) {
+export function floorMapReducer(
+  state: IFloorMapState | undefined,
+  action: Action,
+) {
   return reducer(state, action);
 }

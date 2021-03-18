@@ -3,9 +3,9 @@ import { filter, skipWhile } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { ordersSelectors } from '@bgap/admin/shared/orders';
-import { dayInterval } from '@bgap/admin/shared/utils';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { dayInterval } from '@bgap/shared/utils';
 import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -18,12 +18,13 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject(
-    []
-  );
-  public dailyOrdersSum: IKeyValueObject;
-  public groupCurrency: string;
+  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<
+    IOrder[]
+  >([]);
+  public dailyOrdersSum: IKeyValueObject = {};
+  public groupCurrency = '';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {
     this.dateFormControl = new FormControl();
 
@@ -31,9 +32,9 @@ export class ReportsBodyComponent implements OnDestroy {
       .pipe(
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
-      .subscribe((group: IGroup): void => {
+      .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
       });
 
@@ -48,7 +49,7 @@ export class ReportsBodyComponent implements OnDestroy {
         const dailyHistoryOrders: IOrder[] = historyOrders.filter(
           (o: IOrder): boolean =>
             o.created >= selectedDayInterval.start &&
-            o.created <= selectedDayInterval.end
+            o.created <= selectedDayInterval.end,
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);
@@ -57,7 +58,6 @@ export class ReportsBodyComponent implements OnDestroy {
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

@@ -27,7 +27,7 @@
     <div>
       <nb-select
         size="small"
-        [formControl]="entitySelector['controls'].chainId"
+        [formControl]="entitySelector.get('chainId')! | asFormControl"
       >
         <nb-option value="">-</nb-option>
         <nb-option *ngFor="let option of chainOptions" [value]="option.key">{{

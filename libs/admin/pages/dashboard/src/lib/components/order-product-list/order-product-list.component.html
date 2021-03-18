@@ -13,7 +13,7 @@
     >
       <nb-option
         *ngFor="let option of productCategories"
-        [value]="option._id"
+        [value]="option.id"
         >{{ option.name | localize }}</nb-option
       >
     </nb-select>
@@ -32,16 +32,13 @@
 
         <div class="clearfix"></div>
 
-        <div
-          class="row"
-          *ngFor="let variant of product.variants | objectToArray"
-        >
+        <div class="row" *ngFor="let variant of product.variants">
           <div class="caption col-5 pt-2 m-auto font-larger">
-            {{ variant.variantName | localize }}
+            {{ variant.variantName || {} | localize }}
           </div>
 
           <div class="caption col-4 pt-2 m-auto font-larger">
-            {{ variant.price | currencyFormatter: groupCurrency }}
+            {{ variant.price || 0 | currencyFormatter: groupCurrency }}
           </div>
 
           <div class="col-3 pt-2">
@@ -51,7 +48,7 @@
               status="success"
               [size]="buttonSize"
               shape="round"
-              (click)="addProductVariant(product, variant._id)"
+              (click)="addProductVariant(product, variant.id || '')"
             >
               <nb-icon icon="plus-outline"></nb-icon>
             </button>

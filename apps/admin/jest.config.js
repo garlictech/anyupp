@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/app/**/*.{js,ts}'],
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {

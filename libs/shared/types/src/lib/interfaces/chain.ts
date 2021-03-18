@@ -1,3 +1,4 @@
+import { IAddressInfo } from './address';
 import { IContact } from './contact';
 import { ILocalizedItem } from './localized-item';
 
@@ -19,8 +20,8 @@ export interface IChainStyle {
   };
 }
 
-export interface IChain extends IContact {
-  _id: string;
+export interface IChain extends IContact, IAddressInfo {
+  id: string;
   name: string;
   description: ILocalizedItem<string>;
   style: IChainStyle;

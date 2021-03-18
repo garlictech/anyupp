@@ -1,12 +1,8 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IAdminUser } from '@bgap/shared/types';
-import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-
-import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
+import * as fp from 'lodash/fp';
 
 import { Component, Input } from '@angular/core';
+import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { AuthService } from '@bgap/admin/shared/auth';
 
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';
@@ -14,23 +10,19 @@ import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-r
 @Component({
   selector: 'bgap-admin-user-list-item',
   templateUrl: './admin-user-list-item.component.html',
-  styleUrls: ['./admin-user-list-item.component.scss']
+  styleUrls: ['./admin-user-list-item.component.scss'],
 })
 export class AdminUserListItemComponent {
-  @Input() adminUser: IAdminUser;
+  @Input() adminUser!: IAdminUser;
 
-  constructor(
-    private _nbDialogService: NbDialogService,
-    private _authService: AuthService,
-    private _toasterService: ToasterService
-  ) {}
+  constructor(private _nbDialogService: NbDialogService) {}
 
   editAdminUser(): void {
     const dialog = this._nbDialogService.open(AdminUserFormComponent, {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUser = _cloneDeep(this.adminUser);
+    dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
   }
 
   editAdminUserRoles(): void {
@@ -38,10 +30,11 @@ export class AdminUserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUser = _cloneDeep(this.adminUser);
+    dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
   }
 
   public resetEmail(): void {
+    /*
     const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
       dialogClass: 'form-dialog',
     });
@@ -52,7 +45,7 @@ export class AdminUserListItemComponent {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._authService.sendPasswordResetEmail(this.adminUser.email).then(
+            this._authService.sendPasswordResetEmail(this.adminUser.email || '').then(
               (): void => {
                 this._toasterService.show(
                   EToasterType.SUCCESS,
@@ -73,10 +66,13 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: () => {/**/},
+          callback: () => {
+
+          },
           status: 'basic',
         },
       ],
     };
+    */
   }
 }

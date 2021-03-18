@@ -5,7 +5,7 @@
   <div>
     <nb-select
       width="100"
-      [size]="size"
+      [size]="size!"
       [formControl]="control"
       (selectedChange)="onChange($event)"
     >
@@ -13,7 +13,7 @@
         >-</nb-option
       >
       <nb-option *ngFor="let option of options" [value]="option.key">{{
-        localize ? (option.value | localize) : (option.value | translate)
+        localize ? (option.value! | localize) : (option.value! | translate)
       }}</nb-option>
     </nb-select>
   </div>

@@ -1,6 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
+  "plugins": ["unused-imports", "@nrwl/nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -9,15 +10,15 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": ["angular-anyupp", "nodejs-shared"],
             "depConstraints": [
               {
                 "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": ["scope:shared"]
               },
               {
-                "sourceTag": "scope:bgap",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:bgap"]
+                "sourceTag": "scope:anyupp",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:anyupp"]
               },
               {
                 "sourceTag": "platform:universal",
@@ -31,10 +32,11 @@
                 ]
               },
               {
-                "sourceTag": "platform:nest",
+                "sourceTag": "platform:ionic",
                 "onlyDependOnLibsWithTags": [
                   "platform:universal",
-                  "platform:nest"
+                  "platform:angular",
+                  "platform:ionic"
                 ]
               },
               {
@@ -48,6 +50,14 @@
               {
                 "sourceTag": "type:utils",
                 "onlyDependOnLibsWithTags": ["type:utils"]
+              },
+              {
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": ["type:utils"]
+              },
+              {
+                "sourceTag": "type:server",
+                "onlyDependOnLibsWithTags": ["type:feature", "type:utils"]
               }
             ]
           }
@@ -57,29 +67,14 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "parserOptions": {
-        "project": "./tsconfig.*?.json"
-      },
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {
-        "@typescript-eslint/consistent-type-definitions": "error",
-        "@typescript-eslint/dot-notation": "off",
-        "@typescript-eslint/explicit-member-accessibility": [
-          "off",
-          {
-            "accessibility": "explicit"
-          }
-        ],
-        "id-blacklist": "off",
-        "id-match": "off",
-        "no-underscore-dangle": "off"
-      }
+      "parserOptions": { "project": "./tsconfig.*?.json" },
+      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
     }
-  ],
-  "plugins": ["unused-imports", "@nrwl/nx"]
+  ]
 }

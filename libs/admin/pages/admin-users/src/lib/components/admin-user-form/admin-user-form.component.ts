@@ -1,147 +1,164 @@
-import { Apollo } from 'apollo-angular';
-import { get as _get } from 'lodash-es';
+import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { Auth } from '@aws-amplify/auth';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { cleanObject, EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
-import { CreateAdminUser, UpdateAdminUser } from '@bgap/api/graphql/schema';
-import { EImageType, IAdminUser } from '@bgap/shared/types';
+import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-admin-user-form',
   templateUrl: './admin-user-form.component.html',
-  styleUrls: ['./admin-user-form.component.scss']
+  styleUrls: ['./admin-user-form.component.scss'],
 })
-export class AdminUserFormComponent extends AbstractFormDialogComponent implements OnInit {
-  public adminUser: IAdminUser;
+export class AdminUserFormComponent
+  extends AbstractFormDialogComponent
+  implements OnInit {
+  public adminUser!: IAdminUser;
   public eImageType = EImageType;
+
   private _formService: FormsService;
-  private _apollo: Apollo;
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
 
-    this._apollo = this._injector.get(Apollo);
     this._formService = this._injector.get(FormsService);
+    this._logger = this._injector.get(NGXLogger);
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
-  get userImage(): string {
-    return _get(this.adminUser, 'profileImage');
+  get userImageKey(): string {
+    return this.adminUser?.profileImage || '';
   }
 
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 
     if (this.adminUser) {
-      this.dialogForm.patchValue(this.adminUser);
+      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     } else {
       // Add custom asyncValidator to check existing email
-      this.dialogForm.controls['email'].setAsyncValidators([
-        this._formService.adminExistingEmailValidator,
+      (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
+        this._formService.adminExistingEmailValidator(
+          this.dialogForm.controls.email || '',
+        ),
       ]);
     }
   }
 
   public async submit(): Promise<void> {
-    if (this.dialogForm.valid) {
-      if (this.adminUser?._id) {
-        this._apollo
-          .mutate({
-            mutation: UpdateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm.value),
-              id: this.adminUser._id,
-            },
-          })
-          .subscribe(
-            ({ data }) => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful'
-              );
-              this.close();
-            },
-            error => {
-              console.error('there was an error sending the query', error);
-            }
+    if (this.dialogForm?.valid) {
+      if (this.adminUser?.id) {
+        try {
+          await this._amplifyDataService.update<IAdminUser>('getAdminUser', 'updateAdminUser',
+            this.adminUser.id,
+            () => this.dialogForm.value
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+
+          this.close();
+        } catch (error) {
+          this._logger.error(`ADMIN USER UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._apollo
-          .mutate({
-            mutation: CreateAdminUser,
-            variables: {
-              data: cleanObject(this.dialogForm.value),
-            },
-          })
-          .subscribe(
-            ({ data }) => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful'
-              );
-              this.close();
-            },
-            error => {
-              console.error('there was an error sending the query', error);
+        try {
+          const email = this.dialogForm.controls['email'].value;
+          const user = await Auth.signUp({
+            username: email,
+            password: 'tempAdfd12TODO',
+            attributes: {
+              email
             }
+          });
+
+          await this._amplifyDataService.create('createAdminUser', {
+            ...this.dialogForm?.value,
+            id: user.userSub,
+            roles: {
+              role: EAdminRole.INACTIVE,
+            },
+          });
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
           );
+
+          this.close();
+        } catch (error) {
+          this._logger.error(`ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }
 
-  public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm.controls.profileImage.setValue(imagePath);
+  public imageUploadCallback = (storageKey: string): void => {
+    this.dialogForm?.controls.profileImage.setValue(storageKey);
 
+    console.error('imageUploadCallback', storageKey);
     // Update existing user's image
-    if (_get(this.adminUser, '_id')) {
+    if (this.adminUser?.id) {
+      console.error('TODO implement AWS');
+      /*
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, imagePath)
+        .updateAdminUserProfileImagePath(this.adminUser.id || '', imagePath)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageUploadSuccess'
+            'common.imageUploadSuccess',
           );
         });
+        */
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
   };
 
   public imageRemoveCallback = (): void => {
-    this.dialogForm.controls.profileImage.setValue('');
+    this.dialogForm?.controls.profileImage.setValue('');
 
     if (this.adminUser) {
       delete this.adminUser.profileImage;
     }
 
     // Update existing user's image
-    if (_get(this.adminUser, '_id')) {
+    if (this.adminUser?.id) {
+      console.error('TODO implement AWS');
+      /*
       this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser._id, null)
+        .updateAdminUserProfileImagePath(this.adminUser.id || '', null)
         .then((): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.imageRemoveSuccess'
+            'common.imageRemoveSuccess',
           );
         });
+      */
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
   };

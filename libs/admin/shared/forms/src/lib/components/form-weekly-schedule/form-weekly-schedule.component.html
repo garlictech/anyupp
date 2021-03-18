@@ -1,4 +1,4 @@
-<fieldset class="form">
+<fieldset class="form" *ngIf="scheduleControl">
   <legend class="label">{{ 'units.openingHours' | translate }}</legend>
   <table>
     <tr *ngFor="let day of dayKeys">
@@ -8,12 +8,11 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl['controls'][day]['controls'].from"
+          [formControl]="scheduleControl.get(day)!.get('from')! | asFormControl"
           [status]="
-            scheduleControl['controls'][day]['controls'].from.touched &&
-            (scheduleControl['controls'][day]['controls'].from.errors
-              ?.required ||
-              scheduleControl['controls'][day]['controls'].from.invalid)
+            scheduleControl.get(day)?.get('from')?.touched &&
+            (scheduleControl.get(day)?.get('from')?.errors?.required ||
+              scheduleControl.get(day)?.get('from')?.invalid)
               ? 'danger'
               : 'basic'
           "
@@ -25,11 +24,11 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl['controls'][day]['controls'].to"
+          [formControl]="scheduleControl.get(day)!.get('to')! | asFormControl"
           [status]="
-            scheduleControl['controls'][day]['controls'].to.touched &&
-            (scheduleControl['controls'][day]['controls'].to.errors?.required ||
-              scheduleControl['controls'][day]['controls'].to.invalid)
+            scheduleControl.get(day)?.get('to')?.touched &&
+            (scheduleControl.get(day)?.get('to')?.errors?.required ||
+              scheduleControl.get(day)?.get('to')?.invalid)
               ? 'danger'
               : 'basic'
           "
@@ -57,16 +56,13 @@
 
     <table>
       <tr
-        *ngFor="
-          let customDay of scheduleControl['controls'].override['controls'];
-          index as i
-        "
+        *ngFor="let customDay of scheduleControl.get('override')! | iterableAbstractControls; index as i"
       >
         <td>
           <input
             nbInput
             fieldSize="small"
-            [formControl]="customDay.controls.date"
+            [formControl]="customDay.get('date')! | asFormControl"
             type="date"
           />
         </td>
@@ -75,11 +71,11 @@
             nbInput
             fieldSize="small"
             [placeholder]="'common.hmPlaceholder' | translate"
-            [formControl]="customDay.controls.from"
+            [formControl]="customDay.get('from')! | asFormControl"
             [status]="
-              customDay.controls.from.touched &&
-              (customDay.controls.from.errors?.required ||
-                customDay.controls.from.invalid)
+              customDay.get('from')?.touched &&
+              (customDay.get('from')?.errors?.required ||
+                customDay.get('from')?.invalid)
                 ? 'danger'
                 : 'basic'
             "
@@ -91,11 +87,11 @@
             nbInput
             fieldSize="small"
             [placeholder]="'common.hmPlaceholder' | translate"
-            [formControl]="customDay.controls.to"
+            [formControl]="customDay.get('to')! | asFormControl"
             [status]="
-              customDay.controls.to.touched &&
-              (customDay.controls.to.errors?.required ||
-                customDay.controls.to.invalid)
+              customDay.get('to')?.touched &&
+              (customDay.get('to')?.errors?.required ||
+                customDay.get('to')?.invalid)
                 ? 'danger'
                 : 'basic'
             "

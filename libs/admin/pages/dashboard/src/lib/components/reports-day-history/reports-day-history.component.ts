@@ -2,11 +2,18 @@ import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
-import { IOrder } from '@bgap/shared/types';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { IOrder } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -15,73 +22,77 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./reports-day-history.component.scss'],
 })
 export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
+  private _chart!: Chart;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
-      type: 'bar',
-      plugins: [ChartDataLabels],
-      data: {
-        labels: this._translatedLabels(),
-        datasets: [
-          {
-            data: [4234, 1456, undefined],
-            backgroundColor: ['#ffc107', '#3e95cd', '#8e5ea2'],
-          },
-        ],
-      },
-      options: {
-        legend: {
-          display: false,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        tooltips: {
-          callbacks: {
-            label: () => {
-              return ''; //tooltipItem.yLabel;
-            },
-          },
-        },
-        scales: {
-          yAxes: [
+    this._chart = new Chart(
+      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
+      {
+        type: 'bar',
+        plugins: [ChartDataLabels],
+        data: {
+          labels: this._translatedLabels(),
+          datasets: [
             {
-              ticks: {
-                beginAtZero: true,
-              },
+              data: [4234, 1456, undefined],
+              backgroundColor: ['#ffc107', '#3e95cd', '#8e5ea2'],
             },
           ],
         },
-        plugins: {
-          datalabels: {
-            color: 'white',
-            labels: {
-              title: {
-                font: {
-                  weight: 'bold',
-                },
+        options: {
+          legend: {
+            display: false,
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            callbacks: {
+              label: () => {
+                return ''; //tooltipItem.yLabel;
               },
             },
-            /* formatter: (value, ctx) => {
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+          plugins: {
+            datalabels: {
+              color: 'white',
+              labels: {
+                title: {
+                  font: {
+                    weight: 'bold',
+                  },
+                },
+              },
+              /* formatter: (value, ctx) => {
               console.error('value', value);
               console.error('ctx', ctx);
               const label = ctx.chart.data.datasets[ctx.datasetIndex].label;
 
               return label
             },*/
+            },
           },
         },
       },
-    });
+    );
 
     /*
     this.orders$.pipe(untilDestroyed(this)).subscribe((orders: IOrder[]): void => {
@@ -122,7 +133,6 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

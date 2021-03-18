@@ -1,0 +1,338 @@
+{
+  "common": {
+    "appTitle": "AnyUpp",
+    "cancel": "Mégsem",
+    "piece": "db",
+    "close": "Bezár",
+    "select": "Kiválaszt",
+    "ok": "Rendben"
+  },
+  "locale": {
+    "EN": "English",
+    "DE": "German",
+    "HU": "Magyar"
+  },
+  "login": {
+    "welcome": "It's time to make the world real",
+    "join": "Csatlakoznál?",
+    "swipeUp": "Húzd ezt feljebb!",
+    "continueWith": "Belépés a következőkkel",
+    "signInAnonymously": "Folytatás regisztráció nélkül",
+    "accountLink": {
+      "title": "Másik account összekapcsolása",
+      "description": "Úgy látjuk, hogy már használtad a rendszerünket ugyanezzel az e-mail címmel, de egy másik közösségi accounttal. Szeretnéd mindkettőt nálunk összekötve használni?",
+      "selectAccount": "Melyiket szeretnéd összekapcsolni?",
+      "linkWith": "Összekapcsolás ezzel {{0}}",
+      "cancelLogin": "Mégsem ezzel jelentkezem be"
+    },
+    "email": {
+      "loginProgress": "Bejelentkezés...",
+      "forgotPassword": "Elfelejtett helszó. . .",
+      "emailFieldLabel": "Email",
+      "passwordFieldLabel": "Jelszó",
+      "password2FieldLabel": "Jelszó újra",
+      "linkLoginWithLink": "Bejelentkezés email üzenetben. . .",
+      "linkLoginWithPassword": "Bejelentkezés jelszóval. . .",
+      "linkSignIn": "Belépés. . .",
+      "linkRegister": "Regisztráció. . .",
+      "buttonLogin": "Belépés",
+      "buttonLoginLink": "Belépési link elküldése",
+      "buttonRegister": "Regisztráció",
+      "buttonPasswordReset": "Jelszó reset email küldése",
+      "sendPasswordResetMessage": "Jelszó reset email küldése folyamatban...",
+      "dialogEmailSentTitle": "Email elküldve",
+      "dialogEmailSentMessage": "Nézd meg az email-jeid és kattints a linkre a bejelentkezéshez!",
+      "dialogResetSentTitle": "Jelszó frissítve",
+      "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
+      "closeButton": "Bezárás"
+    },
+    "accountUnlink": {
+      "title": "Account lekapcsolása",
+      "description": "Ezzel a funkcióval lekapcsolódhatsz az elsődleges felhasználódról. Le akarsz kapcsolódni?",
+      "unlink": "Lekapcsolás",
+      "cancel": "Mégse"
+    },
+    "phone": {
+      "loginProgress": "Belépés folyamatban...",
+      "title": "Telefonos bejelentkezés",
+      "phoneNumLabel": "Telefonszám",
+      "phoneNumDesc": "A belépési kódod SMS-ben elküldtük...",
+      "smsCodeLabel": "SMS kód",
+      "buttonRequireSMS": "SMS kód kérése",
+      "buttonSendSMSCode": "Bejelentkezés",
+      "searchByCountry": "Országkód szerinti keresés"
+    }
+  },
+  "logout": {
+    "title": "Kijelentkezés megerősítése",
+    "description": "Biztosan ki szeretnél jelentkezni?",
+    "cancel": "Mégsem",
+    "confirm": "Kijelentkezés"
+  },
+  "tos": {
+    "acceptionPrefix": "Az alkalmazás használatával elfogadod az ",
+    "aszf": "Általános szerződési feltételeket"
+  },
+  "dataTransfer": {
+    "title": "Adattovábbítási nyilatkozat",
+    "content": "Tudomásul veszem, hogy a(z) {{0}} ({{1}}) adatkezelő által a(z) {{2}} ({{3}}) felhasználói adatbázisában tárolt alábbi személyes adataim átadásra kerülnek az OTP Mobil Kft., mint adatfeldolgozó részére. Az adatkezelő által továbbított adatok köre az alábbi: \n {{4}} \n\n Az adatfeldolgozó által végzett adatfeldolgozási tevékenység jellege és célja a SimplePay Adatkezelési tájékoztatóban, az alábbi linken tekinthető meg:"
+  },
+  "onLanding": {
+    "welcomeTo": "Üdvözlünk!"
+  },
+  "specialOffer": {
+    "specialOffers": "Special offers"
+  },
+  "barcodeScanner": {
+    "flashOn": "Segédfény be",
+    "flashOff": "Segédfény ki"
+  },
+  "main": {
+    "menu": {
+      "menu": "Étlap",
+      "favorites": "Kedvencek",
+      "orderStatus": "Rendeléseim",
+      "profile": "Profil",
+      "cart": "Kosár"
+    },
+    "bottomTitles": {
+      "menu": "Étlap",
+      "favorites": "Kedvencek",
+      "orders": "Rendelések",
+      "profile": "Profil"
+    },
+    "categoryEmpty": "A választott kategória jelenleg üres.",
+    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel."
+  },
+  "cart": {
+    "totalCost": "Fizetendő:",
+    "emptyCartLine1": "A kosarad még üres.",
+    "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!"
+  },
+  "favorites": {
+    "noFavorites": "Még nincsenek kedvenceid"
+  },
+  "orders": {
+    "tabCurrentOrder": "Rendelések",
+    "tabOrderHistory": "Történet",
+    "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
+    "totalCost": "ÖSSZESEN",
+    "noOrderHistory": "Még nincs rendeléstörténeted",
+    "status": {
+      "PLACED": "BEADVA",
+      "PROCESSING": "FOLYAMATBAN",
+      "READY": "KÉSZ",
+      "PAID": "FIZETVE",
+      "REJECTED": "TÖRÖLVE"
+    },
+    "pay": "Fizetni szeretnék",
+    "waiting": "Kérjük, várj a pincérre!",
+    "simplepay": "Fizetés SimplePay-jel",
+    "stripepay": "Pay with Stripe"
+  },
+  "payment": {
+    "title": "FIZETÉS",
+    "choose": "Melyik fizetési módot választod?",
+    "method": {
+      "cash": "Pincérnél készpénzzel",
+      "creditCard": "Pincérnél kártyával",
+      "inAppPayment": "Kártyás fizetés SimplePay-jel (ajánlott)"
+    },
+    "sendOrder": "RENDELÉS",
+    "orderPlaced": "Köszönjük, átvettük a rendelésed!",
+    "paymentInfo": {
+      "simplePay": {
+        "prefix": "Ezt a fizetési módot választva tudomásul veszem az alábbi dokumentumokban leírtakat",
+        "paymentInfo": "SimplePay vásárlói tájékoztató"
+      }
+    },
+    "simplePayStatus": {
+      "cancelled": {
+        "title": "Megszakított fizetés",
+        "description": "Ön megszakította a fizetést"
+      },
+      "failed": {
+        "title": "Sikertelen tranzakció.",
+        "description": "SimplePay tranzakció azonosító: {{0}} \n\n Kérjük, ellenőrizze a tranzakció során megadott adatok helyességét. Amennyiben minden adatot helyesen adott meg, a visszautasítás okának kivizsgálása érdekében kérjük, szíveskedjen kapcsolatba lépni kártyakibocsátó bankjával."
+      },
+      "timeout": {
+        "title": "Időtúllépés",
+        "description": "Ön túllépte a tranzakció elindításának lehetséges maximális idejét."
+      },
+      "finished": {
+        "title": "Sikeres tranzakció.",
+        "description": "SimplePay tranzakció azonosító: {{0}}"
+      }
+    }
+  },
+  "selectUnit": {
+    "welcome": "Üdvözlünk {{0}}!",
+    "unknown": "Ismeretlen",
+    "findNearest": "Találj egy közeli helyet!",
+    "checkAllOnMap": "Térkép használata",
+    "scanQR": "Kattints ide és olvasd be a QR kódot az asztalodról!",
+    "qrConnected": "Helyválasztás",
+    "chair": "szék #{{0}} asztalszám #{{1}}",
+    "findingSeat": "Asztal és szék választása...",
+    "tableReserved": {
+      "title": "Asztal lefoglalva!",
+      "description": "Asztal sikeresen lefoglalva. Asztal: {{0}}, Szék: {{1}}"
+    },
+    "qrCodeError": {
+      "title": "Hibás QR kód",
+      "description": "Úgy látszik a beolvasott QR kód nem megfelelő."
+    },
+    "qrUnitsError": {
+      "title": "Nem találtam éttermet",
+      "description": "Úgy tűnik nincs egyetlen egy étterem sem a közeledben. :("
+    },
+    "qrGeneralError": {
+      "title": "Valami hiba történt",
+      "description": "Valami hiba történt az éttermek keresgélése közben. :("
+    }
+  },
+  "qrScan": {
+    "loading": "QR kód adatainak betöltése...",
+    "moveCloser": "Közelítsd a kamerát a QR kódhoz!",
+    "pointCamera": "Iránítsd a kamerát a QR kódra!",
+    "permission": {
+      "denied": {
+        "title": "Kamerahasználat",
+        "message": "QR kód olvasáshoz kamerahasználat szükséges, de azt véglegesen letiltotta.",
+        "cancel": "Tiltás",
+        "confirm": "Beállítások"
+      },
+      "notGranted": {
+        "title": "Kamerahasználat",
+        "message": "QR kód olvasáshoz kamerahasználat szükséges.",
+        "cancel": "Tiltás",
+        "confirm": "Újrakérés"
+      }
+    }
+  },
+  "selectUnitMap": {
+    "noNearUnits": "Sajnos nem találunk a közeledben választható üzletet",
+    "notLoaded": "Sikertelen betöltés",
+    "userMarker": {
+      "title": "Az azonosított pozíciód",
+      "description": "Itt vagy..."
+    },
+    "permission": {
+      "title": "Engedélykérés",
+      "description": "Hogy segítsünk megbizonyosodni arról, hogy a megfelelő helyen vagy, és hogy a közeledben van-e választható üzletünk, valamint hogy rendelést tudjunk fogadni a választott üzletben, a helyadataidhoz való hozzáféréshez kérünk tőled engedélyt.",
+      "closeApp": "Alkalmazás bezárása",
+      "backToMap": "Vissza a térképre"
+    }
+  },
+  "location": {
+    "title": "Jelenlegi helyed",
+    "changeLocation": "Helyszín váltása"
+  },
+  "about": {
+    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Kész vagy, megetted, fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, SimplePay-jel, ahogy kényelmes, aztán fogd magad és sétálj ki! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "licences": "Licences",
+    "version": "Verzió"
+  },
+  "profile": {
+    "menu": {
+      "contact": "Kapcsolat",
+      "about": "Rólunk",
+      "cards": "Mentett kártyák",
+      "logout": "Kijelentkezés",
+      "settings": "Beállítások",
+      "regulations": "Szabályzatok",
+      "language": "Nyelv"
+    }
+  },
+  "affiliate": {
+    "advertisement": "Hirdetés"
+  },
+  "error": {
+    "title": "Hiba",
+    "description": "A művelet során hiba történt!",
+    "ERROR_SIMPLE_PAY": {
+      "title": "SimplePay Hiba",
+      "description": "A fizetési tranzakciót nem sikerült elindítani!"
+    },
+    "ERROR_SIMPLE_PAY_TRANSACTION_STATUS_UNKNOWN": {
+      "title": "SimplePay Hiba",
+      "description": "A fizetési tranzakció állapotát nem sikerült lekérdezni, kérjük, jelezd ezt a problémát a személyzetnek! \n\n Tranzakció azonosító: {{0}}"
+    },
+    "ERROR_UNIT_ORDER_CREATE": {
+      "title": "A rendelésed jelenleg sajnos nem engedélyezett.",
+      "description": "Ha mégis nyitvatartási időben a kiválasztott helyszínen vagy, kérjük, jelezd ezt a problémát a személyzetnek!"
+    },
+    "LOGIN_EXCEPTION": {
+      "title": "Bejelentkezési hiba",
+      "description": "Hiba történt a bejelentkezés során! Próbáld meg újra!"
+    },
+    "ERROR_INVALID_CUSTOM_TOKEN": {
+      "title": "Login error",
+      "description": "The custom token format is incorrect. Please check the documentation."
+    },
+    "ERROR_CUSTOM_TOKEN_MISMATCH": {
+      "title": "Login error",
+      "description": "The custom token corresponds to a different audience."
+    },
+    "ERROR_INVALID_CREDENTIAL": {
+      "title": "Login error",
+      "description": "The supplied auth credential is malformed or has expired."
+    },
+    "ERROR_INVALID_EMAIL": {
+      "title": "Login error",
+      "description": "The email address is badly formatted."
+    },
+    "ERROR_WRONG_PASSWORD": {
+      "title": "Login error",
+      "description": "The password is invalid or the user does not have a password."
+    },
+    "ERROR_USER_MISMATCH": {
+      "title": "Login error",
+      "description": "The supplied credentials do not correspond to the previously signed in user."
+    },
+    "ERROR_REQUIRES_RECENT_LOGIN": {
+      "title": "Login error",
+      "description": "This operation is sensitive and requires recent authentication. Log in again before retrying this request."
+    },
+    "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL": {
+      "title": "Login error",
+      "description": "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address."
+    },
+    "ERROR_EMAIL_ALREADY_IN_USE": {
+      "title": "Login error",
+      "description": "The email address is already in use by another account."
+    },
+    "ERROR_CREDENTIAL_ALREADY_IN_USE": {
+      "title": "Login error",
+      "description": "This credential is already associated with a different user account."
+    },
+    "ERROR_USER_DISABLED": {
+      "title": "Login error",
+      "description": "The user account has been disabled by an administrator."
+    },
+    "ERROR_USER_TOKEN_EXPIRED": {
+      "title": "Login error",
+      "description": "The user\\'s credential is no longer valid. The user must sign in again."
+    },
+    "ERROR_USER_NOT_FOUND": {
+      "title": "Login error",
+      "description": "There is no user record corresponding to this identifier. The user may have been deleted."
+    },
+    "ERROR_INVALID_USER_TOKEN": {
+      "title": "Login error",
+      "description": "The user\\'s credential is no longer valid. The user must sign in again."
+    },
+    "ERROR_OPERATION_NOT_ALLOWED": {
+      "title": "Login error",
+      "description": "This operation is not allowed. You must enable this service in the console."
+    },
+    "ERROR_WEAK_PASSWORD": {
+      "title": "Login error",
+      "description": "The given password is invalid."
+    },
+    "ERROR_MISSING_EMAIL": {
+      "title": "Login error",
+      "description": "An email address must be provided."
+    }
+  }
+}

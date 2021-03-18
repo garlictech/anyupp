@@ -7,8 +7,16 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbLayoutModule,
-  NbListModule, NbSelectModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -35,7 +43,6 @@ const NB_MODULES = [
   NbUserModule,
   NbIconModule,
   NbInputModule,
-  NbEvaIconsModule,
   NbButtonModule,
   NbDialogModule,
   NbSelectModule,
@@ -54,7 +61,7 @@ const COMPONENTS = [
   ConfirmDialogComponent,
   StatusLedComponent,
   ColorizedLaneIconComponent,
-  ContactComponent
+  ContactComponent,
 ];
 
 @NgModule({

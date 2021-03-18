@@ -1,7 +1,7 @@
 <div class="container">
   <ng-container
     *ngFor="
-      let availability of availabilityFormArray['controls'];
+      let availability of availabilityFormArray | iterableAbstractControls;
       index as i;
       first as isFirst;
       last as isLast
@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-md-4">
         <bgap-form-select
-          [control]="availability.controls.type"
+          [control]="availability.get('type')! | asFormControl"
           caption="common.type"
           [options]="availabilityTypes"
           (selectionChange)="onTypeChange($event, i)"
@@ -23,10 +23,10 @@
       <div class="col-md-4">
         <bgap-form-text-input
           [staticCaption]="
-            ('products.price' | translate) + ' (' + currency + ')'
+            ('products.price' | translate) + ' (' + currency! + ')'
           "
           type="number"
-          [control]="availability.controls.price"
+          [control]="availability.get('price')! | asFormControl"
         ></bgap-form-text-input>
       </div>
 
@@ -51,7 +51,7 @@
       >
         <div class="col-md-4">
           <bgap-form-select
-            [control]="availability.controls.dayFrom"
+            [control]="availability.get('dayFrom')! | asFormControl"
             caption="products.dayFrom"
             [options]="iterativeAvailabilities"
             [localize]="false"
@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-4">
           <bgap-form-select
-            [control]="availability.controls.dayTo"
+            [control]="availability.get('dayTo')! | asFormControl"
             caption="products.dayTo"
             [options]="iterativeAvailabilities"
             [localize]="false"
@@ -76,14 +76,14 @@
           <bgap-form-text-input
             caption="products.dayFrom"
             type="date"
-            [control]="availability.controls.dayFrom"
+            [control]="availability.get('dayFrom')! | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="products.dayTo"
             type="date"
-            [control]="availability.controls.dayTo"
+            [control]="availability.get('dayTo')! | asFormControl"
           ></bgap-form-text-input>
         </div>
       </ng-container>
@@ -92,14 +92,14 @@
         <bgap-form-text-input
           caption="products.timeFrom"
           type="text"
-          [control]="availability.controls.timeFrom"
+          [control]="availability.get('timeFrom')! | asFormControl"
         ></bgap-form-text-input>
       </div>
       <div class="col-md-2">
         <bgap-form-text-input
           caption="products.timeTo"
           type="text"
-          [control]="availability.controls.timeTo"
+          [control]="availability.get('timeTo')! | asFormControl"
         ></bgap-form-text-input>
       </div>
     </div>

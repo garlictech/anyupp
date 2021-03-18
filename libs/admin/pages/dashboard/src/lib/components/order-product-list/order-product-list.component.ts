@@ -1,16 +1,15 @@
-import { cloneDeep as _cloneDeep, get as _get } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/groups';
-import { productCategoriesSelectors } from '@bgap/admin/shared/product-categories';
-import { productsSelectors } from '@bgap/admin/shared/products';
-import { OrderService } from '@bgap/admin/shared/data';
-import { currentStatus } from '@bgap/admin/shared/orders';
+import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, IAdminUser, IGroup, IOrder, IOrderItem, IProduct, IProductCategory
+  EDashboardSize, ENebularButtonSize, IGeneratedProduct, IGroup, IOrder, IProduct,
+  IProductCategory
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -19,36 +18,34 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'bgap-order-product-list',
   templateUrl: './order-product-list.component.html',
-  styleUrls: ['./order-product-list.component.scss']
+  styleUrls: ['./order-product-list.component.scss'],
 })
 export class OrderProductListComponent {
-  @Input() selectedOrder: IOrder;
-  public generatedUnitProducts: IProduct[];
-  public productCategories: IProductCategory[];
-  public selectedProductCategoryId: string;
-  public groupCurrency: string;
-  public buttonSize: ENebularButtonSize;
+  @Input() selectedOrder?: IOrder;
+  public generatedUnitProducts: IGeneratedProduct[];
+  public productCategories: IProductCategory[] = [];
+  public selectedProductCategoryId = '';
+  public groupCurrency = '';
+  public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
-  constructor(
-    private _store: Store<any>,
-    private _orderService: OrderService
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private _store: Store<any>, private _orderService: OrderService) {
     this.generatedUnitProducts = [];
 
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group)
+        skipWhile((group): boolean => !group),
       )
-      .subscribe((group: IGroup): void => {
-        this.groupCurrency = group.currency;
+      .subscribe((group: IGroup | undefined): void => {
+        this.groupCurrency = group?.currency || '';
       });
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
+      .subscribe((size: EDashboardSize): void => {
         this.buttonSize =
-          _get(adminUser, 'settings.dashboardSize') === EDashboardSize.LARGER
+          size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
       });
@@ -56,37 +53,40 @@ export class OrderProductListComponent {
     combineLatest([
       this._store.pipe(
         select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(productsSelectors.getAllGeneratedUnitProducts),
-        untilDestroyed(this)
-      )
+        untilDestroyed(this),
+      ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
         ([productCategories, generatedUnitProducts]: [
           IProductCategory[],
-          IProduct[]
+          IProduct[],
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
+
+          /* TODO fix - remove?
+          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
+            p._variants_arr = <IProductVariant[]>objectToArray(p.variants);
+          });
+          */
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {
               return (
                 this.generatedUnitProducts.filter(
-                  (p: IProduct): boolean => p.productCategoryId === category._id
+                  (p: IGeneratedProduct): boolean =>
+                    p.productCategoryId === category.id,
                 ).length > 0
               );
-            }
+            },
           );
 
-          this.selectedProductCategoryId = _get(
-            this.productCategories,
-            '[0]._id',
-            undefined
-          );
-        }
+          this.selectedProductCategoryId = this.productCategories?.[0]?.id;
+        },
       );
   }
 
@@ -94,38 +94,46 @@ export class OrderProductListComponent {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(product: IProduct, variantId: string): void {
-    const existingVariantOrderIdx = this.selectedOrder.items.findIndex(
+  public addProductVariant(
+    product: IGeneratedProduct,
+    variantId: string,
+  ): void {
+    console.error('TODO addProductVariant', product, variantId);
+    /* TODO variant object refactor
+    const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
-        orderItem.productId === product._id &&
+        orderItem.productId === product.id &&
         orderItem.variantId === variantId &&
-        orderItem.priceShown.pricePerUnit === product.variants[variantId].price
+        orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
     );
 
-    if (existingVariantOrderIdx >= 0) {
+
+    if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        _cloneDeep(this.selectedOrder),
-        existingVariantOrderIdx,
-        1
+        fp.cloneDeep(<IOrder>this.selectedOrder),
+        <number>existingVariantOrderIdx,
+        1,
       );
 
       if (
         currentStatus(
-          this.selectedOrder.items[existingVariantOrderIdx].statusLog
+          (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx]
+            .statusLog,
         ) === EOrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
-          this.selectedOrder._id,
+          (<IOrder>this.selectedOrder).id,
           EOrderStatus.PLACED,
-          existingVariantOrderIdx
+          <number>existingVariantOrderIdx,
         );
       }
     } else {
       this._orderService.addProductVariant(
-        _cloneDeep(this.selectedOrder),
+        fp.cloneDeep(<IOrder>this.selectedOrder),
         product,
-        variantId
+        variantId,
       );
     }
+    */
   }
 }

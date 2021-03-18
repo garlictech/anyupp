@@ -15,11 +15,15 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <div class="subtitle">{{ adminUser.name }}</div>
 
       <bgap-form-admin-role
-        [roleFormGroup]="dialogForm.controls.roles"
+        [roleFormGroup]="dialogForm.controls.roles! | asFormGroup"
       ></bgap-form-admin-role>
 
       <div class="mt-20">
@@ -29,7 +33,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm.invalid!"
         >
           {{ 'common.submit' | translate }}
         </button>

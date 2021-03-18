@@ -2,11 +2,24 @@ import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/products';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { reducer } from '@bgap/admin/shared/utils';
-import { EProductType, IOrder, IOrderAmounts, IProduct } from '@bgap/shared/types';
+import { reducer } from '@bgap/shared/utils';
+import {
+  EProductType,
+  IKeyValueObject,
+  IOrder,
+  IOrderAmounts,
+  IProduct,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,84 +32,90 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ReportsDailySalesPerTypeComponent
   implements AfterViewInit, OnDestroy {
-  @ViewChild('chart', { static: false }) chart: ElementRef<HTMLCanvasElement>;
-  @Input() orders$: Observable<IOrder[]>;
+  @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
+  @Input() orders$!: Observable<IOrder[]>;
   @Input() currency = '';
 
-  private _chart: Chart;
+  private _chart!: Chart;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
-    private _currencyFormatter: CurrencyFormatterPipe
+    private _currencyFormatter: CurrencyFormatterPipe,
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(this.chart.nativeElement.getContext('2d'), {
-      type: 'pie',
-      plugins: [ChartDataLabels],
-      data: {
-        labels: this._translatedLabels(),
-        datasets: [
-          {
-            backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
-            data: [0, 0, 0],
-          },
-        ],
-      },
-      options: {
-        legend: {
-          position: 'bottom',
-        },
-        tooltips: {
-          callbacks: {
-            label: (tooltipItem, data) => {
-              const label = data.labels[tooltipItem.index] || '';
-              const value: number =
-                <number>data.datasets[0].data[tooltipItem.index] || 0;
-
-              return ` ${label}: ${this._currencyFormatter.transform(
-                value,
-                this.currency
-              )}`;
+    this._chart = new Chart(
+      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
+      {
+        type: 'pie',
+        plugins: [ChartDataLabels],
+        data: {
+          labels: this._translatedLabels(),
+          datasets: [
+            {
+              backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
+              data: [0, 0, 0],
             },
-          },
+          ],
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          datalabels: {
-            color: 'white',
-            labels: {
-              title: {
-                font: {
-                  weight: 'bold',
-                },
+        options: {
+          legend: {
+            position: 'bottom',
+          },
+          tooltips: {
+            callbacks: {
+              label: (tooltipItem, data) => {
+                const label =
+                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
+                const value: number =
+                  <number>(
+                    (<Chart.ChartDataSets[]>(
+                      (<Chart.ChartDataSets[]>data.datasets)[0].data
+                    ))[tooltipItem.index || 0]
+                  ) || 0;
+
+                return ` ${label}: ${this._currencyFormatter.transform(
+                  value,
+                  this.currency,
+                )}`;
               },
             },
-            formatter: (value, ctx) => {
-              const sum = (ctx.chart.data.datasets[0].data as number[]).reduce(
-                reducer
-              );
-              const perc = ((value / sum) * 100).toFixed(0);
-              return ` ${perc}%`;
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              color: 'white',
+              labels: {
+                title: {
+                  font: {
+                    weight: 'bold',
+                  },
+                },
+              },
+              formatter: (value, ctx) => {
+                const sum = ((<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0]
+                  .data as number[]).reduce(reducer);
+                const perc = ((value / sum) * 100).toFixed(0);
+                return ` ${perc}%`;
+              },
             },
           },
         },
       },
-    });
+    );
 
     combineLatest([
-      this._store.pipe(
-        select(productsSelectors.getAllGeneratedUnitProducts)
-      ),
+      this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)),
       this.orders$,
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
         const amounts = this._orderAmounts(products, orders);
 
-        this._chart.data.datasets[0].data = [
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           amounts[EProductType.FOOD],
           amounts[EProductType.DRINK],
           amounts[EProductType.OTHER],
@@ -113,7 +132,6 @@ export class ReportsDailySalesPerTypeComponent
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -125,14 +143,15 @@ export class ReportsDailySalesPerTypeComponent
       [EProductType.OTHER]: 0,
     };
 
-    const productTypeMap = {};
+    const productTypeMap: IKeyValueObject = {};
     products.forEach(p => {
-      productTypeMap[p._id] = p.productType;
+      productTypeMap[p.id] = p.productType;
     });
 
     orders.forEach(o => {
       o.items.forEach(i => {
-        amounts[productTypeMap[i.productId]] += i.priceShown.priceSum;
+        amounts[<EProductType>productTypeMap[i.productId]] +=
+          i.priceShown.priceSum;
       });
     });
 

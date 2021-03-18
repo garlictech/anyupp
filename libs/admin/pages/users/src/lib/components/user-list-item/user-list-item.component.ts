@@ -1,7 +1,7 @@
-import { cloneDeep as _cloneDeep } from 'lodash-es';
-import { IUser } from '@bgap/shared/types';
+import * as fp from 'lodash/fp';
 
 import { Component, Input } from '@angular/core';
+import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { UserFormComponent } from '../user-form/user-form.component';
@@ -11,7 +11,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
   templateUrl: './user-list-item.component.html',
 })
 export class UserListItemComponent {
-  @Input() user: IUser;
+  @Input() user!: IUser;
 
   constructor(private _nbDialogService: NbDialogService) {}
 
@@ -20,6 +20,6 @@ export class UserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.user = _cloneDeep(this.user);
+    dialog.componentRef.instance.user = fp.cloneDeep(this.user);
   }
 }

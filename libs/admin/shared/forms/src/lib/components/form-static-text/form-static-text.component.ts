@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./form-static-text.component.scss'],
 })
 export class FormStaticTextComponent {
-  @Input() caption?: string; // Language key!!!
+  @Input() caption = ''; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() value: string;
+  @Input() value = '';
 }

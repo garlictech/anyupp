@@ -27,7 +27,7 @@
     <div>
       <nb-select
         size="small"
-        [formControl]="entitySelector['controls'].chainId"
+        [formControl]="entitySelector.get('chainId')! | asFormControl"
       >
         <nb-option value="">-</nb-option>
         <nb-option *ngFor="let option of chainOptions" [value]="option.key">{{
@@ -41,7 +41,10 @@
       <label class="caption">{{ 'roles.selectGroup' | translate }}</label>
     </div>
 
-    <nb-select size="small" [formControl]="entitySelector['controls'].groupId">
+    <nb-select
+      size="small"
+      [formControl]="entitySelector.get('groupId')! | asFormControl"
+    >
       <nb-option value="">-</nb-option>
       <nb-option *ngFor="let option of groupOptions" [value]="option.key">{{
         option.value

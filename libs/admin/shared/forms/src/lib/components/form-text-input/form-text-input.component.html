@@ -1,10 +1,11 @@
 <div class="form-control-group">
-  <label class="caption">{{ staticCaption || (caption | translate) }}
+  <label class="caption"
+    >{{ staticCaption || (caption | translate) }}
     <input
       nbInput
       [type]="type"
       fullWidth
-      [fieldSize]="fieldSize"
+      [fieldSize]="fieldSize!"
       [formControl]="control"
       [autocomplete]="false"
       [status]="

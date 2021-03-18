@@ -16,7 +16,7 @@ export class CurrencyFormatterPipe implements PipeTransform {
       case 'USD':
         return `$${safeValue.toFixed(2)}`;
       default:
-        return;
+        return '';
     }
   }
 }
