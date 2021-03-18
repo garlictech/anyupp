@@ -161,7 +161,7 @@
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
     "api-order": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
     "shared-graphql-api-client": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
