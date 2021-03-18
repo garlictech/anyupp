@@ -229,6 +229,20 @@ Then, remove the CDK stack:
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
+## Manual testing the project
+
+The deployed admin sites:
+
+- DEV: https://dev.admin.anyupp-backend.anyupp.com/
+- QA: https://qa.admin.anyupp-backend.anyupp.com/
+
+Both systems have some minimal data seeded at deploy/creation time.
+
+- A test user: username: `test@test.com`, password: `Testtesttest12_`
+
+If you want to test registration, email, etc., then you should use a disposable email service, for example
+https://temp-mail.org/hu/
+
 ## Executing cucumber/cypress tests
 
 After cloning the repo:
