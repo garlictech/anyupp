@@ -4,18 +4,18 @@ schema {
 }
 
 input CreateOrderFromCartInput {
-  unitId: ID!
-  cartId: ID!
-  paymentMethod: String!
+  # unitId: ID!
+  id: ID!
+  # paymentMethod: String!
   # userLocation: ??
-  place: PlaceInput!
+  # place: PlaceInput!
   # cartItems: [CartItemInput!]!
 }
 
-input PlaceInput {
-  seat: String!
-  table: String!
-}
+# input PlaceInput {
+#   seat: String!
+#   table: String!
+# }
 
 type Query {
   getFoo: String

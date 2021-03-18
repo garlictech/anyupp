@@ -7,9 +7,7 @@ interface WithAuthenticatedUser {
   userId: string;
 }
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
-  AppsyncApi.MutationCreateOrderFromCartArgs & {
-    currency: string;
-  };
+  AppsyncApi.MutationCreateOrderFromCartArgs;
 
 export const orderRequestHandler = {
   createOrderFromCart(
@@ -18,21 +16,16 @@ export const orderRequestHandler = {
   ) {
     missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
       'userId',
-      'currency',
       'input',
     ]);
     missingParametersCheck<AppsyncApi.CreateOrderFromCartInput>(
       requestPayload.input,
-      ['unitId', 'paymentMethod', 'place', 'cartItems'],
+      ['id'],
     );
-    missingParametersCheck<AppsyncApi.PlaceInput>(requestPayload.input.place, [
-      'seat',
-      'table',
-    ]);
 
     return orderService.createOrderFromCart({
-      ...requestPayload,
-      ...requestPayload.input,
+      userId: requestPayload.userId,
+      cartId: requestPayload.input.id,
       graphqlApiClient,
     });
   },

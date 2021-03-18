@@ -17,15 +17,7 @@ export interface Scalars {
 }
 
 export interface CreateOrderFromCartInput {
-  unitId: Scalars['ID'];
-  cartId: Scalars['ID'];
-  paymentMethod: Scalars['String'];
-  place: PlaceInput;
-}
-
-export interface PlaceInput {
-  seat: Scalars['String'];
-  table: Scalars['String'];
+  id: Scalars['ID'];
 }
 
 export interface Query {

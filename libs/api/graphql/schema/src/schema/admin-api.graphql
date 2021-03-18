@@ -192,28 +192,28 @@ type PriceShown {
 
 type OrderItem {
   created: Int
-  productName: LocalizedItem
-  priceShown: PriceShown
-  productId: ID
-  quantity: Int
+  productName: LocalizedItem!
+  priceShown: PriceShown!
+  productId: ID!
+  quantity: Int!
   statusLog: [StatusLog]
-  variantId: ID
-  variantName: LocalizedItem
+  variantId: ID!
+  variantName: LocalizedItem!
   laneId: ID
 }
 
 # Order
 type Order @model @auth(rules: [{ allow: public }]) {
   id: ID!
+  userId: ID!
+  unitId: ID!
   created: Int
-  items: [OrderItem]
-  paymentMethod: String
+  items: [OrderItem!]!
+  paymentMethod: String!
   staffId: ID
-  statusLog: [StatusLog]
-  sumPriceShown: PriceShown
+  statusLog: [StatusLog!]!
+  sumPriceShown: PriceShown!
   takeAway: Boolean
-  userId: ID
-  unitId: ID
   place: Place
   paymentIntention: Int
 }
@@ -221,6 +221,16 @@ type Order @model @auth(rules: [{ allow: public }]) {
 type Place {
   seat: String
   table: String
+}
+
+# Cart
+type Cart @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  place: Place
+  paymentMethod: String!
+  items: [OrderItem!]!
 }
 
 # ProductCategory
@@ -395,6 +405,7 @@ type Subscription {
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+
   onUnitsChange: Unit
     @aws_subscribe(mutations: ["createUnit", "updateUnit"])
   onUsersChange: User
