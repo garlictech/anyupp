@@ -48,7 +48,8 @@
         [tabId]="EProductLevel.GROUP"
         [active]="selectedProductLevel === EProductLevel.GROUP"
         [badgeText]="
-          selectedGroupId ? pendingGroupProducts.length.toString() || '' : ''
+        (pendingGroupProducts || []).length > 0 && selectedGroupId ? pendingGroupProducts.length.toString() : ''
+
         "
         badgeStatus="danger"
         [disabled]="!selectedGroupId"
@@ -79,7 +80,7 @@
         [tabId]="EProductLevel.UNIT"
         [active]="selectedProductLevel === EProductLevel.UNIT"
         [badgeText]="
-          selectedUnitId ? pendingUnitProducts.length.toString() || '' : ''
+           (pendingUnitProducts || []).length > 0 && selectedUnitId ? pendingUnitProducts.length.toString() : ''
         "
         badgeStatus="danger"
         [disabled]="!selectedUnitId"

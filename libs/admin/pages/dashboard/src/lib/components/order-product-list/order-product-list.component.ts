@@ -1,19 +1,16 @@
-import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import * as fp from 'lodash/fp';
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { Component, Input } from '@angular/core';
+import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { currentStatus } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import {
-  EDashboardSize, ENebularButtonSize, EOrderStatus, IGeneratedProduct, IGroup, IOrder, IOrderItem, IProduct,
-  IProductCategory, IProductVariant
+  EDashboardSize, ENebularButtonSize, IGeneratedProduct, IGroup, IOrder, IProduct,
+  IProductCategory
 } from '@bgap/shared/types';
-import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -71,9 +68,11 @@ export class OrderProductListComponent {
         ]): void => {
           this.generatedUnitProducts = generatedUnitProducts;
 
+          /* TODO fix - remove?
           this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
             p._variants_arr = <IProductVariant[]>objectToArray(p.variants);
           });
+          */
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {
@@ -99,12 +98,15 @@ export class OrderProductListComponent {
     product: IGeneratedProduct,
     variantId: string,
   ): void {
+    console.error('TODO addProductVariant', product, variantId);
+    /* TODO variant object refactor
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
       (orderItem: IOrderItem): boolean =>
         orderItem.productId === product.id &&
         orderItem.variantId === variantId &&
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
     );
+
 
     if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
@@ -132,5 +134,6 @@ export class OrderProductListComponent {
         variantId,
       );
     }
+    */
   }
 }

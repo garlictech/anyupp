@@ -37,19 +37,15 @@ export class FormChainAdminRoleComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([chains, entities]: [IChain[], IAdminRoleEntity[]]): void => {
-        this.chainOptions = [];
-        this.assignedChains = [];
+        this.chainOptions = chains
+          .filter(
+            chain => !entities.map((e): string => e.chainId).includes(chain.id),
+          )
+          .map(chain => ({ key: chain.id, value: chain.name }));
 
-        chains.forEach((chain: IChain): void => {
-          if (!entities.map((e): string => e.chainId).includes(chain.id)) {
-            this.chainOptions.push({
-              key: chain.id,
-              value: chain.name,
-            });
-          } else {
-            this.assignedChains.push(chain);
-          }
-        });
+        this.assignedChains = chains.filter(chain =>
+          entities.map((e): string => e.chainId).includes(chain.id),
+        );
       });
   }
 

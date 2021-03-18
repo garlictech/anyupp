@@ -59,13 +59,15 @@ export class CognitoStack extends Stack {
       },
     );
 
-    const consumerUserPoolClient = this.createConsumerUserPoolClient(
-      app,
-      this.consumerUserPool,
-    );
+    const {
+      consumerWebClient,
+      consumerNativeClient,
+    } = this.createConsumerUserPoolClient(app, this.consumerUserPool);
 
-    consumerUserPoolClient.node.addDependency(googleIdProvider);
-    consumerUserPoolClient.node.addDependency(facebookIdProvider);
+    consumerWebClient.node.addDependency(googleIdProvider);
+    consumerWebClient.node.addDependency(facebookIdProvider);
+    consumerNativeClient.node.addDependency(googleIdProvider);
+    consumerNativeClient.node.addDependency(facebookIdProvider);
 
     // Export values
     this.createUserPoolOutputs(
@@ -78,7 +80,10 @@ export class CognitoStack extends Stack {
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
     const adminDomain = this.createDomain(app, 'admin', this.adminUserPool);
-    const adminUserPoolClient = this.createAdminUserPoolClients(
+    const {
+      adminNativeClient,
+      adminWebClient,
+    } = this.createAdminUserPoolClients(
       app,
       this.adminUserPool,
       props.adminSiteUrl,
@@ -91,11 +96,19 @@ export class CognitoStack extends Stack {
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
-          clientId: consumerUserPoolClient.userPoolClientId,
+          clientId: consumerNativeClient.userPoolClientId,
           providerName: this.consumerUserPool.userPoolProviderName,
         },
         {
-          clientId: adminUserPoolClient.userPoolClientId,
+          clientId: consumerWebClient.userPoolClientId,
+          providerName: this.consumerUserPool.userPoolProviderName,
+        },
+        {
+          clientId: adminNativeClient.userPoolClientId,
+          providerName: this.adminUserPool.userPoolProviderName,
+        },
+        {
+          clientId: adminWebClient.userPoolClientId,
           providerName: this.adminUserPool.userPoolProviderName,
         },
       ],
@@ -213,7 +226,7 @@ export class CognitoStack extends Stack {
     });
 
     // We need both native and web clients, see https://docs.amplify.aws/cli/auth/import#import-an-existing-cognito-user-pool
-    const nativeClient = new cognito.UserPoolClient(
+    const adminNativeClient = new cognito.UserPoolClient(
       this,
       'AdminUserPoolClientNative',
       {
@@ -222,9 +235,9 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, nativeClient, 'adminNative');
+    this.createUserPoolClientOutput(app, adminNativeClient, 'adminNative');
 
-    const webClient = new cognito.UserPoolClient(
+    const adminWebClient = new cognito.UserPoolClient(
       this,
       'AdminUserPoolClientWeb',
       {
@@ -233,9 +246,19 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, webClient, 'adminWeb');
+    new cognito.CfnUserPoolUICustomizationAttachment(this, 'AdminUserPoolUI', {
+      clientId: adminWebClient.userPoolClientId,
+      userPoolId: userPool.userPoolId,
+      css: `
+        .banner-customizable {
+          background: linear-gradient(#9940B8, #C27BDB)
+        }
+      `,
+    });
 
-    return webClient;
+    this.createUserPoolClientOutput(app, adminWebClient, 'adminWeb');
+
+    return { adminWebClient, adminNativeClient };
   }
 
   private createConsumerUserPoolClient(app: App, userPool: cognito.UserPool) {
@@ -256,7 +279,7 @@ export class CognitoStack extends Stack {
     };
 
     // We need both native and web clients, see https://docs.amplify.aws/cli/auth/import#import-an-existing-cognito-user-pool
-    const webClient = new cognito.UserPoolClient(
+    const consumerWebClient = new cognito.UserPoolClient(
       this,
       'ConsumerUserPoolClientWeb',
       {
@@ -265,9 +288,9 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, webClient, 'consumerWeb');
+    this.createUserPoolClientOutput(app, consumerWebClient, 'consumerWeb');
 
-    const nativeClient = new cognito.UserPoolClient(
+    const consumerNativeClient = new cognito.UserPoolClient(
       this,
       'ConsumerUserPoolClientNative',
       {
@@ -275,9 +298,13 @@ export class CognitoStack extends Stack {
         ...commonProps,
       },
     );
-    this.createUserPoolClientOutput(app, nativeClient, 'consumerNative');
+    this.createUserPoolClientOutput(
+      app,
+      consumerNativeClient,
+      'consumerNative',
+    );
 
-    return nativeClient;
+    return { consumerNativeClient, consumerWebClient };
   }
 
   private createDomain(app: App, label: poolLabel, userPool: cognito.UserPool) {
@@ -295,12 +322,12 @@ export class CognitoStack extends Stack {
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       userVerification: {
-        emailSubject: 'Verify your email for AnyUpp',
+        emailSubject: 'Verify your email for AnyUPP',
         emailBody:
-          'Hello, thanks for signing up to AnyUpp! Your verification code is {####}',
+          'Hello, thanks for signing up to AnyUPP! Your verification code is {####}',
         emailStyle: cognito.VerificationEmailStyle.CODE,
         smsMessage:
-          'Hello thanks for signing up to AnyUpp! Your verification code is {####}',
+          'Hello thanks for signing up to AnyUPP! Your verification code is {####}',
       },
       signInAliases: {
         phone: true,
@@ -342,7 +369,7 @@ export class CognitoStack extends Stack {
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {
     const authenticatedRole = new iam.Role(
       this,
-      'CognitoDefaultAuthenticatedRole',
+      'CognitoDefaultAuthenticatedRole2',
       {
         assumedBy: new iam.FederatedPrincipal(
           'cognito-identity.amazonaws.com',
@@ -371,12 +398,41 @@ export class CognitoStack extends Stack {
       }),
     );
 
+    const unauthenticatedRole = new iam.Role(
+      this,
+      'CognitoDefaultUnauthenticatedRole',
+      {
+        assumedBy: new iam.FederatedPrincipal(
+          'cognito-identity.amazonaws.com',
+          {
+            StringEquals: {
+              'cognito-identity.amazonaws.com:aud': identityPool.ref,
+            },
+            'ForAnyValue:StringLike': {
+              'cognito-identity.amazonaws.com:amr': 'unauthenticated',
+            },
+          },
+          'sts:AssumeRoleWithWebIdentity',
+        ),
+      },
+    );
+
+    unauthenticatedRole.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['mobileanalytics:PutEvents', 'cognito-sync:*'],
+        resources: ['*'],
+      }),
+    );
     new cognito.CfnIdentityPoolRoleAttachment(
       this,
       'IdentityPoolRoleAttachment',
       {
         identityPoolId: identityPool.ref,
-        roles: { authenticated: authenticatedRole.roleArn },
+        roles: {
+          authenticated: authenticatedRole.roleArn,
+          unauthenticated: unauthenticatedRole.roleArn,
+        },
       },
     );
   }

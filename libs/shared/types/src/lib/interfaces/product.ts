@@ -38,12 +38,12 @@ export interface IProductVariant {
   position: string;
 }
 
-export interface IProductVariantsObject {
-  [key: string]: IProductVariant;
-}
-
 export interface IProduct {
   id: string;
+  parentId?: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId?: string;
+  unitId?: string;
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
@@ -52,7 +52,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   // contains: any; // TODO interface
   position: string;
-  variants: IProductVariantsObject;
+  variants: IProductVariant[];
   // alwaysAvailableOnOpen: boolean; // TODO
   // ingredients: IProductIngredients; // TODO later...
   tax: string; // %
@@ -68,8 +68,7 @@ export interface IGeneratedProduct {
   position: string;
   productType: EProductType;
   tax: string;
-  variants: IProductVariantsObject;
-  _variants_arr?: IProductVariant[];
+  variants: IProductVariant[];
   productCategoryId: string;
 }
 

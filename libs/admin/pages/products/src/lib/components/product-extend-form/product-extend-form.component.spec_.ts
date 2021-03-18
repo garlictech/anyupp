@@ -1,3 +1,4 @@
+/*
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProductExtendFormComponent } from './product-extend-form.component';
@@ -24,3 +25,4 @@ xdescribe('ProductExtendFormComponent', (): void => {
     expect(component).toBeTruthy();
   });
 });
+*/
