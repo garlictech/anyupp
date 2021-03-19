@@ -17,9 +17,19 @@ export class DevBuildPipelineStack extends sst.Stack {
     const { adminSiteUrl } = utils.configurePipeline(this, stage);
     const build = utils.createBuildProject(this, cache, stage);
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
+    const integrationTest = utils.createIntegrationTestProject(
+      this,
+      cache,
+      stage,
+    );
     const prefix = utils.projectPrefix(stage);
 
-    utils.configurePermissions(this, props.secretsManager, build, prefix);
+    utils.configurePermissions(
+      this,
+      props.secretsManager,
+      [build, integrationTest],
+      prefix,
+    );
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
       stages: [
@@ -59,6 +69,16 @@ export class DevBuildPipelineStack extends sst.Stack {
               adminPermissions: true,
               extraInputs: [buildOutput],
               replaceOnFailure: true,
+            }),
+          ],
+        },
+        {
+          stageName: 'integrationTest',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'integrationTest',
+              project: integrationTest,
+              input: sourceOutput,
             }),
           ],
         },

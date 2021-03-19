@@ -133,7 +133,7 @@ export class ProductCategoryFormComponent
         this._logger.error(
           `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
         );
-        }
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -141,7 +141,6 @@ export class ProductCategoryFormComponent
         'common.imageUploadSuccess',
       );
     }
-
   };
 
   public imageRemoveCallback = async (): Promise<void> => {
@@ -165,7 +164,7 @@ export class ProductCategoryFormComponent
         this._logger.error(
           `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
         );
-        }
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,

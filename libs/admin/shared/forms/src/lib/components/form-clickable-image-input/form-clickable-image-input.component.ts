@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { StorageService } from '@bgap/admin/shared/data-access/storage';
 import { ImageCompressorService } from '@bgap/admin/shared/utils';
 import { EImageType } from '@bgap/shared/types';

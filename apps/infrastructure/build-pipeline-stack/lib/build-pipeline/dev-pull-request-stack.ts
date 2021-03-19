@@ -76,7 +76,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
       },
     );
 
-    utils.configurePermissions(this, props.secretsManager, project, prefix);
+    utils.configurePermissions(this, props.secretsManager, [project], prefix);
 
     utils.configurePRNotifications(
       this,

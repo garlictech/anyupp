@@ -5,6 +5,7 @@ import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { ParamsStack } from './app/params-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
+import { SeederStack } from './app/seeder-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -31,6 +32,10 @@ export class AnyUppStack extends Stack {
     });
 
     new StripeStack(scope, 'stripe');
+
+    new SeederStack(scope, 'seeder', {
+      adminUserPool: cognitoStack.adminUserPool,
+    });
   }
 }
 

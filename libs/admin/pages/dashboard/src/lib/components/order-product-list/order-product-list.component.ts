@@ -71,7 +71,9 @@ export class OrderProductListComponent {
           IProductCategory[],
           IProduct[],
         ]): void => {
-          this.generatedUnitProducts = <IGeneratedProduct[]>generatedUnitProducts;
+          this.generatedUnitProducts = <IGeneratedProduct[]>(
+            generatedUnitProducts
+          );
 
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {

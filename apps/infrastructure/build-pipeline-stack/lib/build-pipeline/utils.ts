@@ -24,36 +24,37 @@ export const projectPrefix = (stage: string) => `${stage}-${appConfig.name}`;
 export const configurePermissions = (
   stack: sst.Stack,
   secretsManager: SecretsManagerStack,
-  resource: iam.IGrantable,
+  resources: iam.IGrantable[],
   prefix: string,
 ) => {
-  secretsManager.pipelineSecrets.grantRead(resource);
-  secretsManager.pipelineSecrets.grantRead(resource);
+  resources.forEach((resource, index) => {
+    secretsManager.pipelineSecrets.grantRead(resource);
 
-  [
-    'consumerWebUserPoolClientId',
-    'consumerNativeUserPoolClientId',
-    'consumerUserPoolDomain',
-    'IdentityPoolId',
-    'GraphqlApiKey',
-    'GraphqlApiUrl',
-    'StripeWebhookEndpoint',
-    'googleClientId',
-    'stripePublishableKey',
-    'facebookAppId',
-    'AdminSiteUrl',
-    'adminWebUserPoolClientId',
-    'adminNativeUserPoolClientId',
-    'adminUserPoolId',
-    'adminUserPoolDomain',
-    'AdminAmplifyAppId',
-  ].forEach(param =>
-    ssm.StringParameter.fromStringParameterName(
-      stack,
-      param + 'Param',
-      prefix + '-' + param,
-    ).grantRead(resource),
-  );
+    [
+      'consumerWebUserPoolClientId',
+      'consumerNativeUserPoolClientId',
+      'consumerUserPoolDomain',
+      'IdentityPoolId',
+      'GraphqlApiKey',
+      'GraphqlApiUrl',
+      'StripeWebhookEndpoint',
+      'googleClientId',
+      'stripePublishableKey',
+      'facebookAppId',
+      'AdminSiteUrl',
+      'adminWebUserPoolClientId',
+      'adminNativeUserPoolClientId',
+      'adminUserPoolId',
+      'adminUserPoolDomain',
+      'AdminAmplifyAppId',
+    ].forEach(param =>
+      ssm.StringParameter.fromStringParameterName(
+        stack,
+        param + 'Param' + index,
+        prefix + '-' + param,
+      ).grantRead(resource),
+    );
+  });
 };
 
 export const createBuildProject = (
@@ -137,6 +138,53 @@ export const createE2eTestProject = (
       },
       artifacts: {
         files: ['cyreport/**/*'],
+      },
+    }),
+    cache,
+    environment: {
+      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+    },
+  });
+
+export const createIntegrationTestProject = (
+  stack: sst.Stack,
+  cache: codebuild.Cache,
+  stage: string,
+): codebuild.PipelineProject =>
+  new codebuild.PipelineProject(stack, 'integrationTest', {
+    buildSpec: codebuild.BuildSpec.fromObject({
+      version: '0.2',
+      phases: {
+        install: {
+          commands: [
+            `sh ./tools/setup-aws-environment.sh`,
+            'yarn',
+            'npm install -g @aws-amplify/cli',
+          ],
+        },
+        pre_build: {
+          commands: [
+            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
+            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
+          ],
+        },
+        build: {
+          commands: [
+            `yarn nx test integration-tests --codeCoverage --coverageReporters=clover`,
+          ],
+        },
+      },
+      reports: {
+        coverage: {
+          files: ['coverage/**/*'],
+          'file-format': 'CLOVERXML',
+        },
+      },
+      env: {
+        'secrets-manager': {
+          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
+          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
+        },
       },
     }),
     cache,
