@@ -1,11 +1,11 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+import { type } from 'os';
 
 When('I fill out the {string} input with {string}',
   (inputLabel: string, value: string) => {
-    cy.findByLabelText(inputLabel).type(value);
-  },
-);
+    cy.findByLabelText(inputLabel).type(value,{force: true});
+  });
 
-When('I click on the {string} checkbox', (checkbox:string) => {
-  cy.get(checkbox).check();
-});
+//When('I click on the {string} checkbox', (checkbox:string) => {
+//  cy.get(checkbox).check();
+//});
