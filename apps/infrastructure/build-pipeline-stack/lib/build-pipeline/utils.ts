@@ -148,6 +148,7 @@ export const createE2eTestProject = (
 export const createIntegrationTestProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
+  stage: string,
 ): codebuild.PipelineProject =>
   new codebuild.PipelineProject(stack, 'integrationTest', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -155,6 +156,12 @@ export const createIntegrationTestProject = (
       phases: {
         install: {
           commands: ['yarn'],
+        },
+        pre_build: {
+          commands: [
+            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
+            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
+          ],
         },
         build: {
           commands: [
