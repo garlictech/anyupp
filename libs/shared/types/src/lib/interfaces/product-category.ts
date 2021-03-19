@@ -4,7 +4,7 @@ export interface IProductCategory {
   id: string;
   chainId: string;
   description: ILocalizedItem<string>;
-  image: string;
+  image: string | null;
   name: ILocalizedItem<string>;
   position: string;
 }

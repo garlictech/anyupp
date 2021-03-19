@@ -92,7 +92,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (menuItem.roles.includes(this.adminUser?.roles?.role || EAdminRole.INACTIVE)) {
+          if (
+            menuItem.roles.includes(
+              this.adminUser?.roles?.role || EAdminRole.INACTIVE,
+            )
+          ) {
             this.menu.push({
               ...menuItem,
               title: this._translateService.instant(menuItem.title),

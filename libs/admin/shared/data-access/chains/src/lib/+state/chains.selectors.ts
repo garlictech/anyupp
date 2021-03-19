@@ -59,7 +59,5 @@ export const getSeletedChain = createSelector(
     userSettings: IAdminUserSettings | undefined,
     chains: IChain[],
   ): IChain | undefined =>
-    chains.find(
-      (chain): boolean => chain.id === userSettings?.selectedChainId,
-    ),
+    chains.find((chain): boolean => chain.id === userSettings?.selectedChainId),
 );

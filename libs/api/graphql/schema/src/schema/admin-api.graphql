@@ -398,23 +398,16 @@ type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
   onAdminUsersChange: AdminUser
-    @aws_subscribe(
-      mutations: ["createAdminUser", "updateAdminUser"]
-    )
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-  onUnitsChange: Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
-  onUsersChange: User
-    @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+  onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
-      mutations: [
-        "createProductCategory"
-        "updateProductCategory"
-      ]
+      mutations: ["createProductCategory", "updateProductCategory"]
     )
   onChainProductChange: ChainProduct
     @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])

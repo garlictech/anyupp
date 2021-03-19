@@ -8,5 +8,4 @@ export const upsertUser = createAction(
   props<{ user: IUser }>(),
 );
 
-
 export const resetUsers = createAction('[UserList] Reset users');

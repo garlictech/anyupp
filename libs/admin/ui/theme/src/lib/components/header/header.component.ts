@@ -8,7 +8,12 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import {
+  NbMediaBreakpointsService,
+  NbMenuService,
+  NbSidebarService,
+  NbThemeService,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -105,7 +110,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.adminUser?.name;
   }
 
-  get userImage(): string | undefined {
+  get userImage(): string | undefined | null {
     return this.adminUser?.profileImage;
   }
 

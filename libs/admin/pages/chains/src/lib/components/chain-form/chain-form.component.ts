@@ -1,5 +1,4 @@
 import * as fp from 'lodash/fp';
-
 import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
@@ -65,11 +64,11 @@ export class ChainFormComponent
     });
   }
 
-  get logoFilePath(): string {
+  get logoImage(): string {
     return this.chain?.style?.images?.logo;
   }
 
-  get headerFilePath(): string {
+  get headerImage(): string {
     return this.chain?.style?.images?.header;
   }
 
@@ -85,9 +84,11 @@ export class ChainFormComponent
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
         try {
-          await this._amplifyDataService.update<IChain>('getChain', 'updateChain',
+          await this._amplifyDataService.update<IChain>(
+            'getChain',
+            'updateChain',
             this.chain.id,
-            () => this.dialogForm.value
+            () => this.dialogForm.value,
           );
 
           this._toasterService.show(
@@ -101,7 +102,10 @@ export class ChainFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createChain', this.dialogForm?.value);
+          await this._amplifyDataService.create(
+            'createChain',
+            this.dialogForm?.value,
+          );
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -116,22 +120,34 @@ export class ChainFormComponent
     }
   }
 
-  public logoUploadCallback = (imagePath: string, key: string): void => {
+  public logoUploadCallback = async (
+    image: string,
+    param: string,
+  ): Promise<void> => {
     (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(key)
-    )).setValue(imagePath);
+      this.dialogForm.get('style')?.get('images')?.get(param)
+    )).setValue(image);
 
-    // Update existing user's image
     if (this.chain?.id) {
-      this._dataService
-        .updateChainImagePath(this.chain.id, key, imagePath)
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess',
-          );
-        });
+      try {
+        await this._amplifyDataService.update<IChain>(
+          'getChain',
+          'updateChain',
+          this.chain.id,
+          (data: unknown) =>
+            fp.set(`style.images.${param}`, image, <IChain>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `ADMIN USER IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -141,26 +157,18 @@ export class ChainFormComponent
     }
   };
 
-  public logoRemoveCallback = (key: string): void => {
+  public logoRemoveCallback = async (param: string): Promise<void> => {
     (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(key)
+      this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue('');
 
-    if (this.chain) {
-      fp.set(`style.images.${key}`, null, this.chain);
-    }
-
-    // Update existing user's image
     if (this.chain?.id) {
-      this._dataService
-        .updateChainImagePath(this.chain.id, key, null)
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess',
-          );
-        });
+      await this._amplifyDataService.update<IChain>(
+        'getChain',
+        'updateChain',
+        this.chain.id,
+        (data: unknown) => fp.set(`style.images.${param}`, null, <IChain>data),
+      );
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,

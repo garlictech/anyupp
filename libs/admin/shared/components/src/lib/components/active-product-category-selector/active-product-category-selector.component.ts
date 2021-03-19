@@ -45,8 +45,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
   public onProductCategorySelected(productCategoryId: string): void {
     if (
       this._adminUser?.id &&
-      productCategoryId !==
-        this._adminUser?.settings?.selectedProductCategoryId
+      productCategoryId !== this._adminUser?.settings?.selectedProductCategoryId
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ...(this._adminUser?.settings || {}),

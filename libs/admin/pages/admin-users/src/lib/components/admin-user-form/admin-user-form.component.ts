@@ -1,3 +1,4 @@
+import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
@@ -31,7 +32,7 @@ export class AdminUserFormComponent
     this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
-  get userImageKey(): string {
+  get userImage(): string {
     return this.adminUser?.profileImage || '';
   }
 
@@ -58,9 +59,11 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          await this._amplifyDataService.update<IAdminUser>('getAdminUser', 'updateAdminUser',
+          await this._amplifyDataService.update<IAdminUser>(
+            'getAdminUser',
+            'updateAdminUser',
             this.adminUser.id,
-            () => this.dialogForm.value
+            () => this.dialogForm.value,
           );
 
           this._toasterService.show(
@@ -71,7 +74,9 @@ export class AdminUserFormComponent
 
           this.close();
         } catch (error) {
-          this._logger.error(`ADMIN USER UPDATE ERROR: ${JSON.stringify(error)}`);
+          this._logger.error(
+            `ADMIN USER UPDATE ERROR: ${JSON.stringify(error)}`,
+          );
         }
       } else {
         try {
@@ -80,8 +85,8 @@ export class AdminUserFormComponent
             username: email,
             password: 'tempAdfd12TODO',
             attributes: {
-              email
-            }
+              email,
+            },
           });
 
           await this._amplifyDataService.create('createAdminUser', {
@@ -100,30 +105,36 @@ export class AdminUserFormComponent
 
           this.close();
         } catch (error) {
-          this._logger.error(`ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`);
+          this._logger.error(
+            `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
+          );
         }
       }
     }
   }
 
-  public imageUploadCallback = (storageKey: string): void => {
-    this.dialogForm?.controls.profileImage.setValue(storageKey);
+  public imageUploadCallback = async (image: string): Promise<void> => {
+    this.dialogForm?.controls.profileImage.setValue(image);
 
-    console.error('imageUploadCallback', storageKey);
-    // Update existing user's image
     if (this.adminUser?.id) {
-      console.error('TODO implement AWS');
-      /*
-      this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser.id || '', imagePath)
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess',
-          );
-        });
-        */
+      try {
+        await this._amplifyDataService.update<IAdminUser>(
+          'getAdminUser',
+          'updateAdminUser',
+          this.adminUser.id,
+          (data: unknown) => fp.set(`profileImage`, image, <IAdminUser>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `ADMIN USER IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -133,27 +144,32 @@ export class AdminUserFormComponent
     }
   };
 
-  public imageRemoveCallback = (): void => {
+  public imageRemoveCallback = async (): Promise<void> => {
     this.dialogForm?.controls.profileImage.setValue('');
 
     if (this.adminUser) {
       delete this.adminUser.profileImage;
     }
 
-    // Update existing user's image
     if (this.adminUser?.id) {
-      console.error('TODO implement AWS');
-      /*
-      this._dataService
-        .updateAdminUserProfileImagePath(this.adminUser.id || '', null)
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess',
-          );
-        });
-      */
+      try {
+        await this._amplifyDataService.update<IAdminUser>(
+          'getAdminUser',
+          'updateAdminUser',
+          this.adminUser.id,
+          (data: unknown) => fp.set(`profileImage`, null, <IAdminUser>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageRemoveSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `ADMIN USER IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,

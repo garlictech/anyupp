@@ -11,6 +11,7 @@ import { AsFormControlPipe } from './as-form-control/as-form-control.pipe';
 import { AsFormArrayPipe } from './as-form-array/as-form-array.pipe';
 import { AsFormGroupPipe } from './as-form-group/as-form-group.pipe';
 import { IterableAbstractControlsPipe } from './iterable-abstract-controls/iterable-abstract-controls.pipe';
+import { AwsStoragePathPipe } from './aws-storage-path/aws-storage-path';
 
 const PIPES = [
   LocalizePipe,
@@ -23,12 +24,13 @@ const PIPES = [
   AsFormArrayPipe,
   AsFormGroupPipe,
   IterableAbstractControlsPipe,
+  AwsStoragePathPipe,
 ];
 
 @NgModule({
   declarations: [...PIPES],
   exports: [...PIPES],
-  providers: [LocalizePipe, CurrencyFormatterPipe],
+  providers: [LocalizePipe, CurrencyFormatterPipe, AwsStoragePathPipe],
   imports: [CommonModule],
 })
 export class AdminSharedPipesModule {}

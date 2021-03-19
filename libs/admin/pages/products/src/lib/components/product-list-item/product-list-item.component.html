@@ -2,7 +2,7 @@
   class="float-left"
   [name]="product.name | localize"
   [title]="product.description | localize"
-  [picture]="product.image"
+  [picture]="((product.image || '') | awsStoragePath | async) || ''"
 ></nb-user>
 
 <bgap-status-led class="ml-1" [status]="product.isVisible"></bgap-status-led>

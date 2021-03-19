@@ -45,7 +45,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
   public onUnitSelected(unitId: string): void {
     if (
       this._adminUser?.id &&
-      unitId !==  this._adminUser?.settings?.selectedUnitId
+      unitId !== this._adminUser?.settings?.selectedUnitId
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ...(this._adminUser?.settings || {}),
