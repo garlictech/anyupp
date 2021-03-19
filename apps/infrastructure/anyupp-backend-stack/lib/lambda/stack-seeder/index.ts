@@ -1,5 +1,5 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import { createAdminUser, CreateAdminUserInput } from '@bgap/admin/amplify-api';
+import { AmplifyApi, AmplifyApiMutations } from '@bgap/admin/amplify-api';
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import { from, of, throwError } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
@@ -89,9 +89,11 @@ export const seedAdminUser = (UserPoolId: string) =>
         role: 'superuser',
       },
     })),
-    switchMap((input: CreateAdminUserInput) =>
+    switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
-        API.graphql(graphqlOperation(createAdminUser, { input })),
+        API.graphql(
+          graphqlOperation(AmplifyApiMutations.createAdminUser, { input }),
+        ),
         operation =>
           operation instanceof Promise
             ? from(operation)

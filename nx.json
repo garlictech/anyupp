@@ -183,6 +183,9 @@
     },
     "admin-amplify-api": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "admin-amplify-app": {
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
     }
   }
 }
