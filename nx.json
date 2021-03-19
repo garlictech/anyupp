@@ -173,7 +173,7 @@
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "integration-tests": {
-      "tags": ["scope:bgap", "type:test", "platform:universal"]
+      "tags": ["type:integration-tests"]
     },
     "admin-amplify-api": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
