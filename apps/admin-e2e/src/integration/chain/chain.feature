@@ -1,4 +1,3 @@
-@create @edit @chain
 Feature: Create a new Chain
 
     Create or update your Chain with a name and description. Give a whole contact for it. 

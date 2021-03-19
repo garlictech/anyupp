@@ -1,5 +1,4 @@
-import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
-import { type } from 'os';
+import { When } from 'cypress-cucumber-preprocessor/steps';
 
 When('I click on the {string} button', (buttonTitle: string) => {
   cy.findByRole('button').contains(new RegExp(buttonTitle, 'i')).click();

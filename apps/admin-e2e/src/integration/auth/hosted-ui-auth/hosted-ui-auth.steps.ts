@@ -1,7 +1,6 @@
-import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
-import { type } from 'os';
+import { When } from 'cypress-cucumber-preprocessor/steps';
 
-  When('I click on the {string} text', (label:string) => {
+When('I click on the {string} text', (label:string) => {
     cy.get('a').contains(label).click({force: true});
   });
 
@@ -9,6 +8,6 @@ import { type } from 'os';
     cy.get('#username').type(username);
   });
 
-  When('I submit the form with {string} button', (inputLabel: string) => {
+  When('I submit the form with {string} button', () => {
     cy.get('input[value="Sign in"]').first().click({force: true});
   });

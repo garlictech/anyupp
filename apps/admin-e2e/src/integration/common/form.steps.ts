@@ -1,5 +1,4 @@
-import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
-import { type } from 'os';
+import { When } from 'cypress-cucumber-preprocessor/steps';
 
 When('I fill out the {string} input with {string}',
   (inputLabel: string, value: string) => {
