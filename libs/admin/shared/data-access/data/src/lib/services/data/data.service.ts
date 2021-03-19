@@ -588,23 +588,6 @@ export class DataService {
   }
 
   //
-  // Chain
-  //
-
-  // TODO refactor
-  public updateChainImagePath(
-    chainId: string,
-    key: string,
-    imagePath: string | null,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/chains/${chainId}/style/images`)
-      .update({
-        [key]: imagePath,
-      });
-  }
-
-  //
   // Unit
   //
 
@@ -639,19 +622,6 @@ export class DataService {
   //
   // Product category
   //
-
-  // TODO refactor
-  public updateProductCategoryImagePath(
-    chainId: string,
-    productCategoryId: string,
-    imagePath: string | null,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
-      .update({
-        image: imagePath,
-      });
-  }
 
   // TODO refactor
   public updateProductCategoryPosition(
@@ -823,16 +793,5 @@ export class DataService {
         return <IAdminUser>adminUser;
       },
     );
-  }
-
-  public updateAdminUserProfileImagePath(): // userId: string,
-  // imagePath: string | null,
-  void {
-    console.error('TODO implement AWS');
-    /*
-    return this._angularFireDatabase.object(`/adminUsers/${userId}`).update({
-      profileImage: imagePath,
-    });
-    */
   }
 }

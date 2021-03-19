@@ -1,12 +1,14 @@
-import { ImageCompressorService } from '@bgap/admin/shared/utils';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { StorageService } from '@bgap/admin/shared/data-access/storage';
-import { AmplifyService } from 'aws-amplify-angular';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ImageCompressorService } from '@bgap/admin/shared/utils';
 import { EImageType } from '@bgap/shared/types';
-
-interface IStorageResponse {
-  key: string;
-}
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,13 +18,13 @@ interface IStorageResponse {
 })
 export class FormClickableImageInputComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() imagePath?: string;
+  @Input() image?: string;
   @Input() maxSize = 400;
   @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
-  @Input() uploadCallbackFn!: (imagePath: string, key: string) => void;
-  @Input() removeCallbackFn!: (key: string) => void;
+  @Input() uploadCallbackFn!: (resp: string, param: string) => void;
+  @Input() removeCallbackFn!: (param: string) => void;
   @Input() callbackParam = '';
 
   @Input() width = '';
@@ -32,7 +34,6 @@ export class FormClickableImageInputComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
-    private _amplifyService: AmplifyService,
     private _storageService: StorageService,
     private _imageCompressorService: ImageCompressorService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -40,12 +41,8 @@ export class FormClickableImageInputComponent {
     this.caption = '';
   }
 
-  get pathUrl(): string {
-    return `url("${this.imagePath || '#fff'}")`;
-  }
-
   loadImage(): void {
-    if (!this.imagePath) {
+    if (!this.image) {
       this.fileInput.nativeElement.click();
     }
   }
@@ -73,30 +70,24 @@ export class FormClickableImageInputComponent {
   }
 
   private _uploadFile(file: File): void {
-    const key = `${this.uploadFolderPath || ''}/${file.name}`;
+    this._storageService
+      .uploadFile(this.uploadFolderPath || '', file)
+      .then((imageKey: string) => {
+        this.image = imageKey;
 
-    this._amplifyService.storage().put(key, file, {
-      level: 'public',
-      contentType: file.type
-    }).then((success: IStorageResponse) => {
-      console.error('success', success);
-      this._amplifyService.storage().get(success.key).then((filePath: string) => {
-        this.imagePath = filePath;
-        // this.uploadCallbackFn(success.key, this.callbackParam);
-        this.uploadCallbackFn(filePath, this.callbackParam);
+        this.uploadCallbackFn(imageKey, this.callbackParam);
 
         this._changeDetectorRef.detectChanges();
       });
-    }).catch((error: unknown) => {
-      console.error('Upload error', error);
-    });
   }
 
   public remove(): void {
-    if (this.imagePath) {
-      this._storageService.removeFile(this.imagePath).then(
+    if (this.image) {
+      this._storageService.removeFile(this.image).then(
         (): void => {
-          this.imagePath = undefined;
+          this.image = undefined;
+
+          this._changeDetectorRef.detectChanges();
           this.removeCallbackFn(this.callbackParam);
         },
         (): void => {

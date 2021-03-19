@@ -2,10 +2,8 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (product && product.id
-          ? 'products.editProduct'
-          : 'products.newProduct'
-        ) | translate
+        (product && product.id ? 'products.editProduct' : 'products.newProduct')
+          | translate
       }}
     </div>
     <button
@@ -149,13 +147,13 @@
       </fieldset-->
 
       <bgap-form-clickable-image-input
-        [imagePath]="imagePath"
+        [image]="productImage"
         [imageType]="eImageType.JPEG"
         [uploadCallbackFn]="imageUploadCallback"
         [removeCallbackFn]="imageRemoveCallback"
         [maxSize]="480"
         caption="common.image"
-        uploadFolderPath="/products/"
+        uploadFolderPath="products"
         width="200px"
         height="200px"
         borderRadius="0.25rem"
@@ -174,6 +172,5 @@
         </button>
       </div>
     </form>
-    <pre>{{dialogForm.value | json}}</pre>
   </nb-card-body>
 </nb-card>

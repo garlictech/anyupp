@@ -145,6 +145,36 @@ export const createE2eTestProject = (
     },
   });
 
+export const createIntegrationTestProject = (
+  stack: sst.Stack,
+  cache: codebuild.Cache,
+): codebuild.PipelineProject =>
+  new codebuild.PipelineProject(stack, 'integrationTest', {
+    buildSpec: codebuild.BuildSpec.fromObject({
+      version: '0.2',
+      phases: {
+        install: {
+          commands: ['yarn'],
+        },
+        build: {
+          commands: [
+            `yarn nx test integration-tests --codeCoverage --coverageReporters=clover`,
+          ],
+        },
+      },
+      reports: {
+        coverage: {
+          files: ['coverage/**/*'],
+          'file-format': 'CLOVERXML',
+        },
+      },
+    }),
+    cache,
+    environment: {
+      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+    },
+  });
+
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,

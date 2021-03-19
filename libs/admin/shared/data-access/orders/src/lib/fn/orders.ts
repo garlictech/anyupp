@@ -1,8 +1,13 @@
-
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  EOrderStatus, IFloorMapTableOrderObjects, IFloorMapUserOrderObjects, IFloorMapUserOrders, ILaneOrderItem, IOrder,
-  IStatusLog, IUnit
+  EOrderStatus,
+  IFloorMapTableOrderObjects,
+  IFloorMapUserOrderObjects,
+  IFloorMapUserOrders,
+  ILaneOrderItem,
+  IOrder,
+  IStatusLog,
+  IUnit,
 } from '@bgap/shared/types';
 
 export const currentStatus = (status: IStatusLog): EOrderStatus => {
@@ -62,7 +67,8 @@ export const getOrderLaneColor = (
   unit: IUnit,
 ): string => {
   return unit?.lanes && orderItem.laneId
-    ? unit.lanes.find(l => l.id === orderItem.laneId)?.color || DEFAULT_LANE_COLOR
+    ? unit.lanes.find(l => l.id === orderItem.laneId)?.color ||
+        DEFAULT_LANE_COLOR
     : DEFAULT_LANE_COLOR;
 };
 

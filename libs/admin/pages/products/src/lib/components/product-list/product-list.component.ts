@@ -1,4 +1,3 @@
-
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
@@ -104,9 +103,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       )
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
-        this._sortedUnitProductIds = this.unitProducts.map(
-          (p): string => p.id,
-        );
+        this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
       });
 
     combineLatest([

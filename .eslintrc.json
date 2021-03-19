@@ -6,11 +6,12 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "unused-imports/no-unused-imports-ts": 2,
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["angular-anyupp", "nodejs-shared"],
+            "allow": [],
             "depConstraints": [
               {
                 "sourceTag": "scope:shared",
@@ -58,11 +59,14 @@
               {
                 "sourceTag": "type:server",
                 "onlyDependOnLibsWithTags": ["type:feature", "type:utils"]
+              },
+              {
+                "sourceTag": "type:integration-tests",
+                "onlyDependOnLibsWithTags": ["*"]
               }
             ]
           }
-        ],
-        "unused-imports/no-unused-imports-ts": "error"
+        ]
       }
     },
     {

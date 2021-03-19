@@ -2,7 +2,7 @@
   class="float-left role-border {{ adminUser.roles?.role?.toLowerCase() }}"
   [name]="adminUser.name || ''"
   [title]="adminUser.email || ''"
-  [picture]="adminUser.profileImage || ''"
+  [picture]="(adminUser.profileImage || '' | awsStoragePath | async) || ''"
 ></nb-user>
 
 <button

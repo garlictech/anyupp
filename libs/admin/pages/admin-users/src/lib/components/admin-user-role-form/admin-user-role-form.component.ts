@@ -22,10 +22,6 @@ export class AdminUserRoleFormComponent
     this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
-  get userImage(): string | undefined {
-    return this.adminUser?.profileImage || '';
-  }
-
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       roles: this._formBuilder.group({
@@ -44,7 +40,7 @@ export class AdminUserRoleFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id || '',
-          () => this.dialogForm.value
+          () => this.dialogForm.value,
         );
 
         this._toasterService.show(

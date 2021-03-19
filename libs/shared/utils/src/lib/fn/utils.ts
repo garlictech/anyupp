@@ -115,3 +115,6 @@ export const isOfType = <T>(
   propertyValueToCheck === undefined
     ? true
     : (varToBeChecked as T)[propertyToCheckFor] === propertyValueToCheck;
+
+export const randomString = (length: number) =>
+  [...Array(length)].map(() => (~~(Math.random() * 36)).toString(36)).join('');

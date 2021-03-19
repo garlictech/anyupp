@@ -7,7 +7,12 @@ import { API, GraphQLResult } from '@aws-amplify/api';
 import { Mutations, Queries, Subscriptions } from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
-import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';
+import {
+  apiQueryTypes,
+  listTypes,
+  queryTypes,
+  subscriptionTypes,
+} from './types';
 
 interface ISubscriptionResult {
   value?: {
@@ -57,7 +62,6 @@ export class AmplifyDataService {
           }),
       ),
       tap((data: ISubscriptionResult) => {
-        // TODO delete object???
         params.upsertFn(
           data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
         );

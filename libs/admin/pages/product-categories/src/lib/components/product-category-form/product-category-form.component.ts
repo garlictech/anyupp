@@ -1,13 +1,14 @@
 import * as fp from 'lodash/fp';
-import { take } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
+import { take } from 'rxjs/operators';
+
 import { Component, Injector, OnInit } from '@angular/core';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { EImageType, IProductCategory } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 
 @Component({
   selector: 'bgap-product-category-form',
@@ -39,8 +40,8 @@ export class ProductCategoryFormComponent
       });
   }
 
-  get imagePath(): string {
-    return this.productCategory?.image;
+  get categoryImage(): string {
+    return this.productCategory?.image || '';
   }
 
   ngOnInit(): void {
@@ -111,24 +112,28 @@ export class ProductCategoryFormComponent
     }
   }
 
-  public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm?.controls.image.setValue(imagePath);
+  public imageUploadCallback = async (image: string): Promise<void> => {
+    this.dialogForm?.controls.image.setValue(image);
 
-    // Update existing user's image
     if (this.productCategory?.id) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedChainId || '',
+      try {
+        await this._amplifyDataService.update<IProductCategory>(
+          'getProductCategory',
+          'updateProductCategory',
           this.productCategory.id,
-          imagePath,
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess',
-          );
-        });
+          (data: unknown) => fp.set(`image`, image, <IProductCategory>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -138,28 +143,28 @@ export class ProductCategoryFormComponent
     }
   };
 
-  public imageRemoveCallback = (): void => {
+  public imageRemoveCallback = async (): Promise<void> => {
     this.dialogForm?.controls.image.setValue('');
 
-    if (this.productCategory) {
-      fp.set('image', null, this.productCategory);
-    }
-
-    // Update existing user's image
     if (this.productCategory?.id) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedChainId || '',
+      try {
+        await this._amplifyDataService.update<IProductCategory>(
+          'getProductCategory',
+          'updateProductCategory',
           this.productCategory.id,
-          null,
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess',
-          );
-        });
+          (data: unknown) => fp.set(`image`, null, <IProductCategory>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
