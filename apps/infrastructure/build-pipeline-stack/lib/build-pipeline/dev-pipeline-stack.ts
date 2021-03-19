@@ -24,7 +24,12 @@ export class DevBuildPipelineStack extends sst.Stack {
     );
     const prefix = utils.projectPrefix(stage);
 
-    utils.configurePermissions(this, props.secretsManager, build, prefix);
+    utils.configurePermissions(
+      this,
+      props.secretsManager,
+      [build, integrationTest],
+      prefix,
+    );
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
       stages: [
