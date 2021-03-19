@@ -20,7 +20,8 @@ export class StorageService {
         level: 'public',
         contentType: file.type,
       })
-      .then((success: IStorageResponse) => success.key
+      .then(
+        (success: IStorageResponse) => success.key,
         /*
         this._amplifyService
           .storage()

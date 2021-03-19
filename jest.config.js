@@ -55,5 +55,6 @@ module.exports = {
     '<rootDir>/apps/amplify-admin',
     '<rootDir>/libs/admin/amplify',
     '<rootDir>/libs/integration-tests',
+    '<rootDir>/libs/shared/appsync-client',
   ],
 };
