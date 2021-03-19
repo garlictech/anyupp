@@ -1,21 +1,8 @@
-import {
-  GraphqlApi,
-  LambdaDataSource,
-  MappingTemplate,
-} from '@aws-cdk/aws-appsync';
-import { Construct } from '@aws-cdk/core';
+import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
 
-/**
- *
- * @param scope usually the stack itself so set `this` as value of this param
- */
 export const createOrderResolvers = ({
-  scope,
-  api,
   lambdaDs,
 }: {
-  scope: Construct;
-  api: GraphqlApi;
   lambdaDs: LambdaDataSource;
 }): void => {
   lambdaDs.createResolver({
