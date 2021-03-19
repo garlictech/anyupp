@@ -11,16 +11,16 @@
   [ngStyle]="{
     width: width,
     height: height,
-    background: pathUrl,
+    background: 'url(' + ((image || '') | awsStoragePath | async) +')',
     borderRadius: borderRadius
   }"
   [ngClass]="{
-    clickable: !imagePath
+    clickable: !image
   }"
   (click)="loadImage()"
 >
-  <nb-icon icon="plus" *ngIf="!imagePath"></nb-icon>
-  <div class="removeBtn clickable" *ngIf="imagePath" (click)="remove()">
+  <nb-icon icon="plus" *ngIf="!image"></nb-icon>
+  <div class="removeBtn clickable" *ngIf="image" (click)="remove()">
     <nb-icon icon="minus"></nb-icon>
   </div>
 </div>

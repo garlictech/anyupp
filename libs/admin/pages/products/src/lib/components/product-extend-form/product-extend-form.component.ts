@@ -1,31 +1,22 @@
 import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
-import { NGXLogger } from 'ngx-logger';
+
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  ILane,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
+  EProductLevel, IAdminUserSettings, IKeyValue, ILane, IProduct, IProductCategory, IProductVariant, IUnit
 } from '@bgap/shared/types';
 import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 
 @UntilDestroy()
 @Component({
@@ -89,14 +80,10 @@ export class ProductExtendFormComponent
       });
   }
 
-  get imagePath(): string {
-    return this.product?.image;
-  }
-
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       isVisible: [''],
-      variants: this._formBuilder.array([]), // temp array!
+      variants: this._formBuilder.array([]),
     });
 
     if (this.productLevel === EProductLevel.GROUP) {
@@ -136,14 +123,17 @@ export class ProductExtendFormComponent
 
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      console.error('EZT MENTEM', this.dialogForm?.value);
       const value = { ...this.dialogForm?.value };
 
       if (this.editing) {
         try {
           await this._amplifyDataService.update<IProduct>(
-            this.productLevel === EProductLevel.GROUP ? 'getGroupProduct' : 'getUnitProduct',
-            this.productLevel === EProductLevel.GROUP ? 'updateGroupProduct' : 'updateUnitProduct',
+            this.productLevel === EProductLevel.GROUP
+              ? 'getGroupProduct'
+              : 'getUnitProduct',
+            this.productLevel === EProductLevel.GROUP
+              ? 'updateGroupProduct'
+              : 'updateUnitProduct',
             this.product.id,
             () => value,
           );
@@ -155,7 +145,9 @@ export class ProductExtendFormComponent
           );
           this.close();
         } catch (error) {
-          this._logger.error(`EXTENDED PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`);
+          this._logger.error(
+            `EXTENDED PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
+          );
         }
       } else {
         // Save the extended product id
@@ -167,7 +159,12 @@ export class ProductExtendFormComponent
         }
 
         try {
-          await this._amplifyDataService.create(this.productLevel === EProductLevel.GROUP ? 'createGroupProduct' : 'createUnitProduct', value);
+          await this._amplifyDataService.create(
+            this.productLevel === EProductLevel.GROUP
+              ? 'createGroupProduct'
+              : 'createUnitProduct',
+            value,
+          );
 
           this._toasterService.show(
             EToasterType.SUCCESS,

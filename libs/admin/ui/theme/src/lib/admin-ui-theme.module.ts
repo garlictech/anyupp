@@ -19,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AdminSharedComponentsModule } from '@bgap/admin/shared/components';
 import { FooterComponent, HeaderComponent } from './components';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -42,6 +43,7 @@ const COMPONENTS = [HeaderComponent, FooterComponent, AdminLayoutComponent];
     TranslateModule,
     RouterModule,
     AdminSharedComponentsModule,
+    AdminSharedPipesModule,
     ...NB_MODULES,
   ],
   exports: [CommonModule, ...COMPONENTS],

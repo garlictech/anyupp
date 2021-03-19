@@ -8,7 +8,11 @@ import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
+  addressFormGroup,
+  clearDbProperties,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
 } from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -100,9 +104,11 @@ export class GroupFormComponent
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
         try {
-          await this._amplifyDataService.update<IGroup>('getGroup', 'updateGroup',
+          await this._amplifyDataService.update<IGroup>(
+            'getGroup',
+            'updateGroup',
             this.group.id,
-            () => this.dialogForm.value
+            () => this.dialogForm.value,
           );
 
           this._toasterService.show(
@@ -117,7 +123,10 @@ export class GroupFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createGroup', this.dialogForm?.value);
+          await this._amplifyDataService.create(
+            'createGroup',
+            this.dialogForm?.value,
+          );
 
           this._toasterService.show(
             EToasterType.SUCCESS,

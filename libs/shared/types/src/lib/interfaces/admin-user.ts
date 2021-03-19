@@ -33,8 +33,11 @@ export interface IAdminUserCredential {
   settings?: IAdminUserSettings;
 }
 
-export interface IAdminUser extends IContact, IAdminUserCredential, IAmplifyModel {
+export interface IAdminUser
+  extends IContact,
+    IAdminUserCredential,
+    IAmplifyModel {
   id?: string;
   name?: string;
-  profileImage?: string;
+  profileImage?: string | null;
 }
