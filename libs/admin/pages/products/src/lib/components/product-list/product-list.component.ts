@@ -4,7 +4,10 @@ import { map, skipWhile, take } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { DataService } from '@bgap/admin/shared/data-access/data';
+import {
+  AmplifyDataService,
+  DataService,
+} from '@bgap/admin/shared/data-access/data';
 import { customNumberCompare } from '@bgap/shared/utils';
 import {
   EAdminRole,
@@ -52,6 +55,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _dataService: DataService,
+    private _amplifyDataService: AmplifyDataService,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
 
@@ -170,39 +174,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public chainPositionChange($event: IProductOrderChangeEvent): void {
-    const idx = this._sortedChainProductIds.indexOf($event.productId);
-
-    if (
-      (idx >= 0 &&
-        $event.change === 1 &&
-        idx < this._sortedChainProductIds.length - 1) ||
-      ($event.change === -1 && idx > 0)
-    ) {
-      this._sortedChainProductIds.splice(idx, 1);
-      this._sortedChainProductIds.splice(
-        idx + $event.change,
-        0,
-        $event.productId,
-      );
-
-      /* TODO refactor
-      this._sortedChainProductIds.forEach(
-        (productId: string, pos: number): void => {
-          if (this.selectedChainId) {
-            this._dataService.updateChainProductPosition(
-              this.selectedChainId,
-              productId,
-              (pos + 1).toString(),
-            );
-          }
-        },
-      );
-      */
-    }
-  }
-
-  public unitPositionChange($event: IProductOrderChangeEvent): void {
+  public unitProductPositionChange($event: IProductOrderChangeEvent): void {
     const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
     if (
@@ -219,12 +191,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
       );
 
       this._sortedUnitProductIds.forEach(
-        (productId: string, pos: number): void => {
+        async (productId: string, pos: number): Promise<void> => {
           if (this.selectedUnitId) {
-            this._dataService.updateUnitProductPosition(
-              this.selectedUnitId,
+            await this._amplifyDataService.update<IProduct>(
+              'getUnitProduct',
+              'updateUnitProduct',
               productId,
-              (pos + 1).toString(),
+              (data: unknown) => ({
+                ...(<IProduct>data),
+                position: (pos + 1).toString(),
+              }),
             );
           }
         },

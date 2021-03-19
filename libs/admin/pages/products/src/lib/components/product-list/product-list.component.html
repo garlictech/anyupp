@@ -38,7 +38,6 @@
               [product]="product"
               [productLevel]="EProductLevel.CHAIN"
               [currency]="groupCurrency"
-              (positionChange)="chainPositionChange($event)"
             ></bgap-product-list-item>
           </nb-list-item>
         </ng-container>
@@ -110,7 +109,7 @@
               [product]="product"
               [productLevel]="EProductLevel.UNIT"
               [currency]="groupCurrency"
-              (positionChange)="unitPositionChange($event)"
+              (positionChange)="unitProductPositionChange($event)"
               [isFirst]="isFirst"
               [isLast]="isLast"
             ></bgap-product-list-item>

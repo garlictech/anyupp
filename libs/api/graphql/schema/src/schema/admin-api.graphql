@@ -241,7 +241,6 @@ type ChainProduct @model @auth(rules: [{ allow: public }]) {
   productCategoryId: ID
   productType: String
   isVisible: Boolean
-  position: String
   image: String
   variants: [ProductVariant]
   # extends: String
@@ -257,7 +256,6 @@ type GroupProduct @model @auth(rules: [{ allow: public }]) {
   groupId: ID!
   isVisible: Boolean
   tax: Int
-  position: String
   variants: [ProductVariant]
 }
 
