@@ -11,7 +11,7 @@
   [ngStyle]="{
     width: width,
     height: height,
-    background: 'url(' + ((image || '') | awsStoragePath | async) +')',
+    background: 'url(' + (image || '' | awsStoragePath | async) + ')',
     borderRadius: borderRadius
   }"
   [ngClass]="{
