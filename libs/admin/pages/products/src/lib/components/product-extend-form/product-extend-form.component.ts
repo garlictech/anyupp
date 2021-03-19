@@ -9,10 +9,20 @@ import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel, IAdminUserSettings, IKeyValue, ILane, IProduct, IProductCategory, IProductVariant, IUnit
+  EProductLevel,
+  IAdminUserSettings,
+  IKeyValue,
+  ILane,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
+  IUnit,
 } from '@bgap/shared/types';
 import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

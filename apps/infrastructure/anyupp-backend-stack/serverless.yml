@@ -37,5 +37,5 @@ functions:
   stripe-webhook:
     handler: lib/lambda/stripe-webhook/index.handler
 
-  dynamodb-seeder:
-    handler: lib/lambda/dynamodb-seeder/index.handler
+  stack-seeder:
+    handler: lib/lambda/stack-seeder/index.handler

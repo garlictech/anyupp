@@ -7,7 +7,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, clearDbProperties, contactFormGroup, EToasterType, multiLangValidator
+  addressFormGroup,
+  clearDbProperties,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
 } from '@bgap/admin/shared/utils';
 import { EImageType, IChain } from '@bgap/shared/types';
 

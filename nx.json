@@ -179,13 +179,10 @@
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "integration-tests": {
-      "tags": []
+      "tags": ["type:integration-tests"]
     },
     "admin-amplify-api": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "admin-amplify-app": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     }
   }
 }

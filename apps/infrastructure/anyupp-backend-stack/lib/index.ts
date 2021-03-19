@@ -5,6 +5,7 @@ import { CognitoStack } from './app/cognito-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { StripeStack } from './app/stripe-stack';
+import { SeederStack } from './app/seeder-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -33,11 +34,10 @@ export class AnyUppStack extends Stack {
     });
 
     new StripeStack(scope, 'stripe');
-    // TODO
-    // new DynamoDBSeederStack(scope, 'dynamoDBSeeder', {
-    //   dynamoDBStack,
-    //   userPool: cognitoStack.consumerUserPool,
-    // });
+
+    new SeederStack(scope, 'seeder', {
+      adminUserPool: cognitoStack.adminUserPool,
+    });
   }
 }
 
