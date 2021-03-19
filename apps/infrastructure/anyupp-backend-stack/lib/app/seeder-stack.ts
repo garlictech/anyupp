@@ -27,16 +27,17 @@ export class SeederStack extends sst.Stack {
       timeout: Duration.minutes(15),
     });
 
-    seederLambda.role?.addToPolicy(
-      new iam.PolicyStatement({
-        actions: [
-          'cognito-idp:AdminSetUserPassword',
-          'cognito-idp:AdminGetUser',
-          'cognito-idp:AdminCreateUser',
-        ],
-        resources: [props.adminUserPool.userPoolArn],
-      }),
-    );
+    seederLambda.role &&
+      seederLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: [
+            'cognito-idp:AdminSetUserPassword',
+            'cognito-idp:AdminGetUser',
+            'cognito-idp:AdminCreateUser',
+          ],
+          resources: [props.adminUserPool.userPoolArn],
+        }),
+      );
 
     const provider = new Provider(this, 'StackSeederProvider', {
       onEventHandler: seederLambda,
