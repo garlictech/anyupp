@@ -17,7 +17,11 @@ export class DevBuildPipelineStack extends sst.Stack {
     const { adminSiteUrl } = utils.configurePipeline(this, stage);
     const build = utils.createBuildProject(this, cache, stage);
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
-    const integrationTest = utils.createIntegrationTestProject(this, cache);
+    const integrationTest = utils.createIntegrationTestProject(
+      this,
+      cache,
+      stage,
+    );
     const prefix = utils.projectPrefix(stage);
 
     utils.configurePermissions(this, props.secretsManager, build, prefix);
