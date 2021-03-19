@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'shared-appsync-client',
-  preset: '../../../jest.preset.js',
+  displayName: 'shared-graphql-api-client',
+  preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/shared/appsync-client',
+  coverageDirectory: '../../../../coverage/libs/shared/graphql/api-client',
 };

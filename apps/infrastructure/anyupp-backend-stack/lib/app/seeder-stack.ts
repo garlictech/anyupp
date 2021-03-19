@@ -1,30 +1,24 @@
 import path from 'path';
 
-import * as appsync from '@aws-cdk/aws-appsync';
-import * as cognito from '@aws-cdk/aws-cognito';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as sm from '@aws-cdk/aws-secretsmanager';
-import * as ssm from '@aws-cdk/aws-ssm';
-import * as cdk from '@aws-cdk/core';
-import * as amplify from '@aws-cdk/aws-amplify';
-import { createStripeResolvers } from '@bgap/stripe';
+import * as iam from '@aws-cdk/aws-iam';
 import * as sst from '@serverless-stack/resources';
 
-import { TableConstruct } from './dynamodb-construct';
 import { commonLambdaProps } from './lambda-common';
-import { PROJECT_ROOT } from './settings';
-import { GraphqlApi } from '@aws-cdk/aws-appsync';
-import { Provider, Duration, CustomResource } from '@aws-cdk/core';
+import { Duration, CustomResource } from '@aws-cdk/core';
+import { Provider } from '@aws-cdk/custom-resources';
+import * as cognito from '@aws-cdk/aws-cognito';
 
 export interface SeederStackProps extends sst.StackProps {
-  adminAmplifyAppId: string;
+  adminUserPool: cognito.UserPool;
 }
 
 export class SeederStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: SeederStackProps) {
     super(scope, id);
+    const adminUserPoolId = props.adminUserPool.userPoolId;
 
-    const seederLambda = new lambda.Function(this, 'StackSeeder', {
+    const seederLambda = new lambda.Function(this, 'StackSeederLambda', {
       ...commonLambdaProps,
       handler: 'lib/lambda/stack-seeder/index.handler',
       code: lambda.Code.fromAsset(
@@ -33,6 +27,17 @@ export class SeederStack extends sst.Stack {
       timeout: Duration.minutes(15),
     });
 
+    seederLambda.role?.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'cognito-idp:AdminSetUserPassword',
+          'cognito-idp:AdminGetUser',
+          'cognito-idp:AdminCreateUser',
+        ],
+        resources: [props.adminUserPool.userPoolArn],
+      }),
+    );
+
     const provider = new Provider(this, 'StackSeederProvider', {
       onEventHandler: seederLambda,
     });
@@ -40,6 +45,9 @@ export class SeederStack extends sst.Stack {
     new CustomResource(this, 'StackSeeder', {
       serviceToken: provider.serviceToken,
       resourceType: 'Custom::StackSeeder',
+      properties: {
+        adminUserPoolId,
+      },
     });
   }
 }

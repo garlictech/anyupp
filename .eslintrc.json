@@ -6,6 +6,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "unused-imports/no-unused-imports-ts": 2,
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
@@ -61,8 +62,7 @@
               }
             ]
           }
-        ],
-        "unused-imports/no-unused-imports-ts": "error"
+        ]
       }
     },
     {

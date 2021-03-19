@@ -238,10 +238,40 @@ The deployed admin sites:
 
 Both systems have some minimal data seeded at deploy/creation time.
 
+**IMPORTANT**: the seed process is executed only when the seed stack or its
+dependencies deployed/modified!
+
 - A test user: username: `test@test.com`, password: `Testtesttest12_`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
+
+## Some useful tools
+
+### Create a new admin user
+
+`sh ./tools/create-admin-user.sh CDK-BACKEND-APPNAME STAGE USERNAME PASSWORD`
+
+Example:
+
+`sh ./tools/create-admin-user.sh anyupp-backend dev foouser Barbarbar12_`
+
+It creates and verifies the cognito user only, it does not create anything in the
+database!
+
+## Integration tests
+
+We collect all teh integration tests to `libs/integration-test` and develop/execute
+them with jest. We must separete them from the other components, because we don't want
+to interfere with the unit tests.
+
+Execute all the integration tests:
+
+`nx test integration-tests`
+
+Execute on single integration test suite:
+
+`yarn jest -c libs/integration-tests/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
 
 ## Executing cucumber/cypress tests
 
