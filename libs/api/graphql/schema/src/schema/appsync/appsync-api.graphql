@@ -17,11 +17,92 @@ input CreateOrderFromCartInput {
 #   table: String!
 # }
 
+### Stripe
+
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+# https://stripe.com/docs/api/cards/object?lang=node
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+# # https://stripe.com/docs/api/metadata?lang=node
+# # Updateable Stripe objects
+type StripeMetadata {
+  key: String!
+  value: String!
+}
+
+type StripeCard @aws_cognito_user_pools {
+  brand: CardBrand
+  # checks: CardChecks
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  name: String
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  # wallet: String # to do
+  # IMPLEMENTED INTERFACES
+  id: ID!
+  object: String!
+  metadata: [StripeMetadata!]!
+}
+
+input StartStripePaymentInput {
+  chainId: ID!
+  unitId: ID!
+  userId: ID!
+  paymentMethodId: ID!
+}
+
+type StartStripePaymentOutput {
+  clientSecret: String!
+  status: String!
+}
+
+input StripeCardUpdateInput {
+  id: ID!
+  exp_month: String
+  exp_year: String
+  metadata: [StripeMetadata!]
+  default_for_currency: Boolean
+  name: String
+}
+
+input StripeCardDeleteInput {
+  id: ID!
+}
+
 type Query {
   getFoo: String
 }
 
 type Mutation {
   createOrderFromCart(input: CreateOrderFromCartInput!): Boolean
+    @aws_cognito_user_pools
+    # Stripe
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
+    @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
 }
