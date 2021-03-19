@@ -172,9 +172,6 @@
     "api-graphql-resolver-mapping-templates": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
-    "api-shared-data-access": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "api-stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
