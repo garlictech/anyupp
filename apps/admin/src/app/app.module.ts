@@ -1,4 +1,3 @@
-
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -135,11 +134,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     AdminSharedUnitsModule,
     AdminSharedUsersModule,
   ],
-  providers: [
-    AmplifyService,
-    { provide: REGION, useValue: 'europe-west3' },
-
-  ],
+  providers: [AmplifyService, { provide: REGION, useValue: 'europe-west3' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

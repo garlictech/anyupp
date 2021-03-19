@@ -11,11 +11,9 @@
       (selectedChange)="onProductCategorySelected($event)"
       [selected]="selectedProductCategoryId"
     >
-      <nb-option
-        *ngFor="let option of productCategories"
-        [value]="option.id"
-        >{{ option.name | localize }}</nb-option
-      >
+      <nb-option *ngFor="let option of productCategories" [value]="option.id">{{
+        option.name | localize
+      }}</nb-option>
     </nb-select>
 
     <ng-container *ngFor="let product of generatedUnitProducts">

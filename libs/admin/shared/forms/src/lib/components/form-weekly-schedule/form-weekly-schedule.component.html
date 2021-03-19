@@ -56,7 +56,11 @@
 
     <table>
       <tr
-        *ngFor="let customDay of scheduleControl.get('override')! | iterableAbstractControls; index as i"
+        *ngFor="
+          let customDay of scheduleControl.get('override')!
+            | iterableAbstractControls;
+          index as i
+        "
       >
         <td>
           <input

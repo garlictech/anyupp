@@ -13,7 +13,7 @@ import * as ProductsActions from './products.actions';
 
 export const PRODUCTS_FEATURE_KEY = 'products';
 
-export type IProductEntityState = EntityState<IProduct>
+export type IProductEntityState = EntityState<IProduct>;
 
 export interface IProductsState {
   chainProducts: IProductEntityState;

@@ -62,14 +62,16 @@ export class FormUnitAdminRoleComponent implements OnInit, OnDestroy {
           IUnit[],
           IAdminRoleEntity[],
         ]): void => {
-          this.chainOptions = chains.map(chain => ({ key: chain.id, value: chain.name, }))
+          this.chainOptions = chains.map(chain => ({
+            key: chain.id,
+            value: chain.name,
+          }));
           this.assignedUnits = entities.map(entity => ({
             chainName: chains.find((c): boolean => c.id === entity.chainId)
               ?.name,
             groupName: groups.find((g): boolean => g.id === entity.groupId)
               ?.name,
-            unitName: units.find((u): boolean => u.id === entity.unitId)
-              ?.name,
+            unitName: units.find((u): boolean => u.id === entity.unitId)?.name,
           }));
         },
       );

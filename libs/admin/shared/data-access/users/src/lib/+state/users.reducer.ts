@@ -27,8 +27,8 @@ const reducer = createReducer(
   initialState,
   on(UsersActions.init, state => ({ ...state, loaded: false, error: null })),
   on(UsersActions.upsertUser, (state, { user }) =>
-  usersAdapter.upsertOne(user, state),
-),
+    usersAdapter.upsertOne(user, state),
+  ),
   on(UsersActions.resetUsers, state => usersAdapter.removeAll(state)),
 );
 

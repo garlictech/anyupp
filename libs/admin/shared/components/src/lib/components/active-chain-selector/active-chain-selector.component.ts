@@ -45,7 +45,7 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   public onChainSelected(chainId: string): void {
     if (
       this._adminUser?.id &&
-      chainId !==  this._adminUser?.settings?.selectedChainId
+      chainId !== this._adminUser?.settings?.selectedChainId
     ) {
       this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
         ...(this._adminUser?.settings || {}),

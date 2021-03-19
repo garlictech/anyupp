@@ -53,13 +53,13 @@
       ></bgap-form-text-input>
 
       <bgap-form-clickable-image-input
-        [imagePath]="imagePath"
+        [image]="categoryImage"
         [imageType]="eImageType.JPEG"
         [uploadCallbackFn]="imageUploadCallback"
         [removeCallbackFn]="imageRemoveCallback"
         [maxSize]="480"
         caption="common.image"
-        uploadFolderPath="/product-categories/"
+        uploadFolderPath="product-categories"
         width="200px"
         height="200px"
         borderRadius="0.25rem"

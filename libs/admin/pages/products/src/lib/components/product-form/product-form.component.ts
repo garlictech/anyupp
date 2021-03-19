@@ -2,15 +2,25 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -33,6 +43,7 @@ export class ProductFormComponent
   private _store: Store<any>;
   private _formsService: FormsService;
   private _amplifyDataService: AmplifyDataService;
+  private _changeDetectorRef: ChangeDetectorRef;
   private _logger: NGXLogger;
   private _selectedChainId = '';
   private _selectedGroupId = '';
@@ -60,6 +71,7 @@ export class ProductFormComponent
     this._formsService = this._injector.get(FormsService);
     this._amplifyDataService = this._injector.get(AmplifyDataService);
     this._logger = this._injector.get(NGXLogger);
+    this._changeDetectorRef = this._injector.get(ChangeDetectorRef);
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
@@ -85,13 +97,12 @@ export class ProductFormComponent
       });
   }
 
-  get imagePath(): string {
-    return this.product?.image;
+  get productImage(): string {
+    return this.product?.image || '';
   }
 
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
-      // extends: [''],
       name: this._formBuilder.group(
         {
           hu: [''],
@@ -113,16 +124,7 @@ export class ProductFormComponent
       isVisible: [''],
       position: [''],
       image: [''],
-      /*
-      contains: this._formBuilder.group({
-        allergens: this._formBuilder.group({
-          lactose: [''],
-          nuts: [''],
-        }),
-      }),
-      */
-      // ingredients: [''],
-      variants: this._formBuilder.array([]), // temp array!
+      variants: this._formBuilder.array([]),
     });
 
     if (this.product) {
@@ -190,24 +192,29 @@ export class ProductFormComponent
     }
   }
 
-  public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm?.controls.image.setValue(imagePath);
+  public imageUploadCallback = async (image: string): Promise<void> => {
+    this.dialogForm?.controls.image.setValue(image);
 
     // Update existing user's image
     if (this.product?.id) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedGroupId,
+      try {
+        await this._amplifyDataService.update<IProduct>(
+          'getChainProduct',
+          'updateChainProduct',
           this.product.id,
-          imagePath,
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess',
-          );
-        });
+          (data: unknown) => fp.set(`image`, image, <IProduct>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -215,30 +222,32 @@ export class ProductFormComponent
         'common.imageUploadSuccess',
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 
-  public imageRemoveCallback = (): void => {
+  public imageRemoveCallback = async (): Promise<void> => {
     this.dialogForm?.controls.image.setValue('');
 
-    if (this.product) {
-      fp.set('image', null, this.product);
-    }
-
-    // Update existing user's image
     if (this.product?.id) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedGroupId,
+      try {
+        await this._amplifyDataService.update<IProduct>(
+          'getChainProduct',
+          'updateChainProduct',
           this.product.id,
-          null,
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess',
-          );
-        });
+          (data: unknown) => fp.set(`image`, null, <IProduct>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageRemoveSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -246,5 +255,7 @@ export class ProductFormComponent
         'common.imageRemoveSuccess',
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 }

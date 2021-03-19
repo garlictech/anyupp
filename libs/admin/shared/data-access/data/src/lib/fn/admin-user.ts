@@ -2,7 +2,10 @@ import * as fp from 'lodash/fp';
 
 import { EAdminRole, IAdminUser, IAdminUserRole } from '@bgap/shared/types';
 
-export const chainAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: IAdminUserRole): boolean => {
+export const chainAdminFilter = (
+  checkedAdminUser: IAdminUser,
+  loggedAdminRole: IAdminUserRole,
+): boolean => {
   const loggedAdminChainIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.chainId,
   );
@@ -19,7 +22,10 @@ export const chainAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: 
     : false;
 };
 
-export const groupAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: IAdminUserRole): boolean => {
+export const groupAdminFilter = (
+  checkedAdminUser: IAdminUser,
+  loggedAdminRole: IAdminUserRole,
+): boolean => {
   const loggedAdminGroupIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
@@ -35,7 +41,10 @@ export const groupAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: 
     : false;
 };
 
-export const unitAdminFilter = (checkedAdminUser: IAdminUser, loggedAdminRole: IAdminUserRole): boolean => {
+export const unitAdminFilter = (
+  checkedAdminUser: IAdminUser,
+  loggedAdminRole: IAdminUserRole,
+): boolean => {
   const loggedAdminUnitIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
