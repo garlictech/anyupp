@@ -1,14 +1,19 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import { createAdminUser, CreateAdminUserInput } from '@bgap/admin/amplify-api';
-import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { from, of, throwError } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
-import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
 import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
+import { from, of, throwError } from 'rxjs';
+import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
+
+import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
+import { awsConfig, createAdminUser, CreateAdminUserInput } from '@bgap/admin/amplify-api';
+
+import {
+  createTestChain, createTestChainProduct, createTestGroup, createTestGroupProduct, createTestProductCategory,
+  createTestUnit, createTestUnitProduct
+} from './mock-fn';
 
 Amplify.configure(awsConfig);
 /**
@@ -98,14 +103,33 @@ export const seedAdminUser = (UserPoolId: string) =>
             : throwError('Wrong graphql operation'),
       ),
     ),
-    mapTo('SUCCESS'),
-    catchError((error: AWSError) => {
-      console.log("Probably 'normal' error: ", error);
-      return error.code === 'UsernameExistsException'
-        ? of('SUCCESS')
-        : throwError(error);
-    }),
-  );
+  )
+    .pipe(
+      switchMap(createTestChain(1)),
+      switchMap(createTestGroup(1, 1)),
+      switchMap(createTestGroup(2, 1)),
+      switchMap(createTestUnit(1, 1, 1)),
+      switchMap(createTestUnit(1, 1, 2)),
+      switchMap(createTestUnit(1, 2, 1)),
+      switchMap(createTestProductCategory(1, 1)),
+      switchMap(createTestProductCategory(1, 2)),
+      switchMap(createTestChainProduct(1, 1, 1)),
+      switchMap(createTestChainProduct(1, 1, 2)),
+      switchMap(createTestChainProduct(1, 2, 1)),
+      switchMap(createTestGroupProduct(1, 1, 1, 1)),
+      switchMap(createTestGroupProduct(1, 1, 2, 2)),
+      switchMap(createTestUnitProduct(1, 1, 1, 1, 1)),
+      switchMap(createTestUnitProduct(1, 1, 1, 2, 1)),
+    )
+    .pipe(
+      mapTo('SUCCESS'),
+      catchError((error: AWSError) => {
+        console.log("Probably 'normal' error: ", error);
+        return error.code === 'UsernameExistsException'
+          ? of('SUCCESS')
+          : throwError(error);
+      }),
+    );
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log(JSON.stringify(event, null, 2));
