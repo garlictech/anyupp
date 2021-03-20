@@ -24,7 +24,6 @@ import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/exception/exception.dart';
 import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
-import 'modules/demo-datastore/demo-datastore.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
@@ -201,7 +200,6 @@ class _MyAppState extends State<MyApp> {
               BlocProvider<FaceDetectionBloc>(create: (BuildContext context) => getIt<FaceDetectionBloc>()),
               BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
               BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
-              BlocProvider<AmplifyUnitBloc>(create: (BuildContext context) => getIt<AmplifyUnitBloc>()),
             ],
             child: BlocBuilder<LocaleBloc, LocaleState>(
               builder: (context, LocaleState localeState) {

@@ -131,10 +131,10 @@ type Order @model
   paymentIntention: Int
   statusLog: [StatusLog] @connection
   created: Int
-  status: OrderSatus
+  status: OrderStatus
 }
 
-enum OrderSatus {
+enum OrderStatus {
   PLACED,
   PROCESSING,
   READY,
@@ -147,7 +147,7 @@ type OrderItem @model {
   variantId: ID!
   productName: LocalizedItem @connection
   priceShown: PriceShown @connection
-  quantity: Int
+  quantity: Int!
   statusLog: [StatusLog] @connection
   variantName: LocalizedItem @connection
   created: Int
@@ -158,7 +158,17 @@ type Cart @model {
   id: ID!
   userId: ID!
   unitId: ID!
-  order: Order @connection
+  takeAway: Boolean
+  place: Place @connection
+  paymentMethod: PaymentMode! @connection
+  created: Int
+  items: [CartItem] @connection
+}
+
+type CartItem @model {
+  product: GeneratedProduct! @connection
+  variant: ProductVariant! @connection
+  quantity: Int!
 }
 
 type Place @model {

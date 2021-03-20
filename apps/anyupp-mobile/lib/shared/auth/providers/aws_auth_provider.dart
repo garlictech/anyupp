@@ -81,8 +81,11 @@ class AwsAuthProvider implements IAuthProvider {
       // print('getAuthenticatedUserProfile().session.credentials.sessionToken=${session.credentials?.sessionToken}');
       // print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
       // print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
-      // print('getAuthenticatedUserProfile().session.userPoolTokens.refreshToken=${session.userPoolTokens?.refreshToken}');
-      // print('getAuthenticatedUserProfile().session.userPoolTokens.accessToken=${session.userPoolTokens?.accessToken}');
+      if (session.userPoolTokens != null) {
+        print('getAuthenticatedUserProfile().idToken=${session.userPoolTokens?.idToken}');
+        print('getAuthenticatedUserProfile().refreshToken=${session.userPoolTokens?.refreshToken}');
+        print('getAuthenticatedUserProfile().accessToken=${session.userPoolTokens?.accessToken}');
+      }
       if (!session.isSignedIn) {
         _user = null;
       } else {
@@ -156,16 +159,31 @@ class AwsAuthProvider implements IAuthProvider {
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: true),
       );
-      print('***** getAcceddToken()=${session.userPoolTokens?.accessToken}');
+      // print('***** getAccessToken()=${session.userPoolTokens?.accessToken}');
       // if (isTokenValid(session.userPoolTokens.accessToken)) {
       //  return session.userPoolTokens?.accessToken;
       // } 
       return session.userPoolTokens?.accessToken;
     } on Exception catch (e) {
-      print('***** getAcceddToken().error=$e');
+      print('***** getAccessToken().error=$e');
       return null;
     }
   }
+
+  @override
+  Future<String> getIdToken() async {
+    try {
+      CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
+        options: CognitoSessionOptions(getAWSCredentials: true),
+      );
+      // print('***** getIdToken()=${session.userPoolTokens?.idToken}');
+      return session.userPoolTokens?.idToken;
+    } on Exception catch (e) {
+      print('***** getIdToken().error=$e');
+      return null;
+    }
+  }
+
 
   
   bool isTokenValid(String token) {

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/foundation.dart';
@@ -18,7 +20,6 @@ class AwsSubscription<T extends Model> {
   StreamController<List<T>> _listController = BehaviorSubject<List<T>>();
   List<T> _items;
   final IAuthProvider _authProvider;
-  final ValueNotifier<GraphQLClient> _client;
 
   final String listQuery;
   final String listNodeName;
@@ -29,17 +30,15 @@ class AwsSubscription<T extends Model> {
 
   AwsSubscription({
     authProvider,
-    client,
     this.listQuery,
     this.listNodeName,
     this.subscriptionQuery,
     this.subscriptionNodeName,
     this.modelFromJson,
     this.filterModel,
-  })  : _authProvider = authProvider,
-        _client = client;
+  })  : _authProvider = authProvider;
 
-  Stream<List<T>> get stream => _listController.stream;
+  Stream<List<T>> get stream => _listController?.stream;
 
   Future<void> startListSubscription({Map<String, dynamic> variables}) async {
     print('**** startListSubscription[$listNodeName].variables=$variables');
@@ -50,21 +49,26 @@ class AwsSubscription<T extends Model> {
       await _listSubscription?.cancel();
 
       _items = await _getList(variables);
+      print('**** startListSubscription[$listNodeName].items=$_items');
       _listController.add(_items);
 
       User user = await _authProvider.getAuthenticatedUserProfile();
-      print('**** startListSubscription().userId=${user.id}');
-      _listSubscription = _client.value.subscribe(
+      print('**** startListSubscription[$listNodeName].userId=${user.id}');
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      _listSubscription = _client.value
+          .subscribe(
         SubscriptionOptions(
           document: gql(subscriptionQuery),
-          variables: variables,),
-      ).listen((QueryResult result) async {
-        print('**** startListSubscription().onData=$result');
+          variables: variables,
+        ),
+      )
+          .listen((QueryResult result) async {
+        print('**** startListSubscription[$listNodeName].onData=$result');
         // print('**** startListSubscription().onData.context=${result.context}');
-        print('**** startListSubscription().onData.hasException=${result.hasException}');
+        print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
         if (!result.hasException) {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          print('**** startListSubscription().item=$item');
+          print('**** startListSubscription[$listNodeName].item=$item');
           int index = _items.indexWhere((o) => o.id == item.id);
           if (index != -1) {
             bool isFiltered = filterModel(item);
@@ -78,12 +82,12 @@ class AwsSubscription<T extends Model> {
           }
         }
       }, onDone: () {
-        print('**** startListSubscription().onDone');
+        print('**** startListSubscription[$listNodeName].onDone');
       }, onError: (error) {
-        print('**** startListSubscription().onError=$error');
+        print('**** startListSubscription[$listNodeName].onError=$error');
       }, cancelOnError: false);
     } on Exception catch (e) {
-      print('startListSubscription.Exception: $e');
+      print('**** startListSubscription[$listNodeName].Exception: $e');
       rethrow;
     }
   }
@@ -91,13 +95,16 @@ class AwsSubscription<T extends Model> {
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
     print('_getList[$listNodeName]');
     try {
-
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
-          document: gql(listQuery),
-          variables: variables,
+        document: gql(listQuery),
+        variables: variables,
       ));
-    // print('_getList[$listNodeName].result.data=${result.data}');
-    // print('_getList[$listNodeName].result.exception=${result.exception}');
+      print('_getList[$listNodeName].result.data=${result.data}');
+      print('_getList[$listNodeName].result.exception=${result.exception}');
+      if (result == null || result.data == null) {
+        return [];
+      }
 
       List<dynamic> items = result.data[listNodeName]['items'];
       // print('***** _getList().items=$items');

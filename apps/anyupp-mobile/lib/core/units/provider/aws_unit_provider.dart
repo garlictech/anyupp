@@ -16,6 +16,13 @@ class AwsUnitProvider implements IUnitProvider {
         document: gql(QUERY_SEARCH_UNITS),
       ));
 
+      // print('***** searchUnitsNearLocation().result()=$result');
+      // print('***** searchUnitsNearLocation().result().data=${result?.data}');
+
+      if (result.data == null) {
+        return [];
+      }
+
       List<dynamic> items = result.data['listGeoUnits']['items'];
       //print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];

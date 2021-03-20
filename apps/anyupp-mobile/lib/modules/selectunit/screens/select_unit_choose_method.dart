@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/demo-datastore/demo-datastore.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -119,26 +118,6 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
             child: IconButton(
-              icon: Icon(Icons.refresh_outlined,
-                color: Colors.black,
-                size: 22.0,
-              ),
-              onPressed: () {
-                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
-              },
-            ),
-          ),
-          Container(
-            width: 46.0,
-            height: 46.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1.5,
-                color: Color(0x33857C18),
-              ),
-            ),
-            child: IconButton(
               icon: SvgPicture.asset(
                 'assets/icons/login.svg',
                 color: Colors.black,
@@ -147,7 +126,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
               onPressed: () {
                 // Nav.to(DataStoreDemoScreen());
-                showConfirmLogoutDialog(context, false);
+                showConfirmLogoutDialog(context, true);
               },
             ),
           ),
@@ -268,10 +247,18 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
       // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
       if (state is UnitsNoNearUnit) {
-        return Text(trans('selectUnitMap.noNearUnits'));
+        return Container(
+          padding: EdgeInsets.all(0.0),
+          height: 138,
+          child: Center(child: Text(trans('selectUnitMap.noNearUnits'))),
+        );
       }
       if (state is UnitsNotLoaded) {
-        return Text(trans('selectUnitMap.notLoaded'));
+        return Container(
+          padding: EdgeInsets.all(0.0),
+          height: 138,
+          child: Center(child: Text(trans('selectUnitMap.notLoaded'))),
+        );
       }
       if (state is UnitsLoaded) {
         return _buildUnitList(context, state.units);

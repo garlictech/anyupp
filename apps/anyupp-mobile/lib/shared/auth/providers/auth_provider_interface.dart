@@ -6,4 +6,5 @@ abstract class IAuthProvider {
   // Stream<AuthenticatedUser> get authenticatedUser;
   Future<void> cancel();
   Future<String> getAccessToken();
+  Future<String> getIdToken();
 }

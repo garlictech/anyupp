@@ -140,9 +140,9 @@ class CartScreen extends StatelessWidget {
                   color: theme.disabled.withOpacity(0.3),
                 ),
                 physics: BouncingScrollPhysics(),
-                itemCount: cart.order?.items?.length ?? 0,
+                itemCount: cart.items?.length ?? 0,
                 itemBuilder: (context, position) {
-                  final OrderItem order = cart.order.items[position];
+                  final CartItem order = cart.items[position];
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 375),
@@ -202,12 +202,12 @@ class CartScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  onPressed: () => cart.order?.place == null
+                  onPressed: () => cart.place == null
                       ? Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
                       : showSelectPaymentMethodBottomSheet(context),
                   color: theme.indicator,
                   textColor: theme.text2,
-                  child: cart.order?.place == null
+                  child: cart.place == null
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',
                           color: theme.text2,
@@ -226,7 +226,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, CartItem order) {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

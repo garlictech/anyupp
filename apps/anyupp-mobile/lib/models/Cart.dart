@@ -17,6 +17,7 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the Cart type in your schema. */
@@ -26,7 +27,11 @@ class Cart extends Model {
   final String id;
   final String userId;
   final String unitId;
-  final Order order;
+  final bool takeAway;
+  final Place place;
+  final PaymentMode paymentMethod;
+  final int created;
+  final List<CartItem> items;
 
   @override
   getInstanceType() => classType;
@@ -40,18 +45,30 @@ class Cart extends Model {
       {@required this.id,
       @required this.userId,
       @required this.unitId,
-      this.order});
+      this.takeAway,
+      this.place,
+      @required this.paymentMethod,
+      this.created,
+      this.items});
 
   factory Cart(
       {String id,
       @required String userId,
       @required String unitId,
-      Order order}) {
+      bool takeAway,
+      Place place,
+      @required PaymentMode paymentMethod,
+      int created,
+      List<CartItem> items}) {
     return Cart._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
         unitId: unitId,
-        order: order);
+        takeAway: takeAway,
+        place: place,
+        paymentMethod: paymentMethod,
+        created: created,
+        items: items != null ? List.unmodifiable(items) : items);
   }
 
   bool equals(Object other) {
@@ -65,7 +82,11 @@ class Cart extends Model {
         id == other.id &&
         userId == other.userId &&
         unitId == other.unitId &&
-        order == other.order;
+        takeAway == other.takeAway &&
+        place == other.place &&
+        paymentMethod == other.paymentMethod &&
+        created == other.created &&
+        DeepCollectionEquality().equals(items, other.items);
   }
 
   @override
@@ -79,38 +100,85 @@ class Cart extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("order=" + (order != null ? order.toString() : "null"));
+    buffer.write(
+        "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
+    buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
+    buffer.write("paymentMethod=" +
+        (paymentMethod != null ? paymentMethod.toString() : "null") +
+        ", ");
+    buffer.write("created=" + (created != null ? created.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  Cart copyWith({String id, String userId, String unitId, Order order}) {
+  Cart copyWith(
+      {String id,
+      String userId,
+      String unitId,
+      bool takeAway,
+      Place place,
+      PaymentMode paymentMethod,
+      int created,
+      List<CartItem> items}) {
     return Cart(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
-        order: order ?? this.order);
+        takeAway: takeAway ?? this.takeAway,
+        place: place ?? this.place,
+        paymentMethod: paymentMethod ?? this.paymentMethod,
+        created: created ?? this.created,
+        items: items ?? this.items);
   }
 
   Cart.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userId = json['userId'],
         unitId = json['unitId'],
-        order = json['order'] != null
-            ? Order.fromJson(new Map<String, dynamic>.from(json['order']))
+        takeAway = json['takeAway'],
+        place = json['place'] != null
+            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
+            : null,
+        paymentMethod = json['paymentMethod'] != null
+            ? PaymentMode.fromJson(
+                new Map<String, dynamic>.from(json['paymentMethod']))
+            : null,
+        created = json['created'],
+        items = json['items'] is List
+            ? (json['items'] as List)
+                .map((e) => CartItem.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
             : null;
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'userId': userId, 'unitId': unitId, 'order': order?.toJson()};
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'userId': userId,
+        'unitId': unitId,
+        'takeAway': takeAway,
+        'place': place?.toJson(),
+        'paymentMethod': paymentMethod?.toJson(),
+        'created': created,
+        'items': items?.map((e) => e?.toJson())?.toList()
+      };
 
   static final QueryField ID = QueryField(fieldName: "cart.id");
   static final QueryField USERID = QueryField(fieldName: "userId");
   static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField ORDER = QueryField(
-      fieldName: "order",
+  static final QueryField TAKEAWAY = QueryField(fieldName: "takeAway");
+  static final QueryField PLACE = QueryField(
+      fieldName: "place",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Order).toString()));
+          ofModelName: (Place).toString()));
+  static final QueryField PAYMENTMETHOD = QueryField(
+      fieldName: "paymentMethod",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (PaymentMode).toString()));
+  static final QueryField CREATED = QueryField(fieldName: "created");
+  static final QueryField ITEMS = QueryField(
+      fieldName: "items",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (CartItem).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Cart";
@@ -128,11 +196,33 @@ class Cart extends Model {
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Cart.ORDER,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Cart.TAKEAWAY,
         isRequired: false,
-        targetName: "cartOrderId",
-        ofModelName: (Order).toString()));
+        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: Cart.PLACE,
+        isRequired: false,
+        targetName: "cartPlaceId",
+        ofModelName: (Place).toString()));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: Cart.PAYMENTMETHOD,
+        isRequired: true,
+        targetName: "cartPaymentMethodId",
+        ofModelName: (PaymentMode).toString()));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Cart.CREATED,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: Cart.ITEMS,
+        isRequired: false,
+        ofModelName: (CartItem).toString(),
+        associatedKey: CartItem.CARTITEMSID));
   });
 }
 

@@ -50,7 +50,7 @@ class OrderItem extends Model {
       @required this.variantId,
       this.productName,
       this.priceShown,
-      this.quantity,
+      @required this.quantity,
       this.statusLog,
       this.variantName,
       this.created,
@@ -63,7 +63,7 @@ class OrderItem extends Model {
       @required String variantId,
       LocalizedItem productName,
       PriceShown priceShown,
-      int quantity,
+      @required int quantity,
       List<StatusLog> statusLog,
       LocalizedItem variantName,
       int created,
@@ -257,7 +257,7 @@ class OrderItem extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: OrderItem.QUANTITY,
-        isRequired: false,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(

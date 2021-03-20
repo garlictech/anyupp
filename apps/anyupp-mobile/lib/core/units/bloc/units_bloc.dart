@@ -83,9 +83,9 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     print('UnitsBloc._findNearestLoactions().start()');
     try {
       final geoUnits = await _unitRepository.searchUnitsNearLocation(location, radiusInMeter);
-      // print('UnitsBloc._findNearestLoactions().units=$geoUnits');
+      //print('UnitsBloc._findNearestLoactions().units=$geoUnits');
 
-      if (geoUnits == null) {
+      if (geoUnits == null || geoUnits.isEmpty) {
         yield UnitsNoNearUnit();
       } else {
         yield UnitsLoaded(geoUnits);

@@ -139,10 +139,10 @@ type Order @model
   paymentIntention: Int
   statusLog: [StatusLog]
   created: Int
-  status: OrderSatus
+  status: OrderStatus
 }
 
-enum OrderSatus {
+enum OrderStatus {
   PLACED,
   PROCESSING,
   READY,
@@ -166,8 +166,19 @@ type Cart @model {
   id: ID!
   userId: ID!
   unitId: ID!
-  order: Order @connection
+  takeAway: Boolean
+  place: Place
+  paymentMethod: PaymentMode
+  created: Int
+  items: [CartItem]
 }
+
+type CartItem {
+  product: GeneratedProduct!
+  variant: ProductVariant!
+  quantity: Int!
+}
+
 
 type Place {
   seat: String
@@ -191,4 +202,9 @@ type StatusLog {
 type Subscription {
   onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"])
   onOrderChanged(userId: String, unitId: String): Order @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+}
+
+type Mutation {
+  createOrderFromCart(cartId: String): Order @function(name: "createOrderFromCart-${env}")
+  startStripePayment(orderId: String): String @function(name: "startStripePayment-${env}")
 }

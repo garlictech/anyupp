@@ -1,25 +1,25 @@
 import 'package:fa_prev/models.dart';
 
 extension CartExtension on Cart {
-  int get orderCount => order?.items?.length ?? 0;
+  int get orderCount => items?.length ?? 0;
 
   int get totalCount {
     int count = 0;
-    order.items.forEach((order) => count += order.quantity);
+    items.forEach((order) => count += order.quantity);
     return count;
   }
 
   double get totalPrice {
     double value = 0;
-    order.items.forEach((order) => value += order.priceShown.pricePerUnit);
+    items.forEach((order) => value += order.variant.price);
     return value;
   }
 
   int variantCount(GeneratedProduct item, ProductVariant variant) {
-    int index = order?.items == null
+    int index = items == null
         ? -1
-        : order.items.indexWhere((order) => order.productId == item.id && order.variantId == variant.id);
-    return index != -1 ? order.items[index].quantity : 0;
+        : items.indexWhere((order) => order.product?.id == item.id && order.variant?.id == variant.id);
+    return index != -1 ? items[index].quantity : 0;
   }
 }
 

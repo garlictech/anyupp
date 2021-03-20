@@ -14,11 +14,14 @@ class GraphQLClientService {
 
   ValueNotifier<GraphQLClient> _client;
 
-  GraphQLClientService({@required IAuthProvider authProvider, @required this.apiUrl, @required this.apiKey, @required this.websocketApiUrl})
+  GraphQLClientService(
+      {@required IAuthProvider authProvider,
+      @required this.apiUrl,
+      @required this.apiKey,
+      @required this.websocketApiUrl})
       : _authProvider = authProvider;
 
   Future<ValueNotifier<GraphQLClient>> getGraphQLClient() async {
-
     if (_client != null) {
       return _client;
     }
@@ -26,22 +29,30 @@ class GraphQLClientService {
     _client?.dispose();
 
     String accessToken = await _authProvider.getAccessToken();
-    print('GraphQLClientService.Creating client. key=$apiKey, accessToken=$accessToken');
+    print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
-    final Map<String, String> headers = {
-      'x-api-key': apiKey,
-      'host': Uri.parse(apiUrl).host,
-    };
+    Map<String, String> headers;
     if (accessToken != null) {
-      headers['Authorization'] = 'Bearer $accessToken';
+      headers = {
+        'Authorization': accessToken,
+        'host': Uri.parse(apiUrl).host,
+      };
+    } else {
+      headers = {
+        'x-api-key': apiKey,
+        'host': Uri.parse(apiUrl).host,
+      };
     }
+    print('GraphQLClientService.headers=$headers');
     final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
-    final HttpLink _httpLink = HttpLink(apiUrl, defaultHeaders: headers);
+    final HttpLink _httpLink = HttpLink(
+      apiUrl,
+      defaultHeaders: headers,
+    );
 
     final AuthLink _authLink = AuthLink(
-      // getToken: () => 'x-api-key: $apiKey',
-      getToken: () => accessToken != null ? 'Bearer $accessToken' : null,
+      getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
     );
 
     // final Link _link = _httpLink;
@@ -49,9 +60,10 @@ class GraphQLClientService {
 
     final _wsLink = WebSocketLink('$websocketApiUrl?header=$encodedHeader&payload=e30=',
         config: SocketClientConfig(
-          serializer: AppSyncRequest(authHeader: headers),
+          initialPayload: headers,
+          // serializer: AppSyncRequest(authHeader: headers),
           autoReconnect: true,
-          delayBetweenReconnectionAttempts: Duration(seconds: 1), // Default 5
+          delayBetweenReconnectionAttempts: Duration(seconds: 5), // Default 5
           inactivityTimeout: Duration(minutes: 30), // Default 30 seconds
           queryAndMutationTimeout: Duration(seconds: 30), // Default 10
         ));
@@ -65,5 +77,4 @@ class GraphQLClientService {
 
     return _client;
   }
-
 }

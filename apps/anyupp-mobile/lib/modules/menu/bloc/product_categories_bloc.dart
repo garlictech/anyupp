@@ -25,7 +25,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
         (_unitSelectBloc.state as UnitSelected).unit.id,
       ));
     }
-    _unitSelectSubscription = _unitSelectBloc.asBroadcastStream().listen((state) {
+    _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
         add(LoadProductCategories(state.unit.chainId, state.unit.id));
       }

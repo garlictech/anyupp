@@ -13,7 +13,7 @@ import 'package:fa_prev/modules/cart/cart.dart';
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
-  final OrderItem order;
+  final CartItem order;
   final GeneratedProduct product;
   final ProductVariant variant;
   CartListItemWidget({Key key, this.unit, this.order, this.product, this.variant}) : super(key: key);
@@ -83,7 +83,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           margin: EdgeInsets.only(bottom: 2),
                           child: Text(
-                            formatCurrency(widget.order.priceShown?.priceSum ?? 0, widget.unit.currency),
+                            formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -173,5 +173,9 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   void _removeOrder() {
     BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(
         widget.unit.chainId, widget.unit.id, widget.product, widget.variant));
+  }
+
+  double getTotalPriceOfOrederItem(CartItem item) {
+    return item.quantity * item.variant.price;
   }
 }

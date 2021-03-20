@@ -58,7 +58,7 @@ class UpdateProductInCartAction extends BaseCartAction {
 }
 
 class RemoveOrderFromCartAction extends BaseCartAction {
-  final OrderItem order;
+  final CartItem order;
   final String chainId;
   final String unitId;
 

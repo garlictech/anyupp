@@ -10,7 +10,7 @@ export 'models/Location.dart';
 export 'models/ModelProvider.dart';
 export 'models/Order.dart';
 export 'models/OrderItem.dart';
-export 'models/OrderSatus.dart';
+export 'models/OrderStatus.dart';
 export 'models/PaymentMode.dart';
 export 'models/Place.dart';
 export 'models/PriceShown.dart';

@@ -36,7 +36,7 @@ class Order extends Model {
   final int paymentIntention;
   final List<StatusLog> statusLog;
   final int created;
-  final OrderSatus status;
+  final OrderStatus status;
 
   @override
   getInstanceType() => classType;
@@ -74,7 +74,7 @@ class Order extends Model {
       int paymentIntention,
       List<StatusLog> statusLog,
       int created,
-      OrderSatus status}) {
+      OrderStatus status}) {
     return Order._internal(
         id: id == null ? UUID.getUUID() : id,
         userId: userId,
@@ -159,7 +159,7 @@ class Order extends Model {
       int paymentIntention,
       List<StatusLog> statusLog,
       int created,
-      OrderSatus status}) {
+      OrderStatus status}) {
     return Order(
         id: id ?? this.id,
         userId: userId ?? this.userId,
@@ -207,7 +207,8 @@ class Order extends Model {
                 .toList()
             : null,
         created = json['created'],
-        status = enumFromString<OrderSatus>(json['status'], OrderSatus.values);
+        status =
+            enumFromString<OrderStatus>(json['status'], OrderStatus.values);
 
   Map<String, dynamic> toJson() => {
         'id': id,

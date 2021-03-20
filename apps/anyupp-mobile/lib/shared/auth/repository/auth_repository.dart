@@ -27,4 +27,9 @@ class AuthRepository implements IAuthProvider {
   Future<String> getAccessToken() {
     return _authProvider.getAccessToken();
   }
+
+  @override
+  Future<String> getIdToken() {
+    return _authProvider.getIdToken();
+  }
 }
