@@ -76,9 +76,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
       )
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
-        this._sortedChainProductIds = this.chainProducts.map(
-          (p): string => p.id,
-        );
       });
 
     this._store

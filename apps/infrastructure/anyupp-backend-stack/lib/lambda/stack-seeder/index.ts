@@ -123,26 +123,23 @@ export const seedAdminUser = (UserPoolId: string) =>
 
 export const seedBusinessData = () =>
   pipe(
-    from('data'),
-    switchMap(() =>
-      combineLatest([
-        createTestChain(1),
-        createTestGroup(1, 1),
-        createTestGroup(2, 1),
-        createTestUnit(1, 1, 1),
-        createTestUnit(1, 1, 2),
-        createTestUnit(1, 2, 1),
-        createTestProductCategory(1, 1),
-        createTestProductCategory(1, 2),
-        createTestChainProduct(1, 1, 1),
-        createTestChainProduct(1, 1, 2),
-        createTestChainProduct(1, 2, 1),
-        createTestGroupProduct(1, 1, 1, 1),
-        createTestGroupProduct(1, 1, 2, 2),
-        createTestUnitProduct(1, 1, 1, 1, 1),
-        createTestUnitProduct(1, 1, 1, 2, 2),
-      ]),
-    ),
+    combineLatest([
+      createTestChain(1),
+      createTestGroup(1, 1),
+      createTestGroup(2, 1),
+      createTestUnit(1, 1, 1),
+      createTestUnit(1, 1, 2),
+      createTestUnit(1, 2, 1),
+      createTestProductCategory(1, 1),
+      createTestProductCategory(1, 2),
+      createTestChainProduct(1, 1, 1),
+      createTestChainProduct(1, 1, 2),
+      createTestChainProduct(1, 2, 1),
+      createTestGroupProduct(1, 1, 1, 1),
+      createTestGroupProduct(1, 1, 2, 2),
+      createTestUnitProduct(1, 1, 1, 1, 1),
+      createTestUnitProduct(1, 1, 1, 2, 2),
+    ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {
       console.log("Probably 'normal' error: ", error);
