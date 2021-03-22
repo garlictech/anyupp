@@ -1,8 +1,5 @@
 #Feature: Menu lanes
 
-#    If you click on the menu button, you can choose between different pages,
-#    like Products, Product categories or Chains.
-
 # Background: 
 #   Given I am on the dashboard page
 

@@ -1,7 +1,5 @@
 #Feature: Admin language
 
-#    Pick one of the 3 languages at the header. 
-
 #Scenario: Set the hu language
 #  Given I am on the dashboard page
 #  And the language is set for "EN"

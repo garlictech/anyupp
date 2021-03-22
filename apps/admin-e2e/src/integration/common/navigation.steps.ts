@@ -6,7 +6,7 @@ Given('I am on the login page', () => {
 });
 
 //Then('I should see the dashboard page', () => {
-//  cy.location('pathname').should('eq', '/dashboard');
+//  cy.visit('/');
 //});
 
 //Given('I am on the dashboard page', () => {
