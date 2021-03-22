@@ -3,17 +3,26 @@ import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { from, of, throwError } from 'rxjs';
+import { combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
-import { awsConfig, createAdminUser, CreateAdminUserInput } from '@bgap/admin/amplify-api';
+import {
+  awsConfig,
+  createAdminUser,
+  CreateAdminUserInput,
+} from '@bgap/admin/amplify-api';
 
 import {
-  createTestChain, createTestChainProduct, createTestGroup, createTestGroupProduct, createTestProductCategory,
-  createTestUnit, createTestUnitProduct
-} from './mock-fn';
+  createTestChain,
+  createTestChainProduct,
+  createTestGroup,
+  createTestGroupProduct,
+  createTestProductCategory,
+  createTestUnit,
+  createTestUnitProduct,
+} from './seed-data-fn';
 
 Amplify.configure(awsConfig);
 /**
@@ -103,33 +112,43 @@ export const seedAdminUser = (UserPoolId: string) =>
             : throwError('Wrong graphql operation'),
       ),
     ),
-  )
-    .pipe(
-      switchMap(createTestChain(1)),
-      switchMap(createTestGroup(1, 1)),
-      switchMap(createTestGroup(2, 1)),
-      switchMap(createTestUnit(1, 1, 1)),
-      switchMap(createTestUnit(1, 1, 2)),
-      switchMap(createTestUnit(1, 2, 1)),
-      switchMap(createTestProductCategory(1, 1)),
-      switchMap(createTestProductCategory(1, 2)),
-      switchMap(createTestChainProduct(1, 1, 1)),
-      switchMap(createTestChainProduct(1, 1, 2)),
-      switchMap(createTestChainProduct(1, 2, 1)),
-      switchMap(createTestGroupProduct(1, 1, 1, 1)),
-      switchMap(createTestGroupProduct(1, 1, 2, 2)),
-      switchMap(createTestUnitProduct(1, 1, 1, 1, 1)),
-      switchMap(createTestUnitProduct(1, 1, 1, 2, 1)),
-    )
-    .pipe(
-      mapTo('SUCCESS'),
-      catchError((error: AWSError) => {
-        console.log("Probably 'normal' error: ", error);
-        return error.code === 'UsernameExistsException'
-          ? of('SUCCESS')
-          : throwError(error);
-      }),
-    );
+    mapTo('SUCCESS'),
+    catchError((error: AWSError) => {
+      console.log("Probably 'normal' error: ", error);
+      return error.code === 'UsernameExistsException'
+        ? of('SUCCESS')
+        : throwError(error);
+    }),
+  );
+
+export const seedBusinessData = () =>
+  pipe(
+    from('data'),
+    switchMap(() =>
+      combineLatest([
+        createTestChain(1),
+        createTestGroup(1, 1),
+        createTestGroup(2, 1),
+        createTestUnit(1, 1, 1),
+        createTestUnit(1, 1, 2),
+        createTestUnit(1, 2, 1),
+        createTestProductCategory(1, 1),
+        createTestProductCategory(1, 2),
+        createTestChainProduct(1, 1, 1),
+        createTestChainProduct(1, 1, 2),
+        createTestChainProduct(1, 2, 1),
+        createTestGroupProduct(1, 1, 1, 1),
+        createTestGroupProduct(1, 1, 2, 2),
+        createTestUnitProduct(1, 1, 1, 1, 1),
+        createTestUnitProduct(1, 1, 1, 2, 2),
+      ]),
+    ),
+    mapTo('SUCCESS'),
+    catchError((error: AWSError) => {
+      console.log("Probably 'normal' error: ", error);
+      return of('SUCCESS');
+    }),
+  );
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log(JSON.stringify(event, null, 2));
@@ -156,6 +175,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
             }),
           ),
         ),
+        switchMap(seedBusinessData),
       )
       .toPromise();
   }
