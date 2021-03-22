@@ -1,5 +1,5 @@
 // I am on a page like tests
-import { Given, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Given } from 'cypress-cucumber-preprocessor/steps';
 
 Given('I am on the login page', () => {
   cy.visit('/');
