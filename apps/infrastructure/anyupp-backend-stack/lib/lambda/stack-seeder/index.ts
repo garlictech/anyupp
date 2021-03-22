@@ -1,14 +1,28 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import { AmplifyApi, AmplifyApiMutations } from '@bgap/admin/amplify-api';
-import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { from, of, throwError } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
-import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
 import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
+import { combineLatest, from, of, throwError } from 'rxjs';
+import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
+
+import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
+import {
+  AmplifyApi,
+  AmplifyApiMutations,
+  awsConfig,
+} from '@bgap/admin/amplify-api';
+
+import {
+  createTestChain,
+  createTestChainProduct,
+  createTestGroup,
+  createTestGroupProduct,
+  createTestProductCategory,
+  createTestUnit,
+  createTestUnitProduct,
+} from './seed-data-fn';
 
 Amplify.configure(awsConfig);
 /**
@@ -109,6 +123,32 @@ export const seedAdminUser = (UserPoolId: string) =>
     }),
   );
 
+export const seedBusinessData = () =>
+  pipe(
+    combineLatest([
+      createTestChain(1),
+      createTestGroup(1, 1),
+      createTestGroup(2, 1),
+      createTestUnit(1, 1, 1),
+      createTestUnit(1, 1, 2),
+      createTestUnit(1, 2, 1),
+      createTestProductCategory(1, 1),
+      createTestProductCategory(1, 2),
+      createTestChainProduct(1, 1, 1),
+      createTestChainProduct(1, 1, 2),
+      createTestChainProduct(1, 2, 1),
+      createTestGroupProduct(1, 1, 1, 1),
+      createTestGroupProduct(1, 1, 2, 2),
+      createTestUnitProduct(1, 1, 1, 1, 1),
+      createTestUnitProduct(1, 1, 1, 2, 2),
+    ]),
+    mapTo('SUCCESS'),
+    catchError((error: AWSError) => {
+      console.log("Probably 'normal' error: ", error);
+      return of('SUCCESS');
+    }),
+  );
+
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log(JSON.stringify(event, null, 2));
 
@@ -134,6 +174,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
             }),
           ),
         ),
+        switchMap(seedBusinessData),
       )
       .toPromise();
   }
