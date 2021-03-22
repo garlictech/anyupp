@@ -1,7 +1,7 @@
-schema {
-    query: Query
-    mutation: Mutation
-}
+# schema {
+#     query: Query
+#     mutation: Mutation
+# }
 
 input CreateOrderFromCartInput {
   # unitId: ID!
@@ -82,7 +82,7 @@ input StripeCardUpdateInput {
   id: ID!
   exp_month: String
   exp_year: String
-  metadata: [StripeMetadata!]
+  # metadata: [StripeMetadata!]
   default_for_currency: Boolean
   name: String
 }
@@ -98,7 +98,7 @@ type Query {
 type Mutation {
   createOrderFromCart(input: CreateOrderFromCartInput!): Boolean
     @aws_cognito_user_pools
-    # Stripe
+  # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard

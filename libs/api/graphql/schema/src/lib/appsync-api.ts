@@ -77,7 +77,6 @@ export interface StripeCardUpdateInput {
   id: Scalars['ID'];
   exp_month?: Maybe<Scalars['String']>;
   exp_year?: Maybe<Scalars['String']>;
-  metadata?: Maybe<Array<StripeMetadata>>;
   default_for_currency?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
 }

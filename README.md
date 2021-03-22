@@ -118,7 +118,7 @@ are not yet supported in headless mode :( So fill in the forms if required.
 Cognito part:
 
 ```
-cd apps/amplify-admin-api
+cd apps/admin-amplify-app
 amplify remove auth
 amplify import auth
 ```
@@ -129,6 +129,9 @@ amplify import auth
 
 Appsync part:
 
+```
+amplify add api
+```
 Answere these questions
 
 - ? Please select from one of the below mentioned services: `GraphQL`
