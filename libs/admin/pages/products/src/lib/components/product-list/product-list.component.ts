@@ -2,31 +2,17 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import {
-  AmplifyDataService,
-  DataService,
-} from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
-import {
-  EAdminRole,
-  EProductLevel,
-  IAdminUser,
-  IGroup,
-  IProduct,
-  IProductOrderChangeEvent,
-} from '@bgap/shared/types';
-import {
-  NbDialogService,
-  NbTabComponent,
-  NbTabsetComponent,
-} from '@nebular/theme';
+import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 
 @UntilDestroy()
 @Component({
@@ -47,14 +33,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public selectedProductLevel: EProductLevel;
   public adminUser?: IAdminUser;
 
-  private _sortedChainProductIds: string[] = [];
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
     private _amplifyDataService: AmplifyDataService,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
@@ -174,37 +158,39 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public unitProductPositionChange($event: IProductOrderChangeEvent): void {
-    const idx = this._sortedUnitProductIds.indexOf($event.productId);
+  public async unitProductPositionChange(
+    $event: IProductOrderChangeEvent,
+  ): Promise<void> {
+    if (this.adminUser?.settings?.selectedUnitId) {
+      const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
-    if (
-      (idx >= 0 &&
-        $event.change === 1 &&
-        idx < this._sortedUnitProductIds.length - 1) ||
-      ($event.change === -1 && idx > 0)
-    ) {
-      this._sortedUnitProductIds.splice(idx, 1);
-      this._sortedUnitProductIds.splice(
-        idx + $event.change,
-        0,
-        $event.productId,
-      );
+      if (
+        (idx >= 0 &&
+          $event.change === 1 &&
+          idx < this._sortedUnitProductIds.length - 1) ||
+        ($event.change === -1 && idx > 0)
+      ) {
+        this._sortedUnitProductIds.splice(idx, 1);
+        this._sortedUnitProductIds.splice(
+          idx + $event.change,
+          0,
+          $event.productId,
+        );
 
-      this._sortedUnitProductIds.forEach(
-        async (productId: string, pos: number): Promise<void> => {
-          if (this.selectedUnitId) {
-            await this._amplifyDataService.update<IProduct>(
-              'getUnitProduct',
-              'updateUnitProduct',
-              productId,
-              (data: unknown) => ({
-                ...(<IProduct>data),
-                position: (pos + 1).toString(),
-              }),
-            );
-          }
-        },
-      );
+        for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
+          const productId = this._sortedUnitProductIds[i];
+
+          await this._amplifyDataService.update<IProduct>(
+            'getUnitProduct',
+            'updateUnitProduct',
+            productId,
+            (data: unknown) => ({
+              ...(<IProduct>data),
+              position: (i + 1).toString(),
+            }),
+          );
+        }
+      }
     }
   }
 }
