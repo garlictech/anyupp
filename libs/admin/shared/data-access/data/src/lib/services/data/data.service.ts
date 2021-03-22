@@ -620,53 +620,6 @@ export class DataService {
   }
 
   //
-  // Product category
-  //
-
-  // TODO refactor
-  public updateProductCategoryPosition(
-    chainId: string,
-    productCategoryId: string,
-    value: string,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/productCategories/chains/${chainId}/${productCategoryId}`)
-      .update({
-        position: value,
-      });
-  }
-
-  //
-  // Product
-  //
-
-  // TODO refactor
-  public updateChainProductPosition(
-    chainId: string,
-    productId: string,
-    value: string,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/products/chains/${chainId}/${productId}`)
-      .update({
-        position: value,
-      });
-  }
-
-  // TODO refactor
-  public updateUnitProductPosition(
-    unitId: string,
-    productId: string,
-    value: string,
-  ): Promise<void> {
-    return this._angularFireDatabase
-      .object(`/products/units/${unitId}/${productId}`)
-      .update({
-        position: value,
-      });
-  }
-
-  //
   // Order
   //
 

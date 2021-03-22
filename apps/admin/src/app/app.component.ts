@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AuthService } from '@bgap/admin/shared/data-access/auth';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bgap-root',
