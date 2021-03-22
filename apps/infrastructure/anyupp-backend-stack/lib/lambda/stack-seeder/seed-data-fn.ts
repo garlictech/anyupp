@@ -126,9 +126,9 @@ export const createTestUnit = (
               name: 'bár',
             },
             {
-              color: '#e72222',
+              color: '#e123ef',
               id: generateLaneId(chainIdx, groupIdx, unitIdx, 2),
-              name: 'bár',
+              name: 'konyha',
             },
           ],
           open: {
