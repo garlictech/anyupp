@@ -2,6 +2,7 @@ export * from './address';
 export * from './admin-user';
 export * from './amplify';
 export * from './auth';
+export * from './cart';
 export * from './chain';
 export * from './confirmation';
 export * from './contact';

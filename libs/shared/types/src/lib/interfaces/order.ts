@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 import { EOrderStatus, EPaymentMethod } from '../enums';
 import { ILocalizedItem } from './localized-item';
 
@@ -45,6 +47,10 @@ export interface IPlace {
   seat: string;
   table: string;
 }
+export const placeSchema: Joi.SchemaMap = {
+  seat: Joi.string().required(),
+  table: Joi.string().required(),
+};
 
 export interface IOrders {
   [key: string]: IOrder;

@@ -21,6 +21,8 @@ import {
 
 import { calculateOrderSumPrice } from './order.utils';
 import { missingParametersCheck } from '@bgap/shared/utils';
+import { IOrderItem, validateCart } from '@bgap/shared/types';
+import { ICart } from '../../../../shared/types/src/lib/interfaces/cart';
 
 export const createOrderFromCart = async ({
   userId,
@@ -143,7 +145,7 @@ const getOrderItems = ({
   graphqlApiClient,
 }: {
   userId: string;
-  cartItems: AmplifyApi.OrderItem[];
+  cartItems: IOrderItem[];
   currency: string;
   graphqlApiClient: GraphqlApiClient;
 }): Observable<AmplifyApi.OrderItemInput[]> => {
@@ -170,7 +172,7 @@ const convertCartOrderToOrderItem = ({
   laneId,
 }: {
   userId: string;
-  cartItem: AmplifyApi.OrderItem;
+  cartItem: IOrderItem;
   currency: string;
   laneId: string | null | undefined;
 }): AmplifyApi.OrderItemInput => {
@@ -276,16 +278,19 @@ const getUnit = (
 const getCart = (
   graphqlApiClient: GraphqlApiClient,
   id?: string,
-): Observable<AmplifyApi.Cart> => {
+): Observable<ICart> => {
   if (!id) throw 'Missing CartId';
 
   return executeQuery(graphqlApiClient)<AmplifyApi.GetCartQuery>(
     AmplifyApiQueries.getCart,
     { id },
   ).pipe(
-    map(o => o.getCart as AmplifyApi.Cart),
-    throwIfEmpty(() => 'Missing Cart'),
+    map(x => x.getCart),
+    switchMap(validateCart),
   );
+
+  // map(o => o.getCart as AmplifyApi.Cart),
+  // throwIfEmpty(() => 'Missing Cart'),
 };
 
 const deleteCart = (
