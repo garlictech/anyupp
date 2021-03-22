@@ -35,7 +35,7 @@ class AwsUnitProvider implements IUnitProvider {
       }
 
       return results;
-    } on ApiException catch (e) {
+    } on Exception catch (e) {
       print('AwsUnitProvider.searchUnitsNearLocation.Exception: $e');
       rethrow;
     }
