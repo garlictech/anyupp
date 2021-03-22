@@ -18,3 +18,11 @@
 // Given('I am on the login page', () => {
 //   cy.visit('/');
 // });
+
+//import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+
+//When('I fill out the {string} input with {string}',  (field, value ) => {
+//    switch (field) {
+//        cy.get('label').contains(field)
+//    }
+//  });

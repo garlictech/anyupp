@@ -288,6 +288,12 @@ The last command should build and start the admin, launch cypress and execute th
 yarn nx e2e admin-e2e --watch
 ```
 
+To launch cypress and execute the admin test on the REMOTE admin without the starting the admin locally.
+
+```
+yarn nx e2e-remote admin-e2e --watch --baseUrl=https://qa.admin.anyupp-backend.anyupp.com/
+```
+
 All the reports and videos recording the test execution are generated in the `cyreport` folder of the project root. To generate a nice html report out of them:
 
 ```
