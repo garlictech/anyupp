@@ -8,6 +8,10 @@ Then('I should see {string} label', (title: string) => {
   cy.get('label').contains(title).findAllByText(title).should('exist');
 });
 
+//Then('the {string} title is displayed', (title: string) => {
+//  cy.findAllByText(title).should('exist');
+//});
+
 //Given('the language is set for {string}', (label: string) => {
 //  cy.findByText(label).should('exist');
 //});

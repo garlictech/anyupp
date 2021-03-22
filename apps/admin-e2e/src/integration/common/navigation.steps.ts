@@ -5,13 +5,13 @@ Given('I am on the login page', () => {
   cy.visit('/');
 });
 
-Given('I am on the dashboard page', () => {
-  cy.url().should('include', '/dashboard')
-});
+//Then('I should see the dashboard page', () => {
+//  cy.location('pathname').should('eq', '/dashboard');
+//});
 
-Then('I should see the dashboard page', () => {
-  cy.url().should('include', '/dashboard')
-});
+//Given('I am on the dashboard page', () => {
+//  cy.url().should('include', '/dashboard')
+//});
 
 //Given('I am on the unit products list', () => {
 //  cy.url().should('include', '/products')
