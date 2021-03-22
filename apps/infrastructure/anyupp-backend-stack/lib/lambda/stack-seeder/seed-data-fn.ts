@@ -12,7 +12,6 @@ import {
   createUnitProduct,
 } from '@bgap/admin/amplify-api';
 import { EProductType } from '@bgap/shared/types';
-import { tap } from 'rxjs/operators';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
