@@ -1,11 +1,11 @@
 import { ICart, isCart, validateCart } from './cart';
-import { EPaymentMethod } from '../enums/payment-method';
+// import { EPaymentMethod } from '../enums/payment-method';
 
 const cart: ICart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
-  paymentMethod: EPaymentMethod.CARD,
+  // paymentMethod: EPaymentMethod.CARD,
   items: [
     {
       created: 100,

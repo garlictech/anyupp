@@ -4,12 +4,11 @@
 # }
 
 input CreateOrderFromCartInput {
-  # unitId: ID!
   id: ID!
-  # paymentMethod: String!
-  # userLocation: ??
-  # place: PlaceInput!
-  # cartItems: [CartItemInput!]!
+}
+
+type CreateOrderFromCartOutput {
+  id: ID!
 }
 
 # input PlaceInput {
@@ -96,8 +95,9 @@ type Query {
 }
 
 type Mutation {
-  createOrderFromCart(input: CreateOrderFromCartInput!): Boolean
-    @aws_cognito_user_pools
+  createOrderFromCart(
+    input: CreateOrderFromCartInput!
+  ): CreateOrderFromCartOutput @aws_cognito_user_pools @aws_api_key
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools

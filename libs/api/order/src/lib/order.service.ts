@@ -21,8 +21,7 @@ import {
 
 import { calculateOrderSumPrice } from './order.utils';
 import { missingParametersCheck } from '@bgap/shared/utils';
-import { IOrderItem, validateCart } from '@bgap/shared/types';
-import { ICart } from '../../../../shared/types/src/lib/interfaces/cart';
+import { IOrderItem, validateCart, ICart } from '@bgap/shared/types';
 
 export const createOrderFromCart = async ({
   userId,
@@ -76,7 +75,7 @@ export const createOrderFromCart = async ({
           graphqlApiClient,
           userId,
           currency: props.currency,
-          cartItems: props.cart.items!,
+          cartItems: props.cart.items,
         }).pipe(map(items => ({ ...props, items }))),
       ),
       map(props => ({
@@ -84,7 +83,7 @@ export const createOrderFromCart = async ({
         orderInput: toOrderInputFormat({
           userId,
           unitId: props.cart.unitId,
-          paymentMethod: props.cart.paymentMethod,
+          // paymentMethod: props.cart.paymentMethod,
           items: props.items,
           place: props.cart.place,
         }),
@@ -97,7 +96,7 @@ export const createOrderFromCart = async ({
       // Remove the cart from the db after the order has been created successfully
       switchMap(props =>
         deleteCart(graphqlApiClient, props.cart.id).pipe(
-          map(o => props.orderId),
+          mapTo(props.orderId),
           pipeDebug('### Response'),
         ),
       ),
@@ -194,24 +193,24 @@ const convertCartOrderToOrderItem = ({
   return {
     ...cartItem,
     // created: DateTime.utc().toMillis(),
-    productName: cartItem.productName!,
+    productName: cartItem.productName,
     priceShown: {
       currency,
-      pricePerUnit: cartItem.priceShown!.pricePerUnit,
+      pricePerUnit: cartItem.priceShown.pricePerUnit,
       priceSum: toFixed2Number(
-        cartItem.priceShown!.pricePerUnit! * cartItem.quantity!,
+        cartItem.priceShown.pricePerUnit * cartItem.quantity,
       ),
-      tax: cartItem.priceShown!.tax,
+      tax: cartItem.priceShown.tax,
       taxSum: toFixed2Number(
-        cartItem.priceShown!.pricePerUnit! *
-          cartItem.quantity! *
-          (cartItem.priceShown!.tax! / 100),
+        cartItem.priceShown.pricePerUnit *
+          cartItem.quantity *
+          (cartItem.priceShown.tax / 100),
       ),
     },
-    productId: cartItem.productId!,
-    quantity: cartItem.quantity!,
-    variantId: cartItem.variantId!,
-    variantName: cartItem.variantName!,
+    productId: cartItem.productId,
+    quantity: cartItem.quantity,
+    variantId: cartItem.variantId,
+    variantName: cartItem.variantName,
     statusLog: createStatusLog(userId),
     laneId,
   };

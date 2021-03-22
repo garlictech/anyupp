@@ -20,6 +20,11 @@ export interface CreateOrderFromCartInput {
   id: Scalars['ID'];
 }
 
+export interface CreateOrderFromCartOutput {
+  __typename?: 'CreateOrderFromCartOutput';
+  id: Scalars['ID'];
+}
+
 export enum CardBrand {
   amex = 'amex',
   diners = 'diners',
@@ -92,7 +97,7 @@ export interface Query {
 
 export interface Mutation {
   __typename?: 'Mutation';
-  createOrderFromCart?: Maybe<Scalars['Boolean']>;
+  createOrderFromCart?: Maybe<CreateOrderFromCartOutput>;
   startStripePayment?: Maybe<StartStripePaymentOutput>;
   updateMyStripeCard?: Maybe<StripeCard>;
   deleteMyStripeCard?: Maybe<Scalars['Boolean']>;
@@ -113,3 +118,26 @@ export interface MutationUpdateMyStripeCardArgs {
 export interface MutationDeleteMyStripeCardArgs {
   input: StripeCardDeleteInput;
 }
+
+export type CreateOrderFromCartMutationMutationVariables = Exact<{
+  input: CreateOrderFromCartInput;
+}>;
+
+export type CreateOrderFromCartMutationMutation = {
+  __typename?: 'Mutation';
+} & {
+  createOrderFromCart?: Maybe<
+    { __typename?: 'CreateOrderFromCartOutput' } & Pick<
+      CreateOrderFromCartOutput,
+      'id'
+    >
+  >;
+};
+
+export const CreateOrderFromCartMutation = gql`
+  mutation CreateOrderFromCartMutation($input: CreateOrderFromCartInput!) {
+    createOrderFromCart(input: $input) {
+      id
+    }
+  }
+`;

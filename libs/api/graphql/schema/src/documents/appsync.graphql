@@ -1,3 +1,9 @@
+mutation CreateOrderFromCartMutation($input: CreateOrderFromCartInput!) {
+  createOrderFromCart(input: $input) {
+    id
+  }
+}
+
 # query GetMyStripeCards {
 #   getMyStripeCards {
 #     brand

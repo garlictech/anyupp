@@ -1,24 +1,27 @@
 import gql from 'graphql-tag';
 import { pluck } from 'rxjs/operators';
 import { GraphqlApiClient } from './graphql-api-client';
+import { DocumentNode } from 'graphql';
 
-export const toGraphQLDocument = (documentString: string) =>
-  gql`
-    ${documentString}
-  `;
+export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
+  typeof gqlDocument === 'string'
+    ? gql`
+        ${gqlDocument}
+      `
+    : gqlDocument;
 
 export const executeQuery = (client: GraphqlApiClient) => <T>(
-  gqlDocumentString: string,
+  gqlDocument: string | DocumentNode,
   variables?: Record<string, unknown>,
 ) =>
   client
-    .query<T>(toGraphQLDocument(gqlDocumentString), variables)
+    .query<T>(toGraphQLDocument(gqlDocument), variables)
     .pipe(pluck('data'));
 
 export const executeMutation = (client: GraphqlApiClient) => <T>(
-  gqlDocumentString: string,
+  gqlDocument: string | DocumentNode,
   variables?: Record<string, unknown>,
 ) =>
   client
-    .mutate<T>(toGraphQLDocument(gqlDocumentString), variables)
+    .mutate<T>(toGraphQLDocument(gqlDocument), variables)
     .pipe(pluck('data'));
