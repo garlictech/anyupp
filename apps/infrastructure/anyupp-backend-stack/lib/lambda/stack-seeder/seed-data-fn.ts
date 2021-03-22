@@ -38,7 +38,7 @@ const generateUnitProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `unit_product_${chainIdx}_${groupIdx}_${idx}_id`;
+) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
 
