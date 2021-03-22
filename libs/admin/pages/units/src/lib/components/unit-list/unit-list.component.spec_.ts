@@ -11,7 +11,7 @@ xdescribe('UnitListComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [UnitListComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-data-access-logged-user',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
@@ -14,7 +15,8 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../../../coverage/libs/admin/shared/data-access/logged-user',
+  coverageDirectory:
+    '../../../../../coverage/libs/admin/shared/data-access/logged-user',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',

@@ -51,7 +51,7 @@ export interface IOrders {
 }
 
 export interface IOrder {
-  _id: string;
+  id: string;
   created: number;
   items: IOrderItem[];
   paymentMethod: EPaymentMethod;

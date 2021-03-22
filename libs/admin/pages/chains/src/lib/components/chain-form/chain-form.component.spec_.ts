@@ -11,7 +11,7 @@ xdescribe('ChainFormComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [ChainFormComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

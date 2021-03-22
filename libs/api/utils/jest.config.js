@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'api-utils',
   preset: '../../../jest.preset.js',
   globals: {

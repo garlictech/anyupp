@@ -11,7 +11,7 @@ xdescribe('FormUnitLanesComponent', (): void => {
       await TestBed.configureTestingModule({
         declarations: [FormUnitLanesComponent],
       }).compileComponents();
-    }
+    },
   );
 
   beforeEach((): void => {

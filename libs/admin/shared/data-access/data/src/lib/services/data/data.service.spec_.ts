@@ -1,3 +1,4 @@
+/*
 import { TestBed } from '@angular/core/testing';
 
 import { DataService } from './data.service';
@@ -14,3 +15,4 @@ xdescribe('DataService', (): void => {
     expect(service).toBeTruthy();
   });
 });
+*/

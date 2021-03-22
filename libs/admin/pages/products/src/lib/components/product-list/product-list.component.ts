@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
@@ -52,30 +51,30 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService
+    private _dataService: DataService,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
 
     this.groupProducts$ = this._store.pipe(
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
   }
 
-  get selectedChainId(): string {
-    return _get(this.adminUser, 'settings.selectedChainId');
+  get selectedChainId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedChainId;
   }
 
-  get selectedGroupId(): string {
-    return _get(this.adminUser, 'settings.selectedGroupId');
+  get selectedGroupId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedGroupId;
   }
 
-  get selectedUnitId(): string {
-    return _get(this.adminUser, 'settings.selectedUnitId');
+  get selectedUnitId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedUnitId;
   }
 
-  get selectedProductCategoryId(): string {
-    return _get(this.adminUser, 'settings.selectedProductCategoryId');
+  get selectedProductCategoryId(): string | null | undefined {
+    return this.adminUser?.settings?.selectedProductCategoryId;
   }
 
   ngOnInit(): void {
@@ -83,45 +82,42 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .pipe(
         select(productsSelectors.getChainProductsOfSelectedCategory()),
         map((products): IProduct[] =>
-          products.sort(customNumberCompare('position'))
+          products.sort(customNumberCompare('position')),
         ),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((chainProducts: IProduct[]): void => {
         this.chainProducts = chainProducts;
         this._sortedChainProductIds = this.chainProducts.map(
-          (p): string => p._id
+          (p): string => p.id,
         );
       });
-
 
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
         map((products): IProduct[] =>
-          products.sort(customNumberCompare('position'))
+          products.sort(customNumberCompare('position')),
         ),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
-        this._sortedUnitProductIds = this.unitProducts.map(
-          (p): string => p._id
-        );
+        this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
       });
 
     combineLatest([
       this._store.pipe(
         select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(loggedUserSelectors.getLoggedUser),
-        skipWhile((adminUser): boolean => !adminUser)
+        skipWhile((adminUser): boolean => !adminUser),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -129,7 +125,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         ([pendingGroupProducts, pendingUnitProducts, adminUser]: [
           IProduct[],
           IProduct[],
-          IAdminUser
+          IAdminUser,
         ]): void => {
           this.adminUser = adminUser;
 
@@ -137,7 +133,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             EAdminRole.SUPERUSER,
             EAdminRole.CHAIN_ADMIN,
             EAdminRole.GROUP_ADMIN,
-          ].includes(_get(adminUser, 'roles.role'))
+          ].includes(<EAdminRole>adminUser?.roles?.role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -146,12 +142,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
             .pipe(
               select(groupsSelectors.getSeletedGroup),
               skipWhile((group): boolean => !group),
-              take(1)
+              take(1),
             )
             .subscribe((group: IGroup | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
-        }
+        },
       );
   }
 
@@ -187,18 +183,22 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this._sortedChainProductIds.splice(
         idx + $event.change,
         0,
-        $event.productId
+        $event.productId,
       );
 
+      /* TODO refactor
       this._sortedChainProductIds.forEach(
         (productId: string, pos: number): void => {
-          this._dataService.updateChainProductPosition(
-            this.selectedChainId,
-            productId,
-            (pos + 1).toString()
-          );
-        }
+          if (this.selectedChainId) {
+            this._dataService.updateChainProductPosition(
+              this.selectedChainId,
+              productId,
+              (pos + 1).toString(),
+            );
+          }
+        },
       );
+      */
     }
   }
 
@@ -215,17 +215,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this._sortedUnitProductIds.splice(
         idx + $event.change,
         0,
-        $event.productId
+        $event.productId,
       );
 
       this._sortedUnitProductIds.forEach(
         (productId: string, pos: number): void => {
-          this._dataService.updateUnitProductPosition(
-            this.selectedUnitId,
-            productId,
-            (pos + 1).toString()
-          );
-        }
+          if (this.selectedUnitId) {
+            this._dataService.updateUnitProductPosition(
+              this.selectedUnitId,
+              productId,
+              (pos + 1).toString(),
+            );
+          }
+        },
       );
     }
   }

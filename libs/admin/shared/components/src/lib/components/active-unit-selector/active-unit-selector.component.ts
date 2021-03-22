@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnDestroy } from '@angular/core';
@@ -25,7 +24,7 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
     this.showIcon = false;
     this.units$ = this._store.pipe(
       select(unitsSelectors.getSelectedGroupUnits),
-      untilDestroyed(this)
+      untilDestroyed(this),
     );
 
     this._store
@@ -35,10 +34,9 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       });
   }
 
-  get selectedUnitId(): string {
-    return _get(this._adminUser, 'settings.selectedUnitId');
+  get selectedUnitId(): string | null | undefined {
+    return this._adminUser?.settings?.selectedUnitId;
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
@@ -46,11 +44,11 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
 
   public onUnitSelected(unitId: string): void {
     if (
-      _get(this._adminUser, '_id') &&
-      unitId !== _get(this._adminUser, 'settings.selectedUnitId')
+      this._adminUser?.id &&
+      unitId !== this._adminUser?.settings?.selectedUnitId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser._id || '', {
-        ..._get(this._adminUser, 'settings', {}),
+      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
+        ...(this._adminUser?.settings || {}),
         selectedUnitId: unitId,
       });
     }

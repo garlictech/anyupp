@@ -2,7 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (adminUser && adminUser._id
+        (adminUser && adminUser.id
           ? 'adminUsers.editAdminUser'
           : 'adminUsers.newAdminUser'
         ) | translate
@@ -20,17 +20,21 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <div class="row">
         <div class="col-md-8"></div>
         <div class="col-md-4">
           <bgap-form-clickable-image-input
-            [imagePath]="userImage"
+            [image]="userImage"
             [imageType]="eImageType.JPEG"
             [uploadCallbackFn]="imageUploadCallback"
             [removeCallbackFn]="imageRemoveCallback"
             [maxSize]="480"
-            uploadFolderPath="/users/"
+            uploadFolderPath="admin-users"
             width="80px"
             height="80px"
             borderRadius="50%"
@@ -46,6 +50,7 @@
 
       <bgap-form-contact-group
         [contactFormGroup]="dialogForm | asFormGroup"
+        [showAddressForm]="false"
       ></bgap-form-contact-group>
 
       <div class="mt-20">

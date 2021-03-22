@@ -1,9 +1,10 @@
 import { ILocalizedItem } from './localized-item';
 
 export interface IProductCategory {
-  _id: string;
+  id: string;
+  chainId: string;
   description: ILocalizedItem<string>;
-  image: string;
+  image: string | null;
   name: ILocalizedItem<string>;
   position: string;
 }

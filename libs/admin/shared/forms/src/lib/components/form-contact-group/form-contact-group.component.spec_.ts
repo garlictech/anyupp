@@ -11,7 +11,7 @@ xdescribe('ContactGroupComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormContactGroupComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

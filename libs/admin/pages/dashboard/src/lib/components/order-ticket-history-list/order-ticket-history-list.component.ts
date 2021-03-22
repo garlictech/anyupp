@@ -2,8 +2,14 @@ import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { dashboardActions, dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/data-access/dashboard';
+import {
+  currentStatus as currentStatusFn,
+  ordersSelectors,
+} from '@bgap/admin/shared/data-access/orders';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -26,14 +32,14 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
       .pipe(select(dashboardSelectors.getSelectedHistoryDate), take(1))
       .subscribe((historyDate: number): void => {
         this.dateFormControl = new FormControl(
-          new Date(historyDate).toISOString().slice(0, 10)
+          new Date(historyDate).toISOString().slice(0, 10),
         );
       });
 
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryOrder()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
@@ -53,11 +59,10 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
       this._store.dispatch(
         dashboardActions.setHistoryDate({
           historyDate: this.dateFormControl?.value,
-        })
+        }),
       );
     });
   }
-
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
@@ -65,13 +70,13 @@ export class OrderTicketHistoryListComponent implements OnDestroy {
 
   public selectOrder(order: IOrder): void {
     const selectedOrder = this.dailyOrders.find(
-      (o): boolean => o._id === order?._id
+      (o): boolean => o.id === order?.id,
     );
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({
-        orderId: selectedOrder ? selectedOrder._id : undefined,
-      })
+        orderId: selectedOrder ? selectedOrder.id : undefined,
+      }),
     );
   }
 }

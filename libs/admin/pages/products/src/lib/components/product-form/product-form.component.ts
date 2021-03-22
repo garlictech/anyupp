@@ -1,16 +1,27 @@
-import { get as _get, omit as _omit, set as _set } from 'lodash-es';
+import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductVariant,
 } from '@bgap/shared/types';
-import { customNumberCompare, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -31,6 +42,9 @@ export class ProductFormComponent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
+  private _amplifyDataService: AmplifyDataService;
+  private _changeDetectorRef: ChangeDetectorRef;
+  private _logger: NGXLogger;
   private _selectedChainId = '';
   private _selectedGroupId = '';
   private _selectedProductCategoryId = '';
@@ -55,6 +69,9 @@ export class ProductFormComponent
 
     this._store = this._injector.get(Store);
     this._formsService = this._injector.get(FormsService);
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
+    this._changeDetectorRef = this._injector.get(ChangeDetectorRef);
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
@@ -68,32 +85,31 @@ export class ProductFormComponent
     this._store
       .pipe(
         select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories.map(
           (productCategory): IKeyValue => ({
-            key: productCategory._id,
+            key: productCategory.id,
             value: productCategory.name,
-          })
+          }),
         );
       });
   }
 
-  get imagePath(): string {
-    return _get(this.product, 'image');
+  get productImage(): string {
+    return this.product?.image || '';
   }
 
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
-      extends: [''],
       name: this._formBuilder.group(
         {
           hu: [''],
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       description: this._formBuilder.group(
         {
@@ -101,150 +117,145 @@ export class ProductFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       productCategoryId: ['', [Validators.required]],
       productType: ['', [Validators.required]],
       isVisible: [''],
       position: [''],
       image: [''],
-      contains: this._formBuilder.group({
-        allergens: this._formBuilder.group({
-          lactose: [''],
-          nuts: [''],
-        }),
-      }),
-      ingredients: [''],
-      _variantArr: this._formBuilder.array([]), // temp array!
+      variants: this._formBuilder.array([]),
     });
 
     if (this.product) {
-      this.dialogForm.patchValue(_omit(this.product, 'variants'));
+      this.dialogForm.patchValue(fp.omit('variants', this.product));
 
-      // Parse variants object to temp array
-      const variantsArr = (<IProductVariant[]>(
-        objectToArray(this.product.variants || {})
-      )).sort(customNumberCompare('position'));
-
-      variantsArr.forEach((variant: IProductVariant): void => {
+      this.product.variants.forEach((variant: IProductVariant): void => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(variant);
 
-        (this.dialogForm?.controls._variantArr as FormArray).push(variantGroup);
+        (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
       });
     } else {
       // Patch ProductCategoryID
       if (this._selectedProductCategoryId) {
         this.dialogForm.controls.productCategoryId.patchValue(
-          this._selectedProductCategoryId
+          this._selectedProductCategoryId,
         );
       }
       this.dialogForm.controls.isVisible.patchValue(true);
     }
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
-        variants: {},
+        chainId: this._selectedChainId,
       };
 
-      value._variantArr.map((variant: IProductVariant): void => {
-        value.variants[variant._id || ''] = _omit(variant, '_id');
-      });
-
-      delete value._variantArr;
-
-      if (_get(this.product, '_id')) {
-        this._dataService
-          .updateChainProduct(this._selectedChainId, this.product._id, value)
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful'
-              );
-              this.close();
-            },
-            err => {
-              console.error('CHAIN UPDATE ERROR', err);
-            }
+      if (this.product?.id) {
+        try {
+          await this._amplifyDataService.update<IProduct>(
+            'getChainProduct',
+            'updateChainProduct',
+            this.product.id,
+            () => value,
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertChainProduct(this._selectedChainId, value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('CHAIN INSERT ERROR', err);
-          }
-        );
+        try {
+          console.error('insert chain product', value);
+          await this._amplifyDataService.create('createChainProduct', value);
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(
+            `CHAIN PRODUCT INSERT ERROR: ${JSON.stringify(error)}`,
+          );
+        }
       }
     }
   }
 
-  public imageUploadCallback = (imagePath: string): void => {
-    this.dialogForm?.controls.image.setValue(imagePath);
+  public imageUploadCallback = async (image: string): Promise<void> => {
+    this.dialogForm?.controls.image.setValue(image);
 
     // Update existing user's image
-    if (_get(this.product, '_id')) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedGroupId,
-          this.product._id,
-          imagePath
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess'
-          );
-        });
+    if (this.product?.id) {
+      try {
+        await this._amplifyDataService.update<IProduct>(
+          'getChainProduct',
+          'updateChainProduct',
+          this.product.id,
+          (data: unknown) => fp.set(`image`, image, <IProduct>data),
+        );
+
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageUploadSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageUploadSuccess'
+        'common.imageUploadSuccess',
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 
-  public imageRemoveCallback = (): void => {
+  public imageRemoveCallback = async (): Promise<void> => {
     this.dialogForm?.controls.image.setValue('');
 
-    if (this.product) {
-      _set(this.product, 'image', null);
-    }
+    if (this.product?.id) {
+      try {
+        await this._amplifyDataService.update<IProduct>(
+          'getChainProduct',
+          'updateChainProduct',
+          this.product.id,
+          (data: unknown) => fp.set(`image`, null, <IProduct>data),
+        );
 
-    // Update existing user's image
-    if (_get(this.product, '_id')) {
-      this._dataService
-        .updateProductCategoryImagePath(
-          this._selectedGroupId,
-          this.product._id,
-          null
-        )
-        .then((): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess'
-          );
-        });
+        this._toasterService.show(
+          EToasterType.SUCCESS,
+          '',
+          'common.imageRemoveSuccess',
+        );
+      } catch (error) {
+        this._logger.error(
+          `PRODUCT IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
+        );
+      }
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
         '',
-        'common.imageRemoveSuccess'
+        'common.imageRemoveSuccess',
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 }

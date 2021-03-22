@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (unit?._id ? 'units.editUnit' : 'units.newUnit') | translate }}
+      {{ (unit?.id ? 'units.editUnit' : 'units.newUnit') | translate }}
     </div>
     <button
       nbButton
@@ -15,7 +15,11 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <div class="row">
         <div class="col-md-6">
           <bgap-form-text-input
@@ -38,7 +42,9 @@
           <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
-            [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('hu')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
       </div>
@@ -47,7 +53,9 @@
           <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
-            [control]="dialogForm.get('description')!.get('en')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('en')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
       </div>
@@ -56,7 +64,9 @@
           <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
-            [control]="dialogForm.get('description')!.get('de')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('de')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
       </div>
@@ -109,7 +119,7 @@
       ></bgap-form-weekly-schedule>
 
       <bgap-form-unit-lanes
-        [lanesFormArray]="dialogForm.get('_lanesArr')! | asFormArray"
+        [lanesFormArray]="dialogForm.get('lanes')! | asFormArray"
       ></bgap-form-unit-lanes>
 
       <div class="mt-20">

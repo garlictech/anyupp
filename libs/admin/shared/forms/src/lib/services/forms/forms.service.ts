@@ -2,9 +2,19 @@ import { map, take } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { TIME_FORMAT_PATTERN,  multiLangValidator, productAvailabilityValidator } from '@bgap/admin/shared/utils';
+import {
+  TIME_FORMAT_PATTERN,
+  multiLangValidator,
+  productAvailabilityValidator,
+} from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IAdminUser } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
@@ -17,23 +27,23 @@ export class FormsService {
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
-      _id: [uuidV1()],
+      id: [uuidV1()],
       variantName: this._formBuilder.group(
         {
           hu: ['', Validators.maxLength(40)],
           en: ['', Validators.maxLength(40)],
           de: ['', Validators.maxLength(40)],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       pack: this._formBuilder.group({
-        size: [''],
+        size: [0],
         unit: [''],
       }),
       isAvailable: [true],
       availabilities: this._formBuilder.array([]),
       position: [''],
-      refGroupPrice: [''],
+      refGroupPrice: [0],
     };
 
     return this._formBuilder.group(groupConfig);
@@ -49,7 +59,7 @@ export class FormsService {
         timeTo: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
         price: ['', [Validators.required]],
       },
-      { validators: productAvailabilityValidator }
+      { validators: productAvailabilityValidator },
     );
   };
 
@@ -66,21 +76,23 @@ export class FormsService {
 
   public createLaneFormGroup = (): FormGroup => {
     return this._formBuilder.group({
-      _laneId: [uuidV1()],
+      id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#fff', [Validators.required]],
     });
   };
 
-  public adminExistingEmailValidator(control: AbstractControl): AsyncValidatorFn {
+  public adminExistingEmailValidator(
+    control: AbstractControl,
+  ): AsyncValidatorFn {
     return () => {
       return this._store.pipe(
         select(adminUsersSelectors.getAdminUserByEmail(control.value)),
         take(1),
         map((adminUser: IAdminUser | undefined) => {
           return adminUser ? { err: 'ADMIN_USER_EXISTS' } : null;
-        })
-      )
+        }),
+      );
     };
   }
 }

@@ -1,22 +1,14 @@
-import * as ssm from '@aws-cdk/aws-ssm';
+import * as utils from './utils';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
-import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
-import { SecretsManagerStack } from './secretsmanager-stack';
-import * as chatbot from '@aws-cdk/aws-chatbot';
-import { configurePermissions } from './utils';
-
-export interface DevPullRequestBuildStackProps extends sst.StackProps {
-  readonly chatbot: chatbot.SlackChannelConfiguration;
-  readonly repoName: string;
-  readonly repoOwner: string;
-  readonly repoBranch: string;
-  readonly secretsManager: SecretsManagerStack;
-}
+import { PipelineStackProps } from './utils';
 
 export class DevPullRequestBuildStack extends sst.Stack {
-  constructor(app: sst.App, id: string, props: DevPullRequestBuildStackProps) {
+  constructor(app: sst.App, id: string, props: PipelineStackProps) {
     super(app, id, props);
+
+    const stage = 'dev';
+    const prefix = utils.projectPrefix(stage);
 
     const githubPrSource = codebuild.Source.gitHub({
       owner: props.repoOwner,
@@ -24,67 +16,73 @@ export class DevPullRequestBuildStack extends sst.Stack {
       webhook: true,
       webhookFilters: [
         codebuild.FilterGroup.inEventOf(
-          codebuild.EventAction.PULL_REQUEST_CREATED
-        ),
+          codebuild.EventAction.PULL_REQUEST_CREATED,
+        ).andBaseBranchIs(stage),
         codebuild.FilterGroup.inEventOf(
-          codebuild.EventAction.PULL_REQUEST_UPDATED
-        )
-      ]
+          codebuild.EventAction.PULL_REQUEST_UPDATED,
+        ).andBaseBranchIs(stage),
+      ],
     });
 
-    const project = new codebuild.Project(this, 'AnyUpp Verify Pull Request', {
-      source: githubPrSource,
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          install: {
-            commands: ['yarn']
-          },
-          pre_build: {
-            commands: ['yarn nx config shared-config']
-          },
-          build: {
-            commands: [
-              'yarn nx affected:lint --base=dev --with-deps',
-              'yarn nx affected:test --base=dev --with-deps',
-              'yarn nx affected:build --base=dev --with-deps --exclude="infrastructure-build-pipeline-stack"'
-            ]
-          }
-        }
-      }),
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
-      }
-    });
-
-    configurePermissions(this, props.secretsManager, project);
-
-    new codestarnotifications.CfnNotificationRule(
+    const project = new codebuild.Project(
       this,
-      'PullRequestNotification',
+      'AnyUpp:DEV Verify Pull Request',
       {
-        detailType: 'FULL',
-        eventTypeIds: [
-          'codebuild-project-build-state-in-progress',
-          'codebuild-project-build-state-failed',
-          'codebuild-project-build-state-succeeded'
-        ],
-        name: 'AnyUppDevPRNotification',
-        resource: project.projectArn,
-        targets: [
-          {
-            targetAddress: props.chatbot.slackChannelConfigurationArn,
-            targetType: 'AWSChatbotSlack'
-          }
-        ]
-      }
+        source: githubPrSource,
+        buildSpec: codebuild.BuildSpec.fromObject({
+          version: '0.2',
+          phases: {
+            install: {
+              commands: [
+                `sh ./tools/setup-aws-environment.sh`,
+                'yarn',
+                'npm install -g @aws-amplify/cli',
+              ],
+            },
+            pre_build: {
+              commands: [
+                `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
+              ],
+            },
+            build: {
+              commands: [
+                `yarn nx affected:lint --base=${stage} --with-deps`,
+                `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
+                `yarn nx build admin`,
+                `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${utils.appConfig.name}`,
+              ],
+            },
+          },
+          reports: {
+            coverage: {
+              files: ['coverage/**/*'],
+              'file-format': 'CLOVERXML',
+            },
+          },
+          env: {
+            'secrets-manager': {
+              AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
+              AWS_SECRET_ACCESS_KEY:
+                'codebuild:codebuild-aws_secret_access_key',
+            },
+          },
+        }),
+        environment: {
+          buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+
+          //          buildImage: utils.getBuildImage(this),
+        },
+      },
     );
 
-    new ssm.StringParameter(this, 'DevPullRequestBuildStackArn', {
-      allowedPattern: '.*',
-      description: 'ARN of the PR build project',
-      parameterName: app.logicalPrefixedName('DevPullRequestBuildStackArn'),
-      stringValue: project.projectArn
-    });
+    utils.configurePermissions(this, props.secretsManager, [project], prefix);
+
+    utils.configurePRNotifications(
+      this,
+      project.projectArn,
+      props.chatbot,
+      stage,
+    );
   }
 }

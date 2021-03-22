@@ -10,7 +10,7 @@ const SCHEMA_ROOT = join(process.cwd(), 'libs/api/graphql/schema/src');
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      typePaths: [`${SCHEMA_ROOT}/schema/**/*.graphql`],
+      typePaths: [`${SCHEMA_ROOT}/schema/google-schema.graphql`],
       installSubscriptionHandlers: true,
       // https://docs.nestjs.com/graphql/subscriptions#customize-subscriptions-server
       // subscriptions: {

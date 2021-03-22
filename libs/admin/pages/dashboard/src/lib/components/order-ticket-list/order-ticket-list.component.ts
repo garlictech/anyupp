@@ -2,8 +2,15 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
-import { currentStatus as currentStatusFn, ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
+import {
+  currentStatus as currentStatusFn,
+  ordersSelectors,
+} from '@bgap/admin/shared/data-access/orders';
 import { customNumberCompare } from '@bgap/shared/utils';
 import {
   EDashboardSize,
@@ -43,16 +50,16 @@ export class OrderTicketListComponent implements OnDestroy {
     combineLatest([
       this._store.pipe(
         select(ordersSelectors.getAllActiveOrders),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
       this._store.pipe(
         select(dashboardSelectors.getTicketListType),
-        untilDestroyed(this)
+        untilDestroyed(this),
       ),
     ]).subscribe(
       ([activeOrders, ticketListType]: [
         IOrder[],
-        EDashboardTicketListType
+        EDashboardTicketListType,
       ]): void => {
         this._orders = activeOrders;
 
@@ -60,13 +67,13 @@ export class OrderTicketListComponent implements OnDestroy {
         this._refreshReadyOrders();
         this._refreshPaymentOrders();
         this._refreshFilteredOrders(ticketListType);
-      }
+      },
     );
 
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedActiveOrder()),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
@@ -84,7 +91,6 @@ export class OrderTicketListComponent implements OnDestroy {
       });
   }
 
-
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -93,7 +99,7 @@ export class OrderTicketListComponent implements OnDestroy {
     this.placedOrders = [
       ...this._orders.filter(
         (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) !== EOrderStatus.READY
+          currentStatusFn(o.statusLog) !== EOrderStatus.READY,
       ),
     ];
   }
@@ -102,12 +108,12 @@ export class OrderTicketListComponent implements OnDestroy {
     this.readyOrders = [
       ...this._orders.filter(
         (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) === EOrderStatus.READY
+          currentStatusFn(o.statusLog) === EOrderStatus.READY,
       ),
     ];
 
     this.uniqueReadyOrdersCount = this.readyOrders.filter(
-      (v, i, a): boolean => a.indexOf(v) === i
+      (v, i, a): boolean => a.indexOf(v) === i,
     ).length;
   }
 
@@ -120,7 +126,7 @@ export class OrderTicketListComponent implements OnDestroy {
     this.uniquePaymentUsersCount = uniquePaymentUsers.length;
     this.paymentOrders = [
       ...this._orders.filter((o: IOrder): boolean =>
-        uniquePaymentUsers.includes(o.userId)
+        uniquePaymentUsers.includes(o.userId),
       ),
     ];
   }
@@ -129,7 +135,7 @@ export class OrderTicketListComponent implements OnDestroy {
     switch (listType) {
       case EDashboardTicketListType.PLACED:
         this.filteredOrders = this.placedOrders.sort(
-          customNumberCompare('created')
+          customNumberCompare('created'),
         );
         break;
       case EDashboardTicketListType.READY:
@@ -137,7 +143,7 @@ export class OrderTicketListComponent implements OnDestroy {
         break;
       case EDashboardTicketListType.PAYMENT_INTENTION:
         this.filteredOrders = this.paymentOrders.sort(
-          customNumberCompare('paymentIntention')
+          customNumberCompare('paymentIntention'),
         );
         break;
     }
@@ -146,7 +152,7 @@ export class OrderTicketListComponent implements OnDestroy {
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
       .subscribe((selectedOrderId: string | undefined): void => {
         const found = this.filteredOrders
-          .map((o): string => o._id)
+          .map((o): string => o.id)
           .includes(selectedOrderId || '');
 
         if (!found) {
@@ -156,14 +162,12 @@ export class OrderTicketListComponent implements OnDestroy {
   }
 
   public selectOrder(order: IOrder): void {
-    const selectedOrder = this._orders.find(
-      (o): boolean => o._id === order?._id
-    );
+    const selectedOrder = this._orders.find((o): boolean => o.id === order?.id);
 
     this._store.dispatch(
       dashboardActions.setSelectedOrderId({
-        orderId: selectedOrder ? selectedOrder._id : undefined,
-      })
+        orderId: selectedOrder ? selectedOrder.id : undefined,
+      }),
     );
   }
 
@@ -175,11 +179,11 @@ export class OrderTicketListComponent implements OnDestroy {
     this._store.dispatch(
       dashboardActions.setTicketListType({
         ticketListType: listType,
-      })
+      }),
     );
   }
 
   public trackByFn(index: number, item: IOrder): string {
-    return item._id;
+    return item.id;
   }
 }

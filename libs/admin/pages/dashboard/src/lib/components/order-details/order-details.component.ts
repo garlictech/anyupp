@@ -1,9 +1,15 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
-  currentStatus as currentStatusFn, getNextOrderItemStatus, getNextOrderStatus, getStatusColor
+  currentStatus as currentStatusFn,
+  getNextOrderItemStatus,
+  getNextOrderStatus,
+  getStatusColor,
 } from '@bgap/admin/shared/data-access/orders';
 import {
   EDashboardListMode,
@@ -36,7 +42,7 @@ export class OrderDetailsComponent implements OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {
     this.workingOrderStatus = false;
 
@@ -60,7 +66,6 @@ export class OrderDetailsComponent implements OnDestroy {
     return getStatusColor(EOrderStatus.PLACED);
   }
 
-
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -78,18 +83,18 @@ export class OrderDetailsComponent implements OnDestroy {
         (err): void => {
           console.error(err);
           this.workingOrderStatus = false;
-        }
+        },
       );
     }
   }
 
   public updateOrderItemStatus(idx: number): void {
     const status = getNextOrderItemStatus(
-      currentStatusFn(this.order.items[idx].statusLog)
+      currentStatusFn(this.order.items[idx].statusLog),
     );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(this.order._id, status, idx);
+      this._orderService.updateOrderItemStatus(this.order.id, status, idx);
     }
   }
 
@@ -105,9 +110,9 @@ export class OrderDetailsComponent implements OnDestroy {
           label: 'common.ok',
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
-              this.order._id,
+              this.order.id,
               EOrderStatus.PLACED,
-              idx
+              idx,
             );
           },
           status: 'success',

@@ -18,14 +18,18 @@ export class FormAdminRoleComponent implements OnInit {
     this.roleOptions = Object.keys(EAdminRole).map(
       (key): IKeyValue => ({
         key: EAdminRole[<keyof typeof EAdminRole>key].toString(),
-        value: this._translateService.instant(`roles.${EAdminRole[<keyof typeof EAdminRole>key]}`),
-      })
+        value: this._translateService.instant(
+          `roles.${EAdminRole[<keyof typeof EAdminRole>key]}`,
+        ),
+      }),
     );
   }
 
   ngOnInit(): void {
-    (<FormGroup>this.roleFormGroup.get('role')).valueChanges.subscribe((): void => {
-      (<FormGroup>this.roleFormGroup.get('entities')).patchValue([]);
-    });
+    (<FormGroup>this.roleFormGroup.get('role')).valueChanges.subscribe(
+      (): void => {
+        (<FormGroup>this.roleFormGroup.get('entities')).patchValue([]);
+      },
+    );
   }
 }

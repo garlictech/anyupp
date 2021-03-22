@@ -1,6 +1,11 @@
-import { Construct, RemovalPolicy, Duration } from '@aws-cdk/core';
+import {
+  Construct,
+  RemovalPolicy,
+  Duration,
+  CustomResource,
+} from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-
+import { Provider } from '@aws-cdk/custom-resources';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
 import path from 'path';
 
@@ -8,7 +13,7 @@ export class AutoDeleteBucket extends Bucket {
   constructor(scope: Construct, id: string, props: BucketProps = {}) {
     super(scope, id, {
       ...props,
-      removalPolicy: RemovalPolicy.DESTROY
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const adlambda = new lambda.SingletonFunction(this, 'AutoBucketHandler', {
@@ -16,13 +21,25 @@ export class AutoDeleteBucket extends Bucket {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'lib/lambda/auto-delete-bucket/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/auto-delete-bucket.zip')
+        path.join(__dirname, '../../.serverless/auto-delete-bucket.zip'),
       ),
       lambdaPurpose: 'AutoBucket',
-      timeout: Duration.minutes(15)
+      timeout: Duration.minutes(15),
     });
 
     // allow the bucket contents to be read and deleted by the lambda
     this.grantReadWrite(adlambda);
+
+    const provider = new Provider(this, 'ElasticsearchIndexProvider', {
+      onEventHandler: adlambda,
+    });
+
+    new CustomResource(this, 'AutoBucket', {
+      serviceToken: provider.serviceToken,
+      resourceType: 'Custom::AutoDeleteBucket',
+      properties: {
+        bucketName: this.bucketName,
+      },
+    });
   }
 }

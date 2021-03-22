@@ -1,9 +1,8 @@
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AuthService } from '@bgap/admin/shared/data-access/auth';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, contactFormGroup } from '@bgap/admin/shared/utils';
+import { contactFormGroup } from '@bgap/admin/shared/utils';
 import { IUser } from '@bgap/shared/types';
 
 @Component({
@@ -30,7 +29,7 @@ export class UserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 
@@ -40,9 +39,10 @@ export class UserFormComponent
   }
 
   public submit(): void {
+    /*
     if (this.dialogForm?.valid) {
-      if (this.user?._id) {
-        this._dataService.updateUser(this.user._id, this.dialogForm?.value).then(
+      if (this.user?.id) {
+        this._dataService.updateUser(this.user.id, this.dialogForm?.value).then(
           (): void => {
             this._toasterService.show(
               EToasterType.SUCCESS,
@@ -89,6 +89,7 @@ export class UserFormComponent
           );
       }
     }
+    */
   }
 
   /*
@@ -96,8 +97,8 @@ export class UserFormComponent
     this.dialogForm.controls.profileImage.setValue(imagePath);
 
     // Update existing user's image
-    if (_get(this.user, '_id')) {
-      this._dataService.updateUserProfileImagePath(this.user._id, imagePath).then((): void => {
+    if (this.user?.id) {
+      this._dataService.updateUserProfileImagePath(this.user.id, imagePath).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
       });
     } else {
@@ -110,8 +111,8 @@ export class UserFormComponent
     delete this.user.profileImage;
 
     // Update existing user's image
-    if (_get(this.user, '_id')) {
-      this._dataService.updateUserProfileImagePath(this.user._id, null).then((): void => {
+    if (this.user?.id) {
+      this._dataService.updateUserProfileImagePath(this.user.id, null).then((): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
       });
     } else {

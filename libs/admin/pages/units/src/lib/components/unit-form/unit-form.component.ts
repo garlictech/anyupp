@@ -1,16 +1,20 @@
-import { get as _get, omit as _omit, pick as _pick } from 'lodash-es';
+import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
+  addressFormGroup,
+  clearDbProperties,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
@@ -23,7 +27,6 @@ import {
   IGroup,
   IKeyValue,
   ILane,
-  ILanesObject,
   IPaymentMode,
   IUnit,
 } from '@bgap/shared/types';
@@ -45,26 +48,31 @@ export class UnitFormComponent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private _formsService: FormsService;
-  private groups: IGroup[] = [];
+  private _groups: IGroup[] = [];
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this._store = this._injector.get(Store);
     this._formsService = this._injector.get(FormsService);
     this._store
       .pipe(
         select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this)
+        untilDestroyed(this),
       )
       .subscribe((groups: IGroup[]): void => {
-        this.groups = groups;
+        this._groups = groups;
 
-        this.groupOptions = this.groups.map(
+        this.groupOptions = this._groups.map(
           (group: IGroup): IKeyValue => ({
-            key: group._id,
+            key: group.id,
             value: group.name,
-          })
+          }),
         );
       });
 
@@ -79,10 +87,11 @@ export class UnitFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       paymentModes: [[]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
+      ...addressFormGroup(this._formBuilder),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -119,38 +128,38 @@ export class UnitFormComponent
           }),
           override: this._formBuilder.array([]),
         },
-        { validators: unitOpeningHoursValidator }
+        { validators: unitOpeningHoursValidator },
       ),
-      _lanesArr: this._formBuilder.array([]), // temp array!
+      lanes: this._formBuilder.array([]),
     });
   }
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(this.unit);
+      this.dialogForm.patchValue(
+        clearDbProperties<IUnit>(fp.omit(['lanes'], this.unit)),
+      );
 
       // Parse openingHours object to temp array
-      const override: ICustomDailySchedule[] = _get(
-        this.unit,
-        'openingHours.override'
-      );
+      const override: ICustomDailySchedule[] | undefined = this.unit
+        ?.openingHours?.override;
+
       if (override) {
         override.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (<FormArray>this.dialogForm?.get('openingHours')?.get('override')).push(dayGroup);
+          (<FormArray>(
+            this.dialogForm?.get('openingHours')?.get('override')
+          )).push(dayGroup);
         });
       }
 
-      // Parse lanes object to temp array
-      Object.keys(this.unit.lanes || {}).forEach((key: string): void => {
+      // Patch lanes array
+      (this.unit.lanes || []).forEach((lane: ILane): void => {
         const laneGroup = this._formsService.createLaneFormGroup();
-        laneGroup.patchValue({
-          _laneId: key,
-          ...(<ILanesObject>this.unit.lanes)[key],
-        });
-        (<FormArray>this.dialogForm?.get('_lanesArr')).push(laneGroup);
+        laneGroup.patchValue(lane);
+        (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
       });
     } else {
       // Patch ChainId
@@ -175,47 +184,42 @@ export class UnitFormComponent
     }
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      const value = {
-        ...this.dialogForm?.value,
-        lanes: {},
-      };
+      if (this.unit?.id) {
+        try {
+          await this._amplifyDataService.update<IUnit>(
+            'getUnit',
+            'updateUnit',
+            this.unit.id,
+            () => this.dialogForm?.value,
+          );
 
-      value._lanesArr.map((lane: ILane): void => {
-        value.lanes[lane._laneId || ''] = _omit(lane, '_laneId');
-      });
-
-      delete value._lanesArr;
-
-      if (_get(this.unit, '_id')) {
-        this._dataService.updateUnit(this.unit._id, value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP UPDATE ERROR', err);
-          }
-        );
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertUnit(value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP INSERT ERROR', err);
-          }
-        );
+        try {
+          await this._amplifyDataService.create(
+            'createUnit',
+            this.dialogForm?.value,
+          );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`UNIT INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }
@@ -235,7 +239,7 @@ export class UnitFormComponent
       .indexOf(paymentMode.name);
 
     if (idx < 0) {
-      paymentModesArr.push(_pick(paymentMode, ['name', 'method']));
+      paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }

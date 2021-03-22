@@ -1,0 +1,10 @@
+../../libs/admin/amplify/src/lib/models
+../..libs/admin/amplify/src/lib/models
+
+src/models
+
+../..libs/admin/amplify-api/src/lib/models
+
+../../libs/admin/amplify-api/src/lib/models
+
+../../libs/admin/amplify-api/src/lib/generated/models

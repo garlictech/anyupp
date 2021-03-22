@@ -11,7 +11,7 @@ xdescribe('FormChainAdminRoleComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormChainAdminRoleComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

@@ -45,7 +45,7 @@ export const sumOrders = (orders: IOrders): number => {
 };
 
 export const getActualStatusLogItem = (
-  statusLog: IStatusLog
+  statusLog: IStatusLog,
 ): [string, IStatusLogItem] | [] => {
   const statusLogs = Object.entries(statusLog);
   if (statusLogs.length > 0) {
@@ -55,7 +55,7 @@ export const getActualStatusLogItem = (
 };
 
 export const getActualStatus = (
-  statusLog: IStatusLog
+  statusLog: IStatusLog,
 ): EOrderStatus | undefined => {
   const [, logItem] = getActualStatusLogItem(statusLog);
   return logItem?.status;

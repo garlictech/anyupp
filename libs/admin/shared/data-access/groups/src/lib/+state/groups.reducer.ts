@@ -16,11 +16,9 @@ export interface IGroupsPartialState {
   readonly [GROUPS_FEATURE_KEY]: IGroupsState;
 }
 
-export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<IGroup>(
-  {
-    selectId: (item: IGroup): string => item._id,
-  }
-);
+export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<
+  IGroup
+>();
 
 export const initialState: IGroupsState = groupsAdapter.getInitialState({
   // set initial required properties
@@ -30,10 +28,10 @@ export const initialState: IGroupsState = groupsAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(GroupsActions.init, state => ({ ...state, loaded: false, error: null })),
-  on(GroupsActions.loadGroupsSuccess, (state, { groups }) =>
-    groupsAdapter.setAll(groups, { ...state, loaded: true })
+  on(GroupsActions.upsertGroup, (state, { group }) =>
+    groupsAdapter.upsertOne(group, state),
   ),
-  on(GroupsActions.resetGroups, state => groupsAdapter.removeAll(state))
+  on(GroupsActions.resetGroups, state => groupsAdapter.removeAll(state)),
 );
 
 export function groupsReducer(state: IGroupsState | undefined, action: Action) {

@@ -1,3 +1,4 @@
+/*
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitFormComponent } from './unit-form.component';
@@ -11,7 +12,7 @@ xdescribe('UnitFormComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [UnitFormComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {
@@ -24,3 +25,4 @@ xdescribe('UnitFormComponent', (): void => {
     expect(component).toBeTruthy();
   });
 });
+*/

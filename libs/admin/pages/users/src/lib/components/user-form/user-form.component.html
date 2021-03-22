@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <div class="float-left">
-      {{ (user && user._id ? 'users.editUser' : 'users.newUser') | translate }}
+      {{ (user && user.id ? 'users.editUser' : 'users.newUser') | translate }}
     </div>
     <button
       nbButton
@@ -15,7 +15,11 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <bgap-form-text-input
         caption="common.name"
         type="text"
@@ -24,6 +28,7 @@
 
       <bgap-form-contact-group
         [contactFormGroup]="dialogForm | asFormGroup"
+        [showAddressForm]="false"
       ></bgap-form-contact-group>
 
       <div class="mt-20">

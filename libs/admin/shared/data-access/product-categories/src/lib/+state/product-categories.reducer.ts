@@ -18,15 +18,13 @@ export interface ProductCategoriesPartialState {
 
 export const productCategoriesAdapter: EntityAdapter<IProductCategory> = createEntityAdapter<
   IProductCategory
->({
-  selectId: (item: IProductCategory): string => item._id,
-});
+>();
 
 export const initialState: IProductCategoriesState = productCategoriesAdapter.getInitialState(
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const reducer = createReducer(
@@ -37,21 +35,18 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductCategoriesActions.loadProductCategoriesSuccess,
-    (state, { productCategories }) =>
-      productCategoriesAdapter.setAll(productCategories, {
-        ...state,
-        loaded: true,
-      })
+    ProductCategoriesActions.upsertProductCategory,
+    (state, { productCategory }) =>
+      productCategoriesAdapter.upsertOne(productCategory, state),
   ),
   on(ProductCategoriesActions.resetProductCategories, state =>
-    productCategoriesAdapter.removeAll(state)
-  )
+    productCategoriesAdapter.removeAll(state),
+  ),
 );
 
 export function productCategoriesReducer(
   state: IProductCategoriesState | undefined,
-  action: Action
+  action: Action,
 ) {
   return reducer(state, action);
 }

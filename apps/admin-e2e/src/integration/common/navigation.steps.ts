@@ -6,9 +6,21 @@ Given('I am on the login page', () => {
 });
 
 Given('I am on the dashboard page', () => {
-  cy.visit('/dashboard');
+  cy.url().should('include', '/dashboard')
 });
 
-Then('I should be on the Dashboard page', () => {
-  cy.url().should('include', '/dashboard');
+Then('I should see the dashboard page', () => {
+  cy.url().should('include', '/dashboard')
 });
+
+//Given('I am on the unit products list', () => {
+//  cy.url().should('include', '/products')
+//});
+
+//Given('I am at the chains page', () => {
+//  cy.url().should('include', '/chains')
+//});
+
+//Then('I should see the login page', () => {
+//  cy.url().should('include', '/login')
+//});

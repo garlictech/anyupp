@@ -4,13 +4,20 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { EVariantAvailabilityType, ICustomDailySchedule, IDateIntervals } from '@bgap/shared/types';
+import {
+  EVariantAvailabilityType,
+  ICustomDailySchedule,
+  IDateIntervals,
+} from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
-export const contactFormGroup = (formBuilder: FormBuilder) => ({
+export const contactFormGroup = () => ({
   email: ['', [Validators.email]],
   phone: [''],
+});
+
+export const addressFormGroup = (formBuilder: FormBuilder) => ({
   address: formBuilder.group({
     address: [''],
     city: [''],
@@ -33,7 +40,7 @@ export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
 };
 
 export const productAvailabilityValidator: ValidatorFn = (
-  control: AbstractControl
+  control: AbstractControl,
 ) => {
   const type = control.get('type')?.value;
   const dayFrom = control.get('dayFrom')?.value;
@@ -80,7 +87,7 @@ export const productAvailabilityValidator: ValidatorFn = (
 };
 
 export const unitOpeningHoursValidator: ValidatorFn = (
-  control: AbstractControl
+  control: AbstractControl,
 ) => {
   let error = null;
 

@@ -12,7 +12,7 @@ export class DatabaseService {
   }
 
   getRefValue = async <T>(
-    ref: fbAdmin.database.Reference | fbAdmin.database.Query
+    ref: fbAdmin.database.Reference | fbAdmin.database.Query,
   ): Promise<T> => await (await ref.once('value')).val();
 
   // ADMIN_USER

@@ -32,7 +32,7 @@ export class UnitFloorMapComponent
       floorMap: [this.unit.floorMap || ''],
     });
 
-    /*
+    /* JUST FOR MANUAL EDIT!!!
     this.rawForm = this._formBuilder.group({
       floorMap: [JSON.stringify(this.unit.floorMap) || {}],
     });
@@ -41,25 +41,25 @@ export class UnitFloorMapComponent
 
   public submit(): void {
     this._dataService
-      .updateUnit(this.unit._id, { floorMap: floorMapLib.mapRawData })
+      .updateUnit(this.unit.id, { floorMap: floorMapLib.mapRawData })
       .then(
         (): void => {
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
-            'common.updateSuccessful'
+            'common.updateSuccessful',
           );
           this.close();
         },
         err => {
           console.error('GROUP UPDATE ERROR', err);
-        }
+        },
       );
   }
 
   /*
   public submitRaw(): void {
-    this._dataService.updateUnit(this.unit._id, { floorMap: JSON.parse(this.rawForm.value.floorMap) }).then(
+    this._dataService.updateUnit(this.unit.id, { floorMap: JSON.parse(this.rawForm.value.floorMap) }).then(
       (): void => {
         this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
         this.close();

@@ -3,11 +3,11 @@ import { createAction, props } from '@ngrx/store';
 
 export const init = createAction('[ProductCategories Page] Init');
 
-export const loadProductCategoriesSuccess = createAction(
-  '[ProductCategories] Load ProductCategories Success',
-  props<{ productCategories: IProductCategory[] }>()
+export const upsertProductCategory = createAction(
+  '[ProductCategories] Upsert Group',
+  props<{ productCategory: IProductCategory }>(),
 );
 
 export const resetProductCategories = createAction(
-  '[ProductCategoryList] Reset product categories'
+  '[ProductCategories] Reset product categories',
 );

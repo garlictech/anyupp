@@ -1,15 +1,18 @@
-import { get as _get } from 'lodash-es';
+import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
+  addressFormGroup,
+  clearDbProperties,
+  contactFormGroup,
   EToasterType,
   multiLangValidator,
-  contactFormGroup,
 } from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -27,12 +30,18 @@ export class GroupFormComponent
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
+  private _amplifyDataService: AmplifyDataService;
+  private _logger: NGXLogger;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
   private chains: IChain[] = [];
 
   constructor(protected _injector: Injector) {
     super(_injector);
+
+    this._amplifyDataService = this._injector.get(AmplifyDataService);
+    this._logger = this._injector.get(NGXLogger);
 
     this._store = this._injector.get(Store);
     this._store
@@ -42,9 +51,9 @@ export class GroupFormComponent
 
         this.chainOptions = this.chains.map(
           (chain): IKeyValue => ({
-            key: chain._id,
+            key: chain.id,
             value: chain.name,
-          })
+          }),
         );
       });
 
@@ -52,7 +61,7 @@ export class GroupFormComponent
       (currency): IKeyValue => ({
         key: currency,
         value: currency,
-      })
+      }),
     );
   }
 
@@ -66,14 +75,15 @@ export class GroupFormComponent
           en: [''],
           de: [''],
         },
-        { validators: multiLangValidator }
+        { validators: multiLangValidator },
       ),
       currency: ['', [Validators.required]],
-      ...contactFormGroup(this._formBuilder),
+      ...contactFormGroup(),
+      ...addressFormGroup(this._formBuilder),
     });
 
     if (this.group) {
-      this.dialogForm.patchValue(this.group);
+      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
     } else {
       // Patch ChainId
       this._store
@@ -90,38 +100,43 @@ export class GroupFormComponent
     // untilDestroyed uses it.
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
-      if (_get(this.group, '_id')) {
-        this._dataService
-          .updateGroup(this.group._id, this.dialogForm?.value)
-          .then(
-            (): void => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.updateSuccessful'
-              );
-              this.close();
-            },
-            err => {
-              console.error('GROUP UPDATE ERROR', err);
-            }
+      if (this.group?.id) {
+        try {
+          await this._amplifyDataService.update<IGroup>(
+            'getGroup',
+            'updateGroup',
+            this.group.id,
+            () => this.dialogForm.value,
           );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+
+          this.close();
+        } catch (error) {
+          this._logger.error(`GROUP UPDATE ERROR: ${JSON.stringify(error)}`);
+        }
       } else {
-        this._dataService.insertGroup(this.dialogForm?.value).then(
-          (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful'
-            );
-            this.close();
-          },
-          err => {
-            console.error('GROUP INSERT ERROR', err);
-          }
-        );
+        try {
+          await this._amplifyDataService.create(
+            'createGroup',
+            this.dialogForm?.value,
+          );
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        } catch (error) {
+          this._logger.error(`GROUP INSERT ERROR: ${JSON.stringify(error)}`);
+        }
       }
     }
   }

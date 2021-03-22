@@ -2,10 +2,8 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (product && product._id
-          ? 'products.editProduct'
-          : 'products.newProduct'
-        ) | translate
+        (product && product.id ? 'products.editProduct' : 'products.newProduct')
+          | translate
       }}
     </div>
     <button
@@ -50,21 +48,27 @@
           <bgap-form-text-input
             caption="common.descriptionHU"
             type="text"
-            [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('hu')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.descriptionEN"
             type="text"
-            [control]="dialogForm.get('description')!.get('en')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('en')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.descriptionDE"
             type="text"
-            [control]="dialogForm.get('description')!.get('de')! | asFormControl"
+            [control]="
+              dialogForm.get('description')!.get('de')! | asFormControl
+            "
           ></bgap-form-text-input>
         </div>
       </div>
@@ -101,12 +105,12 @@
       <!-- VARIANTS -->
       <bgap-form-product-variants
         [productLevel]="productLevel"
-        [variantFormArray]="dialogForm.get('_variantArr')! | asFormArray"
+        [variantFormArray]="dialogForm.get('variants')! | asFormArray"
       ></bgap-form-product-variants>
 
       <!-- CONTAINS -->
 
-      <fieldset class="form" formGroupName="contains">
+      <!--fieldset class="form" formGroupName="contains">
         <legend class="label">{{ 'products.contains' | translate }}</legend>
 
         <div formGroupName="allergens">
@@ -118,13 +122,19 @@
             <div class="col-md-3">
               <bgap-form-checkbox
                 caption="products.allergens.lactose"
-                [control]="dialogForm.get('contains')!.get('allergens')!.get('lactose')! | asFormControl"
+                [control]="
+                  dialogForm.get('contains')!.get('allergens')!.get('lactose')!
+                    | asFormControl
+                "
               ></bgap-form-checkbox>
             </div>
             <div class="col-md-3">
               <bgap-form-checkbox
                 caption="products.allergens.nuts"
-                [control]="dialogForm.get('contains')!.get('allergens')!.get('nuts')! | asFormControl"
+                [control]="
+                  dialogForm.get('contains')!.get('allergens')!.get('nuts')!
+                    | asFormControl
+                "
               ></bgap-form-checkbox>
             </div>
           </div>
@@ -134,16 +144,16 @@
           }}</label>
           <div class="col-md-3">...</div>
         </div>
-      </fieldset>
+      </fieldset-->
 
       <bgap-form-clickable-image-input
-        [imagePath]="imagePath"
+        [image]="productImage"
         [imageType]="eImageType.JPEG"
         [uploadCallbackFn]="imageUploadCallback"
         [removeCallbackFn]="imageRemoveCallback"
         [maxSize]="480"
         caption="common.image"
-        uploadFolderPath="/products/"
+        uploadFolderPath="products"
         width="200px"
         height="200px"
         borderRadius="0.25rem"

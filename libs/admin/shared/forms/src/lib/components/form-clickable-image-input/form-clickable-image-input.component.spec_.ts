@@ -11,7 +11,7 @@ xdescribe('FormClickableImageInputComponent', (): void => {
       TestBed.configureTestingModule({
         declarations: [FormClickableImageInputComponent],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach((): void => {

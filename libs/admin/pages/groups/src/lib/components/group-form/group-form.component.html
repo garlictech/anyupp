@@ -2,8 +2,7 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (group && group._id ? 'groups.editGroup' : 'groups.newGroup')
-          | translate
+        (group && group.id ? 'groups.editGroup' : 'groups.newGroup') | translate
       }}
     </div>
     <button
@@ -18,7 +17,11 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" [autocomplete]="false">
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
       <div class="row">
         <div class="col-md-6">
           <bgap-form-select

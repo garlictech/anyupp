@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'api-graphql-resolvers',
   preset: '../../../../jest.preset.js',
   globals: {

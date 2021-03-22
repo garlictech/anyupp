@@ -18,15 +18,13 @@ export interface IAdminUsersPartialState {
 
 export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
   IAdminUser
->({
-  selectId: (item: IAdminUser): string => item._id || '',
-});
+>();
 
 export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const reducer = createReducer(
@@ -36,17 +34,17 @@ const reducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(AdminUsersActions.loadAdminUsersSuccess, (state, { adminUsers }) =>
-    adminUsersAdapter.setAll(adminUsers, { ...state, loaded: true })
+  on(AdminUsersActions.upsertAdminUser, (state, { adminUser }) =>
+    adminUsersAdapter.upsertOne(adminUser, state),
   ),
   on(AdminUsersActions.resetAdminUsers, state =>
-    adminUsersAdapter.removeAll(state)
-  )
+    adminUsersAdapter.removeAll(state),
+  ),
 );
 
 export function adminUsersReducer(
   state: IAdminUsersState | undefined,
-  action: Action
+  action: Action,
 ) {
   return reducer(state, action);
 }

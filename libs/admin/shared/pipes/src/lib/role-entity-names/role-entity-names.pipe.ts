@@ -1,4 +1,3 @@
-import { get as _get } from 'lodash-es';
 import { take } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
@@ -16,13 +15,13 @@ export class RoleEntityNamesPipe implements PipeTransform {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _domSanitizer: DomSanitizer
+    private _domSanitizer: DomSanitizer,
   ) {}
 
   transform(roles: IAdminUserRole): unknown {
     const entityPaths: string[] = [];
 
-    _get(roles, 'entities', []).forEach((entity): void => {
+    Object.values(roles?.entities || {}).forEach((entity): void => {
       const entitiesArr: string[] = [];
 
       if (entity.chainId) {
@@ -48,7 +47,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
       }
 
       entityPaths.push(
-        `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`
+        `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`,
       );
     });
 

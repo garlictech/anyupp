@@ -34,62 +34,58 @@ export interface OrdersPartialState {
 
 export const activeOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
   IOrder
->({
-  selectId: (item: IOrder): string => item._id,
-});
+>();
 
 export const initialActiveOrdersState: IOrderEntityState = activeOrdersAdapter.getInitialState(
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const activeOrdersReducer = createReducer(
   initialActiveOrdersState,
   on(OrdersActions.setAllActiveOrders, (state, { orders }) =>
-    activeOrdersAdapter.setAll(orders, state)
+    activeOrdersAdapter.setAll(orders, state),
   ),
   on(OrdersActions.upsertActiveOrder, (state, { order }) =>
-    activeOrdersAdapter.upsertOne(order, state)
+    activeOrdersAdapter.upsertOne(order, state),
   ),
   on(OrdersActions.removeActiveOrder, (state, { orderId }) =>
-    activeOrdersAdapter.removeOne(orderId, state)
+    activeOrdersAdapter.removeOne(orderId, state),
   ),
   on(OrdersActions.resetActiveOrders, state =>
-    activeOrdersAdapter.removeAll(state)
-  )
+    activeOrdersAdapter.removeAll(state),
+  ),
 );
 
 // HISTORY
 
 export const historyOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
   IOrder
->({
-  selectId: (item: IOrder): string => item._id,
-});
+>();
 
 export const initialHistoryOrdersState: IOrderEntityState = historyOrdersAdapter.getInitialState(
   {
     // set initial required properties
     loaded: false,
-  }
+  },
 );
 
 const historyOrdersReducer = createReducer(
   initialHistoryOrdersState,
   on(OrdersActions.setAllHistoryOrders, (state, { orders }) =>
-    historyOrdersAdapter.setAll(orders, state)
+    historyOrdersAdapter.setAll(orders, state),
   ),
   on(OrdersActions.upsertHistoryOrder, (state, { order }) =>
-    historyOrdersAdapter.upsertOne(order, state)
+    historyOrdersAdapter.upsertOne(order, state),
   ),
   on(OrdersActions.removeHistoryOrder, (state, { orderId }) =>
-    historyOrdersAdapter.removeOne(orderId, state)
+    historyOrdersAdapter.removeOne(orderId, state),
   ),
   on(OrdersActions.resetHistoryOrders, state =>
-    historyOrdersAdapter.removeAll(state)
-  )
+    historyOrdersAdapter.removeAll(state),
+  ),
 );
 
 const reducerMap: ActionReducerMap<IOrdersState> = {
@@ -98,7 +94,7 @@ const reducerMap: ActionReducerMap<IOrdersState> = {
 };
 
 const combinedReducer: ActionReducer<IOrdersState> = combineReducers(
-  reducerMap
+  reducerMap,
 );
 
 export function ordersReducer(state: IOrdersState | undefined, action: Action) {

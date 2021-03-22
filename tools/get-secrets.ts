@@ -4,17 +4,21 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
 
-const stage = process.argv[2];
-const filenamePostfix = stage === 'dev' ? '' : stage + '.';
+// Project is unised now, it's anyupp always. Might be changed in the future!
+//const project = process.argv[2];
+const project = 'anyupp';
+const stage = process.argv[3];
 
-const secretName = `anyupp-${stage}-secrets`;
-const firebaseConfigTargetFile = `${__dirname}/../libs/shared/config/src/lib/firebase.config.${filenamePostfix}json`;
-//const stripeSecretTargetFile = `${__dirname}/../libs/shared/config/src/lib/stripe-secret.${filenamePostfix}json`;
-const firebaseServiceAccountKeyTargetFile = `${__dirname}/../libs/shared/config/src/lib/firebase-service-account-key.${filenamePostfix}json`;
+const secretName = `${project}-${stage}-secrets`;
+const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
+const firebaseConfigTargetFile = `${targetDir}/firebase.config.json`;
+const firebaseServiceAccountKeyTargetFile = `${targetDir}/firebase-service-account-key.json`;
 
 const client = new AWS.SecretsManager({
-  region: region
+  region: region,
 });
+
+fs.mkdirSync(targetDir, { recursive: true });
 
 client.getSecretValue({ SecretId: secretName }, function (err, data) {
   if (err) {
@@ -24,28 +28,22 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
       data.SecretString,
       JSON.parse,
       fp.tap(secret => {
+        // Firebase CONFIG
         fs.writeFileSync(
           firebaseConfigTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2)
+          JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2),
         );
-
         console.log(`Config written to ${firebaseConfigTargetFile}`);
-        /*fs.writeFileSync(
-          stripeSecretTargetFile,
-          JSON.stringify({ stripe_secret_key: secret.stripeSecretKey }, null, 2)
-        );
 
-        console.log(`Config written to ${stripeSecretTargetFile}`);
-        */
-
+        // FB service account Key
         fs.writeFileSync(
           firebaseServiceAccountKeyTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2)
+          JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2),
         );
       }),
       fp.tap(() =>
-        console.log(`Config written to ${firebaseServiceAccountKeyTargetFile}`)
-      )
+        console.log(`Config written to ${firebaseServiceAccountKeyTargetFile}`),
+      ),
     );
   }
 });

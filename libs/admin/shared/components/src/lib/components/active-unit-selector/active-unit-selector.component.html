@@ -11,7 +11,7 @@
   (selectedChange)="onUnitSelected($event)"
   [selected]="selectedUnitId"
 >
-  <nb-option *ngFor="let option of units$ | async" [value]="option._id">{{
+  <nb-option *ngFor="let option of units$ | async" [value]="option.id">{{
     option.name
   }}</nb-option>
 </nb-select>
