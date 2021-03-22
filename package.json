@@ -137,7 +137,7 @@
     "@types/googlemaps": "^3.40.5",
     "@types/jasmine": "3.6.2",
     "@types/jasminewd2": "~2.0.3",
-    "@types/jest": "26.0.8",
+    "@types/jest": "^26.0.21",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "12.12.38",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
@@ -154,6 +154,7 @@
     "graphql-schema-utilities": "^1.1.3",
     "jest": "26.2.2",
     "jest-preset-angular": "8.3.1",
+    "joi": "^17.4.0",
     "mocha": "^8.3.0",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",
@@ -173,20 +174,5 @@
     "apps/graphql-server",
     "apps/infrastructure/build-pipeline-stack",
     "apps/infrastructure/anyupp-backend-stack"
-  ],
-  "resolutions": {
-    "@aws-cdk/aws-chatbot": "1.91.0",
-    "@aws-cdk/aws-sns": "1.91.0",
-    "@aws-cdk/aws-events": "1.91.0",
-    "@aws-cdk/aws-events-targets": "1.91.0",
-    "@aws-cdk/aws-codebuild": "1.91.0",
-    "@aws-cdk/aws-codestarnotifications": "1.91.0",
-    "@aws-cdk/aws-codecommit": "1.91.0",
-    "@aws-cdk/aws-codedeploy": "1.91.0",
-    "@aws-cdk/aws-codepipeline": "1.91.0",
-    "@aws-cdk/aws-codepipeline-actions": "1.91.0",
-    "@aws-cdk/aws-secretsmanager": "1.91.0",
-    "@aws-cdk/custom-resources": "1.91.0",
-    "@aws-cdk/core": "1.91.0"
-  }
+  ]
 }
