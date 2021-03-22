@@ -40,9 +40,6 @@
     "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "api-data-access": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },

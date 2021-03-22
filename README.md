@@ -480,8 +480,8 @@ The generator will collect the new resolver's name
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build infrastructure-anyupp-backend-stack
-   nx deploy infrastructure-anyupp-backend-stack
+   nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+   nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 
 ### Amplify - Admin
 
