@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { map as fp_map } from 'lodash/fp';
 import { from, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 export const validationOptions: Joi.ValidationOptions = {
   abortEarly: false,
@@ -10,9 +10,9 @@ export interface SchemaValidation<T> {
   validate: (arg: unknown) => Observable<T>;
   isType: (arg: unknown) => boolean;
 }
-export function validateSchema<REQUIRED_TYPE>(
+export const validateSchema = <REQUIRED_TYPE>(
   schema: Joi.SchemaMap,
-): SchemaValidation<REQUIRED_TYPE> {
+): SchemaValidation<REQUIRED_TYPE> => {
   return {
     validate: (arg: unknown): Observable<REQUIRED_TYPE> =>
       from(Joi.object(schema).validateAsync(arg, validationOptions)).pipe(
@@ -31,4 +31,4 @@ export function validateSchema<REQUIRED_TYPE>(
       return !Joi.object(schema).validate(arg).error;
     },
   };
-}
+};

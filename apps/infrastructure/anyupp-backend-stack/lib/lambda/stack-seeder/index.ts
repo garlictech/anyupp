@@ -8,6 +8,7 @@ import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
+import { createTestCart } from './seed-data-fn';
 import {
   AmplifyApi,
   AmplifyApiMutations,
@@ -141,6 +142,7 @@ export const seedBusinessData = () =>
       createTestGroupProduct(1, 1, 2, 2),
       createTestUnitProduct(1, 1, 1, 1, 1),
       createTestUnitProduct(1, 1, 1, 2, 2),
+      createTestCart(1, 1, 1, 1, 1, 1),
     ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {

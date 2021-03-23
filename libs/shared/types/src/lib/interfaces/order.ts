@@ -1,7 +1,8 @@
 import * as Joi from 'joi';
 
-import { EOrderStatus, EPaymentMethod } from '../enums';
+import { EOrderStatus } from '../enums/order-status';
 import { ILocalizedItem } from './localized-item';
+import { EPaymentMethod } from '../enums/payment-method';
 
 export interface IPriceShown {
   currency: string;

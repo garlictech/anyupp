@@ -2,16 +2,8 @@ import { pipe } from 'fp-ts/lib/function';
 import { from, throwError } from 'rxjs';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import {
-  createChain,
-  createChainProduct,
-  createGroup,
-  createGroupProduct,
-  createProductCategory,
-  createUnit,
-  createUnitProduct,
-} from '@bgap/admin/amplify-api';
-import { EProductType } from '@bgap/shared/types';
+import { EPaymentMethod, EProductType } from '@bgap/shared/types';
+import { AmplifyApi, AmplifyApiMutations } from '@bgap/admin/amplify-api';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -40,11 +32,13 @@ const generateUnitProductId = (
 ) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
+const generateCartId = (idx: number) => `cart_${idx}_id`;
+const generateUserId = (idx: number) => `user_${idx}_id`;
 
 export const createTestChain = (chainIdx: number) =>
   pipe(
     API.graphql(
-      graphqlOperation(createChain, {
+      graphqlOperation(AmplifyApiMutations.createChain, {
         input: {
           id: generateChainId(chainIdx),
           name: `Test chain #${chainIdx}`,
@@ -67,7 +61,7 @@ export const createTestChain = (chainIdx: number) =>
 export const createTestGroup = (chainIdx: number, groupIdx: number) =>
   pipe(
     API.graphql(
-      graphqlOperation(createGroup, {
+      graphqlOperation(AmplifyApiMutations.createGroup, {
         input: {
           id: generateGroupId(chainIdx, groupIdx),
           chainId: generateChainId(chainIdx),
@@ -93,7 +87,7 @@ export const createTestUnit = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(createUnit, {
+      graphqlOperation(AmplifyApiMutations.createUnit, {
         input: {
           id: generateUnitId(chainIdx, groupIdx, unitIdx),
           groupId: generateGroupId(chainIdx, groupIdx),
@@ -150,7 +144,7 @@ export const createTestProductCategory = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(createProductCategory, {
+      graphqlOperation(AmplifyApiMutations.createProductCategory, {
         input: {
           id: generateProductCategoryId(chainIdx, productCategoryId),
           chainId: generateChainId(chainIdx),
@@ -179,7 +173,7 @@ export const createTestChainProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(createChainProduct, {
+      graphqlOperation(AmplifyApiMutations.createChainProduct, {
         input: {
           id: generateChainProductId(chainIdx, productIdx),
           chainId: generateChainId(chainIdx),
@@ -229,7 +223,7 @@ export const createTestGroupProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(createGroupProduct, {
+      graphqlOperation(AmplifyApiMutations.createGroupProduct, {
         input: {
           id: generateGroupProductId(chainIdx, groupIdx, productIdx),
           parentId: generateChainProductId(chainIdx, chainProductIdx),
@@ -270,7 +264,7 @@ export const createTestUnitProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(createUnitProduct, {
+      graphqlOperation(AmplifyApiMutations.createUnitProduct, {
         input: {
           id: generateUnitProductId(chainIdx, groupIdx, productIdx),
           parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
@@ -305,6 +299,52 @@ export const createTestUnitProduct = (
             },
           ],
         },
+      }),
+    ),
+    operation =>
+      operation instanceof Promise
+        ? from(operation)
+        : throwError('Wrong graphql operation'),
+  );
+
+export const createTestCart = (
+  chainIdx: number,
+  groupIdx: number,
+  unitIdx: number,
+  productIdx: number,
+  userIdx: number,
+  cartIdx: number,
+) =>
+  pipe(
+    API.graphql(
+      graphqlOperation(AmplifyApiMutations.createCart, {
+        input: {
+          id: generateCartId(cartIdx),
+          userId: generateUserId(userIdx),
+          unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+          paymentMethod: EPaymentMethod.INAPP,
+          items: [
+            {
+              productName: {
+                en: 'Water',
+                hu: 'Viz',
+              },
+              priceShown: {
+                currency: 'EUR',
+                pricePerUnit: 1,
+                priceSum: 2,
+              },
+              productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
+              quantity: 2,
+              variantId: generateVariantId(chainIdx, productIdx, 1),
+              variantName: {
+                en: 'glass',
+                hu: 'pohár',
+              },
+              laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+            } as AmplifyApi.OrderItemInput,
+          ],
+        } as AmplifyApi.CreateCartInput,
       }),
     ),
     operation =>
