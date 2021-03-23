@@ -3,7 +3,10 @@ import { from, throwError } from 'rxjs';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import { EPaymentMethod, EProductType } from '@bgap/shared/types';
-import { AmplifyApi, AmplifyApiMutations } from '@bgap/admin/amplify-api';
+import {
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
+} from '@bgap/admin/amplify-api';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -38,7 +41,7 @@ const generateUserId = (idx: number) => `user_${idx}_id`;
 export const createTestChain = (chainIdx: number) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createChain, {
+      graphqlOperation(AmplifyApiMutationDocuments.createChain, {
         input: {
           id: generateChainId(chainIdx),
           name: `Test chain #${chainIdx}`,
@@ -61,7 +64,7 @@ export const createTestChain = (chainIdx: number) =>
 export const createTestGroup = (chainIdx: number, groupIdx: number) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createGroup, {
+      graphqlOperation(AmplifyApiMutationDocuments.createGroup, {
         input: {
           id: generateGroupId(chainIdx, groupIdx),
           chainId: generateChainId(chainIdx),
@@ -87,7 +90,7 @@ export const createTestUnit = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createUnit, {
+      graphqlOperation(AmplifyApiMutationDocuments.createUnit, {
         input: {
           id: generateUnitId(chainIdx, groupIdx, unitIdx),
           groupId: generateGroupId(chainIdx, groupIdx),
@@ -144,7 +147,7 @@ export const createTestProductCategory = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createProductCategory, {
+      graphqlOperation(AmplifyApiMutationDocuments.createProductCategory, {
         input: {
           id: generateProductCategoryId(chainIdx, productCategoryId),
           chainId: generateChainId(chainIdx),
@@ -173,7 +176,7 @@ export const createTestChainProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createChainProduct, {
+      graphqlOperation(AmplifyApiMutationDocuments.createChainProduct, {
         input: {
           id: generateChainProductId(chainIdx, productIdx),
           chainId: generateChainId(chainIdx),
@@ -223,7 +226,7 @@ export const createTestGroupProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createGroupProduct, {
+      graphqlOperation(AmplifyApiMutationDocuments.createGroupProduct, {
         input: {
           id: generateGroupProductId(chainIdx, groupIdx, productIdx),
           parentId: generateChainProductId(chainIdx, chainProductIdx),
@@ -264,7 +267,7 @@ export const createTestUnitProduct = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createUnitProduct, {
+      graphqlOperation(AmplifyApiMutationDocuments.createUnitProduct, {
         input: {
           id: generateUnitProductId(chainIdx, groupIdx, productIdx),
           parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
@@ -317,7 +320,7 @@ export const createTestCart = (
 ) =>
   pipe(
     API.graphql(
-      graphqlOperation(AmplifyApiMutations.createCart, {
+      graphqlOperation(AmplifyApiMutationDocuments.createCart, {
         input: {
           id: generateCartId(cartIdx),
           userId: generateUserId(userIdx),

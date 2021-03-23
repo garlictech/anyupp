@@ -119,13 +119,11 @@ export interface MutationDeleteMyStripeCardArgs {
   input: StripeCardDeleteInput;
 }
 
-export type CreateOrderFromCartMutationMutationVariables = Exact<{
+export type CreateOrderFromCartMutationVariables = Exact<{
   input: CreateOrderFromCartInput;
 }>;
 
-export type CreateOrderFromCartMutationMutation = {
-  __typename?: 'Mutation';
-} & {
+export type CreateOrderFromCartMutation = { __typename?: 'Mutation' } & {
   createOrderFromCart?: Maybe<
     { __typename?: 'CreateOrderFromCartOutput' } & Pick<
       CreateOrderFromCartOutput,
@@ -134,8 +132,8 @@ export type CreateOrderFromCartMutationMutation = {
   >;
 };
 
-export const CreateOrderFromCartMutation = gql`
-  mutation CreateOrderFromCartMutation($input: CreateOrderFromCartInput!) {
+export const CreateOrderFromCart = gql`
+  mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
     createOrderFromCart(input: $input) {
       id
     }

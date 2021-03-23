@@ -11,7 +11,7 @@ import Amplify from '@aws-amplify/core';
 import { createTestCart } from './seed-data-fn';
 import {
   AmplifyApi,
-  AmplifyApiMutations,
+  AmplifyApiMutationDocuments,
   awsConfig,
 } from '@bgap/admin/amplify-api';
 
@@ -107,7 +107,9 @@ export const seedAdminUser = (UserPoolId: string) =>
     switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
         API.graphql(
-          graphqlOperation(AmplifyApiMutations.createAdminUser, { input }),
+          graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
+            input,
+          }),
         ),
         operation =>
           operation instanceof Promise

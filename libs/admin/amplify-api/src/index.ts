@@ -1,15 +1,14 @@
 import awsmobile from './lib/aws-exports';
 import * as AmplifyApi from './lib/generated/api';
-import * as AmplifyApiMutations from './lib/generated/graphql/mutations';
+import * as Mutations from './lib/generated/graphql/mutations';
 import * as Queries from './lib/generated/graphql/queries';
-import * as AmplifyApiSubscriptions from './lib/generated/graphql/subscriptions';
 import * as CustomQueries from './lib/custom-documents/queries';
+import * as Subscriptions from './lib/generated/graphql/subscriptions';
 
-export const AmplifyApiQueries = { ...Queries, ...CustomQueries };
+export const AmplifyApiQueryDocuments = { ...Queries, ...CustomQueries };
 export {
   awsmobile as awsConfig,
   AmplifyApi,
-  AmplifyApiMutations,
-  // Queries + CustomQueries as AmplifyApiQueries,
-  AmplifyApiSubscriptions,
+  Mutations as AmplifyApiMutationDocuments,
+  Subscriptions as AmplifyApiSubscriptionDocuments,
 };
