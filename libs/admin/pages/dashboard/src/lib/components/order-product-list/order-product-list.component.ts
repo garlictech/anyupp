@@ -75,12 +75,6 @@ export class OrderProductListComponent {
             generatedUnitProducts
           );
 
-          /* TODO fix - remove?
-          this.generatedUnitProducts.forEach((p: IGeneratedProduct) => {
-            p._variants_arr = <IProductVariant[]>objectToArray(p.variants);
-          });
-          */
-
           this.productCategories = productCategories.filter(
             (category: IProductCategory): boolean => {
               return (
