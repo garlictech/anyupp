@@ -204,11 +204,11 @@ export class CognitoStack extends Stack {
     adminSiteUrl: string,
   ) {
     const callbackUrls = [`${adminSiteUrl}/admin/dashboard`];
-    const logoutUrls = [`${adminSiteUrl}/auth/logout`];
+    const logoutUrls = [`${adminSiteUrl}/auth/login`];
 
     if (app.stage === 'dev') {
       callbackUrls.push(`http://localhost:4200/admin/dashboard`);
-      logoutUrls.push(`http://localhost:4200/auth/logout`);
+      logoutUrls.push(`http://localhost:4200/auth/login`);
     }
 
     const commonProps = (callbackUrls: string[], logoutUrls: string[]) => ({
