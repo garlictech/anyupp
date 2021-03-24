@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { map as fp_map } from 'lodash/fp';
+import * as fp from 'lodash/fp';
 import { from, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -19,11 +19,16 @@ export const validateSchema = <REQUIRED_TYPE>(
         map(x => x as REQUIRED_TYPE),
         catchError((err: Joi.ValidationError) =>
           throwError(
-            fp_map((x: Joi.ValidationErrorItem) => ({
-              message: x.message,
-              path: x.path,
-              exception: x.type,
-            }))(err.details),
+            // fp.map((x: Joi.ValidationErrorItem) => ({
+            //   message: x.message,
+            //   path: x.path,
+            //   exception: x.type,
+            // }))(err.details),
+            'Validation Error: ' +
+              fp.flow(
+                fp.map((x: Joi.ValidationErrorItem) => x.message),
+                fp.join(', '),
+              )(err.details),
           ),
         ),
       ),

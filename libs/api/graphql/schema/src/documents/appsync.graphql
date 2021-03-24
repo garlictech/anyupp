@@ -1,4 +1,4 @@
-mutation CreateOrderFromCartMutation($input: CreateOrderFromCartInput!) {
+mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input) {
     id
   }

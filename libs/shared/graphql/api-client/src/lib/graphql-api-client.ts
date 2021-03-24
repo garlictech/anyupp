@@ -1,13 +1,12 @@
 import { ApolloQueryResult } from 'apollo-client';
 import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
-import * as fp from 'lodash/fp';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import API from '@aws-amplify/api';
 import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
-import { buildRetryLogic } from '@bgap/shared/utils';
+import { buildRetryLogic, pipeDebug } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,33 +19,41 @@ export class GraphqlApiClient {
   ) {
     API.configure(genericConfig);
 
-    const parser = fp.memoize((error: unknown) =>
-      JSON.parse(fp.get('graphQLErrors[0].message', error)),
-    );
-    const retryable = (error: unknown) => {
-      try {
-        return fp.flow(
-          err => parser(err).retryable,
-          retryable => (fp.isBoolean(retryable) ? retryable : true),
-        )(error);
-      } catch (_err) {
-        return true;
-      }
-    };
-    const retryDelayInMillisec = (error: unknown) => {
-      try {
-        return fp.flow(
-          err => parser(err).retryDelay,
-          retryable => (fp.isNumber(retryable) ? retryable * 1000 : 2000),
-        )(error);
-      } catch (_err) {
-        return 2000;
-      }
-    };
+    // TODO: the retrayable and retryDelayInMillisec functions is not good
+    // for the current GraphQL client responses
+    // const parser = fp.memoize((error: ApolloError) => {
+    //   if (isApolloError(error)) {
+    //     // return error.message;
+    //     error;
+    //   }
+    //   // return JSON.stringify(error, undefined, 2);
+    //   // return JSON.parse(fp.get('graphQLErrors[0].message', error));
+    // });
+    // const retryable = (error: unknown) => {
+    //   try {
+    //     return fp.flow(
+    //       // err => parser(err).retryable,
+    //       err => !!parser(err).networkError,
+    //       retryable => (fp.isBoolean(retryable) ? retryable : true),
+    //     )(error);
+    //   } catch (_err) {
+    //     return true;
+    //   }
+    // };
+    // const retryDelayInMillisec = (error: unknown) => {
+    //   try {
+    //     return fp.flow(
+    //       err => parser(err).retryDelay,
+    //       retryable => (fp.isNumber(retryable) ? retryable * 1000 : 2000),
+    //     )(error);
+    //   } catch (_err) {
+    //     return 2000;
+    //   }
+    // };
     this._graphqlRetryLogic = buildRetryLogic({
-      logger: this.logger,
-      retryable,
-      retryDelayInMillisec,
+      // logger: this.logger,
+      // retryable,
+      // retryDelayInMillisec,
     });
     this._client = new AWSAppSyncClient({
       url: genericConfig.aws_appsync_graphqlEndpoint,
@@ -72,6 +79,7 @@ export class GraphqlApiClient {
       }),
     ).pipe(
       this._graphqlRetryLogic,
+      pipeDebug('### QUERY AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
   }
@@ -86,6 +94,7 @@ export class GraphqlApiClient {
       }),
     ).pipe(
       this._graphqlRetryLogic,
+      pipeDebug('### MUTATION AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
   }

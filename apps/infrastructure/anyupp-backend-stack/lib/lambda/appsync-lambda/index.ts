@@ -2,27 +2,21 @@
 import { Context, Handler } from 'aws-lambda';
 import { stripeRequestHandler } from '@bgap/api/stripe';
 import { orderRequestHandler } from '@bgap/api/order';
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
-import { IAmplifyApiConfig } from '@bgap/shared/types';
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
   payload: unknown;
 }
 
-export const AWS_CONFIG: IAmplifyApiConfig = {
-  api_key: awsConfig.aws_appsync_apiKey,
-  ...awsConfig,
+const handleError = (error: Error | string) => {
+  if (typeof error === 'string') {
+    throw error;
+  }
+  throw JSON.stringify(error, undefined, 2);
 };
 
-export const backendGraphQlClient = GraphqlApiFp.createPublicClient(
-  AWS_CONFIG,
-  console,
-  true,
-);
-
-export const handler: Handler<AnyuppRequest, unknown> = (
+export const handler: Handler<AnyuppRequest, unknown> = async (
   event: AnyuppRequest,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: Context,
@@ -40,26 +34,33 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   switch (event.handler) {
     case 'getStripeCardsForCustomer': {
       console.log('Handling getStripeCardsForCustomer');
-      return stripeRequestHandler.getStripeCardsForCustomer(event.payload);
+      return stripeRequestHandler
+        .getStripeCardsForCustomer(event.payload)
+        .catch(handleError);
     }
     case 'updateStripeCard': {
       console.log('Handling updateStripeCard');
-      return stripeRequestHandler.updateStripeCard(event.payload);
+      return stripeRequestHandler
+        .updateStripeCard(event.payload)
+        .catch(handleError);
     }
     case 'deleteStripeCard': {
       console.log('Handling deleteStripeCard');
-      return stripeRequestHandler.deleteStripeCard(event.payload);
+      return stripeRequestHandler
+        .deleteStripeCard(event.payload)
+        .catch(handleError);
     }
     case 'startStripePayment': {
       console.log('Handling startStripePayment');
-      return stripeRequestHandler.startStripePayment(event.payload);
+      return stripeRequestHandler
+        .startStripePayment(event.payload)
+        .catch(handleError);
     }
     case 'createOrderFromCart': {
       console.log('Handling createOrderFromCart');
-      return orderRequestHandler.createOrderFromCart(
-        event.payload as any,
-        backendGraphQlClient,
-      );
+      return orderRequestHandler
+        .createOrderFromCart(event.payload as any, amplifyGraphQlClient)
+        .catch(handleError);
     }
     default:
       throw 'missing handler';

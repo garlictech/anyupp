@@ -136,21 +136,21 @@ export const pipeDebug = <T>(tag: string) => {
     next(value) {
       console.log(
         `%c[${tag}: Next]`,
-        'background: #009688; color: #fff; padding: 3px; font-size: 9px;',
-        value,
+        // 'background: #009688; color: #fff; padding: 3px; font-size: 9px;',
+        JSON.stringify(value, undefined, 2),
       );
     },
     error(error) {
       console.log(
         `%[${tag}: Error]`,
-        'background: #E91E63; color: #fff; padding: 3px; font-size: 9px;',
-        error,
+        // 'background: #E91E63; color: #fff; padding: 3px; font-size: 9px;',
+        JSON.stringify(error, undefined, 2),
       );
     },
     complete() {
       console.log(
         `%c[${tag}]: Complete`,
-        'background: #00BCD4; color: #fff; padding: 3px; font-size: 9px;',
+        // 'background: #00BCD4; color: #fff; padding: 3px; font-size: 9px;',
       );
     },
   });

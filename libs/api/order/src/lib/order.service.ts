@@ -2,11 +2,16 @@ import { DateTime } from 'luxon';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, tap, throwIfEmpty, mapTo } from 'rxjs/operators';
 
-// import { EOrderStatus } from '@bgap/shared/types';
+import {
+  IOrderItem,
+  validateCart,
+  ICart,
+  EOrderStatus,
+} from '@bgap/shared/types';
 import {
   AmplifyApi,
-  AmplifyApiMutations,
-  AmplifyApiQueries,
+  AmplifyApiMutationDocuments,
+  AmplifyApiQueryDocuments,
 } from '@bgap/admin/amplify-api';
 import { toFixed2Number } from '@bgap/api/utils';
 import {
@@ -21,7 +26,6 @@ import {
 
 import { calculateOrderSumPrice } from './order.utils';
 import { missingParametersCheck } from '@bgap/shared/utils';
-import { IOrderItem, validateCart, ICart } from '@bgap/shared/types';
 
 export const createOrderFromCart = async ({
   userId,
@@ -57,18 +61,20 @@ export const createOrderFromCart = async ({
         ),
       ),
       pipeDebug('### CURRENCY + UNIT'),
-      tap(({ unit }) => {
-        if (unit.isAcceptingOrders === false) {
-          throw getUnitIsNotAcceptingOrdersError();
-        }
-        // if (
-        //   !userLocation ||
-        //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-        //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-        // ) {
-        //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
-        //   console.log('###: User is too far from the UNIT error should be thrown');
-        // }
+      tap({
+        next({ unit }) {
+          if (unit.isAcceptingOrders === false) {
+            throw getUnitIsNotAcceptingOrdersError();
+          }
+          // if (
+          //   !userLocation ||
+          //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
+          //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
+          // ) {
+          //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
+          //   console.log('###: User is too far from the UNIT error should be thrown');
+          // }
+        },
       }),
       switchMap(props =>
         getOrderItems({
@@ -83,13 +89,13 @@ export const createOrderFromCart = async ({
         orderInput: toOrderInputFormat({
           userId,
           unitId: props.cart.unitId,
-          // paymentMethod: props.cart.paymentMethod,
+          paymentMethod: props.cart.paymentMethod,
           items: props.items,
           place: props.cart.place,
         }),
       })),
       switchMap(props =>
-        saveOrder({ orderInput: props.orderInput, graphqlApiClient }).pipe(
+        createOrder({ orderInput: props.orderInput, graphqlApiClient }).pipe(
           map(o => ({ ...props, orderId: o.createOrder?.id as string })),
         ),
       ),
@@ -223,15 +229,14 @@ const getLaneIdForCartItem = (
   if (!productId) throw 'Missing productId';
 
   return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitProductQuery>(
-    AmplifyApiQueries.getUnitProduct,
+    AmplifyApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(map(product => product.getUnitProduct?.laneId));
 };
 
 const createStatusLog = (
   userId: string,
-  // TODO: status: EOrderStatus = EOrderStatus.PLACED,
-  status = 'PLACED',
+  status: EOrderStatus = EOrderStatus.PLACED,
 ): Array<AmplifyApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];
@@ -241,7 +246,7 @@ const createStatusLog = (
 //   return Promise.resolve('STAFF_ID');
 // };
 
-const saveOrder = ({
+const createOrder = ({
   orderInput,
   graphqlApiClient,
 }: {
@@ -249,7 +254,7 @@ const saveOrder = ({
   graphqlApiClient: GraphqlApiClient;
 }) => {
   return executeMutation(graphqlApiClient)<AmplifyApi.CreateOrderMutation>(
-    AmplifyApiMutations.createOrder,
+    AmplifyApiMutationDocuments.createOrder,
     {
       input: orderInput,
     },
@@ -263,7 +268,7 @@ const getUnit = (
   if (!id) throw 'Missing UnitId';
 
   return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitQuery>(
-    AmplifyApiQueries.getUnit,
+    AmplifyApiQueryDocuments.getUnit,
     { id },
   ).pipe(
     // getFieldOrThrowMap('getUnit'),
@@ -281,7 +286,7 @@ const getCart = (
   if (!id) throw 'Missing CartId';
 
   return executeQuery(graphqlApiClient)<AmplifyApi.GetCartQuery>(
-    AmplifyApiQueries.getCart,
+    AmplifyApiQueryDocuments.getCart,
     { id },
   ).pipe(
     map(x => x.getCart),
@@ -299,8 +304,8 @@ const deleteCart = (
   if (!id) throw 'Missing CartId';
 
   return executeMutation(graphqlApiClient)<AmplifyApi.DeleteCartMutation>(
-    AmplifyApiMutations.deleteCart,
-    { id },
+    AmplifyApiMutationDocuments.deleteCart,
+    { input: { id } },
   ).pipe(mapTo(true));
 };
 
@@ -308,8 +313,8 @@ const getGroupCurrency = (graphqlApiClient: GraphqlApiClient, id?: string) => {
   if (!id) throw 'Missing GroupId';
 
   return executeQuery(graphqlApiClient)<AmplifyApi.GetGroupQuery>(
-    AmplifyApiQueries.getGroupCurrency,
-    { id },
+    AmplifyApiQueryDocuments.getGroupCurrency,
+    { input: { id } },
   ).pipe(
     // getFieldOrThrowMap('getUnit'),
     // map(o => getFieldOrThrow(o, 'getUnit')),
