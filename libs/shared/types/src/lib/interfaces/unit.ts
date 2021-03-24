@@ -1,3 +1,6 @@
+import * as Joi from 'joi';
+
+import { validateSchema } from '../validation/validate';
 import { IAddressInfo } from './address';
 import { IContact } from './contact';
 import { IFloorMapData } from './floor-map';
@@ -38,3 +41,17 @@ export interface IUnit extends IContact, IAddressInfo {
   floorMap?: IFloorMapData;
   paymentModes?: IPaymentMode[];
 }
+
+export const unitSchema: Joi.SchemaMap = {
+  __typename: Joi.string().valid('Unit').optional(),
+  id: Joi.string().required(),
+  groupId: Joi.string().required(),
+  chainId: Joi.string().required(),
+  createdAt: Joi.string().required(),
+  updatedAt: Joi.string().required(),
+};
+
+export const { validate: validateUnit, isType: isUnit } = validateSchema<IUnit>(
+  unitSchema,
+  'Unit',
+);

@@ -1,13 +1,7 @@
 import { DateTime } from 'luxon';
 import { combineLatest, Observable } from 'rxjs';
-import { map, switchMap, tap, throwIfEmpty, mapTo } from 'rxjs/operators';
+import { map, mapTo, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 
-import {
-  IOrderItem,
-  validateCart,
-  ICart,
-  EOrderStatus,
-} from '@bgap/shared/types';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
@@ -20,12 +14,20 @@ import {
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 import {
+  EOrderStatus,
+  ICart,
+  IOrderItem,
+  IUnit,
+  validateCart,
+  validateUnit,
+} from '@bgap/shared/types';
+import {
   getUnitIsNotAcceptingOrdersError,
+  missingParametersCheck,
   pipeDebug,
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
-import { missingParametersCheck } from '@bgap/shared/utils';
 
 export const createOrderFromCart = async ({
   userId,
@@ -48,7 +50,7 @@ export const createOrderFromCart = async ({
 
   return getCart(graphqlApiClient, cartId)
     .pipe(
-      pipeDebug('### CART'),
+      // pipeDebug('### CART'),
       switchMap(cart =>
         getUnit(graphqlApiClient, cart.unitId).pipe(
           pipeDebug('### UNIT'),
@@ -224,10 +226,8 @@ const convertCartOrderToOrderItem = ({
 
 const getLaneIdForCartItem = (
   graphqlApiClient: GraphqlApiClient,
-  productId?: string,
+  productId: string,
 ): Observable<string | null | undefined> => {
-  if (!productId) throw 'Missing productId';
-
   return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitProductQuery>(
     AmplifyApiQueryDocuments.getUnitProduct,
     { id: productId },
@@ -263,28 +263,21 @@ const createOrder = ({
 
 const getUnit = (
   graphqlApiClient: GraphqlApiClient,
-  id?: string,
-): Observable<AmplifyApi.Unit> => {
-  if (!id) throw 'Missing UnitId';
-
+  id: string,
+): Observable<IUnit> => {
   return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitQuery>(
     AmplifyApiQueryDocuments.getUnit,
     { id },
   ).pipe(
-    // getFieldOrThrowMap('getUnit'),
-    // map(o => getFieldOrThrow(o, 'getUnit')),
-    // pluck<AmplifyApi.GetUnitQuery, AmplifyApi.Unit>('getUnit'),
-    map(o => o.getUnit as AmplifyApi.Unit),
-    throwIfEmpty(() => 'Missing Unit'),
+    map(o => o.getUnit),
+    switchMap(validateUnit),
   );
 };
 
 const getCart = (
   graphqlApiClient: GraphqlApiClient,
-  id?: string,
+  id: string,
 ): Observable<ICart> => {
-  if (!id) throw 'Missing CartId';
-
   return executeQuery(graphqlApiClient)<AmplifyApi.GetCartQuery>(
     AmplifyApiQueryDocuments.getCart,
     { id },
@@ -292,26 +285,19 @@ const getCart = (
     map(x => x.getCart),
     switchMap(validateCart),
   );
-
-  // map(o => o.getCart as AmplifyApi.Cart),
-  // throwIfEmpty(() => 'Missing Cart'),
 };
 
 const deleteCart = (
   graphqlApiClient: GraphqlApiClient,
-  id?: string,
+  id: string,
 ): Observable<boolean> => {
-  if (!id) throw 'Missing CartId';
-
   return executeMutation(graphqlApiClient)<AmplifyApi.DeleteCartMutation>(
     AmplifyApiMutationDocuments.deleteCart,
     { input: { id } },
   ).pipe(mapTo(true));
 };
 
-const getGroupCurrency = (graphqlApiClient: GraphqlApiClient, id?: string) => {
-  if (!id) throw 'Missing GroupId';
-
+const getGroupCurrency = (graphqlApiClient: GraphqlApiClient, id: string) => {
   return executeQuery(graphqlApiClient)<AmplifyApi.GetGroupQuery>(
     AmplifyApiQueryDocuments.getGroupCurrency,
     { input: { id } },

@@ -29,4 +29,5 @@ export const cartSchema: Joi.SchemaMap = {
 
 export const { validate: validateCart, isType: isCart } = validateSchema<ICart>(
   cartSchema,
+  'Cart',
 );

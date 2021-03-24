@@ -21,6 +21,7 @@ const imageInvalid = {
 };
 const { validate: validateImage, isType: isImage } = validateSchema<Image>(
   imageSchema,
+  'Image',
 );
 
 describe('JOI validaton test', () => {
@@ -46,17 +47,9 @@ describe('JOI validaton test', () => {
     await validateImage(imageInvalid)
       .toPromise()
       .catch(error => {
-        expect(error).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "exception": "any.required",
-              "message": "\\"url\\" is required",
-              "path": Array [
-                "url",
-              ],
-            },
-          ]
-        `);
+        expect(error).toMatchInlineSnapshot(
+          `"Image Object Validation Error: \\"url\\" is required"`,
+        );
       });
   });
 });

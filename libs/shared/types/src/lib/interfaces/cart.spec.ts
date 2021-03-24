@@ -1,11 +1,11 @@
 import { ICart, isCart, validateCart } from './cart';
-// import { EPaymentMethod } from '../enums/payment-method';
+import { EPaymentMethod } from '../enums/payment-method';
 
 const cart: ICart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
-  // paymentMethod: EPaymentMethod.CARD,
+  paymentMethod: EPaymentMethod.CARD,
   items: [
     {
       created: 100,
@@ -77,17 +77,9 @@ describe('Cart validaton test', () => {
     await validateCart(invalidCart)
       .toPromise()
       .catch(error => {
-        expect(error).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "exception": "any.required",
-              "message": "\\"id\\" is required",
-              "path": Array [
-                "id",
-              ],
-            },
-          ]
-        `);
+        expect(error).toMatchInlineSnapshot(
+          `"Cart Object Validation Error: \\"id\\" is required"`,
+        );
       });
     expect(isCart(invalidCart)).toEqual(false);
   });

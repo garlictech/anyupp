@@ -1,11 +1,9 @@
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
+import { existingCartId, notExistingCartId } from './fixtures/cart';
 import {
   amplifyGraphQlClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
-
-const existingCartId = 'cart_1_id';
-const notExistingCartId = 'NOT_EXISTING_CART';
 
 describe('getCart test', () => {
   it('successful query execution', done => {
