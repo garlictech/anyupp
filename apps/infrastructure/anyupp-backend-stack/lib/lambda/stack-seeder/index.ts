@@ -8,7 +8,6 @@ import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
-import { createTestCart } from './seed-data-fn';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
@@ -16,6 +15,7 @@ import {
 } from '@bgap/admin/amplify-api';
 
 import {
+  createTestCart,
   createTestChain,
   createTestChainProduct,
   createTestGroup,
@@ -23,7 +23,7 @@ import {
   createTestProductCategory,
   createTestUnit,
   createTestUnitProduct,
-} from './seed-data-fn';
+} from '@bgap/shared/utils';
 
 Amplify.configure(awsConfig);
 /**
@@ -144,7 +144,14 @@ export const seedBusinessData = () =>
       createTestGroupProduct(1, 1, 2, 2),
       createTestUnitProduct(1, 1, 1, 1, 1),
       createTestUnitProduct(1, 1, 1, 2, 2),
-      createTestCart(1, 1, 1, 1, 1, 1),
+      createTestCart({
+        chainIdx: 1,
+        groupIdx: 1,
+        unitIdx: 1,
+        productIdx: 1,
+        userIdx: 1,
+        cartIdx: 1,
+      }),
     ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {

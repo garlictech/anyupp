@@ -310,14 +310,21 @@ export const createTestUnitProduct = (
         : throwError('Wrong graphql operation'),
   );
 
-export const createTestCart = (
-  chainIdx: number,
-  groupIdx: number,
-  unitIdx: number,
-  productIdx: number,
-  userIdx: number,
-  cartIdx: number,
-) =>
+export const createTestCart = ({
+  chainIdx,
+  groupIdx,
+  unitIdx,
+  productIdx,
+  userIdx,
+  cartIdx,
+}: {
+  chainIdx: number;
+  groupIdx: number;
+  unitIdx: number;
+  productIdx: number;
+  userIdx: number;
+  cartIdx: number;
+}) =>
   pipe(
     API.graphql(
       graphqlOperation(AmplifyApiMutationDocuments.createCart, {
