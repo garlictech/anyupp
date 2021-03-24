@@ -8,11 +8,9 @@ Feature: Login
   Scenario: Forgotten password steps
     When I click on the "Forgot your password?" text
     Then I should see "Forgot your password?" header
-    When I fill out the username input with "laura@bitgap.com"
+    When I fill out the username input with "test@test.com"
     And I click on the "Reset my password" button
-    #TODO: next step
 
-@focus
   Scenario: Login with an e-mail and password
     Then I should see "Username" label
     And I should see "Password" label
