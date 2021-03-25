@@ -1,4 +1,4 @@
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult, QueryOptions } from 'apollo-client';
 import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
 import { from, Observable } from 'rxjs';
@@ -64,6 +64,7 @@ export class GraphqlApiClient {
   query<T = unknown>(
     document: DocumentNode,
     variables?: Record<string, unknown>,
+    options?: Partial<QueryOptions> | undefined,
   ): Observable<ApolloQueryResult<T>> {
     this.logger.debug(
       `Query ${JSON.stringify(document)} called with variables ${JSON.stringify(
@@ -76,6 +77,7 @@ export class GraphqlApiClient {
       this._client.query({
         query: document,
         variables,
+        ...options,
       }),
     ).pipe(
       this._graphqlRetryLogic,

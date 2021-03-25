@@ -1,3 +1,4 @@
+import { QueryOptions } from 'apollo-client';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 import { pluck } from 'rxjs/operators';
@@ -14,9 +15,10 @@ export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
 export const executeQuery = (client: GraphqlApiClient) => <T>(
   gqlDocument: string | DocumentNode,
   variables?: Record<string, unknown>,
+  queryOptions?: Partial<QueryOptions>,
 ) =>
   client
-    .query<T>(toGraphQLDocument(gqlDocument), variables)
+    .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
     .pipe(pluck('data'));
 
 export const executeMutation = (client: GraphqlApiClient) => <T>(
