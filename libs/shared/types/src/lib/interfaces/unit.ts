@@ -27,8 +27,9 @@ export interface IDetailedLane extends ILane {
 }
 
 export interface IUnit extends IContact, IAddressInfo {
-  id: string;
+  __typename: 'Unit';
   _group?: IGroup;
+  id: string;
   groupId: string;
   chainId: string;
   isActive?: boolean;
@@ -40,9 +41,11 @@ export interface IUnit extends IContact, IAddressInfo {
   lanes?: [ILane];
   floorMap?: IFloorMapData;
   paymentModes?: IPaymentMode[];
+  createdAt: string;
+  updatedAt: string;
 }
 
-export const unitSchema: Joi.SchemaMap = {
+export const unitSchema: Joi.SchemaMap<IUnit> = {
   __typename: Joi.string().valid('Unit').optional(),
   id: Joi.string().required(),
   groupId: Joi.string().required(),

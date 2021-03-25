@@ -5,6 +5,7 @@ import { validateSchema } from '../validation/validate';
 import { IOrderItem, IPlace, placeSchema } from './order';
 
 export interface ICart {
+  __typename: 'Cart';
   id: string;
   userId: string;
   unitId: string;
@@ -15,7 +16,7 @@ export interface ICart {
   updatedAt: string;
 }
 
-export const cartSchema: Joi.SchemaMap = {
+export const cartSchema: Joi.SchemaMap<ICart> = {
   __typename: Joi.string().valid('Cart').optional(),
   id: Joi.string().required(),
   userId: Joi.string().required(),

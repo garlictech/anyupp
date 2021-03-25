@@ -5,17 +5,19 @@ import { IContact } from './contact';
 import { ILocalizedItem } from './localized-item';
 
 export interface IGroup extends IContact, IAddressInfo {
+  __typename: 'Group';
   id: string;
   chainId: string;
   name: string;
   description: ILocalizedItem<string>;
   currency: string; // group edit, unit readonly
+  createdAt: string;
+  updatedAt: string;
 }
 
-export const groupSchema: Joi.SchemaMap = {
+export const groupSchema: Joi.SchemaMap<IGroup> = {
   __typename: Joi.string().valid('Group').optional(),
   id: Joi.string().required(),
-  groupId: Joi.string().required(),
   chainId: Joi.string().required(),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
