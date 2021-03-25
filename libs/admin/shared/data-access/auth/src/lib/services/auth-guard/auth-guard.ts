@@ -54,6 +54,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this._getAdminUser().pipe(
       map((adminUser: IAdminUser | undefined) => {
+        /* TODO use admin with contexts
         if (adminUser?.roles?.role === EAdminRole.INACTIVE) {
           this._cognitoService.signOut();
           this._router.navigate(['auth/login']);
@@ -66,6 +67,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this._router.navigate(['admin/dashboard']);
           }
         }
+        */
 
         return true;
       }),
@@ -79,15 +81,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           this._cognitoService.getAuth(),
       ),
       switchMap(
-        (cognitoUser): Observable<IAdminUser | undefined> =>
-          cognitoUser
+        (cognitoUser): Observable<IAdminUser | undefined> => {
+          return cognitoUser
             ? from(
                 <Promise<GraphQLResult<GetAdminUserQuery>>>API.graphql({
                   query: Queries.getAdminUser,
                   variables: { id: <string>cognitoUser?.user?.id },
                 }),
-              ).pipe(map(data => (<IAuthAdminResult>data).data?.getAdminUser))
-            : of(undefined),
+              ).pipe(map(data => {
+                return (<IAuthAdminResult>data).data?.getAdminUser;
+              }))
+            : of(undefined)
+          }
       ),
       take(1),
     );

@@ -22,9 +22,13 @@ import {
   OnUnitsChangeSubscription,
   OnUsersChangeSubscription,
   OnChainProductChangeSubscription,
+  ListRoleContextsQuery,
+  OnRoleContextsChangeSubscription,
+  GetRoleContextQuery,
 } from '@bgap/admin/amplify-api';
 
 export type queryTypes = GetAdminUserQuery &
+  GetRoleContextQuery &
   GetChainQuery &
   GetGroupQuery &
   GetUnitQuery &
@@ -34,6 +38,7 @@ export type queryTypes = GetAdminUserQuery &
   GetUserQuery &
   GetChainProductQuery;
 export type listTypes = ListAdminUsersQuery &
+  ListRoleContextsQuery &
   ListChainsQuery &
   ListGroupsQuery &
   ListUnitsQuery &
@@ -44,6 +49,7 @@ export type listTypes = ListAdminUsersQuery &
   ListChainProductsQuery;
 export type apiQueryTypes = queryTypes & listTypes;
 export type subscriptionTypes = OnAdminUserChangeSubscription &
+  OnRoleContextsChangeSubscription &
   OnChainsChangeSubscription &
   OnGroupsChangeSubscription &
   OnUnitsChangeSubscription &

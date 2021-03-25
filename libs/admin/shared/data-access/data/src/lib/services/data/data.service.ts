@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
+import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
@@ -30,6 +31,7 @@ import {
   IOrder,
   IProduct,
   IProductCategory,
+  IRoleContext,
   IUnit,
   IUser,
 } from '@bgap/shared/types';
@@ -57,6 +59,7 @@ export class DataService {
   ) {}
 
   public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
+
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
@@ -112,37 +115,18 @@ export class DataService {
           ();
       });
 
-    this._store
-      .pipe(
-        select(loggedUserSelectors.getLoggedUserRoles),
-        filter((roles: IAdminUserRole | undefined): boolean => !!roles),
-        takeUntil(this._destroyConnection$),
-      )
-      .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
-        this._rolesChanged$.next(true);
+    // Lists
 
-        switch (adminUserRoles?.role) {
-          case EAdminRole.SUPERUSER:
-            this._createSuperuserSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.CHAIN_ADMIN:
-            this._createChainAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.GROUP_ADMIN:
-            this._createGroupAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.UNIT_ADMIN:
-            this._createUnitAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.STAFF:
-            this._createStaffSubscriptions(adminUserRoles);
-            break;
-          default:
-            break;
-        }
-      });
+    this._subscribeToRoleContext();
+    this._subscribeToChains();
+    this._subscribeToGroups();
+    this._subscribeToUnits();
+    this._subscribeToUsers();
+    this._subscribeToAdminUsers();
+
 
     // Get user language
+
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
@@ -151,83 +135,29 @@ export class DataService {
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
+
   }
 
-  private _createSuperuserSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole('*');
-    this._subscribeToGroupsByRole('id', '*');
-    this._subscribeToUnitsByRole('id', '*');
-    this._subscribeToUsers();
-    this._subscribeToAdminUsers(adminUserRoles);
+  private _subscribeToRoleContext(): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listRoleContexts',
+        subscriptionName: 'onRoleContextsChange',
+        resetFn: () => {
+          this._store.dispatch(roleContextActions.resetRoleContexts());
+        },
+        upsertFn: (roleContext: unknown): void => {
+          this._store.dispatch(
+            roleContextActions.upsertRoleContext({
+              roleContext: <IRoleContext>roleContext,
+            }),
+          );
+        },
+      })
+      .subscribe();
   }
 
-  private _createChainAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'chainId',
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToUnitsByRole(
-      'chainId',
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createGroupAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'groupId',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createUnitAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createStaffSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-    );
-  }
-
-  private _subscribeToChainsByRole(
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (chain: IChain): boolean =>
-      loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(chain.id);
-
+  private _subscribeToChains(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listChains',
@@ -236,28 +166,17 @@ export class DataService {
           this._store.dispatch(chainsActions.resetChains());
         },
         upsertFn: (chain: unknown): void => {
-          if (allowUpsert(<IChain>chain)) {
-            this._store.dispatch(
-              chainsActions.upsertChain({
-                chain: <IChain>chain,
-              }),
-            );
-          }
+          this._store.dispatch(
+            chainsActions.upsertChain({
+              chain: <IChain>chain,
+            }),
+          );
         },
       })
       .subscribe();
   }
 
-  private _subscribeToGroupsByRole(
-    fieldName: keyof IGroup,
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (group: IGroup): boolean => {
-      return loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(<string>group[fieldName]);
-    };
-
+  private _subscribeToGroups(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroups',
@@ -266,27 +185,17 @@ export class DataService {
           this._store.dispatch(groupsActions.resetGroups());
         },
         upsertFn: (group: unknown): void => {
-          if (allowUpsert(<IGroup>group)) {
-            this._store.dispatch(
-              groupsActions.upsertGroup({
-                group: <IGroup>group,
-              }),
-            );
-          }
+          this._store.dispatch(
+            groupsActions.upsertGroup({
+              group: <IGroup>group,
+            }),
+          );
         },
       })
       .subscribe();
   }
 
-  private _subscribeToUnitsByRole(
-    fieldName: keyof IUnit,
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (unit: IUnit): boolean =>
-      loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(<string>unit[fieldName]);
-
+  private _subscribeToUnits(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listUnits',
@@ -295,13 +204,11 @@ export class DataService {
           this._store.dispatch(unitsActions.resetUnits());
         },
         upsertFn: (unit: unknown): void => {
-          if (allowUpsert(<IUnit>unit)) {
-            this._store.dispatch(
-              unitsActions.upsertUnit({
-                unit: <IUnit>unit,
-              }),
-            );
-          }
+          this._store.dispatch(
+            unitsActions.upsertUnit({
+              unit: <IUnit>unit,
+            }),
+          );
         },
       })
       .subscribe();
@@ -528,22 +435,7 @@ export class DataService {
       .subscribe();
   }
 
-  private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
-    const allowUpsert = (adminUser: IAdminUser): boolean => {
-      switch (loggedAdminRole.role) {
-        case EAdminRole.SUPERUSER:
-          return true;
-        case EAdminRole.CHAIN_ADMIN:
-          return chainAdminFilter(adminUser, loggedAdminRole);
-        case EAdminRole.GROUP_ADMIN:
-          return groupAdminFilter(adminUser, loggedAdminRole);
-        case EAdminRole.UNIT_ADMIN:
-          return unitAdminFilter(adminUser, loggedAdminRole);
-        default:
-          return false;
-      }
-    };
-
+  private _subscribeToAdminUsers(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listAdminUsers',
@@ -552,13 +444,11 @@ export class DataService {
           this._store.dispatch(adminUsersActions.resetAdminUsers());
         },
         upsertFn: (adminUser: unknown): void => {
-          if (allowUpsert(<IAdminUser>adminUser)) {
-            this._store.dispatch(
-              adminUsersActions.upsertAdminUser({
-                adminUser: <IAdminUser>adminUser,
-              }),
-            );
-          }
+          this._store.dispatch(
+            adminUsersActions.upsertAdminUser({
+              adminUser: <IAdminUser>adminUser,
+            }),
+          );
         },
       })
       .subscribe();
@@ -714,6 +604,8 @@ export class DataService {
     userId: string,
     value: IAdminUserSettings,
   ): Promise<void> {
+    console.error('updateAdminUserSettings');
+
     await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',
@@ -733,6 +625,7 @@ export class DataService {
     userId: string,
     language: string,
   ): Promise<void> {
+    console.error('updateAdminUserSeletedLanguage');
     await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',

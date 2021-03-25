@@ -15,11 +15,6 @@ export const getAdminUsersState = createFeatureSelector<
 
 const { selectAll, selectEntities } = adminUsersAdapter.getSelectors();
 
-export const getAdminUsersLoaded = createSelector(
-  getAdminUsersState,
-  (state: IAdminUsersState) => state.loaded,
-);
-
 export const getAdminUsersError = createSelector(
   getAdminUsersState,
   (state: IAdminUsersState) => state.error,
@@ -33,17 +28,6 @@ export const getAllAdminUsers = createSelector(
 export const getAdminUsersEntities = createSelector(
   getAdminUsersState,
   (state: IAdminUsersState) => selectEntities(state),
-);
-
-export const getSelectedId = createSelector(
-  getAdminUsersState,
-  (state: IAdminUsersState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getAdminUsersEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
 );
 
 export const getAdminUserById = (id: string) => {

@@ -174,7 +174,6 @@ export class ProductFormComponent
         }
       } else {
         try {
-          console.error('insert chain product', value);
           await this._amplifyDataService.create('createChainProduct', value);
 
           this._toasterService.show(

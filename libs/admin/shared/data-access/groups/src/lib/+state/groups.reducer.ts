@@ -7,8 +7,6 @@ import * as GroupsActions from './groups.actions';
 export const GROUPS_FEATURE_KEY = 'groups';
 
 export interface IGroupsState extends EntityState<IGroup> {
-  selectedId?: string | number; // which Groups record has been selected
-  loaded: boolean; // has the Groups list been loaded
   error?: string | null; // last known error (if any)
 }
 
@@ -20,14 +18,11 @@ export const groupsAdapter: EntityAdapter<IGroup> = createEntityAdapter<
   IGroup
 >();
 
-export const initialState: IGroupsState = groupsAdapter.getInitialState({
-  // set initial required properties
-  loaded: false,
-});
+export const initialState: IGroupsState = groupsAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
-  on(GroupsActions.init, state => ({ ...state, loaded: false, error: null })),
+  on(GroupsActions.init, state => ({ ...state, error: null })),
   on(GroupsActions.upsertGroup, (state, { group }) =>
     groupsAdapter.upsertOne(group, state),
   ),

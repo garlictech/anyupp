@@ -1522,6 +1522,64 @@
           }
         }
       }
+    },
+    "admin-shared-data-access-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/role-contexts",
+      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/shared/data-access/role-contexts/tsconfig.lib.json",
+              "libs/admin/shared/data-access/role-contexts/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/shared/data-access/role-contexts/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/pages/role-contexts",
+      "sourceRoot": "libs/admin/pages/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/admin/pages/role-contexts/tsconfig.lib.json",
+              "libs/admin/pages/role-contexts/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/admin/pages/role-contexts/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/pages/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

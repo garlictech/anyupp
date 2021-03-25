@@ -15,11 +15,6 @@ export const getChainsState = createFeatureSelector<IChainsState>(
 
 const { selectAll, selectEntities } = chainsAdapter.getSelectors();
 
-export const getChainsLoaded = createSelector(
-  getChainsState,
-  (state: IChainsState) => state.loaded,
-);
-
 export const getChainsError = createSelector(
   getChainsState,
   (state: IChainsState) => state.error,
@@ -33,17 +28,6 @@ export const getAllChains = createSelector(
 export const getChainsEntities = createSelector(
   getChainsState,
   (state: IChainsState) => selectEntities(state),
-);
-
-export const getSelectedId = createSelector(
-  getChainsState,
-  (state: IChainsState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getChainsEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
 );
 
 export const getChainById = (id: string) => {

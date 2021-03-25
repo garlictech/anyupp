@@ -81,7 +81,8 @@
     "groups": "Groups",
     "chains": "Chains",
     "users": "Felhasználók",
-    "admins": "Adminisztrátorok"
+    "admins": "Adminisztrátorok",
+    "roleContexts": "Jog környezetek"
   },
   "header": {
     "profile": "Profile",
@@ -218,6 +219,12 @@
     "editAdminUser": "Adminisztrátor szerkesztése",
     "newAdminUser": "Új adminisztrátor",
     "editAdminUserRole": "Adminisztrátori jogok szerkesztése"
+  },
+  "roleContexts": {
+    "listTitle": "Jogkörnyezetek",
+    "editAdminUser": "Jogkörnyezet szerkesztése",
+    "newAdminUser": "Új jogkörnyezet",
+    "contextId": "Jogkörnyezet azonosító"
   },
   "orders": {
     "listTitle": "Megrendelések",

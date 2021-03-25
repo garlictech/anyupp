@@ -11,11 +11,6 @@ export const getUnitsState = createFeatureSelector<IUnitsState>(
 
 const { selectAll, selectEntities } = unitsAdapter.getSelectors();
 
-export const getUnitsLoaded = createSelector(
-  getUnitsState,
-  (state: IUnitsState) => state.loaded,
-);
-
 export const getUnitsError = createSelector(
   getUnitsState,
   (state: IUnitsState) => state.error,
@@ -28,17 +23,6 @@ export const getAllUnits = createSelector(getUnitsState, (state: IUnitsState) =>
 export const getUnitsEntities = createSelector(
   getUnitsState,
   (state: IUnitsState) => selectEntities(state),
-);
-
-export const getSelectedId = createSelector(
-  getUnitsState,
-  (state: IUnitsState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getUnitsEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
 );
 
 export const getUnitById = (id: string) => {

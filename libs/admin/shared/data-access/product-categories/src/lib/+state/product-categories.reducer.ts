@@ -7,8 +7,6 @@ import * as ProductCategoriesActions from './product-categories.actions';
 export const PRODUCT_CATEGORIES_FEATURE_KEY = 'productCategories';
 
 export interface IProductCategoriesState extends EntityState<IProductCategory> {
-  selectedId?: string | number; // which ProductCategories record has been selected
-  loaded: boolean; // has the ProductCategories list been loaded
   error?: string | null; // last known error (if any)
 }
 
@@ -21,17 +19,13 @@ export const productCategoriesAdapter: EntityAdapter<IProductCategory> = createE
 >();
 
 export const initialState: IProductCategoriesState = productCategoriesAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const reducer = createReducer(
   initialState,
   on(ProductCategoriesActions.init, state => ({
     ...state,
-    loaded: false,
     error: null,
   })),
   on(
