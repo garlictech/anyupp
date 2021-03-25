@@ -1,7 +1,4 @@
-import {
-  awsConfig,
-  CreateAdminUserMutation,
-} from '@bgap/admin/amplify-api';
+import { awsConfig, CreateAdminUserMutation } from '@bgap/admin/amplify-api';
 import {
   GraphqlApiKey,
   GraphqlApiUrl,
@@ -81,7 +78,6 @@ describe('Admin user creation/deletion', () => {
           }),
         ),
         x => x as Observable<ApolloQueryResult<CreateAdminUserMutation>>,
-        tap(x => console.log('****1', x)),
         map(result => result.data.createAdminUser),
         switchMap(() =>
           apiClient
