@@ -68,15 +68,15 @@ export const seedAdminUser = (UserPoolId: string) =>
           Value: username,
         },
         {
-          Name: 'fullname',
+          Name: 'name',
           Value: 'Test Elek',
         },
         {
-          Name: 'phoneNumber',
+          Name: 'phone_number',
           Value: '+123456789012',
         },
         {
-          Name: 'profilePicture',
+          Name: 'picture',
           Value:
             'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
         },

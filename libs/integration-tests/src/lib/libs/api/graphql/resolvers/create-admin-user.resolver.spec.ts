@@ -1,4 +1,7 @@
-import { awsConfig } from '@bgap/admin/amplify-api';
+import {
+  awsConfig,
+  CreateAdminUserMutation,
+} from '@bgap/admin/amplify-api';
 import {
   GraphqlApiKey,
   GraphqlApiUrl,
@@ -6,10 +9,11 @@ import {
   testAdminUserPassword,
 } from '../../../../common';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
-import { from, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { CreateAdminUser, DeleteAdminUser } from '@bgap/api/graphql/schema';
+import { ApolloQueryResult } from 'apollo-client';
 
 Amplify.configure({
   ...awsConfig,
@@ -18,8 +22,8 @@ Amplify.configure({
   aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
 });
 
-describe('Testing backend seed state', () => {
-  test('Test user must be present and we can log in', done => {
+describe('Admin user creation/deletion', () => {
+  test('Admin user should be created/deleted', done => {
     const appsyncConfig = {
       ...awsConfig,
       aws_appsync_graphqlEndpoint: GraphqlApiUrl,
@@ -76,9 +80,9 @@ describe('Testing backend seed state', () => {
             input: { email: userName },
           }),
         ),
-        tap(result =>
-          expect(result).toMatchSnapshot('Successful user creation with email'),
-        ),
+        x => x as Observable<ApolloQueryResult<CreateAdminUserMutation>>,
+        tap(x => console.log('****1', x)),
+        map(result => result.data.createAdminUser),
         switchMap(() =>
           apiClient
             .mutate(CreateAdminUser, {
@@ -91,6 +95,13 @@ describe('Testing backend seed state', () => {
               }),
             ),
         ),
+        // Cleanup
+        switchMap(() =>
+          apiClient.mutate(DeleteAdminUser, {
+            userName,
+          }),
+        ),
+        tap(result => expect(result).toMatchSnapshot('Cleanup')),
       )
       .subscribe(
         () => done(),

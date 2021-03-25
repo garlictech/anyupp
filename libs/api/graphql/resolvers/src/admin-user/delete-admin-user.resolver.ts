@@ -25,48 +25,44 @@ export const deleteAdminUser = (params: DeleteAdminUserMutationVariables) => {
   console.debug('Resolver parameters: ', params);
   let userId: string;
 
-  return (
-    from(
-      cognitoidentityserviceprovider
-        .adminGetUser({
-          UserPoolId,
-          Username: params.userName,
-        })
-        .promise(),
-    ),
-    tap(x => console.debug('Step 1 result:', x)),
-    map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
-      pipe(
-        user.UserAttributes,
-        fp.find(attr => attr.Name === 'sub'),
-        attr => attr?.Value,
-      ),
-    ),
-    tap(x => console.debug('Step 2 result:', x)),
-    filter(fp.negate(fp.isEmpty)),
-    tap((sub: string) => (userId = sub)),
-    tap(x => console.debug('Step 3 result:', x)),
-    switchMap(() =>
-      cognitoidentityserviceprovider
-        .adminDeleteUser({
-          UserPoolId,
-          Username: params.userName,
-        })
-        .promise(),
-    ),
-    tap(x => console.debug('Step 4 result:', x)),
-    switchMap(() =>
-      pipe(
-        API.graphql(
-          graphqlOperation(amplifyDeleteAdminUser, { input: { id: userId } }),
+  return from(
+    cognitoidentityserviceprovider
+      .adminGetUser({
+        UserPoolId,
+        Username: params.userName,
+      })
+      .promise(),
+  )
+    .pipe(
+      map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
+        pipe(
+          user.UserAttributes,
+          fp.find(attr => attr.Name === 'sub'),
+          attr => attr?.Value,
         ),
-        operation =>
-          operation instanceof Promise
-            ? (from(operation) as Observable<GraphQLResult<AmplifyAdminUser>>)
-            : throwError('Wrong graphql operation'),
       ),
-    ),
-    tap(x => console.debug('Step 5 result:', x)),
-    mapTo(true)
-  );
+      filter(fp.negate(fp.isEmpty)),
+      tap((sub: string) => (userId = sub)),
+      switchMap(() =>
+        cognitoidentityserviceprovider
+          .adminDeleteUser({
+            UserPoolId,
+            Username: params.userName,
+          })
+          .promise(),
+      ),
+      switchMap(() =>
+        pipe(
+          API.graphql(
+            graphqlOperation(amplifyDeleteAdminUser, { input: { id: userId } }),
+          ),
+          operation =>
+            operation instanceof Promise
+              ? (from(operation) as Observable<GraphQLResult<AmplifyAdminUser>>)
+              : throwError('Wrong graphql operation'),
+        ),
+      ),
+      mapTo(true),
+    )
+    .toPromise();
 };
