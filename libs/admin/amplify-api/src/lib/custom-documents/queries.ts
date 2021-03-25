@@ -1,3 +1,5 @@
+import { validateSchema, groupSchema, IGroup } from '@bgap/shared/types';
+
 export const getGroupCurrency = /* GraphQL */ `
   query GetGroupCurrency($id: ID!) {
     getGroupCurrency(id: $id) {
@@ -5,3 +7,8 @@ export const getGroupCurrency = /* GraphQL */ `
     }
   }
 `;
+
+export const { validate: validateGetGroupCurrency } = validateSchema<IGroup>(
+  { currency: groupSchema.currency },
+  'GetGroupCurrency',
+);

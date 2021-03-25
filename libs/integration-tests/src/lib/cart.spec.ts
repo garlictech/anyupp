@@ -1,5 +1,5 @@
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
-import { existingCartId, notExistingCartId } from './fixtures/cart';
+import { cartSeed } from './fixtures/cart';
 import {
   amplifyGraphQlClient,
   executeQuery,
@@ -9,19 +9,18 @@ describe('getCart test', () => {
   it('successful query execution', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,
-      { id: existingCartId },
+      { id: cartSeed.cart_01.id },
     ).subscribe({
       next(x) {
-        expect(x.getCart?.id).toEqual(existingCartId);
+        expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
         done();
       },
     });
   });
-
   it('should return null for a not existing item', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,
-      { id: notExistingCartId },
+      { id: cartSeed.cartId_NotExisting },
     ).subscribe({
       next(x) {
         expect(x.getCart).toBeNull();
@@ -29,7 +28,6 @@ describe('getCart test', () => {
       },
     });
   }, 10000);
-
   it('should throw error without id as input', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,

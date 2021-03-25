@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { combineLatest, Observable } from 'rxjs';
-import { map, mapTo, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 import {
   AmplifyApi,
@@ -19,15 +19,17 @@ import {
   IOrderItem,
   IUnit,
   validateCart,
+  validateOrder,
   validateUnit,
+  validateUnitProduct,
 } from '@bgap/shared/types';
 import {
   getUnitIsNotAcceptingOrdersError,
-  missingParametersCheck,
   pipeDebug,
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
+import { IOrder } from '@bgap/shared/types';
 
 export const createOrderFromCart = async ({
   userId,
@@ -98,7 +100,7 @@ export const createOrderFromCart = async ({
       })),
       switchMap(props =>
         createOrder({ orderInput: props.orderInput, graphqlApiClient }).pipe(
-          map(o => ({ ...props, orderId: o.createOrder?.id as string })),
+          map(x => ({ ...props, orderId: x.id as string })),
         ),
       ),
       // Remove the cart from the db after the order has been created successfully
@@ -120,16 +122,11 @@ const toOrderInputFormat = ({
   place,
 }: {
   userId: string;
-  unitId?: string;
-  paymentMethod?: string;
-  items?: AmplifyApi.OrderItemInput[];
-  place?: AmplifyApi.PlaceInput;
+  unitId: string;
+  paymentMethod: string;
+  items: AmplifyApi.OrderItemInput[];
+  place: AmplifyApi.PlaceInput;
 }): AmplifyApi.CreateOrderInput => {
-  if (!paymentMethod) throw 'Missing paymentMethod';
-  if (!unitId) throw 'Missing unitId';
-  if (!items) throw 'Missing items';
-  if (!place) throw 'Missing place';
-
   return {
     userId,
     takeAway: false,
@@ -187,16 +184,6 @@ const convertCartOrderToOrderItem = ({
     '### ~ file: order.service.ts ~ line 192 ~ cartItem',
     JSON.stringify(cartItem, undefined, 2),
   );
-  missingParametersCheck<AmplifyApi.OrderItem>(cartItem, [
-    'productName',
-    'quantity',
-    'productId',
-    'priceShown',
-  ]);
-  missingParametersCheck<AmplifyApi.PriceShown>(cartItem.priceShown, [
-    'pricePerUnit',
-    'tax',
-  ]);
 
   return {
     ...cartItem,
@@ -227,11 +214,15 @@ const convertCartOrderToOrderItem = ({
 const getLaneIdForCartItem = (
   graphqlApiClient: GraphqlApiClient,
   productId: string,
-): Observable<string | null | undefined> => {
+): Observable<string | undefined> => {
   return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitProductQuery>(
     AmplifyApiQueryDocuments.getUnitProduct,
     { id: productId },
-  ).pipe(map(product => product.getUnitProduct?.laneId));
+  ).pipe(
+    map(product => product.getUnitProduct),
+    switchMap(validateUnitProduct),
+    map(product => product.laneId),
+  );
 };
 
 const createStatusLog = (
@@ -252,13 +243,16 @@ const createOrder = ({
 }: {
   orderInput: AmplifyApi.CreateOrderInput;
   graphqlApiClient: GraphqlApiClient;
-}) => {
+}): Observable<IOrder> => {
   return executeMutation(graphqlApiClient)<AmplifyApi.CreateOrderMutation>(
     AmplifyApiMutationDocuments.createOrder,
     {
       input: orderInput,
     },
-  ).pipe(throwIfEmpty(() => 'Order is not in response'));
+  ).pipe(
+    map(x => x.createOrder),
+    switchMap(validateOrder),
+  );
 };
 
 const getUnit = (
@@ -269,7 +263,7 @@ const getUnit = (
     AmplifyApiQueryDocuments.getUnit,
     { id },
   ).pipe(
-    map(o => o.getUnit),
+    map(x => x.getUnit),
     switchMap(validateUnit),
   );
 };
@@ -297,15 +291,16 @@ const deleteCart = (
   ).pipe(mapTo(true));
 };
 
-const getGroupCurrency = (graphqlApiClient: GraphqlApiClient, id: string) => {
+const getGroupCurrency = (
+  graphqlApiClient: GraphqlApiClient,
+  id: string,
+): Observable<string> => {
   return executeQuery(graphqlApiClient)<AmplifyApi.GetGroupQuery>(
     AmplifyApiQueryDocuments.getGroupCurrency,
     { input: { id } },
   ).pipe(
-    // getFieldOrThrowMap('getUnit'),
-    // map(o => getFieldOrThrow(o, 'getUnit')),
-    // pluck<AmplifyApi.GetUnitQuery, AmplifyApi.Unit>('getUnit'),
-    map(o => o.getGroup?.currency as string),
-    throwIfEmpty(() => 'Missing GroupCurrency'),
+    map(x => x.getGroup),
+    switchMap(AmplifyApiQueryDocuments.validateGetGroupCurrency),
+    map(x => x.currency),
   );
 };

@@ -8,7 +8,7 @@ type Image = {
 const imageSchema: Joi.SchemaMap = {
   url: Joi.string().uri().required(),
   width: Joi.number().integer().positive(),
-  height: Joi.number().integer().positive(),
+  height: Joi.number().integer().positive().optional(),
 };
 const image: Image = {
   url: 'http://imgURL.hu',
@@ -33,6 +33,18 @@ describe('JOI validaton test', () => {
     expect(isImage(imageInvalid)).toEqual(false);
   });
 
+  it('validateImage ', async () => {
+    const { height, ...imageWithoutHeight } = image;
+    const imageTyped: Image = await validateImage(
+      imageWithoutHeight,
+    ).toPromise();
+    expect(imageTyped).toMatchInlineSnapshot(`
+      Object {
+        "url": "http://imgURL.hu",
+        "width": 100,
+      }
+    `);
+  });
   it('validateImage ', async () => {
     const imageTyped: Image = await validateImage(image).toPromise();
     expect(imageTyped).toMatchInlineSnapshot(`

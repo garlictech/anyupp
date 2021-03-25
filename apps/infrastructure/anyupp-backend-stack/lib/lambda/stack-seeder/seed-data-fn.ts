@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { from, throwError } from 'rxjs';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { EPaymentMethod, EProductType } from '@bgap/shared/types';
+import { EProductType, EPaymentMethod } from '@bgap/shared/types';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,

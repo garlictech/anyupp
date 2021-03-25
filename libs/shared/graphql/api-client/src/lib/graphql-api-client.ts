@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 import API from '@aws-amplify/api';
 import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
-import { buildRetryLogic, pipeDebug } from '@bgap/shared/utils';
+import { buildRetryLogic } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,7 +79,7 @@ export class GraphqlApiClient {
       }),
     ).pipe(
       this._graphqlRetryLogic,
-      pipeDebug('### QUERY AfterRetry'),
+      // pipeDebug('### QUERY AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
   }
@@ -94,7 +94,7 @@ export class GraphqlApiClient {
       }),
     ).pipe(
       this._graphqlRetryLogic,
-      pipeDebug('### MUTATION AfterRetry'),
+      // pipeDebug('### MUTATION AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
   }

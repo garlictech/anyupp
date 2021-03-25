@@ -1,11 +1,11 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { validateSchema } from '../validation/validate';
 import { IAddressInfo } from './address';
 import { IContact } from './contact';
 import { ILocalizedItem } from './localized-item';
 
 export interface IGroup extends IContact, IAddressInfo {
-  __typename: 'Group';
+  __typename?: 'Group';
   id: string;
   chainId: string;
   name: string;

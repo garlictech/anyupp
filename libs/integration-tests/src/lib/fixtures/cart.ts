@@ -1,2 +1,62 @@
-export const existingCartId = 'cart_1_id';
-export const notExistingCartId = 'NOT_EXISTING_CART';
+import { EPaymentMethod, EOrderStatus } from '@bgap/shared/types';
+import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { unitSeed } from './unit';
+
+const cartId_01 = 'cart_1_id';
+const unitId_01 = unitSeed.unitId_seeded;
+
+// fictional - not exsisting
+const cartId_NotExisting = 'NOT_EXSISTING_CART';
+const unitProductId_01 = 'unit_product_1_id';
+const variantId_01 = 'variant_1_id';
+const laneId_01 = 'lane_1_id';
+const userId_01 = 'user_1_id';
+
+const getOrderItem = (): AmplifyApi.OrderItemInput => ({
+  productName: {
+    en: 'Water',
+    hu: 'Viz',
+  },
+  priceShown: {
+    currency: 'EUR',
+    pricePerUnit: 1,
+    priceSum: 2,
+    tax: 1,
+    taxSum: 2,
+  },
+  // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
+  productId: unitProductId_01,
+  quantity: 2,
+  // variantId: generateVariantId(chainIdx, productIdx, 1),
+  variantId: variantId_01,
+  variantName: {
+    en: 'glass',
+    hu: 'pohár',
+  },
+  // laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+  laneId: laneId_01,
+  statusLog: [
+    {
+      userId: userId_01,
+      status: EOrderStatus.PLACED,
+      ts: 1234,
+    },
+  ],
+});
+
+const cart_01: AmplifyApi.CreateCartInput = {
+  id: cartId_01,
+  userId: userId_01,
+  unitId: unitId_01,
+  paymentMethod: EPaymentMethod.INAPP,
+  place: {
+    seat: 'SEAT',
+    table: 'TABLE',
+  },
+  items: [getOrderItem()],
+};
+
+export const cartSeed = {
+  cartId_NotExisting,
+  cart_01,
+};

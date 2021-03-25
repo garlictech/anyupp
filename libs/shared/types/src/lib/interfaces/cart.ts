@@ -2,14 +2,14 @@ import * as Joi from 'joi';
 
 import { EPaymentMethod, paymentMethodSchema } from '../enums/payment-method';
 import { validateSchema } from '../validation/validate';
-import { IOrderItem, IPlace, placeSchema } from './order';
+import { IOrderItem, IPlace, placeSchema, orderItemSchema } from './order';
 
 export interface ICart {
-  __typename: 'Cart';
+  __typename?: 'Cart';
   id: string;
   userId: string;
   unitId: string;
-  place?: IPlace;
+  place: IPlace;
   paymentMethod: EPaymentMethod;
   items: Array<IOrderItem>;
   createdAt: string;
@@ -21,9 +21,9 @@ export const cartSchema: Joi.SchemaMap<ICart> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
-  place: Joi.object(placeSchema).allow(null),
+  place: Joi.object(placeSchema),
   paymentMethod: paymentMethodSchema.required(),
-  items: Joi.array().required(),
+  items: Joi.array().items(orderItemSchema),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

@@ -27,7 +27,7 @@ export interface IDetailedLane extends ILane {
 }
 
 export interface IUnit extends IContact, IAddressInfo {
-  __typename: 'Unit';
+  __typename?: 'Unit';
   _group?: IGroup;
   id: string;
   groupId: string;
