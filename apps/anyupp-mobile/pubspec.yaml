@@ -76,11 +76,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # artemis: ^5.1.0 # to generate dart classes from graphql queries
-  build_runner: ^1.5.0 # required by artemis
+  # artemis: ^6.18.4 # to generate dart classes from graphql queries
+  # build_runner: ^1.5.0 # required by artemis
+  build_runner: ^1.10.1
+  gql_pedantic: ^1.0.2
+  gql_build: ^0.1.3
+  ferry_generator: ^0.3.3
   effective_dart: ^1.0.0
   flutter_launcher_icons: ^0.8.0
 
+dependency_overrides:
+  analyzer: '0.39.14'
+  
 flutter_icons:
   android: 'launcher_icon'
   ios: true
