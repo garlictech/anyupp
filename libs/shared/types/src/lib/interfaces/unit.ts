@@ -1,12 +1,12 @@
 import * as Joi from 'joi';
 
 import { validateSchema } from '../validation/validate';
-import { IAddressInfo } from './address';
-import { IContact } from './contact';
-import { IFloorMapData } from './floor-map';
+import { addressInfoSchema, IAddressInfo } from './address';
+import { contactSchema, IContact } from './contact';
+import { floorMapSchema, IFloorMapData } from './floor-map';
 import { IGroup } from './group';
-import { ILocalizedItem } from './localized-item';
-import { IPaymentMode } from './payment';
+import { ILocalizedItem, localizedItemSchema } from './localized-item';
+import { IPaymentMode, paymentModeSchema } from './payment';
 import { IDailySchedule, IWeeklySchedule } from './weekly-schedule';
 
 export interface IUnitSeat {
@@ -15,11 +15,17 @@ export interface IUnitSeat {
 }
 
 export interface ILane {
+  __typename?: 'Lane';
   id?: string;
   name: string;
   color: string;
 }
-
+export const laneSchema: Joi.SchemaMap<ILane> = {
+  __typename: Joi.string().valid('Lane').optional(),
+  id: Joi.string().allow(null),
+  name: Joi.string().required(),
+  color: Joi.string().required(),
+};
 export interface IDetailedLane extends ILane {
   placedCount?: number;
   processingCount?: number;
@@ -50,8 +56,19 @@ export const unitSchema: Joi.SchemaMap<IUnit> = {
   id: Joi.string().required(),
   groupId: Joi.string().required(),
   chainId: Joi.string().required(),
+  isActive: Joi.boolean().allow(null),
+  isAcceptingOrders: Joi.boolean().allow(null),
+  name: Joi.string().allow(null),
+  description: localizedItemSchema.required(),
+  open: Joi.object(),
+  openingHours: Joi.object().allow(null),
+  lanes: Joi.array().items(laneSchema).allow(null),
+  floorMap: Joi.object(floorMapSchema).allow(null),
+  paymentModes: Joi.array().items(paymentModeSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
+  ...contactSchema,
+  ...addressInfoSchema,
 };
 
 export const { validate: validateUnit, isType: isUnit } = validateSchema<IUnit>(

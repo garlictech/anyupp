@@ -105,7 +105,7 @@ export class AppsyncAppStack extends sst.Stack {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/appsync-lambda/index.handler',
-      timeout: Duration.seconds(5),
+      timeout: Duration.seconds(30),
       memorySize: 256,
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),

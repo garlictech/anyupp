@@ -41,7 +41,6 @@ export interface IProductVariant {
 }
 
 export interface IProduct {
-  __typename?: 'UnitProduct';
   id: string;
   parentId?: string; // parent chainProduct/groupProduct ID
   chainId: string;
@@ -58,18 +57,39 @@ export interface IProduct {
   tax: string; // %
   laneId?: string;
   productType: EProductType;
+  takeaway?: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-export const unitProductSchema: Joi.SchemaMap<IProduct> = {
+export interface IUnitProduct {
+  __typename?: 'UnitProduct';
+  id: string;
+  parentId?: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId?: string;
+  unitId?: string;
+  isVisible: boolean; // temp
+  position: string;
+  variants: IProductVariant[];
+  laneId?: string;
+  takeaway?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   __typename: Joi.string().valid('UnitProduct').optional(),
   id: Joi.string().required(),
   parentId: Joi.string().required(),
-  groupId: Joi.string().required(),
   chainId: Joi.string().required(),
+  groupId: Joi.string().required(),
   unitId: Joi.string().required(),
+  isVisible: Joi.boolean().required(),
+  position: Joi.string().allow(null),
+  variants: Joi.array().required(), //TODO: use an exact schema
   laneId: Joi.string().optional(),
+  takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

@@ -132,6 +132,17 @@ export const createTestUnit = (
             from: '08:00',
             to: '18:00',
           },
+          address: {
+            address: 'ADDRESS',
+            city: 'CITY',
+            country: 'COUNTRY',
+            title: 'TITLE',
+            postalCode: 'POSTALCODE',
+            location: {
+              lat: 47,
+              lng: 19,
+            },
+          },
         },
       }),
     ),

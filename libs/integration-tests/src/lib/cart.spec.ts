@@ -4,8 +4,24 @@ import {
   amplifyGraphQlClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { deleteTestCart, createTestCart } from './seeds/cart';
 
 describe('getCart test', () => {
+  beforeAll(async () => {
+    await combineLatest([
+      // CleanUP
+      deleteTestCart(),
+    ])
+      .pipe(
+        switchMap(() =>
+          // Seeding
+          combineLatest([createTestCart()]),
+        ),
+      )
+      .toPromise();
+  });
   it('successful query execution', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,

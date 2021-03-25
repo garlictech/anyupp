@@ -31,87 +31,86 @@ import {
 import { calculateOrderSumPrice } from './order.utils';
 import { IOrder } from '@bgap/shared/types';
 
-export const createOrderFromCart = async ({
+export const createOrderFromCart = ({
   userId,
   cartId,
-  graphqlApiClient,
+  amplifyGraphQlClient,
 }: {
   userId: string;
   cartId: string;
-  graphqlApiClient: GraphqlApiClient;
-}): Promise<string> => {
-  console.log(
-    '### ~ file: order.service.ts ~ line 39 ~ INPUT PARAMS',
-    JSON.stringify({
-      userId,
-      cartId,
-    }),
-    undefined,
-    2,
-  );
+  amplifyGraphQlClient: GraphqlApiClient;
+}): Observable<string> => {
+  // console.log(
+  //   '### ~ file: order.service.ts ~ line 39 ~ INPUT PARAMS',
+  //   JSON.stringify({
+  //     userId,
+  //     cartId,
+  //   }),
+  //   undefined,
+  //   2,
+  // );
 
-  return getCart(graphqlApiClient, cartId)
-    .pipe(
-      // pipeDebug('### CART'),
-      switchMap(cart =>
-        getUnit(graphqlApiClient, cart.unitId).pipe(
-          pipeDebug('### UNIT'),
-          map(unit => ({ cart, unit })),
-        ),
+  return getCart(amplifyGraphQlClient, cartId).pipe(
+    // pipeDebug('### CART'),
+    switchMap(cart =>
+      getUnit(amplifyGraphQlClient, cart.unitId).pipe(
+        // pipeDebug('### UNIT'),
+        map(unit => ({ cart, unit })),
       ),
-      switchMap(props =>
-        getGroupCurrency(graphqlApiClient, props.unit?.groupId).pipe(
-          map(currency => ({ ...props, currency })),
-        ),
+    ),
+    switchMap(props =>
+      getGroupCurrency(amplifyGraphQlClient, props.unit?.groupId).pipe(
+        map(currency => ({ ...props, currency })),
       ),
-      pipeDebug('### CURRENCY + UNIT'),
-      tap({
-        next({ unit }) {
-          if (unit.isAcceptingOrders === false) {
-            throw getUnitIsNotAcceptingOrdersError();
-          }
-          // if (
-          //   !userLocation ||
-          //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-          //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-          // ) {
-          //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
-          //   console.log('###: User is too far from the UNIT error should be thrown');
-          // }
-        },
+    ),
+    // pipeDebug('### CURRENCY + UNIT'),
+    tap({
+      next({ unit }) {
+        if (unit.isAcceptingOrders === false) {
+          throw getUnitIsNotAcceptingOrdersError();
+        }
+        // if (
+        //   !userLocation ||
+        //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
+        //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
+        // ) {
+        //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
+        //   console.log('###: User is too far from the UNIT error should be thrown');
+        // }
+      },
+    }),
+    switchMap(props =>
+      getOrderItems({
+        amplifyApiClient: amplifyGraphQlClient,
+        userId,
+        currency: props.currency,
+        cartItems: props.cart.items,
+      }).pipe(map(items => ({ ...props, items }))),
+    ),
+    map(props => ({
+      ...props,
+      orderInput: toOrderInputFormat({
+        userId,
+        unitId: props.cart.unitId,
+        paymentMethod: props.cart.paymentMethod,
+        items: props.items,
+        place: removeTypeNameField(props.cart.place),
       }),
-      switchMap(props =>
-        getOrderItems({
-          graphqlApiClient,
-          userId,
-          currency: props.currency,
-          cartItems: props.cart.items,
-        }).pipe(map(items => ({ ...props, items }))),
+    })),
+    switchMap(props =>
+      createOrder({
+        orderInput: props.orderInput,
+        amplifyApiClient: amplifyGraphQlClient,
+      }).pipe(map(x => ({ ...props, orderId: x.id as string }))),
+    ),
+    // Remove the cart from the db after the order has been created successfully
+    switchMap(props =>
+      deleteCart(amplifyGraphQlClient, props.cart.id).pipe(
+        mapTo(props.orderId),
+        pipeDebug('### Response'),
       ),
-      map(props => ({
-        ...props,
-        orderInput: toOrderInputFormat({
-          userId,
-          unitId: props.cart.unitId,
-          paymentMethod: props.cart.paymentMethod,
-          items: props.items,
-          place: props.cart.place,
-        }),
-      })),
-      switchMap(props =>
-        createOrder({ orderInput: props.orderInput, graphqlApiClient }).pipe(
-          map(x => ({ ...props, orderId: x.id as string })),
-        ),
-      ),
-      // Remove the cart from the db after the order has been created successfully
-      switchMap(props =>
-        deleteCart(graphqlApiClient, props.cart.id).pipe(
-          mapTo(props.orderId),
-          pipeDebug('### Response'),
-        ),
-      ),
-    )
-    .toPromise();
+    ),
+  );
 };
 
 const toOrderInputFormat = ({
@@ -133,7 +132,7 @@ const toOrderInputFormat = ({
     paymentMethod: paymentMethod,
     // created: DateTime.utc().toMillis(),
     items: items,
-    staffId: 'STAFF_ID',
+    staffId: 'STAFF_ID', // TODO
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
@@ -146,16 +145,16 @@ const getOrderItems = ({
   userId,
   cartItems,
   currency,
-  graphqlApiClient,
+  amplifyApiClient,
 }: {
   userId: string;
   cartItems: IOrderItem[];
   currency: string;
-  graphqlApiClient: GraphqlApiClient;
+  amplifyApiClient: GraphqlApiClient;
 }): Observable<AmplifyApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
-      getLaneIdForCartItem(graphqlApiClient, cartItem.productId).pipe(
+      getLaneIdForCartItem(amplifyApiClient, cartItem.productId).pipe(
         map(laneId =>
           convertCartOrderToOrderItem({
             userId,
@@ -169,6 +168,11 @@ const getOrderItems = ({
   );
 };
 
+// TODO: create a recursive version of this
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+const removeTypeNameField = ({ __typename, ...objectWithoutTypename }: any) =>
+  objectWithoutTypename;
+
 const convertCartOrderToOrderItem = ({
   userId,
   cartItem,
@@ -180,15 +184,12 @@ const convertCartOrderToOrderItem = ({
   currency: string;
   laneId: string | null | undefined;
 }): AmplifyApi.OrderItemInput => {
-  console.log(
-    '### ~ file: order.service.ts ~ line 192 ~ cartItem',
-    JSON.stringify(cartItem, undefined, 2),
-  );
+  // const {__typename, ...item} = cartItem;
 
   return {
-    ...cartItem,
+    // ...cartItem,
     // created: DateTime.utc().toMillis(),
-    productName: cartItem.productName,
+    productName: removeTypeNameField(cartItem.productName),
     priceShown: {
       currency,
       pricePerUnit: cartItem.priceShown.pricePerUnit,
@@ -205,17 +206,17 @@ const convertCartOrderToOrderItem = ({
     productId: cartItem.productId,
     quantity: cartItem.quantity,
     variantId: cartItem.variantId,
-    variantName: cartItem.variantName,
+    variantName: removeTypeNameField(cartItem.variantName),
     statusLog: createStatusLog(userId),
     laneId,
   };
 };
 
 const getLaneIdForCartItem = (
-  graphqlApiClient: GraphqlApiClient,
+  amplifyApiClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
-  return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitProductQuery>(
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
     AmplifyApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(
@@ -239,12 +240,12 @@ const createStatusLog = (
 
 const createOrder = ({
   orderInput,
-  graphqlApiClient,
+  amplifyApiClient,
 }: {
   orderInput: AmplifyApi.CreateOrderInput;
-  graphqlApiClient: GraphqlApiClient;
+  amplifyApiClient: GraphqlApiClient;
 }): Observable<IOrder> => {
-  return executeMutation(graphqlApiClient)<AmplifyApi.CreateOrderMutation>(
+  return executeMutation(amplifyApiClient)<AmplifyApi.CreateOrderMutation>(
     AmplifyApiMutationDocuments.createOrder,
     {
       input: orderInput,
@@ -256,10 +257,10 @@ const createOrder = ({
 };
 
 const getUnit = (
-  graphqlApiClient: GraphqlApiClient,
+  amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<IUnit> => {
-  return executeQuery(graphqlApiClient)<AmplifyApi.GetUnitQuery>(
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitQuery>(
     AmplifyApiQueryDocuments.getUnit,
     { id },
   ).pipe(
@@ -269,10 +270,10 @@ const getUnit = (
 };
 
 const getCart = (
-  graphqlApiClient: GraphqlApiClient,
+  amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<ICart> => {
-  return executeQuery(graphqlApiClient)<AmplifyApi.GetCartQuery>(
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetCartQuery>(
     AmplifyApiQueryDocuments.getCart,
     { id },
   ).pipe(
@@ -282,22 +283,22 @@ const getCart = (
 };
 
 const deleteCart = (
-  graphqlApiClient: GraphqlApiClient,
+  amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<boolean> => {
-  return executeMutation(graphqlApiClient)<AmplifyApi.DeleteCartMutation>(
+  return executeMutation(amplifyApiClient)<AmplifyApi.DeleteCartMutation>(
     AmplifyApiMutationDocuments.deleteCart,
     { input: { id } },
   ).pipe(mapTo(true));
 };
 
 const getGroupCurrency = (
-  graphqlApiClient: GraphqlApiClient,
+  amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(graphqlApiClient)<AmplifyApi.GetGroupQuery>(
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetGroupQuery>(
     AmplifyApiQueryDocuments.getGroupCurrency,
-    { input: { id } },
+    { id },
   ).pipe(
     map(x => x.getGroup),
     switchMap(AmplifyApiQueryDocuments.validateGetGroupCurrency),

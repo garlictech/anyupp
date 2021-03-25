@@ -56,7 +56,7 @@ export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
   statusLog: statusLogSchema.required(),
   variantId: Joi.string().required(),
   variantName: localizedItemSchema.required(),
-  laneId: Joi.string().optional().allow(null),
+  laneId: Joi.string().allow(null),
 };
 
 export interface ILaneOrderItem extends IOrderItem {
@@ -90,11 +90,12 @@ export interface IOrder {
   created: number;
   items: IOrderItem[];
   paymentMethod: EPaymentMethod;
+  userId: string;
+  unitId: string;
   staffId: string;
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  userId: string;
   place: IPlace;
   paymentIntention?: number;
   createdAt: string;
@@ -103,15 +104,17 @@ export interface IOrder {
 export const orderSchema: Joi.SchemaMap<IOrder> = {
   __typename: Joi.string().valid('Order').optional(),
   id: Joi.string().required(),
+  created: Joi.number().positive().allow(null),
   items: Joi.array().items(orderItemSchema),
   paymentMethod: paymentMethodSchema.required(),
+  userId: Joi.string().required(),
+  unitId: Joi.string().required(),
   staffId: Joi.string().required(),
   statusLog: statusLogSchema.required(),
   sumPriceShown: Joi.object(priceShownSchema).required(),
   takeAway: Joi.boolean(),
-  userId: Joi.string().required(),
   place: Joi.object(placeSchema).required(),
-  paymentIntention: Joi.number().optional().allow(null),
+  paymentIntention: Joi.number().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

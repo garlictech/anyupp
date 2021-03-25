@@ -59,7 +59,11 @@ export const handler: Handler<AnyuppRequest, unknown> = async (
     case 'createOrderFromCart': {
       console.log('Handling createOrderFromCart');
       return orderRequestHandler
-        .createOrderFromCart(event.payload as any, amplifyGraphQlClient)
+        .createOrderFromCart({
+          requestPayload: event.payload as any,
+          amplifyGraphQlClient,
+        })
+        .toPromise()
         .catch(handleError);
     }
     default:

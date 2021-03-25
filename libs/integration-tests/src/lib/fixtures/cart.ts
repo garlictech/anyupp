@@ -1,13 +1,14 @@
 import { EPaymentMethod, EOrderStatus } from '@bgap/shared/types';
 import { AmplifyApi } from '@bgap/admin/amplify-api';
 import { unitSeed } from './unit';
+import { unitProductSeed } from './unit-product';
 
 const cartId_01 = 'cart_1_id';
 const unitId_01 = unitSeed.unitId_seeded;
+const unitProductId_01 = unitProductSeed.unitProductId_seeded;
 
 // fictional - not exsisting
 const cartId_NotExisting = 'NOT_EXSISTING_CART';
-const unitProductId_01 = 'unit_product_1_id';
 const variantId_01 = 'variant_1_id';
 const laneId_01 = 'lane_1_id';
 const userId_01 = 'user_1_id';
@@ -44,7 +45,8 @@ const getOrderItem = (): AmplifyApi.OrderItemInput => ({
   ],
 });
 
-const cart_01: AmplifyApi.CreateCartInput = {
+// const cart_01: Required<AmplifyApi.CreateCartInput> = {
+const cart_01 = {
   id: cartId_01,
   userId: userId_01,
   unitId: unitId_01,

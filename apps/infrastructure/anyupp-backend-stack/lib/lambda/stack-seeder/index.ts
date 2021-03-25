@@ -15,6 +15,7 @@ import {
 } from '@bgap/admin/amplify-api';
 
 import {
+  createTestCart,
   createTestChain,
   createTestChainProduct,
   createTestGroup,
@@ -143,14 +144,14 @@ export const seedBusinessData = () =>
       createTestGroupProduct(1, 1, 2, 2),
       createTestUnitProduct(1, 1, 1, 1, 1),
       createTestUnitProduct(1, 1, 1, 2, 2),
-      // createTestCart({
-      //   chainIdx: 1,
-      //   groupIdx: 1,
-      //   unitIdx: 1,
-      //   productIdx: 1,
-      //   userIdx: 1,
-      //   cartIdx: 1,
-      // }),
+      createTestCart({
+        chainIdx: 1,
+        groupIdx: 1,
+        unitIdx: 1,
+        productIdx: 1,
+        userIdx: 1,
+        cartIdx: 1,
+      }),
     ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {
