@@ -1,5 +1,12 @@
 import { interval, Observable, of, throwError } from 'rxjs';
-import { delayWhen, retryWhen, switchMap, take, tap } from 'rxjs/operators';
+import {
+  concatMap,
+  delayWhen,
+  retryWhen,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 
 export const buildRetryLogic = <T>({
   logger,
@@ -29,7 +36,7 @@ export const buildRetryLogic = <T>({
               )
             : throwError(error),
         ),
-        take(3),
+        concatMap((e, i) => (i < 2 ? of(e) : throwError(e))),
       ),
     ),
   );

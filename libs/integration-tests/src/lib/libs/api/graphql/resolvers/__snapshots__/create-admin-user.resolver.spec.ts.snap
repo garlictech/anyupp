@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing backend seed state Test user must be present and we can log in 1`] = `
+CognitoUser {
+  "Session": null,
+  "attributes": Object {
+    "sub": "b6f74d05-3636-40f2-8397-99d5589acc8d",
+  },
+  "authenticationFlowType": "USER_SRP_AUTH",
+  "client": Client {
+    "endpoint": "https://cognito-idp.eu-west-1.amazonaws.com/",
+    "fetchOptions": Object {},
+  },
+  "keyPrefix": "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s",
+  "pool": CognitoUserPool {
+    "advancedSecurityDataCollectionFlag": true,
+    "client": Client {
+      "endpoint": "https://cognito-idp.eu-west-1.amazonaws.com/",
+      "fetchOptions": Object {},
+    },
+    "clientId": "4hq082sd8sngpd5ei6gueh2h7s",
+    "storage": Storage {
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.LastAuthUser": "test@anyupp.com",
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.accessToken": "eyJraWQiOiJtU0p3Skpuekx5VU0wU0JKV0dVenZcLzRxam5hdWhFbzYxNlIyUzRDWVA5cz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJldmVudF9pZCI6IjJhNmFjYzNiLWEyYTYtNDJkZi04YWZkLTA1MmE5NDBjOGNmYiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImV4cCI6MTYxNjYzNTEyNCwiaWF0IjoxNjE2NjMxNTI0LCJqdGkiOiI2YmM4MzNmNS04YzAyLTQwNWMtOTA0Mi0yZjBmMWM5NTkwMTMiLCJjbGllbnRfaWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsInVzZXJuYW1lIjoidGVzdEBhbnl1cHAuY29tIn0.dDW-_th9PJH71CxgjogGIkNmYKiMi2HSgWqQCiVk1CdLNJH41E4lxzwQvDqFH-rgRLg1DWvHjvxyVrOt63qrBIsfWfTL5DC_Z3GRVzIbFc0BWaGKqD8E7Bp8p2fi-pbvgdDScFH4s6gOLSSCZLGAV7av6F27hMaEOcoWc_x0-ZcRNlRYQFgOzPc80uLc8l7dR95danSNNv5clX1QN1cE14D98REygBbysMDhtGaJjRmxkFxSte6uy-SoGP_S8zdZKTqexSznzUIhgSdDWuRW16-mNMiewf3Sd-8-KAdexGfawXvIhiYD46DmLT53mXsFgLPOY0PAfHAydZFblKeZzg",
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.clockDrift": "0",
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.idToken": "eyJraWQiOiJBQ0YxYmwrekpxNWxNY1M2YzF6WkhkQmlpdHBBTlhHbmlPVmJ5aG4xa1pnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJhdWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsImV2ZW50X2lkIjoiMmE2YWNjM2ItYTJhNi00MmRmLThhZmQtMDUyYTk0MGM4Y2ZiIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImNvZ25pdG86dXNlcm5hbWUiOiJ0ZXN0QGFueXVwcC5jb20iLCJleHAiOjE2MTY2MzUxMjQsImlhdCI6MTYxNjYzMTUyNH0.0DujSpLbO2pBrQsGSubZP3Iv6j9FOJtpdObrtyWc-Agav-AI3ZoF4u2Y74Yy5Hg-gcOws68v8pHiA0OG0kygiaidl2AdbTUjfMbAk7K-XsKvDVLrMwkJu-nX8TCDCeX4vUucdkEfhEOXVHQbM-9i4RSGRSOyMLKMlfOj5j0jJb540cDHrXOKCWB9fY6RrKBj95b3QA-Bd71C8WlKJjyryewQTHhCYe4bA21RmV9xmlEHZv2aQJ4GY8ECFq2W36RNOHIskpYAFwpEVotNAkTrEor-T_YUyyfLp9QtXMuqmg-QT-eal46q1DvRXuiuPr293YrllUNI4vEdDBZ0mj-a5Q",
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.refreshToken": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.e7dB_c07wtMryJGVw6YyU8gOHv5NKyuWgGnO8NJzWEi5ltXLCV5vYVWKDRv0UCvt3tscQBjJ6idqDcVVoR_snZZY5C-q7M-S9eIxHbgP0IpexbuAzwulSWpHDgjiKiGsMHBHND4onSsIAKcgKv7OOM98Y3BrT4aQFnzeWP37vldd6a3HdHHKmg91oum9xxQRIGcT-DPhGT-PJVrniRGY0BEQ6nx55nw89TYinirhlunNPF0bT73kOafp5ud02IjySQG-6g-gK_WUrN9oQ4CE6jLNYQJGOJJr_mze2POVt4fbq9kTXL5GpKex5mXg_2vjyWIiN8740HYPd62al3zz8Q.1A14pSSPtEIVL8W1.0-kONhaiY_qCcKs0VVcRH4QdSnpsvsQ0y3jxKXfID2er63olIJm1HZE14-Q1vMd7GmzSxOx3pPmQ8WkpE_RRX8aHKTIYE7V0oPs8WdpDksUiQmpt_2Jday1yg5c-D603ubmxg1Gl2Wbizcb6STkwJz5-bBlnV4vh9j-UORy1XfquM6zlFM-WOLsELCHnXHijPBashx4Z-Mq6lBNsoOJo0gdgj9QdDC3dq2em96dE9m7bPbGSocz1nGvmYV5ZanTQumbQn-QCc-g0yIU3LjypPjI67oImbh5GDPEqrtbV1q-6e5c9krbn8pyQ9kDEETMJhuRTg8-1LRCerofY7BbpugDV6Q6-YeWl0E1KPCH0lJFNT7UgGVTR7fwEIwSC_Xr7kCG20LYBklsEiU-2Sl5UaR4DbAnrw2HANCce6bejUiegBFBenHR8uGriQZjxVOcgc3Vxh-_JupzbvFZ3pqhfIO4hed3ys51L9jBDx6KSfX58clxVJTCUjlG8W0RyBRRxc7apc_7zVG1vL8Cl2G7q48DsGahmVt51OjyOSHBoS32cakCGJtaPcdf9B4kGWeG8Wbkb5ngdiwhHSRFWvbkn6XPafkw4MIasCTbtOb7pmATgVtKL0_JAihpm3eVxwYqmjB3P9pKu7Ou8iMIU11biO_NJbKyqep8I8UDTIjzgQyP-DHoNT0ruQcJeKql3iS2B32Zx8nRTZVHWp08BaH-fgQa7GGH02U03rNsJ35ZSuPUgzqCCY4lQB-wA6Bmr5_ulq5HlNywA32slhZlCKbXmWvHiQ0rHT-OLbDxc0uziXMBWfophx1B2beZy8RVMHQr4w3GRMhIFLodt5dx1yB7WhriAJbLJ8vnyhHeoAH-TuzVuleWuo0TsqHjJpeIrup6kTMeqIu-Z6LpIfsiO42Tw-wu8ZCExKzwCdiiTAdBWrshoFQQNjTs24RoJBWpOUMe0fy6gDbWnvn52bynY7F4PFQ2BbeN5B0X5HXFfn_WjEOcvuistSpmCZaVVDE1aWsOXh5TQAbqCA6oYKpksqdrOCAc28kVj-EKlrpu7lHHz2nOjTubQWNhXHI_avlB1wp0OaMQ_GxIwDbDhRSTiDWTwoH0fTZigawxQxl_H63ycyCIr-Yb_bwnz7dZm_X9qvBvtSOQ3KrWO___CPZ3e6pKf0pW021Mut5EhTLFoUoRphRnPqgILw9j8CkRMR3jBsM-Htbi1jX2SYtv1jApMsDk1lB3BvcTEG5oSnV3aaj4hZF-3j4cctT8PEHP2bDnr9DWwRwQwPULy1C-uj5WFLW70KQ.qhkYTIFuauT3xteQwNFtfg",
+      "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.userData": "{\\"UserAttributes\\":[{\\"Name\\":\\"sub\\",\\"Value\\":\\"b6f74d05-3636-40f2-8397-99d5589acc8d\\"}],\\"Username\\":\\"test@anyupp.com\\"}",
+      "amplify-signin-with-hostedUI": "false",
+    },
+    "userPoolId": "eu-west-1_uQinis9TS",
+    "wrapRefreshSessionCallback": [Function],
+  },
+  "preferredMFA": "NOMFA",
+  "signInUserSession": CognitoUserSession {
+    "accessToken": CognitoAccessToken {
+      "jwtToken": "eyJraWQiOiJtU0p3Skpuekx5VU0wU0JKV0dVenZcLzRxam5hdWhFbzYxNlIyUzRDWVA5cz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJldmVudF9pZCI6IjJhNmFjYzNiLWEyYTYtNDJkZi04YWZkLTA1MmE5NDBjOGNmYiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImV4cCI6MTYxNjYzNTEyNCwiaWF0IjoxNjE2NjMxNTI0LCJqdGkiOiI2YmM4MzNmNS04YzAyLTQwNWMtOTA0Mi0yZjBmMWM5NTkwMTMiLCJjbGllbnRfaWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsInVzZXJuYW1lIjoidGVzdEBhbnl1cHAuY29tIn0.dDW-_th9PJH71CxgjogGIkNmYKiMi2HSgWqQCiVk1CdLNJH41E4lxzwQvDqFH-rgRLg1DWvHjvxyVrOt63qrBIsfWfTL5DC_Z3GRVzIbFc0BWaGKqD8E7Bp8p2fi-pbvgdDScFH4s6gOLSSCZLGAV7av6F27hMaEOcoWc_x0-ZcRNlRYQFgOzPc80uLc8l7dR95danSNNv5clX1QN1cE14D98REygBbysMDhtGaJjRmxkFxSte6uy-SoGP_S8zdZKTqexSznzUIhgSdDWuRW16-mNMiewf3Sd-8-KAdexGfawXvIhiYD46DmLT53mXsFgLPOY0PAfHAydZFblKeZzg",
+      "payload": Object {
+        "auth_time": 1616631524,
+        "client_id": "4hq082sd8sngpd5ei6gueh2h7s",
+        "event_id": "2a6acc3b-a2a6-42df-8afd-052a940c8cfb",
+        "exp": 1616635124,
+        "iat": 1616631524,
+        "iss": "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_uQinis9TS",
+        "jti": "6bc833f5-8c02-405c-9042-2f0f1c959013",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "b6f74d05-3636-40f2-8397-99d5589acc8d",
+        "token_use": "access",
+        "username": "test@anyupp.com",
+      },
+    },
+    "clockDrift": 0,
+    "idToken": CognitoIdToken {
+      "jwtToken": "eyJraWQiOiJBQ0YxYmwrekpxNWxNY1M2YzF6WkhkQmlpdHBBTlhHbmlPVmJ5aG4xa1pnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJhdWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsImV2ZW50X2lkIjoiMmE2YWNjM2ItYTJhNi00MmRmLThhZmQtMDUyYTk0MGM4Y2ZiIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImNvZ25pdG86dXNlcm5hbWUiOiJ0ZXN0QGFueXVwcC5jb20iLCJleHAiOjE2MTY2MzUxMjQsImlhdCI6MTYxNjYzMTUyNH0.0DujSpLbO2pBrQsGSubZP3Iv6j9FOJtpdObrtyWc-Agav-AI3ZoF4u2Y74Yy5Hg-gcOws68v8pHiA0OG0kygiaidl2AdbTUjfMbAk7K-XsKvDVLrMwkJu-nX8TCDCeX4vUucdkEfhEOXVHQbM-9i4RSGRSOyMLKMlfOj5j0jJb540cDHrXOKCWB9fY6RrKBj95b3QA-Bd71C8WlKJjyryewQTHhCYe4bA21RmV9xmlEHZv2aQJ4GY8ECFq2W36RNOHIskpYAFwpEVotNAkTrEor-T_YUyyfLp9QtXMuqmg-QT-eal46q1DvRXuiuPr293YrllUNI4vEdDBZ0mj-a5Q",
+      "payload": Object {
+        "aud": "4hq082sd8sngpd5ei6gueh2h7s",
+        "auth_time": 1616631524,
+        "cognito:username": "test@anyupp.com",
+        "event_id": "2a6acc3b-a2a6-42df-8afd-052a940c8cfb",
+        "exp": 1616635124,
+        "iat": 1616631524,
+        "iss": "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_uQinis9TS",
+        "sub": "b6f74d05-3636-40f2-8397-99d5589acc8d",
+        "token_use": "id",
+      },
+    },
+    "refreshToken": CognitoRefreshToken {
+      "token": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.e7dB_c07wtMryJGVw6YyU8gOHv5NKyuWgGnO8NJzWEi5ltXLCV5vYVWKDRv0UCvt3tscQBjJ6idqDcVVoR_snZZY5C-q7M-S9eIxHbgP0IpexbuAzwulSWpHDgjiKiGsMHBHND4onSsIAKcgKv7OOM98Y3BrT4aQFnzeWP37vldd6a3HdHHKmg91oum9xxQRIGcT-DPhGT-PJVrniRGY0BEQ6nx55nw89TYinirhlunNPF0bT73kOafp5ud02IjySQG-6g-gK_WUrN9oQ4CE6jLNYQJGOJJr_mze2POVt4fbq9kTXL5GpKex5mXg_2vjyWIiN8740HYPd62al3zz8Q.1A14pSSPtEIVL8W1.0-kONhaiY_qCcKs0VVcRH4QdSnpsvsQ0y3jxKXfID2er63olIJm1HZE14-Q1vMd7GmzSxOx3pPmQ8WkpE_RRX8aHKTIYE7V0oPs8WdpDksUiQmpt_2Jday1yg5c-D603ubmxg1Gl2Wbizcb6STkwJz5-bBlnV4vh9j-UORy1XfquM6zlFM-WOLsELCHnXHijPBashx4Z-Mq6lBNsoOJo0gdgj9QdDC3dq2em96dE9m7bPbGSocz1nGvmYV5ZanTQumbQn-QCc-g0yIU3LjypPjI67oImbh5GDPEqrtbV1q-6e5c9krbn8pyQ9kDEETMJhuRTg8-1LRCerofY7BbpugDV6Q6-YeWl0E1KPCH0lJFNT7UgGVTR7fwEIwSC_Xr7kCG20LYBklsEiU-2Sl5UaR4DbAnrw2HANCce6bejUiegBFBenHR8uGriQZjxVOcgc3Vxh-_JupzbvFZ3pqhfIO4hed3ys51L9jBDx6KSfX58clxVJTCUjlG8W0RyBRRxc7apc_7zVG1vL8Cl2G7q48DsGahmVt51OjyOSHBoS32cakCGJtaPcdf9B4kGWeG8Wbkb5ngdiwhHSRFWvbkn6XPafkw4MIasCTbtOb7pmATgVtKL0_JAihpm3eVxwYqmjB3P9pKu7Ou8iMIU11biO_NJbKyqep8I8UDTIjzgQyP-DHoNT0ruQcJeKql3iS2B32Zx8nRTZVHWp08BaH-fgQa7GGH02U03rNsJ35ZSuPUgzqCCY4lQB-wA6Bmr5_ulq5HlNywA32slhZlCKbXmWvHiQ0rHT-OLbDxc0uziXMBWfophx1B2beZy8RVMHQr4w3GRMhIFLodt5dx1yB7WhriAJbLJ8vnyhHeoAH-TuzVuleWuo0TsqHjJpeIrup6kTMeqIu-Z6LpIfsiO42Tw-wu8ZCExKzwCdiiTAdBWrshoFQQNjTs24RoJBWpOUMe0fy6gDbWnvn52bynY7F4PFQ2BbeN5B0X5HXFfn_WjEOcvuistSpmCZaVVDE1aWsOXh5TQAbqCA6oYKpksqdrOCAc28kVj-EKlrpu7lHHz2nOjTubQWNhXHI_avlB1wp0OaMQ_GxIwDbDhRSTiDWTwoH0fTZigawxQxl_H63ycyCIr-Yb_bwnz7dZm_X9qvBvtSOQ3KrWO___CPZ3e6pKf0pW021Mut5EhTLFoUoRphRnPqgILw9j8CkRMR3jBsM-Htbi1jX2SYtv1jApMsDk1lB3BvcTEG5oSnV3aaj4hZF-3j4cctT8PEHP2bDnr9DWwRwQwPULy1C-uj5WFLW70KQ.qhkYTIFuauT3xteQwNFtfg",
+    },
+  },
+  "storage": Storage {
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.LastAuthUser": "test@anyupp.com",
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.accessToken": "eyJraWQiOiJtU0p3Skpuekx5VU0wU0JKV0dVenZcLzRxam5hdWhFbzYxNlIyUzRDWVA5cz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJldmVudF9pZCI6IjJhNmFjYzNiLWEyYTYtNDJkZi04YWZkLTA1MmE5NDBjOGNmYiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImV4cCI6MTYxNjYzNTEyNCwiaWF0IjoxNjE2NjMxNTI0LCJqdGkiOiI2YmM4MzNmNS04YzAyLTQwNWMtOTA0Mi0yZjBmMWM5NTkwMTMiLCJjbGllbnRfaWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsInVzZXJuYW1lIjoidGVzdEBhbnl1cHAuY29tIn0.dDW-_th9PJH71CxgjogGIkNmYKiMi2HSgWqQCiVk1CdLNJH41E4lxzwQvDqFH-rgRLg1DWvHjvxyVrOt63qrBIsfWfTL5DC_Z3GRVzIbFc0BWaGKqD8E7Bp8p2fi-pbvgdDScFH4s6gOLSSCZLGAV7av6F27hMaEOcoWc_x0-ZcRNlRYQFgOzPc80uLc8l7dR95danSNNv5clX1QN1cE14D98REygBbysMDhtGaJjRmxkFxSte6uy-SoGP_S8zdZKTqexSznzUIhgSdDWuRW16-mNMiewf3Sd-8-KAdexGfawXvIhiYD46DmLT53mXsFgLPOY0PAfHAydZFblKeZzg",
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.clockDrift": "0",
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.idToken": "eyJraWQiOiJBQ0YxYmwrekpxNWxNY1M2YzF6WkhkQmlpdHBBTlhHbmlPVmJ5aG4xa1pnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiNmY3NGQwNS0zNjM2LTQwZjItODM5Ny05OWQ1NTg5YWNjOGQiLCJhdWQiOiI0aHEwODJzZDhzbmdwZDVlaTZndWVoMmg3cyIsImV2ZW50X2lkIjoiMmE2YWNjM2ItYTJhNi00MmRmLThhZmQtMDUyYTk0MGM4Y2ZiIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTY2MzE1MjQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX3VRaW5pczlUUyIsImNvZ25pdG86dXNlcm5hbWUiOiJ0ZXN0QGFueXVwcC5jb20iLCJleHAiOjE2MTY2MzUxMjQsImlhdCI6MTYxNjYzMTUyNH0.0DujSpLbO2pBrQsGSubZP3Iv6j9FOJtpdObrtyWc-Agav-AI3ZoF4u2Y74Yy5Hg-gcOws68v8pHiA0OG0kygiaidl2AdbTUjfMbAk7K-XsKvDVLrMwkJu-nX8TCDCeX4vUucdkEfhEOXVHQbM-9i4RSGRSOyMLKMlfOj5j0jJb540cDHrXOKCWB9fY6RrKBj95b3QA-Bd71C8WlKJjyryewQTHhCYe4bA21RmV9xmlEHZv2aQJ4GY8ECFq2W36RNOHIskpYAFwpEVotNAkTrEor-T_YUyyfLp9QtXMuqmg-QT-eal46q1DvRXuiuPr293YrllUNI4vEdDBZ0mj-a5Q",
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.refreshToken": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.e7dB_c07wtMryJGVw6YyU8gOHv5NKyuWgGnO8NJzWEi5ltXLCV5vYVWKDRv0UCvt3tscQBjJ6idqDcVVoR_snZZY5C-q7M-S9eIxHbgP0IpexbuAzwulSWpHDgjiKiGsMHBHND4onSsIAKcgKv7OOM98Y3BrT4aQFnzeWP37vldd6a3HdHHKmg91oum9xxQRIGcT-DPhGT-PJVrniRGY0BEQ6nx55nw89TYinirhlunNPF0bT73kOafp5ud02IjySQG-6g-gK_WUrN9oQ4CE6jLNYQJGOJJr_mze2POVt4fbq9kTXL5GpKex5mXg_2vjyWIiN8740HYPd62al3zz8Q.1A14pSSPtEIVL8W1.0-kONhaiY_qCcKs0VVcRH4QdSnpsvsQ0y3jxKXfID2er63olIJm1HZE14-Q1vMd7GmzSxOx3pPmQ8WkpE_RRX8aHKTIYE7V0oPs8WdpDksUiQmpt_2Jday1yg5c-D603ubmxg1Gl2Wbizcb6STkwJz5-bBlnV4vh9j-UORy1XfquM6zlFM-WOLsELCHnXHijPBashx4Z-Mq6lBNsoOJo0gdgj9QdDC3dq2em96dE9m7bPbGSocz1nGvmYV5ZanTQumbQn-QCc-g0yIU3LjypPjI67oImbh5GDPEqrtbV1q-6e5c9krbn8pyQ9kDEETMJhuRTg8-1LRCerofY7BbpugDV6Q6-YeWl0E1KPCH0lJFNT7UgGVTR7fwEIwSC_Xr7kCG20LYBklsEiU-2Sl5UaR4DbAnrw2HANCce6bejUiegBFBenHR8uGriQZjxVOcgc3Vxh-_JupzbvFZ3pqhfIO4hed3ys51L9jBDx6KSfX58clxVJTCUjlG8W0RyBRRxc7apc_7zVG1vL8Cl2G7q48DsGahmVt51OjyOSHBoS32cakCGJtaPcdf9B4kGWeG8Wbkb5ngdiwhHSRFWvbkn6XPafkw4MIasCTbtOb7pmATgVtKL0_JAihpm3eVxwYqmjB3P9pKu7Ou8iMIU11biO_NJbKyqep8I8UDTIjzgQyP-DHoNT0ruQcJeKql3iS2B32Zx8nRTZVHWp08BaH-fgQa7GGH02U03rNsJ35ZSuPUgzqCCY4lQB-wA6Bmr5_ulq5HlNywA32slhZlCKbXmWvHiQ0rHT-OLbDxc0uziXMBWfophx1B2beZy8RVMHQr4w3GRMhIFLodt5dx1yB7WhriAJbLJ8vnyhHeoAH-TuzVuleWuo0TsqHjJpeIrup6kTMeqIu-Z6LpIfsiO42Tw-wu8ZCExKzwCdiiTAdBWrshoFQQNjTs24RoJBWpOUMe0fy6gDbWnvn52bynY7F4PFQ2BbeN5B0X5HXFfn_WjEOcvuistSpmCZaVVDE1aWsOXh5TQAbqCA6oYKpksqdrOCAc28kVj-EKlrpu7lHHz2nOjTubQWNhXHI_avlB1wp0OaMQ_GxIwDbDhRSTiDWTwoH0fTZigawxQxl_H63ycyCIr-Yb_bwnz7dZm_X9qvBvtSOQ3KrWO___CPZ3e6pKf0pW021Mut5EhTLFoUoRphRnPqgILw9j8CkRMR3jBsM-Htbi1jX2SYtv1jApMsDk1lB3BvcTEG5oSnV3aaj4hZF-3j4cctT8PEHP2bDnr9DWwRwQwPULy1C-uj5WFLW70KQ.qhkYTIFuauT3xteQwNFtfg",
+    "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.userData": "{\\"UserAttributes\\":[{\\"Name\\":\\"sub\\",\\"Value\\":\\"b6f74d05-3636-40f2-8397-99d5589acc8d\\"}],\\"Username\\":\\"test@anyupp.com\\"}",
+    "amplify-signin-with-hostedUI": "false",
+  },
+  "userDataKey": "CognitoIdentityServiceProvider.4hq082sd8sngpd5ei6gueh2h7s.test@anyupp.com.userData",
+  "username": "test@anyupp.com",
+}
+`;
+
+exports[`Testing backend seed state Test user must be present and we can log in: Malformed email error 1`] = `[Error: GraphQL error: UsernameExistsException: User account already exists]`;
+
+exports[`Testing backend seed state Test user must be present and we can log in: Missing email error 1`] = `[Error: GraphQL error: InvalidParameterException: 2 validation errors detected: Value at 'username' failed to satisfy constraint: Member must have length greater than or equal to 1; Value at 'username' failed to satisfy constraint: Member must satisfy regular expression pattern: [\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+]`;

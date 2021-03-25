@@ -24,7 +24,7 @@ type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   profileImage: String
-  roles: AdminUserRole!
+  roles: AdminUserRole
   settings: AdminUserSettings
   email: String
   phone: String
