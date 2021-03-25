@@ -28,6 +28,12 @@ type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   profileImage: String
+<<<<<<< HEAD
+  roles: AdminUserRole
+||||||| bbb78c0
+  roles: AdminUserRole!
+=======
+>>>>>>> dev
   settings: AdminUserSettings
 }
 
