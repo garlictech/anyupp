@@ -1,1 +1,2 @@
-export * from './app/app.module';
+export * from './admin-user/create-admin-user.resolver';
+export * from './admin-user/delete-admin-user.resolver';

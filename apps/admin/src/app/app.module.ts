@@ -31,7 +31,7 @@ import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
-import { FIREBASE_CONFIG } from '@bgap/shared/config';
+import { firebaseConfig } from '@bgap/shared/config';
 import {
   NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
 } from '@nebular/theme';
@@ -62,7 +62,7 @@ const NB_MODULES = [
 ];
 
 const FIREBASE_MODULES = [
-  AngularFireModule.initializeApp(FIREBASE_CONFIG),
+  AngularFireModule.initializeApp(firebaseConfig),
   AngularFireAuthModule,
   AngularFireDatabaseModule,
   AngularFireStorageModule,

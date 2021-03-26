@@ -9,7 +9,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: 'eu-west-1',
 });
 
-const username = 'test@test.com';
+const username = 'test@anyupp.com';
 
 describe('Testing backend seed state', () => {
   test('Test user must be present and we can log in', done => {
@@ -23,9 +23,7 @@ describe('Testing backend seed state', () => {
     )
       .pipe(
         tap(result =>
-          expect(
-            fp.pick(['Enabled', 'UserStatus', 'Username'], result),
-          ).toMatchSnapshot(),
+          expect(fp.pick(['Enabled', 'UserStatus'], result)).toMatchSnapshot(),
         ),
       )
       .subscribe(() => done());

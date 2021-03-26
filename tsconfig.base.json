@@ -116,6 +116,9 @@
       ],
       "@bgap/admin/pages/role-contexts": [
         "libs/admin/pages/role-contexts/src/index.ts"
+      ],
+      "@bgap/shared/graphql/api-client": [
+        "libs/shared/graphql/api-client/src/index.ts"
       ]
     }
   },

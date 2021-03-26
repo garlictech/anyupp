@@ -19,20 +19,20 @@ WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminWebUserPool
 NATIVECLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminNativeUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
-ANGULARCONFIG="{\
+ANGULARconfig="{\
 \"SourceDir\":\"../../libs/admin/amplify-api/src/lib/generated\",\
 \"DistributionDir\":\"../../dist/apps/admin\",\
 \"BuildCommand\":\"yarn nx build admin\",\
 \"StartCommand\":\"yarn nx serve admin\"\
 }"
 
-AUTHCONFIG="{\
+AUTHconfig="{\
 \"userPoolId\":\"$USERPOOLID\",\
 \"webClientId\":\"$WEBCLIENTID\",\
 \"nativeClientId\":\"$NATIVECLIENTID\"\
 }"
 
-AWSCLOUDFORMATIONCONFIG="{\
+AWSCLOUDFORMATIONconfig="{\
 \"configLevel\":\"project\",\
 \"useProfile\":true,\
 \"profileName\":\"${AWS_PROFILE}\"\
@@ -48,11 +48,11 @@ AMPLIFY="{\
 FRONTEND="{\
 \"frontend\":\"javascript\",\
 \"framework\":\"angular\",\
-\"config\":$ANGULARCONFIG\
+\"config\":$ANGULARconfig\
 }"
 
 PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
+\"awscloudformation\":$AWSCLOUDFORMATIONconfig\
 }"
 
 CODEGEN="{\
@@ -65,7 +65,7 @@ CODEGEN="{\
 }"
 
 CATEGORIES="{\
-\"auth\":$AUTHCONFIG\
+\"auth\":$AUTHconfig\
 }"
 
 amplify pull \

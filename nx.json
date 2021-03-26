@@ -155,7 +155,7 @@
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "shared-utils": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "anyupp-mobile": {
       "tags": ["scope:bgap", "type:application", "platform:flutter"]
@@ -164,7 +164,7 @@
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
     "shared-graphql-api-client": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "admin-amplify-app": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
