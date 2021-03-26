@@ -1,4 +1,4 @@
-import { devConfig as config } from '@bgap/shared/config';
+import { config } from '@bgap/shared/config';
 export const testAdminUsername = 'test@anyupp.com';
 export const testAdminUserPassword = 'Testtesttest12_';
 
