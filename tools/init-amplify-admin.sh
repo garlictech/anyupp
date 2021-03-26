@@ -6,13 +6,13 @@ APPNAME=$1
 STAGE=$2
 EDITORNAME=${EDITORNAME:-vim}
 
-AWSCLOUDFORMATIONCONFIG="{\
+AWSCLOUDFORMATIONconfig="{\
 \"configLevel\":\"project\",\
 \"useProfile\":true,\
 \"profileName\":\"${AWS_PROFILE}\"\
 }"
 
-AUTHCONFIG="{\
+AUTHconfig="{\
 \"userPoolId\":\"$USERPOOLID\",\
 \"webClientId\":\"$WEBCLIENTID\",\
 \"nativeClientId\":\"$NATIVECLIENTID\"\
@@ -27,11 +27,11 @@ AMPLIFY="{\
 FRONTEND="{\
 \"frontend\":\"javascript\",\
 \"framework\":\"angular\",\
-\"config\":$ANGULARCONFIG\
+\"config\":$ANGULARconfig\
 }"
 
 PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
+\"awscloudformation\":$AWSCLOUDFORMATIONconfig\
 }"
 
 X=$(amplify init \

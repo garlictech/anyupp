@@ -1,5 +1,5 @@
+import * as iam from '@aws-cdk/aws-iam';
 import path from 'path';
-
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -8,11 +8,10 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import { createStripeResolvers } from '@bgap/stripe';
 import * as sst from '@serverless-stack/resources';
-
 import { TableConstruct } from './dynamodb-construct';
 import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
-import { GraphqlApi } from '@aws-cdk/aws-appsync';
+import { GraphqlApi, MappingTemplate } from '@aws-cdk/aws-appsync';
 import { Duration } from '@aws-cdk/core';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
@@ -62,7 +61,7 @@ export class AppsyncAppStack extends sst.Stack {
       xrayEnabled: true,
     });
 
-    this.createDatasources(props.secretsManager);
+    this.createDatasources(props);
 
     createStripeResolvers({
       api: this.api,
@@ -70,6 +69,8 @@ export class AppsyncAppStack extends sst.Stack {
       userTableDDDs: this.userTableDDDs,
       lambdaDs: this.lambdaDs,
     });
+
+    this.createAdminUserResolvers();
 
     new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -96,7 +97,7 @@ export class AppsyncAppStack extends sst.Stack {
     });
   }
 
-  private createDatasources(secretsManager: sm.ISecret) {
+  private createDatasources(props: AppsyncAppStackProps) {
     // NO DATA SOURCE
     new appsync.NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
@@ -123,9 +124,49 @@ export class AppsyncAppStack extends sst.Stack {
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
       ),
+      environment: {
+        userPoolId: props.adminUserPool.userPoolId,
+      },
     });
 
-    secretsManager.grantRead(apiLambda);
+    apiLambda.role &&
+      apiLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: [
+            'cognito-idp:AdminCreateUser',
+            'cognito-idp:AdminGetUser',
+            'cognito-idp:AdminDeleteUser',
+          ],
+          resources: [props.adminUserPool.userPoolArn],
+        }),
+      );
+
+    props.secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
+  }
+
+  private createAdminUserResolvers() {
+    ['createAdminUser', 'deleteAdminUser'].forEach(fieldName =>
+      this.lambdaDs.createResolver({
+        typeName: 'Mutation',
+        fieldName,
+        requestMappingTemplate: MappingTemplate.fromString(
+          `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+
+          "handler": "${fieldName}",
+          "payload": $util.toJson($ctx.arguments)
+        }
+      }
+      `,
+        ),
+        responseMappingTemplate: MappingTemplate.fromString(
+          '$util.toJson($context.result)',
+        ),
+      }),
+    );
   }
 }

@@ -4,6 +4,5 @@ exports[`Testing backend seed state Test user must be present and we can log in 
 Object {
   "Enabled": true,
   "UserStatus": "CONFIRMED",
-  "Username": "test@test.com",
 }
 `;
