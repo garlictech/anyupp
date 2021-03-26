@@ -39,7 +39,7 @@ export class GraphqlApiFp {
       {
         auth: {
           type: AUTH_TYPE.API_KEY,
-          apiKey: config.api_key,
+          apiKey: config.aws_appsync_apiKey,
         },
         offlineConfig: {
           keyPrefix: 'public',

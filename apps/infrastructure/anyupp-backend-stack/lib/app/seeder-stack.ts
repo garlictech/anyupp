@@ -49,6 +49,7 @@ export class SeederStack extends sst.Stack {
       resourceType: 'Custom::StackSeeder',
       properties: {
         adminUserPoolId,
+        physicalResourceId: scope.logicalPrefixedName('seeder'),
       },
     });
   }

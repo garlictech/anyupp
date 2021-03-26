@@ -40,8 +40,14 @@ enum CardFundingType {
   unknown
 }
 
-# # https://stripe.com/docs/api/metadata?lang=node
-# # Updateable Stripe objects
+# type CardChecks {
+#   address_line1_check: String
+#   address_postal_code_check: String
+#   cvc_check: String
+# }
+
+# https://stripe.com/docs/api/metadata?lang=node
+# Updateable Stripe objects
 type StripeMetadata {
   key: String!
   value: String!
@@ -90,11 +96,17 @@ input StripeCardDeleteInput {
   id: ID!
 }
 
+# Operations
 type Query {
-  getFoo: String
+  # Stripe
+  getMyStripeCards: [StripeCard] @aws_cognito_user_pools
 }
 
 type Mutation {
+  # AdminUser
+  createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
+  deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
+
   createOrderFromCart(
     input: CreateOrderFromCartInput!
   ): CreateOrderFromCartOutput @aws_cognito_user_pools @aws_api_key

@@ -40,6 +40,10 @@ export class CognitoStack extends Stack {
         clientSecret: props.googleClientSecret,
         attributeMapping: {
           email: cognito.ProviderAttribute.GOOGLE_EMAIL,
+          birthdate: cognito.ProviderAttribute.GOOGLE_BIRTHDAYS,
+          fullname: cognito.ProviderAttribute.GOOGLE_NAME,
+          phoneNumber: cognito.ProviderAttribute.GOOGLE_PHONE_NUMBERS,
+          profilePicture: cognito.ProviderAttribute.GOOGLE_PICTURE,
         },
         scopes: ['profile', 'email', 'openid'],
       },
@@ -54,6 +58,8 @@ export class CognitoStack extends Stack {
         clientSecret: props.facebookClientSecret,
         attributeMapping: {
           email: cognito.ProviderAttribute.FACEBOOK_EMAIL,
+          birthdate: cognito.ProviderAttribute.FACEBOOK_BIRTHDAY,
+          fullname: cognito.ProviderAttribute.FACEBOOK_NAME,
         },
         scopes: ['public_profile', 'email', 'openid'],
       },
@@ -319,6 +325,7 @@ export class CognitoStack extends Stack {
   private createConsumerUserPool(app: App) {
     return new cognito.UserPool(this, 'ConsumerUserPool', {
       userPoolName: app.logicalPrefixedName('consumer-user-pool'),
+      ...this.getCommonUserPoolProperties(),
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       userVerification: {
@@ -329,40 +336,71 @@ export class CognitoStack extends Stack {
         smsMessage:
           'Hello thanks for signing up to AnyUPP! Your verification code is {####}',
       },
-      signInAliases: {
-        phone: true,
-        email: true,
-      },
       mfa: cognito.Mfa.OPTIONAL,
       mfaSecondFactor: {
         sms: true,
         otp: true,
       },
-      passwordPolicy: {
-        minLength: 12,
-        requireLowercase: true,
-        requireUppercase: true,
-        requireDigits: true,
-        requireSymbols: false,
-        tempPasswordValidity: Duration.days(3),
+      standardAttributes: {
+        email: {
+          mutable: true,
+          required: true,
+        },
+        fullname: {
+          mutable: true,
+          required: false,
+        },
+        phoneNumber: {
+          mutable: true,
+          required: false,
+        },
+        profilePicture: {
+          mutable: true,
+          required: false,
+        },
+        address: {
+          mutable: true,
+          required: false,
+        },
+        birthdate: {
+          mutable: false,
+          required: false,
+        },
+        nickname: {
+          mutable: false,
+          required: false,
+        },
       },
-      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
     });
   }
 
   private createAdminUserPool(app: App) {
     return new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
+      ...this.getCommonUserPoolProperties(),
       selfSignUpEnabled: false,
-      passwordPolicy: {
-        minLength: 12,
-        requireLowercase: true,
-        requireUppercase: true,
-        requireDigits: true,
-        requireSymbols: false,
-        tempPasswordValidity: Duration.days(3),
+      standardAttributes: {
+        email: {
+          mutable: true,
+          required: true,
+        },
+        fullname: {
+          mutable: true,
+          required: true,
+        },
+        phoneNumber: {
+          mutable: true,
+          required: true,
+        },
+        profilePicture: {
+          mutable: true,
+          required: false,
+        },
       },
-      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
+      signInAliases: {
+        email: true,
+        phone: true,
+      },
     });
   }
 
@@ -435,5 +473,24 @@ export class CognitoStack extends Stack {
         },
       },
     );
+  }
+
+  private getCommonUserPoolProperties() {
+    return {
+      signInAliases: {
+        phone: true,
+        email: true,
+      },
+      passwordPolicy: {
+        minLength: 12,
+        requireLowercase: true,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: false,
+        tempPasswordValidity: Duration.days(3),
+      },
+      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
+      signInCaseSensitive: false,
+    };
   }
 }

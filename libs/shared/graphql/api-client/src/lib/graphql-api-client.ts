@@ -3,7 +3,6 @@ import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import API from '@aws-amplify/api';
 import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
 import { buildRetryLogic } from '@bgap/shared/utils';
@@ -11,6 +10,7 @@ import { buildRetryLogic } from '@bgap/shared/utils';
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _client: AWSAppSyncClient<any>;
+  // See issue #348
   private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
     genericConfig: IAmplifyApiConfig,
@@ -21,6 +21,8 @@ export class GraphqlApiClient {
 
     // TODO: the retrayable and retryDelayInMillisec functions is not good
     // for the current GraphQL client responses
+    // See issue #348
+
     // const parser = fp.memoize((error: ApolloError) => {
     //   if (isApolloError(error)) {
     //     // return error.message;

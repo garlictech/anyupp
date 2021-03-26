@@ -50,7 +50,7 @@ const sendResponse = async (props: any) => {
   });
 };
 
-const username = 'test@test.com';
+const username = 'test@anyupp.com';
 const password = 'Testtesttest12_';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -63,6 +63,25 @@ export const seedAdminUser = (UserPoolId: string) =>
     {
       UserPoolId,
       Username: username,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: username,
+        },
+        {
+          Name: 'name',
+          Value: 'Test Elek',
+        },
+        {
+          Name: 'phone_number',
+          Value: '+123456789012',
+        },
+        {
+          Name: 'picture',
+          Value:
+            'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
+        },
+      ],
     },
     params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
     from,
@@ -98,11 +117,6 @@ export const seedAdminUser = (UserPoolId: string) =>
     filter(fp.negate(fp.isEmpty)),
     map((adminUserId: string) => ({
       id: adminUserId,
-      email: username,
-      name: 'Test Elek',
-      roles: {
-        role: 'superuser',
-      },
     })),
     switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
@@ -169,23 +183,24 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
   const adminUserPoolId = event.ResourceProperties.adminUserPoolId;
+  const physicalResourceId = event.ResourceProperties.physicalResourceId;
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await seedAdminUser(adminUserPoolId)
+    await combineLatest([seedAdminUser(adminUserPoolId), seedBusinessData()])
       .pipe(
-        switchMap(status =>
+        switchMap(() =>
           from(
             sendResponse({
-              status,
+              status: 'SUCCESS',
               requestId: event.RequestId,
               stackId: event.StackId,
               reason: '',
+              physicalResourceId,
               logicalResourceId: event.LogicalResourceId,
               responseUrl: event.ResponseURL,
             }),
           ),
         ),
-        switchMap(seedBusinessData),
       )
       .toPromise();
   }
