@@ -1,3 +1,5 @@
+# FONTOS!!!! EZT CSAK A BACKEND OLDALHOZ SZABAD GENERALTATNI!!!!
+# 'amplify api gql-compile' KELL!!!!
 type Address {
   address: String
   city: String
@@ -24,21 +26,7 @@ type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   profileImage: String
-  roles: AdminUserRole!
   settings: AdminUserSettings
-  email: String
-  phone: String
-}
-
-type AdminUserRole {
-  role: String!
-  entities: [AdminRoleEntity]
-}
-
-type AdminRoleEntity {
-  chainId: String
-  groupId: String
-  unitId: String
 }
 
 type AdminUserSettings {
@@ -48,6 +36,18 @@ type AdminUserSettings {
   selectedProductCategoryId: String
   selectedLanguage: String
   selectedHistoryDate: Int
+}
+
+# RoleContext
+
+type RoleContext @model @auth(rules: [{ allow: public }]) {
+  contextId: String! # Readable short id
+  role: String!
+  name: String!
+  chainId: String
+  groupId: String
+  unitId: String
+  users: [ID]
 }
 
 # Stripe
@@ -191,13 +191,13 @@ type PriceShown {
 }
 
 type OrderItem {
+  productId: ID!
+  variantId: ID!
   created: Int
   productName: LocalizedItem
   priceShown: PriceShown
-  productId: ID
   quantity: Int
   statusLog: [StatusLog]
-  variantId: ID
   variantName: LocalizedItem
   laneId: ID
 }
@@ -205,6 +205,8 @@ type OrderItem {
 # Order
 type Order @model @auth(rules: [{ allow: public }]) {
   id: ID!
+  userId: ID!
+  unitId: ID!
   created: Int
   items: [OrderItem]
   paymentMethod: String
@@ -212,9 +214,17 @@ type Order @model @auth(rules: [{ allow: public }]) {
   statusLog: [StatusLog]
   sumPriceShown: PriceShown
   takeAway: Boolean
-  userId: ID
   place: Place
   paymentIntention: Int
+  status: OrderStatus
+}
+
+enum OrderStatus {
+  PLACED,
+  PROCESSING,
+  READY,
+  PAID,
+  REJECTED
 }
 
 type Place {
@@ -241,7 +251,6 @@ type ChainProduct @model @auth(rules: [{ allow: public }]) {
   productCategoryId: ID
   productType: String
   isVisible: Boolean
-  position: String
   image: String
   variants: [ProductVariant]
   # extends: String
@@ -257,7 +266,6 @@ type GroupProduct @model @auth(rules: [{ allow: public }]) {
   groupId: ID!
   isVisible: Boolean
   tax: Int
-  position: String
   variants: [ProductVariant]
 }
 
@@ -388,6 +396,8 @@ type Subscription {
     @aws_subscribe(mutations: ["updateAdminUser"])
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+  onRoleContextsChange: RoleContext
+    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
@@ -404,4 +414,69 @@ type Subscription {
     @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+
+  # Added for the Mobile Application
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"])
+  onOrderChanged(userId: String, unitId: String): Order @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+
+}
+
+# Added for the Mobile Application
+type GeoUnit @model 
+@key(name: "unitsByChain", fields: ["chainId"])
+@key(name: "unitsByGroup", fields: ["groupId"])
+{
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String
+  address: Address
+  style: ChainStyle
+  paymentModes: [PaymentMode!]
+  distance: Int
+  openingHours: String
+  currency: String
+  place: Place
+}
+
+type GeneratedProduct @model
+@key(name: "productsByUnit", fields: ["unitId"])
+@key(name: "productsByUnitAndCategory", fields: ["unitId", "productCategoryId"])
+{
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem
+  description: LocalizedItem
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  variants: [ProductVariant!]
+}
+
+type FavoriteProduct @model
+@key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"])
+{
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct @connection
+}
+
+type Cart @model {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean
+  place: Place
+  paymentMethod: PaymentMode
+  created: Int
+  items: [CartItem]
+}
+
+type CartItem {
+  product: GeneratedProduct!
+  variant: ProductVariant!
+  quantity: Int!
 }

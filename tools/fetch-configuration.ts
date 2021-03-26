@@ -15,6 +15,7 @@ const prefix = `${stage}-${project}-`;
 
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
 const targetFile = `${targetDir}/config.json`;
+const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsconfiguration.dart`;
 
 fs.mkdirSync(targetDir, { recursive: true });
 
@@ -46,6 +47,11 @@ pipe(
         console.log(config);
         fs.writeFileSync(targetFile, JSON.stringify(config, null, 2));
         console.log(`Config written to ${targetFile}`);
+      }),
+      fp.tap(config => {
+        //console.log(config);
+        fs.writeFileSync(mobileAppConfigurationFile, `const amplifyconfig = '''${JSON.stringify(config, null, 2)}''';`);
+        console.log(`Mobile application config written to ${mobileAppConfigurationFile}`);
       }),
     ),
   ),

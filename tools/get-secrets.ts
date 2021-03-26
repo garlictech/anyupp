@@ -13,6 +13,8 @@ const secretName = `${project}-${stage}-secrets`;
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
 const firebaseConfigTargetFile = `${targetDir}/firebase.config.json`;
 const firebaseServiceAccountKeyTargetFile = `${targetDir}/firebase-service-account-key.json`;
+const androidKeyStoreTargetFile = `${__dirname}/../apps/anyupp-mobile/android/anyupp-keystore.jks`;
+const androidKeyPropertiesTargetFile = `${__dirname}/../apps/anyupp-mobile/android/key.properties`;
 
 const client = new AWS.SecretsManager({
   region: region,
@@ -39,6 +41,20 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
         fs.writeFileSync(
           firebaseServiceAccountKeyTargetFile,
           JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2),
+        );
+
+         // Android keystore binary
+         fs.writeFileSync(
+          androidKeyStoreTargetFile,
+          secret.androidKeyStore,
+          {encoding: 'base64'}
+        );
+
+        // Android key properties (key alias, password, path etc...)
+        fs.writeFileSync(
+          androidKeyPropertiesTargetFile,
+          secret.androidKeyProperties,
+          {encoding: 'base64'}
         );
       }),
       fp.tap(() =>
