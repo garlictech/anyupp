@@ -1,6 +1,6 @@
 import { EUnitMapObjectType } from '@bgap/shared/types';
 
-export const FLOOR_MAP_CONFIG = {
+export const FLOOR_MAP_config = {
   grid: 10,
   gridDivider: 5,
   backgroundColor: '#f8f8f8',
@@ -16,7 +16,7 @@ export const FLOOR_MAP_CONFIG = {
   wallFill: 'rgba(136, 136, 136, 0.7)',
 };
 
-export const FLOOR_MAP_TEXT_CONFIG = {
+export const FLOOR_MAP_TEXT_config = {
   fontFamily: 'Arial',
   fontSize: 14,
   fill: '#fff',
@@ -27,7 +27,7 @@ export const FLOOR_MAP_TEXT_CONFIG = {
 };
 
 export const FLOOR_MAP_COMMON_BG_OPTIONS = {
-  strokeWidth: FLOOR_MAP_CONFIG.strokeWidth,
+  strokeWidth: FLOOR_MAP_config.strokeWidth,
   originX: 'center',
   originY: 'center',
   selectable: false,
@@ -35,7 +35,7 @@ export const FLOOR_MAP_COMMON_BG_OPTIONS = {
 };
 
 export const FLOOR_MAP_GRID_OPTIONS = {
-  stroke: FLOOR_MAP_CONFIG.lineStroke,
+  stroke: FLOOR_MAP_config.lineStroke,
   selectable: false,
   type: 'line',
   hoverCursor: 'default',

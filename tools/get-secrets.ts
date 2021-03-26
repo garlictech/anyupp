@@ -10,7 +10,7 @@ const project = 'anyupp';
 const stage = process.argv[3];
 
 const secretName = `${project}-${stage}-secrets`;
-const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
+const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const firebaseConfigTargetFile = `${targetDir}/firebase.config.json`;
 const firebaseServiceAccountKeyTargetFile = `${targetDir}/firebase-service-account-key.json`;
 
@@ -28,7 +28,7 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
       data.SecretString,
       JSON.parse,
       fp.tap(secret => {
-        // Firebase CONFIG
+        // Firebase config
         fs.writeFileSync(
           firebaseConfigTargetFile,
           JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2),

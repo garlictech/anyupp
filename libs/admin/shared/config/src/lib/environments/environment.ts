@@ -2,13 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { CONFIG } from '@bgap/shared/config';
+import { config } from '@bgap/shared/config';
 
 export const environment = {
   production: false,
   id: 'dev',
   name: 'DEV',
-  config: CONFIG,
+  config: config,
 };
 
 /*

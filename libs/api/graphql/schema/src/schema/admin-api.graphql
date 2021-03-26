@@ -39,7 +39,7 @@ type AdminUserSettings {
 type RoleContext @model @auth(rules: [{ allow: public }]) {
   contextId: String! # Readable short id
   role: String!
-  name: String!
+  name: LocalizedItem
   chainId: String
   groupId: String
   unitId: String
