@@ -1,6 +1,6 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
 
-When('I click on the {string} text', (label:string) => {
+  When('I click on the {string} text', (label:string) => {
     cy.get('a').contains(label).click({force: true});
   });
 

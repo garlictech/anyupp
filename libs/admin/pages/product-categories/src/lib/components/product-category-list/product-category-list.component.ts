@@ -1,14 +1,14 @@
 import { map } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { DataService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { customNumberCompare } from '@bgap/shared/utils';
 import {
   IProductCategory,
   IProductCategoryOrderChangeEvent,
 } from '@bgap/shared/types';
+import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -29,7 +29,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
+    private _amplifyDataService: AmplifyDataService,
   ) {}
 
   ngOnInit(): void {
@@ -88,11 +88,15 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       );
 
       this._sortedProductCategoryIds.forEach(
-        (productCategoryId: string, pos: number): void => {
-          this._dataService.updateProductCategoryPosition(
-            this._selectedChainId || '',
+        async (productCategoryId: string, pos: number): Promise<void> => {
+          await this._amplifyDataService.update<IProductCategory>(
+            'getProductCategory',
+            'updateProductCategory',
             productCategoryId,
-            (pos + 1).toString(),
+            (data: unknown) => ({
+              ...(<IProductCategory>data),
+              position: (pos + 1).toString(),
+            }),
           );
         },
       );

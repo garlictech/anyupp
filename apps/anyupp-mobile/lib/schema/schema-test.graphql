@@ -1,0 +1,848 @@
+type GeoUnit {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String
+  address: Address
+  style: ChainStyle
+  paymentModes: [PaymentMode!]
+  distance: Int
+  openingHours: String
+  currency: String
+  place: Place
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Address {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location
+}
+
+type Location {
+  lat: Float
+  lng: Float
+}
+
+type LocalizedItem {
+  en: String
+  de: String
+  hu: String
+}
+
+type ChainStyle {
+  colors: ChainStyleColors
+  images: ChainStyleImages
+}
+
+type ChainStyleColors {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
+type PaymentMode {
+  name: String!
+  caption: String
+  method: String!
+}
+
+type User {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  loginMethod: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type GeneratedProduct {
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem
+  description: LocalizedItem
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  variants: [ProductVariant!]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ProductCategory {
+  id: ID!
+  unitId: ID!
+  name: LocalizedItem
+  description: LocalizedItem
+  image: String
+  position: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ProductVariant {
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  isAvailable: Boolean
+  price: Float
+  position: Int
+}
+
+type ProductVariantPack {
+  size: Float
+  unit: String
+}
+
+type FavoriteProduct {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Order {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  items: [OrderItem]
+  paymentMethod: PaymentMode
+  staffId: String
+  sumPriceShown: PriceShown
+  takeAway: Boolean
+  place: Place
+  paymentIntention: Int
+  statusLog: [StatusLog]
+  created: Int
+  status: OrderStatus
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum OrderStatus {
+  PLACED
+  PROCESSING
+  READY
+  PAID
+  REJECTED
+}
+
+type OrderItem {
+  productId: ID!
+  variantId: ID!
+  productName: LocalizedItem
+  priceShown: PriceShown
+  quantity: Int
+  statusLog: [StatusLog]
+  variantName: LocalizedItem
+  created: Int
+  takeAway: Boolean
+}
+
+type Cart {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean
+  place: Place
+  paymentMethod: PaymentMode
+  created: Int
+  items: [CartItem]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type CartItem {
+  product: GeneratedProduct!
+  variant: ProductVariant!
+  quantity: Int!
+}
+
+type Place {
+  seat: String
+  table: String
+}
+
+type PriceShown {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+type StatusLog {
+  userId: ID!
+  status: String
+  ts: Int
+}
+
+type Subscription {
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"])
+  onOrderChanged(userId: String, unitId: String): Order @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+  onCreateGeoUnit: GeoUnit @aws_subscribe(mutations: ["createGeoUnit"])
+  onUpdateGeoUnit: GeoUnit @aws_subscribe(mutations: ["updateGeoUnit"])
+  onDeleteGeoUnit: GeoUnit @aws_subscribe(mutations: ["deleteGeoUnit"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"])
+  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"])
+  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"])
+  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"])
+  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"])
+  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"])
+  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"])
+  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"])
+  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"])
+  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"])
+  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"])
+  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"])
+  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"])
+  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"])
+  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"])
+}
+
+type Mutation {
+  createOrderFromCart(cartId: String): Order
+  startStripePayment(orderId: String): String
+  createGeoUnit(input: CreateGeoUnitInput!, condition: ModelGeoUnitConditionInput): GeoUnit
+  updateGeoUnit(input: UpdateGeoUnitInput!, condition: ModelGeoUnitConditionInput): GeoUnit
+  deleteGeoUnit(input: DeleteGeoUnitInput!, condition: ModelGeoUnitConditionInput): GeoUnit
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createGeneratedProduct(input: CreateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct
+  updateGeneratedProduct(input: UpdateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct
+  deleteGeneratedProduct(input: DeleteGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct
+  createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  updateProductCategory(input: UpdateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  deleteProductCategory(input: DeleteProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory
+  createFavoriteProduct(input: CreateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct
+  updateFavoriteProduct(input: UpdateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct
+  deleteFavoriteProduct(input: DeleteFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct
+  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order
+  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order
+  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order
+  createCart(input: CreateCartInput!, condition: ModelCartConditionInput): Cart
+  updateCart(input: UpdateCartInput!, condition: ModelCartConditionInput): Cart
+  deleteCart(input: DeleteCartInput!, condition: ModelCartConditionInput): Cart
+}
+
+input AddressInput {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: LocationInput
+}
+
+input LocationInput {
+  lat: Float
+  lng: Float
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
+}
+
+input PaymentModeInput {
+  name: String!
+  caption: String
+  method: String!
+}
+
+input PlaceInput {
+  seat: String
+  table: String
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelGeoUnitConnection {
+  items: [GeoUnit]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelGeoUnitFilterInput {
+  id: ModelIDInput
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  name: ModelStringInput
+  distance: ModelIntInput
+  openingHours: ModelStringInput
+  currency: ModelStringInput
+  and: [ModelGeoUnitFilterInput]
+  or: [ModelGeoUnitFilterInput]
+  not: ModelGeoUnitFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getGeoUnit(id: ID!): GeoUnit
+  listGeoUnits(filter: ModelGeoUnitFilterInput, limit: Int, nextToken: String): ModelGeoUnitConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getGeneratedProduct(id: ID!): GeneratedProduct
+  listGeneratedProducts(filter: ModelGeneratedProductFilterInput, limit: Int, nextToken: String): ModelGeneratedProductConnection
+  getProductCategory(id: ID!): ProductCategory
+  listProductCategorys(filter: ModelProductCategoryFilterInput, limit: Int, nextToken: String): ModelProductCategoryConnection
+  getFavoriteProduct(id: ID!): FavoriteProduct
+  listFavoriteProducts(filter: ModelFavoriteProductFilterInput, limit: Int, nextToken: String): ModelFavoriteProductConnection
+  getOrder(id: ID!): Order
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection
+  getCart(id: ID!): Cart
+  listCarts(filter: ModelCartFilterInput, limit: Int, nextToken: String): ModelCartConnection
+}
+
+input CreateGeoUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  name: String
+  address: AddressInput
+  style: ChainStyleInput
+  paymentModes: [PaymentModeInput!]
+  distance: Int
+  openingHours: String
+  currency: String
+  place: PlaceInput
+}
+
+input UpdateGeoUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  name: String
+  address: AddressInput
+  style: ChainStyleInput
+  paymentModes: [PaymentModeInput!]
+  distance: Int
+  openingHours: String
+  currency: String
+  place: PlaceInput
+}
+
+input DeleteGeoUnitInput {
+  id: ID
+}
+
+input ModelGeoUnitConditionInput {
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  name: ModelStringInput
+  distance: ModelIntInput
+  openingHours: ModelStringInput
+  currency: ModelStringInput
+  and: [ModelGeoUnitConditionInput]
+  or: [ModelGeoUnitConditionInput]
+  not: ModelGeoUnitConditionInput
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  loginMethod: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  loginMethod: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  loginMethod: String
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  loginMethod: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+input ProductVariantInput {
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  isAvailable: Boolean
+  price: Float
+  position: Int
+}
+
+input ProductVariantPackInput {
+  size: Float
+  unit: String
+}
+
+type ModelGeneratedProductConnection {
+  items: [GeneratedProduct]
+  nextToken: String
+}
+
+input ModelGeneratedProductFilterInput {
+  id: ModelIDInput
+  unitId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  tax: ModelIntInput
+  position: ModelIntInput
+  image: ModelStringInput
+  and: [ModelGeneratedProductFilterInput]
+  or: [ModelGeneratedProductFilterInput]
+  not: ModelGeneratedProductFilterInput
+}
+
+input CreateGeneratedProductInput {
+  id: ID
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  variants: [ProductVariantInput!]
+}
+
+input UpdateGeneratedProductInput {
+  id: ID!
+  unitId: ID
+  productCategoryId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productType: String
+  tax: Int
+  position: Int
+  image: String
+  variants: [ProductVariantInput!]
+}
+
+input DeleteGeneratedProductInput {
+  id: ID
+}
+
+input ModelGeneratedProductConditionInput {
+  unitId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  tax: ModelIntInput
+  position: ModelIntInput
+  image: ModelStringInput
+  and: [ModelGeneratedProductConditionInput]
+  or: [ModelGeneratedProductConditionInput]
+  not: ModelGeneratedProductConditionInput
+}
+
+type ModelProductCategoryConnection {
+  items: [ProductCategory]
+  nextToken: String
+}
+
+input ModelProductCategoryFilterInput {
+  id: ModelIDInput
+  unitId: ModelIDInput
+  image: ModelStringInput
+  position: ModelIntInput
+  and: [ModelProductCategoryFilterInput]
+  or: [ModelProductCategoryFilterInput]
+  not: ModelProductCategoryFilterInput
+}
+
+input CreateProductCategoryInput {
+  id: ID
+  unitId: ID!
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  image: String
+  position: Int
+}
+
+input UpdateProductCategoryInput {
+  id: ID!
+  unitId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  image: String
+  position: Int
+}
+
+input DeleteProductCategoryInput {
+  id: ID
+}
+
+input ModelProductCategoryConditionInput {
+  unitId: ModelIDInput
+  image: ModelStringInput
+  position: ModelIntInput
+  and: [ModelProductCategoryConditionInput]
+  or: [ModelProductCategoryConditionInput]
+  not: ModelProductCategoryConditionInput
+}
+
+type ModelFavoriteProductConnection {
+  items: [FavoriteProduct]
+  nextToken: String
+}
+
+input ModelFavoriteProductFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  and: [ModelFavoriteProductFilterInput]
+  or: [ModelFavoriteProductFilterInput]
+  not: ModelFavoriteProductFilterInput
+}
+
+input CreateFavoriteProductInput {
+  id: ID
+  userId: ID!
+  unitId: ID!
+  favoriteProductProductId: ID
+}
+
+input UpdateFavoriteProductInput {
+  id: ID!
+  userId: ID
+  unitId: ID
+  favoriteProductProductId: ID
+}
+
+input DeleteFavoriteProductInput {
+  id: ID
+}
+
+input ModelFavoriteProductConditionInput {
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  and: [ModelFavoriteProductConditionInput]
+  or: [ModelFavoriteProductConditionInput]
+  not: ModelFavoriteProductConditionInput
+}
+
+input OrderItemInput {
+  productId: ID!
+  variantId: ID!
+  productName: LocalizedItemInput
+  priceShown: PriceShownInput
+  quantity: Int
+  statusLog: [StatusLogInput]
+  variantName: LocalizedItemInput
+  created: Int
+  takeAway: Boolean
+}
+
+input PriceShownInput {
+  currency: String
+  pricePerUnit: Float
+  priceSum: Float
+  tax: Int
+  taxSum: Float
+}
+
+input StatusLogInput {
+  userId: ID!
+  status: String
+  ts: Int
+}
+
+type ModelOrderConnection {
+  items: [Order]
+  nextToken: String
+}
+
+input ModelOrderStatusInput {
+  eq: OrderStatus
+  ne: OrderStatus
+}
+
+input ModelOrderFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  staffId: ModelStringInput
+  takeAway: ModelBooleanInput
+  paymentIntention: ModelIntInput
+  created: ModelIntInput
+  status: ModelOrderStatusInput
+  and: [ModelOrderFilterInput]
+  or: [ModelOrderFilterInput]
+  not: ModelOrderFilterInput
+}
+
+input CreateOrderInput {
+  id: ID
+  userId: ID!
+  unitId: ID!
+  items: [OrderItemInput]
+  paymentMethod: PaymentModeInput
+  staffId: String
+  sumPriceShown: PriceShownInput
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Int
+  statusLog: [StatusLogInput]
+  created: Int
+  status: OrderStatus
+}
+
+input UpdateOrderInput {
+  id: ID!
+  userId: ID
+  unitId: ID
+  items: [OrderItemInput]
+  paymentMethod: PaymentModeInput
+  staffId: String
+  sumPriceShown: PriceShownInput
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Int
+  statusLog: [StatusLogInput]
+  created: Int
+  status: OrderStatus
+}
+
+input DeleteOrderInput {
+  id: ID
+}
+
+input ModelOrderConditionInput {
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  staffId: ModelStringInput
+  takeAway: ModelBooleanInput
+  paymentIntention: ModelIntInput
+  created: ModelIntInput
+  status: ModelOrderStatusInput
+  and: [ModelOrderConditionInput]
+  or: [ModelOrderConditionInput]
+  not: ModelOrderConditionInput
+}
+
+input CartItemInput {
+  variant: ProductVariantInput!
+  quantity: Int!
+}
+
+type ModelCartConnection {
+  items: [Cart]
+  nextToken: String
+}
+
+input ModelCartFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  takeAway: ModelBooleanInput
+  created: ModelIntInput
+  and: [ModelCartFilterInput]
+  or: [ModelCartFilterInput]
+  not: ModelCartFilterInput
+}
+
+input CreateCartInput {
+  id: ID
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentMethod: PaymentModeInput
+  created: Int
+  items: [CartItemInput]
+}
+
+input UpdateCartInput {
+  id: ID!
+  userId: ID
+  unitId: ID
+  takeAway: Boolean
+  place: PlaceInput
+  paymentMethod: PaymentModeInput
+  created: Int
+  items: [CartItemInput]
+}
+
+input DeleteCartInput {
+  id: ID
+}
+
+input ModelCartConditionInput {
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  takeAway: ModelBooleanInput
+  created: ModelIntInput
+  and: [ModelCartConditionInput]
+  or: [ModelCartConditionInput]
+  not: ModelCartConditionInput
+}
+
+input ModelIDKeyConditionInput {
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  between: [ID]
+  beginsWith: ID
+}
