@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Admin user creation/deletion Admin user should be created/deleted: Cleanup 1`] = `
+Object {
+  "data": Object {
+    "deleteAdminUser": true,
+  },
+}
+`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted: Malformed email error 1`] = `[Error: GraphQL error: Username should be either an email or a phone number.]`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted: Missing email error 1`] = `[Error: GraphQL error: 2 validation errors detected: Value at 'username' failed to satisfy constraint: Member must have length greater than or equal to 1; Value at 'username' failed to satisfy constraint: Member must satisfy regular expression pattern: [\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+]`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted: Should not create existing user 1`] = `[Error: GraphQL error: An account with the given email already exists.]`;

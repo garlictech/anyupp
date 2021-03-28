@@ -33,9 +33,18 @@ mutation UpdateMyStripeCard($input: StripeCardUpdateInput!) {
     }
   }
 }
+
 mutation StartStripePayment($input: StartStripePaymentInput!) {
   startStripePayment(input: $input) {
     clientSecret
     status
   }
+}
+
+mutation CreateAdminUser($input: CreateAdminUserInput!) {
+  createAdminUser(input: $input)
+}
+
+mutation DeleteAdminUser($userName: String!) {
+  deleteAdminUser(userName: $userName)
 }

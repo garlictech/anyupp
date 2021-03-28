@@ -22,10 +22,8 @@ type LocalizedItem {
 
 # AdminUser
 
-type AdminUser @model @auth(rules: [{ allow: public }]) {
+type AdminUser @model {
   id: ID!
-  name: String
-  profileImage: String
   settings: AdminUserSettings
 }
 
@@ -43,7 +41,7 @@ type AdminUserSettings {
 type RoleContext @model @auth(rules: [{ allow: public }]) {
   contextId: String! # Readable short id
   role: String!
-  name: String!
+  name: LocalizedItem
   chainId: String
   groupId: String
   unitId: String
@@ -396,8 +394,6 @@ type Subscription {
     @aws_subscribe(mutations: ["updateAdminUser"])
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
-  onRoleContextsChange: RoleContext
-    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group

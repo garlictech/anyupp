@@ -44,7 +44,7 @@ export interface AdminUser {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   profileImage?: Maybe<Scalars['String']>;
-  roles: AdminUserRole;
+  roles?: Maybe<AdminUserRole>;
   settings?: Maybe<AdminUserSettings>;
   email?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
@@ -245,7 +245,6 @@ export interface ChainProduct {
   productCategoryId?: Maybe<Scalars['ID']>;
   productType?: Maybe<Scalars['String']>;
   isVisible?: Maybe<Scalars['Boolean']>;
-  position?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   variants?: Maybe<Array<Maybe<ProductVariant>>>;
 }
@@ -258,7 +257,6 @@ export interface GroupProduct {
   groupId: Scalars['ID'];
   isVisible?: Maybe<Scalars['Boolean']>;
   tax?: Maybe<Scalars['Int']>;
-  position?: Maybe<Scalars['String']>;
   variants?: Maybe<Array<Maybe<ProductVariant>>>;
 }
 
@@ -436,11 +434,26 @@ export interface Query {
   getMyStripeCards?: Maybe<Array<Maybe<StripeCard>>>;
 }
 
+export interface CreateAdminUserInput {
+  email?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+}
+
 export interface Mutation {
   __typename?: 'Mutation';
+  createAdminUser: Scalars['ID'];
+  deleteAdminUser: Scalars['Boolean'];
   startStripePayment?: Maybe<StartStripePaymentOutput>;
   updateMyStripeCard?: Maybe<StripeCard>;
   deleteMyStripeCard?: Maybe<Scalars['Boolean']>;
+}
+
+export interface MutationCreateAdminUserArgs {
+  input: CreateAdminUserInput;
+}
+
+export interface MutationDeleteAdminUserArgs {
+  userName: Scalars['String'];
 }
 
 export interface MutationStartStripePaymentArgs {
@@ -526,6 +539,24 @@ export type StartStripePaymentMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export type CreateAdminUserMutationVariables = Exact<{
+  input: CreateAdminUserInput;
+}>;
+
+export type CreateAdminUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'createAdminUser'
+>;
+
+export type DeleteAdminUserMutationVariables = Exact<{
+  userName: Scalars['String'];
+}>;
+
+export type DeleteAdminUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'deleteAdminUser'
+>;
+
 export const GetMyStripeCards = gql`
   query GetMyStripeCards {
     getMyStripeCards {
@@ -570,5 +601,15 @@ export const StartStripePayment = gql`
       clientSecret
       status
     }
+  }
+`;
+export const CreateAdminUser = gql`
+  mutation CreateAdminUser($input: CreateAdminUserInput!) {
+    createAdminUser(input: $input)
+  }
+`;
+export const DeleteAdminUser = gql`
+  mutation DeleteAdminUser($userName: String!) {
+    deleteAdminUser(userName: $userName)
   }
 `;

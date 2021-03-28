@@ -43,37 +43,11 @@
               "zen-observable",
               "graphql-tag"
             ],
-            "scripts": [],
-            "fileReplacements": [
-              {
-                "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/config.json",
-                "with": "./libs/shared/config/src/lib/dev/config.json"
-              }
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/production/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
@@ -120,18 +94,6 @@
                 }
               ],
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/qa/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"

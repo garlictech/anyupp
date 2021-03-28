@@ -13,7 +13,7 @@ const project = process.argv[2];
 const stage = process.argv[3];
 const prefix = `${stage}-${project}-`;
 
-const targetDir = `${__dirname}/../libs/shared/config/src/lib/${stage}`;
+const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const targetFile = `${targetDir}/config.json`;
 const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsconfiguration.dart`;
 

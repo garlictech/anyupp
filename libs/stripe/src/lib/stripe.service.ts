@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { SharedSecrets, sharedSecretsPromise } from '@bgap/shared/secrets';
+import { SharedSecrets, getSecrets } from '@bgap/shared/secrets';
 import { isOfType } from '@bgap/shared/utils';
 
 import { mapStripeCardToCard, mapPaymentMethodToCard } from './stripe.utils';
@@ -115,7 +115,7 @@ const handleStripeErrors = (error: Stripe.StripeError) => {
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
 
 const initStripe = async () => {
-  const secrets: SharedSecrets = await sharedSecretsPromise;
+  const secrets: SharedSecrets = await getSecrets();
   return new Stripe(secrets.stripeSecretKey, {
     apiVersion: '2020-08-27',
   });

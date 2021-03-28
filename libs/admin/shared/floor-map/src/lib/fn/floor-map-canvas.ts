@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-import { FLOOR_MAP_CONFIG, FLOOR_MAP_GRID_OPTIONS } from '../const';
+import { FLOOR_MAP_config, FLOOR_MAP_GRID_OPTIONS } from '../const';
 
 import * as utils from './floor-map-utils';
 
@@ -17,7 +17,7 @@ export const initCanvas = (editMode: boolean): void => {
   }
 
   fabricCanvas = new fabric.Canvas('canvas');
-  fabricCanvas.backgroundColor = FLOOR_MAP_CONFIG.backgroundColor;
+  fabricCanvas.backgroundColor = FLOOR_MAP_config.backgroundColor;
   fabricCanvas.selection = false; // Disable group selection
 
   fabricCanvas.hasBorders = fabricEditMode;
@@ -45,14 +45,14 @@ export const resizeCanvas = (w: number, h: number): void => {
 
 const _drawGrid = (): void => {
   // horizontal lines
-  for (let i = 0; i < (fabricCanvas.height || 0) / FLOOR_MAP_CONFIG.grid; i++) {
+  for (let i = 0; i < (fabricCanvas.height || 0) / FLOOR_MAP_config.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
         [
           0,
-          i * FLOOR_MAP_CONFIG.grid,
+          i * FLOOR_MAP_config.grid,
           fabricCanvas.width || 0,
-          i * FLOOR_MAP_CONFIG.grid,
+          i * FLOOR_MAP_config.grid,
         ],
         FLOOR_MAP_GRID_OPTIONS,
       ),
@@ -60,13 +60,13 @@ const _drawGrid = (): void => {
   }
 
   // vertical lines
-  for (let i = 0; i < (fabricCanvas.width || 0) / FLOOR_MAP_CONFIG.grid; i++) {
+  for (let i = 0; i < (fabricCanvas.width || 0) / FLOOR_MAP_config.grid; i++) {
     fabricCanvas.add(
       new fabric.Line(
         [
-          i * FLOOR_MAP_CONFIG.grid,
+          i * FLOOR_MAP_config.grid,
           0,
-          i * FLOOR_MAP_CONFIG.grid,
+          i * FLOOR_MAP_config.grid,
           fabricCanvas.height || 0,
         ],
         FLOOR_MAP_GRID_OPTIONS,
@@ -91,16 +91,16 @@ const _snapToGrid = (e: any): void => {
   e.target.set({
     left:
       (Math.round(
-        e.target.left / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider),
+        e.target.left / (FLOOR_MAP_config.grid / FLOOR_MAP_config.gridDivider),
       ) *
-        FLOOR_MAP_CONFIG.grid) /
-      FLOOR_MAP_CONFIG.gridDivider,
+        FLOOR_MAP_config.grid) /
+      FLOOR_MAP_config.gridDivider,
     top:
       (Math.round(
-        e.target.top / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider),
+        e.target.top / (FLOOR_MAP_config.grid / FLOOR_MAP_config.gridDivider),
       ) *
-        FLOOR_MAP_CONFIG.grid) /
-      FLOOR_MAP_CONFIG.gridDivider,
+        FLOOR_MAP_config.grid) /
+      FLOOR_MAP_config.gridDivider,
   });
 };
 
@@ -142,9 +142,9 @@ const _onScale = (e: any): void => {
 };
 
 const _roundScale = (val: number): number =>
-  (Math.round(val / (FLOOR_MAP_CONFIG.grid / FLOOR_MAP_CONFIG.gridDivider)) *
-    FLOOR_MAP_CONFIG.grid) /
-  FLOOR_MAP_CONFIG.gridDivider;
+  (Math.round(val / (FLOOR_MAP_config.grid / FLOOR_MAP_config.gridDivider)) *
+    FLOOR_MAP_config.grid) /
+  FLOOR_MAP_config.gridDivider;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _onScaled = (e: any): void => {
