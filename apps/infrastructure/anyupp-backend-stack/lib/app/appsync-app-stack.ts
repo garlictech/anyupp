@@ -126,6 +126,7 @@ export class AppsyncAppStack extends sst.Stack {
       ),
       environment: {
         userPoolId: props.adminUserPool.userPoolId,
+        secretName: props.secretsManager.secretName,
       },
     });
 
