@@ -6,7 +6,7 @@ import {
   GetOrderQuery,
   GetProductCategoryQuery,
   GetUnitQuery,
-  GetUserQuery,
+  // GetUserQuery,
   ListAdminUsersQuery,
   ListChainProductsQuery,
   ListChainsQuery,
@@ -14,13 +14,13 @@ import {
   ListOrdersQuery,
   ListProductCategorysQuery,
   ListUnitsQuery,
-  ListUsersQuery,
+  // ListUsersQuery,
   OnAdminUserChangeSubscription,
   OnChainsChangeSubscription,
   OnGroupsChangeSubscription,
   OnProductCategoriesChangeSubscription,
   OnUnitsChangeSubscription,
-  OnUsersChangeSubscription,
+  // OnUsersChangeSubscription,
   OnChainProductChangeSubscription,
   ListRoleContextsQuery,
   OnRoleContextsChangeSubscription,
@@ -35,7 +35,7 @@ export type queryTypes = GetAdminUserQuery &
   GetOrderQuery &
   GetProductCategoryQuery &
   GetChainProductQuery &
-  GetUserQuery &
+  // GetUserQuery &
   GetChainProductQuery;
 export type listTypes = ListAdminUsersQuery &
   ListRoleContextsQuery &
@@ -45,7 +45,7 @@ export type listTypes = ListAdminUsersQuery &
   ListOrdersQuery &
   ListProductCategorysQuery &
   ListChainProductsQuery &
-  ListUsersQuery &
+  // ListUsersQuery &
   ListChainProductsQuery;
 export type apiQueryTypes = queryTypes & listTypes;
 export type subscriptionTypes = OnAdminUserChangeSubscription &
@@ -53,6 +53,6 @@ export type subscriptionTypes = OnAdminUserChangeSubscription &
   OnChainsChangeSubscription &
   OnGroupsChangeSubscription &
   OnUnitsChangeSubscription &
-  OnUsersChangeSubscription &
+  // OnUsersChangeSubscription &
   OnProductCategoriesChangeSubscription &
   OnChainProductChangeSubscription;

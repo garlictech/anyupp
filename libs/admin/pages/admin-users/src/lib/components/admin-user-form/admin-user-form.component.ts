@@ -46,20 +46,20 @@ export class AdminUserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(),
+      // ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
-    } else {
+    } /* else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
         this._formService.adminExistingEmailValidator(
           this.dialogForm.controls.email || '',
         ),
       ]);
-    }
+    } */
   }
 
   public async submit(): Promise<void> {
@@ -185,4 +185,5 @@ export class AdminUserFormComponent
       );
     }
   };
+
 }

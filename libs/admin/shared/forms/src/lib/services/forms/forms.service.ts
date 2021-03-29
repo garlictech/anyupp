@@ -42,7 +42,8 @@ export class FormsService {
       }),
       isAvailable: [true],
       availabilities: this._formBuilder.array([]),
-      position: [''],
+      position: [0],
+      price: [0],
       refGroupPrice: [0],
     };
 
@@ -81,18 +82,4 @@ export class FormsService {
       color: ['#fff', [Validators.required]],
     });
   };
-
-  public adminExistingEmailValidator(
-    control: AbstractControl,
-  ): AsyncValidatorFn {
-    return () => {
-      return this._store.pipe(
-        select(adminUsersSelectors.getAdminUserByEmail(control.value)),
-        take(1),
-        map((adminUser: IAdminUser | undefined) => {
-          return adminUser ? { err: 'ADMIN_USER_EXISTS' } : null;
-        }),
-      );
-    };
-  }
 }

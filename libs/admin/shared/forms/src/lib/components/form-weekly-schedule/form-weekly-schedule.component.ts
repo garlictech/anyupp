@@ -15,7 +15,7 @@ export class FormWeeklyScheduleComponent {
   }
 
   public addCustomDate(): void {
-    (<FormArray>this.scheduleControl.get('override')).push(
+    (<FormArray>this.scheduleControl.get('custom')).push(
       this._formsService.createCustomDailyScheduleFormGroup(),
     );
   }

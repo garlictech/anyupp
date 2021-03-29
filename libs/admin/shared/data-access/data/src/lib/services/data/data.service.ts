@@ -5,40 +5,25 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
-import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
+import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
   EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserRole,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IRoleContext,
-  IUnit,
-  IUser,
+  EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory,
+  IRoleContext, IUnit, IUser
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
 
 @Injectable({
@@ -68,7 +53,10 @@ export class DataService {
         upsertFn: (loggedUser: unknown) => {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
-              loggedUser: <IAdminUser>loggedUser,
+              loggedUser: {
+                ...<IAdminUser>loggedUser,
+                role: EAdminRole.SUPERUSER // TODO contextből
+              },
             }),
           );
         },
@@ -121,9 +109,8 @@ export class DataService {
     this._subscribeToChains();
     this._subscribeToGroups();
     this._subscribeToUnits();
-    this._subscribeToUsers();
+    // this._subscribeToUsers(); TODO not used?
     this._subscribeToAdminUsers();
-
 
     // Get user language
 
@@ -416,6 +403,7 @@ export class DataService {
       });*/
   }
 
+  /*
   private _subscribeToUsers(): void {
     this._amplifyDataService
       .snapshotChanges$({
@@ -434,6 +422,7 @@ export class DataService {
       })
       .subscribe();
   }
+  */
 
   private _subscribeToAdminUsers(): void {
     this._amplifyDataService
@@ -625,7 +614,6 @@ export class DataService {
     userId: string,
     language: string,
   ): Promise<void> {
-    console.error('updateAdminUserSeletedLanguage');
     await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',

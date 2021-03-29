@@ -38,6 +38,7 @@ export const getAdminUserById = (id: string) => {
   );
 };
 
+/*
 export const getAdminUserByEmail = (email: string) => {
   return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
     | IAdminUser
@@ -45,3 +46,4 @@ export const getAdminUserByEmail = (email: string) => {
     adminUsers.find((adminUser): boolean => adminUser.email === email),
   );
 };
+*/

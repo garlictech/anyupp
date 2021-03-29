@@ -20,10 +20,10 @@ type LocalizedItem {
 
 ### AdminUser
 
-type AdminUser @model {
+type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  # name: String
-  # profileImage: String
+  name: String!
+  profileImage: String
   settings: AdminUserSettings
 }
 
@@ -330,6 +330,7 @@ type Availability {
 
 type GeneratedProduct
   @model
+  @auth(rules: [{ allow: public }])
   @key(name: "productsByUnit", fields: ["unitId"])
   @key(
     name: "productsByUnitAndCategory"
@@ -350,6 +351,7 @@ type GeneratedProduct
 
 type FavoriteProduct
   @model
+  @auth(rules: [{ allow: public }])
   @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
   id: ID!
   userId: ID!
@@ -477,7 +479,7 @@ type Subscription {
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
   onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
-  onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]

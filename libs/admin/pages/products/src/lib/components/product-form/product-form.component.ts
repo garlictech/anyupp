@@ -121,8 +121,7 @@ export class ProductFormComponent
       ),
       productCategoryId: ['', [Validators.required]],
       productType: ['', [Validators.required]],
-      isVisible: [''],
-      position: [''],
+      isVisible: ['', [Validators.required]],
       image: [''],
       variants: this._formBuilder.array([]),
     });
@@ -151,7 +150,7 @@ export class ProductFormComponent
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
-        chainId: this._selectedChainId,
+        chainId: this._selectedChainId
       };
 
       if (this.product?.id) {

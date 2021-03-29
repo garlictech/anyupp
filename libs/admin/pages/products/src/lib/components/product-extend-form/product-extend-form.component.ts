@@ -104,7 +104,7 @@ export class ProductExtendFormComponent
     }
     if (this.productLevel === EProductLevel.UNIT) {
       this.dialogForm.addControl('laneId', new FormControl(''));
-      this.dialogForm.addControl('takeaway', new FormControl(''));
+      this.dialogForm.addControl('takeaway', new FormControl(false, Validators.required));
     }
 
     if (this.product) {
@@ -128,6 +128,10 @@ export class ProductExtendFormComponent
         });
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
+
+      if (this.productLevel === EProductLevel.UNIT) {
+        this.dialogForm.controls.takeaway.patchValue(false);
+      }
     }
   }
 
@@ -166,6 +170,7 @@ export class ProductExtendFormComponent
         value.groupId = this._selectedGroupId;
         if (this.productLevel === EProductLevel.UNIT) {
           value.unitId = this._selectedUnitId;
+          value.position = 0;
         }
 
         try {

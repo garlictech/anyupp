@@ -13,7 +13,7 @@ import {
   EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
-  IAdminUserRole,
+  IAdminUser,
   IProduct,
   IProductVariant,
 } from '@bgap/shared/types';
@@ -51,24 +51,24 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store
-      .pipe(
-        select(loggedUserSelectors.getLoggedUserRoles),
-        untilDestroyed(this),
-      )
-      .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((adminUser: IAdminUser | undefined): void => {
+        this.hasRoleToEdit = true
+
+        /* TODO
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -76,11 +76,12 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;
         }
+        */
       });
   }
 

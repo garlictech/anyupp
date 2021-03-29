@@ -1,11 +1,14 @@
 import * as fp from 'lodash/fp';
 
-import { EAdminRole, IAdminUser, IAdminUserRole } from '@bgap/shared/types';
+import { EAdminRole, IAdminUser } from '@bgap/shared/types';
 
 export const chainAdminFilter = (
   checkedAdminUser: IAdminUser,
-  loggedAdminRole: IAdminUserRole,
+  loggedAdminRole: EAdminRole, // IAdminUserRole,
 ): boolean => {
+  return true;
+
+  /* TODO check this
   const loggedAdminChainIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.chainId,
   );
@@ -20,12 +23,16 @@ export const chainAdminFilter = (
   ].includes(checkedAdminUser.roles?.role || EAdminRole.INACTIVE)
     ? fp.intersection(loggedAdminChainIds, currentAdminChainIds).length > 0
     : false;
+    */
 };
 
 export const groupAdminFilter = (
   checkedAdminUser: IAdminUser,
-  loggedAdminRole: IAdminUserRole,
+  loggedAdminRole: EAdminRole, // IAdminUserRole,
 ): boolean => {
+  return true;
+
+  /* TODO check this
   const loggedAdminGroupIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
@@ -39,12 +46,16 @@ export const groupAdminFilter = (
   )
     ? fp.intersection(loggedAdminGroupIds, currentAdminGroupIds).length > 0
     : false;
+    */
 };
 
 export const unitAdminFilter = (
   checkedAdminUser: IAdminUser,
-  loggedAdminRole: IAdminUserRole,
+  loggedAdminRole: EAdminRole, // IAdminUserRole,
 ): boolean => {
+  return true;
+
+  /* TODO check this
   const loggedAdminUnitIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
@@ -53,7 +64,8 @@ export const unitAdminFilter = (
   );
 
   // Unit admin shows only the group/unit admins and the staffs of his chains
-  return checkedAdminUser.roles?.role === EAdminRole.STAFF
+  return checkedAdminUser.role === EAdminRole.STAFF
     ? fp.intersection(loggedAdminUnitIds, currentAdminUnitIds).length > 0
     : false;
+    */
 };

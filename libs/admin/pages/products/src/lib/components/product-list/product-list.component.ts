@@ -114,11 +114,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
         ]): void => {
           this.adminUser = adminUser;
 
+          console.error('pendingGroupProducts', pendingGroupProducts);
           this.pendingGroupProducts = [
             EAdminRole.SUPERUSER,
             EAdminRole.CHAIN_ADMIN,
             EAdminRole.GROUP_ADMIN,
-          ].includes(<EAdminRole>adminUser?.roles?.role)
+          ].includes(<EAdminRole>adminUser?.role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -183,7 +184,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             productId,
             (data: unknown) => ({
               ...(<IProduct>data),
-              position: (i + 1).toString(),
+              position: (i + 1),
             }),
           );
         }

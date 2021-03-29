@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { IAdminUserRole, IChain, IGroup, IUnit } from '@bgap/shared/types';
+import {  IChain, IGroup, IUnit } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 @Pipe({
@@ -18,7 +18,8 @@ export class RoleEntityNamesPipe implements PipeTransform {
     private _domSanitizer: DomSanitizer,
   ) {}
 
-  transform(roles: IAdminUserRole): unknown {
+  transform(): unknown {
+    /*
     const entityPaths: string[] = [];
 
     Object.values(roles?.entities || {}).forEach((entity): void => {
@@ -50,7 +51,8 @@ export class RoleEntityNamesPipe implements PipeTransform {
         `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`,
       );
     });
+    */
 
-    return this._domSanitizer.bypassSecurityTrustHtml(entityPaths.join('<br>'));
+    return 'entities list'; // this._domSanitizer.bypassSecurityTrustHtml(entityPaths.join('<br>'));
   }
 }
