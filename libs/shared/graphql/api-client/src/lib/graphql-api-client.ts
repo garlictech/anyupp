@@ -68,13 +68,13 @@ export class GraphqlApiClient {
     variables?: Record<string, unknown>,
     options?: Partial<QueryOptions> | undefined,
   ): Observable<ApolloQueryResult<T>> {
-    this.logger.debug(
-      `Query ${JSON.stringify(document)} called with variables ${JSON.stringify(
-        variables,
-        null,
-        2,
-      )}`,
-    );
+    // this.logger.debug(
+    //   `Query ${JSON.stringify(document)} called with variables ${JSON.stringify(
+    //     variables,
+    //     null,
+    //     2,
+    //   )}`,
+    // );
     return from(
       this._client.query({
         query: document,
@@ -91,6 +91,11 @@ export class GraphqlApiClient {
     document: DocumentNode,
     variables?: Record<string, unknown>,
   ): Observable<ApolloQueryResult<T>> {
+    // this.logger.debug(
+    //   `Mutation ${JSON.stringify(
+    //     document,
+    //   )} called with variables ${JSON.stringify(variables, null, 2)}`,
+    // );
     return from(
       this._client.mutate({
         mutation: document,

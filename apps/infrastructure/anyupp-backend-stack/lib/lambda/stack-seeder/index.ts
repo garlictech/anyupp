@@ -1,11 +1,3 @@
-import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
-import axios from 'axios';
-import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
-import { combineLatest, from, of, throwError } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
-
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
 import {
@@ -13,7 +5,13 @@ import {
   AmplifyApiMutationDocuments,
   awsConfig,
 } from '@bgap/admin/amplify-api';
-
+import { CloudFormationCustomResourceEvent } from 'aws-lambda';
+import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
+import axios from 'axios';
+import { pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
+import { combineLatest, from, of, throwError } from 'rxjs';
+import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
 import {
   createTestCart,
   createTestChain,

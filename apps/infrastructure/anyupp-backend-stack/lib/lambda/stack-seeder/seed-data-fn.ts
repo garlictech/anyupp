@@ -52,7 +52,7 @@ export const createTestChain = (chainIdx: number) =>
           isActive: true,
           email: `info@chain${chainIdx}.com`,
           phone: '1234567890',
-        },
+        } as AmplifyApi.CreateChainInput,
       }),
     ),
     operation =>
@@ -74,7 +74,7 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) =>
             en: `Test group #${groupIdx} description`,
           },
           currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
-        },
+        } as AmplifyApi.CreateGroupInput,
       }),
     ),
     operation =>
@@ -139,11 +139,11 @@ export const createTestUnit = (
             title: 'TITLE',
             postalCode: 'POSTALCODE',
             location: {
-              lat: 47,
-              lng: 19,
+              lat: '47',
+              lng: '19',
             },
           },
-        },
+        } as AmplifyApi.CreateUnitInput,
       }),
     ),
     operation =>
@@ -171,7 +171,7 @@ export const createTestProductCategory = (
             en: `Test product category #${productCategoryId} description`,
           },
           position: productCategoryId.toString(),
-        },
+        } as AmplifyApi.CreateProductCategoryInput,
       }),
     ),
     operation =>
@@ -220,7 +220,7 @@ export const createTestChainProduct = (
               },
             },
           ],
-        },
+        } as AmplifyApi.CreateChainProductInput,
       }),
     ),
     operation =>
@@ -260,7 +260,7 @@ export const createTestGroupProduct = (
               refGroupPrice: productIdx * 50,
             },
           ],
-        },
+        } as AmplifyApi.CreateGroupInput,
       }),
     ),
     operation =>
@@ -312,7 +312,7 @@ export const createTestUnitProduct = (
               ],
             },
           ],
-        },
+        } as AmplifyApi.CreateUnitProductInput,
       }),
     ),
     operation =>

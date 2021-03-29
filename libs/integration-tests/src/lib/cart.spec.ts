@@ -21,7 +21,7 @@ describe('getCart test', () => {
         ),
       )
       .toPromise();
-  });
+  }, 15000);
   it('successful query execution', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,
@@ -32,7 +32,7 @@ describe('getCart test', () => {
         done();
       },
     });
-  });
+  }, 15000);
   it('should return null for a not existing item', done => {
     executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
       AmplifyApiQueryDocuments.getCart,
@@ -53,5 +53,5 @@ describe('getCart test', () => {
         done();
       },
     });
-  }, 10000);
+  }, 15000);
 });

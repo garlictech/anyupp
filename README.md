@@ -123,7 +123,7 @@ amplify remove auth
 amplify import auth
 ```
 
-- Choose `Cognito User Pool and Identity Pool Cognito User Pool only`
+- Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
 
@@ -148,7 +148,7 @@ Answere these questions
 Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
 
-- ? Enable conflict detection? `Yes`
+- ? Enable conflict detection? `No`
 - ? Select the default resolution strategy `Auto Merge`
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`

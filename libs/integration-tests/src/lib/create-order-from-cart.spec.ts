@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
@@ -48,14 +48,12 @@ describe('CreatCartFromOrder mutation test', () => {
     const userId = cartSeed.cart_01.userId;
     const unitId = cartSeed.cart_01.unitId;
 
-    orderRequestHandler
-      .createOrderFromCart({
-        requestPayload: {
-          userId,
-          input: { id: cartSeed.cart_01.id },
-        },
-        amplifyGraphQlClient: amplifyGraphQlClient,
-      })
+    from(
+      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+        userId,
+        input: { id: cartId },
+      }),
+    )
       .pipe(
         // check order has been truly created
         filter(x => !!x),
@@ -104,6 +102,8 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 15000);
 });
 
+// TODO: ?? relocate somewhere like a data-access lib
+// because this is a duplication of the one tha is in the order.service.ts
 const getOrder = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
@@ -111,14 +111,9 @@ const getOrder = (
   return executeQuery(amplifyApiClient)<AmplifyApi.GetOrderQuery>(
     AmplifyApiQueryDocuments.getOrder,
     { id },
-  ).pipe(
-    map(x => x.getOrder as IOrder),
-    // switchMap(validateCart),
-  );
+  ).pipe(map(x => x.getOrder as IOrder));
 };
 
-// TODO: relocate somewhere like a data-access lib
-// because this is a duplication of the one tha is in the order.service.ts
 const getCart = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
@@ -127,8 +122,5 @@ const getCart = (
     AmplifyApiQueryDocuments.getCart,
     { id },
     { fetchPolicy: 'no-cache' },
-  ).pipe(
-    map(x => x.getCart as ICart),
-    // switchMap(validateCart),
-  );
+  ).pipe(map(x => x.getCart as ICart));
 };

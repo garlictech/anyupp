@@ -1,4 +1,4 @@
-import awsmobile from './lib/aws-exports';
+import awsmobile from './lib/generated/aws-exports';
 import * as AmplifyApi from './lib/generated/api';
 import * as Mutations from './lib/generated/graphql/mutations';
 import * as Queries from './lib/generated/graphql/queries';

@@ -6,9 +6,8 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import {
   awsConfig,
-  createAdminUser as amplifyCreateAdminUser,
-  CreateAdminUserMutation,
-  CreateAdminUserInput as AmplifyCreateAdminUserInput,
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
 } from '@bgap/admin/amplify-api';
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
@@ -54,9 +53,13 @@ export const createAdminUser = (vars: CreateAdminUserMutationVariables) => {
     map((adminUserId: string) => ({
       id: adminUserId,
     })),
-    switchMap((input: AmplifyCreateAdminUserInput) =>
+    switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
-        API.graphql(graphqlOperation(amplifyCreateAdminUser, { input })),
+        API.graphql(
+          graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
+            input,
+          }),
+        ),
         operation =>
           operation instanceof Promise
             ? from(operation)
@@ -64,7 +67,7 @@ export const createAdminUser = (vars: CreateAdminUserMutationVariables) => {
       ),
     ),
     map(
-      (data: GraphQLResult<CreateAdminUserMutation>) =>
+      (data: GraphQLResult<AmplifyApi.CreateAdminUserMutation>) =>
         data.data?.createAdminUser?.id,
     ),
   ).toPromise();

@@ -1,7 +1,11 @@
-# schema {
-#     query: Query
-#     mutation: Mutation
-# }
+### AdminUser
+
+input CreateAdminUserInput {
+  email: String
+  phone: String
+}
+
+### Order
 
 input CreateOrderFromCartInput {
   id: ID!

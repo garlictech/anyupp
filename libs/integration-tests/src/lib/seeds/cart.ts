@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { cartSeed } from '../fixtures/cart';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import {
   amplifyGraphQlClient,
   executeMutation,
@@ -26,6 +27,9 @@ export const createTestCart = (
       next(cart) {
         console.log('### new CART created with id: ' + cart.createCart?.id);
       },
+      error(err) {
+        console.error('Error during test cart creation', err.message);
+      },
     }),
   );
 
@@ -40,5 +44,11 @@ export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
       next(cart) {
         console.log('### CART deleted with id: ' + cart.deleteCart?.id);
       },
+    }),
+    catchError(err => {
+      console.error('Error during cart delete with id:' + id, err.message);
+      return throwError(
+        `Error during cart delete with id: ${id}, Err: ${err.message}`,
+      );
     }),
   );

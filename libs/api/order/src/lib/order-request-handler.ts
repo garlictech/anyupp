@@ -10,13 +10,9 @@ export type CreateOrderFromCartRequest = WithAuthenticatedUser &
   AppsyncApi.MutationCreateOrderFromCartArgs;
 
 export const orderRequestHandler = {
-  createOrderFromCart({
-    requestPayload,
-    amplifyGraphQlClient,
-  }: {
-    requestPayload: CreateOrderFromCartRequest;
-    amplifyGraphQlClient: GraphqlApiClient;
-  }) {
+  createOrderFromCart: (amplifyGraphQlClient: GraphqlApiClient) => (
+    requestPayload: CreateOrderFromCartRequest,
+  ) => {
     missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
       'userId',
       'input',
@@ -26,10 +22,12 @@ export const orderRequestHandler = {
       ['id'],
     );
 
-    return orderService.createOrderFromCart({
-      userId: requestPayload.userId,
-      cartId: requestPayload.input.id,
-      amplifyGraphQlClient,
-    });
+    return orderService
+      .createOrderFromCart({
+        userId: requestPayload.userId,
+        cartId: requestPayload.input.id,
+        amplifyGraphQlClient,
+      })
+      .toPromise();
   },
 };
