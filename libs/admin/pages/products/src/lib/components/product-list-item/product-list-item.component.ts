@@ -9,6 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   EAdminRole,
   EProductLevel,
@@ -23,7 +24,6 @@ import { select, Store } from '@ngrx/store';
 
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { loggedUserSelectors } from 'libs/admin/shared/data-access/logged-user/src';
 
 @UntilDestroy()
 @Component({
