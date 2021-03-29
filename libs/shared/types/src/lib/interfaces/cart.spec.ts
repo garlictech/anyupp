@@ -19,7 +19,7 @@ const cart: ICart = {
       },
       productId: 'PRODUCTID',
       quantity: 100,
-      statusLog: {},
+      statusLog: [],
       variantId: 'VARIANTID',
       variantName: { en: 'EN' },
       laneId: 'LANEID',
@@ -33,42 +33,42 @@ const cart: ICart = {
 describe('Cart validaton test', () => {
   it('should be valid', async () => {
     expect(await validateCart(cart).toPromise()).toMatchInlineSnapshot(`
+      Object {
+        "createdAt": "CREATEDAT",
+        "id": "ID",
+        "items": Array [
           Object {
-            "createdAt": "CREATEDAT",
-            "id": "ID",
-            "items": Array [
-              Object {
-                "created": 100,
-                "laneId": "LANEID",
-                "priceShown": Object {
-                  "currency": "HUF",
-                  "pricePerUnit": 100,
-                  "priceSum": 100,
-                  "tax": 100,
-                  "taxSum": 100,
-                },
-                "productId": "PRODUCTID",
-                "productName": Object {
-                  "en": "EN",
-                },
-                "quantity": 100,
-                "statusLog": Object {},
-                "variantId": "VARIANTID",
-                "variantName": Object {
-                  "en": "EN",
-                },
-              },
-            ],
-            "paymentMethod": "CARD",
-            "place": Object {
-              "seat": "SEAT",
-              "table": "TABLE",
+            "created": 100,
+            "laneId": "LANEID",
+            "priceShown": Object {
+              "currency": "HUF",
+              "pricePerUnit": 100,
+              "priceSum": 100,
+              "tax": 100,
+              "taxSum": 100,
             },
-            "unitId": "UNITID",
-            "updatedAt": "UPDATEDAT",
-            "userId": "USERID",
-          }
-        `);
+            "productId": "PRODUCTID",
+            "productName": Object {
+              "en": "EN",
+            },
+            "quantity": 100,
+            "statusLog": Array [],
+            "variantId": "VARIANTID",
+            "variantName": Object {
+              "en": "EN",
+            },
+          },
+        ],
+        "paymentMethod": "CARD",
+        "place": Object {
+          "seat": "SEAT",
+          "table": "TABLE",
+        },
+        "unitId": "UNITID",
+        "updatedAt": "UPDATEDAT",
+        "userId": "USERID",
+      }
+    `);
     expect(isCart(cart)).toEqual(true);
   });
 

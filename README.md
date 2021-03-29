@@ -149,7 +149,6 @@ Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
 
 - ? Enable conflict detection? `No`
-- ? Select the default resolution strategy `Auto Merge`
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
