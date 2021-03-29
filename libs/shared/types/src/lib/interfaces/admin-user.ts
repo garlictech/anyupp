@@ -13,7 +13,7 @@ export interface IAdminUserSettings {
 export interface IAdminUser
   extends IAmplifyModel {
   id?: string;
-  name: string;
+  name?: string;
   profileImage?: string;
   role?: EAdminRole; // Filled from token
   settings?: IAdminUserSettings;
