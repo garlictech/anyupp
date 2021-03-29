@@ -11,12 +11,9 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   clearDbProperties,
   EToasterType,
@@ -52,21 +49,15 @@ export class RoleContextFormComponent
   public groupDisabled = true;
   public unitDisabled = true;
 
-  private _formService: FormsService;
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
-
   constructor(
-    private _store: Store<any>,
     protected _injector: Injector,
+    private _store: Store<any>,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
-
-    this._formService = this._injector.get(FormsService);
-    this._logger = this._injector.get(NGXLogger);
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
 
     this.roleOptions = Object.keys(EAdminRole).map(
       (key): IKeyValue => ({
@@ -79,21 +70,24 @@ export class RoleContextFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      contextId: ['', [Validators.required]],
-      name: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      role: ['', [Validators.required]],
-      chainId: [''],
-      groupId: [''],
-      unitId: [''],
-    });
+    this.dialogForm = this._formBuilder.group(
+      {
+        contextId: ['', [Validators.required]],
+        name: this._formBuilder.group(
+          {
+            hu: [''],
+            en: [''],
+            de: [''],
+          },
+          { validators: multiLangValidator },
+        ),
+        role: [EAdminRole.INACTIVE, [Validators.required]],
+        chainId: [''],
+        groupId: [''],
+        unitId: [''],
+      },
+      { validators: this._roleLevelValidator },
+    );
 
     if (this.roleContext) {
       this.dialogForm.patchValue(
@@ -168,6 +162,31 @@ export class RoleContextFormComponent
       });
   }
 
+  private _roleLevelValidator = (
+    control: AbstractControl,
+  ): unknown => {
+    switch (control.value.role) {
+      case EAdminRole.INACTIVE:
+      case EAdminRole.SUPERUSER:
+        return null;
+      case EAdminRole.CHAIN_ADMIN:
+        return control.value.chainId ? null : { empty: true };
+      case EAdminRole.GROUP_ADMIN:
+        return control.value.chainId && control.value.groupId
+          ? null
+          : { empty: true };
+      case EAdminRole.UNIT_ADMIN:
+      case EAdminRole.STAFF:
+        return control.value.chainId &&
+          control.value.groupId &&
+          control.value.unitId
+          ? null
+          : { empty: true };
+      default:
+        return null;
+    }
+  };
+
   private _refreshDisabledFields(role: EAdminRole) {
     this.chainDisabled = [
       EAdminRole.SUPERUSER,
@@ -185,15 +204,14 @@ export class RoleContextFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       if (this.roleContext?.id) {
-
         try {
           await this._amplifyDataService.update<IRoleContext>(
             'getRoleContext',
             'updateRoleContext',
             this.roleContext.id,
             (data: unknown) => ({
-              ...<IRoleContext>data,
-              ...this.dialogForm.value
+              ...(<IRoleContext>data),
+              ...this.dialogForm.value,
             }),
           );
 
@@ -209,7 +227,6 @@ export class RoleContextFormComponent
             `ROLE CONTEXT UPDATE ERROR: ${JSON.stringify(error)}`,
           );
         }
-
       } else {
         try {
           await this._amplifyDataService.create(

@@ -1,16 +1,33 @@
 import * as fp from 'lodash/fp';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { EProductLevel, EVariantAvailabilityType, IProduct, IProductVariant } from '@bgap/shared/types';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  EAdminRole,
+  EProductLevel,
+  EVariantAvailabilityType,
+  IAdminUser,
+  IProduct,
+  IProductVariant,
+} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
 
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { loggedUserSelectors } from 'libs/admin/shared/data-access/logged-user/src';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-list-item',
   templateUrl: './product-list-item.component.html',
   styleUrls: ['./product-list-item.component.scss'],
@@ -35,12 +52,10 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-     /* TODO
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser | undefined): void => {
-        this.hasRoleToEdit = true
-
+        this.hasRoleToEdit = true;
 
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
@@ -67,9 +82,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
           default:
             break;
         }
-
       });
-      */
   }
 
   ngOnDestroy(): void {

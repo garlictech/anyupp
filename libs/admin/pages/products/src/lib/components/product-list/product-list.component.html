@@ -29,7 +29,7 @@
         [active]="selectedProductLevel === EProductLevel.CHAIN"
         [disabled]="!selectedChainId"
       >
-        <ng-container *ngFor="let product of chainProducts">
+        <ng-container *ngFor="let product of chainProducts$ | async">
           <nb-list-item
             *ngIf="product.productCategoryId === selectedProductCategoryId"
           >
