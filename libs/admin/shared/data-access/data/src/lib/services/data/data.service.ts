@@ -19,7 +19,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
   EAdminRole,
   EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory,
-  IRoleContext, IUnit, IUser
+  IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';

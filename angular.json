@@ -1492,16 +1492,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/data-access/role-contexts/tsconfig.lib.json",
-              "libs/admin/shared/data-access/role-contexts/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/data-access/role-contexts/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
           }
         },
         "test": {
@@ -1521,16 +1514,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/role-contexts/tsconfig.lib.json",
-              "libs/admin/pages/role-contexts/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/pages/role-contexts/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
           }
         },
         "test": {

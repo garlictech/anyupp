@@ -2,7 +2,7 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { Auth } from '@aws-amplify/auth';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import {
@@ -11,7 +11,6 @@ import {
 } from '@bgap/admin/shared/forms';
 import {
   clearDbProperties,
-  contactFormGroup,
   EToasterType,
 } from '@bgap/admin/shared/utils';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';

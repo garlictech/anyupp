@@ -1,25 +1,10 @@
 import * as fp from 'lodash/fp';
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import {
-  EAdminRole,
-  EProductLevel,
-  EVariantAvailabilityType,
-  IAdminUser,
-  IProduct,
-  IProductVariant,
-} from '@bgap/shared/types';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { EProductLevel, EVariantAvailabilityType, IProduct, IProductVariant } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
 
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
@@ -50,12 +35,13 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+     /* TODO
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser | undefined): void => {
         this.hasRoleToEdit = true
 
-        /* TODO
+
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
@@ -81,8 +67,9 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
           default:
             break;
         }
-        */
+
       });
+      */
   }
 
   ngOnDestroy(): void {

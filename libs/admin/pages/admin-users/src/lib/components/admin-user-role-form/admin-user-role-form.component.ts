@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
+import { clearDbProperties } from '@bgap/admin/shared/utils';
 import { IAdminUser } from '@bgap/shared/types';
 
 @Component({

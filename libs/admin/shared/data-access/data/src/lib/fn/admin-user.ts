@@ -1,14 +1,12 @@
-import * as fp from 'lodash/fp';
-
-import { EAdminRole, IAdminUser } from '@bgap/shared/types';
-
+// import { EAdminRole, IAdminUser } from '@bgap/shared/types';
+/*
 export const chainAdminFilter = (
-  checkedAdminUser: IAdminUser,
-  loggedAdminRole: EAdminRole, // IAdminUserRole,
+  // checkedAdminUser: IAdminUser,
+  // loggedAdminRole: EAdminRole, // IAdminUserRole,
 ): boolean => {
   return true;
 
-  /* TODO check this
+
   const loggedAdminChainIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.chainId,
   );
@@ -23,7 +21,7 @@ export const chainAdminFilter = (
   ].includes(checkedAdminUser.roles?.role || EAdminRole.INACTIVE)
     ? fp.intersection(loggedAdminChainIds, currentAdminChainIds).length > 0
     : false;
-    */
+
 };
 
 export const groupAdminFilter = (
@@ -32,7 +30,7 @@ export const groupAdminFilter = (
 ): boolean => {
   return true;
 
-  /* TODO check this
+
   const loggedAdminGroupIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
@@ -46,7 +44,7 @@ export const groupAdminFilter = (
   )
     ? fp.intersection(loggedAdminGroupIds, currentAdminGroupIds).length > 0
     : false;
-    */
+
 };
 
 export const unitAdminFilter = (
@@ -55,7 +53,7 @@ export const unitAdminFilter = (
 ): boolean => {
   return true;
 
-  /* TODO check this
+
   const loggedAdminUnitIds = (loggedAdminRole?.entities ?? []).map(
     (e): string => e.unitId || '',
   );
@@ -67,5 +65,6 @@ export const unitAdminFilter = (
   return checkedAdminUser.role === EAdminRole.STAFF
     ? fp.intersection(loggedAdminUnitIds, currentAdminUnitIds).length > 0
     : false;
-    */
+
 };
+*/
