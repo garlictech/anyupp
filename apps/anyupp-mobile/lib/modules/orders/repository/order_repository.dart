@@ -1,5 +1,4 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/models.dart';
 import 'dart:async';
 
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -25,11 +24,11 @@ class OrderRepository {
     return _provider.clearCart(chainId, unitId);
   }
 
-  Stream<List<PlacedOrder>> getCurrentOrders(String chainId, String unitId) {
+  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) {
     return _provider.getCurrentOrders(chainId, unitId);
   }
 
-  Stream<List<PlacedOrder>> getOrderHistory(String chainId, String unitId) {
+  Stream<List<Order>> getOrderHistory(String chainId, String unitId) {
     return _provider.getOrderHistory(chainId, unitId);
   }
 
@@ -39,5 +38,21 @@ class OrderRepository {
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId) async {
     await _provider.userPaymentIntentionSignal(chainId, unitId);
+  }
+
+  Future<void> startOrderListSubscription(String chainId, String unitId) async {
+    await _provider.startOrderListSubscription(chainId, unitId);
+  }
+
+  Future<void> stopOrderListSubscription() async {
+    await _provider.stopOrderListSubscription();
+  }
+
+    Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
+    await _provider.startOrderHistoryListSubscription(chainId, unitId);
+  }
+
+  Future<void> stopOrderHistoryListSubscription() async {
+    await _provider.stopOrderHistoryListSubscription();
   }
 }

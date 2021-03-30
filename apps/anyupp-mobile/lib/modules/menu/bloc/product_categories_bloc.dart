@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
@@ -22,12 +22,12 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     if (_unitSelectBloc.state is UnitSelected) {
       add(LoadProductCategories(
         (_unitSelectBloc.state as UnitSelected).unit.chainId,
-        (_unitSelectBloc.state as UnitSelected).unit.unitId,
+        (_unitSelectBloc.state as UnitSelected).unit.id,
       ));
     }
-    _unitSelectSubscription = _unitSelectBloc.listen((state) {
+    _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
-        add(LoadProductCategories(state.unit.chainId, state.unit.unitId));
+        add(LoadProductCategories(state.unit.chainId, state.unit.id));
       }
     });
   }
@@ -55,6 +55,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     await _productCategoriesSubscription?.cancel();
     _productCategoriesSubscription =
         _productRepository.getProductCategoryList(event.chainId, event.unitId).listen((event) {
+          print('productCategory._mapLoadProductCategoriesToState().event=$event');
       add(ProductCategoriesUpdated(event));
     });
   }

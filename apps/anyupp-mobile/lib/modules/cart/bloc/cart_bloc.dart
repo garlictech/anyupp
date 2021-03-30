@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/exception.dart';
@@ -55,7 +56,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is ClearCartAction) {
-        await _cartRepository.clearCart(action.unit);
+        await _cartRepository.clearCart(action.user, action.unit);
         yield EmptyCartState();
       }
     } on PlatformException catch (e) {

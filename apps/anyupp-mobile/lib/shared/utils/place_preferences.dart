@@ -1,15 +1,18 @@
-import 'package:fa_prev/shared/models.dart';
+import 'dart:convert';
+
+import 'package:fa_prev/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> setPlacePref(Place place) async {
   // print('**** setPlacePref=$place');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.setString('PLACE', place.toJson());
+  return prefs.setString('PLACE', place.toString());
 }
 
 Future<Place> getPlacePref() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  Place place = Place.fromJson(prefs.getString('PLACE'));
+  String s = prefs.getString('PLACE');
+  Place place = s != null ? Place.fromJson(jsonDecode(s)) : null;
   // print('**** getPlacePref=$place');
   return place;
 }

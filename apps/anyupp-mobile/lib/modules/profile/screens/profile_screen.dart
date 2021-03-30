@@ -1,14 +1,13 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -74,61 +73,6 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              if (DotEnv().env['stage'] != 'staging' && DotEnv().env['stage'] != 'prod')
-                Column(
-                  children: [
-                    _buildAgeGenderTextWidget(context, FacePreferences.getGender(), 'Gender'),
-                    _buildAgeGenderTextWidget(context, FacePreferences.getAge(), 'Age'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ClipOval(
-                          child: Material(
-                            color: theme.indicator, // button color
-                            child: InkWell(
-                              splashColor: theme.background, // inkwell color
-                              child: SizedBox(
-                                  width: 36.0,
-                                  height: 36.0,
-                                  child: Icon(
-                                    Icons.delete,
-                                    size: 24.0,
-                                    color: theme.background,
-                                  )),
-                              onTap: () async {
-                                await FacePreferences.clear();
-                                setState(() {
-                                  // Nothing to do
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        ClipOval(
-                          child: Material(
-                            color: theme.indicator, // button color
-                            child: InkWell(
-                              splashColor: theme.background, // inkwell color
-                              child: SizedBox(
-                                  width: 36.0,
-                                  height: 36.0,
-                                  child: Icon(
-                                    Icons.refresh,
-                                    size: 24.0,
-                                    color: theme.background,
-                                  )),
-                              onTap: () async {
-                                setState(() {
-                                  // Nothing to do
-                                });
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                )
             ],
           ),
         ),
@@ -137,32 +81,6 @@ class _ProfileState extends State<Profile> {
         _buildMenuList(context),
       ],
     );
-  }
-
-  Widget _buildAgeGenderTextWidget(BuildContext context, Future future, String text) {
-    return FutureBuilder<String>(
-        future: future,
-        builder: (context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              padding: EdgeInsets.only(
-                bottom: 8.0,
-                // bottom: 20.0,
-              ),
-              child: Text(
-                '$text: ${snapshot.data}',
-                style: GoogleFonts.poppins(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                  color: theme.text,
-                ),
-              ),
-            );
-          }
-          return Container(
-            child: Text('$text: -'),
-          );
-        });
   }
 
   Widget _buildMenuList(BuildContext context) {

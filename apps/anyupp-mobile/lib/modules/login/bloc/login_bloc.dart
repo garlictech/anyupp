@@ -28,28 +28,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           // --- Get provider specific auth Credential from the given provider
           ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.method);
           print('*** LoginBloc().federated.loginResponse=$loginResponse');
+          yield LoginSuccess();
 
           // --- Try to log into Firebase with this credential and update the user's profile
-          try {
-            await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
-            yield LoginSuccess();
-          } on LoginException catch (le) {
-            print('*** LoginBloc().federated.loginexception=${le.subCode}');
-            // --- Handle Account linking!
-            if (le.subCode == LoginException.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL) {
-              final existingMethods = await _repository.fetchSignInMethodsForEmail(loginResponse.user.email);
-              print('*** LoginBloc().federated.existingMethods=$existingMethods');
-              yield NeedAccountLinking(loginResponse.credential, existingMethods);
-              return;
-            }
+          // try {
+          //   await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
+          //   yield LoginSuccess();
+          // } on LoginException catch (le) {
+          //   print('*** LoginBloc().federated.loginexception=${le.subCode}');
+          //   // --- Handle Account linking!
+          //   if (le.subCode == LoginException.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL) {
+          //     final existingMethods = await _repository.fetchSignInMethodsForEmail(loginResponse.user.email);
+          //     print('*** LoginBloc().federated.existingMethods=$existingMethods');
+          //     yield NeedAccountLinking(loginResponse.credential, existingMethods);
+          //     return;
+          //   }
 
-            getIt<ExceptionBloc>().add(ShowException(le));
-            yield LoginError(le.subCode, le.message);
-          } on Exception catch (e) {
-            print('*** LoginBloc().federated.exception=$e');
-            getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
-            yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
-          }
+          //   getIt<ExceptionBloc>().add(ShowException(le));
+          //   yield LoginError(le.subCode, le.message);
+          // } on Exception catch (e) {
+          //   print('*** LoginBloc().federated.exception=$e');
+          //   getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
+          //   yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
+          // }
         } else {
           // --- Handle not Federated logins (PHONE, Anonymous)
           yield LoginInProgress();
@@ -64,40 +65,42 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
 
+      // TODO AWS remove
       // --- Handle account linking when logging in
-      if (event is LinkLoginWithProvider) {
-        yield LoginInProgress();
+      // if (event is LinkLoginWithProvider) {
+      //   yield LoginInProgress();
 
-        // Try to login with the new provider
-        ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
+      //   // Try to login with the new provider
+      //   ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
 
-        // Update firebase user if login success
-        await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
+      //   // Update firebase user if login success
+      //   await _repository.signInWithCredentialAndUpdateFirebaseUser(loginResponse.credential, loginResponse.user);
 
-        // Link the account with this existing account
-        await _repository.linkAccountToFirebaseUser(loginResponse.user.email, event.providerCredentials);
+      //   // Link the account with this existing account
+      //   await _repository.linkAccountToFirebaseUser(loginResponse.user.email, event.providerCredentials);
 
-        yield LoginSuccess();
-      }
+      //   yield LoginSuccess();
+      // }
 
+      // TODO AWS remove
       // --- Handle account linking when already logged in
-      if (event is LinkCurrentAccountWithProvider) {
-        // Try to login with the new provider
-        ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
+      // if (event is LinkCurrentAccountWithProvider) {
+      //   // Try to login with the new provider
+      //   ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.providerToBeLinked);
 
-        // Link the account with this existing account
-        await _repository.linkCredentialsToFirebaseUser(loginResponse.credential, loginResponse.user);
+      //   // Link the account with this existing account
+      //   await _repository.linkCredentialsToFirebaseUser(loginResponse.credential, loginResponse.user);
 
-        yield AccountLinked(event.providerToBeLinked, true);
-      }
+      //   yield AccountLinked(event.providerToBeLinked, true);
+      // }
 
-      // --- Handle account unlinking when already logged in
-      if (event is UnlinkCurrentAccountFromProvider) {
-        // Unlink the account from base account
-        await _repository.unlinkProviderToFirebaseUser(event.providerToBeUnlinked);
+      // // --- Handle account unlinking when already logged in
+      // if (event is UnlinkCurrentAccountFromProvider) {
+      //   // Unlink the account from base account
+      //   await _repository.unlinkProviderToFirebaseUser(event.providerToBeUnlinked);
 
-        yield AccountLinked(event.providerToBeUnlinked, false);
-      }
+      //   yield AccountLinked(event.providerToBeUnlinked, false);
+      // }
 
       // --- Handle phone login (Require SMS code)
       if (event is LoginWithPhoneRequireSMSCode) {
@@ -163,7 +166,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle send password reset to email
       if (event is SendPasswordResetEmail) {
         yield LoginInProgress();
-        _repository.sendPasswordResetEmail(event.email);
+        await _repository.sendPasswordResetEmail(event.email);
         yield PasswordResetEmailSent(event.email);
       }
 

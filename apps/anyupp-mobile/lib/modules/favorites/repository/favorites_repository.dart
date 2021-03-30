@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 class FavoritesRepository {
   final IFavoritesProvider _provider;
 
   FavoritesRepository(this._provider);
 
-  Stream<List<Product>> getFavoritesList(String chainId, String unitId) {
+  Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId) {
     return _provider.getFavoritesList(chainId, unitId);
   }
 

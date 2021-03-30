@@ -1,7 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +13,10 @@ import 'package:fa_prev/modules/cart/cart.dart';
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
-  final Order order;
-  CartListItemWidget({Key key, this.unit, this.order}) : super(key: key);
+  final CartItem order;
+  final GeneratedProduct product;
+  final ProductVariant variant;
+  CartListItemWidget({Key key, this.unit, this.order, this.product, this.variant}) : super(key: key);
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -37,7 +39,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
               ),
               width: 100,
               child: ImageWidget(
-                url: this.widget.order.product.image,
+                url: this.widget.product.image,
                 placeholder: CircularProgressIndicator(),
                 errorWidget: Icon(Icons.error),
                 fit: BoxFit.cover,
@@ -58,7 +60,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          getLocalizedText(context, widget.order.product.name).toUpperCase(),
+                          getLocalizedText(context, widget.product.name).toUpperCase(),
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -67,7 +69,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                           ),
                         ),
                         Text(
-                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variant.variantName)}",
+                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.variant.variantName)}",
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -81,7 +83,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           margin: EdgeInsets.only(bottom: 2),
                           child: Text(
-                            formatCurrency(widget.order.price, widget.unit.currency),
+                            formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -165,11 +167,15 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _addOrder() {
     BlocProvider.of<CartBloc>(context).add(
-        AddProductToCartAction(widget.unit, widget.order.product, widget.order.variant));
+        AddProductToCartAction(widget.unit, widget.product, widget.variant));
   }
 
   void _removeOrder() {
     BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(
-        widget.unit.chainId, widget.unit.unitId, widget.order.product, widget.order.variant));
+        widget.unit.chainId, widget.unit.id, widget.product, widget.variant));
+  }
+
+  double getTotalPriceOfOrederItem(CartItem item) {
+    return item.quantity * item.variant.price;
   }
 }

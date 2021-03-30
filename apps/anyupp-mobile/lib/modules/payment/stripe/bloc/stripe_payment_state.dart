@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/graphql/graphql.dart';
+import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 abstract class StripePaymentState extends Equatable {
   const StripePaymentState();
@@ -16,7 +16,7 @@ class StripePaymentLoading extends StripePaymentState {
 }
 
 class StripePaymentMethodsList extends StripePaymentState {
-  final List<GetCustomerStripeCards$Query$StripeCard> data;
+  final List<StripeCard> data;
 
   const StripePaymentMethodsList(this.data);
 
