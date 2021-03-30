@@ -246,7 +246,7 @@ export class ReportsHourlyBreakdownComponent
     });
 
     orders.forEach(o => {
-      const hour = new Date(o.created || 0).getHours();
+      const hour = new Date(o.createdAt || 0).getHours();
       o.items?.forEach((i: IOrderItem) => {
         amounts[<EProductType>productTypeMap[i.productId]][hour] +=
           i.priceShown.priceSum;

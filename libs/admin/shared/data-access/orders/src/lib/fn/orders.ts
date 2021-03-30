@@ -128,7 +128,7 @@ export const getOrdersByUser = (
         ordersByUser[order.userId].hasPaymentIntention ||
         (order.paymentIntention || 0) > 0;
 
-      if (order.created > ordersByUser[order.userId].lastOrder.created) {
+      if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
         ordersByUser[order.userId].lastOrder = { ...order };
       }
 

@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
 
-import { EOrderStatus } from '../enums/order-status';
-import { ILocalizedItem, localizedItemSchema } from './localized-item';
+import { EOrderStatus } from '../enums';
 import { validateSchema } from '../validation/validate';
+import { ILocalizedItem, localizedItemSchema } from './localized-item';
 import { IPaymentMode, paymentModeSchema } from './payment';
 
 export interface IPriceShown {
@@ -94,7 +94,7 @@ export interface IOrder {
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  place?: IPlace;
+  place: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;

@@ -74,7 +74,7 @@
       *ngFor="let method of paymentMethods"
       nbButton
       class="float-right mr-1"
-      [status]="order.paymentMethod === method.value ? 'success' : 'basic'"
+      [status]="order.paymentMode.method === method.value ? 'success' : 'basic'"
       [size]="buttonSize"
       shape="round"
       (click)="updateOrderPaymentMethod(method.key)"
