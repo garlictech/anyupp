@@ -167,6 +167,18 @@
             ]
           }
         },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/infrastructure/build-pipeline-stack",
+            "parallel": false,
+            "commands": [
+              {
+                "command": "yarn sst remove"
+              }
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
