@@ -101,6 +101,10 @@ export const createBuildProject = (
           AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
           AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
         },
+        variables: {
+          NODE_OPTIONS:
+            '--unhandled-rejections=strict --max_old_space_size=8196',
+        },
       },
     }),
     cache,
@@ -139,6 +143,12 @@ export const createE2eTestProject = (
       },
       artifacts: {
         files: ['cyreport/**/*'],
+      },
+      env: {
+        variables: {
+          NODE_OPTIONS:
+            '--unhandled-rejections=strict --max_old_space_size=8196',
+        },
       },
     }),
     cache,
@@ -186,6 +196,10 @@ export const createIntegrationTestProject = (
         'secrets-manager': {
           AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
           AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
+        },
+        variables: {
+          NODE_OPTIONS:
+            '--unhandled-rejections=strict --max_old_space_size=8196',
         },
       },
     }),

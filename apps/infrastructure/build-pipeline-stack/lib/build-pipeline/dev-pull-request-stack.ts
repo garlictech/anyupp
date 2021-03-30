@@ -68,6 +68,10 @@ export class DevPullRequestBuildStack extends sst.Stack {
               AWS_SECRET_ACCESS_KEY:
                 'codebuild:codebuild-aws_secret_access_key',
             },
+            variables: {
+              NODE_OPTIONS:
+                '--unhandled-rejections=strict --max_old_space_size=8196',
+            },
           },
         }),
         environment: {
