@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { from, throwError } from 'rxjs';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { EProductType, EPaymentMethod } from '@bgap/shared/types';
+import { EProductType } from '@bgap/shared/types';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
@@ -52,6 +52,17 @@ export const createTestChain = (chainIdx: number) =>
           isActive: true,
           email: `info@chain${chainIdx}.com`,
           phone: '1234567890',
+          style: {
+            backgroundLight: '#fff',
+            backgroundDark: '#fff',
+            borderLight: '#fff',
+            borderDark: '#fff',
+            disabled: '#fff',
+            highlight: '#fff',
+            indicator: '#fff',
+            textLight: '#fff',
+            textDark: '#fff',
+          },
         } as AmplifyApi.CreateChainInput,
       }),
     ),
@@ -98,6 +109,13 @@ export const createTestUnit = (
           isActive: true,
           isAcceptingOrders: true,
           name: `Test unit #${unitIdx}`,
+          address: {
+            address: 'Ág u. 1.',
+            city: 'Budapest',
+            country: 'Magyarország',
+            title: 'HQ',
+            postalCode: '1021',
+          },
           description: {
             hu: `Teszt unit #${unitIdx} leírás`,
             en: `Test unit #${unitIdx} description`,
@@ -170,7 +188,7 @@ export const createTestProductCategory = (
             hu: `Teszt product kategória #${productCategoryId} leírás`,
             en: `Test product category #${productCategoryId} description`,
           },
-          position: productCategoryId.toString(),
+          position: productCategoryId,
         } as AmplifyApi.CreateProductCategoryInput,
       }),
     ),
@@ -288,6 +306,7 @@ export const createTestUnitProduct = (
           laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
           isVisible: true,
           takeaway: false,
+          position: productIdx,
           variants: [
             {
               id: generateVariantId(chainIdx, productIdx, 1),
