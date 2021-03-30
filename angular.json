@@ -1277,7 +1277,7 @@
         "buildApk": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "flutter build apk --split-per-abi",
+            "command": "flutter build apk --split-per-abi --scan",
             "cwd": "apps/anyupp-mobile"
           }
         },
