@@ -65,12 +65,12 @@ export interface IProduct {
 export interface IUnitProduct {
   __typename?: 'UnitProduct';
   id: string;
-  parentId?: string; // parent chainProduct/groupProduct ID
+  parentId: string; // parent chainProduct/groupProduct ID
   chainId: string;
-  groupId?: string;
-  unitId?: string;
+  groupId: string;
+  unitId: string;
   isVisible: boolean; // temp
-  position: string;
+  position: number;
   variants: IProductVariant[];
   laneId?: string;
   takeaway?: boolean;
@@ -86,9 +86,9 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   groupId: Joi.string().required(),
   unitId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
-  position: Joi.string().allow(null),
+  position: Joi.number().required(),
   variants: Joi.array().required(), //TODO: use an exact schema
-  laneId: Joi.string().optional(),
+  laneId: Joi.string().allow(null),
   takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),

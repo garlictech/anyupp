@@ -138,7 +138,7 @@ const toOrderInputFormat = ({
   return {
     userId,
     takeAway: false,
-    paymentMode: paymentMode,
+    paymentMode: removeTypeNameField(paymentMode),
     // created: DateTime.utc().toMillis(),
     items: items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),

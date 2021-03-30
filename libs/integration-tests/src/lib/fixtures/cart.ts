@@ -1,4 +1,4 @@
-import { EPaymentMethod, EOrderStatus } from '@bgap/shared/types';
+import { EOrderStatus } from '@bgap/shared/types';
 import { AmplifyApi } from '@bgap/admin/amplify-api';
 import { unitSeed } from './unit';
 import { unitProductSeed } from './unit-product';
@@ -50,7 +50,11 @@ const cart_01 = {
   id: cartId_01,
   userId: userId_01,
   unitId: unitId_01,
-  paymentMethod: EPaymentMethod.INAPP,
+  takeAway: false,
+  paymentMode: {
+    name: 'IN_APP',
+    method: AmplifyApi.PaymentMethod.INAPP,
+  },
   place: {
     seat: 'SEAT',
     table: 'TABLE',

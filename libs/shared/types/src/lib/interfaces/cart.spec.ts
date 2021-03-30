@@ -1,11 +1,15 @@
 import { ICart, isCart, validateCart } from './cart';
-import { EPaymentMethod } from '../enums/payment-method';
+import { AmplifyApi } from '@bgap/admin/amplify-api';
 
 const cart: ICart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
-  paymentMethod: EPaymentMethod.CARD,
+  paymentMode: {
+    method: AmplifyApi.PaymentMethod.CARD,
+    name: 'CARD',
+  },
+  takeAway: false,
   items: [
     {
       created: 100,
@@ -59,11 +63,15 @@ describe('Cart validaton test', () => {
             },
           },
         ],
-        "paymentMethod": "CARD",
+        "paymentMode": Object {
+          "method": "CARD",
+          "name": "CARD",
+        },
         "place": Object {
           "seat": "SEAT",
           "table": "TABLE",
         },
+        "takeAway": false,
         "unitId": "UNITID",
         "updatedAt": "UPDATEDAT",
         "userId": "USERID",

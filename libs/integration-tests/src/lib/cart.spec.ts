@@ -6,7 +6,7 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { deleteTestCart, createTestCart } from './seeds/cart';
+import { createTestCart, deleteTestCart } from './seeds/cart';
 
 describe('getCart test', () => {
   beforeAll(async () => {

@@ -108,7 +108,7 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
   sumPriceShown: Joi.object(priceShownSchema).required(),
-  takeAway: Joi.boolean(),
+  takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema).required(),
   paymentIntention: Joi.number().allow(null),
   createdAt: Joi.string().required(),

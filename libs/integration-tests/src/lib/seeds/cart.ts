@@ -28,7 +28,7 @@ export const createTestCart = (
         console.log('### new CART created with id: ' + cart.createCart?.id);
       },
       error(err) {
-        console.error('Error during test cart creation', err.message);
+        console.error('Error during test cart creation: ', err.message);
       },
     }),
   );

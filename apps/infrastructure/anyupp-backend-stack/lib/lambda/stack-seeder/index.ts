@@ -9,6 +9,7 @@ import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';
 import { pipe } from 'fp-ts/lib/function';
+import { pipeDebug } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
 import { combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
@@ -69,7 +70,7 @@ export const seedAdminUser = (UserPoolId: string) =>
         {
           Name: 'phone_number',
           Value: '+123456789012',
-        }
+        },
       ],
     },
     params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
@@ -107,7 +108,8 @@ export const seedAdminUser = (UserPoolId: string) =>
     map((adminUserId: string) => ({
       id: adminUserId,
       name: 'John Doe',
-      profileImage: 'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD'
+      profileImage:
+        'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
     switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
@@ -134,21 +136,21 @@ export const seedAdminUser = (UserPoolId: string) =>
 export const seedBusinessData = () =>
   pipe(
     combineLatest([
-      createTestChain(1),
-      createTestGroup(1, 1),
-      createTestGroup(2, 1),
-      createTestUnit(1, 1, 1),
-      createTestUnit(1, 1, 2),
-      createTestUnit(1, 2, 1),
-      createTestProductCategory(1, 1),
-      createTestProductCategory(1, 2),
-      createTestChainProduct(1, 1, 1),
-      createTestChainProduct(1, 1, 2),
-      createTestChainProduct(1, 2, 1),
-      createTestGroupProduct(1, 1, 1, 1),
-      createTestGroupProduct(1, 1, 2, 2),
-      createTestUnitProduct(1, 1, 1, 1, 1),
-      createTestUnitProduct(1, 1, 1, 2, 2),
+      createTestChain(1).pipe(pipeDebug('### Chain SEED')),
+      createTestGroup(1, 1).pipe(pipeDebug('### Group SEED')),
+      createTestGroup(2, 1).pipe(pipeDebug('### Group SEED')),
+      createTestUnit(1, 1, 1).pipe(pipeDebug('### Unit SEED')),
+      createTestUnit(1, 1, 2).pipe(pipeDebug('### Unit SEED')),
+      createTestUnit(1, 2, 1).pipe(pipeDebug('### Unit SEED')),
+      createTestProductCategory(1, 1).pipe(pipeDebug('### ProdCat SEED')),
+      createTestProductCategory(1, 2).pipe(pipeDebug('### ProdCat SEED')),
+      createTestChainProduct(1, 1, 1).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestChainProduct(1, 1, 2).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestChainProduct(1, 2, 1).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestGroupProduct(1, 1, 1, 1).pipe(pipeDebug('### GroupProd SEED')),
+      createTestGroupProduct(1, 1, 2, 2).pipe(pipeDebug('### GroupProd SEED')),
+      createTestUnitProduct(1, 1, 1, 1, 1).pipe(pipeDebug('### UnitProd SEED')),
+      createTestUnitProduct(1, 1, 1, 2, 2).pipe(pipeDebug('### UnitProd SEED')),
       createTestCart({
         chainIdx: 1,
         groupIdx: 1,
@@ -156,7 +158,7 @@ export const seedBusinessData = () =>
         productIdx: 1,
         userIdx: 1,
         cartIdx: 1,
-      }),
+      }).pipe(pipeDebug('### Cart SEED')),
     ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {

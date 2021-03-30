@@ -22,6 +22,7 @@ export const cartSchema: Joi.SchemaMap<ICart> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
+  takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema),
   paymentMode: Joi.object(paymentModeSchema),
   items: Joi.array().items(orderItemSchema),
