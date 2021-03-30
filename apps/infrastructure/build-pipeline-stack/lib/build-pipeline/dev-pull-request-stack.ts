@@ -37,6 +37,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `sh ./tools/setup-aws-environment.sh`,
                 'yarn',
                 'npm install -g @aws-amplify/cli',
+                'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
               ],
             },
             pre_build: {
@@ -48,7 +49,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
             build: {
               commands: [
-                `docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -m 4g -v "$PWD":/project matspfeiffer/flutter analyze`,
+                `yarn nx analyze anyupp-mobile`,
                 `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
@@ -72,6 +73,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             variables: {
               NODE_OPTIONS:
                 '--unhandled-rejections=strict --max_old_space_size=8196',
+              PATH: '$PATH:/tmp/flutter/bin',
             },
           },
         }),
