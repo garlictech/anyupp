@@ -2,8 +2,8 @@ import * as Joi from 'joi';
 
 import { EOrderStatus } from '../enums/order-status';
 import { ILocalizedItem, localizedItemSchema } from './localized-item';
-import { EPaymentMethod, paymentMethodSchema } from '../enums/payment-method';
 import { validateSchema } from '../validation/validate';
+import { IPaymentMode, paymentModeSchema } from './payment';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';
@@ -39,7 +39,7 @@ export interface IOrderItem {
 export interface IStatusLogItem {
   userId: string;
   status: EOrderStatus;
-  ts?: string; // after objectToArray(statusLog, 'ts')
+  ts?: number; // after objectToArray(statusLog, 'ts')
 }
 export interface IStatusLog {
   [timestamp: number]: IStatusLogItem;
@@ -87,16 +87,14 @@ export interface IOrders {
 export interface IOrder {
   __typename?: 'Order';
   id: string;
-  created: number;
-  items: IOrderItem[];
-  paymentMethod: EPaymentMethod;
   userId: string;
   unitId: string;
-  staffId: string;
+  items: IOrderItem[];
+  paymentMode: IPaymentMode;
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  place: IPlace;
+  place?: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;
@@ -104,12 +102,10 @@ export interface IOrder {
 export const orderSchema: Joi.SchemaMap<IOrder> = {
   __typename: Joi.string().valid('Order').optional(),
   id: Joi.string().required(),
-  created: Joi.number().positive().allow(null),
-  items: Joi.array().items(orderItemSchema),
-  paymentMethod: paymentMethodSchema.required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
-  staffId: Joi.string().required(),
+  items: Joi.array().items(orderItemSchema),
+  paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
   sumPriceShown: Joi.object(priceShownSchema).required(),
   takeAway: Joi.boolean(),

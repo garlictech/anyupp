@@ -251,16 +251,6 @@ type Place {
   table: String!
 }
 
-### Cart
-type Cart @model @auth(rules: [{ allow: public }]) {
-  id: ID!
-  userId: ID!
-  unitId: ID!
-  place: Place
-  paymentMethod: String!
-  items: [OrderItem!]!
-}
-
 ### ProductCategory
 type ProductCategory @model @auth(rules: [{ allow: public }]) {
   id: ID!

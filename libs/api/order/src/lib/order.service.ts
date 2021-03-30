@@ -16,20 +16,24 @@ import {
 import {
   EOrderStatus,
   ICart,
+  IOrder,
   IOrderItem,
+  IPaymentMode,
+  IPlace,
   IUnit,
   validateCart,
+  validateGetGroupCurrency,
   validateOrder,
   validateUnit,
   validateUnitProduct,
 } from '@bgap/shared/types';
 import {
   getUnitIsNotAcceptingOrdersError,
+  missingParametersCheck,
   pipeDebug,
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
-import { IOrder } from '@bgap/shared/types';
 
 export const createOrderFromCart = ({
   userId,
@@ -65,7 +69,7 @@ export const createOrderFromCart = ({
     ),
     // pipeDebug('### CURRENCY + UNIT'),
     tap({
-      next({ unit }) {
+      next({ unit, cart }) {
         if (unit.isAcceptingOrders === false) {
           throw getUnitIsNotAcceptingOrdersError();
         }
@@ -77,6 +81,10 @@ export const createOrderFromCart = ({
         //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
         //   console.log('###: User is too far from the UNIT error should be thrown');
         // }
+
+        // The paymentMode is not required for a new cart but it is required in this life-stage of the cart
+        // Because it vas signed to be converted to an order and the user choosed a paymentMode in this step.
+        missingParametersCheck(cart, ['paymentMode']);
       },
     }),
     switchMap(props =>
@@ -92,9 +100,10 @@ export const createOrderFromCart = ({
       orderInput: toOrderInputFormat({
         userId,
         unitId: props.cart.unitId,
-        paymentMethod: props.cart.paymentMethod,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
         items: props.items,
-        place: removeTypeNameField(props.cart.place),
+        place: props.cart.place,
       }),
     })),
     switchMap(props =>
@@ -116,27 +125,26 @@ export const createOrderFromCart = ({
 const toOrderInputFormat = ({
   userId,
   unitId,
-  paymentMethod,
+  paymentMode,
   items,
   place,
 }: {
   userId: string;
   unitId: string;
-  paymentMethod: string;
+  paymentMode: IPaymentMode;
   items: AmplifyApi.OrderItemInput[];
-  place: AmplifyApi.PlaceInput;
+  place: IPlace | undefined;
 }): AmplifyApi.CreateOrderInput => {
   return {
     userId,
     takeAway: false,
-    paymentMethod: paymentMethod,
+    paymentMode: paymentMode,
     // created: DateTime.utc().toMillis(),
     items: items,
-    staffId: 'STAFF_ID', // TODO
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
-    place,
+    place: removeTypeNameField(place),
     unitId,
   };
 };
@@ -301,7 +309,7 @@ const getGroupCurrency = (
     { id },
   ).pipe(
     map(x => x.getGroup),
-    switchMap(AmplifyApiQueryDocuments.validateGetGroupCurrency),
+    switchMap(validateGetGroupCurrency),
     map(x => x.currency),
   );
 };
