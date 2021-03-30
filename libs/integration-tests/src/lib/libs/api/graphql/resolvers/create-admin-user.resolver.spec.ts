@@ -51,30 +51,18 @@ describe('Admin user creation/deletion', () => {
         switchMap(() =>
           apiClient
             .mutate(CreateAdminUser, {
-              input: { email: 'foobar' },
+              input: { email: 'foobar', name: 'Mekk elek', phone: '12356666' },
             })
             .pipe(
               catchError(err => {
                 expect(err).toMatchSnapshot('Malformed email error');
-                return of({});
-              }),
-            ),
-        ),
-        switchMap(() =>
-          apiClient
-            .mutate(CreateAdminUser, {
-              input: {},
-            })
-            .pipe(
-              catchError(err => {
-                expect(err).toMatchSnapshot('Missing email error');
-                return of({});
+                return of(err);
               }),
             ),
         ),
         switchMap(() =>
           apiClient.mutate(CreateAdminUser, {
-            input: { email: userName },
+            input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
         x => x as Observable<ApolloQueryResult<CreateAdminUserMutation>>,
@@ -82,7 +70,7 @@ describe('Admin user creation/deletion', () => {
         switchMap(() =>
           apiClient
             .mutate(CreateAdminUser, {
-              input: { email: userName },
+              input: { email: userName, name: 'Mekk Elek', phone: '123456' },
             })
             .pipe(
               catchError(err => {
