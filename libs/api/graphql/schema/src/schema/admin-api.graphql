@@ -50,8 +50,6 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
   unitId: String
 }
 
-
-
 ### Stripe
 
 # STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
@@ -197,10 +195,8 @@ type OrderItem {
   created: Int
   productName: LocalizedItem!
   priceShown: PriceShown!
-  productId: ID!
   quantity: Int!
   statusLog: [StatusLog]
-  variantId: ID!
   variantName: LocalizedItem!
   laneId: ID
 }
