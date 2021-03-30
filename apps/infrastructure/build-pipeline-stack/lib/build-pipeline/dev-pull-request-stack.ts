@@ -38,6 +38,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 'yarn',
                 'npm install -g @aws-amplify/cli',
                 'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+                'export PATH=$PATH:/tmp/flutter/bin',
               ],
             },
             pre_build: {
