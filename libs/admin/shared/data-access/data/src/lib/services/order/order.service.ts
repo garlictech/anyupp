@@ -112,7 +112,7 @@ export class OrderService {
     );*/
   }
 
-  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<void> {
+  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<unknown> {
     return this._dataService.insertOrderStatus(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
@@ -125,7 +125,7 @@ export class OrderService {
     orderId: string,
     status: EOrderStatus,
     idx: number,
-  ): Promise<void> {
+  ): Promise<unknown> {
     return this._dataService.insertOrderItemStatus(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',
