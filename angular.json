@@ -1431,12 +1431,12 @@
             ]
           }
         },
-        "build": {
+        "build-schema": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
-            "commands": ["sh ../../tools/build-amplify-admin.sh {args.stage}"]
+            "commands": ["sh ../../tools/build-schema-admin.sh {args.stage}"]
           }
         },
         "deploy": {
