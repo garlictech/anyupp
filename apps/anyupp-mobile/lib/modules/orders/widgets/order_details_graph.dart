@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -10,7 +11,7 @@ import 'order_state_card.dart';
 // Responsible for the whole graph that appears in the order tracking system
 class CartDetailsGraph extends StatefulWidget {
   // Contains all your order states
-  final List<Item> orderStates;
+  final List<OrderItem> orderStates;
   final double height;
 
   // IntrinsicHeight so that our view will fill as much space as it can and we will be able to render it in ScrollView
@@ -61,7 +62,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
     _initFabAnimationController();
 
     // Adding the global key for each state
-    widget.orderStates.forEach((state) => _stateKeys.add(new GlobalKey<OrderStateCardState>()));
+    widget.orderStates.forEach((state) => _stateKeys.add(GlobalKey<OrderStateCardState>()));
 
     // Start the animation
     _orderSizeAnimationController.forward();
@@ -83,7 +84,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   }
 
   // Responsible for building the order state cards
-  Widget _buildStateCard(Item state) {
+  Widget _buildStateCard(OrderItem state) {
     int index = widget.orderStates.indexOf(state);
     double topMargin = _dotPositions[index].value - 0.5 * (OrderStateCard.height - AnimatedDot.size);
     bool isLeft = index.isOdd;
@@ -111,9 +112,9 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   }
 
   // Determining the color of dots depending on the state of each phase
-  Widget _mapOrderStateToDot(Item state) {
+  Widget _mapOrderStateToDot(OrderItem state) {
     int index = widget.orderStates.indexOf(state);
-    bool isDoneOrNot = (state.statusLog[state.statusLog.keys.first].status.toLowerCase() == "Ok".toLowerCase());
+    bool isDoneOrNot = (state.statusLog[state.statusLog.length - 1].status.toLowerCase() == "Ok".toLowerCase());
     Color color = isDoneOrNot ? Colors.green : Colors.red;
 
     return AnimatedDot(
@@ -204,13 +205,13 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
       final end = start + slideDurationInterval;
 
       double finalMarginTop = minMarginTop + i * (0.8 * OrderStateCard.height);
-      Animation<double> animation = new Tween(
+      Animation<double> animation = Tween(
         begin: startingMarginTop,
         end: finalMarginTop,
       ).animate(
-        new CurvedAnimation(
+        CurvedAnimation(
           parent: _dotsAnimationController,
-          curve: new Interval(start, end, curve: Curves.easeOut),
+          curve: Interval(start, end, curve: Curves.easeOut),
         ),
       );
       _dotPositions.add(animation);
@@ -219,7 +220,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
 
   // Responsible for starting the animation of each card, then the animation of the payment button
   void _initDotAnimationController() {
-    _dotsAnimationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+    _dotsAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animateOrderStateCards().then((_) => _animateFab());
@@ -230,7 +231,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
   // Responsible for starting the animation of each card
   Future _animateOrderStateCards() async {
     return Future.forEach(_stateKeys, (GlobalKey<OrderStateCardState> stateKey) {
-      return new Future.delayed(Duration(milliseconds: 250), () {
+      return Future.delayed(Duration(milliseconds: 250), () {
         stateKey.currentState?.runAnimation();
       });
     });
@@ -238,7 +239,7 @@ class _CartDetailsGraphState extends State<CartDetailsGraph> with TickerProvider
 
   // Responsible for controlling the animation of the payment button
   void _initFabAnimationController() {
-    _fabAnimationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _fabAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   _animateFab() {

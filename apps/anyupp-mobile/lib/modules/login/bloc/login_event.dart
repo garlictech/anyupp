@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
@@ -69,7 +69,8 @@ class LoginWithPhoneVerifySMSCode extends LoginEvent {
 
 class LinkLoginWithProvider extends LoginEvent {
   final LoginMethod providerToBeLinked;
-  final AuthCredential providerCredentials;
+  // AWS TODO!!! ez nem kell majd
+  final dynamic providerCredentials;
 
   const LinkLoginWithProvider(this.providerToBeLinked, this.providerCredentials);
 

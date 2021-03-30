@@ -12,7 +12,7 @@ class PaymentBloc extends Bloc<BasePaymentEvent, BasePaymentState> {
   Stream<BasePaymentState> mapEventToState(BasePaymentEvent event) async* {
     if (event is UserPaymentIntentionSignalAction) {
       yield PaymentInProgress();
-      await _orderService.userPaymentIntentionSignal(event.unit.chainId, event.unit.unitId);
+      await _orderService.userPaymentIntentionSignal(event.unit.chainId, event.unit.id);
       yield PaymentNoState();
     }
   }

@@ -28,20 +28,24 @@
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "allowedCommonJsDependencies": [
-              "fabric",
+              "@angular/common/locales",
+              "@aws-crypto/crc32",
+              "@aws-crypto/sha256-browser",
+              "@aws-crypto/sha256-js",
+              "axios",
+              "buffer",
               "chart.js",
               "chartjs-plugin-datalabels",
+              "crypto-js",
+              "fabric",
+              "fast-xml-parser",
+              "graphql-tag",
+              "isomorphic-unfetch",
+              "js-cookie",
               "lodash",
-              "firebase/app",
-              "@firebase",
-              "@firebase/app",
-              "@firebase/auth",
-              "@firebase/component",
-              "@firebase/database",
-              "@firebase/functions",
-              "@angular/common/locales",
-              "zen-observable",
-              "graphql-tag"
+              "url",
+              "uuid",
+              "zen-observable"
             ],
             "scripts": []
           },
@@ -1261,7 +1265,7 @@
         "buildApk": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "flutter build apk",
+            "command": "flutter build apk --split-per-abi",
             "cwd": "apps/anyupp-mobile"
           }
         },

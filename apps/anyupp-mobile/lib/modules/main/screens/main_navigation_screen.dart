@@ -1,6 +1,7 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -8,7 +9,6 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/affiliate.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +21,7 @@ class MainNavigation extends StatefulWidget {
 
   const MainNavigation({Key key, this.pageIndex = 0, this.animateCartIcon = true}) : super(key: key);
 
-  _MainNavigationState createState() => new _MainNavigationState();
+  _MainNavigationState createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
@@ -210,9 +210,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
       if (state is UnitSelected) {
         final GeoUnit unit = state.unit;
-        return StreamBuilder<List<PlacedOrder>>(
-            stream: getIt<OrderRepository>().getCurrentOrders(unit.chainId, unit.unitId),
-            builder: (context, AsyncSnapshot<List<PlacedOrder>> orderState) {
+        return StreamBuilder<List<Order>>(
+            stream: getIt<OrderRepository>().getCurrentOrders(unit.chainId, unit.id),
+            builder: (context, AsyncSnapshot<List<Order>> orderState) {
               int orderCount = orderState?.data?.length ?? 0;
               return _createBottomBarIconWithText(
                   2, Icons.receipt, 'main.bottomTitles.orders', orderCount > 0 ? orderCount.toString() : null);
@@ -234,13 +234,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
-    if (index == 2) {
-      // Start Face detection
-      getIt<FaceDetectionBloc>().add(StartAgeAndGenderDetections(force: false));
-    } else {
-      // Stop Face detection
-      getIt<FaceDetectionBloc>().add(StopFaceRecognition());
-    }
     setState(() {
       _selectedIndex = index;
     });

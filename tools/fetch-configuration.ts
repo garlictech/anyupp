@@ -15,11 +15,12 @@ const prefix = `${stage}-${project}-`;
 
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const targetFile = `${targetDir}/config.json`;
+const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsconfiguration.dart`;
 
 fs.mkdirSync(targetDir, { recursive: true });
 
 pipe(
-  ['GraphqlApiKey', 'GraphqlApiUrl', 'stripePublishableKey'],
+  ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlWebsocketApiUrl', 'stripePublishableKey', 'IdentityPoolId', 'consumerNativeUserPoolClientId', 'consumerUserPoolDomain', 'consumerUserPoolId', 'region'],
   // We need to do this because the stuff can query max 10 parameters in one request
   fp.chunk(10),
   fp.map(
@@ -46,6 +47,11 @@ pipe(
         console.log(config);
         fs.writeFileSync(targetFile, JSON.stringify(config, null, 2));
         console.log(`Config written to ${targetFile}`);
+      }),
+      fp.tap(config => {
+        //console.log(config);
+        fs.writeFileSync(mobileAppConfigurationFile, `const AWSCONFIG = '''${JSON.stringify(config, null, 2)}''';`);
+        console.log(`Mobile application config written to ${mobileAppConfigurationFile}`);
       }),
     ),
   ),

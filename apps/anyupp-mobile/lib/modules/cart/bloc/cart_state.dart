@@ -1,8 +1,7 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:fa_prev/modules/cart/cart.dart';
 
 @immutable
 abstract class BaseCartState extends Equatable {

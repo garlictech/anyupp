@@ -33,7 +33,11 @@ class AffiliateBloc extends Bloc<AffiliateEvent, AffiliateState> {
   void _startAdvertisement() {
     _stopAdvertisement();
     print('AffiliateBloc.startAdvertisement()');
-    _affiniateSubscription = _repository.getCurrentAffiliateStream().listen((data) {
+    _affiniateSubscription = _repository.getCurrentAffiliateStream().asBroadcastStream().listen((data) {
+      if (data == null) {
+        add(NoAdvertisement());
+        return;
+      }
       _affiliate = data;
       if (_timer != null && _timer.isActive) {
         _timer.cancel();

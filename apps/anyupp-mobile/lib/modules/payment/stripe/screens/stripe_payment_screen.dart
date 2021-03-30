@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,9 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/orders/model/placed_order.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 
@@ -18,7 +17,7 @@ class StripePaymentScreen extends StatefulWidget {
   final String chainId;
   final String unitId;
   final String userId;
-  final PlacedOrder order;
+  final Order order;
   final double sum;
 
   const StripePaymentScreen({Key key, this.chainId, this.unitId, this.userId, this.order, this.sum}) : super(key: key);

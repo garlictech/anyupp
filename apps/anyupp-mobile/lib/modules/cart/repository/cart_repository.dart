@@ -1,98 +1,130 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 
-
 class CartRepository {
+  final IAuthProvider _authProvider;
+  final IOrdersProvider _ordersProvider;
 
-  final ICartProvider _cartProvider;
+  CartRepository(this._ordersProvider, this._authProvider);
 
-  CartRepository(this._cartProvider);
-  
-  Future<Cart> addProductToCart(GeoUnit unit, Product product, Variant variant) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.chainId, unit.unitId);
-    if (_cart == null || _cart.orders == null) {
-      _cart = Cart(orders: List<Order>(), place: await getPlacePref());
+  Future<Cart> addProductToCart(GeoUnit unit, GeneratedProduct product, ProductVariant variant) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
+    User user = await _authProvider.getAuthenticatedUserProfile();
+    if (_cart == null || _cart.items == null) {
+      _cart = Cart(
+        userId: user.id,
+        unitId: unit.id,
+        takeAway: false,
+        paymentMethod: PaymentMode(
+          method: 'INAPP',
+          name: 'STRIPE',
+        ),
+        place: await getPlacePref(),
+        created: DateTime.now().millisecondsSinceEpoch,
+        items: [
+          CartItem(
+            product: product,
+            variant: variant,
+            quantity: 1,
+          )
+        ],
+      );
     }
 
-    int index = _cart.orders.indexWhere((order) => order.product.id == product.id && order.variant.id == variant.id);
+    int index = _cart.items.indexWhere((order) => order.product?.id == product.id && order.variant.id == variant.id);
     if (index != -1) {
-      Order existingOrder = _cart.orders[index];
-      existingOrder.quantity++;
+      // TODO AWS
+      // OrderItem existingOrder = _cart.order.items[index];
+      // Map<String, dynamic> data = existingOrder.toJson();
+      // data['quantity'] = data['quatnity'] + 1;
+      // existingOrder = OrderItem.fromJson(data);
+      CartItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity + 1);
+      _cart.items[index] = existingOrder;
     } else {
-      Order order = Order((_cart.orders.length + 1).toString(), product, variant, 1);
-      _cart.orders.add(order);
+      CartItem order = CartItem(
+        product: product,
+        variant: variant,
+        quantity: 1,
+      );
+      // Order order = Order((_cart.orders.length + 1).toString(), product, variant, 1);
+      _cart.items.add(order);
     }
 
-    await _cartProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
     return _cart;
   }
 
-  Future<Cart> removeProductFromCart(String chainId, String unitId, Product product, Variant variant) async {
-    Cart _cart = await _cartProvider.getCurrentCart(chainId, unitId);
+  Future<Cart> removeProductFromCart(
+      String chainId, String unitId, GeneratedProduct product, ProductVariant variant) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       return null;
     }
 
-    int index = _cart.orders.indexWhere((order) => order.product.id == product.id && order.variant.id == variant.id);
+    int index = _cart.items.indexWhere((order) => order.product.id == product.id && order.variant.id == variant.id);
     if (index != -1) {
-      Order existingOrder = _cart.orders[index];
-      existingOrder.quantity--;
+      // TODO AWS
+      // OrderItem existingOrder = _cart.order.items[index];
+      // Map<String, dynamic> data = existingOrder.toJson();
+      // data['quantity'] = data['quantity'] - 1;
+      // existingOrder = OrderItem.fromJson(data);
+      CartItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity - 1);
       if (existingOrder.quantity == 0) {
-        _cart.orders.removeAt(index);
+        _cart.items.removeAt(index);
       }
     }
 
-    await _cartProvider.updateCart(chainId, unitId, _cart);
+    await _ordersProvider.updateCart(chainId, unitId, _cart);
     return _cart;
   }
 
-  Future<Cart> removeOrderFromCart(String chainId, String unitId, Order order) async {
-    Cart _cart = await _cartProvider.getCurrentCart(chainId, unitId);
+  Future<Cart> removeOrderFromCart(String chainId, String unitId, CartItem order) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       return null;
     }
 
-    _cart.orders.removeWhere((o) => o.id == order.id);
-    await _cartProvider.updateCart(chainId, unitId, _cart);
+    _cart.items.removeWhere((o) => o.id == order.id);
+    await _ordersProvider.updateCart(chainId, unitId, _cart);
     return _cart;
   }
 
   Future<Cart> updatePlaceInCart(GeoUnit unit) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.chainId, unit.unitId);
-    if (_cart == null || _cart.orders == null) {
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
+    if (_cart == null || _cart.items == null) {
       return null;
     }
-    _cart.place = unit.place;
-    await _cartProvider.updateCart(unit.chainId, unit.unitId, _cart);
+    _cart =  _cart.copyWith(place: unit.place);
+    await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
     return _cart;
   }
 
   Future<Cart> getCurrentCart(String chainId, String unitId) {
-    return _cartProvider.getCurrentCart(chainId, unitId);
+    return _ordersProvider.getCurrentCart(chainId, unitId);
   }
 
   Stream<Cart> getCurrentCartStream(String chainId, String unitId) {
-    return _cartProvider.getCurrentCartStream(chainId, unitId);
+    return _ordersProvider.getCurrentCartStream(chainId, unitId);
   }
 
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    await _cartProvider.createAndSendOrderFromCart(unit, paymentMethod);
+    await _ordersProvider.createAndSendOrderFromCart(unit, paymentMethod);
   }
 
-  Future<Cart> clearCart(GeoUnit unit) async {
-    await _cartProvider.clearCart(unit.chainId, unit.unitId);
-    return Cart(orders: List<Order>(), place: unit.place);
+  Future<Cart> clearCart(User user, GeoUnit unit) async {
+    await _ordersProvider.clearCart(unit.chainId, unit.id);
+    return null;
   }
 
   Future<Cart> clearPlaceInCart(GeoUnit unit) async {
-    Cart cart = await getCurrentCart(unit.chainId, unit.unitId);
+    Cart cart = await getCurrentCart(unit.chainId, unit.id);
     if (cart != null) {
-      cart.place = null;
-      await _cartProvider.updateCart(unit.chainId, unit.unitId, cart);
+      cart = cart.copyWith(place: null);
+      await _ordersProvider.updateCart(unit.chainId, unit.id, cart);
     }
     return cart;
   }

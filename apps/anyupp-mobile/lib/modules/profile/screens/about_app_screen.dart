@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 
@@ -12,8 +11,6 @@ class AboutApp extends StatefulWidget {
 
 class _AboutAppState extends State<AboutApp> {
   Widget build(BuildContext context) {
-    var stage = DotEnv().env["stage"];
-
     return Scaffold(
       // The appBar head text
       appBar: AppBar(
@@ -62,14 +59,14 @@ class _AboutAppState extends State<AboutApp> {
                     SizedBox(
                       height: 16.0,
                     ),
-                    if (stage != 'prod')
-                      Text(
-                        'Stage: ${DotEnv().env["stage"]}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
-                      ),
+                    // if (stage != 'prod')
+                    //   Text(
+                    //     'Stage: ${DotEnv().env["stage"]}',
+                    //     style: GoogleFonts.poppins(
+                    //       fontSize: 14.0,
+                    //       color: Colors.grey,
+                    //     ),
+                    //   ),
                     FutureBuilder<PackageInfo>(
                         future: PackageInfo.fromPlatform(),
                         builder: (context, AsyncSnapshot<PackageInfo> snapshot) {

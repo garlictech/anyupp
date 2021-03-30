@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -23,8 +23,8 @@ class GetCurrentCartAction extends BaseCartAction {
 
 class AddProductToCartAction extends BaseCartAction {
   final GeoUnit unit;
-  final Product product;
-  final Variant variant;
+  final GeneratedProduct product;
+  final ProductVariant variant;
 
   const AddProductToCartAction(this.unit, this.product, this.variant);
 
@@ -35,8 +35,8 @@ class AddProductToCartAction extends BaseCartAction {
 class RemoveProductFromCartAction extends BaseCartAction {
   final String chainId;
   final String unitId;
-  final Product product;
-  final Variant variant;
+  final GeneratedProduct product;
+  final ProductVariant variant;
 
   const RemoveProductFromCartAction(this.chainId, this.unitId, this.product, this.variant);
 
@@ -47,8 +47,8 @@ class RemoveProductFromCartAction extends BaseCartAction {
 class UpdateProductInCartAction extends BaseCartAction {
   final String chainId;
   final String unitId;
-  final Product product;
-  final Variant variant;
+  final GeneratedProduct product;
+  final ProductVariant variant;
   final int quantity;
 
   const UpdateProductInCartAction(this.chainId, this.unitId, this.product, this.variant, this.quantity);
@@ -58,7 +58,7 @@ class UpdateProductInCartAction extends BaseCartAction {
 }
 
 class RemoveOrderFromCartAction extends BaseCartAction {
-  final Order order;
+  final CartItem order;
   final String chainId;
   final String unitId;
 
@@ -69,12 +69,13 @@ class RemoveOrderFromCartAction extends BaseCartAction {
 }
 
 class ClearCartAction extends BaseCartAction {
+  final User user;
   final GeoUnit unit;
   
-  const ClearCartAction(this.unit);
+  const ClearCartAction(this.user, this.unit);
 
   @override
-  List<Object> get props => [unit];
+  List<Object> get props => [unit, user];
 }
 
 class ClearPlaceInCart extends BaseCartAction {

@@ -18,7 +18,7 @@ void main() {
 
   test('Check affiniate ad selection by gender and age', () async {
 
-    final file = new File('test/data/project-3fa-affiliate-export.json');
+    final file = File('test/data/project-3fa-affiliate-export.json');
     final json = jsonDecode(await file.readAsString());
     Affiliate affiliate = Affiliate.fromMap(json);
     // print('affiliate=$affiliate');

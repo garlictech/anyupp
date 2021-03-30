@@ -1,6 +1,8 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'dart:convert';
+
+import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/graphql/graphql_client.dart';
+import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -10,16 +12,12 @@ import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
-import 'package:fa_prev/shared/providers.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -28,96 +26,104 @@ import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
 GetIt getIt = GetIt.instance;
-DotEnv dotEnv = DotEnv();
+Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
-void initDependencyInjection() {
-  // 3rd party
-  FirebaseDatabase database = FirebaseDatabase.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  CloudFunctions functions = CloudFunctions(region: dotEnv.env['region']);
-  GraphQLClient graphQLClient = getGraphQLClient(url: dotEnv.env['graphql-url']);
+Future<void> initDependencyInjection() async {
+  _initCommon();
+  _initProviders();
+  _initRepositories();
+  _initServices();
+  _initBlocs();
+}
+
+void _initCommon() {
+
+  
+  print('AWS CONFIG=$awsConfig');
+
   final Stripe stripe = Stripe(
-    dotEnv.env['stripe_pulblishable_key'],
-    // stripeAccount: dotEnv.env['stripe_merchant_id'],
-    returnUrlForSca: dotEnv.env['stripe_return_url_for_sca'],
+    awsConfig['stripePublishableKey'],
+    returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
-  // database.setPersistenceEnabled(true);
+  final CognitoService cognitoService = CognitoService(
+    region: awsConfig['region'],
+    userPoolId: awsConfig['consumerUserPoolId'],
+    identityPoolId: awsConfig['IdentityPoolId'],
+    clientId: awsConfig['consumerNativeUserPoolClientId'],
+  );
+  getIt.registerLazySingleton<CognitoService>(() => cognitoService);
 
-  getIt.registerLazySingleton<DatabaseReference>(() => database.reference());
-  getIt.registerLazySingleton<FirebaseAuth>(() => auth);
-  getIt.registerLazySingleton<CloudFunctions>(() => functions);
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
+  // getIt.registerLazySingleton<ValueNotifier<GraphQLClient>>(() => graphQLClient);
+  getIt.registerLazySingleton<Stripe>(() => stripe);
+}
 
+void _initProviders() {
   // Providers
-  getIt.registerLazySingleton<FirebaseUserProvider>(() => FirebaseUserProvider());
-  getIt.registerLazySingleton<FirebaseAuthProvider>(
-      () => FirebaseAuthProvider(getIt<FirebaseAuth>(), getIt<DatabaseReference>()));
-  getIt.registerLazySingleton<FirebaseFunctionsProvider>(() => FirebaseFunctionsProvider(getIt<CloudFunctions>()));
-  getIt.registerLazySingleton<FirebaseFavoritesProvider>(
-      () => FirebaseFavoritesProvider(getIt<DatabaseReference>(), getIt<FirebaseAuthProvider>()));
-  getIt.registerLazySingleton<FirebaseOrderProvider>(() => FirebaseOrderProvider(
-      getIt<DatabaseReference>(), getIt<FirebaseAuthProvider>(), getIt<FirebaseFunctionsProvider>()));
-  getIt.registerLazySingleton<FirebaseProductProvider>(() => FirebaseProductProvider(getIt<DatabaseReference>()));
-  getIt.registerLazySingleton<FirebaseUnitProvider>(() => FirebaseUnitProvider(getIt<FirebaseFunctionsProvider>()));
-  getIt.registerLazySingleton<GraphQLStripePaymentProvider>(() => GraphQLStripePaymentProvider(graphQLClient, stripe));
-  getIt.registerLazySingleton<FirebaseSimplepayProvider>(() => FirebaseSimplepayProvider(getIt<FirebaseFunctionsProvider>()));
-  getIt.registerLazySingleton<FirebaseCartProvider>(() => FirebaseCartProvider(getIt<DatabaseReference>(), getIt<FirebaseAuthProvider>(), getIt<FirebaseFunctionsProvider>()));
-
-  // Login providers
-  getIt.registerLazySingleton<FirebaseCommonLoginProvider>(() => FirebaseCommonLoginProvider(
-    getIt<FirebaseAuth>(),
-    getIt<FirebaseUserProvider>(),));
-  getIt.registerLazySingleton<FirebaseSocialLoginProvider>(() => FirebaseSocialLoginProvider(
-    getIt<FirebaseAuth>(),
-    getIt<GoogleSignIn>(),
-    getIt<FacebookLogin>(),
-    getIt<FirebaseUserProvider>(),
-    ));
-  getIt.registerLazySingleton<FirebasePhoneLoginProvider>(() => FirebasePhoneLoginProvider(
-    getIt<FirebaseAuth>(),
-    getIt<FirebaseUserProvider>(),
-    getIt<FirebaseCommonLoginProvider>(),
-    ));
-   getIt.registerLazySingleton<FirebaseEmailLoginProvider>(() => FirebaseEmailLoginProvider(
-    getIt<FirebaseAuth>(),
-    getIt<FirebaseUserProvider>(),
-    ));
-
-  // Firebase Login Repository
-  getIt.registerLazySingleton<LoginRepository>(() => LoginRepository(
-        getIt<FirebaseUserProvider>(),
-        getIt<FirebaseCommonLoginProvider>(),
-        getIt<FirebaseSocialLoginProvider>(),
-        getIt<FirebaseEmailLoginProvider>(),
-        getIt<FirebasePhoneLoginProvider>(),
+  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
+  getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
+        getIt<IAuthProvider>(),
       ));
-  getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<FirebaseProductProvider>()));
-  getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<FirebaseOrderProvider>()));
-  getIt.registerLazySingleton<FirebaseUnitRepository>(() => FirebaseUnitRepository(getIt<FirebaseUnitProvider>()));
-  getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<FirebaseFavoritesProvider>()));
-  getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<FirebaseSimplepayProvider>()));
+  getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
+  getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
+  getIt.registerLazySingleton<IStripePaymentProvider>(
+      () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
+  getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
-  // Affiliate repository + provider
-  getIt.registerLazySingleton<AffiliateFirebaseProvider>(() => AffiliateFirebaseProvider(getIt<DatabaseReference>()));
-  getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<AffiliateFirebaseProvider>()));
+  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider());
+  getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
+  getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
+        getIt<IAuthProvider>(),
+      ));
+
+  // Login providers AWS
+  getIt.registerLazySingleton<ISocialLoginProvider>(
+      () => AwsSocialLoginProvider(getIt<GoogleSignIn>(), getIt<FacebookLogin>(), getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
+}
+
+void _initRepositories() {
+  // Login Repository
+  getIt.registerLazySingleton<LoginRepository>(() => LoginRepository(
+        getIt<ICommonLoginProvider>(),
+        getIt<ISocialLoginProvider>(),
+        getIt<IEmailLoginProvider>(),
+        getIt<IPhoneLoginProvider>(),
+      ));
+  getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<IProductProvider>()));
+  getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
+  getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
+  getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
+  getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
 
   // Repostories
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<FirebaseAuthProvider>()));
+  getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<IAffiliateProvider>()));
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
-  getIt.registerLazySingleton<FaceRepository>(() => FaceRepository());
-  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<FirebaseCartProvider>()));
-  getIt.registerLazySingleton<StripePaymentRepository>(
-      () => StripePaymentRepository(getIt<GraphQLStripePaymentProvider>()));
+  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
 
-  // Blocs
+}
+
+void _initServices() {
+   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
+    authProvider: getIt<IAuthProvider>(),
+        apiUrl: awsConfig['GraphqlApiUrl'],
+        websocketApiUrl: awsConfig['GraphqlWebsocketApiUrl'],
+        apiKey: awsConfig['GraphqlApiKey'],
+      ));
+}
+
+void _initBlocs() {
+// Blocs
   getIt.registerLazySingleton(() => AuthBloc(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ExceptionBloc());
   getIt.registerLazySingleton(() => UnitSelectBloc());
-  getIt.registerLazySingleton(() => UnitsBloc(getIt<FirebaseUnitRepository>(), getIt<LocationRepository>()));
-  // TODO ide lehetne vajon registerLazySingleton?
+  getIt.registerLazySingleton(() => UnitsBloc(getIt<UnitRepository>(), getIt<LocationRepository>()));
   getIt.registerLazySingleton(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));
   getIt.registerLazySingleton(() => LocaleBloc());
@@ -125,9 +131,10 @@ void initDependencyInjection() {
   getIt.registerLazySingleton(() => SimplePayBloc(getIt<SimplePayRepository>()));
   getIt.registerLazySingleton(() => ThemeBloc(getIt<UnitSelectBloc>()));
   getIt.registerLazySingleton(() => CartBloc(getIt<CartRepository>()));
-  getIt.registerLazySingleton(() => FaceDetectionBloc(getIt<FaceRepository>()));
-  getIt.registerLazySingleton<NetworkStatusBloc>(() => NetworkStatusBloc());
+  getIt.registerLazySingleton(() => NetworkStatusBloc());
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
-  getIt.registerLazySingleton<StripePaymentBloc>(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
-}
+  getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
+  getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
+
+ }

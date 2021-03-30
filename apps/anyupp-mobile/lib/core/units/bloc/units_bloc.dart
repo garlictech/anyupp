@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,7 +15,7 @@ part 'units_state.dart';
 String geoFirePathToReference = "generated/unitsGeo";
 
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
-  final FirebaseUnitRepository _unitRepository;
+  final UnitRepository _unitRepository;
   final LocationRepository _locationService;
 
   UnitsBloc(this._unitRepository, this._locationService) : super(UnitsInitial());
@@ -82,9 +83,9 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     print('UnitsBloc._findNearestLoactions().start()');
     try {
       final geoUnits = await _unitRepository.searchUnitsNearLocation(location, radiusInMeter);
-      print('UnitsBloc._findNearestLoactions().units=$geoUnits');
+      //print('UnitsBloc._findNearestLoactions().units=$geoUnits');
 
-      if (geoUnits == null) {
+      if (geoUnits == null || geoUnits.isEmpty) {
         yield UnitsNoNearUnit();
       } else {
         yield UnitsLoaded(geoUnits);

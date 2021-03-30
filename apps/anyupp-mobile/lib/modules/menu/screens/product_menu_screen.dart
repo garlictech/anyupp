@@ -2,7 +2,7 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,9 +19,10 @@ class Menu extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => getIt<ProductCategoriesBloc>(),
       child: BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
-        print('Menu.ProductCategoriesBloc.state=$state');
+        // print('Menu.ProductCategoriesBloc.state=$state');
         if (state is ProductCategoriesLoaded) {
-          if (state.productCategories != null && state.productCategories.length > 0) {
+          // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
+          if (state.productCategories != null && state.productCategories.isNotEmpty) {
             return _buildTabBar(context, state.productCategories);
           } else {
             return _noCategoriesWidget(context);
@@ -103,7 +104,7 @@ class Menu extends StatelessWidget {
       ),
 
       // centerTitle: true,
-      bottom: productCategories.length > 0
+      bottom: productCategories.isNotEmpty
           ? ColoredTabBar(
               color: theme.background2,
               tabBar: TabBar(

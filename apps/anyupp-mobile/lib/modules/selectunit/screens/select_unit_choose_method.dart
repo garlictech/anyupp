@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -124,7 +125,8 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                 height: 22.0,
               ),
               onPressed: () {
-                showConfirmLogoutDialog(context, false);
+                // Nav.to(DataStoreDemoScreen());
+                showConfirmLogoutDialog(context, true);
               },
             ),
           ),
@@ -245,10 +247,18 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
       // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
       if (state is UnitsNoNearUnit) {
-        return Text(trans('selectUnitMap.noNearUnits'));
+        return Container(
+          padding: EdgeInsets.all(0.0),
+          height: 138,
+          child: Center(child: Text(trans('selectUnitMap.noNearUnits'))),
+        );
       }
       if (state is UnitsNotLoaded) {
-        return Text(trans('selectUnitMap.notLoaded'));
+        return Container(
+          padding: EdgeInsets.all(0.0),
+          height: 138,
+          child: Center(child: Text(trans('selectUnitMap.notLoaded'))),
+        );
       }
       if (state is UnitsLoaded) {
         return _buildUnitList(context, state.units);
@@ -306,7 +316,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                       ),
                     ),
                     Text(
-                      units[index].address?.address,
+                      units[index].address?.address ?? '',
                       maxLines: 2,
                       style: GoogleFonts.poppins(
                         fontSize: 12.0,
