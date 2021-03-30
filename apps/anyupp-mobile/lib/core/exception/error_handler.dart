@@ -1,14 +1,12 @@
-// Catcher configuration https://pub.dev/packages/catcher
-
 import 'package:catcher/catcher.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void configureCatcherAndRunZonedApp(Widget mainApp) {
-  final customParameters = {'stage': DotEnv().env['stage']};
+  final customParameters = {'stage': 'anyupp'};
 
   final slackHandler = SlackHandler(
-      DotEnv().env['SLACK_ERROR_WEBHOOK_URL'], '#' + DotEnv().env['SLACK_ERROR_CHANNEL_NAME'],
+     awsConfig['SlackErrorWebhookUrl'], '#' + awsConfig['SlackErrorChannel'],
       username: "ErrorCatcher",
       iconEmoji: ":bug:",
       enableDeviceParameters: true,
@@ -21,7 +19,7 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
 
   /// Debug configuration with dialog report mode and console handler. It will show dialog and once user accepts it, error will be shown   /// in console.
   CatcherOptions debugOptions =
-      CatcherOptions(SilentReportMode(), [], /* [consoleHandler], TODO */ customParameters: customParameters);
+      CatcherOptions(SilentReportMode(), [consoleHandler], customParameters: customParameters);
   // CatcherOptions(DialogReportMode(), [ConsoleHandler()]);
 
   /// Release configuration. Same as above, but once user accepts dialog, user will be prompted to send email with crash to support.

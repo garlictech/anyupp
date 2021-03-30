@@ -26,3 +26,7 @@ class ShowNewAdvertisement extends AffiliateEvent {
   @override
   List<Object> get props => [ad];
 }
+
+class NoAdvertisement extends AffiliateEvent {
+  const NoAdvertisement();
+}

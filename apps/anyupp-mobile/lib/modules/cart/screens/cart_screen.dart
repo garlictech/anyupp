@@ -1,12 +1,11 @@
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +29,7 @@ class CartScreen extends StatelessWidget {
         centerTitle: false,
         elevation: 0.0,
         // Only dev and qa builds are show the table and seat in the top right corner
-        title: (DotEnv().env['stage'] == 'dev' || DotEnv().env['stage'] == 'qa')
+        title: (true)
             ? FutureBuilder<Place>(
                 future: getPlacePref(),
                 builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
@@ -108,7 +107,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.unitId),
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null) {
@@ -140,9 +139,9 @@ class CartScreen extends StatelessWidget {
                   color: theme.disabled.withOpacity(0.3),
                 ),
                 physics: BouncingScrollPhysics(),
-                itemCount: cart.orders.length,
+                itemCount: cart.items?.length ?? 0,
                 itemBuilder: (context, position) {
-                  final Order order = cart.orders[position];
+                  final CartItem order = cart.items[position];
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 375),
@@ -226,7 +225,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, Order order) {
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, CartItem order) {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
@@ -237,7 +236,7 @@ class CartScreen extends StatelessWidget {
             order: order,
           ),
           onDismissed: (direction) {
-            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.unitId, order));
+            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.id, order));
           },
           // Setting the Dismissible background (appears on swipping)
           background: Container(color: Colors.redAccent),

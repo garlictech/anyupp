@@ -1,9 +1,8 @@
-import 'package:fa_prev/shared/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:fa_prev/models.dart';
 
 class ProviderLoginResponse {
-  final AuthCredential credential;
+  // TODO AWS remove
+  final dynamic credential;
   final User user;
 
   ProviderLoginResponse({

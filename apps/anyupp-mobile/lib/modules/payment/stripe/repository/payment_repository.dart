@@ -9,7 +9,7 @@ class StripePaymentRepository implements IStripePaymentProvider {
   StripePaymentRepository(this._paymentProvider);
 
   @override
-  Future<List<GetCustomerStripeCards$Query$StripeCard>> getPaymentMethods() {
+  Future<List<StripeCard>> getPaymentMethods() {
     return _paymentProvider.getPaymentMethods();
   }
 

@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -14,7 +15,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
     @required this.order,
   }) : super(key: key);
 
-  final PlacedOrder order;
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderHeader(BuildContext context, PlacedOrder order) {
+  Widget _buildOrderHeader(BuildContext context, Order order) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -69,14 +70,14 @@ class CurrentOrderCardWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${order.id}',
+            '${order.id.split("-").last}',
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: theme.text,
             ),
           ),
           Text(
-            DF_SHORT.format(order.created),
+            DF_SHORT.format(order.created != null ? DateTime.fromMillisecondsSinceEpoch(order.created) : DateTime.now()),
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: theme.text,
@@ -87,10 +88,10 @@ class CurrentOrderCardWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildOrderItemList(BuildContext context, PlacedOrder order) {
+  List<Widget> _buildOrderItemList(BuildContext context, Order order) {
     List<Widget> results = [];
     for (int i = 0; i < order.items.length; i++) {
-      Item item = order.items[i];
+      OrderItem item = order.items[i];
       results.add(
         OrderSimpleListItemWidget(orderItem: item),
       );
@@ -103,7 +104,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
     return results;
   }
 
-  Widget _buildTotalPrice(BuildContext context, PlacedOrder order) {
+  Widget _buildTotalPrice(BuildContext context, Order order) {
     return Container(
       padding: EdgeInsets.only(
         top: 12.0,

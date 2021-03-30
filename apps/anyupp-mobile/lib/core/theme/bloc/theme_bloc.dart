@@ -5,6 +5,7 @@ import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/color.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   StreamSubscription _unitSelectSubscription;
 
   ThemeBloc(this._unitSelectBloc) : super(ThemeState(theme: ThemeAnyUpp())) {
-    _unitSelectSubscription = _unitSelectBloc.listen((unitSelectedState) {
+    _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((unitSelectedState) {
       if (unitSelectedState is UnitSelected) {
         add(ThemeSelected(theme: unitThemeToThemeChainData(unitSelectedState.unit)));
       }

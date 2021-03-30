@@ -1,6 +1,10 @@
 
 import 'package:fa_prev/app.dart';
 
-void main() {
-  runAppByStage(stage: 'dev');
+import 'core/core.dart';
+
+void main() async {
+  await initDependencyInjection();
+  configureCatcherAndRunZonedApp(MyApp());
+  //runApp(MyApp());
 }

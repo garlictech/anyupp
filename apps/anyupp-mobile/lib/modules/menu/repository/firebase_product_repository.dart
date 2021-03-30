@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 import 'package:fa_prev/modules/menu/menu.dart';
 
@@ -11,11 +11,7 @@ class ProductRepository  {
     return _provider.getProductCategoryList(chainId, unitId);
   }
 
-  Stream<List<String>> getNotEmptyProductCategoryList(String unitId) {
-    return _provider.getNotEmptyProductCategoryList(unitId);
-  }
-
-  Stream<List<Product>> getProductList(String unitId, String categoryId) {
+  Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) {
     return _provider.getProductList(unitId, categoryId);
   }
 }

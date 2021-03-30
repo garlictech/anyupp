@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -62,7 +62,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
 
   void _initCameraAndScanner() async {
     print('_initCameraAndScanner().getCamera()');
-    ScannerUtils.getCamera(CameraLensDirection.back).then(
+    await ScannerUtils.getCamera(CameraLensDirection.back).then(
       (CameraDescription camera) async {
         print('_initCameraAndScanner()._openCamera()');
         await _openCamera(camera);
@@ -160,7 +160,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
     if (!await Permission.camera.request().isGranted) {
       if (await Permission.camera.isPermanentlyDenied) {
         print('_checkCameraPermissions().PermanentlyDenied!');
-        showConfirmDialog(
+        await showConfirmDialog(
           context,
           title: trans('qrScan.permission.denied.title'),
           message: trans('qrScan.permission.denied.message'),
@@ -181,7 +181,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
         );
       } else {
         print('_checkCameraPermissions().notGranted!');
-        showConfirmDialog(
+        await showConfirmDialog(
           context,
           title: trans('qrScan.permission.notGranted.title'),
           message: trans('qrScan.permission.notGranted.message'),
@@ -224,7 +224,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
 
     this._streaming = true;
 
-    _cameraController.startImageStream((CameraImage image) {
+    await _cameraController.startImageStream((CameraImage image) {
       if (isDetecting) {
         return;
       }
@@ -311,7 +311,7 @@ class _SelectUnitQRCodeScannerScreenState extends State<SelectUnitQRCodeScannerS
               final unitId = uri.pathSegments[0];
               final table = uri.pathSegments[1];
               final seat = uri.pathSegments[2];
-              final Place place = Place(table, seat);
+              final Place place = Place(table: table, seat: seat);
               // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
               _switchAnimationState(AnimationState.barcodeFound);
               // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
