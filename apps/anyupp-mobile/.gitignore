@@ -82,3 +82,7 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+
+android/*.jks
+android/key.properties
+lib/awsconfiguration.dart
