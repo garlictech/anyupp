@@ -1,251 +1,253 @@
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/models.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
-// TODO: probably we shouldn't check these on the client
-stringOrMissingToInt(value) {
-  if (value is int) {
-    return value;
-  }
+// TODO AWS REMOVED
+// import 'package:fa_prev/models.dart';
+// import 'package:fa_prev/modules/cart/cart.dart';
+// import 'package:fa_prev/modules/favorites/favorites.dart';
+// import 'package:fa_prev/modules/orders/orders.dart';
+// import 'package:fa_prev/shared/auth.dart';
+// import 'package:fa_prev/models.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
 
-  if (value == null || value == '') {
-    return 0;
-  }
-  if (value is String) {
-    return int.parse(value);
-  }
-}
+// // TODO: probably we shouldn't check these on the client
+// stringOrMissingToInt(value) {
+//   if (value is int) {
+//     return value;
+//   }
 
-double stringOrMissingToDouble(value) {
-  if (value is int) {
-    return value.toDouble();
-  }
+//   if (value == null || value == '') {
+//     return 0;
+//   }
+//   if (value is String) {
+//     return int.parse(value);
+//   }
+// }
 
-  if (value == null || value == '') {
-    return 0.0;
-  }
-  if (value is double) {
-    return value;
-  }
-  if (value is String) {
-    return double.parse(value);
-  }
+// double stringOrMissingToDouble(value) {
+//   if (value is int) {
+//     return value.toDouble();
+//   }
 
-  return 0.0;
-}
+//   if (value == null || value == '') {
+//     return 0.0;
+//   }
+//   if (value is double) {
+//     return value;
+//   }
+//   if (value is String) {
+//     return double.parse(value);
+//   }
 
-Map<dynamic, dynamic> missingCheckOnMap(value) {
-  if (value == null) {
-    return {};
-  } else {
-    return value;
-  }
-}
+//   return 0.0;
+// }
 
-// TODO ezeket szet kellene szedni modulokra
-class FirebaseModelMapper {
-  static List<ProductCategory> snapshotToProductCategories(DataSnapshot ds) {
-    List<ProductCategory> productCategories =
-        Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToProductCategory).toList();
-    productCategories.sort((a, b) => a.position - b.position);
-    return productCategories;
-  }
+// Map<dynamic, dynamic> missingCheckOnMap(value) {
+//   if (value == null) {
+//     return {};
+//   } else {
+//     return value;
+//   }
+// }
 
-  static List<String> snapshotToNotEmptyProductCategories(DataSnapshot ds) {
-    if (ds.value == null) {
-      return List<String>();
-    }
-    return Map<String, dynamic>.from(ds.value).entries.map((dynamic ds) {
-      return ds.key.toString();
-    }).toList();
-  }
+// // TODO ezeket szet kellene szedni modulokra
+// class FirebaseModelMapper {
+//   static List<ProductCategory> snapshotToProductCategories(DataSnapshot ds) {
+//     List<ProductCategory> productCategories =
+//         Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToProductCategory).toList();
+//     productCategories.sort((a, b) => a.position - b.position);
+//     return productCategories;
+//   }
 
-  static ProductCategory snapshotToProductCategory(dynamic ds) {
-    return ProductCategory(
-        id: ds.key,
-        name: Map<String, String>.from(ds.value['name']),
-        // TODO: could it be missing from the db (null) description: Map<String, String>.from(ds.value['description']),
-        image: ds.value['image'],
-        position: stringOrMissingToInt(ds.value['position']));
-  }
+//   static List<String> snapshotToNotEmptyProductCategories(DataSnapshot ds) {
+//     if (ds.value == null) {
+//       return List<String>();
+//     }
+//     return Map<String, dynamic>.from(ds.value).entries.map((dynamic ds) {
+//       return ds.key.toString();
+//     }).toList();
+//   }
 
-  static List<FavoriteProduct> snapshotToFavorites(DataSnapshot ds) {
-    if (ds.value == null) {
-      return List<FavoriteProduct>();
-    }
+//   static ProductCategory snapshotToProductCategory(dynamic ds) {
+//     return ProductCategory(
+//         id: ds.key,
+//         name: Map<String, String>.from(ds.value['name']),
+//         // TODO: could it be missing from the db (null) description: Map<String, String>.from(ds.value['description']),
+//         image: ds.value['image'],
+//         position: stringOrMissingToInt(ds.value['position']));
+//   }
 
-    List<FavoriteProduct> favorites =
-        Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToFavorite).toList();
-    return favorites;
-  }
+//   static List<FavoriteProduct> snapshotToFavorites(DataSnapshot ds) {
+//     if (ds.value == null) {
+//       return List<FavoriteProduct>();
+//     }
 
-  static FavoriteProduct snapshotToFavorite(MapEntry<String, dynamic> ds) {
-    return FavoriteProduct.fromMap(ds.value);
-  }
+//     List<FavoriteProduct> favorites =
+//         Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToFavorite).toList();
+//     return favorites;
+//   }
 
-  static List<Product> snapshotToProducts(String categoryId, DataSnapshot ds) {
-    if (ds.value == null) {
-      return List<Product>();
-    }
-    List<Product> products =
-        Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToProduct).toList();
-    products.sort((a, b) => a.position - b.position);
-    products.forEach((element) {
-      element.productCategoryId = categoryId;
-    });
-    return products;
-  }
+//   static FavoriteProduct snapshotToFavorite(MapEntry<String, dynamic> ds) {
+//     return FavoriteProduct.fromMap(ds.value);
+//   }
 
-  static List<PlacedOrder> snapshotToPlacedOrders(DataSnapshot ds) {
-    if (ds.value == null) {
-      return List<PlacedOrder>();
-    }
+//   static List<GeneratedProduct> snapshotToProducts(String categoryId, DataSnapshot ds) {
+//     if (ds.value == null) {
+//       return List<GeneratedProduct>();
+//     }
+//     List<GeneratedProduct> products =
+//         Map<String, dynamic>.from(ds.value).entries.map(FirebaseModelMapper.snapshotToProduct).toList();
+//     products.sort((a, b) => a.position - b.position);
+//     products.forEach((element) {
+//       element.productCategoryId = categoryId;
+//     });
+//     return products;
+//   }
 
-    final List<PlacedOrder> orders = [];
+//   static List<Order> snapshotToPlacedOrders(DataSnapshot ds) {
+//     if (ds.value == null) {
+//       return List<Order>();
+//     }
 
-    Map<String, dynamic>.from(ds.value).forEach((key, value) {
-      PlacedOrder order = PlacedOrder.fromMap(value);
-      order.id = key;
-      orders.add(order);
-    });
+//     final List<Order> orders = [];
 
-    orders.sort((a, b) => b.created.compareTo(a.created));
-    return orders;
-  }
+//     Map<String, dynamic>.from(ds.value).forEach((key, value) {
+//       Order order = Order.fromMap(value);
+//       order.id = key;
+//       orders.add(order);
+//     });
 
-  static Product snapshotToProduct(dynamic ds) {
-    Product product = Product(
-        id: ds.key,
-        name: Map<String, String>.from(missingCheckOnMap(ds.value['name'])),
-        description: Map<String, String>.from(missingCheckOnMap(ds.value['description'])),
-        image: ds.value['image'],
-        // availability: ds.value['availability'],
-        // isAvailable: ds.value['isAvailable'],
-        isVisible: ds.value['isVisible'],
-        tax: stringOrMissingToInt(ds.value['tax']),
-        position: stringOrMissingToInt(ds.value['position']));
+//     orders.sort((a, b) => b.created.compareTo(a.created));
+//     return orders;
+//   }
 
-    // if (ds.value['price'] != null) {
-    //   product.price = Map<String, int>.from(ds.value['price']);
-    // }
+//   static GeneratedProduct snapshotToProduct(dynamic ds) {
+//     GeneratedProduct product = GeneratedProduct(
+//         id: ds.key,
+//         name: Map<String, String>.from(missingCheckOnMap(ds.value['name'])),
+//         description: Map<String, String>.from(missingCheckOnMap(ds.value['description'])),
+//         image: ds.value['image'],
+//         // availability: ds.value['availability'],
+//         // isAvailable: ds.value['isAvailable'],
+//         isVisible: ds.value['isVisible'],
+//         tax: stringOrMissingToInt(ds.value['tax']),
+//         position: stringOrMissingToInt(ds.value['position']));
 
-    if (ds.value['contains'] != null) {
-      product.contains = Contains();
-      // TODO: reenable product.contains.allergens =
-      //     Map<String, bool>.from(ds.value['contains']['allergens']);
-    }
+//     // if (ds.value['price'] != null) {
+//     //   product.price = Map<String, int>.from(ds.value['price']);
+//     // }
 
-    if (ds.value['variants'] != null) {
-      product.variants = Map<String, dynamic>.from(ds.value['variants'])
-          .entries
-          .map(
-            (entry) => snapshotToVariant(entry),
-          )
-          .toList();
-      product.variants.sort((a, b) => a.position - b.position);
-    }
+//     if (ds.value['contains'] != null) {
+//       product.contains = Contains();
+//       // TODO: reenable product.contains.allergens =
+//       //     Map<String, bool>.from(ds.value['contains']['allergens']);
+//     }
 
-    return product;
-  }
+//     if (ds.value['variants'] != null) {
+//       product.variants = Map<String, dynamic>.from(ds.value['variants'])
+//           .entries
+//           .map(
+//             (entry) => snapshotToVariant(entry),
+//           )
+//           .toList();
+//       product.variants.sort((a, b) => a.position - b.position);
+//     }
 
-  static Variant snapshotToVariant(dynamic entry) {
-    return Variant(
-      id: entry.key,
-      variantName: Map<String, String>.from(entry.value['variantName']),
-      pack: Pack(
-        size: stringOrMissingToDouble(entry.value['pack']['size']),
-        unit: entry.value['pack']['unit'],
-      ),
-      price: stringOrMissingToDouble(entry.value['price']),
-      position: stringOrMissingToInt(entry.value['position']),
-    );
-  }
+//     return product;
+//   }
 
-  static User snapshotToUser(DataSnapshot ds) {
-    User user = User(
-      id: ds.key,
-      email: ds.value['email'],
-      phone: ds.value['phone'],
-      profileImage: ds.value['profileImage'],
-      name: ds.value['name'],
-    );
-    if (ds.value['address'] != null) {
-      Map<dynamic, dynamic> address = ds.value['address'];
-      user.address = Address(
-        name: address['name'],
-        country: address['country'],
-        postalCode: address['postalCode'],
-        city: address['city'],
-        address: address['address'],
-      );
-    }
-    if (ds.value['orders'] != null) {
-      Map<dynamic, dynamic> orders = ds.value['orders'];
-      user.orders = Orders(
-        active: orders['active'],
-        history: orders['history'] != null ? List<String>.from(orders['history']) : null,
-        pending: orders['pending'] != null ? List<String>.from(orders['pending']) : null,
-      );
-    }
-    return user;
-  }
+//   static Variant snapshotToVariant(dynamic entry) {
+//     return Variant(
+//       id: entry.key,
+//       variantName: Map<String, String>.from(entry.value['variantName']),
+//       pack: Pack(
+//         size: stringOrMissingToDouble(entry.value['pack']['size']),
+//         unit: entry.value['pack']['unit'],
+//       ),
+//       price: stringOrMissingToDouble(entry.value['price']),
+//       position: stringOrMissingToInt(entry.value['position']),
+//     );
+//   }
 
-  static Cart snapshotToCart(DataSnapshot ds) {
-    return Cart.fromMap(ds.value);
-  }
+//   static User snapshotToUser(DataSnapshot ds) {
+//     User user = User(
+//       id: ds.key,
+//       email: ds.value['email'],
+//       phone: ds.value['phone'],
+//       profileImage: ds.value['profileImage'],
+//       name: ds.value['name'],
+//     );
+//     if (ds.value['address'] != null) {
+//       Map<dynamic, dynamic> address = ds.value['address'];
+//       user.address = Address(
+//         country: address['country'],
+//         postalCode: address['postalCode'],
+//         city: address['city'],
+//         address: address['address'],
+//       );
+//     }
+//     if (ds.value['orders'] != null) {
+//       Map<dynamic, dynamic> orders = ds.value['orders'];
+//       user.orders = Orders(
+//         active: orders['active'],
+//         history: orders['history'] != null ? List<String>.from(orders['history']) : null,
+//         pending: orders['pending'] != null ? List<String>.from(orders['pending']) : null,
+//       );
+//     }
+//     return user;
+//   }
 
-  static Order snapshotToOrder(Map<String, dynamic> snapshot) {
-    return Order.fromMap(snapshot);
-  }
+//   static Cart snapshotToCart(DataSnapshot ds) {
+//     return Cart.fromMap(ds.value);
+//   }
 
-  //
-  // Convert firebaseUser to AuthenticatedUser
-  static AuthenticatedUser firebaseUsertoAuthenticatedUser(FirebaseUser firebaseUser) {
-    if (firebaseUser != null) {
-      return AuthenticatedUser(
-          id: firebaseUser.uid,
-          displayName: firebaseUser.displayName,
-          email: firebaseUser.email,
-          photoUrl: firebaseUser.photoUrl);
-    }
-    return null;
-  }
+//   static Order snapshotToOrder(Map<String, dynamic> snapshot) {
+//     return Order.fromMap(snapshot);
+//   }
 
-  static User firebaseUserToUser(FirebaseUser firebaseUser, [String displayName]) {
-    return User.fromMap(firebaseUserToDBUser(firebaseUser, displayName));
-  }
+//   //
+//   // Convert firebaseUser to AuthenticatedUser
+//   static AuthenticatedUser firebaseUsertoAuthenticatedUser(FirebaseUser firebaseUser) {
+//     if (firebaseUser != null) {
+//       return AuthenticatedUser(
+//           id: firebaseUser.uid,
+//           displayName: firebaseUser.displayName,
+//           email: firebaseUser.email,
+//           photoUrl: firebaseUser.photoUrl);
+//     }
+//     return null;
+//   }
 
-  static Map firebaseUserToDBUser(FirebaseUser firebaseUser, String displayName) {
-    return {
-      'name': displayName != null ? displayName : firebaseUser.displayName,
-      'email': firebaseUser.email,
-      'profileImage': firebaseUser.photoUrl,
-      'phone': firebaseUser.phoneNumber,
-      'address': {
-        'address': '-',
-        'city': '-',
-        'country': '-',
-        'name': '-',
-        'postalCode': '-',
-        'location': {'lat': 0.0, 'lng': 0.0}
-      }
-    };
-  }
-}
+//   static User firebaseUserToUser(FirebaseUser firebaseUser, [String displayName]) {
+//     return User.fromMap(firebaseUserToDBUser(firebaseUser, displayName));
+//   }
 
-extension UserToMapFormat on User {
-  ///
-  /// Convert User model to it's MAP representation
-  Map toMap() {
-    return {
-      'name': this.name,
-      'email': this.email,
-      'phone': this.phone,
-      'address': {'address': '-', 'city': '-', 'country': '-', 'name': '-', 'postalCode': '-'}
-    };
-  }
-}
+//   static Map firebaseUserToDBUser(FirebaseUser firebaseUser, String displayName) {
+//     return {
+//       'name': displayName != null ? displayName : firebaseUser.displayName,
+//       'email': firebaseUser.email,
+//       'profileImage': firebaseUser.photoUrl,
+//       'phone': firebaseUser.phoneNumber,
+//       'address': {
+//         'address': '-',
+//         'city': '-',
+//         'country': '-',
+//         'name': '-',
+//         'postalCode': '-',
+//         'location': {'lat': 0.0, 'lng': 0.0}
+//       }
+//     };
+//   }
+// }
+
+// extension UserToMapFormat on User {
+//   ///
+//   /// Convert User model to it's MAP representation
+//   Map toMap() {
+//     return {
+//       'name': this.name,
+//       'email': this.email,
+//       'phone': this.phone,
+//       'address': {'address': '-', 'city': '-', 'country': '-', 'name': '-', 'postalCode': '-'}
+//     };
+//   }
+// }

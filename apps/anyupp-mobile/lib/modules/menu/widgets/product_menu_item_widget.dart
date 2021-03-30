@@ -1,8 +1,8 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:fa_prev/shared/nav.dart';
 // Representing each sandwich in menu list (Menu page)
 class ProductMenuItem extends StatelessWidget {
   final GeoUnit unit;
-  final Product item;
+  final GeneratedProduct item;
   final String heroPrefix;
 
   ProductMenuItem({Key key, this.item, this.heroPrefix, this.unit}) : super(key: key);
@@ -22,7 +22,7 @@ class ProductMenuItem extends StatelessWidget {
   }
 }
 
-Widget buildProductItem(BuildContext context, GeoUnit unit, Product item, String heroPrefix, ThemeChainData theme) {
+Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;
@@ -151,7 +151,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, Product item, String
   );
 }
 
-Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<Variant> variants, String currency) {
+Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
   if (variants == null) {
     return Container();
   }

@@ -14,7 +14,7 @@ import 'package:fa_prev/shared/nav.dart';
 class SimplePayScreen extends StatefulWidget {
   final String url;
   final bool backEnabled = false;
-  // final ChromeSafariBrowser browser = new MyChromeSafariBrowser(new MyInAppBrowser());
+  // final ChromeSafariBrowser browser = MyChromeSafariBrowser(MyInAppBrowser());
 
   SimplePayScreen({Key key, this.url}) : super(key: key);
 

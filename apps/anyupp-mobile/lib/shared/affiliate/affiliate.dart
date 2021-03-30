@@ -6,4 +6,5 @@ export 'utils/affiliate_utils.dart';
 export 'repository/affiliate_repository.dart';
 export 'providers/affiliate_firebase_provider.dart';
 export 'providers/affiliate_provider_interface.dart';
+export 'providers/affiliate_aws_provider.dart';
 export 'widgets/affiliate_card_widget.dart';

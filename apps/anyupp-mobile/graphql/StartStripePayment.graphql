@@ -1,3 +1,0 @@
-mutation StartStripePayment($chainId: ID!, $unitId: ID!, $userId: ID!) {
-  startStripePayment(chainId: $chainId, unitId: $unitId, userId: $userId)
-}

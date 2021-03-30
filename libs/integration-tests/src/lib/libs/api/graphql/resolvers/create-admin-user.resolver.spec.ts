@@ -9,8 +9,8 @@ import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
-import { CreateAdminUser, DeleteAdminUser } from '@bgap/api/graphql/schema';
 import { ApolloQueryResult } from 'apollo-client';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
 Amplify.configure({
   ...awsConfig,
@@ -38,7 +38,7 @@ describe('Admin user creation/deletion', () => {
       .pipe(
         switchMap(() =>
           appsyncApiClient
-            .mutate(DeleteAdminUser, {
+            .mutate(AppsyncApi.DeleteAdminUser, {
               userName,
             })
             .pipe(
@@ -50,31 +50,19 @@ describe('Admin user creation/deletion', () => {
         ),
         switchMap(() =>
           appsyncApiClient
-            .mutate(CreateAdminUser, {
-              input: { email: 'foobar' },
+            .mutate(AppsyncApi.CreateAdminUser, {
+              input: { email: 'foobar', name: 'Mekk elek', phone: '12356666' },
             })
             .pipe(
               catchError(err => {
                 expect(err).toMatchSnapshot('Malformed email error');
-                return of({});
+                return of(err);
               }),
             ),
         ),
         switchMap(() =>
-          appsyncApiClient
-            .mutate(CreateAdminUser, {
-              input: {},
-            })
-            .pipe(
-              catchError(err => {
-                expect(err).toMatchSnapshot('Missing email error');
-                return of({});
-              }),
-            ),
-        ),
-        switchMap(() =>
-          appsyncApiClient.mutate(CreateAdminUser, {
-            input: { email: userName },
+          appsyncApiClient.mutate(AppsyncApi.CreateAdminUser, {
+            input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
         x =>
@@ -84,8 +72,8 @@ describe('Admin user creation/deletion', () => {
         map(result => result.data.createAdminUser),
         switchMap(() =>
           appsyncApiClient
-            .mutate(CreateAdminUser, {
-              input: { email: userName },
+            .mutate(AppsyncApi.CreateAdminUser, {
+              input: { email: userName, name: 'Mekk Elek', phone: '123456' },
             })
             .pipe(
               catchError(err => {
@@ -96,7 +84,7 @@ describe('Admin user creation/deletion', () => {
         ),
         // Cleanup
         switchMap(() =>
-          appsyncApiClient.mutate(DeleteAdminUser, {
+          appsyncApiClient.mutate(AppsyncApi.DeleteAdminUser, {
             userName,
           }),
         ),

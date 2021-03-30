@@ -1,7 +1,7 @@
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 
 abstract class IFavoritesProvider {
-  Stream<List<Product>> getFavoritesList(String chainId, String unitId);
+  Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId);
 
   Future<bool> addOrRemoveFavoriteProduct(String chainId, String unitId, String categoryId, String productId);
 

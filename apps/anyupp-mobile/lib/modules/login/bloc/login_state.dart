@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 
 abstract class LoginState extends Equatable {
@@ -22,7 +21,8 @@ class LoggedOut extends LoginState {
 }
 
 class NeedAccountLinking extends LoginState {
-  final AuthCredential newProviderCredentials;
+  // TODO AWS remove
+  final dynamic newProviderCredentials;
   final List<LoginMethod> existingProviderList;
 
   const NeedAccountLinking(this.newProviderCredentials, this.existingProviderList);

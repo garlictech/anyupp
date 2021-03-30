@@ -1,14 +1,12 @@
 import 'dart:math';
-import 'package:fa_prev/shared/face.dart';
-
 import 'package:fa_prev/shared/affiliate.dart';
 
 class AffiliateUtils {
   static Random _random = Random();
 
   static Future<Advertisement> getAdvertisementByProfile(List<Advertisement> ads) async {
-    String gender = await FacePreferences.getGender();
-    String age = await FacePreferences.getAge();
+    String gender; // TODO = await FacePreferences.getGender();
+    String age; // TODO = await FacePreferences.getAge();
     // print('**** getAdvertisementByProfile().gender=$gender, age=$age');
     return getAdvertisement(ads, gender, age);
   }
@@ -26,7 +24,7 @@ class AffiliateUtils {
       }
     }
 
-    if (matchedAds.length == 0) {
+    if (matchedAds.isEmpty) {
       // TODO mi legyen akkor, ha nincs reklám? Most random visszaadunkvalamit
       int index = _random.nextInt(ads.length);
       return ads[index];
@@ -40,7 +38,7 @@ class AffiliateUtils {
 
   static bool _matchTag(List<AdTag> tags, String attribute, String value) {
     // print('_matchTag=$value with $attribute=$value');
-    if (tags == null || tags.length == 0 || value == null || attribute == null) {
+    if (tags == null || tags.isEmpty || value == null || attribute == null) {
       return true;
     }
 

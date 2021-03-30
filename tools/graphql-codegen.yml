@@ -2,7 +2,7 @@ overwrite: true
 schema: libs/api/graphql/schema/src/schema/appsync/*.graphql
 documents: libs/api/graphql/schema/src/documents/*.graphql
 generates:
-  libs/api/graphql/schema/src/lib/appsync-api.ts:
+  libs/api/graphql/schema/src/lib/generated/appsync-api.ts:
     hooks:
       afterOneFileWrite:
         - prettier --write

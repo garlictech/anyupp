@@ -15,24 +15,24 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
 
-  final AuthRepository _authService = getIt<AuthRepository>();
+  final AuthRepository _authRepository = getIt<AuthRepository>();
 
   @override
   Widget build(BuildContext context) {
+    print('***** OnBoarding().build()');
     return NetworkConnectionWrapperWidget(
-      // child: LoginScreen(),
       child: StreamBuilder<String>(
-        stream: _authService
-            .getAuthenticatedUser()
-            .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
-            .delay(Duration(seconds: 2)),
+        stream: _authRepository
+            .getAuthenticatedUserProfileStream()
+            .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED"),
+            //.delay(Duration(seconds: 2)),
         builder: (context, snapshot) {
           print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');
           if (snapshot.hasData) {
             if (snapshot.data == 'AUTHENTICATED') {
 
-              if (_authService.nextPageAfterLogin != null) {
-                return _authService.nextPageAfterLogin;
+              if (_authRepository.nextPageAfterLogin != null) {
+                return _authRepository.nextPageAfterLogin;
               }
 
               return SelectUnitChooseMethodScreen();

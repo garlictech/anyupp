@@ -501,3 +501,54 @@ The generator will collect the new resolver's name
 
 Generate amplify GQL models - this script moves the models folder into the lib folder
 `yarn codegen:models`
+
+
+### Amplify - Mobile
+Configure mobile app. 
+You need to upload some keys to the secretmanager and some paramaters to the parameter store.
+
+### Mobile app parameters
+Parameters that are required in the parameter store for the mobile app are the followings: 
+  `'{STAGE}-{APPNAME}-region',`  - Server region, eg eu-west-1
+  `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
+  `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
+  `'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
+  `'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
+  `'{STAGE}-{APPNAME}-GraphqlApiUrl',` - GraphQL API http endpoint (start with https://)
+  `'{STAGE}-{APPNAME}-GraphqlWebsocketApiUrl',` - GraphQL realtime websocket endpoint (start with: wss://)
+  `'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API
+  `'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
+  `'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
+
+### Mobile app secrets
+You MUST upload the keystore files to sign in the Application with release keys! Open the secret manager with the environment (eg. `anyupp-dev-secrets`) and add the following values to the JSON map:
+`androidKeyStore` - Base64 encoded value of the Android publish key, the file extension is JKS and must be convert to base64 string (and paste this base64 string here)
+`androidKeyProperties` - Base64 encoded value of the properties of the keystore, need by the Android sign in mechanism
+
+#### Convert files to base64 string
+You must convert the JKS and property files to base64, and put these values into the secretmanager.
+
+To convert a file to it's base64 representation use the following command on linux/unix:
+`openssl base64 -in anyupp-dev.jks -out anyupp-dev.base64`  - it converts the anyupp-dev.jks binary file to base64 string: you should paste the base64 value to the secretmanager
+
+#### Format of the `androidKeyProperties` file
+The property file which are contains the JKS key secret parameters (password, key alias, etc) is looks like this:
+`key.properties`
+```
+storePassword=4GtWdaksd
+keyAlias=AnyUpp
+keyPassword=dsjhg324SG
+```
+
+You must convert it to base64 format and paste it to the secretmanager `anyupp-dev-secrets` environment's `androidKeyProperties` value.
+`openssl base64 -in key.properties -out key.base64`
+
+You must configure the mobile app environment, before you build the app (Android, ios).
+To do this, run the following command:
+`nx config shared-config --app=anyupp-backend --stage=dev`
+
+Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a", "arm64-v8a"
+`nx buildApk anyupp-mobile`
+
+Build IOS app
+`nx buildIos anyupp-mobile`

@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final List<PlacedOrder> orders;
+  final List<Order> orders;
   final bool backButtonPop;
 
   const PaymentScreen({Key key, this.orders, this.backButtonPop = false}) : super(key: key);
@@ -68,7 +69,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget _buildList(List<PlacedOrder> list) {
+  Widget _buildList(List<Order> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,

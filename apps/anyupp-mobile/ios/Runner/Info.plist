@@ -29,6 +29,12 @@
 				<string>fb166876958090898</string>
 			</array>
 		</dict>
+    <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>anyupp</string>
+        </array>
+    </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>

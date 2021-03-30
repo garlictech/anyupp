@@ -7,11 +7,6 @@ import localeDe from '@angular/common/locales/de';
 import localeEnGb from '@angular/common/locales/en-GB';
 import localeHu from '@angular/common/locales/hu';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +26,6 @@ import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
-import { firebaseConfig } from '@bgap/shared/config';
 import {
   NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
 } from '@nebular/theme';
@@ -59,14 +53,6 @@ const NB_MODULES = [
   }),
   AdminUiCoreModule.forRoot(),
   AdminUiThemeModule,
-];
-
-const FIREBASE_MODULES = [
-  AngularFireModule.initializeApp(firebaseConfig),
-  AngularFireAuthModule,
-  AngularFireDatabaseModule,
-  AngularFireStorageModule,
-  AngularFireFunctionsModule,
 ];
 
 export const FEATURE_STORES = [
@@ -121,7 +107,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       },
     ),
     ...NB_MODULES,
-    ...FIREBASE_MODULES,
     ...FEATURE_STORES,
     !environment.production
       ? StoreDevtoolsModule.instrument({
@@ -134,7 +119,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       serverLogLevel: NgxLoggerLevel.ERROR,
     }),
   ],
-  providers: [AmplifyService, { provide: REGION, useValue: 'europe-west3' }],
+  providers: [AmplifyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

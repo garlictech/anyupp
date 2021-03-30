@@ -33,7 +33,12 @@ class AffiliateCardWidget extends StatelessWidget {
               },
               child: _buildCardContent(context, state.product, state.display),
             );
+          } else if (state is NoAffiliateAd) {
+            return Center(
+              child: Text('No advertisements'),
+            );
           }
+
           return CenterLoadingWidget();
         }),
       ),

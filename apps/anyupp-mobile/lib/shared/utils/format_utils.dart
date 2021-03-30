@@ -20,7 +20,7 @@ String ellapsedTimeToStringDescription(DateTime date) {
 
 String formatCurrency(dynamic number, String currency) {
   // if (languageCode == null) {
-  //   languageCode = new Locale('en_US').languageCode;
+  //   languageCode = Locale('en_US').languageCode;
   // }
   return getNumberFormatter(currency).format(number);
 }
@@ -28,12 +28,12 @@ String formatCurrency(dynamic number, String currency) {
 NumberFormat getNumberFormatter(String currency) {
   switch (currency.toLowerCase()) {
     case 'eur':
-      return new NumberFormat.currency(locale: 'en_US', symbol: '€', decimalDigits: 2); // €1,000.11
+      return NumberFormat.currency(locale: 'en_US', symbol: '€', decimalDigits: 2); // €1,000.11
     case 'usd':
-      return new NumberFormat.currency(locale: 'en_US', symbol: '\$', decimalDigits: 2); // $1,000.11
+      return NumberFormat.currency(locale: 'en_US', symbol: '\$', decimalDigits: 2); // $1,000.11
     case 'huf':
-      return new NumberFormat.currency(locale: 'hu_HU', symbol: 'Ft', decimalDigits: 0); // 1 000,11 Ft
+      return NumberFormat.currency(locale: 'hu_HU', symbol: 'Ft', decimalDigits: 0); // 1 000,11 Ft
     default:
-      return new NumberFormat.currency(locale: 'en_US', symbol: currency, decimalDigits: 2);
+      return NumberFormat.currency(locale: 'en_US', symbol: currency, decimalDigits: 2);
   }
 }

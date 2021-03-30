@@ -3,7 +3,7 @@ import 'package:stripe_sdk/src/models/card.dart';
 
 abstract class IStripePaymentProvider {
 
-  Future<List<GetCustomerStripeCards$Query$StripeCard>> getPaymentMethods();
+  Future<List<StripeCard>> getPaymentMethods();
 
   Future<String> startStripePaymentWithExistingCard(String chainId, String unitId, String userId, String paymentMethodId);
 

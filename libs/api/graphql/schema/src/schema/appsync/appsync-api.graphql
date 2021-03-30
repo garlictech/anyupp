@@ -1,8 +1,9 @@
 ### AdminUser
 
 input CreateAdminUserInput {
-  email: String
-  phone: String
+  email: String!
+  phone: String!
+  name: String!
 }
 
 ### Order

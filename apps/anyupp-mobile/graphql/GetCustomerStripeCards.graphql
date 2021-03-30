@@ -1,9 +1,0 @@
-query GetCustomerStripeCards($customerId: ID) {
-  getCustomerStripeCards(customerId: $customerId) {
-    id,
-    brand,
-    last4,
-    exp_month,
-    exp_year
-  }
-}

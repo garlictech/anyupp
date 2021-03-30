@@ -22,7 +22,7 @@ class AppLocalizations {
     String data = await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
 
     // Parse data
-    _translations = new Map();
+    _translations = Map();
     dotNotate(json.decode(data), _translations, '');
 
     // Init IntlLib
@@ -56,7 +56,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    AppLocalizations localizations = new AppLocalizations();
+    AppLocalizations localizations = AppLocalizations();
     await AppLocalizations.load(locale);
 
     return localizations;

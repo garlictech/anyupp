@@ -52,7 +52,7 @@ export const createAdminUser = (vars: CreateAdminUserMutationVariables) => {
     filter(fp.negate(fp.isEmpty)),
     map((adminUserId: string) => ({
       id: adminUserId,
-      name: 'TEMP NAME TO UPDATE',
+      name: vars.input.name,
     })),
     switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(

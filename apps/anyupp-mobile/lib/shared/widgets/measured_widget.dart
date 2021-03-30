@@ -35,7 +35,7 @@ class _MeasuredWidgetState extends State<MeasuredWidget> {
   void _postFrameCallback(_) {
     var context = widgetKey.currentContext;
     RenderObject ro = context.findRenderObject();
-    if (ro is RenderBox) {
+    if (ro is RenderBox && !ro.debugNeedsLayout) {
       Size newSize = context.size;
       if (newSize == Size.zero) return;
       if (oldSize == newSize) return;
