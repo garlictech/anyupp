@@ -43,10 +43,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config api-graphql-schema`,
               ],
             },
             build: {
               commands: [
+                `yarn nx build-schema admin-amplify-app --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin`,

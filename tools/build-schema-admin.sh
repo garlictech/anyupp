@@ -10,5 +10,6 @@ APPID=$(amplify env get --name ${STAGE} --json | \
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")\
 
 cp ../../libs/api/graphql/schema/src/schema/admin-api.graphql amplify/backend/api/$APINAME/schema.graphql
+amplify api gql-compile
 amplify codegen
 

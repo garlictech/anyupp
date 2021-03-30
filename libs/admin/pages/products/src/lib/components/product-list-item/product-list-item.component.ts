@@ -1,6 +1,7 @@
 import * as fp from 'lodash/fp';
 
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -13,7 +14,7 @@ import {
   EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
-  IAdminUserRole,
+  IAdminUser,
   IProduct,
   IProductVariant,
 } from '@bgap/shared/types';
@@ -26,6 +27,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-list-item',
   templateUrl: './product-list-item.component.html',
   styleUrls: ['./product-list-item.component.scss'],
@@ -51,24 +53,23 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store
-      .pipe(
-        select(loggedUserSelectors.getLoggedUserRoles),
-        untilDestroyed(this),
-      )
-      .subscribe((adminUserRole: IAdminUserRole | undefined): void => {
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((adminUser: IAdminUser | undefined): void => {
+        this.hasRoleToEdit = true;
+
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -76,7 +77,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(adminUserRole?.role || EAdminRole.INACTIVE);
+            ].includes(adminUser?.role || EAdminRole.INACTIVE);
             break;
           default:
             break;

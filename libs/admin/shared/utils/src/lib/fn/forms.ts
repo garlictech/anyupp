@@ -17,13 +17,13 @@ export const contactFormGroup = () => ({
   phone: [''],
 });
 
-export const addressFormGroup = (formBuilder: FormBuilder) => ({
+export const addressFormGroup = (formBuilder: FormBuilder, required = false) => ({
   address: formBuilder.group({
-    address: [''],
-    city: [''],
-    country: [''],
+    address: ['', required ? [Validators.required] : []],
+    city: ['', required ? [Validators.required] : []],
+    country: ['', required ? [Validators.required] : []],
     title: [''],
-    postalCode: [''],
+    postalCode: ['', required ? [Validators.required] : []],
     location: formBuilder.group({
       lat: [''],
       lng: [''],
@@ -92,7 +92,7 @@ export const unitOpeningHoursValidator: ValidatorFn = (
   let error = null;
 
   Object.keys(control.value).forEach((d: string): void => {
-    if (d === 'override') {
+    if (d === 'custom') {
       control.value[d].forEach((day: ICustomDailySchedule): void => {
         if (day.date && day.from && day.to && day.from >= day.to) {
           error = { timeInterval: true };

@@ -105,8 +105,9 @@ type Query {
 }
 
 input CreateAdminUserInput {
-  email: String
-  phone: String
+  email: String!
+  phone: String!
+  name: String!
 }
 
 type Mutation {

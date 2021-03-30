@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 export const init = createAction('[AdminUsers Page] Init');
 
 export const upsertAdminUser = createAction(
-  '[AdminUsers] Upsert AdminUser',
+  '[AdminUsers] Upsert admin user',
   props<{ adminUser: IAdminUser }>(),
 );
 

@@ -44,7 +44,7 @@ const menuItems = {
   },
   chains: {
     title: 'menu.chains',
-    icon: 'shield-outline',
+    icon: 'flag-outline',
     link: '/admin/chains',
     roles: MENU_ROLES.CHAINS,
   },
@@ -59,6 +59,12 @@ const menuItems = {
     icon: 'person-outline',
     link: '/admin/admins',
     roles: MENU_ROLES.ADMINS,
+  },
+  roleContexts: {
+    title: 'menu.roleContexts',
+    icon: 'shield-outline',
+    link: '/admin/role-contexts',
+    roles: MENU_ROLES.ROLE_CONTEXTS,
   },
 };
 
@@ -92,16 +98,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (
+          /*if ( TODO use roleContext check
             menuItem.roles.includes(
               this.adminUser?.roles?.role || EAdminRole.INACTIVE,
             )
-          ) {
+          ) {*/
             this.menu.push({
               ...menuItem,
               title: this._translateService.instant(menuItem.title),
             });
-          }
+          // }
         });
       });
   }

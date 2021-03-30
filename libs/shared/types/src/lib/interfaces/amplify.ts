@@ -7,9 +7,6 @@ export interface IAmplifyApiConfig extends Record<string, unknown> {
 }
 
 export interface IAmplifyModel {
-  // _deleted?: number;
-  // _lastChangedAt?: number;
-  // _version?: number;
   createdAt?: number;
   updatedAt?: number;
 }

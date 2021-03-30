@@ -7,8 +7,6 @@ import { IChain } from '@bgap/shared/types';
 export const CHAINS_FEATURE_KEY = 'chains';
 
 export interface IChainsState extends EntityState<IChain> {
-  selectedId?: string | number; // which Chains record has been selected
-  loaded: boolean; // has the Chains list been loaded
   error?: string | null; // last known error (if any)
 }
 
@@ -20,14 +18,11 @@ export const chainsAdapter: EntityAdapter<IChain> = createEntityAdapter<
   IChain
 >();
 
-export const initialState: IChainsState = chainsAdapter.getInitialState({
-  // set initial required properties
-  loaded: false,
-});
+export const initialState: IChainsState = chainsAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
-  on(ChainsActions.init, state => ({ ...state, loaded: false, error: null })),
+  on(ChainsActions.init, state => ({ ...state, error: null })),
   on(ChainsActions.upsertChain, (state, { chain }) =>
     chainsAdapter.upsertOne(chain, state),
   ),

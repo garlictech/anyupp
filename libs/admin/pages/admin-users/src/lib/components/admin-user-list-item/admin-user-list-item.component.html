@@ -1,7 +1,6 @@
 <nb-user
-  class="float-left role-border {{ adminUser.roles?.role?.toLowerCase() }}"
+  class="float-left role-border {{ adminUser.role?.toLowerCase() }}"
   [name]="adminUser.name || ''"
-  [title]="adminUser.email || ''"
   [picture]="(adminUser.profileImage || '' | awsStoragePath | async) || ''"
 ></nb-user>
 
@@ -42,7 +41,7 @@
 
 <div class="pl-5">
   <div class="subtitle-2">
-    {{ 'roles.' + adminUser?.roles?.role! | translate }}
+    {{ 'roles.' + adminUser?.role | translate }}
   </div>
-  <div class="caption" [innerHTML]="adminUser?.roles! | roleEntityNames"></div>
+  <!-- TODO div class="caption" [innerHTML]="adminUser?.roles! | roleEntityNames"></div-->
 </div>

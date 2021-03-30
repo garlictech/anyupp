@@ -68,17 +68,8 @@ export const seedAdminUser = (UserPoolId: string) =>
           Value: username,
         },
         {
-          Name: 'name',
-          Value: 'Test Elek',
-        },
-        {
           Name: 'phone_number',
           Value: '+123456789012',
-        },
-        {
-          Name: 'picture',
-          Value:
-            'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
         },
       ],
     },
@@ -116,6 +107,9 @@ export const seedAdminUser = (UserPoolId: string) =>
     filter(fp.negate(fp.isEmpty)),
     map((adminUserId: string) => ({
       id: adminUserId,
+      name: 'John Doe',
+      profileImage:
+        'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
     switchMap((input: CreateAdminUserInput) =>
       pipe(

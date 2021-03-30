@@ -35,7 +35,7 @@ export interface IProductVariant {
   price?: number; // generated
   availabilities: IAvailability[]; // unit edit
   availableFrom: Date;
-  position: string;
+  position: number;
 }
 
 export interface IProduct {
@@ -50,7 +50,7 @@ export interface IProduct {
   image: string | null;
   productCategoryId: string;
   isVisible: boolean; // temp
-  position: string;
+  position: number;
   variants: IProductVariant[];
   tax: string; // %
   laneId?: string;
@@ -62,7 +62,7 @@ export interface IGeneratedProduct {
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
   image: string;
-  position: string;
+  position: number;
   productType: EProductType;
   tax: string;
   variants: IProductVariant[];
