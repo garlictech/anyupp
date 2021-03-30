@@ -43,37 +43,11 @@
               "zen-observable",
               "graphql-tag"
             ],
-            "scripts": [],
-            "fileReplacements": [
-              {
-                "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/config.json",
-                "with": "./libs/shared/config/src/lib/dev/config.json"
-              }
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/production/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
@@ -120,18 +94,6 @@
                 }
               ],
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/qa/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
@@ -1469,12 +1431,12 @@
             ]
           }
         },
-        "build": {
+        "build-schema": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
-            "commands": ["sh ../../tools/build-amplify-admin.sh {args.stage}"]
+            "commands": ["sh ../../tools/build-schema-admin.sh {args.stage}"]
           }
         },
         "deploy": {
@@ -1518,6 +1480,50 @@
           "outputs": ["coverage/libs/admin/amplify-api"],
           "options": {
             "jestConfig": "libs/admin/amplify-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data-access-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/role-contexts",
+      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/pages/role-contexts",
+      "sourceRoot": "libs/admin/pages/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/pages/role-contexts/jest.config.js",
             "passWithNoTests": true
           }
         }

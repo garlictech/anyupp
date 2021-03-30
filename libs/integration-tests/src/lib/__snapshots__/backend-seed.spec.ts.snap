@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Testing backend seed state Test user must be present and we can log in 1`] = `
-Object {
-  "Enabled": true,
-  "UserStatus": "CONFIRMED",
-  "Username": "test@test.com",
-}
-`;

@@ -1,3 +1,6 @@
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -12,30 +15,25 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '@bgap/admin/shared/config';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
 import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
-import { environment } from '@bgap/admin/shared/config';
 import { AdminSharedDashboardModule } from '@bgap/admin/shared/data-access/dashboard';
-import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
 import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
 import { AdminSharedOrdersModule } from '@bgap/admin/shared/data-access/orders';
 import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/data-access/product-categories';
 import { AdminSharedProductsModule } from '@bgap/admin/shared/data-access/products';
+import { AdminSharedRoleContextsModule } from '@bgap/admin/shared/data-access/role-contexts';
 import { AdminSharedUnitsModule } from '@bgap/admin/shared/data-access/units';
 import { AdminSharedUsersModule } from '@bgap/admin/shared/data-access/users';
+import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
-import { FIREBASE_CONFIG } from '@bgap/shared/config';
+import { firebaseConfig } from '@bgap/shared/config';
 import {
-  NbDialogModule,
-  NbGlobalPhysicalPosition,
-  NbLayoutModule,
-  NbMenuModule,
-  NbSidebarModule,
-  NbThemeModule,
-  NbToastrModule,
+  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -44,8 +42,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -66,11 +62,26 @@ const NB_MODULES = [
 ];
 
 const FIREBASE_MODULES = [
-  AngularFireModule.initializeApp(FIREBASE_CONFIG),
+  AngularFireModule.initializeApp(firebaseConfig),
   AngularFireAuthModule,
   AngularFireDatabaseModule,
   AngularFireStorageModule,
   AngularFireFunctionsModule,
+];
+
+export const FEATURE_STORES = [
+  AdminSharedAdminUsersModule,
+  AdminSharedChainsModule,
+  AdminSharedDashboardModule,
+  AdminSharedFloorMapModule,
+  AdminSharedGroupsModule,
+  AdminSharedLoggedUserModule,
+  AdminSharedOrdersModule,
+  AdminSharedProductCategoriesModule,
+  AdminSharedProductsModule,
+  AdminSharedUnitsModule,
+  AdminSharedUsersModule,
+  AdminSharedRoleContextsModule,
 ];
 
 registerLocaleData(localeDe);
@@ -99,8 +110,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         deps: [HttpClient],
       },
     }),
-    ...NB_MODULES,
-    ...FIREBASE_MODULES,
     StoreModule.forRoot(
       {},
       {
@@ -111,6 +120,9 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         },
       },
     ),
+    ...NB_MODULES,
+    ...FIREBASE_MODULES,
+    ...FEATURE_STORES,
     !environment.production
       ? StoreDevtoolsModule.instrument({
           maxAge: 25,
@@ -121,18 +133,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR,
     }),
-    // Store modules
-    AdminSharedAdminUsersModule,
-    AdminSharedChainsModule,
-    AdminSharedDashboardModule,
-    AdminSharedFloorMapModule,
-    AdminSharedGroupsModule,
-    AdminSharedLoggedUserModule,
-    AdminSharedOrdersModule,
-    AdminSharedProductCategoriesModule,
-    AdminSharedProductsModule,
-    AdminSharedUnitsModule,
-    AdminSharedUsersModule,
   ],
   providers: [AmplifyService, { provide: REGION, useValue: 'europe-west3' }],
   bootstrap: [AppComponent],

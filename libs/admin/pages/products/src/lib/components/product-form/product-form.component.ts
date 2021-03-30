@@ -1,8 +1,14 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -24,9 +30,11 @@ import {
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
   templateUrl: './product-form.component.html',
 })
@@ -36,7 +44,7 @@ export class ProductFormComponent
   public eImageType = EImageType;
   public product!: IProduct;
   public productLevel!: EProductLevel;
-  public productCategories: IKeyValue[] = [];
+  public productCategories$: Observable<IKeyValue[]>;
   public productTypes: IKeyValue[];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,19 +90,18 @@ export class ProductFormComponent
           userSettings?.selectedProductCategoryId || '';
       });
 
-    this._store
-      .pipe(
-        select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this),
-      )
-      .subscribe((productCategories: IProductCategory[]): void => {
-        this.productCategories = productCategories.map(
+    this.productCategories$ = this._store.pipe(
+      select(productCategoriesSelectors.getAllProductCategories),
+      map((productCategories: IProductCategory[]) =>
+        productCategories.map(
           (productCategory): IKeyValue => ({
             key: productCategory.id,
             value: productCategory.name,
           }),
-        );
-      });
+        ),
+      ),
+      untilDestroyed(this),
+    );
   }
 
   get productImage(): string {
@@ -121,8 +128,7 @@ export class ProductFormComponent
       ),
       productCategoryId: ['', [Validators.required]],
       productType: ['', [Validators.required]],
-      isVisible: [''],
-      position: [''],
+      isVisible: ['', [Validators.required]],
       image: [''],
       variants: this._formBuilder.array([]),
     });
@@ -174,7 +180,6 @@ export class ProductFormComponent
         }
       } else {
         try {
-          console.error('insert chain product', value);
           await this._amplifyDataService.create('createChainProduct', value);
 
           this._toasterService.show(

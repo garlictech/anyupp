@@ -1,11 +1,11 @@
 ---
 name: Feature request
-about:
-  Use this template to help streamline the information you collect from stakeholders
+about: Use this template to help streamline the information you collect from stakeholders
   who submit requests, enhancements, or product improvements.
 title: ''
 labels: ''
 assignees: ''
+
 ---
 
 ## Describe the ideal solution or feature request
@@ -27,3 +27,7 @@ Describe whether this request is related to an existing workflow, feature, or ot
 Add more on who asked for this, ie. company, person, how much they pay us, what their tier is, are they a strategic account, etc.
 
 ## Test descriptions
+
+### Integration test location (file name, etc.)
+
+### QA tests

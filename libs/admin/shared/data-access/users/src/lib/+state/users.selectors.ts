@@ -10,11 +10,6 @@ export const getUsersState = createFeatureSelector<IUsersState>(
 
 const { selectAll, selectEntities } = usersAdapter.getSelectors();
 
-export const getUsersLoaded = createSelector(
-  getUsersState,
-  (state: IUsersState) => state.loaded,
-);
-
 export const getUsersError = createSelector(
   getUsersState,
   (state: IUsersState) => state.error,
@@ -27,17 +22,6 @@ export const getAllUsers = createSelector(getUsersState, (state: IUsersState) =>
 export const getUsersEntities = createSelector(
   getUsersState,
   (state: IUsersState) => selectEntities(state),
-);
-
-export const getSelectedId = createSelector(
-  getUsersState,
-  (state: IUsersState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getUsersEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
 );
 
 export const getUserById = (id: string) => {

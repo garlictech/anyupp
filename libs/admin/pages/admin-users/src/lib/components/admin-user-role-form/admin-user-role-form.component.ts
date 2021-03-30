@@ -2,8 +2,8 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
-import { IAdminUser, IAdminUserRole } from '@bgap/shared/types';
+import { clearDbProperties } from '@bgap/admin/shared/utils';
+import { IAdminUser } from '@bgap/shared/types';
 
 @Component({
   selector: 'bgap-admin-user-role-form',
@@ -24,7 +24,7 @@ export class AdminUserRoleFormComponent
 
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
-      roles: this._formBuilder.group({
+      roleContext: this._formBuilder.group({
         role: ['', [Validators.required]],
         entities: [[]],
       }),
@@ -34,6 +34,7 @@ export class AdminUserRoleFormComponent
   }
 
   public async submit(): Promise<void> {
+    /*
     if (this.dialogForm?.valid) {
       try {
         await this._amplifyDataService.update<IAdminUserRole>(
@@ -53,5 +54,6 @@ export class AdminUserRoleFormComponent
         console.error('there was an error sending the query', error);
       }
     }
+    */
   }
 }

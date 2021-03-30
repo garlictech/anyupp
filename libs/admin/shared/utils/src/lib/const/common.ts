@@ -52,6 +52,12 @@ export const MENU_ROLES = {
     EAdminRole.GROUP_ADMIN,
     EAdminRole.UNIT_ADMIN,
   ],
+  ROLE_CONTEXTS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+    EAdminRole.UNIT_ADMIN,
+  ],
 };
 
 export const PAYMENT_MODES: IPaymentMode[] = [

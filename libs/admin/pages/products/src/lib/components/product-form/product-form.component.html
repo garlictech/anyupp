@@ -78,7 +78,7 @@
           <bgap-form-select
             [control]="dialogForm.get('productCategoryId')! | asFormControl"
             caption="common.productCategory"
-            [options]="productCategories"
+            [options]="(productCategories$ | async) || []"
             [localize]="true"
           >
           </bgap-form-select>
