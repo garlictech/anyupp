@@ -47,6 +47,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
             build: {
               commands: [
+                `yarn nx build-schema admin-amplify-app --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin`,

@@ -194,7 +194,7 @@ some samples, see the build targets belonging to the examples in the
 
 ### Build the amplify app
 
-`nx build amplify-admin-api`
+`nx config-schema amplify-admin-api --stage dev`
 
 The command builds the _current_ configured app / stage.
 
