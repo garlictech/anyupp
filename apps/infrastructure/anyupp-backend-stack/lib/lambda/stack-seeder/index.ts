@@ -70,7 +70,7 @@ export const seedAdminUser = (UserPoolId: string) =>
         {
           Name: 'phone_number',
           Value: '+123456789012',
-        }
+        },
       ],
     },
     params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),

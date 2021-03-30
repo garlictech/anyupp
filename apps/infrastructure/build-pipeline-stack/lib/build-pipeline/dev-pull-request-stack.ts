@@ -43,6 +43,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config api-graphql-schema`,
               ],
             },
             build: {

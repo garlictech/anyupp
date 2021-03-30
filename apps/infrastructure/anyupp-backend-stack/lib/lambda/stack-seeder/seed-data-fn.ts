@@ -117,7 +117,7 @@ export const createTestUnit = (
             city: 'Budapest',
             country: 'Magyarország',
             title: 'HQ',
-            postalCode: '1021'
+            postalCode: '1021',
           },
           description: {
             hu: `Teszt unit #${unitIdx} leírás`,
