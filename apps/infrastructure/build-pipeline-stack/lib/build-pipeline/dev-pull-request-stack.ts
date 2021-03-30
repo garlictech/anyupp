@@ -48,6 +48,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
             build: {
               commands: [
+                `docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -m 4g -v "$PWD":/project matspfeiffer/flutter analyze`,
                 `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
