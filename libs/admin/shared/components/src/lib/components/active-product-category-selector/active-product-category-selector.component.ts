@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
@@ -10,6 +10,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-active-product-category-selector',
   templateUrl: './active-product-category-selector.component.html',
   styleUrls: ['./active-product-category-selector.component.scss'],

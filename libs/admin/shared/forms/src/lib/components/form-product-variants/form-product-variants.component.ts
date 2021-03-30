@@ -41,7 +41,7 @@ export class FormProductVariantsComponent {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
       arr.forEach((variant: IProductVariant, pos: number): void => {
-        variant.position = (pos + 1).toString();
+        variant.position = pos + 1;
       });
 
       arr.sort(customNumberCompare('position'));

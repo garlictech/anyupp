@@ -6,7 +6,7 @@ export interface IProductCategory {
   description: ILocalizedItem<string>;
   image: string | null;
   name: ILocalizedItem<string>;
-  position: string;
+  position: number;
 }
 
 export interface IProductCategoryOrderChangeEvent {

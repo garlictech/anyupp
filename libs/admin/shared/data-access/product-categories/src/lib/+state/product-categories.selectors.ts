@@ -13,11 +13,6 @@ export const getProductCategoriesState = createFeatureSelector<
 
 const { selectAll, selectEntities } = productCategoriesAdapter.getSelectors();
 
-export const getProductCategoriesLoaded = createSelector(
-  getProductCategoriesState,
-  (state: IProductCategoriesState) => state.loaded,
-);
-
 export const getProductCategoriesError = createSelector(
   getProductCategoriesState,
   (state: IProductCategoriesState) => state.error,
@@ -33,13 +28,3 @@ export const getProductCategoriesEntities = createSelector(
   (state: IProductCategoriesState) => selectEntities(state),
 );
 
-export const getSelectedId = createSelector(
-  getProductCategoriesState,
-  (state: IProductCategoriesState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getProductCategoriesEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
-);

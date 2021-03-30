@@ -14,8 +14,6 @@ import * as OrdersActions from './orders.actions';
 export const ORDERS_FEATURE_KEY = 'orders';
 
 export interface IOrderEntityState extends EntityState<IOrder> {
-  selectedId?: string | number; // which Orders record has been selected
-  loaded: boolean; // has the Orders list been loaded
   error?: string | null; // last known error (if any)
 }
 
@@ -37,10 +35,7 @@ export const activeOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
 >();
 
 export const initialActiveOrdersState: IOrderEntityState = activeOrdersAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const activeOrdersReducer = createReducer(
@@ -66,10 +61,7 @@ export const historyOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
 >();
 
 export const initialHistoryOrdersState: IOrderEntityState = historyOrdersAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
+  {},
 );
 
 const historyOrdersReducer = createReducer(

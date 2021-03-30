@@ -1,7 +1,7 @@
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -16,6 +16,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
@@ -23,7 +24,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts: IProduct[] = [];
+  public chainProducts$: Observable<IProduct[]>;
   public groupProducts$: Observable<IProduct[]>;
   public pendingGroupProducts: IProduct[] = [];
   public pendingUnitProducts: IProduct[] = [];
@@ -47,6 +48,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
       untilDestroyed(this),
     );
+
+    this.chainProducts$ = this._store
+      .pipe(
+        select(productsSelectors.getChainProductsOfSelectedCategory()),
+        map((products): IProduct[] =>
+          products.sort(customNumberCompare('position')),
+        ),
+        untilDestroyed(this),
+      );
   }
 
   get selectedChainId(): string | null | undefined {
@@ -66,17 +76,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._store
-      .pipe(
-        select(productsSelectors.getChainProductsOfSelectedCategory()),
-        map((products): IProduct[] =>
-          products.sort(customNumberCompare('position')),
-        ),
-        untilDestroyed(this),
-      )
-      .subscribe((chainProducts: IProduct[]): void => {
-        this.chainProducts = chainProducts;
-      });
+
 
     this._store
       .pipe(
@@ -118,7 +118,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             EAdminRole.SUPERUSER,
             EAdminRole.CHAIN_ADMIN,
             EAdminRole.GROUP_ADMIN,
-          ].includes(<EAdminRole>adminUser?.roles?.role)
+          ].includes(<EAdminRole>adminUser?.role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -183,7 +183,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             productId,
             (data: unknown) => ({
               ...(<IProduct>data),
-              position: (i + 1).toString(),
+              position: (i + 1),
             }),
           );
         }

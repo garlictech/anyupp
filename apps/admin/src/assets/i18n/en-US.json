@@ -81,7 +81,8 @@
     "groups": "Groups",
     "chains": "Chains",
     "users": "Users",
-    "admins": "Admins"
+    "admins": "Admins",
+    "roleContexts": "Role contexts"
   },
   "header": {
     "profile": "Profile",
@@ -218,6 +219,12 @@
     "editAdminUser": "Edit admin user",
     "newAdminUser": "New admin user",
     "editAdminUserRole": "Edit admin user role"
+  },
+  "roleContexts": {
+    "listTitle": "Role contexts",
+    "editRoleContext": "Edit role context",
+    "newRoleContext": "New role context",
+    "contextId": "Context ID"
   },
   "orders": {
     "listTitle": "Orders",
