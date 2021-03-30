@@ -1,37 +1,17 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the ProductCategory type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class ProductCategory extends Model {
-  static const classType = const ProductCategoryType();
   final String id;
   final String unitId;
   final LocalizedItem name;
   final LocalizedItem description;
   final String image;
   final int position;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -138,60 +118,4 @@ class ProductCategory extends Model {
         'image': image,
         'position': position
       };
-
-  static final QueryField ID = QueryField(fieldName: "productCategory.id");
-  static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField NAME = QueryField(
-      fieldName: "name",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (LocalizedItem).toString()));
-  static final QueryField DESCRIPTION = QueryField(
-      fieldName: "description",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (LocalizedItem).toString()));
-  static final QueryField IMAGE = QueryField(fieldName: "image");
-  static final QueryField POSITION = QueryField(fieldName: "position");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "ProductCategory";
-    modelSchemaDefinition.pluralName = "ProductCategories";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductCategory.UNITID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ProductCategory.NAME,
-        isRequired: false,
-        targetName: "productCategoryNameId",
-        ofModelName: (LocalizedItem).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ProductCategory.DESCRIPTION,
-        isRequired: false,
-        targetName: "productCategoryDescriptionId",
-        ofModelName: (LocalizedItem).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductCategory.IMAGE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductCategory.POSITION,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-  });
-}
-
-class ProductCategoryType extends ModelType<ProductCategory> {
-  const ProductCategoryType();
-
-  @override
-  ProductCategory fromJson(Map<String, dynamic> jsonData) {
-    return ProductCategory.fromJson(jsonData);
-  }
 }

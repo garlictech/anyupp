@@ -1,29 +1,12 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:collection/collection.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the GeoUnit type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class GeoUnit extends Model {
-  static const classType = const GeoUnitType();
   final String id;
   final String groupId;
   final String chainId;
@@ -35,9 +18,6 @@ class GeoUnit extends Model {
   final String openingHours;
   final String currency;
   final Place place;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -194,98 +174,4 @@ class GeoUnit extends Model {
         'currency': currency,
         'place': place?.toJson()
       };
-
-  static final QueryField ID = QueryField(fieldName: "geoUnit.id");
-  static final QueryField GROUPID = QueryField(fieldName: "groupId");
-  static final QueryField CHAINID = QueryField(fieldName: "chainId");
-  static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField ADDRESS = QueryField(
-      fieldName: "address",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Address).toString()));
-  static final QueryField STYLE = QueryField(
-      fieldName: "style",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ChainStyle).toString()));
-  static final QueryField PAYMENTMODES = QueryField(
-      fieldName: "paymentModes",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (PaymentMode).toString()));
-  static final QueryField DISTANCE = QueryField(fieldName: "distance");
-  static final QueryField OPENINGHOURS = QueryField(fieldName: "openingHours");
-  static final QueryField CURRENCY = QueryField(fieldName: "currency");
-  static final QueryField PLACE = QueryField(
-      fieldName: "place",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Place).toString()));
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "GeoUnit";
-    modelSchemaDefinition.pluralName = "GeoUnits";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.GROUPID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.CHAINID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.NAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: GeoUnit.ADDRESS,
-        isRequired: false,
-        targetName: "geoUnitAddressId",
-        ofModelName: (Address).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: GeoUnit.STYLE,
-        isRequired: false,
-        targetName: "geoUnitStyleId",
-        ofModelName: (ChainStyle).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: GeoUnit.PAYMENTMODES,
-        isRequired: true,
-        ofModelName: (PaymentMode).toString(),
-        associatedKey: PaymentMode.GEOUNITPAYMENTMODESID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.DISTANCE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.OPENINGHOURS,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeoUnit.CURRENCY,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: GeoUnit.PLACE,
-        isRequired: false,
-        targetName: "geoUnitPlaceId",
-        ofModelName: (Place).toString()));
-  });
-}
-
-class GeoUnitType extends ModelType<GeoUnit> {
-  const GeoUnitType();
-
-  @override
-  GeoUnit fromJson(Map<String, dynamic> jsonData) {
-    return GeoUnit.fromJson(jsonData);
-  }
 }

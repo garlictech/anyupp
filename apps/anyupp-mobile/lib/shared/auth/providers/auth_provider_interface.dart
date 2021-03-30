@@ -1,3 +1,4 @@
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
 
 abstract class IAuthProvider {
@@ -5,6 +6,6 @@ abstract class IAuthProvider {
   Future<User> getAuthenticatedUserProfile();
   // Stream<AuthenticatedUser> get authenticatedUser;
   Future<void> cancel();
-  Future<String> getAccessToken();
-  Future<String> getIdToken();
+  Future<CognitoAccessToken> getAccessToken();
+  Future<CognitoIdToken> getIdToken();
 }

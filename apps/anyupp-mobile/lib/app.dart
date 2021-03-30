@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -16,12 +12,10 @@ import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 
 import 'core/dependency_indjection/dependency_injection.dart';
-import 'core/exception/exception.dart';
 import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
@@ -30,48 +24,19 @@ import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
-//import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:amplify_core/amplify_core.dart';
-//import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
-import 'amplifyconfiguration.dart';
-
-// extension on AmplifyClass {
-//   bool hasConfiguredAuth() => AuthCategory.plugins.isNotEmpty;
+// void runApp() {
+//   runZoned(() async {
+//     await initDependencyInjection();
+//     // WidgetsFlutterBinding.ensureInitialized();
+//     configureCatcherAndRunZonedApp(MyApp());
+//     // runApp(MyApp());
+//   }, onError: (error, stackTrace) {
+//     Catcher.reportCheckedError(error, stackTrace);
+//   });
 // }
 
-void runAppByStage({String stage = 'dev'}) {
-  runZoned(() async {
-    print('main().stage=$stage');
-    await DotEnv().load('env/.env.$stage');
-    await _initAmplify();
-    await initDependencyInjection();
-    // WidgetsFlutterBinding.ensureInitialized();
-    configureCatcherAndRunZonedApp(MyApp());
-    // runApp(MyApp());
-  }, onError: (error, stackTrace) {
-    Catcher.reportCheckedError(error, stackTrace);
-  });
-}
-
-
-  Future<void> _initAmplify() async {
-    print('_initAmplify().start()');
-    try {
-      await Amplify.addPlugins([
-        AmplifyAuthCognito(),
-        // AmplifyDataStore(modelProvider: ModelProvider.instance),
-        AmplifyAPI(),
-      ]);
-      await Amplify.configure(amplifyconfig);
-      print('_initAmplify().Amplify initialized successfully...');
-    } on AmplifyAlreadyConfiguredException catch (e) {
-      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    } on Exception catch (e) {
-      print('_initAmplify().Error initializing Amplify: $e');
-    }
-  }
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -197,7 +162,6 @@ class _MyAppState extends State<MyApp> {
               BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
               BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
               BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
-              BlocProvider<FaceDetectionBloc>(create: (BuildContext context) => getIt<FaceDetectionBloc>()),
               BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
               BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
             ],

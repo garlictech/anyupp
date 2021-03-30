@@ -9,7 +9,6 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/affiliate.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -235,13 +234,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
-    if (index == 2) {
-      // Start Face detection
-      getIt<FaceDetectionBloc>().add(StartAgeAndGenderDetections(force: false));
-    } else {
-      // Stop Face detection
-      getIt<FaceDetectionBloc>().add(StopFaceRecognition());
-    }
     setState(() {
       _selectedIndex = index;
     });

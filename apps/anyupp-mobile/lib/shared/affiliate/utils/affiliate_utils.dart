@@ -1,14 +1,12 @@
 import 'dart:math';
-import 'package:fa_prev/shared/face.dart';
-
 import 'package:fa_prev/shared/affiliate.dart';
 
 class AffiliateUtils {
   static Random _random = Random();
 
   static Future<Advertisement> getAdvertisementByProfile(List<Advertisement> ads) async {
-    String gender = await FacePreferences.getGender();
-    String age = await FacePreferences.getAge();
+    String gender; // TODO = await FacePreferences.getGender();
+    String age; // TODO = await FacePreferences.getAge();
     // print('**** getAdvertisementByProfile().gender=$gender, age=$age');
     return getAdvertisement(ads, gender, age);
   }

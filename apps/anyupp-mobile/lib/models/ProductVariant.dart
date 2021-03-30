@@ -1,28 +1,11 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the ProductVariant type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class ProductVariant extends Model {
-  static const classType = const ProductVariantType();
   final String id;
   final LocalizedItem variantName;
   final ProductVariantPack pack;
@@ -30,9 +13,6 @@ class ProductVariant extends Model {
   final double price;
   final int position;
   final String generatedProductVariantsId;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -151,67 +131,4 @@ class ProductVariant extends Model {
         'position': position,
         'generatedProductVariantsId': generatedProductVariantsId
       };
-
-  static final QueryField ID = QueryField(fieldName: "productVariant.id");
-  static final QueryField VARIANTNAME = QueryField(
-      fieldName: "variantName",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (LocalizedItem).toString()));
-  static final QueryField PACK = QueryField(
-      fieldName: "pack",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ProductVariantPack).toString()));
-  static final QueryField ISAVAILABLE = QueryField(fieldName: "isAvailable");
-  static final QueryField PRICE = QueryField(fieldName: "price");
-  static final QueryField POSITION = QueryField(fieldName: "position");
-  static final QueryField GENERATEDPRODUCTVARIANTSID =
-      QueryField(fieldName: "generatedProductVariantsId");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "ProductVariant";
-    modelSchemaDefinition.pluralName = "ProductVariants";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ProductVariant.VARIANTNAME,
-        isRequired: false,
-        targetName: "productVariantVariantNameId",
-        ofModelName: (LocalizedItem).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ProductVariant.PACK,
-        isRequired: false,
-        targetName: "productVariantPackId",
-        ofModelName: (ProductVariantPack).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.ISAVAILABLE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.PRICE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.POSITION,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: ProductVariant.GENERATEDPRODUCTVARIANTSID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-  });
-}
-
-class ProductVariantType extends ModelType<ProductVariant> {
-  const ProductVariantType();
-
-  @override
-  ProductVariant fromJson(Map<String, dynamic> jsonData) {
-    return ProductVariant.fromJson(jsonData);
-  }
 }

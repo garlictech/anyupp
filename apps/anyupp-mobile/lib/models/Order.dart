@@ -1,29 +1,11 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:collection/collection.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the Order type in your schema. */
+import 'core/model_base.dart';
+
 @immutable
 class Order extends Model {
-  static const classType = const OrderType();
   final String id;
   final String userId;
   final String unitId;
@@ -37,9 +19,6 @@ class Order extends Model {
   final List<StatusLog> statusLog;
   final int created;
   final OrderStatus status;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -225,115 +204,4 @@ class Order extends Model {
         'created': created,
         'status': enumToString(status)
       };
-
-  static final QueryField ID = QueryField(fieldName: "order.id");
-  static final QueryField USERID = QueryField(fieldName: "userId");
-  static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField ITEMS = QueryField(
-      fieldName: "items",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (OrderItem).toString()));
-  static final QueryField PAYMENTMETHOD = QueryField(
-      fieldName: "paymentMethod",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (PaymentMode).toString()));
-  static final QueryField STAFFID = QueryField(fieldName: "staffId");
-  static final QueryField SUMPRICESHOWN = QueryField(
-      fieldName: "sumPriceShown",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (PriceShown).toString()));
-  static final QueryField TAKEAWAY = QueryField(fieldName: "takeAway");
-  static final QueryField PLACE = QueryField(
-      fieldName: "place",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Place).toString()));
-  static final QueryField PAYMENTINTENTION =
-      QueryField(fieldName: "paymentIntention");
-  static final QueryField STATUSLOG = QueryField(
-      fieldName: "statusLog",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (StatusLog).toString()));
-  static final QueryField CREATED = QueryField(fieldName: "created");
-  static final QueryField STATUS = QueryField(fieldName: "status");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Order";
-    modelSchemaDefinition.pluralName = "Orders";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.USERID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.UNITID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Order.ITEMS,
-        isRequired: false,
-        ofModelName: (OrderItem).toString(),
-        associatedKey: OrderItem.ORDERITEMSID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Order.PAYMENTMETHOD,
-        isRequired: false,
-        targetName: "orderPaymentMethodId",
-        ofModelName: (PaymentMode).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.STAFFID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Order.SUMPRICESHOWN,
-        isRequired: false,
-        targetName: "orderSumPriceShownId",
-        ofModelName: (PriceShown).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.TAKEAWAY,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: Order.PLACE,
-        isRequired: false,
-        targetName: "orderPlaceId",
-        ofModelName: (Place).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.PAYMENTINTENTION,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Order.STATUSLOG,
-        isRequired: false,
-        ofModelName: (StatusLog).toString(),
-        associatedKey: StatusLog.ORDERSTATUSLOGID));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.CREATED,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Order.STATUS,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
-  });
-}
-
-class OrderType extends ModelType<Order> {
-  const OrderType();
-
-  @override
-  Order fromJson(Map<String, dynamic> jsonData) {
-    return Order.fromJson(jsonData);
-  }
 }

@@ -1,34 +1,15 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:collection/collection.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the ChainStyle type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class ChainStyle extends Model {
-  static const classType = const ChainStyleType();
   final String id;
   final ChainStyleColors colors;
   final ChainStyleImages images;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -61,7 +42,7 @@ class ChainStyle extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("ChainStyle {");
     buffer.write("id=" + "$id" + ", ");
@@ -85,51 +66,13 @@ class ChainStyle extends Model {
       : id = json['id'],
         colors = json['colors'] != null
             ? ChainStyleColors.fromJson(
-                new Map<String, dynamic>.from(json['colors']))
+                Map<String, dynamic>.from(json['colors']))
             : null,
         images = json['images'] != null
             ? ChainStyleImages.fromJson(
-                new Map<String, dynamic>.from(json['images']))
+                Map<String, dynamic>.from(json['images']))
             : null;
 
   Map<String, dynamic> toJson() =>
       {'id': id, 'colors': colors?.toJson(), 'images': images?.toJson()};
-
-  static final QueryField ID = QueryField(fieldName: "chainStyle.id");
-  static final QueryField COLORS = QueryField(
-      fieldName: "colors",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ChainStyleColors).toString()));
-  static final QueryField IMAGES = QueryField(
-      fieldName: "images",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ChainStyleImages).toString()));
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "ChainStyle";
-    modelSchemaDefinition.pluralName = "ChainStyles";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ChainStyle.COLORS,
-        isRequired: false,
-        targetName: "chainStyleColorsId",
-        ofModelName: (ChainStyleColors).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: ChainStyle.IMAGES,
-        isRequired: false,
-        targetName: "chainStyleImagesId",
-        ofModelName: (ChainStyleImages).toString()));
-  });
-}
-
-class ChainStyleType extends ModelType<ChainStyle> {
-  const ChainStyleType();
-
-  @override
-  ChainStyle fromJson(Map<String, dynamic> jsonData) {
-    return ChainStyle.fromJson(jsonData);
-  }
 }

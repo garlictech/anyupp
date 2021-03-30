@@ -1,33 +1,14 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the Location type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class Location extends Model {
-  static const classType = const LocationType();
   final String id;
   final double lat;
   final double lng;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -81,34 +62,4 @@ class Location extends Model {
         lng = json['lng'];
 
   Map<String, dynamic> toJson() => {'id': id, 'lat': lat, 'lng': lng};
-
-  static final QueryField ID = QueryField(fieldName: "location.id");
-  static final QueryField LAT = QueryField(fieldName: "lat");
-  static final QueryField LNG = QueryField(fieldName: "lng");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Location";
-    modelSchemaDefinition.pluralName = "Locations";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Location.LAT,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Location.LNG,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
-  });
-}
-
-class LocationType extends ModelType<Location> {
-  const LocationType();
-
-  @override
-  Location fromJson(Map<String, dynamic> jsonData) {
-    return Location.fromJson(jsonData);
-  }
 }

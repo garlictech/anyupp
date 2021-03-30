@@ -1,35 +1,16 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the PaymentMode type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class PaymentMode extends Model {
-  static const classType = const PaymentModeType();
   final String id;
   final String name;
   final String caption;
   final String method;
   final String geoUnitPaymentModesId;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -119,47 +100,4 @@ class PaymentMode extends Model {
         'method': method,
         'geoUnitPaymentModesId': geoUnitPaymentModesId
       };
-
-  static final QueryField ID = QueryField(fieldName: "paymentMode.id");
-  static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField CAPTION = QueryField(fieldName: "caption");
-  static final QueryField METHOD = QueryField(fieldName: "method");
-  static final QueryField GEOUNITPAYMENTMODESID =
-      QueryField(fieldName: "geoUnitPaymentModesId");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "PaymentMode";
-    modelSchemaDefinition.pluralName = "PaymentModes";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.NAME,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.CAPTION,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.METHOD,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: PaymentMode.GEOUNITPAYMENTMODESID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-  });
-}
-
-class PaymentModeType extends ModelType<PaymentMode> {
-  const PaymentModeType();
-
-  @override
-  PaymentMode fromJson(Map<String, dynamic> jsonData) {
-    return PaymentMode.fromJson(jsonData);
-  }
 }

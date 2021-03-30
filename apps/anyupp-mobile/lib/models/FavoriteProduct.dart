@@ -1,35 +1,15 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the FavoriteProduct type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class FavoriteProduct extends Model {
-  static const classType = const FavoriteProductType();
   final String id;
   final String userId;
   final String unitId;
   final GeneratedProduct product;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -109,44 +89,4 @@ class FavoriteProduct extends Model {
         'unitId': unitId,
         'product': product?.toJson()
       };
-
-  static final QueryField ID = QueryField(fieldName: "favoriteProduct.id");
-  static final QueryField USERID = QueryField(fieldName: "userId");
-  static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField PRODUCT = QueryField(
-      fieldName: "product",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (GeneratedProduct).toString()));
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "FavoriteProduct";
-    modelSchemaDefinition.pluralName = "FavoriteProducts";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FavoriteProduct.USERID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FavoriteProduct.UNITID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: FavoriteProduct.PRODUCT,
-        isRequired: false,
-        targetName: "favoriteProductProductId",
-        ofModelName: (GeneratedProduct).toString()));
-  });
-}
-
-class FavoriteProductType extends ModelType<FavoriteProduct> {
-  const FavoriteProductType();
-
-  @override
-  FavoriteProduct fromJson(Map<String, dynamic> jsonData) {
-    return FavoriteProduct.fromJson(jsonData);
-  }
 }

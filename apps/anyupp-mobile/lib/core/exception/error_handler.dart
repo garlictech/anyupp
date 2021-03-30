@@ -1,14 +1,12 @@
-// Catcher configuration https://pub.dev/packages/catcher
-
 import 'package:catcher/catcher.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void configureCatcherAndRunZonedApp(Widget mainApp) {
-  final customParameters = {'stage': DotEnv().env['stage']};
+  final customParameters = {'stage': 'anyupp'};
 
   final slackHandler = SlackHandler(
-      DotEnv().env['SLACK_ERROR_WEBHOOK_URL'], '#' + DotEnv().env['SLACK_ERROR_CHANNEL_NAME'],
+     awsConfig['SlackErrorWebhookUrl'], '#' + awsConfig['SlackErrorChannel'],
       username: "ErrorCatcher",
       iconEmoji: ":bug:",
       enableDeviceParameters: true,

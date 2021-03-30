@@ -1,4 +1,3 @@
-import 'package:amplify_api/amplify_api.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';

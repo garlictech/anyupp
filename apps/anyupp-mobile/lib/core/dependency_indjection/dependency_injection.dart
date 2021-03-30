@@ -1,6 +1,8 @@
+import 'dart:convert';
+
+import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/graphql/graphql_client.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -10,14 +12,12 @@ import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/face.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -26,7 +26,7 @@ import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
 GetIt getIt = GetIt.instance;
-DotEnv dotEnv = DotEnv();
+Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 Future<void> initDependencyInjection() async {
   _initCommon();
@@ -37,21 +37,22 @@ Future<void> initDependencyInjection() async {
 }
 
 void _initCommon() {
-  // ValueNotifier<GraphQLClient> graphQLClient = getGraphQLClient(
-  //     url: dotEnv.env['graphql-url'],
-  //     websocketUrl: dotEnv.env['graphql-ws-url'],
-  //     apiKey: dotEnv.env['graphql-api-key']);
+
+  
+  print('AWS CONFIG=$awsConfig');
+
   final Stripe stripe = Stripe(
-    dotEnv.env['stripe_pulblishable_key'],
-    // stripeAccount: dotEnv.env['stripe_merchant_id'],
-    returnUrlForSca: dotEnv.env['stripe_return_url_for_sca'],
+    awsConfig['stripePublishableKey'],
+    returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
-  // final CognitoUserPool userPool = CognitoUserPool(
-  //   dotEnv.env['cognito-userpool-id'],
-  //   dotEnv.env['cognito-client-id']
-  // );
-  // getIt.registerLazySingleton<CognitoUserPool>(() => userPool);
+  final CognitoService cognitoService = CognitoService(
+    region: awsConfig['region'],
+    userPoolId: awsConfig['consumerUserPoolId'],
+    identityPoolId: awsConfig['IdentityPoolId'],
+    clientId: awsConfig['consumerNativeUserPoolClientId'],
+  );
+  getIt.registerLazySingleton<CognitoService>(() => cognitoService);
 
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
@@ -61,7 +62,7 @@ void _initCommon() {
 
 void _initProviders() {
   // Providers
-  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider());
+  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
   getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
         getIt<IAuthProvider>(),
@@ -103,7 +104,6 @@ void _initRepositories() {
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
-  getIt.registerLazySingleton<FaceRepository>(() => FaceRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
 
@@ -112,9 +112,9 @@ void _initRepositories() {
 void _initServices() {
    getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
     authProvider: getIt<IAuthProvider>(),
-        apiUrl: dotEnv.env['graphql-url'],
-        websocketApiUrl: dotEnv.env['graphql-ws-url'],
-        apiKey: dotEnv.env['graphql-api-key'],
+        apiUrl: awsConfig['GraphqlApiUrl'],
+        websocketApiUrl: awsConfig['GraphqlWebsocketApiUrl'],
+        apiKey: awsConfig['GraphqlApiKey'],
       ));
 }
 
@@ -131,7 +131,6 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => SimplePayBloc(getIt<SimplePayRepository>()));
   getIt.registerLazySingleton(() => ThemeBloc(getIt<UnitSelectBloc>()));
   getIt.registerLazySingleton(() => CartBloc(getIt<CartRepository>()));
-  getIt.registerLazySingleton(() => FaceDetectionBloc(getIt<FaceRepository>()));
   getIt.registerLazySingleton(() => NetworkStatusBloc());
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));

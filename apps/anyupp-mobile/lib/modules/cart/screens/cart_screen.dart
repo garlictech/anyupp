@@ -6,7 +6,6 @@ import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +29,7 @@ class CartScreen extends StatelessWidget {
         centerTitle: false,
         elevation: 0.0,
         // Only dev and qa builds are show the table and seat in the top right corner
-        title: (DotEnv().env['stage'] == 'dev' || DotEnv().env['stage'] == 'qa')
+        title: (true)
             ? FutureBuilder<Place>(
                 future: getPlacePref(),
                 builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {

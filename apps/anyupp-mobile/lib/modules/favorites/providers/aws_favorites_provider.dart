@@ -1,13 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql-queries.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -106,9 +101,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       print('***** getFavoritesList().favorites=$favorites');
       _favoritesController.add(favorites);
       return favorites;
-    } on ApiException catch (e) {
-      print('AwsFavoritesProvider.getFavoritesList.ApiException: $e');
-      rethrow;
     } on Exception catch (e) {
       print('AwsFavoritesProvider.getFavoritesList.Exception: $e');
       rethrow;
@@ -145,9 +137,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       // return response.errors?.isEmpty ?? true;
 
       return result?.exception == null ? true : false;
-    } on ApiException catch (e) {
-      print('AwsFavoritesProvider._deleteFavoriteProduct.ApiException: $e');
-      rethrow;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._deleteFavoriteProduct.Exception: $e');
       rethrow;
@@ -189,9 +178,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       // Map<String, dynamic> json = jsonDecode(data);
       // print('_addFavoriteProduct().response=$json');
       // return response.errors?.isEmpty ?? true;
-    } on ApiException catch (e) {
-      print('AwsFavoritesProvider._addFavoriteProduct.ApiException: $e');
-      rethrow;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
       rethrow;

@@ -1,29 +1,12 @@
-/*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
-
-// ignore_for_file: public_member_api_docs
-
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:collection/collection.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
-/** This is an auto generated class representing the GeneratedProduct type in your schema. */
+import 'core/model_base.dart';
+
+
 @immutable
 class GeneratedProduct extends Model {
-  static const classType = const GeneratedProductType();
   final String id;
   final String unitId;
   final String productCategoryId;
@@ -34,9 +17,6 @@ class GeneratedProduct extends Model {
   final int position;
   final String image;
   final List<ProductVariant> variants;
-
-  @override
-  getInstanceType() => classType;
 
   @override
   String getId() {
@@ -183,89 +163,4 @@ class GeneratedProduct extends Model {
         'image': image,
         'variants': variants?.map((e) => e?.toJson())?.toList()
       };
-
-  static final QueryField ID = QueryField(fieldName: "generatedProduct.id");
-  static final QueryField UNITID = QueryField(fieldName: "unitId");
-  static final QueryField PRODUCTCATEGORYID =
-      QueryField(fieldName: "productCategoryId");
-  static final QueryField NAME = QueryField(
-      fieldName: "name",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (LocalizedItem).toString()));
-  static final QueryField DESCRIPTION = QueryField(
-      fieldName: "description",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (LocalizedItem).toString()));
-  static final QueryField PRODUCTTYPE = QueryField(fieldName: "productType");
-  static final QueryField TAX = QueryField(fieldName: "tax");
-  static final QueryField POSITION = QueryField(fieldName: "position");
-  static final QueryField IMAGE = QueryField(fieldName: "image");
-  static final QueryField VARIANTS = QueryField(
-      fieldName: "variants",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ProductVariant).toString()));
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "GeneratedProduct";
-    modelSchemaDefinition.pluralName = "GeneratedProducts";
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.UNITID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.PRODUCTCATEGORYID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: GeneratedProduct.NAME,
-        isRequired: false,
-        targetName: "generatedProductNameId",
-        ofModelName: (LocalizedItem).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-        key: GeneratedProduct.DESCRIPTION,
-        isRequired: false,
-        targetName: "generatedProductDescriptionId",
-        ofModelName: (LocalizedItem).toString()));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.PRODUCTTYPE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.TAX,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.POSITION,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: GeneratedProduct.IMAGE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: GeneratedProduct.VARIANTS,
-        isRequired: true,
-        ofModelName: (ProductVariant).toString(),
-        associatedKey: ProductVariant.GENERATEDPRODUCTVARIANTSID));
-  });
-}
-
-class GeneratedProductType extends ModelType<GeneratedProduct> {
-  const GeneratedProductType();
-
-  @override
-  GeneratedProduct fromJson(Map<String, dynamic> jsonData) {
-    return GeneratedProduct.fromJson(jsonData);
-  }
 }

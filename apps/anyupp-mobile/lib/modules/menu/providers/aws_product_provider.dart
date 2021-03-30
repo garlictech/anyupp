@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
-import 'package:amplify_api/amplify_api.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +35,7 @@ class AwsProductProvider implements IProductProvider {
       }
 
       yield results;
-    } on ApiException catch (e) {
+    } on Exception catch (e) {
       print('AwsUnitProvider.getProductCategoryList.Exception: $e');
       rethrow;
     }
@@ -64,7 +63,7 @@ class AwsProductProvider implements IProductProvider {
       }
 
       yield results;
-    } on ApiException catch (e) {
+    } on Exception catch (e) {
       print('AwsUnitProvider.getProductList.Exception: $e');
       rethrow;
     }

@@ -1,5 +1,5 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
@@ -10,6 +10,7 @@ import 'email_login_provider_interface.dart';
 
 class AwsEmailLoginProvider implements IEmailLoginProvider {
   final AwsAuthProvider _authProvider;
+  final CognitoService _service = getIt<CognitoService>();
 
   AwsEmailLoginProvider(this._authProvider);
 
@@ -24,12 +25,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password) async {
     try {
-      SignInResult signInResult = await Amplify.Auth.signInWithWebUI();
-      // SignInResult signInResult = await Amplify.Auth.signIn(
-      //   username: email,
-      //   password: password,
-      // );
-      if (signInResult.isSignedIn) {
+      CognitoUser user = _service.createCognitoUser(email);
+      CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
+
+      if (session.isValid()) {
         User user = await _authProvider.getAuthenticatedUserProfile();
         return ProviderLoginResponse(
           credential: null,
@@ -38,9 +37,39 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       }
 
       throw LoginException(code: LoginException.INVALID_CREDENTIALS, message: 'Invalid credentials');
-    } on AuthException catch (e) {
-      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
-    } on Exception catch (e) {
+    } on CognitoUserNewPasswordRequiredException catch (e) {
+      // handle New Password challenge
+      print('loginWithEmailAndPassword.CognitoUserNewPasswordRequiredException=$e');
+      rethrow;
+    } on CognitoUserMfaRequiredException catch (e) {
+      // handle SMS_MFA challenge
+      print('loginWithEmailAndPassword.CognitoUserMfaRequiredException=$e');
+      rethrow;
+    } on CognitoUserSelectMfaTypeException catch (e) {
+      // handle SELECT_MFA_TYPE challenge
+      print('loginWithEmailAndPassword.CognitoUserSelectMfaTypeException=$e');
+      rethrow;
+    } on CognitoUserMfaSetupException catch (e) {
+      // handle MFA_SETUP challenge
+      print('loginWithEmailAndPassword.CognitoUserMfaSetupException=$e');
+      rethrow;
+    } on CognitoUserTotpRequiredException catch (e) {
+      // handle SOFTWARE_TOKEN_MFA challenge
+      print('loginWithEmailAndPassword.CognitoUserTotpRequiredException=$e');
+      rethrow;
+    } on CognitoUserCustomChallengeException catch (e) {
+      // handle CUSTOM_CHALLENGE challenge
+      print('loginWithEmailAndPassword.CognitoUserCustomChallengeException=$e');
+      rethrow;
+    } on CognitoUserConfirmationNecessaryException catch (e) {
+      // handle User Confirmation Necessary
+      print('loginWithEmailAndPassword.CognitoUserConfirmationNecessaryException=$e');
+      rethrow;
+    } on CognitoClientException catch (e) {
+      // handle Wrong Username and Password and Cognito Client
+      print('loginWithEmailAndPassword.CognitoClientException=$e');
+      rethrow;
+    } catch (e) {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
   }
