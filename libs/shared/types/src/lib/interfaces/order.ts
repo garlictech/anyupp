@@ -1,5 +1,6 @@
 import { EOrderStatus, EPaymentMethod } from '../enums';
 import { ILocalizedItem } from './localized-item';
+import { IPaymentMode } from './payment';
 
 export interface IPriceShown {
   currency: string;
@@ -52,16 +53,17 @@ export interface IOrders {
 
 export interface IOrder {
   id: string;
-  created: number;
+  userId: string;
+  unitId: string;
   items: IOrderItem[];
-  paymentMethod: EPaymentMethod;
-  staffId: string;
+  paymentMode: IPaymentMode;
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  userId: string;
   place: IPlace;
   paymentIntention?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IDateIntervals {

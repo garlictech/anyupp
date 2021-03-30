@@ -132,7 +132,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
     };
 
     orders.forEach(o => {
-      amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
+      amounts[o.paymentMode.method] += o.sumPriceShown.priceSum;
     });
 
     return amounts;
