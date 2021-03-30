@@ -6,8 +6,9 @@ import { contactSchema, IContact } from './contact';
 import { floorMapSchema, IFloorMapData } from './floor-map';
 import { IGroup } from './group';
 import { ILocalizedItem, localizedItemSchema } from './localized-item';
+import { IDateIntervals } from './order';
 import { IPaymentMode, paymentModeSchema } from './payment';
-import { IDailySchedule, IWeeklySchedule } from './weekly-schedule';
+import { IWeeklySchedule } from './weekly-schedule';
 
 export interface IUnitSeat {
   user: string; // ???
@@ -38,11 +39,11 @@ export interface IUnit extends IContact, IAddressInfo {
   id: string;
   groupId: string;
   chainId: string;
-  isActive?: boolean;
-  isAcceptingOrders?: boolean;
-  name?: string;
+  isActive: boolean;
+  isAcceptingOrders: boolean;
+  name: string;
   description?: ILocalizedItem<string>;
-  open?: IDailySchedule;
+  open?: IDateIntervals;
   openingHours?: IWeeklySchedule;
   lanes?: [ILane];
   floorMap?: IFloorMapData;

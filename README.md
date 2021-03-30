@@ -439,6 +439,12 @@ Visit [Nx Cloud](https://nx.app/) to learn more.
 
 TIP: use `--dry-run` to check your idea. It shows what will be generated without writing to disk.
 
+### Generate an Angular page with ngrx store
+
+`nx g @nrwl/angular:lib admin/pages/<pageName>` (page module)
+`ng g @nrwl/angular:lib admin/shared/data-access/<pageName>` (featureStore module)
+`nx g @nrwl/angular:ngrx <pageName> --module=libs/admin/shared/data-access/<pageName>/src/lib/admin-shared-data-access-<pageName>.module.ts --defaults`
+
 ### Generate a ??? (simple workspace lib)
 
 `nx g @nrwl/workspace:lib shared/config`

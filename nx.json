@@ -180,6 +180,12 @@
     },
     "admin-amplify-app": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
+    },
+    "admin-pages-role-contexts": {
+      "tags": ["scope:bgap", "type:website", "platform:angular"]
+    },
+    "admin-shared-data-access-role-contexts": {
+      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     }
   }
 }

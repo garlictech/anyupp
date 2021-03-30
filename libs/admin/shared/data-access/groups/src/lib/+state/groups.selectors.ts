@@ -15,11 +15,6 @@ export const getGroupsState = createFeatureSelector<IGroupsState>(
 
 const { selectAll, selectEntities } = groupsAdapter.getSelectors();
 
-export const getGroupsLoaded = createSelector(
-  getGroupsState,
-  (state: IGroupsState) => state.loaded,
-);
-
 export const getGroupsError = createSelector(
   getGroupsState,
   (state: IGroupsState) => state.error,
@@ -33,17 +28,6 @@ export const getAllGroups = createSelector(
 export const getGroupsEntities = createSelector(
   getGroupsState,
   (state: IGroupsState) => selectEntities(state),
-);
-
-export const getSelectedId = createSelector(
-  getGroupsState,
-  (state: IGroupsState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getGroupsEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
 );
 
 export const getGroupById = (id: string) => {

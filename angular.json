@@ -1507,6 +1507,50 @@
           }
         }
       }
+    },
+    "admin-shared-data-access-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/role-contexts",
+      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/pages/role-contexts",
+      "sourceRoot": "libs/admin/pages/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/pages/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

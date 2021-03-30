@@ -1,4 +1,4 @@
-export interface IDailySchedule {
+export interface IDateIntervalStr {
   from: string;
   to: string;
 }
@@ -10,12 +10,12 @@ export interface ICustomDailySchedule {
 }
 
 export interface IWeeklySchedule {
-  mon?: IDailySchedule;
-  tue?: IDailySchedule;
-  wed?: IDailySchedule;
-  thu?: IDailySchedule;
-  fri?: IDailySchedule;
-  sat?: IDailySchedule;
-  sun?: IDailySchedule;
-  override?: ICustomDailySchedule[];
+  mon?: IDateIntervalStr;
+  tue?: IDateIntervalStr;
+  wed?: IDateIntervalStr;
+  thu?: IDateIntervalStr;
+  fri?: IDateIntervalStr;
+  sat?: IDateIntervalStr;
+  sun?: IDateIntervalStr;
+  custom?: ICustomDailySchedule[];
 }

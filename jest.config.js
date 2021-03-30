@@ -58,5 +58,9 @@ module.exports = {
     '<rootDir>/libs/admin/amplify',
     '<rootDir>/libs/integration-tests',
     '<rootDir>/libs/shared/appsync-client',
+    '<rootDir>/libs/admin/pages/contexts',
+    '<rootDir>/libs/admin/shared/data-access/contexts',
+    '<rootDir>/libs/admin/shared/data-access/role-contexts',
+    '<rootDir>/libs/admin/pages/role-contexts',
   ],
 };

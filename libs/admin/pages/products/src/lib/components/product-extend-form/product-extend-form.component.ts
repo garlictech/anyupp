@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -30,6 +30,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-extend-form',
   templateUrl: './product-extend-form.component.html',
 })
@@ -104,7 +105,7 @@ export class ProductExtendFormComponent
     }
     if (this.productLevel === EProductLevel.UNIT) {
       this.dialogForm.addControl('laneId', new FormControl(''));
-      this.dialogForm.addControl('takeaway', new FormControl(''));
+      this.dialogForm.addControl('takeaway', new FormControl(false, Validators.required));
     }
 
     if (this.product) {
@@ -128,6 +129,10 @@ export class ProductExtendFormComponent
         });
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
+
+      if (this.productLevel === EProductLevel.UNIT) {
+        this.dialogForm.controls.takeaway.patchValue(false);
+      }
     }
   }
 
@@ -166,6 +171,7 @@ export class ProductExtendFormComponent
         value.groupId = this._selectedGroupId;
         if (this.productLevel === EProductLevel.UNIT) {
           value.unitId = this._selectedUnitId;
+          value.position = 0;
         }
 
         try {
