@@ -1,9 +1,7 @@
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
@@ -17,9 +15,8 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole,
-  EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory,
-  IRoleContext, IUnit
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct,
+  IProductCategory, IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -37,8 +34,6 @@ export class DataService {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _angularFireDatabase: AngularFireDatabase,
-    private _angularFireFunctions: AngularFireFunctions,
     private _amplifyDataService: AmplifyDataService,
     private _translateService: TranslateService,
   ) {}
@@ -488,14 +483,15 @@ export class DataService {
   }
 
   // TODO refactor
-  public regenerateUnitData(unitId: string): Promise<void> {
-    const callable = this._angularFireFunctions.httpsCallable(
+  public regenerateUnitData(unitId: string): Promise<unknown> {
+    /*const callable = this._angularFireFunctions.httpsCallable(
       `regenerateUnitData`,
     );
 
     return callable({
       unitId,
-    }).toPromise();
+    }).toPromise();*/
+    return of({unitId}).toPromise();
   }
 
   //
@@ -508,18 +504,22 @@ export class DataService {
     unitId: string,
     orderId: string,
   ): Observable<unknown> {
-    return this._angularFireDatabase
+    return of({chainId, unitId, orderId}); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .valueChanges()
-      .pipe(take(1));
+      .pipe(take(1));*/
   }
+
   // TODO refactor
   public insertOrderStatus(
     chainId: string,
     unitId: string,
     orderId: string,
     status: EOrderStatus,
-  ): Promise<void> {
+  ): Promise<unknown> {
+    return of({chainId, unitId, orderId, status}).toPromise();
+
+    /*
     const callable = this._angularFireFunctions.httpsCallable(
       `setNewOrderStatus`,
     );
@@ -530,18 +530,21 @@ export class DataService {
       orderId,
       status,
     }).toPromise();
+    */
   }
+
   // TODO refactor
   public updateOrderPaymentMode(
     chainId: string,
     unitId: string,
     orderId: string,
     value: IOrder | IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({chainId, unitId, orderId, value}).toPromise(); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .update(value);
+      .update(value);*/
   }
+
   // TODO refactor
   public insertOrderItemStatus(
     chainId: string,
@@ -549,12 +552,12 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
       )
-      .update(value);
+      .update(value);*/
   }
   // TODO refactor
   public updateOrderItemQuantityAndPrice(
@@ -563,12 +566,12 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
-      .update(value);
+      .update(value);*/
   }
   // TODO refactor
   public addOrderItem(
@@ -577,12 +580,12 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
-      .update(value);
+      .update(value);*/
   }
 
   //
