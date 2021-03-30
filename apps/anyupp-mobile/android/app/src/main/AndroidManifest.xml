@@ -76,7 +76,7 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="barcode,face" />
+        <!-- <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="barcode,face" /> -->
 
         <activity android:name="com.amazonaws.mobileconnectors.cognitoauth.activities.CustomTabsRedirectActivity">
           <intent-filter>
