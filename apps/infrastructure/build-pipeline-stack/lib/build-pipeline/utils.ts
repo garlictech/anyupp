@@ -84,9 +84,9 @@ export const createBuildProject = (
         },
         build: {
           commands: [
-            `yarn nx build-schema admin-amplify-app --stage=${stage}`,
-            `yarn nx build admin ${adminConfig}`,
-            `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${appConfig.name}`,
+            `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
+            `yarn nx build admin ${adminConfig} --skip-nx-cache`,
+            `yarn nx build infrastructure-anyupp-backend-stack --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
           ],
         },
         post_build: {
