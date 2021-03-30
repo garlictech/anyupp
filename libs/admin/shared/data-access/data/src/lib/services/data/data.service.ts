@@ -1,3 +1,6 @@
+import { Observable, of, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
@@ -12,17 +15,14 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole,
-  EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct, IProductCategory,
-  IRoleContext, IUnit
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct,
+  IProductCategory, IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { AmplifyDataService } from '../amplify-data/amplify-data.service';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+
 @Injectable({
   providedIn: 'root',
 })
