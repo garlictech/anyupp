@@ -73,7 +73,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
             variables: {
               NODE_OPTIONS:
                 '--unhandled-rejections=strict --max_old_space_size=8196',
-              PATH: '$PATH:/tmp/flutter/bin',
             },
           },
         }),
