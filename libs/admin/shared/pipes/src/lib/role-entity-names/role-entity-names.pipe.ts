@@ -1,44 +1,47 @@
+import { IChain, IGroup, IRoleContext, IUnit } from 'libs/shared/types/src';
+import { take } from 'rxjs/operators';
+
 import { Pipe, PipeTransform } from '@angular/core';
+import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { select, Store } from '@ngrx/store';
 
 @Pipe({
   name: 'roleEntityNames',
 })
 export class RoleEntityNamesPipe implements PipeTransform {
-  transform(): unknown {
-    /*
-    const entityPaths: string[] = [];
+  constructor(private _store: Store<any>) {}
 
-    Object.values(roles?.entities || {}).forEach((entity): void => {
-      const entitiesArr: string[] = [];
+  transform(roleContext: IRoleContext): unknown {
+    const entitiesArr: string[] = [];
 
-      if (entity.chainId) {
-        this._store
-          .pipe(select(chainsSelectors.getChainById(entity.chainId), take(1)))
-          .subscribe((chain: IChain | undefined): void => {
-            entitiesArr.push(chain?.name || '');
-          });
-      }
-      if (entity.groupId) {
-        this._store
-          .pipe(select(groupsSelectors.getGroupById(entity.groupId), take(1)))
-          .subscribe((group: IGroup | undefined): void => {
-            entitiesArr.push(group?.name || '');
-          });
-      }
-      if (entity.unitId) {
-        this._store
-          .pipe(select(unitsSelectors.getUnitById(entity.unitId), take(1)))
-          .subscribe((unit: IUnit | undefined): void => {
-            entitiesArr.push(unit?.name || '');
-          });
-      }
+    if (roleContext.chainId) {
+      this._store
+        .pipe(
+          select(chainsSelectors.getChainById(roleContext.chainId), take(1)),
+        )
+        .subscribe((chain: IChain | undefined): void => {
+          entitiesArr.push(chain?.name || '');
+        });
+    }
+    if (roleContext.groupId) {
+      this._store
+        .pipe(
+          select(groupsSelectors.getGroupById(roleContext.groupId), take(1)),
+        )
+        .subscribe((group: IGroup | undefined): void => {
+          entitiesArr.push(group?.name || '');
+        });
+    }
+    if (roleContext.unitId) {
+      this._store
+        .pipe(select(unitsSelectors.getUnitById(roleContext.unitId), take(1)))
+        .subscribe((unit: IUnit | undefined): void => {
+          entitiesArr.push(unit?.name || '');
+        });
+    }
 
-      entityPaths.push(
-        `@ ${entitiesArr.filter((e): boolean => e !== '').join(' / ')}`,
-      );
-    });
-    */
-
-    return 'entities list'; // this._domSanitizer.bypassSecurityTrustHtml(entityPaths.join('<br>'));
+    return entitiesArr.filter((e): boolean => e !== '').join(' / ');
   }
 }
