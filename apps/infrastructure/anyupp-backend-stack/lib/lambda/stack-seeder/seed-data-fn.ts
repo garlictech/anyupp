@@ -373,7 +373,7 @@ export const createTestCart = ({
     userId: generateUserId(userIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
     paymentMode: {
-      name: 'IN_APP',
+      name: 'INAPP',
       method: AmplifyApi.PaymentMethod.INAPP,
     },
     takeAway: false,
