@@ -18,7 +18,6 @@ export class OrderTicketListItemComponent {
 
   /*
   ngOnChanges(): void {
-
     this.readyCount =
       this.ticketListType === EDashboardTicketListType.PLACED
         ? this.order.items.filter(

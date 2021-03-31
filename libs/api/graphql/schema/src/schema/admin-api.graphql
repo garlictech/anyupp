@@ -1,5 +1,3 @@
-# FONTOS!!!! EZT CSAK A BACKEND OLDALHOZ SZABAD GENERALTATNI!!!!
-# 'amplify api gql-compile' KELL!!!!
 type Address {
   address: String
   city: String
@@ -192,8 +190,6 @@ type PriceShown {
 }
 
 type OrderItem {
-  productId: ID!
-  variantId: ID!
   created: Int
   productName: LocalizedItem!
   priceShown: PriceShown!
