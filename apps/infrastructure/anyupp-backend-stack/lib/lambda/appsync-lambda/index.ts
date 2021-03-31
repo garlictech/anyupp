@@ -1,8 +1,8 @@
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 
-import * as resolvers from '@bgap/api/graphql/resolvers';
 import { orderRequestHandler } from '@bgap/api/order';
+import { adminRequestHandler } from '@bgap/api/admin-user';
 import { stripeRequestHandler } from '@bgap/api/stripe';
 import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
@@ -15,8 +15,8 @@ const resolverMap = {
   getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
   updateStripeCard: stripeRequestHandler.updateStripeCard,
   deleteStripeCard: stripeRequestHandler.deleteStripeCard,
-  createAdminUser: resolvers.createAdminUser,
-  deleteAdminUser: resolvers.deleteAdminUser,
+  createAdminUser: adminRequestHandler.createAdminUser,
+  deleteAdminUser: adminRequestHandler.deleteAdminUser,
   createOrderFromCart: orderRequestHandler.createOrderFromCart(
     amplifyGraphQlClient,
   ),
