@@ -29,7 +29,10 @@
       "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
-    "admin-e2e": { "tags": [], "implicitDependencies": ["admin"] },
+    "admin-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin"]
+    },
     "graphql-server": {
       "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
       "tags": ["scope:bgap", "type:server", "platform:nest"]
@@ -143,9 +146,6 @@
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "infrastructure-build-pipeline-stack": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "api-graphql-appsync-lambda": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "shared-utils": {

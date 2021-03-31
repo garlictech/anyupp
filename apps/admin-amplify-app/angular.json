@@ -1141,27 +1141,6 @@
         }
       }
     },
-    "api-graphql-appsync-lambda": {
-      "root": "libs/api/graphql/appsync-lambda",
-      "sourceRoot": "libs/api/graphql/appsync-lambda/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/graphql/appsync-lambda/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
-          "options": {
-            "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "shared-utils": {
       "root": "libs/shared/utils",
       "sourceRoot": "libs/shared/utils/src",
