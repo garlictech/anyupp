@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { combineLatest, Observable } from 'rxjs';
-import { map, mapTo, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, Observable, throwError, of } from 'rxjs';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
   AmplifyApi,
@@ -29,7 +29,7 @@ import {
 } from '@bgap/shared/types';
 import {
   getUnitIsNotAcceptingOrdersError,
-  missingParametersCheck,
+  missingParametersError,
   pipeDebug,
 } from '@bgap/shared/utils';
 
@@ -68,25 +68,26 @@ export const createOrderFromCart = ({
       ),
     ),
     // pipeDebug('### CURRENCY + UNIT'),
-    tap({
-      next({ unit, cart }) {
-        if (unit.isAcceptingOrders === false) {
-          throw getUnitIsNotAcceptingOrdersError();
-        }
-        // if (
-        //   !userLocation ||
-        //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-        //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-        // ) {
-        //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
-        //   console.log('###: User is too far from the UNIT error should be thrown');
-        // }
-
-        // The paymentMode is not required for a new cart but it is required in this life-stage of the cart
-        // Because it vas signed to be converted to an order and the user choosed a paymentMode in this step.
-        missingParametersCheck(cart, ['paymentMode']);
-      },
-    }),
+    // INSPECTIONS
+    switchMap(props =>
+      props.unit.isAcceptingOrders
+        ? of(props)
+        : throwError(getUnitIsNotAcceptingOrdersError()),
+    ),
+    switchMap(props =>
+      props.cart.paymentMode !== undefined
+        ? of(props)
+        : throwError(missingParametersError('cart.paymentMode')),
+    ),
+    // TODO: distance check
+    //     // if (
+    //     //   !userLocation ||
+    //     //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
+    //     //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
+    //     // ) {
+    //     //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
+    //     //   console.log('###: User is too far from the UNIT error should be thrown');
+    //     // }
     switchMap(props =>
       getOrderItems({
         amplifyApiClient: amplifyGraphQlClient,
