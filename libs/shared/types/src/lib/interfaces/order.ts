@@ -23,6 +23,16 @@ export const priceShownSchema: Joi.SchemaMap<IPriceShown> = {
   taxSum: Joi.number().required().optional(),
 };
 
+export interface IStatusLogItem {
+  userId: string;
+  status: EOrderStatus;
+  ts?: number; // after objectToArray(statusLog, 'ts')
+}
+export interface IStatusLog {
+  [timestamp: number]: IStatusLogItem;
+}
+export const statusLogSchema = Joi.array();
+
 export interface IOrderItem {
   __typename?: 'OrderItem';
   created: number;
@@ -35,16 +45,6 @@ export interface IOrderItem {
   variantName: ILocalizedItem<string>;
   laneId?: string;
 }
-
-export interface IStatusLogItem {
-  userId: string;
-  status: EOrderStatus;
-  ts?: number; // after objectToArray(statusLog, 'ts')
-}
-export interface IStatusLog {
-  [timestamp: number]: IStatusLogItem;
-}
-export const statusLogSchema = Joi.array();
 
 export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
   __typename: Joi.string().valid('OrderItem').optional(),

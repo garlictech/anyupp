@@ -71,9 +71,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe((): void => {
           this.processingTimer = Math.floor(
-            (new Date().getTime() -
-              parseInt(<string>(<IStatusLogItem>processingInfo).ts, 10)) *
-              0.001,
+            new Date().getTime() - (processingInfo?.ts || 0) * 0.001,
           );
         });
     }
