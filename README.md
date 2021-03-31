@@ -118,17 +118,20 @@ are not yet supported in headless mode :( So fill in the forms if required.
 Cognito part:
 
 ```
-cd apps/amplify-admin-api
+cd apps/admin-amplify-app
 amplify remove auth
 amplify import auth
 ```
 
-- Choose `Cognito User Pool and Identity Pool Cognito User Pool only`
+- Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
 
 Appsync part:
 
+```
+amplify add api
+```
 Answere these questions
 
 - ? Please select from one of the below mentioned services: `GraphQL`
@@ -145,8 +148,7 @@ Answere these questions
 Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
 
-- ? Enable conflict detection? `Yes`
-- ? Select the default resolution strategy `Auto Merge`
+- ? Enable conflict detection? `No`
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
@@ -194,7 +196,7 @@ some samples, see the build targets belonging to the examples in the
 
 ### Build the amplify app
 
-`nx config-schema amplify-admin-api --stage dev`
+`nx config-schema admin-amplify-api --stage dev`
 
 The command builds the _current_ configured app / stage.
 
@@ -202,7 +204,7 @@ The command builds the _current_ configured app / stage.
 
 Deploy the current app/stage:
 
-`nx deploy amplify-admin-api`
+`nx deploy admin-amplify-api`
 
 To build the admin site for a given configuration:
 
@@ -398,9 +400,12 @@ Run `ng build my-app` to build the project. The build artifacts will be stored i
 
 ## Running unit tests
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
+
+### Using jest options [Nrwl - testing](https://nx.dev/latest/angular/cli/test#testfile)
+Run `nx test projectName --i --testFile=partOfASpecFileNameToTest --watch` to execute the unit tests on a single file in runInBand and watch mode.
 
 ## Running end-to-end tests
 
@@ -444,9 +449,13 @@ TIP: use `--dry-run` to check your idea. It shows what will be generated without
 
 `nx g @nrwl/workspace:lib shared/config`
 
-### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
+### [Remove an app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
 
 `nx g @nrwl/workspace:rm shared-config-firebase`
+
+### [Move an app or lib](https://nx.dev/latest/angular/workspace/move)
+
+`nx g @nrwl/workspace:move --project projectName new/path`
 
 ### Generate a nest lib
 
@@ -485,8 +494,8 @@ The generator will collect the new resolver's name
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build infrastructure-anyupp-backend-stack
-   nx deploy infrastructure-anyupp-backend-stack
+   nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+   nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 
 ### Amplify - Admin
 

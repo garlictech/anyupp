@@ -1,4 +1,6 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
+import { tap } from 'rxjs/operators';
+import { missingParametersError } from './errors';
 
 export const customNumberCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
@@ -115,6 +117,44 @@ export const isOfType = <T>(
   propertyValueToCheck === undefined
     ? true
     : (varToBeChecked as T)[propertyToCheckFor] === propertyValueToCheck;
+
+export const missingParametersCheck = <T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  varToBeChecked: any,
+  paramNames: (keyof T)[],
+): varToBeChecked is T => {
+  for (const paramName of paramNames) {
+    if (!isOfType<T>(varToBeChecked, paramName)) {
+      throw missingParametersError(paramName as string);
+    }
+  }
+  return true;
+};
+
+export const pipeDebug = <T>(tag: string) => {
+  return tap<T>({
+    next(value) {
+      console.log(
+        `%c[${tag}: Next]`,
+        // 'background: #009688; color: #fff; padding: 3px; font-size: 9px;',
+        JSON.stringify(value, undefined, 2),
+      );
+    },
+    error(error) {
+      console.log(
+        `%[${tag}: Error]`,
+        // 'background: #E91E63; color: #fff; padding: 3px; font-size: 9px;',
+        JSON.stringify(error, undefined, 2),
+      );
+    },
+    complete() {
+      console.log(
+        `%c[${tag}]: Complete`,
+        // 'background: #00BCD4; color: #fff; padding: 3px; font-size: 9px;',
+      );
+    },
+  });
+};
 
 export const randomString = (length: number) =>
   [...Array(length)].map(() => (~~(Math.random() * 36)).toString(36)).join('');

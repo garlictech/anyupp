@@ -40,9 +40,6 @@
     "api-graphql-resolvers": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "api-data-access": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -163,20 +160,26 @@
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
+    "api-order": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
     "shared-graphql-api-client": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
-    "admin-amplify-app": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
+    "api-graphql-resolver-mapping-templates": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
-    "stripe": {
+    "api-stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "integration-tests": {
       "tags": ["type:integration-tests"]
     },
     "admin-amplify-api": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "admin-amplify-app": {
+      "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
     "admin-pages-role-contexts": {
       "tags": ["scope:bgap", "type:website", "platform:angular"]

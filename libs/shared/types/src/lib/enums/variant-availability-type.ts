@@ -1,5 +1,5 @@
 export enum EVariantAvailabilityType {
-  'ALWAYS' = 'A',
-  'WEEKLY' = 'W',
-  'SEASONAL' = 'S',
+  ALWAYS = 'A',
+  WEEKLY = 'W',
+  SEASONAL = 'S',
 }

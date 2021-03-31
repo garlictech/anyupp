@@ -27,5 +27,5 @@ describe('Testing backend seed state', () => {
         ),
       )
       .subscribe(() => done());
-  });
+  }, 15000);
 });

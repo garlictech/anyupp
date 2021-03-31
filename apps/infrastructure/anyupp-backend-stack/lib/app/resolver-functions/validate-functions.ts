@@ -1,3 +1,4 @@
+import * as vtl from '@bgap/api/graphql/resolver-mapping-templates';
 import {
   AppsyncFunction,
   MappingTemplate,
@@ -27,8 +28,8 @@ export const createValidatorResolverFunctions = (
         #end
         {}
       `),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplate,
     ),
   }),
 
@@ -42,8 +43,8 @@ export const createValidatorResolverFunctions = (
         #end
         {}
       `),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplate,
     ),
   }),
 
@@ -61,8 +62,8 @@ export const createValidatorResolverFunctions = (
         #end
         {}
       `),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplate,
     ),
   }),
 
@@ -76,8 +77,8 @@ export const createValidatorResolverFunctions = (
         #end
         {}
       `),
-    responseMappingTemplate: MappingTemplate.fromFile(
-      'lib/appsync/graphql-api/mapping-templates/common-response-mapping-template.vtl',
+    responseMappingTemplate: MappingTemplate.fromString(
+      vtl.commonResponseMappingTemplate,
     ),
   }),
 });
