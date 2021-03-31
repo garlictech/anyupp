@@ -1,16 +1,17 @@
-import { IChain, IGroup, IRoleContext, IUnit } from 'libs/shared/types/src';
 import { take } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { IChain, IGroup, IRoleContext, IUnit } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 @Pipe({
   name: 'roleEntityNames',
 })
 export class RoleEntityNamesPipe implements PipeTransform {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>) {}
 
   transform(roleContext: IRoleContext): unknown {
