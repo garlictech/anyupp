@@ -188,6 +188,8 @@ type PriceShown {
 }
 
 type OrderItem {
+  productId: ID!
+  variantId: ID!
   created: Int
   productName: LocalizedItem!
   priceShown: PriceShown!
