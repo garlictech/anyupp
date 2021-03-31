@@ -10,12 +10,12 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { EPaymentMethod, IOrder, IOrderAmounts } from '@bgap/shared/types';
+import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import { IOrder, IOrderAmounts } from '@bgap/shared/types';
+import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
-
-import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { reducer } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -104,9 +104,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
         const amounts = this._orderAmounts(orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          amounts[EPaymentMethod.CARD],
-          amounts[EPaymentMethod.CASH],
-          amounts[EPaymentMethod.INAPP],
+          amounts[AmplifyApi.PaymentMethod.CARD],
+          amounts[AmplifyApi.PaymentMethod.CASH],
+          amounts[AmplifyApi.PaymentMethod.INAPP],
         ];
 
         this._chart.update();
@@ -126,9 +126,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
   private _orderAmounts(orders: IOrder[]) {
     const amounts: IOrderAmounts = {
-      [EPaymentMethod.CARD]: 0,
-      [EPaymentMethod.CASH]: 0,
-      [EPaymentMethod.INAPP]: 0,
+      [AmplifyApi.PaymentMethod.CARD]: 0,
+      [AmplifyApi.PaymentMethod.CASH]: 0,
+      [AmplifyApi.PaymentMethod.INAPP]: 0,
     };
 
     orders.forEach(o => {

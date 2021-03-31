@@ -1,4 +1,6 @@
+import * as Joi from 'joi';
 import { EProductType, EVariantAvailabilityType } from '../enums';
+import { validateSchema } from '../validation/validate';
 import { ILocalizedItem } from './localized-item';
 
 export interface IAllergen {
@@ -55,7 +57,47 @@ export interface IProduct {
   tax: string; // %
   laneId?: string;
   productType: EProductType;
+  takeaway?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export interface IUnitProduct {
+  __typename?: 'UnitProduct';
+  id: string;
+  parentId: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId: string;
+  unitId: string;
+  isVisible: boolean; // temp
+  position: number;
+  variants: IProductVariant[];
+  laneId?: string;
+  takeaway?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
+  __typename: Joi.string().valid('UnitProduct').optional(),
+  id: Joi.string().required(),
+  parentId: Joi.string().required(),
+  chainId: Joi.string().required(),
+  groupId: Joi.string().required(),
+  unitId: Joi.string().required(),
+  isVisible: Joi.boolean().required(),
+  position: Joi.number().required(),
+  variants: Joi.array().required(), //TODO: use an exact schema
+  laneId: Joi.string().allow(null),
+  takeaway: Joi.boolean().allow(null),
+  createdAt: Joi.string().required(),
+  updatedAt: Joi.string().required(),
+};
+
+export const {
+  validate: validateUnitProduct,
+  isType: isUnitProduct,
+} = validateSchema<IProduct>(unitProductSchema, 'UnitProduct');
 
 export interface IGeneratedProduct {
   id: string;

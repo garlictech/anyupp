@@ -1,4 +1,4 @@
-import { awsConfig, CreateAdminUserMutation } from '@bgap/admin/amplify-api';
+import { awsConfig, AmplifyApi } from '@bgap/admin/amplify-api';
 import {
   GraphqlApiKey,
   GraphqlApiUrl,
@@ -9,8 +9,8 @@ import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
-import { CreateAdminUser, DeleteAdminUser } from '@bgap/api/graphql/schema';
 import { ApolloQueryResult } from 'apollo-client';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
 Amplify.configure({
   ...awsConfig,
@@ -26,7 +26,7 @@ describe('Admin user creation/deletion', () => {
       aws_appsync_graphqlEndpoint: GraphqlApiUrl,
       aws_appsync_apiKey: GraphqlApiKey,
     };
-    const apiClient = GraphqlApiFp.createAuthenticatedClient(
+    const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
       appsyncConfig,
       console,
       true,
@@ -37,8 +37,8 @@ describe('Admin user creation/deletion', () => {
     from(Auth.signIn(testAdminUsername, testAdminUserPassword))
       .pipe(
         switchMap(() =>
-          apiClient
-            .mutate(DeleteAdminUser, {
+          appsyncApiClient
+            .mutate(AppsyncApi.DeleteAdminUser, {
               userName,
             })
             .pipe(
@@ -49,8 +49,8 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          apiClient
-            .mutate(CreateAdminUser, {
+          appsyncApiClient
+            .mutate(AppsyncApi.CreateAdminUser, {
               input: { email: 'foobar', name: 'Mekk elek', phone: '12356666' },
             })
             .pipe(
@@ -61,15 +61,18 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          apiClient.mutate(CreateAdminUser, {
+          appsyncApiClient.mutate(AppsyncApi.CreateAdminUser, {
             input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
-        x => x as Observable<ApolloQueryResult<CreateAdminUserMutation>>,
+        x =>
+          x as Observable<
+            ApolloQueryResult<AmplifyApi.CreateAdminUserMutation>
+          >,
         map(result => result.data.createAdminUser),
         switchMap(() =>
-          apiClient
-            .mutate(CreateAdminUser, {
+          appsyncApiClient
+            .mutate(AppsyncApi.CreateAdminUser, {
               input: { email: userName, name: 'Mekk Elek', phone: '123456' },
             })
             .pipe(
@@ -81,7 +84,7 @@ describe('Admin user creation/deletion', () => {
         ),
         // Cleanup
         switchMap(() =>
-          apiClient.mutate(DeleteAdminUser, {
+          appsyncApiClient.mutate(AppsyncApi.DeleteAdminUser, {
             userName,
           }),
         ),

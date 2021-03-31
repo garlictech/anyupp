@@ -5,8 +5,8 @@ import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import {
   awsConfig,
-  deleteAdminUser as amplifyDeleteAdminUser,
-  AdminUser as AmplifyAdminUser,
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
 } from '@bgap/admin/amplify-api';
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
@@ -54,11 +54,15 @@ export const deleteAdminUser = (params: DeleteAdminUserMutationVariables) => {
       switchMap(() =>
         pipe(
           API.graphql(
-            graphqlOperation(amplifyDeleteAdminUser, { input: { id: userId } }),
+            graphqlOperation(AmplifyApiMutationDocuments.deleteAdminUser, {
+              input: { id: userId },
+            }),
           ),
           operation =>
             operation instanceof Promise
-              ? (from(operation) as Observable<GraphQLResult<AmplifyAdminUser>>)
+              ? (from(operation) as Observable<
+                  GraphQLResult<AmplifyApi.AdminUser>
+                >)
               : throwError('Wrong graphql operation'),
         ),
       ),

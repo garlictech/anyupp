@@ -827,27 +827,6 @@
         }
       }
     },
-    "api-data-access": {
-      "root": "libs/api/data-access",
-      "sourceRoot": "libs/api/data-access/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/data-access/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/data-access"],
-          "options": {
-            "jestConfig": "libs/api/data-access/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-shared-floor-map": {
       "projectType": "library",
       "root": "libs/admin/shared/floor-map",
@@ -1327,6 +1306,27 @@
         }
       }
     },
+    "api-order": {
+      "root": "libs/api/order",
+      "sourceRoot": "libs/api/order/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/order/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/order"],
+          "options": {
+            "jestConfig": "libs/api/order/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
       "sourceRoot": "libs/shared/graphql/api-client/src",
@@ -1348,22 +1348,45 @@
         }
       }
     },
-    "stripe": {
-      "root": "libs/stripe",
-      "sourceRoot": "libs/stripe/src",
+    "api-graphql-resolver-mapping-templates": {
+      "root": "libs/api/graphql/resolver-mapping-templates",
+      "sourceRoot": "libs/api/graphql/resolver-mapping-templates/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/stripe/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/api/graphql/resolver-mapping-templates/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/stripe"],
+          "outputs": ["coverage/libs/api/graphql/resolver-mapping-templates"],
           "options": {
-            "jestConfig": "libs/stripe/jest.config.js",
+            "jestConfig": "libs/api/graphql/resolver-mapping-templates/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-stripe": {
+      "root": "libs/api/stripe",
+      "sourceRoot": "libs/api/stripe/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/stripe/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/stripe"],
+          "options": {
+            "jestConfig": "libs/api/stripe/jest.config.js",
             "passWithNoTests": true
           }
         }

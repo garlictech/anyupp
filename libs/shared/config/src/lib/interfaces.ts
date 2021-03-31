@@ -5,8 +5,10 @@ export interface SharedConfig {
   UserPoolClientId: string;
   UserPoolDomain: string;
   UserPoolId: string;
-  googleClientId: string;
-  stripePublishableKey: string;
+  // googleClientId: string;
+  // stripePublishableKey: string;
+  GraphqlApiKeyAmplify: string;
+  GraphqlApiUrlAmplify: string;
 }
 
 export interface SharedFirebaseConfig {
