@@ -91,7 +91,7 @@ class GeoUnit extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("GeoUnit {");
     buffer.write("id=" + "$id" + ", ");
@@ -143,22 +143,22 @@ class GeoUnit extends Model {
         chainId = json['chainId'],
         name = json['name'],
         address = json['address'] != null
-            ? Address.fromJson(new Map<String, dynamic>.from(json['address']))
+            ? Address.fromJson(Map<String, dynamic>.from(json['address']))
             : null,
         style = json['style'] != null
-            ? ChainStyle.fromJson(new Map<String, dynamic>.from(json['style']))
+            ? ChainStyle.fromJson(Map<String, dynamic>.from(json['style']))
             : null,
         paymentModes = json['paymentModes'] is List
             ? (json['paymentModes'] as List)
                 .map((e) =>
-                    PaymentMode.fromJson(new Map<String, dynamic>.from(e)))
+                    PaymentMode.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         distance = json['distance'],
         openingHours = json['openingHours'],
         currency = json['currency'],
         place = json['place'] != null
-            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
+            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
             : null;
 
   Map<String, dynamic> toJson() => {

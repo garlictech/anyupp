@@ -98,7 +98,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
       if (status == 'READY') {
-        if (order.paymentMethod == 'CARD' || order.paymentMethod == 'CASH') {
+        if (order.paymentMethod.method == 'CARD' || order.paymentMethod.method == 'CASH') {
           // --- Payable
           if (order.paymentIntention == null) {
             cashOrderCount++;
@@ -110,7 +110,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
             waitingForCashPaymentSum += order.sumPriceShown.priceSum;
             // orders.add(order);
           }
-        } else if (order.paymentMethod == 'INAPP') {
+        } else if (order.paymentMethod.method == 'INAPP') {
           if (order.paymentIntention == null) {
             onlineOrderCount++;
             onlineOrderSum += order.sumPriceShown.priceSum;
@@ -231,6 +231,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
         });
   }
 
+  // ignore: unused_element
   Widget _buildSimplePayButtonWidget(BuildContext context, Order order, double sum) {
     return BlocListener<SimplePayBloc, SimplePayState>(
       listener: (BuildContext context, SimplePayState state) {

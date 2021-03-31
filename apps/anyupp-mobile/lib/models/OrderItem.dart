@@ -89,7 +89,7 @@ class OrderItem extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("OrderItem {");
     buffer.write("id=" + "$id" + ", ");
@@ -148,22 +148,22 @@ class OrderItem extends Model {
         variantId = json['variantId'],
         productName = json['productName'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['productName']))
+                Map<String, dynamic>.from(json['productName']))
             : null,
         priceShown = json['priceShown'] != null
             ? PriceShown.fromJson(
-                new Map<String, dynamic>.from(json['priceShown']))
+                Map<String, dynamic>.from(json['priceShown']))
             : null,
         quantity = json['quantity'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List)
                 .map(
-                    (e) => StatusLog.fromJson(new Map<String, dynamic>.from(e)))
+                    (e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         variantName = json['variantName'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['variantName']))
+                Map<String, dynamic>.from(json['variantName']))
             : null,
         created = json['created'],
         takeAway = json['takeAway'],

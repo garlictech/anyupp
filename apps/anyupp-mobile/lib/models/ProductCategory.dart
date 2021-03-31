@@ -63,7 +63,7 @@ class ProductCategory extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("ProductCategory {");
     buffer.write("id=" + "$id" + ", ");
@@ -101,11 +101,11 @@ class ProductCategory extends Model {
         unitId = json['unitId'],
         name = json['name'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['name']))
+                Map<String, dynamic>.from(json['name']))
             : null,
         description = json['description'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['description']))
+                Map<String, dynamic>.from(json['description']))
             : null,
         image = json['image'],
         position = json['position'];

@@ -53,7 +53,7 @@ class FavoriteProduct extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("FavoriteProduct {");
     buffer.write("id=" + "$id" + ", ");
@@ -80,7 +80,7 @@ class FavoriteProduct extends Model {
         unitId = json['unitId'],
         product = json['product'] != null
             ? GeneratedProduct.fromJson(
-                new Map<String, dynamic>.from(json['product']))
+                Map<String, dynamic>.from(json['product']))
             : null;
 
   Map<String, dynamic> toJson() => {

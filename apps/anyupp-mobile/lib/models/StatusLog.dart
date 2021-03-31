@@ -63,7 +63,7 @@ class StatusLog extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("StatusLog {");
     buffer.write("id=" + "$id" + ", ");

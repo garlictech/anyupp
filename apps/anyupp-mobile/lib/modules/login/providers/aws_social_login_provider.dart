@@ -20,7 +20,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) async {
     print('***** AwsSocialLoginProvider.fetchSignInMethodsForEmail()=$email');
-    // TODO AWS
     return [];
   }
 
@@ -44,6 +43,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     print('***** AwsSocialLoginProvider.signInAnonymously()');
+    return null;
     // throw UnimplementedError();
   }
 
@@ -66,6 +66,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     //   print('***** AwsSocialLoginProvider.signInWithApple().Exception=$e');
     //   throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     // }
+    return null;
   }
 
   @override
@@ -82,7 +83,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     return null;
   }
 
-  @override
   Future<ProviderLoginResponse> signInWithFacebook2() async {
     print('***** AwsSocialLoginProvider.signInWithFacebook()');
     try {
@@ -145,6 +145,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     //   print('***** AwsSocialLoginProvider.signInWithGoogle().Exception=$e');
     //   throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     // }
+    return null;
   }
 
   @override

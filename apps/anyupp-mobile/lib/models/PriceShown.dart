@@ -63,7 +63,7 @@ class PriceShown extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("PriceShown {");
     buffer.write("id=" + "$id" + ", ");

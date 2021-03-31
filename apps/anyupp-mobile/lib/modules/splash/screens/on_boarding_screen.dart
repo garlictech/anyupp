@@ -4,7 +4,6 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'splash_screen.dart';
 

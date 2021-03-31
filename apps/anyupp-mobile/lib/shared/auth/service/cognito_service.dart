@@ -1,7 +1,6 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cognito_local_storage.dart';
 
@@ -57,9 +56,9 @@ class CognitoService {
     AuthenticationDetails authDetails = AuthenticationDetails(
       username: credentials.userIdentityId,
     );
-    CognitoUserSession session = user.getSignInUserSession();
+    // CognitoUserSession session = user.getSignInUserSession();
     // await user.refreshSession(CognitoRefreshToken(credentials.sessionToken));
-    // CognitoUserSession session = await user.authenticateUser(authDetails);
+    CognitoUserSession session = await user.authenticateUser(authDetails);
     // CognitoUserSession session = await user.getSession();
     print('loginWithCredentials().session=$session');
 

@@ -4,8 +4,6 @@ import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import 'graphql_request_serializer.dart';
-
 class GraphQLClientService {
   final String apiUrl;
   final String apiKey;

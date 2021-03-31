@@ -1,10 +1,7 @@
-import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:fa_prev/shared/connectivity.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef ConnectivityCallback = Function(ConnectivityResult);

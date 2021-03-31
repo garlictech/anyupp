@@ -1,8 +1,6 @@
-import 'dart:ffi';
 
 import 'package:awesome_card/awesome_card.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';

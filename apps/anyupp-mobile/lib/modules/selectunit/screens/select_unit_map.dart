@@ -96,7 +96,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           minChildSize: 0.25,
           maxChildSize: 0.9,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Stack(overflow: Overflow.visible, fit: StackFit.expand, children: [
+            return Stack(clipBehavior: Clip.none, fit: StackFit.expand, children: [
               Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
