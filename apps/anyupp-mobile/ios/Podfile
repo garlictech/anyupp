@@ -25,7 +25,7 @@ end
 
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
-# pod 'Firebase/MLVisionBarcodeModel'
+pod 'Firebase/MLVisionBarcodeModel'
 # pod 'Firebase/MLVisionFaceModel'
 # pod 'Firebase/MLVisionLabelModel'
 # pod 'Firebase/MLVisionTextModel'

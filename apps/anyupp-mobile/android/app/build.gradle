@@ -74,14 +74,9 @@ android {
     }
 
     dependencies {
-        // api 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
+        api 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
         // api 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
         // api 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
-    }
-
-    aaptOptions {
-        noCompress 'tflite'
-        noCompress 'lite'
     }
 }
 
@@ -94,5 +89,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'io.fabric'
+// apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'io.fabric'

@@ -69,7 +69,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   }
 
   @override
-  Future<ProviderLoginResponse> signInWithFacebook2() async {
+  Future<ProviderLoginResponse> signInWithFacebook() async {
     print('***** AwsSocialLoginProvider.signInWithFacebook()');
     try {
 
@@ -79,10 +79,11 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       print('***** AwsSocialLoginProvider.signInWithFacebook().Exception=$e');
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
+    return null;
   }
 
   @override
-  Future<ProviderLoginResponse> signInWithFacebook() async {
+  Future<ProviderLoginResponse> signInWithFacebook2() async {
     print('***** AwsSocialLoginProvider.signInWithFacebook()');
     try {
       final loginResult = await _facebookLogin.logIn(permissions: [
