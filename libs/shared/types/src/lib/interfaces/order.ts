@@ -1,4 +1,4 @@
-import { EOrderStatus, EPaymentMethod } from '../enums';
+import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
 import { IPaymentMode } from './payment';
 
@@ -35,7 +35,7 @@ export interface ILaneOrderItem extends IOrderItem {
 export interface IStatusLogItem {
   userId: string;
   status: EOrderStatus;
-  ts?: string; // after objectToArray(statusLog, 'ts')
+  ts?: number; // after objectToArray(statusLog, 'ts')
 }
 
 export interface IStatusLog {
