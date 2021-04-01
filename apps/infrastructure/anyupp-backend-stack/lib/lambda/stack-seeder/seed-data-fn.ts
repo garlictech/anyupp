@@ -1,12 +1,13 @@
 import { pipe } from 'fp-ts/lib/function';
 import { from, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { EProductType } from '@bgap/shared/types';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
 } from '@bgap/admin/amplify-api';
+import { EProductType } from '@bgap/shared/types';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -38,6 +39,49 @@ const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
 const generateCartId = (idx: number) => `cart_${idx}_id`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const promiseOrObservableResponseCheck = (operation: any) =>
+  operation instanceof Promise
+    ? from(operation)
+    : throwError('Wrong graphql operation');
+
+const deleteCreate = ({
+  input,
+  deleteOperation,
+  createOperation,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  input: any;
+  deleteOperation: string;
+  createOperation: string;
+}) =>
+  pipe(
+    API.graphql(
+      graphqlOperation(deleteOperation, {
+        input: { id: input.id },
+      }),
+    ),
+    promiseOrObservableResponseCheck,
+  ).pipe(
+    // catchError((err: Error) => {
+    //   console.error(err);
+    //   if (!err.message.includes('Record does not exist')) {
+    //     console.warn('Probably normal error: ', err);
+    //   }
+    //   return of({});
+    // }),
+    switchMap(() =>
+      pipe(
+        API.graphql(
+          graphqlOperation(createOperation, {
+            input,
+          }),
+        ),
+        promiseOrObservableResponseCheck,
+      ),
+    ),
+  );
+
 export const createTestChain = (chainIdx: number) => {
   const input: AmplifyApi.CreateChainInput = {
     id: generateChainId(chainIdx),
@@ -63,17 +107,11 @@ export const createTestChain = (chainIdx: number) => {
       },
     },
   };
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createChain, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteChain,
+    createOperation: AmplifyApiMutationDocuments.createChain,
+  });
 };
 
 export const createTestGroup = (chainIdx: number, groupIdx: number) => {
@@ -87,17 +125,11 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => {
     },
     currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
   };
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createGroup, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteGroup,
+    createOperation: AmplifyApiMutationDocuments.createGroup,
+  });
 };
 
 export const createTestUnit = (
@@ -158,18 +190,11 @@ export const createTestUnit = (
       to: '18:00',
     },
   };
-
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createUnit, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteUnit,
+    createOperation: AmplifyApiMutationDocuments.createUnit,
+  });
 };
 
 export const createTestProductCategory = (
@@ -189,17 +214,12 @@ export const createTestProductCategory = (
     },
     position: productCategoryId,
   };
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createProductCategory, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteProductCategory,
+    createOperation: AmplifyApiMutationDocuments.createProductCategory,
+  });
 };
 
 export const createTestChainProduct = (
@@ -238,18 +258,11 @@ export const createTestChainProduct = (
       },
     ],
   };
-
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createChainProduct, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteChainProduct,
+    createOperation: AmplifyApiMutationDocuments.createChainProduct,
+  });
 };
 
 export const createTestGroupProduct = (
@@ -283,18 +296,13 @@ export const createTestGroupProduct = (
       },
     ],
   };
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createGroupProduct, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteGroupProduct,
+    createOperation: AmplifyApiMutationDocuments.createGroupProduct,
+  });
 };
+
 export const createTestUnitProduct = (
   chainIdx: number,
   groupIdx: number,
@@ -339,18 +347,11 @@ export const createTestUnitProduct = (
       },
     ],
   };
-
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createUnitProduct, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteUnitProduct,
+    createOperation: AmplifyApiMutationDocuments.createUnitProduct,
+  });
 };
 
 export const createTestCart = ({
@@ -401,16 +402,9 @@ export const createTestCart = ({
       },
     ],
   };
-
-  return pipe(
-    API.graphql(
-      graphqlOperation(AmplifyApiMutationDocuments.createCart, {
-        input,
-      }),
-    ),
-    operation =>
-      operation instanceof Promise
-        ? from(operation)
-        : throwError('Wrong graphql operation'),
-  );
+  return deleteCreate({
+    input,
+    deleteOperation: AmplifyApiMutationDocuments.deleteCart,
+    createOperation: AmplifyApiMutationDocuments.createCart,
+  });
 };
