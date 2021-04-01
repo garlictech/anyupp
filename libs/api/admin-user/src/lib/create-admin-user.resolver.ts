@@ -1,16 +1,17 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { CreateAdminUserMutationVariables } from '@bgap/api/graphql/schema';
+import * as fp from 'lodash/fp';
 import { from, throwError } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import * as fp from 'lodash/fp';
-import {
-  awsConfig,
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
+import {
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
+  awsConfig,
+} from '@bgap/admin/amplify-api';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -21,7 +22,9 @@ const UserPoolId = process.env.userPoolId || '';
 
 Amplify.configure(awsConfig);
 
-export const createAdminUser = (vars: CreateAdminUserMutationVariables) => {
+export const createAdminUser = (
+  vars: AppsyncApi.CreateAdminUserMutationVariables,
+) => {
   console.debug('Resolver parameters: ', vars);
   const Username = vars.input.email || vars.input.phone || '';
 

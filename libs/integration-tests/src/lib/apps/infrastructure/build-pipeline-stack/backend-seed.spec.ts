@@ -11,6 +11,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 const username = 'test@anyupp.com';
 
+// TODO add test to find the user in the DB
 describe('Testing backend seed state', () => {
   test('Test user must be present and we can log in', done => {
     from(

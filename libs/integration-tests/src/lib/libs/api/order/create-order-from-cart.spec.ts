@@ -15,9 +15,9 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { ICart, IOrder } from '@bgap/shared/types';
 
-import { cartSeed } from './fixtures/cart';
-import { unitSeed } from './fixtures/unit';
-import { createTestCart, deleteTestCart } from './seeds/cart';
+import { cartSeed } from '../../../fixtures/cart';
+import { unitSeed } from '../../../fixtures/unit';
+import { createTestCart, deleteTestCart } from '../../../seeds/cart';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 
