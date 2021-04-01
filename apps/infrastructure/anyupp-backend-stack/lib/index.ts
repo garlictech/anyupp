@@ -5,13 +5,13 @@ import { CognitoStack } from './app/cognito-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
-// import { SiteStack } from './app/site-stack';
+import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
-    // const sites = new SiteStack(scope, 'sites');
+    const sites = new SiteStack(scope, 'sites');
     const secretsManagerStack = new SecretsManagerStack(
       scope,
       'SecretsManagerStack',
@@ -19,8 +19,8 @@ export class AnyUppStack extends Stack {
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
-      // adminSiteUrl: sites.adminSiteUrl,
-      adminSiteUrl: 'http://localhost:4200', // TODO: re enable admin site
+      adminSiteUrl: sites.adminSiteUrl,
+      // adminSiteUrl: 'http://localhost:4200', // TODO: re enable admin site
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,
