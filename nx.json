@@ -33,13 +33,6 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-server": {
-      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "api-graphql-resolvers": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
