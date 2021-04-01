@@ -26,8 +26,9 @@ class GraphQLClientService {
 
     _client?.dispose();
 
-    String accessToken = (await _authProvider.getAccessToken()).jwtToken;
-    print('GraphQLClientService.Creating client. AccessToken=$accessToken');
+    String accessToken = await _authProvider.getAccessToken();
+    accessToken = null;
+    // print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
     Map<String, String> headers;
     if (accessToken != null) {

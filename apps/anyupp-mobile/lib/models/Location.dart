@@ -7,8 +7,8 @@ import 'core/model_base.dart';
 @immutable
 class Location extends Model {
   final String id;
-  final double lat;
-  final double lng;
+  final String lat;
+  final String lng;
 
   @override
   String getId() {
@@ -17,7 +17,7 @@ class Location extends Model {
 
   const Location._internal({@required this.id, this.lat, this.lng});
 
-  factory Location({String id, double lat, double lng}) {
+  factory Location({String id, String lat, String lng}) {
     return Location._internal(
         id: id == null ? UUID.getUUID() : id, lat: lat, lng: lng);
   }

@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:catcher/catcher.dart';
+import 'package:fa_prev/amplifyconfig-stub.dart';
+import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +41,7 @@ import 'package:google_fonts/google_fonts.dart';
 //     Catcher.reportCheckedError(error, stackTrace);
 //   });
 // }
+Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 class MyApp extends StatefulWidget {
   @override
@@ -45,7 +51,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   StreamSubscription _deeplinkSubscription;
   StreamSubscription _amplifySubscription;
-  bool _amplifyInitialized = true;
+  bool _amplifyInitialized = false;
   String _amplifyError;
 
   @override
@@ -67,13 +73,39 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _init() async {
     print('_init().start()');
-    // await _initAmplify();
+    await _initAmplify();
     // await _initAmplifyDataStore();
     // await initDependencyInjection();
     await _initDeepLinks();
     print('_init().end()');
   }
 
+  void _initAmplify() async {
+    print('_initAmplify().start()');
+    if (_amplifyInitialized == true) {
+      print('_initAmplify(): Amplify already initialized, skipping...');
+      return;
+    }
+    try {
+      await Amplify.addPlugins([AmplifyAuthCognito()]);
+      // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
+      await Amplify.configure(getAmplifyConfig(awsConfig));
+      print('_initAmplify().Amplify initialized successfully...');
+      setState(() {
+        _amplifyInitialized = true;
+      });
+    } on AmplifyAlreadyConfiguredException {
+      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+      setState(() {
+        _amplifyInitialized = true;
+      });
+    } on Exception catch (e) {
+      print('_initAmplify().Error initializing Amplify: $e');
+      setState(() {
+        _amplifyInitialized = false;
+      });
+    }
+  }
 
   // void _initAmplifyDataStore() async {
   //   print('_initAmplifyDataStore().start()');

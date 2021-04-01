@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fa_prev/app.dart';
 import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -26,7 +27,6 @@ import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
 GetIt getIt = GetIt.instance;
-Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 Future<void> initDependencyInjection() async {
   _initCommon();

@@ -88,5 +88,6 @@
               <data android:scheme="anyupp" />
           </intent-filter>
         </activity>
+        
     </application>
 </manifest>

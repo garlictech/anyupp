@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/app.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -527,8 +528,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);
-              _toggleEmailLoginForm();
-              // getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
+              // _toggleEmailLoginForm();
+              getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
 
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));

@@ -22,9 +22,11 @@ class AwsProductProvider implements IProductProvider {
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_LIST_PRODUCT_CATEGORIES),
         variables: {
-          'unitId': unitId,
+          'chainId': chainId,
         },
       ));
+
+      print('getProductCategoryList.result=$result');
 
       List<dynamic> items = result.data['listProductCategorys']['items'];
       List<ProductCategory> results = [];

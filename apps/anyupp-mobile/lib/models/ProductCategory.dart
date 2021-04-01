@@ -7,7 +7,7 @@ import 'core/model_base.dart';
 @immutable
 class ProductCategory extends Model {
   final String id;
-  final String unitId;
+  final String chainId;
   final LocalizedItem name;
   final LocalizedItem description;
   final String image;
@@ -20,7 +20,7 @@ class ProductCategory extends Model {
 
   const ProductCategory._internal(
       {@required this.id,
-      @required this.unitId,
+      @required this.chainId,
       this.name,
       this.description,
       this.image,
@@ -28,14 +28,14 @@ class ProductCategory extends Model {
 
   factory ProductCategory(
       {String id,
-      @required String unitId,
+      @required String chainId,
       LocalizedItem name,
       LocalizedItem description,
       String image,
       int position}) {
     return ProductCategory._internal(
         id: id == null ? UUID.getUUID() : id,
-        unitId: unitId,
+        chainId: chainId,
         name: name,
         description: description,
         image: image,
@@ -51,7 +51,7 @@ class ProductCategory extends Model {
     if (identical(other, this)) return true;
     return other is ProductCategory &&
         id == other.id &&
-        unitId == other.unitId &&
+        chainId == other.chainId &&
         name == other.name &&
         description == other.description &&
         image == other.image &&
@@ -67,7 +67,7 @@ class ProductCategory extends Model {
 
     buffer.write("ProductCategory {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("unitId=" + "$unitId" + ", ");
+    buffer.write("chainId=" + "$chainId" + ", ");
     buffer.write("name=" + (name != null ? name.toString() : "null") + ", ");
     buffer.write("description=" +
         (description != null ? description.toString() : "null") +
@@ -82,14 +82,14 @@ class ProductCategory extends Model {
 
   ProductCategory copyWith(
       {String id,
-      String unitId,
+      String chainId,
       LocalizedItem name,
       LocalizedItem description,
       String image,
       int position}) {
     return ProductCategory(
         id: id ?? this.id,
-        unitId: unitId ?? this.unitId,
+        chainId: chainId ?? this.chainId,
         name: name ?? this.name,
         description: description ?? this.description,
         image: image ?? this.image,
@@ -98,7 +98,7 @@ class ProductCategory extends Model {
 
   ProductCategory.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        unitId = json['unitId'],
+        chainId = json['chainId'],
         name = json['name'] != null
             ? LocalizedItem.fromJson(
                 Map<String, dynamic>.from(json['name']))
@@ -112,7 +112,7 @@ class ProductCategory extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'unitId': unitId,
+        'chainId': chainId,
         'name': name?.toJson(),
         'description': description?.toJson(),
         'image': image,

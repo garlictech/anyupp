@@ -344,7 +344,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                           ),
                           child: Center(
                             child: Text(
-                              (units[index].distance / 1000).toStringAsFixed(3) + ' km',
+                              (units[index].distance ?? 0 / 1000).toStringAsFixed(3) + ' km',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 color: const Color(0xffffffff),

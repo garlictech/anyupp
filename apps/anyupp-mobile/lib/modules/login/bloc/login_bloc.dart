@@ -18,13 +18,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     print('*** LoginBloc().mapEventToState=$event');
     try {
 
-      if (event is LoginWithMethod) {
-        yield ShowSocialLoginWebView(event.method);
-        return;
-      }
+      // if (event is LoginWithMethod) {
+      //   yield ShowSocialLoginWebView(event.method);
+      //   return;
+      // }
 
       // --- Handle logins
-      if (event is CompleteLoginWithMethod) {
+      if (event is LoginWithMethod) {
         yield LoginInProgress();
 
         // --- HANDLE FEDERATED LOGINS (FACEBOOK, APPLE, GOOGLE)
