@@ -42,8 +42,10 @@ describe('Admin user creation/deletion', () => {
               userName,
             })
             .pipe(
-              catchError(err => {
-                console.warn('Probably normal error: ', err);
+              catchError((err: Error) => {
+                if (!err.message.includes('User does not exist')) {
+                  console.warn('Probably normal error: ', err);
+                }
                 return of({});
               }),
             ),
