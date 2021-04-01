@@ -26,7 +26,7 @@
       [autocomplete]="false"
     >
       <div class="row">
-        <div class="col-4">
+        <div class="col-3">
           <bgap-form-text-input
             caption="common.nameHU"
             type="text"
@@ -34,7 +34,7 @@
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
           <bgap-form-text-input
             caption="common.nameEN"
             type="text"
@@ -42,25 +42,15 @@
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
           <bgap-form-text-input
             caption="common.nameDE"
             type="text"
             [control]="dialogForm.get('name')!.get('de')! | asFormControl"
           ></bgap-form-text-input>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-md-4">
-          <bgap-form-text-input
-            caption="roleContexts.contextId"
-            type="text"
-            [control]="dialogForm.get('contextId')! | asFormControl"
-          ></bgap-form-text-input>
-        </div>
-
-        <div class="col-md-4">
+        <div class="col-md-3">
           <bgap-form-select
             [control]="dialogForm.get('role')! | asFormControl"
             caption="roles.role"

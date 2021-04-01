@@ -257,7 +257,17 @@ export class CognitoStack extends Stack {
       userPoolId: userPool.userPoolId,
       css: `
         .banner-customizable {
-          background: linear-gradient(#9940B8, #C27BDB)
+          background: #464646;
+        }
+        .submitButton-customizable {
+          height: 32px;
+          background-color: #3366ff;
+        }
+        .submitButton-customizable:hover {
+          background-color: #598bff;
+        }
+        .inputField-customizable {
+          border: 1px solid #e4e9f2;
         }
       `,
     });

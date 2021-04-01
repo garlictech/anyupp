@@ -4,27 +4,12 @@ import { unitsSelectors } from 'libs/admin/shared/data-access/units/src';
 import { NGXLogger } from 'ngx-logger';
 import { pairwise, startWith, take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
-import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { AbstractControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
-import {
-  EAdminRole,
-  IChain,
-  IKeyValue,
-  IRoleContext,
-} from '@bgap/shared/types';
+import { clearDbProperties, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { EAdminRole, IChain, IKeyValue, IRoleContext } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -72,7 +57,6 @@ export class RoleContextFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group(
       {
-        contextId: ['', [Validators.required]],
         name: this._formBuilder.group(
           {
             hu: [''],
@@ -162,9 +146,7 @@ export class RoleContextFormComponent
       });
   }
 
-  private _roleLevelValidator = (
-    control: AbstractControl,
-  ): unknown => {
+  private _roleLevelValidator = (control: AbstractControl): unknown => {
     switch (control.value.role) {
       case EAdminRole.INACTIVE:
       case EAdminRole.SUPERUSER:
@@ -231,7 +213,10 @@ export class RoleContextFormComponent
         try {
           await this._amplifyDataService.create(
             'createRoleContext',
-            this.dialogForm?.value,
+            {
+              ...this.dialogForm?.value,
+              contextId: Math.random().toString(36).substring(2, 8)
+            },
           );
 
           this._toasterService.show(
