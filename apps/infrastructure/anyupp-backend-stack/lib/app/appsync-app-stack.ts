@@ -7,6 +7,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
+import { createAdminUserResolvers } from '@bgap/api/admin-user';
 import { createOrderResolvers } from '@bgap/api/order';
 import * as sst from '@serverless-stack/resources';
 
@@ -61,11 +62,8 @@ export class AppsyncAppStack extends sst.Stack {
 
     this.createDatasources(props);
 
-    createOrderResolvers({
-      lambdaDs: this.lambdaDs,
-    });
-
-    this.createAdminUserResolvers();
+    createOrderResolvers({ lambdaDs: this.lambdaDs });
+    createAdminUserResolvers({ lambdaDs: this.lambdaDs });
 
     new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -132,30 +130,5 @@ export class AppsyncAppStack extends sst.Stack {
 
     props.secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
-  }
-
-  private createAdminUserResolvers() {
-    ['createAdminUser', 'deleteAdminUser'].forEach(fieldName =>
-      this.lambdaDs.createResolver({
-        typeName: 'Mutation',
-        fieldName,
-        requestMappingTemplate: appsync.MappingTemplate.fromString(
-          `
-      {
-        "version" : "2017-02-28",
-        "operation" : "Invoke",
-        "payload": {
-
-          "handler": "${fieldName}",
-          "payload": $util.toJson($ctx.arguments)
-        }
-      }
-      `,
-        ),
-        responseMappingTemplate: appsync.MappingTemplate.fromString(
-          '$util.toJson($context.result)',
-        ),
-      }),
-    );
   }
 }

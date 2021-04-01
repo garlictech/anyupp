@@ -1555,6 +1555,27 @@
           }
         }
       }
+    },
+    "api-admin-user": {
+      "root": "libs/api/admin-user",
+      "sourceRoot": "libs/api/admin-user/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/admin-user/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/admin-user"],
+          "options": {
+            "jestConfig": "libs/api/admin-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

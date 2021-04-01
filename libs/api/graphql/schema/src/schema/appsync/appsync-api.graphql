@@ -114,12 +114,13 @@ type Mutation {
 
   createOrderFromCart(
     input: CreateOrderFromCartInput!
-  ): CreateOrderFromCartOutput @aws_cognito_user_pools @aws_api_key
+  ): CreateOrderFromCartOutput! @aws_cognito_user_pools @aws_api_key
   # Stripe
-  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+  startStripePayment(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput! @aws_cognito_user_pools
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
     @aws_cognito_user_pools
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-    @aws_cognito_user_pools
-  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!
     @aws_cognito_user_pools
 }
