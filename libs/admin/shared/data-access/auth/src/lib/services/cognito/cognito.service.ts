@@ -1,5 +1,5 @@
 import { from, Observable, of } from 'rxjs';
-import { catchError, map, mapTo } from 'rxjs/operators';
+import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
@@ -35,8 +35,18 @@ export class CognitoService {
     }
   }
 
-  public signIn(): void {
-    Auth.federatedSignIn();
+  public signIn(context = 'FOOBARCONTEXT'): void {
+    from(Auth.federatedSignIn()).pipe(
+      switchMap(() => from(Auth.currentAuthenticatedUser())),
+      switchMap(user =>
+        from(
+          Auth.updateUserAttributes(user, { 'custom:context': context }),
+        ).pipe(
+          switchMap(() => from(Auth.currentSession())),
+          switchMap(session => user.refreshSession(session.getRefreshToken())),
+        ),
+      ),
+    );
   }
 
   public signOut(): Observable<boolean> {

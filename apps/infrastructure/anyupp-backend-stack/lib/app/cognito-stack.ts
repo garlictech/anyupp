@@ -1,8 +1,11 @@
-import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput, Duration } from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
+import * as ssm from '@aws-cdk/aws-ssm';
+import { CfnOutput, Duration } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
+import path from 'path';
+import { commonLambdaProps } from './lambda-common';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -400,6 +403,35 @@ export class CognitoStack extends Stack {
       signInAliases: {
         email: true,
         phone: true,
+      },
+      lambdaTriggers: {
+        preTokenGeneration: new lambda.Function(
+          this,
+          'AdminPreTokenGenerationLambda',
+          {
+            ...commonLambdaProps,
+            // It must be relative to the serverless.yml file
+            handler: 'lib/lambda/pre-token-generation/index.handler',
+            code: lambda.Code.fromAsset(
+              path.join(
+                __dirname,
+                '../../.serverless/pre-token-generation.zip',
+              ),
+            ),
+          },
+        ),
+        preAuthentication: new lambda.Function(
+          this,
+          'AdminPreAuthenticationLambda',
+          {
+            ...commonLambdaProps,
+            // It must be relative to the serverless.yml file
+            handler: 'lib/lambda/pre-authentication/index.handler',
+            code: lambda.Code.fromAsset(
+              path.join(__dirname, '../../.serverless/pre-authentication.zip'),
+            ),
+          },
+        ),
       },
     });
   }
