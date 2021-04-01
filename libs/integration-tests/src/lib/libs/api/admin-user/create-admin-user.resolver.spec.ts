@@ -4,7 +4,7 @@ import {
   GraphqlApiUrl,
   testAdminUsername,
   testAdminUserPassword,
-} from '../../../../common';
+} from '../../../common';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
@@ -42,8 +42,10 @@ describe('Admin user creation/deletion', () => {
               userName,
             })
             .pipe(
-              catchError(err => {
-                console.warn('Probably normal error: ', err);
+              catchError((err: Error) => {
+                if (!err.message.includes('User does not exist')) {
+                  console.warn('Probably normal error: ', err);
+                }
                 return of({});
               }),
             ),

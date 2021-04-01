@@ -30,9 +30,6 @@
     "paths": {
       "*": ["*", "types/*"],
       "crypto": ["node_modules/crypto-js"],
-      "@bgap/api/graphql/resolvers": [
-        "libs/api/graphql/resolvers/src/index.ts"
-      ],
       "@bgap/api/graphql/schema": ["libs/api/graphql/schema/src/index.ts"],
       "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
       "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
@@ -103,9 +100,6 @@
       ],
       "@bgap/admin/shared/data-access/storage": [
         "libs/admin/shared/data-access/storage/src/index.ts"
-      ],
-      "@bgap/api/graphql/appsync-lambda": [
-        "libs/api/graphql/appsync-lambda/src/index.ts"
       ],
       "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
