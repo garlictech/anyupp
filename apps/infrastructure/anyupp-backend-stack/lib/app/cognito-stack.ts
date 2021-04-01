@@ -420,18 +420,18 @@ export class CognitoStack extends Stack {
             ),
           },
         ),
-        preAuthentication: new lambda.Function(
-          this,
-          'AdminPreAuthenticationLambda',
-          {
-            ...commonLambdaProps,
-            // It must be relative to the serverless.yml file
-            handler: 'lib/lambda/pre-authentication/index.handler',
-            code: lambda.Code.fromAsset(
-              path.join(__dirname, '../../.serverless/pre-authentication.zip'),
-            ),
-          },
-        ),
+        //preAuthentication: new lambda.Function(
+        //  this,
+        //  'AdminPreAuthenticationLambda',
+        //  {
+        //    ...commonLambdaProps,
+        //    // It must be relative to the serverless.yml file
+        //    handler: 'lib/lambda/pre-authentication/index.handler',
+        //    code: lambda.Code.fromAsset(
+        //      path.join(__dirname, '../../.serverless/pre-authentication.zip'),
+        //    ),
+        //  },
+        //),
       },
     });
   }
