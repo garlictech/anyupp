@@ -94,7 +94,7 @@ export interface IOrder {
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  place: IPlace;
+  place?: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;

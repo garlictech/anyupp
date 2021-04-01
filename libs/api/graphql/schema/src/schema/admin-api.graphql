@@ -25,7 +25,7 @@ type AdminUser @model @auth(rules: [{ allow: public }]) {
   name: String!
   profileImage: String
   settings: AdminUserSettings
-  roles: [ID]
+  roleContexts: [AdminRoleContext] @connection(keyName: "byAdminUser", fields: ["id"])
 }
 
 type AdminUserSettings {
@@ -37,15 +37,32 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
+###
+# Create a join model and disable queries as you don't need them
+# and can query through Post.editors and AdminUser.roleContexts
+type AdminRoleContext
+  @model(queries: null)
+  @auth(rules: [{ allow: public }])
+  @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
+  @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
+  id: ID!
+  roleContextId: ID!
+  adminUserId: ID!
+  roleContext: RoleContext! @connection(fields: ["roleContextId"])
+  adminUser: AdminUser! @connection(fields: ["adminUserId"])
+}
+
 ### RoleContext
 
 type RoleContext @model @auth(rules: [{ allow: public }]) {
-  contextId: String! # Readable short id
+  id: ID!
+  contextId: ID! # Readable short id
   role: String!
   name: LocalizedItem
   chainId: String
   groupId: String
   unitId: String
+  adminUsers: [AdminRoleContext] @connection(keyName: "byRoleContext", fields: ["id"])
 }
 
 ### Stripe
@@ -427,13 +444,13 @@ type FloorMapDataObject {
 }
 
 enum UnitMapObjectType {
-  TABLE_RECTANGLE
-  TABLE_CIRCLE
-  SEAT_RECTANGLE
-  SEAT_CIRCLE
-  COUNTER
-  WALL
-  LABEL
+  table_r
+  table_c
+  seat_r
+  seat_c
+  counter
+  wall
+  label
 }
 
 type Lane {
