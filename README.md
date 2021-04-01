@@ -98,6 +98,8 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
   to the "name" field
 - in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
   in the `service` field
+- in `apps/admin-amplify-app/.graphqlconfig.yml`, use the same name
+  in the `schemaPath` field (...api/<APPNAME>/build...)
 - build and deploy the stack to the desired stage (it will use the stage-related
   parameters, secrets, etc:)
 
@@ -126,6 +128,7 @@ amplify import auth
 - Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
+
 
 Appsync part:
 
@@ -504,11 +507,11 @@ Generate amplify GQL models - this script moves the models folder into the lib f
 
 
 ### Amplify - Mobile
-Configure mobile app. 
+Configure mobile app.
 You need to upload some keys to the secretmanager and some paramaters to the parameter store.
 
 ### Mobile app parameters
-Parameters that are required in the parameter store for the mobile app are the followings: 
+Parameters that are required in the parameter store for the mobile app are the followings:
   `'{STAGE}-{APPNAME}-region',`  - Server region, eg eu-west-1
   `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
   `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app

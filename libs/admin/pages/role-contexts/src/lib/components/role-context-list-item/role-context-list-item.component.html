@@ -1,6 +1,6 @@
 <div class="float-left">
   <div class="subtitle-2">{{ roleContext.name | localize }} &bull; {{ roleContext.contextId }} </div>
-  <div class="caption">{{ roleContext | roleEntityNames }}</div>
+  <div class="caption">{{ 'roles.' + roleContext.role | translate }} @ {{ roleContext | roleEntityNames | async  }}</div>
 </div>
 
 <button
