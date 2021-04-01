@@ -33,13 +33,6 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-server": {
-      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "api-graphql-resolvers": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -148,9 +141,6 @@
     "infrastructure-build-pipeline-stack": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
-    "api-graphql-appsync-lambda": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
     "shared-utils": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -161,7 +151,10 @@
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
     "api-order": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "api-admin-user": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "shared-graphql-api-client": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]

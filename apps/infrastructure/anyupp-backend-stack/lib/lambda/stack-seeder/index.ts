@@ -73,20 +73,29 @@ export const seedAdminUser = (UserPoolId: string) =>
         },
       ],
     },
-    params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
-    from,
-    switchMap(() =>
+    // CREATE user in Cognito
+    params =>
       from(
-        cognitoidentityserviceprovider
-          .adminSetUserPassword({
-            UserPoolId,
-            Username: username,
-            Password: password,
-            Permanent: true,
-          })
-          .promise(),
+        cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+      ).pipe(
+        switchMap(() =>
+          from(
+            cognitoidentityserviceprovider
+              .adminSetUserPassword({
+                UserPoolId,
+                Username: username,
+                Password: password,
+                Permanent: true,
+              })
+              .promise(),
+          ),
+        ),
+        catchError(err => {
+          console.warn('Probably normal error: ', err);
+          return of({});
+        }),
       ),
-    ),
+    // GET user from Cognito
     switchMap(() =>
       from(
         cognitoidentityserviceprovider

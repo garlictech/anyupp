@@ -1,16 +1,17 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
 import { from, Observable, throwError } from 'rxjs';
 import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
-import * as fp from 'lodash/fp';
-import {
-  awsConfig,
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
-import { DeleteAdminUserMutationVariables } from '@bgap/api/graphql/schema';
+import {
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
+  awsConfig,
+} from '@bgap/admin/amplify-api';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -21,7 +22,9 @@ const UserPoolId = process.env.userPoolId || '';
 
 Amplify.configure(awsConfig);
 
-export const deleteAdminUser = (params: DeleteAdminUserMutationVariables) => {
+export const deleteAdminUser = (
+  params: AppsyncApi.DeleteAdminUserMutationVariables,
+) => {
   console.debug('Resolver parameters: ', params);
   let userId: string;
 

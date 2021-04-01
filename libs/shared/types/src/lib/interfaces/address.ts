@@ -1,5 +1,8 @@
 import * as Joi from 'joi';
 
+export const latitudeSchema = Joi.number().min(-90).max(90).precision(8);
+export const longitudeSchema = Joi.number().min(-180).max(180).precision(8);
+
 export interface ILocation {
   __typename?: 'Location';
   lat: number;
@@ -8,8 +11,8 @@ export interface ILocation {
 
 export const locationSchema: Joi.SchemaMap<ILocation> = {
   __typename: Joi.string().valid('Location').optional(),
-  lat: Joi.number(),
-  lng: Joi.number(),
+  lat: latitudeSchema,
+  lng: longitudeSchema,
 };
 
 export interface IAddress {

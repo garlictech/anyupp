@@ -105,6 +105,8 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 
 :exclamation: use your own app name
 
+!!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
+
 ```
 nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
@@ -155,7 +157,11 @@ Use a Cognito user pool configured as a part of this project.
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
-Then, it pushes the app, and generates code. Code generation steps:
+Then, we should push the app, and generat code. Code generation steps:
+
+```
+amplify push
+```
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
@@ -246,7 +252,7 @@ Both systems have some minimal data seeded at deploy/creation time.
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@test.com`, password: `Testtesttest12_`
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
