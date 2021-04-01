@@ -1,14 +1,13 @@
 import { pipe } from 'fp-ts/lib/function';
-import { from, throwError, of } from 'rxjs';
+import { from, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import { EProductType } from '@bgap/shared/types';
-import { switchMap, catchError } from 'rxjs/operators';
-import { deleteGroup } from '../../../../../../libs/admin/amplify-api/src/lib/generated/graphql/mutations';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
 } from '@bgap/admin/amplify-api';
+import { EProductType } from '@bgap/shared/types';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
