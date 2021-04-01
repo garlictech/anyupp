@@ -4,7 +4,7 @@ import {
   GraphqlApiUrl,
   testAdminUsername,
   testAdminUserPassword,
-} from '../../../../common';
+} from '../../../common';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
