@@ -120,7 +120,8 @@
       "@bgap/shared/graphql/api-client": [
         "libs/shared/graphql/api-client/src/index.ts"
       ],
-      "@bgap/api/admin-user": ["libs/api/admin-user/src/index.ts"]
+      "@bgap/api/admin-user": ["libs/api/admin-user/src/index.ts"],
+      "@bgap/api/unit": ["libs/api/unit/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

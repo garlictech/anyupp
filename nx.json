@@ -165,6 +165,9 @@
     "api-stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
+    "api-unit": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
     "integration-tests": {
       "tags": ["type:integration-tests"]
     },
