@@ -14,9 +14,7 @@ import 'package:fa_prev/modules/cart/cart.dart';
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final CartItem order;
-  final GeneratedProduct product;
-  final ProductVariant variant;
-  CartListItemWidget({Key key, this.unit, this.order, this.product, this.variant}) : super(key: key);
+  CartListItemWidget({Key key, this.unit, this.order}) : super(key: key);
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -39,7 +37,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
               ),
               width: 100,
               child: ImageWidget(
-                url: this.widget.product.image,
+                url: this.widget.order.product.image,
                 placeholder: CircularProgressIndicator(),
                 errorWidget: Icon(Icons.error),
                 fit: BoxFit.cover,
@@ -60,7 +58,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          getLocalizedText(context, widget.product.name).toUpperCase(),
+                          getLocalizedText(context, widget.order.product.name).toUpperCase(),
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -69,7 +67,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                           ),
                         ),
                         Text(
-                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.variant.variantName)}",
+                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variant.variantName)}",
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -83,7 +81,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           margin: EdgeInsets.only(bottom: 2),
                           child: Text(
-                            formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
+                            formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency ?? 'huf'), // TODO geounit!!
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -167,12 +165,12 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _addOrder() {
     BlocProvider.of<CartBloc>(context).add(
-        AddProductToCartAction(widget.unit, widget.product, widget.variant));
+        AddProductToCartAction(widget.unit, widget.order.product, widget.order.variant));
   }
 
   void _removeOrder() {
     BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(
-        widget.unit.chainId, widget.unit.id, widget.product, widget.variant));
+        widget.unit.chainId, widget.unit.id, widget.order.product, widget.order.variant));
   }
 
   double getTotalPriceOfOrederItem(CartItem item) {

@@ -86,6 +86,7 @@ class Cart extends Model {
         (paymentMethod != null ? paymentMethod.toString() : "null") +
         ", ");
     buffer.write("created=" + (created != null ? created.toString() : "null"));
+    buffer.write("items=$items");
     buffer.write("}");
 
     return buffer.toString();

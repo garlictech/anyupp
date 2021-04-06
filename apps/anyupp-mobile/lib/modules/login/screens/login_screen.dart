@@ -450,8 +450,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      // TODO: we could use remoteConfig to aquire this value independent of the app version
-                                      // or the firebase storage getDownloadUrl method in case we need the latest documents for all the app versions
                                       launch('https://www.anyupp.com/privacy/');
                                     },
                                 ),

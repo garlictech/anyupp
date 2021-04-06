@@ -47,7 +47,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ],
           ),
           Text(
-            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency),
+            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'),  // TODO geounit!!
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,

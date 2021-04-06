@@ -31,16 +31,6 @@ import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// void runApp() {
-//   runZoned(() async {
-//     await initDependencyInjection();
-//     // WidgetsFlutterBinding.ensureInitialized();
-//     configureCatcherAndRunZonedApp(MyApp());
-//     // runApp(MyApp());
-//   }, onError: (error, stackTrace) {
-//     Catcher.reportCheckedError(error, stackTrace);
-//   });
-// }
 Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 class MyApp extends StatefulWidget {

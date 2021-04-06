@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fa_prev/app.dart';
-import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -19,9 +18,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
@@ -53,10 +50,6 @@ void _initCommon() {
     clientId: awsConfig['consumerNativeUserPoolClientId'],
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
-
-  getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
-  getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
-  // getIt.registerLazySingleton<ValueNotifier<GraphQLClient>>(() => graphQLClient);
   getIt.registerLazySingleton<Stripe>(() => stripe);
 }
 
@@ -81,7 +74,7 @@ void _initProviders() {
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(
-      () => AwsSocialLoginProvider(getIt<GoogleSignIn>(), getIt<FacebookLogin>(), getIt<IAuthProvider>()));
+      () => AwsSocialLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
 }
 

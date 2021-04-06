@@ -26,24 +26,21 @@ class CartRepository {
         place: await getPlacePref(),
         created: DateTime.now().millisecondsSinceEpoch,
         items: [
-          CartItem(
-            product: product,
-            variant: variant,
-            quantity: 1,
-          )
+          // CartItem(
+          //   product: product,
+          //   variant: variant,
+          //   quantity: 1,
+          // )
         ],
       );
     }
 
     int index = _cart.items.indexWhere((order) => order.product?.id == product.id && order.variant.id == variant.id);
     if (index != -1) {
-      // TODO AWS
-      // OrderItem existingOrder = _cart.order.items[index];
-      // Map<String, dynamic> data = existingOrder.toJson();
-      // data['quantity'] = data['quatnity'] + 1;
-      // existingOrder = OrderItem.fromJson(data);
       CartItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity + 1);
-      _cart.items[index] = existingOrder;
+      List<CartItem> items = List<CartItem>.from(_cart.items);
+      items[index] = existingOrder;
+      _cart = _cart.copyWith(items: items);
     } else {
       CartItem order = CartItem(
         product: product,
@@ -51,7 +48,9 @@ class CartRepository {
         quantity: 1,
       );
       // Order order = Order((_cart.orders.length + 1).toString(), product, variant, 1);
-      _cart.items.add(order);
+      List<CartItem> items = List<CartItem>.from(_cart.items);
+      items.add(order);
+      _cart = _cart.copyWith(items: items);
     }
 
     await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
@@ -62,19 +61,21 @@ class CartRepository {
       String chainId, String unitId, GeneratedProduct product, ProductVariant variant) async {
     Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
+      await _ordersProvider.updateCart(chainId, unitId, _cart);
       return null;
     }
 
     int index = _cart.items.indexWhere((order) => order.product.id == product.id && order.variant.id == variant.id);
     if (index != -1) {
-      // TODO AWS
-      // OrderItem existingOrder = _cart.order.items[index];
-      // Map<String, dynamic> data = existingOrder.toJson();
-      // data['quantity'] = data['quantity'] - 1;
-      // existingOrder = OrderItem.fromJson(data);
       CartItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity - 1);
-      if (existingOrder.quantity == 0) {
-        _cart.items.removeAt(index);
+      if (existingOrder.quantity <= 0) {
+        List<CartItem> items = List<CartItem>.from(_cart.items);
+        items.removeWhere((order) => order.product.id == product.id && order.variant.id == variant.id);
+        _cart = _cart.copyWith(items: items);
+      } else {
+        List<CartItem> items = List<CartItem>.from(_cart.items);
+        items[index] = existingOrder.copyWith();
+        _cart = _cart.copyWith(items: items);
       }
     }
 
@@ -88,7 +89,9 @@ class CartRepository {
       return null;
     }
 
-    _cart.items.removeWhere((o) => o.id == order.id);
+    List<CartItem> items = List<CartItem>.from(_cart.items);
+    items.removeWhere((o) => o.id == order.id);
+    _cart = _cart.copyWith(items: items);
     await _ordersProvider.updateCart(chainId, unitId, _cart);
     return _cart;
   }
@@ -98,7 +101,7 @@ class CartRepository {
     if (_cart == null || _cart.items == null) {
       return null;
     }
-    _cart =  _cart.copyWith(place: unit.place);
+    _cart = _cart.copyWith(place: unit.place);
     await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
     return _cart;
   }

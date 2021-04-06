@@ -295,7 +295,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Container(
                   margin: EdgeInsets.only(right: 8.0),
                   child: Text(
-                    formatCurrency(variant.price, unit.currency),
+                    formatCurrency(variant.price, unit.currency ?? 'huf'), // TODO geounit!!
                     textAlign: TextAlign.right,
                     style: GoogleFonts.poppins(
                       color: theme.highlight,

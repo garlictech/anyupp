@@ -109,8 +109,9 @@ class CartScreen extends StatelessWidget {
             return StreamBuilder<Cart>(
               stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
+                print('CartScreen.cart=${snapshot.data}');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                  if (snapshot.data != null) {
+                  if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
                     return _buildCartListAndTotal(context, state.unit, snapshot.data);
                   }
                   return _emptyCart(context);
@@ -179,7 +180,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency),
+                          formatCurrency(cart.totalPrice, unit.currency ?? 'huf'), // TODO GeoUnit currency!
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,

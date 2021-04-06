@@ -26,6 +26,7 @@ class AwsAuthProvider implements IAuthProvider {
   Future<User> getAuthenticatedUserProfile() async {
     print('getAuthenticatedUserProfile().user=$_user');
     try {
+
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: false),
       );

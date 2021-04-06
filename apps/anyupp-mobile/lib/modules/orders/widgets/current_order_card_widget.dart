@@ -125,7 +125,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
+            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'huf'),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,
