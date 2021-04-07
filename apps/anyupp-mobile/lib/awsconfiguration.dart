@@ -7,7 +7,5 @@ const AWSCONFIG = '''{
   "consumerUserPoolDomain": "https://dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
   "consumerUserPoolId": "eu-west-1_yKkBXvlqI",
   "region": "eu-west-1",
-  "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDBds",
-  "SlackErrorWebhookUrl": "https://hooks.slack.com/services/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",
-  "SlackErrorChannel": "anyupp-errors"
+  "stripePublishableKey": "pk_test_51H6vUFKnnCp2ddwxrks1Md8euzovN1gxvvKsXBVBwXumf70MfdLOJGkZN7cz4Rz3n1Dt5DD0UBHxkRuAHcaVZxM900rz9vDBds"
 }''';

@@ -3,7 +3,7 @@ import { CfnOutput, Construct, RemovalPolicy } from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import { StreamViewType, Table } from '@aws-cdk/aws-dynamodb';
 
-export interface GtrackTableProps {
+export interface AnyUppTableProps {
   isStreamed?: boolean;
   primaryKeyName?: string;
 }
@@ -11,7 +11,7 @@ export interface GtrackTableProps {
 export class TableConstruct extends Construct {
   public readonly theTable: Table;
 
-  constructor(scope: Construct, id: string, props?: GtrackTableProps) {
+  constructor(scope: Construct, id: string, props?: AnyUppTableProps) {
     super(scope, id);
     const app = this.node.root as sst.App;
 

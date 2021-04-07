@@ -4,7 +4,11 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import { Mutations, Queries, Subscriptions } from '@bgap/admin/amplify-api';
+import {
+  AmplifyApiMutationDocuments as Mutations,
+  AmplifyApiQueryDocuments as Queries,
+  AmplifyApiSubscriptionDocuments as Subscriptions,
+} from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
 import {
@@ -35,7 +39,7 @@ export class AmplifyDataService {
   public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
     return from(
       <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-        query: Queries[params.queryName],
+        query: Queries[params.queryName] as string, // TODO: Why should I cast this to string?
         variables: params.variables,
       }),
     ).pipe(

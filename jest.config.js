@@ -52,6 +52,8 @@ module.exports = {
     '<rootDir>/libs/stripe',
     '<rootDir>/libs/admin/shared/data-access/graphql-client',
     '<rootDir>/libs/shared/graphql/api-client',
+    '<rootDir>/libs/api/order',
+    '<rootDir>/libs/api/graphql/resolver-mapping-templates',
     '<rootDir>/apps/amplify-admin',
     '<rootDir>/libs/admin/amplify',
     '<rootDir>/libs/integration-tests',
@@ -60,5 +62,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/contexts',
     '<rootDir>/libs/admin/shared/data-access/role-contexts',
     '<rootDir>/libs/admin/pages/role-contexts',
+    '<rootDir>/libs/api/admin-user',
   ],
 };

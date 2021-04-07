@@ -4,7 +4,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router } from '@angular/router';
 import { API, GraphQLResult } from '@aws-amplify/api';
-import { GetAdminUserQuery, Queries } from '@bgap/admin/amplify-api';
+import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import { IAdminUser, IAuthenticatedCognitoUser } from '@bgap/shared/types';
 
@@ -74,10 +74,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         (cognitoUser): Observable<IAdminUser | undefined> => {
           return cognitoUser
             ? from(
-                <Promise<GraphQLResult<GetAdminUserQuery>>>API.graphql({
-                  query: Queries.getAdminUser,
-                  variables: { id: <string>cognitoUser?.user?.id },
-                }),
+                <Promise<GraphQLResult<AmplifyApi.GetAdminUserQuery>>>(
+                  API.graphql({
+                    query: AmplifyApiQueryDocuments.getAdminUser,
+                    variables: { id: <string>cognitoUser?.user?.id },
+                  })
+                ),
               ).pipe(
                 map(data => {
                   return (<IAuthAdminResult>data).data?.getAdminUser;

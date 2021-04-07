@@ -128,7 +128,7 @@ export const getOrdersByUser = (
         ordersByUser[order.userId].hasPaymentIntention ||
         (order.paymentIntention || 0) > 0;
 
-      if (order.created > ordersByUser[order.userId].lastOrder.created) {
+      if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
         ordersByUser[order.userId].lastOrder = { ...order };
       }
 
@@ -151,7 +151,7 @@ export const getTableOrders = (
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
       (userOrder: IFloorMapUserOrders): boolean =>
-        `${userOrder.lastOrder.place.table}.${userOrder.lastOrder.place.seat}` ===
+        `${userOrder.lastOrder.place?.table || ''}.${userOrder.lastOrder.place?.seat || ''}` ===
         tsID,
     );
 

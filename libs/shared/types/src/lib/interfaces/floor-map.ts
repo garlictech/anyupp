@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import * as Joi from 'joi';
 
 import { EOrderStatus } from '../enums';
 import { IOrder } from './order';
@@ -19,10 +20,18 @@ export interface IFloorMapDataObject {
 }
 
 export interface IFloorMapData {
+  __typename?: 'FloorMapData';
   w: number;
   h: number;
   objects: IFloorMapDataObject[];
 }
+
+export const floorMapSchema: Joi.SchemaMap<IFloorMapData> = {
+  __typename: Joi.string().valid('PriceShown').optional(),
+  w: Joi.number().required(),
+  h: Joi.number().required(),
+  objects: Joi.object(),
+};
 
 export interface IFloorMapUserOrders {
   userId: string;
