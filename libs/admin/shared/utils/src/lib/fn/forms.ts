@@ -25,8 +25,8 @@ export const addressFormGroup = (formBuilder: FormBuilder, required = false) => 
     title: [''],
     postalCode: ['', required ? [Validators.required] : []],
     location: formBuilder.group({
-      lat: [''],
-      lng: [''],
+      lat: [0],
+      lng: [0],
     }),
   }),
 });

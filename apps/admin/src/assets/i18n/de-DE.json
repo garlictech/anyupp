@@ -16,6 +16,7 @@
     "inactive": "Inactive",
     "confirm": "Confirm",
     "cancel": "Cancel",
+    "delete": "Delete",
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
@@ -52,6 +53,7 @@
     "imageRemoveSuccess": "Image removed successfully",
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
+    "removeSuccessful": "Remove successful",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",
@@ -276,7 +278,8 @@
     "assignedGroups": "Assigned groups",
     "selectUnit": "Select unit",
     "assignedUnits": "Assigned units",
-    "assign": "Assign"
+    "assign": "Assign",
+    "confirmRemoveRoleContext": "Are you sure you remove assigning the role context?"
   },
   "errors": {
     "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",
