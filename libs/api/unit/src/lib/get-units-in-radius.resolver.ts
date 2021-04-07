@@ -1,22 +1,26 @@
+import * as geolib from 'geolib';
+import * as fp from 'lodash/fp';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
+import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { removeTypeNameField } from '@bgap/api/utils';
 import {
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 import {
+  IChain,
   IChainStyle,
-  IUnit,
-  validateGetGroupCurrency,
-  IWeeklySchedule,
   IPaymentMode,
+  IUnit,
+  IWeeklySchedule,
+  validateChain,
+  validateGetGroupCurrency,
+  validateUnit,
 } from '@bgap/shared/types';
-import * as fp from 'lodash/fp';
-import { Observable, combineLatest } from 'rxjs';
-import { map, switchMap, filter } from 'rxjs/operators';
 import { pipeDebug } from '@bgap/shared/utils';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { validateUnit } from '@bgap/shared/types';
-import * as geolib from 'geolib';
 
 type listResponse<T> = {
   items: Array<T>;
@@ -31,14 +35,14 @@ export const getUnitsInRadius = ({
   amplifyGraphQlClient: GraphqlApiClient;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Observable<listResponse<AppsyncApi.GeoUnit>> => {
-  console.log(
-    '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
-    JSON.stringify({
-      location,
-    }),
-    undefined,
-    2,
-  );
+  // console.log(
+  //   '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
+  //   JSON.stringify({
+  //     location,
+  //   }),
+  //   undefined,
+  //   2,
+  // );
 
   // TODO: use geoSearch for the units
   return listActiveUnits(amplifyGraphQlClient).pipe(
@@ -50,12 +54,17 @@ export const getUnitsInRadius = ({
           // .filter(isUnit)
           .map(unit =>
             getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
-              map(currency =>
+              switchMap(currency =>
+                getChain(amplifyGraphQlClient, unit.chainId).pipe(
+                  map(chain => ({ chain, currency })),
+                ),
+              ),
+              map(props =>
                 toGeoUnit({
                   unit,
-                  currency,
+                  currency: props.currency,
                   inputLocation: location,
-                  chainStyle: {} as any,
+                  chainStyle: props.chain.style,
                   openingHours: {},
                   paymentModes: {} as any,
                 }),
@@ -89,20 +98,10 @@ const toGeoUnit = ({
   groupId: unit.groupId,
   chainId: unit.chainId,
   name: unit.name,
-  address: unit.address as any,
-  style: chainStyle as any,
+  address: removeTypeNameField(unit.address),
+  style: removeTypeNameField(chainStyle),
   currency,
-  distance: geolib.getDistance(
-    {
-      latitude: unit.address.location.lat.toString(),
-      longitude: unit.address.location.lng.toString(),
-    },
-    {
-      latitude: inputLocation.lat.toString(),
-      longitude: inputLocation.lng.toString(),
-    },
-  ),
-  // distance: geolib.getDistance(unit.address.location, inputLocation),
+  distance: geolib.getDistance(unit.address.location, inputLocation),
   openingHours: getOpeningOursForToday(openingHours),
   // paymentModes: paymentModes as AppsyncApi.PaymentMode[],
   paymentModes: paymentModes as any,
@@ -139,5 +138,19 @@ const getGroupCurrency = (
     map(x => x.getGroup),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
+  );
+};
+
+const getChain = (
+  amplifyApiClient: GraphqlApiClient,
+  id: string,
+): Observable<IChain> => {
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetChainQuery>(
+    AmplifyApiQueryDocuments.getChain,
+    { id },
+  ).pipe(
+    map(x => x.getChain),
+    // pipeDebug(`### GET CHAIN with id: ${id}`),
+    switchMap(validateChain),
   );
 };

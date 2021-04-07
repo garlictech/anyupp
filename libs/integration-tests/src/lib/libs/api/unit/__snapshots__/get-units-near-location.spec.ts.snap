@@ -9,3 +9,21 @@ exports[`GetUnitsNearLocation tests input validation should throw without a lng 
 exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location\\" is required"`;
 
 exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location.lat\\" must be a number, \\"input.location.lng\\" must be less than or equal to 180"`;
+
+exports[`GetUnitsNearLocation tests should return all the units in  1`] = `
+Object {
+  "colors": Object {
+    "__typename": "ChainStyleColors",
+    "backgroundDark": "#fff",
+    "backgroundLight": "#fff",
+    "borderDark": "#fff",
+    "borderLight": "#fff",
+    "disabled": "#fff",
+    "highlight": "#fff",
+    "indicator": "#fff",
+    "textDark": "#fff",
+    "textLight": "#fff",
+  },
+  "images": null,
+}
+`;

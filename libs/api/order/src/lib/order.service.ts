@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { combineLatest, Observable, throwError, of } from 'rxjs';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
@@ -7,7 +7,7 @@ import {
   AmplifyApiMutationDocuments,
   AmplifyApiQueryDocuments,
 } from '@bgap/admin/amplify-api';
-import { toFixed2Number } from '@bgap/api/utils';
+import { removeTypeNameField, toFixed2Number } from '@bgap/api/utils';
 import {
   executeMutation,
   executeQuery,
@@ -176,11 +176,6 @@ const getOrderItems = ({
     ),
   );
 };
-
-// TODO: create a recursive version of this
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-const removeTypeNameField = ({ __typename, ...objectWithoutTypename }: any) =>
-  objectWithoutTypename;
 
 const convertCartOrderToOrderItem = ({
   userId,

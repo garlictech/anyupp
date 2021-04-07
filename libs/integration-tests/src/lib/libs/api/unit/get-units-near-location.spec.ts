@@ -134,7 +134,7 @@ describe('GetUnitsNearLocation tests', () => {
       next(result) {
         console.log(
           '### ~ file: get-units-near-location.spec.ts ~ line 88 ~ next ~ foundItems',
-          result,
+          JSON.stringify(result, undefined, 2),
         );
         expect(result).toHaveProperty('items');
         const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
@@ -152,6 +152,7 @@ describe('GetUnitsNearLocation tests', () => {
         expect(foundItems[2].distance).toEqual(153);
         // The rest is in the same location so we don't know their order
         expect(foundItems[3].distance).toEqual(54649);
+        expect(foundItems[0].style).toMatchSnapshot();
         done();
       },
     });
