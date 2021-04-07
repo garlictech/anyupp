@@ -225,7 +225,7 @@ export class CognitoStack extends Stack {
         flows: {
           authorizationCodeGrant: true,
         },
-        scopes: [cognito.OAuthScope.OPENID],
+        scopes: [cognito.OAuthScope.OPENID, cognito.OAuthScope.COGNITO_ADMIN],
         callbackUrls,
         logoutUrls,
       },
@@ -410,6 +410,13 @@ export class CognitoStack extends Stack {
           required: false,
         },
       },
+      customAttributes: {
+        context: new cognito.StringAttribute({
+          minLen: 1,
+          maxLen: 256,
+          mutable: true,
+        }),
+      },
       signInAliases: {
         email: true,
         phone: true,
@@ -430,18 +437,6 @@ export class CognitoStack extends Stack {
             ),
           },
         ),
-        //preAuthentication: new lambda.Function(
-        //  this,
-        //  'AdminPreAuthenticationLambda',
-        //  {
-        //    ...commonLambdaProps,
-        //    // It must be relative to the serverless.yml file
-        //    handler: 'lib/lambda/pre-authentication/index.handler',
-        //    code: lambda.Code.fromAsset(
-        //      path.join(__dirname, '../../.serverless/pre-authentication.zip'),
-        //    ),
-        //  },
-        //),
       },
     });
   }

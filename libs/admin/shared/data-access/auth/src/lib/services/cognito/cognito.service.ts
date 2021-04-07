@@ -1,5 +1,5 @@
-import { from, Observable, of } from 'rxjs';
-import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
+import { bindNodeCallback, from, Observable, of } from 'rxjs';
+import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
@@ -11,6 +11,13 @@ import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
 export class CognitoService {
   private _onSignInCallback?: () => void;
   private _onSignOutCallback?: () => void;
+  // Handle this properly
+  private _currentContext = 'DEFAULTCONTEXT';
+
+  // Call this to set the current context to be authorized
+  set currentContext(context: string) {
+    this._currentContext = context;
+  }
 
   constructor() {
     Hub.listen('auth', data => {
@@ -26,6 +33,7 @@ export class CognitoService {
     message?: string;
   }): void {
     if (payload.event === 'signIn') {
+      this._handleContext();
       this._onSignInCallback?.();
     } else if (
       payload.event === 'signOut' ||
@@ -35,23 +43,8 @@ export class CognitoService {
     }
   }
 
-  public signIn(context = 'FOOBARCONTEXT'): void {
-    from(Auth.federatedSignIn()).pipe(
-      tap(x => console.log('***1', x)),
-      switchMap(() => from(Auth.currentAuthenticatedUser())),
-      tap(x => console.log('***2', x)),
-      switchMap(user =>
-        from(
-          Auth.updateUserAttributes(user, { 'custom:context': context }),
-        ).pipe(
-          tap(x => console.log('***3', x)),
-          switchMap(() => from(Auth.currentSession())),
-          tap(x => console.log('***4', x)),
-          switchMap(session => user.refreshSession(session.getRefreshToken())),
-          tap(x => console.log('***5', x)),
-        ),
-      ),
-    );
+  public signIn(): void {
+    Auth.federatedSignIn();
   }
 
   public signOut(): Observable<boolean> {
@@ -82,7 +75,6 @@ export class CognitoService {
         const decoded = token?.decodePayload();
 
         return {
-          token: token?.getJwtToken(),
           user: {
             id: decoded?.sub,
             email: decoded?.email,
@@ -93,16 +85,27 @@ export class CognitoService {
     );
   }
 
-  /* Empty ???
-  public getUserProfile(): Observable<unknown> {
-    return from(Auth.currentUserInfo());
+  private async _handleContext() {
+    await from(Auth.currentAuthenticatedUser())
+      .pipe(
+        switchMap((user: CognitoUser) =>
+          from(
+            Auth.updateUserAttributes(user, {
+              'custom:context': this._currentContext,
+            }),
+          ).pipe(
+            switchMap(() => from(Auth.currentSession())),
+            switchMap(session =>
+              bindNodeCallback(
+                (
+                  refreshToken: ReturnType<typeof session.getRefreshToken>,
+                  cb: () => void,
+                ) => user.refreshSession(refreshToken, cb),
+              )(session.getRefreshToken()),
+            ),
+          ),
+        ),
+      )
+      .toPromise();
   }
-  */
-
-  //
-  /*
-  public refreshSession(): Observable<boolean> {
-    return from(Auth.currentSession()).pipe(mapTo(true));
-  }
-  */
 }

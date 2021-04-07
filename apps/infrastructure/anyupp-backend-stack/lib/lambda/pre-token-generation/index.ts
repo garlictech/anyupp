@@ -1,15 +1,18 @@
 import { PreTokenGenerationTriggerHandler } from 'aws-lambda';
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-
-const cognitoISP = new CognitoIdentityServiceProvider();
 
 export const handler: PreTokenGenerationTriggerHandler = async event => {
-  console.log('*****', event, JSON.stringify(event, null, 2));
-  //event.response.claimsOverrideDetails = {
-  //  claimsToAddOrOverride: {
-  //    roles: (roles && roles.Value) || 'user',
-  //  },
-  //};
+  const desiredContext = event.request.userAttributes['custom:context'];
+
+  // add the context checking logic here. The user id is: event.request.userAttributes.sub
+  // verify the role with graphql, if it is OK, then fetch teh context data, and
+  // execute code like below
+  // otherwise do NOT execute it so that there is no context data in the token.
+
+  event.response.claimsOverrideDetails = {
+    claimsToAddOrOverride: {
+      groupId: 'MY GROUP ID',
+    },
+  };
 
   return event;
 };

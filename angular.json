@@ -1299,27 +1299,6 @@
         }
       }
     },
-    "integration-tests": {
-      "root": "libs/integration-tests",
-      "sourceRoot": "libs/integration-tests/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/integration-tests/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/integration-tests"],
-          "options": {
-            "jestConfig": "libs/integration-tests/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-amplify-app": {
       "root": "apps/admin-amplify-app",
       "sourceRoot": "apps/admin-amplify-app/src",
@@ -1479,6 +1458,77 @@
           "outputs": ["coverage/libs/api/admin-user"],
           "options": {
             "jestConfig": "libs/api/admin-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "integration-tests-nodejs": {
+      "root": "libs/integration-tests/nodejs",
+      "sourceRoot": "libs/integration-tests/nodejs/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/integration-tests/nodejs/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests/nodejs"],
+          "options": {
+            "jestConfig": "libs/integration-tests/nodejs/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "integration-tests-angular": {
+      "projectType": "library",
+      "root": "libs/integration-tests/angular",
+      "sourceRoot": "libs/integration-tests/angular/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/integration-tests/angular/tsconfig.lib.json",
+              "libs/integration-tests/angular/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/integration-tests/angular/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests/angular"],
+          "options": {
+            "jestConfig": "libs/integration-tests/angular/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-data-validators": {
+      "root": "libs/shared/data-validators",
+      "sourceRoot": "libs/shared/data-validators/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/data-validators/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/data-validators"],
+          "options": {
+            "jestConfig": "libs/shared/data-validators/jest.config.js",
             "passWithNoTests": true
           }
         }
