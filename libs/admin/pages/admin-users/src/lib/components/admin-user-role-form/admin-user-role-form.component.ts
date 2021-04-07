@@ -1,23 +1,22 @@
-import { take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { Component, Injector, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { EToasterType } from '@bgap/admin/shared/utils';
 import {
   IAdminUser,
   IAdminUserConnectedRoleContext,
   IKeyValue,
   IRoleContext,
 } from '@bgap/shared/types';
+import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { NbDialogService } from '@nebular/theme';
-import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
-import { EToasterType } from 'libs/admin/shared/utils/src';
-import { combineLatest, Observable } from 'rxjs';
-import { roleContextsSelectors } from 'libs/admin/shared/data-access/role-contexts/src';
-import { Validators } from '@angular/forms';
 
 @UntilDestroy()
 @Component({
@@ -28,7 +27,7 @@ import { Validators } from '@angular/forms';
 export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public adminUserId: string = '';
+  public adminUserId = '';
   public adminUser: IAdminUser = {};
   public roleContextOptions: IKeyValue[] = [];
 
