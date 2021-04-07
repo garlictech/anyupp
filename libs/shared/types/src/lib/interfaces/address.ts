@@ -1,10 +1,7 @@
 import * as Joi from 'joi';
 
-export const latitudeSchema = Joi.string();
-export const longitudeSchema = Joi.string();
-// TODO: ?? We store the lat/lng as a string in the database
-// TODO: export const latitudeSchema = Joi.number().min(-90).max(90).precision(8);
-// TODO: export const longitudeSchema = Joi.number().min(-180).max(180).precision(8);
+export const latitudeSchema = Joi.number().min(-90).max(90).precision(8);
+export const longitudeSchema = Joi.number().min(-180).max(180).precision(8);
 
 export interface ILocation {
   __typename?: 'Location';

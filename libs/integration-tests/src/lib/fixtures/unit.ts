@@ -22,8 +22,8 @@ const unit_01: AmplifyApi.CreateUnitInput = {
     title: 'HQ',
     postalCode: '1021',
     location: {
-      lat: '47',
-      lng: '19',
+      lat: 47,
+      lng: 19,
     },
   },
   description: {

@@ -1,13 +1,13 @@
 ### COMMON
 # TODO: extraxt these because the admin-api also contains these
 type Location {
-  lat: String!
-  lng: String!
+  lat: Float!
+  lng: Float!
 }
 
 input LocationInput {
-  lat: String!
-  lng: String!
+  lat: Float!
+  lng: Float!
 }
 
 type Address {

@@ -100,7 +100,7 @@ input StripeCardDeleteInput {
 
 ### UNIT GEO_UNIT
 input GetUnitsNearLocationInput {
-  location: LocationInput
+  location: LocationInput!
 }
 type GeoUnit {
   id: ID!
