@@ -3,7 +3,11 @@ import { combineLatest, from } from 'rxjs';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { unitRequestHandler } from '@bgap/api/unit';
-import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
+import {
+  amplifyGraphQlClient,
+  appsyncGraphQlClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { switchMap } from 'rxjs/operators';
@@ -113,9 +117,10 @@ describe('GetUnitsNearLocation tests', () => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '230.0000', lat: '-1oo' } },
       } as any;
-      from(
-        unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
-      ).subscribe({
+
+      executeMutation(appsyncGraphQlClient)<
+        AppsyncApi.CreateOrderFromCartMutation
+      >(AppsyncApi.CreateOrderFromCart, input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -124,7 +129,7 @@ describe('GetUnitsNearLocation tests', () => {
     });
   });
 
-  it('should return all the units in ', done => {
+  it('should return all the units in geoUnitsFormat ordered by distance', done => {
     const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };

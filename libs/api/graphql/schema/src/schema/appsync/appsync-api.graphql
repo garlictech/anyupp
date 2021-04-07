@@ -1,3 +1,63 @@
+### COMMON
+# TODO: extraxt these because the admin-api also contains these
+type Location {
+  lat: Float!
+  lng: Float!
+}
+
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+type Address {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location
+}
+
+type LocalizedItem {
+  en: String
+  de: String
+  hu: String
+}
+
+type PaymentMode {
+  name: String!
+  caption: String
+  method: PaymentMethod!
+}
+enum PaymentMethod {
+  CASH
+  CARD
+  INAPP
+}
+
+type ChainStyle {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors {
+  backgroundLight: String!
+  backgroundDark: String!
+  borderLight: String!
+  borderDark: String!
+  disabled: String!
+  highlight: String!
+  indicator: String!
+  textLight: String!
+  textDark: String!
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
 ### ADMIN_USER
 input CreateAdminUserInput {
   email: String!
