@@ -33,7 +33,6 @@ export const getUnitsInRadius = ({
 }: {
   location: AmplifyApi.LocationInput;
   amplifyGraphQlClient: GraphqlApiClient;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Observable<listResponse<AppsyncApi.GeoUnit>> => {
   // console.log(
   //   '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
@@ -50,27 +49,26 @@ export const getUnitsInRadius = ({
     // switchMap((units: Array<IUnit>) =>
     switchMap(units =>
       combineLatest(
-        units
-          // .filter(isUnit)
-          .map(unit =>
-            getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
-              switchMap(currency =>
-                getChain(amplifyGraphQlClient, unit.chainId).pipe(
-                  map(chain => ({ chain, currency })),
-                ),
-              ),
-              map(props =>
-                toGeoUnit({
-                  unit,
-                  currency: props.currency,
-                  inputLocation: location,
-                  chainStyle: props.chain.style,
-                  openingHours: {},
-                  paymentModes: {} as any,
-                }),
+        units.map(unit =>
+          getChain(amplifyGraphQlClient, unit.chainId).pipe(
+            filter(chain => chain.isActive),
+            switchMap(chain =>
+              getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
+                map(currency => ({ chain, currency })),
               ),
             ),
+            map(props =>
+              toGeoUnit({
+                unit,
+                currency: props.currency,
+                inputLocation: location,
+                chainStyle: props.chain.style,
+                openingHours: {},
+                paymentModes: unit.paymentModes as any,
+              }),
+            ),
           ),
+        ),
       ),
     ),
     map(items => items.sort((a, b) => (a.distance > b.distance ? 1 : -1))),
