@@ -30,6 +30,7 @@ import {
   IProduct,
   IProductCategory,
   IRoleContext,
+  IAdminUserConnectedRoleContext,
   IUnit,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
@@ -118,7 +119,9 @@ export class DataService {
     this._subscribeToGroups();
     this._subscribeToUnits();
     // this._subscribeToUsers(); TODO not used?
+    this._subscribeToRoleContext();
     this._subscribeToAdminUsers();
+    this._subscribeToAdminRoleContexts();
 
     // Get user language
 
@@ -445,6 +448,29 @@ export class DataService {
               adminUser: <IAdminUser>adminUser,
             }),
           );
+        },
+      })
+      .subscribe();
+  }
+
+  private _subscribeToAdminRoleContexts(): void {
+    this._amplifyDataService
+      .subscribe$({
+        subscriptionName: 'onAdminRoleContextsChange',
+        upsertFn: async (adminRoleContext: unknown): Promise<void> => {
+          const result = await this._amplifyDataService.query({
+            queryName: 'getAdminUser',
+            variables: { id: (<IAdminUserConnectedRoleContext>adminRoleContext).adminUserId },
+          });
+          const adminUser: unknown = result?.data?.getAdminUser;
+
+          if (adminUser) {
+            this._store.dispatch(
+              adminUsersActions.upsertAdminUser({
+                adminUser: <IAdminUser>adminUser
+              }),
+            );
+          }
         },
       })
       .subscribe();

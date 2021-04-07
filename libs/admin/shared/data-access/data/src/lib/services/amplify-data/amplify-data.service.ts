@@ -1,5 +1,5 @@
 import * as fp from 'lodash/fp';
-import { from, Observable, ObservableInput } from 'rxjs';
+import { from, Observable, ObservableInput, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -24,13 +24,19 @@ interface ISubscriptionResult {
   };
 }
 
-interface ISnapshotParams {
-  queryName: keyof typeof Queries;
+interface ISubscriptionParams {
   subscriptionName: keyof typeof Subscriptions;
   resetFn?: () => void;
   upsertFn: (data: unknown) => void;
   variables?: Record<string, unknown>;
 }
+
+interface IQueryParams {
+  queryName: keyof typeof Queries;
+  variables?: Record<string, unknown>;
+}
+
+interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +45,7 @@ export class AmplifyDataService {
   public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
     return from(
       <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-        query: Queries[params.queryName] as string, // TODO: Why should I cast this to string?
+        query: Queries[params.queryName] as string,
         variables: params.variables,
       }),
     ).pipe(
@@ -102,5 +108,35 @@ export class AmplifyDataService {
       query: Mutations[mutationName],
       variables: { input: modified },
     });
+  }
+
+  public async delete(mutationName: keyof typeof Mutations, value: unknown) {
+    return API.graphql({
+      query: Mutations[mutationName],
+      variables: { input: value },
+    });
+  }
+
+  public query(params: IQueryParams) {
+    return <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
+      query: Queries[params.queryName] as string,
+      variables: params.variables,
+    });
+  }
+
+  public subscribe$(params: ISubscriptionParams): Observable<unknown> {
+    return of('subscription').pipe(
+      switchMap(
+        () => <ObservableInput<ISubscriptionResult>>API.graphql({
+            query: Subscriptions[params.subscriptionName],
+            variables: params.variables,
+          }),
+      ),
+      tap((data: ISubscriptionResult) => {
+        params.upsertFn(
+          data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
+        );
+      }),
+    );
   }
 }
