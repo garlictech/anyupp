@@ -15,29 +15,60 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
-      <!-- TODO div class="subtitle">{{ adminUser.name }}</div -->
+    <div class="mb-4">
+      <form
+        [formGroup]="dialogForm!"
+        (ngSubmit)="submit()"
+        [autocomplete]="false"
+      >
+        <div class="row">
+          <div class="col-12">
+            <bgap-form-select
+              [control]="dialogForm.get('roleContextId')! | asFormControl"
+              caption="roles.role"
+              [options]="roleContextOptions"
+              [localize]="true"
+            >
+            </bgap-form-select>
+          </div>
+        </div>
+        <div>
+          <button
+            nbButton
+            size="small"
+            type="submit"
+            status="primary"
+            [disabled]="dialogForm.invalid"
+          >
+            {{ 'common.submit' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
 
-      <!--bgap-form-admin-role
-        [roleFormGroup]="dialogForm.controls.roles! | asFormGroup"
-      ></bgap-form-admin-role-->
+    <nb-list-item *ngFor="let item of adminUser.roleContexts?.items">
+      <div class="w-100">
+        <div class="float-left">
 
-      <!--div class="mt-20">
+          <div class="subtitle-2">{{ item.roleContext.name | localize}}</div>
+          <div class="label">
+          {{ 'roles.' + item.roleContext.role | translate }} @
+          {{ item.roleContext | roleEntityNames | async }}
+        </div>
+        </div>
+
         <button
           nbButton
-          size="small"
-          type="submit"
-          fullWidth
-          status="primary"
-          [disabled]="dialogForm.invalid!"
+          shape="round"
+          status="danger"
+          size="tiny"
+          class="float-right mr-2"
+          [title]="'common.delete' | translate"
+          (click)="removeRole(item)"
         >
-          {{ 'common.submit' | translate }}
+          <nb-icon icon="trash-2-outline"></nb-icon>
         </button>
-      </div-->
-    </form>
+      </div>
+    </nb-list-item>
   </nb-card-body>
 </nb-card>

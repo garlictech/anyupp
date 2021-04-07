@@ -1,3 +1,4 @@
+import * as fp from 'lodash/fp';
 import { Observable, of, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
@@ -6,7 +7,10 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import {
+  loggedUserActions,
+  loggedUserSelectors,
+} from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
@@ -15,8 +19,19 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import {
-  EAdminRole, EOrderStatus, IAdminUser, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder, IProduct,
-  IProductCategory, IRoleContext, IUnit
+  EAdminRole,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserSettings,
+  IChain,
+  IGroup,
+  IKeyValueObject,
+  IOrder,
+  IProduct,
+  IProductCategory,
+  IRoleContext,
+  IAdminUserConnectedRoleContext,
+  IUnit,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -39,7 +54,6 @@ export class DataService {
   ) {}
 
   public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
-
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
@@ -49,8 +63,8 @@ export class DataService {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
-                ...<IAdminUser>loggedUser,
-                role: EAdminRole.SUPERUSER // TODO contextből
+                ...(<IAdminUser>loggedUser),
+                role: EAdminRole.SUPERUSER, // TODO contextből
               },
             }),
           );
@@ -105,7 +119,9 @@ export class DataService {
     this._subscribeToGroups();
     this._subscribeToUnits();
     // this._subscribeToUsers(); TODO not used?
+    this._subscribeToRoleContext();
     this._subscribeToAdminUsers();
+    this._subscribeToAdminRoleContexts();
 
     // Get user language
 
@@ -117,7 +133,6 @@ export class DataService {
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
-
   }
 
   private _subscribeToRoleContext(): void {
@@ -438,6 +453,29 @@ export class DataService {
       .subscribe();
   }
 
+  private _subscribeToAdminRoleContexts(): void {
+    this._amplifyDataService
+      .subscribe$({
+        subscriptionName: 'onAdminRoleContextsChange',
+        upsertFn: async (adminRoleContext: unknown): Promise<void> => {
+          const result = await this._amplifyDataService.query({
+            queryName: 'getAdminUser',
+            variables: { id: (<IAdminUserConnectedRoleContext>adminRoleContext).adminUserId },
+          });
+          const adminUser: unknown = result?.data?.getAdminUser;
+
+          if (adminUser) {
+            this._store.dispatch(
+              adminUsersActions.upsertAdminUser({
+                adminUser: <IAdminUser>adminUser
+              }),
+            );
+          }
+        },
+      })
+      .subscribe();
+  }
+
   public destroyDataConnection(): void {
     // We have to destroy the subscriptions on logout
     this._destroyConnection$.next(true);
@@ -491,7 +529,7 @@ export class DataService {
     return callable({
       unitId,
     }).toPromise();*/
-    return of({unitId}).toPromise();
+    return of({ unitId }).toPromise();
   }
 
   //
@@ -504,7 +542,11 @@ export class DataService {
     unitId: string,
     orderId: string,
   ): Observable<unknown> {
-    return of({chainId, unitId, orderId}); /* this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+    }); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .valueChanges()
       .pipe(take(1));*/
@@ -517,7 +559,7 @@ export class DataService {
     orderId: string,
     status: EOrderStatus,
   ): Promise<unknown> {
-    return of({chainId, unitId, orderId, status}).toPromise();
+    return of({ chainId, unitId, orderId, status }).toPromise();
 
     /*
     const callable = this._angularFireFunctions.httpsCallable(
@@ -540,7 +582,12 @@ export class DataService {
     orderId: string,
     value: IOrder | IKeyValueObject,
   ): Promise<unknown> {
-    return of({chainId, unitId, orderId, value}).toPromise(); /* this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .update(value);*/
   }
@@ -553,7 +600,13 @@ export class DataService {
     idx: number,
     value: IKeyValueObject,
   ): Promise<unknown> {
-    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
       )
@@ -567,7 +620,13 @@ export class DataService {
     idx: number,
     value: IKeyValueObject,
   ): Promise<unknown> {
-    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
@@ -581,7 +640,13 @@ export class DataService {
     idx: number,
     value: IKeyValueObject,
   ): Promise<unknown> {
-    return of({chainId, unitId, orderId, idx, value}).toPromise(); /* this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
@@ -596,8 +661,6 @@ export class DataService {
     userId: string,
     value: IAdminUserSettings,
   ): Promise<void> {
-    console.error('updateAdminUserSettings');
-
     await this._amplifyDataService.update<IAdminUser>(
       'getAdminUser',
       'updateAdminUser',
@@ -608,7 +671,10 @@ export class DataService {
           ...value,
         };
 
-        return <IAdminUser>adminUser;
+        return fp.pick(
+          ['id', 'name', 'profileImage', 'settings'],
+          <IAdminUser>adminUser,
+        );
       },
     );
   }
@@ -627,7 +693,10 @@ export class DataService {
           selectedLanguage: language,
         };
 
-        return <IAdminUser>adminUser;
+        return fp.pick(
+          ['id', 'name', 'profileImage', 'settings'],
+          <IAdminUser>adminUser,
+        );
       },
     );
   }

@@ -28,4 +28,5 @@ export type subscriptionTypes = AmplifyApi.OnAdminUserChangeSubscription &
   AmplifyApi.OnUnitsChangeSubscription &
   // AmplifyApi.OnUsersChangeSubscription &
   AmplifyApi.OnProductCategoriesChangeSubscription &
-  AmplifyApi.OnChainProductChangeSubscription;
+  AmplifyApi.OnChainProductChangeSubscription &
+  AmplifyApi.OnAdminRoleContextsChangeSubscription;

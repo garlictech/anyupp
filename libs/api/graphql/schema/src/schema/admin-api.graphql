@@ -42,7 +42,7 @@ type AdminUserSettings {
 # Create a join model and disable queries as you don't need them
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
-  @model(queries: null)
+  @model
   @auth(rules: [{ allow: public }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
@@ -492,7 +492,14 @@ type Subscription {
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
   onRoleContextsChange: RoleContext
     @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
-
+  onAdminRoleContextsChange: AdminRoleContext
+    @aws_subscribe(
+      mutations: [
+        "createAdminRoleContext"
+        "updateAdminRoleContext"
+        "deleteAdminRoleContext"
+      ]
+    )
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group
