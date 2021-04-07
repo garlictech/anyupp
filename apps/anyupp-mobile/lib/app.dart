@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
     } on Exception catch (e) {
       print('_initAmplify().Error initializing Amplify: $e');
       setState(() {
-        _amplifyInitialized = false;
+        _amplifyInitialized = true;
       });
     }
   }

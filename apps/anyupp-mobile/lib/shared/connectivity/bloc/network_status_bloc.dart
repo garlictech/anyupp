@@ -12,8 +12,9 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   NetworkStatusBloc() : super(NetworkState(ConnectivityResult.none, null, null)) {
     print('NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
-    _connectivitySubscription = Connectivity().onConnectivityChanged.asBroadcastStream().listen(
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) {
+        print('NetworkStatusBloc.result=$result');
         bool show = false;
         bool hide = false;
 
@@ -33,6 +34,11 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
         _lastState = result;
       },
     );
+
+    Connectivity().checkConnectivity().then((result) {
+      print('NetworkStatusBloc.checkConnectivity()=$result');
+      add(NetworkConnectionChangedEvent(result, false, false));
+    });
   }
 
   @override

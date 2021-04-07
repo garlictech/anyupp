@@ -13,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'auth_provider_interface.dart';
 
 class AwsAuthProvider implements IAuthProvider {
-  StreamController<User> _userController = BehaviorSubject<User>();
+  StreamController<User> _userController = StreamController<User>();
   User _user;
   final CognitoService _service;
 
@@ -24,9 +24,8 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> getAuthenticatedUserProfile() async {
-    print('getAuthenticatedUserProfile().user=$_user');
+    // print('getAuthenticatedUserProfile().user=$_user');
     try {
-
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: false),
       );
@@ -51,15 +50,16 @@ class AwsAuthProvider implements IAuthProvider {
         _user = _userFromAttributes(attributes);
       }
       _userController.add(_user);
+      print('getAuthenticatedUserProfile()._userController=$_userController');
       print('getAuthenticatedUserProfile().user=$_user');
       return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
-       _userController.add(null);
+      _userController.add(null);
       return null;
     } on Error catch (e) {
       print('getAuthenticatedUserProfile().error=$e');
-       _userController.add(null);
+      _userController.add(null);
       return null;
     }
   }
@@ -187,7 +187,7 @@ class AwsAuthProvider implements IAuthProvider {
   //   return user;
   // }
 
- @override
+  @override
   Future<String> getAccessToken() async {
     try {
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
@@ -196,7 +196,7 @@ class AwsAuthProvider implements IAuthProvider {
       // print('***** getAccessToken()=${session.userPoolTokens?.accessToken}');
       // if (isTokenValid(session.userPoolTokens.accessToken)) {
       //  return session.userPoolTokens?.accessToken;
-      // } 
+      // }
       return session.userPoolTokens?.accessToken;
     } on Exception catch (e) {
       print('***** getAccessToken().error=$e');
