@@ -33,12 +33,12 @@ const createAdminUserInputSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserInput>
   phone: Joi.string().required(),
   name: Joi.string().required(),
 };
-const createInputSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserMutationVariables> = {
+const createMutationSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserMutationVariables> = {
   input: Joi.object(createAdminUserInputSchema).required(),
 };
 const { validate: validatCreateAdminUserInput } = validateSchema<
   AppsyncApi.CreateAdminUserMutationVariables
->(createInputSchema, 'CreateAdminUserMutationVariables');
+>(createMutationSchema, 'CreateAdminUserMutationVariables');
 
 // DELETE
 const deleteInputSchema: Joi.SchemaMap<AppsyncApi.DeleteAdminUserMutationVariables> = {

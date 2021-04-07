@@ -1,10 +1,10 @@
 import { EOrderStatus } from '@bgap/shared/types';
 import { AmplifyApi } from '@bgap/admin/amplify-api';
-import { unitSeed } from './unit';
 import { unitProductSeed } from './unit-product';
+import { unitSeed } from './unit';
 
 const cartId_01 = 'cart_1_id';
-const unitId_01 = unitSeed.unitId_seeded;
+const unitId_01 = unitSeed.unitId_seeded_01;
 const unitProductId_01 = unitProductSeed.unitProductId_seeded;
 
 // fictional - not exsisting
