@@ -422,7 +422,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 color: Colors.transparent,
                                 padding: EdgeInsets.all(8.0),
                                 splashColor: Colors.blueAccent,
-                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,

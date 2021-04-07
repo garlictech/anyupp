@@ -13,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'auth_provider_interface.dart';
 
 class AwsAuthProvider implements IAuthProvider {
-  StreamController<User> _userController = StreamController<User>();
+  StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
   final CognitoService _service;
 
