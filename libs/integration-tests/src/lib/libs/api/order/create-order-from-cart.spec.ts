@@ -75,6 +75,22 @@ describe('CreatCartFromOrder mutation test', () => {
       });
   }, 30000);
 
+  it("should fail in case the cart is not the user's", done => {
+    const cartId = cartSeed.cart_01.id;
+    const userId = 'DIFFERENT_USER';
+    from(
+      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+        userId,
+        input: { id: cartId },
+      }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  }, 15000);
+
   it('should fail without a cart', done => {
     executeMutation(appsyncGraphQlClient)<
       AppsyncApi.CreateOrderFromCartMutation

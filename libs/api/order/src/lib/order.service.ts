@@ -28,6 +28,7 @@ import {
   validateUnitProduct,
 } from '@bgap/shared/types';
 import {
+  getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
   pipeDebug,
@@ -55,15 +56,20 @@ export const createOrderFromCart = ({
   // );
 
   return getCart(amplifyGraphQlClient, cartId).pipe(
-    // pipeDebug('### CART'),
+    // CART.USERID CHECK
+    switchMap(cart =>
+      cart.userId === userId ? of(cart) : throwError(getCartIsMissingError()),
+    ),
     switchMap(cart =>
       getUnit(amplifyGraphQlClient, cart.unitId).pipe(
+        // TODO: ??? create catchError and custom error
         // pipeDebug('### UNIT'),
         map(unit => ({ cart, unit })),
       ),
     ),
     switchMap(props =>
       getGroupCurrency(amplifyGraphQlClient, props.unit?.groupId).pipe(
+        // TODO: ??? create catchError and custom error
         map(currency => ({ ...props, currency })),
       ),
     ),
