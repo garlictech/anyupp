@@ -7,7 +7,5 @@
       "ResDir": "./lib/"
     }
   },
-  "providers": [
-    "awscloudformation"
-  ]
+  "providers": ["awscloudformation"]
 }

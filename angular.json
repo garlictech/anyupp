@@ -45,7 +45,9 @@
               "lodash",
               "url",
               "uuid",
-              "zen-observable"
+              "zen-observable",
+              "@aws-amplify/core",
+              "@aws-amplify/auth"
             ],
             "scripts": []
           },

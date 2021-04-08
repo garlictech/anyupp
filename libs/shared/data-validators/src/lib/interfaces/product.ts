@@ -1,9 +1,6 @@
 import * as Joi from 'joi';
 import { validateSchema } from '../validation/validate';
-import {
-  IProduct,
-  IUnitProduct,
-} from '@bgap/shared/types';
+import { IProduct, IUnitProduct } from '@bgap/shared/types';
 
 export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   __typename: Joi.string().valid('UnitProduct').optional(),

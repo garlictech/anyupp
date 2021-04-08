@@ -1,24 +1,55 @@
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
-import Amplify, { Auth } from 'aws-amplify';
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { Auth, CognitoUser } from '@aws-amplify/auth';
 import {
   testAdminUsername,
   testAdminUserPassword,
+  configureAmplify,
 } from '../../../../../common';
 import { from } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
-Amplify.configure(awsConfig);
+import { map, switchMap, tap } from 'rxjs/operators';
 
 describe('Testing cognito service', () => {
-  test('Test valid authorization', done => {
-    const service = new CognitoService();
+  const service = new CognitoService();
+  const goodContext = 'GOOD_CONTEXT';
+  const badContext = 'BAD_CONTEXT';
+  const goodGroupId = 'MY GROUP ID';
 
-    service.currentContext = 'GOOD_CONTEXT';
+  beforeAll(() => {
+    configureAmplify();
+  });
+
+  test('Test valid authorization', done => {
+    service.currentContext = goodContext;
+
     from(Auth.signIn(testAdminUsername, testAdminUserPassword))
-      .pipe(tap(res => expect(res).toMatchSnapshot))
-      .subscribe({
-        next: done,
-      });
+      .pipe(
+        switchMap(() => service.handleContext()),
+        switchMap(() => from(Auth.currentAuthenticatedUser())),
+        tap((auth: CognitoUser) => {
+          const token = auth?.getSignInUserSession()?.getIdToken();
+          const decoded = token?.decodePayload();
+          expect(decoded?.groupId).toEqual(goodGroupId);
+          expect(decoded?.['custom:context']).toEqual(goodContext);
+        }),
+      )
+      .subscribe(() => done());
+  });
+
+  test('Test invalid authorization', done => {
+    service.currentContext = badContext;
+
+    from(Auth.signIn(testAdminUsername, testAdminUserPassword))
+      .pipe(
+        switchMap(() => service.handleContext()),
+        switchMap(() => from(Auth.currentAuthenticatedUser())),
+        tap((auth: CognitoUser) => {
+          const token = auth?.getSignInUserSession()?.getIdToken();
+          const decoded = token?.decodePayload();
+          expect(decoded?.groupId).toBeUndefined();
+          expect(decoded?.chainId).toBeUndefined();
+          expect(decoded?.['custom:context']).toEqual('');
+        }),
+      )
+      .subscribe(() => done());
   });
 });

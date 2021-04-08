@@ -140,17 +140,17 @@ export class UnitFormComponent
       );
 
       // Parse openingHours object to temp array
-      const custom: ICustomDailySchedule[] | undefined = this.unit
-        ?.openingHours?.custom;
+      const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
+        ?.custom;
 
       if (custom) {
         custom.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (<FormArray>(
-            this.dialogForm?.get('openingHours')?.get('custom')
-          )).push(dayGroup);
+          (<FormArray>this.dialogForm?.get('openingHours')?.get('custom')).push(
+            dayGroup,
+          );
         });
       }
 
@@ -205,14 +205,10 @@ export class UnitFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createUnit',
-            {
-              ...this.dialogForm?.value,
-              isAcceptingOrders: false
-            }
-
-          );
+          await this._amplifyDataService.create('createUnit', {
+            ...this.dialogForm?.value,
+            isAcceptingOrders: false,
+          });
 
           this._toasterService.show(
             EToasterType.SUCCESS,

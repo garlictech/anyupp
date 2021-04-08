@@ -33,7 +33,7 @@ export class CognitoService {
     message?: string;
   }): void {
     if (payload.event === 'signIn') {
-      this._handleContext();
+      this.handleContext();
       this._onSignInCallback?.();
     } else if (
       payload.event === 'signOut' ||
@@ -85,7 +85,7 @@ export class CognitoService {
     );
   }
 
-  private async _handleContext() {
+  async handleContext() {
     await from(Auth.currentAuthenticatedUser())
       .pipe(
         switchMap((user: CognitoUser) =>

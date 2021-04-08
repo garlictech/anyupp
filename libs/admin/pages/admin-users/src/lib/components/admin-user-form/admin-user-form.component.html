@@ -25,22 +25,22 @@
       (ngSubmit)="submit()"
       [autocomplete]="false"
     >
-    <div class="row">
-      <div class="col-md-8"></div>
-      <div class="col-md-4">
-        <bgap-form-clickable-image-input
-          [image]="userImage"
-          [imageType]="eImageType.JPEG"
-          [uploadCallbackFn]="imageUploadCallback"
-          [removeCallbackFn]="imageRemoveCallback"
-          [maxSize]="480"
-          uploadFolderPath="admin-users"
-          width="80px"
-          height="80px"
-          borderRadius="50%"
-        ></bgap-form-clickable-image-input>
+      <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <bgap-form-clickable-image-input
+            [image]="userImage"
+            [imageType]="eImageType.JPEG"
+            [uploadCallbackFn]="imageUploadCallback"
+            [removeCallbackFn]="imageRemoveCallback"
+            [maxSize]="480"
+            uploadFolderPath="admin-users"
+            width="80px"
+            height="80px"
+            borderRadius="50%"
+          ></bgap-form-clickable-image-input>
+        </div>
       </div>
-    </div>
 
       <bgap-form-text-input
         caption="common.name"

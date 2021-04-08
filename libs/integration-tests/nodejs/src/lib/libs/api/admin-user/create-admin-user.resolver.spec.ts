@@ -1,5 +1,6 @@
 import { awsConfig, AmplifyApi } from '@bgap/admin/amplify-api';
 import {
+  configureAmplify,
   GraphqlApiKey,
   GraphqlApiUrl,
   testAdminUsername,
@@ -7,19 +8,16 @@ import {
 } from '../../../common';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import Amplify, { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 
-Amplify.configure({
-  ...awsConfig,
-  // See: https://github.com/aws-amplify/amplify-js/issues/6552#issuecomment-682259256
-  authenticationFlowType: 'USER_PASSWORD_AUTH',
-  aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
-});
-
 describe('Admin user creation/deletion', () => {
+  beforeAll(() => {
+    configureAmplify();
+  });
+
   test('Admin user should be created/deleted', done => {
     const appsyncConfig = {
       ...awsConfig,

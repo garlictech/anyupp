@@ -3,10 +3,7 @@ import * as Joi from 'joi';
 import { validateSchema } from '../validation/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
-import {
-  ILane,
-  IUnit,
-} from '@bgap/shared/types';
+import { ILane, IUnit } from '@bgap/shared/types';
 import { floorMapSchema } from './floor-map';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
