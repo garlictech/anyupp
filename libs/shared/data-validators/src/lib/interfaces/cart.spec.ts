@@ -1,5 +1,6 @@
-import { ICart, isCart, validateCart } from './cart';
+import { isCart, validateCart } from './cart';
 import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { ICart } from '@bgap/shared/types';
 
 const cart: ICart = {
   id: 'ID',
