@@ -6,7 +6,7 @@ import {
   configureAmplify,
 } from '../../../../../common';
 import { from } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 describe('Testing cognito service', () => {
   const service = new CognitoService();

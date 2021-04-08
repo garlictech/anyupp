@@ -2,11 +2,6 @@
   "extends": "../../../tsconfig.base.json",
   "files": [],
   "include": [],
-  "compilerOptions": {
-    "outDir": "../../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["jest", "node"]
-  },
   "references": [
     {
       "path": "./tsconfig.lib.json"
