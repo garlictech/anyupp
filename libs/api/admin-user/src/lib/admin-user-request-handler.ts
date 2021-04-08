@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { validateSchema } from '@bgap/shared/types';
+import { validateSchema } from '@bgap/shared/data-validators';
 
 import { createAdminUser } from './create-admin-user.resolver';
 import { deleteAdminUser } from './delete-admin-user.resolver';

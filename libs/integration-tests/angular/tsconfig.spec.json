@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"],
+    "allowJs": true,
+    "target": "es5",
+    "downlevelIteration": true
+  },
+  "files": ["src/test-setup.ts"],
+  "include": ["**/*.spec.ts", "**/*.d.ts"]
+}

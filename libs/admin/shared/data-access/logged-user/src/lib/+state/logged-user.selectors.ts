@@ -1,8 +1,4 @@
-import {
-  EAdminRole,
-  IAdminUser,
-  IAdminUserSettings,
-} from '@bgap/shared/types';
+import { EAdminRole, IAdminUser, IAdminUserSettings } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
@@ -28,8 +24,7 @@ export const getLoggedUserSettings = createSelector(
 
 export const getLoggedUserRole = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): EAdminRole | undefined =>
-    state.loggedUser?.role,
+  (state: ILoggedUserState): EAdminRole | undefined => state.loggedUser?.role,
 );
 
 export const getSelectedChainId = createSelector(

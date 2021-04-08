@@ -1,12 +1,10 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
 
-export const createAdminUserResolvers =(
-  {
-    lambdaDs,
-  }: {
-    lambdaDs: LambdaDataSource;
-  }
-) => {
+export const createAdminUserResolvers = ({
+  lambdaDs,
+}: {
+  lambdaDs: LambdaDataSource;
+}) => {
   ['createAdminUser', 'deleteAdminUser'].forEach(fieldName =>
     lambdaDs.createResolver({
       typeName: 'Mutation',
@@ -29,4 +27,4 @@ export const createAdminUserResolvers =(
       ),
     }),
   );
-}
+};

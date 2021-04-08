@@ -73,6 +73,16 @@ export class DevBuildPipelineStack extends sst.Stack {
           ],
         },
         {
+          stageName: 'SeederRemoval',
+          actions: [
+            new codepipeline_actions.CloudFormationDeleteStackAction({
+              actionName: `DeleteSeederStack`,
+              stackName: `${utils.projectPrefix(stage)}-seeder`,
+              adminPermissions: true,
+            }),
+          ],
+        },
+        {
           stageName: 'integrationTest',
           actions: [
             new codepipeline_actions.CodeBuildAction({

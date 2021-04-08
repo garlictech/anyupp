@@ -9,10 +9,7 @@ import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -184,5 +181,4 @@ export class AdminUserFormComponent
       );
     }
   };
-
 }

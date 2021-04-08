@@ -1,8 +1,6 @@
 {
   "trigger": true,
-  "modules": [
-    "verification-link"
-  ],
+  "modules": ["verification-link"],
   "parentResource": "anyuppmobile1525ad78",
   "functionName": "anyuppmobile1525ad78CustomMessage",
   "resourceName": "anyuppmobile1525ad78CustomMessage",

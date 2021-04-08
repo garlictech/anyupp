@@ -460,14 +460,17 @@ export class DataService {
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
           const result = await this._amplifyDataService.query({
             queryName: 'getAdminUser',
-            variables: { id: (<IAdminUserConnectedRoleContext>adminRoleContext).adminUserId },
+            variables: {
+              id: (<IAdminUserConnectedRoleContext>adminRoleContext)
+                .adminUserId,
+            },
           });
           const adminUser: unknown = result?.data?.getAdminUser;
 
           if (adminUser) {
             this._store.dispatch(
               adminUsersActions.upsertAdminUser({
-                adminUser: <IAdminUser>adminUser
+                adminUser: <IAdminUser>adminUser,
               }),
             );
           }
