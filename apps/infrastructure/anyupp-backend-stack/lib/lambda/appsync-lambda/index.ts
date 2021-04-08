@@ -1,9 +1,10 @@
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 
-import { orderRequestHandler } from '@bgap/api/order';
 import { adminRequestHandler } from '@bgap/api/admin-user';
+import { orderRequestHandler } from '@bgap/api/order';
 import { stripeRequestHandler } from '@bgap/api/stripe';
+import { unitRequestHandler } from '@bgap/api/unit';
 import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
@@ -18,6 +19,9 @@ const resolverMap = {
   createAdminUser: adminRequestHandler.createAdminUser,
   deleteAdminUser: adminRequestHandler.deleteAdminUser,
   createOrderFromCart: orderRequestHandler.createOrderFromCart(
+    amplifyGraphQlClient,
+  ),
+  getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
     amplifyGraphQlClient,
   ),
 };
@@ -41,7 +45,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   if (resolver) {
     return resolver(event.payload).catch(handleError);
   } else {
-    throw 'Unknown graphql field';
+    throw 'Unknown graphql field in the appsync-lambda handler';
   }
 };
 

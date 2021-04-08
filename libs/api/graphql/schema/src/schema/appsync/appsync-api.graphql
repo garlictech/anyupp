@@ -185,6 +185,7 @@ type Query {
   # Units
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_cognito_user_pools
+    @aws_api_key
 }
 
 ### MUTATION

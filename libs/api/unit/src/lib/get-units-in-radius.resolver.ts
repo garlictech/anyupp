@@ -20,7 +20,7 @@ import {
   validateGetGroupCurrency,
   validateUnit,
 } from '@bgap/shared/types';
-import { pipeDebug } from '@bgap/shared/utils';
+// import { pipeDebug } from '@bgap/shared/utils';
 
 type listResponse<T> = {
   items: Array<T>;
@@ -72,7 +72,7 @@ export const getUnitsInRadius = ({
       ),
     ),
     map(items => items.sort((a, b) => (a.distance > b.distance ? 1 : -1))),
-    pipeDebug('### getUnitsInRadius'),
+    // pipeDebug('### getUnitsInRadius'),
     map(x => ({ items: x })),
   );
 };

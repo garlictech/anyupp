@@ -8,7 +8,7 @@ import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 // HANDER
 export const unitRequestHandler = {
-  getUnitsInRadius: (amplifyGraphQlClient: GraphqlApiClient) => (
+  getUnitsNearLocation: (amplifyGraphQlClient: GraphqlApiClient) => (
     requestPayload: AppsyncApi.GetUnitsNearLocationQueryVariables,
   ) => {
     return validatGetUnitsNearLocationInput(requestPayload)

@@ -1,20 +1,20 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
 
-export const createAdminUserResolvers = ({
+export const createUnitResolvers = ({
   lambdaDs,
 }: {
   lambdaDs: LambdaDataSource;
 }) => {
   lambdaDs.createResolver({
     typeName: 'Query',
-    fieldName: 'getUnitsInRadius',
+    fieldName: 'getUnitsNearLocation',
     requestMappingTemplate: MappingTemplate.fromString(
       `
       {
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "getUnitsInRadius",
+          "handler": "getUnitsNearLocation",
           "payload": {
             "input": $util.toJson($ctx.arguments.input)
           }

@@ -6,11 +6,11 @@ import { unitRequestHandler } from '@bgap/api/unit';
 import {
   amplifyGraphQlClient,
   appsyncGraphQlClient,
-  executeMutation,
+  executeQuery,
 } from '@bgap/shared/graphql/api-client';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
-import { switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
@@ -66,7 +66,7 @@ describe('GetUnitsNearLocation tests', () => {
     it('should throw without a input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
-        unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -79,7 +79,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: {},
       } as any;
       from(
-        unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -92,7 +92,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lat: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -105,7 +105,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -115,51 +115,69 @@ describe('GetUnitsNearLocation tests', () => {
     });
     it('should throw without valid location input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lng: '230.0000', lat: '-1oo' } },
+        input: { location: { lng: 230.0, lat: -100 } },
       } as any;
 
-      executeMutation(appsyncGraphQlClient)<
-        AppsyncApi.CreateOrderFromCartMutation
-      >(AppsyncApi.CreateOrderFromCart, input).subscribe({
+      executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
+        AppsyncApi.GetUnitsNearLocation,
+        input,
+      ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
         },
       });
-    });
+    }, 25000);
   });
 
   it('should return all the units in geoUnitsFormat ordered by distance', done => {
     const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    from(
-      unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
-    ).subscribe({
-      next(result) {
-        console.log(
-          '### ~ file: get-units-near-location.spec.ts ~ line 88 ~ next ~ foundItems',
-          JSON.stringify(result, undefined, 2),
-        );
-        expect(result).toHaveProperty('items');
-        const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
-        const ids = foundItems.map(x => x.id);
-        expect(ids).toContain(unitSeed.unitId_seeded_01);
-        expect(ids).toContain(unitSeed.unitId_seeded_02);
-        expect(ids).toContain(unitSeed.unitId_seeded_03);
-        expect(ids).not.toContain(unitNotActive.id);
+    // To test with the local appsync code
+    // from(
+    //   unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+    // ).subscribe({
+    // next(result) {
+    //   expect(result).toHaveProperty('items');
+    //   const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
+    executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
+      AppsyncApi.GetUnitsNearLocation,
+      input,
+    )
+      .pipe(
+        map(x => x.getUnitsNearLocation?.items),
+        filter(x => !!x),
+      )
+      .subscribe({
+        next(result) {
+          if (!result || result === null) {
+            throw 'Missing result';
+          }
+          // console.log(
+          //   '### ~ file: get-units-near-location.spec.ts ~ line 88 ~ next ~ foundItems',
+          //   JSON.stringify(result, undefined, 2),
+          // );
+          const foundItems: Array<AppsyncApi.GeoUnit> = result as Array<
+            AppsyncApi.GeoUnit
+          >;
+          const ids = foundItems.map(x => x.id);
+          expect(ids).toContain(unitSeed.unitId_seeded_01);
+          expect(ids).toContain(unitSeed.unitId_seeded_02);
+          expect(ids).toContain(unitSeed.unitId_seeded_03);
+          expect(ids).not.toContain(unitNotActive.id);
 
-        expect(foundItems[0].id).toEqual(unit_03.id);
-        expect(foundItems[1].id).toEqual(unit_01.id);
-        expect(foundItems[2].id).toEqual(unit_02.id);
-        expect(foundItems[0].distance).toEqual(0);
-        expect(foundItems[1].distance).toEqual(74);
-        expect(foundItems[2].distance).toEqual(153);
-        // The rest is in the same location so we don't know their order
-        expect(foundItems[3].distance).toEqual(54649);
-        expect(foundItems[0].style).toMatchSnapshot();
-        done();
-      },
-    });
+          expect(foundItems[0].id).toEqual(unit_03.id);
+          expect(foundItems[1].id).toEqual(unit_01.id);
+          expect(foundItems[2].id).toEqual(unit_02.id);
+          expect(foundItems[0].distance).toEqual(0);
+          expect(foundItems[1].distance).toEqual(74);
+          expect(foundItems[2].distance).toEqual(153);
+          // The rest is in the same location so we don't know their order
+          expect(foundItems[3].distance).toEqual(54649);
+          expect(foundItems[0]).toMatchSnapshot();
+          done();
+        },
+      });
   }, 15000);
 });
