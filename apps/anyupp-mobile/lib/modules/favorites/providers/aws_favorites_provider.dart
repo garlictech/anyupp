@@ -52,7 +52,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   @override
   Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId) {
     _getFavorites(chainId, unitId).then((favorites) {
-      print('***** getFavoritesList().then()=$favorites');
+      // print('***** getFavoritesList().then()=$favorites');
       _favorites = favorites ?? [];
       _favoritesController.add(_favorites);
     });
@@ -84,8 +84,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         },
         fetchPolicy: FetchPolicy.networkOnly,
       ));
-      print('_getFavorites().result.data=${result.data}');
-      print('_getFavorites().result.exception=${result.exception}');
+      // print('_getFavorites().result.data=${result.data}');
+      // print('_getFavorites().result.exception=${result.exception}');
 
       List<dynamic> items = result.data['listFavoriteProducts']['items'];
       if (items == null || items.isEmpty) {
@@ -98,7 +98,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         favorites.add(FavoriteProduct.fromJson(Map<String, dynamic>.from(items[i])));
       }
 
-      print('***** getFavoritesList().favorites=$favorites');
+      // print('***** getFavoritesList().favorites=$favorites');
       _favoritesController.add(favorites);
       return favorites;
     } on Exception catch (e) {
@@ -165,19 +165,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       }
 
       return result?.exception == null ? true : false;
-
-      // var operation = Amplify.API.mutate(
-      //   request: GraphQLRequest<String>(
-      //     document: MUTATION_ADD_FAVORITE_PRODUCT,
-      //     variables: {'userId': user.id, 'chainId': chainId, 'unitId': unitId, 'productId': productId},
-      //   ),
-      // );
-
-      // var response = await operation.response;
-      // var data = response.data;
-      // Map<String, dynamic> json = jsonDecode(data);
-      // print('_addFavoriteProduct().response=$json');
-      // return response.errors?.isEmpty ?? true;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
       rethrow;

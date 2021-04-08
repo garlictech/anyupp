@@ -372,7 +372,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: LatLng(double.parse(unit.address.location.lat), double.parse(unit.address.location.lng)),
+        position: LatLng(unit.address.location.lat, unit.address.location.lng),
         infoWindow: InfoWindow(title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);

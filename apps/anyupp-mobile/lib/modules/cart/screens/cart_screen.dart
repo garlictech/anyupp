@@ -33,7 +33,7 @@ class CartScreen extends StatelessWidget {
             ? FutureBuilder<Place>(
                 future: getPlacePref(),
                 builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
-                  print('placeSnapshot=$placeSnapshot');
+                  // print('placeSnapshot=$placeSnapshot');
 
                   if (placeSnapshot.hasData) {
                     return Row(
@@ -109,7 +109,6 @@ class CartScreen extends StatelessWidget {
             return StreamBuilder<Cart>(
               stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
-                print('CartScreen.cart=${snapshot.data}');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
                     return _buildCartListAndTotal(context, state.unit, snapshot.data);

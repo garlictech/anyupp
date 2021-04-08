@@ -19,7 +19,7 @@ class CartRepository {
         userId: user.id,
         unitId: unit.id,
         takeAway: false,
-        paymentMethod: PaymentMode(
+        paymentMode: PaymentMode(
           method: 'INAPP',
           name: 'STRIPE',
         ),

@@ -11,7 +11,7 @@ class Cart extends Model {
   final String unitId;
   final bool takeAway;
   final Place place;
-  final PaymentMode paymentMethod;
+  final PaymentMode paymentMode;
   final int created;
   final List<CartItem> items;
 
@@ -26,7 +26,7 @@ class Cart extends Model {
       @required this.unitId,
       this.takeAway,
       this.place,
-      @required this.paymentMethod,
+      @required this.paymentMode,
       this.created,
       this.items});
 
@@ -36,16 +36,16 @@ class Cart extends Model {
       @required String unitId,
       bool takeAway,
       Place place,
-      @required PaymentMode paymentMethod,
+      @required PaymentMode paymentMode,
       int created,
       List<CartItem> items}) {
     return Cart._internal(
-        id: id == null ? UUID.getUUID() : id,
+        id: id,
         userId: userId,
         unitId: unitId,
         takeAway: takeAway,
         place: place,
-        paymentMethod: paymentMethod,
+        paymentMode: paymentMode,
         created: created,
         items: items != null ? List.unmodifiable(items) : items);
   }
@@ -63,7 +63,7 @@ class Cart extends Model {
         unitId == other.unitId &&
         takeAway == other.takeAway &&
         place == other.place &&
-        paymentMethod == other.paymentMethod &&
+        paymentMode == other.paymentMode &&
         created == other.created &&
         DeepCollectionEquality().equals(items, other.items);
   }
@@ -82,8 +82,8 @@ class Cart extends Model {
     buffer.write(
         "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
     buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
-    buffer.write("paymentMethod=" +
-        (paymentMethod != null ? paymentMethod.toString() : "null") +
+    buffer.write("paymentMode=" +
+        (paymentMode != null ? paymentMode.toString() : "null") +
         ", ");
     buffer.write("created=" + (created != null ? created.toString() : "null"));
     buffer.write("items=$items");
@@ -98,7 +98,7 @@ class Cart extends Model {
       String unitId,
       bool takeAway,
       Place place,
-      PaymentMode paymentMethod,
+      PaymentMode paymentMode,
       int created,
       List<CartItem> items}) {
     return Cart(
@@ -107,7 +107,7 @@ class Cart extends Model {
         unitId: unitId ?? this.unitId,
         takeAway: takeAway ?? this.takeAway,
         place: place ?? this.place,
-        paymentMethod: paymentMethod ?? this.paymentMethod,
+        paymentMode: paymentMode ?? this.paymentMode,
         created: created ?? this.created,
         items: items ?? this.items);
   }
@@ -120,9 +120,9 @@ class Cart extends Model {
         place = json['place'] != null
             ? Place.fromJson(Map<String, dynamic>.from(json['place']))
             : null,
-        paymentMethod = json['paymentMethod'] != null
+        paymentMode = json['paymentMode'] != null
             ? PaymentMode.fromJson(
-                Map<String, dynamic>.from(json['paymentMethod']))
+                Map<String, dynamic>.from(json['paymentMode']))
             : null,
         created = json['created'],
         items = json['items'] is List
@@ -137,7 +137,7 @@ class Cart extends Model {
         'unitId': unitId,
         'takeAway': takeAway,
         'place': place?.toJson(),
-        'paymentMethod': paymentMethod?.toJson(),
+        'paymentMode': paymentMode?.toJson(),
         'created': created,
         'items': items?.map((e) => e?.toJson())?.toList()
       };

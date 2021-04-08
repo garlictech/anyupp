@@ -1,5 +1,8 @@
 export 'mutations/add_favorite_product.dart';
 export 'mutations/delete_favorite_product.dart';
+export 'mutations/save_cart.dart';
+export 'mutations/update_cart.dart';
+export 'mutations/delete_cart.dart';
 export 'queries/list_favorites.dart';
 export 'queries/list_order_history.dart';
 export 'queries/list_orders.dart';

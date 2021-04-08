@@ -215,7 +215,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildVariantsList(Cart cart, List<ProductVariant> list) {
-    print('***** _buildVariantsList.cart=$cart, variants=$list');
+    // print('***** _buildVariantsList.cart=$cart, variants=$list');
     if (list == null) {
       return Container();
     }
