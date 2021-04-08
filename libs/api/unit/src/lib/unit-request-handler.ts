@@ -6,7 +6,7 @@ import { locationSchema, validateSchema } from '@bgap/shared/types';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
-// HANDER
+// HANDLER
 export const unitRequestHandler = {
   getUnitsNearLocation: (amplifyGraphQlClient: GraphqlApiClient) => (
     requestPayload: AppsyncApi.GetUnitsNearLocationQueryVariables,

@@ -19,7 +19,7 @@ export const validateSchema = <REQUIRED_TYPE>(
       from(Joi.object(schema).validateAsync(arg, validationOptions)).pipe(
         map(x => x as REQUIRED_TYPE),
         catchError((err: Joi.ValidationError) => {
-          console.error(
+          console.log(
             '### ~ file: validate.ts ~ line 24 ~ err - JOI',
             JSON.stringify(err, undefined, 2),
           );

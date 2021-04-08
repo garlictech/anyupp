@@ -7,7 +7,7 @@ import { validateSchema } from '@bgap/shared/types';
 import { createAdminUser } from './create-admin-user.resolver';
 import { deleteAdminUser } from './delete-admin-user.resolver';
 
-// HANDER
+// HANDLER
 export const adminRequestHandler = {
   createAdminUser: (
     requestPayload: AppsyncApi.CreateAdminUserMutationVariables,
