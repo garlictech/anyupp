@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 import { IChain, IChainStyle } from '@bgap/shared/types';
 
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { addressSchema } from './address';
 import { contactSchema } from './contact';
 import { localizedItemSchema } from './localized-item';

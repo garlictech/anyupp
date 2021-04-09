@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { locationSchema, validateSchema } from '@bgap/shared/types';
+import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 

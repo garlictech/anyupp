@@ -16,10 +16,12 @@ import {
   IPaymentMode,
   IUnit,
   IWeeklySchedule,
+} from '@bgap/shared/types';
+import {
   validateChain,
   validateGetGroupCurrency,
   validateUnit,
-} from '@bgap/shared/types';
+} from '@bgap/shared/data-validators';
 // import { pipeDebug } from '@bgap/shared/utils';
 
 type listResponse<T> = {
