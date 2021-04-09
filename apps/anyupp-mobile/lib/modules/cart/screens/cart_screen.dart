@@ -109,6 +109,7 @@ class CartScreen extends StatelessWidget {
             return StreamBuilder<Cart>(
               stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
+                print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
                     return _buildCartListAndTotal(context, state.unit, snapshot.data);
@@ -226,6 +227,7 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildCartItem(BuildContext context, GeoUnit unit, CartItem order) {
+    print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

@@ -11,7 +11,7 @@ extension CartExtension on Cart {
 
   double get totalPrice {
     double value = 0;
-    items.forEach((order) => value += order.variant.price);
+    items.forEach((order) => value += order.variant?.price ?? 0);
     return value;
   }
 

@@ -57,6 +57,15 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 }
             }
         }
+    },
+    "storage": {
+        "plugins": {
+            "awsS3StoragePlugin": {
+                "bucket": "${config['s3BucketName']}",
+                "region": "${config['region']}",
+                "defaultAccessLevel": "guest"
+            }
+        }
     }
 }''';
 }

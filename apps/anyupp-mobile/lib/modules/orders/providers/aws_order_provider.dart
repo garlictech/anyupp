@@ -48,6 +48,9 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> clearCart(String chainId, String unitId) async {
+    if (_cart != null && _cart.id != null) {
+      await _deleteCartFromBackend(_cart.id);
+    }
     _cart = null;
     _cartController.add(null);
   }
@@ -60,10 +63,13 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<Cart> getCurrentCart(String chainId, String unitId) async {
-    if (_cart == null) {
-      _cart = await _getCartFromBackEnd(unitId);
-      _cartController.add(_cart);
-    }
+    // if (_cart == null) {
+    //   _cart = await _getCartFromBackEnd(unitId);
+    //   _cartController.add(_cart);
+    // }
+    // return _cart;
+    _cart = await _getCartFromBackEnd(unitId);
+    _cartController.add(_cart);
     return _cart;
   }
 
@@ -90,19 +96,24 @@ class AwsOrderProvider implements IOrdersProvider {
       await _saveCartToBackend(_cart);
     } else {
       _cart = cart;
-      await _updateCartOnBckend(_cart);
+      await _updateCartOnBackend(_cart);
     }
     _cartController.add(_cart);
   }
 
   Future<Cart> _getCartFromBackEnd(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
+    print('AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
     try {
       ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-      QueryResult result = await _client.value.query(QueryOptions(document: gql(QUERY_GET_CART), variables: {
-        'userId': user.id,
-        'unitId': unitId,
-      }));
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_GET_CART),
+        variables: {
+          'userId': user.id,
+          'unitId': unitId,
+        },
+        fetchPolicy: FetchPolicy.networkOnly,
+      ));
 
       print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
       if (result.data == null) {
@@ -110,9 +121,12 @@ class AwsOrderProvider implements IOrdersProvider {
       }
 
       List<dynamic> items = result.data['listCarts']['items'];
-      print('AwsOrderProvider._getCartFromBackEnd().items=$items, length=${items?.length}');
+      print('AwsOrderProvider._getCartFromBackEnd().items.length=${items?.length}');
       if (items != null && items.isNotEmpty) {
+        print('json[items] is List=${items[0]['items'] is List}');
         Cart cart = Cart.fromJson(Map<String, dynamic>.from(items[0]));
+        print('AwsOrderProvider._getCartFromBackEnd().cart=$cart');
+        print('AwsOrderProvider._getCartFromBackEnd().items=${cart.items}');
         return cart;
       }
 
@@ -124,53 +138,13 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   Future<bool> _saveCartToBackend(Cart cart) async {
-    print('******** CREATING CART IN BACKEND=${cart.toJson()}');
+    print('******** CREATING CART IN BACKEND');
     try {
       ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_SAVE_CART),
-          variables: {
-            'createCartInput': {
-              // 'id': cart.id == null ? UUID.getUUID() : cart.id,
-              'unitId': cart.unitId,
-              'userId': cart.userId,
-              'items': cart.items.map((item) {
-                return {
-                  'productId': item.product.id,
-                  'variantId': item.variant.id,
-                  'created': 0, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
-                  'productName': {
-                    'en': item.product.name.en,
-                    'de': item.product.name.de,
-                    'hu': item.product.name.hu,
-                  },
-                  'priceShown': {
-                    'currency': 'huf', 
-                    'pricePerUnit': item.variant.price,
-                    'priceSum': item.variant.price * item.quantity,
-                    'tax': 0, // TODO
-                    'taxSum': 0, // TODO
-                  },
-                  'quantity': item.quantity,
-                  'variantName': {
-                    'en': item.variant.variantName.en,
-                    'de': item.variant.variantName.de, // TODO
-                    'hu': item.variant.variantName.hu,
-                  },
-                };
-              }).toList(),
-              'paymentMode': cart.paymentMode != null
-                  ? {
-                      'name': cart.paymentMode.name,
-                      'caption': cart.paymentMode.caption,
-                      'method': cart.paymentMode.method,
-                    }
-                  : null,
-              'takeAway': cart.takeAway,
-              'place': cart.place,
-            },
-          },
+          variables: _getCartMutationVariablesFromCart(cart, 'createCartInput'),
         ),
       );
       print('AwsOrderProvider._saveCartToBackend().result.data=${result.data}');
@@ -185,14 +159,32 @@ class AwsOrderProvider implements IOrdersProvider {
 
       return result?.exception == null ? true : false;
     } on Exception catch (e) {
-      print('AwsOrderProvider._addFavoriteProduct.Exception: $e');
+      print('AwsOrderProvider._saveCartToBackend.Exception: $e');
       rethrow;
     }
   }
 
-  Future<bool> _updateCartOnBckend(Cart cart) async {
+  Future<bool> _updateCartOnBackend(Cart cart) async {
     print('******** UPDATING CART IN BACKEND');
-    return true;
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.mutate(
+        MutationOptions(
+          document: gql(MUTATION_UPDATE_CART),
+          variables: _getCartMutationVariablesFromCart(cart, 'updateCartInput'),
+        ),
+      );
+      print('AwsOrderProvider._updateCartOnBackend().result.data=${result.data}');
+      if (result.hasException) {
+        print('AwsOrderProvider._updateCartOnBackend().exception=${result.exception}');
+        print('AwsOrderProvider._updateCartOnBackend().source=${result.source}');
+      }
+
+      return result?.exception == null ? true : false;
+    } on Exception catch (e) {
+      print('AwsOrderProvider._updateCartOnBackend.Exception: $e');
+      rethrow;
+    }
   }
 
   Future<bool> _deleteCartFromBackend(String cartId) async {
@@ -261,4 +253,55 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Stream<List<Order>> getOrderHistory(String chainId, String unitId) => _subOrderHistoryList.stream;
+
+  Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
+    return {
+      '$name': {
+        if (cart.id != null) 'id': cart.id,
+        'unitId': cart.unitId,
+        'userId': cart.userId,
+        'items': cart.items.map((item) {
+          return {
+            'productId': item.product.id,
+            'variantId': item.variant.id,
+            'created':
+                0, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
+            'productName': {
+              'en': item.product.name.en,
+              'de': item.product.name.de,
+              'hu': item.product.name.hu,
+            },
+            'priceShown': {
+              'currency': 'huf',
+              'pricePerUnit': item.variant.price,
+              'priceSum': item.variant.price * item.quantity,
+              'tax': 0, // TODO
+              'taxSum': 0, // TODO
+            },
+            'quantity': item.quantity,
+            'variantName': {
+              'en': item.variant.variantName.en,
+              'de': item.variant.variantName.de,
+              'hu': item.variant.variantName.hu,
+            },
+          };
+        }).toList(),
+        'paymentMode': cart.paymentMode != null
+            ? {
+                'name': cart.paymentMode.name,
+                'caption': cart.paymentMode.caption,
+                'method': cart.paymentMode.method,
+              }
+            : null,
+        'takeAway': cart.takeAway,
+        'place': cart.place != null
+            ? {
+                'table': cart.place.table,
+                'seat': cart.place.seat,
+              }
+            : null,
+      },
+    };
+  }
+
 }

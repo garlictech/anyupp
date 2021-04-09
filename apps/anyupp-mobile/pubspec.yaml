@@ -28,7 +28,8 @@ dependencies:
   amazon_cognito_identity_dart_2: ^0.1.25+4
   animated_background: ^1.0.5
   amplify_flutter: '<1.0.0'
-  amplify_auth_cognito: '<1.0.0'  
+  amplify_auth_cognito: '<1.0.0'
+  amplify_storage_s3: '<1.0.0'  
   apple_sign_in: ^0.1.0
   awesome_card: ^1.1.0
   badges: ^1.1.1
@@ -64,6 +65,7 @@ dependencies:
   lottie: ^0.7.0+1
   mask_text_input_formatter: ^1.0.7
   # meta: '>=1.0.0 <2.0.0'
+  path_provider: ^1.6.10
   package_info: '>=0.4.3 <2.0.0'
   permission_handler: ^5.0.1+1
   rxdart: ^0.24.0

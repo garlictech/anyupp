@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/amplifyconfig-stub.dart';
 import 'package:fa_prev/awsconfiguration.dart';
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
       return;
     }
     try {
-      await Amplify.addPlugins([AmplifyAuthCognito()]);
+      await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
       // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
       await Amplify.configure(getAmplifyConfig(awsConfig));
       print('_initAmplify().Amplify initialized successfully...');
