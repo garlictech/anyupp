@@ -39,3 +39,7 @@ functions:
 
   stack-seeder:
     handler: lib/lambda/stack-seeder/index.handler
+
+  pre-token-generation:
+    handler: lib/lambda/pre-token-generation/index.handler
+

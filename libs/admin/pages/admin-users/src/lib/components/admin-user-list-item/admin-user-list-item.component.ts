@@ -30,7 +30,7 @@ export class AdminUserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUserId =  this.adminUser.id || '';
+    dialog.componentRef.instance.adminUserId = this.adminUser.id || '';
   }
 
   public resetEmail(): void {

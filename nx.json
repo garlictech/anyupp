@@ -168,9 +168,6 @@
     "api-unit": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "integration-tests": {
-      "tags": ["type:integration-tests"]
-    },
     "admin-amplify-api": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -182,6 +179,15 @@
     },
     "admin-shared-data-access-role-contexts": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "integration-tests-angular": {
+      "tags": ["scope:bgap", "type:integration-tests", "platform:angular"]
+    },
+    "shared-data-validators": {
+      "tags": ["scope:bgap", "type:utils", "platform:universal"]
+    },
+    "integration-tests-universal": {
+      "tags": ["scope:bgap", "type:integration-tests", "platform:universal"]
     }
   }
 }

@@ -35,7 +35,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             install: {
               commands: [
                 `sh ./tools/setup-aws-environment.sh`,
-                'yarn',
+                'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli',
               ],
             },

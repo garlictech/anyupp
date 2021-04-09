@@ -109,7 +109,6 @@
       ],
       "@bgap/api/stripe": ["libs/api/stripe/src/index.ts"],
       "@bgap/stripe": ["libs/stripe/src/index.ts"],
-      "@bgap/integration-tests": ["libs/integration-tests/src/index.ts"],
       "@bgap/admin/amplify-api": ["libs/admin/amplify-api/src/index.ts"],
       "@bgap/admin/shared/data-access/role-contexts": [
         "libs/admin/shared/data-access/role-contexts/src/index.ts"
@@ -121,7 +120,16 @@
         "libs/shared/graphql/api-client/src/index.ts"
       ],
       "@bgap/api/admin-user": ["libs/api/admin-user/src/index.ts"],
-      "@bgap/api/unit": ["libs/api/unit/src/index.ts"]
+      "@bgap/api/unit": ["libs/api/unit/src/index.ts"],
+      "@bgap/integration-tests/angular": [
+        "libs/integration-tests/angular/src/index.ts"
+      ],
+      "@bgap/shared/data-validators": [
+        "libs/shared/data-validators/src/index.ts"
+      ],
+      "@bgap/integration-tests/universal": [
+        "libs/integration-tests/universal/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

@@ -41,6 +41,7 @@
 
 <div class="pl-5">
   <div class="caption" *ngFor="let item of adminUser.roleContexts?.items">
-    {{ 'roles.' + item.roleContext.role | translate }} @ {{ item.roleContext | roleEntityNames | async  }}
+    {{ 'roles.' + item.roleContext.role | translate }} @
+    {{ item.roleContext | roleEntityNames | async }}
   </div>
 </div>

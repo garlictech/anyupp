@@ -17,7 +17,10 @@ export const contactFormGroup = () => ({
   phone: [''],
 });
 
-export const addressFormGroup = (formBuilder: FormBuilder, required = false) => ({
+export const addressFormGroup = (
+  formBuilder: FormBuilder,
+  required = false,
+) => ({
   address: formBuilder.group({
     address: ['', required ? [Validators.required] : []],
     city: ['', required ? [Validators.required] : []],

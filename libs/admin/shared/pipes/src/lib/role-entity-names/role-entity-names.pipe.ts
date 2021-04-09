@@ -18,25 +18,24 @@ export class RoleEntityNamesPipe implements PipeTransform {
 
   transform(roleContext: IRoleContext): Observable<string> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const selectorFv = (id: string, selector: any) => of(id).pipe(
-      filter(fp.negate(fp.isEmpty)),
-      switchMap(() => this._store.select(selector(id))),
-      map(entity => entity?.name),
-      filter(fp.isString),
-      startWith('')
-    )
+    const selectorFv = (id: string, selector: any) =>
+      of(id).pipe(
+        filter(fp.negate(fp.isEmpty)),
+        switchMap(() => this._store.select(selector(id))),
+        map(entity => entity?.name),
+        filter(fp.isString),
+        startWith(''),
+      );
 
     const entitiesPath$ = combineLatest([
       selectorFv(roleContext.chainId, chainsSelectors.getChainById),
       selectorFv(roleContext.groupId || '', groupsSelectors.getGroupById),
-      selectorFv(roleContext.unitId || '', unitsSelectors.getUnitById)
+      selectorFv(roleContext.unitId || '', unitsSelectors.getUnitById),
     ]).pipe(
-      map(([c, g, u]) =>  [c, g, u].filter((e) => e !== '').join(' / ')),
-      shareReplay())
+      map(([c, g, u]) => [c, g, u].filter(e => e !== '').join(' / ')),
+      shareReplay(),
+    );
 
     return entitiesPath$;
   }
 }
-
-
-

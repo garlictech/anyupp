@@ -26,7 +26,7 @@ exports.handler = (event, context, callback) => {
         redirectUrl,
         region,
         clientId,
-      })
+      }),
     ).toString('base64');
     const bucketUrl = `http://${resourcePrefix}verificationbucket-${process.env.ENV}.s3-website${seperator}${region}.amazonaws.com`;
     const url = `${bucketUrl}/?data=${payload}&code=${codeParameter}`;

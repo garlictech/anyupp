@@ -21,12 +21,15 @@ import {
   IPaymentMode,
   IPlace,
   IUnit,
+} from '@bgap/shared/types';
+import {
   validateCart,
   validateGetGroupCurrency,
   validateOrder,
   validateUnit,
   validateUnitProduct,
-} from '@bgap/shared/types';
+} from '@bgap/shared/data-validators';
+
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,

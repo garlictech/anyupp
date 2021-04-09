@@ -1,13 +1,14 @@
 /* eslint-disable */
 var __assign =
   (this && this.__assign) ||
-  function() {
+  function () {
     __assign =
       Object.assign ||
-      function(t) {
+      function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
           s = arguments[i];
-          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+          for (var p in s)
+            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
       };
@@ -33,7 +34,7 @@ var defaults = {
   shadow: '0 0 1px transparent',
   position: 'absolute',
 };
-var Spinner = /** @class */ (function() {
+var Spinner = /** @class */ (function () {
   function Spinner(opts) {
     if (opts === void 0) {
       opts = {};
@@ -45,7 +46,7 @@ var Spinner = /** @class */ (function() {
    * spinning, it is automatically removed from its previous target by calling
    * stop() internally.
    */
-  Spinner.prototype.spin = function(target) {
+  Spinner.prototype.spin = function (target) {
     this.stop();
     this.el = document.createElement('div');
     this.el.className = this.opts.className;
@@ -68,7 +69,7 @@ var Spinner = /** @class */ (function() {
    * Stops and removes the Spinner.
    * Stopped spinners may be reused by calling spin() again.
    */
-  Spinner.prototype.stop = function() {
+  Spinner.prototype.stop = function () {
     if (this.el) {
       if (typeof requestAnimationFrame !== 'undefined') {
         cancelAnimationFrame(this.animateId);
@@ -131,7 +132,8 @@ function drawLines(el, opts) {
       background: getColor(opts.color, i),
       borderRadius: borderRadius,
       boxShadow: normalizeShadow(shadows, degrees),
-      animation: 1 / opts.speed + 's linear ' + delay + 's infinite ' + opts.animation,
+      animation:
+        1 / opts.speed + 's linear ' + delay + 's infinite ' + opts.animation,
     });
     backgroundLine.appendChild(line);
     el.appendChild(backgroundLine);
@@ -178,7 +180,15 @@ function normalizeShadow(shadows, degrees) {
   for (var _i = 0, shadows_1 = shadows; _i < shadows_1.length; _i++) {
     var shadow = shadows_1[_i];
     var xy = convertOffset(shadow.x, shadow.y, degrees);
-    normalized.push(shadow.prefix + xy[0] + shadow.xUnits + ' ' + xy[1] + shadow.yUnits + shadow.end);
+    normalized.push(
+      shadow.prefix +
+        xy[0] +
+        shadow.xUnits +
+        ' ' +
+        xy[1] +
+        shadow.yUnits +
+        shadow.end,
+    );
   }
   return normalized.join(', ');
 }
@@ -186,5 +196,8 @@ function convertOffset(x, y, degrees) {
   var radians = (degrees * Math.PI) / 180;
   var sin = Math.sin(radians);
   var cos = Math.cos(radians);
-  return [Math.round((x * cos + y * sin) * 1000) / 1000, Math.round((-x * sin + y * cos) * 1000) / 1000];
+  return [
+    Math.round((x * cos + y * sin) * 1000) / 1000,
+    Math.round((-x * sin + y * cos) * 1000) / 1000,
+  ];
 }

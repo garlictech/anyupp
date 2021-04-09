@@ -64,5 +64,7 @@ module.exports = {
     '<rootDir>/libs/admin/pages/role-contexts',
     '<rootDir>/libs/api/admin-user',
     '<rootDir>/libs/api/unit',
+    '<rootDir>/libs/integration-tests/angular',
+    '<rootDir>/libs/shared/data-validators',
   ],
 };

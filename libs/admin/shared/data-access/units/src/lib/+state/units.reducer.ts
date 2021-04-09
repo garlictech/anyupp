@@ -16,9 +16,7 @@ export interface IUnitsPartialState {
 
 export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<IUnit>();
 
-export const initialState: IUnitsState = unitsAdapter.getInitialState({
-
-});
+export const initialState: IUnitsState = unitsAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
