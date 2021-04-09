@@ -30,7 +30,7 @@ export class AdminUserListItemComponent {
       dialogClass: 'form-dialog',
     });
 
-    dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
+    dialog.componentRef.instance.adminUserId = this.adminUser.id || '';
   }
 
   public resetEmail(): void {

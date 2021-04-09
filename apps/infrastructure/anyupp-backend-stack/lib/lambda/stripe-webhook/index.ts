@@ -17,6 +17,7 @@ interface HttpLambdaEvent {
 
 export const handler: Handler = async (
   event: HttpLambdaEvent,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: Context,
 ) => {
   console.log('Stripe webhook called with ', event);

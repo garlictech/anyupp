@@ -7,7 +7,7 @@ import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 class SuccessAnimationWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new SuccessAnimationWidgetState();
+    return SuccessAnimationWidgetState();
   }
 }
 
@@ -19,23 +19,23 @@ class SuccessAnimationWidgetState extends State<SuccessAnimationWidget> with Sin
   @override
   void initState() {
     int factor = 50;
-    animationController = new AnimationController(vsync: this);
-    sequenceAnimation = new SequenceAnimationBuilder()
+    animationController = AnimationController(vsync: this);
+    sequenceAnimation = SequenceAnimationBuilder()
         .addAnimatable(
-            animatable: new Tween(begin: 0.0, end: 0.70),
-            from: new Duration(milliseconds: 3 * factor),
-            to: new Duration(milliseconds: 10 * factor),
+            animatable: Tween(begin: 0.0, end: 0.70),
+            from: Duration(milliseconds: 3 * factor),
+            to: Duration(milliseconds: 10 * factor),
             tag: "start")
         .addAnimatable(
-            animatable: new Tween(begin: 0.0, end: 1.0),
-            from: new Duration(milliseconds: 0),
-            to: new Duration(milliseconds: 10 * factor),
+            animatable: Tween(begin: 0.0, end: 1.0),
+            from: Duration(milliseconds: 0),
+            to: Duration(milliseconds: 10 * factor),
             tag: "end",
             curve: Curves.easeOut)
         .animate(animationController);
 
     // Delay
-    new Future.delayed(new Duration(milliseconds: 200)).then((_) {
+    Future.delayed(Duration(milliseconds: 200)).then((_) {
       animationController.forward();
     });
 
@@ -44,11 +44,11 @@ class SuccessAnimationWidgetState extends State<SuccessAnimationWidget> with Sin
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
         animation: animationController,
         builder: (c, w) {
-          return new CustomPaint(
-            painter: new _CustomPainter(
+          return CustomPaint(
+            painter: _CustomPainter(
               strokeStart: sequenceAnimation['start'].value,
               strokeEnd: sequenceAnimation['end'].value,
               context: context,
@@ -59,7 +59,7 @@ class SuccessAnimationWidgetState extends State<SuccessAnimationWidget> with Sin
 }
 
 class _CustomPainter extends CustomPainter {
-  Paint _paint = new Paint();
+  Paint _paint = Paint();
   BuildContext context;
 
   double _r = 32.0;
@@ -89,9 +89,9 @@ class _CustomPainter extends CustomPainter {
   }
 
   Path createPath() {
-    Path path = new Path();
+    Path path = Path();
     path.addArc(
-        new Rect.fromCircle(center: new Offset(_r, _r), radius: _r), math.radians(60.0 - 30.0), math.radians(-200.0));
+        Rect.fromCircle(center: Offset(_r, _r), radius: _r), math.radians(60.0 - 30.0), math.radians(-200.0));
     path.lineTo(24.0, 46.0);
     path.lineTo(49.0, 18.0);
     return path;
@@ -99,8 +99,8 @@ class _CustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Path path = new Path();
-    path.addArc(new Rect.fromCircle(center: new Offset(_r, _r), radius: _r), 0.0, math.radians(360.0));
+    Path path = Path();
+    path.addArc(Rect.fromCircle(center: Offset(_r, _r), radius: _r), 0.0, math.radians(360.0));
 
     // Responsible for the color of the circle(ring) around the checkmark
     _paint.color = Theme.of(context).primaryColor.withOpacity(0.7);

@@ -1,0 +1,25 @@
+<nb-card class="h-100 mb-0">
+  <nb-card-header>
+    <div class="float-left">
+      {{ 'roleContexts.listTitle' | translate }}
+    </div>
+    <button
+      nbButton
+      type="button"
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="addRoleContext()"
+    >
+      <nb-icon icon="plus-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list-item *ngFor="let roleContext of roleContexts$ | async">
+      <bgap-role-context-list-item
+        class="w-100"
+        [roleContext]="roleContext"
+      ></bgap-role-context-list-item>
+    </nb-list-item>
+  </nb-card-body>
+</nb-card>

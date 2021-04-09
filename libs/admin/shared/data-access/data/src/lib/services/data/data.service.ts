@@ -1,9 +1,8 @@
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
+import { Observable, of, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireFunctions } from '@angular/fire/functions';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
@@ -15,6 +14,7 @@ import {
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
+import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
@@ -22,7 +22,6 @@ import {
   EAdminRole,
   EOrderStatus,
   IAdminUser,
-  IAdminUserRole,
   IAdminUserSettings,
   IChain,
   IGroup,
@@ -30,13 +29,13 @@ import {
   IOrder,
   IProduct,
   IProductCategory,
+  IRoleContext,
+  IAdminUserConnectedRoleContext,
   IUnit,
-  IUser,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-import { chainAdminFilter, groupAdminFilter, unitAdminFilter } from '../../fn';
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
 
 @Injectable({
@@ -50,8 +49,6 @@ export class DataService {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _angularFireDatabase: AngularFireDatabase,
-    private _angularFireFunctions: AngularFireFunctions,
     private _amplifyDataService: AmplifyDataService,
     private _translateService: TranslateService,
   ) {}
@@ -65,7 +62,10 @@ export class DataService {
         upsertFn: (loggedUser: unknown) => {
           this._store.dispatch(
             loggedUserActions.loadLoggedUserSuccess({
-              loggedUser: <IAdminUser>loggedUser,
+              loggedUser: {
+                ...(<IAdminUser>loggedUser),
+                role: EAdminRole.SUPERUSER, // TODO contextből
+              },
             }),
           );
         },
@@ -112,37 +112,19 @@ export class DataService {
           ();
       });
 
-    this._store
-      .pipe(
-        select(loggedUserSelectors.getLoggedUserRoles),
-        filter((roles: IAdminUserRole | undefined): boolean => !!roles),
-        takeUntil(this._destroyConnection$),
-      )
-      .subscribe((adminUserRoles: IAdminUserRole | undefined): void => {
-        this._rolesChanged$.next(true);
+    // Lists
 
-        switch (adminUserRoles?.role) {
-          case EAdminRole.SUPERUSER:
-            this._createSuperuserSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.CHAIN_ADMIN:
-            this._createChainAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.GROUP_ADMIN:
-            this._createGroupAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.UNIT_ADMIN:
-            this._createUnitAdminSubscriptions(adminUserRoles);
-            break;
-          case EAdminRole.STAFF:
-            this._createStaffSubscriptions(adminUserRoles);
-            break;
-          default:
-            break;
-        }
-      });
+    this._subscribeToRoleContext();
+    this._subscribeToChains();
+    this._subscribeToGroups();
+    this._subscribeToUnits();
+    // this._subscribeToUsers(); TODO not used?
+    this._subscribeToRoleContext();
+    this._subscribeToAdminUsers();
+    this._subscribeToAdminRoleContexts();
 
     // Get user language
+
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
@@ -153,81 +135,26 @@ export class DataService {
       });
   }
 
-  private _createSuperuserSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole('*');
-    this._subscribeToGroupsByRole('id', '*');
-    this._subscribeToUnitsByRole('id', '*');
-    this._subscribeToUsers();
-    this._subscribeToAdminUsers(adminUserRoles);
+  private _subscribeToRoleContext(): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listRoleContexts',
+        subscriptionName: 'onRoleContextsChange',
+        resetFn: () => {
+          this._store.dispatch(roleContextActions.resetRoleContexts());
+        },
+        upsertFn: (roleContext: unknown): void => {
+          this._store.dispatch(
+            roleContextActions.upsertRoleContext({
+              roleContext: <IRoleContext>roleContext,
+            }),
+          );
+        },
+      })
+      .subscribe();
   }
 
-  private _createChainAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'chainId',
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToUnitsByRole(
-      'chainId',
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createGroupAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'groupId',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createUnitAdminSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-    );
-    this._subscribeToAdminUsers(adminUserRoles);
-  }
-
-  private _createStaffSubscriptions(adminUserRoles: IAdminUserRole): void {
-    this._subscribeToChainsByRole(
-      (adminUserRoles?.entities ?? []).map(e => e.chainId),
-    );
-    this._subscribeToGroupsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.groupId || ''),
-    );
-    this._subscribeToUnitsByRole(
-      'id',
-      (adminUserRoles?.entities ?? []).map(e => e.unitId || ''),
-    );
-  }
-
-  private _subscribeToChainsByRole(
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (chain: IChain): boolean =>
-      loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(chain.id);
-
+  private _subscribeToChains(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listChains',
@@ -236,28 +163,17 @@ export class DataService {
           this._store.dispatch(chainsActions.resetChains());
         },
         upsertFn: (chain: unknown): void => {
-          if (allowUpsert(<IChain>chain)) {
-            this._store.dispatch(
-              chainsActions.upsertChain({
-                chain: <IChain>chain,
-              }),
-            );
-          }
+          this._store.dispatch(
+            chainsActions.upsertChain({
+              chain: <IChain>chain,
+            }),
+          );
         },
       })
       .subscribe();
   }
 
-  private _subscribeToGroupsByRole(
-    fieldName: keyof IGroup,
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (group: IGroup): boolean => {
-      return loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(<string>group[fieldName]);
-    };
-
+  private _subscribeToGroups(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroups',
@@ -266,27 +182,17 @@ export class DataService {
           this._store.dispatch(groupsActions.resetGroups());
         },
         upsertFn: (group: unknown): void => {
-          if (allowUpsert(<IGroup>group)) {
-            this._store.dispatch(
-              groupsActions.upsertGroup({
-                group: <IGroup>group,
-              }),
-            );
-          }
+          this._store.dispatch(
+            groupsActions.upsertGroup({
+              group: <IGroup>group,
+            }),
+          );
         },
       })
       .subscribe();
   }
 
-  private _subscribeToUnitsByRole(
-    fieldName: keyof IUnit,
-    loggedAdminUserEntities: string | string[],
-  ): void {
-    const allowUpsert = (unit: IUnit): boolean =>
-      loggedAdminUserEntities === '*'
-        ? true
-        : loggedAdminUserEntities.includes(<string>unit[fieldName]);
-
+  private _subscribeToUnits(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listUnits',
@@ -295,13 +201,11 @@ export class DataService {
           this._store.dispatch(unitsActions.resetUnits());
         },
         upsertFn: (unit: unknown): void => {
-          if (allowUpsert(<IUnit>unit)) {
-            this._store.dispatch(
-              unitsActions.upsertUnit({
-                unit: <IUnit>unit,
-              }),
-            );
-          }
+          this._store.dispatch(
+            unitsActions.upsertUnit({
+              unit: <IUnit>unit,
+            }),
+          );
         },
       })
       .subscribe();
@@ -509,6 +413,7 @@ export class DataService {
       });*/
   }
 
+  /*
   private _subscribeToUsers(): void {
     this._amplifyDataService
       .snapshotChanges$({
@@ -527,23 +432,9 @@ export class DataService {
       })
       .subscribe();
   }
+  */
 
-  private _subscribeToAdminUsers(loggedAdminRole: IAdminUserRole): void {
-    const allowUpsert = (adminUser: IAdminUser): boolean => {
-      switch (loggedAdminRole.role) {
-        case EAdminRole.SUPERUSER:
-          return true;
-        case EAdminRole.CHAIN_ADMIN:
-          return chainAdminFilter(adminUser, loggedAdminRole);
-        case EAdminRole.GROUP_ADMIN:
-          return groupAdminFilter(adminUser, loggedAdminRole);
-        case EAdminRole.UNIT_ADMIN:
-          return unitAdminFilter(adminUser, loggedAdminRole);
-        default:
-          return false;
-      }
-    };
-
+  private _subscribeToAdminUsers(): void {
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listAdminUsers',
@@ -552,7 +443,31 @@ export class DataService {
           this._store.dispatch(adminUsersActions.resetAdminUsers());
         },
         upsertFn: (adminUser: unknown): void => {
-          if (allowUpsert(<IAdminUser>adminUser)) {
+          this._store.dispatch(
+            adminUsersActions.upsertAdminUser({
+              adminUser: <IAdminUser>adminUser,
+            }),
+          );
+        },
+      })
+      .subscribe();
+  }
+
+  private _subscribeToAdminRoleContexts(): void {
+    this._amplifyDataService
+      .subscribe$({
+        subscriptionName: 'onAdminRoleContextsChange',
+        upsertFn: async (adminRoleContext: unknown): Promise<void> => {
+          const result = await this._amplifyDataService.query({
+            queryName: 'getAdminUser',
+            variables: {
+              id: (<IAdminUserConnectedRoleContext>adminRoleContext)
+                .adminUserId,
+            },
+          });
+          const adminUser: unknown = result?.data?.getAdminUser;
+
+          if (adminUser) {
             this._store.dispatch(
               adminUsersActions.upsertAdminUser({
                 adminUser: <IAdminUser>adminUser,
@@ -609,14 +524,15 @@ export class DataService {
   }
 
   // TODO refactor
-  public regenerateUnitData(unitId: string): Promise<void> {
-    const callable = this._angularFireFunctions.httpsCallable(
+  public regenerateUnitData(unitId: string): Promise<unknown> {
+    /*const callable = this._angularFireFunctions.httpsCallable(
       `regenerateUnitData`,
     );
 
     return callable({
       unitId,
-    }).toPromise();
+    }).toPromise();*/
+    return of({ unitId }).toPromise();
   }
 
   //
@@ -629,18 +545,26 @@ export class DataService {
     unitId: string,
     orderId: string,
   ): Observable<unknown> {
-    return this._angularFireDatabase
+    return of({
+      chainId,
+      unitId,
+      orderId,
+    }); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
       .valueChanges()
-      .pipe(take(1));
+      .pipe(take(1));*/
   }
+
   // TODO refactor
   public insertOrderStatus(
     chainId: string,
     unitId: string,
     orderId: string,
     status: EOrderStatus,
-  ): Promise<void> {
+  ): Promise<unknown> {
+    return of({ chainId, unitId, orderId, status }).toPromise();
+
+    /*
     const callable = this._angularFireFunctions.httpsCallable(
       `setNewOrderStatus`,
     );
@@ -651,18 +575,26 @@ export class DataService {
       orderId,
       status,
     }).toPromise();
+    */
   }
+
   // TODO refactor
   public updateOrderPaymentMode(
     chainId: string,
     unitId: string,
     orderId: string,
     value: IOrder | IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .update(value);
+      .update(value);*/
   }
+
   // TODO refactor
   public insertOrderItemStatus(
     chainId: string,
@@ -670,12 +602,18 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
       )
-      .update(value);
+      .update(value);*/
   }
   // TODO refactor
   public updateOrderItemQuantityAndPrice(
@@ -684,12 +622,18 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
-      .update(value);
+      .update(value);*/
   }
   // TODO refactor
   public addOrderItem(
@@ -698,12 +642,18 @@ export class DataService {
     orderId: string,
     idx: number,
     value: IKeyValueObject,
-  ): Promise<void> {
-    return this._angularFireDatabase
+  ): Promise<unknown> {
+    return of({
+      chainId,
+      unitId,
+      orderId,
+      idx,
+      value,
+    }).toPromise(); /* this._angularFireDatabase
       .object(
         `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
       )
-      .update(value);
+      .update(value);*/
   }
 
   //
@@ -724,7 +674,10 @@ export class DataService {
           ...value,
         };
 
-        return <IAdminUser>adminUser;
+        return fp.pick(
+          ['id', 'name', 'profileImage', 'settings'],
+          <IAdminUser>adminUser,
+        );
       },
     );
   }
@@ -743,7 +696,10 @@ export class DataService {
           selectedLanguage: language,
         };
 
-        return <IAdminUser>adminUser;
+        return fp.pick(
+          ['id', 'name', 'profileImage', 'settings'],
+          <IAdminUser>adminUser,
+        );
       },
     );
   }

@@ -17,13 +17,23 @@ class StripePaymentMethod extends Equatable {
   @override
   List<Object> get props => [id, brand, last4, expMonth, expYear];
 
-  factory StripePaymentMethod.fromStripe(GetCustomerStripeCards$Query$StripeCard stripeCard) {
-    return StripePaymentMethod(
-      id: stripeCard.id,
-      brand: stripeCard.brand.toString().split('.').last,
-      last4: stripeCard.last4,
-      expYear: stripeCard.exp_year,
-      expMonth: stripeCard.exp_month,
-    );
-  }
+  // factory StripePaymentMethod.fromStripe(GetCustomerStripeCards$Query$StripeCard stripeCard) {
+  //   return StripePaymentMethod(
+  //     id: stripeCard.id,
+  //     brand: stripeCard.brand.toString().split('.').last,
+  //     last4: stripeCard.last4,
+  //     expYear: stripeCard.exp_year,
+  //     expMonth: stripeCard.exp_month,
+  //   );
+  // }
 }
+
+// class StripeCard {
+//   String id;
+
+//   String last4;
+
+//   int exp_month;
+
+//   int exp_year;
+// }

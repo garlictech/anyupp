@@ -4,10 +4,19 @@ import { filter } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  IDashboardSettings,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IUnit } from '@bgap/shared/types';
+import {
+  EDashboardListMode,
+  EDashboardSize,
+  ENebularButtonSize,
+  IUnit,
+} from '@bgap/shared/types';
 import { zeroFill } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -62,7 +71,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     timer(0, 1000)
       .pipe(untilDestroyed(this))
       .subscribe((): void => {

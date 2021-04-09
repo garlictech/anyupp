@@ -1,35 +1,55 @@
-import { interval, Observable, of, throwError } from 'rxjs';
-import { delayWhen, retryWhen, switchMap, take, tap } from 'rxjs/operators';
+import { Observable, throwError, timer } from 'rxjs';
+import { mergeMap, retryWhen } from 'rxjs/operators';
 
 export const buildRetryLogic = <T>({
-  logger,
+  // logger,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   retryable = (_error: unknown) => true,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  retryDelayInMillisec = (_error: unknown) => 1000,
+  maxRetryAttempts = 3,
+  retryScalingDurationInMillisec = 1000,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  logger?: { warn: (arg0: string) => void };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // logger?: { warn: (arg0: string) => void };
   retryable?: (error: unknown) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  retryDelayInMillisec?: (error: unknown) => number;
+  maxRetryAttempts?: number;
+  retryScalingDurationInMillisec?: number;
 }) => (source: Observable<T>): Observable<T> =>
   source.pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        tap(error =>
-          logger?.warn(`Error happened... ${JSON.stringify(error, null, 2)}`),
-        ),
-        switchMap(error =>
-          retryable(error)
-            ? of(retryDelayInMillisec(error)).pipe(
-                tap(delayValue => logger?.warn(`Retry in ${delayValue} ms...`)),
-                delayWhen(delayValue => interval(delayValue).pipe(take(1))),
-              )
-            : throwError(error),
-        ),
-        take(3),
-      ),
+    retryWhen(
+      genericRetryStrategy<T>({
+        maxRetryAttempts,
+        retryScalingDurationInMillisec,
+      }),
     ),
   );
+
+const genericRetryStrategy = <T>({
+  maxRetryAttempts = 3,
+  retryScalingDurationInMillisec = 1000,
+}: // excludedStatusCodes = [],
+{
+  maxRetryAttempts?: number;
+  retryScalingDurationInMillisec?: number;
+  // excludedStatusCodes?: number[];
+} = {}) => (attempts: Observable<T>) => {
+  return attempts.pipe(
+    mergeMap((error, i) => {
+      const retryAttempt = i + 1;
+      // if maximum number of retries have been met
+      // or response is a status code we don't wish to retry, throw error
+      if (
+        retryAttempt > maxRetryAttempts
+        // || excludedStatusCodes.find(e => e === error.status)
+      ) {
+        return throwError(error);
+      }
+      console.log(
+        `Attempt ${retryAttempt}: retrying in ${
+          retryAttempt * retryScalingDurationInMillisec
+        }ms`,
+      );
+      // retry after 1s, 2s, etc...
+      return timer(retryAttempt * retryScalingDurationInMillisec);
+    }),
+    // finalize(() => console.log('We are done!')),
+  );
+};

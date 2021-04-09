@@ -20,8 +20,8 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Handle payment method list
       if (event is PaymentMethodListEvent) {
         yield StripePaymentLoading();
-        List<GetCustomerStripeCards$Query$StripeCard> methods = await _paymentRepository.getPaymentMethods();
-        yield StripePaymentMethodsList(methods);
+        // List<GetCustomerStripeCards$Query$StripeCard> methods = await _paymentRepository.getPaymentMethods();
+        // yield StripePaymentMethodsList(methods);
       }
 
       // --- Handle start payment with existing card

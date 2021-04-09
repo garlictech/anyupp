@@ -1,5 +1,5 @@
-import { EAdminRole, EPaymentMethod } from '@bgap/shared/types';
-import { IPaymentMode } from '@bgap/shared/types';
+import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { EAdminRole, IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
 export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
@@ -52,38 +52,44 @@ export const MENU_ROLES = {
     EAdminRole.GROUP_ADMIN,
     EAdminRole.UNIT_ADMIN,
   ],
+  ROLE_CONTEXTS: [
+    EAdminRole.SUPERUSER,
+    EAdminRole.CHAIN_ADMIN,
+    EAdminRole.GROUP_ADMIN,
+    EAdminRole.UNIT_ADMIN,
+  ],
 };
 
 export const PAYMENT_MODES: IPaymentMode[] = [
   {
     name: 'Cash',
     caption: 'common.paymentModes.cash',
-    method: EPaymentMethod.CASH,
+    method: AmplifyApi.PaymentMethod.CASH,
   },
   {
     name: 'Card',
     caption: 'common.paymentModes.card',
-    method: EPaymentMethod.CARD,
+    method: AmplifyApi.PaymentMethod.CARD,
   },
   {
     name: 'Google Pay',
     caption: 'Google Pay',
-    method: EPaymentMethod.INAPP,
+    method: AmplifyApi.PaymentMethod.INAPP,
   },
   {
     name: 'Apple Pay',
     caption: 'Apple Pay',
-    method: EPaymentMethod.INAPP,
+    method: AmplifyApi.PaymentMethod.INAPP,
   },
   {
     name: 'Stripe',
     caption: 'Stripe',
-    method: EPaymentMethod.INAPP,
+    method: AmplifyApi.PaymentMethod.INAPP,
   },
   {
     name: 'Simple Pay',
     caption: 'Simple Pay',
-    method: EPaymentMethod.INAPP,
+    method: AmplifyApi.PaymentMethod.INAPP,
   },
 ];
 

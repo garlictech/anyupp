@@ -426,25 +426,25 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     )))),
                         Container(
                           padding: EdgeInsets.all(8.0),
-                          child: new RichText(
+                          child: RichText(
                             textAlign: TextAlign.center,
-                            text: new TextSpan(
+                            text: TextSpan(
                               children: [
-                                new TextSpan(
+                                TextSpan(
                                   text: trans('tos.acceptionPrefix') + ' ',
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.0,
                                     color: Color(0x993C2F2F),
                                   ),
                                 ),
-                                new TextSpan(
+                                TextSpan(
                                   text: trans('tos.aszf'),
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.0,
                                     decoration: TextDecoration.underline,
                                     color: Color(0x993C2F2F),
                                   ),
-                                  recognizer: new TapGestureRecognizer()
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       // TODO: we could use remoteConfig to aquire this value independent of the app version
                                       // or the firebase storage getDownloadUrl method in case we need the latest documents for all the app versions
@@ -487,7 +487,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   if (snapshot.data == true) // has Apple Login
                     _createSocialButtonWidget('apple', LoginMethod.APPLE),
                   _createSocialButtonWidget('email', LoginMethod.EMAIL, theme.indicator),
-                  _createSocialButtonWidget('phone', LoginMethod.PHONE),
+                  // _createSocialButtonWidget('phone', LoginMethod.PHONE),
                 ],
               ),
             ),
@@ -524,7 +524,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);
-              _toggleEmailLoginForm();
+              // _toggleEmailLoginForm();
+              getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
+              
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
             }

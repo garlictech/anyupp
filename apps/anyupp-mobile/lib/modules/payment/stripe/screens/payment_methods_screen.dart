@@ -4,7 +4,6 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/nav.dart';
 
 class StripePaymentMethodsScreen extends StatefulWidget {

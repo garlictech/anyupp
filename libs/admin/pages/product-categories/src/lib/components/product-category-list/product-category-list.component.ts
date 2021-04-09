@@ -95,7 +95,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
             productCategoryId,
             (data: unknown) => ({
               ...(<IProductCategory>data),
-              position: (pos + 1).toString(),
+              position: pos + 1,
             }),
           );
         },

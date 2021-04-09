@@ -21,6 +21,7 @@ export class SeederStack extends sst.Stack {
     const seederLambda = new lambda.Function(this, 'StackSeederLambda', {
       ...commonLambdaProps,
       handler: 'lib/lambda/stack-seeder/index.handler',
+      memorySize: 512,
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/stack-seeder.zip'),
       ),
@@ -48,6 +49,7 @@ export class SeederStack extends sst.Stack {
       resourceType: 'Custom::StackSeeder',
       properties: {
         adminUserPoolId,
+        physicalResourceId: scope.logicalPrefixedName('seeder'),
       },
     });
   }

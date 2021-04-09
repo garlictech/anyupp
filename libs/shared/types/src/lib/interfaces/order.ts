@@ -1,7 +1,9 @@
-import { EOrderStatus, EPaymentMethod } from '../enums';
+import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
+import { IPaymentMode } from './payment';
 
 export interface IPriceShown {
+  __typename?: 'PriceShown';
   currency: string;
   pricePerUnit: number;
   priceSum: number;
@@ -9,7 +11,17 @@ export interface IPriceShown {
   taxSum: number;
 }
 
+export interface IStatusLogItem {
+  userId: string;
+  status: EOrderStatus;
+  ts?: number; // after objectToArray(statusLog, 'ts')
+}
+export interface IStatusLog {
+  [timestamp: number]: IStatusLogItem;
+}
+
 export interface IOrderItem {
+  __typename?: 'OrderItem';
   created: number;
   productName: ILocalizedItem<string>;
   priceShown: IPriceShown;
@@ -31,17 +43,8 @@ export interface ILaneOrderItem extends IOrderItem {
   currentStatus?: EOrderStatus;
 }
 
-export interface IStatusLogItem {
-  userId: string;
-  status: EOrderStatus;
-  ts?: string; // after objectToArray(statusLog, 'ts')
-}
-
-export interface IStatusLog {
-  [timestamp: number]: IStatusLogItem;
-}
-
 export interface IPlace {
+  __typename?: 'Place';
   seat: string;
   table: string;
 }
@@ -51,17 +54,19 @@ export interface IOrders {
 }
 
 export interface IOrder {
+  __typename?: 'Order';
   id: string;
-  created: number;
+  userId: string;
+  unitId: string;
   items: IOrderItem[];
-  paymentMethod: EPaymentMethod;
-  staffId: string;
+  paymentMode: IPaymentMode;
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;
-  userId: string;
-  place: IPlace;
+  place?: IPlace;
   paymentIntention?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IDateIntervals {

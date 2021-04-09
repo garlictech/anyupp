@@ -1,0 +1,147 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">
+      {{
+        (roleContext && roleContext.id
+          ? 'roleContexts.editRoleContext'
+          : 'roleContexts.newRoleContext'
+        ) | translate
+      }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
+      <div class="row">
+        <div class="col-3">
+          <bgap-form-text-input
+            caption="common.nameHU"
+            type="text"
+            [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-3">
+          <bgap-form-text-input
+            caption="common.nameEN"
+            type="text"
+            [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-3">
+          <bgap-form-text-input
+            caption="common.nameDE"
+            type="text"
+            [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-md-3">
+          <bgap-form-select
+            [control]="dialogForm.get('role')! | asFormControl"
+            caption="roles.role"
+            [options]="roleOptions"
+            [localize]="false"
+          >
+          </bgap-form-select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div [hidden]="chainDisabled">
+            <div>
+              <label class="caption">{{
+                'roles.selectChain' | translate
+              }}</label>
+            </div>
+            <div>
+              <nb-select
+                size="small"
+                [formControl]="dialogForm.get('chainId')! | asFormControl"
+              >
+                <nb-option value="">-</nb-option>
+                <nb-option
+                  *ngFor="let option of chainOptions"
+                  [value]="option.key"
+                  >{{ option.value }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div [hidden]="groupDisabled">
+            <div>
+              <label class="caption">{{
+                'roles.selectGroup' | translate
+              }}</label>
+            </div>
+
+            <nb-select
+              size="small"
+              [formControl]="dialogForm.get('groupId')! | asFormControl"
+            >
+              <nb-option value="">-</nb-option>
+              <nb-option
+                *ngFor="let option of groupOptions"
+                [value]="option.key"
+                >{{ option.value }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div [hidden]="unitDisabled">
+            <div>
+              <label class="caption">{{
+                'roles.selectUnit' | translate
+              }}</label>
+            </div>
+            <div>
+              <nb-select
+                size="small"
+                [formControl]="dialogForm.get('unitId')! | asFormControl"
+              >
+                <nb-option value="">-</nb-option>
+                <nb-option
+                  *ngFor="let option of unitOptions"
+                  [value]="option.key"
+                  >{{ option.value }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-20">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

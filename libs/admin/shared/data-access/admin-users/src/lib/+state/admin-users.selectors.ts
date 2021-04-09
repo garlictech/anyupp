@@ -15,11 +15,6 @@ export const getAdminUsersState = createFeatureSelector<
 
 const { selectAll, selectEntities } = adminUsersAdapter.getSelectors();
 
-export const getAdminUsersLoaded = createSelector(
-  getAdminUsersState,
-  (state: IAdminUsersState) => state.loaded,
-);
-
 export const getAdminUsersError = createSelector(
   getAdminUsersState,
   (state: IAdminUsersState) => state.error,
@@ -35,17 +30,6 @@ export const getAdminUsersEntities = createSelector(
   (state: IAdminUsersState) => selectEntities(state),
 );
 
-export const getSelectedId = createSelector(
-  getAdminUsersState,
-  (state: IAdminUsersState) => state.selectedId,
-);
-
-export const getSelected = createSelector(
-  getAdminUsersEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId],
-);
-
 export const getAdminUserById = (id: string) => {
   return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
     | IAdminUser
@@ -54,6 +38,7 @@ export const getAdminUserById = (id: string) => {
   );
 };
 
+/*
 export const getAdminUserByEmail = (email: string) => {
   return createSelector(getAllAdminUsers, (adminUsers: IAdminUser[]):
     | IAdminUser
@@ -61,3 +46,4 @@ export const getAdminUserByEmail = (email: string) => {
     adminUsers.find((adminUser): boolean => adminUser.email === email),
   );
 };
+*/

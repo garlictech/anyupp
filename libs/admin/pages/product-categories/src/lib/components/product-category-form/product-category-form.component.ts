@@ -75,6 +75,7 @@ export class ProductCategoryFormComponent
       const value = {
         ...this.dialogForm?.value,
         chainId: this._selectedChainId,
+        position: this.productCategory?.position || 0,
       };
 
       if (this.productCategory?.id) {

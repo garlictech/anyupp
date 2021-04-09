@@ -1,16 +1,14 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/utils/local_notifications_util.dart';
 import 'package:fa_prev/shared/utils/order_status_preferences.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fa_prev/modules/orders/orders.dart';
-
 class OrderNotificationService {
 
-  void checkIfShowOrderStatusNotification(BuildContext context, List<PlacedOrder> orders) async {
+  void checkIfShowOrderStatusNotification(BuildContext context, List<Order> orders) async {
     orders.forEach((order) async {
-      var statusKeys = order.statusLog.keys.toList()..sort();
-      String currentStatus = order.statusLog[statusKeys.last].status;
+      String currentStatus = order.statusLog[order.statusLog.length - 1].status;
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
       String previousStatus = await getOrderStatusPref(order.id);
@@ -20,7 +18,7 @@ class OrderNotificationService {
       }
 
       if (previousStatus != null) {
-        if (currentStatus == OrderStatus.PROCESSING && previousStatus == OrderStatus.PLACED) {
+        if (currentStatus == 'PROCESSING' && previousStatus == 'PLACED') {
           print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
           showNotification(
             context,
@@ -32,7 +30,7 @@ class OrderNotificationService {
           );
         }
 
-        if (currentStatus == OrderStatus.READY && previousStatus == OrderStatus.PROCESSING) {
+        if (currentStatus == 'READY' && previousStatus == 'PROCESSING') {
           print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMethod}');
 
           if (order.paymentMethod == 'INAPP') {

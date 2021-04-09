@@ -35,7 +35,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             install: {
               commands: [
                 `sh ./tools/setup-aws-environment.sh`,
-                'yarn',
+                'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli',
               ],
             },
@@ -43,14 +43,16 @@ export class DevPullRequestBuildStack extends sst.Stack {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config api-graphql-schema`,
               ],
             },
             build: {
               commands: [
+                `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests" --codeCoverage --coverageReporters=clover`,
-                `yarn nx build admin`,
-                `yarn nx build infrastructure-anyupp-backend-stack --stage=${stage} --app=${utils.appConfig.name}`,
+                `yarn nx build admin --skip-nx-cache`,
+                `yarn nx build infrastructure-anyupp-backend-stack --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
               ],
             },
           },
@@ -65,6 +67,10 @@ export class DevPullRequestBuildStack extends sst.Stack {
               AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
               AWS_SECRET_ACCESS_KEY:
                 'codebuild:codebuild-aws_secret_access_key',
+            },
+            variables: {
+              NODE_OPTIONS:
+                '--unhandled-rejections=strict --max_old_space_size=8196',
             },
           },
         }),

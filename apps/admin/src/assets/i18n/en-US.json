@@ -16,6 +16,7 @@
     "inactive": "Inactive",
     "confirm": "Confirm",
     "cancel": "Cancel",
+    "delete": "Delete",
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
@@ -52,6 +53,7 @@
     "imageRemoveSuccess": "Image removed successfully",
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
+    "removeSuccessful": "Remove successful",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",
@@ -81,7 +83,8 @@
     "groups": "Groups",
     "chains": "Chains",
     "users": "Users",
-    "admins": "Admins"
+    "admins": "Admins",
+    "roleContexts": "Role contexts"
   },
   "header": {
     "profile": "Profile",
@@ -219,6 +222,12 @@
     "newAdminUser": "New admin user",
     "editAdminUserRole": "Edit admin user role"
   },
+  "roleContexts": {
+    "listTitle": "Role contexts",
+    "editRoleContext": "Edit role context",
+    "newRoleContext": "New role context",
+    "contextId": "Context ID"
+  },
   "orders": {
     "listTitle": "Orders",
     "ordersAccepted": "Orders accepted",
@@ -269,7 +278,8 @@
     "assignedGroups": "Assigned groups",
     "selectUnit": "Select unit",
     "assignedUnits": "Assigned units",
-    "assign": "Assign"
+    "assign": "Assign",
+    "confirmRemoveRoleContext": "Are you sure you remove assigning the role context?"
   },
   "errors": {
     "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",

@@ -2,7 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,11 +31,13 @@ class FavoritesScreen extends StatelessWidget {
 
   Widget _buildFavorites(BuildContext context, GeoUnit unit) {
     FavoritesRepository _repository = getIt<FavoritesRepository>();
-    return StreamBuilder<List<Product>>(
-        stream: _repository.getFavoritesList(unit.chainId, unit.unitId),
-        builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data.length > 0) {
+    return StreamBuilder<List<FavoriteProduct>>(
+        stream: _repository.getFavoritesList(unit.chainId, unit.id),
+        builder: (context, AsyncSnapshot<List<FavoriteProduct>> snapshot) {
+          // print('**** FavoritesScreen.snapshot=$snapshot');
+          // print('**** FavoritesScreen.snapshot=${snapshot.hasData}');
+          if (snapshot.hasData || snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data != null && snapshot.data.isNotEmpty) {
               return _buildList(unit, snapshot.data);
             }
             return _buildEmptyList(context);
@@ -56,7 +58,7 @@ class FavoritesScreen extends StatelessWidget {
         });
   }
 
-  Widget _buildList(GeoUnit unit, List<Product> list) {
+  Widget _buildList(GeoUnit unit, List<FavoriteProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length,
@@ -71,7 +73,7 @@ class FavoritesScreen extends StatelessWidget {
               child: FadeInAnimation(
                 child: ProductMenuItem(
                   unit: unit,
-                  item: list[position],
+                  item: list[position].product,
                   heroPrefix: 'favorites',
                 ),
               ),

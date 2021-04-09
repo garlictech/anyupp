@@ -1,8 +1,11 @@
-import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput, Duration } from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
+import * as ssm from '@aws-cdk/aws-ssm';
+import { CfnOutput, Duration } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
+import path from 'path';
+import { commonLambdaProps } from './lambda-common';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -40,6 +43,10 @@ export class CognitoStack extends Stack {
         clientSecret: props.googleClientSecret,
         attributeMapping: {
           email: cognito.ProviderAttribute.GOOGLE_EMAIL,
+          birthdate: cognito.ProviderAttribute.GOOGLE_BIRTHDAYS,
+          fullname: cognito.ProviderAttribute.GOOGLE_NAME,
+          phoneNumber: cognito.ProviderAttribute.GOOGLE_PHONE_NUMBERS,
+          profilePicture: cognito.ProviderAttribute.GOOGLE_PICTURE,
         },
         scopes: ['profile', 'email', 'openid'],
       },
@@ -54,6 +61,8 @@ export class CognitoStack extends Stack {
         clientSecret: props.facebookClientSecret,
         attributeMapping: {
           email: cognito.ProviderAttribute.FACEBOOK_EMAIL,
+          birthdate: cognito.ProviderAttribute.FACEBOOK_BIRTHDAY,
+          fullname: cognito.ProviderAttribute.FACEBOOK_NAME,
         },
         scopes: ['public_profile', 'email', 'openid'],
       },
@@ -204,11 +213,11 @@ export class CognitoStack extends Stack {
     adminSiteUrl: string,
   ) {
     const callbackUrls = [`${adminSiteUrl}/admin/dashboard`];
-    const logoutUrls = [`${adminSiteUrl}/auth/logout`];
+    const logoutUrls = [`${adminSiteUrl}/auth/login`];
 
     if (app.stage === 'dev') {
       callbackUrls.push(`http://localhost:4200/admin/dashboard`);
-      logoutUrls.push(`http://localhost:4200/auth/logout`);
+      logoutUrls.push(`http://localhost:4200/auth/login`);
     }
 
     const commonProps = (callbackUrls: string[], logoutUrls: string[]) => ({
@@ -216,7 +225,7 @@ export class CognitoStack extends Stack {
         flows: {
           authorizationCodeGrant: true,
         },
-        scopes: [cognito.OAuthScope.OPENID],
+        scopes: [cognito.OAuthScope.OPENID, cognito.OAuthScope.COGNITO_ADMIN],
         callbackUrls,
         logoutUrls,
       },
@@ -251,7 +260,17 @@ export class CognitoStack extends Stack {
       userPoolId: userPool.userPoolId,
       css: `
         .banner-customizable {
-          background: linear-gradient(#9940B8, #C27BDB)
+          background: #464646;
+        }
+        .submitButton-customizable {
+          height: 32px;
+          background-color: #3366ff;
+        }
+        .submitButton-customizable:hover {
+          background-color: #598bff;
+        }
+        .inputField-customizable {
+          border: 1px solid #e4e9f2;
         }
       `,
     });
@@ -267,7 +286,13 @@ export class CognitoStack extends Stack {
         flows: {
           authorizationCodeGrant: true,
         },
-        scopes: [cognito.OAuthScope.OPENID],
+        scopes: [
+          cognito.OAuthScope.OPENID,
+          cognito.OAuthScope.PHONE,
+          cognito.OAuthScope.EMAIL,
+          cognito.OAuthScope.COGNITO_ADMIN,
+          cognito.OAuthScope.PROFILE,
+        ],
         callbackUrls: ['anyupp://signin/'],
         logoutUrls: ['anyupp://signout/'],
       },
@@ -319,6 +344,7 @@ export class CognitoStack extends Stack {
   private createConsumerUserPool(app: App) {
     return new cognito.UserPool(this, 'ConsumerUserPool', {
       userPoolName: app.logicalPrefixedName('consumer-user-pool'),
+      ...this.getCommonUserPoolProperties(),
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       userVerification: {
@@ -329,41 +355,105 @@ export class CognitoStack extends Stack {
         smsMessage:
           'Hello thanks for signing up to AnyUPP! Your verification code is {####}',
       },
-      signInAliases: {
-        phone: true,
-        email: true,
-      },
       mfa: cognito.Mfa.OPTIONAL,
       mfaSecondFactor: {
         sms: true,
         otp: true,
       },
-      passwordPolicy: {
-        minLength: 12,
-        requireLowercase: true,
-        requireUppercase: true,
-        requireDigits: true,
-        requireSymbols: false,
-        tempPasswordValidity: Duration.days(3),
+      standardAttributes: {
+        email: {
+          mutable: true,
+          required: true,
+        },
+        fullname: {
+          mutable: true,
+          required: false,
+        },
+        phoneNumber: {
+          mutable: true,
+          required: false,
+        },
+        profilePicture: {
+          mutable: true,
+          required: false,
+        },
+        address: {
+          mutable: true,
+          required: false,
+        },
+        birthdate: {
+          mutable: false,
+          required: false,
+        },
+        nickname: {
+          mutable: false,
+          required: false,
+        },
       },
-      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
     });
   }
 
   private createAdminUserPool(app: App) {
-    return new cognito.UserPool(this, 'AdminUserPool', {
-      userPoolName: app.logicalPrefixedName('admin-user-pool'),
-      selfSignUpEnabled: false,
-      passwordPolicy: {
-        minLength: 12,
-        requireLowercase: true,
-        requireUppercase: true,
-        requireDigits: true,
-        requireSymbols: false,
-        tempPasswordValidity: Duration.days(3),
+    const preTokenGenerationLambda = new lambda.Function(
+      this,
+      'AdminPreTokenGenerationLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        handler: 'lib/lambda/pre-token-generation/index.handler',
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+        ),
       },
-      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
+    );
+
+    const userPool = new cognito.UserPool(this, 'AdminUserPool', {
+      userPoolName: app.logicalPrefixedName('admin-user-pool'),
+      ...this.getCommonUserPoolProperties(),
+      selfSignUpEnabled: false,
+      standardAttributes: {
+        email: {
+          mutable: true,
+          required: true,
+        },
+        fullname: {
+          mutable: true,
+          required: true,
+        },
+        phoneNumber: {
+          mutable: true,
+          required: true,
+        },
+        profilePicture: {
+          mutable: true,
+          required: false,
+        },
+      },
+      customAttributes: {
+        context: new cognito.StringAttribute({
+          minLen: 1,
+          maxLen: 256,
+          mutable: true,
+        }),
+      },
+      signInAliases: {
+        email: true,
+        phone: true,
+      },
+      lambdaTriggers: {
+        preTokenGeneration: preTokenGenerationLambda,
+      },
     });
+
+    preTokenGenerationLambda.role &&
+      preTokenGenerationLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: ['cognito-idp:AdminUpdateUserAttributes'],
+          resources: ['*'],
+        }),
+      );
+
+    return userPool;
   }
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {
@@ -435,5 +525,24 @@ export class CognitoStack extends Stack {
         },
       },
     );
+  }
+
+  private getCommonUserPoolProperties() {
+    return {
+      signInAliases: {
+        phone: true,
+        email: true,
+      },
+      passwordPolicy: {
+        minLength: 12,
+        requireLowercase: true,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: false,
+        tempPasswordValidity: Duration.days(3),
+      },
+      accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
+      signInCaseSensitive: false,
+    };
   }
 }

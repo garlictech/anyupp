@@ -22,11 +22,6 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AbstractFormDialogComponent } from './components/abstract-form-dialog/abstract-form-dialog.component';
-import { FormAdminRoleComponent } from './components/form-admin-role/form-admin-role.component';
-import { FormChainAdminRoleComponent } from './components/form-admin-role/form-chain-admin-role/form-chain-admin-role.component';
-import { FormGroupAdminRoleComponent } from './components/form-admin-role/form-group-admin-role/form-group-admin-role.component';
-import { FormStaffRoleComponent } from './components/form-admin-role/form-staff-role/form-staff-role.component';
-import { FormUnitAdminRoleComponent } from './components/form-admin-role/form-unit-admin-role/form-unit-admin-role.component';
 import { FormCheckboxComponent } from './components/form-checkbox/form-checkbox.component';
 import { FormClickableImageInputComponent } from './components/form-clickable-image-input/form-clickable-image-input.component';
 import { FormColorPickerComponent } from './components/form-color-picker/form-color-picker.component';
@@ -59,8 +54,6 @@ const NB_MODULES = [
 
 const COMPONENTS = [
   AbstractFormDialogComponent,
-  FormChainAdminRoleComponent,
-  FormAdminRoleComponent,
   FormTextInputComponent,
   FormContactGroupComponent,
   FormClickableImageInputComponent,
@@ -70,10 +63,6 @@ const COMPONENTS = [
   FormWeeklyScheduleComponent,
   FormProductVariantsComponent,
   FormProductAvailabilitiesComponent,
-  FormChainAdminRoleComponent,
-  FormGroupAdminRoleComponent,
-  FormUnitAdminRoleComponent,
-  FormStaffRoleComponent,
   FormColorPickerComponent,
   FormStaticTextComponent,
 ];

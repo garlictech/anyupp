@@ -3,7 +3,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/affiliate.dart';
-import 'package:fa_prev/shared/models.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,11 +38,11 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         builder: (context, state) {
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
-            return StreamBuilder<List<Product>>(
-              stream: _productRepository.getProductList(unit.unitId, widget.categoryId),
-              builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+            return StreamBuilder<List<GeneratedProduct>>(
+              stream: _productRepository.getProductList(unit.id, widget.categoryId),
+              builder: (context, AsyncSnapshot<List<GeneratedProduct>> snapshot) {
                 if (snapshot.hasData) {
-                  if (snapshot.data.length == 0) {
+                  if (snapshot.data.isEmpty) {
                     return _buildEmptyList(context);
                   }
 
@@ -65,7 +65,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     );
   }
 
-  Widget _buildList(GeoUnit unit, List<Product> list) {
+  Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
         itemCount: list.length + 1,

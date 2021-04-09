@@ -29,6 +29,8 @@ class LoginException extends AppException {
 
   static const LOGIN_PHONE_SMS_TIMEOUT = 'LOGIN_PHONE_SMS_TIMEOUT';
 
+  static const INVALID_CREDENTIALS = 'INVALID_CREDENTIALS';
+
   LoginException({
     code,
     subCode,

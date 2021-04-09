@@ -32,27 +32,12 @@
               "chart.js",
               "chartjs-plugin-datalabels",
               "lodash",
-              "firebase/app",
-              "@firebase",
-              "@firebase/app",
-              "@firebase/auth",
-              "@firebase/component",
-              "@firebase/database",
-              "@firebase/functions",
               "@angular/common/locales",
               "zen-observable",
               "graphql-tag"
             ],
             "scripts": [],
             "fileReplacements": [
-              {
-                "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
-              },
               {
                 "replace": "./libs/shared/config/src/lib/config.json",
                 "with": "./libs/shared/config/src/lib/dev/config.json"
@@ -62,14 +47,6 @@
           "configurations": {
             "production": {
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
-                },
                 {
                   "replace": "./libs/shared/config/src/lib/config.json",
                   "with": "./libs/shared/config/src/lib/production/config.json"
@@ -120,14 +97,6 @@
                 }
               ],
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
-                },
                 {
                   "replace": "./libs/shared/config/src/lib/config.json",
                   "with": "./libs/shared/config/src/lib/qa/config.json"
@@ -1167,27 +1136,6 @@
           "outputs": ["coverage/libs/api/utils"],
           "options": {
             "jestConfig": "libs/api/utils/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "api-graphql-appsync-lambda": {
-      "root": "libs/api/graphql/appsync-lambda",
-      "sourceRoot": "libs/api/graphql/appsync-lambda/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/graphql/appsync-lambda/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
-          "options": {
-            "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
             "passWithNoTests": true
           }
         }

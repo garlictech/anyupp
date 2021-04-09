@@ -45,11 +45,12 @@ export class ReportsBodyComponent implements OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(([historyOrders, dateFormValue]: [IOrder[], string]): void => {
         // TODO Use history with daily query from FB
+        // TODO test it: new Date(o.createdAt).getTime()
         const selectedDayInterval = dayInterval(dateFormValue);
         const dailyHistoryOrders: IOrder[] = historyOrders.filter(
           (o: IOrder): boolean =>
-            o.created >= selectedDayInterval.start &&
-            o.created <= selectedDayInterval.end,
+            new Date(o.createdAt).getTime() >= selectedDayInterval.start &&
+            new Date(o.createdAt).getTime() <= selectedDayInterval.end,
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);

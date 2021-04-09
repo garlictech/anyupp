@@ -71,6 +71,10 @@ fieldset.form {
 label.caption {
   display: block !important;
   margin-bottom: 0.2rem !important;
+
+  input {
+    margin-top: 0.2rem !important;
+  }
 }
 
 nb-list-item {

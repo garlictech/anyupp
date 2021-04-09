@@ -1,35 +1,35 @@
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import 'package:fa_prev/graphql/graphql.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
-  final GraphQLClient _client;
+  final ValueNotifier<GraphQLClient> _client;
   final Stripe _stripe;
 
   GraphQLStripePaymentProvider(this._client, this._stripe);
 
   @override
-  Future<List<GetCustomerStripeCards$Query$StripeCard>> getPaymentMethods() async {
-    print('getPaymentMethods().start().doc=${GetCustomerStripeCardsQuery().document.definitions}');
-    final results = await _client.query(
-      QueryOptions(
-        documentNode: GetCustomerStripeCardsQuery().document,
-        variables: GetCustomerStripeCardsArguments(
-          customerId: 'cus_HqrrboxTxefVa3',
-        ).toJson(),
-      ),
-    );
-    print(results);
-    if (results.hasException) {
-      throw results.exception;
-    } else {
-      return GetCustomerStripeCards$Query.fromJson(results.data).getCustomerStripeCards;
-    }
+  Future<List<StripeCard>> getPaymentMethods() async {
+    // print('getPaymentMethods().start().doc=${GetCustomerStripeCardsQuery().document.definitions}');
+    // final results = await _client.query(
+    //   QueryOptions(
+    //     document: GetCustomerStripeCardsQuery().document,
+    //     variables: GetCustomerStripeCardsArguments(
+    //       customerId: 'cus_HqrrboxTxefVa3',
+    //     ).toJson(),
+    //   ),
+    // );
+    // print(results);
+    // if (results.hasException) {
+    //   throw results.exception;
+    // } else {
+    //   return GetCustomerStripeCards$Query.fromJson(results.data).getCustomerStripeCards;
+    // }
   }
 
   @override
@@ -41,21 +41,21 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     //     variables: StartStripePaymentArguments(chainId: chainId, unitId: unitId, userId: userId),
     //   ).document,
     // ));
-    final result = await _client.mutate(MutationOptions(
-      documentNode: StartStripePaymentMutation().document,
-      variables: StartStripePaymentArguments(
-        chainId: chainId,
-        unitId: unitId,
-        userId: userId,
-      ).toJson(),
-    ));
-    if (result.hasException) {
-      print('startStripePayment().error=${result.exception}');
-      throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    } else {
-      print('startStripePayment().result=${result.data}');
-      return '${result.data.startStripePayment}';
-    }
+    // final result = await _client.mutate(MutationOptions(
+    //   document: StartStripePaymentMutation().document,
+    //   variables: StartStripePaymentArguments(
+    //     chainId: chainId,
+    //     unitId: unitId,
+    //     userId: userId,
+    //   ).toJson(),
+    // ));
+    // if (result.hasException) {
+    //   print('startStripePayment().error=${result.exception}');
+    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
+    // } else {
+    //   print('startStripePayment().result=${result.data}');
+    //   return '${result.data["startStripePayment"]}';
+    // }
   }
 
   @override
@@ -63,51 +63,51 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$chainId, $unitId, $userId, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
-    final result = await _client.mutate(MutationOptions(
-      documentNode: StartStripePaymentMutation().document,
-      variables: StartStripePaymentArguments(
-        chainId: chainId,
-        unitId: unitId,
-        userId: userId,
-      ).toJson(),
-    ));
+    // final result = await _client.mutate(MutationOptions(
+    //   document: StartStripePaymentMutation().document,
+    //   variables: StartStripePaymentArguments(
+    //     chainId: chainId,
+    //     unitId: unitId,
+    //     userId: userId,
+    //   ).toJson(),
+    // ));
 
-    if (result.hasException) {
-      print('startStripePaymentWithNewCard().error=${result.exception}');
-      throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    }
+    // if (result.hasException) {
+    //   print('startStripePaymentWithNewCard().error=${result.exception}');
+    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
+    // }
 
-    print('startStripePaymentWithNewCard().result=${result.data}');
-    final String clientSecret = result.data['startStripePayment'];
-    print('startStripePaymentWithNewCard().client_secret=$clientSecret');
+    // print('startStripePaymentWithNewCard().result=${result.data}');
+    // final String clientSecret = result.data['startStripePayment'];
+    // print('startStripePaymentWithNewCard().client_secret=$clientSecret');
 
-    // TODO 3D ellenorzes!!!
-    // if (result['status'] == 'requires_action') { 
-    //   paymentIntentRes = await confirmPayment3DSecure(clientSecret, paymentMethodId);
-    // } 
-    Map<String, dynamic> params = {
-      'payment_method_data': stripeCard.toPaymentMethod()
-    };
+    // // TODO 3D ellenorzes!!!
+    // // if (result['status'] == 'requires_action') { 
+    // //   paymentIntentRes = await confirmPayment3DSecure(clientSecret, paymentMethodId);
+    // // } 
+    // Map<String, dynamic> params = {
+    //   'payment_method_data': stripeCard.toPaymentMethod()
+    // };
 
-    if (saveCard) {
-      params['setup_future_usage'] = 'off_session';
-    }
+    // if (saveCard) {
+    //   params['setup_future_usage'] = 'off_session';
+    // }
 
-     //Map<String, dynamic> params = stripeCard.toPaymentMethod();
-     print('startStripePaymentWithNewCard().params=$params');
+    //  //Map<String, dynamic> params = stripeCard.toPaymentMethod();
+    //  print('startStripePaymentWithNewCard().params=$params');
 
-     Map<String, dynamic> paymentResponse = await _stripe.api.confirmPaymentIntent(clientSecret, data: params);
-     print('startStripePaymentWithNewCard().paymentResponse=$paymentResponse');
-     if (paymentResponse['status'] == 'succeeded') {
-       return paymentResponse['status'];
-     }
+    //  Map<String, dynamic> paymentResponse = await _stripe.api.confirmPaymentIntent(clientSecret, data: params);
+    //  print('startStripePaymentWithNewCard().paymentResponse=$paymentResponse');
+    //  if (paymentResponse['status'] == 'succeeded') {
+    //    return paymentResponse['status'];
+    //  }
 
-    // await _stripe.api.
+    // // await _stripe.api.
 
-    // return '$clientSecret';
+    // // return '$clientSecret';
 
-    // TODO nem string lesz a response!!!
-    return paymentResponse['status'];
+    // // TODO nem string lesz a response!!!
+    // return paymentResponse['status'];
   }
 
   @override

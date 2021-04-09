@@ -27,3 +27,7 @@ Describe whether this request is related to an existing workflow, feature, or ot
 Add more on who asked for this, ie. company, person, how much they pay us, what their tier is, are they a strategic account, etc.
 
 ## Test descriptions
+
+### Integration test location (file name, etc.)
+
+### QA tests

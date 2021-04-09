@@ -1,6 +1,6 @@
 import { EAdminRole } from '../enums';
 import { IAmplifyModel } from './amplify';
-import { IContact } from './contact';
+import { IRoleContext } from './role-context';
 
 export interface IAdminUserSettings {
   selectedChainId?: string | null;
@@ -11,33 +11,23 @@ export interface IAdminUserSettings {
   selectedHistoryDate?: number | null;
 }
 
-export interface IAdminRoleEntity {
-  chainId: string;
-  groupId?: string;
-  unitId?: string;
+export interface IAdminUserConnectedRoleContext {
+  id: string;
+  adminUser: IAdminUser;
+  adminUserId: string;
+  roleContextId: string;
+  roleContext: IRoleContext;
 }
 
-export interface IAssignedEntityNames {
-  chainName?: string;
-  groupName?: string;
-  unitName?: string;
+export interface IAdminUserConnectedRoleContextList {
+  items: IAdminUserConnectedRoleContext[];
 }
 
-export interface IAdminUserRole {
-  role: EAdminRole;
-  entities: IAdminRoleEntity[];
-}
-
-export interface IAdminUserCredential {
-  roles?: IAdminUserRole;
-  settings?: IAdminUserSettings;
-}
-
-export interface IAdminUser
-  extends IContact,
-    IAdminUserCredential,
-    IAmplifyModel {
+export interface IAdminUser extends IAmplifyModel {
   id?: string;
   name?: string;
-  profileImage?: string | null;
+  profileImage?: string;
+  role?: EAdminRole; // Filled from token
+  roleContexts?: IAdminUserConnectedRoleContextList; // Filled with GQL connection
+  settings?: IAdminUserSettings;
 }

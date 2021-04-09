@@ -1,4 +1,4 @@
-import 'package:fa_prev/core/units/model/unit_style.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 
 class ThemeChainData {
@@ -11,7 +11,7 @@ class ThemeChainData {
   final Color disabled;
   final Color border;
   final Color border2;
-  final Images images;
+  final ChainStyleImages images;
 
   ThemeChainData({
     this.background,

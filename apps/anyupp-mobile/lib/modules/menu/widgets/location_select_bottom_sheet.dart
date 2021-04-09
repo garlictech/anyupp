@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
@@ -80,7 +81,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    unit.address.toAddressString(),
+                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text,
@@ -120,7 +121,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                '${unit.openingHours}',
+                '${unit.openingHours ?? ""}',
                 //'Nyitva: 09:00 - 22:00',
                 style: GoogleFonts.poppins(
                   fontSize: 16,

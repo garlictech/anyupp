@@ -57,7 +57,6 @@ export class UnitFormComponent
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);
     this._logger = this._injector.get(NGXLogger);
-
     this._store = this._injector.get(Store);
     this._formsService = this._injector.get(FormsService);
     this._store
@@ -91,7 +90,7 @@ export class UnitFormComponent
       ),
       paymentModes: [[]],
       ...contactFormGroup(),
-      ...addressFormGroup(this._formBuilder),
+      ...addressFormGroup(this._formBuilder, true),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -126,7 +125,7 @@ export class UnitFormComponent
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
           }),
-          override: this._formBuilder.array([]),
+          custom: this._formBuilder.array([]),
         },
         { validators: unitOpeningHoursValidator },
       ),
@@ -141,17 +140,17 @@ export class UnitFormComponent
       );
 
       // Parse openingHours object to temp array
-      const override: ICustomDailySchedule[] | undefined = this.unit
-        ?.openingHours?.override;
+      const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
+        ?.custom;
 
-      if (override) {
-        override.forEach((day: ICustomDailySchedule): void => {
+      if (custom) {
+        custom.forEach((day: ICustomDailySchedule): void => {
           const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
           dayGroup.patchValue(day);
 
-          (<FormArray>(
-            this.dialogForm?.get('openingHours')?.get('override')
-          )).push(dayGroup);
+          (<FormArray>this.dialogForm?.get('openingHours')?.get('custom')).push(
+            dayGroup,
+          );
         });
       }
 
@@ -206,10 +205,10 @@ export class UnitFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createUnit',
-            this.dialogForm?.value,
-          );
+          await this._amplifyDataService.create('createUnit', {
+            ...this.dialogForm?.value,
+            isAcceptingOrders: false,
+          });
 
           this._toasterService.show(
             EToasterType.SUCCESS,

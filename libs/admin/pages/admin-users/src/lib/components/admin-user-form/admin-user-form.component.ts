@@ -2,18 +2,14 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { Auth } from '@aws-amplify/auth';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { clearDbProperties, EToasterType } from '@bgap/admin/shared/utils';
 import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -46,20 +42,20 @@ export class AdminUserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      ...contactFormGroup(),
+      // ...contactFormGroup(),
       profileImage: [''], // Just for file upload!!
     });
 
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
-    } else {
+    } /* else {
       // Add custom asyncValidator to check existing email
       (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
         this._formService.adminExistingEmailValidator(
           this.dialogForm.controls.email || '',
         ),
       ]);
-    }
+    } */
   }
 
   public async submit(): Promise<void> {

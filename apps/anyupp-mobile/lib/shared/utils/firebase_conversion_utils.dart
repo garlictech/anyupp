@@ -12,7 +12,7 @@ int getIntFromFirebaseValue(dynamic value) {
   }
 
   if (value is String) {
-    return value.length > 0 ? int.parse(value) : 0;
+    return value.isNotEmpty ? int.parse(value) : 0;
   }
 
   return 0;
@@ -32,7 +32,7 @@ double getDoubleFromFirebaseValue(dynamic value) {
   }
 
   if (value is String) {
-    return value.length > 0 ? double.parse(value) : 0;
+    return value.isNotEmpty ? double.parse(value) : 0;
   }
 
   return 0.0;

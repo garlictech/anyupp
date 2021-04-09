@@ -1,20 +1,20 @@
+import API, { graphqlOperation } from '@aws-amplify/api-graphql';
+import Amplify from '@aws-amplify/core';
+import {
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
+  awsConfig,
+} from '@bgap/admin/amplify-api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';
 import { pipe } from 'fp-ts/lib/function';
+import { pipeDebug } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
 import { combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
-
-import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import Amplify from '@aws-amplify/core';
 import {
-  awsConfig,
-  createAdminUser,
-  CreateAdminUserInput,
-} from '@bgap/admin/amplify-api';
-
-import {
+  createTestCart,
   createTestChain,
   createTestChainProduct,
   createTestGroup,
@@ -49,7 +49,7 @@ const sendResponse = async (props: any) => {
   });
 };
 
-const username = 'test@test.com';
+const username = 'test@anyupp.com';
 const password = 'Testtesttest12_';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -62,21 +62,40 @@ export const seedAdminUser = (UserPoolId: string) =>
     {
       UserPoolId,
       Username: username,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: username,
+        },
+        {
+          Name: 'phone_number',
+          Value: '+123456789013',
+        },
+      ],
     },
-    params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
-    from,
-    switchMap(() =>
+    // CREATE user in Cognito
+    params =>
       from(
-        cognitoidentityserviceprovider
-          .adminSetUserPassword({
-            UserPoolId,
-            Username: username,
-            Password: password,
-            Permanent: true,
-          })
-          .promise(),
+        cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+      ).pipe(
+        switchMap(() =>
+          from(
+            cognitoidentityserviceprovider
+              .adminSetUserPassword({
+                UserPoolId,
+                Username: username,
+                Password: password,
+                Permanent: true,
+              })
+              .promise(),
+          ),
+        ),
+        catchError(err => {
+          console.warn('Probably normal error: ', err);
+          return of({});
+        }),
       ),
-    ),
+    // GET user from Cognito
     switchMap(() =>
       from(
         cognitoidentityserviceprovider
@@ -97,15 +116,17 @@ export const seedAdminUser = (UserPoolId: string) =>
     filter(fp.negate(fp.isEmpty)),
     map((adminUserId: string) => ({
       id: adminUserId,
-      email: username,
-      name: 'Test Elek',
-      roles: {
-        role: 'superuser',
-      },
+      name: 'John Doe',
+      profileImage:
+        'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
-    switchMap((input: CreateAdminUserInput) =>
+    switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(
-        API.graphql(graphqlOperation(createAdminUser, { input })),
+        API.graphql(
+          graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
+            input,
+          }),
+        ),
         operation =>
           operation instanceof Promise
             ? from(operation)
@@ -124,21 +145,29 @@ export const seedAdminUser = (UserPoolId: string) =>
 export const seedBusinessData = () =>
   pipe(
     combineLatest([
-      createTestChain(1),
-      createTestGroup(1, 1),
-      createTestGroup(2, 1),
-      createTestUnit(1, 1, 1),
-      createTestUnit(1, 1, 2),
-      createTestUnit(1, 2, 1),
-      createTestProductCategory(1, 1),
-      createTestProductCategory(1, 2),
-      createTestChainProduct(1, 1, 1),
-      createTestChainProduct(1, 1, 2),
-      createTestChainProduct(1, 2, 1),
-      createTestGroupProduct(1, 1, 1, 1),
-      createTestGroupProduct(1, 1, 2, 2),
-      createTestUnitProduct(1, 1, 1, 1, 1),
-      createTestUnitProduct(1, 1, 1, 2, 2),
+      createTestChain(1).pipe(pipeDebug('### Chain SEED')),
+      createTestGroup(1, 1).pipe(pipeDebug('### Group SEED')),
+      createTestGroup(2, 1).pipe(pipeDebug('### Group SEED')),
+      createTestUnit(1, 1, 1).pipe(pipeDebug('### Unit SEED')),
+      createTestUnit(1, 1, 2).pipe(pipeDebug('### Unit SEED')),
+      createTestUnit(1, 2, 1).pipe(pipeDebug('### Unit SEED')),
+      createTestProductCategory(1, 1).pipe(pipeDebug('### ProdCat SEED')),
+      createTestProductCategory(1, 2).pipe(pipeDebug('### ProdCat SEED')),
+      createTestChainProduct(1, 1, 1).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestChainProduct(1, 1, 2).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestChainProduct(1, 2, 1).pipe(pipeDebug('### ChainProduct SEED')),
+      createTestGroupProduct(1, 1, 1, 1).pipe(pipeDebug('### GroupProd SEED')),
+      createTestGroupProduct(1, 1, 2, 2).pipe(pipeDebug('### GroupProd SEED')),
+      createTestUnitProduct(1, 1, 1, 1, 1).pipe(pipeDebug('### UnitProd SEED')),
+      createTestUnitProduct(1, 1, 1, 2, 2).pipe(pipeDebug('### UnitProd SEED')),
+      createTestCart({
+        chainIdx: 1,
+        groupIdx: 1,
+        unitIdx: 1,
+        productIdx: 1,
+        userIdx: 1,
+        cartIdx: 1,
+      }).pipe(pipeDebug('### Cart SEED')),
     ]),
     mapTo('SUCCESS'),
     catchError((error: AWSError) => {
@@ -156,23 +185,24 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
   const adminUserPoolId = event.ResourceProperties.adminUserPoolId;
+  const physicalResourceId = event.ResourceProperties.physicalResourceId;
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await seedAdminUser(adminUserPoolId)
+    await combineLatest([seedAdminUser(adminUserPoolId), seedBusinessData()])
       .pipe(
-        switchMap(status =>
+        switchMap(() =>
           from(
             sendResponse({
-              status,
+              status: 'SUCCESS',
               requestId: event.RequestId,
               stackId: event.StackId,
               reason: '',
+              physicalResourceId,
               logicalResourceId: event.LogicalResourceId,
               responseUrl: event.ResponseURL,
             }),
           ),
         ),
-        switchMap(seedBusinessData),
       )
       .toPromise();
   }

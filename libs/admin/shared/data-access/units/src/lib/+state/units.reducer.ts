@@ -7,8 +7,6 @@ import * as UnitsActions from './units.actions';
 export const UNITS_FEATURE_KEY = 'units';
 
 export interface IUnitsState extends EntityState<IUnit> {
-  selectedId?: string | number; // which Units record has been selected
-  loaded: boolean; // has the Units list been loaded
   error?: string | null; // last known error (if any)
 }
 
@@ -18,14 +16,11 @@ export interface IUnitsPartialState {
 
 export const unitsAdapter: EntityAdapter<IUnit> = createEntityAdapter<IUnit>();
 
-export const initialState: IUnitsState = unitsAdapter.getInitialState({
-  // set initial required properties
-  loaded: false,
-});
+export const initialState: IUnitsState = unitsAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
-  on(UnitsActions.init, state => ({ ...state, loaded: false, error: null })),
+  on(UnitsActions.init, state => ({ ...state, error: null })),
   on(UnitsActions.upsertUnit, (state, { unit }) =>
     unitsAdapter.upsertOne(unit, state),
   ),

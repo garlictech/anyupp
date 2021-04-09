@@ -28,52 +28,32 @@
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "allowedCommonJsDependencies": [
-              "fabric",
+              "@angular/common/locales",
+              "@aws-crypto/crc32",
+              "@aws-crypto/sha256-browser",
+              "@aws-crypto/sha256-js",
+              "axios",
+              "buffer",
               "chart.js",
               "chartjs-plugin-datalabels",
+              "crypto-js",
+              "fabric",
+              "fast-xml-parser",
+              "graphql-tag",
+              "isomorphic-unfetch",
+              "js-cookie",
               "lodash",
-              "firebase/app",
-              "@firebase",
-              "@firebase/app",
-              "@firebase/auth",
-              "@firebase/component",
-              "@firebase/database",
-              "@firebase/functions",
-              "@angular/common/locales",
+              "url",
+              "uuid",
               "zen-observable",
-              "graphql-tag"
+              "@aws-amplify/core",
+              "@aws-amplify/auth"
             ],
-            "scripts": [],
-            "fileReplacements": [
-              {
-                "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase.config.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                "with": "./libs/shared/config/src/lib/dev/firebase-service-account-key.json"
-              },
-              {
-                "replace": "./libs/shared/config/src/lib/config.json",
-                "with": "./libs/shared/config/src/lib/dev/config.json"
-              }
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/production/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/production/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
@@ -120,18 +100,6 @@
                 }
               ],
               "fileReplacements": [
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase.config.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase.config.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/firebase-service-account-key.json",
-                  "with": "./libs/shared/config/src/lib/qa/firebase-service-account-key.json"
-                },
-                {
-                  "replace": "./libs/shared/config/src/lib/config.json",
-                  "with": "./libs/shared/config/src/lib/qa/config.json"
-                },
                 {
                   "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
                   "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
@@ -311,78 +279,6 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
-    "graphql-server": {
-      "root": "apps/graphql-server",
-      "sourceRoot": "apps/graphql-server/src",
-      "projectType": "application",
-      "prefix": "graphql-server",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/graphql-server",
-            "main": "apps/graphql-server/src/main.ts",
-            "tsConfig": "apps/graphql-server/tsconfig.app.json"
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/graphql-server/src/environments/environment.ts",
-                  "with": "apps/graphql-server/src/environments/environment.production.ts"
-                }
-              ]
-            }
-          },
-          "outputs": ["{options.outputPath}"]
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "graphql-server:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/graphql-server/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/graphql-server/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": ["coverage/apps/graphql-server"]
-        }
-      }
-    },
-    "api-graphql-resolvers": {
-      "root": "libs/api/graphql/resolvers",
-      "sourceRoot": "libs/api/graphql/resolvers/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/graphql/resolvers/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/graphql/resolvers"],
-          "options": {
-            "jestConfig": "libs/api/graphql/resolvers/jest.config.js",
-            "passWithNoTests": true
           }
         }
       }
@@ -861,27 +757,6 @@
         }
       }
     },
-    "api-data-access": {
-      "root": "libs/api/data-access",
-      "sourceRoot": "libs/api/data-access/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/data-access/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/data-access"],
-          "options": {
-            "jestConfig": "libs/api/data-access/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "admin-shared-floor-map": {
       "projectType": "library",
       "root": "libs/admin/shared/floor-map",
@@ -1172,27 +1047,6 @@
         }
       }
     },
-    "api-graphql-appsync-lambda": {
-      "root": "libs/api/graphql/appsync-lambda",
-      "sourceRoot": "libs/api/graphql/appsync-lambda/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/graphql/appsync-lambda/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/graphql/appsync-lambda"],
-          "options": {
-            "jestConfig": "libs/api/graphql/appsync-lambda/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "shared-utils": {
       "root": "libs/shared/utils",
       "sourceRoot": "libs/shared/utils/src",
@@ -1299,7 +1153,7 @@
         "buildApk": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "flutter build apk",
+            "command": "flutter build apk --split-per-abi",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1361,6 +1215,27 @@
         }
       }
     },
+    "api-order": {
+      "root": "libs/api/order",
+      "sourceRoot": "libs/api/order/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/order/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/order"],
+          "options": {
+            "jestConfig": "libs/api/order/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
       "sourceRoot": "libs/shared/graphql/api-client/src",
@@ -1382,43 +1257,45 @@
         }
       }
     },
-    "stripe": {
-      "root": "libs/stripe",
-      "sourceRoot": "libs/stripe/src",
+    "api-graphql-resolver-mapping-templates": {
+      "root": "libs/api/graphql/resolver-mapping-templates",
+      "sourceRoot": "libs/api/graphql/resolver-mapping-templates/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/stripe/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/api/graphql/resolver-mapping-templates/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/stripe"],
+          "outputs": ["coverage/libs/api/graphql/resolver-mapping-templates"],
           "options": {
-            "jestConfig": "libs/stripe/jest.config.js",
+            "jestConfig": "libs/api/graphql/resolver-mapping-templates/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "integration-tests": {
-      "root": "libs/integration-tests",
-      "sourceRoot": "libs/integration-tests/src",
+    "api-stripe": {
+      "root": "libs/api/stripe",
+      "sourceRoot": "libs/api/stripe/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/integration-tests/**/*.ts"]
+            "lintFilePatterns": ["libs/api/stripe/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/integration-tests"],
+          "outputs": ["coverage/libs/api/stripe"],
           "options": {
-            "jestConfig": "libs/integration-tests/jest.config.js",
+            "jestConfig": "libs/api/stripe/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -1469,12 +1346,12 @@
             ]
           }
         },
-        "build": {
+        "build-schema": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/admin-amplify-app",
             "parallel": false,
-            "commands": ["sh ../../tools/build-amplify-admin.sh {args.stage}"]
+            "commands": ["sh ../../tools/build-schema-admin.sh {args.stage}"]
           }
         },
         "deploy": {
@@ -1518,6 +1395,129 @@
           "outputs": ["coverage/libs/admin/amplify-api"],
           "options": {
             "jestConfig": "libs/admin/amplify-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data-access-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/role-contexts",
+      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-pages-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/pages/role-contexts",
+      "sourceRoot": "libs/admin/pages/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/pages/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/pages/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "api-admin-user": {
+      "root": "libs/api/admin-user",
+      "sourceRoot": "libs/api/admin-user/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/api/admin-user/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/admin-user"],
+          "options": {
+            "jestConfig": "libs/api/admin-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "integration-tests-angular": {
+      "projectType": "library",
+      "root": "libs/integration-tests/angular",
+      "sourceRoot": "libs/integration-tests/angular/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/integration-tests/angular/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests/angular"],
+          "options": {
+            "jestConfig": "libs/integration-tests/angular/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-data-validators": {
+      "root": "libs/shared/data-validators",
+      "sourceRoot": "libs/shared/data-validators/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared/data-validators/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/data-validators"],
+          "options": {
+            "jestConfig": "libs/shared/data-validators/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "integration-tests-universal": {
+      "root": "libs/integration-tests/universal",
+      "sourceRoot": "libs/integration-tests/universal/src",
+      "projectType": "library",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/integration-tests/universal"],
+          "options": {
+            "jestConfig": "libs/integration-tests/universal/jest.config.js",
             "passWithNoTests": true
           }
         }

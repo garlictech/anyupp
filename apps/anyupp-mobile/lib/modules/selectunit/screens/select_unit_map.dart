@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -246,7 +247,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    unit.address.toAddressString(),
+                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),
@@ -288,7 +289,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    unit.openingHours,
+                    unit.openingHours ?? '',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),
@@ -314,10 +315,10 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     try {
       LatLng userLocation = await getIt<LocationRepository>().getUserCurrentLocation();
       print('_determineUserPositionAndLoadUnits().location=$userLocation');
-      _animateMapToLocation(userLocation);
+      await _animateMapToLocation(userLocation);
       _loadNearUnits(userLocation);
     } on Exception {
-      _showLocationPermissionRejectedAlertDialog(context);
+      await _showLocationPermissionRejectedAlertDialog(context);
     }
   }
 
@@ -334,7 +335,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       trans('selectUnitMap.userMarker.description'),
     );
     if (mounted) {
-      _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
+      await _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
     }
   }
 
@@ -366,13 +367,13 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     Map<MarkerId, Marker> unitMarkers = <MarkerId, Marker>{};
 
     units.forEach((unit) {
-      final MarkerId markerId = MarkerId(unit.unitId);
+      final MarkerId markerId = MarkerId(unit.id);
 
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: unit.address.location,
-        infoWindow: InfoWindow(title: unit.name, snippet: unit.address.toAddressString()),
+        position: LatLng( unit.address.location.lat, unit.address.location.lng),
+        infoWindow: InfoWindow(title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);
         },

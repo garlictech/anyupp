@@ -1,29 +1,22 @@
-import { map, take } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import {
-  TIME_FORMAT_PATTERN,
   multiLangValidator,
   productAvailabilityValidator,
+  TIME_FORMAT_PATTERN,
 } from '@bgap/admin/shared/utils';
-import { EVariantAvailabilityType, IAdminUser } from '@bgap/shared/types';
-import { select, Store } from '@ngrx/store';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormsService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
+  constructor(
+    /*private _store: Store<any>,*/ private _formBuilder: FormBuilder,
+  ) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -42,7 +35,8 @@ export class FormsService {
       }),
       isAvailable: [true],
       availabilities: this._formBuilder.array([]),
-      position: [''],
+      position: [0],
+      price: [0],
       refGroupPrice: [0],
     };
 
@@ -81,18 +75,4 @@ export class FormsService {
       color: ['#fff', [Validators.required]],
     });
   };
-
-  public adminExistingEmailValidator(
-    control: AbstractControl,
-  ): AsyncValidatorFn {
-    return () => {
-      return this._store.pipe(
-        select(adminUsersSelectors.getAdminUserByEmail(control.value)),
-        take(1),
-        map((adminUser: IAdminUser | undefined) => {
-          return adminUser ? { err: 'ADMIN_USER_EXISTS' } : null;
-        }),
-      );
-    };
-  }
 }

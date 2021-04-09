@@ -1,3 +1,2 @@
-import * as AppsyncApi from './lib/appsync-api';
-
+import * as AppsyncApi from './lib/generated/appsync-api';
 export { AppsyncApi };
