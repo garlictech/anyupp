@@ -23,6 +23,8 @@ type LocalizedItem {
 type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
+  email: String!
+  phone: String!
   profileImage: String
   settings: AdminUserSettings
   roleContexts: [AdminRoleContext] @connection(keyName: "byAdminUser", fields: ["id"])
