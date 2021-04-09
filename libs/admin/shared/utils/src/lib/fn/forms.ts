@@ -12,12 +12,15 @@ import {
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
-export const contactFormGroup = (requiredEmail?: boolean = false) => ({
+export const contactFormGroup = (requiredEmail: boolean = false) => ({
   email: requiredEmail ? ['', [Validators.email, Validators.required]] : ['', [Validators.email]],
   phone: [''],
 });
 
-export const addressFormGroup = (formBuilder: FormBuilder, required = false) => ({
+export const addressFormGroup = (
+  formBuilder: FormBuilder,
+  required = false,
+) => ({
   address: formBuilder.group({
     address: ['', required ? [Validators.required] : []],
     city: ['', required ? [Validators.required] : []],

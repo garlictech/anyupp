@@ -69,7 +69,7 @@ export const seedAdminUser = (UserPoolId: string) =>
         },
         {
           Name: 'phone_number',
-          Value: '+123456789012',
+          Value: '+123456789013',
         },
       ],
     },

@@ -8,21 +8,25 @@ import { AdminSharedComponentsModule } from '@bgap/admin/shared/components';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
-  NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbLayoutModule,
-  NbListModule, NbSelectModule, NbUserModule
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbSelectModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AbstractFormDialogComponent } from './components/abstract-form-dialog/abstract-form-dialog.component';
 import { FormCheckboxComponent } from './components/form-checkbox/form-checkbox.component';
-import {
-  FormClickableImageInputComponent
-} from './components/form-clickable-image-input/form-clickable-image-input.component';
+import { FormClickableImageInputComponent } from './components/form-clickable-image-input/form-clickable-image-input.component';
 import { FormColorPickerComponent } from './components/form-color-picker/form-color-picker.component';
 import { FormContactGroupComponent } from './components/form-contact-group/form-contact-group.component';
-import {
-  FormProductAvailabilitiesComponent
-} from './components/form-product-availabilities/form-product-availabilities.component';
+import { FormProductAvailabilitiesComponent } from './components/form-product-availabilities/form-product-availabilities.component';
 import { FormProductVariantsComponent } from './components/form-product-variants/form-product-variants.component';
 import { FormSelectComponent } from './components/form-select/form-select.component';
 import { FormStaticTextComponent } from './components/form-static-text/form-static-text.component';

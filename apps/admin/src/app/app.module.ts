@@ -1,7 +1,7 @@
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeEnGb from '@angular/common/locales/en-GB';
@@ -27,7 +27,13 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
-  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbLayoutModule,
+  NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -36,6 +42,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AmplifyService } from 'aws-amplify-angular';
+import { NotFoundComponent } from './not-found.component';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -79,11 +87,12 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
-    AmplifyAngularModule,
+    AmplifyUIAngularModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,

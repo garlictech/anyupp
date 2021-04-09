@@ -1,8 +1,11 @@
-import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput, Duration } from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
+import * as ssm from '@aws-cdk/aws-ssm';
+import { CfnOutput, Duration } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
+import path from 'path';
+import { commonLambdaProps } from './lambda-common';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -222,7 +225,7 @@ export class CognitoStack extends Stack {
         flows: {
           authorizationCodeGrant: true,
         },
-        scopes: [cognito.OAuthScope.OPENID],
+        scopes: [cognito.OAuthScope.OPENID, cognito.OAuthScope.COGNITO_ADMIN],
         callbackUrls,
         logoutUrls,
       },
@@ -283,7 +286,13 @@ export class CognitoStack extends Stack {
         flows: {
           authorizationCodeGrant: true,
         },
-        scopes: [cognito.OAuthScope.OPENID],
+        scopes: [
+          cognito.OAuthScope.OPENID,
+          cognito.OAuthScope.PHONE,
+          cognito.OAuthScope.EMAIL,
+          cognito.OAuthScope.COGNITO_ADMIN,
+          cognito.OAuthScope.PROFILE,
+        ],
         callbackUrls: ['anyupp://signin/'],
         logoutUrls: ['anyupp://signout/'],
       },
@@ -385,7 +394,20 @@ export class CognitoStack extends Stack {
   }
 
   private createAdminUserPool(app: App) {
-    return new cognito.UserPool(this, 'AdminUserPool', {
+    const preTokenGenerationLambda = new lambda.Function(
+      this,
+      'AdminPreTokenGenerationLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        handler: 'lib/lambda/pre-token-generation/index.handler',
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+        ),
+      },
+    );
+
+    const userPool = new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
       ...this.getCommonUserPoolProperties(),
       selfSignUpEnabled: false,
@@ -407,11 +429,31 @@ export class CognitoStack extends Stack {
           required: false,
         },
       },
+      customAttributes: {
+        context: new cognito.StringAttribute({
+          minLen: 1,
+          maxLen: 256,
+          mutable: true,
+        }),
+      },
       signInAliases: {
         email: true,
         phone: true,
       },
+      lambdaTriggers: {
+        preTokenGeneration: preTokenGenerationLambda,
+      },
     });
+
+    preTokenGenerationLambda.role &&
+      preTokenGenerationLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: ['cognito-idp:AdminUpdateUserAttributes'],
+          resources: ['*'],
+        }),
+      );
+
+    return userPool;
   }
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {
