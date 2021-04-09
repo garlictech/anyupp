@@ -75,12 +75,15 @@ describe('CreatCartFromOrder mutation test', () => {
       });
   }, 30000);
 
-  it('should fail without a cart', done => {
-    executeMutation(appsyncGraphQlClient)<
-      AppsyncApi.CreateOrderFromCartMutation
-    >(AppsyncApi.CreateOrderFromCart, {
-      input: { id: cartSeed.cartId_NotExisting },
-    }).subscribe({
+  it("should fail in case the cart is not the user's", done => {
+    const cartId = cartSeed.cart_01.id;
+    const userId = 'DIFFERENT_USER';
+    from(
+      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+        userId,
+        input: { id: cartId },
+      }),
+    ).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -89,10 +92,26 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 15000);
 
   it('should fail without a unit', done => {
+    const cartId = cartWithNotExistingUNIT;
+    const userId = cartSeed.cart_01.userId;
+    from(
+      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+        userId,
+        input: { id: cartId },
+      }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  }, 15000);
+
+  it('should fail without a cart', done => {
     executeMutation(appsyncGraphQlClient)<
       AppsyncApi.CreateOrderFromCartMutation
     >(AppsyncApi.CreateOrderFromCart, {
-      input: { id: cartWithNotExistingUNIT },
+      input: { id: cartSeed.cartId_NotExisting },
     }).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();

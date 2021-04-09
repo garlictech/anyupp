@@ -6,8 +6,8 @@ export const longitudeSchema = Joi.number().min(-180).max(180).precision(8);
 
 export const locationSchema: Joi.SchemaMap<ILocation> = {
   __typename: Joi.string().valid('Location').optional(),
-  lat: latitudeSchema,
-  lng: longitudeSchema,
+  lat: latitudeSchema.required(),
+  lng: longitudeSchema.required(),
 };
 
 export const addressSchema: Joi.SchemaMap<IAddress> = {

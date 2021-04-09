@@ -149,6 +149,7 @@ export const seedBusinessData = () =>
     combineLatest([
       createTestChain(1).pipe(pipeDebug('### Chain SEED')),
       createTestGroup(1, 1).pipe(pipeDebug('### Group SEED')),
+      createTestGroup(1, 2).pipe(pipeDebug('### Group SEED')),
       createTestGroup(2, 1).pipe(pipeDebug('### Group SEED')),
       createTestUnit(1, 1, 1).pipe(pipeDebug('### Unit SEED')),
       createTestUnit(1, 1, 2).pipe(pipeDebug('### Unit SEED')),

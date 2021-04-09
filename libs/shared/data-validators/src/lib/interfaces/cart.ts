@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import { ICart } from '@bgap/shared/types';
 
 import { paymentModeSchema } from './payment';
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { placeSchema, orderItemSchema } from './order';
 
 export const cartSchema: Joi.SchemaMap<ICart> = {

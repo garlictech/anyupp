@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { combineLatest, Observable, throwError, of } from 'rxjs';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
@@ -7,7 +7,7 @@ import {
   AmplifyApiMutationDocuments,
   AmplifyApiQueryDocuments,
 } from '@bgap/admin/amplify-api';
-import { toFixed2Number } from '@bgap/api/utils';
+import { removeTypeNameField, toFixed2Number } from '@bgap/api/utils';
 import {
   executeMutation,
   executeQuery,
@@ -31,6 +31,7 @@ import {
 } from '@bgap/shared/data-validators';
 
 import {
+  getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
   pipeDebug,
@@ -58,15 +59,20 @@ export const createOrderFromCart = ({
   // );
 
   return getCart(amplifyGraphQlClient, cartId).pipe(
-    // pipeDebug('### CART'),
+    // CART.USERID CHECK
+    switchMap(cart =>
+      cart.userId === userId ? of(cart) : throwError(getCartIsMissingError()),
+    ),
     switchMap(cart =>
       getUnit(amplifyGraphQlClient, cart.unitId).pipe(
+        // TODO: ??? create catchError and custom error
         // pipeDebug('### UNIT'),
         map(unit => ({ cart, unit })),
       ),
     ),
     switchMap(props =>
       getGroupCurrency(amplifyGraphQlClient, props.unit?.groupId).pipe(
+        // TODO: ??? create catchError and custom error
         map(currency => ({ ...props, currency })),
       ),
     ),
@@ -179,11 +185,6 @@ const getOrderItems = ({
     ),
   );
 };
-
-// TODO: create a recursive version of this
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-const removeTypeNameField = ({ __typename, ...objectWithoutTypename }: any) =>
-  objectWithoutTypename;
 
 const convertCartOrderToOrderItem = ({
   userId,
