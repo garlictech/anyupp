@@ -9,6 +9,7 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import { createAdminUserResolvers } from '@bgap/api/admin-user';
 import { createOrderResolvers } from '@bgap/api/order';
+import { createUnitResolvers } from '@bgap/api/unit';
 import * as sst from '@serverless-stack/resources';
 
 import { commonLambdaProps } from './lambda-common';
@@ -62,8 +63,10 @@ export class AppsyncAppStack extends sst.Stack {
 
     this.createDatasources(props);
 
-    createOrderResolvers({ lambdaDs: this.lambdaDs });
-    createAdminUserResolvers({ lambdaDs: this.lambdaDs });
+    const commonResolverInputs = { lambdaDs: this.lambdaDs };
+    createOrderResolvers(commonResolverInputs);
+    createAdminUserResolvers(commonResolverInputs);
+    createUnitResolvers(commonResolverInputs);
 
     new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
       allowedPattern: '.*',

@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { paymentMethodSchema } from '../validators/enums';
+import { paymentMethodSchema } from '../enums/enums';
 import { IPaymentMode } from '@bgap/shared/types';
 
 export const paymentModeSchema: Joi.SchemaMap<IPaymentMode> = {

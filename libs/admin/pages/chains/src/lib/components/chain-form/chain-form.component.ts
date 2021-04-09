@@ -68,11 +68,11 @@ export class ChainFormComponent
     });
   }
 
-  get logoImage(): string {
+  get logoImage(): string | undefined {
     return this.chain?.style?.images?.logo;
   }
 
-  get headerImage(): string {
+  get headerImage(): string | undefined {
     return this.chain?.style?.images?.header;
   }
 

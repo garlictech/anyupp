@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { IOrder, IOrderItem, IPlace, IPriceShown } from '@bgap/shared/types';
 
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
 

@@ -1,7 +1,8 @@
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { missingParametersCheck } from '@bgap/shared/utils';
-import * as orderService from './order.service';
+
+import { createOrderFromCart } from './create-order-from-cart.resolver';
 
 interface WithAuthenticatedUser {
   userId: string;
@@ -22,12 +23,10 @@ export const orderRequestHandler = {
       ['id'],
     );
 
-    return orderService
-      .createOrderFromCart({
-        userId: requestPayload.userId,
-        cartId: requestPayload.input.id,
-        amplifyGraphQlClient,
-      })
-      .toPromise();
+    return createOrderFromCart({
+      userId: requestPayload.userId,
+      cartId: requestPayload.input.id,
+      amplifyGraphQlClient,
+    }).toPromise();
   },
 };

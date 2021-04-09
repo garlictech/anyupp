@@ -1,4 +1,4 @@
-import { validateSchema } from '../../lib/validation/validate';
+import { validateSchema } from '../../lib/validator/validate';
 import { groupSchema } from '../interfaces';
 import { IGroup } from '@bgap/shared/types';
 

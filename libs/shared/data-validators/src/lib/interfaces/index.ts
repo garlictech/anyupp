@@ -1,5 +1,6 @@
 export * from './address';
 export * from './cart';
+export * from './chain';
 export * from './contact';
 export * from './floor-map';
 export * from './group';
