@@ -1,9 +1,6 @@
-import * as Joi from 'joi';
-
-import { IAddressInfo, addressSchema } from './address';
-import { IContact, contactSchema } from './contact';
-import { ILocalizedItem, localizedItemSchema } from './localized-item';
-import { validateSchema } from '../validation/validate';
+import { IAddressInfo } from './address';
+import { IContact } from './contact';
+import { ILocalizedItem } from './localized-item';
 
 export interface IChainStyle {
   __typename?: 'ChainStyle';
@@ -23,11 +20,6 @@ export interface IChainStyle {
     logo: string;
   };
 }
-export const chainStyleSchema: Joi.SchemaMap<IChainStyle> = {
-  __typename: Joi.string().valid('ChainStyle').optional(),
-  colors: Joi.object().required(),
-  images: Joi.object().allow(null),
-};
 
 export interface IChain extends IContact, IAddressInfo {
   __typename?: 'Chain';
@@ -39,20 +31,3 @@ export interface IChain extends IContact, IAddressInfo {
   createdAt: string;
   updatedAt: string;
 }
-
-export const chainSchema: Joi.SchemaMap<IChain> = {
-  __typename: Joi.string().valid('Chain').optional(),
-  id: Joi.string().required(),
-  isActive: Joi.boolean().required(),
-  name: Joi.string().required(),
-  description: localizedItemSchema.required(),
-  style: Joi.object(chainStyleSchema).required(),
-  createdAt: Joi.string().required(),
-  updatedAt: Joi.string().required(),
-  address: Joi.object(addressSchema).allow(null),
-  ...contactSchema,
-};
-
-export const { validate: validateChain, isType: isChain } = validateSchema<
-  IChain
->(chainSchema, 'Chain');
