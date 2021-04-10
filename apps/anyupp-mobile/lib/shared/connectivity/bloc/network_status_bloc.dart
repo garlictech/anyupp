@@ -9,7 +9,7 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   StreamSubscription _connectivitySubscription;
   ConnectivityResult _lastState;
 
-  NetworkStatusBloc() : super(NetworkState(ConnectivityResult.none, null, null)) {
+  NetworkStatusBloc() : super(NetworkState(ConnectivityResult.wifi, null, null)) {
     print('NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
     if (_connectivitySubscription != null) {
