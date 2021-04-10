@@ -10,20 +10,20 @@ class AwsUnitProvider implements IUnitProvider {
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start()');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_SEARCH_UNITS),
       ));
 
-      // print('***** searchUnitsNearLocation().result()=$result');
+      print('***** searchUnitsNearLocation().result()=$result');
       // print('***** searchUnitsNearLocation().result().data=${result?.data}');
 
       if (result.data == null) {
         return [];
       }
 
-      List<dynamic> items = result.data['listGeoUnits']['items'];
-      //print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      List<dynamic> items = result.data['listUnits']['items'];
+      print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
@@ -32,6 +32,7 @@ class AwsUnitProvider implements IUnitProvider {
           results.add(unit);
         }
       }
+      results.sort((a, b) => a.position.compareTo(b.position));
 
       return results;
     } on Exception catch (e) {

@@ -98,7 +98,7 @@ class Order extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("Order {");
     buffer.write("id=" + "$id" + ", ");
@@ -162,27 +162,27 @@ class Order extends Model {
         items = json['items'] is List
             ? (json['items'] as List)
                 .map(
-                    (e) => OrderItem.fromJson(new Map<String, dynamic>.from(e)))
+                    (e) => OrderItem.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         paymentMethod = json['paymentMethod'] != null
             ? PaymentMode.fromJson(
-                new Map<String, dynamic>.from(json['paymentMethod']))
+                Map<String, dynamic>.from(json['paymentMethod']))
             : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null
             ? PriceShown.fromJson(
-                new Map<String, dynamic>.from(json['sumPriceShown']))
+                Map<String, dynamic>.from(json['sumPriceShown']))
             : null,
         takeAway = json['takeAway'],
         place = json['place'] != null
-            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
+            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
             : null,
         paymentIntention = json['paymentIntention'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List)
                 .map(
-                    (e) => StatusLog.fromJson(new Map<String, dynamic>.from(e)))
+                    (e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         created = json['created'],

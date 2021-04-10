@@ -1,9 +1,7 @@
 import 'package:fa_prev/models.dart';
-import 'package:rxdart/rxdart.dart';
-
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/simplepay/providers/simplepay_provider_interface.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SimplePayRepository {
   final ISimplePayProvider _functionsProvider;

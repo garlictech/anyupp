@@ -6,6 +6,6 @@ abstract class IAuthProvider {
   Future<User> getAuthenticatedUserProfile();
   // Stream<AuthenticatedUser> get authenticatedUser;
   Future<void> cancel();
-  Future<CognitoAccessToken> getAccessToken();
-  Future<CognitoIdToken> getIdToken();
+  Future<String> getAccessToken();
+  Future<String> getIdToken();
 }

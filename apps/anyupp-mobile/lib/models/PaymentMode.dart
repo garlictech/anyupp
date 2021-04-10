@@ -58,7 +58,7 @@ class PaymentMode extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("PaymentMode {");
     buffer.write("id=" + "$id" + ", ");

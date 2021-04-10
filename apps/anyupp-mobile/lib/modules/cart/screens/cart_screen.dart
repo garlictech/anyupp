@@ -33,7 +33,7 @@ class CartScreen extends StatelessWidget {
             ? FutureBuilder<Place>(
                 future: getPlacePref(),
                 builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
-                  print('placeSnapshot=$placeSnapshot');
+                  // print('placeSnapshot=$placeSnapshot');
 
                   if (placeSnapshot.hasData) {
                     return Row(
@@ -109,8 +109,9 @@ class CartScreen extends StatelessWidget {
             return StreamBuilder<Cart>(
               stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
+                print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                  if (snapshot.data != null) {
+                  if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
                     return _buildCartListAndTotal(context, state.unit, snapshot.data);
                   }
                   return _emptyCart(context);
@@ -141,7 +142,7 @@ class CartScreen extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: cart.items?.length ?? 0,
                 itemBuilder: (context, position) {
-                  final CartItem order = cart.items[position];
+                  final OrderItem order = cart.items[position];
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 375),
@@ -179,7 +180,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency),
+                          formatCurrency(cart.totalPrice, unit.currency ?? 'huf'), // TODO GeoUnit currency!
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,
@@ -225,7 +226,8 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, CartItem order) {
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
+    print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

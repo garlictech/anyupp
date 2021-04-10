@@ -96,7 +96,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           minChildSize: 0.25,
           maxChildSize: 0.9,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Stack(overflow: Overflow.visible, fit: StackFit.expand, children: [
+            return Stack(clipBehavior: Clip.none, fit: StackFit.expand, children: [
               Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -372,7 +372,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: LatLng( unit.address.location.lat, unit.address.location.lng),
+        position: LatLng(unit.address.location.lat, unit.address.location.lng),
         infoWindow: InfoWindow(title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);

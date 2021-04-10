@@ -1,12 +1,15 @@
 import 'package:catcher/catcher.dart';
-import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/app.dart';
 import 'package:flutter/material.dart';
 
 void configureCatcherAndRunZonedApp(Widget mainApp) {
   final customParameters = {'stage': 'anyupp'};
 
+  print('configureCatcherAndRunZonedApp().awsConfig=$awsConfig');
+  bool useSlack = awsConfig['SlackErrorWebhookUrl'] != null;
+
   final slackHandler = SlackHandler(
-     awsConfig['SlackErrorWebhookUrl'], '#' + awsConfig['SlackErrorChannel'],
+      (awsConfig['SlackErrorWebhookUrl'] ?? ''), '#' + (awsConfig['SlackErrorChannel'] ?? 'anyupp-errors'),
       username: "ErrorCatcher",
       iconEmoji: ":bug:",
       enableDeviceParameters: true,
@@ -27,7 +30,7 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
       SilentReportMode(),
       [
         // EmailManualHandler(["ERROR@3fa.com"])
-        slackHandler
+        if (useSlack) slackHandler
       ],
       customParameters: customParameters);
 

@@ -11,9 +11,8 @@ class Cart extends Model {
   final String unitId;
   final bool takeAway;
   final Place place;
-  final PaymentMode paymentMethod;
-  final int created;
-  final List<CartItem> items;
+  final PaymentMode paymentMode;
+  final List<OrderItem> items;
 
   @override
   String getId() {
@@ -26,8 +25,7 @@ class Cart extends Model {
       @required this.unitId,
       this.takeAway,
       this.place,
-      @required this.paymentMethod,
-      this.created,
+      @required this.paymentMode,
       this.items});
 
   factory Cart(
@@ -36,17 +34,15 @@ class Cart extends Model {
       @required String unitId,
       bool takeAway,
       Place place,
-      @required PaymentMode paymentMethod,
-      int created,
-      List<CartItem> items}) {
+      @required PaymentMode paymentMode,
+      List<OrderItem> items}) {
     return Cart._internal(
-        id: id == null ? UUID.getUUID() : id,
+        id: id,
         userId: userId,
         unitId: unitId,
         takeAway: takeAway,
         place: place,
-        paymentMethod: paymentMethod,
-        created: created,
+        paymentMode: paymentMode,
         items: items != null ? List.unmodifiable(items) : items);
   }
 
@@ -63,8 +59,7 @@ class Cart extends Model {
         unitId == other.unitId &&
         takeAway == other.takeAway &&
         place == other.place &&
-        paymentMethod == other.paymentMethod &&
-        created == other.created &&
+        paymentMode == other.paymentMode &&
         DeepCollectionEquality().equals(items, other.items);
   }
 
@@ -79,13 +74,10 @@ class Cart extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write(
-        "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
+    buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
     buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
-    buffer.write("paymentMethod=" +
-        (paymentMethod != null ? paymentMethod.toString() : "null") +
-        ", ");
-    buffer.write("created=" + (created != null ? created.toString() : "null"));
+    buffer.write("paymentMode=" + (paymentMode != null ? paymentMode.toString() : "null") + ", ");
+    buffer.write("items=$items");
     buffer.write("}");
 
     return buffer.toString();
@@ -97,17 +89,16 @@ class Cart extends Model {
       String unitId,
       bool takeAway,
       Place place,
-      PaymentMode paymentMethod,
+      PaymentMode paymentMode,
       int created,
-      List<CartItem> items}) {
+      List<OrderItem> items}) {
     return Cart(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
         takeAway: takeAway ?? this.takeAway,
         place: place ?? this.place,
-        paymentMethod: paymentMethod ?? this.paymentMethod,
-        created: created ?? this.created,
+        paymentMode: paymentMode ?? this.paymentMode,
         items: items ?? this.items);
   }
 
@@ -116,18 +107,11 @@ class Cart extends Model {
         userId = json['userId'],
         unitId = json['unitId'],
         takeAway = json['takeAway'],
-        place = json['place'] != null
-            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
-            : null,
-        paymentMethod = json['paymentMethod'] != null
-            ? PaymentMode.fromJson(
-                Map<String, dynamic>.from(json['paymentMethod']))
-            : null,
-        created = json['created'],
+        place = json['place'] != null ? Place.fromJson(Map<String, dynamic>.from(json['place'])) : null,
+        paymentMode =
+            json['paymentMode'] != null ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode'])) : null,
         items = json['items'] is List
-            ? (json['items'] as List)
-                .map((e) => CartItem.fromJson(Map<String, dynamic>.from(e)))
-                .toList()
+            ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -136,8 +120,7 @@ class Cart extends Model {
         'unitId': unitId,
         'takeAway': takeAway,
         'place': place?.toJson(),
-        'paymentMethod': paymentMethod?.toJson(),
-        'created': created,
+        'paymentMode': paymentMode?.toJson(),
         'items': items?.map((e) => e?.toJson())?.toList()
       };
 }

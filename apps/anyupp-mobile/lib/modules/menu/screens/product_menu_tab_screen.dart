@@ -68,16 +68,17 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
-        itemCount: list.length + 1,
+        // itemCount: list.length + 1, // TODO remove affiliate
+        itemCount: list.length,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, position) {
-          if (position == list.length) {
-            return Container(
-              padding: EdgeInsets.all(8.0),
-              child: AffiliateCardWidget(),
-            );
-          }
+          // if (position == list.length) {
+          //   return Container(
+          //     padding: EdgeInsets.all(8.0),
+          //     child: AffiliateCardWidget(),
+          //   );
+          // }
 
           return AnimationConfiguration.staggeredList(
             position: position,

@@ -20,7 +20,7 @@ const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsco
 fs.mkdirSync(targetDir, { recursive: true });
 
 pipe(
-  ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlWebsocketApiUrl', 'stripePublishableKey', 'IdentityPoolId', 'consumerNativeUserPoolClientId', 'consumerUserPoolDomain', 'consumerUserPoolId', 'region'],
+  ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlAdminApiUrl', 'GraphqlAdminApiKey', 'stripePublishableKey', 'IdentityPoolId', 'consumerWebUserPoolClientId', 'consumerUserPoolDomain', 'consumerUserPoolId', 'region'],
   // We need to do this because the stuff can query max 10 parameters in one request
   fp.chunk(10),
   fp.map(

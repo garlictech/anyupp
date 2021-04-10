@@ -13,10 +13,8 @@ import 'package:fa_prev/modules/cart/cart.dart';
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
-  final CartItem order;
-  final GeneratedProduct product;
-  final ProductVariant variant;
-  CartListItemWidget({Key key, this.unit, this.order, this.product, this.variant}) : super(key: key);
+  final OrderItem order;
+  CartListItemWidget({Key key, this.unit, this.order}) : super(key: key);
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -39,7 +37,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
               ),
               width: 100,
               child: ImageWidget(
-                url: this.widget.product.image,
+                url: this.widget.order.image,
                 placeholder: CircularProgressIndicator(),
                 errorWidget: Icon(Icons.error),
                 fit: BoxFit.cover,
@@ -60,7 +58,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          getLocalizedText(context, widget.product.name).toUpperCase(),
+                          getLocalizedText(context, widget.order.productName).toUpperCase(),
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -69,7 +67,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                           ),
                         ),
                         Text(
-                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.variant.variantName)}",
+                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variantName)}",
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             color: theme.text,
@@ -83,7 +81,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           margin: EdgeInsets.only(bottom: 2),
                           child: Text(
-                            formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
+                            formatCurrency(getTotalPriceOfOrederItem(widget.order),
+                                widget.unit.currency ?? 'huf'), // TODO geounit!!
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -166,16 +165,16 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   void _addOrder() {
-    BlocProvider.of<CartBloc>(context).add(
-        AddProductToCartAction(widget.unit, widget.product, widget.variant));
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit, widget.order));
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(
-        widget.unit.chainId, widget.unit.id, widget.product, widget.variant));
+    BlocProvider.of<CartBloc>(context)
+        .add(RemoveProductFromCartAction(widget.unit.chainId, widget.unit.id, widget.order));
   }
 
-  double getTotalPriceOfOrederItem(CartItem item) {
-    return item.quantity * item.variant.price;
+  double getTotalPriceOfOrederItem(OrderItem item) {
+    return item.quantity * item.priceShown.pricePerUnit;
+    //return item.quantity * item...price;
   }
 }

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.34+1034
+version: 1.1.0+10100
 
 environment:
   sdk: '>=2.11.0 <3.0.0'
@@ -27,6 +27,9 @@ dependencies:
     sdk: flutter
   amazon_cognito_identity_dart_2: ^0.1.25+4
   animated_background: ^1.0.5
+  amplify_flutter: '<1.0.0'
+  amplify_auth_cognito: '<1.0.0'
+  amplify_storage_s3: '<1.0.0'  
   apple_sign_in: ^0.1.0
   awesome_card: ^1.1.0
   badges: ^1.1.1
@@ -35,17 +38,18 @@ dependencies:
   camera: ^0.5.8+7
   catcher: ^0.3.23
   # cloud_functions: ^0.5.0
-  connectivity: ^2.0.0
+  connectivity: ^2.0.2
   cupertino_icons: ^0.1.3
   double_back_to_close_app: ^2.0.1
   equatable: ^2.0.0
-  firebase_ml_vision: ^0.9.7
+  # firebase_core: ^0.5.0
+  firebase_ml_vision: ^0.9.10
   # flutter_aws_amplify_cognito: ^1.0.0+7
   flutter_bloc: ^7.0.0
   # flutter_dotenv: ^2.1.0
   # flutter_inappwebview: ^4.0.0+4
   flutter_local_notifications: ^1.4.4+2
-  flutter_login_facebook: ^0.4.1
+  # flutter_login_facebook: ^0.4.1 # removed: Aws Cognito
   flutter_sequence_animation: ^3.0.1
   flutter_staggered_animations: ^0.1.2
   flutter_svg: ^0.19.3
@@ -54,13 +58,14 @@ dependencies:
   get_it: ^4.0.2
   google_fonts: ^1.1.0
   google_maps_flutter: ^0.5.28+1
-  google_sign_in: ^4.4.6
+  # google_sign_in: ^4.4.6 # removed: Aws Cognito
   graphql_flutter: ^4.0.1
   intl: ^0.17.0
   # json_serializable: ^3.0.0
   lottie: ^0.7.0+1
   mask_text_input_formatter: ^1.0.7
   # meta: '>=1.0.0 <2.0.0'
+  path_provider: ^1.6.10
   package_info: '>=0.4.3 <2.0.0'
   permission_handler: ^5.0.1+1
   rxdart: ^0.24.0
@@ -70,7 +75,7 @@ dependencies:
   uni_links: ^0.4.0
   url_launcher: ^5.7.4
   uuid: ^2.2.0
-  webview_flutter: ^1.0.7
+  webview_flutter: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -84,7 +89,8 @@ dev_dependencies:
   # gql_build: ^0.1.3
   # gql_pedantic: ^1.0.2
 
-# dependency_overrides:
+dependency_overrides:
+  sqflite: 1.3.0
   # analyzer: '0.39.14'
 
 flutter_icons:
@@ -108,7 +114,6 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/flags/
-    - env/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
