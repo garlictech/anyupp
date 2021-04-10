@@ -7,7 +7,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class GraphQLClientService {
   final String graphqlApiUrl;
   final String graphqlApiKey;
-  final String graphqlWsApiUrl;
   final String graphqlAdminApiUrl;
   final String graphqlAdminApiKey;
   final IAuthProvider _authProvider;
@@ -19,7 +18,6 @@ class GraphQLClientService {
     @required IAuthProvider authProvider,
     @required this.graphqlApiUrl,
     @required this.graphqlApiKey,
-    @required this.graphqlWsApiUrl,
     @required this.graphqlAdminApiUrl,
     @required this.graphqlAdminApiKey,
   }) : _authProvider = authProvider;
@@ -62,6 +60,9 @@ class GraphQLClientService {
 
     // final Link _link = _httpLink;
     Link _link = _authLink.concat(_httpLink);
+    String graphqlWsApiUrl =
+        graphqlApiUrl.replaceFirst('https:', 'wss:').replaceFirst('appsync-api', 'appsync-realtime-api');
+    print('GraphQLClientService.websocket=$graphqlWsApiUrl');
 
     final _wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
         config: SocketClientConfig(
@@ -83,7 +84,6 @@ class GraphQLClientService {
     return _appSyncClient;
   }
 
-  
   Future<ValueNotifier<GraphQLClient>> getNormalGraphQLClient() async {
     if (_adminClient != null) {
       return _adminClient;

@@ -34,8 +34,6 @@ Future<void> initDependencyInjection() async {
 }
 
 void _initCommon() {
-
-  
   print('AWS CONFIG=$awsConfig');
 
   final Stripe stripe = Stripe(
@@ -47,7 +45,7 @@ void _initCommon() {
     region: awsConfig['region'],
     userPoolId: awsConfig['consumerUserPoolId'],
     identityPoolId: awsConfig['IdentityPoolId'],
-    clientId: awsConfig['consumerNativeUserPoolClientId'],
+    clientId: awsConfig['consumerWebUserPoolClientId'],
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);
@@ -73,8 +71,7 @@ void _initProviders() {
       ));
 
   // Login providers AWS
-  getIt.registerLazySingleton<ISocialLoginProvider>(
-      () => AwsSocialLoginProvider(getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
 }
 
@@ -99,14 +96,12 @@ void _initRepositories() {
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
-
 }
 
 void _initServices() {
-   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
-    authProvider: getIt<IAuthProvider>(),
+  getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
+        authProvider: getIt<IAuthProvider>(),
         graphqlApiUrl: awsConfig['GraphqlApiUrl'],
-        graphqlWsApiUrl: awsConfig['GraphqlWebsocketApiUrl'],
         graphqlApiKey: awsConfig['GraphqlApiKey'],
         graphqlAdminApiUrl: awsConfig['AdminGraphqlApiUrl'],
         graphqlAdminApiKey: awsConfig['AdminGraphqlApiKey'],
@@ -131,5 +126,4 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
-
- }
+}
