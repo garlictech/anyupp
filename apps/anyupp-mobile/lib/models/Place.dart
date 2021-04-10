@@ -40,7 +40,7 @@ class Place extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("Place {");
     buffer.write("id=" + "$id" + ", ");

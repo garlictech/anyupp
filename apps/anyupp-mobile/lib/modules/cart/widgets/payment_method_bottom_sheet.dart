@@ -103,13 +103,13 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (unit.paymentModes?.contains('INAPP'))
+              if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
                     "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
-              if (unit.paymentModes?.contains('CASH'))
+              if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
-              if (unit.paymentModes?.contains('CARD'))
+              if (unit.paymentModes != null && unit.paymentModes.contains('CARD'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
             ],

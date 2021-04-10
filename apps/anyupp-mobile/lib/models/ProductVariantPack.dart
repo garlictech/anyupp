@@ -40,7 +40,7 @@ class ProductVariantPack extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("ProductVariantPack {");
     buffer.write("id=" + "$id" + ", ");

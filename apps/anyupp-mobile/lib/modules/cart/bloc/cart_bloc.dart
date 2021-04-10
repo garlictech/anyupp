@@ -23,13 +23,13 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
       if (action is AddProductToCartAction) {
         // _currentCart.addProductToCart(action.product, action.variant);
-        Cart cart = await _cartRepository.addProductToCart(action.unit, action.product, action.variant);
+        Cart cart = await _cartRepository.addProductToCart(action.unit, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is RemoveProductFromCartAction) {
         Cart cart =
-            await _cartRepository.removeProductFromCart(action.chainId, action.unitId, action.product, action.variant);
+            await _cartRepository.removeProductFromCart(action.chainId, action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 

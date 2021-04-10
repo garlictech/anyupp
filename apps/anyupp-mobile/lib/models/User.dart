@@ -63,7 +63,7 @@ class User extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("User {");
     buffer.write("id=" + "$id" + ", ");

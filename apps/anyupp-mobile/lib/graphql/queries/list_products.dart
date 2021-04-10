@@ -20,6 +20,7 @@ query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
       productType
       tax
       variants {
+        id
         position
         price
         pack {
