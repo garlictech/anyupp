@@ -1,7 +1,6 @@
 const AWSCONFIG = '''{
-  "GraphqlApiKey": "da2-bujmyohan5ayvdhn5o3fctyiwu",
-  "GraphqlApiUrl": "https://27vneia6cnglrgi6eiezcqozne.appsync-api.eu-west-1.amazonaws.com/graphql",
-  "GraphqlWebsocketApiUrl": "wss://g7rewo2kyrfnvbubzbbyhwplxm.appsync-realtime-api.eu-west-1.amazonaws.com/graphql",
+  "GraphqlApiKey": "da2-z7merrmw6reg3kppjre3e3dngy",
+  "GraphqlApiUrl": "https://ygzl3hlvujcrvlmmnhnhjvlpiu.appsync-api.eu-west-1.amazonaws.com/graphql",
   "IdentityPoolId": "eu-west-1:faea92dc-486e-4082-a6d1-4f02f4ec8ad5",
   "consumerNativeUserPoolClientId": "78f0j09ncgjgvmndd1t594ssvd",
   "consumerUserPoolDomain": "https://dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
