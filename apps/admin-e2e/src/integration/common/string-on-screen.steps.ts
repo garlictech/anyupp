@@ -1,21 +1,23 @@
-import { Then } from 'cypress-cucumber-preprocessor/steps';
+import { Then, When } from 'cypress-cucumber-preprocessor/steps';
 
-Then('I should see {string} header', (title: string) => {
-  cy.get('h1').contains(title).findAllByText(title).should('exist');
-});
+// Then('I should see {string} header', (title: string) => {
+//   cy.get('h1').contains(title).findAllByText(title).should('exist');
+// });
 
+// This CONTAINS selector is our friend from now
 Then('I should see {string} sub-header', (title: string) => {
-  cy.get('h3').contains(title).findAllByText(title).should('exist');
+  cy.contains('h3', title).should('exist');
 });
 
-Then('I should see {string} label', (title: string) => {
-  cy.get('label').contains(title).findAllByText(title).should('exist');
-});
+// Then('I should see {string} label', (title: string) => {
+//   cy.get('label').contains(title).findAllByText(title).should('exist');
+// });
 
-Then('the {string} title is displayed', (title: string) => {
-  cy.findAllByText(title).should('exist');
-});
+// Then('the {string} title is displayed', (title: string) => {
+//   cy.findAllByText(title).should('exist');
+// });
 
-//Then('the {string} button is displayed', (title: string) => {
-//  cy.get('button').contains(title).findAllByText(title).should('exist');
-//});
+// This CONTAINS selector is our friend from now
+When('I click the {string} text', (value: string) => {
+  cy.contains(value, { matchCase: false }).click({ timeout: 10000 });
+});
