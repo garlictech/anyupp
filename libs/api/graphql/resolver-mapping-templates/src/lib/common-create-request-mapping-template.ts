@@ -1,0 +1,16 @@
+export const commonCreateRequestMappingTemplate = `
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key":  {
+    "id": $util.dynamodb.toDynamoDBJson($util.autoId())
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($context.args.input),
+  "condition": {
+    "expression": "attribute_not_exists(#id)",
+    "expressionNames": {
+      "#id": "id"
+    }
+  }
+}
+`;

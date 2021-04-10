@@ -3,7 +3,12 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -105,7 +110,10 @@ export class ProductExtendFormComponent
     }
     if (this.productLevel === EProductLevel.UNIT) {
       this.dialogForm.addControl('laneId', new FormControl(''));
-      this.dialogForm.addControl('takeaway', new FormControl(false, Validators.required));
+      this.dialogForm.addControl(
+        'takeaway',
+        new FormControl(false, Validators.required),
+      );
     }
 
     if (this.product) {

@@ -11,7 +11,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
@@ -72,7 +72,6 @@ export class RoleContextFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group(
       {
-        contextId: ['', [Validators.required]],
         name: this._formBuilder.group(
           {
             hu: [''],
@@ -162,9 +161,7 @@ export class RoleContextFormComponent
       });
   }
 
-  private _roleLevelValidator = (
-    control: AbstractControl,
-  ): unknown => {
+  private _roleLevelValidator = (control: AbstractControl): unknown => {
     switch (control.value.role) {
       case EAdminRole.INACTIVE:
       case EAdminRole.SUPERUSER:
@@ -229,10 +226,10 @@ export class RoleContextFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createRoleContext',
-            this.dialogForm?.value,
-          );
+          await this._amplifyDataService.create('createRoleContext', {
+            ...this.dialogForm?.value,
+            contextId: Math.random().toString(36).substring(2, 8),
+          });
 
           this._toasterService.show(
             EToasterType.SUCCESS,

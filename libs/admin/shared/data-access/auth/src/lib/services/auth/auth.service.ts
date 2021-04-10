@@ -1,12 +1,11 @@
-import { AmplifyService } from 'aws-amplify-angular';
-import { AuthState } from 'aws-amplify-angular/dist/src/providers';
-
 import { Injectable } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 
 import { CognitoService } from '../cognito/cognito.service';
 import { take } from 'rxjs/operators';
 import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+
+import { onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +14,14 @@ export class AuthService {
   constructor(
     private _dataService: DataService,
     private _cognitoService: CognitoService,
-    private _amplifyService: AmplifyService,
   ) {}
 
   public init() {
-    this._amplifyService.authStateChange$.subscribe((authState: AuthState) => {
-      if (authState.state === 'signedIn') {
+    // TODO: we replaced aws-amplify-angular with @aws-amplify/ui-components
+    // so the method below can probably be simplified. See the corresponding
+    // callback in app.component.ts, where we get the user data as well.
+    onAuthUIStateChange(authState => {
+      if (authState === 'signedin') {
         this._cognitoService
           .getAuth()
           .pipe(take(1))

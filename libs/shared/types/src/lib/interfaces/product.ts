@@ -55,6 +55,25 @@ export interface IProduct {
   tax: string; // %
   laneId?: string;
   productType: EProductType;
+  takeaway?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IUnitProduct {
+  __typename?: 'UnitProduct';
+  id: string;
+  parentId: string; // parent chainProduct/groupProduct ID
+  chainId: string;
+  groupId: string;
+  unitId: string;
+  isVisible: boolean; // temp
+  position: number;
+  variants: IProductVariant[];
+  laneId?: string;
+  takeaway?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IGeneratedProduct {

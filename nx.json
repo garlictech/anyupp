@@ -33,16 +33,6 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "graphql-server": {
-      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "api-graphql-resolvers": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "api-data-access": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "api-graphql-schema": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -151,9 +141,6 @@
     "infrastructure-build-pipeline-stack": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
     },
-    "api-graphql-appsync-lambda": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
     "shared-utils": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -163,26 +150,44 @@
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
+    "api-order": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "api-admin-user": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
     "shared-graphql-api-client": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "api-graphql-resolver-mapping-templates": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
+    "api-stripe": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "api-unit": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+    },
+    "admin-amplify-api": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
     "admin-amplify-app": {
       "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "stripe": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "integration-tests": {
-      "tags": ["type:integration-tests"]
-    },
-    "admin-amplify-api": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
     },
     "admin-pages-role-contexts": {
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
     "admin-shared-data-access-role-contexts": {
       "tags": ["scope:bgap", "type:utils", "platform:angular"]
+    },
+    "integration-tests-angular": {
+      "tags": ["scope:bgap", "type:integration-tests", "platform:angular"]
+    },
+    "shared-data-validators": {
+      "tags": ["scope:bgap", "type:utils", "platform:universal"]
+    },
+    "integration-tests-universal": {
+      "tags": ["scope:bgap", "type:integration-tests", "platform:universal"]
     }
   }
 }

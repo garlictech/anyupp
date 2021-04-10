@@ -1,6 +1,11 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';

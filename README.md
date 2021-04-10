@@ -98,10 +98,14 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
   to the "name" field
 - in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
   in the `service` field
+- in `apps/admin-amplify-app/.graphqlconfig.yml`, use the same name
+  in the `schemaPath` field (...api/<APPNAME>/build...)
 - build and deploy the stack to the desired stage (it will use the stage-related
   parameters, secrets, etc:)
 
 :exclamation: use your own app name
+
+!!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
 
 ```
 nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
@@ -118,16 +122,20 @@ are not yet supported in headless mode :( So fill in the forms if required.
 Cognito part:
 
 ```
-cd apps/amplify-admin-api
+cd apps/admin-amplify-app
 amplify remove auth
 amplify import auth
 ```
 
-- Choose `Cognito User Pool and Identity Pool Cognito User Pool only`
+- Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
 - Select the native client (in this point it should assume well which client is the native one)
 
 Appsync part:
+
+```
+amplify add api
+```
 
 Answere these questions
 
@@ -145,12 +153,15 @@ Answere these questions
 Cognito UserPool configuration
 Use a Cognito user pool configured as a part of this project.
 
-- ? Enable conflict detection? `Yes`
-- ? Select the default resolution strategy `Auto Merge`
+- ? Enable conflict detection? `No`
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
 
-Then, it pushes the app, and generates code. Code generation steps:
+Then, we should push the app, and generat code. Code generation steps:
+
+```
+amplify push
+```
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
@@ -194,7 +205,7 @@ some samples, see the build targets belonging to the examples in the
 
 ### Build the amplify app
 
-`nx config-schema amplify-admin-api --stage dev`
+`nx config-schema admin-amplify-api --stage dev`
 
 The command builds the _current_ configured app / stage.
 
@@ -202,7 +213,7 @@ The command builds the _current_ configured app / stage.
 
 Deploy the current app/stage:
 
-`nx deploy amplify-admin-api`
+`nx deploy admin-amplify-api`
 
 To build the admin site for a given configuration:
 
@@ -241,7 +252,7 @@ Both systems have some minimal data seeded at deploy/creation time.
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@test.com`, password: `Testtesttest12_`
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
@@ -398,9 +409,13 @@ Run `ng build my-app` to build the project. The build artifacts will be stored i
 
 ## Running unit tests
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
+
+### Using jest options [Nrwl - testing](https://nx.dev/latest/angular/cli/test#testfile)
+
+Run `nx test projectName --i --testFile=partOfASpecFileNameToTest --watch` to execute the unit tests on a single file in runInBand and watch mode.
 
 ## Running end-to-end tests
 
@@ -444,9 +459,13 @@ TIP: use `--dry-run` to check your idea. It shows what will be generated without
 
 `nx g @nrwl/workspace:lib shared/config`
 
-### [Remove app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
+### [Remove an app or lib](https://nx.dev/latest/angular/plugins/workspace/generators/remove)
 
 `nx g @nrwl/workspace:rm shared-config-firebase`
+
+### [Move an app or lib](https://nx.dev/latest/angular/workspace/move)
+
+`nx g @nrwl/workspace:move --project projectName new/path`
 
 ### Generate a nest lib
 
@@ -485,46 +504,51 @@ The generator will collect the new resolver's name
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build infrastructure-anyupp-backend-stack
-   nx deploy infrastructure-anyupp-backend-stack
+   nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+   nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
 
 ### Amplify - Admin
 
 Generate amplify GQL models - this script moves the models folder into the lib folder
 `yarn codegen:models`
 
-
 ### Amplify - Mobile
-Configure mobile app. 
+
+Configure mobile app.
 You need to upload some keys to the secretmanager and some paramaters to the parameter store.
 
 ### Mobile app parameters
-Parameters that are required in the parameter store for the mobile app are the followings: 
-  `'{STAGE}-{APPNAME}-region',`  - Server region, eg eu-west-1
-  `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
-  `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
-  `'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
-  `'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
-  `'{STAGE}-{APPNAME}-GraphqlApiUrl',` - GraphQL API http endpoint (start with https://)
-  `'{STAGE}-{APPNAME}-GraphqlWebsocketApiUrl',` - GraphQL realtime websocket endpoint (start with: wss://)
-  `'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API
-  `'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
-  `'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
+
+Parameters that are required in the parameter store for the mobile app are the followings:
+`'{STAGE}-{APPNAME}-region',` - Server region, eg eu-west-1
+`'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
+`'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
+`'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
+`'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
+`'{STAGE}-{APPNAME}-GraphqlApiUrl',` - GraphQL API http endpoint (start with https://)
+`'{STAGE}-{APPNAME}-GraphqlWebsocketApiUrl',` - GraphQL realtime websocket endpoint (start with: wss://)
+`'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API
+`'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
+`'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
 
 ### Mobile app secrets
+
 You MUST upload the keystore files to sign in the Application with release keys! Open the secret manager with the environment (eg. `anyupp-dev-secrets`) and add the following values to the JSON map:
 `androidKeyStore` - Base64 encoded value of the Android publish key, the file extension is JKS and must be convert to base64 string (and paste this base64 string here)
 `androidKeyProperties` - Base64 encoded value of the properties of the keystore, need by the Android sign in mechanism
 
 #### Convert files to base64 string
+
 You must convert the JKS and property files to base64, and put these values into the secretmanager.
 
 To convert a file to it's base64 representation use the following command on linux/unix:
-`openssl base64 -in anyupp-dev.jks -out anyupp-dev.base64`  - it converts the anyupp-dev.jks binary file to base64 string: you should paste the base64 value to the secretmanager
+`openssl base64 -in anyupp-dev.jks -out anyupp-dev.base64` - it converts the anyupp-dev.jks binary file to base64 string: you should paste the base64 value to the secretmanager
 
 #### Format of the `androidKeyProperties` file
+
 The property file which are contains the JKS key secret parameters (password, key alias, etc) is looks like this:
 `key.properties`
+
 ```
 storePassword=4GtWdaksd
 keyAlias=AnyUpp

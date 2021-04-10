@@ -19,6 +19,7 @@ export interface IFloorMapDataObject {
 }
 
 export interface IFloorMapData {
+  __typename?: 'FloorMapData';
   w: number;
   h: number;
   objects: IFloorMapDataObject[];
