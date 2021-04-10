@@ -4,19 +4,14 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
+import Amplify from '@aws-amplify/core';
 import {
-  AmplifyApiMutationDocuments as Mutations,
-  AmplifyApiQueryDocuments as Queries,
-  AmplifyApiSubscriptionDocuments as Subscriptions,
+  AmplifyApiMutationDocuments as Mutations, AmplifyApiQueryDocuments as Queries,
+  AmplifyApiSubscriptionDocuments as Subscriptions, awsConfig
 } from '@bgap/admin/amplify-api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
-import {
-  apiQueryTypes,
-  listTypes,
-  queryTypes,
-  subscriptionTypes,
-} from './types';
+import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';
 
 interface ISubscriptionResult {
   value?: {
@@ -43,6 +38,8 @@ interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
 })
 export class AmplifyDataService {
   public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
+    Amplify.configure(awsConfig);
+
     return from(
       <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
         query: Queries[params.queryName] as string,
@@ -80,6 +77,8 @@ export class AmplifyDataService {
   }
 
   public async create(mutationName: keyof typeof Mutations, value: unknown) {
+    Amplify.configure(awsConfig);
+
     return API.graphql({
       query: Mutations[mutationName],
       variables: { input: value },
@@ -92,6 +91,8 @@ export class AmplifyDataService {
     id: string,
     updaterFn: (data: unknown) => T,
   ) {
+    Amplify.configure(awsConfig);
+
     const data: GraphQLResult<queryTypes> = await (<
       Promise<GraphQLResult<queryTypes>>
     >API.graphql({
@@ -111,6 +112,8 @@ export class AmplifyDataService {
   }
 
   public async delete(mutationName: keyof typeof Mutations, value: unknown) {
+    Amplify.configure(awsConfig);
+
     return API.graphql({
       query: Mutations[mutationName],
       variables: { input: value },
@@ -118,6 +121,8 @@ export class AmplifyDataService {
   }
 
   public query(params: IQueryParams) {
+    Amplify.configure(awsConfig);
+
     return <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
       query: Queries[params.queryName] as string,
       variables: params.variables,
@@ -125,6 +130,8 @@ export class AmplifyDataService {
   }
 
   public subscribe$(params: ISubscriptionParams): Observable<unknown> {
+    Amplify.configure(awsConfig);
+
     return of('subscription').pipe(
       switchMap(
         () => <ObservableInput<ISubscriptionResult>>API.graphql({
