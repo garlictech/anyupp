@@ -56,12 +56,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
               ],
             },
           },
-          reports: {
-            coverage: {
-              files: ['coverage/**/*'],
-              'file-format': 'CLOVERXML',
-            },
-          },
           env: {
             'secrets-manager': {
               AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
