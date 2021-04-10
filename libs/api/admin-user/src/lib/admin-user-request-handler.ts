@@ -2,12 +2,12 @@ import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { validateSchema } from '@bgap/shared/types';
+import { validateSchema } from '@bgap/shared/data-validators';
 
 import { createAdminUser } from './create-admin-user.resolver';
 import { deleteAdminUser } from './delete-admin-user.resolver';
 
-// HANDER
+// HANDLER
 export const adminRequestHandler = {
   createAdminUser: (
     requestPayload: AppsyncApi.CreateAdminUserMutationVariables,
@@ -33,12 +33,12 @@ const createAdminUserInputSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserInput>
   phone: Joi.string().required(),
   name: Joi.string().required(),
 };
-const createInputSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserMutationVariables> = {
+const createMutationSchema: Joi.SchemaMap<AppsyncApi.CreateAdminUserMutationVariables> = {
   input: Joi.object(createAdminUserInputSchema).required(),
 };
 const { validate: validatCreateAdminUserInput } = validateSchema<
   AppsyncApi.CreateAdminUserMutationVariables
->(createInputSchema, 'CreateAdminUserMutationVariables');
+>(createMutationSchema, 'CreateAdminUserMutationVariables');
 
 // DELETE
 const deleteInputSchema: Joi.SchemaMap<AppsyncApi.DeleteAdminUserMutationVariables> = {

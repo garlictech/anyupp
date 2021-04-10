@@ -151,8 +151,9 @@ export const getTableOrders = (
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
       (userOrder: IFloorMapUserOrders): boolean =>
-        `${userOrder.lastOrder.place?.table || ''}.${userOrder.lastOrder.place?.seat || ''}` ===
-        tsID,
+        `${userOrder.lastOrder.place?.table || ''}.${
+          userOrder.lastOrder.place?.seat || ''
+        }` === tsID,
     );
 
     tableOrders[tsID] = {

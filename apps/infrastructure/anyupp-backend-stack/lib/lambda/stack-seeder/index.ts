@@ -69,7 +69,7 @@ export const seedAdminUser = (UserPoolId: string) =>
         },
         {
           Name: 'phone_number',
-          Value: '+123456789012',
+          Value: '+123456789013',
         },
       ],
     },
@@ -117,6 +117,8 @@ export const seedAdminUser = (UserPoolId: string) =>
     map((adminUserId: string) => ({
       id: adminUserId,
       name: 'John Doe',
+      email: 'john@doe.com',
+      phone: '123123213',
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
@@ -147,6 +149,7 @@ export const seedBusinessData = () =>
     combineLatest([
       createTestChain(1).pipe(pipeDebug('### Chain SEED')),
       createTestGroup(1, 1).pipe(pipeDebug('### Group SEED')),
+      createTestGroup(1, 2).pipe(pipeDebug('### Group SEED')),
       createTestGroup(2, 1).pipe(pipeDebug('### Group SEED')),
       createTestUnit(1, 1, 1).pipe(pipeDebug('### Unit SEED')),
       createTestUnit(1, 1, 2).pipe(pipeDebug('### Unit SEED')),

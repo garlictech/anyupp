@@ -71,7 +71,7 @@ export const createBuildProject = (
         install: {
           commands: [
             `sh ./tools/setup-aws-environment.sh`,
-            'yarn',
+            'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli',
           ],
         },
@@ -125,7 +125,7 @@ export const createE2eTestProject = (
       version: '0.2',
       phases: {
         install: {
-          commands: ['yarn'],
+          commands: ['yarn --frozen-lockfile'],
         },
         build: {
           commands: [
@@ -169,7 +169,7 @@ export const createIntegrationTestProject = (
         install: {
           commands: [
             `sh ./tools/setup-aws-environment.sh`,
-            'yarn',
+            'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli',
           ],
         },
@@ -182,7 +182,8 @@ export const createIntegrationTestProject = (
         },
         build: {
           commands: [
-            `yarn nx test integration-tests --codeCoverage --coverageReporters=clover`,
+            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
+            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
           ],
         },
       },

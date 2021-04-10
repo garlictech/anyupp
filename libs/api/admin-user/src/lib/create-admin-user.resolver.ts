@@ -56,6 +56,8 @@ export const createAdminUser = (
     map((adminUserId: string) => ({
       id: adminUserId,
       name: vars.input.name,
+      email: vars.input.email,
+      phone: vars.input.phone,
     })),
     switchMap((input: AmplifyApi.CreateAdminUserInput) =>
       pipe(

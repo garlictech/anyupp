@@ -16,10 +16,12 @@
     "inactive": "Inaktív",
     "confirm": "Megerősítés",
     "cancel": "Mégse",
+    "delete": "Törlés",
     "ok": "OK",
     "yes": "Igen",
     "no": "Nem",
     "email": "Email",
+    "phone": "Telefonszám",
     "chain": "Chain",
     "image": "Kép",
     "title": "Cím",
@@ -52,6 +54,7 @@
     "imageRemoveSuccess": "Sikeres kép törlés",
     "insertSuccessful": "Sikeres beszúrás",
     "updateSuccessful": "Sikeres frissítés",
+    "removeSuccessful": "Sikeres törlés",
     "days": {
       "mon": "Hétfő",
       "tue": "Kedd",
@@ -276,7 +279,8 @@
     "assignedGroups": "Hozzárendelt groupok",
     "selectUnit": "Unit kiválasztása",
     "assignedUnits": "Hozzárendelt unit",
-    "assign": "Hozzárendelés"
+    "assign": "Hozzárendelés",
+    "confirmRemoveRoleContext": "Biztosan törlöd a jogkörnyezet hozzárendelést?"
   },
   "errors": {
     "availabilityWeeklyDateInterval": "A nyitó nap kisebb kell legyen, mint a záró!",

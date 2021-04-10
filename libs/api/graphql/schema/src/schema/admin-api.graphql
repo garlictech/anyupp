@@ -8,8 +8,8 @@ type Address {
 }
 
 type Location {
-  lat: String!
-  lng: String!
+  lat: Float!
+  lng: Float!
 }
 
 type LocalizedItem {
@@ -23,9 +23,12 @@ type LocalizedItem {
 type AdminUser @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String!
+  email: String!
+  phone: String!
   profileImage: String
   settings: AdminUserSettings
-  roleContexts: [AdminRoleContext] @connection(keyName: "byAdminUser", fields: ["id"])
+  roleContexts: [AdminRoleContext]
+    @connection(keyName: "byAdminUser", fields: ["id"])
 }
 
 type AdminUserSettings {
@@ -41,7 +44,7 @@ type AdminUserSettings {
 # Create a join model and disable queries as you don't need them
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
-  @model(queries: null)
+  @model
   @auth(rules: [{ allow: public }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
@@ -62,7 +65,8 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
   chainId: String
   groupId: String
   unitId: String
-  adminUsers: [AdminRoleContext] @connection(keyName: "byRoleContext", fields: ["id"])
+  adminUsers: [AdminRoleContext]
+    @connection(keyName: "byRoleContext", fields: ["id"])
 }
 
 ### Stripe
@@ -490,7 +494,14 @@ type Subscription {
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
   onRoleContextsChange: RoleContext
     @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
-
+  onAdminRoleContextsChange: AdminRoleContext
+    @aws_subscribe(
+      mutations: [
+        "createAdminRoleContext"
+        "updateAdminRoleContext"
+        "deleteAdminRoleContext"
+      ]
+    )
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
   onGroupsChange: Group

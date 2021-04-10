@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Cart Object Validation Error: "value" must be of type object]`;
-
-exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `[Error: GraphQL error: Unit Object Validation Error: "value" must be of type object]`;

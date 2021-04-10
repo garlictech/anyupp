@@ -13,7 +13,7 @@ export class GraphqlApiClient {
   // See issue #348
   private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
-    genericConfig: IAmplifyApiConfig,
+    private genericConfig: IAmplifyApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
     private logger: ILogger,
   ) {
@@ -63,6 +63,7 @@ export class GraphqlApiClient {
       ...specificConfig,
     } as AWSAppSyncClientOptions);
   }
+
   query<T = unknown>(
     document: DocumentNode,
     variables?: Record<string, unknown>,
@@ -75,6 +76,9 @@ export class GraphqlApiClient {
     //     2,
     //   )}`,
     // );
+
+    // reconfig
+    API.configure(this.genericConfig);
     return from(
       this._client.query({
         query: document,
@@ -96,6 +100,7 @@ export class GraphqlApiClient {
     //     document,
     //   )} called with variables ${JSON.stringify(variables, null, 2)}`,
     // );
+    API.configure(this.genericConfig);
     return from(
       this._client.mutate({
         mutation: document,

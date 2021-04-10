@@ -9,4 +9,6 @@ export const upsertRoleContext = createAction(
   props<{ roleContext: IRoleContext }>(),
 );
 
-export const resetRoleContexts = createAction('[RoleContexts] Reset role contexts');
+export const resetRoleContexts = createAction(
+  '[RoleContexts] Reset role contexts',
+);

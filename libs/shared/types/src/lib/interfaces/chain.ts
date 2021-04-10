@@ -3,6 +3,7 @@ import { IContact } from './contact';
 import { ILocalizedItem } from './localized-item';
 
 export interface IChainStyle {
+  __typename?: 'ChainStyle';
   colors: {
     backgroundLight: string;
     backgroundDark: string;
@@ -14,16 +15,19 @@ export interface IChainStyle {
     textLight: string;
     textDark: string;
   };
-  images: {
+  images?: {
     header: string;
     logo: string;
   };
 }
 
 export interface IChain extends IContact, IAddressInfo {
+  __typename?: 'Chain';
   id: string;
   name: string;
   description: ILocalizedItem<string>;
   style: IChainStyle;
   isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

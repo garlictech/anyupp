@@ -112,7 +112,10 @@ export class OrderService {
     );*/
   }
 
-  public updateOrderStatus(order: IOrder, status: EOrderStatus): Promise<unknown> {
+  public updateOrderStatus(
+    order: IOrder,
+    status: EOrderStatus,
+  ): Promise<unknown> {
     return this._dataService.insertOrderStatus(
       this._adminUser?.settings?.selectedChainId || '',
       this._adminUser?.settings?.selectedUnitId || '',

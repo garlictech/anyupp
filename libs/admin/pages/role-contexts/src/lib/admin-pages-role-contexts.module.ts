@@ -30,7 +30,7 @@ const NB_MODULES = [
   NbIconModule,
   NbEvaIconsModule,
   NbButtonModule,
-  NbSelectModule
+  NbSelectModule,
 ];
 
 @NgModule({
