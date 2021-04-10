@@ -142,7 +142,7 @@ class CartScreen extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: cart.items?.length ?? 0,
                 itemBuilder: (context, position) {
-                  final CartItem order = cart.items[position];
+                  final OrderItem order = cart.items[position];
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 375),
@@ -226,7 +226,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, CartItem order) {
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
     print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,

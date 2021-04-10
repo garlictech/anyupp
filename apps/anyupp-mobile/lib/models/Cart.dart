@@ -12,8 +12,7 @@ class Cart extends Model {
   final bool takeAway;
   final Place place;
   final PaymentMode paymentMode;
-  final int created;
-  final List<CartItem> items;
+  final List<OrderItem> items;
 
   @override
   String getId() {
@@ -27,7 +26,6 @@ class Cart extends Model {
       this.takeAway,
       this.place,
       @required this.paymentMode,
-      this.created,
       this.items});
 
   factory Cart(
@@ -37,8 +35,7 @@ class Cart extends Model {
       bool takeAway,
       Place place,
       @required PaymentMode paymentMode,
-      int created,
-      List<CartItem> items}) {
+      List<OrderItem> items}) {
     return Cart._internal(
         id: id,
         userId: userId,
@@ -46,7 +43,6 @@ class Cart extends Model {
         takeAway: takeAway,
         place: place,
         paymentMode: paymentMode,
-        created: created,
         items: items != null ? List.unmodifiable(items) : items);
   }
 
@@ -64,7 +60,6 @@ class Cart extends Model {
         takeAway == other.takeAway &&
         place == other.place &&
         paymentMode == other.paymentMode &&
-        created == other.created &&
         DeepCollectionEquality().equals(items, other.items);
   }
 
@@ -79,13 +74,9 @@ class Cart extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write(
-        "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
+    buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
     buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
-    buffer.write("paymentMode=" +
-        (paymentMode != null ? paymentMode.toString() : "null") +
-        ", ");
-    buffer.write("created=" + (created != null ? created.toString() : "null"));
+    buffer.write("paymentMode=" + (paymentMode != null ? paymentMode.toString() : "null") + ", ");
     buffer.write("items=$items");
     buffer.write("}");
 
@@ -100,7 +91,7 @@ class Cart extends Model {
       Place place,
       PaymentMode paymentMode,
       int created,
-      List<CartItem> items}) {
+      List<OrderItem> items}) {
     return Cart(
         id: id ?? this.id,
         userId: userId ?? this.userId,
@@ -108,7 +99,6 @@ class Cart extends Model {
         takeAway: takeAway ?? this.takeAway,
         place: place ?? this.place,
         paymentMode: paymentMode ?? this.paymentMode,
-        created: created ?? this.created,
         items: items ?? this.items);
   }
 
@@ -117,18 +107,11 @@ class Cart extends Model {
         userId = json['userId'],
         unitId = json['unitId'],
         takeAway = json['takeAway'],
-        place = json['place'] != null
-            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
-            : null,
-        paymentMode = json['paymentMode'] != null
-            ? PaymentMode.fromJson(
-                Map<String, dynamic>.from(json['paymentMode']))
-            : null,
-        created = json['created'],
+        place = json['place'] != null ? Place.fromJson(Map<String, dynamic>.from(json['place'])) : null,
+        paymentMode =
+            json['paymentMode'] != null ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode'])) : null,
         items = json['items'] is List
-            ? (json['items'] as List)
-                .map((e) => CartItem.fromJson(Map<String, dynamic>.from(e)))
-                .toList()
+            ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -138,7 +121,6 @@ class Cart extends Model {
         'takeAway': takeAway,
         'place': place?.toJson(),
         'paymentMode': paymentMode?.toJson(),
-        'created': created,
         'items': items?.map((e) => e?.toJson())?.toList()
       };
 }

@@ -57,8 +57,32 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    // TODO: implement createAndSendOrderFromCart
-    throw UnimplementedError();
+    print('AwsOrderProvider.createAndSendOrderFromCart()');
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      QueryResult result = await _client.value.mutate(
+        MutationOptions(
+          document: gql(MUTATION_CREATE_ORDER_FROM_CART),
+          variables: {
+            'cartId': _cart.id,
+          }
+        ),
+      );
+      print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+      String id = result.data['createOrderFromCart']['id'];
+      print('AwsOrderProvider.createAndSendOrderFromCart().id=$id');
+
+      if (result.hasException) {
+        print('AwsOrderProvider.createAndSendOrderFromCart().exception=${result.exception}');
+      }
+
+      _cart = null;
+      _cartController.add(null);
+
+    } on Exception catch (e) {
+      print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
+      rethrow;
+    }
   }
 
   @override
@@ -105,7 +129,7 @@ class AwsOrderProvider implements IOrdersProvider {
     User user = await _authProvider.getAuthenticatedUserProfile();
     print('AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_GET_CART),
         variables: {
@@ -118,6 +142,11 @@ class AwsOrderProvider implements IOrdersProvider {
       print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
       if (result.data == null) {
         return null;
+      }
+      if (result.hasException) {
+        throw GraphQLException(
+          message: result.exception.toString(),
+        );
       }
 
       List<dynamic> items = result.data['listCarts']['items'];
@@ -140,7 +169,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _saveCartToBackend(Cart cart) async {
     print('******** CREATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_SAVE_CART),
@@ -167,7 +196,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _updateCartOnBackend(Cart cart) async {
     print('******** UPDATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_UPDATE_CART),
@@ -193,7 +222,7 @@ class AwsOrderProvider implements IOrdersProvider {
       return false;
     }
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_DELETE_CART),
@@ -262,27 +291,27 @@ class AwsOrderProvider implements IOrdersProvider {
         'userId': cart.userId,
         'items': cart.items.map((item) {
           return {
-            'productId': item.product.id,
-            'variantId': item.variant.id,
+            'productId': item.productId,
+            'variantId': item.variantId,
             'created':
                 0, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
             'productName': {
-              'en': item.product.name.en,
-              'de': item.product.name.de,
-              'hu': item.product.name.hu,
+              'en': item.productName.en,
+              'de': item.productName.de,
+              'hu': item.productName.hu,
             },
             'priceShown': {
-              'currency': 'huf',
-              'pricePerUnit': item.variant.price,
-              'priceSum': item.variant.price * item.quantity,
-              'tax': 0, // TODO
-              'taxSum': 0, // TODO
+              'currency': item.priceShown.currency,
+              'pricePerUnit': item.priceShown.pricePerUnit,
+              'priceSum': item.priceShown.priceSum,
+              'tax': item.priceShown.tax, // TODO
+              'taxSum': item.priceShown.taxSum, // TODO
             },
             'quantity': item.quantity,
             'variantName': {
-              'en': item.variant.variantName.en,
-              'de': item.variant.variantName.de,
-              'hu': item.variant.variantName.hu,
+              'en': item.variantName.en,
+              'de': item.variantName.de,
+              'hu': item.variantName.hu,
             },
           };
         }).toList(),
@@ -303,5 +332,4 @@ class AwsOrderProvider implements IOrdersProvider {
       },
     };
   }
-
 }

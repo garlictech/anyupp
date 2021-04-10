@@ -15,9 +15,9 @@ class OrderItem extends Model {
   final int quantity;
   final List<StatusLog> statusLog;
   final LocalizedItem variantName;
-  final int created;
   final bool takeAway;
   final String orderItemsId;
+  final String image;
 
   @override
   String getId() {
@@ -33,9 +33,9 @@ class OrderItem extends Model {
       @required this.quantity,
       this.statusLog,
       this.variantName,
-      this.created,
       this.takeAway,
-      this.orderItemsId});
+      this.orderItemsId,
+      this.image});
 
   factory OrderItem(
       {String id,
@@ -46,9 +46,9 @@ class OrderItem extends Model {
       @required int quantity,
       List<StatusLog> statusLog,
       LocalizedItem variantName,
-      int created,
       bool takeAway,
-      String orderItemsId}) {
+      String orderItemsId,
+      String image}) {
     return OrderItem._internal(
         id: id == null ? UUID.getUUID() : id,
         productId: productId,
@@ -58,9 +58,9 @@ class OrderItem extends Model {
         quantity: quantity,
         statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
         variantName: variantName,
-        created: created,
         takeAway: takeAway,
-        orderItemsId: orderItemsId);
+        orderItemsId: orderItemsId,
+        image: image);
   }
 
   bool equals(Object other) {
@@ -79,9 +79,9 @@ class OrderItem extends Model {
         quantity == other.quantity &&
         DeepCollectionEquality().equals(statusLog, other.statusLog) &&
         variantName == other.variantName &&
-        created == other.created &&
         takeAway == other.takeAway &&
-        orderItemsId == other.orderItemsId;
+        orderItemsId == other.orderItemsId &&
+        image == image;
   }
 
   @override
@@ -107,10 +107,9 @@ class OrderItem extends Model {
         (variantName != null ? variantName.toString() : "null") +
         ", ");
     buffer.write(
-        "created=" + (created != null ? created.toString() : "null") + ", ");
-    buffer.write(
         "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
-    buffer.write("orderItemsId=" + "$orderItemsId");
+    buffer.write("orderItemsId=" + "$orderItemsId" + ", ");
+    buffer.write("image=" + "$image");
     buffer.write("}");
 
     return buffer.toString();
@@ -125,9 +124,9 @@ class OrderItem extends Model {
       int quantity,
       List<StatusLog> statusLog,
       LocalizedItem variantName,
-      int created,
       bool takeAway,
-      String orderItemsId}) {
+      String orderItemsId,
+      String image}) {
     return OrderItem(
         id: id ?? this.id,
         productId: productId ?? this.productId,
@@ -137,9 +136,9 @@ class OrderItem extends Model {
         quantity: quantity ?? this.quantity,
         statusLog: statusLog ?? this.statusLog,
         variantName: variantName ?? this.variantName,
-        created: created ?? this.created,
         takeAway: takeAway ?? this.takeAway,
-        orderItemsId: orderItemsId ?? this.orderItemsId);
+        orderItemsId: orderItemsId ?? this.orderItemsId,
+        image : image ?? this.image);
   }
 
   OrderItem.fromJson(Map<String, dynamic> json)
@@ -165,9 +164,9 @@ class OrderItem extends Model {
             ? LocalizedItem.fromJson(
                 Map<String, dynamic>.from(json['variantName']))
             : null,
-        created = json['created'],
         takeAway = json['takeAway'],
-        orderItemsId = json['orderItemsId'];
+        orderItemsId = json['orderItemsId'],
+        image = json['image'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -178,8 +177,8 @@ class OrderItem extends Model {
         'quantity': quantity,
         'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
         'variantName': variantName?.toJson(),
-        'created': created,
         'takeAway': takeAway,
-        'orderItemsId': orderItemsId
+        'orderItemsId': orderItemsId,
+        'image': image,
       };
 }
