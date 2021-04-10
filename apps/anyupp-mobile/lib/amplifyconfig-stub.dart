@@ -1,5 +1,4 @@
 String getAmplifyConfig(Map<String, dynamic> config) {
-
   String webDomain = Uri.parse(config['consumerUserPoolDomain']).host;
   print('getAmplifyConfig().webDomain=$webDomain');
 
@@ -25,7 +24,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 "CognitoUserPool": {
                     "Default": {
                         "PoolId": "${config['consumerUserPoolId']}",
-                        "AppClientId": "${config['consumerNativeUserPoolClientId']}",
+                        "AppClientId": "${config['consumerWebUserPoolClientId']}",
                         "Region": "${config['region']}"
                     }
                 },
@@ -33,7 +32,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                     "Default": {
                         "OAuth": {
                             "WebDomain": "$webDomain",
-                            "AppClientId": "${config['consumerNativeUserPoolClientId']}",
+                            "AppClientId": "${config['consumerWebUserPoolClientId']}",
                             "SignInRedirectURI": "anyupp://signin/",
                             "SignOutRedirectURI": "anyupp://signout/",
                             "Scopes": [

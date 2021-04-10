@@ -16,6 +16,11 @@ PODS:
     - AmplifyPlugins/AWSCognitoAuthPlugin
     - AWSPluginsCore
     - Flutter
+  - amplify_storage_s3 (0.0.1):
+    - Amplify
+    - amplify_core
+    - AmplifyPlugins/AWSS3StoragePlugin
+    - Flutter
   - AmplifyPlugins/AWSCognitoAuthPlugin (1.7.2):
     - AWSAuthCore (~> 2.23.0)
     - AWSCognitoIdentityProvider (~> 2.23.0)
@@ -23,6 +28,10 @@ PODS:
     - AWSCore (~> 2.23.0)
     - AWSMobileClient (~> 2.23.0)
     - AWSPluginsCore (= 1.7.2)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.7.2):
+    - AWSCore (~> 2.23.0)
+    - AWSPluginsCore (= 1.7.2)
+    - AWSS3 (~> 2.23.0)
   - apple_sign_in (0.0.1):
     - Flutter
   - AWSAuthCore (2.23.2):
@@ -40,6 +49,8 @@ PODS:
   - AWSPluginsCore (1.7.2):
     - Amplify (= 1.7.2)
     - AWSCore (~> 2.23.0)
+  - AWSS3 (2.23.2):
+    - AWSCore (= 2.23.2)
   - barcode_scan (0.0.1):
     - Flutter
     - MTBBarcodeScanner
@@ -64,9 +75,6 @@ PODS:
   - Firebase/MLVisionBarcodeModel (6.33.0):
     - Firebase/CoreOnly
     - FirebaseMLVisionBarcodeModel (~> 0.21.0)
-  - firebase_core (0.5.3):
-    - Firebase/CoreOnly (~> 6.33.0)
-    - Flutter
   - firebase_ml_vision (0.1.1):
     - Firebase/Core
     - Firebase/MLVision
@@ -218,6 +226,7 @@ DEPENDENCIES:
   - amplify_auth_cognito (from `.symlinks/plugins/amplify_auth_cognito/ios`)
   - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
   - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
+  - amplify_storage_s3 (from `.symlinks/plugins/amplify_storage_s3/ios`)
   - apple_sign_in (from `.symlinks/plugins/apple_sign_in/ios`)
   - barcode_scan (from `.symlinks/plugins/barcode_scan/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
@@ -226,7 +235,6 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Firebase/MLVision
   - Firebase/MLVisionBarcodeModel
-  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_ml_vision (from `.symlinks/plugins/firebase_ml_vision/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -253,6 +261,7 @@ SPEC REPOS:
     - AWSCore
     - AWSMobileClient
     - AWSPluginsCore
+    - AWSS3
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -285,6 +294,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/amplify_core/ios"
   amplify_flutter:
     :path: ".symlinks/plugins/amplify_flutter/ios"
+  amplify_storage_s3:
+    :path: ".symlinks/plugins/amplify_storage_s3/ios"
   apple_sign_in:
     :path: ".symlinks/plugins/apple_sign_in/ios"
   barcode_scan:
@@ -297,8 +308,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
-  firebase_core:
-    :path: ".symlinks/plugins/firebase_core/ios"
   firebase_ml_vision:
     :path: ".symlinks/plugins/firebase_ml_vision/ios"
   Flutter:
@@ -335,6 +344,7 @@ SPEC CHECKSUMS:
   amplify_auth_cognito: 2e090a788d0ba4e08f6438170b1e7aac872782b4
   amplify_core: 8b38d20089fe4f225c14db6892f586bd03824a42
   amplify_flutter: d64b45e3a016e491bbb2e110fee57e150daf2164
+  amplify_storage_s3: 784469070ec70527454e540ef0d501498f58927a
   AmplifyPlugins: 5f3a4bc1bf725d225129b55be304287817c49a1f
   apple_sign_in: 7716c7ddfa195aeab7dec0dc374ef4ff45d1adb4
   AWSAuthCore: 59770d4c2c1b3dbb183b95d1867e3584b4816e54
@@ -343,13 +353,13 @@ SPEC CHECKSUMS:
   AWSCore: 70f79e95ee30f8eefa7122391d76ace516778f22
   AWSMobileClient: 54fd215e76e34a8edb3cb1199788a69543cebc95
   AWSPluginsCore: 13d0f6c3a0af58a8f219c735048cdcc4222741f8
+  AWSS3: f307717d61880b0470e1f152d3f48a8239ae96cb
   barcode_scan: a5c27959edfafaa0c771905bad0b29d6d39e4479
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   catcher: e5585ed31458c849f4fd9c3719b2fcb0188b8918
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
-  firebase_core: 5d6a02f3d85acd5f8321c2d6d62877626a670659
   firebase_ml_vision: cf3db3a9b870a2424e4c1c369b2123d31177cc9f
   FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
