@@ -8,6 +8,7 @@ import 'package:stripe_sdk/stripe_sdk_ui.dart';
 import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
+  // ignore: unused_field
   final ValueNotifier<GraphQLClient> _client;
   final Stripe _stripe;
 
@@ -15,6 +16,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
   @override
   Future<List<StripeCard>> getPaymentMethods() async {
+    return null;
     // print('getPaymentMethods().start().doc=${GetCustomerStripeCardsQuery().document.definitions}');
     // final results = await _client.query(
     //   QueryOptions(
@@ -56,6 +58,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     //   print('startStripePayment().result=${result.data}');
     //   return '${result.data["startStripePayment"]}';
     // }
+    return null;
   }
 
   @override
@@ -63,6 +66,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$chainId, $unitId, $userId, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
+    return null;
     // final result = await _client.mutate(MutationOptions(
     //   document: StartStripePaymentMutation().document,
     //   variables: StartStripePaymentArguments(
@@ -117,6 +121,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       // _stripe.api.createPaymentMethodFromCard();
       final paymentMethod = await _stripe.api.createPaymentMethodFromCard(card);
       print('createPaymentMethodFromCard().paymentMethod=$paymentMethod');
+    return false;
 
       // final result = await http.post(
       //   "URL/payment-intent",
@@ -146,7 +151,6 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     } on Exception catch (e) {
       throw StripeException.fromException(StripeException.UNKNOWN_ERROR, e);
     }
-    return false;
   }
 
   Future<Map<String, dynamic>> confirmPayment3DSecure(String clientSecret, String paymentMethodId) async {

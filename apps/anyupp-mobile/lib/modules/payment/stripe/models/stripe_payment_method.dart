@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/graphql/graphql.dart';
 
 class StripePaymentMethod extends Equatable {
   final String id;

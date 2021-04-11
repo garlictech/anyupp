@@ -1,7 +1,7 @@
 export 'bloc/cart_bloc.dart';
 export 'bloc/cart_event.dart';
 export 'bloc/cart_state.dart';
-export 'models/cart.dart';
+export 'models/cart_extension.dart';
 export 'models/cart_exception.dart';
 export 'repository/cart_repository.dart';
 export 'screens/cart_screen.dart';

@@ -11,4 +11,3 @@ export 'model/simplepay_exception.dart';
 export 'repository/simplepay_repository.dart';
 export 'providers/simplepay_provider_interface.dart';
 export 'providers/aws_simplepay_provider.dart';
-export 'providers/firebase_simplepay_provider.dart';

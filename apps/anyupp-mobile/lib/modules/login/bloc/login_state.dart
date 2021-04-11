@@ -106,3 +106,12 @@ class EmailFormUIChange extends LoginState {
   @override
   List<Object> get props => [ui, animationDuration, animationCurve];
 }
+
+class ShowSocialLoginWebView extends LoginState {
+
+  final LoginMethod provider;
+  ShowSocialLoginWebView(this.provider);
+
+  @override
+  List<Object> get props => [provider];
+}

@@ -89,7 +89,7 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
     return _emailLoginProvider.signInWithEmailLink(email, emailLink);
   }
 
-    /// Logout the user from the Firebase and all Social platforms
+    /// Logout the user from the backend and all Social platforms
   Future<void> logout() async {
     return Future.wait([
       (await SharedPreferences.getInstance()).clear(),

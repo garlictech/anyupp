@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stripe_sdk/src/models/card.dart';
 import 'package:stripe_sdk/src/ui/widgets/card_form.dart';
 
 class StripeAddPaymentMethodScreen extends StatefulWidget {
@@ -8,7 +7,7 @@ class StripeAddPaymentMethodScreen extends StatefulWidget {
 }
 
 class _StripeAddPaymentMethodScreenState extends State<StripeAddPaymentMethodScreen> {
-  StripeCard _cardData;
+  // StripeCard _cardData;
   GlobalKey<FormState> _formKey;
   CardForm _form;
 
@@ -16,7 +15,7 @@ class _StripeAddPaymentMethodScreenState extends State<StripeAddPaymentMethodScr
 
   _StripeAddPaymentMethodScreenState() {
     _form = CardForm();
-    _cardData = _form.card;
+    // _cardData = _form.card;
     _formKey = _form.formKey;
   }
 
