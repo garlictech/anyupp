@@ -129,7 +129,8 @@
       ],
       "@bgap/integration-tests/universal": [
         "libs/integration-tests/universal/src/index.ts"
-      ]
+      ],
+      "@bgap/api/product": ["libs/api/product/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

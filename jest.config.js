@@ -66,5 +66,6 @@ module.exports = {
     '<rootDir>/libs/api/unit',
     '<rootDir>/libs/integration-tests/angular',
     '<rootDir>/libs/shared/data-validators',
+    '<rootDir>/libs/api/product',
   ],
 };

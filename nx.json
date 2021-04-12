@@ -150,17 +150,20 @@
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
+    "shared-graphql-api-client": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "api-graphql-resolver-mapping-templates": {
+      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    },
     "api-order": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "api-admin-user": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
-    "shared-graphql-api-client": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "api-graphql-resolver-mapping-templates": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
+    "api-product": {
+      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "api-stripe": {
       "tags": ["scope:bgap", "type:feature", "platform:nest"]
