@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { IGroup } from '@bgap/shared/types';
 

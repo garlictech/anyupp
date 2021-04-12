@@ -4,6 +4,7 @@ import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -108,9 +109,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     onTapped: () {
                       Nav.reset(MainNavigation(
-                                pageIndex: 4,
-                                animateCartIcon: false,
-                              ));
+                        pageIndex: 4,
+                        animateCartIcon: false,
+                      ));
                     },
                   ),
                 ),
@@ -215,7 +216,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _buildVariantsList(Cart cart, List<ProductVariant> list) {
-    print('***** _buildVariantsList.cart=$cart, variants=$list');
+    // print('***** _buildVariantsList.cart=$cart, variants=$list');
     if (list == null) {
       return Container();
     }
@@ -295,7 +296,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Container(
                   margin: EdgeInsets.only(right: 8.0),
                   child: Text(
-                    formatCurrency(variant.price, unit.currency),
+                    formatCurrency(variant.price, unit.currency ?? 'huf'), // TODO geounit!!
                     textAlign: TextAlign.right,
                     style: GoogleFonts.poppins(
                       color: theme.highlight,
@@ -348,11 +349,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  void _addOrder(ProductVariant variant) {
+  Future<void> _addOrder(ProductVariant variant) async {
+    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
       widget.unit,
-      widget.item,
-      variant,
+      OrderItem(
+        productId: widget.item.id,
+        variantId: variant.id,
+        image: widget.item.image,
+        priceShown: PriceShown(
+          currency: widget.unit.currency ?? 'huf', // TODO
+          pricePerUnit: variant.price,
+          priceSum: variant.price,
+          tax: 0,
+          taxSum: 0,
+        ),
+        productName: widget.item.name,
+        takeAway: false,
+        variantName: variant.variantName,
+        statusLog: [
+          StatusLog(
+            userId: user.id,
+            status: 'CART',
+            ts: 0,
+          ),
+        ],
+        quantity: 0,
+      ),
     ));
   }
 }

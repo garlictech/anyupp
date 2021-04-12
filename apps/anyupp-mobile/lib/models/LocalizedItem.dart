@@ -42,7 +42,7 @@ class LocalizedItem extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("LocalizedItem {");
     buffer.write("id=" + "$id" + ", ");

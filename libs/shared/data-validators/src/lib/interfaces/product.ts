@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { IProduct, IUnitProduct } from '@bgap/shared/types';
 
 export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {

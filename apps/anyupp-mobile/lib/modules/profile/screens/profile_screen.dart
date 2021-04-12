@@ -76,7 +76,7 @@ class _ProfileState extends State<Profile> {
             ],
           ),
         ),
-        UnlinkAccountsWidget(user: user),
+        // UnlinkAccountsWidget(user: user),
         Spacer(),
         _buildMenuList(context),
       ],

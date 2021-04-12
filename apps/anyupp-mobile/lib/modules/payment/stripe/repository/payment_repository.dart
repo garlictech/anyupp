@@ -1,4 +1,3 @@
-import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 

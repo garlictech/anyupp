@@ -1,6 +1,47 @@
-mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
-  createOrderFromCart(input: $input) {
-    id
+query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
+  getUnitsNearLocation(input: $input) {
+    items {
+      id
+      groupId
+      chainId
+      name
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+      style {
+        colors {
+          backgroundLight
+          backgroundDark
+          borderLight
+          borderDark
+          disabled
+          highlight
+          indicator
+          textLight
+          textDark
+        }
+        images {
+          header
+          logo
+        }
+      }
+      paymentModes {
+        name
+        caption
+        method
+      }
+      distance
+      openingHours
+      currency
+    }
   }
 }
 
@@ -45,7 +86,11 @@ mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
 #     status
 #   }
 # }
-
+mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
+  createOrderFromCart(input: $input) {
+    id
+  }
+}
 mutation CreateAdminUser($input: CreateAdminUserInput!) {
   createAdminUser(input: $input)
 }

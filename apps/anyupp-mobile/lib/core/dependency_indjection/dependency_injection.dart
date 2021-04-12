@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/awsconfiguration.dart';
+import 'package:fa_prev/app.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -18,15 +18,12 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
 GetIt getIt = GetIt.instance;
-Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 Future<void> initDependencyInjection() async {
   _initCommon();
@@ -37,8 +34,6 @@ Future<void> initDependencyInjection() async {
 }
 
 void _initCommon() {
-
-  
   print('AWS CONFIG=$awsConfig');
 
   final Stripe stripe = Stripe(
@@ -50,13 +45,9 @@ void _initCommon() {
     region: awsConfig['region'],
     userPoolId: awsConfig['consumerUserPoolId'],
     identityPoolId: awsConfig['IdentityPoolId'],
-    clientId: awsConfig['consumerNativeUserPoolClientId'],
+    clientId: awsConfig['consumerWebUserPoolClientId'],
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
-
-  getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
-  getIt.registerLazySingleton<FacebookLogin>(() => FacebookLogin());
-  // getIt.registerLazySingleton<ValueNotifier<GraphQLClient>>(() => graphQLClient);
   getIt.registerLazySingleton<Stripe>(() => stripe);
 }
 
@@ -80,8 +71,7 @@ void _initProviders() {
       ));
 
   // Login providers AWS
-  getIt.registerLazySingleton<ISocialLoginProvider>(
-      () => AwsSocialLoginProvider(getIt<GoogleSignIn>(), getIt<FacebookLogin>(), getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
 }
 
@@ -106,15 +96,15 @@ void _initRepositories() {
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
-
 }
 
 void _initServices() {
-   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
-    authProvider: getIt<IAuthProvider>(),
-        apiUrl: awsConfig['GraphqlApiUrl'],
-        websocketApiUrl: awsConfig['GraphqlWebsocketApiUrl'],
-        apiKey: awsConfig['GraphqlApiKey'],
+  getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
+        authProvider: getIt<IAuthProvider>(),
+        graphqlApiUrl: awsConfig['GraphqlApiUrl'],
+        graphqlApiKey: awsConfig['GraphqlApiKey'],
+        graphqlAdminApiUrl: awsConfig['AdminGraphqlApiUrl'],
+        graphqlAdminApiKey: awsConfig['AdminGraphqlApiKey'],
       ));
 }
 
@@ -136,5 +126,4 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
-
- }
+}

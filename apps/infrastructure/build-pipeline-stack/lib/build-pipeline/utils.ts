@@ -182,7 +182,7 @@ export const createIntegrationTestProject = (
         },
         build: {
           commands: [
-            `yarn nx test integration-tests-nodejs --codeCoverage --coverageReporters=clover`,
+            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
             `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
           ],
         },

@@ -1,9 +1,9 @@
 const QUERY_LIST_PRODUCT_CATEGORIES = '''
-query ListProductCategoriesQuery(\$unitId: ID!) {
-  listProductCategorys(filter: {unitId: {eq: \$unitId }}) {
+query ListProductCategoriesQuery(\$chainId: ID!) {
+  listProductCategorys(filter: {chainId: {eq: \$chainId }}) {
     items {
       id
-      unitId
+      chainId
       name {
         en
         de

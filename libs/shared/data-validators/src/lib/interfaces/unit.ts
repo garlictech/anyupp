@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-import { validateSchema } from '../validation/validate';
+import { validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
 import { ILane, IUnit } from '@bgap/shared/types';

@@ -28,7 +28,7 @@ class StripePaymentScreen extends StatefulWidget {
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
   StripeCard _cardData;
-  GlobalKey<FormState> _formKey;
+  // GlobalKey<FormState> _formKey;
   CardForm _form;
   bool _saveCard = false;
 
@@ -38,7 +38,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       card: _cardData,
     );
     // _cardData = _form.card;
-    _formKey = _form.formKey;
+    // _formKey = _form.formKey;
   }
 
   @override
