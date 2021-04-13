@@ -2,10 +2,11 @@ import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 
 import { adminRequestHandler } from '@bgap/api/admin-user';
+import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 import { orderRequestHandler } from '@bgap/api/order';
+import { productRequestHandler } from '@bgap/api/product';
 import { stripeRequestHandler } from '@bgap/api/stripe';
 import { unitRequestHandler } from '@bgap/api/unit';
-import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
@@ -22,6 +23,9 @@ const resolverMap = {
     amplifyGraphQlClient,
   ),
   getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
+    amplifyGraphQlClient,
+  ),
+  createUnitProduct: productRequestHandler.createUnitProduct(
     amplifyGraphQlClient,
   ),
 };
