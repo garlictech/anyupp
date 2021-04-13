@@ -86,7 +86,7 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
 #     status
 #   }
 # }
-mutation createOrderFromCart($input: CreateOrderFromCartInput!) {
+mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input) {
     id
   }
@@ -97,4 +97,8 @@ mutation CreateAdminUser($input: CreateAdminUserInput!) {
 
 mutation DeleteAdminUser($userName: String!) {
   deleteAdminUser(userName: $userName)
+}
+
+mutation CreateUnitProduct($input: CreateUnitProductInput!) {
+  createUnitProduct(input: $input)
 }

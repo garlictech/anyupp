@@ -58,6 +58,12 @@ type ChainStyleImages {
   logo: String
 }
 
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
 ### ADMIN_USER
 input CreateAdminUserInput {
   email: String!
@@ -78,6 +84,45 @@ type CreateOrderFromCartOutput {
 #   seat: String!
 #   table: String!
 # }
+
+### UNIT_PRODUCT
+input CreateUnitProductInput {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+}
+
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+}
+
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
 
 ### STRIPE
 # STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
@@ -194,9 +239,14 @@ type Mutation {
   createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
   deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
 
+  # Order
   createOrderFromCart(
     input: CreateOrderFromCartInput!
   ): CreateOrderFromCartOutput! @aws_cognito_user_pools @aws_api_key
+
+  # Product
+  createUnitProduct(input: CreateUnitProductInput!): ID! @aws_cognito_user_pools
+
   # Stripe
   startStripePayment(
     input: StartStripePaymentInput!

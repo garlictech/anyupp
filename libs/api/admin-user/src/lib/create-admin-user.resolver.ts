@@ -5,11 +5,11 @@ import { from, throwError } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
-import Amplify from '@aws-amplify/core';
+// import Amplify from '@aws-amplify/core';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
-  awsConfig,
+  // awsConfig,
 } from '@bgap/admin/amplify-api';
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 
@@ -20,7 +20,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 const UserPoolId = process.env.userPoolId || '';
 
-Amplify.configure(awsConfig);
+// Amplify.configure(awsConfig);
 
 export const createAdminUser = (
   vars: AppsyncApi.CreateAdminUserMutationVariables,

@@ -1,41 +1,34 @@
-import { awsConfig, AmplifyApi } from '@bgap/admin/amplify-api';
-import {
-  configureAmplify,
-  GraphqlApiKey,
-  GraphqlApiUrl,
-  testAdminUsername,
-  testAdminUserPassword,
-} from '../../../common';
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Auth } from 'aws-amplify';
-import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+
+import { AmplifyApi } from '@bgap/admin/amplify-api';
 import { AppsyncApi } from '@bgap/api/graphql/schema';
+import {
+  AuthenticatdGraphQlClientWithUserId,
+  createAuthenticatedAppsyncGraphQlClient,
+} from '@bgap/shared/graphql/api-client';
+
+import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 describe('Admin user creation/deletion', () => {
-  beforeAll(() => {
-    configureAmplify();
+  let authHelper: AuthenticatdGraphQlClientWithUserId;
+
+  beforeAll(async () => {
+    authHelper = await createAuthenticatedAppsyncGraphQlClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
   });
 
   test('Admin user should be created/deleted', done => {
-    const appsyncConfig = {
-      ...awsConfig,
-      aws_appsync_graphqlEndpoint: GraphqlApiUrl,
-      aws_appsync_apiKey: GraphqlApiKey,
-    };
-    const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
-      appsyncConfig,
-      console,
-      true,
-    );
-
     const userName = 'foobar@anyupp.com';
 
-    from(Auth.signIn(testAdminUsername, testAdminUserPassword))
+    of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
       .pipe(
         switchMap(() =>
-          appsyncApiClient
+          authHelper.graphQlClient
             .mutate(AppsyncApi.DeleteAdminUser, {
               userName,
             })
@@ -49,9 +42,13 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          appsyncApiClient
+          authHelper.graphQlClient
             .mutate(AppsyncApi.CreateAdminUser, {
-              input: { email: 'foobar', name: 'Mekk elek', phone: '12356666' },
+              input: {
+                email: 'foobar',
+                name: 'Mekk elek',
+                phone: '12356666',
+              },
             })
             .pipe(
               catchError(err => {
@@ -61,7 +58,7 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          appsyncApiClient.mutate(AppsyncApi.CreateAdminUser, {
+          authHelper.graphQlClient.mutate(AppsyncApi.CreateAdminUser, {
             input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
@@ -71,9 +68,13 @@ describe('Admin user creation/deletion', () => {
           >,
         map(result => result.data.createAdminUser),
         switchMap(() =>
-          appsyncApiClient
+          authHelper.graphQlClient
             .mutate(AppsyncApi.CreateAdminUser, {
-              input: { email: userName, name: 'Mekk Elek', phone: '123456' },
+              input: {
+                email: userName,
+                name: 'Mekk Elek',
+                phone: '123456',
+              },
             })
             .pipe(
               catchError(err => {
@@ -84,7 +85,7 @@ describe('Admin user creation/deletion', () => {
         ),
         // Cleanup
         switchMap(() =>
-          appsyncApiClient.mutate(AppsyncApi.DeleteAdminUser, {
+          authHelper.graphQlClient.mutate(AppsyncApi.DeleteAdminUser, {
             userName,
           }),
         ),

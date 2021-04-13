@@ -5,13 +5,12 @@ import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import API from '@aws-amplify/api';
 import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
-import { buildRetryLogic } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _client: AWSAppSyncClient<any>;
   // See issue #348
-  private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
+  // private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
     private genericConfig: IAmplifyApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
@@ -52,11 +51,12 @@ export class GraphqlApiClient {
     //     return 2000;
     //   }
     // };
-    this._graphqlRetryLogic = buildRetryLogic({
-      // logger: this.logger,
-      // retryable,
-      // retryDelayInMillisec,
-    });
+    // This one works but not needed during development
+    // this._graphqlRetryLogic = buildRetryLogic({
+    //   // logger: this.logger,
+    //   // retryable,
+    //   // retryDelayInMillisec,
+    // });
     this._client = new AWSAppSyncClient({
       url: genericConfig.aws_appsync_graphqlEndpoint,
       region: genericConfig.aws_appsync_region,
@@ -86,7 +86,7 @@ export class GraphqlApiClient {
         ...options,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### QUERY AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
@@ -107,7 +107,7 @@ export class GraphqlApiClient {
         variables,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### MUTATION AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
