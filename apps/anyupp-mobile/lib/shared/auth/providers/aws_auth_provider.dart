@@ -222,6 +222,12 @@ class AwsAuthProvider implements IAuthProvider {
     }
   }
 
+  @override
+  Future<void> clearUserSession() async {
+    _user = null;
+    _userController.add(_user);
+  }
+
   bool isTokenValid(String token) {
     if (DateTime.now().add(Duration(minutes: 5)).isBefore(tokenExpiration(token))) {
       return true;

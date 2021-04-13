@@ -7,4 +7,5 @@ abstract class IAuthProvider {
   Future<void> cancel();
   Future<String> getAccessToken();
   Future<String> getIdToken();
+  Future<void> clearUserSession();
 }

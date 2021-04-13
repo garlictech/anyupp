@@ -62,7 +62,7 @@ void _initProviders() {
       () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
-  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider());
+  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
   getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
         getIt<IAuthProvider>(),

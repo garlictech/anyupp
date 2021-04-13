@@ -42,10 +42,11 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
                 color: theme.border,
               ),
             ),
-            child: FlatButton(
-              color: Colors.transparent,
-              padding: EdgeInsets.all(8.0),
-              splashColor: theme.indicator,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                padding: EdgeInsets.all(8.0),
+              ),
               onPressed: widget.onItemSelected == null
                   ? () => Nav.pop()
                   : () {

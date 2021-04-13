@@ -401,7 +401,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(trans('selectUnitMap.permission.closeApp')),
               onPressed: () {
                 // Close this dialog
@@ -410,7 +410,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                 SystemChannels.platform.invokeMethod('SystemNavigator.pop');
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(trans('selectUnitMap.permission.backToMap')),
               onPressed: () {
                 // Close this dialog

@@ -56,7 +56,10 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                   shrinkWrap: true,
                   itemCount: state.existingProviderList.length,
                   itemBuilder: (context, index) {
-                    return RaisedButton(
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: theme.indicator,
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                         // TODO removed
@@ -71,14 +74,16 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                         // 'Link with ${LoginMethodUtils.methodToString(state.existingProviderList[index])}',
                         style: TextStyle(color: theme.text2),
                       ),
-                      color: theme.indicator,
                     );
                   },
                 ),
                 Spacer(),
                 SizedBox(
                   width: 320.0,
-                  child: RaisedButton(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: theme.disabled,
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                       getIt<LoginBloc>().add(ResetLogin());
@@ -87,7 +92,6 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                       transEx(context, 'login.accountLink.cancelLogin'),
                       style: TextStyle(color: theme.text2),
                     ),
-                    color: theme.disabled,
                   ),
                 )
               ],
@@ -142,7 +146,10 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RaisedButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: theme.disabled,
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -153,21 +160,23 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                           color: theme.text2,
                         ),
                       ),
-                      color: theme.disabled,
                     ),
-                    RaisedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          getIt<LoginBloc>().add(UnlinkCurrentAccountFromProvider(method));
-                        },
-                        child: Text(
-                          transEx(context, 'login.accountUnlink.unlink', [LoginMethodUtils.methodToString(method)]),
-                          style: GoogleFonts.poppins(
-                            fontSize: 12.0,
-                            color: theme.text2,
-                          ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: theme.indicator,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getIt<LoginBloc>().add(UnlinkCurrentAccountFromProvider(method));
+                      },
+                      child: Text(
+                        transEx(context, 'login.accountUnlink.unlink', [LoginMethodUtils.methodToString(method)]),
+                        style: GoogleFonts.poppins(
+                          fontSize: 12.0,
+                          color: theme.text2,
                         ),
-                        color: theme.indicator),
+                      ),
+                    ),
                   ],
                 )
               ],
