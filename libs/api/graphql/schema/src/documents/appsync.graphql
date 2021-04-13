@@ -87,9 +87,7 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
 #   }
 # }
 mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
-  createOrderFromCart(input: $input) {
-    id
-  }
+  createOrderFromCart(input: $input)
 }
 mutation CreateAdminUser($input: CreateAdminUserInput!) {
   createAdminUser(input: $input)

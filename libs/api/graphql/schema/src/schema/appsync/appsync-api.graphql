@@ -76,10 +76,6 @@ input CreateOrderFromCartInput {
   id: ID!
 }
 
-type CreateOrderFromCartOutput {
-  id: ID!
-}
-
 # input PlaceInput {
 #   seat: String!
 #   table: String!
@@ -240,9 +236,9 @@ type Mutation {
   deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
 
   # Order
-  createOrderFromCart(
-    input: CreateOrderFromCartInput!
-  ): CreateOrderFromCartOutput! @aws_cognito_user_pools @aws_api_key
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID!
+    @aws_cognito_user_pools
+    @aws_api_key
 
   # Product
   createUnitProduct(input: CreateUnitProductInput!): ID! @aws_cognito_user_pools
