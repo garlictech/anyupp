@@ -18,11 +18,6 @@ qr-origin=https://dev.anyupp.com
 
 ## Set up your project
 
-1. Add `google-services.json` to your `android/app` directory.
-1. Add `GoogleService-Info.plist` to your `ios/Runner` directory.
-
-## To better manage the various flutter versions use FVM
-
 1. [Install dart](https://dart.dev/get-dart#install) probably without `flutter`, because we will use `fvm` to get the proper version of the flutter sdk, so install the standalone dart SDK, not the one that is already in a flutter sdk.
 1. Install and activate `fvm` with the `pub global activate fvm` command (read more about this package manager at <https://pub.dev/packages/fvm> - keep in mind that there are multiple fvms!)
 1. `fvm install` will install the right version for the project in case there is a valid `flutterSdkVersion` value in the `.fvm/fvm_config.json` file

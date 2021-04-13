@@ -4,6 +4,8 @@ import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import 'graphql_request_serializer.dart';
+
 class GraphQLClientService {
   final String graphqlApiUrl;
   final String graphqlApiKey;
@@ -22,12 +24,18 @@ class GraphQLClientService {
     @required this.graphqlAdminApiKey,
   }) : _authProvider = authProvider;
 
-  Future<ValueNotifier<GraphQLClient>> getAppSyncGraphQLClient() async {
+  Future<ValueNotifier<GraphQLClient>> getAppSyncGraphQLClient({bool force = false}) async {
+    
+    if (force == true) {
+      await _appSyncClient?.dispose();
+      _appSyncClient = null;
+    }
+
     if (_appSyncClient != null) {
       return _appSyncClient;
     }
 
-    _appSyncClient?.dispose();
+    
 
     String accessToken = await _authProvider.getAccessToken();
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
@@ -67,7 +75,7 @@ class GraphQLClientService {
     final _wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
         config: SocketClientConfig(
           initialPayload: headers,
-          // serializer: AppSyncRequest(authHeader: headers),
+          serializer: AppSyncRequest(authHeader: headers),
           autoReconnect: true,
           delayBetweenReconnectionAttempts: Duration(seconds: 5), // Default 5
           inactivityTimeout: Duration(minutes: 30), // Default 30 seconds
@@ -84,7 +92,8 @@ class GraphQLClientService {
     return _appSyncClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getNormalGraphQLClient() async {
+  Future<ValueNotifier<GraphQLClient>> getAdminGraphQLClient() async {
+    print('getAdminGraphQLClient().url=$graphqlAdminApiUrl');
     if (_adminClient != null) {
       return _adminClient;
     }
@@ -92,8 +101,9 @@ class GraphQLClientService {
     _adminClient?.dispose();
 
     String accessToken = await _authProvider.getAccessToken();
+    print('getAdminGraphQLClient().accessToken=$accessToken');
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
 
     Map<String, String> headers;
     if (accessToken != null) {

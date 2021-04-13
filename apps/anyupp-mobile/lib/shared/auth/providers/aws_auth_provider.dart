@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/auth/service/cognito_service.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -15,9 +13,9 @@ import 'auth_provider_interface.dart';
 class AwsAuthProvider implements IAuthProvider {
   StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
-  final CognitoService _service;
+  // final CognitoService _service;
 
-  AwsAuthProvider(this._service) {
+  AwsAuthProvider() {
     print('AwsAuthProvider().constructor()');
     getAuthenticatedUserProfile();
   }
@@ -26,6 +24,12 @@ class AwsAuthProvider implements IAuthProvider {
   Future<User> getAuthenticatedUserProfile() async {
     // print('getAuthenticatedUserProfile().user=$_user');
     try {
+      AuthUser user = await Amplify.Auth.getCurrentUser();
+      print('getAuthenticatedUserProfile().user=${user?.userId}, name=${user?.username}');
+      if (user != null && _user != null) {
+        return _user;
+      }
+
       CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
         options: CognitoSessionOptions(getAWSCredentials: false),
       );

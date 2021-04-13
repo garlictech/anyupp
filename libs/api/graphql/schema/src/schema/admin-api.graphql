@@ -211,8 +211,9 @@ type PriceShown {
 type OrderItem {
   productId: ID!
   variantId: ID!
-  created: Int
+  created: Float
   productName: LocalizedItem!
+  image: String
   priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog]
@@ -530,4 +531,6 @@ type Subscription {
     )
   onOrderChanged(userId: String, unitId: String): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+  onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
+    @aws_subscribe(mutations: ["createOrderHistory", "updateOrderHistory", "deleteOrderHistory"])
 }

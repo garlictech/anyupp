@@ -1,6 +1,5 @@
-const SUBSCRIPTION_ORDER_HISTORY_LIST = '''
-subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: String) {
-  onOrderChanged(unitId: \$unitId, userId: \$userId) {
+subscription OnOrderChangedSubscription($userId: String, $unitId: String) {
+  onOrderChanged(unitId: $unitId, userId: $userId) {
    	id
     unitId
     userId
@@ -56,4 +55,3 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
     }
   }
 }
-''';

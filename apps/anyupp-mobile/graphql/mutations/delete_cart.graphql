@@ -1,0 +1,5 @@
+mutation DeleteCartMutation($cartId: ID!) {
+  deleteCart(input: {id: $cartId}) {
+    id
+  }
+}
