@@ -191,6 +191,8 @@ First, pull the admin amplify app:
 
 `nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
 
+example: `nx config admin-amplify-app --app anyupp-backend --stage dev` for the dev
+
 It pulls the admin Amplify project and connects it to the actual CDK resources.
 
 ## Building the project
