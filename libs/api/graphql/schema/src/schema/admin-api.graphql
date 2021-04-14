@@ -477,7 +477,9 @@ type Lane {
 
 ### Cart
 
-type Cart @model @auth(rules: [{ allow: public }]) {
+type Cart
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!

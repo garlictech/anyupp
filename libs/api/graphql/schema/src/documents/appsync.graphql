@@ -98,5 +98,39 @@ mutation DeleteAdminUser($userName: String!) {
 }
 
 mutation CreateUnitProduct($input: CreateUnitProductInput!) {
-  createUnitProduct(input: $input)
+  createUnitProduct(input: $input) {
+    chainId
+    groupId
+    isVisible
+    id
+    laneId
+    parentId
+    position
+    takeaway
+    unitId
+    variants {
+      availabilities {
+        dayFrom
+        dayTo
+        price
+        timeFrom
+        timeTo
+        type
+      }
+      id
+      isAvailable
+      variantName {
+        de
+        hu
+        en
+      }
+      refGroupPrice
+      price
+      position
+      pack {
+        size
+        unit
+      }
+    }
+  }
 }

@@ -82,6 +82,44 @@ input CreateOrderFromCartInput {
 # }
 
 ### UNIT_PRODUCT
+
+type UnitProduct {
+  id: ID!
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+}
+
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+
+type ProductVariantPack {
+  size: Float!
+  unit: String!
+}
+
+type Availability {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
 input CreateUnitProductInput {
   id: ID!
   parentId: ID! # parent groupProduct ID
@@ -241,7 +279,8 @@ type Mutation {
     @aws_api_key
 
   # Product
-  createUnitProduct(input: CreateUnitProductInput!): ID! @aws_cognito_user_pools
+  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
 
   # Stripe
   startStripePayment(

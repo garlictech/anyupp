@@ -61,12 +61,6 @@ export const createAuthenticatedAppsyncGraphQlClient = (
   );
 };
 
-// export const appsyncBackendGraphQlClient = GraphqlApiFp.createBackendClient(
-//   AWS_APPSYNC_CONFIG,
-//   console,
-//   true,
-// );
-
 const AWS_AMPLIFY_CONFIG: IAmplifyApiConfig = {
   ...awsConfig,
 };
@@ -76,3 +70,31 @@ export const amplifyGraphQlClient = GraphqlApiFp.createPublicClient(
   console,
   true,
 );
+
+export const amplifyBackendGraphQlClient = GraphqlApiFp.createBackendClient(
+  AWS_AMPLIFY_CONFIG,
+  process.env.AWS_ACCESS_KEY_ID || '',
+  process.env.AWS_SECRET_ACCESS_KEY || '',
+  console,
+);
+
+export const createAuthenticatedAmplifyGraphQlClient = (
+  userName: string,
+  password: string,
+): Observable<AuthenticatdGraphQlClientWithUserId> => {
+  configureAmplifyWithUserPasswordAuthFlow();
+
+  return from(Auth.signIn(userName, password)).pipe(
+    map(user => ({
+      userAttributes: {
+        id: user.attributes.sub,
+        ...user.attributes,
+      },
+      graphQlClient: GraphqlApiFp.createAuthenticatedClient(
+        AWS_AMPLIFY_CONFIG,
+        console,
+        true,
+      ),
+    })),
+  );
+};

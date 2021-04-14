@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateUnitProduct tests should require authentication to access 1`] = `[Error: GraphQL error: Not Authorized to access createUnitProduct on type Mutation]`;
+
+exports[`CreateUnitProduct tests with authenticated user should .... with authenticated user 1`] = `[Error: GraphQL error: Cannot return null for non-nullable type: 'ID' within parent 'Mutation' (/createUnitProduct)]`;

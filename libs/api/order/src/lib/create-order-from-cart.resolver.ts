@@ -20,6 +20,7 @@ import {
   IOrderItem,
   IPaymentMode,
   IPlace,
+  IProduct,
   IUnit,
 } from '@bgap/shared/types';
 import {
@@ -229,13 +230,21 @@ const getLaneIdForCartItem = (
   amplifyApiClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
+  return getUnitProduct(amplifyApiClient, productId).pipe(
+    map(product => product.laneId),
+  );
+};
+
+const getUnitProduct = (
+  amplifyApiClient: GraphqlApiClient,
+  productId: string,
+): Observable<IProduct> => {
   return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
     AmplifyApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),
     switchMap(validateUnitProduct),
-    map(product => product.laneId),
   );
 };
 
