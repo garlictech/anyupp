@@ -73,7 +73,7 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-    });
+    }, 15000);
     it('should throw without a location input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
         input: {},
@@ -86,7 +86,7 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-    });
+    }, 15000);
     it('should throw without a lat arg in the location input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lat: '12' } },
@@ -99,7 +99,7 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-    });
+    }, 15000);
     it('should throw without a lng arg in the location input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '12' } },
@@ -112,7 +112,7 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-    });
+    }, 15000);
     it('should throw without valid location input', done => {
       const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
@@ -127,20 +127,32 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-    }, 25000);
+    }, 15000);
   });
 
   // TODO: create test with A NOT ACTIVE CHAIN
-  it('should return all the units in geoUnitsFormat ordered by distance', done => {
+  it('should return all the units in geoUnitsFormat ordered by distance with direct handler call', done => {
     const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
     // To test with the local appsync code
-    // from(
-    //   unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
-    // ).subscribe({
-    //     expect(result).toHaveProperty('items');
-    //     const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
+    from(
+      unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+    ).subscribe({
+      next(result) {
+        expect(result).toHaveProperty('items');
+        const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
+        successfullExecutionChecks(foundItems);
+        done();
+      },
+    });
+  }, 15000);
+
+  // TODO: create test with A NOT ACTIVE CHAIN
+  it('should return all the units in geoUnitsFormat ordered by distance with remove appsync api call', done => {
+    const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+      input: userLoc,
+    };
     executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
       AppsyncApi.GetUnitsNearLocation,
       input,
@@ -161,23 +173,29 @@ describe('GetUnitsNearLocation tests', () => {
           const foundItems: Array<AppsyncApi.GeoUnit> = result as Array<
             AppsyncApi.GeoUnit
           >;
-          const ids = foundItems.map(x => x.id);
-          expect(ids).toContain(unitSeed.unitId_seeded_01);
-          expect(ids).toContain(unitSeed.unitId_seeded_02);
-          expect(ids).toContain(unitSeed.unitId_seeded_03);
-          expect(ids).not.toContain(unitNotActive.id);
-
-          expect(foundItems[0].id).toEqual(unit_03.id);
-          expect(foundItems[1].id).toEqual(unit_01.id);
-          expect(foundItems[2].id).toEqual(unit_02.id);
-          expect(foundItems[0].distance).toEqual(0);
-          expect(foundItems[1].distance).toEqual(74);
-          expect(foundItems[2].distance).toEqual(153);
-          // The rest is in the same location so we don't know their order
-          expect(foundItems[3].distance).toEqual(54649);
-          expect(foundItems[0]).toMatchSnapshot();
+          successfullExecutionChecks(foundItems);
           done();
         },
       });
-  }, 50000);
+  }, 15000);
+
+  const successfullExecutionChecks = (
+    foundItems: Array<AppsyncApi.GeoUnit>,
+  ) => {
+    const ids = foundItems.map(x => x.id);
+    expect(ids).toContain(unitSeed.unitId_seeded_01);
+    expect(ids).toContain(unitSeed.unitId_seeded_02);
+    expect(ids).toContain(unitSeed.unitId_seeded_03);
+    expect(ids).not.toContain(unitNotActive.id);
+
+    expect(foundItems[0].id).toEqual(unit_03.id);
+    expect(foundItems[1].id).toEqual(unit_01.id);
+    expect(foundItems[2].id).toEqual(unit_02.id);
+    expect(foundItems[0].distance).toEqual(0);
+    expect(foundItems[1].distance).toEqual(74);
+    expect(foundItems[2].distance).toEqual(153);
+    // The rest is in the same location so we don't know their order
+    expect(foundItems[3].distance).toEqual(54649);
+    expect(foundItems[0]).toMatchSnapshot();
+  };
 });
