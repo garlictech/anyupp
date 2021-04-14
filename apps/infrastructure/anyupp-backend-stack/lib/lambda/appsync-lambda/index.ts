@@ -1,10 +1,12 @@
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 
-import { adminRequestHandler } from '@bgap/api/admin-user';
-import { orderRequestHandler } from '@bgap/api/order';
-import { stripeRequestHandler } from '@bgap/api/stripe';
-import { unitRequestHandler } from '@bgap/api/unit';
+import {
+  adminRequestHandler,
+  orderRequestHandler,
+  stripeRequestHandler,
+  unitRequestHandler,
+} from '@bgap/appsync-gql/backend';
 import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {

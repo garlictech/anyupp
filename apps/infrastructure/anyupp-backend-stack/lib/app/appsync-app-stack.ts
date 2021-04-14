@@ -7,9 +7,11 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
-import { createAdminUserResolvers } from '@bgap/api/admin-user';
-import { createOrderResolvers } from '@bgap/api/order';
-import { createUnitResolvers } from '@bgap/api/unit';
+import {
+  createAdminUserResolvers,
+  createOrderResolvers,
+  createUnitResolvers,
+} from '@bgap/appsync-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
 import { commonLambdaProps } from './lambda-common';

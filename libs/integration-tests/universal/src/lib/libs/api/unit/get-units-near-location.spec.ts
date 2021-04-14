@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { combineLatest, from } from 'rxjs';
 
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AppsyncApi } from '@bgap/appsync-gql/backend';
 import { unitRequestHandler } from '@bgap/api/unit';
 import {
   amplifyGraphQlClient,

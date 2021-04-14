@@ -30,7 +30,6 @@
     "paths": {
       "*": ["*", "types/*"],
       "crypto": ["node_modules/crypto-js"],
-      "@bgap/api/graphql/schema": ["libs/api/graphql/schema/src/index.ts"],
       "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
       "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
@@ -129,7 +128,11 @@
       ],
       "@bgap/integration-tests/universal": [
         "libs/integration-tests/universal/src/index.ts"
-      ]
+      ],
+      "@bgap/appsync-gql/backend": ["libs/appsync-gql/backend/src/index.ts"],
+      "@bgap/appsync-gql/api": ["libs/appsync-gql/api/src/index.ts"],
+      "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
+      "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

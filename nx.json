@@ -33,9 +33,6 @@
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "api-graphql-schema": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
     "shared-types": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
@@ -188,6 +185,18 @@
     },
     "integration-tests-universal": {
       "tags": ["scope:bgap", "type:integration-tests", "platform:universal"]
+    },
+    "appsync-gql-backend": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
+    },
+    "appsync-gql-api": {
+      "tags": []
+    },
+    "crud-gql-backend": {
+      "tags": []
+    },
+    "crud-gql-api": {
+      "tags": []
     }
   }
 }

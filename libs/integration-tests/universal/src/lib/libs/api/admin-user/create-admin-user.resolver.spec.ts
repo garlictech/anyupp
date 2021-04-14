@@ -11,7 +11,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AppsyncApi } from '@bgap/appsync-gql/backend';
 
 describe('Admin user creation/deletion', () => {
   beforeAll(() => {

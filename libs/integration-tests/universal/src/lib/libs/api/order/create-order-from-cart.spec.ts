@@ -4,7 +4,7 @@ import { combineLatest, Observable, from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AppsyncApi } from '@bgap/appsync-gql/backend';
 import { orderRequestHandler } from '@bgap/api/order';
 import {
   amplifyGraphQlClient,

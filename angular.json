@@ -283,37 +283,6 @@
         }
       }
     },
-    "api-graphql-schema": {
-      "root": "libs/api/graphql/schema",
-      "sourceRoot": "libs/api/graphql/schema/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/api/graphql/schema/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/api/graphql/schema"],
-          "options": {
-            "jestConfig": "libs/api/graphql/schema/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "config": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              {
-                "command": "yarn graphql-codegen --config tools/graphql-codegen.yml"
-              }
-            ]
-          }
-        }
-      }
-    },
     "shared-types": {
       "root": "libs/shared/types",
       "sourceRoot": "libs/shared/types/src",
@@ -1539,6 +1508,100 @@
           "outputs": ["coverage/libs/api/unit"],
           "options": {
             "jestConfig": "libs/api/unit/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "appsync-gql-backend": {
+      "root": "libs/appsync-gql/backend",
+      "sourceRoot": "libs/appsync-gql/backend/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/appsync-gql/backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/appsync-gql/backend"],
+          "options": {
+            "jestConfig": "libs/appsync-gql/backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "config": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "yarn graphql-codegen --config tools/graphql-codegen.yml"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "appsync-gql-api": {
+      "root": "libs/appsync-gql/api",
+      "sourceRoot": "libs/appsync-gql/api/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/appsync-gql/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/appsync-gql/api"],
+          "options": {
+            "jestConfig": "libs/appsync-gql/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "crud-gql-backend": {
+      "root": "libs/crud-gql/backend",
+      "sourceRoot": "libs/crud-gql/backend/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/crud-gql/backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/crud-gql/backend"],
+          "options": {
+            "jestConfig": "libs/crud-gql/backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "crud-gql-api": {
+      "root": "libs/crud-gql/api",
+      "sourceRoot": "libs/crud-gql/api/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/crud-gql/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/crud-gql/api"],
+          "options": {
+            "jestConfig": "libs/crud-gql/api/jest.config.js",
             "passWithNoTests": true
           }
         }

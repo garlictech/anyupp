@@ -4,7 +4,7 @@ import { awsConfig } from '@bgap/admin/amplify-api';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AppsyncApi } from '@bgap/appsync-gql/backend';
 import { config } from '@bgap/shared/config';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
