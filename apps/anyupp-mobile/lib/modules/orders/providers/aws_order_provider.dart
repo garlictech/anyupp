@@ -59,7 +59,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
     print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAdminGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_CREATE_ORDER_FROM_CART),
@@ -135,7 +135,7 @@ class AwsOrderProvider implements IOrdersProvider {
     User user = await _authProvider.getAuthenticatedUserProfile();
     print('AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_GET_CART),
         variables: {
@@ -175,7 +175,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _saveCartToBackend(Cart cart) async {
     print('******** CREATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_SAVE_CART),
@@ -202,7 +202,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _updateCartOnBackend(Cart cart) async {
     print('******** UPDATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_UPDATE_CART),
@@ -228,7 +228,7 @@ class AwsOrderProvider implements IOrdersProvider {
       return false;
     }
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_DELETE_CART),

@@ -10,7 +10,7 @@ class AwsUnitProvider implements IUnitProvider {
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start()');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_SEARCH_UNITS),
       ));

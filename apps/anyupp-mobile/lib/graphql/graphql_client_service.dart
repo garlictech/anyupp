@@ -7,32 +7,32 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'graphql_request_serializer.dart';
 
 class GraphQLClientService {
+  final String amplifyApiUrl;
+  final String amplifyApiKey;
   final String graphqlApiUrl;
   final String graphqlApiKey;
-  final String graphqlAdminApiUrl;
-  final String graphqlAdminApiKey;
   final IAuthProvider _authProvider;
 
-  ValueNotifier<GraphQLClient> _appSyncClient;
-  ValueNotifier<GraphQLClient> _adminClient;
+  ValueNotifier<GraphQLClient> _amplifyClient;
+  ValueNotifier<GraphQLClient> _graphqlClient;
 
   GraphQLClientService({
     @required IAuthProvider authProvider,
+    @required this.amplifyApiUrl,
+    @required this.amplifyApiKey,
     @required this.graphqlApiUrl,
     @required this.graphqlApiKey,
-    @required this.graphqlAdminApiUrl,
-    @required this.graphqlAdminApiKey,
   }) : _authProvider = authProvider;
 
-  Future<ValueNotifier<GraphQLClient>> getAppSyncGraphQLClient({bool force = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getAmplifyClient({bool force = false}) async {
     
     if (force == true) {
-      await _appSyncClient?.dispose();
-      _appSyncClient = null;
+      await _amplifyClient?.dispose();
+      _amplifyClient = null;
     }
 
-    if (_appSyncClient != null) {
-      return _appSyncClient;
+    if (_amplifyClient != null) {
+      return _amplifyClient;
     }
 
     
@@ -46,19 +46,19 @@ class GraphQLClientService {
     if (accessToken != null) {
       headers = {
         'Authorization': 'Bearer $accessToken',
-        'host': Uri.parse(graphqlApiUrl).host,
+        'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {
       headers = {
-        'x-api-key': graphqlApiKey,
-        'host': Uri.parse(graphqlApiUrl).host,
+        'x-api-key': amplifyApiKey,
+        'host': Uri.parse(amplifyApiUrl).host,
       };
     }
     print('GraphQLClientService.headers=$headers');
     final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
     final HttpLink _httpLink = HttpLink(
-      graphqlApiUrl,
+      amplifyApiUrl,
       defaultHeaders: headers,
     );
 
@@ -69,7 +69,7 @@ class GraphQLClientService {
     // final Link _link = _httpLink;
     Link _link = _authLink.concat(_httpLink);
     String graphqlWsApiUrl =
-        graphqlApiUrl.replaceFirst('https:', 'wss:').replaceFirst('appsync-api', 'appsync-realtime-api');
+        amplifyApiUrl.replaceFirst('https:', 'wss:').replaceFirst('appsync-api', 'appsync-realtime-api');
     print('GraphQLClientService.websocket=$graphqlWsApiUrl');
 
     final _wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
@@ -84,21 +84,21 @@ class GraphQLClientService {
 
     _link = Link.split((request) => request.isSubscription, _wsLink, _link);
 
-    _appSyncClient = ValueNotifier(GraphQLClient(
+    _amplifyClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
       link: _link,
     ));
 
-    return _appSyncClient;
+    return _amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getAdminGraphQLClient() async {
-    print('getAdminGraphQLClient().url=$graphqlAdminApiUrl');
-    if (_adminClient != null) {
-      return _adminClient;
+  Future<ValueNotifier<GraphQLClient>> getGraphQLClient() async {
+    print('getAdminGraphQLClient().url=$graphqlApiUrl');
+    if (_graphqlClient != null) {
+      return _graphqlClient;
     }
 
-    _adminClient?.dispose();
+    _graphqlClient?.dispose();
 
     String accessToken = await _authProvider.getAccessToken();
     print('getAdminGraphQLClient().accessToken=$accessToken');
@@ -109,17 +109,17 @@ class GraphQLClientService {
     if (accessToken != null) {
       headers = {
         'Authorization': 'Bearer $accessToken',
-        'host': Uri.parse(graphqlAdminApiUrl).host,
+        'host': Uri.parse(graphqlApiUrl).host,
       };
     } else {
       headers = {
-        'x-api-key': graphqlAdminApiKey,
-        'host': Uri.parse(graphqlAdminApiUrl).host,
+        'x-api-key': graphqlApiKey,
+        'host': Uri.parse(graphqlApiUrl).host,
       };
     }
 
     final HttpLink _httpLink = HttpLink(
-      graphqlApiUrl,
+      amplifyApiUrl,
       defaultHeaders: headers,
     );
 
@@ -130,11 +130,11 @@ class GraphQLClientService {
     // final Link _link = _httpLink;
     Link _link = _authLink.concat(_httpLink);
 
-    _adminClient = ValueNotifier(GraphQLClient(
+    _graphqlClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
       link: _link,
     ));
 
-    return _adminClient;
+    return _graphqlClient;
   }
 }

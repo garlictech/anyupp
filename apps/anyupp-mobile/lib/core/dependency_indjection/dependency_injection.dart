@@ -101,8 +101,8 @@ void _initServices() {
         authProvider: getIt<IAuthProvider>(),
         graphqlApiUrl: awsConfig['GraphqlApiUrl'],
         graphqlApiKey: awsConfig['GraphqlApiKey'],
-        graphqlAdminApiUrl: awsConfig['GraphqlAdminApiUrl'],
-        graphqlAdminApiKey: awsConfig['GraphqlAdminApiKey'],
+        amplifyApiUrl: awsConfig['GraphqlAdminApiUrl'],
+        amplifyApiKey: awsConfig['GraphqlAdminApiKey'],
       ));
 }
 
