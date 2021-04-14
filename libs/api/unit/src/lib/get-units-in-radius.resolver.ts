@@ -1,11 +1,16 @@
 import * as geolib from 'geolib';
 import * as fp from 'lodash/fp';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, EMPTY, iif, Observable, of } from 'rxjs';
+import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
 
 import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { removeTypeNameField } from '@bgap/api/utils';
+import {
+  validateChain,
+  validateGetGroupCurrency,
+  validateUnit,
+} from '@bgap/shared/data-validators';
 import {
   executeQuery,
   GraphqlApiClient,
@@ -17,12 +22,6 @@ import {
   IUnit,
   IWeeklySchedule,
 } from '@bgap/shared/types';
-import {
-  validateChain,
-  validateGetGroupCurrency,
-  validateUnit,
-} from '@bgap/shared/data-validators';
-// import { pipeDebug } from '@bgap/shared/utils';
 
 type listResponse<T> = {
   items: Array<T>;
@@ -47,13 +46,11 @@ export const getUnitsInRadius = ({
 
   // TODO: use geoSearch for the units
   return listActiveUnits(amplifyGraphQlClient).pipe(
-    // filter(fp.negate(fp.isEmpty)),
-    // switchMap((units: Array<IUnit>) =>
     switchMap(units =>
       combineLatest(
         units.map(unit =>
           getChain(amplifyGraphQlClient, unit.chainId).pipe(
-            filter(chain => chain.isActive),
+            switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
             switchMap(chain =>
               getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
                 map(currency => ({ chain, currency })),
@@ -69,12 +66,16 @@ export const getUnitsInRadius = ({
                 paymentModes: unit.paymentModes as any,
               }),
             ),
+            defaultIfEmpty({} as AppsyncApi.GeoUnit),
           ),
         ),
       ),
     ),
-    map(items => items.sort((a, b) => (a.distance > b.distance ? 1 : -1))),
-    // pipeDebug('### getUnitsInRadius'),
+    map(items =>
+      items
+        .filter(x => !!x.id) // Filter out the {} that comes for the e not active chains
+        .sort((a, b) => (a.distance > b.distance ? 1 : -1)),
+    ),
     map(x => ({ items: x })),
   );
 };
@@ -122,6 +123,7 @@ const listActiveUnits = (
     input,
   ).pipe(
     map(x => x.listUnits?.items),
+    // pipeDebug('### LIST ACTIVE UNITS'),
     filter(fp.negate(fp.isEmpty)),
     switchMap((items: []) => combineLatest(items.map(validateUnit))),
   );
@@ -136,6 +138,7 @@ const getGroupCurrency = (
     { id },
   ).pipe(
     map(x => x.getGroup),
+    // pipeDebug(`### GET GROUP with id: ${id}`),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
   );
