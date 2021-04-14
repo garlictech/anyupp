@@ -179,5 +179,5 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-  }, 25000);
+  }, 50000);
 });
