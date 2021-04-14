@@ -130,17 +130,17 @@ describe('GetUnitsNearLocation tests', () => {
     }, 25000);
   });
 
+  // TODO: create test with A NOT ACTIVE CHAIN
   it('should return all the units in geoUnitsFormat ordered by distance', done => {
     const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
     // To test with the local appsync code
     // from(
-    //   unitRequestHandler.getUnitsInRadius(amplifyGraphQlClient)(input),
+    //   unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
     // ).subscribe({
-    // next(result) {
-    //   expect(result).toHaveProperty('items');
-    //   const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
+    //     expect(result).toHaveProperty('items');
+    //     const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
     executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
       AppsyncApi.GetUnitsNearLocation,
       input,
@@ -179,5 +179,5 @@ describe('GetUnitsNearLocation tests', () => {
           done();
         },
       });
-  }, 15000);
+  }, 25000);
 });
