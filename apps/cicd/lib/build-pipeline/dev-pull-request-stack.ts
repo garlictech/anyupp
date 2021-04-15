@@ -52,7 +52,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin --skip-nx-cache`,
-                `yarn nx build infrastructure-anyupp-backend-stack --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
+                `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
               ],
             },
           },

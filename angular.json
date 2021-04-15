@@ -1528,7 +1528,7 @@
       "root": "apps/anyupp-backend",
       "sourceRoot": "apps/anyupp-backend/src",
       "projectType": "application",
-      "prefix": "infrastructure-anyupp-backend-stack",
+      "prefix": "anyupp-backend",
       "architect": {
         "build": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1595,7 +1595,7 @@
       "root": "apps/cicd",
       "sourceRoot": "apps/cicd/src",
       "projectType": "application",
-      "prefix": "infrastructure-build-pipeline-stack",
+      "prefix": "cicd",
       "architect": {
         "build": {
           "builder": "@nrwl/workspace:run-commands",

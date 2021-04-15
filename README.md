@@ -111,8 +111,8 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 !!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
 
 ```
-nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
-nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+nx build anyupp-backend --app=APPNAME --stage=dev
+nx deploy anyupp-backend --app=APPNAME --stage=dev
 ```
 
 **Be careful** and do NOT check in the mentioned two config files!
@@ -224,11 +224,11 @@ To build the admin site for a given configuration:
 
 Building the stack:
 
-`nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx build anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 Deploying the stack:
 
-`nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx deploy anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 ## Deleting the stack
 
@@ -241,7 +241,7 @@ and the backend resources so be careful.
 
 Then, remove the CDK stack:
 
-`nx remove infrastructure-anyupp-backend-stack --stage ${STAGE}`
+`nx remove anyupp-backend --stage ${STAGE}`
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
@@ -509,8 +509,8 @@ The generator will collect the new resolver's name
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
-   nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+   nx build anyupp-backend --app=APPNAME --stage=dev
+   nx deploy anyupp-backend --app=APPNAME --stage=dev
 
 ### Amplify - Admin
 
