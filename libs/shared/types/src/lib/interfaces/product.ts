@@ -27,7 +27,7 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
-  id?: string;
+  id: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
@@ -52,7 +52,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
-  tax: string; // %
+  tax: number; // %
   laneId?: string;
   productType: EProductType;
   takeaway?: boolean;
@@ -76,6 +76,29 @@ export interface IUnitProduct {
   updatedAt: string;
 }
 
+export interface IChainProduct {
+  __typename?: 'ChainProduct';
+  id: string;
+  chainId: string;
+  name: ILocalizedItem<string>;
+  description: ILocalizedItem<string>;
+  productCategoryId: string;
+  productType: EProductType;
+  isVisible: boolean;
+  image: string;
+  variants: [IProductVariant];
+}
+export interface IGroupProduct {
+  __typename?: 'GroupProduct';
+  id: string;
+  parentId: string;
+  chainId: string;
+  groupId: string;
+  isVisible: boolean;
+  tax: number;
+  variants: [IProductVariant];
+}
+
 export interface IGeneratedProduct {
   id: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
@@ -92,3 +115,19 @@ export interface IProductOrderChangeEvent {
   change: number;
   productId: string;
 }
+
+// export interface IGeneratedProductVariantsMap {
+//   [key: string]: IGeneratedProductVariant;
+// }
+
+// export interface IMergedProduct {
+//   productCategoryId: string;
+//   isVisible: boolean;
+//   variants: IProductVariant[];
+//   name: ILocalizedItem<string>;
+//   description: ILocalizedItem<string>;
+//   image: string;
+//   tax: number;
+//   position: number;
+//   productType: string;
+// }

@@ -11,7 +11,7 @@ import {
   executeMutation,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
-import { IProduct } from '@bgap/shared/types';
+import { IUnitProduct } from '@bgap/shared/types';
 
 export const createUnitProduct = ({
   input,
@@ -19,7 +19,7 @@ export const createUnitProduct = ({
 }: {
   input: AppsyncApi.CreateUnitProductInput;
   amplifyGraphQlClient: GraphqlApiClient;
-}): Observable<IProduct> => {
+}): Observable<IUnitProduct> => {
   return createUnitProductInDb({ input, amplifyGraphQlClient });
 };
 
@@ -29,7 +29,7 @@ const createUnitProductInDb = ({
 }: {
   input: AmplifyApi.CreateUnitProductInput;
   amplifyGraphQlClient: GraphqlApiClient;
-}): Observable<IProduct> => {
+}): Observable<IUnitProduct> => {
   return executeMutation(amplifyGraphQlClient)<
     AmplifyApi.CreateUnitProductMutation
   >(AmplifyApiMutationDocuments.createUnitProduct, {
