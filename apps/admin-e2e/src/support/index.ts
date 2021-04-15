@@ -29,3 +29,10 @@ Cypress.on('test:after:run', (test, runnable) => {
     addContext({ test }, screenshot);
   }
 });
+
+// Cypress.on('uncaught:exception', (err, runnable) => {
+//   // returning false here prevents Cypress from
+//   // failing the test
+//   console.log('Error from the app', JSON.stringify(err, undefined, 2));
+//   return false;
+// });
