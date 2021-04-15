@@ -1,8 +1,8 @@
 import { awsConfig, CrudApi } from '@bgap/crud-gql/api';
 import {
   configureAmplify,
-  GraphqlApiKey,
-  GraphqlApiUrl,
+  AnyuppGraphqlApiKey,
+  AnyuppGraphqlApiUrl,
   testAdminUsername,
   testAdminUserPassword,
 } from '../../../common';
@@ -21,8 +21,8 @@ describe('Admin user creation/deletion', () => {
   test('Admin user should be created/deleted', done => {
     const appsyncConfig = {
       ...awsConfig,
-      aws_appsync_graphqlEndpoint: GraphqlApiUrl,
-      aws_appsync_apiKey: GraphqlApiKey,
+      aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
+      aws_appsync_apiKey: AnyuppGraphqlApiKey,
     };
     const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
       appsyncConfig,

@@ -70,14 +70,14 @@ export class AppsyncAppStack extends sst.Stack {
     createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
 
-    new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
+    new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
       description: 'The graphql API endpoint URL',
       parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiUrl',
       stringValue: this.api.graphqlUrl,
     });
 
-    new ssm.StringParameter(this, 'GraphqlApiKeyParam', {
+    new ssm.StringParameter(this, 'AnyuppGraphqlApiKeyParam', {
       allowedPattern: '.*',
       description: 'The graphql API key',
       parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiKey',
@@ -85,12 +85,12 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     // Prints out the AppSync GraphQL endpoint to the terminal
-    new cdk.CfnOutput(this, 'GraphqlApiUrl', {
+    new cdk.CfnOutput(this, 'AnyuppGraphqlApiUrl', {
       value: this.api.graphqlUrl,
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
-    new cdk.CfnOutput(this, 'GraphqlApiKey', {
+    new cdk.CfnOutput(this, 'AnyuppGraphqlApiKey', {
       value: this.api.apiKey || '',
     });
   }

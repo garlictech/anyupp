@@ -101,10 +101,10 @@ void _initRepositories() {
 void _initServices() {
   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
         authProvider: getIt<IAuthProvider>(),
-        graphqlApiUrl: awsConfig['GraphqlApiUrl'],
-        graphqlApiKey: awsConfig['GraphqlApiKey'],
-        graphqlAdminApiUrl: awsConfig['AdminGraphqlApiUrl'],
-        graphqlAdminApiKey: awsConfig['AdminGraphqlApiKey'],
+        graphqlApiUrl: awsConfig['AnyuppGraphqlApiUrl'],
+        graphqlApiKey: awsConfig['AnyuppGraphqlApiKey'],
+        graphqlAdminApiUrl: awsConfig['AdminAnyuppGraphqlApiUrl'],
+        graphqlAdminApiKey: awsConfig['AdminAnyuppGraphqlApiKey'],
       ));
 }
 

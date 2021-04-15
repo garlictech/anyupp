@@ -19,7 +19,7 @@ const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsco
 
 fs.mkdirSync(targetDir, { recursive: true });
 
-const generatedParams = ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlAdminApiUrl',
+const generatedParams = ['AnyuppGraphqlApiKey', 'AnyuppGraphqlApiUrl', 'GraphqlAdminApiUrl',
   'GraphqlAdminApiKey', 'IdentityPoolId', 'consumerWebUserPoolClientId', 
   'consumerUserPoolDomain', 'consumerUserPoolId'].map(
     paramName => `${prefix}/generated/${paramName}`

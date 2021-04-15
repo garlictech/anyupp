@@ -530,8 +530,8 @@ Parameters that are required in the parameter store for the mobile app are the f
 `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
 `'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
 `'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
-`'{STAGE}-{APPNAME}-GraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
-`'{STAGE}-{APPNAME}-GraphqlApiKey',` - Amplify GraphQL API key
+`'{STAGE}-{APPNAME}-AnyuppGraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
+`'{STAGE}-{APPNAME}-AnyuppGraphqlApiKey',` - Amplify GraphQL API key
 `'{STAGE}-{APPNAME}-GraphqlAdminApiUrl',` - Admin GraphQL API http endpoint (start with https://)
 `'{STAGE}-{APPNAME}-GraphqlAdminApiKey',` - Admin GraphQL API key
 `'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API

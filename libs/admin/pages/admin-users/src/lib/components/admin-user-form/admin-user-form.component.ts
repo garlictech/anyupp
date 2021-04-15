@@ -77,11 +77,11 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
-          const { GraphqlApiKey, GraphqlApiUrl } = config;
+          const { AnyuppGraphqlApiKey, AnyuppGraphqlApiUrl } = config;
           const appsyncConfig = {
             ...awsConfig,
-            aws_appsync_graphqlEndpoint: GraphqlApiUrl,
-            aws_appsync_apiKey: GraphqlApiKey,
+            aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
+            aws_appsync_apiKey: AnyuppGraphqlApiKey,
           };
           const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
             appsyncConfig,

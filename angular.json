@@ -1487,8 +1487,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "amplify delete --force",
-              "aws ssm delete-parameter --name '{args.stage}-{args.app}-CrudApiAppId'"
+              "sh ../../tools/ remove-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },

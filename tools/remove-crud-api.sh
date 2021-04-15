@@ -7,8 +7,8 @@ export AWS_PAGER=""
 APPNAME=$1
 STAGE=$2
 
-USERNAME=${3:-test@test.com}
-PASSWORD=${4:-"Testtesttest12_"}
-
-sh ./tools/create-admin-user.sh $APPNAME $STAGE $USERNAME $PASSWORD
+amplify delete --force
+aws ssm delete-parameter --name "${STAGE}-${APPNAME}/generated/CrudApiAppId"
+aws ssm delete-parameter --name "${STAGE}-${APPNAME}/generated/CrudApiGraphqlEndpoint"
+aws ssm delete-parameter --name "${STAGE}-${APPNAME}/generated/CrudApiGraphqlAplKey"
 

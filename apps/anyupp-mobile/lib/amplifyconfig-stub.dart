@@ -48,7 +48,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "${config['GraphqlApiUrl']}",
+                        "ApiUrl": "${config['AnyuppGraphqlApiUrl']}",
                         "Region": "${config['region']}",
                         "AuthMode": "AMAZON_COGNITO_USER_POOLS",
                         "ClientDatabasePrefix": "anyuppbackend_AMAZON_COGNITO_USER_POOLS"
