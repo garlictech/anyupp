@@ -1,32 +1,32 @@
-import { AmplifyApi } from '@bgap/crud-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
 
-export type queryTypes = AmplifyApi.GetAdminUserQuery &
-  AmplifyApi.GetRoleContextQuery &
-  AmplifyApi.GetChainQuery &
-  AmplifyApi.GetGroupQuery &
-  AmplifyApi.GetUnitQuery &
-  AmplifyApi.GetOrderQuery &
-  AmplifyApi.GetProductCategoryQuery &
-  AmplifyApi.GetChainProductQuery &
-  // AmplifyApi.GetUserQuery &
-  AmplifyApi.GetChainProductQuery;
-export type listTypes = AmplifyApi.ListAdminUsersQuery &
-  AmplifyApi.ListRoleContextsQuery &
-  AmplifyApi.ListChainsQuery &
-  AmplifyApi.ListGroupsQuery &
-  AmplifyApi.ListUnitsQuery &
-  AmplifyApi.ListOrdersQuery &
-  AmplifyApi.ListProductCategorysQuery &
-  AmplifyApi.ListChainProductsQuery &
-  // AmplifyApi.ListUsersQuery &
-  AmplifyApi.ListChainProductsQuery;
+export type queryTypes = CrudApi.GetAdminUserQuery &
+  CrudApi.GetRoleContextQuery &
+  CrudApi.GetChainQuery &
+  CrudApi.GetGroupQuery &
+  CrudApi.GetUnitQuery &
+  CrudApi.GetOrderQuery &
+  CrudApi.GetProductCategoryQuery &
+  CrudApi.GetChainProductQuery &
+  // CrudApi.GetUserQuery &
+  CrudApi.GetChainProductQuery;
+export type listTypes = CrudApi.ListAdminUsersQuery &
+  CrudApi.ListRoleContextsQuery &
+  CrudApi.ListChainsQuery &
+  CrudApi.ListGroupsQuery &
+  CrudApi.ListUnitsQuery &
+  CrudApi.ListOrdersQuery &
+  CrudApi.ListProductCategorysQuery &
+  CrudApi.ListChainProductsQuery &
+  // CrudApi.ListUsersQuery &
+  CrudApi.ListChainProductsQuery;
 export type apiQueryTypes = queryTypes & listTypes;
-export type subscriptionTypes = AmplifyApi.OnAdminUserChangeSubscription &
-  AmplifyApi.OnRoleContextsChangeSubscription &
-  AmplifyApi.OnChainsChangeSubscription &
-  AmplifyApi.OnGroupsChangeSubscription &
-  AmplifyApi.OnUnitsChangeSubscription &
-  // AmplifyApi.OnUsersChangeSubscription &
-  AmplifyApi.OnProductCategoriesChangeSubscription &
-  AmplifyApi.OnChainProductChangeSubscription &
-  AmplifyApi.OnAdminRoleContextsChangeSubscription;
+export type subscriptionTypes = CrudApi.OnAdminUserChangeSubscription &
+  CrudApi.OnRoleContextsChangeSubscription &
+  CrudApi.OnChainsChangeSubscription &
+  CrudApi.OnGroupsChangeSubscription &
+  CrudApi.OnUnitsChangeSubscription &
+  // CrudApi.OnUsersChangeSubscription &
+  CrudApi.OnProductCategoriesChangeSubscription &
+  CrudApi.OnChainProductChangeSubscription &
+  CrudApi.OnAdminRoleContextsChangeSubscription;

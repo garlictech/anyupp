@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
@@ -9,7 +9,7 @@ import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 // HANDLER
 export const unitRequestHandler = {
   getUnitsNearLocation: (amplifyGraphQlClient: GraphqlApiClient) => (
-    requestPayload: AppsyncApi.GetUnitsNearLocationQueryVariables,
+    requestPayload: AnyuppApi.GetUnitsNearLocationQueryVariables,
   ) => {
     return validatGetUnitsNearLocationInput(requestPayload)
       .pipe(
@@ -26,12 +26,12 @@ export const unitRequestHandler = {
 
 // INPUT VALIDATORS
 // // GetUnitsInRadius
-const getUnitsInRadiusInputSchema: Joi.SchemaMap<AppsyncApi.GetUnitsNearLocationInput> = {
+const getUnitsInRadiusInputSchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationInput> = {
   location: Joi.object(locationSchema).required(),
 };
-const getUnitsInRadiusQuerySchema: Joi.SchemaMap<AppsyncApi.GetUnitsNearLocationQueryVariables> = {
+const getUnitsInRadiusQuerySchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationQueryVariables> = {
   input: Joi.object(getUnitsInRadiusInputSchema).required(),
 };
 const { validate: validatGetUnitsNearLocationInput } = validateSchema<
-  AppsyncApi.GetUnitsNearLocationQueryVariables
+  AnyuppApi.GetUnitsNearLocationQueryVariables
 >(getUnitsInRadiusQuerySchema, 'GetUnitsNearLocationQueryVariables');

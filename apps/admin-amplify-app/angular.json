@@ -356,7 +356,7 @@
         }
       }
     },
-    "api-graphql-schema": {
+    "anyupp-gql-api": {
       "root": "libs/api/graphql/schema",
       "sourceRoot": "libs/api/graphql/schema/src",
       "projectType": "library",

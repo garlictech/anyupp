@@ -4,8 +4,8 @@ import { switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
+  CrudApi,
+  CrudApiMutationDocuments,
 } from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
 
@@ -83,7 +83,7 @@ const deleteCreate = ({
   );
 
 export const createTestChain = (chainIdx: number) => {
-  const input: AmplifyApi.CreateChainInput = {
+  const input: CrudApi.CreateChainInput = {
     id: generateChainId(chainIdx),
     name: `Test chain #${chainIdx}`,
     description: {
@@ -109,13 +109,13 @@ export const createTestChain = (chainIdx: number) => {
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteChain,
-    createOperation: AmplifyApiMutationDocuments.createChain,
+    deleteOperation: CrudApiMutationDocuments.deleteChain,
+    createOperation: CrudApiMutationDocuments.createChain,
   });
 };
 
 export const createTestGroup = (chainIdx: number, groupIdx: number) => {
-  const input: AmplifyApi.CreateGroupInput = {
+  const input: CrudApi.CreateGroupInput = {
     id: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
     name: `Test group #${groupIdx}`,
@@ -127,8 +127,8 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => {
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteGroup,
-    createOperation: AmplifyApiMutationDocuments.createGroup,
+    deleteOperation: CrudApiMutationDocuments.deleteGroup,
+    createOperation: CrudApiMutationDocuments.createGroup,
   });
 };
 
@@ -137,7 +137,7 @@ export const createTestUnit = (
   groupIdx: number,
   unitIdx: number,
 ) => {
-  const input: AmplifyApi.CreateUnitInput = {
+  const input: CrudApi.CreateUnitInput = {
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
@@ -161,15 +161,15 @@ export const createTestUnit = (
     },
     paymentModes: [
       {
-        method: AmplifyApi.PaymentMethod.CASH,
+        method: CrudApi.PaymentMethod.CASH,
         name: 'Cash',
       },
       {
-        method: AmplifyApi.PaymentMethod.CARD,
+        method: CrudApi.PaymentMethod.CARD,
         name: 'Card',
       },
       {
-        method: AmplifyApi.PaymentMethod.INAPP,
+        method: CrudApi.PaymentMethod.INAPP,
         name: 'Stripe',
       },
     ],
@@ -192,8 +192,8 @@ export const createTestUnit = (
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteUnit,
-    createOperation: AmplifyApiMutationDocuments.createUnit,
+    deleteOperation: CrudApiMutationDocuments.deleteUnit,
+    createOperation: CrudApiMutationDocuments.createUnit,
   });
 };
 
@@ -201,7 +201,7 @@ export const createTestProductCategory = (
   chainIdx: number,
   productCategoryId: number,
 ) => {
-  const input: AmplifyApi.CreateProductCategoryInput = {
+  const input: CrudApi.CreateProductCategoryInput = {
     id: generateProductCategoryId(chainIdx, productCategoryId),
     chainId: generateChainId(chainIdx),
     name: {
@@ -217,8 +217,8 @@ export const createTestProductCategory = (
 
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteProductCategory,
-    createOperation: AmplifyApiMutationDocuments.createProductCategory,
+    deleteOperation: CrudApiMutationDocuments.deleteProductCategory,
+    createOperation: CrudApiMutationDocuments.createProductCategory,
   });
 };
 
@@ -227,7 +227,7 @@ export const createTestChainProduct = (
   productCategoryIdx: number,
   productIdx: number,
 ) => {
-  const input: AmplifyApi.CreateChainProductInput = {
+  const input: CrudApi.CreateChainProductInput = {
     id: generateChainProductId(chainIdx, productIdx),
     chainId: generateChainId(chainIdx),
     name: {
@@ -260,8 +260,8 @@ export const createTestChainProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteChainProduct,
-    createOperation: AmplifyApiMutationDocuments.createChainProduct,
+    deleteOperation: CrudApiMutationDocuments.deleteChainProduct,
+    createOperation: CrudApiMutationDocuments.createChainProduct,
   });
 };
 
@@ -271,7 +271,7 @@ export const createTestGroupProduct = (
   chainProductIdx: number,
   productIdx: number,
 ) => {
-  const input: AmplifyApi.CreateGroupProductInput = {
+  const input: CrudApi.CreateGroupProductInput = {
     id: generateGroupProductId(chainIdx, groupIdx, productIdx),
     parentId: generateChainProductId(chainIdx, chainProductIdx),
     chainId: generateChainId(chainIdx),
@@ -298,8 +298,8 @@ export const createTestGroupProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteGroupProduct,
-    createOperation: AmplifyApiMutationDocuments.createGroupProduct,
+    deleteOperation: CrudApiMutationDocuments.deleteGroupProduct,
+    createOperation: CrudApiMutationDocuments.createGroupProduct,
   });
 };
 
@@ -310,7 +310,7 @@ export const createTestUnitProduct = (
   groupProductIdx: number,
   productIdx: number,
 ) => {
-  const input: AmplifyApi.CreateUnitProductInput = {
+  const input: CrudApi.CreateUnitProductInput = {
     id: generateUnitProductId(chainIdx, groupIdx, productIdx),
     parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
     chainId: generateChainId(chainIdx),
@@ -349,8 +349,8 @@ export const createTestUnitProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteUnitProduct,
-    createOperation: AmplifyApiMutationDocuments.createUnitProduct,
+    deleteOperation: CrudApiMutationDocuments.deleteUnitProduct,
+    createOperation: CrudApiMutationDocuments.createUnitProduct,
   });
 };
 
@@ -369,13 +369,13 @@ export const createTestCart = ({
   userIdx: number;
   cartIdx: number;
 }) => {
-  const input: AmplifyApi.CreateCartInput = {
+  const input: CrudApi.CreateCartInput = {
     id: generateCartId(cartIdx),
     userId: generateUserId(userIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
     paymentMode: {
       name: 'INAPP',
-      method: AmplifyApi.PaymentMethod.INAPP,
+      method: CrudApi.PaymentMethod.INAPP,
     },
     takeAway: false,
     items: [
@@ -404,7 +404,7 @@ export const createTestCart = ({
   };
   return deleteCreate({
     input,
-    deleteOperation: AmplifyApiMutationDocuments.deleteCart,
-    createOperation: AmplifyApiMutationDocuments.createCart,
+    deleteOperation: CrudApiMutationDocuments.deleteCart,
+    createOperation: CrudApiMutationDocuments.createCart,
   });
 };

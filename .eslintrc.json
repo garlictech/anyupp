@@ -1,10 +1,20 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
-  "plugins": ["unused-imports", "@nrwl/nx"],
+  "ignorePatterns": [
+    "**/*"
+  ],
+  "plugins": [
+    "unused-imports",
+    "@nrwl/nx"
+  ],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
       "rules": {
         "unused-imports/no-unused-imports-ts": 2,
         "@nrwl/nx/enforce-module-boundaries": [
@@ -14,16 +24,10 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              },
-              {
-                "sourceTag": "scope:anyupp",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:anyupp"]
-              },
-              {
                 "sourceTag": "platform:universal",
-                "onlyDependOnLibsWithTags": ["platform:universal"]
+                "onlyDependOnLibsWithTags": [
+                  "platform:universal"
+                ]
               },
               {
                 "sourceTag": "platform:angular",
@@ -42,27 +46,43 @@
               },
               {
                 "sourceTag": "type:ui",
-                "onlyDependOnLibsWithTags": ["type:ui", "type:utils"]
+                "onlyDependOnLibsWithTags": [
+                  "type:ui",
+                  "type:utils"
+                ]
               },
               {
                 "sourceTag": "type:data-access",
-                "onlyDependOnLibsWithTags": ["type:data-access", "type:utils"]
+                "onlyDependOnLibsWithTags": [
+                  "type:data-access",
+                  "type:utils"
+                ]
               },
               {
                 "sourceTag": "type:utils",
-                "onlyDependOnLibsWithTags": ["type:utils"]
+                "onlyDependOnLibsWithTags": [
+                  "type:utils"
+                ]
               },
               {
                 "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": ["type:utils"]
+                "onlyDependOnLibsWithTags": [
+                  "type:utils"
+                ]
               },
               {
-                "sourceTag": "type:server",
-                "onlyDependOnLibsWithTags": ["type:feature", "type:utils"]
+                "sourceTag": "type:backend",
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:utils",
+                  "type:backend"
+                ]
               },
               {
                 "sourceTag": "type:integration-tests",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
               }
             ]
           }
@@ -70,14 +90,26 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "parserOptions": { "project": "./tsconfig.*?.json" },
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/typescript"
+      ],
+      "parserOptions": {
+        "project": "./tsconfig.*?.json"
+      },
       "rules": {}
     },
     {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/javascript"
+      ],
       "rules": {}
     }
   ]

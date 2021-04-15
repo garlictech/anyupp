@@ -1,4 +1,4 @@
-import { AmplifyApi } from '@bgap/crud-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { groupSeed } from './group';
 import { chainSeed } from './chain';
 
@@ -8,7 +8,7 @@ const unitId_seeded_02 = 'unit_c1_g1_2_id';
 const unitId_seeded_03 = 'unit_c1_g2_1_id';
 const unitId_NotExisting = 'NOT_EXISTING_UNIT';
 
-const unit_01: AmplifyApi.CreateUnitInput = {
+const unit_01: CrudApi.CreateUnitInput = {
   id: unitId_01,
   groupId: groupSeed.groupId_seeded_01,
   chainId: chainSeed.chainId_seeded_01,
@@ -32,15 +32,15 @@ const unit_01: AmplifyApi.CreateUnitInput = {
   },
   paymentModes: [
     {
-      method: AmplifyApi.PaymentMethod.CASH,
+      method: CrudApi.PaymentMethod.CASH,
       name: 'Cash',
     },
     {
-      method: AmplifyApi.PaymentMethod.CARD,
+      method: CrudApi.PaymentMethod.CARD,
       name: 'Card',
     },
     {
-      method: AmplifyApi.PaymentMethod.INAPP,
+      method: CrudApi.PaymentMethod.INAPP,
       name: 'Stripe',
     },
   ],

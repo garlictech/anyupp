@@ -3,7 +3,7 @@ import * as fp from 'lodash/fp';
 import {combineLatest, EMPTY, iif, Observable, of} from 'rxjs';
 import {defaultIfEmpty, filter, map, switchMap} from 'rxjs/operators';
 
-import {AmplifyApi, AmplifyApiQueryDocuments} from '@bgap/admin/amplify-api';
+import {CrudApi, CrudApiQueryDocuments} from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   validateChain,
@@ -32,7 +32,7 @@ export const getUnitsInRadius = ({
   location,
   amplifyGraphQlClient,
 }: {
-  location: AmplifyApi.LocationInput;
+  location: CrudApi.LocationInput;
   amplifyGraphQlClient: GraphqlApiClient;
 }): Observable<listResponse<AnyuppApi.GeoUnit>> => {
   // console.log(
@@ -115,11 +115,11 @@ const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => 
 const listActiveUnits = (
   amplifyApiClient: GraphqlApiClient,
 ): Observable<Array<IUnit>> => {
-  const input: AmplifyApi.ListUnitsQueryVariables = {
+  const input: CrudApi.ListUnitsQueryVariables = {
     filter: {isActive: {eq: true}},
   };
-  return executeQuery(amplifyApiClient)<AmplifyApi.ListUnitsQuery>(
-    AmplifyApiQueryDocuments.listUnits,
+  return executeQuery(amplifyApiClient)<CrudApi.ListUnitsQuery>(
+    CrudApiQueryDocuments.listUnits,
     input,
   ).pipe(
     map(x => x.listUnits?.items),
@@ -133,8 +133,8 @@ const getGroupCurrency = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetGroupQuery>(
-    AmplifyApiQueryDocuments.getGroupCurrency,
+  return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
+    CrudApiQueryDocuments.getGroupCurrency,
     {id},
   ).pipe(
     map(x => x.getGroup),
@@ -148,8 +148,8 @@ const getChain = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<IChain> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetChainQuery>(
-    AmplifyApiQueryDocuments.getChain,
+  return executeQuery(amplifyApiClient)<CrudApi.GetChainQuery>(
+    CrudApiQueryDocuments.getChain,
     {id},
   ).pipe(
     map(x => x.getChain),

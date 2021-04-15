@@ -27,19 +27,22 @@ Install the following tools:
 - Amplify CLI - `npm i -g @aws-amplify/cli`
 - The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
 
-## Configuring the project
+## Configuring/building the project
 
 Use the `config` build targets for projects requiring configuration.
-Configuration involves code generation processes as well.
+Use the `build` build targets for projects requiring build/code generation.
 
-Currently, the following packages can be configured:
+**the graphql schemas**
 
-**the graphql schema**
+`nx build anyupp-gql-api`
 
-`nx config api-graphql-schema`
-
-Whenever the schema changes, you must execute the code generation phase for the
+Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
+
+`nx build-schema admin-amplify-app --app=anyupp-backend --stage=dev`
+
+The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify) 
+and generates client-side code to the `crud-gql/api` project. It does not deploy the backend!
 
 **the configs (and secrets)**
 
@@ -155,7 +158,7 @@ Use a Cognito user pool configured as a part of this project.
 
 - ? Enable conflict detection? `No`
 - ? Do you have an annotated GraphQL schema? `Yes`
-- ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
+- ? Provide your schema file path: `../../libs/crud-gql/backend/src/graphql/crud-api.graphql`
 
 Then, we should push the app, and generat code. Code generation steps:
 
@@ -165,10 +168,10 @@ amplify push
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
-- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql`
+- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.graphql`
 - ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
 - ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
-- ? Enter the file name for the generated code `../../libs/admin/amplify-api/src/lib/generated/api.ts`
+- ? Enter the file name for the generated code `../../libs/crud-gql/api/src/lib/generated/api.ts`
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 
 Then, answer `yes` to the _code generation/code overwrite_ questions.
@@ -177,7 +180,7 @@ So, for auth, add API key, IAM and user pool options. Select the annotated schem
 from your source tree.
 
 **WARNING** always synchronize the schema files between amplify and github! When you
-change the schema, apply the changes to `libs/api/graphql/schema/src/schema/admin-api.graphql`
+change the schema, apply the changes to `libs/crud-gql/backend/src/graphql/crud-api.graphql`
 as well!
 
 ### Option 2: Configure your project with existing resources

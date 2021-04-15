@@ -1,6 +1,6 @@
 // import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
-import {AmplifyApi} from '@bgap/admin/amplify-api';
+import {CrudApi} from '@bgap/crud-gql/api';
 import {
   IOrderItem,
   IOrders,
@@ -11,7 +11,7 @@ import {
 import {toFixed2Number} from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (
-  items: IOrderItem[] | AmplifyApi.OrderItemInput[],
+  items: IOrderItem[] | CrudApi.OrderItemInput[],
 ): IPriceShown => roundSums(sumItems(items as IOrderItem[]));
 
 const sumItems = (items: IOrderItem[]): IPriceShown => {

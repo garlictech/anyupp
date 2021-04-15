@@ -23,7 +23,7 @@ NATIVECLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminNativeUs
   jq -r '.Parameter.Value')
 
 ANGULARconfig="{\
-\"SourceDir\":\"../../libs/admin/amplify-api/src/lib/generated\",\
+\"SourceDir\":\"../../libs/crud-gql/api/src/lib/generated\",\
 \"DistributionDir\":\"../../dist/apps/admin\",\
 \"BuildCommand\":\"yarn nx build admin\",\
 \"StartCommand\":\"yarn nx serve admin\"\
@@ -62,8 +62,8 @@ PROVIDERS="{\
 CODEGEN="{\
 \"generateCode\":true,\
 \"codeLanguage\":\"javascript\",\
-\"fileNamePattern\":\"../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.ts\",\
-\"generatedFileName\":\"../../libs/admin/amplify-api/src/lib/generated/api.ts\",\
+\"fileNamePattern\":\"../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts\",\
+\"generatedFileName\":\"../../libs/crud-gql/api/src/lib/generated/api.ts\",\
 \"maxDepth\":10,\
 \"generateDocs\":true\
 }"

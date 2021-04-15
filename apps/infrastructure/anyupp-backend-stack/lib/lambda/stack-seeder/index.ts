@@ -1,8 +1,8 @@
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
+  CrudApi,
+  CrudApiMutationDocuments,
   awsConfig,
 } from '@bgap/crud-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
@@ -122,10 +122,10 @@ export const seedAdminUser = (UserPoolId: string) =>
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
-    switchMap((input: AmplifyApi.CreateAdminUserInput) =>
+    switchMap((input: CrudApi.CreateAdminUserInput) =>
       pipe(
         API.graphql(
-          graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
+          graphqlOperation(CrudApiMutationDocuments.createAdminUser, {
             input,
           }),
         ),

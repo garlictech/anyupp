@@ -7,11 +7,11 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
+  CrudApi,
+  CrudApiMutationDocuments,
   awsConfig,
-} from '@bgap/admin/amplify-api';
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+} from '@bgap/crud-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -23,7 +23,7 @@ const UserPoolId = process.env.userPoolId || '';
 Amplify.configure(awsConfig);
 
 export const createAdminUser = (
-  vars: AppsyncApi.CreateAdminUserMutationVariables,
+  vars: AnyuppApi.CreateAdminUserMutationVariables,
 ) => {
   console.debug('Resolver parameters: ', vars);
   const Username = vars.input.email || vars.input.phone || '';
@@ -59,10 +59,10 @@ export const createAdminUser = (
       email: vars.input.email,
       phone: vars.input.phone,
     })),
-    switchMap((input: AmplifyApi.CreateAdminUserInput) =>
+    switchMap((input: CrudApi.CreateAdminUserInput) =>
       pipe(
         API.graphql(
-          graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
+          graphqlOperation(CrudApiMutationDocuments.createAdminUser, {
             input,
           }),
         ),
@@ -73,7 +73,7 @@ export const createAdminUser = (
       ),
     ),
     map(
-      (data: GraphQLResult<AmplifyApi.CreateAdminUserMutation>) =>
+      (data: GraphQLResult<CrudApi.CreateAdminUserMutation>) =>
         data.data?.createAdminUser?.id,
     ),
   ).toPromise();

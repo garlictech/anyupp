@@ -36,7 +36,7 @@ export class AppsyncAppStack extends sst.Stack {
       name: app.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
         PROJECT_ROOT +
-          'libs/api/graphql/schema/src/schema/appsync/appsync-api.graphql',
+          'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
       ),
       authorizationConfig: {
         defaultAuthorization: {

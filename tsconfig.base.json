@@ -102,7 +102,6 @@
       "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
       "@bgap/stripe": ["libs/stripe/src/index.ts"],
-      "@bgap/admin/amplify-api": ["libs/admin/amplify-api/src/index.ts"],
       "@bgap/admin/shared/data-access/role-contexts": [
         "libs/admin/shared/data-access/role-contexts/src/index.ts"
       ],

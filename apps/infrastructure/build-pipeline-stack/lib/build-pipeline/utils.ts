@@ -79,7 +79,7 @@ export const createBuildProject = (
           commands: [
             `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config api-graphql-schema`,
+            `yarn nx build anyupp-gql-api`,
           ],
         },
         build: {
@@ -177,7 +177,7 @@ export const createIntegrationTestProject = (
           commands: [
             `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config api-graphql-schema`,
+            `yarn nx build anyupp-gql-api`,
           ],
         },
         build: {

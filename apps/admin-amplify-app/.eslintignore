@@ -2,6 +2,6 @@
 
 src/models
 
-../../libs/admin/amplify-api/src/lib/models
+../../libs/crud-gql/api/src/lib/models
 
-../../libs/admin/amplify-api/src/lib/generated/models
+../../libs/crud-gql/api/src/lib/generated/models

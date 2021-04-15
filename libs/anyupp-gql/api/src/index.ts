@@ -1,1 +1,1 @@
-export * from './lib/generated/appsync-api';
+export * from './lib/generated/anyupp-api';

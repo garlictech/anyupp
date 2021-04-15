@@ -1,4 +1,4 @@
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { missingParametersCheck } from '@bgap/shared/utils';
 
@@ -8,7 +8,7 @@ interface WithAuthenticatedUser {
   userId: string;
 }
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
-  AppsyncApi.MutationCreateOrderFromCartArgs;
+  AnyuppApi.MutationCreateOrderFromCartArgs;
 
 export const orderRequestHandler = {
   createOrderFromCart: (amplifyGraphQlClient: GraphqlApiClient) => (
@@ -18,7 +18,7 @@ export const orderRequestHandler = {
       'userId',
       'input',
     ]);
-    missingParametersCheck<AppsyncApi.CreateOrderFromCartInput>(
+    missingParametersCheck<AnyuppApi.CreateOrderFromCartInput>(
       requestPayload.input,
       ['id'],
     );

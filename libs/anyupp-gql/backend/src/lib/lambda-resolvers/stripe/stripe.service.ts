@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { SharedSecrets, getSecrets } from '@bgap/shared/secrets';
 import { isOfType } from '@bgap/shared/utils';
 
@@ -9,7 +9,7 @@ import { mapStripeCardToCard, mapPaymentMethodToCard } from './stripe.utils';
 // TODO: use stripe.customers.listSources https://stripe.com/docs/api/cards/list?lang=node
 export const getStripeCardsForCustomer = async (
   stripeCustomerId: string,
-): Promise<AppsyncApi.StripeCard[]> => {
+): Promise<AnyuppApi.StripeCard[]> => {
   const stripe = await initStripe();
 
   return stripe.paymentMethods
@@ -25,8 +25,8 @@ export const getStripeCardsForCustomer = async (
 
 export const updateStripeCard = async (
   stripeCustomerId: string,
-  input: AppsyncApi.StripeCardUpdateInput,
-): Promise<AppsyncApi.StripeCard> => {
+  input: AnyuppApi.StripeCardUpdateInput,
+): Promise<AnyuppApi.StripeCard> => {
   const stripe = await initStripe();
 
   return stripe.customers
@@ -46,7 +46,7 @@ export const updateStripeCard = async (
 
 export const deleteStripeCard = async (
   stripeCustomerId: string,
-  input: AppsyncApi.StripeCardDeleteInput,
+  input: AnyuppApi.StripeCardDeleteInput,
 ): Promise<boolean> => {
   const stripe = await initStripe();
 
@@ -63,8 +63,8 @@ export const deleteStripeCard = async (
 
 export const startStripePayment = async (
   stripeCustomerId: string,
-  input: AppsyncApi.StartStripePaymentInput,
-): Promise<AppsyncApi.StartStripePaymentOutput> => {
+  input: AnyuppApi.StartStripePaymentInput,
+): Promise<AnyuppApi.StartStripePaymentOutput> => {
   // const stripe = await initStripe();
 
   // const { chainId, unitId, userId, paymentMethodId } = input;

@@ -3,11 +3,12 @@ import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-  AmplifyApiQueryDocuments,
-} from '@bgap/admin/amplify-api';
-import { removeTypeNameField, toFixed2Number } from '../../utils';
+  CrudApi,
+  CrudApiMutationDocuments,
+  CrudApiQueryDocuments,
+} from '@bgap/crud-gql/api';
+import { removeTypeNameField} from '../../utils/graphql.utils';
+import { toFixed2Number } from '../../utils/number.utils';
 import {
   executeMutation,
   executeQuery,
@@ -142,9 +143,9 @@ const toOrderInputFormat = ({
   userId: string;
   unitId: string;
   paymentMode: IPaymentMode;
-  items: AmplifyApi.OrderItemInput[];
+  items: CrudApi.OrderItemInput[];
   place: IPlace | undefined;
-}): AmplifyApi.CreateOrderInput => {
+}): CrudApi.CreateOrderInput => {
   return {
     userId,
     takeAway: false,
@@ -169,7 +170,7 @@ const getOrderItems = ({
   cartItems: IOrderItem[];
   currency: string;
   amplifyApiClient: GraphqlApiClient;
-}): Observable<AmplifyApi.OrderItemInput[]> => {
+}): Observable<CrudApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
       getLaneIdForCartItem(amplifyApiClient, cartItem.productId).pipe(
@@ -196,7 +197,7 @@ const convertCartOrderToOrderItem = ({
   cartItem: IOrderItem;
   currency: string;
   laneId: string | null | undefined;
-}): AmplifyApi.OrderItemInput => {
+}): CrudApi.OrderItemInput => {
   // const {__typename, ...item} = cartItem;
 
   return {
@@ -229,8 +230,8 @@ const getLaneIdForCartItem = (
   amplifyApiClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
-    AmplifyApiQueryDocuments.getUnitProduct,
+  return executeQuery(amplifyApiClient)<CrudApi.GetUnitProductQuery>(
+    CrudApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),
@@ -242,7 +243,7 @@ const getLaneIdForCartItem = (
 const createStatusLog = (
   userId: string,
   status: EOrderStatus = EOrderStatus.PLACED,
-): Array<AmplifyApi.StatusLogInput> => [
+): Array<CrudApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];
 
@@ -255,11 +256,11 @@ const createOrder = ({
   orderInput,
   amplifyApiClient,
 }: {
-  orderInput: AmplifyApi.CreateOrderInput;
+  orderInput: CrudApi.CreateOrderInput;
   amplifyApiClient: GraphqlApiClient;
 }): Observable<IOrder> => {
-  return executeMutation(amplifyApiClient)<AmplifyApi.CreateOrderMutation>(
-    AmplifyApiMutationDocuments.createOrder,
+  return executeMutation(amplifyApiClient)<CrudApi.CreateOrderMutation>(
+    CrudApiMutationDocuments.createOrder,
     {
       input: orderInput,
     },
@@ -273,8 +274,8 @@ const getUnit = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<IUnit> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitQuery>(
-    AmplifyApiQueryDocuments.getUnit,
+  return executeQuery(amplifyApiClient)<CrudApi.GetUnitQuery>(
+    CrudApiQueryDocuments.getUnit,
     { id },
   ).pipe(
     map(x => x.getUnit),
@@ -286,8 +287,8 @@ const getCart = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<ICart> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetCartQuery>(
-    AmplifyApiQueryDocuments.getCart,
+  return executeQuery(amplifyApiClient)<CrudApi.GetCartQuery>(
+    CrudApiQueryDocuments.getCart,
     { id },
   ).pipe(
     map(x => x.getCart),
@@ -299,8 +300,8 @@ const deleteCart = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<boolean> => {
-  return executeMutation(amplifyApiClient)<AmplifyApi.DeleteCartMutation>(
-    AmplifyApiMutationDocuments.deleteCart,
+  return executeMutation(amplifyApiClient)<CrudApi.DeleteCartMutation>(
+    CrudApiMutationDocuments.deleteCart,
     { input: { id } },
   ).pipe(mapTo(true));
 };
@@ -309,8 +310,8 @@ const getGroupCurrency = (
   amplifyApiClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetGroupQuery>(
-    AmplifyApiQueryDocuments.getGroupCurrency,
+  return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
+    CrudApiQueryDocuments.getGroupCurrency,
     { id },
   ).pipe(
     map(x => x.getGroup),

@@ -1,4 +1,4 @@
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { missingParametersCheck } from '@bgap/shared/utils';
 import * as stripeService from './stripe.service';
 
@@ -6,16 +6,16 @@ interface WithStripeCustomer {
   stripeCustomerId: string;
 }
 type UpdateStripeCardRequest = WithStripeCustomer &
-  AppsyncApi.MutationUpdateMyStripeCardArgs;
+  AnyuppApi.MutationUpdateMyStripeCardArgs;
 type DeleteStripeCardRequest = WithStripeCustomer &
-  AppsyncApi.MutationDeleteMyStripeCardArgs;
+  AnyuppApi.MutationDeleteMyStripeCardArgs;
 type StartStripePaymentRequest = WithStripeCustomer &
-  AppsyncApi.MutationStartStripePaymentArgs;
+  AnyuppApi.MutationStartStripePaymentArgs;
 
 export const stripeRequestHandler = {
   getStripeCardsForCustomer(
     requestPayload: unknown,
-  ): Promise<AppsyncApi.StripeCard[]> {
+  ): Promise<AnyuppApi.StripeCard[]> {
     const { stripeCustomerId } = requestPayload as WithStripeCustomer;
 
     if (!stripeCustomerId) {
@@ -24,7 +24,7 @@ export const stripeRequestHandler = {
 
     return stripeService.getStripeCardsForCustomer(stripeCustomerId);
   },
-  updateStripeCard(requestPayload: unknown): Promise<AppsyncApi.StripeCard> {
+  updateStripeCard(requestPayload: unknown): Promise<AnyuppApi.StripeCard> {
     const {
       stripeCustomerId,
       input,

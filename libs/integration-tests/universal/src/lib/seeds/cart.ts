@@ -7,15 +7,15 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
+  CrudApi,
+  CrudApiMutationDocuments,
 } from '@bgap/crud-gql/api';
 
 export const createTestCart = (
-  overwrites: Partial<AmplifyApi.CreateCartInput> = {},
+  overwrites: Partial<CrudApi.CreateCartInput> = {},
 ) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.CreateCartMutation>(
-    AmplifyApiMutationDocuments.createCart,
+  executeMutation(amplifyGraphQlClient)<CrudApi.CreateCartMutation>(
+    CrudApiMutationDocuments.createCart,
     {
       input: {
         ...cartSeed.cart_01,
@@ -34,8 +34,8 @@ export const createTestCart = (
   );
 
 export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.DeleteCartMutation>(
-    AmplifyApiMutationDocuments.deleteCart,
+  executeMutation(amplifyGraphQlClient)<CrudApi.DeleteCartMutation>(
+    CrudApiMutationDocuments.deleteCart,
     {
       input: { id },
     },

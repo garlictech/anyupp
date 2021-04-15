@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 import { API, GraphQLResult } from '@aws-amplify/api';
 import Amplify from '@aws-amplify/core';
 import {
-  AmplifyApiMutationDocuments as Mutations, AmplifyApiQueryDocuments as Queries,
-  AmplifyApiSubscriptionDocuments as Subscriptions, awsConfig
+  CrudApiMutationDocuments as Mutations, CrudApiQueryDocuments as Queries,
+  CrudApiSubscriptionDocuments as Subscriptions, awsConfig
 } from '@bgap/crud-gql/api';
 import { IAmplifyModel } from '@bgap/shared/types';
 

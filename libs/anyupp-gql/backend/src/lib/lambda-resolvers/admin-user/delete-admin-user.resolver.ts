@@ -7,11 +7,11 @@ import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
 import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
+  CrudApi,
+  CrudApiMutationDocuments,
   awsConfig,
-} from '@bgap/admin/amplify-api';
-import { AppsyncApi } from '@bgap/api/appsync-gql';
+} from '@bgap/crud-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -23,7 +23,7 @@ const UserPoolId = process.env.userPoolId || '';
 Amplify.configure(awsConfig);
 
 export const deleteAdminUser = (
-  params: AppsyncApi.DeleteAdminUserMutationVariables,
+  params: AnyuppApi.DeleteAdminUserMutationVariables,
 ) => {
   console.debug('Resolver parameters: ', params);
   let userId: string;
@@ -57,14 +57,14 @@ export const deleteAdminUser = (
       switchMap(() =>
         pipe(
           API.graphql(
-            graphqlOperation(AmplifyApiMutationDocuments.deleteAdminUser, {
+            graphqlOperation(CrudApiMutationDocuments.deleteAdminUser, {
               input: { id: userId },
             }),
           ),
           operation =>
             operation instanceof Promise
               ? (from(operation) as Observable<
-                  GraphQLResult<AmplifyApi.AdminUser>
+                  GraphQLResult<CrudApi.AdminUser>
                 >)
               : throwError('Wrong graphql operation'),
         ),

@@ -4,7 +4,7 @@ import { awsConfig } from '@bgap/crud-gql/api';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
-import { AppsyncApi } from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { config } from '@bgap/shared/config';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
@@ -90,7 +90,7 @@ export class AdminUserFormComponent
           );
 
           appsyncApiClient
-            .mutate(AppsyncApi.CreateAdminUser, {
+            .mutate(AnyuppApi.CreateAdminUser, {
               input: { email, name, phone },
             })
             .pipe(map((result: any) => result.data.createAdminUser))

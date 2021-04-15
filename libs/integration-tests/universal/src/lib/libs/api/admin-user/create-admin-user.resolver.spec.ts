@@ -1,4 +1,4 @@
-import { awsConfig, AmplifyApi } from '@bgap/crud-gql/api';
+import { awsConfig, CrudApi } from '@bgap/crud-gql/api';
 import {
   configureAmplify,
   GraphqlApiKey,
@@ -11,7 +11,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
-import { AppsyncApi } from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/backend';
 
 describe('Admin user creation/deletion', () => {
   beforeAll(() => {
@@ -36,7 +36,7 @@ describe('Admin user creation/deletion', () => {
       .pipe(
         switchMap(() =>
           appsyncApiClient
-            .mutate(AppsyncApi.DeleteAdminUser, {
+            .mutate(AnyuppApi.DeleteAdminUser, {
               userName,
             })
             .pipe(
@@ -50,7 +50,7 @@ describe('Admin user creation/deletion', () => {
         ),
         switchMap(() =>
           appsyncApiClient
-            .mutate(AppsyncApi.CreateAdminUser, {
+            .mutate(AnyuppApi.CreateAdminUser, {
               input: { email: 'foobar', name: 'Mekk elek', phone: '12356666' },
             })
             .pipe(
@@ -61,18 +61,18 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          appsyncApiClient.mutate(AppsyncApi.CreateAdminUser, {
+          appsyncApiClient.mutate(AnyuppApi.CreateAdminUser, {
             input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
         x =>
           x as Observable<
-            ApolloQueryResult<AmplifyApi.CreateAdminUserMutation>
+            ApolloQueryResult<CrudApi.CreateAdminUserMutation>
           >,
         map(result => result.data.createAdminUser),
         switchMap(() =>
           appsyncApiClient
-            .mutate(AppsyncApi.CreateAdminUser, {
+            .mutate(AnyuppApi.CreateAdminUser, {
               input: { email: userName, name: 'Mekk Elek', phone: '123456' },
             })
             .pipe(
@@ -84,7 +84,7 @@ describe('Admin user creation/deletion', () => {
         ),
         // Cleanup
         switchMap(() =>
-          appsyncApiClient.mutate(AppsyncApi.DeleteAdminUser, {
+          appsyncApiClient.mutate(AnyuppApi.DeleteAdminUser, {
             userName,
           }),
         ),

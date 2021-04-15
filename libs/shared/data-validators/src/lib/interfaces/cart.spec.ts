@@ -1,5 +1,5 @@
 import { isCart, validateCart } from './cart';
-import { AmplifyApi } from '@bgap/crud-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { ICart } from '@bgap/shared/types';
 
 const cart: ICart = {
@@ -7,7 +7,7 @@ const cart: ICart = {
   userId: 'USERID',
   unitId: 'UNITID',
   paymentMode: {
-    method: AmplifyApi.PaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.CARD,
     name: 'CARD',
   },
   takeAway: false,
