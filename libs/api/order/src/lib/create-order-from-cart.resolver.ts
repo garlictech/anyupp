@@ -118,7 +118,7 @@ export const createOrderFromCart = ({
       }),
     })),
     switchMap(props =>
-      createOrder({
+      createOrderInDb({
         orderInput: props.orderInput,
         amplifyApiClient: amplifyGraphQlClient,
       }).pipe(map(x => ({ ...props, orderId: x.id as string }))),
@@ -260,7 +260,7 @@ const createStatusLog = (
 //   return Promise.resolve('STAFF_ID');
 // };
 
-const createOrder = ({
+const createOrderInDb = ({
   orderInput,
   amplifyApiClient,
 }: {

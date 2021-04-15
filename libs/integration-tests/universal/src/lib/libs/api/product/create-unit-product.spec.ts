@@ -4,11 +4,12 @@ import {
 } from 'libs/admin/amplify-api/src';
 import { validateUnitProduct } from 'libs/shared/data-validators/src';
 import { IProduct } from 'libs/shared/types/src';
-import { Observable, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { AppsyncApi } from '@bgap/api/graphql/schema';
 import {
+  amplifyGraphQlClient,
   appsyncGraphQlClient,
   AuthenticatdGraphQlClientWithUserId,
   createAuthenticatedAppsyncGraphQlClient,
@@ -22,6 +23,7 @@ import {
   testAdminUserPassword,
   unitProductSeed,
 } from '../../../fixtures';
+import { deleteUnitProduct } from '../../../seeds/unit-product';
 
 const input: AppsyncApi.CreateUnitProductMutationVariables = {
   input: unitProductSeed.unitProduct_01,
@@ -39,7 +41,7 @@ describe('CreateUnitProduct tests', () => {
     });
   }, 25000);
 
-  describe.only('with authenticated user', () => {
+  describe('with authenticated user', () => {
     let authHelper: AuthenticatdGraphQlClientWithUserId;
 
     beforeAll(async () => {
@@ -50,64 +52,71 @@ describe('CreateUnitProduct tests', () => {
       console.warn(authHelper.userAttributes);
     });
     // let authenticatedApsyncGraphQlClient;
-    // beforeAll(async () => {
-    //   authenticatedApsyncGraphQlClient = createAuthenticatedAppsyncGraphQlClient()
-    //   await combineLatest([
-    //     // CleanUP
-    //     // deleteTestCart(),
-    //     // deleteTestCart(cartWithNotExistingUNIT),
-    //   ])
-    //     .pipe(
-    //       switchMap(() =>
-    //         // Seeding
-    //         combineLatest([
-    //           // createTestCart(),
-    //           // createTestCart({
-    //           //   id: cartWithNotExistingUNIT,
-    //           //   unitId: unitSeed.unitId_NotExisting,
-    //           // }),
-    //         ]),
-    //       ),
-    //     )
-    //     .toPromise();
-    // }
+    beforeAll(async () => {
+      await combineLatest([
+        // CleanUP
+        deleteUnitProduct(input.input.id),
+      ])
+        // .pipe(
+        //   switchMap(() =>
+        //     // Seeding
+        //     // combineLatest([
+        //       // createTestCart(),
+        //       // createTestCart({
+        //       //   id: cartWithNotExistingUNIT,
+        //       //   unitId: unitSeed.unitId_NotExisting,
+        //       // }),
+        //     // ]),
+        //   ),
+        // )
+        .toPromise();
+    });
 
-    // it('should .... with authenticated user', done => {
-    //   // return executeMutation(authHelper.graphQlClient)<
-    //   //   AppsyncApi.CreateUnitProductMutation
-    //   // >(AppsyncApi.CreateUnitProduct, input)
-    //   from(productRequestHandler.createUnitProduct(amplifyGraphQlClient)(input))
-    //     .pipe(
-    //       pipeDebug('### UNITPRODUCT CREATE RESULT'),
-    //       // map(result => result.createUnitProduct),
-    //       // switchMap(product =>
-    //       //   // getUnitProduct(amplifyGraphQlClient, product.id),
-    //       // ),
-    //     )
-    //     .subscribe({
-    //       next(result) {
-    //         console.log(
-    //           '### ~ file: create-unit-product.spec.ts ~ line 69 ~ next ~ result',
-    //           JSON.stringify(result, undefined, 2),
-    //         );
-    //         expect(result).toMatchSnapshot();
+    it('should create unitProduct in the database', done => {
+      return (
+        executeMutation(authHelper.graphQlClient)<
+          AppsyncApi.CreateUnitProductMutation
+        >(AppsyncApi.CreateUnitProduct, input)
+          // from(productRequestHandler.createUnitProduct(amplifyGraphQlClient)(input))
+          .pipe(
+            // pipeDebug('### UNITPRODUCT CREATE RESULT'),
+            map(result => result.createUnitProduct),
+            switchMap(product =>
+              getUnitProduct(amplifyGraphQlClient, product.id),
+            ),
+          )
+          .subscribe({
+            next(result) {
+              // console.log(
+              //   '### ~ file: create-unit-product.spec.ts ~ line 69 ~ next ~ result',
+              //   JSON.stringify(result, undefined, 2),
+              // );
+              const { createdAt, updatedAt, ...product } = result;
+              expect(createdAt).not.toBeUndefined();
+              expect(updatedAt).not.toBeUndefined();
+              expect(product).toMatchSnapshot();
 
-    //         done();
-    //       },
-    //     });
-    // });
+              done();
+            },
+          })
+      );
+    }, 25000);
   });
 });
 
-// const getUnitProduct = (
-//   amplifyApiClient: GraphqlApiClient,
-//   productId: string,
-// ): Observable<IProduct> => {
-//   return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
-//     AmplifyApiQueryDocuments.getUnitProduct,
-//     { id: productId },
-//   ).pipe(
-//     map(product => product.getUnitProduct),
-//     switchMap(validateUnitProduct),
-//   );
-// };
+const getUnitProduct = (
+  amplifyApiClient: GraphqlApiClient,
+  productId: string,
+): Observable<IProduct> => {
+  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
+    AmplifyApiQueryDocuments.getUnitProduct,
+    { id: productId },
+  ).pipe(
+    map(product => product.getUnitProduct),
+    switchMap(validateUnitProduct),
+    catchError(err => {
+      console.error(err);
+      return throwError('Unit is missing');
+    }),
+  );
+};

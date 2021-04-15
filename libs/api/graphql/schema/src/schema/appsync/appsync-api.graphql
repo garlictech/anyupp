@@ -19,7 +19,7 @@ type Address {
   location: Location
 }
 
-type LocalizedItem {
+type LocalizedItem @aws_cognito_user_pools {
   en: String
   de: String
   hu: String
@@ -83,7 +83,7 @@ input CreateOrderFromCartInput {
 
 ### UNIT_PRODUCT
 
-type UnitProduct {
+type UnitProduct @aws_cognito_user_pools {
   id: ID!
   parentId: ID!
   chainId: ID!
@@ -96,7 +96,7 @@ type UnitProduct {
   variants: [ProductVariant]
 }
 
-type ProductVariant {
+type ProductVariant @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem
   pack: ProductVariantPack
@@ -107,12 +107,12 @@ type ProductVariant {
   position: Int!
 }
 
-type ProductVariantPack {
+type ProductVariantPack @aws_cognito_user_pools {
   size: Float!
   unit: String!
 }
 
-type Availability {
+type Availability @aws_cognito_user_pools {
   type: String!
   dayFrom: String
   dayTo: String

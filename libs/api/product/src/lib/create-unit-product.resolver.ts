@@ -1,39 +1,45 @@
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import {
+  AmplifyApi,
+  AmplifyApiMutationDocuments,
+} from '@bgap/admin/amplify-api';
 import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
+import {
+  executeMutation,
+  GraphqlApiClient,
+} from '@bgap/shared/graphql/api-client';
+import { IProduct } from '@bgap/shared/types';
 
 export const createUnitProduct = ({
-  // userId,
-  // cartId,
+  input,
   amplifyGraphQlClient,
 }: {
-  // userId: string;
-  // cartId: string;
+  input: AppsyncApi.CreateUnitProductInput;
   amplifyGraphQlClient: GraphqlApiClient;
-}): Observable<AppsyncApi.UnitProduct> => {
-  // console.log(
-  //   '### ~ file: order.service.ts ~ line 39 ~ INPUT PARAMS',
-  //   JSON.stringify({
-  //     userId,
-  //     cartId,
-  //   }),
-  //   undefined,
-  //   2,
-  // );
-
-  return of({} as any);
+}): Observable<IProduct> => {
+  return createUnitProductInDb({ input, amplifyGraphQlClient });
 };
 
-// const getUnitProduct = (
-//   amplifyApiClient: GraphqlApiClient,
-//   productId: string,
-// ): Observable<IProduct> => {
-//   return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
-//     AmplifyApiQueryDocuments.getUnitProduct,
-//     { id: productId },
-//   ).pipe(
-//     map(product => product.getUnitProduct),
-//     switchMap(validateUnitProduct),
-//   );
-// };
+const createUnitProductInDb = ({
+  input,
+  amplifyGraphQlClient,
+}: {
+  input: AmplifyApi.CreateUnitProductInput;
+  amplifyGraphQlClient: GraphqlApiClient;
+}): Observable<IProduct> => {
+  return executeMutation(amplifyGraphQlClient)<
+    AmplifyApi.CreateUnitProductMutation
+  >(AmplifyApiMutationDocuments.createUnitProduct, {
+    input,
+  }).pipe(
+    map(x => x.createUnitProduct),
+    switchMap(validateUnitProduct),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Unit Product creation error');
+    }),
+  );
+};

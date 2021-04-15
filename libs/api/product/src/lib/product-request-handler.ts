@@ -24,6 +24,7 @@ export const productRequestHandler = {
     return createUnitProduct({
       // userId: requestPayload.userId,
       // cartId: requestPayload.input.id,
+      input: requestPayload.input,
       amplifyGraphQlClient,
     }).toPromise();
   },
