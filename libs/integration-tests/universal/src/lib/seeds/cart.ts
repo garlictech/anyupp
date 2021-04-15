@@ -9,7 +9,7 @@ import {
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+} from '@bgap/crud-gql/api';
 
 export const createTestCart = (
   overwrites: Partial<AmplifyApi.CreateCartInput> = {},

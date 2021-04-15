@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 
 export const paymentMethodSchema = Joi.string().valid(
   AmplifyApi.PaymentMethod.CARD,

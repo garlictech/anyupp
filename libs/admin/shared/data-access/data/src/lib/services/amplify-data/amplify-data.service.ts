@@ -8,7 +8,7 @@ import Amplify from '@aws-amplify/core';
 import {
   AmplifyApiMutationDocuments as Mutations, AmplifyApiQueryDocuments as Queries,
   AmplifyApiSubscriptionDocuments as Subscriptions, awsConfig
-} from '@bgap/admin/amplify-api';
+} from '@bgap/crud-gql/api';
 import { IAmplifyModel } from '@bgap/shared/types';
 
 import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';

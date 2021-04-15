@@ -6,7 +6,7 @@ import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+} from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;

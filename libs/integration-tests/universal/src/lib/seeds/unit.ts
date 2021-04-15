@@ -9,7 +9,7 @@ import {
 import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+} from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
   overwrites: Partial<AmplifyApi.CreateUnitInput> = {},

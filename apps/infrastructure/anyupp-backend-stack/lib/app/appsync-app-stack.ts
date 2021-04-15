@@ -11,7 +11,7 @@ import {
   createAdminUserResolvers,
   createOrderResolvers,
   createUnitResolvers,
-} from '@bgap/appsync-gql/backend';
+} from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
 import { commonLambdaProps } from './lambda-common';

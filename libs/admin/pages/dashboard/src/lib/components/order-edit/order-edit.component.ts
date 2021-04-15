@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,

@@ -1,4 +1,4 @@
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 import { groupSeed } from './group';
 import { chainSeed } from './chain';
 

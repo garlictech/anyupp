@@ -4,7 +4,7 @@ import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
   awsConfig,
-} from '@bgap/admin/amplify-api';
+} from '@bgap/crud-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { AWSError, CognitoIdentityServiceProvider } from 'aws-sdk';
 import axios from 'axios';

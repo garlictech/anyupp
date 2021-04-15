@@ -1,4 +1,4 @@
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { awsConfig } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { IAmplifyApiConfig } from '@bgap/shared/types';
 import { GraphqlApiFp } from './graphql-api-fp';

@@ -39,9 +39,6 @@
     "shared-config": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
     },
-    "api-utils": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
-    },
     "admin-pages-admin-users": {
       "tags": ["scope:bgap", "type:website", "platform:angular"]
     },
@@ -147,23 +144,8 @@
     "shared-secrets": {
       "tags": ["scope:bgap", "type:utils", "platform:nest"]
     },
-    "api-order": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "api-admin-user": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
     "shared-graphql-api-client": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "api-graphql-resolver-mapping-templates": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
-    },
-    "api-stripe": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "api-unit": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
     },
     "admin-amplify-api": {
       "tags": ["scope:shared", "type:utils", "platform:universal"]
@@ -186,17 +168,17 @@
     "integration-tests-universal": {
       "tags": ["scope:bgap", "type:integration-tests", "platform:universal"]
     },
-    "appsync-gql-backend": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "appsync-gql-api": {
-      "tags": []
-    },
     "crud-gql-backend": {
       "tags": []
     },
     "crud-gql-api": {
       "tags": []
+    },
+    "anyupp-gql-api": {
+      "tags": []
+    },
+    "anyupp-gql-backend": {
+      "tags": ["scope:shared", "type:utils", "platform:universal"]
     }
   }
 }

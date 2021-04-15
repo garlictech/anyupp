@@ -1,4 +1,4 @@
-import { awsConfig, AmplifyApi } from '@bgap/admin/amplify-api';
+import { awsConfig, AmplifyApi } from '@bgap/crud-gql/api';
 import {
   configureAmplify,
   GraphqlApiKey,
@@ -11,7 +11,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
-import { AppsyncApi } from '@bgap/appsync-gql/backend';
+import { AppsyncApi } from '@bgap/anyupp-gql/backend';
 
 describe('Admin user creation/deletion', () => {
   beforeAll(() => {

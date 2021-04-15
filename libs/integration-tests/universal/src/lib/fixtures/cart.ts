@@ -1,5 +1,5 @@
 import { EOrderStatus } from '@bgap/shared/types';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 import { unitProductSeed } from './unit-product';
 import { unitSeed } from './unit';
 

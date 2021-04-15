@@ -6,7 +6,7 @@ import {
   orderRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
-} from '@bgap/appsync-gql/backend';
+} from '@bgap/anyupp-gql/backend';
 import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {

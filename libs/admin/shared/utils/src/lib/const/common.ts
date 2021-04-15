@@ -1,4 +1,4 @@
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 import { EAdminRole, IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön

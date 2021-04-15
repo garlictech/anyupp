@@ -1,4 +1,4 @@
-import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
+import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/crud-gql/api';
 import { cartSeed } from '../fixtures/cart';
 import {
   amplifyGraphQlClient,

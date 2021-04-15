@@ -1,4 +1,4 @@
-import * as vtl from '@bgap/api/graphql/resolver-mapping-templates';
+import { vtl } from '@bgap/anyupp-gql/backend';
 import {
   AppsyncFunction,
   MappingTemplate,

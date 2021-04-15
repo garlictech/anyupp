@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { combineLatest, from } from 'rxjs';
 
-import { AppsyncApi } from '@bgap/appsync-gql/backend';
-import { unitRequestHandler } from '@bgap/api/unit';
 import {
   amplifyGraphQlClient,
   appsyncGraphQlClient,
@@ -12,6 +10,8 @@ import { unitSeed } from '../../../fixtures/unit';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -64,7 +64,7 @@ describe('GetUnitsNearLocation tests', () => {
 
   describe('input validation', () => {
     it('should throw without a input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {} as any;
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
         unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({

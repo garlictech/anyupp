@@ -10,7 +10,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { AmplifyApi } from '@bgap/crud-gql/api';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { reducer } from '@bgap/shared/utils';
