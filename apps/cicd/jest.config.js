@@ -1,7 +1,7 @@
 module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
-  displayName: 'infrastructure-anyupp-backend-stack',
-  preset: '../../../jest.preset.js',
+  displayName: 'cicd',
+  preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory:
-    '../../../coverage/apps/infrastructure/anyupp-backend-stack',
+    '../../coverage/apps/cicd',
 };

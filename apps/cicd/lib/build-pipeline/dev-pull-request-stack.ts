@@ -42,13 +42,13 @@ export class DevPullRequestBuildStack extends sst.Stack {
             pre_build: {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx config admin-amplify-app --app=${utils.appConfig.name} --stage=${stage}`,
+                `yarn nx config crud-backend --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx build anyupp-gql-api`,
               ],
             },
             build: {
               commands: [
-                `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
+                `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
                 `yarn nx affected:lint --base=${stage} --with-deps`,
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin --skip-nx-cache`,

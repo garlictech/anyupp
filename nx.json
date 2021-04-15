@@ -32,7 +32,7 @@
   "projects": {
     "admin": {
       "implicitDependencies": [
-        "infrastructure-anyupp-backend-stack"
+        "anyupp-backend"
       ],
       "tags": [
         "type:website",
@@ -237,18 +237,6 @@
         "platform:angular"
       ]
     },
-    "infrastructure-anyupp-backend-stack": {
-      "tags": [
-        "type:backend",
-        "platform:nodejs"
-      ]
-    },
-    "infrastructure-build-pipeline-stack": {
-      "tags": [
-        "type:backend",
-        "platform:nodejs"
-      ]
-    },
     "shared-utils": {
       "tags": [
         "type:utils",
@@ -271,12 +259,6 @@
       "tags": [
         "type:utils",
         "platform:universal"
-      ]
-    },
-    "admin-amplify-app": {
-      "tags": [
-        "type:backend",
-        "platform:nodejs"
       ]
     },
     "admin-pages-role-contexts": {
@@ -328,6 +310,24 @@
       ]
     },
     "anyupp-gql-backend": {
+      "tags": [
+        "type:backend",
+        "platform:nodejs"
+      ]
+    },
+    "crud-backend": {
+      "tags": [
+        "type:backend",
+        "platform:nodejs"
+      ]
+    },
+    "anyupp-backend": {
+      "tags": [
+        "type:backend",
+        "platform:nodejs"
+      ]
+    },
+    "cicd": {
       "tags": [
         "type:backend",
         "platform:nodejs"

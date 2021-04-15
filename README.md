@@ -39,7 +39,7 @@ Use the `build` build targets for projects requiring build/code generation.
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
 
-`nx build-schema admin-amplify-app --app=anyupp-backend --stage=dev`
+`nx build-schema crud-backend --app=anyupp-backend --stage=dev`
 
 The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify) 
 and generates client-side code to the `crud-gql/api` project. It does not deploy the backend!
@@ -87,7 +87,7 @@ export EDITORNAME=vim
 
 Then, create an amplify app for admin:
 
-`nx init admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
+`nx init crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
 
 The stuff writes the amplify app id to parameter store, CDK will use it to fetch
 the amplify resources.
@@ -101,7 +101,7 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
   to the "name" field
 - in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
   in the `service` field
-- in `apps/admin-amplify-app/.graphqlconfig.yml`, use the same name
+- in `apps/crud-backend/.graphqlconfig.yml`, use the same name
   in the `schemaPath` field (...api/<APPNAME>/build...)
 - build and deploy the stack to the desired stage (it will use the stage-related
   parameters, secrets, etc:)
@@ -125,7 +125,7 @@ are not yet supported in headless mode :( So fill in the forms if required.
 Cognito part:
 
 ```
-cd apps/admin-amplify-app
+cd apps/crud-backend
 amplify remove auth
 amplify import auth
 ```
@@ -192,9 +192,9 @@ in the AWS console, use the shell scripts behind the angular commands as hints.
 
 First, pull the admin amplify app:
 
-`nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
+`nx config crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
 
-example: `nx config admin-amplify-app --app anyupp-backend --stage dev` for the dev
+example: `nx config crud-backend --app anyupp-backend --stage dev` for the dev
 
 It pulls the admin Amplify project and connects it to the actual CDK resources.
 
@@ -234,7 +234,7 @@ Deploying the stack:
 
 Destroy the admin amplify app:
 
-`nx remove admin-amplify-app`
+`nx remove crud-backend`
 
 **WARNING**: the command destroys the amplify app that is currently pulled! Both the local
 and the backend resources so be careful.

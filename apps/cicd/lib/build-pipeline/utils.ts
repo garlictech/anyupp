@@ -77,20 +77,20 @@ export const createBuildProject = (
         },
         pre_build: {
           commands: [
-            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
+            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
             `yarn nx build anyupp-gql-api`,
           ],
         },
         build: {
           commands: [
-            `yarn nx build-schema admin-amplify-app --skip-nx-cache --stage=${stage}`,
+            `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
             `yarn nx build admin ${adminConfig} --skip-nx-cache`,
             `yarn nx build infrastructure-anyupp-backend-stack --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
           ],
         },
         post_build: {
-          commands: [`yarn nx deploy admin-amplify-app`],
+          commands: [`yarn nx deploy crud-backend`],
         },
       },
       artifacts: {
@@ -175,7 +175,7 @@ export const createIntegrationTestProject = (
         },
         pre_build: {
           commands: [
-            `yarn nx config admin-amplify-app --app=${appConfig.name} --stage=${stage}`,
+            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
             `yarn nx build anyupp-gql-api`,
           ],
