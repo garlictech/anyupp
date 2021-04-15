@@ -20,7 +20,7 @@ class AwsUnitProvider implements IUnitProvider {
         }
       ));
 
-      print('***** searchUnitsNearLocation().result()=$result');
+      // print('***** searchUnitsNearLocation().result()=$result');
       if (result.hasException) {
         print('searchUnitsNearLocation.exception=${result.exception}');
         // TODO ?!
@@ -31,7 +31,7 @@ class AwsUnitProvider implements IUnitProvider {
       }
 
       List<dynamic> items = result.data['getUnitsNearLocation']['items'];
-      print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      // print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
