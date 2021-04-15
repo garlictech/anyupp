@@ -7,16 +7,19 @@ STAGE=$2
 EDITORNAME=${EDITORNAME:-vim}
 AWS_PROFILE=${AWS_PROFILE:-default}
 
-APPID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-AdminAmplifyAppId" | \
+APPID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/AdminAmplifyAppId" | \
   jq -r '.Parameter.Value')
 
-USERPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminUserPoolId" | \
+USERPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminUserPoolId" | \
   jq -r '.Parameter.Value')
 
-WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminWebUserPoolClientId" | \
+IDENTITYPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
   jq -r '.Parameter.Value')
 
-NATIVECLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}-adminNativeUserPoolClientId" | \
+WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminWebUserPoolClientId" | \
+  jq -r '.Parameter.Value')
+
+NATIVECLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminNativeUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
 ANGULARconfig="{\
@@ -28,6 +31,7 @@ ANGULARconfig="{\
 
 AUTHconfig="{\
 \"userPoolId\":\"$USERPOOLID\",\
+\"identityPoolId\":\"$IDENTITYPOOLID\",\
 \"webClientId\":\"$WEBCLIENTID\",\
 \"nativeClientId\":\"$NATIVECLIENTID\"\
 }"
@@ -76,5 +80,3 @@ amplify pull \
 --yes
 
 amplify codegen
-amplify codegen model
-

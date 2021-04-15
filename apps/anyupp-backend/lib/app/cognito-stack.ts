@@ -133,7 +133,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, identityPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The identity pool ID',
-      parameterName: app.logicalPrefixedName(identityPoolId),
+      parameterName: app.logicalPrefixedName('/generated/') + identityPoolId,
       stringValue: identityPool.ref,
     });
   }
@@ -152,7 +152,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool ID for ' + label,
-      parameterName: app.logicalPrefixedName(userPoolId),
+      parameterName: app.logicalPrefixedName('/generated/') + userPoolId,
       stringValue: userPool.userPoolId,
     });
 
@@ -164,7 +164,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolDomainId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool domain for ' + label,
-      parameterName: app.logicalPrefixedName(userPoolDomainId),
+      parameterName: app.logicalPrefixedName('/generated/') + userPoolDomainId,
       stringValue: domain.baseUrl(),
     });
   }
@@ -184,7 +184,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolClientId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool client ID for ' + label,
-      parameterName: app.logicalPrefixedName(userPoolClientId),
+      parameterName: app.logicalPrefixedName('/generated/') + userPoolClientId,
       stringValue: userPoolClient.userPoolClientId,
     });
   }

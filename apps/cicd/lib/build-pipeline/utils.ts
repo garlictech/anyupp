@@ -46,7 +46,7 @@ export const configurePermissions = (
       'adminNativeUserPoolClientId',
       'adminUserPoolId',
       'adminUserPoolDomain',
-      'AdminAmplifyAppId',
+      'CrudApiAppId',
     ].forEach(param =>
       ssm.StringParameter.fromStringParameterName(
         stack,

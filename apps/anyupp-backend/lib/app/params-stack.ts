@@ -8,7 +8,6 @@ export class ParamsStack extends sst.Stack {
   public googleClientId: string;
   public facebookAppId: string;
   public stripePublishableKey: string;
-  public adminAmplifyAppId: string;
 
   constructor(scope: sst.App, id: string) {
     super(scope, id);
@@ -51,19 +50,6 @@ export class ParamsStack extends sst.Stack {
     new CfnOutput(this, 'stripePublishableKeyOutput', {
       value: this.stripePublishableKey,
       exportName: app.logicalPrefixedName('stripePublishableKey'),
-    });
-
-    this.adminAmplifyAppId = ssm.StringParameter.fromStringParameterAttributes(
-      this,
-      'AdminAmplifyAppIdParam',
-      {
-        parameterName: `${app.stage}-${rootAppName}-AdminAmplifyAppId`,
-      },
-    ).stringValue;
-
-    new CfnOutput(this, 'AdminAmplifyAppIdOutput', {
-      value: this.adminAmplifyAppId,
-      exportName: app.logicalPrefixedName('AdminAmplifyAppId'),
     });
   }
 }

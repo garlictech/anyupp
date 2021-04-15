@@ -20,7 +20,7 @@ export class SiteStack extends sst.Stack {
     new ssm.StringParameter(this, 'AdminSiteUrl', {
       allowedPattern: '.*',
       description: 'The URL of the admin site',
-      parameterName: app.logicalPrefixedName('AdminSiteUrl'),
+      parameterName: app.logicalPrefixedName('/generated/') + AdminSiteUrl,
       stringValue: this.adminSiteUrl,
     });
   }

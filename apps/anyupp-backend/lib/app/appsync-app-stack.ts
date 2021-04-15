@@ -73,14 +73,14 @@ export class AppsyncAppStack extends sst.Stack {
     new ssm.StringParameter(this, 'GraphqlApiUrlParam', {
       allowedPattern: '.*',
       description: 'The graphql API endpoint URL',
-      parameterName: app.logicalPrefixedName('GraphqlApiUrl'),
+      parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiUrl',
       stringValue: this.api.graphqlUrl,
     });
 
     new ssm.StringParameter(this, 'GraphqlApiKeyParam', {
       allowedPattern: '.*',
       description: 'The graphql API key',
-      parameterName: app.logicalPrefixedName('GraphqlApiKey'),
+      parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiKey',
       stringValue: this.api.apiKey || '',
     });
 

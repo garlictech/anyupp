@@ -33,7 +33,7 @@ export class StripeStack extends sst.Stack {
     new ssm.StringParameter(this, 'StripeWebhookEndpointParam', {
       allowedPattern: '.*',
       description: 'Webhook for Stripe',
-      parameterName: scope.logicalPrefixedName('StripeWebhookEndpoint'),
+      parameterName: scope.logicalPrefixedName('/generated/StripeWebhookEndpoint'),
       stringValue: api.url,
     });
 

@@ -1449,7 +1449,7 @@
       "root": "apps/crud-backend",
       "sourceRoot": "apps/crud-backend/src",
       "projectType": "application",
-      "prefix": "amplify-admin",
+      "prefix": "crud-api",
       "architect": {
         "config": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1457,7 +1457,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/pull-amplify-admin.sh '{args.app}' '{args.stage}'"
+              "sh ../../tools/pull-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },
@@ -1467,7 +1467,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/init-amplify-admin.sh '{args.app}' '{args.stage}'"
+              "sh ../../tools/init-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },
@@ -1477,7 +1477,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/reconfig-amplify-admin.sh"
+              "sh ../../tools/reconfig-crud-api.sh"
             ]
           }
         },
@@ -1488,7 +1488,7 @@
             "parallel": false,
             "commands": [
               "amplify delete --force",
-              "aws ssm delete-parameter --name '{args.stage}-{args.app}-AdminAmplifyAppId'"
+              "aws ssm delete-parameter --name '{args.stage}-{args.app}-CrudApiAppId'"
             ]
           }
         },

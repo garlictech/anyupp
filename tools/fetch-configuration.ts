@@ -11,7 +11,7 @@ const client = new AWS.SSM({ region });
 
 const project = process.argv[2];
 const stage = process.argv[3];
-const prefix = `${stage}-${project}-`;
+const prefix = `${stage}-${project}`;
 
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const targetFile = `${targetDir}/config.json`;
@@ -19,8 +19,18 @@ const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsco
 
 fs.mkdirSync(targetDir, { recursive: true });
 
+const generatedParams = ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlAdminApiUrl',
+  'GraphqlAdminApiKey', 'IdentityPoolId', 'consumerWebUserPoolClientId', 
+  'consumerUserPoolDomain', 'consumerUserPoolId'].map(
+    paramName => `${prefix}/generated/${paramName}`
+  )
+
+const fixParams = ['stripePublishableKey', 'region'].map(
+    paramName => `${prefix}-${paramName}`
+  )
+
 pipe(
-  ['GraphqlApiKey', 'GraphqlApiUrl', 'GraphqlAdminApiUrl', 'GraphqlAdminApiKey', 'stripePublishableKey', 'IdentityPoolId', 'consumerWebUserPoolClientId', 'consumerUserPoolDomain', 'consumerUserPoolId', 'region'],
+[...generatedParams, ...fixParams],
   // We need to do this because the stuff can query max 10 parameters in one request
   fp.chunk(10),
   fp.map(
