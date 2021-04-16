@@ -18,6 +18,7 @@ class GeoUnit extends Model {
   final String openingHours;
   final String currency;
   final Place place;
+  final int position;
 
   @override
   String getId() {
@@ -35,7 +36,8 @@ class GeoUnit extends Model {
       this.distance,
       this.openingHours,
       this.currency,
-      this.place});
+      this.place,
+      this.position});
 
   factory GeoUnit(
       {String id,
@@ -48,7 +50,8 @@ class GeoUnit extends Model {
       int distance,
       String openingHours,
       String currency,
-      Place place}) {
+      Place place,
+      int position}) {
     return GeoUnit._internal(
         id: id == null ? UUID.getUUID() : id,
         groupId: groupId,
@@ -62,7 +65,9 @@ class GeoUnit extends Model {
         distance: distance,
         openingHours: openingHours,
         currency: currency,
-        place: place);
+        place: place,
+        position: position,
+        );
   }
 
   bool equals(Object other) {
@@ -83,7 +88,8 @@ class GeoUnit extends Model {
         distance == other.distance &&
         openingHours == other.openingHours &&
         currency == other.currency &&
-        place == other.place;
+        place == other.place &&
+        position == other.position;
   }
 
   @override
@@ -91,7 +97,7 @@ class GeoUnit extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("GeoUnit {");
     buffer.write("id=" + "$id" + ", ");
@@ -106,6 +112,7 @@ class GeoUnit extends Model {
     buffer.write("openingHours=" + "$openingHours" + ", ");
     buffer.write("currency=" + "$currency" + ", ");
     buffer.write("place=" + (place != null ? place.toString() : "null"));
+    buffer.write("position=" + (position != null ? position.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -122,7 +129,8 @@ class GeoUnit extends Model {
       int distance,
       String openingHours,
       String currency,
-      Place place}) {
+      Place place,
+      int position}) {
     return GeoUnit(
         id: id ?? this.id,
         groupId: groupId ?? this.groupId,
@@ -134,7 +142,9 @@ class GeoUnit extends Model {
         distance: distance ?? this.distance,
         openingHours: openingHours ?? this.openingHours,
         currency: currency ?? this.currency,
-        place: place ?? this.place);
+        place: place ?? this.place,
+        position: position ?? this.position,
+        );
   }
 
   GeoUnit.fromJson(Map<String, dynamic> json)
@@ -143,23 +153,24 @@ class GeoUnit extends Model {
         chainId = json['chainId'],
         name = json['name'],
         address = json['address'] != null
-            ? Address.fromJson(new Map<String, dynamic>.from(json['address']))
+            ? Address.fromJson(Map<String, dynamic>.from(json['address']))
             : null,
         style = json['style'] != null
-            ? ChainStyle.fromJson(new Map<String, dynamic>.from(json['style']))
+            ? ChainStyle.fromJson(Map<String, dynamic>.from(json['style']))
             : null,
         paymentModes = json['paymentModes'] is List
             ? (json['paymentModes'] as List)
                 .map((e) =>
-                    PaymentMode.fromJson(new Map<String, dynamic>.from(e)))
+                    PaymentMode.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         distance = json['distance'],
         openingHours = json['openingHours'],
         currency = json['currency'],
         place = json['place'] != null
-            ? Place.fromJson(new Map<String, dynamic>.from(json['place']))
-            : null;
+            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
+            : null,
+        position = json['position'] ?? 0;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -172,6 +183,7 @@ class GeoUnit extends Model {
         'distance': distance,
         'openingHours': openingHours,
         'currency': currency,
-        'place': place?.toJson()
+        'place': place?.toJson(),
+        'position': position
       };
 }

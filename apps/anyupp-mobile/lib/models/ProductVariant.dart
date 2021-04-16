@@ -68,7 +68,7 @@ class ProductVariant extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("ProductVariant {");
     buffer.write("id=" + "$id" + ", ");
@@ -111,11 +111,11 @@ class ProductVariant extends Model {
       : id = json['id'],
         variantName = json['variantName'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['variantName']))
+                Map<String, dynamic>.from(json['variantName']))
             : null,
         pack = json['pack'] != null
             ? ProductVariantPack.fromJson(
-                new Map<String, dynamic>.from(json['pack']))
+                Map<String, dynamic>.from(json['pack']))
             : null,
         isAvailable = json['isAvailable'],
         price = json['price'],

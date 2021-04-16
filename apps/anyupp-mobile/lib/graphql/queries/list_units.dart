@@ -1,14 +1,11 @@
 const String QUERY_SEARCH_UNITS = '''
 query SearchUnitsQuery {
-  listGeoUnits {
+  listUnits {
     items {
       id
       groupId
       chainId
       name
-      distance
-      openingHours
-      currency
       address {
         address
         city
@@ -20,27 +17,10 @@ query SearchUnitsQuery {
           lng
         }
       }
-      place {
-        seat
-        table
-      }
-      style {
-        colors {
-          backgroundDark
-          backgroundLight
-          borderDark
-          borderLight
-          disabled
-          highlight
-          indicator
-          textDark
-          textLight
-        }
-        images {
-          header
-          logo
-        }
-      }
+      email
+      isActive
+      isAcceptingOrders
+      phone
     }
   }
 }

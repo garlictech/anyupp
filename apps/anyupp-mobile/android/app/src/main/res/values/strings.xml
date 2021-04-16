@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AnyUpp</string>
-    <string name="facebook_app_id">166876958090898</string>
-    <string name="fb_login_protocol_scheme">fb166876958090898</string>
 </resources>

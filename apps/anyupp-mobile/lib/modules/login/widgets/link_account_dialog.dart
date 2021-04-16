@@ -59,10 +59,11 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                     return RaisedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        getIt<LoginBloc>().add(LinkLoginWithProvider(
-                          state.existingProviderList[index],
-                          state.newProviderCredentials,
-                        ));
+                        // TODO removed
+                        // getIt<LoginBloc>().add(LinkLoginWithProvider(
+                        //   state.existingProviderList[index],
+                        //   state.newProviderCredentials,
+                        // ));
                       },
                       child: Text(
                         transEx(context, 'login.accountLink.linkWith',

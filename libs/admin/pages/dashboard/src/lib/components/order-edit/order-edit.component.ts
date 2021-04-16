@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -20,7 +20,7 @@ import * as fp from 'lodash/fp';
 
 interface IPaymentMethodKV {
   key: string;
-  value: AmplifyApi.PaymentMethod;
+  value: CrudApi.PaymentMethod;
 }
 
 @UntilDestroy()
@@ -47,11 +47,10 @@ export class OrderEditComponent implements OnDestroy {
   ) {
     this.workingOrderStatus = false;
 
-    Object.keys(AmplifyApi.PaymentMethod).forEach((key: string): void => {
+    Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
-        value:
-          AmplifyApi.PaymentMethod[<keyof typeof AmplifyApi.PaymentMethod>key],
+        value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
       });
     });
 

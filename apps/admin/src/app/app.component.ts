@@ -63,6 +63,7 @@ export class AppComponent {
         const token = this.user.getSignInUserSession()?.getIdToken();
         const decoded = token?.decodePayload();
 
+        // TODO token context = a megadott contextel??
         this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role || EAdminRole.INACTIVE);
       } else {
         this._dataService.destroyDataConnection();

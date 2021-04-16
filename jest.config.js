@@ -54,7 +54,7 @@ module.exports = {
     '<rootDir>/libs/shared/graphql/api-client',
     '<rootDir>/libs/api/order',
     '<rootDir>/libs/api/graphql/resolver-mapping-templates',
-    '<rootDir>/apps/amplify-admin',
+    '<rootDir>/apps/crud-api',
     '<rootDir>/libs/admin/amplify',
     '<rootDir>/libs/integration-tests',
     '<rootDir>/libs/shared/appsync-client',
@@ -66,5 +66,8 @@ module.exports = {
     '<rootDir>/libs/api/unit',
     '<rootDir>/libs/integration-tests/angular',
     '<rootDir>/libs/shared/data-validators',
+    '<rootDir>/libs/api/crud-gql',
+    '<rootDir>/libs/appsync-gql/api',
+    '<rootDir>/libs/crud-gql/api',
   ],
 };

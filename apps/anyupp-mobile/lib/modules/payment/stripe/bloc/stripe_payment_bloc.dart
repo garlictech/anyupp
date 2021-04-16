@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:flutter/services.dart';

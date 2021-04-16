@@ -52,4 +52,4 @@ generated
 /libs/shared/config/src/lib/*/*
 cdk.out
 
-/apps/admin-amplify-app/amplify
+/apps/crud-backend/amplify

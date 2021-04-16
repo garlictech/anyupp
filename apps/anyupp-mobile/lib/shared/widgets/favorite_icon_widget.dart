@@ -1,7 +1,6 @@
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

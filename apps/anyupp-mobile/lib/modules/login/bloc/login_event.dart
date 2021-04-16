@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
@@ -37,6 +35,16 @@ class LoginWithMethod extends LoginEvent {
   List<Object> get props => [method];
 }
 
+class CompleteLoginWithMethod extends LoginEvent {
+  final LoginMethod method;
+  final String code;
+
+  const CompleteLoginWithMethod(this.method, this.code);
+
+  @override
+  List<Object> get props => [method, code];
+}
+
 class LoginWithPhoneRequireSMSCode extends LoginEvent {
   final String phoneNumber;
   final bool linkAccount;
@@ -65,17 +73,6 @@ class LoginWithPhoneVerifySMSCode extends LoginEvent {
 
   @override
   List<Object> get props => [verificationId, smsCode];
-}
-
-class LinkLoginWithProvider extends LoginEvent {
-  final LoginMethod providerToBeLinked;
-  // AWS TODO!!! ez nem kell majd
-  final dynamic providerCredentials;
-
-  const LinkLoginWithProvider(this.providerToBeLinked, this.providerCredentials);
-
-  @override
-  List<Object> get props => [providerToBeLinked, providerCredentials];
 }
 
 class LinkCurrentAccountWithProvider extends LoginEvent {

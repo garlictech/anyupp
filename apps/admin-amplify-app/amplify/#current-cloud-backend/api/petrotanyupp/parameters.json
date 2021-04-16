@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "petrotanyupp",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authpetrotanyupp9b099e55",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

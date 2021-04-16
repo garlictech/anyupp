@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
@@ -23,25 +22,23 @@ class GetCurrentCartAction extends BaseCartAction {
 
 class AddProductToCartAction extends BaseCartAction {
   final GeoUnit unit;
-  final GeneratedProduct product;
-  final ProductVariant variant;
+  final OrderItem order;
 
-  const AddProductToCartAction(this.unit, this.product, this.variant);
+  const AddProductToCartAction(this.unit, this.order);
 
   @override
-  List<Object> get props => [unit, product, variant];
+  List<Object> get props => [unit, order];
 }
 
 class RemoveProductFromCartAction extends BaseCartAction {
   final String chainId;
   final String unitId;
-  final GeneratedProduct product;
-  final ProductVariant variant;
+  final OrderItem order;
 
-  const RemoveProductFromCartAction(this.chainId, this.unitId, this.product, this.variant);
+  const RemoveProductFromCartAction(this.chainId, this.unitId, this.order);
 
   @override
-  List<Object> get props => [chainId, unitId, product, variant];
+  List<Object> get props => [chainId, unitId, order];
 }
 
 class UpdateProductInCartAction extends BaseCartAction {
@@ -58,7 +55,7 @@ class UpdateProductInCartAction extends BaseCartAction {
 }
 
 class RemoveOrderFromCartAction extends BaseCartAction {
-  final CartItem order;
+  final OrderItem order;
   final String chainId;
   final String unitId;
 

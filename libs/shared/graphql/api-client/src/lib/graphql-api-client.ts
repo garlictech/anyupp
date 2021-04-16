@@ -4,7 +4,7 @@ import { DocumentNode } from 'graphql';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import API from '@aws-amplify/api';
-import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
+import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
 import { buildRetryLogic } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
@@ -13,7 +13,7 @@ export class GraphqlApiClient {
   // See issue #348
   private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
-    private genericConfig: IAmplifyApiConfig,
+    private genericConfig: ICrudApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
     private logger: ILogger,
   ) {
