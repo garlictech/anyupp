@@ -208,9 +208,9 @@ Or, they should support it if needed, we have to add this support gradually. For
 some samples, see the build targets belonging to the examples in the
 `angular.json`.
 
-### Build the amplify app
+### Build the crud (amplify) app
 
-`nx config-schema admin-amplify-api --stage dev`
+`nx build-schema crud-backend --app=APPNAME --stage=dev`
 
 The command builds the _current_ configured app / stage.
 
@@ -218,7 +218,7 @@ The command builds the _current_ configured app / stage.
 
 Deploy the current app/stage:
 
-`nx deploy admin-amplify-api`
+`nx deploy crud-backend --app=APPNAME --stage=dev`
 
 To build the admin site for a given configuration:
 
@@ -234,14 +234,14 @@ Deploying the stack:
 
 Destroy the admin amplify app:
 
-`nx remove crud-backend`
+`nx remove crud-backend --app=APPNAME --stage=dev`
 
 **WARNING**: the command destroys the amplify app that is currently pulled! Both the local
 and the backend resources so be careful.
 
 Then, remove the CDK stack:
 
-`nx remove anyupp-backend --stage ${STAGE}`
+`nx remove anyupp-backend --stage=dev`
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
