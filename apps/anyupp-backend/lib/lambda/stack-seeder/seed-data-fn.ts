@@ -409,7 +409,7 @@ export const createTestCart = ({
 
 
 export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, groupIdx: number, unitIdx: number) => {
-  const superuserInput: AmplifyApi.CreateRoleContextInput = {
+  const superuserInput: CrudApi.CreateRoleContextInput = {
     id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
     name: {
       hu: `Test SUPERUSER role context #${roleContextIdx}`,
@@ -419,7 +419,7 @@ export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, 
     contextId: 'SU_CTX_ID'
   };
 
-  const chainAdminInput: AmplifyApi.CreateRoleContextInput = {
+  const chainAdminInput: CrudApi.CreateRoleContextInput = {
     id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
     name: {
       hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
@@ -431,7 +431,7 @@ export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, 
   };
 
   const r3 = EAdminRole.GROUP_ADMIN;
-  const groupAdminInput: AmplifyApi.CreateRoleContextInput = {
+  const groupAdminInput: CrudApi.CreateRoleContextInput = {
     id: generateRoleContextId(roleContextIdx, r3),
     name: {
       hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
@@ -444,7 +444,7 @@ export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, 
   };
 
   const r4 = EAdminRole.UNIT_ADMIN;
-  const unitAdminInput: AmplifyApi.CreateRoleContextInput = {
+  const unitAdminInput: CrudApi.CreateRoleContextInput = {
     id: generateRoleContextId(roleContextIdx, r4),
     name: {
       hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
@@ -458,7 +458,7 @@ export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, 
   };
 
   const r5 = EAdminRole.STAFF;
-  const staffInput: AmplifyApi.CreateRoleContextInput = {
+  const staffInput: CrudApi.CreateRoleContextInput = {
     id: generateRoleContextId(roleContextIdx, r5),
     name: {
       hu: `Test STAFF role context #${roleContextIdx}`,
@@ -474,28 +474,28 @@ export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, 
   return combineLatest([
     deleteCreate({
       input: superuserInput,
-      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
-      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
     }),
     deleteCreate({
       input: chainAdminInput,
-      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
-      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
     }),
     deleteCreate({
       input: groupAdminInput,
-      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
-      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
     }),
     deleteCreate({
       input: unitAdminInput,
-      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
-      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
     }),
     deleteCreate({
       input: staffInput,
-      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
-      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
     })
   ]);
 };
