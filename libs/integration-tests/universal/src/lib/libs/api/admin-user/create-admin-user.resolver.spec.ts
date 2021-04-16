@@ -2,8 +2,8 @@ import { ApolloQueryResult } from 'apollo-client';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
-import { AmplifyApi } from '@bgap/admin/amplify-api';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   AuthenticatdGraphQlClientWithUserId,
   createAuthenticatedAppsyncGraphQlClient,
@@ -29,7 +29,7 @@ describe('Admin user creation/deletion', () => {
       .pipe(
         switchMap(() =>
           authHelper.graphQlClient
-            .mutate(AppsyncApi.DeleteAdminUser, {
+            .mutate(AnyuppApi.DeleteAdminUser, {
               userName,
             })
             .pipe(
@@ -43,7 +43,7 @@ describe('Admin user creation/deletion', () => {
         ),
         switchMap(() =>
           authHelper.graphQlClient
-            .mutate(AppsyncApi.CreateAdminUser, {
+            .mutate(AnyuppApi.CreateAdminUser, {
               input: {
                 email: 'foobar',
                 name: 'Mekk elek',
@@ -58,18 +58,16 @@ describe('Admin user creation/deletion', () => {
             ),
         ),
         switchMap(() =>
-          authHelper.graphQlClient.mutate(AppsyncApi.CreateAdminUser, {
+          authHelper.graphQlClient.mutate(AnyuppApi.CreateAdminUser, {
             input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
         x =>
-          x as Observable<
-            ApolloQueryResult<AmplifyApi.CreateAdminUserMutation>
-          >,
+          x as Observable<ApolloQueryResult<CrudApi.CreateAdminUserMutation>>,
         map(result => result.data.createAdminUser),
         switchMap(() =>
           authHelper.graphQlClient
-            .mutate(AppsyncApi.CreateAdminUser, {
+            .mutate(AnyuppApi.CreateAdminUser, {
               input: {
                 email: userName,
                 name: 'Mekk Elek',
@@ -85,7 +83,7 @@ describe('Admin user creation/deletion', () => {
         ),
         // Cleanup
         switchMap(() =>
-          authHelper.graphQlClient.mutate(AppsyncApi.DeleteAdminUser, {
+          authHelper.graphQlClient.mutate(AnyuppApi.DeleteAdminUser, {
             userName,
           }),
         ),

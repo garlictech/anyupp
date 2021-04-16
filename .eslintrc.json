@@ -14,14 +14,6 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              },
-              {
-                "sourceTag": "scope:anyupp",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:anyupp"]
-              },
-              {
                 "sourceTag": "platform:universal",
                 "onlyDependOnLibsWithTags": ["platform:universal"]
               },
@@ -57,8 +49,12 @@
                 "onlyDependOnLibsWithTags": ["type:utils"]
               },
               {
-                "sourceTag": "type:server",
-                "onlyDependOnLibsWithTags": ["type:feature", "type:utils"]
+                "sourceTag": "type:backend",
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:utils",
+                  "type:backend"
+                ]
               },
               {
                 "sourceTag": "type:integration-tests",
@@ -72,7 +68,9 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "parserOptions": { "project": "./tsconfig.*?.json" },
+      "parserOptions": {
+        "project": "./tsconfig.*?.json"
+      },
       "rules": {}
     },
     {

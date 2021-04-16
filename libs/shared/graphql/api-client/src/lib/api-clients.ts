@@ -1,18 +1,16 @@
+import { awsConfig } from '@bgap/crud-gql/api';
+import { config } from '@bgap/shared/config';
+import { ICrudApiConfig } from '@bgap/shared/types';
+import { GraphqlApiFp } from './graphql-api-fp';
 import { Auth } from 'aws-amplify';
-import { from, Observable } from 'rxjs';
+import { GraphqlApiClient } from './graphql-api-client';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { awsConfig } from '@bgap/admin/amplify-api';
-import { config } from '@bgap/shared/config';
-import { IAmplifyApiConfig } from '@bgap/shared/types';
-
-import { GraphqlApiClient } from './graphql-api-client';
-import { GraphqlApiFp } from './graphql-api-fp';
-
-const AWS_APPSYNC_CONFIG: IAmplifyApiConfig = {
+const AWS_APPSYNC_CONFIG: ICrudApiConfig = {
   ...awsConfig,
-  aws_appsync_apiKey: config.GraphqlApiKey,
-  aws_appsync_graphqlEndpoint: config.GraphqlApiUrl,
+  aws_appsync_apiKey: config.AnyuppGraphqlApiKey,
+  aws_appsync_graphqlEndpoint: config.AnyuppGraphqlApiUrl,
 };
 
 export const appsyncGraphQlClient = GraphqlApiFp.createPublicClient(
@@ -61,7 +59,7 @@ export const createAuthenticatedAppsyncGraphQlClient = (
   );
 };
 
-const AWS_AMPLIFY_CONFIG: IAmplifyApiConfig = {
+const AWS_AMPLIFY_CONFIG: ICrudApiConfig = {
   ...awsConfig,
 };
 

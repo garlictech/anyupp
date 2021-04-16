@@ -3,8 +3,8 @@ import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import API from '@aws-amplify/api';
-import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
+import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
+// import { buildRetryLogic } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,11 +12,11 @@ export class GraphqlApiClient {
   // See issue #348
   // private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
-    private genericConfig: IAmplifyApiConfig,
+    private genericConfig: ICrudApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
     private logger: ILogger,
   ) {
-    API.configure(genericConfig);
+    // API.configure(genericConfig);
 
     // TODO: the retrayable and retryDelayInMillisec functions is not good
     // for the current GraphQL client responses
@@ -78,7 +78,7 @@ export class GraphqlApiClient {
     // );
 
     // reconfig
-    API.configure(this.genericConfig);
+    // API.configure(this.genericConfig);
     return from(
       this._client.query({
         query: document,
@@ -100,7 +100,7 @@ export class GraphqlApiClient {
     //     document,
     //   )} called with variables ${JSON.stringify(variables, null, 2)}`,
     // );
-    API.configure(this.genericConfig);
+    // API.configure(this.genericConfig);
     return from(
       this._client.mutate({
         mutation: document,

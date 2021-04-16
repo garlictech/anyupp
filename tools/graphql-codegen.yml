@@ -1,8 +1,8 @@
 overwrite: true
-schema: libs/api/graphql/schema/src/schema/appsync/*.graphql
-documents: libs/api/graphql/schema/src/documents/*.graphql
+schema: libs/anyupp-gql/backend/src/graphql/schema/*.graphql
+documents: libs/anyupp-gql/backend/src/graphql/documents/*.graphql
 generates:
-  libs/api/graphql/schema/src/lib/generated/appsync-api.ts:
+  libs/anyupp-gql/api/src/lib/generated/anyupp-api.ts:
     hooks:
       afterOneFileWrite:
         - prettier --write

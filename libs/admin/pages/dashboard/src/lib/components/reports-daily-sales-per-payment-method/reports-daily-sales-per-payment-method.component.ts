@@ -10,7 +10,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { reducer } from '@bgap/shared/utils';
@@ -104,9 +104,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
         const amounts = this._orderAmounts(orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          amounts[AmplifyApi.PaymentMethod.CARD],
-          amounts[AmplifyApi.PaymentMethod.CASH],
-          amounts[AmplifyApi.PaymentMethod.INAPP],
+          amounts[CrudApi.PaymentMethod.CARD],
+          amounts[CrudApi.PaymentMethod.CASH],
+          amounts[CrudApi.PaymentMethod.INAPP],
         ];
 
         this._chart.update();
@@ -126,9 +126,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
   private _orderAmounts(orders: IOrder[]) {
     const amounts: IOrderAmounts = {
-      [AmplifyApi.PaymentMethod.CARD]: 0,
-      [AmplifyApi.PaymentMethod.CASH]: 0,
-      [AmplifyApi.PaymentMethod.INAPP]: 0,
+      [CrudApi.PaymentMethod.CARD]: 0,
+      [CrudApi.PaymentMethod.CASH]: 0,
+      [CrudApi.PaymentMethod.INAPP]: 0,
     };
 
     orders.forEach(o => {
