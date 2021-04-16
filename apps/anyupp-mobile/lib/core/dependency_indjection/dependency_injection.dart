@@ -37,7 +37,7 @@ void _initCommon() {
   print('AWS CONFIG=$awsConfig');
 
   final Stripe stripe = Stripe(
-    awsConfig['stripePublishableKey'],
+    awsConfig['StripePublishableKey'],
     returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
@@ -45,7 +45,7 @@ void _initCommon() {
     region: awsConfig['region'],
     userPoolId: awsConfig['consumerUserPoolId'],
     identityPoolId: awsConfig['IdentityPoolId'],
-    clientId: awsConfig['consumerWebUserPoolClientId'],
+    clientId: awsConfig['ConsumerWebUserPoolClientId'],
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);

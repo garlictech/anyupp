@@ -17,7 +17,7 @@ export class ParamsStack extends sst.Stack {
       this,
       'googleClientIdParam',
       {
-        parameterName: `${app.stage}-${rootAppName}-googleClientId`,
+        parameterName: `/${app.stage}-${rootAppName}/GoogleClientId`,
       },
     ).stringValue;
 
@@ -30,7 +30,7 @@ export class ParamsStack extends sst.Stack {
       this,
       'facebookAppIdParam',
       {
-        parameterName: `${app.stage}-${rootAppName}-facebookAppId`,
+        parameterName: `/${app.stage}-${rootAppName}/FacebookAppId`,
       },
     ).stringValue;
 
@@ -43,7 +43,7 @@ export class ParamsStack extends sst.Stack {
       this,
       'stripePublishableKeyParam',
       {
-        parameterName: `${app.stage}-${rootAppName}-stripePublishableKey`,
+        parameterName: `/${app.stage}-${rootAppName}/StripePublishableKey`,
       },
     ).stringValue;
 

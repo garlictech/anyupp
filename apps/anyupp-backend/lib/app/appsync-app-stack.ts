@@ -14,8 +14,9 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
-import { commonLambdaProps } from './lambda-common';
-import { PROJECT_ROOT } from './settings';
+import {commonLambdaProps} from './lambda-common';
+import {PROJECT_ROOT} from './settings';
+import {getFQParamName} from './utils';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -36,7 +37,7 @@ export class AppsyncAppStack extends sst.Stack {
       name: app.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
         PROJECT_ROOT +
-          'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
+        'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
       ),
       authorizationConfig: {
         defaultAuthorization: {
@@ -65,7 +66,7 @@ export class AppsyncAppStack extends sst.Stack {
 
     this.createDatasources(props);
 
-    const commonResolverInputs = { lambdaDs: this.lambdaDs };
+    const commonResolverInputs = {lambdaDs: this.lambdaDs};
     createOrderResolvers(commonResolverInputs);
     createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
@@ -73,14 +74,14 @@ export class AppsyncAppStack extends sst.Stack {
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
       description: 'The graphql API endpoint URL',
-      parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiUrl',
+      parameterName: getFQParamName(app, 'AnyuppGraphqlApiUrl'),
       stringValue: this.api.graphqlUrl,
     });
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiKeyParam', {
       allowedPattern: '.*',
       description: 'The graphql API key',
-      parameterName: app.logicalPrefixedName('/generated/') + 'AnyuppApiKey',
+      parameterName: getFQParamName(app, 'AnyuppGraphqlApiKey'),
       stringValue: this.api.apiKey || '',
     });
 

@@ -50,8 +50,7 @@ export class OrderEditComponent implements OnDestroy {
     Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
-        value:
-          CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
+        value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
       });
     });
 

@@ -9,9 +9,12 @@ STAGE=$2
 
 amplify push --yes
 
-aws ssm put-parameter \
+APPID=$(amplify env get --name ${STAGE} --json | \
+  jq -r '.awscloudformation.AmplifyAppId')
+
+X=$(aws ssm put-parameter \
   --type String \
   --overwrite \
   --value ${APPID} \
-  --name "${STAGE}-${APPNAME}/generated/CrudApiAppId"
+  --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId")
 

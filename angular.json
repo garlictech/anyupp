@@ -1497,7 +1497,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/build-schema-admin.sh {args.stage}"
+              "sh ../../tools/build-schema-crud-api.sh {args.stage}"
             ]
           }
         },
@@ -1507,7 +1507,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "amplify push --yes"
+              "sh ../../tools/deploy-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },

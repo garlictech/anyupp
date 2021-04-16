@@ -7,19 +7,19 @@ STAGE=$2
 EDITORNAME=${EDITORNAME:-vim}
 AWS_PROFILE=${AWS_PROFILE:-default}
 
-APPID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/CrudApiAppId" | \
+APPID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId" | \
   jq -r '.Parameter.Value')
 
-USERPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminUserPoolId" | \
+USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
   jq -r '.Parameter.Value')
 
-IDENTITYPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
+IDENTITYPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
   jq -r '.Parameter.Value')
 
-WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminWebUserPoolClientId" | \
+WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
-NATIVECLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminNativeUserPoolClientId" | \
+NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminNativeUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
 ANGULARconfig="{\

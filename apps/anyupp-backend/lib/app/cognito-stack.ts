@@ -6,6 +6,7 @@ import { CfnOutput, Duration } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
+import { getFQParamName } from './utils';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -15,7 +16,7 @@ export interface CognitoStackProps extends StackProps {
   facebookClientSecret: string;
 }
 
-type poolLabel = 'admin' | 'consumer';
+type poolLabel = 'Admin' | 'Consumer';
 
 export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
@@ -30,7 +31,7 @@ export class CognitoStack extends Stack {
 
     const consumerDomain = this.createDomain(
       app,
-      'consumer',
+      'Consumer',
       this.consumerUserPool,
     );
 
@@ -83,12 +84,12 @@ export class CognitoStack extends Stack {
       app,
       this.consumerUserPool,
       consumerDomain,
-      'consumer',
+      'Consumer',
     );
 
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
-    const adminDomain = this.createDomain(app, 'admin', this.adminUserPool);
+    const adminDomain = this.createDomain(app, 'Admin', this.adminUserPool);
     const {
       adminNativeClient,
       adminWebClient,
@@ -98,7 +99,7 @@ export class CognitoStack extends Stack {
       props.adminSiteUrl,
     );
 
-    this.createUserPoolOutputs(app, this.adminUserPool, adminDomain, 'admin');
+    this.createUserPoolOutputs(app, this.adminUserPool, adminDomain, 'Admin');
 
     // The common identity pool
     const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
@@ -133,7 +134,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, identityPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The identity pool ID',
-      parameterName: app.logicalPrefixedName('/generated/') + identityPoolId,
+      parameterName: getFQParamName(app, identityPoolId),
       stringValue: identityPool.ref,
     });
   }
@@ -152,7 +153,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool ID for ' + label,
-      parameterName: app.logicalPrefixedName('/generated/') + userPoolId,
+      parameterName: getFQParamName(app, userPoolId),
       stringValue: userPool.userPoolId,
     });
 
@@ -164,7 +165,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolDomainId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool domain for ' + label,
-      parameterName: app.logicalPrefixedName('/generated/') + userPoolDomainId,
+      parameterName: getFQParamName(app, userPoolDomainId),
       stringValue: domain.baseUrl(),
     });
   }
@@ -184,7 +185,7 @@ export class CognitoStack extends Stack {
     new ssm.StringParameter(this, userPoolClientId + 'Param', {
       allowedPattern: '.*',
       description: 'The user pool client ID for ' + label,
-      parameterName: app.logicalPrefixedName('/generated/') + userPoolClientId,
+      parameterName: getFQParamName(app, userPoolClientId),
       stringValue: userPoolClient.userPoolClientId,
     });
   }
@@ -244,7 +245,7 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, adminNativeClient, 'adminNative');
+    this.createUserPoolClientOutput(app, adminNativeClient, 'AdminNative');
 
     const adminWebClient = new cognito.UserPoolClient(
       this,
@@ -275,7 +276,7 @@ export class CognitoStack extends Stack {
       `,
     });
 
-    this.createUserPoolClientOutput(app, adminWebClient, 'adminWeb');
+    this.createUserPoolClientOutput(app, adminWebClient, 'AdminWeb');
 
     return { adminWebClient, adminNativeClient };
   }
@@ -313,7 +314,7 @@ export class CognitoStack extends Stack {
       },
     );
 
-    this.createUserPoolClientOutput(app, consumerWebClient, 'consumerWeb');
+    this.createUserPoolClientOutput(app, consumerWebClient, 'ConsumerWeb');
 
     const consumerNativeClient = new cognito.UserPoolClient(
       this,
@@ -326,7 +327,7 @@ export class CognitoStack extends Stack {
     this.createUserPoolClientOutput(
       app,
       consumerNativeClient,
-      'consumerNative',
+      'ConsumerNative',
     );
 
     return { consumerNativeClient, consumerWebClient };
@@ -336,7 +337,7 @@ export class CognitoStack extends Stack {
     return new cognito.UserPoolDomain(this, `CognitoDomain-${label}`, {
       userPool,
       cognitoDomain: {
-        domainPrefix: `${app.stage}-${app.name}-${label}`,
+        domainPrefix: `${app.stage}-${app.name}-${label.toLowerCase()}`,
       },
     });
   }

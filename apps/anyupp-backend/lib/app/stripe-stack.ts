@@ -5,6 +5,7 @@ import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
 import * as ssm from '@aws-cdk/aws-ssm';
+import { getFQParamName } from './utils';
 
 export class StripeStack extends sst.Stack {
   constructor(scope: sst.App, id: string) {
@@ -33,7 +34,7 @@ export class StripeStack extends sst.Stack {
     new ssm.StringParameter(this, 'StripeWebhookEndpointParam', {
       allowedPattern: '.*',
       description: 'Webhook for Stripe',
-      parameterName: scope.logicalPrefixedName('/generated/StripeWebhookEndpoint'),
+      parameterName: getFQParamName(scope, 'StripeWebhookEndpoint'),
       stringValue: api.url,
     });
 

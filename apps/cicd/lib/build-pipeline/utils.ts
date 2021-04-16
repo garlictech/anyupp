@@ -3,7 +3,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { SecretsManagerStack } from './secretsmanager-stack';
+import {SecretsManagerStack} from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -27,31 +27,36 @@ export const configurePermissions = (
   resources: iam.IGrantable[],
   prefix: string,
 ) => {
+  const generatedParams = [
+    'ConsumerWebUserPoolClientId',
+    'ConsumerNativeUserPoolClientId',
+    'ConsumerUserPoolDomain',
+    'IdentityPoolId',
+    'AnyuppGraphqlApiKey',
+    'AnyuppGraphqlApiUrl',
+    'StripeWebhookEndpoint',
+    'AdminSiteUrl',
+    'AdminWebUserPoolClientId',
+    'AdminNativeUserPoolClientId',
+    'AdminUserPoolId',
+    'AdminUserPoolDomain',
+    'CrudApiAppId',
+  ].map(paramName => `/${prefix}/generated/${paramName}`);
+
+  const fixParams = [
+    'GoogleClientId',
+    'StripePublishableKey',
+    'FacebookAppId',
+  ].map(paramName => `/${prefix}/${paramName}`);
+
   resources.forEach((resource, index) => {
     secretsManager.pipelineSecrets.grantRead(resource);
 
-    [
-      'consumerWebUserPoolClientId',
-      'consumerNativeUserPoolClientId',
-      'consumerUserPoolDomain',
-      'IdentityPoolId',
-      'AnyuppGraphqlApiKey',
-      'AnyuppGraphqlApiUrl',
-      'StripeWebhookEndpoint',
-      'googleClientId',
-      'stripePublishableKey',
-      'facebookAppId',
-      'AdminSiteUrl',
-      'adminWebUserPoolClientId',
-      'adminNativeUserPoolClientId',
-      'adminUserPoolId',
-      'adminUserPoolDomain',
-      'CrudApiAppId',
-    ].forEach(param =>
+    [...generatedParams, ...fixParams].forEach(param =>
       ssm.StringParameter.fromStringParameterName(
         stack,
         param + 'Param' + index,
-        prefix + '-' + param,
+        param,
       ).grantRead(resource),
     );
   });
@@ -213,14 +218,14 @@ export const createIntegrationTestProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): { adminSiteUrl: string } => {
+): {adminSiteUrl: string} => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
-    `${stage}-${appConfig.name}-AdminSiteUrl`,
+    `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return { adminSiteUrl };
+  return {adminSiteUrl};
 };
 
 export const configurePipelineNotifications = (

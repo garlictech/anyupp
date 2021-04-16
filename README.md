@@ -41,7 +41,7 @@ clients.
 
 `nx build-schema crud-backend --app=anyupp-backend --stage=dev`
 
-The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify) 
+The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify)
 and generates client-side code to the `crud-gql/api` project. It does not deploy the backend!
 
 **the configs (and secrets)**
@@ -528,13 +528,13 @@ Parameters that are required in the parameter store for the mobile app are the f
 `'{STAGE}-{APPNAME}-region',` - Server region, eg eu-west-1
 `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
 `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
-`'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
-`'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
+`'{STAGE}-{APPNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app
+`'{STAGE}-{APPNAME}-ConsumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
 `'{STAGE}-{APPNAME}-AnyuppGraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
 `'{STAGE}-{APPNAME}-AnyuppGraphqlApiKey',` - Amplify GraphQL API key
 `'{STAGE}-{APPNAME}-GraphqlAdminApiUrl',` - Admin GraphQL API http endpoint (start with https://)
 `'{STAGE}-{APPNAME}-GraphqlAdminApiKey',` - Admin GraphQL API key
-`'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API
+`'{STAGE}-{APPNAME}-StripePublishableKey',` - The publishable key for the Stripe API
 `'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
 `'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
 

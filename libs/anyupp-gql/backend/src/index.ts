@@ -7,5 +7,5 @@ export { unitRequestHandler } from './lib/lambda-resolvers/unit/unit-request-han
 export { createStripeResolvers } from './lib/lambda-resolvers/stripe/stripe-resolvers';
 export { stripeRequestHandler } from './lib/lambda-resolvers/stripe/stripe-request-handler';
 
-import * as vtl from './lib/resolver-mapping-templates'
-export { vtl }
+import * as vtl from './lib/resolver-mapping-templates';
+export { vtl };

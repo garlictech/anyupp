@@ -179,9 +179,7 @@ describe('GetUnitsNearLocation tests', () => {
       });
   }, 15000);
 
-  const successfullExecutionChecks = (
-    foundItems: Array<AnyuppApi.GeoUnit>,
-  ) => {
+  const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
     const ids = foundItems.map(x => x.id);
     expect(ids).toContain(unitSeed.unitId_seeded_01);
     expect(ids).toContain(unitSeed.unitId_seeded_02);

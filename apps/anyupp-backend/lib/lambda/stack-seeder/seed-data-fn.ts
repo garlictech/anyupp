@@ -3,10 +3,7 @@ import { from, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
-import {
-  CrudApi,
-  CrudApiMutationDocuments,
-} from '@bgap/crud-gql/api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;

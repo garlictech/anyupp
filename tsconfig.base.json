@@ -7,6 +7,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "strict": true,
+    "noImplicitAny": true,
     "sourceMap": true,
     "declaration": false,
     "forceConsistentCasingInFileNames": true,

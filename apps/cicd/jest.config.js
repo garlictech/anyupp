@@ -11,6 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory:
-    '../../coverage/apps/cicd',
+  coverageDirectory: '../../coverage/apps/cicd',
 };

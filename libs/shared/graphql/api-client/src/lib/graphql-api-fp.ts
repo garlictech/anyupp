@@ -1,9 +1,9 @@
-import {AUTH_TYPE} from 'aws-appsync';
+import { AUTH_TYPE } from 'aws-appsync';
 
-import {Auth} from '@aws-amplify/auth';
-import {ICrudApiConfig, ILogger} from '@bgap/shared/types';
+import { Auth } from '@aws-amplify/auth';
+import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
 
-import {GraphqlApiClient} from './graphql-api-client';
+import { GraphqlApiClient } from './graphql-api-client';
 
 export class GraphqlApiFp {
   static createAuthenticatedClient(

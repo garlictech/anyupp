@@ -20,7 +20,6 @@ export class AnyUppStack extends Stack {
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
-      // adminSiteUrl: 'http://localhost:4200', // TODO: re enable admin site
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,

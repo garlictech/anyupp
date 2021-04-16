@@ -1,1 +1,1 @@
-export const PROJECT_ROOT = __dirname + '/../../../../../';
+export const PROJECT_ROOT = __dirname + '/../../../../';

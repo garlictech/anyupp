@@ -46,5 +46,5 @@ aws ssm put-parameter \
   --type String \
   --overwrite \
   --value ${APPID} \
-  --name "${STAGE}-${APPNAME}/generated/CrudApiAppId"
+  --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId"
 

@@ -16,7 +16,7 @@ export interface SeederStackProps extends sst.StackProps {
 export class SeederStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: SeederStackProps) {
     super(scope, id);
-    const adminUserPoolId = props.adminUserPool.userPoolId;
+    const AdminUserPoolId = props.adminUserPool.userPoolId;
 
     const seederLambda = new lambda.Function(this, 'StackSeederLambda', {
       ...commonLambdaProps,
@@ -48,7 +48,7 @@ export class SeederStack extends sst.Stack {
       serviceToken: provider.serviceToken,
       resourceType: 'Custom::StackSeeder',
       properties: {
-        adminUserPoolId,
+        AdminUserPoolId,
         physicalResourceId: scope.logicalPrefixedName('seeder'),
       },
     });

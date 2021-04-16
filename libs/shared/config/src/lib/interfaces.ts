@@ -6,7 +6,7 @@ export interface SharedConfig {
   UserPoolDomain: string;
   UserPoolId: string;
   // googleClientId: string;
-  // stripePublishableKey: string;
+  // StripePublishableKey: string;
   AnyuppGraphqlApiKeyAmplify: string;
   AnyuppGraphqlApiUrlAmplify: string;
 }

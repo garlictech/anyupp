@@ -10,4 +10,3 @@ export interface IPaymentMode {
   caption?: string;
   method: CrudApi.PaymentMethod;
 }
-

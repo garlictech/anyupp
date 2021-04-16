@@ -66,9 +66,7 @@ describe('Admin user creation/deletion', () => {
           }),
         ),
         x =>
-          x as Observable<
-            ApolloQueryResult<CrudApi.CreateAdminUserMutation>
-          >,
+          x as Observable<ApolloQueryResult<CrudApi.CreateAdminUserMutation>>,
         map(result => result.data.createAdminUser),
         switchMap(() =>
           appsyncApiClient

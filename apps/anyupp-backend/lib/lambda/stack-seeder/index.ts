@@ -187,11 +187,11 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    *
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
-  const adminUserPoolId = event.ResourceProperties.adminUserPoolId;
+  const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await combineLatest([seedAdminUser(adminUserPoolId), seedBusinessData()])
+    await combineLatest([seedAdminUser(AdminUserPoolId), seedBusinessData()])
       .pipe(
         switchMap(() =>
           from(

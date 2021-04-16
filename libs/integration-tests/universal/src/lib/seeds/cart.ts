@@ -6,10 +6,7 @@ import {
   amplifyGraphQlClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import {
-  CrudApi,
-  CrudApiMutationDocuments,
-} from '@bgap/crud-gql/api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 
 export const createTestCart = (
   overwrites: Partial<CrudApi.CreateCartInput> = {},

@@ -1,6 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import {Stripe} from 'stripe';
-import {toFixed0Number, toFixed2Number} from '../../utils/number.utils';
+import { Stripe } from 'stripe';
+import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
 
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
@@ -50,7 +50,7 @@ const convertFunding = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
 ) =>
   AnyuppApi.CardFundingType[
-  card?.funding as keyof typeof AnyuppApi.CardFundingType
+    card?.funding as keyof typeof AnyuppApi.CardFundingType
   ];
 
 // [key, value] => {key:key, value:value}

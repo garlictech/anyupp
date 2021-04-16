@@ -11,10 +11,10 @@ PASSWORD=$4
 
 REGION=$(aws configure get region)
 
-USERPOOLID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminUserPoolId" | \
+USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
   jq -r '.Parameter.Value')
 
-WEBCLIENTID=$(aws ssm get-parameter --name "${STAGE}-${APPNAME}/generated/adminWebUserPoolClientId" | \
+WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
   jq -r '.Parameter.Value')
 
 if aws cognito-idp admin-get-user \

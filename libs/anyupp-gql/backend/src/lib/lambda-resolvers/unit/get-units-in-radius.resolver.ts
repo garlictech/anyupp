@@ -1,9 +1,9 @@
 import * as geolib from 'geolib';
 import * as fp from 'lodash/fp';
-import {combineLatest, EMPTY, iif, Observable, of} from 'rxjs';
-import {defaultIfEmpty, filter, map, switchMap} from 'rxjs/operators';
+import { combineLatest, EMPTY, iif, Observable, of } from 'rxjs';
+import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
 
-import {CrudApi, CrudApiQueryDocuments} from '@bgap/crud-gql/api';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   validateChain,
@@ -21,7 +21,7 @@ import {
   IUnit,
   IWeeklySchedule,
 } from '@bgap/shared/types';
-import {removeTypeNameField} from '../../utils/graphql.utils';
+import { removeTypeNameField } from '../../utils/graphql.utils';
 
 type listResponse<T> = {
   items: Array<T>;
@@ -53,7 +53,7 @@ export const getUnitsInRadius = ({
             switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
             switchMap(chain =>
               getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
-                map(currency => ({chain, currency})),
+                map(currency => ({ chain, currency })),
               ),
             ),
             map(props =>
@@ -76,7 +76,7 @@ export const getUnitsInRadius = ({
         .filter(x => !!x.id) // Filter out the {} that comes for the e not active chains
         .sort((a, b) => (a.distance > b.distance ? 1 : -1)),
     ),
-    map(x => ({items: x})),
+    map(x => ({ items: x })),
   );
 };
 
@@ -116,7 +116,7 @@ const listActiveUnits = (
   amplifyApiClient: GraphqlApiClient,
 ): Observable<Array<IUnit>> => {
   const input: CrudApi.ListUnitsQueryVariables = {
-    filter: {isActive: {eq: true}},
+    filter: { isActive: { eq: true } },
   };
   return executeQuery(amplifyApiClient)<CrudApi.ListUnitsQuery>(
     CrudApiQueryDocuments.listUnits,
@@ -135,7 +135,7 @@ const getGroupCurrency = (
 ): Observable<string> => {
   return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
     CrudApiQueryDocuments.getGroupCurrency,
-    {id},
+    { id },
   ).pipe(
     map(x => x.getGroup),
     // pipeDebug(`### GET GROUP with id: ${id}`),
@@ -150,7 +150,7 @@ const getChain = (
 ): Observable<IChain> => {
   return executeQuery(amplifyApiClient)<CrudApi.GetChainQuery>(
     CrudApiQueryDocuments.getChain,
-    {id},
+    { id },
   ).pipe(
     map(x => x.getChain),
     // pipeDebug(`### GET CHAIN with id: ${id}`),
