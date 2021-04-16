@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 export class ActiveUnitSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public units$: Observable<IUnit[]>;
-  private _adminUser!: IAdminUser;
+  private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
@@ -29,13 +29,13 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
       });
   }
 
   get selectedUnitId(): string | null | undefined {
-    return this._adminUser?.settings?.selectedUnitId;
+    return this._loggedUser?.settings?.selectedUnitId;
   }
 
   ngOnDestroy(): void {
@@ -44,11 +44,11 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
 
   public onUnitSelected(unitId: string): void {
     if (
-      this._adminUser?.id &&
-      unitId !== this._adminUser?.settings?.selectedUnitId
+      this._loggedUser?.id &&
+      unitId !== this._loggedUser?.settings?.selectedUnitId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
-        ...(this._adminUser?.settings || {}),
+      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
+        ...(this._loggedUser?.settings || {}),
         selectedUnitId: unitId,
       });
     }

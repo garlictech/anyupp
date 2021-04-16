@@ -8,8 +8,8 @@ type Address {
 }
 
 type Location {
-  lat: Float
-  lng: Float
+  lat: Float!
+  lng: Float!
 }
 
 type LocalizedItem {

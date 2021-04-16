@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 export class ActiveGroupSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public groups$: Observable<IGroup[]>;
-  private _adminUser!: IAdminUser;
+  private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
@@ -29,13 +29,13 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
       });
   }
 
   get selectedGroupId(): string | null | undefined {
-    return this._adminUser?.settings?.selectedGroupId;
+    return this._loggedUser?.settings?.selectedGroupId;
   }
 
   ngOnDestroy(): void {
@@ -44,11 +44,11 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
 
   public onGroupSelected(groupId: string): void {
     if (
-      this._adminUser?.id &&
-      groupId !== this._adminUser?.settings?.selectedGroupId
+      this._loggedUser?.id &&
+      groupId !== this._loggedUser?.settings?.selectedGroupId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
-        ...(this._adminUser?.settings || {}),
+      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
+        ...(this._loggedUser?.settings || {}),
         selectedGroupId: groupId,
         selectedUnitId: null, // Reset unit id!
       });

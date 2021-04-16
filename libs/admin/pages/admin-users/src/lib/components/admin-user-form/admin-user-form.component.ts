@@ -1,3 +1,7 @@
+import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
+import { map } from 'rxjs/operators';
+
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { awsConfig } from '@bgap/admin/amplify-api';
@@ -8,10 +12,6 @@ import { AppsyncApi } from '@bgap/api/graphql/schema';
 import { config } from '@bgap/shared/config';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
-import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
-
 
 @Component({
   selector: 'bgap-admin-user-form',

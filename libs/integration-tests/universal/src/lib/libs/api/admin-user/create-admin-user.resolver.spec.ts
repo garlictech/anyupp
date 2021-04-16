@@ -24,10 +24,11 @@ describe('Admin user creation/deletion', () => {
       aws_appsync_graphqlEndpoint: GraphqlApiUrl,
       aws_appsync_apiKey: GraphqlApiKey,
     };
-    const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
+    const appsyncApiClient = GraphqlApiFp.createBackendClient(
       appsyncConfig,
+      process.env.AWS_ACCESS_KEY_ID || '',
+      process.env.AWS_SECRET_ACCESS_KEY || '',
       console,
-      true,
     );
 
     const userName = 'foobar@anyupp.com';

@@ -86,7 +86,7 @@ export class GraphqlApiClient {
         ...options,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### QUERY AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
@@ -107,7 +107,7 @@ export class GraphqlApiClient {
         variables,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### MUTATION AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );

@@ -5,6 +5,7 @@ import * as Queries from './lib/generated/graphql/queries';
 import * as CustomQueries from './lib/custom-documents/queries';
 import * as Subscriptions from './lib/generated/graphql/subscriptions';
 
+// Use same names in CustomQueries to overrides the generated Queries!!!
 export const AmplifyApiQueryDocuments = { ...Queries, ...CustomQueries };
 export {
   awsmobile as awsConfig,

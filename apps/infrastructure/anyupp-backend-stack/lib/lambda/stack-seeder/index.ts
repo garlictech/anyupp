@@ -20,6 +20,7 @@ import {
   createTestGroup,
   createTestGroupProduct,
   createTestProductCategory,
+  // createTestRoleContext,
   createTestUnit,
   createTestUnitProduct,
 } from './seed-data-fn';
@@ -51,6 +52,8 @@ const sendResponse = async (props: any) => {
 
 const username = 'test@anyupp.com';
 const password = 'Testtesttest12_';
+const phone = '+123456789013';
+const email = 'john@doe.com';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -69,7 +72,7 @@ export const seedAdminUser = (UserPoolId: string) =>
         },
         {
           Name: 'phone_number',
-          Value: '+123456789013',
+          Value: phone,
         },
       ],
     },
@@ -117,8 +120,8 @@ export const seedAdminUser = (UserPoolId: string) =>
     map((adminUserId: string) => ({
       id: adminUserId,
       name: 'John Doe',
-      email: 'john@doe.com',
-      phone: '123123213',
+      email,
+      phone,
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     })),
@@ -163,6 +166,7 @@ export const seedBusinessData = () =>
       createTestGroupProduct(1, 1, 2, 2).pipe(pipeDebug('### GroupProd SEED')),
       createTestUnitProduct(1, 1, 1, 1, 1).pipe(pipeDebug('### UnitProd SEED')),
       createTestUnitProduct(1, 1, 1, 2, 2).pipe(pipeDebug('### UnitProd SEED')),
+      // createTestRoleContext(1, 1, 1, 1).pipe(pipeDebug('### RoleContext SEED')),
       createTestCart({
         chainIdx: 1,
         groupIdx: 1,

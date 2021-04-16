@@ -37,7 +37,7 @@ export class OrderEditComponent implements OnDestroy {
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
-  private _adminUser?: IAdminUser;
+  private _loggedUser?: IAdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,7 +58,7 @@ export class OrderEditComponent implements OnDestroy {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+        this._loggedUser = adminUser;
       });
 
     this._store
@@ -109,8 +109,8 @@ export class OrderEditComponent implements OnDestroy {
 
   public updateOrderPaymentMethod(method: string): void {
     this._dataService.updateOrderPaymentMode(
-      this._adminUser?.settings?.selectedChainId || '',
-      this._adminUser?.settings?.selectedUnitId || '',
+      this._loggedUser?.settings?.selectedChainId || '',
+      this._loggedUser?.settings?.selectedUnitId || '',
       this.order.id,
       {
         paymentMethod: method,

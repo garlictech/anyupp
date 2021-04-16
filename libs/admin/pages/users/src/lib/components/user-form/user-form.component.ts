@@ -1,6 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { AuthService } from '@bgap/admin/shared/data-access/auth';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { contactFormGroup } from '@bgap/admin/shared/utils';
 import { IUser } from '@bgap/shared/types';
@@ -14,12 +13,8 @@ export class UserFormComponent
   implements OnInit {
   public user: IUser | undefined;
 
-  private _authService: AuthService;
-
   constructor(protected _injector: Injector) {
     super(_injector);
-
-    this._authService = this._injector.get(AuthService);
   }
 
   get userImage(): string {

@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 export class ActiveChainSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public chains$: Observable<IChain[]>;
-  private _adminUser!: IAdminUser;
+  private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _dataService: DataService) {
@@ -29,13 +29,13 @@ export class ActiveChainSelectorComponent implements OnDestroy {
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
       });
   }
 
   get selectedChainId(): string | null | undefined {
-    return this._adminUser?.settings?.selectedChainId;
+    return this._loggedUser?.settings?.selectedChainId;
   }
 
   ngOnDestroy(): void {
@@ -44,11 +44,12 @@ export class ActiveChainSelectorComponent implements OnDestroy {
 
   public onChainSelected(chainId: string): void {
     if (
-      this._adminUser?.id &&
-      chainId !== this._adminUser?.settings?.selectedChainId
+      this._loggedUser?.id &&
+      chainId !== this._loggedUser?.settings?.selectedChainId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
-        ...(this._adminUser?.settings || {}),
+
+      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
+        ...(this._loggedUser?.settings || {}),
         selectedChainId: chainId,
         selectedGroupId: null, // Reset group id!
         selectedUnitId: null, // Reset unit id!

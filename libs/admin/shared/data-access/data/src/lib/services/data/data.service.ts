@@ -45,6 +45,7 @@ export class DataService {
   private _destroyConnection$: Subject<boolean> = new Subject<boolean>();
   private _settingsChanged$: Subject<boolean> = new Subject<boolean>();
   private _rolesChanged$: Subject<boolean> = new Subject<boolean>();
+  private _dataConnectionInitialized = false;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +54,11 @@ export class DataService {
     private _translateService: TranslateService,
   ) {}
 
-  public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
+  public async initDataConnections<IAdminUser>(userId: string, currentContextRole: EAdminRole): Promise<void> {
+    // Prevent multiple initialization on login
+    if (this._dataConnectionInitialized) return;
+
+    console.error(' this._dataConnectionInitialized??',  this._dataConnectionInitialized);
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
@@ -64,7 +69,7 @@ export class DataService {
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
                 ...(<IAdminUser>loggedUser),
-                role: EAdminRole.SUPERUSER, // TODO contextből
+                role: currentContextRole
               },
             }),
           );
@@ -87,6 +92,7 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
+        console.error('adminUserSettings', adminUserSettings);
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
@@ -133,6 +139,8 @@ export class DataService {
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
+
+      this._dataConnectionInitialized = true;
   }
 
   private _subscribeToRoleContext(): void {
@@ -500,6 +508,8 @@ export class DataService {
     this._store.dispatch(productsActions.resetGeneratedUnitProducts());
     this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
+
+    this._dataConnectionInitialized = false;
   }
 
   //

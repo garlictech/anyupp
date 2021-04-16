@@ -1,5 +1,6 @@
 import { bindNodeCallback, from, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';

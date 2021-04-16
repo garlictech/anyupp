@@ -4,7 +4,7 @@ import * as fp from 'lodash/fp';
 import { from, throwError } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
+import API, { graphqlOperation, GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api-graphql';
 import Amplify from '@aws-amplify/core';
 import {
   AmplifyApi,
@@ -64,6 +64,7 @@ export const createAdminUser = (
         API.graphql(
           graphqlOperation(AmplifyApiMutationDocuments.createAdminUser, {
             input,
+            authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
           }),
         ),
         operation =>

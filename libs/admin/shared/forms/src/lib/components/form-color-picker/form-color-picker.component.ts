@@ -12,7 +12,7 @@ export class FormColorPickerComponent implements OnInit {
   public color = '';
 
   ngOnInit(): void {
-    this.color = this.control?.value || '#fff';
+    this.color = this.control?.value || '#ffffff';
   }
 
   public onChange($event: string): void {

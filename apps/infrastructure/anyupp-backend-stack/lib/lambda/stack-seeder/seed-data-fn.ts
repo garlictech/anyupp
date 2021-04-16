@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/lib/function';
-import { from, throwError } from 'rxjs';
+import { combineLatest, from, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation } from '@aws-amplify/api-graphql';
@@ -7,8 +7,9 @@ import {
   AmplifyApi,
   AmplifyApiMutationDocuments,
 } from '@bgap/admin/amplify-api';
-import { EProductType } from '@bgap/shared/types';
+import { EAdminRole, EProductType } from '@bgap/shared/types';
 
+const generateRoleContextId = (idx: number, role: EAdminRole) => `role_context_${idx}_${role}_id`;
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
   `group_c${chainIdx}_${idx}_id`;
@@ -95,15 +96,15 @@ export const createTestChain = (chainIdx: number) => {
     phone: '1234567890',
     style: {
       colors: {
-        backgroundLight: '#fff',
-        backgroundDark: '#fff',
-        borderLight: '#fff',
-        borderDark: '#fff',
-        disabled: '#fff',
-        highlight: '#fff',
-        indicator: '#fff',
-        textLight: '#fff',
-        textDark: '#fff',
+        backgroundLight: '#ffffff',
+        backgroundDark: '#ffffff',
+        borderLight: '#ffffff',
+        borderDark: '#ffffff',
+        disabled: '#ffffff',
+        highlight: '#ffffff',
+        indicator: '#ffffff',
+        textLight: '#ffffff',
+        textDark: '#ffffff',
       },
     },
   };
@@ -407,4 +408,97 @@ export const createTestCart = ({
     deleteOperation: AmplifyApiMutationDocuments.deleteCart,
     createOperation: AmplifyApiMutationDocuments.createCart,
   });
+};
+
+
+export const createTestRoleContext = (roleContextIdx: number, chainIdx: number, groupIdx: number, unitIdx: number) => {
+  const superuserInput: AmplifyApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+    name: {
+      hu: `Test SUPERUSER role context #${roleContextIdx}`,
+      en: `Test SUPERUSER role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.SUPERUSER,
+    contextId: 'SU_CTX_ID'
+  };
+
+  const chainAdminInput: AmplifyApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
+    name: {
+      hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+      en: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.CHAIN_ADMIN,
+    contextId: 'CA_CTX_ID',
+    chainId: generateChainId(chainIdx)
+  };
+
+  const r3 = EAdminRole.GROUP_ADMIN;
+  const groupAdminInput: AmplifyApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r3),
+    name: {
+      hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+      en: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r3,
+    contextId: 'GA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx)
+  };
+
+  const r4 = EAdminRole.UNIT_ADMIN;
+  const unitAdminInput: AmplifyApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r4),
+    name: {
+      hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+      en: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r4,
+    contextId: 'UA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+
+  const r5 = EAdminRole.STAFF;
+  const staffInput: AmplifyApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r5),
+    name: {
+      hu: `Test STAFF role context #${roleContextIdx}`,
+      en: `Test STAFF role context #${roleContextIdx}`,
+    },
+    role: r5,
+    contextId: 'STF_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
+      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
+      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: groupAdminInput,
+      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
+      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: unitAdminInput,
+      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
+      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: staffInput,
+      deleteOperation: AmplifyApiMutationDocuments.deleteRoleContext,
+      createOperation: AmplifyApiMutationDocuments.createRoleContext,
+    })
+  ]);
 };

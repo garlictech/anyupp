@@ -10,15 +10,15 @@ import { switchMap, tap } from 'rxjs/operators';
 
 describe('Testing cognito service', () => {
   const service = new CognitoService();
-  const goodContext = 'GOOD_CONTEXT';
+  const goodContext = 'cmd46v'; // TODO seeeded data
+  // const goodContext = 'GOOD_CONTEXT';
   const badContext = 'BAD_CONTEXT';
-  const goodGroupId = 'MY GROUP ID';
 
   beforeAll(() => {
     configureAmplify();
   });
 
-  test('Test valid authorization', done => {
+  test.only('Test valid authorization', done => {
     service.currentContext = goodContext;
 
     from(Auth.signIn(testAdminUsername, testAdminUserPassword))
@@ -28,7 +28,7 @@ describe('Testing cognito service', () => {
         tap((auth: CognitoUser) => {
           const token = auth?.getSignInUserSession()?.getIdToken();
           const decoded = token?.decodePayload();
-          expect(decoded?.groupId).toEqual(goodGroupId);
+          expect(decoded?.role).toEqual('superuser');
           expect(decoded?.['custom:context']).toEqual(goodContext);
         }),
       )
@@ -52,4 +52,5 @@ describe('Testing cognito service', () => {
       )
       .subscribe(() => done());
   });
+
 });
