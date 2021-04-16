@@ -14,7 +14,7 @@ export class QABuildPipelineStack extends sst.Stack {
     const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
     const stage = 'qa';
-    const { adminSiteUrl } = utils.configurePipeline(this, stage);
+    const {adminSiteUrl} = utils.configurePipeline(this, stage);
     const build = utils.createBuildProject(this, cache, stage);
     const e2eTest = utils.createE2eTestProject(this, cache, adminSiteUrl);
     const integrationTest = utils.createIntegrationTestProject(
@@ -63,7 +63,7 @@ export class QABuildPipelineStack extends sst.Stack {
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: `CreateStack`,
               templatePath: buildOutput.atPath(
-                `apps/infrastructure/anyupp-backend-stack/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
+                `apps/anyupp-backend/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
               ),
               stackName: `${utils.projectPrefix(stage)}-anyupp`,
               adminPermissions: true,
