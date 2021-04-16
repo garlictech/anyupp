@@ -3,7 +3,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import {SecretsManagerStack} from './secretsmanager-stack';
+import { SecretsManagerStack } from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -84,7 +84,7 @@ export const createBuildProject = (
           commands: [
             `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api`,
+            `yarn nx build anyupp-gql-api --skip-nx-cach`,
           ],
         },
         build: {
@@ -182,7 +182,7 @@ export const createIntegrationTestProject = (
           commands: [
             `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api`,
+            `yarn nx build anyupp-gql-api --skip-nx-cache`,
           ],
         },
         build: {
@@ -218,14 +218,14 @@ export const createIntegrationTestProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): {adminSiteUrl: string} => {
+): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return {adminSiteUrl};
+  return { adminSiteUrl };
 };
 
 export const configurePipelineNotifications = (

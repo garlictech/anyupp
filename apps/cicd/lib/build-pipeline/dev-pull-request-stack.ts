@@ -43,7 +43,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
               commands: [
                 `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
                 `yarn nx config crud-backend --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx build anyupp-gql-api`,
+                `yarn nx build anyupp-gql-api --skip-nx-cache`,
               ],
             },
             build: {
