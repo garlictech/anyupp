@@ -1,13 +1,13 @@
-import { AUTH_TYPE } from 'aws-appsync/lib';
+import { AUTH_TYPE } from 'aws-appsync';
 
 import { Auth } from '@aws-amplify/auth';
-import { IAmplifyApiConfig, ILogger } from '@bgap/shared/types';
+import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
 
 import { GraphqlApiClient } from './graphql-api-client';
 
 export class GraphqlApiFp {
   static createAuthenticatedClient(
-    config: IAmplifyApiConfig,
+    config: ICrudApiConfig,
     logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
@@ -30,7 +30,7 @@ export class GraphqlApiFp {
   }
 
   static createPublicClient(
-    config: IAmplifyApiConfig,
+    config: ICrudApiConfig,
     logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
@@ -51,7 +51,7 @@ export class GraphqlApiFp {
   }
 
   static createAdminClient(
-    config: IAmplifyApiConfig,
+    config: ICrudApiConfig,
     logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
@@ -72,7 +72,7 @@ export class GraphqlApiFp {
   }
 
   static createBackendClient(
-    config: IAmplifyApiConfig,
+    config: ICrudApiConfig,
     accessKeyId: string,
     secretAccessKey: string,
     logger: ILogger,

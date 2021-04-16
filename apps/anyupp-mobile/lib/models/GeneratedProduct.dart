@@ -84,7 +84,7 @@ class GeneratedProduct extends Model {
 
   @override
   String toString() {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     buffer.write("GeneratedProduct {");
     buffer.write("id=" + "$id" + ", ");
@@ -134,11 +134,11 @@ class GeneratedProduct extends Model {
         productCategoryId = json['productCategoryId'],
         name = json['name'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['name']))
+                Map<String, dynamic>.from(json['name']))
             : null,
         description = json['description'] != null
             ? LocalizedItem.fromJson(
-                new Map<String, dynamic>.from(json['description']))
+                Map<String, dynamic>.from(json['description']))
             : null,
         productType = json['productType'],
         tax = json['tax'],
@@ -147,7 +147,7 @@ class GeneratedProduct extends Model {
         variants = json['variants'] is List
             ? (json['variants'] as List)
                 .map((e) =>
-                    ProductVariant.fromJson(new Map<String, dynamic>.from(e)))
+                    ProductVariant.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null;
 

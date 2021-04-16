@@ -25,12 +25,12 @@ class AuthRepository implements IAuthProvider {
   }
 
   @override
-  Future<CognitoAccessToken> getAccessToken() {
+  Future<String> getAccessToken() {
     return _authProvider.getAccessToken();
   }
 
   @override
-  Future<CognitoIdToken> getIdToken() {
+  Future<String> getIdToken() {
     return _authProvider.getIdToken();
   }
 }

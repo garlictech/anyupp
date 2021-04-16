@@ -103,10 +103,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
               this.adminUser?.roles?.role || EAdminRole.INACTIVE,
             )
           ) {*/
-            this.menu.push({
-              ...menuItem,
-              title: this._translateService.instant(menuItem.title),
-            });
+          this.menu.push({
+            ...menuItem,
+            title: this._translateService.instant(menuItem.title),
+          });
           // }
         });
       });

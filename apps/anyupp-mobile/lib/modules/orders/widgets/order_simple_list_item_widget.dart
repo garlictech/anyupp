@@ -1,11 +1,9 @@
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-
-import 'package:fa_prev/modules/orders/orders.dart';
 
 class OrderSimpleListItemWidget extends StatelessWidget {
   final OrderItem orderItem;
@@ -49,7 +47,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ],
           ),
           Text(
-            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency),
+            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'),  // TODO geounit!!
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,

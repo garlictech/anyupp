@@ -10,12 +10,12 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { EPaymentMethod, IOrder, IOrderAmounts } from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import { IOrder, IOrderAmounts } from '@bgap/shared/types';
+import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
-
-import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { reducer } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -104,9 +104,9 @@ export class ReportsDailySalesPerPaymentMethodComponent
         const amounts = this._orderAmounts(orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          amounts[EPaymentMethod.CARD],
-          amounts[EPaymentMethod.CASH],
-          amounts[EPaymentMethod.INAPP],
+          amounts[CrudApi.PaymentMethod.CARD],
+          amounts[CrudApi.PaymentMethod.CASH],
+          amounts[CrudApi.PaymentMethod.INAPP],
         ];
 
         this._chart.update();
@@ -126,13 +126,13 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
   private _orderAmounts(orders: IOrder[]) {
     const amounts: IOrderAmounts = {
-      [EPaymentMethod.CARD]: 0,
-      [EPaymentMethod.CASH]: 0,
-      [EPaymentMethod.INAPP]: 0,
+      [CrudApi.PaymentMethod.CARD]: 0,
+      [CrudApi.PaymentMethod.CASH]: 0,
+      [CrudApi.PaymentMethod.INAPP]: 0,
     };
 
     orders.forEach(o => {
-      amounts[o.paymentMethod] += o.sumPriceShown.priceSum;
+      amounts[o.paymentMode.method] += o.sumPriceShown.priceSum;
     });
 
     return amounts;

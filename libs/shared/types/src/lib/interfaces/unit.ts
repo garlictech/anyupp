@@ -13,6 +13,7 @@ export interface IUnitSeat {
 }
 
 export interface ILane {
+  __typename?: 'Lane';
   id?: string;
   name: string;
   color: string;
@@ -25,8 +26,9 @@ export interface IDetailedLane extends ILane {
 }
 
 export interface IUnit extends IContact, IAddressInfo {
-  id: string;
+  __typename?: 'Unit';
   _group?: IGroup;
+  id: string;
   groupId: string;
   chainId: string;
   isActive: boolean;
@@ -38,4 +40,6 @@ export interface IUnit extends IContact, IAddressInfo {
   lanes?: [ILane];
   floorMap?: IFloorMapData;
   paymentModes?: IPaymentMode[];
+  createdAt: string;
+  updatedAt: string;
 }

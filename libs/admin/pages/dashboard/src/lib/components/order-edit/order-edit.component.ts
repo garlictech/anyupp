@@ -1,6 +1,5 @@
-import * as fp from 'lodash/fp';
-
 import { Component, Input, OnDestroy } from '@angular/core';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -12,16 +11,16 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus,
-  EPaymentMethod,
   IAdminUser,
   IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as fp from 'lodash/fp';
 
 interface IPaymentMethodKV {
   key: string;
-  value: EPaymentMethod;
+  value: CrudApi.PaymentMethod;
 }
 
 @UntilDestroy()
@@ -48,10 +47,10 @@ export class OrderEditComponent implements OnDestroy {
   ) {
     this.workingOrderStatus = false;
 
-    Object.keys(EPaymentMethod).forEach((key: string): void => {
+    Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
-        value: EPaymentMethod[<keyof typeof EPaymentMethod>key],
+        value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
       });
     });
 

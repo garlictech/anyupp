@@ -12,12 +12,17 @@ import {
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
-export const contactFormGroup = () => ({
-  email: ['', [Validators.email]],
+export const contactFormGroup = (requiredEmail = false) => ({
+  email: requiredEmail
+    ? ['', [Validators.email, Validators.required]]
+    : ['', [Validators.email]],
   phone: [''],
 });
 
-export const addressFormGroup = (formBuilder: FormBuilder, required = false) => ({
+export const addressFormGroup = (
+  formBuilder: FormBuilder,
+  required = false,
+) => ({
   address: formBuilder.group({
     address: ['', required ? [Validators.required] : []],
     city: ['', required ? [Validators.required] : []],
@@ -25,8 +30,8 @@ export const addressFormGroup = (formBuilder: FormBuilder, required = false) => 
     title: [''],
     postalCode: ['', required ? [Validators.required] : []],
     location: formBuilder.group({
-      lat: [''],
-      lng: [''],
+      lat: [0],
+      lng: [0],
     }),
   }),
 });

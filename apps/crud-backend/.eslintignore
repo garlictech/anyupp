@@ -1,0 +1,7 @@
+../../libs/admin/amplify/src/lib/models
+
+src/models
+
+../../libs/crud-gql/api/src/lib/models
+
+../../libs/crud-gql/api/src/lib/generated/models

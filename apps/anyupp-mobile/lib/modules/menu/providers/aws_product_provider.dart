@@ -18,13 +18,15 @@ class AwsProductProvider implements IProductProvider {
 
   Stream<List<ProductCategory>> _getWithGraphQL(String chainId, String unitId) async* {
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_LIST_PRODUCT_CATEGORIES),
         variables: {
-          'unitId': unitId,
+          'chainId': chainId,
         },
       ));
+
+      print('getProductCategoryList.result=$result');
 
       List<dynamic> items = result.data['listProductCategorys']['items'];
       List<ProductCategory> results = [];
@@ -43,9 +45,9 @@ class AwsProductProvider implements IProductProvider {
 
   @override
   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) async* {
-    print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
+    // print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_LIST_PRODUCTS),
         variables: {

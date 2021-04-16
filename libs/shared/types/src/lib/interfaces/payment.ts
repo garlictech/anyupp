@@ -1,11 +1,12 @@
-import { EPaymentMethod } from '../enums';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 export interface IStripePayment {
   accountId: string;
 }
 
 export interface IPaymentMode {
+  __typename?: 'PaymentMode';
   name: string;
   caption?: string;
-  method: EPaymentMethod;
+  method: CrudApi.PaymentMethod;
 }

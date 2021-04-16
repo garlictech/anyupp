@@ -1,0 +1,533 @@
+type Address {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location
+}
+
+type Location {
+  lat: Float!
+  lng: Float!
+}
+
+type LocalizedItem {
+  en: String
+  de: String
+  hu: String
+}
+
+### AdminUser
+
+type AdminUser @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  profileImage: String
+  settings: AdminUserSettings
+  roleContexts: [AdminRoleContext]
+    @connection(keyName: "byAdminUser", fields: ["id"])
+}
+
+type AdminUserSettings {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+###
+# Create a join model and disable queries as you don't need them
+# and can query through Post.editors and AdminUser.roleContexts
+type AdminRoleContext
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
+  @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
+  id: ID!
+  roleContextId: ID!
+  adminUserId: ID!
+  roleContext: RoleContext! @connection(fields: ["roleContextId"])
+  adminUser: AdminUser! @connection(fields: ["adminUserId"])
+}
+
+### RoleContext
+
+type RoleContext @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  contextId: ID! # Readable short id
+  role: String!
+  name: LocalizedItem
+  chainId: String
+  groupId: String
+  unitId: String
+  adminUsers: [AdminRoleContext]
+    @connection(keyName: "byRoleContext", fields: ["id"])
+}
+
+### Stripe
+
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+# https://stripe.com/docs/api/cards/object?lang=node
+# Card brand
+# enum CardBrand {
+#   amex
+#   diners
+#   discover
+#   jcb
+#   mastercard
+#   unionpay
+#   visa
+#   unknown
+# }
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+# Card funding type
+# enum CardFundingType {
+#   credit
+#   debit
+#   prepaid
+#   unknown
+# }
+
+# enum StripPaymentMethodType {
+#   alipay
+#   au_becs_debit
+#   bacs_debit
+#   bancontact
+#   card
+#   eps
+#   fpx
+#   giropay
+#   grabpay
+#   ideal
+#   oxxo
+#   p24
+#   sepa_debit
+#   sofort
+# }
+
+# type CardChecks {
+#   address_line1_check: String
+#   address_postal_code_check: String
+#   cvc_check: String
+# }
+
+# https://stripe.com/docs/api/metadata?lang=node
+# Updateable Stripe objects
+# type StripeMetadata {
+#   key: String!
+#   value: String!
+# }
+
+# type StripeCard @model @auth(rules: [{ allow: public }]) {
+#   brand: CardBrand
+#   checks: CardChecks
+#   country: String
+#   last4: String
+#   exp_month: Int
+#   exp_year: Int
+#   fingerprint: String
+#   funding: CardFundingType
+#   three_d_secure: String
+#   # wallet: String # to do
+#   # IMPLEMENTED INTERFACES
+#   id: ID!
+#   object: String!
+#   metadata: [StripeMetadata!]!
+# }
+
+# type StartStripePaymentOutput {
+#   clientSecret: String!
+#   status: String!
+# }
+
+### Chain
+type Chain @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String!
+  description: LocalizedItem
+  style: ChainStyle!
+  isActive: Boolean
+  address: Address
+  email: String
+  phone: String
+}
+
+type ChainStyle {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors {
+  backgroundLight: String!
+  backgroundDark: String!
+  borderLight: String!
+  borderDark: String!
+  disabled: String!
+  highlight: String!
+  indicator: String!
+  textLight: String!
+  textDark: String!
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
+### Group
+type Group @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  chainId: ID!
+  name: String!
+  description: LocalizedItem
+  currency: String!
+  address: Address
+  email: String
+  phone: String
+}
+
+### OrderItem
+type StatusLog {
+  userId: ID!
+  status: String!
+  ts: Float!
+}
+
+type PriceShown {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+type OrderItem {
+  productId: ID!
+  variantId: ID!
+  created: Int
+  productName: LocalizedItem!
+  priceShown: PriceShown!
+  quantity: Int!
+  statusLog: [StatusLog]
+  variantName: LocalizedItem!
+  laneId: ID
+}
+
+### Order
+type Order @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  items: [OrderItem!]!
+  paymentMode: PaymentMode!
+  statusLog: [StatusLog!]!
+  sumPriceShown: PriceShown!
+  takeAway: Boolean!
+  place: Place
+  paymentIntention: Float
+}
+
+type OrderHistory @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  items: [OrderItem!]!
+  paymentMode: PaymentMode!
+  statusLog: [StatusLog!]!
+  sumPriceShown: PriceShown!
+  takeAway: Boolean!
+  place: Place
+  paymentIntention: Float
+  # EXTRA
+  status: OrderStatus
+}
+enum OrderStatus {
+  NONE
+  PLACED
+  PROCESSING
+  READY
+  SERVED
+  WAITING_FOR_PAYMENT
+  PAID
+  # RECEIVED,
+  FAILED
+  REJECTED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  INAPP
+}
+
+type Place {
+  seat: String!
+  table: String!
+}
+
+### ProductCategory
+type ProductCategory @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  chainId: ID!
+  description: LocalizedItem
+  image: String
+  name: LocalizedItem!
+  position: Int!
+}
+
+### Product
+type ChainProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  # extends: String
+  # ingredients
+  # tax: Int
+  # laneId: ID
+}
+
+type GroupProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  # takeawayTax: Int
+  variants: [ProductVariant]
+}
+
+type UnitProduct @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+}
+
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  # availableFrom: String
+  position: Int!
+}
+
+type ProductVariantPack {
+  size: Float!
+  unit: String!
+}
+
+type Availability {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+type GeneratedProduct
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(name: "productsByUnit", fields: ["unitId"])
+  @key(
+    name: "productsByUnitAndCategory"
+    fields: ["unitId", "productCategoryId"]
+  ) {
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productType: String!
+  tax: Int!
+  # takeawayTax: Int!
+  position: Int!
+  image: String
+  variants: [ProductVariant!]!
+}
+
+type FavoriteProduct
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct @connection
+}
+
+### Unit
+type Unit @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItem
+  address: Address!
+  email: String
+  phone: String
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DateInterval
+  openingHours: WeeklySchedule
+}
+
+type DateInterval {
+  from: String
+  to: String
+}
+
+type CustomDailySchedule {
+  date: String
+  from: String
+  to: String
+}
+
+type WeeklySchedule {
+  mon: DateInterval
+  tue: DateInterval
+  wed: DateInterval
+  thu: DateInterval
+  fri: DateInterval
+  sat: DateInterval
+  sun: DateInterval
+  custom: [CustomDailySchedule]
+}
+
+type PaymentMode {
+  name: String!
+  caption: String
+  method: PaymentMethod!
+}
+
+type FloorMapData {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObject!]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: UnitMapObjectType! # Type
+  c: String # Caption
+  w: Int # Width
+  h: Int #  Height
+  r: Int # Radius
+  a: Int # Angle
+  x: Int!
+  y: Int!
+  tID: String # Table ID
+  sID: String # Seat Id
+}
+
+enum UnitMapObjectType {
+  table_r
+  table_c
+  seat_r
+  seat_c
+  counter
+  wall
+  label
+}
+
+type Lane {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+# TODO: use to store User META in the near future
+### User
+# type User @model @auth(rules: [{ allow: public }]) {
+#   id: ID!
+#   # name: String
+#   # email: String
+#   # phone: String
+#   # profileImage: String
+#   # login: String
+#   # stripeCustomerId: String
+# }
+
+### Cart
+
+type Cart @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean!
+  place: Place
+  paymentMode: PaymentMode
+  items: [OrderItem!]!
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+  onAdminUsersChange: AdminUser
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+  onRoleContextsChange: RoleContext
+    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
+  onAdminRoleContextsChange: AdminRoleContext
+    @aws_subscribe(
+      mutations: [
+        "createAdminRoleContext"
+        "updateAdminRoleContext"
+        "deleteAdminRoleContext"
+      ]
+    )
+  onChainsChange: Chain
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
+  onGroupsChange: Group
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onProductCategoriesChange: ProductCategory
+    @aws_subscribe(
+      mutations: ["createProductCategory", "updateProductCategory"]
+    )
+  onChainProductChange: ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+  onGroupProductChange: GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+  onUnitProductChange: UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+
+  # Added for the Mobile Application
+  onProductChanged(unitId: String): GeneratedProduct
+    @aws_subscribe(
+      mutations: [
+        "createGeneratedProduct"
+        "updateGeneratedProduct"
+        "deleteGeneratedProduct"
+      ]
+    )
+  onOrderChanged(userId: String, unitId: String): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+}

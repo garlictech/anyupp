@@ -1,19 +1,20 @@
-import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
-
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Auth } from '@aws-amplify/auth';
+import { awsConfig } from '@bgap/crud-gql/api';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   clearDbProperties,
+  contactFormGroup,
   EToasterType,
 } from '@bgap/admin/shared/utils';
-import { EAdminRole, EImageType, IAdminUser } from '@bgap/shared/types';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { config } from '@bgap/shared/config';
+import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
+import { EImageType, IAdminUser } from '@bgap/shared/types';
+import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'bgap-admin-user-form',
@@ -26,16 +27,12 @@ export class AdminUserFormComponent
   public adminUser!: IAdminUser;
   public eImageType = EImageType;
 
-  private _formService: FormsService;
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
-
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    private _logger: NGXLogger,
+    private _amplifyDataService: AmplifyDataService,
+  ) {
     super(_injector);
-
-    this._formService = this._injector.get(FormsService);
-    this._logger = this._injector.get(NGXLogger);
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
   }
 
   get userImage(): string {
@@ -45,20 +42,13 @@ export class AdminUserFormComponent
   ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
-      // ...contactFormGroup(),
+      ...contactFormGroup(true),
       profileImage: [''], // Just for file upload!!
     });
 
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
-    } /* else {
-      // Add custom asyncValidator to check existing email
-      (<FormControl>this.dialogForm.controls.email).setAsyncValidators([
-        this._formService.adminExistingEmailValidator(
-          this.dialogForm.controls.email || '',
-        ),
-      ]);
-    } */
+    }
   }
 
   public async submit(): Promise<void> {
@@ -86,30 +76,36 @@ export class AdminUserFormComponent
         }
       } else {
         try {
+          const name = this.dialogForm.controls['name'].value;
           const email = this.dialogForm.controls['email'].value;
-          const user = await Auth.signUp({
-            username: email,
-            password: 'tempAdfd12TODO',
-            attributes: {
-              email,
-            },
-          });
+          const phone = this.dialogForm.controls['phone'].value;
 
-          await this._amplifyDataService.create('createAdminUser', {
-            ...this.dialogForm?.value,
-            id: user.userSub,
-            roles: {
-              role: EAdminRole.INACTIVE,
-            },
-          });
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
+          const { AnyuppGraphqlApiKey, AnyuppGraphqlApiUrl } = config;
+          const appsyncConfig = {
+            ...awsConfig,
+            aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
+            aws_appsync_apiKey: AnyuppGraphqlApiKey,
+          };
+          const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
+            appsyncConfig,
+            console,
+            true,
           );
 
-          this.close();
+          appsyncApiClient
+            .mutate(AnyuppApi.CreateAdminUser, {
+              input: { email, name, phone },
+            })
+            .pipe(map((result: any) => result.data.createAdminUser))
+            .subscribe(() => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.insertSuccessful',
+              );
+
+              this.close();
+            });
         } catch (error) {
           this._logger.error(
             `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
@@ -184,5 +180,4 @@ export class AdminUserFormComponent
       );
     }
   };
-
 }

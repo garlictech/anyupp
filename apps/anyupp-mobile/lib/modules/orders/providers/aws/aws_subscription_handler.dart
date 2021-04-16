@@ -49,7 +49,7 @@ class AwsSubscription<T extends Model> {
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription[$listNodeName].userId=${user.id}');
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       _listSubscription = _client.value
           .subscribe(
         SubscriptionOptions(
@@ -88,15 +88,15 @@ class AwsSubscription<T extends Model> {
   }
 
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
-    print('_getList[$listNodeName]');
+    // print('_getList[$listNodeName]');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(listQuery),
         variables: variables,
       ));
-      print('_getList[$listNodeName].result.data=${result.data}');
-      print('_getList[$listNodeName].result.exception=${result.exception}');
+      // print('_getList[$listNodeName].result.data=${result.data}');
+      // print('_getList[$listNodeName].result.exception=${result.exception}');
       if (result == null || result.data == null) {
         return [];
       }

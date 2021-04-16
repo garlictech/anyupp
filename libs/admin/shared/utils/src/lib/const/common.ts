@@ -1,5 +1,5 @@
-import { EAdminRole, EPaymentMethod } from '@bgap/shared/types';
-import { IPaymentMode } from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { EAdminRole, IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
 export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
@@ -64,32 +64,32 @@ export const PAYMENT_MODES: IPaymentMode[] = [
   {
     name: 'Cash',
     caption: 'common.paymentModes.cash',
-    method: EPaymentMethod.CASH,
+    method: CrudApi.PaymentMethod.CASH,
   },
   {
     name: 'Card',
     caption: 'common.paymentModes.card',
-    method: EPaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.CARD,
   },
   {
     name: 'Google Pay',
     caption: 'Google Pay',
-    method: EPaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Apple Pay',
     caption: 'Apple Pay',
-    method: EPaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Stripe',
     caption: 'Stripe',
-    method: EPaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Simple Pay',
     caption: 'Simple Pay',
-    method: EPaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
 ];
 

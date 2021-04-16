@@ -1,6 +1,0 @@
-# Add the AWS (empty) directives, etc. just for codegen, not for the server
-
-directive @aws_api_key on OBJECT | FIELD_DEFINITION
-directive @aws_iam on OBJECT | FIELD_DEFINITION
-directive @aws_cognito_user_pools on OBJECT | FIELD_DEFINITION
-directive @aws_subscribe on OBJECT | FIELD_DEFINITION

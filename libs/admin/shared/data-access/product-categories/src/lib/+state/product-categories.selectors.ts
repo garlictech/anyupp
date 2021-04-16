@@ -27,4 +27,3 @@ export const getProductCategoriesEntities = createSelector(
   getProductCategoriesState,
   (state: IProductCategoriesState) => selectEntities(state),
 );
-

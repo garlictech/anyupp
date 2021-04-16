@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:fa_prev/app.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/locale.dart';
-
-import 'package:fa_prev/modules/login/login.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -113,6 +113,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
           if (state is LoginInProgress || state is LoginSuccess) {
             return _buildLoadingScreen();
+          }
+
+          if (state is ShowSocialLoginWebView) {
+            return _buildSocialLoginWebView(state.provider);
           }
 
           // --- Bottom sheet
@@ -418,7 +422,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 color: Colors.transparent,
                                 padding: EdgeInsets.all(8.0),
                                 splashColor: Colors.blueAccent,
-                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -446,8 +450,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      // TODO: we could use remoteConfig to aquire this value independent of the app version
-                                      // or the firebase storage getDownloadUrl method in case we need the latest documents for all the app versions
                                       launch('https://www.anyupp.com/privacy/');
                                     },
                                 ),
@@ -526,7 +528,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               //LoginWithEmailDialog.show(context, linkAccount: false);
               // _toggleEmailLoginForm();
               getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
-              
+
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
             }
@@ -534,9 +536,50 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
+  final Completer<WebViewController> _webViewController = Completer<WebViewController>();
+
+  Widget _buildSocialLoginWebView(LoginMethod method) {
+    String provider;
+    switch (method) {
+      case LoginMethod.FACEBOOK: provider = 'Facebook';break;
+      case LoginMethod.GOOGLE: provider = 'Google';break;
+      case LoginMethod.APPLE: provider = 'SignInWithApple';break;
+      default:
+        provider = 'COGNITO';
+    } 
+    var url = "${awsConfig['ConsumerUserPoolDomain']}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
+        "anyupp://signin/&response_type=CODE&client_id=${awsConfig['ConsumerNativeUserPoolClientId']}" +
+        "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
+    print('loginScreen.url=$url');
+    return WebView(
+      initialUrl: url,
+      userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
+          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
+      javascriptMode: JavascriptMode.unrestricted,
+      onWebViewCreated: (WebViewController webViewController) {
+        _webViewController.complete(webViewController);
+      },
+      navigationDelegate: (NavigationRequest request) {
+        print('loginScreen.navigationDelegate().request=${request?.url}');
+        if (request.url.startsWith("anyupp://?code=")) {
+          String code = request.url.substring("anyupp://?code=".length);
+          signUserInWithAuthCode(code);
+          return NavigationDecision.prevent;
+        }
+
+        return NavigationDecision.navigate;
+      },
+      gestureNavigationEnabled: true,
+    );
+  }
+
   void _toggleEmailLoginForm() {
     setState(() {
       _showLogin = !_showLogin;
     });
+  }
+
+  void signUserInWithAuthCode(String code) {
+    print('loginScreen.signUserInWithAuthCode().code=$code');
   }
 }

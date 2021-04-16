@@ -84,9 +84,9 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     let lastOrderTime = 0;
 
     this.orders.forEach((order: IOrder): void => {
-      if (order.created > lastOrderTime) {
+      if (new Date(order.createdAt).getTime() > lastOrderTime) {
         this.place = order.place;
-        lastOrderTime = order.created;
+        lastOrderTime = new Date(order.createdAt).getTime();
       }
 
       order.items.forEach((item: IOrderItem): void => {

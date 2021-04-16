@@ -1,58 +1,32 @@
-import {
-  GetAdminUserQuery,
-  GetChainProductQuery,
-  GetChainQuery,
-  GetGroupQuery,
-  GetOrderQuery,
-  GetProductCategoryQuery,
-  GetUnitQuery,
-  // GetUserQuery,
-  ListAdminUsersQuery,
-  ListChainProductsQuery,
-  ListChainsQuery,
-  ListGroupsQuery,
-  ListOrdersQuery,
-  ListProductCategorysQuery,
-  ListUnitsQuery,
-  // ListUsersQuery,
-  OnAdminUserChangeSubscription,
-  OnChainsChangeSubscription,
-  OnGroupsChangeSubscription,
-  OnProductCategoriesChangeSubscription,
-  OnUnitsChangeSubscription,
-  // OnUsersChangeSubscription,
-  OnChainProductChangeSubscription,
-  ListRoleContextsQuery,
-  OnRoleContextsChangeSubscription,
-  GetRoleContextQuery,
-} from '@bgap/admin/amplify-api';
+import { CrudApi } from '@bgap/crud-gql/api';
 
-export type queryTypes = GetAdminUserQuery &
-  GetRoleContextQuery &
-  GetChainQuery &
-  GetGroupQuery &
-  GetUnitQuery &
-  GetOrderQuery &
-  GetProductCategoryQuery &
-  GetChainProductQuery &
-  // GetUserQuery &
-  GetChainProductQuery;
-export type listTypes = ListAdminUsersQuery &
-  ListRoleContextsQuery &
-  ListChainsQuery &
-  ListGroupsQuery &
-  ListUnitsQuery &
-  ListOrdersQuery &
-  ListProductCategorysQuery &
-  ListChainProductsQuery &
-  // ListUsersQuery &
-  ListChainProductsQuery;
+export type queryTypes = CrudApi.GetAdminUserQuery &
+  CrudApi.GetRoleContextQuery &
+  CrudApi.GetChainQuery &
+  CrudApi.GetGroupQuery &
+  CrudApi.GetUnitQuery &
+  CrudApi.GetOrderQuery &
+  CrudApi.GetProductCategoryQuery &
+  CrudApi.GetChainProductQuery &
+  // CrudApi.GetUserQuery &
+  CrudApi.GetChainProductQuery;
+export type listTypes = CrudApi.ListAdminUsersQuery &
+  CrudApi.ListRoleContextsQuery &
+  CrudApi.ListChainsQuery &
+  CrudApi.ListGroupsQuery &
+  CrudApi.ListUnitsQuery &
+  CrudApi.ListOrdersQuery &
+  CrudApi.ListProductCategorysQuery &
+  CrudApi.ListChainProductsQuery &
+  // CrudApi.ListUsersQuery &
+  CrudApi.ListChainProductsQuery;
 export type apiQueryTypes = queryTypes & listTypes;
-export type subscriptionTypes = OnAdminUserChangeSubscription &
-  OnRoleContextsChangeSubscription &
-  OnChainsChangeSubscription &
-  OnGroupsChangeSubscription &
-  OnUnitsChangeSubscription &
-  // OnUsersChangeSubscription &
-  OnProductCategoriesChangeSubscription &
-  OnChainProductChangeSubscription;
+export type subscriptionTypes = CrudApi.OnAdminUserChangeSubscription &
+  CrudApi.OnRoleContextsChangeSubscription &
+  CrudApi.OnChainsChangeSubscription &
+  CrudApi.OnGroupsChangeSubscription &
+  CrudApi.OnUnitsChangeSubscription &
+  // CrudApi.OnUsersChangeSubscription &
+  CrudApi.OnProductCategoriesChangeSubscription &
+  CrudApi.OnChainProductChangeSubscription &
+  CrudApi.OnAdminRoleContextsChangeSubscription;

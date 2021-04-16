@@ -1,14 +1,31 @@
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { EAdminRole, EProductLevel, IAdminUser, IGroup, IProduct, IProductOrderChangeEvent } from '@bgap/shared/types';
+import {
+  EAdminRole,
+  EProductLevel,
+  IAdminUser,
+  IGroup,
+  IProduct,
+  IProductOrderChangeEvent,
+} from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
-import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
+import {
+  NbDialogService,
+  NbTabComponent,
+  NbTabsetComponent,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -49,14 +66,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
     );
 
-    this.chainProducts$ = this._store
-      .pipe(
-        select(productsSelectors.getChainProductsOfSelectedCategory()),
-        map((products): IProduct[] =>
-          products.sort(customNumberCompare('position')),
-        ),
-        untilDestroyed(this),
-      );
+    this.chainProducts$ = this._store.pipe(
+      select(productsSelectors.getChainProductsOfSelectedCategory()),
+      map((products): IProduct[] =>
+        products.sort(customNumberCompare('position')),
+      ),
+      untilDestroyed(this),
+    );
   }
 
   get selectedChainId(): string | null | undefined {
@@ -76,8 +92,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
@@ -183,7 +197,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
             productId,
             (data: unknown) => ({
               ...(<IProduct>data),
-              position: (i + 1),
+              position: i + 1,
             }),
           );
         }
