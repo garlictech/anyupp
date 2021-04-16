@@ -84,7 +84,7 @@ export const createBuildProject = (
           commands: [
             `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
             `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api --skip-nx-cach`,
+            `yarn nx build anyupp-gql-api --skip-nx-cache`,
           ],
         },
         build: {
