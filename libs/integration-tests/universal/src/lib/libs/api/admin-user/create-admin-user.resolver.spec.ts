@@ -11,7 +11,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Auth } from 'aws-amplify';
 import { from, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
-import * as AnyuppApi from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 
 describe('Admin user creation/deletion', () => {
   beforeAll(() => {
