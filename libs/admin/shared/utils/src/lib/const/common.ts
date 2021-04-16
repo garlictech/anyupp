@@ -1,4 +1,4 @@
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { EAdminRole, IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
@@ -64,32 +64,32 @@ export const PAYMENT_MODES: IPaymentMode[] = [
   {
     name: 'Cash',
     caption: 'common.paymentModes.cash',
-    method: AmplifyApi.PaymentMethod.CASH,
+    method: CrudApi.PaymentMethod.CASH,
   },
   {
     name: 'Card',
     caption: 'common.paymentModes.card',
-    method: AmplifyApi.PaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.CARD,
   },
   {
     name: 'Google Pay',
     caption: 'Google Pay',
-    method: AmplifyApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Apple Pay',
     caption: 'Apple Pay',
-    method: AmplifyApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Stripe',
     caption: 'Stripe',
-    method: AmplifyApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   {
     name: 'Simple Pay',
     caption: 'Simple Pay',
-    method: AmplifyApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
 ];
 

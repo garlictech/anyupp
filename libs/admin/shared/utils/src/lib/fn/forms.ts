@@ -13,7 +13,9 @@ import {
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
 export const contactFormGroup = (requiredEmail = false) => ({
-  email: requiredEmail ? ['', [Validators.email, Validators.required]] : ['', [Validators.email]],
+  email: requiredEmail
+    ? ['', [Validators.email, Validators.required]]
+    : ['', [Validators.email]],
   phone: [''],
 });
 

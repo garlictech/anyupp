@@ -1,4 +1,4 @@
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { awsConfig } from '@bgap/crud-gql/api';
 import { from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
