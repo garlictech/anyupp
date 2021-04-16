@@ -144,8 +144,8 @@
       }
     },
     "cicd": {
-      "root": "apps/infrastructure/build-pipeline-stack",
-      "sourceRoot": "apps/infrastructure/build-pipeline-stack/src",
+      "root": "apps/infrastructure/cicd",
+      "sourceRoot": "apps/infrastructure/cicd/src",
       "projectType": "application",
       "prefix": "cicd",
       "architect": {
@@ -153,16 +153,16 @@
           "builder": "@nrwl/workspace:run-commands",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/infrastructure/build-pipeline-stack",
-            "main": "apps/infrastructure/build-pipeline-stack/src/main.ts",
-            "tsConfig": "apps/infrastructure/build-pipeline-stack/tsconfig.app.json",
-            "assets": ["apps/infrastructure/build-pipeline-stack/src/assets"]
+            "outputPath": "dist/apps/infrastructure/cicd",
+            "main": "apps/infrastructure/cicd/src/main.ts",
+            "tsConfig": "apps/infrastructure/cicd/tsconfig.app.json",
+            "assets": ["apps/infrastructure/cicd/src/assets"]
           }
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/infrastructure/build-pipeline-stack",
+            "cwd": "apps/infrastructure/cicd",
             "commands": [
               {
                 "command": "yarn sst deploy"
@@ -174,30 +174,30 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/infrastructure/build-pipeline-stack/**/*.ts"
+              "apps/infrastructure/cicd/**/*.ts"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/infrastructure/build-pipeline-stack"],
+          "outputs": ["coverage/apps/infrastructure/cicd"],
           "options": {
-            "jestConfig": "apps/infrastructure/build-pipeline-stack/jest.config.js",
+            "jestConfig": "apps/infrastructure/cicd/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
     "anyupp-backend": {
-      "root": "apps/infrastructure/anyupp-backend-stack",
-      "sourceRoot": "apps/infrastructure/anyupp-backend-stack/src",
+      "root": "apps/anyupp-backend",
+      "sourceRoot": "apps/anyupp-backend/src",
       "projectType": "application",
       "prefix": "anyupp-backend",
       "architect": {
         "build": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "cwd": "apps/anyupp-backend",
             "parallel": false,
             "commands": [
               "yarn sls package --stage='{args.stage}'",
@@ -209,7 +209,7 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "cwd": "apps/anyupp-backend",
             "parallel": false,
             "commands": [
               {
@@ -224,7 +224,7 @@
         "remove": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/infrastructure/anyupp-backend-stack",
+            "cwd": "apps/anyupp-backend",
             "parallel": false,
             "commands": [
               {
@@ -237,15 +237,15 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/infrastructure/anyupp-backend-stack/**/*.ts"
+              "apps/anyupp-backend/**/*.ts"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/infrastructure/anyupp-backend-stack"],
+          "outputs": ["coverage/apps/anyupp-backend"],
           "options": {
-            "jestConfig": "apps/infrastructure/anyupp-backend-stack/jest.config.js",
+            "jestConfig": "apps/anyupp-backend/jest.config.js",
             "passWithNoTests": true
           }
         }

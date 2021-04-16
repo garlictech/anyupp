@@ -97,9 +97,9 @@ stack in the Parameter Store!
 
 Unfortunately, the SST tools we use to deploy the CDK stack do not support app name parametrization, so:
 
-- in `apps/infrastructure/anyupp-backend-stack/sst.json`, write your app name
+- in `apps/anyupp-backend/sst.json`, write your app name
   to the "name" field
-- in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
+- in `anyupp-backend/serverless.yml`, use the same name
   in the `service` field
 - in `apps/crud-backend/.graphqlconfig.yml`, use the same name
   in the `schemaPath` field (...api/<APPNAME>/build...)
@@ -503,7 +503,7 @@ The generator will collect the new resolver's name
 
 ### Update own backend stack
 
-1. Set stage name in apps/infrastructure/anyupp-backend-stack/sst.json (e.g. dev-petrot)
+1. Set stage name in apps/anyupp-backend/sst.json (e.g. dev-petrot)
 
 2. Download own config:
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`

@@ -99,7 +99,7 @@ export const createBuildProject = (
         },
       },
       artifacts: {
-        files: ['apps/infrastructure/anyupp-backend-stack/cdk.out/**/*'],
+        files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
       env: {
         'secrets-manager': {
