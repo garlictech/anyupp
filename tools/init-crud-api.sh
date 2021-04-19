@@ -26,7 +26,7 @@ AMPLIFY="{\
 
 FRONTEND="{\
 \"frontend\":\"javascript\",\
-\"framework\":\"angular\",\
+\"framework\":\"none\",\
 \"config\":$ANGULARconfig\
 }"
 
