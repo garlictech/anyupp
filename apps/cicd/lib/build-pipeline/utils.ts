@@ -122,6 +122,7 @@ export const createBuildProject = (
     cache,
     environment: {
       //      buildImage: utils.getBuildImage(stack),
+      computeType: codebuild.ComputeType.MEDIUM,
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
