@@ -1,19 +1,19 @@
-import { validateUnitProduct } from 'libs/shared/data-validators/src';
-import { IProduct } from 'libs/shared/types/src';
 import { combineLatest, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
-  amplifyGraphQlClient,
-  appsyncGraphQlClient,
-  AuthenticatdGraphQlClientWithUserId,
-  createAuthenticatedAppsyncGraphQlClient,
+  crudGraphqlClient,
+  anyuppGraphQLClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
   executeMutation,
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
+import { IUnitProduct } from '@bgap/shared/types';
 
 import {
   testAdminUsername,
@@ -28,7 +28,7 @@ const input: AnyuppApi.CreateUnitProductMutationVariables = {
 
 describe('CreateUnitProduct tests', () => {
   it('should require authentication to access', done => {
-    return executeMutation(appsyncGraphQlClient)<
+    return executeMutation(anyuppGraphQLClient)<
       AnyuppApi.CreateUnitProductMutation
     >(AnyuppApi.CreateUnitProduct, input).subscribe({
       error(e) {
@@ -39,16 +39,16 @@ describe('CreateUnitProduct tests', () => {
   }, 25000);
 
   describe('with authenticated user', () => {
-    let authHelper: AuthenticatdGraphQlClientWithUserId;
+    let authHelper: AuthenticatdGraphQLClientWithUserId;
 
     beforeAll(async () => {
-      authHelper = await createAuthenticatedAppsyncGraphQlClient(
+      authHelper = await createAuthenticatedAnyuppGraphQLClient(
         testAdminUsername,
         testAdminUserPassword,
       ).toPromise();
       console.warn(authHelper.userAttributes);
     });
-    // let authenticatedApsyncGraphQlClient;
+    // let authenticatedApsyncGraphQLClient;
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
@@ -74,13 +74,11 @@ describe('CreateUnitProduct tests', () => {
         executeMutation(authHelper.graphQlClient)<
           AnyuppApi.CreateUnitProductMutation
         >(AnyuppApi.CreateUnitProduct, input)
-          // from(productRequestHandler.createUnitProduct(amplifyGraphQlClient)(input))
+          // from(productRequestHandler.createUnitProduct(crudGraphqlClient)(input))
           .pipe(
             // pipeDebug('### UNITPRODUCT CREATE RESULT'),
             map(result => result.createUnitProduct),
-            switchMap(product =>
-              getUnitProduct(amplifyGraphQlClient, product.id),
-            ),
+            switchMap(product => getUnitProduct(crudGraphqlClient, product.id)),
           )
           .subscribe({
             next(result) {
@@ -102,10 +100,10 @@ describe('CreateUnitProduct tests', () => {
 });
 
 const getUnitProduct = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   productId: string,
-): Observable<IProduct> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetUnitProductQuery>(
+): Observable<IUnitProduct> => {
+  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
     CrudApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(

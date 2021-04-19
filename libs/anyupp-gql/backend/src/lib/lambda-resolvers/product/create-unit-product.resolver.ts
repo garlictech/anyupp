@@ -12,26 +12,27 @@ import { IUnitProduct } from '@bgap/shared/types';
 
 export const createUnitProduct = ({
   input,
-  amplifyGraphQlClient,
+  crudGraphqlClient,
 }: {
   input: AnyuppApi.CreateUnitProductInput;
-  amplifyGraphQlClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<IUnitProduct> => {
-  return createUnitProductInDb({ input, amplifyGraphQlClient });
+  return createUnitProductInDb({ input, crudGraphqlClient });
 };
 
 const createUnitProductInDb = ({
   input,
-  amplifyGraphQlClient,
+  crudGraphqlClient,
 }: {
   input: CrudApi.CreateUnitProductInput;
-  amplifyGraphQlClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<IUnitProduct> => {
-  return executeMutation(amplifyGraphQlClient)<
-    CrudApi.CreateUnitProductMutation
-  >(CrudApiMutationDocuments.createUnitProduct, {
-    input,
-  }).pipe(
+  return executeMutation(crudGraphqlClient)<CrudApi.CreateUnitProductMutation>(
+    CrudApiMutationDocuments.createUnitProduct,
+    {
+      input,
+    },
+  ).pipe(
     map(x => x.createUnitProduct),
     switchMap(validateUnitProduct),
     catchError(err => {

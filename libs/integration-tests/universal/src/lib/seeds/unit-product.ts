@@ -1,14 +1,14 @@
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/admin/amplify-api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
-  amplifyGraphQlClient,
+  crudGraphqlClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
 export const deleteUnitProduct = (id: string) =>
-  executeMutation(amplifyGraphQlClient)<CrudApi.DeleteUnitProductMutation>(
+  executeMutation(crudGraphqlClient)<CrudApi.DeleteUnitProductMutation>(
     CrudApiMutationDocuments.deleteUnitProduct,
     {
       input: { id },

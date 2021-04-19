@@ -1,7 +1,7 @@
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import { cartSeed } from '../fixtures/cart';
 import {
-  amplifyGraphQlClient,
+  crudGraphqlClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
 import { combineLatest } from 'rxjs';
@@ -23,7 +23,7 @@ describe('getCart test', () => {
       .toPromise();
   }, 15000);
   it('successful query execution', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
       { id: cartSeed.cart_01.id },
     ).subscribe({
@@ -34,7 +34,7 @@ describe('getCart test', () => {
     });
   }, 15000);
   it('should return null for a not existing item', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
       { id: cartSeed.cartId_NotExisting },
     ).subscribe({
@@ -45,7 +45,7 @@ describe('getCart test', () => {
     });
   }, 10000);
   it('should throw error without id as input', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
     ).subscribe({
       error(e) {

@@ -7,19 +7,19 @@ import { GraphqlApiClient } from './graphql-api-client';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const AWS_APPSYNC_CONFIG: ICrudApiConfig = {
+const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
   ...awsConfig,
   aws_appsync_apiKey: config.AnyuppGraphqlApiKey,
   aws_appsync_graphqlEndpoint: config.AnyuppGraphqlApiUrl,
 };
 
-export const appsyncGraphQlClient = GraphqlApiFp.createPublicClient(
-  AWS_APPSYNC_CONFIG,
+export const anyuppGraphQLClient = GraphqlApiFp.createPublicClient(
+  AWS_ANYUPP_CONFIG,
   console,
   true,
 );
 
-export interface AuthenticatdGraphQlClientWithUserId {
+export interface AuthenticatdGraphQLClientWithUserId {
   userAttributes: {
     id: string;
     sub: string;
@@ -38,10 +38,10 @@ export const configureAmplifyWithUserPasswordAuthFlow = () => {
   });
 };
 
-export const createAuthenticatedAppsyncGraphQlClient = (
+export const createAuthenticatedAnyuppGraphQLClient = (
   userName: string,
   password: string,
-): Observable<AuthenticatdGraphQlClientWithUserId> => {
+): Observable<AuthenticatdGraphQLClientWithUserId> => {
   configureAmplifyWithUserPasswordAuthFlow();
 
   return from(Auth.signIn(userName, password)).pipe(
@@ -51,7 +51,7 @@ export const createAuthenticatedAppsyncGraphQlClient = (
         ...user.attributes,
       },
       graphQlClient: GraphqlApiFp.createAuthenticatedClient(
-        AWS_APPSYNC_CONFIG,
+        AWS_ANYUPP_CONFIG,
         console,
         true,
       ),
@@ -59,27 +59,27 @@ export const createAuthenticatedAppsyncGraphQlClient = (
   );
 };
 
-const AWS_AMPLIFY_CONFIG: ICrudApiConfig = {
+const AWS_CRUD_CONFIG: ICrudApiConfig = {
   ...awsConfig,
 };
 
-export const amplifyGraphQlClient = GraphqlApiFp.createPublicClient(
-  AWS_AMPLIFY_CONFIG,
+export const crudGraphqlClient = GraphqlApiFp.createPublicClient(
+  AWS_CRUD_CONFIG,
   console,
   true,
 );
 
-export const amplifyBackendGraphQlClient = GraphqlApiFp.createBackendClient(
-  AWS_AMPLIFY_CONFIG,
+export const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
+  AWS_CRUD_CONFIG,
   process.env.AWS_ACCESS_KEY_ID || '',
   process.env.AWS_SECRET_ACCESS_KEY || '',
   console,
 );
 
-export const createAuthenticatedAmplifyGraphQlClient = (
+export const createAuthenticatedCrudGraphQLClient = (
   userName: string,
   password: string,
-): Observable<AuthenticatdGraphQlClientWithUserId> => {
+): Observable<AuthenticatdGraphQLClientWithUserId> => {
   configureAmplifyWithUserPasswordAuthFlow();
 
   return from(Auth.signIn(userName, password)).pipe(
@@ -89,7 +89,7 @@ export const createAuthenticatedAmplifyGraphQlClient = (
         ...user.attributes,
       },
       graphQlClient: GraphqlApiFp.createAuthenticatedClient(
-        AWS_AMPLIFY_CONFIG,
+        AWS_CRUD_CONFIG,
         console,
         true,
       ),

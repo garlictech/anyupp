@@ -9,7 +9,7 @@ import { createUnitProduct } from './create-unit-product.resolver';
 export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AnyuppApi.MutationCreateUnitProductArgs;
 
 export const productRequestHandler = {
-  createUnitProduct: (amplifyGraphQlClient: GraphqlApiClient) => (
+  createUnitProduct: (crudGraphqlClient: GraphqlApiClient) => (
     requestPayload: CreateUnitProductRequest,
   ) => {
     // missingParametersCheck<CreateUnitProductRequest>(requestPayload, [
@@ -25,7 +25,7 @@ export const productRequestHandler = {
       // userId: requestPayload.userId,
       // cartId: requestPayload.input.id,
       input: requestPayload.input,
-      amplifyGraphQlClient,
+      crudGraphqlClient,
     }).toPromise();
   },
 };

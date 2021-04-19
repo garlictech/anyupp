@@ -8,14 +8,14 @@ import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 // HANDLER
 export const unitRequestHandler = {
-  getUnitsNearLocation: (amplifyGraphQlClient: GraphqlApiClient) => (
+  getUnitsNearLocation: (crudGraphqlClient: GraphqlApiClient) => (
     requestPayload: AnyuppApi.GetUnitsNearLocationQueryVariables,
   ) => {
     return validatGetUnitsNearLocationInput(requestPayload)
       .pipe(
         switchMap(() =>
           getUnitsInRadius({
-            amplifyGraphQlClient,
+            crudGraphqlClient,
             location: requestPayload.input.location,
           }),
         ),

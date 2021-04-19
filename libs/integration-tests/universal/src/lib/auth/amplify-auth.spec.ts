@@ -1,9 +1,9 @@
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
-  amplifyBackendGraphQlClient,
-  amplifyGraphQlClient,
-  AuthenticatdGraphQlClientWithUserId,
-  createAuthenticatedAmplifyGraphQlClient,
+  crudBackendGraphQLClient,
+  crudGraphqlClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedCrudGraphQLClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
 
@@ -12,7 +12,7 @@ import { cartSeed } from '../fixtures/cart';
 
 describe('Amplify endpoints AUTH test', () => {
   it('should require authentication to access', done => {
-    return executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
       { id: cartSeed.cart_seeded_01_id },
     ).subscribe({
@@ -25,7 +25,7 @@ describe('Amplify endpoints AUTH test', () => {
 
   describe('IAM Auth', () => {
     it('should be able to execute a query with IAM authenticated graphql client', done => {
-      executeQuery(amplifyBackendGraphQlClient)<CrudApi.GetCartQuery>(
+      executeQuery(crudBackendGraphQLClient)<CrudApi.GetCartQuery>(
         CrudApiQueryDocuments.getCart,
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
@@ -38,10 +38,10 @@ describe('Amplify endpoints AUTH test', () => {
   });
 
   describe('UserPool Auth', () => {
-    let authHelper: AuthenticatdGraphQlClientWithUserId;
+    let authHelper: AuthenticatdGraphQLClientWithUserId;
 
     beforeAll(async () => {
-      authHelper = await createAuthenticatedAmplifyGraphQlClient(
+      authHelper = await createAuthenticatedCrudGraphQLClient(
         testAdminUsername,
         testAdminUserPassword,
       ).toPromise();

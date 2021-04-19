@@ -2,8 +2,8 @@
 import { combineLatest, from } from 'rxjs';
 
 import {
-  amplifyGraphQlClient,
-  appsyncGraphQlClient,
+  crudGraphqlClient,
+  anyuppGraphQLClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
 import { unitSeed } from '../../../fixtures/unit';
@@ -66,7 +66,7 @@ describe('GetUnitsNearLocation tests', () => {
     it('should throw without a input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -79,7 +79,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: {},
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -92,7 +92,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lat: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -105,7 +105,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -118,7 +118,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: 230.0, lat: -100 } },
       } as any;
 
-      executeQuery(appsyncGraphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
+      executeQuery(anyuppGraphQLClient)<AnyuppApi.GetUnitsNearLocationQuery>(
         AnyuppApi.GetUnitsNearLocation,
         input,
       ).subscribe({
@@ -137,7 +137,7 @@ describe('GetUnitsNearLocation tests', () => {
     };
     // To test with the local appsync code
     from(
-      unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
+      unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
     ).subscribe({
       next(result) {
         expect(result).toHaveProperty('items');
@@ -153,7 +153,7 @@ describe('GetUnitsNearLocation tests', () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    executeQuery(appsyncGraphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
+    executeQuery(anyuppGraphQLClient)<AnyuppApi.GetUnitsNearLocationQuery>(
       AnyuppApi.GetUnitsNearLocation,
       input,
     )

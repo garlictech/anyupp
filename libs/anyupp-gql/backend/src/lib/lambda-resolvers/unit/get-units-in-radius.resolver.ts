@@ -30,10 +30,10 @@ type listResponse<T> = {
 // TODO: add GEO_SEARCH
 export const getUnitsInRadius = ({
   location,
-  amplifyGraphQlClient,
+  crudGraphqlClient,
 }: {
   location: CrudApi.LocationInput;
-  amplifyGraphQlClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<listResponse<AnyuppApi.GeoUnit>> => {
   // console.log(
   //   '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
@@ -45,14 +45,14 @@ export const getUnitsInRadius = ({
   // );
 
   // TODO: use geoSearch for the units
-  return listActiveUnits(amplifyGraphQlClient).pipe(
+  return listActiveUnits(crudGraphqlClient).pipe(
     switchMap(units =>
       combineLatest(
         units.map(unit =>
-          getChain(amplifyGraphQlClient, unit.chainId).pipe(
+          getChain(crudGraphqlClient, unit.chainId).pipe(
             switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
             switchMap(chain =>
-              getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
+              getGroupCurrency(crudGraphqlClient, unit.groupId).pipe(
                 map(currency => ({ chain, currency })),
               ),
             ),
@@ -113,12 +113,12 @@ const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => 
 };
 
 const listActiveUnits = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
 ): Observable<Array<IUnit>> => {
   const input: CrudApi.ListUnitsQueryVariables = {
     filter: { isActive: { eq: true } },
   };
-  return executeQuery(amplifyApiClient)<CrudApi.ListUnitsQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitsQuery>(
     CrudApiQueryDocuments.listUnits,
     input,
   ).pipe(
@@ -130,10 +130,10 @@ const listActiveUnits = (
 };
 
 const getGroupCurrency = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
     CrudApiQueryDocuments.getGroupCurrency,
     { id },
   ).pipe(
@@ -145,10 +145,10 @@ const getGroupCurrency = (
 };
 
 const getChain = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IChain> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetChainQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetChainQuery>(
     CrudApiQueryDocuments.getChain,
     { id },
   ).pipe(

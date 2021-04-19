@@ -5,17 +5,17 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  AuthenticatdGraphQlClientWithUserId,
-  createAuthenticatedAppsyncGraphQlClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
 } from '@bgap/shared/graphql/api-client';
 
 import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 describe('Admin user creation/deletion', () => {
-  let authHelper: AuthenticatdGraphQlClientWithUserId;
+  let authHelper: AuthenticatdGraphQLClientWithUserId;
 
   beforeAll(async () => {
-    authHelper = await createAuthenticatedAppsyncGraphQlClient(
+    authHelper = await createAuthenticatedAnyuppGraphQLClient(
       testAdminUsername,
       testAdminUserPassword,
     ).toPromise();

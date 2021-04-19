@@ -381,7 +381,9 @@ type FavoriteProduct
 }
 
 ### Unit
-type Unit @model @auth(rules: [{ allow: public }]) {
+type Unit
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   groupId: ID!
   chainId: ID!
