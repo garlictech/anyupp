@@ -1,7 +1,5 @@
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
@@ -12,8 +10,7 @@ import 'email_login_provider_interface.dart';
 
 class AwsEmailLoginProvider implements IEmailLoginProvider {
   final AwsAuthProvider _authProvider;
-  final CognitoService _service = getIt<CognitoService>();
-
+ 
   AwsEmailLoginProvider(this._authProvider);
 
   @override

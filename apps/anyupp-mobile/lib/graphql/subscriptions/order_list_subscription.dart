@@ -4,11 +4,9 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
    	id
     unitId
     userId
-    status
     paymentIntention
-    staffId
     takeAway
-    paymentMethod {
+    paymentMode {
       caption
       name
       method
@@ -49,7 +47,6 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
         ts
         userId
       }
-      takeAway
       variantId
       variantName {
         de

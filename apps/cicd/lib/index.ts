@@ -1,12 +1,11 @@
-import { App } from '@serverless-stack/resources';
-import { DevBuildPipelineStack } from './build-pipeline/dev-pipeline-stack';
-import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
-import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stack';
-import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
-import { PipelineStackProps } from './build-pipeline/utils';
-import { CiStack } from './build-pipeline/ci-stack';
-import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
-import { BuildEnvironmentStack } from './build-pipeline/build-environment';
+import {App} from '@serverless-stack/resources';
+import {DevBuildPipelineStack} from './build-pipeline/dev-pipeline-stack';
+import {SecretsManagerStack} from './build-pipeline/secretsmanager-stack';
+import {DevPullRequestBuildStack} from './build-pipeline/dev-pull-request-stack';
+import {SlackNotificationsStack} from './build-pipeline/slack-notifications-stack';
+import {PipelineStackProps} from './build-pipeline/utils';
+import {CiStack} from './build-pipeline/ci-stack';
+import {QABuildPipelineStack} from './build-pipeline/qa-pipeline-stack';
 
 export default function main(app: App): void {
   const pipelineSecretsManagerArn =
@@ -52,7 +51,7 @@ export default function main(app: App): void {
     ...commonConfig,
   };
 
-  new CiStack(app, 'CiStack', { secretsManager: devSecretsManagerStack });
+  new CiStack(app, 'CiStack', {secretsManager: devSecretsManagerStack});
 
   new DevBuildPipelineStack(
     app,
@@ -70,25 +69,5 @@ export default function main(app: App): void {
     repoBranch: 'qa',
     secretsManager: qaSecretsManagerStack,
     ...commonConfig,
-  });
-
-  new BuildEnvironmentStack(app, 'DockerBuildAWSEnvironment', {
-    repoOwner: 'bgap',
-    repoName: 'aws-codebuild-docker-images',
-    repoBranch: 'master',
-    x86SourceDir: 'al2/x86_64/standard/3.0',
-    armSourceDir: 'al2/aarch64/standard/2.0',
-    imageName: 'aws-codebuild-core',
-    chatbot: slackChannel.chatbot,
-  });
-
-  new BuildEnvironmentStack(app, 'DockerBuildAnyuppEnvironment', {
-    repoOwner: 'bgap',
-    repoName: 'aws-codebuild-docker-images',
-    repoBranch: 'anyupp',
-    x86SourceDir: 'anyupp/x86_64',
-    armSourceDir: 'anyupp/aarch64',
-    imageName: 'anyupp-codebuild',
-    chatbot: slackChannel.chatbot,
   });
 }

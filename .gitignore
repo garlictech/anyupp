@@ -45,11 +45,11 @@ cyreport
 /apps/anyupp-backend/build
 /apps/infrastructure/cicd/build
 
-# The generated files
-generated
-
 # The config - don't commit!
 /libs/shared/config/src/lib/*/*
 cdk.out
 
 /apps/crud-backend/amplify
+/libs/anyupp-gql/api/src/lib/
+/libs/crud-gql/api/src/lib/generated/
+

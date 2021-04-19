@@ -1,4 +1,3 @@
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/material.dart';
@@ -32,5 +31,10 @@ class AuthRepository implements IAuthProvider {
   @override
   Future<String> getIdToken() {
     return _authProvider.getIdToken();
+  }
+
+  @override
+  Future<void> clearUserSession() {
+    return _authProvider.clearUserSession();
   }
 }

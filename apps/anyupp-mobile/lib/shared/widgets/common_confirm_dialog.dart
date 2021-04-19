@@ -55,10 +55,11 @@ Future showConfirmDialog(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FlatButton(
-                      color: Colors.transparent,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: theme.indicator,
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        padding: EdgeInsets.all(8.0),
+                      ),
                       onPressed: onCancel == null
                           ? () => Nav.pop()
                           : () {
@@ -73,10 +74,11 @@ Future showConfirmDialog(
                         ),
                       ),
                     ),
-                    FlatButton(
-                      color: Colors.transparent,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: theme.indicator,
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        padding: EdgeInsets.all(8.0),
+                      ),
                       onPressed: onConfirm == null
                           ? () => Nav.pop()
                           : () {

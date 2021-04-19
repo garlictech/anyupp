@@ -52,8 +52,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
             return StreamBuilder<List<Order>>(
               stream: _repository.getOrderHistory(unit.chainId, unit.id),
               builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
-                if (historySnapshot.hasData) {
-                  if (historySnapshot.data.isEmpty) {
+                if (historySnapshot.connectionState != ConnectionState.waiting || historySnapshot.hasData) {
+                  if (historySnapshot.data == null || historySnapshot.data.isEmpty) {
                     return _noOrderHistory();
                   }
 

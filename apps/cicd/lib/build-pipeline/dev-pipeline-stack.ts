@@ -22,6 +22,12 @@ export class DevBuildPipelineStack extends sst.Stack {
       cache,
       stage,
     );
+    const publishAndroidToAppcenter = utils.createApkPublishProject(
+      this,
+      cache,
+      stage,
+    );
+
     const prefix = utils.projectPrefix(stage);
 
     utils.configurePermissions(
@@ -79,6 +85,16 @@ export class DevBuildPipelineStack extends sst.Stack {
               actionName: `DeleteSeederStack`,
               stackName: `${utils.projectPrefix(stage)}-seeder`,
               adminPermissions: true,
+            }),
+          ],
+        },
+        {
+          stageName: 'publishAndroidToAppcenter',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'publishAndroidToAppcenter',
+              project: publishAndroidToAppcenter,
+              input: buildOutput,
             }),
           ],
         },

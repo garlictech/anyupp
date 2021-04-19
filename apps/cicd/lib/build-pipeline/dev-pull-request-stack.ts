@@ -1,7 +1,7 @@
 import * as utils from './utils';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
-import { PipelineStackProps } from './utils';
+import {PipelineStackProps} from './utils';
 
 export class DevPullRequestBuildStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
@@ -37,6 +37,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `sh ./tools/setup-aws-environment.sh`,
                 'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli',
+                'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+                'export PATH=$PATH:/tmp/flutter/bin',
+                'flutter doctor',
               ],
             },
             pre_build: {
@@ -53,6 +56,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" --codeCoverage --coverageReporters=clover`,
                 `yarn nx build admin --skip-nx-cache`,
                 `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
+                `yarn nx buildApk anyupp-mobile`,
               ],
             },
           },
@@ -70,8 +74,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
         }),
         environment: {
           buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-
-          //          buildImage: utils.getBuildImage(this),
+          computeType: codebuild.ComputeType.MEDIUM,
         },
       },
     );

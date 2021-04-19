@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:flutter/services.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLException extends AppException {
 
@@ -18,6 +19,15 @@ class GraphQLException extends AppException {
       subCode: AppException.peCode(pe),
       message: AppException.peMessage(pe),
       details: AppException.peDetails(pe),
+    );
+  }
+
+    factory GraphQLException.fromApolloException(OperationException oe) {
+    return GraphQLException(
+      code: GraphQLException.CODE,
+      subCode: oe.graphqlErrors[0].extensions['code'],
+      message: oe.graphqlErrors[0].message,
+      details: oe.toString(),
     );
   }
 

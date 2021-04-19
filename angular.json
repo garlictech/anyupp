@@ -994,7 +994,7 @@
         "buildApk": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "flutter build apk --split-per-abi",
+            "command": "flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1030,6 +1030,13 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build ipa",
+            "cwd": "apps/anyupp-mobile"
+          }
+        },
+        "publish-appcenter": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "sh ../../tools/publish-to-appcenter.sh '{args.stage}' '{args.platform}'",
             "cwd": "apps/anyupp-mobile"
           }
         }

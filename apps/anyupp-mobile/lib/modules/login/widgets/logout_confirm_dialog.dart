@@ -15,13 +15,13 @@ showConfirmLogoutDialog(BuildContext context, [bool shouldPopNavigation = true])
         title: Text(transEx(context, 'logout.title')),
         content: Text(transEx(context, 'logout.description')),
         actions: [
-          FlatButton(
+          TextButton(
             child: Text(transEx(context, 'logout.cancel')),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(transEx(context, 'logout.confirm')),
             onPressed: () async {
               if (shouldPopNavigation) {

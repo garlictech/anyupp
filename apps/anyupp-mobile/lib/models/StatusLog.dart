@@ -9,7 +9,7 @@ class StatusLog extends Model {
   final String id;
   final String userId;
   final String status;
-  final int ts;
+  final double ts;
   final String orderStatusLogId;
   final String orderItemStatusLogId;
 
@@ -30,7 +30,7 @@ class StatusLog extends Model {
       {String id,
       @required String userId,
       String status,
-      int ts,
+      double ts,
       String orderStatusLogId,
       String orderItemStatusLogId}) {
     return StatusLog._internal(
