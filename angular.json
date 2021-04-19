@@ -1553,7 +1553,7 @@
                 "command": "yarn sst deploy --stage='{args.stage}'"
               },
               {
-                "command": "cd ../../.. && yarn ts-node ./tools/fetch-configuration.ts '{args.app}' '{args.stage}'"
+                "command": "cd ../.. && yarn ts-node ./tools/fetch-configuration.ts '{args.app}' '{args.stage}'"
               }
             ]
           }
