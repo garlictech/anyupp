@@ -1,17 +1,15 @@
-import { ApolloQueryResult } from 'apollo-client';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap, delay } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi } from '@bgap/crud-gql/api';
 import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedAnyuppGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
-import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 import { pipeDebug } from '../../../../../../../shared/utils/src/lib/fn/utils';
+import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 describe('Admin user creation/deletion', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;

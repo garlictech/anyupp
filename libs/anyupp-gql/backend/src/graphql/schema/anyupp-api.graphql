@@ -10,7 +10,7 @@ input LocationInput {
   lng: Float!
 }
 
-type Address {
+type Address @aws_cognito_user_pools {
   address: String
   city: String
   country: String
@@ -264,7 +264,6 @@ type Query {
   # Units
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_cognito_user_pools
-    @aws_api_key
 }
 
 ### MUTATION
@@ -276,7 +275,6 @@ type Mutation {
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID!
     @aws_cognito_user_pools
-    @aws_api_key
 
   # Product
   createUnitProduct(input: CreateUnitProductInput!): UnitProduct!

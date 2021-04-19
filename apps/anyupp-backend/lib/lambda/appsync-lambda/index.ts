@@ -8,7 +8,7 @@ import {
   stripeRequestHandler,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { crudGraphqlClient } from '@bgap/shared/graphql/api-client';
+import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
@@ -22,12 +22,14 @@ const resolverMap = {
   createAdminUser: adminRequestHandler.createAdminUser,
   deleteAdminUser: adminRequestHandler.deleteAdminUser,
   createOrderFromCart: orderRequestHandler.createOrderFromCart(
-    crudGraphqlClient,
+    crudBackendGraphQLClient,
   ),
   getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
-    crudGraphqlClient,
+    crudBackendGraphQLClient,
   ),
-  createUnitProduct: productRequestHandler.createUnitProduct(crudGraphqlClient),
+  createUnitProduct: productRequestHandler.createUnitProduct(
+    crudBackendGraphQLClient,
+  ),
 };
 
 export const handler: Handler<AnyuppRequest, unknown> = (

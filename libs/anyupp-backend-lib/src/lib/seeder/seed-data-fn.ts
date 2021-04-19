@@ -1,4 +1,4 @@
-import { switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
@@ -6,7 +6,7 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -510,5 +510,13 @@ export const createTestAdminRoleContext = (
       deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
       createOperation: CrudApiMutationDocuments.createAdminRoleContext,
     }),
-  ]);
+  ]).pipe(
+    catchError(err => {
+      console.warn(
+        'The admiRoleContext error could be FALSE because of the already existsing connections',
+        err,
+      );
+      return of('SUCCESS');
+    }),
+  );
 };

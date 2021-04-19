@@ -21,6 +21,7 @@ export const validateSchema = <REQUIRED_TYPE>(
         catchError((err: Joi.ValidationError) => {
           console.log(
             '### ~ file: validate.ts ~ line 24 ~ err - JOI',
+            `schemaName: ${schemaName}`,
             JSON.stringify(err, undefined, 2),
           );
 

@@ -306,6 +306,10 @@ const getCart = (
   ).pipe(
     map(x => x.getCart),
     switchMap(validateCart),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart query error');
+    }),
   );
 };
 
@@ -316,7 +320,13 @@ const deleteCart = (
   return executeMutation(crudGraphqlClient)<CrudApi.DeleteCartMutation>(
     CrudApiMutationDocuments.deleteCart,
     { input: { id } },
-  ).pipe(mapTo(true));
+  ).pipe(
+    mapTo(true),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart Delete error');
+    }),
+  );
 };
 
 const getGroupCurrency = (
@@ -330,5 +340,9 @@ const getGroupCurrency = (
     map(x => x.getGroup),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal GroupCurrency query error');
+    }),
   );
 };

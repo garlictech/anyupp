@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { combineLatest, Observable, from } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, from, Observable, throwError } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
-  crudBackendGraphQLClient,
-  crudGraphqlClient,
   anyuppGraphQLClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
+  crudBackendGraphQLClient,
   executeMutation,
   executeQuery,
   GraphqlApiClient,
@@ -18,11 +20,20 @@ import { ICart, IOrder } from '@bgap/shared/types';
 import { cartSeed } from '../../../fixtures/cart';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
+import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 
 describe('CreatCartFromOrder mutation test', () => {
+  let authHelper: AuthenticatdGraphQLClientWithUserId;
+
   beforeAll(async () => {
+    authHelper = await createAuthenticatedAnyuppGraphQLClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
+
     await combineLatest([
       // CleanUP
       deleteTestCart(),
@@ -79,7 +90,7 @@ describe('CreatCartFromOrder mutation test', () => {
     const cartId = cartSeed.cart_01.id;
     const userId = 'DIFFERENT_USER';
     from(
-      orderRequestHandler.createOrderFromCart(crudGraphqlClient)({
+      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
         input: { id: cartId },
       }),
@@ -95,7 +106,7 @@ describe('CreatCartFromOrder mutation test', () => {
     const cartId = cartWithNotExistingUNIT;
     const userId = cartSeed.cart_01.userId;
     from(
-      orderRequestHandler.createOrderFromCart(crudGraphqlClient)({
+      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
         input: { id: cartId },
       }),
@@ -108,12 +119,11 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 15000);
 
   it('should fail without a cart', done => {
-    executeMutation(anyuppGraphQLClient)<AnyuppApi.CreateOrderFromCartMutation>(
-      AnyuppApi.CreateOrderFromCart,
-      {
-        input: { id: cartSeed.cartId_NotExisting },
-      },
-    ).subscribe({
+    executeMutation(authHelper.graphQlClient)<
+      AnyuppApi.CreateOrderFromCartMutation
+    >(AnyuppApi.CreateOrderFromCart, {
+      input: { id: cartSeed.cartId_NotExisting },
+    }).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -131,7 +141,13 @@ const getOrder = (
   return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
     CrudApiQueryDocuments.getOrder,
     { id },
-  ).pipe(map(x => x.getOrder as IOrder));
+  ).pipe(
+    map(x => x.getOrder as IOrder),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Order query error');
+    }),
+  );
 };
 
 const getCart = (
@@ -142,5 +158,11 @@ const getCart = (
     CrudApiQueryDocuments.getCart,
     { id },
     { fetchPolicy: 'no-cache' },
-  ).pipe(map(x => x.getCart as ICart));
+  ).pipe(
+    map(x => x.getCart as ICart),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart query error');
+    }),
+  );
 };
