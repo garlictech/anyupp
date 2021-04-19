@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 import { API, GRAPHQL_AUTH_MODE, GraphQLResult } from '@aws-amplify/api';
 import Amplify from '@aws-amplify/core';
 import {
-  CrudApiMutationDocuments as Mutations,
-  CrudApiQueryDocuments as Queries,
-  CrudApiSubscriptionDocuments as Subscriptions,
+  CrudApiMutationDocuments,
+  CrudApiQueryDocuments,
+  CrudApiSubscriptionDocuments,
   awsConfig,
 } from '@bgap/crud-gql/api';
 import { IAmplifyModel } from '@bgap/shared/types';
@@ -27,14 +27,14 @@ interface ISubscriptionResult {
 }
 
 interface ISubscriptionParams {
-  subscriptionName: keyof typeof AmplifyApiSubscriptionDocuments;
+  subscriptionName: keyof typeof CrudApiSubscriptionDocuments;
   resetFn?: () => void;
   upsertFn: (data: unknown) => void;
   variables?: Record<string, unknown>;
 }
 
 interface IQueryParams {
-  queryName: keyof typeof AmplifyApiQueryDocuments;
+  queryName: keyof typeof CrudApiQueryDocuments;
   variables?: Record<string, unknown>;
 }
 
@@ -49,7 +49,7 @@ export class AmplifyDataService {
 
     return from(
       <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-        query: AmplifyApiQueryDocuments[params.queryName] as string,
+        query: CrudApiQueryDocuments[params.queryName] as string,
         variables: params.variables,
         authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
       }),
@@ -72,7 +72,7 @@ export class AmplifyDataService {
       }),
       switchMap(
         () => <ObservableInput<ISubscriptionResult>>API.graphql({
-            query: AmplifyApiSubscriptionDocuments[params.subscriptionName],
+            query: CrudApiSubscriptionDocuments[params.subscriptionName],
             variables: params.variables,
             //  authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
           }),
@@ -86,21 +86,21 @@ export class AmplifyDataService {
   }
 
   public async create(
-    mutationName: keyof typeof AmplifyApiMutationDocuments,
+    mutationName: keyof typeof CrudApiMutationDocuments,
     value: unknown,
   ) {
     Amplify.configure(awsConfig);
 
     return API.graphql({
-      query: AmplifyApiMutationDocuments[mutationName],
+      query: CrudApiMutationDocuments[mutationName],
       variables: { input: value },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     });
   }
 
   public async update<T>(
-    queryName: keyof typeof AmplifyApiQueryDocuments,
-    mutationName: keyof typeof AmplifyApiMutationDocuments,
+    queryName: keyof typeof CrudApiQueryDocuments,
+    mutationName: keyof typeof CrudApiMutationDocuments,
     id: string,
     updaterFn: (data: unknown) => T,
   ) {
@@ -109,7 +109,7 @@ export class AmplifyDataService {
     const data: GraphQLResult<queryTypes> = await (<
       Promise<GraphQLResult<queryTypes>>
     >API.graphql({
-      query: AmplifyApiQueryDocuments[<keyof queryTypes>queryName],
+      query: CrudApiQueryDocuments[<keyof queryTypes>queryName],
       variables: { id },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     }));
@@ -120,20 +120,20 @@ export class AmplifyDataService {
     });
 
     return API.graphql({
-      query: AmplifyApiMutationDocuments[mutationName],
+      query: CrudApiMutationDocuments[mutationName],
       variables: { input: modified },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     });
   }
 
   public async delete(
-    mutationName: keyof typeof AmplifyApiMutationDocuments,
+    mutationName: keyof typeof CrudApiMutationDocuments,
     value: unknown,
   ) {
     Amplify.configure(awsConfig);
 
     return API.graphql({
-      query: AmplifyApiMutationDocuments[mutationName],
+      query: CrudApiMutationDocuments[mutationName],
       variables: { input: value },
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     });
@@ -143,7 +143,7 @@ export class AmplifyDataService {
     Amplify.configure(awsConfig);
 
     return <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-      query: AmplifyApiQueryDocuments[params.queryName] as string,
+      query: CrudApiQueryDocuments[params.queryName] as string,
       variables: params.variables,
       authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
     });
@@ -155,7 +155,7 @@ export class AmplifyDataService {
     return of('subscription').pipe(
       switchMap(
         () => <ObservableInput<ISubscriptionResult>>API.graphql({
-            query: AmplifyApiSubscriptionDocuments[params.subscriptionName],
+            query: CrudApiSubscriptionDocuments[params.subscriptionName],
             variables: params.variables,
             // authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
           }),

@@ -3,11 +3,7 @@ import * as fp from 'lodash/fp';
 import { map } from 'rxjs/operators';
 
 import Amplify from '@aws-amplify/core';
-import {
-  AmplifyApi,
-  AmplifyApiQueryDocuments,
-  awsConfig,
-} from '@bgap/admin/amplify-api';
+import { CrudApi, CrudApiQueryDocuments, awsConfig } from '@bgap/crud-gql/api';
 import { executeQuery, GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 
 export const handler: PreTokenGenerationTriggerHandler = async (
@@ -17,17 +13,25 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 ) => {
   Amplify.configure(awsConfig);
 
+  console.error('***** event', event);
+  // console.error('***** process.env.AWS_ACCESS_KEY_ID', process.env.AWS_ACCESS_KEY_ID);
+  // console.error('***** process.env.AWS_SECRET_ACCESS_KEY', process.env.AWS_SECRET_ACCESS_KEY);
+
   const desiredContext = event.request.userAttributes['custom:context'];
-  const amplifyApiClient = GraphqlApiFp.createBackendClient(
+
+
+  const CrudApiClient = GraphqlApiFp.createBackendClient(
     awsConfig,
+    // 'AKIAYIT7GMY5RXSLLQN3',
     process.env.AWS_ACCESS_KEY_ID || '',
+    // 'aYxNIqJ7O56ltpHb1Aq534bpv2r+Atpr1TUxiahx',
     process.env.AWS_SECRET_ACCESS_KEY || '',
     console,
   );
 
-  const adminUser = await executeQuery(amplifyApiClient)<
-    AmplifyApi.GetAdminUserQuery
-  >(AmplifyApiQueryDocuments.getAdminUser, {
+  const adminUser = await executeQuery(CrudApiClient)<
+    CrudApi.GetAdminUserQuery
+  >(CrudApiQueryDocuments.getAdminUser, {
     id: event.request.userAttributes.sub,
   })
     .pipe(map(result => result.getAdminUser))
@@ -35,7 +39,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 
   // Find the role
   const role = (adminUser?.roleContexts?.items || []).find(
-    i =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (i: any) =>
       i?.roleContext?.contextId?.toLowerCase() === desiredContext.toLowerCase(),
   );
 

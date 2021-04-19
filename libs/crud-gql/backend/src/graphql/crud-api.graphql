@@ -20,7 +20,7 @@ type LocalizedItem {
 
 ### AdminUser
 
-type AdminUser @model @auth(rules: [{ allow: private }]) {
+type AdminUser @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
@@ -44,7 +44,7 @@ type AdminUserSettings {
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
   @model
-  @auth(rules: [{ allow: private }])
+  @auth(rules:  [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
   id: ID!
@@ -56,7 +56,7 @@ type AdminRoleContext
 
 ### RoleContext
 
-type RoleContext @model @auth(rules: [{ allow: private }]) {
+type RoleContext @model @auth(rules:  [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
   role: String!
