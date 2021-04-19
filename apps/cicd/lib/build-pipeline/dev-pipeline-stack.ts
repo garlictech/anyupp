@@ -33,7 +33,7 @@ export class DevBuildPipelineStack extends sst.Stack {
     utils.configurePermissions(
       this,
       props.secretsManager,
-      [build, integrationTest],
+      [build, integrationTest, publishAndroidToAppcenter],
       prefix,
     );
 
