@@ -10,7 +10,7 @@ import {
 import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
 import { switchMap } from 'rxjs/operators';
 
-describe.skip('Seeder test', () => {
+describe('Seeder test', () => {
   describe('DB seeder', () => {
     it.skip('should createTestChain work', done => {
       createTestChain(1).subscribe({
@@ -63,7 +63,7 @@ describe.skip('Seeder test', () => {
   });
 
   describe('AdminUser seeder', () => {
-    it('Admin user create', done => {
+    it.skip('Admin user create', done => {
       seedAdminUser(AWS_CRUD_CONFIG.aws_user_pools_id).subscribe({
         complete() {
           done();
@@ -72,7 +72,7 @@ describe.skip('Seeder test', () => {
     }, 25000);
   });
 
-  it('should run complete seeder', done => {
+  it.skip('should run complete seeder', done => {
     seedAdminUser(AWS_CRUD_CONFIG.aws_user_pools_id)
       .pipe(switchMap(userId => seedBusinessData(userId)))
       // .pipe(

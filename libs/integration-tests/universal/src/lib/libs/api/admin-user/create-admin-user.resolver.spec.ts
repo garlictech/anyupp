@@ -1,15 +1,17 @@
 import { ApolloQueryResult } from 'apollo-client';
-import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap, delay } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedAnyuppGraphQLClient,
+  executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
 import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
+import { pipeDebug } from '../../../../../../../shared/utils/src/lib/fn/utils';
 
 describe('Admin user creation/deletion', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;
@@ -28,65 +30,84 @@ describe('Admin user creation/deletion', () => {
     of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
       .pipe(
         switchMap(() =>
-          authHelper.graphQlClient
-            .mutate(AnyuppApi.DeleteAdminUser, {
-              userName,
-            })
-            .pipe(
-              catchError((err: Error) => {
-                if (!err.message.includes('User does not exist')) {
-                  console.warn('Probably normal error: ', err);
-                }
-                return of({});
-              }),
-            ),
+          executeMutation(authHelper.graphQlClient)<
+            AnyuppApi.DeleteAdminUserMutation
+          >(AnyuppApi.DeleteAdminUser, {
+            userName,
+          }).pipe(
+            catchError((err: Error) => {
+              console.log(
+                '### ~ file: create-admin-user.resolver.spec.ts ~ line 39 ~ catchError ~ err',
+                err,
+              );
+              if (!err.message.includes('User does not exist')) {
+                console.warn('Probably normal error: ', err);
+              }
+              return of({ fesf: 'FOOOOO' });
+            }),
+          ),
         ),
+        pipeDebug('### AFTER DELETE'),
         switchMap(() =>
-          authHelper.graphQlClient
-            .mutate(AnyuppApi.CreateAdminUser, {
-              input: {
-                email: 'foobar',
-                name: 'Mekk elek',
-                phone: '12356666',
-              },
-            })
-            .pipe(
-              catchError(err => {
-                expect(err).toMatchSnapshot('Malformed email error');
-                return of(err);
-              }),
-            ),
+          executeMutation(authHelper.graphQlClient)<
+            AnyuppApi.CreateAdminUserMutation
+          >(AnyuppApi.CreateAdminUser, {
+            input: {
+              email: 'foobar',
+              name: 'Mekk elek',
+              phone: '12356666',
+            },
+          }).pipe(
+            catchError(err => {
+              expect(err).toMatchSnapshot('Malformed email error');
+              return of(err);
+            }),
+          ),
         ),
+        pipeDebug('### AFTER CREATE MALFORMED'),
         switchMap(() =>
-          authHelper.graphQlClient.mutate(AnyuppApi.CreateAdminUser, {
+          executeMutation(authHelper.graphQlClient)<
+            AnyuppApi.CreateAdminUserMutation
+          >(AnyuppApi.CreateAdminUser, {
             input: { email: userName, name: 'Mekk Elek', phone: '123456' },
           }),
         ),
-        x =>
-          x as Observable<ApolloQueryResult<CrudApi.CreateAdminUserMutation>>,
-        map(result => result.data.createAdminUser),
+        map(result => result.createAdminUser),
+        pipeDebug('### AFTER CREATE'),
         switchMap(() =>
-          authHelper.graphQlClient
-            .mutate(AnyuppApi.CreateAdminUser, {
-              input: {
-                email: userName,
-                name: 'Mekk Elek',
-                phone: '123456',
-              },
-            })
-            .pipe(
-              catchError(err => {
-                expect(err).toMatchSnapshot('Should not create existing user');
-                return of({});
-              }),
-            ),
+          executeMutation(authHelper.graphQlClient)<
+            AnyuppApi.CreateAdminUserMutation
+          >(AnyuppApi.CreateAdminUser, {
+            input: {
+              email: userName,
+              name: 'Mekk Elek',
+              phone: '123456',
+            },
+          }).pipe(
+            catchError(err => {
+              expect(err).toMatchSnapshot('Should not create existing user');
+              return of({});
+            }),
+          ),
         ),
+        pipeDebug('### AFTER EXISTING USER'),
         // Cleanup
         switchMap(() =>
-          authHelper.graphQlClient.mutate(AnyuppApi.DeleteAdminUser, {
+          executeMutation(authHelper.graphQlClient)<
+            AnyuppApi.DeleteAdminUserMutation
+          >(AnyuppApi.DeleteAdminUser, {
             userName,
-          }),
+          }).pipe(
+            catchError((err: Error) => {
+              console.log(
+                '### ~ file: create-admin-user.resolver.spec.ts ~ line 102 ~ catchError ~ err',
+                err,
+              );
+              return throwError(err);
+            }),
+          ),
         ),
+        pipeDebug('### AFTER CLEANUP'),
         tap(result => expect(result).toMatchSnapshot('Cleanup')),
       )
       .subscribe(

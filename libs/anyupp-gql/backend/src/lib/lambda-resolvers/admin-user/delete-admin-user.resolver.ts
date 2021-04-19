@@ -1,17 +1,15 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { from, Observable, throwError } from 'rxjs';
+import { from } from 'rxjs';
 import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
 
-import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
-import Amplify from '@aws-amplify/core';
-import {
-  CrudApi,
-  CrudApiMutationDocuments,
-  awsConfig,
-} from '@bgap/crud-gql/api';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import {
+  crudBackendGraphQLClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -19,8 +17,6 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 });
 
 const UserPoolId = process.env.userPoolId || '';
-
-Amplify.configure(awsConfig);
 
 export const deleteAdminUser = (
   params: AnyuppApi.DeleteAdminUserMutationVariables,
@@ -55,19 +51,11 @@ export const deleteAdminUser = (
           .promise(),
       ),
       switchMap(() =>
-        pipe(
-          API.graphql(
-            graphqlOperation(CrudApiMutationDocuments.deleteAdminUser, {
-              input: { id: userId },
-            }),
-          ),
-          operation =>
-            operation instanceof Promise
-              ? (from(operation) as Observable<
-                  GraphQLResult<CrudApi.AdminUser>
-                >)
-              : throwError('Wrong graphql operation'),
-        ),
+        executeMutation(crudBackendGraphQLClient)<
+          CrudApi.DeleteAdminUserMutation
+        >(CrudApiMutationDocuments.deleteAdminUser, {
+          input: { id: userId },
+        }),
       ),
       mapTo(true),
     )

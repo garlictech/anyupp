@@ -3,9 +3,12 @@ import { config } from '@bgap/shared/config';
 import { ICrudApiConfig } from '@bgap/shared/types';
 import { GraphqlApiFp } from './graphql-api-fp';
 import { Auth } from 'aws-amplify';
-import { GraphqlApiClient } from './graphql-api-client';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthenticatdGraphQLClientWithUserId } from './common';
+
+// #############
+// ### AYUPP ###
 
 export const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
   ...awsConfig,
@@ -18,16 +21,6 @@ export const anyuppGraphQLClient = GraphqlApiFp.createPublicClient(
   console,
   true,
 );
-
-export interface AuthenticatdGraphQLClientWithUserId {
-  userAttributes: {
-    id: string;
-    sub: string;
-    phone_number: string;
-    email: string;
-  };
-  graphQlClient: GraphqlApiClient;
-}
 
 export const configureAmplifyWithUserPasswordAuthFlow = () => {
   Auth.configure({
@@ -52,44 +45,6 @@ export const createAuthenticatedAnyuppGraphQLClient = (
       },
       graphQlClient: GraphqlApiFp.createAuthenticatedClient(
         AWS_ANYUPP_CONFIG,
-        console,
-        true,
-      ),
-    })),
-  );
-};
-
-export const AWS_CRUD_CONFIG: ICrudApiConfig = {
-  ...awsConfig,
-};
-
-export const crudGraphqlClient = GraphqlApiFp.createPublicClient(
-  AWS_CRUD_CONFIG,
-  console,
-  true,
-);
-
-export const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
-  AWS_CRUD_CONFIG,
-  process.env.AWS_ACCESS_KEY_ID || '',
-  process.env.AWS_SECRET_ACCESS_KEY || '',
-  console,
-);
-
-export const createAuthenticatedCrudGraphQLClient = (
-  userName: string,
-  password: string,
-): Observable<AuthenticatdGraphQLClientWithUserId> => {
-  configureAmplifyWithUserPasswordAuthFlow();
-
-  return from(Auth.signIn(userName, password)).pipe(
-    map(user => ({
-      userAttributes: {
-        id: user.attributes.sub,
-        ...user.attributes,
-      },
-      graphQlClient: GraphqlApiFp.createAuthenticatedClient(
-        AWS_CRUD_CONFIG,
         console,
         true,
       ),

@@ -2,9 +2,7 @@
 
 exports[`Admin user creation/deletion Admin user should be created/deleted: Cleanup 1`] = `
 Object {
-  "data": Object {
-    "deleteAdminUser": true,
-  },
+  "deleteAdminUser": true,
 }
 `;
 
