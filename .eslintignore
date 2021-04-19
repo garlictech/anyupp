@@ -1,3 +1,2 @@
-apps/admin/src/models
-libs/admin/amplify-api/src/lib/models
-libs/admin/amplify-api/src/lib/generated
+libs/crud-gql/api/src/lib/models
+libs/crud-gql/api/src/lib/generated

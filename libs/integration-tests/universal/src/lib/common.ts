@@ -2,10 +2,10 @@ import { config } from '@bgap/shared/config';
 export const testAdminUsername = 'test@anyupp.com';
 export const testAdminUserPassword = 'Testtesttest12_';
 import Amplify from 'aws-amplify';
-import { awsConfig } from '@bgap/admin/amplify-api';
+import { awsConfig } from '@bgap/crud-gql/api';
 
-const { GraphqlApiKey, GraphqlApiUrl } = config;
-export { GraphqlApiUrl, GraphqlApiKey };
+const { AnyuppGraphqlApiKey, AnyuppGraphqlApiUrl } = config;
+export { AnyuppGraphqlApiUrl, AnyuppGraphqlApiKey };
 
 export const configureAmplify = () => {
   Amplify.configure({

@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { combineLatest, from } from 'rxjs';
 
-import { AppsyncApi } from '@bgap/api/graphql/schema';
-import { unitRequestHandler } from '@bgap/api/unit';
 import {
   amplifyGraphQlClient,
   appsyncGraphQlClient,
@@ -12,6 +10,8 @@ import { unitSeed } from '../../../fixtures/unit';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -64,7 +64,7 @@ describe('GetUnitsNearLocation tests', () => {
 
   describe('input validation', () => {
     it('should throw without a input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {} as any;
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
         unitRequestHandler.getUnitsNearLocation(amplifyGraphQlClient)(input),
       ).subscribe({
@@ -75,7 +75,7 @@ describe('GetUnitsNearLocation tests', () => {
       });
     }, 15000);
     it('should throw without a location input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: {},
       } as any;
       from(
@@ -88,7 +88,7 @@ describe('GetUnitsNearLocation tests', () => {
       });
     }, 15000);
     it('should throw without a lat arg in the location input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lat: '12' } },
       } as any;
       from(
@@ -101,7 +101,7 @@ describe('GetUnitsNearLocation tests', () => {
       });
     }, 15000);
     it('should throw without a lng arg in the location input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '12' } },
       } as any;
       from(
@@ -114,12 +114,12 @@ describe('GetUnitsNearLocation tests', () => {
       });
     }, 15000);
     it('should throw without valid location input', done => {
-      const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
       } as any;
 
-      executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
-        AppsyncApi.GetUnitsNearLocation,
+      executeQuery(appsyncGraphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
+        AnyuppApi.GetUnitsNearLocation,
         input,
       ).subscribe({
         error(e) {
@@ -132,7 +132,7 @@ describe('GetUnitsNearLocation tests', () => {
 
   // TODO: create test with A NOT ACTIVE CHAIN
   it('should return all the units in geoUnitsFormat ordered by distance with direct handler call', done => {
-    const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+    const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
     // To test with the local appsync code
@@ -141,7 +141,7 @@ describe('GetUnitsNearLocation tests', () => {
     ).subscribe({
       next(result) {
         expect(result).toHaveProperty('items');
-        const foundItems: Array<AppsyncApi.GeoUnit> = result.items;
+        const foundItems: Array<AnyuppApi.GeoUnit> = result.items;
         successfullExecutionChecks(foundItems);
         done();
       },
@@ -150,11 +150,11 @@ describe('GetUnitsNearLocation tests', () => {
 
   // TODO: create test with A NOT ACTIVE CHAIN
   it('should return all the units in geoUnitsFormat ordered by distance with remove appsync api call', done => {
-    const input: AppsyncApi.GetUnitsNearLocationQueryVariables = {
+    const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    executeQuery(appsyncGraphQlClient)<AppsyncApi.GetUnitsNearLocationQuery>(
-      AppsyncApi.GetUnitsNearLocation,
+    executeQuery(appsyncGraphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
+      AnyuppApi.GetUnitsNearLocation,
       input,
     )
       .pipe(
@@ -170,8 +170,8 @@ describe('GetUnitsNearLocation tests', () => {
           //   '### ~ file: get-units-near-location.spec.ts ~ line 88 ~ next ~ foundItems',
           //   JSON.stringify(result, undefined, 2),
           // );
-          const foundItems: Array<AppsyncApi.GeoUnit> = result as Array<
-            AppsyncApi.GeoUnit
+          const foundItems: Array<AnyuppApi.GeoUnit> = result as Array<
+            AnyuppApi.GeoUnit
           >;
           successfullExecutionChecks(foundItems);
           done();
@@ -179,9 +179,7 @@ describe('GetUnitsNearLocation tests', () => {
       });
   }, 15000);
 
-  const successfullExecutionChecks = (
-    foundItems: Array<AppsyncApi.GeoUnit>,
-  ) => {
+  const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
     const ids = foundItems.map(x => x.id);
     expect(ids).toContain(unitSeed.unitId_seeded_01);
     expect(ids).toContain(unitSeed.unitId_seeded_02);

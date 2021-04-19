@@ -1,5 +1,5 @@
 String getAmplifyConfig(Map<String, dynamic> config) {
-  String webDomain = Uri.parse(config['consumerUserPoolDomain']).host;
+  String webDomain = Uri.parse(config['ConsumerUserPoolDomain']).host;
   print('getAmplifyConfig().webDomain=$webDomain');
 
   return '''{
@@ -24,7 +24,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 "CognitoUserPool": {
                     "Default": {
                         "PoolId": "${config['consumerUserPoolId']}",
-                        "AppClientId": "${config['consumerWebUserPoolClientId']}",
+                        "AppClientId": "${config['ConsumerWebUserPoolClientId']}",
                         "Region": "${config['region']}"
                     }
                 },
@@ -32,7 +32,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                     "Default": {
                         "OAuth": {
                             "WebDomain": "$webDomain",
-                            "AppClientId": "${config['consumerWebUserPoolClientId']}",
+                            "AppClientId": "${config['ConsumerWebUserPoolClientId']}",
                             "SignInRedirectURI": "anyupp://signin/",
                             "SignOutRedirectURI": "anyupp://signout/",
                             "Scopes": [
@@ -48,7 +48,7 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "${config['GraphqlApiUrl']}",
+                        "ApiUrl": "${config['AnyuppGraphqlApiUrl']}",
                         "Region": "${config['region']}",
                         "AuthMode": "AMAZON_COGNITO_USER_POOLS",
                         "ClientDatabasePrefix": "anyuppbackend_AMAZON_COGNITO_USER_POOLS"

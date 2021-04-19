@@ -551,8 +551,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       default:
         provider = 'COGNITO';
     } 
-    var url = "${awsConfig['consumerUserPoolDomain']}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
-        "anyupp://signin/&response_type=CODE&client_id=${awsConfig['consumerNativeUserPoolClientId']}" +
+    var url = "${awsConfig['ConsumerUserPoolDomain']}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
+        "anyupp://signin/&response_type=CODE&client_id=${awsConfig['ConsumerNativeUserPoolClientId']}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
     print('loginScreen.url=$url');
     return WebView(

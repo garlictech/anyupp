@@ -35,7 +35,7 @@ void _initCommon() {
   print('AWS CONFIG=$awsConfig');
 
   final Stripe stripe = Stripe(
-    awsConfig['stripePublishableKey'],
+    awsConfig['StripePublishableKey'],
     returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
