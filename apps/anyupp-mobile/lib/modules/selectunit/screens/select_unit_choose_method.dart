@@ -167,12 +167,14 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               width: double.infinity,
               height: 52.0,
               margin: EdgeInsets.only(top: 16.0),
-              child: FlatButton(
-                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
-                color: Color(0xFFF3F2E7),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xFFF3F2E7),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
                 ),
+                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

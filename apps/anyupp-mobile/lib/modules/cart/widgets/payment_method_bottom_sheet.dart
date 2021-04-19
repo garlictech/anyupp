@@ -103,9 +103,9 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
-                _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
-                    "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
+              // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
+              _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
+                  "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
               if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
@@ -133,7 +133,15 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           bottom: 14.0,
         ),
         width: double.infinity,
-        child: RaisedButton(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: theme.indicator,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+
+            ),
+
+          ),
           child: loading
               ? CenterLoadingWidget(
                   color: theme.highlight,
@@ -148,10 +156,6 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-          color: theme.indicator,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () {
                   if (!loading) {

@@ -1,8 +1,7 @@
-const QUERY_LIST_ACTIVE_ORDERS = '''
-query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
+query ListOrdersQuery($userId: ID!, $unitId: ID!) {
   listOrders(filter: {
-    userId: {eq: \$userId},
-    unitId: {eq: \$unitId}
+    userId: {eq: $userId},
+    unitId: {eq: $unitId}
   }) {
     items {
       id
@@ -60,4 +59,3 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
     }
   }
 }
-''';

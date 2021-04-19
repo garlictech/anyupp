@@ -340,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     left: 12.0,
                   ),
                   child: Row(children: [
-                    RaisedButton(
+                    TextButton(
                       child: Text(
                         trans('login.join'),
                         style: GoogleFonts.poppins(
@@ -348,9 +348,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           color: const Color(0xffffffff),
                         ),
                       ),
-                      color: Color(0xFF30BF60),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color(0xFF30BF60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
                       ),
                       onPressed: () {},
                     ),
@@ -418,10 +420,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 color: const Color(0xffe7e5d0),
                               ),
                             ),
-                            child: FlatButton(
-                                color: Colors.transparent,
-                                padding: EdgeInsets.all(8.0),
-                                splashColor: Colors.blueAccent,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  padding: EdgeInsets.all(8.0),
+                                ),
+                                //: Colors.blueAccent,
                                 onPressed: null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
@@ -573,6 +577,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
+  // ignore: unused_element
   void _toggleEmailLoginForm() {
     setState(() {
       _showLogin = !_showLogin;
