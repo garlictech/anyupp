@@ -74,7 +74,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
         }),
         environment: {
           buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-          computeType: codebuild.ComputeType.LARGE,
+          computeType: codebuild.ComputeType.MEDIUM,
 
           //          buildImage: utils.getBuildImage(this),
         },
