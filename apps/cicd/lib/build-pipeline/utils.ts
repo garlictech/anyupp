@@ -3,7 +3,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { SecretsManagerStack } from './secretsmanager-stack';
+import {SecretsManagerStack} from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -78,6 +78,9 @@ export const createBuildProject = (
             `sh ./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli',
+            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+            'export PATH=$PATH:/tmp/flutter/bin',
+            'flutter doctor',
           ],
         },
         pre_build: {
@@ -92,6 +95,7 @@ export const createBuildProject = (
             `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
             `yarn nx build admin ${adminConfig} --skip-nx-cache`,
             `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
+            `yarn nx buildApk anyupp-mobile`,
           ],
         },
         post_build: {
@@ -99,7 +103,10 @@ export const createBuildProject = (
         },
       },
       artifacts: {
-        files: ['apps/anyupp-backend/cdk.out/**/*'],
+        files: [
+          'apps/anyupp-backend/cdk.out/**/*',
+          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
+        ],
       },
       env: {
         'secrets-manager': {
@@ -215,17 +222,56 @@ export const createIntegrationTestProject = (
     },
   });
 
+export const createApkPublishProject = (
+  stack: sst.Stack,
+  cache: codebuild.Cache,
+  stage: string,
+): codebuild.PipelineProject =>
+  new codebuild.PipelineProject(stack, 'publishApk', {
+    buildSpec: codebuild.BuildSpec.fromObject({
+      version: '0.2',
+      phases: {
+        install: {
+          commands: ['npm install -g appcenter-cli'],
+        },
+        build: {
+          commands: [`echo 'Pushing APK to appcenter...'`],
+        },
+        post_build: {
+          commands: [
+            `nx publish-appcenter anyupp-mobile --stage=${stage} --platform=android`,
+          ],
+        },
+      },
+      env: {
+        'secrets-manager': {
+          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
+          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
+          APP_CENTER_TOKEN: 'codebuild:codebuild-appcenter-token',
+        },
+        variables: {
+          NODE_OPTIONS:
+            '--unhandled-rejections=strict --max_old_space_size=8196',
+        },
+      },
+    }),
+    cache,
+    environment: {
+      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+    },
+  });
+
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): { adminSiteUrl: string } => {
+): {adminSiteUrl: string} => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return { adminSiteUrl };
+  return {adminSiteUrl};
 };
 
 export const configurePipelineNotifications = (
