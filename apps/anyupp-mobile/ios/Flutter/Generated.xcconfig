@@ -1,0 +1,12 @@
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=/Users/molnarzs/Dev/flutter
+FLUTTER_APPLICATION_PATH=/Users/molnarzs/ActualProjects/bgap/anyupp/apps/anyupp-mobile
+FLUTTER_TARGET=lib/main.dart
+FLUTTER_BUILD_DIR=build
+SYMROOT=${SOURCE_ROOT}/../build/ios
+FLUTTER_BUILD_NAME=1.1.1
+FLUTTER_BUILD_NUMBER=10101
+DART_OBFUSCATION=false
+TRACK_WIDGET_CREATION=false
+TREE_SHAKE_ICONS=true
+PACKAGE_CONFIG=/Users/molnarzs/ActualProjects/bgap/anyupp/apps/anyupp-mobile/.dart_tool/package_config.json
