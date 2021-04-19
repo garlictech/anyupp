@@ -574,3 +574,15 @@ Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a
 
 Build IOS app
 `nx buildIos anyupp-mobile`
+
+**Deploy to App Center**
+
+`nx publish-appcenter anyupp-mobile --stage=dev --platform=android`
+
+- stage is `dev`, `qa`, `prod`
+- platform is `android`, `ios`
+
+The tool assumes that you have a valid appcenter token in the `APP_CENTER_TOKEN`
+environment variable. The tool uses the current app image path, so
+be careful: if you want to publish QA, then build the app with QA config, then
+publish!

@@ -148,7 +148,9 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
 # }
 
 ### Chain
-type Chain @model @auth(rules: [{ allow: public }]) {
+type Chain
+  @model
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: LocalizedItem
