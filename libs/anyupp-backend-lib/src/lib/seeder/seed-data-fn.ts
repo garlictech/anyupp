@@ -5,7 +5,8 @@ import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import { EProductType } from '@bgap/shared/types';
+import { EProductType, EAdminRole } from '@bgap/shared/types';
+import { combineLatest } from 'rxjs';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -36,6 +37,10 @@ const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
 const generateCartId = (idx: number) => `cart_${idx}_id`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
+const generateRoleContextId = (idx: number, role: EAdminRole) =>
+  `role_context_${idx}_${role}_id`;
+const generateAdminRoleContextId = (idx: number) =>
+  `admin_role_context_${idx}_id`;
 
 const deleteCreate = ({
   input,
@@ -382,4 +387,128 @@ export const createTestCart = ({
     deleteOperation: CrudApiMutationDocuments.deleteCart,
     createOperation: CrudApiMutationDocuments.createCart,
   });
+};
+
+export const createTestRoleContext = (
+  roleContextIdx: number,
+  chainIdx: number,
+  groupIdx: number,
+  unitIdx: number,
+) => {
+  const superuserInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+    name: {
+      hu: `Test SUPERUSER role context #${roleContextIdx}`,
+      en: `Test SUPERUSER role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.SUPERUSER,
+    contextId: 'SU_CTX_ID',
+  };
+  const chainAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
+    name: {
+      hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+      en: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.CHAIN_ADMIN,
+    contextId: 'CA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+  };
+  const r3 = EAdminRole.GROUP_ADMIN;
+  const groupAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r3),
+    name: {
+      hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+      en: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r3,
+    contextId: 'GA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+  };
+  const r4 = EAdminRole.UNIT_ADMIN;
+  const unitAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r4),
+    name: {
+      hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+      en: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r4,
+    contextId: 'UA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+  const r5 = EAdminRole.STAFF;
+  const staffInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r5),
+    name: {
+      hu: `Test STAFF role context #${roleContextIdx}`,
+      en: `Test STAFF role context #${roleContextIdx}`,
+    },
+    role: r5,
+    contextId: 'STF_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: groupAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: unitAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: staffInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+  ]);
+};
+
+export const createTestAdminRoleContext = (
+  adminRoleContextIdx: number,
+  roleContextIdx: number,
+  adminUserId: string,
+) => {
+  const superuserInput: CrudApi.CreateAdminRoleContextInput = {
+    id: generateAdminRoleContextId(adminRoleContextIdx),
+    adminUserId,
+    roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+  };
+  const chainAdminInput: CrudApi.CreateAdminRoleContextInput = {
+    id: generateAdminRoleContextId(adminRoleContextIdx),
+    adminUserId,
+    roleContextId: generateRoleContextId(
+      roleContextIdx,
+      EAdminRole.CHAIN_ADMIN,
+    ),
+  };
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    }),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    }),
+  ]);
 };

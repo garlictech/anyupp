@@ -7,7 +7,7 @@ import { GraphqlApiClient } from './graphql-api-client';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
+export const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
   ...awsConfig,
   aws_appsync_apiKey: config.AnyuppGraphqlApiKey,
   aws_appsync_graphqlEndpoint: config.AnyuppGraphqlApiUrl,
@@ -59,7 +59,7 @@ export const createAuthenticatedAnyuppGraphQLClient = (
   );
 };
 
-const AWS_CRUD_CONFIG: ICrudApiConfig = {
+export const AWS_CRUD_CONFIG: ICrudApiConfig = {
   ...awsConfig,
 };
 

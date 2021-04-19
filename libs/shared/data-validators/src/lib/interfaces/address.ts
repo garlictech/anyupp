@@ -12,12 +12,12 @@ export const locationSchema: Joi.SchemaMap<ILocation> = {
 
 export const addressSchema: Joi.SchemaMap<IAddress> = {
   __typename: Joi.string().valid('Address').optional(),
-  address: Joi.string(),
-  city: Joi.string(),
-  country: Joi.string(),
-  title: Joi.string(),
-  postalCode: Joi.string(),
-  location: Joi.object(locationSchema),
+  address: Joi.string().allow(null),
+  city: Joi.string().allow(null),
+  country: Joi.string().allow(null),
+  title: Joi.string().allow(null),
+  postalCode: Joi.string().allow(null),
+  location: Joi.object(locationSchema).allow(null),
 };
 
 export const addressInfoSchema: Joi.SchemaMap<IAddressInfo> = {

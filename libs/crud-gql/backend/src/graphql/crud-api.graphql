@@ -20,7 +20,9 @@ type LocalizedItem {
 
 ### AdminUser
 
-type AdminUser @model @auth(rules: [{ allow: public }]) {
+type AdminUser
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
@@ -45,7 +47,7 @@ type AdminUserSettings {
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
   id: ID!
@@ -57,7 +59,9 @@ type AdminRoleContext
 
 ### RoleContext
 
-type RoleContext @model @auth(rules: [{ allow: public }]) {
+type RoleContext
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
   role: String!
@@ -125,7 +129,7 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
 #   value: String!
 # }
 
-# type StripeCard @model @auth(rules: [{ allow: public }]) {
+# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   brand: CardBrand
 #   checks: CardChecks
 #   country: String
@@ -148,7 +152,9 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
 # }
 
 ### Chain
-type Chain @model @auth(rules: [{ allow: public }]) {
+type Chain
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -182,7 +188,9 @@ type ChainStyleImages {
 }
 
 ### Group
-type Group @model @auth(rules: [{ allow: public }]) {
+type Group
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: String!
@@ -221,7 +229,9 @@ type OrderItem {
 }
 
 ### Order
-type Order @model @auth(rules: [{ allow: public }]) {
+type Order
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -234,7 +244,9 @@ type Order @model @auth(rules: [{ allow: public }]) {
   paymentIntention: Float
 }
 
-type OrderHistory @model @auth(rules: [{ allow: public }]) {
+type OrderHistory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -273,7 +285,9 @@ type Place {
 }
 
 ### ProductCategory
-type ProductCategory @model @auth(rules: [{ allow: public }]) {
+type ProductCategory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   description: LocalizedItem
@@ -283,7 +297,9 @@ type ProductCategory @model @auth(rules: [{ allow: public }]) {
 }
 
 ### Product
-type ChainProduct @model @auth(rules: [{ allow: public }]) {
+type ChainProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -299,7 +315,9 @@ type ChainProduct @model @auth(rules: [{ allow: public }]) {
   # laneId: ID
 }
 
-type GroupProduct @model @auth(rules: [{ allow: public }]) {
+type GroupProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent chainProduct ID
   chainId: ID!
@@ -310,7 +328,9 @@ type GroupProduct @model @auth(rules: [{ allow: public }]) {
   variants: [ProductVariant]
 }
 
-type UnitProduct @model @auth(rules: [{ allow: public }]) {
+type UnitProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent groupProduct ID
   chainId: ID!
@@ -351,7 +371,7 @@ type Availability {
 
 type GeneratedProduct
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productsByUnit", fields: ["unitId"])
   @key(
     name: "productsByUnitAndCategory"
@@ -372,7 +392,7 @@ type GeneratedProduct
 
 type FavoriteProduct
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
   id: ID!
   userId: ID!
@@ -467,7 +487,7 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: public }]) {
+# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   id: ID!
 #   # name: String
 #   # email: String

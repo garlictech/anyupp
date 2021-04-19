@@ -1,6 +1,6 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import axios from 'axios';
-import { combineLatest, from } from 'rxjs';
+import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { seedAdminUser, seedBusinessData } from '@bgap/anyupp-backend-lib';
@@ -41,18 +41,15 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await combineLatest([
-      seedAdminUser(AdminUserPoolId),
-      seedBusinessData(),
-      // .pipe(
-      //   mapTo('SUCCESS'),
-      //   catchError((error: AWSError) => {
-      //     console.log("Probably 'normal' error: ", error);
-      //     return of('SUCCESS');
-      //   }),
-      // ),
-    ])
+    await seedAdminUser(AdminUserPoolId)
       .pipe(
+        switchMap(userId => seedBusinessData(userId)),
+        //   mapTo('SUCCESS'),
+        //   catchError((error: AWSError) => {
+        //     console.log("Probably 'normal' error: ", error);
+        //     return of('SUCCESS');
+        //   }),
+        // ),
         switchMap(() =>
           from(
             sendResponse({
