@@ -89,22 +89,22 @@ export class DevBuildPipelineStack extends sst.Stack {
           ],
         },
         {
-          stageName: 'integrationTest',
-          actions: [
-            new codepipeline_actions.CodeBuildAction({
-              actionName: 'integrationTest',
-              project: integrationTest,
-              input: sourceOutput,
-            }),
-          ],
-        },
-        {
           stageName: 'publishAndroidToAppcenter',
           actions: [
             new codepipeline_actions.CodeBuildAction({
               actionName: 'publishAndroidToAppcenter',
               project: publishAndroidToAppcenter,
               input: buildOutput,
+            }),
+          ],
+        },
+        {
+          stageName: 'integrationTest',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'integrationTest',
+              project: integrationTest,
+              input: sourceOutput,
             }),
           ],
         },

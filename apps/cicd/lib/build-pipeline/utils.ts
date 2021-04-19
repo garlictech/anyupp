@@ -1,9 +1,8 @@
-import * as ecr from '@aws-cdk/aws-ecr';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import {SecretsManagerStack} from './secretsmanager-stack';
+import { SecretsManagerStack } from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -265,14 +264,14 @@ export const createApkPublishProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): {adminSiteUrl: string} => {
+): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return {adminSiteUrl};
+  return { adminSiteUrl };
 };
 
 export const configurePipelineNotifications = (
@@ -324,34 +323,6 @@ export const configurePRNotifications = (
   });
 };
 
-export const configureDockerImageNotifications = (
-  stack: sst.Stack,
-  resourceArn: string,
-  chatbot: chatbot.SlackChannelConfiguration,
-  label: string,
-): void => {
-  new codestarnotifications.CfnNotificationRule(
-    stack,
-    label + 'BuildNotification',
-    {
-      detailType: 'FULL',
-      eventTypeIds: [
-        'codebuild-project-build-state-in-progress',
-        'codebuild-project-build-state-failed',
-        'codebuild-project-build-state-succeeded',
-      ],
-      name: `AnyUppDockerImageNotification${label}`,
-      resource: resourceArn,
-      targets: [
-        {
-          targetAddress: chatbot.slackChannelConfigurationArn,
-          targetType: 'AWSChatbotSlack',
-        },
-      ],
-    },
-  );
-};
-
 export const copyParameter = (
   paramName: string,
   fromStage: string,
@@ -374,17 +345,4 @@ export const copyParameter = (
     parameterName: `${projectPrefix(toStage)}-${paramName}`,
     stringValue: param,
   });
-};
-
-export const getBuildImage = (stack: sst.Stack): codebuild.IBuildImage => {
-  const buildDockerRepo = ecr.Repository.fromRepositoryName(
-    stack,
-    'CodebuildDockerRepo',
-    'aws-codebuild-core',
-  );
-
-  return codebuild.LinuxBuildImage.fromEcrRepository(
-    buildDockerRepo,
-    'latest-amd64',
-  );
 };
