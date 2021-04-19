@@ -1,9 +1,10 @@
-import { pipe } from 'fp-ts/lib/function';
-import { from, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import {
+  crudBackendGraphQLClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
 import { EProductType } from '@bgap/shared/types';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
@@ -36,12 +37,6 @@ const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
 const generateCartId = (idx: number) => `cart_${idx}_id`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const promiseOrObservableResponseCheck = (operation: any) =>
-  operation instanceof Promise
-    ? from(operation)
-    : throwError('Wrong graphql operation');
-
 const deleteCreate = ({
   input,
   deleteOperation,
@@ -52,30 +47,13 @@ const deleteCreate = ({
   deleteOperation: string;
   createOperation: string;
 }) =>
-  pipe(
-    API.graphql(
-      graphqlOperation(deleteOperation, {
-        input: { id: input.id },
-      }),
-    ),
-    promiseOrObservableResponseCheck,
-  ).pipe(
-    // catchError((err: Error) => {
-    //   console.error(err);
-    //   if (!err.message.includes('Record does not exist')) {
-    //     console.warn('Probably normal error: ', err);
-    //   }
-    //   return of({});
-    // }),
+  executeMutation(crudBackendGraphQLClient)(deleteOperation, {
+    input: { id: input.id },
+  }).pipe(
     switchMap(() =>
-      pipe(
-        API.graphql(
-          graphqlOperation(createOperation, {
-            input,
-          }),
-        ),
-        promiseOrObservableResponseCheck,
-      ),
+      executeMutation(crudBackendGraphQLClient)(createOperation, {
+        input,
+      }),
     ),
   );
 
