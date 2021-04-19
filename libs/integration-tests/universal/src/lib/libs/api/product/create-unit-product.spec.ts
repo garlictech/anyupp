@@ -1,13 +1,10 @@
-import {
-  AmplifyApi,
-  AmplifyApiQueryDocuments,
-} from 'libs/admin/amplify-api/src';
 import { validateUnitProduct } from 'libs/shared/data-validators/src';
 import { IProduct } from 'libs/shared/types/src';
 import { combineLatest, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
   amplifyGraphQlClient,
   appsyncGraphQlClient,
@@ -25,15 +22,15 @@ import {
 } from '../../../fixtures';
 import { deleteUnitProduct } from '../../../seeds/unit-product';
 
-const input: AppsyncApi.CreateUnitProductMutationVariables = {
+const input: AnyuppApi.CreateUnitProductMutationVariables = {
   input: unitProductSeed.unitProduct_01,
 } as any;
 
 describe('CreateUnitProduct tests', () => {
   it('should require authentication to access', done => {
     return executeMutation(appsyncGraphQlClient)<
-      AppsyncApi.CreateUnitProductMutation
-    >(AppsyncApi.CreateUnitProduct, input).subscribe({
+      AnyuppApi.CreateUnitProductMutation
+    >(AnyuppApi.CreateUnitProduct, input).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -75,8 +72,8 @@ describe('CreateUnitProduct tests', () => {
     it('should create unitProduct in the database', done => {
       return (
         executeMutation(authHelper.graphQlClient)<
-          AppsyncApi.CreateUnitProductMutation
-        >(AppsyncApi.CreateUnitProduct, input)
+          AnyuppApi.CreateUnitProductMutation
+        >(AnyuppApi.CreateUnitProduct, input)
           // from(productRequestHandler.createUnitProduct(amplifyGraphQlClient)(input))
           .pipe(
             // pipeDebug('### UNITPRODUCT CREATE RESULT'),
@@ -108,8 +105,8 @@ const getUnitProduct = (
   amplifyApiClient: GraphqlApiClient,
   productId: string,
 ): Observable<IProduct> => {
-  return executeQuery(amplifyApiClient)<AmplifyApi.GetUnitProductQuery>(
-    AmplifyApiQueryDocuments.getUnitProduct,
+  return executeQuery(amplifyApiClient)<CrudApi.GetUnitProductQuery>(
+    CrudApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),

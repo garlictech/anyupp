@@ -11,7 +11,7 @@ import {
   CrudApiMutationDocuments,
   awsConfig,
 } from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',

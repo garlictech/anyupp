@@ -1,11 +1,8 @@
 import { Observable, throwError } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
-import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   executeMutation,
@@ -17,7 +14,7 @@ export const createUnitProduct = ({
   input,
   amplifyGraphQlClient,
 }: {
-  input: AppsyncApi.CreateUnitProductInput;
+  input: AnyuppApi.CreateUnitProductInput;
   amplifyGraphQlClient: GraphqlApiClient;
 }): Observable<IUnitProduct> => {
   return createUnitProductInDb({ input, amplifyGraphQlClient });
@@ -27,12 +24,12 @@ const createUnitProductInDb = ({
   input,
   amplifyGraphQlClient,
 }: {
-  input: AmplifyApi.CreateUnitProductInput;
+  input: CrudApi.CreateUnitProductInput;
   amplifyGraphQlClient: GraphqlApiClient;
 }): Observable<IUnitProduct> => {
   return executeMutation(amplifyGraphQlClient)<
-    AmplifyApi.CreateUnitProductMutation
-  >(AmplifyApiMutationDocuments.createUnitProduct, {
+    CrudApi.CreateUnitProductMutation
+  >(CrudApiMutationDocuments.createUnitProduct, {
     input,
   }).pipe(
     map(x => x.createUnitProduct),

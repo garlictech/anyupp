@@ -1,4 +1,4 @@
-import { AmplifyApi, AmplifyApiQueryDocuments } from '@bgap/admin/amplify-api';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
   amplifyBackendGraphQlClient,
   amplifyGraphQlClient,
@@ -6,14 +6,14 @@ import {
   createAuthenticatedAmplifyGraphQlClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
-import { testAdminUsername, testAdminUserPassword } from '../fixtures';
 
+import { testAdminUsername, testAdminUserPassword } from '../fixtures';
 import { cartSeed } from '../fixtures/cart';
 
 describe('Amplify endpoints AUTH test', () => {
   it('should require authentication to access', done => {
-    return executeQuery(amplifyGraphQlClient)<AmplifyApi.GetCartQuery>(
-      AmplifyApiQueryDocuments.getCart,
+    return executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+      CrudApiQueryDocuments.getCart,
       { id: cartSeed.cart_seeded_01_id },
     ).subscribe({
       error(e) {
@@ -25,8 +25,8 @@ describe('Amplify endpoints AUTH test', () => {
 
   describe('IAM Auth', () => {
     it('should be able to execute a query with IAM authenticated graphql client', done => {
-      executeQuery(amplifyBackendGraphQlClient)<AmplifyApi.GetCartQuery>(
-        AmplifyApiQueryDocuments.getCart,
+      executeQuery(amplifyBackendGraphQlClient)<CrudApi.GetCartQuery>(
+        CrudApiQueryDocuments.getCart,
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
@@ -49,8 +49,8 @@ describe('Amplify endpoints AUTH test', () => {
     });
 
     it('should be able to execute a query with userpool authenticated graphql client', done => {
-      executeQuery(authHelper.graphQlClient)<AmplifyApi.GetCartQuery>(
-        AmplifyApiQueryDocuments.getCart,
+      executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
+        CrudApiQueryDocuments.getCart,
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {

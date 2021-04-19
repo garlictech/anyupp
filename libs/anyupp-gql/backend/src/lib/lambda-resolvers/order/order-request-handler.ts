@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { missingParametersCheck } from '@bgap/shared/utils';
 

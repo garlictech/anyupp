@@ -1,1 +1,1 @@
-export * from './lib/generated/anyupp-api';
+export * as AnyuppApi from './lib/generated/anyupp-api';

@@ -6,7 +6,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api-graphql';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',

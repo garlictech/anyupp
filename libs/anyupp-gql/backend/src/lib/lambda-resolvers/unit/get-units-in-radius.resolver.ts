@@ -4,7 +4,7 @@ import { combineLatest, EMPTY, iif, Observable, of } from 'rxjs';
 import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
 
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import {
   validateChain,
   validateGetGroupCurrency,

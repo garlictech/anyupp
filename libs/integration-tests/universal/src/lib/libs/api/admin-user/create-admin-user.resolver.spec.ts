@@ -2,7 +2,7 @@ import { ApolloQueryResult } from 'apollo-client';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
   AuthenticatdGraphQlClientWithUserId,

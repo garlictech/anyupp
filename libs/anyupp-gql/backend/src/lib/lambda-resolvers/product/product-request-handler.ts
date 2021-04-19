@@ -1,4 +1,4 @@
-import { AppsyncApi } from '@bgap/api/graphql/schema';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 import { createUnitProduct } from './create-unit-product.resolver';
@@ -6,7 +6,7 @@ import { createUnitProduct } from './create-unit-product.resolver';
 // interface WithAuthenticatedUser {
 //   userId: string;
 // }
-export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AppsyncApi.MutationCreateUnitProductArgs;
+export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AnyuppApi.MutationCreateUnitProductArgs;
 
 export const productRequestHandler = {
   createUnitProduct: (amplifyGraphQlClient: GraphqlApiClient) => (
@@ -16,7 +16,7 @@ export const productRequestHandler = {
     //   'userId',
     //   'input',
     // ]);
-    // missingParametersCheck<AppsyncApi.CreateUnitProductInput>(
+    // missingParametersCheck<AnyuppApi.CreateUnitProductInput>(
     //   requestPayload.input,
     //   ['id'],
     // );
