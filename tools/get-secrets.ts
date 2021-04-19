@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 const region = 'eu-west-1';
-import { pipe } from 'fp-ts/lib/function';
+import {pipe} from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
 
@@ -20,9 +20,9 @@ const client = new AWS.SecretsManager({
   region: region,
 });
 
-fs.mkdirSync(targetDir, { recursive: true });
+fs.mkdirSync(targetDir, {recursive: true});
 
-client.getSecretValue({ SecretId: secretName }, function (err, data) {
+client.getSecretValue({SecretId: secretName}, function (err, data) {
   if (err) {
     console.error('Secret error', err);
   } else {
@@ -30,21 +30,10 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
       data.SecretString,
       JSON.parse,
       fp.tap(secret => {
-        // Firebase config
-        fs.writeFileSync(
-          firebaseConfigTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseConfig), null, 2),
-        );
-        console.log(`Secret config written to ${firebaseConfigTargetFile}`);
-
-        // FB service account Key
-        fs.writeFileSync(
-          firebaseServiceAccountKeyTargetFile,
-          JSON.stringify(JSON.parse(secret.firebaseServiceAccountKey), null, 2),
-        );
-        console.log(
-          `Secret config written to ${firebaseServiceAccountKeyTargetFile}`,
-        );
+        // Android keystore binary
+        fs.writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
+          encoding: 'base64',
+        });
 
         // Android keystore binary
         fs.writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
@@ -56,7 +45,7 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
         fs.writeFileSync(
           androidKeyPropertiesTargetFile,
           secret.androidKeyProperties,
-          { encoding: 'base64' },
+          {encoding: 'base64'},
         );
         console.log(
           `Secret config written to ${androidKeyPropertiesTargetFile}`,

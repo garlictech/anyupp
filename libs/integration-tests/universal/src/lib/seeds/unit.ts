@@ -6,16 +6,13 @@ import {
   amplifyGraphQlClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
-  overwrites: Partial<AmplifyApi.CreateUnitInput> = {},
+  overwrites: Partial<CrudApi.CreateUnitInput> = {},
 ) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.CreateUnitMutation>(
-    AmplifyApiMutationDocuments.createUnit,
+  executeMutation(amplifyGraphQlClient)<CrudApi.CreateUnitMutation>(
+    CrudApiMutationDocuments.createUnit,
     {
       input: {
         ...unitSeed.unit_01,
@@ -34,8 +31,8 @@ export const createTestUnit = (
   );
 
 export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.DeleteUnitMutation>(
-    AmplifyApiMutationDocuments.deleteUnit,
+  executeMutation(amplifyGraphQlClient)<CrudApi.DeleteUnitMutation>(
+    CrudApiMutationDocuments.deleteUnit,
     {
       input: { id },
     },
