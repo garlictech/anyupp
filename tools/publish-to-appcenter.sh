@@ -6,7 +6,7 @@ STAGE=$1
 PLATFORM=$2
 
 if [ $PLATFORM = 'android' ]; then
-  appImagePath=${CODEBUILD_SRC_DIR:-$PWD}/apps/anyupp-mobile/build/app/outputs/flutter-apk/app.apk
+  appImagePath=${CODEBUILD_SRC_DIR:-$PWD}/apps/anyupp-mobile/build/app/outputs/flutter-apk/app-release.apk
 else
   echo "Unsupported platform: ${PLATFORM}"
   exit 1
