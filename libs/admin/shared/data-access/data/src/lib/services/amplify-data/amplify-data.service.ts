@@ -1,10 +1,19 @@
 import * as fp from 'lodash/fp';
 import { from, Observable, ObservableInput, of } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
-
+import { delay, switchMap, take, tap } from 'rxjs/operators';
+import {
+  anyuppAuthenticatedGraphqlClient,
+  GraphqlApiFp,
+} from '@bgap/shared/graphql/api-client';
 import { Injectable } from '@angular/core';
-import { API, GRAPHQL_AUTH_MODE, GraphQLResult } from '@aws-amplify/api';
+import {
+  API,
+  GRAPHQL_AUTH_MODE,
+  GraphQLResult,
+  graphqlOperation,
+} from '@aws-amplify/api';
 import Amplify from '@aws-amplify/core';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   CrudApiMutationDocuments,
   CrudApiQueryDocuments,
@@ -45,15 +54,33 @@ interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
 })
 export class AmplifyDataService {
   public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
-    Amplify.configure(awsConfig);
+   // Amplify.configure(awsConfig);
+    /*
+    <ObservableInput<ISubscriptionResult>>API.graphql({
+      //return of(API.graphql({
+       query: CrudApiSubscriptionDocuments[params.subscriptionName],
+       variables: params.variables,
+     }).subscribe(data => {
+       console.error('data?', data);
+     })
+*/
+    // Subscribe to creation of Todo
+    /*
+const subscription = (<any>API.graphql(
+  graphqlOperation(CrudApiSubscriptionDocuments.onAdminUserChange, params.variables)
+)).subscribe({
+  next: ({ provider, value }) => console.log({ provider, value }),
+  error: error => console.warn(error)
+});*/
 
-    return from(
+    /*return from(
       <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
         query: CrudApiQueryDocuments[params.queryName] as string,
         variables: params.variables,
         authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
       }),
     ).pipe(
+      tap(() => console.error(`Q ${params.queryName} fired`)),
       take(1),
       tap(data => {
         if (params.resetFn) {
@@ -69,19 +96,23 @@ export class AmplifyDataService {
         } else if (data?.data?.[<keyof queryTypes>params.queryName]) {
           params.upsertFn(data?.data?.[<keyof queryTypes>params.queryName]);
         }
+      }),*/
+    return of('subscriber').pipe(
+      switchMap(() => {
+        console.error('PARAMS?', params);
+        return <ObservableInput<ISubscriptionResult>>API.graphql({
+          //return of(API.graphql({
+          query: CrudApiSubscriptionDocuments[params.subscriptionName],
+          variables: params.variables,
+        });
       }),
-      switchMap(
-        () => <ObservableInput<ISubscriptionResult>>API.graphql({
-            query: CrudApiSubscriptionDocuments[params.subscriptionName],
-            variables: params.variables,
-            //  authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-          }),
-      ),
-      tap((data: ISubscriptionResult) => {
+      tap((data: any) => {
+        console.error(`S ${params.subscriptionName} fired`, data);
         params.upsertFn(
           data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
         );
       }),
+      tap(() => console.error('steam vééége 1')),
     );
   }
 

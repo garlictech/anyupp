@@ -541,3 +541,30 @@ export const createTestAdminRoleContext = (
     ),
   ]);
 };
+
+export const createTestAdminRoleContext = (roleContextIdx: number, adminUserId: string) => {
+  const superuserInput: CrudApi.CreateAdminRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+    adminUserId,
+    roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER)
+  };
+
+  const chainAdminInput: CrudApi.CreateAdminRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
+    adminUserId,
+    roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN)
+  };
+
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    }),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    })
+  ]);
+};

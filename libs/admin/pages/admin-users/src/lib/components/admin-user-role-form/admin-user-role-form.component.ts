@@ -64,6 +64,9 @@ export class AdminUserRoleFormComponent
               i => i.roleContextId,
             );
 
+            console.error('adminUser', adminUser);
+            console.error('contextIds', contextIds);
+
             this.roleContextOptions = roleContexts
               .filter(c => !contextIds.includes(c.id))
               .map(

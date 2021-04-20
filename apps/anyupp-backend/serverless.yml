@@ -1,5 +1,5 @@
 org: anyupp
-service: anyupp-backend
+service: petrot-anyupp
 configValidationMode: error
 frameworkVersion: ^2.16.1
 

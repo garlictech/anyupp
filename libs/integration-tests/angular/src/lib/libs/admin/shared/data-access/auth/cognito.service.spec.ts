@@ -10,15 +10,14 @@ import {
 
 describe('Testing cognito service', () => {
   const service = new CognitoService();
-  const goodContext = 'cmd46v'; // TODO seeeded data
-  // const goodContext = 'GOOD_CONTEXT';
+  const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
 
   beforeAll(() => {
     configureAmplifyWithUserPasswordAuthFlow();
   });
 
-  test.only('Test valid authorization', done => {
+  test('Test valid authorization', done => {
     service.currentContext = goodContext;
 
     from(Auth.signIn(testAdminUsername, testAdminUserPassword))
@@ -33,7 +32,7 @@ describe('Testing cognito service', () => {
         }),
       )
       .subscribe(() => done());
-  });
+  }, 15000);
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;
@@ -52,5 +51,4 @@ describe('Testing cognito service', () => {
       )
       .subscribe(() => done());
   });
-
 });

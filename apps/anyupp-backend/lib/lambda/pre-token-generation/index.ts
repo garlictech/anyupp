@@ -14,18 +14,16 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   Amplify.configure(awsConfig);
 
   console.error('***** event', event);
-  // console.error('***** process.env.AWS_ACCESS_KEY_ID', process.env.AWS_ACCESS_KEY_ID);
-  // console.error('***** process.env.AWS_SECRET_ACCESS_KEY', process.env.AWS_SECRET_ACCESS_KEY);
 
   const desiredContext = event.request.userAttributes['custom:context'];
 
-
   const CrudApiClient = GraphqlApiFp.createBackendClient(
     awsConfig,
-    // 'AKIAYIT7GMY5RXSLLQN3',
-    process.env.AWS_ACCESS_KEY_ID || '',
-    // 'aYxNIqJ7O56ltpHb1Aq534bpv2r+Atpr1TUxiahx',
-    process.env.AWS_SECRET_ACCESS_KEY || '',
+    // TODO use process.env variables
+    'AKIAYIT7GMY5RXSLLQN3',
+    //process.env.AWS_ACCESS_KEY_ID || '',
+    'aYxNIqJ7O56ltpHb1Aq534bpv2r+Atpr1TUxiahx',
+    //process.env.AWS_SECRET_ACCESS_KEY || '',
     console,
   );
 

@@ -1,20 +1,11 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
 
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { awsConfig } from '@bgap/crud-gql/api';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { config } from '@bgap/shared/config';
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
+import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({
@@ -49,6 +40,12 @@ export class AdminUserFormComponent
 
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
+    } else {
+      this.dialogForm.patchValue({
+        name: 'Gipsz Jakabné',
+        phone: '13123123',
+        email:  'petro.tamas+' + new Date().getTime() + '@gmail.com'
+      })
     }
   }
 
@@ -81,11 +78,12 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
+          /*
           const { AnyuppGraphqlApiKey, AnyuppGraphqlApiUrl } = config;
           const appsyncConfig = {
             ...awsConfig,
-            aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
-            aws_appsync_apiKey: AnyuppGraphqlApiKey,
+            //aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
+            //aws_appsync_apiKey: AnyuppGraphqlApiKey,
           };
           const AnyuppApiClient = GraphqlApiFp.createAuthenticatedClient(
             appsyncConfig,
@@ -105,7 +103,7 @@ export class AdminUserFormComponent
               );
 
               this.close();
-            });
+            });*/
         } catch (error) {
           this._logger.error(
             `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
