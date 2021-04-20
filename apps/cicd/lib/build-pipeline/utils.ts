@@ -451,7 +451,7 @@ export const createCommonPipelineParts = (
             templatePath: buildOutput.atPath(
               `apps/anyupp-backend/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
             ),
-            stackName: `${utils.projectPrefix(stage)}-anyupp`,
+            stackName: `${stage}-${utils.appConfig.name}-anyupp`,
             adminPermissions: true,
             extraInputs: [buildOutput],
             replaceOnFailure: true,
