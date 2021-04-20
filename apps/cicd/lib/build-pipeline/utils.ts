@@ -120,6 +120,7 @@ export const createBuildProject = (
         files: [
           'apps/anyupp-backend/cdk.out/**/*',
           'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
+          './tools/publish-to-appcenter.sh',
         ],
       },
       env: {
