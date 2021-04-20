@@ -9,8 +9,8 @@ module.exports = {
     '<rootDir>/libs/shared/types',
     '<rootDir>/libs/shared/config',
     '<rootDir>/libs/api/data-access',
-    '<rootDir>/apps/infrastructure/build-pipeline-stack',
-    '<rootDir>/apps/infrastructure/anyupp-backend-stack',
+    '<rootDir>/apps/infrastructure/cicd',
+    '<rootDir>/apps/anyupp-backend',
     '<rootDir>/libs/admin/admin-user',
     '<rootDir>/libs/admin/pages/admin-users',
     '<rootDir>/libs/admin/shared/forms',
@@ -69,5 +69,6 @@ module.exports = {
     '<rootDir>/libs/api/crud-gql',
     '<rootDir>/libs/appsync-gql/api',
     '<rootDir>/libs/crud-gql/api',
+    '<rootDir>/libs/anyupp-backend-lib',
   ],
 };

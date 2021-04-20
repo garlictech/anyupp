@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fa_prev/app.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -41,19 +39,19 @@ void _initCommon() {
     returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
-  final CognitoService cognitoService = CognitoService(
-    region: awsConfig['region'],
-    userPoolId: awsConfig['consumerUserPoolId'],
-    identityPoolId: awsConfig['IdentityPoolId'],
-    clientId: awsConfig['ConsumerWebUserPoolClientId'],
-  );
-  getIt.registerLazySingleton<CognitoService>(() => cognitoService);
+  // final CognitoService cognitoService = CognitoService(
+  //   region: awsConfig['region'],
+  //   userPoolId: awsConfig['consumerUserPoolId'],
+  //   identityPoolId: awsConfig['IdentityPoolId'],
+  //   clientId: awsConfig['consumerWebUserPoolClientId'],
+  // );
+  // getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);
 }
 
 void _initProviders() {
   // Providers
-  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
+  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider());
   getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
         getIt<IAuthProvider>(),
@@ -64,7 +62,7 @@ void _initProviders() {
       () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
-  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider());
+  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
   getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
         getIt<IAuthProvider>(),
@@ -101,10 +99,10 @@ void _initRepositories() {
 void _initServices() {
   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
         authProvider: getIt<IAuthProvider>(),
-        graphqlApiUrl: awsConfig['AnyuppGraphqlApiUrl'],
-        graphqlApiKey: awsConfig['AnyuppGraphqlApiKey'],
-        graphqlAdminApiUrl: awsConfig['AdminAnyuppGraphqlApiUrl'],
-        graphqlAdminApiKey: awsConfig['AdminAnyuppGraphqlApiKey'],
+        graphqlApiUrl: awsConfig['GraphqlApiUrl'],
+        graphqlApiKey: awsConfig['GraphqlApiKey'],
+        amplifyApiUrl: awsConfig['GraphqlAdminApiUrl'],
+        amplifyApiKey: awsConfig['GraphqlAdminApiKey'],
       ));
 }
 

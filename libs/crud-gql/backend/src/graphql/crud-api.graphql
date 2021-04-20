@@ -20,7 +20,9 @@ type LocalizedItem {
 
 ### AdminUser
 
-type AdminUser @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type AdminUser
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
@@ -44,7 +46,7 @@ type AdminUserSettings {
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
   @model
-  @auth(rules:  [{ allow: private }, { allow: public, provider: iam }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
   id: ID!
@@ -56,7 +58,9 @@ type AdminRoleContext
 
 ### RoleContext
 
-type RoleContext @model @auth(rules:  [{ allow: private }, { allow: public, provider: iam }]) {
+type RoleContext
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
   role: String!
@@ -123,7 +127,7 @@ type RoleContext @model @auth(rules:  [{ allow: private }, { allow: public, prov
 #   value: String!
 # }
 
-# type StripeCard @model @auth(rules: [{ allow: private }]) {
+# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   brand: CardBrand
 #   checks: CardChecks
 #   country: String
@@ -146,7 +150,9 @@ type RoleContext @model @auth(rules:  [{ allow: private }, { allow: public, prov
 # }
 
 ### Chain
-type Chain @model @auth(rules: [{ allow: private }]) {
+type Chain
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -180,7 +186,9 @@ type ChainStyleImages {
 }
 
 ### Group
-type Group @model @auth(rules: [{ allow: private }]) {
+type Group
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: String!
@@ -209,8 +217,9 @@ type PriceShown {
 type OrderItem {
   productId: ID!
   variantId: ID!
-  created: Int
+  created: Float
   productName: LocalizedItem!
+  image: String
   priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog]
@@ -219,7 +228,9 @@ type OrderItem {
 }
 
 ### Order
-type Order @model @auth(rules: [{ allow: private }]) {
+type Order
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -232,7 +243,9 @@ type Order @model @auth(rules: [{ allow: private }]) {
   paymentIntention: Float
 }
 
-type OrderHistory @model @auth(rules: [{ allow: private }]) {
+type OrderHistory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -271,7 +284,9 @@ type Place {
 }
 
 ### ProductCategory
-type ProductCategory @model @auth(rules: [{ allow: private }]) {
+type ProductCategory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   description: LocalizedItem
@@ -281,7 +296,9 @@ type ProductCategory @model @auth(rules: [{ allow: private }]) {
 }
 
 ### Product
-type ChainProduct @model @auth(rules: [{ allow: private }]) {
+type ChainProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -297,7 +314,9 @@ type ChainProduct @model @auth(rules: [{ allow: private }]) {
   # laneId: ID
 }
 
-type GroupProduct @model @auth(rules: [{ allow: private }]) {
+type GroupProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent chainProduct ID
   chainId: ID!
@@ -308,7 +327,9 @@ type GroupProduct @model @auth(rules: [{ allow: private }]) {
   variants: [ProductVariant]
 }
 
-type UnitProduct @model @auth(rules: [{ allow: private }]) {
+type UnitProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent groupProduct ID
   chainId: ID!
@@ -349,7 +370,7 @@ type Availability {
 
 type GeneratedProduct
   @model
-  @auth(rules: [{ allow: private }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productsByUnit", fields: ["unitId"])
   @key(
     name: "productsByUnitAndCategory"
@@ -370,7 +391,7 @@ type GeneratedProduct
 
 type FavoriteProduct
   @model
-  @auth(rules: [{ allow: private }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
   id: ID!
   userId: ID!
@@ -379,7 +400,9 @@ type FavoriteProduct
 }
 
 ### Unit
-type Unit @model @auth(rules: [{ allow: private }]) {
+type Unit
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -463,7 +486,7 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: private }]) {
+# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   id: ID!
 #   # name: String
 #   # email: String
@@ -475,7 +498,9 @@ type Lane {
 
 ### Cart
 
-type Cart @model @auth(rules: [{ allow: private }]) {
+type Cart
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -522,4 +547,12 @@ type Subscription {
     )
   onOrderChanged(userId: String, unitId: String): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+  onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
+    @aws_subscribe(
+      mutations: [
+        "createOrderHistory"
+        "updateOrderHistory"
+        "deleteOrderHistory"
+      ]
+    )
 }

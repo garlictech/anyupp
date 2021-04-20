@@ -1,3 +1,5 @@
+[![Appcenter Build status - IOS](https://build.appcenter.ms/v0.1/apps/b0bf2ec0-0acc-4871-a0e9-dcd93586fa05/branches/dev/badge)](https://appcenter.ms)
+
 # Anyupp
 
 See the official nx docs below, let's start with the Anyupp-specific stuff.
@@ -97,9 +99,9 @@ stack in the Parameter Store!
 
 Unfortunately, the SST tools we use to deploy the CDK stack do not support app name parametrization, so:
 
-- in `apps/infrastructure/anyupp-backend-stack/sst.json`, write your app name
+- in `apps/anyupp-backend/sst.json`, write your app name
   to the "name" field
-- in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
+- in `anyupp-backend/serverless.yml`, use the same name
   in the `service` field
 - in `apps/crud-backend/.graphqlconfig.yml`, use the same name
   in the `schemaPath` field (...api/<APPNAME>/build...)
@@ -208,9 +210,9 @@ Or, they should support it if needed, we have to add this support gradually. For
 some samples, see the build targets belonging to the examples in the
 `angular.json`.
 
-### Build the amplify app
+### Build the crud (amplify) app
 
-`nx config-schema admin-amplify-api --stage dev`
+`nx build-schema crud-backend --app=APPNAME --stage=dev`
 
 The command builds the _current_ configured app / stage.
 
@@ -218,7 +220,7 @@ The command builds the _current_ configured app / stage.
 
 Deploy the current app/stage:
 
-`nx deploy admin-amplify-api`
+`nx deploy crud-backend --app=APPNAME --stage=dev`
 
 To build the admin site for a given configuration:
 
@@ -234,14 +236,14 @@ Deploying the stack:
 
 Destroy the admin amplify app:
 
-`nx remove crud-backend`
+`nx remove crud-backend --app=APPNAME --stage=dev`
 
 **WARNING**: the command destroys the amplify app that is currently pulled! Both the local
 and the backend resources so be careful.
 
 Then, remove the CDK stack:
 
-`nx remove anyupp-backend --stage ${STAGE}`
+`nx remove anyupp-backend --stage=dev`
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
@@ -419,6 +421,9 @@ Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
+Use `--exclude="PROJECT_NAME"` to exclude the int tests
+`nx affected:test --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal"`
+
 ### Using jest options [Nrwl - testing](https://nx.dev/latest/angular/cli/test#testfile)
 
 Run `nx test projectName --i --testFile=partOfASpecFileNameToTest --watch` to execute the unit tests on a single file in runInBand and watch mode.
@@ -504,7 +509,7 @@ The generator will collect the new resolver's name
 
 ### Update own backend stack
 
-1. Set stage name in apps/infrastructure/anyupp-backend-stack/sst.json (e.g. dev-petrot)
+1. Set stage name in apps/anyupp-backend/sst.json (e.g. dev-petrot)
 
 2. Download own config:
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
@@ -575,3 +580,15 @@ Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a
 
 Build IOS app
 `nx buildIos anyupp-mobile`
+
+**Deploy to App Center**
+
+`nx publish-appcenter anyupp-mobile --stage=dev --platform=android`
+
+- stage is `dev`, `qa`, `prod`
+- platform is `android`, `ios`
+
+The tool assumes that you have a valid appcenter token in the `APP_CENTER_TOKEN`
+environment variable. The tool uses the current app image path, so
+be careful: if you want to publish QA, then build the app with QA config, then
+publish!

@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
+import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
   CrudApi,
@@ -21,6 +21,7 @@ import {
   IOrderItem,
   IPaymentMode,
   IPlace,
+  IUnitProduct,
   IUnit,
 } from '@bgap/shared/types';
 import {
@@ -43,11 +44,11 @@ import { calculateOrderSumPrice } from './order.utils';
 export const createOrderFromCart = ({
   userId,
   cartId,
-  amplifyGraphQlClient,
+  crudGraphqlClient,
 }: {
   userId: string;
   cartId: string;
-  amplifyGraphQlClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<string> => {
   // console.log(
   //   '### ~ file: order.service.ts ~ line 39 ~ INPUT PARAMS',
@@ -59,20 +60,20 @@ export const createOrderFromCart = ({
   //   2,
   // );
 
-  return getCart(amplifyGraphQlClient, cartId).pipe(
+  return getCart(crudGraphqlClient, cartId).pipe(
     // CART.USERID CHECK
     switchMap(cart =>
       cart.userId === userId ? of(cart) : throwError(getCartIsMissingError()),
     ),
     switchMap(cart =>
-      getUnit(amplifyGraphQlClient, cart.unitId).pipe(
+      getUnit(crudGraphqlClient, cart.unitId).pipe(
         // TODO: ??? create catchError and custom error
         // pipeDebug('### UNIT'),
         map(unit => ({ cart, unit })),
       ),
     ),
     switchMap(props =>
-      getGroupCurrency(amplifyGraphQlClient, props.unit?.groupId).pipe(
+      getGroupCurrency(crudGraphqlClient, props.unit?.groupId).pipe(
         // TODO: ??? create catchError and custom error
         map(currency => ({ ...props, currency })),
       ),
@@ -100,7 +101,7 @@ export const createOrderFromCart = ({
     //     // }
     switchMap(props =>
       getOrderItems({
-        amplifyApiClient: amplifyGraphQlClient,
+        crudGraphqlClient: crudGraphqlClient,
         userId,
         currency: props.currency,
         cartItems: props.cart.items,
@@ -118,14 +119,14 @@ export const createOrderFromCart = ({
       }),
     })),
     switchMap(props =>
-      createOrder({
+      createOrderInDb({
         orderInput: props.orderInput,
-        amplifyApiClient: amplifyGraphQlClient,
+        crudGraphqlClient: crudGraphqlClient,
       }).pipe(map(x => ({ ...props, orderId: x.id as string }))),
     ),
     // Remove the cart from the db after the order has been created successfully
     switchMap(props =>
-      deleteCart(amplifyGraphQlClient, props.cart.id).pipe(
+      deleteCart(crudGraphqlClient, props.cart.id).pipe(
         mapTo(props.orderId),
         pipeDebug('### Response'),
       ),
@@ -164,16 +165,16 @@ const getOrderItems = ({
   userId,
   cartItems,
   currency,
-  amplifyApiClient,
+  crudGraphqlClient,
 }: {
   userId: string;
   cartItems: IOrderItem[];
   currency: string;
-  amplifyApiClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<CrudApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
-      getLaneIdForCartItem(amplifyApiClient, cartItem.productId).pipe(
+      getLaneIdForCartItem(crudGraphqlClient, cartItem.productId).pipe(
         map(laneId =>
           convertCartOrderToOrderItem({
             userId,
@@ -227,16 +228,24 @@ const convertCartOrderToOrderItem = ({
 };
 
 const getLaneIdForCartItem = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetUnitProductQuery>(
+  return getUnitProduct(crudGraphqlClient, productId).pipe(
+    map(product => product.laneId),
+  );
+};
+
+const getUnitProduct = (
+  crudGraphqlClient: GraphqlApiClient,
+  productId: string,
+): Observable<IUnitProduct> => {
+  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
     CrudApiQueryDocuments.getUnitProduct,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),
     switchMap(validateUnitProduct),
-    map(product => product.laneId),
   );
 };
 
@@ -252,14 +261,14 @@ const createStatusLog = (
 //   return Promise.resolve('STAFF_ID');
 // };
 
-const createOrder = ({
+const createOrderInDb = ({
   orderInput,
-  amplifyApiClient,
+  crudGraphqlClient,
 }: {
   orderInput: CrudApi.CreateOrderInput;
-  amplifyApiClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<IOrder> => {
-  return executeMutation(amplifyApiClient)<CrudApi.CreateOrderMutation>(
+  return executeMutation(crudGraphqlClient)<CrudApi.CreateOrderMutation>(
     CrudApiMutationDocuments.createOrder,
     {
       input: orderInput,
@@ -271,51 +280,69 @@ const createOrder = ({
 };
 
 const getUnit = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IUnit> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetUnitQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
     CrudApiQueryDocuments.getUnit,
     { id },
   ).pipe(
     map(x => x.getUnit),
     switchMap(validateUnit),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Unit query error');
+    }),
   );
 };
 
 const getCart = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<ICart> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetCartQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
     CrudApiQueryDocuments.getCart,
     { id },
   ).pipe(
     map(x => x.getCart),
     switchMap(validateCart),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart query error');
+    }),
   );
 };
 
 const deleteCart = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<boolean> => {
-  return executeMutation(amplifyApiClient)<CrudApi.DeleteCartMutation>(
+  return executeMutation(crudGraphqlClient)<CrudApi.DeleteCartMutation>(
     CrudApiMutationDocuments.deleteCart,
     { input: { id } },
-  ).pipe(mapTo(true));
+  ).pipe(
+    mapTo(true),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart Delete error');
+    }),
+  );
 };
 
 const getGroupCurrency = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
     CrudApiQueryDocuments.getGroupCurrency,
     { id },
   ).pipe(
     map(x => x.getGroup),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal GroupCurrency query error');
+    }),
   );
 };

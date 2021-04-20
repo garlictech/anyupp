@@ -30,6 +30,7 @@ export interface IOrderItem {
   statusLog: IStatusLog;
   variantId: string;
   variantName: ILocalizedItem<string>;
+  image?: string;
   laneId?: string;
 }
 

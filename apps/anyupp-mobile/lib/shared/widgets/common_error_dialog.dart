@@ -44,10 +44,11 @@ showErrorDialog(BuildContext context, String error, String description, [VoidCal
                     color: theme.border,
                   ),
                 ),
-                child: FlatButton(
-                  color: Colors.transparent,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: theme.indicator,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    padding: EdgeInsets.all(8.0),
+                  ),
                   onPressed: onClose == null
                       ? () => Nav.pop()
                       : () {

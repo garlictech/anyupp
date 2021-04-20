@@ -11,7 +11,6 @@ import 'country_select_dialog.dart';
 import 'package:fa_prev/shared/nav.dart';
 
 class PhoneDialogContentWidget extends StatefulWidget {
-
   final bool linkAccount;
 
   const PhoneDialogContentWidget({Key key, this.linkAccount = false}) : super(key: key);
@@ -113,7 +112,13 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
               SizedBox(
                 width: double.infinity,
                 height: 52.0,
-                child: RaisedButton(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF30BF60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
                   child: Text(
                     //transEx(context, 'payment.sendOrder'),
                     trans('login.phone.buttonRequireSMS'),
@@ -122,10 +127,6 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
                       color: Color(0xFFFFFFFF),
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  color: Color(0xFF30BF60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
                   ),
                   onPressed: () => _requireSMSCodeToPhoneNumber(),
                 ),
@@ -168,7 +169,13 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
               SizedBox(
                 width: double.infinity,
                 height: 52.0,
-                child: RaisedButton(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF30BF60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
                   child: Text(
                     //transEx(context, 'payment.sendOrder'),
                     trans('login.phone.buttonSendSMSCode'),
@@ -177,10 +184,6 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
                       color: Color(0xFFFFFFFF),
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  color: Color(0xFF30BF60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
                   ),
                   onPressed: () => _sendSMSCode(),
                 ),
@@ -213,7 +216,7 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
             setState(() {
               _selectedCountry = country;
             });
-           }),
+          }),
           icon: Icon(
             Icons.keyboard_arrow_down,
             color: Color(0xFF3C2F2F),
@@ -320,7 +323,9 @@ class _PhoneDialogContentWidgetState extends State<PhoneDialogContentWidget> {
   }
 
   void _requireSMSCodeToPhoneNumber() {
-    print('requireSMSCodeToPhoneNumber()=${_selectedCountry.dialCode}${_phoneNumberController.text}, linkAccount=${widget.linkAccount}');
-    getIt<LoginBloc>().add(LoginWithPhoneRequireSMSCode('${_selectedCountry.dialCode}${_phoneNumberController.text}', widget.linkAccount));
+    print(
+        'requireSMSCodeToPhoneNumber()=${_selectedCountry.dialCode}${_phoneNumberController.text}, linkAccount=${widget.linkAccount}');
+    getIt<LoginBloc>().add(
+        LoginWithPhoneRequireSMSCode('${_selectedCountry.dialCode}${_phoneNumberController.text}', widget.linkAccount));
   }
 }

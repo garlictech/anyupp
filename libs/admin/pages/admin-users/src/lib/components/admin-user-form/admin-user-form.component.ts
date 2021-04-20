@@ -12,7 +12,7 @@ import {
   contactFormGroup,
   EToasterType,
 } from '@bgap/admin/shared/utils';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { config } from '@bgap/shared/config';
 import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
@@ -87,16 +87,15 @@ export class AdminUserFormComponent
             aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
             aws_appsync_apiKey: AnyuppGraphqlApiKey,
           };
-          const appsyncApiClient = GraphqlApiFp.createAuthenticatedClient(
+          const AnyuppApiClient = GraphqlApiFp.createAuthenticatedClient(
             appsyncConfig,
             console,
             true,
           );
 
-          appsyncApiClient
-            .mutate(AnyuppApi.CreateAdminUser, {
-              input: { email, name, phone },
-            })
+          AnyuppApiClient.mutate(AnyuppApi.CreateAdminUser, {
+            input: { email, name, phone },
+          })
             .pipe(map((result: any) => result.data.createAdminUser))
             .subscribe(() => {
               this._toasterService.show(

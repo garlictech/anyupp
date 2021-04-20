@@ -2,15 +2,11 @@ const QUERY_LIST_ACTIVE_ORDERS = '''
 query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId},
-    and: [
-      { status: { ne: PAID }},
-      { status: { ne: REJECTED }},
-    ]
+    unitId: {eq: \$unitId}
   }) {
     items {
       id
-      paymentMethod {
+      paymentMode {
         caption
         name
         method
@@ -20,7 +16,6 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         seat
         table
       }
-      staffId
       statusLog {
         status
         ts
@@ -33,10 +28,8 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         tax
         taxSum
       }
-      takeAway
       unitId
       userId
-      status
       items {
         productId
         productName {
@@ -57,7 +50,6 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
           ts
           userId
         }
-        takeAway
         variantId
         variantName {
           de

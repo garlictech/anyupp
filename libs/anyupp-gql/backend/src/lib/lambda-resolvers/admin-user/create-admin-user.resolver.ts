@@ -1,17 +1,15 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { from, throwError } from 'rxjs';
+import { from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import API, { graphqlOperation, GraphQLResult, GRAPHQL_AUTH_MODE } from '@aws-amplify/api-graphql';
-import Amplify from '@aws-amplify/core';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
-  CrudApi,
-  CrudApiMutationDocuments,
-  awsConfig,
-} from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+  crudBackendGraphQLClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -19,8 +17,6 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 });
 
 const UserPoolId = process.env.userPoolId || '';
-
-Amplify.configure(awsConfig);
 
 export const createAdminUser = (
   vars: AnyuppApi.CreateAdminUserMutationVariables,
@@ -60,22 +56,12 @@ export const createAdminUser = (
       phone: vars.input.phone,
     })),
     switchMap((input: CrudApi.CreateAdminUserInput) =>
-      pipe(
-        API.graphql(
-          graphqlOperation(CrudApiMutationDocuments.createAdminUser, {
-            input,
-            authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-          }),
-        ),
-        operation =>
-          operation instanceof Promise
-            ? from(operation)
-            : throwError('Wrong graphql operation'),
-      ),
+      executeMutation(crudBackendGraphQLClient)<
+        CrudApi.CreateAdminUserMutation
+      >(CrudApiMutationDocuments.createAdminUser, {
+        input,
+      }),
     ),
-    map(
-      (data: GraphQLResult<CrudApi.CreateAdminUserMutation>) =>
-        data.data?.createAdminUser?.id,
-    ),
+    map(data => data.createAdminUser?.id),
   ).toPromise();
 };

@@ -142,7 +142,13 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 bottom: 14.0,
               ),
               width: double.infinity,
-              child: RaisedButton(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: theme.indicator,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 child: Text(
                   transEx(context, 'location.changeLocation'),
                   style: GoogleFonts.poppins(
@@ -150,10 +156,6 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     color: theme.text2,
                     fontWeight: FontWeight.w700,
                   ),
-                ),
-                color: theme.indicator,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
                 ),
                 onPressed: () {
                   Nav.reset(OnBoarding());

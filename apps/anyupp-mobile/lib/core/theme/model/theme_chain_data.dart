@@ -1,5 +1,6 @@
-import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
+
+import 'package:fa_prev/models.dart';
 
 class ThemeChainData {
   final Color background;
@@ -25,4 +26,9 @@ class ThemeChainData {
     this.border2,
     this.images,
   });
+
+  @override
+  String toString() {
+    return 'ThemeChainData(background: $background, background2: $background2, text: $text, text2: $text2, indicator: $indicator, highlight: $highlight, disabled: $disabled, border: $border, border2: $border2, images: $images)';
+  }
 }
