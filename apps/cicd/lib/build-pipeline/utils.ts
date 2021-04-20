@@ -400,6 +400,12 @@ export const createCommonPipelineParts = (
     prefix,
   );
 
+  const publishBuildArtifacts = new codepipeline_actions.S3DeployAction({
+    actionName: 'publishBuildArtifacts',
+    bucket: buildArtifactBucket,
+    input: configOutput,
+  });
+
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
     stages: [
       {
@@ -428,13 +434,7 @@ export const createCommonPipelineParts = (
       },
       {
         stageName: 'publishBuildArtifacts',
-        actions: [
-          new codepipeline_actions.S3DeployAction({
-            actionName: 'publishBuildArtifacts',
-            bucket: buildArtifactBucket,
-            input: configOutput,
-          }),
-        ],
+        actions: [publishBuildArtifacts],
       },
       {
         stageName: 'StackCreation',
@@ -501,4 +501,6 @@ export const createCommonPipelineParts = (
     props.chatbot,
     stage,
   );
+
+  buildArtifactBucket.grantWrite(pipeline.role);
 };
