@@ -20,10 +20,11 @@ echo "Installed flutter to `pwd`/flutter"
 
 
 ARTIFACT_NAME=$(git rev-parse HEAD).tgz
-echo "***** Teh build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
+echo "***** The build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
 
 aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${ARTIFACT_NAME} .
 tar -zxf ${ARTIFACT_NAME}
+ls -l apps/anyupp-mobile/lib
 cd apps/anyupp-mobile
 flutter build ios --release --no-codesign
 
