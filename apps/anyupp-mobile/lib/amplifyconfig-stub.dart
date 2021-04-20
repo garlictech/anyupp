@@ -1,5 +1,7 @@
-String getAmplifyConfig(Map<String, dynamic> config) {
-  String webDomain = Uri.parse(config['ConsumerUserPoolDomain']).host;
+import 'package:fa_prev/app-config.dart';
+
+String getAmplifyConfig() {
+  String webDomain = Uri.parse(AppConfig.UserPoolDomain).host;
   print('getAmplifyConfig().webDomain=$webDomain');
 
   return '''{
@@ -16,23 +18,23 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "${config['IdentityPoolId']}",
-                            "Region": "${config['region']}"
+                            "PoolId": "${AppConfig.IdentityPoolId}",
+                            "Region": "${AppConfig.Region}"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "${config['consumerUserPoolId']}",
-                        "AppClientId": "${config['ConsumerWebUserPoolClientId']}",
-                        "Region": "${config['region']}"
+                        "PoolId": "${AppConfig.UserPoolId}",
+                        "AppClientId": "${AppConfig.UserPoolClientId}",
+                        "Region": "${AppConfig.Region}"
                     }
                 },
                 "Auth": {
                     "Default": {
                         "OAuth": {
                             "WebDomain": "$webDomain",
-                            "AppClientId": "${config['ConsumerWebUserPoolClientId']}",
+                            "AppClientId": "${AppConfig.UserPoolClientId}",
                             "SignInRedirectURI": "anyupp://signin/",
                             "SignOutRedirectURI": "anyupp://signout/",
                             "Scopes": [
@@ -48,8 +50,8 @@ String getAmplifyConfig(Map<String, dynamic> config) {
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "${config['CrudGraphqlApiUrl']}",
-                        "Region": "${config['region']}",
+                        "ApiUrl": "${AppConfig.CrudGraphqlApiUrl}",
+                        "Region": "${AppConfig.Region}",
                         "AuthMode": "AMAZON_COGNITO_USER_POOLS",
                         "ClientDatabasePrefix": "anyuppbackend_AMAZON_COGNITO_USER_POOLS"
                     }
@@ -60,8 +62,8 @@ String getAmplifyConfig(Map<String, dynamic> config) {
     "storage": {
         "plugins": {
             "awsS3StoragePlugin": {
-                "bucket": "${config['s3BucketName']}",
-                "region": "${config['region']}",
+                "bucket": "${AppConfig.S3BucketName}",
+                "region": "${AppConfig.Region}",
                 "defaultAccessLevel": "guest"
             }
         }

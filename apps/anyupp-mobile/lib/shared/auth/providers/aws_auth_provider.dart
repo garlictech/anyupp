@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/shared/auth.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -13,7 +15,9 @@ import 'auth_provider_interface.dart';
 class AwsAuthProvider implements IAuthProvider {
   StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
+  CognitoCredentials _credentials;
   // final CognitoService _service;
+
 
   AwsAuthProvider() {
     print('AwsAuthProvider().constructor()');
@@ -22,41 +26,14 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> getAuthenticatedUserProfile() async {
-    // print('getAuthenticatedUserProfile().user=$_user');
     try {
-      AuthUser user = await Amplify.Auth.getCurrentUser();
-      print('getAuthenticatedUserProfile().user=${user?.userId}, name=${user?.username}');
-      if (user != null && _user != null) {
+      print('getAuthenticatedUserProfile().user=$_user');
+      if (_credentials != null && _user != null) {
         return _user;
       }
+      _userController.add(null);
+      return null;
 
-      CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
-        options: CognitoSessionOptions(getAWSCredentials: false),
-      );
-      print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
-
-      if (session.isSignedIn) {
-        if (_user != null) {
-          return _user;
-        }
-        session = await Amplify.Auth.fetchAuthSession(
-          options: CognitoSessionOptions(getAWSCredentials: true),
-        );
-      }
-      print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
-      print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
-      print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
-      print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
-      if (!session.isSignedIn) {
-        _user = null;
-      } else {
-        List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
-        _user = _userFromAttributes(attributes);
-      }
-      _userController.add(_user);
-      print('getAuthenticatedUserProfile()._userController=$_userController');
-      print('getAuthenticatedUserProfile().user=$_user');
-      return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
       _userController.add(null);
@@ -67,6 +44,62 @@ class AwsAuthProvider implements IAuthProvider {
       return null;
     }
   }
+
+  Future<void> setCredentials(User user, CognitoCredentials credentials) async {
+    _credentials = credentials;
+    _user = user;
+    _userController.add(_user);
+    return _user;
+  }
+
+
+  // @override
+  // Future<User> getAuthenticatedUserProfile() async {
+  //   // print('getAuthenticatedUserProfile().user=$_user');
+  //   try {
+  //     AuthUser user = await Amplify.Auth.getCurrentUser();
+  //     print('getAuthenticatedUserProfile().user=${user?.userId}, name=${user?.username}');
+  //     if (user != null && _user != null) {
+  //       return _user;
+  //     }
+
+  //     CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
+  //       options: CognitoSessionOptions(getAWSCredentials: false),
+  //     );
+  //     print('getAuthenticatedUserProfile().session.isSignedIn=${session.isSignedIn}');
+
+  //     if (session.isSignedIn) {
+  //       if (_user != null) {
+  //         return _user;
+  //       }
+  //       session = await Amplify.Auth.fetchAuthSession(
+  //         options: CognitoSessionOptions(getAWSCredentials: true),
+  //       );
+  //     }
+  //     print('getAuthenticatedUserProfile().session.sessionToken=${session.credentials?.sessionToken}');
+  //     print('getAuthenticatedUserProfile().session.identityId=${session.identityId}');
+  //     print('getAuthenticatedUserProfile().session.userSub=${session.userSub}');
+  //     print('getAuthenticatedUserProfile().session.refreshToken=${session.userPoolTokens?.refreshToken}');
+  //     if (!session.isSignedIn) {
+  //       _user = null;
+  //     } else {
+  //       List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
+  //       _user = _userFromAttributes(attributes);
+  //     }
+  //     _userController.add(_user);
+  //     print('getAuthenticatedUserProfile()._userController=$_userController');
+  //     print('getAuthenticatedUserProfile().user=$_user');
+  //     return _user;
+  //   } on Exception catch (e) {
+  //     print('getAuthenticatedUserProfile().exception=$e');
+  //     _userController.add(null);
+  //     return null;
+  //   } on Error catch (e) {
+  //     print('getAuthenticatedUserProfile().error=$e');
+  //     _userController.add(null);
+  //     return null;
+  //   }
+  // }
 
   // @override
   // Future<User> getAuthenticatedUserProfile() async {
