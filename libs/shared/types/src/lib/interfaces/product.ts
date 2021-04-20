@@ -106,7 +106,7 @@ export interface IGeneratedProduct {
   image: string;
   position: number;
   productType: EProductType;
-  tax: string;
+  tax: number;
   variants: IProductVariant[];
   productCategoryId: string;
 }
