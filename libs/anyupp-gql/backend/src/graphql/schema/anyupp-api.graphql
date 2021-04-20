@@ -1,6 +1,6 @@
 ### COMMON
 # TODO: extraxt these because the admin-api also contains these
-type Location {
+type Location @aws_cognito_user_pools {
   lat: Float!
   lng: Float!
 }
@@ -10,7 +10,7 @@ input LocationInput {
   lng: Float!
 }
 
-type Address {
+type Address @aws_cognito_user_pools {
   address: String
   city: String
   country: String
@@ -19,13 +19,13 @@ type Address {
   location: Location
 }
 
-type LocalizedItem {
+type LocalizedItem @aws_cognito_user_pools {
   en: String
   de: String
   hu: String
 }
 
-type PaymentMode {
+type PaymentMode @aws_cognito_user_pools {
   name: String!
   caption: String
   method: PaymentMethod!
@@ -36,12 +36,12 @@ enum PaymentMethod {
   INAPP
 }
 
-type ChainStyle {
+type ChainStyle @aws_cognito_user_pools {
   colors: ChainStyleColors!
   images: ChainStyleImages
 }
 
-type ChainStyleColors {
+type ChainStyleColors @aws_cognito_user_pools {
   backgroundLight: String!
   backgroundDark: String!
   borderLight: String!
@@ -53,9 +53,15 @@ type ChainStyleColors {
   textDark: String!
 }
 
-type ChainStyleImages {
+type ChainStyleImages @aws_cognito_user_pools {
   header: String
   logo: String
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
 }
 
 ### ADMIN_USER
@@ -70,14 +76,87 @@ input CreateOrderFromCartInput {
   id: ID!
 }
 
-type CreateOrderFromCartOutput {
-  id: ID!
-}
-
 # input PlaceInput {
 #   seat: String!
 #   table: String!
 # }
+
+### UNIT_PRODUCT
+
+type UnitProduct @aws_cognito_user_pools {
+  id: ID!
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+}
+
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input CreateUnitProductInput {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+}
+
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+}
+
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
 
 ### STRIPE
 # STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
@@ -110,7 +189,7 @@ enum CardFundingType {
 
 # https://stripe.com/docs/api/metadata?lang=node
 # Updateable Stripe objects
-type StripeMetadata {
+type StripeMetadata @aws_cognito_user_pools {
   key: String!
   value: String!
 }
@@ -162,7 +241,7 @@ input StripeCardDeleteInput {
 input GetUnitsNearLocationInput {
   location: LocationInput!
 }
-type GeoUnit {
+type GeoUnit @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -174,7 +253,7 @@ type GeoUnit {
   openingHours: String!
   currency: String!
 }
-type GeoUnitList {
+type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
 }
 
@@ -185,7 +264,6 @@ type Query {
   # Units
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_cognito_user_pools
-    @aws_api_key
 }
 
 ### MUTATION
@@ -194,9 +272,14 @@ type Mutation {
   createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
   deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
 
-  createOrderFromCart(
-    input: CreateOrderFromCartInput!
-  ): CreateOrderFromCartOutput! @aws_cognito_user_pools @aws_api_key
+  # Order
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID!
+    @aws_cognito_user_pools
+
+  # Product
+  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+
   # Stripe
   startStripePayment(
     input: StartStripePaymentInput!

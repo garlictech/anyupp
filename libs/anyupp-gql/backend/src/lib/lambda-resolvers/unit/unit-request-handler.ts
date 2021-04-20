@@ -1,21 +1,21 @@
 import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 // HANDLER
 export const unitRequestHandler = {
-  getUnitsNearLocation: (amplifyGraphQlClient: GraphqlApiClient) => (
+  getUnitsNearLocation: (crudGraphqlClient: GraphqlApiClient) => (
     requestPayload: AnyuppApi.GetUnitsNearLocationQueryVariables,
   ) => {
     return validatGetUnitsNearLocationInput(requestPayload)
       .pipe(
         switchMap(() =>
           getUnitsInRadius({
-            amplifyGraphQlClient,
+            crudGraphqlClient,
             location: requestPayload.input.location,
           }),
         ),
