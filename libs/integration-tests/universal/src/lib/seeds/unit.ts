@@ -3,7 +3,7 @@ import { unitSeed } from '../fixtures/unit';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import {
-  crudGraphqlClient,
+  crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
@@ -11,7 +11,7 @@ import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 export const createTestUnit = (
   overwrites: Partial<CrudApi.CreateUnitInput> = {},
 ) =>
-  executeMutation(crudGraphqlClient)<CrudApi.CreateUnitMutation>(
+  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
     CrudApiMutationDocuments.createUnit,
     {
       input: {
@@ -31,7 +31,7 @@ export const createTestUnit = (
   );
 
 export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
-  executeMutation(crudGraphqlClient)<CrudApi.DeleteUnitMutation>(
+  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitMutation>(
     CrudApiMutationDocuments.deleteUnit,
     {
       input: { id },

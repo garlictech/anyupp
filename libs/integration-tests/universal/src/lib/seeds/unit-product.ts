@@ -3,12 +3,12 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
-  crudGraphqlClient,
+  crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
 export const deleteUnitProduct = (id: string) =>
-  executeMutation(crudGraphqlClient)<CrudApi.DeleteUnitProductMutation>(
+  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitProductMutation>(
     CrudApiMutationDocuments.deleteUnitProduct,
     {
       input: { id },

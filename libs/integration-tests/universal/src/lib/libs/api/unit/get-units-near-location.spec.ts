@@ -2,9 +2,11 @@
 import { combineLatest, from } from 'rxjs';
 
 import {
-  crudGraphqlClient,
   anyuppGraphQLClient,
   executeQuery,
+  crudBackendGraphQLClient,
+  createAuthenticatedAnyuppGraphQLClient,
+  AuthenticatdGraphQLClientWithUserId,
 } from '@bgap/shared/graphql/api-client';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
@@ -12,6 +14,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { testAdminUserPassword, testAdminUsername } from '../../../fixtures';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -40,7 +43,15 @@ const unit_03 = {
 };
 
 describe('GetUnitsNearLocation tests', () => {
+  let authHelper: AuthenticatdGraphQLClientWithUserId;
+
   beforeAll(async () => {
+    authHelper = await createAuthenticatedAnyuppGraphQLClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
+
     await combineLatest([
       // CleanUP
       deleteTestUnit(unitNotActive.id),
@@ -66,7 +77,9 @@ describe('GetUnitsNearLocation tests', () => {
     it('should throw without a input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
+          input,
+        ),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -79,7 +92,9 @@ describe('GetUnitsNearLocation tests', () => {
         input: {},
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
+          input,
+        ),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -92,7 +107,9 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lat: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
+          input,
+        ),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -105,7 +122,9 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
+        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
+          input,
+        ),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -118,10 +137,9 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: 230.0, lat: -100 } },
       } as any;
 
-      executeQuery(anyuppGraphQLClient)<AnyuppApi.GetUnitsNearLocationQuery>(
-        AnyuppApi.GetUnitsNearLocation,
-        input,
-      ).subscribe({
+      executeQuery(authHelper.graphQlClient)<
+        AnyuppApi.GetUnitsNearLocationQuery
+      >(AnyuppApi.GetUnitsNearLocation, input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -137,7 +155,7 @@ describe('GetUnitsNearLocation tests', () => {
     };
     // To test with the local appsync code
     from(
-      unitRequestHandler.getUnitsNearLocation(crudGraphqlClient)(input),
+      unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(input),
     ).subscribe({
       next(result) {
         expect(result).toHaveProperty('items');
@@ -149,11 +167,11 @@ describe('GetUnitsNearLocation tests', () => {
   }, 15000);
 
   // TODO: create test with A NOT ACTIVE CHAIN
-  it('should return all the units in geoUnitsFormat ordered by distance with remove appsync api call', done => {
+  it('should return all the units in geoUnitsFormat ordered by distance with remote appsync api call', done => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    executeQuery(anyuppGraphQLClient)<AnyuppApi.GetUnitsNearLocationQuery>(
+    executeQuery(authHelper.graphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
       AnyuppApi.GetUnitsNearLocation,
       input,
     )

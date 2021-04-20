@@ -69,7 +69,7 @@ describe('CreateUnitProduct tests', () => {
         .toPromise();
     });
 
-    it('should create unitProduct in the database', done => {
+    it.skip('should create unitProduct in the database', done => {
       return (
         executeMutation(authHelper.graphQlClient)<
           AnyuppApi.CreateUnitProductMutation

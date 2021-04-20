@@ -1,6 +1,6 @@
 ### COMMON
 # TODO: extraxt these because the admin-api also contains these
-type Location {
+type Location @aws_cognito_user_pools {
   lat: Float!
   lng: Float!
 }
@@ -25,7 +25,7 @@ type LocalizedItem @aws_cognito_user_pools {
   hu: String
 }
 
-type PaymentMode {
+type PaymentMode @aws_cognito_user_pools {
   name: String!
   caption: String
   method: PaymentMethod!
@@ -36,12 +36,12 @@ enum PaymentMethod {
   INAPP
 }
 
-type ChainStyle {
+type ChainStyle @aws_cognito_user_pools {
   colors: ChainStyleColors!
   images: ChainStyleImages
 }
 
-type ChainStyleColors {
+type ChainStyleColors @aws_cognito_user_pools {
   backgroundLight: String!
   backgroundDark: String!
   borderLight: String!
@@ -53,7 +53,7 @@ type ChainStyleColors {
   textDark: String!
 }
 
-type ChainStyleImages {
+type ChainStyleImages @aws_cognito_user_pools {
   header: String
   logo: String
 }
@@ -189,7 +189,7 @@ enum CardFundingType {
 
 # https://stripe.com/docs/api/metadata?lang=node
 # Updateable Stripe objects
-type StripeMetadata {
+type StripeMetadata @aws_cognito_user_pools {
   key: String!
   value: String!
 }
@@ -241,7 +241,7 @@ input StripeCardDeleteInput {
 input GetUnitsNearLocationInput {
   location: LocationInput!
 }
-type GeoUnit {
+type GeoUnit @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -253,7 +253,7 @@ type GeoUnit {
   openingHours: String!
   currency: String!
 }
-type GeoUnitList {
+type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
 }
 

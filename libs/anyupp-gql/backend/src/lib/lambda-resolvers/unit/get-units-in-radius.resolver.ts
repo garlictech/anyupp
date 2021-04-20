@@ -1,7 +1,13 @@
 import * as geolib from 'geolib';
 import * as fp from 'lodash/fp';
-import { combineLatest, EMPTY, iif, Observable, of } from 'rxjs';
-import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, EMPTY, iif, Observable, of, throwError } from 'rxjs';
+import {
+  catchError,
+  defaultIfEmpty,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
@@ -126,6 +132,10 @@ const listActiveUnits = (
     // pipeDebug('### LIST ACTIVE UNITS'),
     filter(fp.negate(fp.isEmpty)),
     switchMap((items: []) => combineLatest(items.map(validateUnit))),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal listActiveUnits query error');
+    }),
   );
 };
 
@@ -141,6 +151,10 @@ const getGroupCurrency = (
     // pipeDebug(`### GET GROUP with id: ${id}`),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal GroupCurrency query error');
+    }),
   );
 };
 
@@ -155,5 +169,9 @@ const getChain = (
     map(x => x.getChain),
     // pipeDebug(`### GET CHAIN with id: ${id}`),
     switchMap(validateChain),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Chain query error');
+    }),
   );
 };
