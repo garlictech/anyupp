@@ -18,6 +18,13 @@ else
   exit 1
 fi
 
+if [ $PLATFORM = 'android' ]; then
+  appImagePath=${CODEBUILD_SRC_DIR:-$PWD}/apps/anyupp-mobile/build/app/outputs/flutter-apk/app-release.apk
+else
+  echo "Unsupported platform: ${PLATFORM}"
+  exit 1
+fi
+
 if [[ -z ${appImagePath} ]]
 then
     echo "No app image were found at ${appImagePath}, skip publishing to App Center"
