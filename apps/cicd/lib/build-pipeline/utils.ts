@@ -393,6 +393,11 @@ export const createCommonPipelineParts = (
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
     bucketName: getAppcenterArtifactBucketName(stage),
     removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+    lifecycleRules: [
+      {
+        expiration: cdk.Duration.days(1),
+      },
+    ],
   });
 
   utils.configurePermissions(
