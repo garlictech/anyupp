@@ -7,7 +7,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { SecretsManagerStack } from './secretsmanager-stack';
+import {SecretsManagerStack} from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -21,6 +21,7 @@ export interface PipelineStackProps extends sst.StackProps {
 
 export const appConfig = {
   name: 'anyupp-backend',
+  appcenterArtifactBucketNamePrefix: 'anyupp-build-artifacts',
 };
 
 export const projectPrefix = (stage: string) => `${stage}-${appConfig.name}`;
@@ -66,6 +67,9 @@ export const configurePermissions = (
   });
 };
 
+const getAppcenterArtifactBucketName = (stage: string) =>
+  `${appConfig.appcenterArtifactBucketNamePrefix}-${stage}`;
+
 export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
@@ -106,21 +110,17 @@ export const createBuildProject = (
           commands: [
             `yarn nx deploy crud-backend`,
             'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
+            `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
+              stage,
+            )}/`,
           ],
         },
       },
       artifacts: {
-        buildOutput: {
-          files: [
-            'apps/anyupp-backend/cdk.out/**/*',
-            'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-          ],
-          name: 'buildOutput',
-        },
-        configOutput: {
-          files: ['${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz'],
-          name: 'configOutput',
-        },
+        files: [
+          'apps/anyupp-backend/cdk.out/**/*',
+          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
+        ],
       },
       env: {
         'secrets-manager': {
@@ -277,14 +277,14 @@ export const createApkPublishProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): { adminSiteUrl: string } => {
+): {adminSiteUrl: string} => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return { adminSiteUrl };
+  return {adminSiteUrl};
 };
 
 export const configurePipelineNotifications = (
@@ -367,11 +367,10 @@ export const createCommonPipelineParts = (
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
-  const configOutput = new codepipeline.Artifact('configOutput');
   const e2eOutput = new codepipeline.Artifact();
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-  const { adminSiteUrl } = utils.configurePipeline(scope, stage);
+  const {adminSiteUrl} = utils.configurePipeline(scope, stage);
   const build = utils.createBuildProject(scope, cache, stage);
   const e2eTest = utils.createE2eTestProject(scope, cache, adminSiteUrl);
   const integrationTest = utils.createIntegrationTestProject(
@@ -388,7 +387,7 @@ export const createCommonPipelineParts = (
   const prefix = utils.projectPrefix(stage);
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
-    bucketName: 'anyupp-build-artifacts-' + stage,
+    bucketName: getAppcenterArtifactBucketName(stage),
     publicReadAccess: true,
     removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
   });
@@ -399,14 +398,6 @@ export const createCommonPipelineParts = (
     [build, integrationTest, publishAndroidToAppcenter],
     prefix,
   );
-
-  const publishBuildArtifacts = new codepipeline_actions.S3DeployAction({
-    actionName: 'publishBuildArtifacts',
-    bucket: buildArtifactBucket,
-    input: configOutput,
-    objectKey: 'appcenter',
-    extract: false,
-  });
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
     stages: [
@@ -430,13 +421,9 @@ export const createCommonPipelineParts = (
             actionName: 'Build',
             project: build,
             input: sourceOutput,
-            outputs: [buildOutput, configOutput],
+            outputs: [buildOutput],
           }),
         ],
-      },
-      {
-        stageName: 'publishBuildArtifacts',
-        actions: [publishBuildArtifacts],
       },
       {
         stageName: 'StackCreation',
