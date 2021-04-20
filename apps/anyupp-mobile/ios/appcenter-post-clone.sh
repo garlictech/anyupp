@@ -17,6 +17,7 @@ flutter channel stable
 flutter doctor
 
 echo "Installed flutter to `pwd`/flutter"
+echo "******************** ${XXX}"
 
 flutter build ios --release --no-codesign
 
