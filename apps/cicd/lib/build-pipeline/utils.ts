@@ -7,7 +7,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import {SecretsManagerStack} from './secretsmanager-stack';
+import { SecretsManagerStack } from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -277,14 +277,14 @@ export const createApkPublishProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): {adminSiteUrl: string} => {
+): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return {adminSiteUrl};
+  return { adminSiteUrl };
 };
 
 export const configurePipelineNotifications = (
@@ -371,7 +371,7 @@ export const createCommonPipelineParts = (
   const e2eOutput = new codepipeline.Artifact();
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
 
-  const {adminSiteUrl} = utils.configurePipeline(scope, stage);
+  const { adminSiteUrl } = utils.configurePipeline(scope, stage);
   const build = utils.createBuildProject(scope, cache, stage);
   const e2eTest = utils.createE2eTestProject(scope, cache, adminSiteUrl);
   const integrationTest = utils.createIntegrationTestProject(
@@ -404,6 +404,8 @@ export const createCommonPipelineParts = (
     actionName: 'publishBuildArtifacts',
     bucket: buildArtifactBucket,
     input: configOutput,
+    objectKey: 'appcenter',
+    extract: false,
   });
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
