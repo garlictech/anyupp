@@ -1,3 +1,8 @@
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from '@aws-cdk/core';
+import * as utils from './utils';
+import * as codepipeline from '@aws-cdk/aws-codepipeline';
+import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
@@ -98,14 +103,24 @@ export const createBuildProject = (
           ],
         },
         post_build: {
-          commands: [`yarn nx deploy crud-backend`],
+          commands: [
+            `yarn nx deploy crud-backend`,
+            'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
+          ],
         },
       },
       artifacts: {
-        files: [
-          'apps/anyupp-backend/cdk.out/**/*',
-          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-        ],
+        buildOutput: {
+          files: [
+            'apps/anyupp-backend/cdk.out/**/*',
+            'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
+          ],
+          name: 'buildOutput',
+        },
+        configOutput: {
+          files: ['${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz'],
+          name: 'configOutput',
+        },
       },
       env: {
         'secrets-manager': {
@@ -238,9 +253,7 @@ export const createApkPublishProject = (
           commands: [`echo 'Pushing APK to appcenter...'`],
         },
         post_build: {
-          commands: [
-            `sh ./tools/publish-to-appcenter.sh '{args.stage}' '{args.platform}'`,
-          ],
+          commands: [`sh ./tools/publish-to-appcenter.sh ${stage} android`],
         },
       },
       env: {
@@ -345,4 +358,147 @@ export const copyParameter = (
     parameterName: `${projectPrefix(toStage)}-${paramName}`,
     stringValue: param,
   });
+};
+
+export const createCommonPipelineParts = (
+  scope: sst.Stack,
+  stage: string,
+  props: utils.PipelineStackProps,
+) => {
+  const sourceOutput = new codepipeline.Artifact();
+  const buildOutput = new codepipeline.Artifact('buildOutput');
+  const configOutput = new codepipeline.Artifact('configOutput');
+  const e2eOutput = new codepipeline.Artifact();
+  const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
+
+  const {adminSiteUrl} = utils.configurePipeline(scope, stage);
+  const build = utils.createBuildProject(scope, cache, stage);
+  const e2eTest = utils.createE2eTestProject(scope, cache, adminSiteUrl);
+  const integrationTest = utils.createIntegrationTestProject(
+    scope,
+    cache,
+    stage,
+  );
+  const publishAndroidToAppcenter = utils.createApkPublishProject(
+    scope,
+    cache,
+    stage,
+  );
+
+  const prefix = utils.projectPrefix(stage);
+
+  const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
+    bucketName: 'anyupp-build-artifacts-' + stage,
+    publicReadAccess: true,
+    removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+  });
+
+  utils.configurePermissions(
+    scope,
+    props.secretsManager,
+    [build, integrationTest, publishAndroidToAppcenter],
+    prefix,
+  );
+
+  const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
+    stages: [
+      {
+        stageName: 'CloneSource',
+        actions: [
+          new codepipeline_actions.GitHubSourceAction({
+            actionName: 'CodeCommit_CloneSource',
+            oauthToken: props.secretsManager.githubOauthToken.secretValue,
+            output: sourceOutput,
+            owner: props.repoOwner,
+            repo: props.repoName,
+            branch: props.repoBranch,
+          }),
+        ],
+      },
+      {
+        stageName: 'Build',
+        actions: [
+          new codepipeline_actions.CodeBuildAction({
+            actionName: 'Build',
+            project: build,
+            input: sourceOutput,
+            outputs: [buildOutput, configOutput],
+          }),
+        ],
+      },
+      {
+        stageName: 'publishBuildArtifacts',
+        actions: [
+          new codepipeline_actions.S3DeployAction({
+            actionName: 'publishBuildArtifacts',
+            bucket: buildArtifactBucket,
+            input: configOutput,
+          }),
+        ],
+      },
+      {
+        stageName: 'StackCreation',
+        actions: [
+          new codepipeline_actions.CloudFormationCreateUpdateStackAction({
+            actionName: `CreateStack`,
+            templatePath: buildOutput.atPath(
+              `apps/anyupp-backend/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
+            ),
+            stackName: `${utils.projectPrefix(stage)}-anyupp`,
+            adminPermissions: true,
+            extraInputs: [buildOutput],
+            replaceOnFailure: true,
+          }),
+        ],
+      },
+      {
+        stageName: 'SeederRemoval',
+        actions: [
+          new codepipeline_actions.CloudFormationDeleteStackAction({
+            actionName: `DeleteSeederStack`,
+            stackName: `${utils.projectPrefix(stage)}-seeder`,
+            adminPermissions: true,
+          }),
+        ],
+      },
+      {
+        stageName: 'publishAndroidToAppcenter',
+        actions: [
+          new codepipeline_actions.CodeBuildAction({
+            actionName: 'publishAndroidToAppcenter',
+            project: publishAndroidToAppcenter,
+            input: buildOutput,
+          }),
+        ],
+      },
+      {
+        stageName: 'integrationTest',
+        actions: [
+          new codepipeline_actions.CodeBuildAction({
+            actionName: 'integrationTest',
+            project: integrationTest,
+            input: sourceOutput,
+          }),
+        ],
+      },
+      {
+        stageName: 'e2eTest',
+        actions: [
+          new codepipeline_actions.CodeBuildAction({
+            actionName: 'e2eTest',
+            project: e2eTest,
+            input: sourceOutput,
+            outputs: [e2eOutput],
+          }),
+        ],
+      },
+    ],
+  });
+
+  utils.configurePipelineNotifications(
+    scope,
+    pipeline.pipelineArn,
+    props.chatbot,
+    stage,
+  );
 };
