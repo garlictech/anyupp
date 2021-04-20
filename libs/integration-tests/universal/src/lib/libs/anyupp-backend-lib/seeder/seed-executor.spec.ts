@@ -1,4 +1,5 @@
 import {
+  createTestAdminRoleContext,
   createTestRoleContext,
   seedAdminUser,
   seedBusinessData,
@@ -55,6 +56,17 @@ describe('Seeder test', () => {
     }, 25000);
     it.skip('should the createTestRoleContext function run successfully', done => {
       createTestRoleContext(1, 1, 1, 1).subscribe({
+        complete() {
+          done();
+        },
+      });
+    }, 25000);
+    it.skip('should the createTestAdminRoleContext function run successfully', done => {
+      createTestAdminRoleContext(
+        1,
+        1,
+        '!!! REQUIRES EXISTING USER ID !!!',
+      ).subscribe({
         complete() {
           done();
         },

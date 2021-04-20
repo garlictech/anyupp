@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { from, merge, Observable, of } from 'rxjs';
+import { combineLatest, concat, from, Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
@@ -11,10 +11,6 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { pipeDebug as pd } from '@bgap/shared/utils';
 
-import {
-  testAdminUsername,
-  testAdminUserPassword,
-} from '../../../../integration-tests/universal/src/lib/fixtures/user';
 import {
   createTestAdminRoleContext,
   createTestCart,
@@ -28,8 +24,8 @@ import {
   createTestUnitProduct,
 } from './seed-data-fn';
 
-const username = testAdminUsername;
-const password = testAdminUserPassword;
+const username = 'test@anyupp.com';
+const password = 'Testtesttest12_';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -137,35 +133,33 @@ export const seedAdminUser = (UserPoolId: string): Observable<string> =>
   );
 
 export const seedBusinessData = (userId: string) =>
-  // combineLatest([
-  merge(
-    createTestChain(1).pipe(pd('### Chain SEED 01')),
-    createTestGroup(1, 1).pipe(pd('### Group SEED 01')),
-    createTestGroup(1, 2).pipe(pd('### Group SEED 02')),
-    createTestGroup(2, 1).pipe(pd('### Group SEED 03')),
-    createTestUnit(1, 1, 1).pipe(pd('### Unit SEED 01')),
-    createTestUnit(1, 1, 2).pipe(pd('### Unit SEED 02')),
-    createTestUnit(1, 2, 1).pipe(pd('### Unit SEED 03')),
-    createTestProductCategory(1, 1).pipe(pd('### ProdCat SEED 01')),
-    createTestProductCategory(1, 2).pipe(pd('### ProdCat SEED 02')),
-    createTestChainProduct(1, 1, 1).pipe(pd('### ChainProduct SEED 01')),
-    createTestChainProduct(1, 1, 2).pipe(pd('### ChainProduct SEED 02')),
-    createTestChainProduct(1, 2, 3).pipe(pd('### ChainProduct SEED 03')),
-    createTestGroupProduct(1, 1, 1, 1).pipe(pd('### GroupProd SEED 01')),
-    createTestGroupProduct(1, 1, 2, 2).pipe(pd('### GroupProd SEED 02')),
-    createTestUnitProduct(1, 1, 1, 1, 1).pipe(pd('### UnitProd SEED 01')),
-    createTestUnitProduct(1, 1, 1, 2, 2).pipe(pd('### UnitProd SEED 02')),
-    createTestCart({
-      chainIdx: 1,
-      groupIdx: 1,
-      unitIdx: 1,
-      productIdx: 1,
-      userIdx: 1,
-      cartIdx: 1,
-    }),
+  concat(
     createTestRoleContext(1, 1, 1, 1).pipe(pd('### RoleContext SEED 01')),
+    combineLatest([
+      createTestChain(1).pipe(pd('### Chain SEED 01')),
+      createTestGroup(1, 1).pipe(pd('### Group SEED 01')),
+      createTestGroup(1, 2).pipe(pd('### Group SEED 02')),
+      createTestGroup(2, 1).pipe(pd('### Group SEED 03')),
+      createTestUnit(1, 1, 1).pipe(pd('### Unit SEED 01')),
+      createTestUnit(1, 1, 2).pipe(pd('### Unit SEED 02')),
+      createTestUnit(1, 2, 1).pipe(pd('### Unit SEED 03')),
+      createTestProductCategory(1, 1).pipe(pd('### ProdCat SEED 01')),
+      createTestProductCategory(1, 2).pipe(pd('### ProdCat SEED 02')),
+      createTestChainProduct(1, 1, 1).pipe(pd('### ChainProduct SEED 01')),
+      createTestChainProduct(1, 1, 2).pipe(pd('### ChainProduct SEED 02')),
+      createTestChainProduct(1, 2, 3).pipe(pd('### ChainProduct SEED 03')),
+      createTestGroupProduct(1, 1, 1, 1).pipe(pd('### GroupProd SEED 01')),
+      createTestGroupProduct(1, 1, 2, 2).pipe(pd('### GroupProd SEED 02')),
+      createTestUnitProduct(1, 1, 1, 1, 1).pipe(pd('### UnitProd SEED 01')),
+      createTestUnitProduct(1, 1, 1, 2, 2).pipe(pd('### UnitProd SEED 02')),
+      createTestCart({
+        chainIdx: 1,
+        groupIdx: 1,
+        unitIdx: 1,
+        productIdx: 1,
+        userIdx: 1,
+        cartIdx: 1,
+      }),
+    ]),
     createTestAdminRoleContext(1, 1, userId),
-    1,
   );
-// }).pipe(pd('### Cart SEED')),
-// ]);

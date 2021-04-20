@@ -30,7 +30,7 @@ const sendResponse = async (props: any) => {
 };
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
-  console.log(JSON.stringify(event, null, 2));
+  console.log('### EVENT:', JSON.stringify(event, null, 2));
 
   /**
    * See the AWS documentation for more information passed in the request for a custom resource.
