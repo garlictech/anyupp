@@ -24,5 +24,6 @@ echo "***** Teh build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
 
 aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${ARTIFACT_NAME} .
 tar -zxf ${ARTIFACT_NAME}
+cd apps/anyupp-mobile
 flutter build ios --release --no-codesign
 
