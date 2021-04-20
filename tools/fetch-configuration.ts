@@ -25,7 +25,7 @@ const generatedParams = [
   'IdentityPoolId',
   'ConsumerWebUserPoolClientId',
   'ConsumerUserPoolDomain',
-  'consumerUserPoolId',
+  'ConsumerUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
 const fixParams = ['StripePublishableKey', 'Region'].map(
