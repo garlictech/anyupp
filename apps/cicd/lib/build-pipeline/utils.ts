@@ -86,6 +86,9 @@ export const createBuildProject = (
             `sh ./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli',
+            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+            'export PATH=$PATH:/tmp/flutter/bin',
+            'flutter doctor',
           ],
         },
         pre_build: {
@@ -100,6 +103,7 @@ export const createBuildProject = (
             `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
             `yarn nx build admin ${adminConfig} --skip-nx-cache`,
             `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
+            `yarn nx buildApk anyupp-mobile`,
           ],
         },
         post_build: {
@@ -116,7 +120,7 @@ export const createBuildProject = (
         files: [
           'apps/anyupp-backend/cdk.out/**/*',
           'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-          './tools/trigger-appcenter-builds.sh',
+          './tools/**/*',
         ],
       },
       env: {
@@ -132,6 +136,7 @@ export const createBuildProject = (
     }),
     cache,
     environment: {
+      computeType: codebuild.ComputeType.MEDIUM,
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
@@ -246,9 +251,10 @@ export const createAppcenterPublishProject = (
         },
         build: {
           commands: [
-            `echo 'Pushing app builds to appcenter...'`,
-            `./tools/trigger-appcenter-builds.sh ${stage} ios`,
-            `./tools/trigger-appcenter-builds.sh ${stage} android`,
+            `echo 'Triggering ios app build in appcenter...'`,
+            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
+            `echo 'Pushing APK to appcenter'`,
+            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
           ],
         },
       },
@@ -369,11 +375,13 @@ export const createCommonPipelineParts = (
   const {adminSiteUrl} = utils.configurePipeline(scope, stage);
   const build = utils.createBuildProject(scope, cache, stage);
   const e2eTest = utils.createE2eTestProject(scope, cache, adminSiteUrl);
+
   const integrationTest = utils.createIntegrationTestProject(
     scope,
     cache,
     stage,
   );
+
   const publishToAppcenter = utils.createAppcenterPublishProject(
     scope,
     cache,
