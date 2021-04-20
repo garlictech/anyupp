@@ -271,6 +271,14 @@ export const createCommonPipelineParts = (
     ],
   });
 
+  build.addToRolePolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['cloudformation:*'],
+      resources: ['*'],
+    }),
+  );
+
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
@@ -289,10 +297,10 @@ export const createCommonPipelineParts = (
         ],
       },
       {
-        stageName: 'Build',
+        stageName: 'BuildAndDeploy',
         actions: [
           new codepipeline_actions.CodeBuildAction({
-            actionName: 'Build',
+            actionName: 'BuildAndDeploy',
             project: build,
             input: sourceOutput,
             outputs: [buildOutput],
