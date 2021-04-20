@@ -18,8 +18,11 @@ flutter doctor
 
 echo "Installed flutter to `pwd`/flutter"
 
-echo "***** Teh build: ${APPCENTER_BRANCH}/${APPCENTER_BUILD_ID}"
 
-aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${APPCENTER_BUILD_ID}.tgz .
+ARTIFACT_NAME=$(git rev-parse HEAD).tgz
+echo "***** Teh build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
+
+aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${ARTIFACT_NAME} .
+tar -zxf ${ARTIFACT_NAME}
 flutter build ios --release --no-codesign
 
