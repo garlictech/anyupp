@@ -3,8 +3,8 @@ import { chainSeed } from './chain';
 import { groupSeed } from './group';
 import { unitSeed } from './unit';
 
-const unitProductId_01 = 'unit_product_1_id';
-const unitProductId_seeded = 'unit_product_c1_g1_1_id';
+const unitProductId_01_id = 'unit_product_1_id';
+const unitProductId_seeded_id = 'unit_product_c1_g1_1_id';
 
 const variant: CrudApi.ProductVariantInput = {
   id: 'VARIANT_ID',
@@ -32,7 +32,7 @@ const variant: CrudApi.ProductVariantInput = {
 };
 
 const unitProduct_01: CrudApi.CreateUnitProductInput = {
-  id: unitProductId_01,
+  id: unitProductId_01_id,
   parentId: 'PARENT_ID',
   chainId: chainSeed.chainId_seeded_01,
   groupId: groupSeed.groupId_seeded_01,
@@ -45,6 +45,6 @@ const unitProduct_01: CrudApi.CreateUnitProductInput = {
 };
 
 export const unitProductSeed = {
-  unitProductId_seeded,
+  unitProductId_seeded_id,
   unitProduct_01,
 };

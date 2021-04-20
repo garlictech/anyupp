@@ -391,6 +391,14 @@ type GeneratedProduct
   variants: [ProductVariant!]!
 }
 
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
+}
+
 type FavoriteProduct
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])

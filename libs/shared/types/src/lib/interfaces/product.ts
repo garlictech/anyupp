@@ -34,8 +34,27 @@ export interface IProductVariant {
   isAvailable: boolean;
   price?: number; // generated
   availabilities: IAvailability[]; // unit edit
-  availableFrom: Date;
+  // availableFrom: Date;
   position: number;
+}
+export interface IGeneratedProductVariant {
+  // id: string;
+  variantName: ILocalizedItem<string>;
+  price: number;
+  position: number;
+  pack: IProductVariantPack;
+}
+
+export interface IGeneratedProduct {
+  id: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: number;
+  productType: EProductType;
+  tax: number;
+  variants: IGeneratedProductVariant[];
+  productCategoryId: string;
 }
 
 export interface IProduct {
@@ -97,18 +116,6 @@ export interface IGroupProduct {
   isVisible: boolean;
   tax: number;
   variants: [IProductVariant];
-}
-
-export interface IGeneratedProduct {
-  id: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: number;
-  variants: IProductVariant[];
-  productCategoryId: string;
 }
 
 export interface IProductOrderChangeEvent {

@@ -6,7 +6,7 @@ import { unitSeed } from './unit';
 const cartId_01 = 'cart_1_id';
 const cart_seeded_01_id = 'cart_1_id';
 const unitId_01 = unitSeed.unitId_seeded_01;
-const unitProductId_01 = unitProductSeed.unitProductId_seeded;
+const unitProductId_01 = unitProductSeed.unitProductId_seeded_id;
 
 // fictional - not exsisting
 const cartId_NotExisting = 'NOT_EXSISTING_CART';
