@@ -1,10 +1,12 @@
-import { pipe } from 'fp-ts/lib/function';
-import { from, throwError } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
-import API, { graphqlOperation } from '@aws-amplify/api-graphql';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import { EProductType } from '@bgap/shared/types';
+import {
+  crudBackendGraphQLClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
+import { EProductType, EAdminRole } from '@bgap/shared/types';
+import { combineLatest, of } from 'rxjs';
 
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -35,12 +37,10 @@ const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
 const generateCartId = (idx: number) => `cart_${idx}_id`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const promiseOrObservableResponseCheck = (operation: any) =>
-  operation instanceof Promise
-    ? from(operation)
-    : throwError('Wrong graphql operation');
+const generateRoleContextId = (idx: number, role: EAdminRole) =>
+  `role_context_${idx}_${role}_id`;
+const generateAdminRoleContextId = (idx: number) =>
+  `admin_role_context_${idx}_id`;
 
 const deleteCreate = ({
   input,
@@ -52,30 +52,13 @@ const deleteCreate = ({
   deleteOperation: string;
   createOperation: string;
 }) =>
-  pipe(
-    API.graphql(
-      graphqlOperation(deleteOperation, {
-        input: { id: input.id },
-      }),
-    ),
-    promiseOrObservableResponseCheck,
-  ).pipe(
-    // catchError((err: Error) => {
-    //   console.error(err);
-    //   if (!err.message.includes('Record does not exist')) {
-    //     console.warn('Probably normal error: ', err);
-    //   }
-    //   return of({});
-    // }),
+  executeMutation(crudBackendGraphQLClient)(deleteOperation, {
+    input: { id: input.id },
+  }).pipe(
     switchMap(() =>
-      pipe(
-        API.graphql(
-          graphqlOperation(createOperation, {
-            input,
-          }),
-        ),
-        promiseOrObservableResponseCheck,
-      ),
+      executeMutation(crudBackendGraphQLClient)(createOperation, {
+        input,
+      }),
     ),
   );
 
@@ -404,4 +387,156 @@ export const createTestCart = ({
     deleteOperation: CrudApiMutationDocuments.deleteCart,
     createOperation: CrudApiMutationDocuments.createCart,
   });
+};
+
+export const createTestRoleContext = (
+  roleContextIdx: number,
+  chainIdx: number,
+  groupIdx: number,
+  unitIdx: number,
+) => {
+  const superuserInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+    name: {
+      hu: `Test SUPERUSER role context #${roleContextIdx}`,
+      en: `Test SUPERUSER role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.SUPERUSER,
+    contextId: 'SU_CTX_ID',
+  };
+  const chainAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
+    name: {
+      hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+      en: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+    },
+    role: EAdminRole.CHAIN_ADMIN,
+    contextId: 'CA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+  };
+  const r3 = EAdminRole.GROUP_ADMIN;
+  const groupAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r3),
+    name: {
+      hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+      en: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r3,
+    contextId: 'GA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+  };
+  const r4 = EAdminRole.UNIT_ADMIN;
+  const unitAdminInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r4),
+    name: {
+      hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+      en: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+    },
+    role: r4,
+    contextId: 'UA_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+  const r5 = EAdminRole.STAFF;
+  const staffInput: CrudApi.CreateRoleContextInput = {
+    id: generateRoleContextId(roleContextIdx, r5),
+    name: {
+      hu: `Test STAFF role context #${roleContextIdx}`,
+      en: `Test STAFF role context #${roleContextIdx}`,
+    },
+    role: r5,
+    contextId: 'STF_CTX_ID',
+    chainId: generateChainId(chainIdx),
+    groupId: generateGroupId(chainIdx, groupIdx),
+    unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+  };
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: groupAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: unitAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+    deleteCreate({
+      input: staffInput,
+      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
+      createOperation: CrudApiMutationDocuments.createRoleContext,
+    }),
+  ]);
+};
+
+export const createTestAdminRoleContext = (
+  adminRoleContextIdx: number,
+  roleContextIdx: number,
+  adminUserId: string,
+) => {
+  const superuserInput: CrudApi.CreateAdminRoleContextInput = {
+    id: `${generateAdminRoleContextId(adminRoleContextIdx)}_${
+      EAdminRole.SUPERUSER
+    }`,
+    adminUserId,
+    roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+  };
+  const chainAdminInput: CrudApi.CreateAdminRoleContextInput = {
+    id: `${generateAdminRoleContextId(adminRoleContextIdx)}_${
+      EAdminRole.CHAIN_ADMIN
+    }`,
+    adminUserId,
+    roleContextId: generateRoleContextId(
+      roleContextIdx,
+      EAdminRole.CHAIN_ADMIN,
+    ),
+  };
+  console.log(
+    '### ~ file: seed-data-fn.ts ~ line 490 ~ superuserInput',
+    superuserInput,
+  );
+  console.log(
+    '### ~ file: seed-data-fn.ts ~ line 496 ~ chainAdminInput',
+    chainAdminInput,
+  );
+  return combineLatest([
+    deleteCreate({
+      input: superuserInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    }).pipe(
+      catchError(err => {
+        console.warn(
+          'The admiRoleContext error could be FALSE because of the already existsing connections 01',
+          err,
+        );
+        return of('SUCCESS');
+      }),
+    ),
+    deleteCreate({
+      input: chainAdminInput,
+      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
+      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
+    }).pipe(
+      catchError(err => {
+        console.warn(
+          'The admiRoleContext error could be FALSE because of the already existsing connections 02',
+          err,
+        );
+        return of('SUCCESS');
+      }),
+    ),
+  ]);
 };

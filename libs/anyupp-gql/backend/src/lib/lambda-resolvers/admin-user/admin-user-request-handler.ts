@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
 
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
 
 import { createAdminUser } from './create-admin-user.resolver';

@@ -1,12 +1,12 @@
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
+import { from } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { configureAmplifyWithUserPasswordAuthFlow } from '@bgap/shared/graphql/api-client';
 import {
   testAdminUsername,
   testAdminUserPassword,
-  configureAmplify,
-} from '../../../../../common';
-import { from } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+} from '@bgap/integration-tests/universal';
 
 describe('Testing cognito service', () => {
   const service = new CognitoService();
@@ -15,7 +15,7 @@ describe('Testing cognito service', () => {
   const goodGroupId = 'MY GROUP ID';
 
   beforeAll(() => {
-    configureAmplify();
+    configureAmplifyWithUserPasswordAuthFlow();
   });
 
   test('Test valid authorization', done => {

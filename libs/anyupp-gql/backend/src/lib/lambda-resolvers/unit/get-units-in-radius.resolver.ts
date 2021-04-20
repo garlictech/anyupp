@@ -1,10 +1,16 @@
 import * as geolib from 'geolib';
 import * as fp from 'lodash/fp';
-import { combineLatest, EMPTY, iif, Observable, of } from 'rxjs';
-import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, EMPTY, iif, Observable, of, throwError } from 'rxjs';
+import {
+  catchError,
+  defaultIfEmpty,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import {
   validateChain,
   validateGetGroupCurrency,
@@ -30,10 +36,10 @@ type listResponse<T> = {
 // TODO: add GEO_SEARCH
 export const getUnitsInRadius = ({
   location,
-  amplifyGraphQlClient,
+  crudGraphqlClient,
 }: {
   location: CrudApi.LocationInput;
-  amplifyGraphQlClient: GraphqlApiClient;
+  crudGraphqlClient: GraphqlApiClient;
 }): Observable<listResponse<AnyuppApi.GeoUnit>> => {
   // console.log(
   //   '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
@@ -45,14 +51,14 @@ export const getUnitsInRadius = ({
   // );
 
   // TODO: use geoSearch for the units
-  return listActiveUnits(amplifyGraphQlClient).pipe(
+  return listActiveUnits(crudGraphqlClient).pipe(
     switchMap(units =>
       combineLatest(
         units.map(unit =>
-          getChain(amplifyGraphQlClient, unit.chainId).pipe(
+          getChain(crudGraphqlClient, unit.chainId).pipe(
             switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
             switchMap(chain =>
-              getGroupCurrency(amplifyGraphQlClient, unit.groupId).pipe(
+              getGroupCurrency(crudGraphqlClient, unit.groupId).pipe(
                 map(currency => ({ chain, currency })),
               ),
             ),
@@ -113,12 +119,12 @@ const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => 
 };
 
 const listActiveUnits = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
 ): Observable<Array<IUnit>> => {
   const input: CrudApi.ListUnitsQueryVariables = {
     filter: { isActive: { eq: true } },
   };
-  return executeQuery(amplifyApiClient)<CrudApi.ListUnitsQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitsQuery>(
     CrudApiQueryDocuments.listUnits,
     input,
   ).pipe(
@@ -126,14 +132,18 @@ const listActiveUnits = (
     // pipeDebug('### LIST ACTIVE UNITS'),
     filter(fp.negate(fp.isEmpty)),
     switchMap((items: []) => combineLatest(items.map(validateUnit))),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal listActiveUnits query error');
+    }),
   );
 };
 
 const getGroupCurrency = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetGroupQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
     CrudApiQueryDocuments.getGroupCurrency,
     { id },
   ).pipe(
@@ -141,19 +151,27 @@ const getGroupCurrency = (
     // pipeDebug(`### GET GROUP with id: ${id}`),
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal GroupCurrency query error');
+    }),
   );
 };
 
 const getChain = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IChain> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetChainQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetChainQuery>(
     CrudApiQueryDocuments.getChain,
     { id },
   ).pipe(
     map(x => x.getChain),
     // pipeDebug(`### GET CHAIN with id: ${id}`),
     switchMap(validateChain),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Chain query error');
+    }),
   );
 };
