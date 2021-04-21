@@ -128,11 +128,7 @@ export const createBuildProject = (
         },
       },
       artifacts: {
-        files: [
-          'apps/anyupp-backend/cdk.out/**/*',
-          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-          './tools/**/*',
-        ],
+        files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
       reports: {
         cypressReports: {
