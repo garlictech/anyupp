@@ -18,6 +18,7 @@ export const orderRequestHandler = {
       'userId',
       'input',
     ]);
+    // TODO use validator instead
     missingParametersCheck<AnyuppApi.CreateOrderFromCartInput>(
       requestPayload.input,
       ['id'],

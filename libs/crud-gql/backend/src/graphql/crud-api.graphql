@@ -342,6 +342,8 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  chainProduct: ChainProduct @connection(fields: ["chainId"])
+  groupProduct: GroupProduct @connection(fields: ["groupId"])
 }
 
 type ProductVariant {

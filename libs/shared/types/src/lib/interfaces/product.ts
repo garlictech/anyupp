@@ -38,7 +38,7 @@ export interface IProductVariant {
   position: number;
 }
 export interface IGeneratedProductVariant {
-  // id: string;
+  id: string;
   variantName: ILocalizedItem<string>;
   price: number;
   position: number;
@@ -46,7 +46,7 @@ export interface IGeneratedProductVariant {
 }
 
 export interface IGeneratedProduct {
-  id: string;
+  id: string; // UnitProductId
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
   image: string;

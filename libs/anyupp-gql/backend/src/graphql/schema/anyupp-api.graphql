@@ -76,6 +76,11 @@ input CreateOrderFromCartInput {
   id: ID!
 }
 
+## UNIT
+input RegenerateUnitDataInput {
+  id: ID!
+}
+
 # input PlaceInput {
 #   seat: String!
 #   table: String!
@@ -278,6 +283,9 @@ type Mutation {
 
   # Product
   createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+  # Unit
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @aws_cognito_user_pools
 
   # Stripe

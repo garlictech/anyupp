@@ -36,7 +36,7 @@ Use the `build` build targets for projects requiring build/code generation.
 
 **the graphql schemas**
 
-`nx build anyupp-gql-api`
+`nx build anyupp-gql-api  --skip-nx-cache`
 
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
