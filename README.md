@@ -259,7 +259,7 @@ Both systems have some minimal data seeded at deploy/creation time.
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/

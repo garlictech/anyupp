@@ -1,6 +1,12 @@
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
@@ -90,7 +96,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),
-        filter((adminUser): boolean => !!adminUser),
+        filter((adminUser): boolean => !!adminUser.role),
         debounceTime(10), // Language reload!
         untilDestroyed(this),
       )
@@ -99,16 +105,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          /*if ( TODO use roleContext check
-            menuItem.roles.includes(
-              this.adminUser?.roles?.role || EAdminRole.INACTIVE,
-            )
-          ) {*/
-          this.menu.push({
-            ...menuItem,
-            title: this._translateService.instant(menuItem.title),
-          });
-          // }
+          if (
+            menuItem.roles.includes(this.adminUser?.role || EAdminRole.INACTIVE)
+          ) {
+            this.menu.push({
+              ...menuItem,
+              title: this._translateService.instant(menuItem.title),
+            });
+          }
         });
 
         this._changeDetectorRef.detectChanges();

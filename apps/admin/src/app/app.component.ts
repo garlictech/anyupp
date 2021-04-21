@@ -1,10 +1,9 @@
-import { DataService } from 'libs/admin/shared/data-access/data/src';
-import { EAdminRole } from 'libs/shared/types/src';
-
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { EAdminRole } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

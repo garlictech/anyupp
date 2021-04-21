@@ -1,27 +1,14 @@
-import {
-  anyuppAuthenticatedGraphqlClient,
-  executeMutation,
-} from 'libs/shared/graphql/api-client/src';
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { anyuppAuthenticatedGraphqlClient, executeMutation } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
 
 @Component({

@@ -18,6 +18,8 @@ export class CognitoService {
   // Call this to set the current context to be authorized
   set currentContext(context: string) {
     this._currentContext = context;
+
+    console.error('CONTEXT?', this._currentContext);
   }
 
   constructor() {
@@ -79,6 +81,7 @@ export class CognitoService {
           user: {
             id: decoded?.sub,
             email: decoded?.email,
+            role: decoded?.role,
           },
         };
       }),
