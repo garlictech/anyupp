@@ -591,32 +591,5 @@ export const createTestAdminRoleContext = (
     executeMutation(crudBackendGraphQLClient)(createAdminRoleContext, {
       input: chainAdminInput,
     }),
-    // return combineLatest([
-    //   deleteCreate({
-    //     input: superuserInput,
-    //     deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
-    //     createOperation: CrudApiMutationDocuments.createAdminRoleContext,
-    //   }).pipe(
-    //     catchError(err => {
-    //       console.warn(
-    //         'The admiRoleContext error could be FALSE because of the already existsing connections 01',
-    //         err,
-    //       );
-    //       return of('SUCCESS');
-    //     }),
-    //   ),
-    //   deleteCreate({
-    //     input: chainAdminInput,
-    //     deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
-    //     createOperation: CrudApiMutationDocuments.createAdminRoleContext,
-    //   }).pipe(
-    //     catchError(err => {
-    //       console.warn(
-    //         'The admiRoleContext error could be FALSE because of the already existsing connections 02',
-    //         err,
-    //       );
-    //       return of('SUCCESS');
-    //     }),
-    //   ),
   ]);
 };
