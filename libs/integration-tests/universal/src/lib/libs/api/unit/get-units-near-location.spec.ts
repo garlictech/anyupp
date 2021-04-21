@@ -71,7 +71,7 @@ describe('GetUnitsNearLocation tests', () => {
         ),
       )
       .toPromise();
-  });
+  }, 10000);
 
   describe('input validation', () => {
     it('should throw without a input', done => {
@@ -167,7 +167,7 @@ describe('GetUnitsNearLocation tests', () => {
   }, 15000);
 
   // TODO: create test with A NOT ACTIVE CHAIN
-  it('should return all the units in geoUnitsFormat ordered by distance with remote appsync api call', done => {
+  it('should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call', done => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };

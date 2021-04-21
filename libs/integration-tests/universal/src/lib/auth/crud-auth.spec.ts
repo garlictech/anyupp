@@ -10,7 +10,7 @@ import {
 import { testAdminUsername, testAdminUserPassword } from '../fixtures';
 import { cartSeed } from '../fixtures/cart';
 
-describe('Amplify endpoints AUTH test', () => {
+describe('CRUD endpoints AUTH test', () => {
   it('should require authentication to access', done => {
     return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,

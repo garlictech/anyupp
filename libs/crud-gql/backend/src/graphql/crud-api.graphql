@@ -1,10 +1,10 @@
 type Address {
-  address: String
-  city: String
-  country: String
+  address: String!
+  city: String!
+  country: String!
   title: String
-  postalCode: String
-  location: Location
+  postalCode: String!
+  location: Location!
 }
 
 type Location {

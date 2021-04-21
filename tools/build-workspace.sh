@@ -9,7 +9,6 @@ yarn nx config crud-backend --app=$APPNAME --stage=$STAGE
 yarn nx config shared-config --app=$APPNAME --stage=$STAGE
 yarn nx build anyupp-gql-api --skip-nx-cache
 yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
-yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 
 if [ $STAGE = 'dev' ]; then
   yarn nx build admin
