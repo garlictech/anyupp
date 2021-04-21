@@ -22,6 +22,7 @@ import {
   createTestRoleContext,
   createTestUnit,
   createTestUnitProduct,
+  deleteTestAdminRoleContext,
 } from './seed-data-fn';
 
 const username = 'test@anyupp.com';
@@ -134,8 +135,8 @@ export const seedAdminUser = (UserPoolId: string): Observable<string> =>
 
 export const seedBusinessData = (userId: string) =>
   concat(
-    createTestRoleContext(1, 1, 1, 1).pipe(pd('### RoleContext SEED 01')),
     combineLatest([
+      createTestRoleContext(1, 1, 1, 1).pipe(pd('### RoleContext SEED 01')),
       createTestChain(1).pipe(pd('### Chain SEED 01')),
       createTestGroup(1, 1).pipe(pd('### Group SEED 01')),
       createTestGroup(1, 2).pipe(pd('### Group SEED 02')),
@@ -161,5 +162,10 @@ export const seedBusinessData = (userId: string) =>
         cartIdx: 1,
       }),
     ]),
-    createTestAdminRoleContext(1, 1, userId),
+    deleteTestAdminRoleContext(1).pipe(
+      pd('### ADMIN_ROLE_CONTEXT SEED DELETE'),
+    ),
+    createTestAdminRoleContext(1, 1, userId).pipe(
+      pd('### ADMIN_ROLE_CONTEXT SEED CREATE'),
+    ),
   );
