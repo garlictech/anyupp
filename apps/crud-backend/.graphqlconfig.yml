@@ -1,6 +1,6 @@
 projects:
-  petrotanyupp:
-    schemaPath: amplify/backend/api/petrotanyupp/build/schema.graphql
+  anyuppbackend:
+    schemaPath: amplify/backend/api/anyuppbackend/build/schema.graphql
     includes:
       - ../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts
     excludes:

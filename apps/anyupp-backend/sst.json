@@ -1,5 +1,5 @@
 {
-  "name": "petrot-anyupp",
+  "name": "anyupp-backend",
   "type": "@serverless-stack/resources",
   "stage": "dev",
   "region": "eu-west-1"
