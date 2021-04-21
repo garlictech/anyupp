@@ -10,7 +10,6 @@ yarn nx config shared-config --app=$APPNAME --stage=$STAGE
 yarn nx build anyupp-gql-api --skip-nx-cache
 yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
-yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE --skip-nx-cache
 
 if [ $STAGE = 'dev' ]; then
   yarn nx build admin
@@ -18,3 +17,4 @@ else
   yarn nx build admin --configuration=$STAGE --skip-nx-cache
 fi
 
+yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE --skip-nx-cache

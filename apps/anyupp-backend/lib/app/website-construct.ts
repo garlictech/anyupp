@@ -45,18 +45,6 @@ export class WebsiteConstruct extends Construct {
     });
 
     new cdk.CfnOutput(this, 'Bucket', {value: siteBucket.bucketName});
-    // TLS certificate
-
-    /*    const certificateArn = new acm.DnsValidatedCertificate(
-      this,
-      'SiteCertificate',
-      {
-        domainName: siteDomain,
-        hostedZone: zone,
-        region: 'us-east-1',
-      },
-    ).certificateArn;
-*/
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
