@@ -93,6 +93,9 @@ export class RoleContextFormComponent
         clearDbProperties<IRoleContext>(this.roleContext),
       );
 
+      this._refreshGroupOptionsByChainId(this.roleContext.chainId || '');
+      this._refreshUnitOptionsByGroupId(this.roleContext.groupId || '');
+
       this._refreshDisabledFields(this.roleContext.role);
     }
 
@@ -126,17 +129,7 @@ export class RoleContextFormComponent
             unitId: undefined,
           });
 
-          this._store
-            .pipe(
-              select(groupsSelectors.getGroupsByChainId(next.chainId)),
-              take(1),
-            )
-            .subscribe((groups): void => {
-              this.groupOptions = groups.map(group => ({
-                key: group.id,
-                value: group.name,
-              }));
-            });
+          this._refreshGroupOptionsByChainId(next.chainId);
         }
 
         if (prev.groupId !== next.groupId) {
@@ -144,18 +137,34 @@ export class RoleContextFormComponent
             unitId: undefined,
           });
 
-          this._store
-            .pipe(
-              select(unitsSelectors.getUnitsByGroupId(next.groupId || '')),
-              take(1),
-            )
-            .subscribe((units): void => {
-              this.unitOptions = units.map(unit => ({
-                key: unit.id,
-                value: unit.name,
-              }));
-            });
+          this._refreshUnitOptionsByGroupId(next.groupId || '');
         }
+
+        this._changeDetectorRef.detectChanges();
+      });
+  }
+
+  private _refreshGroupOptionsByChainId(chainId: string) {
+    this._store
+      .pipe(select(groupsSelectors.getGroupsByChainId(chainId)), take(1))
+      .subscribe((groups): void => {
+        this.groupOptions = groups.map(group => ({
+          key: group.id,
+          value: group.name,
+        }));
+
+        this._changeDetectorRef.detectChanges();
+      });
+  }
+
+  private _refreshUnitOptionsByGroupId(groupId: string) {
+    this._store
+      .pipe(select(unitsSelectors.getUnitsByGroupId(groupId || '')), take(1))
+      .subscribe((units): void => {
+        this.unitOptions = units.map(unit => ({
+          key: unit.id,
+          value: unit.name,
+        }));
 
         this._changeDetectorRef.detectChanges();
       });
@@ -196,6 +205,8 @@ export class RoleContextFormComponent
     this.unitDisabled =
       this.groupDisabled ||
       [EAdminRole.GROUP_ADMIN /* + new roles */].includes(role);
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public async submit(): Promise<void> {
@@ -206,10 +217,7 @@ export class RoleContextFormComponent
             'getRoleContext',
             'updateRoleContext',
             this.roleContext.id,
-            (data: unknown) => ({
-              ...(<IRoleContext>data),
-              ...this.dialogForm.value,
-            }),
+            () => this.dialogForm.value,
           );
 
           this._toasterService.show(

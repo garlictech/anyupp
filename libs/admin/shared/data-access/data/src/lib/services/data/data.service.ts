@@ -37,6 +37,7 @@ import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 @Injectable({
   providedIn: 'root',
@@ -54,13 +55,14 @@ export class DataService {
     private _translateService: TranslateService,
   ) {}
 
-  public async initDataConnections<IAdminUser>(userId: string, currentContextRole: EAdminRole): Promise<void> {
+  public async initDataConnections<IAdminUser>(
+    userId: string,
+    currentContextRole: EAdminRole,
+  ): Promise<void> {
     // Prevent multiple initialization on login
     if (this._dataConnectionInitialized) return;
 
-    console.error(' this._dataConnectionInitialized??',  this._dataConnectionInitialized);
-
-    const a = this._amplifyDataService
+    this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
         subscriptionName: 'onAdminUserChange',
@@ -70,20 +72,20 @@ export class DataService {
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
                 ...(<IAdminUser>loggedUser),
-                role: currentContextRole
+                role: currentContextRole,
               },
             }),
           );
         },
       })
-      .pipe(tap(() => console.error('hellobello')))
-     console.error('EZ MI???? ', a);
-      a.subscribe(ize => {
-        console.error('ize', ize);
-      }, err => {
-        console.error('err', err);
-        debugger;
-      });
+      .subscribe(
+        () => {
+          /* SUCCESS */
+        },
+        err => {
+          console.error('snapshotChanges$ err', err);
+        },
+      );
 
     this._store
       .pipe(
@@ -100,10 +102,8 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe((adminUserSettings: IAdminUserSettings | undefined): void => {
-        console.error('SETTINGS CHANGED adminUserSettings', adminUserSettings);
-        // this._settingsChanged$.next(true);
+        this._settingsChanged$.next(true);
 
-        /*
         this._subscribeToChainProductCategories(
           adminUserSettings?.selectedChainId || '',
         );
@@ -116,7 +116,6 @@ export class DataService {
         this._subscribeToSelectedUnitProducts(
           adminUserSettings?.selectedUnitId || '',
         );
-        */
 
         /*
         this
@@ -132,18 +131,16 @@ export class DataService {
       });
 
     // Lists
-
-    // this._subscribeToRoleContext();
-    // this._subscribeToChains();
-    // this._subscribeToGroups();
-    // this._subscribeToUnits();
-    // // this._subscribeToUsers(); TODO not used?
-    // this._subscribeToRoleContext();
-    // this._subscribeToAdminUsers();
-    // this._subscribeToAdminRoleContexts();
+    this._subscribeToRoleContext();
+    this._subscribeToChains();
+    this._subscribeToGroups();
+    this._subscribeToUnits();
+    // this._subscribeToUsers(); TODO not used?
+    this._subscribeToRoleContext();
+    this._subscribeToAdminUsers();
+    this._subscribeToAdminRoleContexts();
 
     // Get user language
-
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
@@ -153,11 +150,10 @@ export class DataService {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
 
-      this._dataConnectionInitialized = true;
+    this._dataConnectionInitialized = true;
   }
 
   private _subscribeToRoleContext(): void {
-    console.error('_subscribeToRoleContext');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listRoleContexts',
@@ -166,7 +162,6 @@ export class DataService {
           this._store.dispatch(roleContextActions.resetRoleContexts());
         },
         upsertFn: (roleContext: unknown): void => {
-          console.error('roleContext', roleContext);
           this._store.dispatch(
             roleContextActions.upsertRoleContext({
               roleContext: <IRoleContext>roleContext,
@@ -178,7 +173,6 @@ export class DataService {
   }
 
   private _subscribeToChains(): void {
-    console.error('_subscribeToChains');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listChains',
@@ -198,8 +192,7 @@ export class DataService {
   }
 
   private _subscribeToGroups(): void {
-    console.error('_subscribeToGroups');
-    this._amplifyDataService
+  this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroups',
         subscriptionName: 'onGroupsChange',
@@ -218,7 +211,6 @@ export class DataService {
   }
 
   private _subscribeToUnits(): void {
-    console.error('_subscribeToUnits');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listUnits',
@@ -238,7 +230,6 @@ export class DataService {
   }
 
   private _subscribeToChainProductCategories(chainId: string): void {
-    console.error('_subscribeToChainProductCategories');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listProductCategorys',
@@ -264,7 +255,6 @@ export class DataService {
   }
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
-    console.error('_subscribeToSelectedChainProducts');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listChainProducts',
@@ -288,7 +278,6 @@ export class DataService {
   }
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
-    console.error('_subscribeToSelectedGroupProducts');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroupProducts',
@@ -312,7 +301,6 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
-    console.error('_subscribeToSelectedUnitProducts');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listUnitProducts',
@@ -465,7 +453,6 @@ export class DataService {
   */
 
   private _subscribeToAdminUsers(): void {
-    console.error('_subscribeToAdminUsers');
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listAdminUsers',
@@ -485,19 +472,19 @@ export class DataService {
   }
 
   private _subscribeToAdminRoleContexts(): void {
-    console.error('_subscribeToAdminRoleContexts');
     this._amplifyDataService
       .subscribe$({
         subscriptionName: 'onAdminRoleContextsChange',
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
-          const result = await this._amplifyDataService.query({
+          const result: any = await this._amplifyDataService.query({
             queryName: 'getAdminUser',
             variables: {
               id: (<IAdminUserConnectedRoleContext>adminRoleContext)
                 .adminUserId,
             },
           });
-          const adminUser: unknown = result?.data?.getAdminUser;
+
+          const adminUser: unknown = result?.getAdminUser;
 
           if (adminUser) {
             this._store.dispatch(

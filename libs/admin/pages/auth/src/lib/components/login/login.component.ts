@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { environment } from '@bgap/admin/shared/config';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

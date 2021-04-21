@@ -1,6 +1,12 @@
 import { Observable } from 'rxjs';
 
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -10,6 +16,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-active-group-selector',
   templateUrl: './active-group-selector.component.html',
   styleUrls: ['./active-group-selector.component.scss'],
@@ -20,7 +27,11 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
   private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService) {
+  constructor(
+    private _store: Store<any>,
+    private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
@@ -53,5 +64,7 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
         selectedUnitId: null, // Reset unit id!
       });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

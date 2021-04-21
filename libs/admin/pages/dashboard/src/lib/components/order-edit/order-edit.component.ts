@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
@@ -25,11 +32,12 @@ interface IPaymentMethodKV {
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
   styleUrls: ['./order-edit.component.scss'],
 })
-export class OrderEditComponent implements OnDestroy {
+export class OrderEditComponent implements OnInit, OnDestroy {
   @Input() order!: IOrder;
   public paymentMethods: IPaymentMethodKV[] = [];
   public EOrderStatus = EOrderStatus;
@@ -44,9 +52,12 @@ export class OrderEditComponent implements OnDestroy {
     private _store: Store<any>,
     private _orderService: OrderService,
     private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
+  }
 
+  ngOnInit(): void {
     Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
@@ -58,6 +69,8 @@ export class OrderEditComponent implements OnDestroy {
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
         this._loggedUser = adminUser;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -67,6 +80,8 @@ export class OrderEditComponent implements OnDestroy {
           size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

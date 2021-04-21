@@ -2,7 +2,14 @@ import * as printJS from 'print-js';
 import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
@@ -21,6 +28,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-print',
   templateUrl: './order-print.component.html',
   styleUrls: ['./order-print.component.scss'],
@@ -39,12 +47,15 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogRef: NbDialogRef<unknown>,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.sum = {
       value: 0,
       currency: '',
     };
+  }
 
+  ngOnInit(): void {
     combineLatest([
       this._store.pipe(
         select(chainsSelectors.getSeletedChain),
@@ -60,11 +71,11 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       ([chain, unit]: [IChain | undefined, IUnit | undefined]): void => {
         this.chain = chain;
         this.unit = unit;
+
+        this._changeDetectorRef.detectChanges();
       },
     );
-  }
 
-  ngOnInit(): void {
     this._groupOrders();
   }
 

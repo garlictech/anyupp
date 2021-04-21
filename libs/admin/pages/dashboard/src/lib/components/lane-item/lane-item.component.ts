@@ -1,7 +1,7 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
@@ -23,6 +23,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-lane-item',
   templateUrl: './lane-item.component.html',
   styleUrls: ['./lane-item.component.scss'],
@@ -40,6 +41,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
+    private _changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       )
       .subscribe((image: string): void => {
         this.orderItem.image = image;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
@@ -75,6 +79,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
           );
         });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -89,6 +95,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ),
       <number>this.orderItem.idx,
     );
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public moveBack(): void {
@@ -99,5 +107,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ),
       <number>this.orderItem.idx,
     );
+
+    this._changeDetectorRef.detectChanges();
   }
 }

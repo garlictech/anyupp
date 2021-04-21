@@ -1,10 +1,11 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { contactFormGroup } from '@bgap/admin/shared/utils';
 import { IUser } from '@bgap/shared/types';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-user-form',
   templateUrl: './user-form.component.html',
 })
@@ -13,7 +14,7 @@ export class UserFormComponent
   implements OnInit {
   public user: IUser | undefined;
 
-  constructor(protected _injector: Injector) {
+  constructor(protected _injector: Injector, private _changeDetectorRef: ChangeDetectorRef) {
     super(_injector);
   }
 
@@ -31,6 +32,8 @@ export class UserFormComponent
     if (this.user) {
       this.dialogForm.patchValue(this.user);
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public submit(): void {

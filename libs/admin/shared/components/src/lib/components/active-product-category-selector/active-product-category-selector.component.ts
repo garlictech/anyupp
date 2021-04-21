@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -26,7 +27,11 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
   private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService) {
+  constructor(
+    private _store: Store<any>,
+    private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.showIcon = false;
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
@@ -59,5 +64,7 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
         selectedProductCategoryId: productCategoryId,
       });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

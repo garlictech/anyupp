@@ -1,6 +1,6 @@
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
@@ -83,6 +83,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -109,6 +110,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           });
           // }
         });
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

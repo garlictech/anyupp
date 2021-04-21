@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
@@ -9,6 +9,7 @@ import {
 } from '@bgap/shared/types';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-product-variants',
   templateUrl: './form-product-variants.component.html',
 })
@@ -20,7 +21,7 @@ export class FormProductVariantsComponent {
 
   public EProductLevel = EProductLevel;
 
-  constructor(private _formsService: FormsService) {
+  constructor(private _formsService: FormsService, private _changeDetectorRef: ChangeDetectorRef) {
     this.allowAddVariant = true;
   }
 
@@ -28,6 +29,8 @@ export class FormProductVariantsComponent {
     (<FormArray>this.variantFormArray)?.push(
       this._formsService.createProductVariantFormGroup(),
     );
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public move(idx: number, change: number): void {
@@ -62,5 +65,7 @@ export class FormProductVariantsComponent {
         },
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

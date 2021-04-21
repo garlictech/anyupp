@@ -1,11 +1,12 @@
 import * as fp from 'lodash/fp';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-chain-list-item',
   templateUrl: './chain-list-item.component.html',
   styleUrls: ['./chain-list-item.component.scss'],
