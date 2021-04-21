@@ -72,14 +72,25 @@ class LoginFormUtils {
     );
   }
 
-  static FieldValidator emailValidator(BuildContext context) => MultiValidator([
-        EmailValidator(errorText: transEx(context, 'enter a valid email address')),
-        RequiredValidator(errorText: transEx(context, 'this field is required')),
+  static FieldValidator emailOrPhoneValidator(BuildContext context) =>
+      MultiValidator([
+        RequiredValidator(
+            errorText: transEx(context, 'this field is required')),
       ]);
 
-  static FieldValidator passwordValidator(BuildContext context) => MultiValidator([
+  static FieldValidator emailValidator(BuildContext context) => MultiValidator([
+        EmailValidator(
+            errorText: transEx(context, 'enter a valid email address')),
+        RequiredValidator(
+            errorText: transEx(context, 'this field is required')),
+      ]);
+
+  static FieldValidator passwordValidator(BuildContext context) =>
+      MultiValidator([
         RequiredValidator(errorText: 'password is required'),
-        MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-        PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: 'passwords must have at least one special character'),
+        MinLengthValidator(8,
+            errorText: 'password must be at least 8 digits long'),
+        PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+            errorText: 'passwords must have at least one special character'),
       ]);
 }

@@ -8,20 +8,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EmailRegisterDialogContentWidget extends StatefulWidget {
   @override
-  _EmailRegisterDialogContentWidgetState createState() => _EmailRegisterDialogContentWidgetState();
+  _EmailRegisterDialogContentWidgetState createState() =>
+      _EmailRegisterDialogContentWidgetState();
 }
 
-class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogContentWidget> {
+class _EmailRegisterDialogContentWidgetState
+    extends State<EmailRegisterDialogContentWidget> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
-  final _password2Controller = TextEditingController();
+  final _emailOrPhoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _emailController.dispose();
     _password1Controller.dispose();
-    _password2Controller.dispose();
+    _emailOrPhoneController.dispose();
     super.dispose();
   }
 
@@ -31,15 +33,18 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
       listener: (BuildContext context, LoginState state) {
         print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
         if (state is EmailRegistrationSuccess) {
-          getIt<LoginBloc>()
-              .add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_LINK, animationCurve: Curves.easeIn));
+          getIt<LoginBloc>().add(ChangeEmailFormUI(
+              ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+              animationCurve: Curves.easeIn));
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
         // print('PhoneDialogContentWidget.bloc.state=$state');
 
         if (state is LoginInProgress) {
-          return _buildLoading(context, message: trans('login.email.loginProgress'));
+          return _buildLoading(context,
+              message: trans('login.email.loginProgress'));
         }
 
         return _buildRegistrationForm(context);
@@ -82,6 +87,14 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                     // Email + passwords input fields
                     LoginFormUtils.buildTextField(
                       context,
+                      trans('login.email.emailOrPhoneFieldLabel'),
+                      _emailOrPhoneController,
+                      TextInputType.text,
+                      true,
+                      LoginFormUtils.emailOrPhoneValidator(context),
+                    ),
+                    LoginFormUtils.buildTextField(
+                      context,
                       trans('login.email.emailFieldLabel'),
                       _emailController,
                       TextInputType.emailAddress,
@@ -96,19 +109,12 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                       true,
                       LoginFormUtils.passwordValidator(context),
                     ),
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.password2FieldLabel'),
-                      _password2Controller,
-                      TextInputType.text,
-                      true,
-                      LoginFormUtils.passwordValidator(context),
-                    ),
                     // Sing in link button
                     InkWell(
                       onTap: () {
-                        getIt<LoginBloc>().add(
-                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_LINK, animationCurve: Curves.easeIn));
+                        getIt<LoginBloc>().add(ChangeEmailFormUI(
+                            ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                            animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),
@@ -163,7 +169,8 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
     print('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      getIt<LoginBloc>().add(RegisterWithEmailAndPassword(_emailController.text, _password1Controller.text));
+      getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+          _emailController.text, _password1Controller.text));
     }
   }
 }

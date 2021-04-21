@@ -36,7 +36,6 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
   void setPage(EmailFormUIChange state) {
     int index = 0;
     switch (state.ui) {
-      case LoginFormUI.SHOW_LOGIN_WITH_LINK:
       case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
         index = 0;
         break;

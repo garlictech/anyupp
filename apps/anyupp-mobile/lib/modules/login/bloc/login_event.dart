@@ -3,7 +3,7 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {
-  SHOW_LOGIN_WITH_LINK,
+ // SHOW_LOGIN_WITH_LINK,
   SHOW_LOGIN_WITH_PASSWORD,
   SHOW_REGISTRATION,
   SHOW_FORGOT_PASSWORD,

@@ -73,17 +73,17 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                     // Email + passwords input fields
                     LoginFormUtils.buildTextField(
                       context,
-                      trans('login.email.emailFieldLabel'),
+                      trans('login.email.emailOrPhoneFieldLabel'),
                       _emailController,
                       TextInputType.emailAddress,
                       false,
-                      LoginFormUtils.emailValidator(context),
+                      LoginFormUtils.emailOrPhoneValidator(context),
                     ),
                     // Sing in link button
                     InkWell(
                       onTap: () {
                         getIt<LoginBloc>().add(
-                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_LINK, animationCurve: Curves.easeIn));
+                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),

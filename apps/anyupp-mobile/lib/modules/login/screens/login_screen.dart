@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
 
-  static const double EMAIL_FORM_HEIGHT = 180.0;
+  static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
 
   @override
@@ -82,9 +82,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           // print('LoginScreen.listener.state=${state.ui}');
           double height = 0.0;
           switch (state.ui) {
-            case LoginFormUI.SHOW_LOGIN_WITH_LINK:
-              height = 180.0;
-              break;
+            // case LoginFormUI.SHOW_LOGIN_WITH_LINK:
+            //   height = 180.0;
+            //   break;
             case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
               height = 235.0;
               break;
@@ -531,8 +531,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);
-              // _toggleEmailLoginForm();
-              getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
+               _toggleEmailLoginForm();
+          //    getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
 
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
