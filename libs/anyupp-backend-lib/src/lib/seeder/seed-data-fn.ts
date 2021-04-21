@@ -40,8 +40,8 @@ const generateCartId = (idx: number) => `cart_${idx}_id`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: EAdminRole) =>
   `role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (idx: number) =>
-  `admin_role_context_${idx}_id`;
+const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
+  `admin_role_context_${idx}_${role}_id`;
 
 const deleteCreate = ({
   input,
@@ -53,9 +53,14 @@ const deleteCreate = ({
   deleteOperation: string;
   createOperation: string;
 }) =>
+  // DELETE
   executeMutation(crudBackendGraphQLClient)(deleteOperation, {
     input: { id: input.id },
   }).pipe(
+    catchError(error => {
+      console.error('Error during SEED data DELETION', error);
+      return of('STILL TRY TO CREATE IT PLEASE');
+    }),
     switchMap(() =>
       executeMutation(crudBackendGraphQLClient)(createOperation, {
         input,
@@ -453,32 +458,101 @@ export const createTestRoleContext = (
     groupId: generateGroupId(chainIdx, groupIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
   };
+  const deleteRoleContext = /* GraphQL */ `
+    mutation DeleteRoleContext(
+      $input: DeleteRoleContextInput!
+      $condition: ModelRoleContextConditionInput
+    ) {
+      deleteRoleContext(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `;
+  const createRoleContext = /* GraphQL */ `
+    mutation CreateRoleContext(
+      $input: CreateRoleContextInput!
+      $condition: ModelRoleContextConditionInput
+    ) {
+      createRoleContext(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `;
   return combineLatest([
     deleteCreate({
       input: superuserInput,
-      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
-      createOperation: CrudApiMutationDocuments.createRoleContext,
+      deleteOperation: deleteRoleContext,
+      createOperation: createRoleContext,
     }),
     deleteCreate({
       input: chainAdminInput,
-      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
-      createOperation: CrudApiMutationDocuments.createRoleContext,
+      deleteOperation: deleteRoleContext,
+      createOperation: createRoleContext,
     }),
     deleteCreate({
       input: groupAdminInput,
-      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
-      createOperation: CrudApiMutationDocuments.createRoleContext,
+      deleteOperation: deleteRoleContext,
+      createOperation: createRoleContext,
     }),
     deleteCreate({
       input: unitAdminInput,
-      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
-      createOperation: CrudApiMutationDocuments.createRoleContext,
+      deleteOperation: deleteRoleContext,
+      createOperation: createRoleContext,
     }),
     deleteCreate({
       input: staffInput,
-      deleteOperation: CrudApiMutationDocuments.deleteRoleContext,
-      createOperation: CrudApiMutationDocuments.createRoleContext,
+      deleteOperation: deleteRoleContext,
+      createOperation: createRoleContext,
     }),
+  ]);
+};
+
+export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => {
+  const deleteAdminRoleContext = /* GraphQL */ `
+    mutation DeleteAdminRoleContext(
+      $input: DeleteAdminRoleContextInput!
+      $condition: ModelAdminRoleContextConditionInput
+    ) {
+      deleteAdminRoleContext(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `;
+  const idSuper = generateAdminRoleContextId(
+    adminRoleContextIdx,
+    EAdminRole.SUPERUSER,
+  );
+  const idChainAdmin = generateAdminRoleContextId(
+    adminRoleContextIdx,
+    EAdminRole.CHAIN_ADMIN,
+  );
+  return combineLatest([
+    executeMutation(crudBackendGraphQLClient)(deleteAdminRoleContext, {
+      input: {
+        id: idSuper,
+      },
+    }).pipe(
+      catchError(err => {
+        console.warn(
+          `Can NOT delete the AdminRoleContext with id: ${idSuper}`,
+          err,
+        );
+        return of('SUCCESS');
+      }),
+    ),
+    executeMutation(crudBackendGraphQLClient)(deleteAdminRoleContext, {
+      input: {
+        id: idChainAdmin,
+      },
+    }).pipe(
+      catchError(err => {
+        console.warn(
+          `Can NOT delete the AdminRoleContext with id: ${idChainAdmin}`,
+          err,
+        );
+        return of('SUCCESS');
+      }),
+    ),
   ]);
 };
 
@@ -487,57 +561,36 @@ export const createTestAdminRoleContext = (
   roleContextIdx: number,
   adminUserId: string,
 ) => {
+  const createAdminRoleContext = /* GraphQL */ `
+    mutation CreateAdminRoleContext(
+      $input: CreateAdminRoleContextInput!
+      $condition: ModelAdminRoleContextConditionInput
+    ) {
+      createAdminRoleContext(input: $input, condition: $condition) {
+        id
+      }
+    }
+  `;
   const superuserInput: CrudApi.CreateAdminRoleContextInput = {
-    id: `${generateAdminRoleContextId(adminRoleContextIdx)}_${
-      EAdminRole.SUPERUSER
-    }`,
+    id: generateAdminRoleContextId(adminRoleContextIdx, EAdminRole.SUPERUSER),
     adminUserId,
     roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
   };
   const chainAdminInput: CrudApi.CreateAdminRoleContextInput = {
-    id: `${generateAdminRoleContextId(adminRoleContextIdx)}_${
-      EAdminRole.CHAIN_ADMIN
-    }`,
+    id: generateAdminRoleContextId(adminRoleContextIdx, EAdminRole.CHAIN_ADMIN),
     adminUserId,
     roleContextId: generateRoleContextId(
       roleContextIdx,
       EAdminRole.CHAIN_ADMIN,
     ),
   };
-  console.log(
-    '### ~ file: seed-data-fn.ts ~ line 490 ~ superuserInput',
-    superuserInput,
-  );
-  console.log(
-    '### ~ file: seed-data-fn.ts ~ line 496 ~ chainAdminInput',
-    chainAdminInput,
-  );
+
   return combineLatest([
-    deleteCreate({
+    executeMutation(crudBackendGraphQLClient)(createAdminRoleContext, {
       input: superuserInput,
-      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
-      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
-    }).pipe(
-      catchError(err => {
-        console.warn(
-          'The admiRoleContext error could be FALSE because of the already existsing connections 01',
-          err,
-        );
-        return of('SUCCESS');
-      }),
-    ),
-    deleteCreate({
+    }),
+    executeMutation(crudBackendGraphQLClient)(createAdminRoleContext, {
       input: chainAdminInput,
-      deleteOperation: CrudApiMutationDocuments.deleteAdminRoleContext,
-      createOperation: CrudApiMutationDocuments.createAdminRoleContext,
-    }).pipe(
-      catchError(err => {
-        console.warn(
-          'The admiRoleContext error could be FALSE because of the already existsing connections 02',
-          err,
-        );
-        return of('SUCCESS');
-      }),
-    ),
+    }),
   ]);
 };

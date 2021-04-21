@@ -76,6 +76,8 @@ First, find a name for your app stack. It is important, as it will appear everyw
 In the examples below, we use APPNAME for the stack name. Then, choose an environment: dev, qa, prod. The difference
 between the stage environments are the different parameters in the parameter store.
 
+**WARNING** Don't use dots in the private stack name.
+
 ### Option 1: Create everything from scratch
 
 After cloning the repo, configure your environment. You need the following environment variables:
@@ -251,8 +253,8 @@ Then, remove the CDK stack:
 
 The deployed admin sites:
 
-- DEV: https://dev.admin.anyupp-backend.anyupp.com/
-- QA: https://qa.admin.anyupp-backend.anyupp.com/
+- DEV: https://dev-admin-anyupp-backend.anyupp.com/
+- QA: https://qa-admin.-nyupp-backend.anyupp.com/
 
 Both systems have some minimal data seeded at deploy/creation time.
 
@@ -592,3 +594,12 @@ The tool assumes that you have a valid appcenter token in the `APP_CENTER_TOKEN`
 environment variable. The tool uses the current app image path, so
 be careful: if you want to publish QA, then build the app with QA config, then
 publish!
+
+## Tools
+
+### Reconfig the whole workspace
+
+`./tools/build-workspace.sh anyupp-backend dev`
+
+Before it, remove `apps/crud-api/amplify`. Ensure that all your changes are pushed or discard them.
+The command fethes the crud backend, the configurations and regenerates the code files.

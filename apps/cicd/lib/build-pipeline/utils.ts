@@ -75,7 +75,7 @@ export const createBuildProject = (
   cache: codebuild.Cache,
   stage: string,
 ): codebuild.PipelineProject => {
-  const adminConfig = stage === 'dev' ? '' : `--configuration=${stage}`;
+  const {adminSiteUrl} = utils.configurePipeline(stack, stage);
 
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -85,24 +85,15 @@ export const createBuildProject = (
           commands: [
             `sh ./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli',
+            'npm install -g @aws-amplify/cli appcenter-cli',
             'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
             'export PATH=$PATH:/tmp/flutter/bin',
             'flutter doctor',
           ],
         },
-        pre_build: {
-          commands: [
-            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api --skip-nx-cache`,
-          ],
-        },
         build: {
           commands: [
-            `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
-            `yarn nx build admin ${adminConfig} --skip-nx-cache`,
-            `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
+            `sh ./tools/build-workspace.sh ${appConfig.name} ${stage}`,
             `yarn nx buildApk anyupp-mobile`,
           ],
         },
@@ -113,147 +104,30 @@ export const createBuildProject = (
             `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
               stage,
             )}/`,
+            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
+            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
+            `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+            'yarn cucumber:report',
+            'yarn cypress:generate:html:report',
+            `echo 'Triggering ios app build in appcenter...'`,
+            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
+            `echo 'Pushing APK to appcenter'`,
+            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
           ],
         },
       },
       artifacts: {
-        files: [
-          'apps/anyupp-backend/cdk.out/**/*',
-          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-        ],
-      },
-      env: {
-        'secrets-manager': {
-          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
-          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
-        },
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      //      buildImage: utils.getBuildImage(stack),
-      computeType: codebuild.ComputeType.MEDIUM,
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-};
-
-export const createE2eTestProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  adminSiteUrl: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'e2eTest', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: ['yarn --frozen-lockfile'],
-        },
-        build: {
-          commands: [
-            `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-            'yarn cucumber:report',
-            'yarn cypress:generate:html:report',
-          ],
-        },
+        files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
       reports: {
         cypressReports: {
           files: ['cyreport/cucumber-json/**/*'],
           'file-format': 'CUCUMBERJSON',
         },
-      },
-      artifacts: {
-        files: ['cyreport/**/*'],
-      },
-      env: {
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-
-export const createIntegrationTestProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  stage: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'integrationTest', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: [
-            `sh ./tools/setup-aws-environment.sh`,
-            'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli',
-          ],
-        },
-        pre_build: {
-          commands: [
-            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api --skip-nx-cache`,
-          ],
-        },
-        build: {
-          commands: [
-            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
-            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
-          ],
-        },
-      },
-      reports: {
         coverage: {
           files: ['coverage/**/*'],
           'file-format': 'CLOVERXML',
-        },
-      },
-      env: {
-        'secrets-manager': {
-          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
-          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
-        },
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-
-export const createApkPublishProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  stage: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'publishApk', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: ['npm install -g appcenter-cli'],
-        },
-        build: {
-          commands: [`echo 'Pushing APK to appcenter...'`],
-        },
-        post_build: {
-          commands: [`sh ./tools/publish-to-appcenter.sh ${stage} android`],
         },
       },
       env: {
@@ -270,9 +144,11 @@ export const createApkPublishProject = (
     }),
     cache,
     environment: {
+      computeType: codebuild.ComputeType.MEDIUM,
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
+};
 
 export const configurePipeline = (
   stack: sst.Stack,
@@ -367,37 +243,33 @@ export const createCommonPipelineParts = (
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
-  const e2eOutput = new codepipeline.Artifact();
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
-
-  const {adminSiteUrl} = utils.configurePipeline(scope, stage);
   const build = utils.createBuildProject(scope, cache, stage);
-  const e2eTest = utils.createE2eTestProject(scope, cache, adminSiteUrl);
-  const integrationTest = utils.createIntegrationTestProject(
-    scope,
-    cache,
-    stage,
-  );
-  const publishAndroidToAppcenter = utils.createApkPublishProject(
-    scope,
-    cache,
-    stage,
-  );
-
   const prefix = utils.projectPrefix(stage);
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
     bucketName: getAppcenterArtifactBucketName(stage),
-    publicReadAccess: true,
     removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+    lifecycleRules: [
+      {
+        expiration: cdk.Duration.days(1),
+      },
+    ],
   });
 
-  utils.configurePermissions(
-    scope,
-    props.secretsManager,
-    [build, integrationTest, publishAndroidToAppcenter],
-    prefix,
+  /* const serviceRole = new iam.Role(scope, 'CodePipelineServiceRole', {
+    assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
+  });
+
+  serviceRole.addToPolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
   );
+*/
+  utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
     stages: [
@@ -415,28 +287,13 @@ export const createCommonPipelineParts = (
         ],
       },
       {
-        stageName: 'Build',
+        stageName: 'BuildAndDeploy',
         actions: [
           new codepipeline_actions.CodeBuildAction({
-            actionName: 'Build',
+            actionName: 'BuildAndDeploy',
             project: build,
             input: sourceOutput,
             outputs: [buildOutput],
-          }),
-        ],
-      },
-      {
-        stageName: 'StackCreation',
-        actions: [
-          new codepipeline_actions.CloudFormationCreateUpdateStackAction({
-            actionName: `CreateStack`,
-            templatePath: buildOutput.atPath(
-              `apps/anyupp-backend/cdk.out/${stage}-${utils.appConfig.name}-anyupp.template.json`,
-            ),
-            stackName: `${utils.projectPrefix(stage)}-anyupp`,
-            adminPermissions: true,
-            extraInputs: [buildOutput],
-            replaceOnFailure: true,
           }),
         ],
       },
@@ -447,37 +304,6 @@ export const createCommonPipelineParts = (
             actionName: `DeleteSeederStack`,
             stackName: `${utils.projectPrefix(stage)}-seeder`,
             adminPermissions: true,
-          }),
-        ],
-      },
-      {
-        stageName: 'publishAndroidToAppcenter',
-        actions: [
-          new codepipeline_actions.CodeBuildAction({
-            actionName: 'publishAndroidToAppcenter',
-            project: publishAndroidToAppcenter,
-            input: buildOutput,
-          }),
-        ],
-      },
-      {
-        stageName: 'integrationTest',
-        actions: [
-          new codepipeline_actions.CodeBuildAction({
-            actionName: 'integrationTest',
-            project: integrationTest,
-            input: sourceOutput,
-          }),
-        ],
-      },
-      {
-        stageName: 'e2eTest',
-        actions: [
-          new codepipeline_actions.CodeBuildAction({
-            actionName: 'e2eTest',
-            project: e2eTest,
-            input: sourceOutput,
-            outputs: [e2eOutput],
           }),
         ],
       },
