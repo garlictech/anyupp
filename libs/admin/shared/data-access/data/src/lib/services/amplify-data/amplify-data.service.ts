@@ -37,6 +37,7 @@ export class AmplifyDataService {
       params.variables,
     ).pipe(
       take(1),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
           if (params.resetFn) {
@@ -60,6 +61,7 @@ export class AmplifyDataService {
           params.variables,
         );
       }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
           params.upsertFn(
@@ -85,9 +87,10 @@ export class AmplifyDataService {
     id: string,
     updaterFn: (data: unknown) => T,
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await executeQuery(
       crudAuthenticatedGraphqlClient,
-    )(CrudApiQueryDocuments[<keyof queryTypes>queryName], { id }).toPromise();
+    )<T>(CrudApiQueryDocuments[<keyof queryTypes>queryName], { id }).toPromise();
 
     const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
       ...updaterFn(data?.[<keyof queryTypes>queryName]),
@@ -108,8 +111,8 @@ export class AmplifyDataService {
     )(CrudApiMutationDocuments[mutationName], { input: value }).toPromise();
   }
 
-  public query(params: IQueryParams) {
-    return executeQuery(crudAuthenticatedGraphqlClient)(
+  public query<T>(params: IQueryParams) {
+    return executeQuery(crudAuthenticatedGraphqlClient)<T>(
       CrudApiQueryDocuments[params.queryName],
       params.variables,
     ).toPromise();
@@ -123,6 +126,7 @@ export class AmplifyDataService {
           params.variables,
         ),
       ),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
         params.upsertFn(

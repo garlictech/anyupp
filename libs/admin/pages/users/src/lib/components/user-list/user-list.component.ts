@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { usersSelectors } from '@bgap/admin/shared/data-access/users';
 import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';

@@ -1,16 +1,13 @@
 import * as fp from 'lodash/fp';
 import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
@@ -18,26 +15,15 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IRoleContext,
-  IAdminUserConnectedRoleContext,
-  IUnit,
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,
+  IKeyValueObject, IOrder, IProduct, IProductCategory, IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
-import { CrudApi } from '@bgap/crud-gql/api';
 
 @Injectable({
   providedIn: 'root',
@@ -476,7 +462,7 @@ export class DataService {
       .subscribe$({
         subscriptionName: 'onAdminRoleContextsChange',
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
-          const result: any = await this._amplifyDataService.query({
+          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<CrudApi.GetAdminUserQuery>({
             queryName: 'getAdminUser',
             variables: {
               id: (<IAdminUserConnectedRoleContext>adminRoleContext)
@@ -531,7 +517,7 @@ export class DataService {
     unitId: string,
     value: IKeyValueObject,
   ): Promise<void> {
-    await this._amplifyDataService.update<IUnit>(
+    await this._amplifyDataService.update(
       'getUnit',
       'updateUnit',
       unitId,
