@@ -12,18 +12,18 @@ sudo installer -pkg AWSCLIV2.pkg -target /
 cd ..
 git clone -b beta https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
+echo "Installed flutter to `pwd`/flutter"
 
 flutter channel stable
 flutter doctor
 
-echo "Installed flutter to `pwd`/flutter"
-
-
 ARTIFACT_NAME=$(git rev-parse HEAD).tgz
-echo "***** Teh build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
+echo "***** The build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
 
+cd ../..
 aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${ARTIFACT_NAME} .
 tar -zxf ${ARTIFACT_NAME}
+
 cd apps/anyupp-mobile
 flutter build ios --release --no-codesign
 
