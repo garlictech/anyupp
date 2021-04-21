@@ -45,7 +45,7 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   if (role?.roleContext) {
     // The given role has been assigned to the user
     const roleContent = fp.pick(
-      ['role', 'chainId', 'groupId', 'unitId'],
+      ['role', 'chainId', 'groupId', 'unitId', 'contextId'],
       <any>role.roleContext,
     );
 

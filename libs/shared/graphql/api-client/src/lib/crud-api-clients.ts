@@ -19,6 +19,12 @@ export const crudGraphqlClient = GraphqlApiFp.createPublicClient(
   true,
 );
 
+export const crudAuthenticatedGraphqlClient = GraphqlApiFp.createAuthenticatedClient(
+  AWS_CRUD_CONFIG,
+  console,
+  true,
+);
+
 export const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
   AWS_CRUD_CONFIG,
   'AKIAYIT7GMY5RXSLLQN3', // TODO: process.env.AWS_ACCESS_KEY_ID || '',
@@ -38,11 +44,7 @@ export const createAuthenticatedCrudGraphQLClient = (
         id: user.attributes.sub,
         ...user.attributes,
       },
-      graphQlClient: GraphqlApiFp.createAuthenticatedClient(
-        AWS_CRUD_CONFIG,
-        console,
-        true,
-      ),
+      graphQlClient: crudAuthenticatedGraphqlClient
     })),
   );
 };

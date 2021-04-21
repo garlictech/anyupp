@@ -1,7 +1,7 @@
 import { DataService } from 'libs/admin/shared/data-access/data/src';
 import { EAdminRole } from 'libs/shared/types/src';
 
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
@@ -48,6 +48,7 @@ export class AppComponent {
     private _translateService: TranslateService,
     private _cognitoService: CognitoService,
     private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef
   ) {
     // This language will be used as a fallback when a translation isn't found in the current language
     this._translateService.setDefaultLang(DEFAULT_LANG);
@@ -63,7 +64,8 @@ export class AppComponent {
         const token = this.user.getSignInUserSession()?.getIdToken();
         const decoded = token?.decodePayload();
 
-        // TODO token context = a megadott contextel??
+        this._changeDetectorRef.detectChanges();
+
         this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role || EAdminRole.INACTIVE);
       } else {
         this._dataService.destroyDataConnection();

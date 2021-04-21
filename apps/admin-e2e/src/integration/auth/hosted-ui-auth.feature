@@ -24,7 +24,6 @@ Feature: Login
 
 # TODO: re-enable
 # Not working because of an unhandled Admin exception
-  @focus
   Scenario: Login with an e-mail and password
     When I fill out the input with id "username" with the "test@anyupp.com" value
     And I fill out the input with id "password" with the "Testtesttest12_" value

@@ -691,8 +691,8 @@ export class DataService {
       userId,
       (adminUser: unknown) => {
         (<IAdminUser>adminUser).settings = {
-          ...(<IAdminUser>adminUser).settings,
-          ...value,
+          ...fp.omit(['__typename'], (<IAdminUser>adminUser).settings),
+          ...fp.omit(['__typename'], value),
         };
 
         return fp.pick(
@@ -713,7 +713,7 @@ export class DataService {
       userId,
       (adminUser: unknown) => {
         (<IAdminUser>adminUser).settings = {
-          ...(<IAdminUser>adminUser).settings,
+          ...fp.omit(['__typename'], (<IAdminUser>adminUser).settings),
           selectedLanguage: language,
         };
 
