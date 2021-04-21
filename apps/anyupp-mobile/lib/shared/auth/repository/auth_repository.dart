@@ -43,4 +43,7 @@ class AuthRepository implements IAuthProvider {
   Future<void> setCredentials(User user, CognitoCredentials credentials) {
     return _authProvider.setCredentials(user, credentials);
   }
+
+  @override
+  CognitoCredentials get credentials => _authProvider.credentials;
 }

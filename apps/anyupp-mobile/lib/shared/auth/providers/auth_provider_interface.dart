@@ -10,4 +10,5 @@ abstract class IAuthProvider {
   Future<String> getIdToken();
   Future<void> clearUserSession();
   Future<void> setCredentials(User user, CognitoCredentials credentials);
+  CognitoCredentials get credentials;
 }

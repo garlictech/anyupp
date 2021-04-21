@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -25,7 +28,6 @@ class GraphQLClientService {
   }) : _authProvider = authProvider;
 
   Future<ValueNotifier<GraphQLClient>> getAmplifyClient({bool force = false}) async {
-    
     if (force == true) {
       await _amplifyClient?.dispose();
       _amplifyClient = null;
@@ -34,8 +36,6 @@ class GraphQLClientService {
     if (_amplifyClient != null) {
       return _amplifyClient;
     }
-
-    
 
     String accessToken = await _authProvider.getAccessToken();
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
@@ -125,6 +125,44 @@ class GraphQLClientService {
 
     final AuthLink _authLink = AuthLink(
       getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
+    );
+
+    // final Link _link = _httpLink;
+    Link _link = _authLink.concat(_httpLink);
+
+    _graphqlClient = ValueNotifier(GraphQLClient(
+      cache: GraphQLCache(),
+      link: _link,
+    ));
+
+    return _graphqlClient;
+  }
+
+  Future<ValueNotifier<GraphQLClient>> getSigv4GraphQLClient() async {
+    print('getSigv4GraphQLClient()');
+    CognitoCredentials credentials = await _authProvider.credentials;
+    final awsSigV4Client = AwsSigV4Client(
+      credentials.accessKeyId,
+      credentials.secretAccessKey,
+      Uri.parse(graphqlApiUrl).host,
+      serviceName: 'appsync',
+      sessionToken: credentials.sessionToken,
+      region: AppConfig.Region,
+    );
+
+    Map<String, String> headers;
+    headers = {
+      // 'Authorization': 'Bearer $accessToken',
+      'host': Uri.parse(graphqlApiUrl).host,
+    };
+
+    final HttpLink _httpLink = HttpLink(
+      amplifyApiUrl,
+      defaultHeaders: headers,
+    );
+
+    final AuthLink _authLink = AuthLink(
+      getToken: () => null, //accessToken != null ? 'Bearer $accessToken' : null,
     );
 
     // final Link _link = _httpLink;

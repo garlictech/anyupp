@@ -94,7 +94,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       String fpProfileImage = await _facebookLogin.getProfileImageUrl(width: 200);
 
       CognitoCredentials _credential = await _service.loginWithCredentials(loginResult.accessToken.token, 'graph.facebook.com');
-      print('***** AwsSocialLoginProvider.signInWithFacebook().sessionToken=${_credential.sessionToken}');
       User user = User(
         id: _credential.userIdentityId.split(':')[1],
         email: email,

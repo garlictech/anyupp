@@ -24,10 +24,12 @@ class AwsAuthProvider implements IAuthProvider {
     getAuthenticatedUserProfile();
   }
 
+  CognitoCredentials get credentials => _credentials;
+
   @override
   Future<User> getAuthenticatedUserProfile() async {
     try {
-      print('getAuthenticatedUserProfile().user=$_user');
+      // print('getAuthenticatedUserProfile().user=$_user');
       if (_credentials != null && _user != null) {
         return _user;
       }
