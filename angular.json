@@ -1628,6 +1628,17 @@
             ]
           }
         },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/cicd",
+            "commands": [
+              {
+                "command": "yarn sst remove"
+              }
+            ]
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
@@ -1643,6 +1654,31 @@
           ],
           "options": {
             "jestConfig": "apps/cicd/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "anyupp-backend-lib": {
+      "root": "libs/anyupp-backend-lib",
+      "sourceRoot": "libs/anyupp-backend-lib/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/anyupp-backend-lib/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/anyupp-backend-lib"
+          ],
+          "options": {
+            "jestConfig": "libs/anyupp-backend-lib/jest.config.js",
             "passWithNoTests": true
           }
         }

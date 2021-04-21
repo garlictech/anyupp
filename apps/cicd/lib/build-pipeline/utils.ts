@@ -1,3 +1,8 @@
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from '@aws-cdk/core';
+import * as utils from './utils';
+import * as codepipeline from '@aws-cdk/aws-codepipeline';
+import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
@@ -16,6 +21,7 @@ export interface PipelineStackProps extends sst.StackProps {
 
 export const appConfig = {
   name: 'anyupp-backend',
+  appcenterArtifactBucketNamePrefix: 'anyupp-build-artifacts',
 };
 
 export const projectPrefix = (stage: string) => `${stage}-${appConfig.name}`;
@@ -61,12 +67,16 @@ export const configurePermissions = (
   });
 };
 
+const getAppcenterArtifactBucketName = (stage: string) =>
+  `${appConfig.appcenterArtifactBucketNamePrefix}-${stage}`;
+
 export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
   stage: string,
 ): codebuild.PipelineProject => {
   const adminConfig = stage === 'dev' ? '' : `--configuration=${stage}`;
+  const {adminSiteUrl} = utils.configurePipeline(stack, stage);
 
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -76,7 +86,7 @@ export const createBuildProject = (
           commands: [
             `sh ./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli',
+            'npm install -g @aws-amplify/cli appcenter-cli',
             'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
             'export PATH=$PATH:/tmp/flutter/bin',
             'flutter doctor',
@@ -98,149 +108,36 @@ export const createBuildProject = (
           ],
         },
         post_build: {
-          commands: [`yarn nx deploy crud-backend`],
-        },
-      },
-      artifacts: {
-        files: [
-          'apps/anyupp-backend/cdk.out/**/*',
-          'apps/anyupp-mobile/build/app/outputs/flutter-apk/**/*',
-        ],
-      },
-      env: {
-        'secrets-manager': {
-          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
-          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
-        },
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      //      buildImage: utils.getBuildImage(stack),
-      computeType: codebuild.ComputeType.MEDIUM,
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-};
-
-export const createE2eTestProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  adminSiteUrl: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'e2eTest', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: ['yarn --frozen-lockfile'],
-        },
-        build: {
           commands: [
+            `yarn nx deploy crud-backend`,
+            'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
+            `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
+              stage,
+            )}/`,
+            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
+            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
             `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
             'yarn cucumber:report',
             'yarn cypress:generate:html:report',
+            `echo 'Triggering ios app build in appcenter...'`,
+            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
+            `echo 'Pushing APK to appcenter'`,
+            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
           ],
         },
+      },
+      artifacts: {
+        files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
       reports: {
         cypressReports: {
           files: ['cyreport/cucumber-json/**/*'],
           'file-format': 'CUCUMBERJSON',
         },
-      },
-      artifacts: {
-        files: ['cyreport/**/*'],
-      },
-      env: {
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-
-export const createIntegrationTestProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  stage: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'integrationTest', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: [
-            `sh ./tools/setup-aws-environment.sh`,
-            'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli',
-          ],
-        },
-        pre_build: {
-          commands: [
-            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api --skip-nx-cache`,
-          ],
-        },
-        build: {
-          commands: [
-            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
-            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
-          ],
-        },
-      },
-      reports: {
         coverage: {
           files: ['coverage/**/*'],
           'file-format': 'CLOVERXML',
-        },
-      },
-      env: {
-        'secrets-manager': {
-          AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
-          AWS_SECRET_ACCESS_KEY: 'codebuild:codebuild-aws_secret_access_key',
-        },
-        variables: {
-          NODE_OPTIONS:
-            '--unhandled-rejections=strict --max_old_space_size=8196',
-        },
-      },
-    }),
-    cache,
-    environment: {
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-    },
-  });
-
-export const createApkPublishProject = (
-  stack: sst.Stack,
-  cache: codebuild.Cache,
-  stage: string,
-): codebuild.PipelineProject =>
-  new codebuild.PipelineProject(stack, 'publishApk', {
-    buildSpec: codebuild.BuildSpec.fromObject({
-      version: '0.2',
-      phases: {
-        install: {
-          commands: ['npm install -g appcenter-cli'],
-        },
-        build: {
-          commands: [`echo 'Pushing APK to appcenter...'`],
-        },
-        post_build: {
-          commands: [
-            `sh ./tools/publish-to-appcenter.sh '{args.stage}' '{args.platform}'`,
-          ],
         },
       },
       env: {
@@ -257,9 +154,11 @@ export const createApkPublishProject = (
     }),
     cache,
     environment: {
+      computeType: codebuild.ComputeType.MEDIUM,
       buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
     },
   });
+};
 
 export const configurePipeline = (
   stack: sst.Stack,
@@ -345,4 +244,108 @@ export const copyParameter = (
     parameterName: `${projectPrefix(toStage)}-${paramName}`,
     stringValue: param,
   });
+};
+
+export const createCommonPipelineParts = (
+  scope: sst.Stack,
+  stage: string,
+  props: utils.PipelineStackProps,
+) => {
+  const sourceOutput = new codepipeline.Artifact();
+  const buildOutput = new codepipeline.Artifact('buildOutput');
+  const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
+  const build = utils.createBuildProject(scope, cache, stage);
+  const prefix = utils.projectPrefix(stage);
+
+  const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
+    bucketName: getAppcenterArtifactBucketName(stage),
+    removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+    lifecycleRules: [
+      {
+        expiration: cdk.Duration.days(1),
+      },
+    ],
+  });
+
+  build.addToRolePolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
+  );
+
+  build.role &&
+    build.role.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['*'],
+        resources: ['*'],
+      }),
+    );
+
+  utils.configurePermissions(scope, props.secretsManager, [build], prefix);
+
+  const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
+    stages: [
+      {
+        stageName: 'CloneSource',
+        actions: [
+          new codepipeline_actions.GitHubSourceAction({
+            actionName: 'CodeCommit_CloneSource',
+            oauthToken: props.secretsManager.githubOauthToken.secretValue,
+            output: sourceOutput,
+            owner: props.repoOwner,
+            repo: props.repoName,
+            branch: props.repoBranch,
+          }),
+        ],
+      },
+      {
+        stageName: 'BuildAndDeploy',
+        actions: [
+          new codepipeline_actions.CodeBuildAction({
+            actionName: 'BuildAndDeploy',
+            project: build,
+            input: sourceOutput,
+            outputs: [buildOutput],
+          }),
+        ],
+      },
+      {
+        stageName: 'SeederRemoval',
+        actions: [
+          new codepipeline_actions.CloudFormationDeleteStackAction({
+            actionName: `DeleteSeederStack`,
+            stackName: `${utils.projectPrefix(stage)}-seeder`,
+            adminPermissions: true,
+          }),
+        ],
+      },
+    ],
+  });
+
+  utils.configurePipelineNotifications(
+    scope,
+    pipeline.pipelineArn,
+    props.chatbot,
+    stage,
+  );
+
+  buildArtifactBucket.grantWrite(pipeline.role);
+
+  pipeline.addToRolePolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
+  );
+  pipeline.role.addToPolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
+  );
 };

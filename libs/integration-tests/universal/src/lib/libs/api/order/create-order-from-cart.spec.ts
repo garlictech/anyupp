@@ -1,27 +1,39 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import {combineLatest, Observable, from} from 'rxjs';
-import {filter, map, switchMap} from 'rxjs/operators';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import {CrudApi, CrudApiQueryDocuments} from '@bgap/crud-gql/api';
-import {orderRequestHandler} from '@bgap/anyupp-gql/backend';
+import { combineLatest, from, Observable, throwError } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
-  amplifyGraphQlClient,
-  appsyncGraphQlClient,
+  anyuppGraphQLClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
+  crudBackendGraphQLClient,
   executeMutation,
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
-import {ICart, IOrder} from '@bgap/shared/types';
+import { ICart, IOrder } from '@bgap/shared/types';
 
-import {cartSeed} from '../../../fixtures/cart';
-import {unitSeed} from '../../../fixtures/unit';
-import {createTestCart, deleteTestCart} from '../../../seeds/cart';
+import { cartSeed } from '../../../fixtures/cart';
+import { unitSeed } from '../../../fixtures/unit';
+import { createTestCart, deleteTestCart } from '../../../seeds/cart';
+import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 
 describe('CreatCartFromOrder mutation test', () => {
+  let authHelper: AuthenticatdGraphQLClientWithUserId;
+
   beforeAll(async () => {
+    authHelper = await createAuthenticatedAnyuppGraphQLClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
+
     await combineLatest([
       // CleanUP
       deleteTestCart(),
@@ -48,9 +60,9 @@ describe('CreatCartFromOrder mutation test', () => {
     const unitId = cartSeed.cart_01.unitId;
 
     from(
-      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
-        input: {id: cartId},
+        input: { id: cartId },
       }),
     )
       .pipe(
@@ -58,8 +70,8 @@ describe('CreatCartFromOrder mutation test', () => {
         filter(x => !!x),
         switchMap(newOrderId =>
           combineLatest([
-            getOrder(amplifyGraphQlClient, newOrderId!),
-            getCart(amplifyGraphQlClient, cartId),
+            getOrder(crudBackendGraphQLClient, newOrderId!),
+            getCart(crudBackendGraphQLClient, cartId),
           ]),
         ),
       )
@@ -78,9 +90,9 @@ describe('CreatCartFromOrder mutation test', () => {
     const cartId = cartSeed.cart_01.id;
     const userId = 'DIFFERENT_USER';
     from(
-      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
-        input: {id: cartId},
+        input: { id: cartId },
       }),
     ).subscribe({
       error(e) {
@@ -94,9 +106,9 @@ describe('CreatCartFromOrder mutation test', () => {
     const cartId = cartWithNotExistingUNIT;
     const userId = cartSeed.cart_01.userId;
     from(
-      orderRequestHandler.createOrderFromCart(amplifyGraphQlClient)({
+      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
-        input: {id: cartId},
+        input: { id: cartId },
       }),
     ).subscribe({
       error(e) {
@@ -107,10 +119,10 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 15000);
 
   it('should fail without a cart', done => {
-    executeMutation(
-      appsyncGraphQlClient,
-    )<AnyuppApi.CreateOrderFromCartMutation>(AnyuppApi.CreateOrderFromCart, {
-      input: {id: cartSeed.cartId_NotExisting},
+    executeMutation(authHelper.graphQlClient)<
+      AnyuppApi.CreateOrderFromCartMutation
+    >(AnyuppApi.CreateOrderFromCart, {
+      input: { id: cartSeed.cartId_NotExisting },
     }).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
@@ -123,22 +135,34 @@ describe('CreatCartFromOrder mutation test', () => {
 // TODO: ?? relocate somewhere like a data-access lib
 // because this is a duplication of the one tha is in the order.service.ts
 const getOrder = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IOrder> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetOrderQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
     CrudApiQueryDocuments.getOrder,
-    {id},
-  ).pipe(map(x => x.getOrder as IOrder));
+    { id },
+  ).pipe(
+    map(x => x.getOrder as IOrder),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Order query error');
+    }),
+  );
 };
 
 const getCart = (
-  amplifyApiClient: GraphqlApiClient,
+  crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<ICart> => {
-  return executeQuery(amplifyApiClient)<CrudApi.GetCartQuery>(
+  return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
     CrudApiQueryDocuments.getCart,
-    {id},
-    {fetchPolicy: 'no-cache'},
-  ).pipe(map(x => x.getCart as ICart));
+    { id },
+    { fetchPolicy: 'no-cache' },
+  ).pipe(
+    map(x => x.getCart as ICart),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal Cart query error');
+    }),
+  );
 };

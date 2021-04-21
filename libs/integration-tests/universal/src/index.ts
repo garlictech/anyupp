@@ -1,1 +1,1 @@
-export { testAdminUsername, testAdminUserPassword } from './lib/common';
+export * from './lib/fixtures';

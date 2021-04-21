@@ -4,10 +4,11 @@ import * as fp from 'lodash/fp';
 import {
   adminRequestHandler,
   orderRequestHandler,
+  productRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { amplifyGraphQlClient } from '@bgap/shared/graphql/api-client';
+import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
@@ -21,10 +22,13 @@ const resolverMap = {
   createAdminUser: adminRequestHandler.createAdminUser,
   deleteAdminUser: adminRequestHandler.deleteAdminUser,
   createOrderFromCart: orderRequestHandler.createOrderFromCart(
-    amplifyGraphQlClient,
+    crudBackendGraphQLClient,
   ),
   getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
-    amplifyGraphQlClient,
+    crudBackendGraphQLClient,
+  ),
+  createUnitProduct: productRequestHandler.createUnitProduct(
+    crudBackendGraphQLClient,
   ),
 };
 
