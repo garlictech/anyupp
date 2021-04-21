@@ -274,10 +274,19 @@ export const createCommonPipelineParts = (
   build.addToRolePolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
-      actions: ['cloudformation:*'],
+      actions: ['*'],
       resources: ['*'],
     }),
   );
+
+  build.role &&
+    build.role.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['*'],
+        resources: ['*'],
+      }),
+    );
 
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
@@ -328,4 +337,19 @@ export const createCommonPipelineParts = (
   );
 
   buildArtifactBucket.grantWrite(pipeline.role);
+
+  pipeline.addToRolePolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
+  );
+  pipeline.role.addToPolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['*'],
+      resources: ['*'],
+    }),
+  );
 };
