@@ -69,7 +69,7 @@ Object {
 }
 `;
 
-exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remote appsync api call 1`] = `
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call 1`] = `
 Object {
   "__typename": "GeoUnit",
   "address": Object {
