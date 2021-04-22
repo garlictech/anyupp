@@ -8,6 +8,7 @@ import {
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of } from 'rxjs';
 
+
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
   `group_c${chainIdx}_${idx}_id`;
@@ -80,15 +81,15 @@ export const createTestChain = (chainIdx: number) => {
     phone: '1234567890',
     style: {
       colors: {
-        backgroundLight: '#fff',
-        backgroundDark: '#fff',
-        borderLight: '#fff',
-        borderDark: '#fff',
-        disabled: '#fff',
-        highlight: '#fff',
-        indicator: '#fff',
-        textLight: '#fff',
-        textDark: '#fff',
+        backgroundLight: '#ffffff',
+        backgroundDark: '#ffffff',
+        borderLight: '#ffffff',
+        borderDark: '#ffffff',
+        disabled: '#ffffff',
+        highlight: '#ffffff',
+        indicator: '#ffffff',
+        textLight: '#ffffff',
+        textDark: '#ffffff',
       },
     },
   };

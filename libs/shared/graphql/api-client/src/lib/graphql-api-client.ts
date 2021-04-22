@@ -1,8 +1,8 @@
 import { ApolloQueryResult, QueryOptions } from 'apollo-client';
 import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
 // import { buildRetryLogic } from '@bgap/shared/utils';
 
@@ -91,6 +91,7 @@ export class GraphqlApiClient {
       map(x => x as ApolloQueryResult<T>),
     );
   }
+
   mutate<T = unknown>(
     document: DocumentNode,
     variables?: Record<string, unknown>,
@@ -109,6 +110,20 @@ export class GraphqlApiClient {
     ).pipe(
       // this._graphqlRetryLogic,
       // pipeDebug('### MUTATION AfterRetry'),
+      map(x => x as ApolloQueryResult<T>),
+    );
+  }
+
+  subscribe<T = unknown>(
+    document: DocumentNode,
+    variables?: Record<string, unknown>,
+  ): Observable<ApolloQueryResult<T>> {
+    return of('subscriber').pipe(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      switchMap(() => <any>this._client.subscribe({
+        query: document,
+        variables,
+      })),
       map(x => x as ApolloQueryResult<T>),
     );
   }

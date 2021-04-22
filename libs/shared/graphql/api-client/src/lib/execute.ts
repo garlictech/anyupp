@@ -28,3 +28,11 @@ export const executeMutation = (client: GraphqlApiClient) => <T>(
   client
     .mutate<T>(toGraphQLDocument(gqlDocument), variables)
     .pipe(pluck('data'));
+
+export const executeSubscription = (client: GraphqlApiClient) => <T>(
+  gqlDocument: string | DocumentNode,
+  variables?: Record<string, unknown>,
+) =>
+  client
+    .subscribe<T>(toGraphQLDocument(gqlDocument), variables)
+    .pipe(pluck('data'));

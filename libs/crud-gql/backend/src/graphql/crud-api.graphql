@@ -525,10 +525,13 @@ type Cart
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_cognito_user_pools
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+    @aws_cognito_user_pools
   onRoleContextsChange: RoleContext
     @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
+    @aws_cognito_user_pools
   onAdminRoleContextsChange: AdminRoleContext
     @aws_subscribe(
       mutations: [
@@ -537,22 +540,31 @@ type Subscription {
         "deleteAdminRoleContext"
       ]
     )
+    @aws_cognito_user_pools
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
+    @aws_cognito_user_pools
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_cognito_user_pools
+  onUnitsChange: Unit
+    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
+    @aws_cognito_user_pools
   onChainProductChange: ChainProduct
     @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+    @aws_cognito_user_pools
   onGroupProductChange: GroupProduct
     @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+    @aws_cognito_user_pools
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
@@ -563,8 +575,10 @@ type Subscription {
         "deleteGeneratedProduct"
       ]
     )
+    @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+    @aws_cognito_user_pools
   onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
     @aws_subscribe(
       mutations: [
@@ -573,4 +587,5 @@ type Subscription {
         "deleteOrderHistory"
       ]
     )
+    @aws_cognito_user_pools
 }

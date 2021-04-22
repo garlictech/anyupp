@@ -7,10 +7,7 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
@@ -18,20 +15,10 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IRoleContext,
-  IAdminUserConnectedRoleContext,
-  IUnit,
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,
+  IKeyValueObject, IOrder, IProduct, IProductCategory, IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -45,6 +32,7 @@ export class DataService {
   private _destroyConnection$: Subject<boolean> = new Subject<boolean>();
   private _settingsChanged$: Subject<boolean> = new Subject<boolean>();
   private _rolesChanged$: Subject<boolean> = new Subject<boolean>();
+  private _dataConnectionInitialized = false;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +41,13 @@ export class DataService {
     private _translateService: TranslateService,
   ) {}
 
-  public async initDataConnections<IAdminUser>(userId: string): Promise<void> {
+  public async initDataConnections<IAdminUser>(
+    userId: string,
+    currentContextRole: EAdminRole,
+  ): Promise<void> {
+    // Prevent multiple initialization on login
+    if (this._dataConnectionInitialized) return;
+
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
@@ -64,13 +58,20 @@ export class DataService {
             loggedUserActions.loadLoggedUserSuccess({
               loggedUser: {
                 ...(<IAdminUser>loggedUser),
-                role: EAdminRole.SUPERUSER, // TODO contextből
+                role: currentContextRole,
               },
             }),
           );
         },
       })
-      .subscribe();
+      .subscribe(
+        () => {
+          /* SUCCESS */
+        },
+        err => {
+          console.error('snapshotChanges$ err', err);
+        },
+      );
 
     this._store
       .pipe(
@@ -101,6 +102,8 @@ export class DataService {
         this._subscribeToSelectedUnitProducts(
           adminUserSettings?.selectedUnitId || '',
         );
+
+        /*
         this
           ._subscribeToGeneratedUnitProducts
           // adminUserSettings?.selectedUnitId || '',
@@ -110,10 +113,10 @@ export class DataService {
           // adminUserSettings?.selectedChainId || '',
           // adminUserSettings?.selectedUnitId || '',
           ();
+          */
       });
 
     // Lists
-
     this._subscribeToRoleContext();
     this._subscribeToChains();
     this._subscribeToGroups();
@@ -124,7 +127,6 @@ export class DataService {
     this._subscribeToAdminRoleContexts();
 
     // Get user language
-
     this._store
       .pipe(
         select(loggedUserSelectors.getSelectedLanguage),
@@ -133,6 +135,8 @@ export class DataService {
       .subscribe((selectedLanguage: string | undefined | null): void => {
         this._translateService.use(selectedLanguage || DEFAULT_LANG);
       });
+
+    this._dataConnectionInitialized = true;
   }
 
   private _subscribeToRoleContext(): void {
@@ -174,7 +178,7 @@ export class DataService {
   }
 
   private _subscribeToGroups(): void {
-    this._amplifyDataService
+  this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroups',
         subscriptionName: 'onGroupsChange',
@@ -458,14 +462,15 @@ export class DataService {
       .subscribe$({
         subscriptionName: 'onAdminRoleContextsChange',
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
-          const result = await this._amplifyDataService.query({
+          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<CrudApi.GetAdminUserQuery>({
             queryName: 'getAdminUser',
             variables: {
               id: (<IAdminUserConnectedRoleContext>adminRoleContext)
                 .adminUserId,
             },
           });
-          const adminUser: unknown = result?.data?.getAdminUser;
+
+          const adminUser: unknown = result?.getAdminUser;
 
           if (adminUser) {
             this._store.dispatch(
@@ -500,6 +505,8 @@ export class DataService {
     this._store.dispatch(productsActions.resetGeneratedUnitProducts());
     this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
+
+    this._dataConnectionInitialized = false;
   }
 
   //
@@ -510,7 +517,7 @@ export class DataService {
     unitId: string,
     value: IKeyValueObject,
   ): Promise<void> {
-    await this._amplifyDataService.update<IUnit>(
+    await this._amplifyDataService.update(
       'getUnit',
       'updateUnit',
       unitId,
@@ -670,8 +677,8 @@ export class DataService {
       userId,
       (adminUser: unknown) => {
         (<IAdminUser>adminUser).settings = {
-          ...(<IAdminUser>adminUser).settings,
-          ...value,
+          ...fp.omit(['__typename'], (<IAdminUser>adminUser).settings),
+          ...fp.omit(['__typename'], value),
         };
 
         return fp.pick(
@@ -692,7 +699,7 @@ export class DataService {
       userId,
       (adminUser: unknown) => {
         (<IAdminUser>adminUser).settings = {
-          ...(<IAdminUser>adminUser).settings,
+          ...fp.omit(['__typename'], (<IAdminUser>adminUser).settings),
           selectedLanguage: language,
         };
 

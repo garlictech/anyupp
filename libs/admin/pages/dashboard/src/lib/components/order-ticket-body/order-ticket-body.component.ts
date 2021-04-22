@@ -2,7 +2,13 @@ import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
 
 // import * as printJS from 'print-js';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -24,6 +30,7 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-ticket-body',
   templateUrl: './order-ticket-body.component.html',
   styleUrls: ['./order-ticket-body.component.scss'],
@@ -41,6 +48,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +61,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           this.dashboardSettings.size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -76,6 +86,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         this.selectedOrder = selectedOrder;
 
         this._getOrdersInfo();
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -101,6 +113,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         )
         .subscribe((activeOrdersCount: number): void => {
           this.activeOrdersCount = activeOrdersCount;
+
+          this._changeDetectorRef.detectChanges();
         });
 
       this._store
@@ -119,6 +133,8 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;
           });
+
+          this._changeDetectorRef.detectChanges();
         });
     }
   }

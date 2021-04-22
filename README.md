@@ -261,7 +261,7 @@ Both systems have some minimal data seeded at deploy/creation time.
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
@@ -291,7 +291,8 @@ Execute all the integration tests:
 
 Execute on single integration test suite:
 
-`yarn jest -c libs/integration-tests/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/admin/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
 
