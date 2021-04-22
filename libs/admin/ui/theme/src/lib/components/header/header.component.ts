@@ -9,6 +9,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
+  NbDialogService,
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
@@ -17,6 +18,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 
 interface IMenuItem {
   title: string;
@@ -51,6 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _dataService: DataService,
     private _cognitoService: CognitoService,
     private _translateService: TranslateService,
+    private _nbDialogService: NbDialogService,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
 
@@ -63,7 +66,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
-          this._cognitoService.signOut();
+          this._signOut();
         },
       },
     ];
@@ -160,6 +163,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this._changeDetectorRef.detectChanges();
+  }
+
+  private _signOut() {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
+      dialogClass: 'form-dialog',
+    });
+
+    dialog.componentRef.instance.options = {
+      message: 'auth.confirmLogout',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: async (): Promise<void> => {
+            this._cognitoService.signOut().subscribe();
+          },
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
   }
 
   public toggleSidebar(): boolean {

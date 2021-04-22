@@ -3,7 +3,6 @@ import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-ampli
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { EAdminRole } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -63,9 +62,12 @@ export class AppComponent {
         const token = this.user.getSignInUserSession()?.getIdToken();
         const decoded = token?.decodePayload();
 
+        // Initialize data connections only if we have decoded role (e.g. on page refresh)
+        // It's still empty after logging in - in this case we handle the role in the "handleContext" logic
+        if (decoded.role) {
+          this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role);
+        }
         this._changeDetectorRef.detectChanges();
-
-        this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role || EAdminRole.INACTIVE);
       } else {
         this._dataService.destroyDataConnection();
       }
