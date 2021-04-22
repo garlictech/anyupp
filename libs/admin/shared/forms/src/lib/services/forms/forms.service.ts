@@ -72,7 +72,7 @@ export class FormsService {
     return this._formBuilder.group({
       id: [uuidV1()],
       name: ['', [Validators.required]],
-      color: ['#fff', [Validators.required]],
+      color: ['#ffffff', [Validators.required]],
     });
   };
 }

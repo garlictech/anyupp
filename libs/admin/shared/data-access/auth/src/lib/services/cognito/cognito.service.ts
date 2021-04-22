@@ -1,5 +1,6 @@
 import { bindNodeCallback, from, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
@@ -17,6 +18,8 @@ export class CognitoService {
   // Call this to set the current context to be authorized
   set currentContext(context: string) {
     this._currentContext = context;
+
+    console.error('CONTEXT?', this._currentContext);
   }
 
   constructor() {
@@ -78,6 +81,7 @@ export class CognitoService {
           user: {
             id: decoded?.sub,
             email: decoded?.email,
+            role: decoded?.role,
           },
         };
       }),

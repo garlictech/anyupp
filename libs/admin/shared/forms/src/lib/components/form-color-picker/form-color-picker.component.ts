@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-color-picker',
   templateUrl: './form-color-picker.component.html',
   styleUrls: ['./form-color-picker.component.scss'],
@@ -11,11 +12,15 @@ export class FormColorPickerComponent implements OnInit {
   @Input() caption = ''; // Language key!!!
   public color = '';
 
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    this.color = this.control?.value || '#fff';
+    this.color = this.control?.value || '#ffffff';
   }
 
   public onChange($event: string): void {
     this.control?.setValue($event);
+
+    this._changeDetectorRef.detectChanges();
   }
 }

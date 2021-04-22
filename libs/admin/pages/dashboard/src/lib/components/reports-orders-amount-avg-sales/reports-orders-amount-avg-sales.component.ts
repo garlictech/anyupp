@@ -1,12 +1,13 @@
 import { Observable } from 'rxjs';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { getDailyOrdersSum } from '@bgap/admin/shared/data-access/orders';
 import { IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-reports-orders-amount-avg-sales',
   templateUrl: './reports-orders-amount-avg-sales.component.html',
   styleUrls: ['./reports-orders-amount-avg-sales.component.scss'],
@@ -18,6 +19,8 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
   public ordersSum = 0;
   public ordersSumAvg = 0;
 
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+
   ngOnInit(): void {
     this.orders$
       .pipe(untilDestroyed(this))
@@ -25,6 +28,8 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
         this.ordersSum = getDailyOrdersSum(orders);
         this.ordersSumAvg =
           orders.length > 0 ? this.ordersSum / orders.length : 0;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

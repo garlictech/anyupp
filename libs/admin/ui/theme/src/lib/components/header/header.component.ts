@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -26,6 +26,7 @@ interface IMenuItem {
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
@@ -46,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _themeService: NbThemeService,
     private _layoutService: LayoutService,
     private _breakpointService: NbMediaBreakpointsService,
-
+    private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
     private _cognitoService: CognitoService,
     private _translateService: TranslateService,
@@ -90,20 +91,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
       },
     ];
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this.adminUser = adminUser;
-      });
-
-    this._translateService.onLangChange.subscribe(
-      (event: LangChangeEvent): void => {
-        this.selectedLang = (event.lang || '').split('-')[0];
-        this._translateMenuItems();
-      },
-    );
-    this._translateMenuItems();
   }
 
   get userName(): string | undefined {
@@ -115,6 +102,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((adminUser: IAdminUser): void => {
+        this.adminUser = adminUser;
+
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this._translateService.onLangChange.subscribe(
+      (event: LangChangeEvent): void => {
+        this.selectedLang = (event.lang || '').split('-')[0];
+        this._translateMenuItems();
+      },
+    );
+    this._translateMenuItems();
+
     const { xl } = this._breakpointService.getBreakpointsMap();
     this._themeService
       .onMediaQueryChange()
@@ -123,8 +126,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         untilDestroyed(this),
       )
       .subscribe(
-        (isLessThanXl: boolean): boolean =>
-          (this.userPictureOnly = isLessThanXl),
+        (isLessThanXl: boolean): boolean => {
+          this._changeDetectorRef.detectChanges();
+
+          return (this.userPictureOnly = isLessThanXl)
+        }
       );
 
     this._menuService
@@ -152,11 +158,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.languageMenu.forEach((item): void => {
       item.title = this._translateService.instant(item.langKey);
     });
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public toggleSidebar(): boolean {
     this._sidebarService.toggle(true, 'menu-sidebar');
     this._layoutService.changeLayoutSize();
+
+    this._changeDetectorRef.detectChanges();
 
     return false;
   }
