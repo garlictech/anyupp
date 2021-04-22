@@ -1,4 +1,5 @@
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/login/widgets/confirm_signup_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +29,7 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
           EmailLoginDialogContentWidget(),
           EmailRegisterDialogContentWidget(),
           PasswordResetWidget(),
+          ConfirmSignUpWidget(),
         ],
       ),
     );
@@ -44,6 +46,9 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
         break;
       case LoginFormUI.SHOW_FORGOT_PASSWORD:
         index = 2;
+        break;
+      case LoginFormUI.SHOW_CONFIRM_SIGNUP:
+        index = 3;
         break;
     }
     print('setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');

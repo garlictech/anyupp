@@ -3,10 +3,11 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {
- // SHOW_LOGIN_WITH_LINK,
+  // SHOW_LOGIN_WITH_LINK,
   SHOW_LOGIN_WITH_PASSWORD,
   SHOW_REGISTRATION,
   SHOW_FORGOT_PASSWORD,
+  SHOW_CONFIRM_SIGNUP
 }
 
 abstract class LoginEvent extends Equatable {
@@ -114,6 +115,10 @@ class StartLoginWithEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class SignUpConfirmed extends LoginEvent {
+  const SignUpConfirmed();
+}
+
 class FinishLoginWithEmailLink extends LoginEvent {
   final String emailLink;
 
@@ -156,8 +161,13 @@ class ChangeEmailFormUI extends LoginEvent {
   final LoginFormUI ui;
   final Duration animationDuration;
   final Curve animationCurve;
+  final String userName;
 
-  ChangeEmailFormUI({this.ui, this.animationDuration, this.animationCurve = Curves.elasticIn});
+  ChangeEmailFormUI(
+      {this.ui,
+      this.animationDuration,
+      this.animationCurve = Curves.elasticIn,
+      this.userName});
 
   @override
   List<Object> get props => [ui];

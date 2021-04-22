@@ -90,7 +90,7 @@ class _EmailRegisterDialogContentWidgetState
                       trans('login.email.emailOrPhoneFieldLabel'),
                       _emailOrPhoneController,
                       TextInputType.text,
-                      true,
+                      false,
                       LoginFormUtils.emailOrPhoneValidator(context),
                     ),
                     LoginFormUtils.buildTextField(

@@ -22,7 +22,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _backgroundImageScaleAnimation;
 
@@ -59,12 +60,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       curve: Curves.easeInOut,
     );
 
-    _buttonsOpacityAnim = CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
+    _buttonsOpacityAnim =
+        CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
     _buttonsPositionAnim = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)
         .chain(CurveTween(curve: Curves.elasticOut))
         .animate(_buttonAnimController);
 
-    Future.delayed(Duration(milliseconds: 1000)).then((value) => _switchAnimation());
+    Future.delayed(Duration(milliseconds: 1000))
+        .then((value) => _switchAnimation());
   }
 
   @override
@@ -94,6 +97,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             case LoginFormUI.SHOW_FORGOT_PASSWORD:
               height = 180.0;
               break;
+            case LoginFormUI.SHOW_CONFIRM_SIGNUP:
+              height = 235.0;
               break;
           }
           setState(() {
@@ -138,10 +143,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           children: [
             // BACKGROUND IMAGE
             Positioned(
-              top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              top: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              left: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              bottom: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              right: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
               child: _buildBackground(context),
             ),
             CenterLoadingWidget(),
@@ -171,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   Widget _buildAnimation(BuildContext context, Widget child) {
     final height = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
     final iOS = Theme.of(context).platform == TargetPlatform.iOS;
     //print('**** isIOS=$iOS');
 
@@ -183,59 +193,73 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           behavior: HitTestBehavior.deferToChild,
           onTap: () => _switchAnimation(),
           onVerticalDragUpdate: (details) {
-            if (_controller.status == AnimationStatus.dismissed && details.delta.dy < -20.0) {
+            if (_controller.status == AnimationStatus.dismissed &&
+                details.delta.dy < -20.0) {
               _switchAnimation();
-            } else if (_controller.status == AnimationStatus.completed && details.delta.dy > 20.0) {
+            } else if (_controller.status == AnimationStatus.completed &&
+                details.delta.dy > 20.0) {
               _switchAnimation();
             }
           },
-          child: Stack(
-            children: [
-              // BACKGROUND IMAGE
-              Positioned(
-                top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                child: _buildBackground(context),
-              ),
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Container(height: height - statusBarHeight),
+                // BACKGROUND IMAGE
+                Positioned(
+                  top: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  left: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  bottom: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  right: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  child: _buildBackground(context),
+                ),
 
-              //Info text
-              // Positioned(
-              //   top: 16.0,
-              //   left: 16.0,
-              //   child: Text(
-              //       '${_backgroundImageScaleAnimation.value.toStringAsFixed(2)}, H:$height h:$_bottomWidgetHeight',
-              //       //h0: $_bottomWidgetHeight h1:${_bottomKey?.currentContext?.findRenderObject()?.paintBounds?.height}',
-              //       style: GoogleFonts.poppins(
-              //         color: Colors.white,
-              //       )),
-              // ),
+                //Info text
+                // Positioned(
+                //   top: 16.0,
+                //   left: 16.0,
+                //   child: Text(
+                //       '${_backgroundImageScaleAnimation.value.toStringAsFixed(2)}, H:$height h:$_bottomWidgetHeight',
+                //       //h0: $_bottomWidgetHeight h1:${_bottomKey?.currentContext?.findRenderObject()?.paintBounds?.height}',
+                //       style: GoogleFonts.poppins(
+                //         color: Colors.white,
+                //       )),
+                // ),
 
-              // Center logo
-              Positioned(
-                top: (height / 2.0 - 50) - ((height / 2.0 - 50 - 36.0) * _backgroundImageScaleAnimation.value),
-                left: 0.0,
-                right: 0.0,
-                child: _buildLogo(context),
-              ),
+                // Center logo
+                Positioned(
+                  top: (height / 2.0 - 50) -
+                      ((height / 2.0 - 50 - 36.0) *
+                          _backgroundImageScaleAnimation.value),
+                  left: 0.0,
+                  right: 0.0,
+                  child: _buildLogo(context),
+                ),
 
-              // Bottom sheet
-              Positioned(
-                top: _controller.status == AnimationStatus.completed
-                    ? null
-                    : _bottomWidgetHeight == null
-                        ? height
-                        : height -
-                            ((_bottomWidgetHeight + (iOS == true ? 0.0 : 20.0)) *
-                                    _backgroundImageScaleAnimation.value) *
-                                1.0,
-                left: 0.0,
-                right: 0.0,
-                bottom: _controller.status == AnimationStatus.completed ? 0.0 : null,
-                child: _buildBottomSheetContent(context, iOS),
-              ),
-            ],
+                // Bottom sheet
+                Positioned(
+                  top: _controller.status == AnimationStatus.completed
+                      ? null
+                      : _bottomWidgetHeight == null
+                          ? height
+                          : height -
+                              ((_bottomWidgetHeight +
+                                          (iOS == true ? 0.0 : 20.0)) *
+                                      _backgroundImageScaleAnimation.value) *
+                                  1.0,
+                  left: 0.0,
+                  right: 0.0,
+                  bottom: _controller.status == AnimationStatus.completed
+                      ? 0.0
+                      : null,
+                  child: _buildBottomSheetContent(context, iOS),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -393,7 +417,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         _buildEmailLoginForms(context),
                         Padding(
                           // TODO
-                          padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
+                          padding: _showLogin
+                              ? const EdgeInsets.all(0.0)
+                              : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
                             style: GoogleFonts.poppins(
@@ -427,7 +453,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   padding: EdgeInsets.all(8.0),
                                 ),
                                 //: Colors.blueAccent,
-                                onPressed: null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed:
+                                    null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -493,7 +520,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
                   if (snapshot.data == true) // has Apple Login
                     _createSocialButtonWidget('apple', LoginMethod.APPLE),
-                  _createSocialButtonWidget('email', LoginMethod.EMAIL, theme.indicator),
+                  _createSocialButtonWidget(
+                      'email', LoginMethod.EMAIL, theme.indicator),
                   // _createSocialButtonWidget('phone', LoginMethod.PHONE),
                 ],
               ),
@@ -514,7 +542,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
-  Widget _createSocialButtonWidget(String icon, LoginMethod method, [Color iconColor]) {
+  Widget _createSocialButtonWidget(String icon, LoginMethod method,
+      [Color iconColor]) {
     final bool iOS = Theme.of(context).platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(6.0),
@@ -531,8 +560,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);
-               _toggleEmailLoginForm();
-          //    getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
+              _toggleEmailLoginForm();
+              //    getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
 
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
@@ -541,17 +570,24 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
-  final Completer<WebViewController> _webViewController = Completer<WebViewController>();
+  final Completer<WebViewController> _webViewController =
+      Completer<WebViewController>();
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
     String provider;
     switch (method) {
-      case LoginMethod.FACEBOOK: provider = 'Facebook';break;
-      case LoginMethod.GOOGLE: provider = 'Google';break;
-      case LoginMethod.APPLE: provider = 'SignInWithApple';break;
+      case LoginMethod.FACEBOOK:
+        provider = 'Facebook';
+        break;
+      case LoginMethod.GOOGLE:
+        provider = 'Google';
+        break;
+      case LoginMethod.APPLE:
+        provider = 'SignInWithApple';
+        break;
       default:
         provider = 'COGNITO';
-    } 
+    }
     var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
         "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";

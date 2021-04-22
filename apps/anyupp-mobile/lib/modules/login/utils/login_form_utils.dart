@@ -78,6 +78,12 @@ class LoginFormUtils {
             errorText: transEx(context, 'this field is required')),
       ]);
 
+  static FieldValidator confirmCodeValidator(BuildContext context) =>
+      MultiValidator([
+        RequiredValidator(
+            errorText: transEx(context, 'this field is required')),
+      ]);
+
   static FieldValidator emailValidator(BuildContext context) => MultiValidator([
         EmailValidator(
             errorText: transEx(context, 'enter a valid email address')),
@@ -88,9 +94,11 @@ class LoginFormUtils {
   static FieldValidator passwordValidator(BuildContext context) =>
       MultiValidator([
         RequiredValidator(errorText: 'password is required'),
-        MinLengthValidator(8,
-            errorText: 'password must be at least 8 digits long'),
-        PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-            errorText: 'passwords must have at least one special character'),
+        MinLengthValidator(12,
+            errorText: 'password must be at least 12 digits long'),
+        // PatternValidator(
+        //     r'/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/',
+        //     errorText:
+        //         'Password must contain a lower case letter, an upper case letter, a number'),
       ]);
 }

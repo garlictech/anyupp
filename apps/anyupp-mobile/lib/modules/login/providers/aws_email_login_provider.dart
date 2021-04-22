@@ -10,11 +10,12 @@ import 'email_login_provider_interface.dart';
 
 class AwsEmailLoginProvider implements IEmailLoginProvider {
   final AwsAuthProvider _authProvider;
- 
+
   AwsEmailLoginProvider(this._authProvider);
 
   @override
-  Future<String> get email async => (await SharedPreferences.getInstance()).getString('auth_email');
+  Future<String> get email async =>
+      (await SharedPreferences.getInstance()).getString('auth_email');
 
   @override
   Future<bool> isSignInWithEmailLink(String emailLink) async {
@@ -22,14 +23,16 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password) async {
-
+  Future<ProviderLoginResponse> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
       CognitoSignInResult res = await Amplify.Auth.signInWithWebUI();
-      print('***** AwsSocialLoginProvider.loginWithEmailAndPassword().isSignedIn=${res?.isSignedIn}');
+      print(
+          '***** AwsSocialLoginProvider.loginWithEmailAndPassword().isSignedIn=${res?.isSignedIn}');
       //
       User user = await _authProvider.getAuthenticatedUserProfile();
-      print('***** AwsSocialLoginProvider.loginWithEmailAndPassword().user=$user');
+      print(
+          '***** AwsSocialLoginProvider.loginWithEmailAndPassword().user=$user');
       return ProviderLoginResponse(
         credential: null,
         user: user,
@@ -52,7 +55,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     } on Exception catch (e) {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
-    
+
     // try {
     //   CognitoUser user = _service.createCognitoUser(email);
     //   CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
@@ -104,9 +107,34 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<ProviderLoginResponse> registerUserWithEmailAndPassword(String email, String password) {
+  Future<bool> registerUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      SignUpResult res = await Amplify.Auth.signUp(
+          username: email,
+          password: password,
+          options: CognitoSignUpOptions(userAttributes: {'email': email}));
+      return res.isSignUpComplete;
+    } on InvalidPasswordException catch (e) {
+      throw LoginException.fromException(LoginException.INVALID_PASSWORD, e);
+    } on Exception catch (e) {
+      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    }
+
     // TODO: implement registerUserWithEmailAndPassword
-    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> confirmSignUp(String code, String userName) async {
+    try {
+      SignUpResult res = await Amplify.Auth.confirmSignUp(
+          confirmationCode: code, username: userName);
+      return res.isSignUpComplete;
+    } on Exception catch (e) {
+      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    }
+
+    // TODO: implement registerUserWithEmailAndPassword
   }
 
   @override
@@ -122,7 +150,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<ProviderLoginResponse> signInWithEmailLink(String email, String emailLink) {
+  Future<ProviderLoginResponse> signInWithEmailLink(
+      String email, String emailLink) {
     // TODO: implement signInWithEmailLink
     throw UnimplementedError();
   }

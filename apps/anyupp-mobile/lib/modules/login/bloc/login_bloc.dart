@@ -17,7 +17,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     print('*** LoginBloc().mapEventToState=$event');
     try {
-
       // if (event is LoginWithMethod) {
       //   yield ShowSocialLoginWebView(event.method);
       //   return;
@@ -32,7 +31,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           print('*** LoginBloc().federated=${event.method}');
 
           // --- Get provider specific auth Credential from the given provider
-          ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.method);
+          ProviderLoginResponse loginResponse =
+              await _repository.signInWithProvider(event.method);
           print('*** LoginBloc().federated.loginResponse=$loginResponse');
           yield LoginSuccess();
         } else {
@@ -58,7 +58,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // --- Handle phone login (SMS code arrived, need to show enter SMS code form)
       if (event is LoginWithPhoneSMSCodeArrived) {
-        print('**** LoginBloc.LoginWithPhoneSMSCodeArrived()=${event.verificationId}');
+        print(
+            '**** LoginBloc.LoginWithPhoneSMSCodeArrived()=${event.verificationId}');
         yield NeedSMSCode(event.verificationId, event.phoneNumber);
       }
 
@@ -66,7 +67,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is LoginWithPhoneVerifySMSCode) {
         print(
             '**** LoginBloc.LoginWithPhoneVerifySMSCode().verificationId=${event.verificationId}, smsCode=${event.smsCode}');
-        await _repository.validateSMSCodeWithPhone(event.verificationId, event.smsCode);
+        await _repository.validateSMSCodeWithPhone(
+            event.verificationId, event.smsCode);
         yield LoginSuccess();
       }
 
@@ -84,11 +86,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // --- Handle finish login with email link
       if (event is FinishLoginWithEmailLink) {
-        bool isSignInWithEmailLink = await _repository.isSignInWithEmailLink(event.emailLink);
+        bool isSignInWithEmailLink =
+            await _repository.isSignInWithEmailLink(event.emailLink);
         if (isSignInWithEmailLink) {
           yield LoginInProgress();
           String email = await _repository.email;
-          ProviderLoginResponse response = await _repository.signInWithEmailLink(email, event.emailLink);
+          ProviderLoginResponse response =
+              await _repository.signInWithEmailLink(email, event.emailLink);
           print('**** LoginBloc.signInWithEmailLink().finish()=$response');
           yield LoginSuccess();
         }
@@ -97,7 +101,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle login with email and password
       if (event is LoginWithEmailAndPassword) {
         yield LoginInProgress();
-        ProviderLoginResponse response = await _repository.loginWithEmailAndPassword(event.email, event.password);
+        ProviderLoginResponse response = await _repository
+            .loginWithEmailAndPassword(event.email, event.password);
         print('**** LoginBloc.LoginWithEmailAndPassword().finish()=$response');
         yield LoginSuccess();
       }
@@ -105,10 +110,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle registration with email and password
       if (event is RegisterWithEmailAndPassword) {
         yield LoginInProgress();
-        ProviderLoginResponse response =
-            await _repository.registerUserWithEmailAndPassword(event.email, event.password);
-        print('**** LoginBloc.RegisterWithEmailAndPassword().finish()=$response');
-        yield EmailRegistrationSuccess(event.email);
+        bool res = await _repository.registerUserWithEmailAndPassword(
+            event.email, event.password);
+        if (res) {
+          getIt<LoginBloc>().add(ChangeEmailFormUI(
+              ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+              animationCurve: Curves.easeIn, userName: event.email));
+        }
+        //print('**** LoginBloc.RegisterWithEmailAndPassword().finish()=$response');
+        //yield EmailRegistrationSuccess(event.email);
+      }
+
+      if (event is SignUpConfirmed) {
+        yield CodeConfirmedState();
       }
 
       // --- Handle send password reset to email
@@ -120,8 +134,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // --- Handle external errors (eg. errors from repository)
       if (event is LoginErrorOccured) {
-        getIt<ExceptionBloc>()
-            .add(ShowException(LoginException(code: LoginException.CODE, subCode: event.code, message: event.message)));
+        getIt<ExceptionBloc>().add(ShowException(LoginException(
+            code: LoginException.CODE,
+            subCode: event.code,
+            message: event.message)));
         yield LoginError(event.code, event.message);
       }
 
@@ -141,14 +157,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Change the animation of the email forms in the login screen
       if (event is ChangeEmailFormUI) {
         yield EmailFormUIChange(
+          userName: event.userName,
           ui: event.ui,
-          animationDuration: event.animationDuration ?? Duration(milliseconds: 350),
+          animationDuration:
+              event.animationDuration ?? Duration(milliseconds: 350),
           animationCurve: event.animationCurve ?? Curves.bounceInOut,
         );
       }
     } on PlatformException catch (pe) {
       print('********* LoginBloc.PlatformException()=$pe');
-      getIt<ExceptionBloc>().add(ShowException(LoginException.fromPlatformException(pe)));
+      getIt<ExceptionBloc>()
+          .add(ShowException(LoginException.fromPlatformException(pe)));
       yield LoginError(pe.code, pe.message);
     } on LoginException catch (le) {
       print('********* LoginBloc.LoginException()=$le');
@@ -156,7 +175,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginError(le.code, le.message);
     } on Exception catch (e) {
       print('********* LoginBloc.Exception()=$e');
-      getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
+      getIt<ExceptionBloc>().add(ShowException(
+          LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
       yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
     }
   }

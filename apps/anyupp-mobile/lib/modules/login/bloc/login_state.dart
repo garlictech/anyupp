@@ -25,7 +25,8 @@ class NeedAccountLinking extends LoginState {
   final dynamic newProviderCredentials;
   final List<LoginMethod> existingProviderList;
 
-  const NeedAccountLinking(this.newProviderCredentials, this.existingProviderList);
+  const NeedAccountLinking(
+      this.newProviderCredentials, this.existingProviderList);
 
   @override
   List<Object> get props => [newProviderCredentials, existingProviderList];
@@ -76,7 +77,6 @@ class EmailLinkSent extends LoginState {
   List<Object> get props => [email];
 }
 
-
 class PasswordResetEmailSent extends LoginState {
   final String email;
 
@@ -95,20 +95,27 @@ class EmailRegistrationSuccess extends LoginState {
   List<Object> get props => [email];
 }
 
+class CodeConfirmedState extends LoginState {
+  const CodeConfirmedState();
+
+  @override
+  List<Object> get props => [];
+}
 
 class EmailFormUIChange extends LoginState {
   final LoginFormUI ui;
   final Duration animationDuration;
   final Curve animationCurve;
+  final String userName;
 
-  EmailFormUIChange({this.ui, this.animationDuration, this.animationCurve});
+  EmailFormUIChange(
+      {this.ui, this.animationDuration, this.animationCurve, this.userName});
 
   @override
   List<Object> get props => [ui, animationDuration, animationCurve];
 }
 
 class ShowSocialLoginWebView extends LoginState {
-
   final LoginMethod provider;
   ShowSocialLoginWebView(this.provider);
 

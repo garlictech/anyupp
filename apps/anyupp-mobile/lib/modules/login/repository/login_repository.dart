@@ -75,7 +75,7 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   }
 
   @override
-  Future<ProviderLoginResponse> registerUserWithEmailAndPassword(String email, String password) {
+  Future<bool> registerUserWithEmailAndPassword(String email, String password) {
     return _emailLoginProvider.registerUserWithEmailAndPassword(email, password);
   }
 
@@ -101,5 +101,10 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   @override
   Future<void> sendPasswordResetEmail(String email) {
     return _emailLoginProvider.sendPasswordResetEmail(email);
+  }
+
+  @override
+  Future<void> confirmSignUp(String user, String code) {
+    return _emailLoginProvider.confirmSignUp(user, code);
   }
 }

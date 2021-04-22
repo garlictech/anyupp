@@ -31,6 +31,8 @@ class LoginException extends AppException {
 
   static const INVALID_CREDENTIALS = 'INVALID_CREDENTIALS';
 
+  static const INVALID_PASSWORD = 'INVALID_PASSWORD';
+
   LoginException({
     code,
     subCode,

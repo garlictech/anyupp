@@ -45,7 +45,15 @@
       "dialogEmailSentMessage": "Nézd meg az email-jeid és kattints a linkre a bejelentkezéshez!",
       "dialogResetSentTitle": "Jelszó frissítve",
       "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
-      "closeButton": "Bezárás"
+      "closeButton": "Bezárás",
+      "setMailTo" : "A kódot elküldtük a megadott email címre",
+      "enterToConfirm" : "A fiókod aktiválásához add meg a kódot.",
+      "codeNotReceived" : "Nem érkezett meg a kód?",
+      "resendCode" : "Kód újraküldése",
+      "verificationCode" : "Validációs Kód",
+      "confirmAccount" : "Fiók Aktiválása",
+      "dialogConfirmedTitle": "Fiók aktiválva!",
+      "dialogConfirmedMessage": "A fiókod aktív, mostmár bejelentkezhetsz."
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
