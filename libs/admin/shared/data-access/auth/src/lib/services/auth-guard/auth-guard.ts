@@ -1,9 +1,11 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { CanActivateChild, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateChild, Router } from '@angular/router';
 
 import { CognitoService } from '../cognito/cognito.service';
+import { map } from 'rxjs/operators';
+import { EAdminRole } from 'libs/shared/types/src';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +17,9 @@ export class AuthGuard implements CanActivateChild {
   ) {}
 
   canActivateChild(
-    // next: ActivatedRouteSnapshot,
+    next: ActivatedRouteSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
-    /*
+
     return this._cognitoService.getAuth().pipe(
       map((cognitoUser): boolean => {
         if (cognitoUser?.user?.role === EAdminRole.INACTIVE) {
@@ -36,6 +37,6 @@ export class AuthGuard implements CanActivateChild {
 
         return true;
       }),
-    );*/
+    );
   }
 }

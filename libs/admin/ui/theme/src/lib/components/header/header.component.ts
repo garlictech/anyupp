@@ -1,7 +1,16 @@
+import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -18,7 +27,6 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 
 interface IMenuItem {
   title: string;
@@ -54,6 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _cognitoService: CognitoService,
     private _translateService: TranslateService,
     private _nbDialogService: NbDialogService,
+    private _router: Router,
+    private _ngZone: NgZone,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
 
@@ -128,13 +138,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
         untilDestroyed(this),
       )
-      .subscribe(
-        (isLessThanXl: boolean): boolean => {
-          this._changeDetectorRef.detectChanges();
+      .subscribe((isLessThanXl: boolean): boolean => {
+        this._changeDetectorRef.detectChanges();
 
-          return (this.userPictureOnly = isLessThanXl)
-        }
-      );
+        return (this.userPictureOnly = isLessThanXl);
+      });
 
     this._menuService
       .onItemClick()
@@ -176,7 +184,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         {
           label: 'common.ok',
           callback: async (): Promise<void> => {
-            this._cognitoService.signOut().subscribe();
+            this._cognitoService.signOut().subscribe(() => {
+              this._ngZone.run(() => {
+                this._router.navigate(['admin/dashboard']);
+              });
+            });
           },
           status: 'success',
         },
