@@ -45,12 +45,6 @@ export class AdminUserFormComponent
 
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
-    } else {
-      this.dialogForm.patchValue({
-        name: 'Gipsz Jakabné',
-        phone: '13123123',
-        email: 'petro.tamas+' + new Date().getTime() + '@gmail.com',
-      });
     }
 
     this._changeDetectorRef.detectChanges();
