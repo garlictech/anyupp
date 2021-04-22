@@ -4,7 +4,7 @@ import { unitProductSeed } from './unit-product';
 import { unitSeed } from './unit';
 
 const cartId_01 = 'cart_1_id';
-const cart_seeded_01_id = 'cart_1_id';
+const cart_seeded_01_id = 'cart_1_id_seeded';
 const unitId_01 = unitSeed.unitId_seeded_01;
 const unitProductId_01 = unitProductSeed.unitProductId_seeded_id;
 
