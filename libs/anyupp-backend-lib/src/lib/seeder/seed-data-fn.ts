@@ -8,7 +8,6 @@ import {
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of } from 'rxjs';
 
-
 const generateChainId = (idx: number) => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
   `group_c${chainIdx}_${idx}_id`;
@@ -36,7 +35,7 @@ const generateUnitProductId = (
 ) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
-const generateCartId = (idx: number) => `cart_${idx}_id`;
+const generateCartId = (idx: number) => `cart_${idx}_id_seeded`;
 const generateUserId = (idx: number) => `user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: EAdminRole) =>
   `role_context_${idx}_${role}_id`;
