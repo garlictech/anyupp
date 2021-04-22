@@ -30,7 +30,7 @@ describe('CRUD endpoints AUTH test', () => {
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
-          expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
+          expect(x.getCart?.id).toEqual(cartSeed.cart_seeded_01_id);
           done();
         },
       });
@@ -54,7 +54,7 @@ describe('CRUD endpoints AUTH test', () => {
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
-          expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
+          expect(x.getCart?.id).toEqual(cartSeed.cart_seeded_01_id);
           done();
         },
       });
