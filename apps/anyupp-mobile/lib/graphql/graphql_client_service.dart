@@ -137,42 +137,4 @@ class GraphQLClientService {
 
     return _graphqlClient;
   }
-
-  Future<ValueNotifier<GraphQLClient>> getSigv4GraphQLClient() async {
-    print('getSigv4GraphQLClient()');
-    CognitoCredentials credentials = await _authProvider.credentials;
-    final awsSigV4Client = AwsSigV4Client(
-      credentials.accessKeyId,
-      credentials.secretAccessKey,
-      Uri.parse(graphqlApiUrl).host,
-      serviceName: 'appsync',
-      sessionToken: credentials.sessionToken,
-      region: AppConfig.Region,
-    );
-
-    Map<String, String> headers;
-    headers = {
-      // 'Authorization': 'Bearer $accessToken',
-      'host': Uri.parse(graphqlApiUrl).host,
-    };
-
-    final HttpLink _httpLink = HttpLink(
-      amplifyApiUrl,
-      defaultHeaders: headers,
-    );
-
-    final AuthLink _authLink = AuthLink(
-      getToken: () => null, //accessToken != null ? 'Bearer $accessToken' : null,
-    );
-
-    // final Link _link = _httpLink;
-    Link _link = _authLink.concat(_httpLink);
-
-    _graphqlClient = ValueNotifier(GraphQLClient(
-      cache: GraphQLCache(),
-      link: _link,
-    ));
-
-    return _graphqlClient;
-  }
 }
