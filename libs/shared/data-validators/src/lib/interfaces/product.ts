@@ -12,7 +12,7 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
   variants: Joi.array().required(), //TODO: use an exact schema
-  laneId: Joi.string().allow(null),
+  laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
