@@ -13,6 +13,7 @@ describe('Testing cognito service', () => {
     initDataConnections: jest.fn()
   };
   const service = new CognitoService(<any>dataService);
+
   const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
 
