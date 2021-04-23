@@ -9,7 +9,11 @@ import {
 } from '@bgap/integration-tests/universal';
 
 describe('Testing cognito service', () => {
-  const service = new CognitoService();
+  const dataService = {
+    initDataConnections: jest.fn()
+  };
+  const service = new CognitoService(<any>dataService);
+
   const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
 
