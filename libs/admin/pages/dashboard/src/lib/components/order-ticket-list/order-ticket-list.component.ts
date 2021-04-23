@@ -52,8 +52,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
   private _orders: IOrder[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}

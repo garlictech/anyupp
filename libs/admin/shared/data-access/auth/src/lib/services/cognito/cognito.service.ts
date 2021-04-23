@@ -1,10 +1,11 @@
-import { bindNodeCallback, from, Observable, of } from 'rxjs';
+import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
-import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { DataService } from '@bgap/admin/shared/data-access/data';
+import { EAdminRole, IAuthenticatedCognitoUser } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +19,9 @@ export class CognitoService {
   // Call this to set the current context to be authorized
   set currentContext(context: string) {
     this._currentContext = context;
-
-    console.error('CONTEXT?', this._currentContext);
   }
 
-  constructor() {
+  constructor(private _dataService: DataService) {
     Hub.listen('auth', data => {
       const { payload } = data;
 
@@ -51,7 +50,19 @@ export class CognitoService {
   }
 
   public signOut(): Observable<boolean> {
-    return from(Auth.signOut()).pipe(mapTo(true));
+    return from(Auth.currentAuthenticatedUser()).pipe(
+      switchMap((user: CognitoUser) =>
+        merge([
+          from(
+            Auth.updateUserAttributes(user, {
+              'custom:context': '',
+            }),
+          ),
+          from(Auth.signOut()),
+        ]),
+      ),
+      mapTo(true),
+    );
   }
 
   // Register callback
@@ -107,6 +118,13 @@ export class CognitoService {
                 ) => user.refreshSession(refreshToken, cb),
               )(session.getRefreshToken()),
             ),
+            switchMap(() => this.getAuth()),
+            map(data => {
+              this._dataService.initDataConnections(
+                data?.user?.id || '',
+                <EAdminRole>data?.user?.role || EAdminRole.INACTIVE,
+              );
+            }),
           ),
         ),
       )

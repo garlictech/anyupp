@@ -17,6 +17,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 
   const desiredContext = event.request.userAttributes['custom:context'];
 
+  console.error('***** desiredContext', desiredContext);
+
   const CrudApiClient = GraphqlApiFp.createBackendClient(
     awsConfig,
     // TODO use process.env variables
@@ -42,6 +44,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
       i?.roleContext?.contextId?.toLowerCase() === desiredContext?.toLowerCase(),
   );
 
+  console.error('***** role', role);
+
   if (role?.roleContext) {
     // The given role has been assigned to the user
     const roleContent = fp.pick(
@@ -49,12 +53,16 @@ export const handler: PreTokenGenerationTriggerHandler = async (
       <any>role.roleContext,
     );
 
+    console.error('***** context OK', roleContent);
+
     event.response.claimsOverrideDetails = {
       claimsToAddOrOverride: {
         ...roleContent,
       },
     };
   } else {
+    console.error('***** context NOT ASSIGNED');
+
     // The user doesn't have an access to the given role
     event.response.claimsOverrideDetails = {
       claimsToAddOrOverride: {

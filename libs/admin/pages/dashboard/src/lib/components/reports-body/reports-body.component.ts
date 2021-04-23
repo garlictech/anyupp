@@ -31,8 +31,8 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {

@@ -41,8 +41,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
   public groupCurrency = '';
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
     private _changeDetectorRef: ChangeDetectorRef,
