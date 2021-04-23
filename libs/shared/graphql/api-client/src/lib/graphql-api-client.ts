@@ -120,10 +120,12 @@ export class GraphqlApiClient {
   ): Observable<ApolloQueryResult<T>> {
     return of('subscriber').pipe(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      switchMap(() => <any>this._client.subscribe({
-        query: document,
-        variables,
-      })),
+      switchMap(
+        () => <any>this._client.subscribe({
+            query: document,
+            variables,
+          }),
+      ),
       map(x => x as ApolloQueryResult<T>),
     );
   }

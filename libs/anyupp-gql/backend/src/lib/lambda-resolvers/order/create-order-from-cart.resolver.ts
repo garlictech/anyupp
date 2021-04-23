@@ -7,7 +7,6 @@ import {
   CrudApiMutationDocuments,
   CrudApiQueryDocuments,
 } from '@bgap/crud-gql/api';
-import { removeTypeNameField } from '../../utils/graphql.utils';
 import { toFixed2Number } from '../../utils/number.utils';
 import {
   executeMutation,
@@ -37,6 +36,7 @@ import {
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
   pipeDebug,
+  removeTypeNameField,
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';

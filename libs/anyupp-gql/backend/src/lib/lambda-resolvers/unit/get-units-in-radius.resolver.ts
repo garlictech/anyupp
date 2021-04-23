@@ -27,7 +27,7 @@ import {
   IUnit,
   IWeeklySchedule,
 } from '@bgap/shared/types';
-import { removeTypeNameField } from '../../utils/graphql.utils';
+import { removeTypeNameField } from '@bgap/shared/utils';
 
 type listResponse<T> = {
   items: Array<T>;

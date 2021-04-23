@@ -7,8 +7,8 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { createTestCart, deleteTestCart } from '../seeds/cart';
-import { testAdminUsername, testAdminUserPassword } from '../fixtures/user';
+import { testAdminUsername, testAdminUserPassword } from '../../fixtures/user';
+import { createTestCart, deleteTestCart } from '../../seeds/cart';
 
 describe('getCart test', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;
@@ -22,12 +22,12 @@ describe('getCart test', () => {
 
     await combineLatest([
       // CleanUP
-      deleteTestCart(),
+      deleteTestCart(cartSeed.cart_01.id),
     ])
       .pipe(
         switchMap(() =>
           // Seeding
-          combineLatest([createTestCart()]),
+          combineLatest([createTestCart(cartSeed.cart_01)]),
         ),
       )
       .toPromise();

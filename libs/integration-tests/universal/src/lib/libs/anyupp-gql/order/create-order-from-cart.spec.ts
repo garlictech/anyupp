@@ -36,15 +36,16 @@ describe('CreatCartFromOrder mutation test', () => {
 
     await combineLatest([
       // CleanUP
-      deleteTestCart(),
+      deleteTestCart(cartSeed.cart_01.id),
       deleteTestCart(cartWithNotExistingUNIT),
     ])
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestCart(),
+            createTestCart(cartSeed.cart_01),
             createTestCart({
+              ...cartSeed.cart_01,
               id: cartWithNotExistingUNIT,
               unitId: unitSeed.unitId_NotExisting,
             }),

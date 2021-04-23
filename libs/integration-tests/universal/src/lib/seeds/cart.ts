@@ -7,45 +7,18 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import { resultTap } from './seed.util';
 
-export const createTestCart = (
-  overwrites: Partial<CrudApi.CreateCartInput> = {},
-) =>
+export const createTestCart = (input: Partial<CrudApi.CreateCartInput>) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateCartMutation>(
     CrudApiMutationDocuments.createCart,
-    {
-      input: {
-        ...cartSeed.cart_01,
-        ...overwrites,
-      },
-    },
-  ).pipe(
-    tap({
-      next(cart) {
-        console.log('### new CART created with id: ' + cart.createCart?.id);
-      },
-      error(err) {
-        console.error('Error during test cart creation: ', err.message);
-      },
-    }),
-  );
+    { input },
+  ).pipe(resultTap('CART create', input.id!));
 
-export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
+export const deleteTestCart = (id: string) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteCartMutation>(
     CrudApiMutationDocuments.deleteCart,
     {
       input: { id },
     },
-  ).pipe(
-    tap({
-      next(cart) {
-        console.log('### CART deleted with id: ' + cart.deleteCart?.id);
-      },
-    }),
-    catchError(err => {
-      console.error('Error during cart delete with id:' + id, err.message);
-      return throwError(
-        `Error during cart delete with id: ${id}, Err: ${err.message}`,
-      );
-    }),
-  );
+  ).pipe(resultTap('CART delete', id));

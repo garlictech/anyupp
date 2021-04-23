@@ -98,7 +98,7 @@ export const seedAdminUser = (UserPoolId: string): Observable<string> =>
     map((adminUserId: string) => ({
       id: adminUserId || '',
       name: 'John Doe',
-      email: 'john@doe.com',
+      email: username,
       phone: '123123213',
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
