@@ -33,8 +33,8 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
   public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatusFn;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}

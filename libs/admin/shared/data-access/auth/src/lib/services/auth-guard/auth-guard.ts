@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChild, Router } from '@angular/router';
+import { EAdminRole } from '@bgap/shared/types';
 
 import { CognitoService } from '../cognito/cognito.service';
-import { map } from 'rxjs/operators';
-import { EAdminRole } from 'libs/shared/types/src';
 
 @Injectable({
   providedIn: 'root',
