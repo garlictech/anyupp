@@ -10,6 +10,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class AwsUnitProvider implements IUnitProvider {
+
   @override
   Future<List<GeoUnit>> searchUnitsNearLocation3(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
@@ -43,13 +44,13 @@ class AwsUnitProvider implements IUnitProvider {
   }
 
   @override
-  Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
+  Future<List<GeoUnit>> searchUnitsNearLocationSig4v(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
     try {
       IAuthProvider _authProvider = getIt<IAuthProvider>();
       CognitoCredentials _credential = _authProvider.credentials;
 
-      const endpoint = 'https://ygzl3hlvujcrvlmmnhnhjvlpiu.appsync-api.eu-west-1.amazonaws.com';
+      const endpoint = 'https://jv6hts66zzh27mwbts7v5bkd7i.appsync-api.eu-west-1.amazonaws.com';
       final awsSigV4Client = AwsSigV4Client(
         _credential.accessKeyId,
         _credential.secretAccessKey,
@@ -60,19 +61,31 @@ class AwsUnitProvider implements IUnitProvider {
       );
       final query = '''
       query MyQuery {
-        listChains {
+        getUnitsNearLocation(input: {
+          location: {
+            lat: ${location.latitude},
+            lng: ${location.longitude}
+          }}) {
           items {
+            address {
+              address
+              city
+              country
+              postalCode
+              title
+            }
             id
           }
         }
-      }''';
+      }
+      ''';
       final signedRequest = SigV4Request(awsSigV4Client,
           method: 'POST',
           path: '/graphql',
           headers: Map<String, String>.from({
             'Content-Type': 'application/graphql; charset=utf-8',
           }),
-          body: Map<String, String>.from({
+          body: Map<String, dynamic>.from({
             'operationName': 'MyQuery',
             'query': query,
           }));
@@ -88,47 +101,47 @@ class AwsUnitProvider implements IUnitProvider {
     return [];
   }
 
-  // @override
-  // Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
-  //   print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
-  //   try {
-  //     ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-  //     QueryResult result = await _client.value.query(QueryOptions(
-  //       document: gql(QUERY_SEARCH_UNITS),
-  //       variables: {
-  //         'lat': location.latitude,
-  //         'lng': location.longitude,
-  //       }
-  //     ));
+  @override
+  Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
+    print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_SEARCH_UNITS),
+        variables: {
+          'lat': location.latitude,
+          'lng': location.longitude,
+        }
+      ));
 
-  //     // print('***** searchUnitsNearLocation().result()=$result');
-  //     if (result.hasException) {
-  //       print('searchUnitsNearLocation.exception=${result.exception}');
-  //       // TODO ?!
-  //     }
+      // print('***** searchUnitsNearLocation().result()=$result');
+      if (result.hasException) {
+        print('searchUnitsNearLocation.exception=${result.exception}');
+        // TODO ?!
+      }
 
-  //     if (result.data == null) {
-  //       return [];
-  //     }
+      if (result.data == null) {
+        return [];
+      }
 
-  //     List<dynamic> items = result.data['getUnitsNearLocation']['items'];
-  //     // print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
-  //     List<GeoUnit> results = [];
-  //     if (items != null) {
-  //       for (int i = 0; i < items.length; i++) {
-  //         GeoUnit unit = GeoUnit.fromJson(Map<String, dynamic>.from(items[i]));
-  //         // print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.address}');
-  //         results.add(unit);
-  //       }
-  //     }
-  //     results.sort((a, b) => a.position.compareTo(b.position));
+      List<dynamic> items = result.data['getUnitsNearLocation']['items'];
+      // print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      List<GeoUnit> results = [];
+      if (items != null) {
+        for (int i = 0; i < items.length; i++) {
+          GeoUnit unit = GeoUnit.fromJson(Map<String, dynamic>.from(items[i]));
+          // print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.address}');
+          results.add(unit);
+        }
+      }
+      results.sort((a, b) => a.position.compareTo(b.position));
 
-  //     return results;
-  //   } on Exception catch (e) {
-  //     print('AwsUnitProvider.searchUnitsNearLocation.Exception: $e');
-  //     rethrow;
-  //   }
-  // }
+      return results;
+    } on Exception catch (e) {
+      print('AwsUnitProvider.searchUnitsNearLocation.Exception: $e');
+      rethrow;
+    }
+  }
 
   // Future<List<GeoUnit>> searchUnitsNearLocationOld(LatLng location, int radius) async {
   //   print('***** searchUnitsNearLocation().start()');

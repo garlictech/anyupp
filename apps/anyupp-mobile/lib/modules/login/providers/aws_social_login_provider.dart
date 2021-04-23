@@ -70,6 +70,27 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   }
 
   @override
+  Future<ProviderLoginResponse> signInWithFacebookAmplify() async {
+    print('***** AwsSocialLoginProvider.signInWithFacebook()');
+    try {
+      CognitoSignInResult res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.facebook);
+      print('***** signInWithFacebook().CognitoSignInResult.isSignedIn=${res?.isSignedIn}');
+      //
+      User user = await _authProvider.getAuthenticatedUserProfile();
+      return ProviderLoginResponse(
+        credential: null,
+        user: user,
+      );
+    } on AuthException catch (e) {
+      print('***** signInWithFacebook().AuthException=$e');
+      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    } on Exception catch (e) {
+      print('***** signInWithFacebook().Exception=$e');
+      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    }
+  }
+
+  @override
   Future<ProviderLoginResponse> signInWithFacebook() async {
     print('***** AwsSocialLoginProvider.signInWithFacebook()');
     try {
@@ -93,7 +114,8 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       FacebookUserProfile fpProfile = await _facebookLogin.getUserProfile();
       String fpProfileImage = await _facebookLogin.getProfileImageUrl(width: 200);
 
-      CognitoCredentials _credential = await _service.loginWithCredentials(loginResult.accessToken.token, 'graph.facebook.com');
+      CognitoCredentials _credential =
+          await _service.loginWithCredentials(loginResult.accessToken.token, 'graph.facebook.com');
       User user = User(
         id: _credential.userIdentityId.split(':')[1],
         email: email,
@@ -114,7 +136,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
   }
-
 
   @override
   Future<ProviderLoginResponse> signInWithGoogle() async {

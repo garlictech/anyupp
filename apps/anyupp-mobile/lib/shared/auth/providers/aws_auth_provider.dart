@@ -103,56 +103,6 @@ class AwsAuthProvider implements IAuthProvider {
   //   }
   // }
 
-  // @override
-  // Future<User> getAuthenticatedUserProfile() async {
-  //   print('getAuthenticatedUserProfile().user=$_user');
-  //   try {
-  //     // AuthUser u = await Amplify.Auth.getCurrentUser();
-  //     // print('getAuthenticatedUserProfile().getCurrentUser=$u');
-
-  //     // _user = null;
-  //     CognitoUserSession session = await _service.getSession;
-  //     // CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
-  //     //   options: CognitoSessionOptions(getAWSCredentials: false),
-  //     // );
-  //     print('getAuthenticatedUserProfile().session.isSignedIn=${session?.isValid()}');
-  //     if (session == null) {
-  //       _user = null;
-  //       _userController.add(_user);
-  //       return null;
-  //     }
-  //     if (session.isValid()) {
-  //       if (session.idToken != null) {
-  //         print('getAuthenticatedUserProfile().idToken=${session.idToken}');
-  //         print('getAuthenticatedUserProfile().refreshToken=${session.refreshToken}');
-  //         print('getAuthenticatedUserProfile().accessToken=${session.accessToken}');
-  //       }
-
-  //       if (_user == null) {
-  //         CognitoUser user = await _service.currentUser;
-  //         _user = _userFromAttributes(await user.getUserAttributes());
-  //       } else {
-  //         // don't need to call _userController.add(_user);
-  //         return _user;
-  //       }
-  //     } else {
-  //       _user = null;
-
-  //     }
-  //     print('getAuthenticatedUserProfile().final.user=$_user');
-  //     _userController.add(_user);
-  //     return _user;
-  //   } on Exception catch (e) {
-  //     print('getAuthenticatedUserProfile().exception=$e');
-  //     _userController.add(null);
-  //     return null;
-  //   } on Error catch (e) {
-  //     print('getAuthenticatedUserProfile().error=$e');
-  //     _userController.add(null);
-  //     return null;
-  //   }
-  // }
-
   @override
   Stream<User> getAuthenticatedUserProfileStream() => _userController.stream;
 

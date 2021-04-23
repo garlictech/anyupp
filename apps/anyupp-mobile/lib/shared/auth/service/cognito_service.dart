@@ -39,7 +39,7 @@ class CognitoService {
   }
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
-    print('loginWithCredentials()=$provider');
+    print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
     CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool);
     await credentials.getAwsCredentials(accessToken, provider);
     print('loginWithCredentials().credentials.userIdentityId=${credentials?.userIdentityId}');

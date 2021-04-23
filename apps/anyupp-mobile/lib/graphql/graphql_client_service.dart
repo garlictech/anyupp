@@ -103,7 +103,7 @@ class GraphQLClientService {
     String accessToken = await _authProvider.getAccessToken();
     print('getAdminGraphQLClient().accessToken=$accessToken');
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
 
     Map<String, String> headers;
     if (accessToken != null) {
