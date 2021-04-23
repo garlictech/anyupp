@@ -10,7 +10,7 @@ import { paymentModeSchema } from './payment';
 
 export const laneSchema: Joi.SchemaMap<ILane> = {
   __typename: Joi.string().valid('Lane').optional(),
-  id: Joi.string().allow(null),
+  id: Joi.string().allow(null, ''),
   name: Joi.string().required(),
   color: Joi.string().required(),
 };
