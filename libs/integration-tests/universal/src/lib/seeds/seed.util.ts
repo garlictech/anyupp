@@ -4,13 +4,10 @@ export const resultTap = <T>(typename: string, id: string) =>
   tap<T>({
     next(resultObj) {
       if (resultObj) {
-        console.log(`### ${typename} deleted with id: ${id}`);
+        console.log(`### ${typename} with id: ${id}`);
       }
     },
     error(err) {
-      console.error(
-        `### Error during ${typename} delete with id: ${id}`,
-        err.message,
-      );
+      console.error(`### Error during ${typename} with id: ${id}`, err.message);
     },
   });

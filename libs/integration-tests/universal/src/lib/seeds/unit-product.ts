@@ -8,7 +8,15 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { resultTap } from './seed.util';
 
-export const deleteUnitProduct = (id: string) =>
+export const createTestUnitProduct = (input: CrudApi.CreateUnitProductInput) =>
+  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitProductMutation>(
+    CrudApiMutationDocuments.createUnitProduct,
+    {
+      input,
+    },
+  ).pipe(resultTap('UNIT_PRODUCT create', input.id!));
+
+export const deleteTestUnitProduct = (id: string) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitProductMutation>(
     CrudApiMutationDocuments.deleteUnitProduct,
     {

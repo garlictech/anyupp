@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { unitProductSeed } from '@bgap/integration-tests/universal';
+import { productSeed } from '@bgap/integration-tests/universal';
 import {
   EProductType,
   EVariantAvailabilityType,
@@ -12,7 +12,7 @@ import { calculateActualPricesAndCheckActivity } from './calculate-product';
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: any = {
     // const baseProduct: IProduct = {
-    ...unitProductSeed.unitProduct_01,
+    ...productSeed.unitProductBase,
     tax: 11,
     name: { en: 'NAME' },
     description: { en: 'DESCRIPTION' },

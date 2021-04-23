@@ -1,12 +1,12 @@
 import { EOrderStatus } from '@bgap/shared/types';
 import { CrudApi } from '@bgap/crud-gql/api';
-import { unitProductSeed } from './unit-product';
 import { unitSeed } from './unit';
+import { productSeed } from './product';
 
 const cartId_01 = 'cart_1_id';
 const cart_seeded_01_id = 'cart_1_id_seeded';
 const unitId_01 = unitSeed.unitId_seeded_01;
-const unitProductId_01 = unitProductSeed.unitProductId_seeded_id;
+const unitProductId_01 = productSeed.unitProductId_seeded_id;
 
 // fictional - not exsisting
 const cartId_NotExisting = 'NOT_EXSISTING_CART';

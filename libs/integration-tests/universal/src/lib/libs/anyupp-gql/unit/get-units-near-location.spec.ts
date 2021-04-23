@@ -25,19 +25,23 @@ const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // dist
 // const distanceLoc_06 = { location: { lat: 47.493168, lng: 19.055454 } }; // distance from userLoc: 0.787.. km
 
 const unitNotActive = {
+  ...unitSeed.unit_01,
   isActive: false,
   id: 'NOT_ACTIVE_UNIT',
 };
 
 const unit_01 = {
+  ...unitSeed.unit_01,
   id: 'unit_01',
   address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_01]),
 };
 const unit_02 = {
+  ...unitSeed.unit_01,
   id: 'unit_02',
   address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_02]),
 };
 const unit_03 = {
+  ...unitSeed.unit_01,
   id: 'unit_03',
   address: fp.mergeAll([unitSeed.unit_01.address, userLoc]),
 };

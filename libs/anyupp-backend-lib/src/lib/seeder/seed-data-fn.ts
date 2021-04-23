@@ -8,39 +8,39 @@ import {
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of } from 'rxjs';
 
-const generateChainId = (idx: number) => `chain_${idx}_id`;
+const generateChainId = (idx: number) => `chain_${idx}_id_seeded`;
 const generateGroupId = (chainIdx: number, idx: number) =>
-  `group_c${chainIdx}_${idx}_id`;
+  `group_c${chainIdx}_${idx}_id_seeded`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
-  `unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
+  `unit_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
 const generateLaneId = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
   idx: number,
-) => `lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
+) => `lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id_seeded`;
 const generateProductCategoryId = (chainIdx: number, idx: number) =>
-  `product_category_c${chainIdx}_${idx}_id`;
+  `product_category_c${chainIdx}_${idx}_id_seeded`;
 const generateChainProductId = (chainIdx: number, idx: number) =>
-  `chain_product_c${chainIdx}_${idx}_id`;
+  `chain_product_c${chainIdx}_${idx}_id_seeded`;
 const generateGroupProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `group_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
+) => `group_product_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
 const generateUnitProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
+) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
-  `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
+  `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id_seeded`;
 const generateCartId = (idx: number) => `cart_${idx}_id_seeded`;
-const generateUserId = (idx: number) => `user_${idx}_id`;
+const generateUserId = (idx: number) => `user_${idx}_id_seeded`;
 const generateRoleContextId = (idx: number, role: EAdminRole) =>
-  `role_context_${idx}_${role}_id`;
+  `role_context_${idx}_${role}_id_seeded`;
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
-  `admin_role_context_${idx}_${role}_id`;
+  `admin_role_context_${idx}_${role}_id_seeded`;
 
 const deleteCreate = ({
   input,

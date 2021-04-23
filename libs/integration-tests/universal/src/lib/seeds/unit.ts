@@ -9,7 +9,7 @@ import {
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import { resultTap } from './seed.util';
 
-export const createTestUnit = (input: Partial<CrudApi.CreateUnitInput>) =>
+export const createTestUnit = (input: CrudApi.CreateUnitInput) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
     CrudApiMutationDocuments.createUnit,
     {

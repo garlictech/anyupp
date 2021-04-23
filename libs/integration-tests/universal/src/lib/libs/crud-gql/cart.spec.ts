@@ -1,5 +1,4 @@
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
-import { cartSeed } from '../fixtures/cart';
 import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedCrudGraphQLClient,
@@ -7,6 +6,7 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { cartSeed } from '../../fixtures';
 import { testAdminUsername, testAdminUserPassword } from '../../fixtures/user';
 import { createTestCart, deleteTestCart } from '../../seeds/cart';
 

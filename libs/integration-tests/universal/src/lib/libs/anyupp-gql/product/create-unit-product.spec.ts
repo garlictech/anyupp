@@ -16,14 +16,14 @@ import {
 import { IUnitProduct } from '@bgap/shared/types';
 
 import {
+  productSeed,
   testAdminUsername,
   testAdminUserPassword,
-  unitProductSeed,
 } from '../../../fixtures';
-import { deleteUnitProduct } from '../../../seeds/unit-product';
+import { deleteTestUnitProduct } from '../../../seeds/unit-product';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
-  input: unitProductSeed.unitProduct_01,
+  input: productSeed.unitProductBase,
 } as any;
 
 describe('CreateUnitProduct tests', () => {
@@ -52,7 +52,7 @@ describe('CreateUnitProduct tests', () => {
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
-        deleteUnitProduct(input.input.id),
+        deleteTestUnitProduct(input.input.id),
       ])
         // .pipe(
         //   switchMap(() =>

@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { cartSeed } from '../fixtures/cart';
-import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+
 import { resultTap } from './seed.util';
 
-export const createTestCart = (input: Partial<CrudApi.CreateCartInput>) =>
+export const createTestCart = (input: CrudApi.CreateCartInput) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateCartMutation>(
     CrudApiMutationDocuments.createCart,
     { input },
