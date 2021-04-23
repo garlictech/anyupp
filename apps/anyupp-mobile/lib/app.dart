@@ -21,6 +21,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 
+import 'app-config.dart';
 import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
@@ -32,7 +33,6 @@ import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 class MyApp extends StatefulWidget {
   @override
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
     try {
       await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
       // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
-      await Amplify.configure(getAmplifyConfig(awsConfig));
+      await Amplify.configure(getAmplifyConfig());
       print('_initAmplify().Amplify initialized successfully...');
       setState(() {
         _amplifyInitialized = true;

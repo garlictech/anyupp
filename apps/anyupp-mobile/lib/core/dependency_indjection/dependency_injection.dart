@@ -1,4 +1,5 @@
 import 'package:fa_prev/app.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -32,20 +33,20 @@ Future<void> initDependencyInjection() async {
 }
 
 void _initCommon() {
-  print('AWS CONFIG=$awsConfig');
+  print('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(
-    awsConfig['StripePublishableKey'],
-    returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
+    AppConfig.StripePublishableKey,
+    // returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
   );
 
-  // final CognitoService cognitoService = CognitoService(
-  //   region: awsConfig['region'],
-  //   userPoolId: awsConfig['consumerUserPoolId'],
-  //   identityPoolId: awsConfig['IdentityPoolId'],
-  //   clientId: awsConfig['consumerWebUserPoolClientId'],
-  // );
-  // getIt.registerLazySingleton<CognitoService>(() => cognitoService);
+  final CognitoService cognitoService = CognitoService(
+    region: AppConfig.Region,
+    userPoolId: AppConfig.UserPoolId,
+    identityPoolId: AppConfig.IdentityPoolId,
+    clientId: AppConfig.UserPoolClientId,
+  );
+  getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);
 }
 
@@ -99,10 +100,10 @@ void _initRepositories() {
 void _initServices() {
   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
         authProvider: getIt<IAuthProvider>(),
-        graphqlApiUrl: awsConfig['AnyuppGraphqlApiUrl'],
-        graphqlApiKey: awsConfig['AnyuppGraphqlApiKey'],
-        amplifyApiUrl: awsConfig['CrudGraphqlApiUrl'],
-        amplifyApiKey: awsConfig['CrudGraphqlApiKey'],
+        graphqlApiUrl: AppConfig.AnyuppGraphqlApiUrl,
+        graphqlApiKey: AppConfig.AnyuppGraphqlApiKey,
+        amplifyApiUrl: AppConfig.CrudGraphqlApiUrl,
+        amplifyApiKey: AppConfig.CrudGraphqlApiKey,
       ));
 }
 

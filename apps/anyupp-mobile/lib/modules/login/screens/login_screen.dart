@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fa_prev/app.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -551,8 +552,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       default:
         provider = 'COGNITO';
     } 
-    var url = "${awsConfig['ConsumerUserPoolDomain']}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
-        "anyupp://signin/&response_type=CODE&client_id=${awsConfig['ConsumerNativeUserPoolClientId']}" +
+    var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
+        "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
     print('loginScreen.url=$url');
     return WebView(

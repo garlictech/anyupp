@@ -1,6 +1,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fa_prev/app.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,7 +83,7 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
   void _getBucketUrlWithKey() async {
     print('_getBucketUrlWithKey.key=${widget.bucketImageKey}');
     String url =
-        'https://${awsConfig['s3BucketName']}.s3-${awsConfig['region']}.amazonaws.com/${widget.bucketImageKey}';
+        'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/${widget.bucketImageKey}';
     print('_getBucketUrlWithKey.url=$url');
     setState(() {
       _imageUrl = url; //.split('?')[0];
