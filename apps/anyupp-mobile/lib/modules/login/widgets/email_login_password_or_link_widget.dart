@@ -83,31 +83,31 @@ class _EmailLoginDialogContentWidgetState
                 padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
                 child: Column(
                   children: [
-                    Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
-                                animationCurve: Curves.easeOut,
-                              ));
-                            },
-                            child: Text(
-                              trans('login.email.forgotPassword'),
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: theme.highlight,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Stack(
+                    //   children: [
+                    //     Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: InkWell(
+                    //         onTap: () {
+                    //           getIt<LoginBloc>().add(ChangeEmailFormUI(
+                    //             ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
+                    //             animationCurve: Curves.easeOut,
+                    //           ));
+                    //         },
+                    //         child: Text(
+                    //           trans('login.email.forgotPassword'),
+                    //           textAlign: TextAlign.start,
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: theme.highlight,
+                    //             fontWeight: FontWeight.normal,
+                    //             decoration: TextDecoration.underline,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     // Email input field
                     LoginFormUtils.buildTextField(
                       context,
@@ -129,31 +129,72 @@ class _EmailLoginDialogContentWidgetState
                           true,
                           LoginFormUtils.passwordValidator(context),
                         )),
-                    Stack(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_REGISTRATION,
-                                animationCurve: Curves.easeOut,
-                              ));
-                            },
-                            child: Text(
-                              trans('login.email.linkRegister'),
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: theme.highlight,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.underline,
-                              ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                              ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
+                              animationCurve: Curves.easeOut,
+                            ));
+                          },
+                          child: Text(
+                            trans('login.email.forgotPassword'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                              ui: LoginFormUI.SHOW_REGISTRATION,
+                              animationCurve: Curves.easeOut,
+                            ));
+                          },
+                          child: Text(
+                            trans('login.email.linkRegister'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        )
                       ],
                     ),
+                    // Stack(
+                    //   children: [
+                    //     Align(
+                    //       alignment: Alignment.centerRight,
+                    //       child: InkWell(
+                    //         onTap: () {
+                    //           getIt<LoginBloc>().add(ChangeEmailFormUI(
+                    //             ui: LoginFormUI.SHOW_REGISTRATION,
+                    //             animationCurve: Curves.easeOut,
+                    //           ));
+                    //         },
+                    //         child: Text(
+                    //           trans('login.email.linkRegister'),
+                    //           textAlign: TextAlign.start,
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: theme.highlight,
+                    //             fontWeight: FontWeight.normal,
+                    //             decoration: TextDecoration.underline,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 8.0,
                     ),

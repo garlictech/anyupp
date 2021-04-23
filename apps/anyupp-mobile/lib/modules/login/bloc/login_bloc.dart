@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:flutter/animation.dart';
@@ -110,19 +111,39 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle registration with email and password
       if (event is RegisterWithEmailAndPassword) {
         yield LoginInProgress();
-        bool res = await _repository.registerUserWithEmailAndPassword(
-            event.email, event.password);
-        if (res) {
-          getIt<LoginBloc>().add(ChangeEmailFormUI(
-              ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-              animationCurve: Curves.easeIn, userName: event.email));
-        }
+        getIt<LoginBloc>().add(SignUpErrorOccured("test", "test"));
+        // bool res = await _repository.registerUserWithEmailAndPassword(
+        //     event.email, event.password);
+        // if (res) {
+        // getIt<LoginBloc>().add(ChangeEmailFormUI(
+        //     ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+        //     animationCurve: Curves.easeIn));
+        // yield EmailFormUIChange(
+        //   ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+        //   animationDuration: Duration(milliseconds: 350),
+        //   animationCurve: Curves.bounceInOut,
+        // );
+        // await Future.delayed(Duration(seconds: 1));
+        // yield UserCreated();
+
+        // }
         //print('**** LoginBloc.RegisterWithEmailAndPassword().finish()=$response');
         //yield EmailRegistrationSuccess(event.email);
+      }
+      if (event is SignUpConfirm) {
+        yield ConfirmCodeState(event.user);
       }
 
       if (event is SignUpConfirmed) {
         yield CodeConfirmedState();
+      }
+
+      if (event is CodeReSendining) {
+        yield ConfirmCodeSending();
+      }
+
+      if (event is SentConfirmCodeEmail) {
+        yield ConfirmCodeEmailSent(event.user);
       }
 
       // --- Handle send password reset to email
@@ -136,6 +157,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is LoginErrorOccured) {
         getIt<ExceptionBloc>().add(ShowException(LoginException(
             code: LoginException.CODE,
+            subCode: event.code,
+            message: event.message)));
+        yield LoginError(event.code, event.message);
+      }
+
+      if (event is SignUpErrorOccured) {
+        getIt<ExceptionBloc>().add(ShowException(SignUpException(
+            code: SignUpException.CODE,
             subCode: event.code,
             message: event.message)));
         yield LoginError(event.code, event.message);
@@ -157,7 +186,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Change the animation of the email forms in the login screen
       if (event is ChangeEmailFormUI) {
         yield EmailFormUIChange(
-          userName: event.userName,
           ui: event.ui,
           animationDuration:
               event.animationDuration ?? Duration(milliseconds: 350),
@@ -171,8 +199,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginError(pe.code, pe.message);
     } on LoginException catch (le) {
       print('********* LoginBloc.LoginException()=$le');
-      getIt<ExceptionBloc>().add(ShowException(le));
-      yield LoginError(le.code, le.message);
+      if (le.code == LoginException.UNCONFIRMED) {
+        getIt<LoginBloc>().add(ChangeEmailFormUI(
+            ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+            animationCurve: Curves.easeIn));
+        getIt<LoginBloc>().add(SignUpConfirm(le.message));
+      } else {
+        getIt<ExceptionBloc>().add(ShowException(le));
+        yield LoginError(le.code, le.message);
+      }
     } on Exception catch (e) {
       print('********* LoginBloc.Exception()=$e');
       getIt<ExceptionBloc>().add(ShowException(

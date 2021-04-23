@@ -30,16 +30,15 @@ class _EmailRegisterDialogContentWidgetState
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
-      listener: (BuildContext context, LoginState state) {
-        print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
+      listener: (BuildContext context, LoginState state) {},
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
         if (state is EmailRegistrationSuccess) {
+          print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
           getIt<LoginBloc>().add(ChangeEmailFormUI(
               ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
               animationCurve: Curves.easeIn));
         }
-      },
-      child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (BuildContext context, LoginState state) {
         // print('PhoneDialogContentWidget.bloc.state=$state');
 
         if (state is LoginInProgress) {
@@ -169,8 +168,8 @@ class _EmailRegisterDialogContentWidgetState
     print('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
-          _emailController.text, _password1Controller.text));
+    getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+        _emailController.text, _password1Controller.text));
     }
   }
 }

@@ -94,11 +94,9 @@ class LoginFormUtils {
   static FieldValidator passwordValidator(BuildContext context) =>
       MultiValidator([
         RequiredValidator(errorText: 'password is required'),
-        MinLengthValidator(12,
-            errorText: 'password must be at least 12 digits long'),
-        // PatternValidator(
-        //     r'/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/',
-        //     errorText:
-        //         'Password must contain a lower case letter, an upper case letter, a number'),
+        MinLengthValidator(8,
+            errorText: 'password must be at least 8 digits long'),
+        PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+            errorText: 'passwords must have at least one special character'),
       ]);
 }

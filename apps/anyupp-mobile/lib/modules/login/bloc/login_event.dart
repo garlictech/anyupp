@@ -27,6 +27,16 @@ class LoginErrorOccured extends LoginEvent {
   List<Object> get props => [code, message];
 }
 
+class SignUpErrorOccured extends LoginEvent {
+  final String code;
+  final String message;
+
+  const SignUpErrorOccured(this.code, this.message);
+
+  @override
+  List<Object> get props => [code, message];
+}
+
 class LoginWithMethod extends LoginEvent {
   final LoginMethod method;
 
@@ -115,8 +125,21 @@ class StartLoginWithEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class SignUpConfirm extends LoginEvent {
+  final String user;
+
+  SignUpConfirm(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class SignUpConfirmed extends LoginEvent {
   const SignUpConfirmed();
+}
+
+class CodeReSendining extends LoginEvent {
+  const CodeReSendining();
 }
 
 class FinishLoginWithEmailLink extends LoginEvent {
@@ -157,17 +180,25 @@ class SendPasswordResetEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class SentConfirmCodeEmail extends LoginEvent {
+  final String user;
+
+  const SentConfirmCodeEmail(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class ChangeEmailFormUI extends LoginEvent {
   final LoginFormUI ui;
   final Duration animationDuration;
   final Curve animationCurve;
-  final String userName;
 
-  ChangeEmailFormUI(
-      {this.ui,
-      this.animationDuration,
-      this.animationCurve = Curves.elasticIn,
-      this.userName});
+  ChangeEmailFormUI({
+    this.ui,
+    this.animationDuration,
+    this.animationCurve = Curves.elasticIn,
+  });
 
   @override
   List<Object> get props => [ui];

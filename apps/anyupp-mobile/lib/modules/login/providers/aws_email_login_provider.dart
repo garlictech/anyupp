@@ -3,6 +3,7 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
+import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(
       String email, String password) async {
+    throw LoginException(code: LoginException.UNCONFIRMED, message: email);
     try {
       CognitoSignInResult res = await Amplify.Auth.signInWithWebUI();
       print(
@@ -116,9 +118,9 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           options: CognitoSignUpOptions(userAttributes: {'email': email}));
       return res.isSignUpComplete;
     } on InvalidPasswordException catch (e) {
-      throw LoginException.fromException(LoginException.INVALID_PASSWORD, e);
+      throw SignUpException.fromException(SignUpException.INVALID_PASSWORD, e);
     } on Exception catch (e) {
-      throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e);
     }
 
     // TODO: implement registerUserWithEmailAndPassword

@@ -57,6 +57,16 @@ class LoginError extends LoginState {
   List<Object> get props => [code, message];
 }
 
+class SignUpError extends LoginState {
+  final String code;
+  final String message;
+
+  const SignUpError(this.code, this.message);
+
+  @override
+  List<Object> get props => [code, message];
+}
+
 class AccountLinked extends LoginState {
   final LoginMethod provider;
 
@@ -86,6 +96,22 @@ class PasswordResetEmailSent extends LoginState {
   List<Object> get props => [email];
 }
 
+class ConfirmCodeSending extends LoginState {
+  ConfirmCodeSending();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ConfirmCodeEmailSent extends LoginState {
+  final String user;
+
+  ConfirmCodeEmailSent(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class EmailRegistrationSuccess extends LoginState {
   final String email;
 
@@ -97,6 +123,21 @@ class EmailRegistrationSuccess extends LoginState {
 
 class CodeConfirmedState extends LoginState {
   const CodeConfirmedState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ConfirmCodeState extends LoginState {
+  final String user;
+  const ConfirmCodeState(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class UserCreated extends LoginState {
+  const UserCreated();
 
   @override
   List<Object> get props => [];

@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,20 +25,64 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (BuildContext context, LoginState state) {
-        if (state is CodeConfirmedState) {
-          return _buildEmailConfirmedInfo(context);
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state is ConfirmCodeEmailSent) {
+          showSuccessDialog(
+              context,
+              trans('login.email.setMailTo'),
+              trans(
+                'login.email.checkInbox',
+              ));
+
+          return _buildSignUpConfirmForm(context, state.user);
         }
-        if (state is EmailFormUIChange) {
-          this.userName = state.userName;
-        }
-        return _buildSignUpConfirmForm(context);
+
+        // TODO: implement listener
       },
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (BuildContext context, LoginState state) {
+          if (state is CodeConfirmedState) {
+            return _buildEmailConfirmedInfo(context);
+          }
+          if (state is ConfirmCodeState) {
+            return _buildSignUpConfirmForm(context, state.user);
+          }
+          if (state is LoginInProgress) {
+            _buildLoading(
+              context,
+            );
+          }
+
+          return _buildLoading(
+            context,
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildSignUpConfirmForm(BuildContext context) {
+  Widget _buildLoading(BuildContext context, {String message = '...'}) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CenterLoadingWidget(),
+          Text(
+            message,
+            style: GoogleFonts.poppins(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF3C2F2F),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSignUpConfirmForm(BuildContext context, String user) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Form(
@@ -96,10 +141,13 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                  ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-                                  animationCurve: Curves.easeIn));
+                            onTap: () async {
+                              FocusScope.of(context).unfocus();
+                              getIt<LoginBloc>().add(CodeReSendining());
+                              await Future.delayed(Duration(seconds: 1));
+                              getIt<LoginBloc>()
+                                  .add(SentConfirmCodeEmail(user));
+                               getIt<LoginBloc>().add(SignUpConfirm(user));
                             },
                             child: Text(
                               trans('login.email.resendCode'),
@@ -156,7 +204,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                        onPressed: () => _confirmSigInCode(),
+                        onPressed: () => _confirmSigInCode(user),
                       ),
                     ),
                   ],
@@ -192,12 +240,36 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
               Center(
                 child: Container(
                     margin: EdgeInsets.only(top: 16.0, bottom: 26.0),
-                    child: Text(
-                      trans('login.email.dialogConfirmedMessage'),
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18.0,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          trans('login.email.dialogConfirmedMessage'),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                                animationCurve: Curves.easeIn));
+                          },
+                          child: Text(
+                            trans('login.email.signIn'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
                     )),
               ),
               // Buttons
@@ -208,12 +280,13 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
     );
   }
 
-  void _confirmSigInCode() {
-    print('_confirmSigInCode()=${_confirmCodeController.text}');
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      getIt<LoginBloc>()
-          .add(SendPasswordResetEmail(_confirmCodeController.text));
-    }
+  void _confirmSigInCode(String user) {
+    getIt<LoginBloc>().add(SignUpConfirmed());
+    // print('_confirmSigInCode()=${_confirmCodeController.text}');
+    // if (_formKey.currentState.validate()) {
+    //   _formKey.currentState.save();
+    //   getIt<LoginBloc>()
+    //       .add(SendPasswordResetEmail(_confirmCodeController.text));
+    // }
   }
 }

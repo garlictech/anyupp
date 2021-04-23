@@ -68,7 +68,7 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
               Container(
                 padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     // Email + passwords input fields
                     LoginFormUtils.buildTextField(

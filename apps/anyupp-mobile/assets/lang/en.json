@@ -40,6 +40,7 @@
       "password2FieldLabel": "Password again",
       "linkLoginWithLink": "Login with email link. . .",
       "linkLoginWithPassword": "Login with password. . .",
+      "signIn": "Sign in",
       "linkSignIn": "Sign in. . .",
       "linkRegister": "Sign up. . .",
       "buttonLogin": "Login",
@@ -53,13 +54,14 @@
       "dialogResetSentMessage": "Password reset email sent! Check your mail to finish password reset.",
       "closeButton": "Close",
       "setMailTo" : "We have sent a code by email",
+      "checkInbox" : "Check your inbox!",
       "enterToConfirm" : "Enter it below to confirm your account.",
       "codeNotReceived" : "Didn't receive a code?",
       "resendCode" : "Resend it",
       "verificationCode" : "Verification Code",
       "confirmAccount" : "Confirm Account",
       "dialogConfirmedTitle": "Account Verified!",
-      "dialogConfirmedMessage": "Your account has been verified, you can sign in now."
+      "dialogConfirmedMessage": "Your account has been verified."
     },
     "phone": {
       "loginProgress": "Login in progress...",

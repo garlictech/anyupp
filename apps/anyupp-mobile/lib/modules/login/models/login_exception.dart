@@ -33,6 +33,8 @@ class LoginException extends AppException {
 
   static const INVALID_PASSWORD = 'INVALID_PASSWORD';
 
+  static const UNCONFIRMED = 'UNCONFIRMED';
+
   LoginException({
     code,
     subCode,

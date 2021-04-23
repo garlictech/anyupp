@@ -34,6 +34,7 @@
       "password2FieldLabel": "Jelszó újra",
       "linkLoginWithLink": "Bejelentkezés email üzenetben. . .",
       "linkLoginWithPassword": "Bejelentkezés jelszóval. . .",
+      "signIn": "Belépés",
       "linkSignIn": "Belépés. . .",
       "linkRegister": "Regisztráció. . .",
       "buttonLogin": "Belépés",
@@ -47,13 +48,14 @@
       "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
       "closeButton": "Bezárás",
       "setMailTo" : "A kódot elküldtük a megadott email címre",
+      "checkInbox" : "Ellenőrizd a bejövő leveleidet!",
       "enterToConfirm" : "A fiókod aktiválásához add meg a kódot.",
       "codeNotReceived" : "Nem érkezett meg a kód?",
       "resendCode" : "Kód újraküldése",
       "verificationCode" : "Validációs Kód",
       "confirmAccount" : "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
-      "dialogConfirmedMessage": "A fiókod aktív, mostmár bejelentkezhetsz."
+      "dialogConfirmedMessage": "A fiókodod aktiválva."
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
