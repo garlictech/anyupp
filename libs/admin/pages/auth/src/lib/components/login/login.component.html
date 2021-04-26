@@ -1,22 +1,20 @@
-<nb-layout center>
-  <nb-layout-column>
-    <nb-card>
-      <nb-card-body>
-        <h1 class="title">
-          AnyUpp Login <sup>{{ env.name }}</sup>
-        </h1>
-
-        <div class="p-1">
-          <button
-            type="button"
-            id="sendlogin"
-            class="btn btn-primary"
-            (click)="openLoginUI()"
-          >
-            Login
-          </button>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </nb-layout-column>
-</nb-layout>
+<amplify-authenticator federated="">
+  <amplify-sign-in #title header-text="AnyUPP Admin" slot="sign-in">
+    <div slot="secondary-footer-content">
+      <input
+        type="text"
+        required
+        [ngModel]="context"
+        label="Context"
+        placeholder="Context"
+        (ngModelChange)="contextChanged($event)"
+      />
+    </div>
+    <img
+      width="20px"
+      slot="header-subtitle"
+      src="https://cdn.logo.com/hotlink-ok/logo-social-sq.png"
+    />
+    <div slot="federated-buttons"></div>
+  </amplify-sign-in>
+</amplify-authenticator>
