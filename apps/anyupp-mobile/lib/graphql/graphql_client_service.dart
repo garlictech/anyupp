@@ -39,13 +39,13 @@ class GraphQLClientService {
 
     String accessToken = await _authProvider.getAccessToken();
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
     // print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
     Map<String, String> headers;
     if (accessToken != null) {
       headers = {
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': accessToken, // 'Bearer $accessToken',
         'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {

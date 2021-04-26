@@ -5,34 +5,43 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:fa_prev/shared/locale/locale.dart';
 
-class SocialLoginScreen extends StatelessWidget {
+class SocialLoginScreen extends StatefulWidget {
   final String title;
   final String provider;
 
   static const SIGNIN_CALLBACK = 'anyupp://signin/';
   static const SIGNOUT_CALLBACK = 'anyupp://signout/';
 
-  final Completer<WebViewController> _webViewController = Completer<WebViewController>();
-
   SocialLoginScreen({Key key, this.title, this.provider}) : super(key: key);
+
+  @override
+  _SocialLoginScreenState createState() => _SocialLoginScreenState();
+}
+
+class _SocialLoginScreenState extends State<SocialLoginScreen> {
+  final Completer<WebViewController> _webViewController = Completer<WebViewController>();
+  String _error;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(widget.title),
         ),
-        body: getWebView(context));
+        body: _error != null ? _buildErrorScreen() : _buildWebView(context));
   }
 
-  Widget getWebView(BuildContext context) {
+  Widget _buildWebView(BuildContext context) {
     var url = '${AppConfig.UserPoolDomain}/oauth2/authorize?'
-        'identity_provider=$provider&'
-        'redirect_uri=$SIGNIN_CALLBACK&'
+        'identity_provider=${widget.provider}&'
+        'redirect_uri=${SocialLoginScreen.SIGNIN_CALLBACK}&'
         'response_type=CODE&'
         'client_id=${AppConfig.UserPoolClientId}&'
         'scope=email%20openid%20profile%20aws.cognito.signin.user.admin';
@@ -45,8 +54,8 @@ class SocialLoginScreen extends StatelessWidget {
       },
       navigationDelegate: (NavigationRequest request) {
         print('SocialLoginScreen.navigationDelegate().request=$request');
-        if (request.url.startsWith('$SIGNIN_CALLBACK?code=')) {
-          var code = request.url.substring('$SIGNIN_CALLBACK?code='.length);
+        if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+          var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
           // This is the authorization code!!!
           signUserInWithAuthCode(context, code);
           return NavigationDecision.prevent;
@@ -63,7 +72,7 @@ class SocialLoginScreen extends StatelessWidget {
         'grant_type=authorization_code&'
         'client_id=${AppConfig.UserPoolClientId}&'
         'code=$authCode&'
-        'redirect_uri=$SIGNIN_CALLBACK';
+        'redirect_uri=${SocialLoginScreen.SIGNIN_CALLBACK}';
     final response = await http.post(
       url,
       body: {},
@@ -74,22 +83,107 @@ class SocialLoginScreen extends StatelessWidget {
     print('SocialLoginScreen.signUserInWithAuthCode().response=${response.statusCode}');
     print('SocialLoginScreen.signUserInWithAuthCode().response.body=${response.body}');
     if (response.statusCode != 200) {
-      throw Exception('Received bad status code from Cognito for auth code:' +
-          response.statusCode.toString() +
-          '; body: ' +
-          response.body);
+      setState(() {
+        _error = '${response.statusCode}: ${response.body}';
+      });
+      return;
+      // throw Exception('Received bad status code from Cognito for auth code:' +
+      //     response.statusCode.toString() +
+      //     '; body: ' +
+      //     response.body);
     }
-    final tokenData = json.decode(response.body);
-    final idToken = CognitoIdToken(tokenData['id_token']);
-    final accessToken = CognitoAccessToken(tokenData['access_token']);
-    final refreshToken = CognitoRefreshToken(tokenData['refresh_token']);
-    print('SocialLoginScreen.signUserInWithAuthCode().idToken=$idToken');
-    print('SocialLoginScreen.signUserInWithAuthCode().accessToken=$accessToken');
-    print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=$refreshToken');
 
-    final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
-    AuthRepository repository = getIt<AuthRepository>();
-    await repository.loginWithCognitoSession(session);
-    Navigator.of(context).pop();
+    try {
+      final tokenData = json.decode(response.body);
+      final idToken = CognitoIdToken(tokenData['id_token']);
+      final accessToken = CognitoAccessToken(tokenData['access_token']);
+      final refreshToken = CognitoRefreshToken(tokenData['refresh_token']);
+      print('SocialLoginScreen.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
+      print('SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
+      print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
+
+      final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
+      AuthRepository repository = getIt<AuthRepository>();
+      await repository.loginWithCognitoSession(session);
+      Navigator.of(context).pop();
+    } on Exception catch (e) {
+      setState(() {
+        _error = 'UNKNOWN_ERROR: $e';
+      });
+    }
+  }
+
+  Widget _buildErrorScreen() {
+    return Container(
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              _error,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                color: Colors.red,
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF30BF60),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: Text(
+                trans('login.email.buttonLogin'),
+                softWrap: false,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: theme.text2,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  _error = null;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return Stack(
+      children: [
+        // BACKGROUND IMAGE
+        Positioned(
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          child: _buildBackground(),
+        ),
+        CenterLoadingWidget(),
+      ],
+    );
+  }
+
+  Widget _buildBackground() {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/anyapp_background.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        // Set gradient black in image splash screen
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 0.65),
+        ),
+      ),
+    );
   }
 }

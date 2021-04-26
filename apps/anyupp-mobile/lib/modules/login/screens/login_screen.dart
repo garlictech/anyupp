@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fa_prev/app.dart';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
