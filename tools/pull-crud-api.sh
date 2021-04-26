@@ -115,4 +115,5 @@ echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
+echo "Content:"
 cat $TABLE_CONFIG_NAME
