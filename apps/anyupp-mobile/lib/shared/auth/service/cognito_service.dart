@@ -46,8 +46,8 @@ class CognitoService {
     try {
       CognitoUser user = await this.currentUser;
       if (user != null) {
-        await user.signOut();
         await user.globalSignOut();
+        await user.signOut();
       }
 
       return true;

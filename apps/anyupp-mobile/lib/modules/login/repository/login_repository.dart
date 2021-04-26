@@ -102,4 +102,9 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   Future<void> sendPasswordResetEmail(String email) {
     return _emailLoginProvider.sendPasswordResetEmail(email);
   }
+
+  @override
+  Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode) {
+    return _socialLoginProvider.signUserInWithAuthCode(authCode);
+  }
 }
