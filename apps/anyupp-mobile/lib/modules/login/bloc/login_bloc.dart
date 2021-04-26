@@ -18,36 +18,42 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     print('*** LoginBloc().mapEventToState=$event');
     try {
 
-      // if (event is LoginWithMethod) {
-      //   yield ShowSocialLoginWebView(event.method);
-      //   return;
-      // }
+      if (event is LoginWithMethod) {
+        yield ShowSocialLoginWebView(event.method);
+        return;
+      }
+
+      if (event is CompleteLoginWithMethod) {
+        ProviderLoginResponse response = await _repository.signUserInWithAuthCode(event.code);
+         print('*** LoginBloc().federated.loginResponse=$response');
+        yield LoginSuccess();
+      }
 
       // --- Handle logins
-      if (event is LoginWithMethod) {
-        yield LoginInProgress();
+      // if (event is LoginWithMethod) {
+      //   yield LoginInProgress();
 
-        // --- HANDLE FEDERATED LOGINS (FACEBOOK, APPLE, GOOGLE)
-        if (_repository.isFederated(event.method)) {
-          print('*** LoginBloc().federated=${event.method}');
+      //   // --- HANDLE FEDERATED LOGINS (FACEBOOK, APPLE, GOOGLE)
+      //   if (_repository.isFederated(event.method)) {
+      //     print('*** LoginBloc().federated=${event.method}');
 
-          // --- Get provider specific auth Credential from the given provider
-          ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.method);
-          print('*** LoginBloc().federated.loginResponse=$loginResponse');
-          yield LoginSuccess();
-        } else {
-          // --- Handle not Federated logins (PHONE, Anonymous)
-          yield LoginInProgress();
+      //     // --- Get provider specific auth Credential from the given provider
+      //     ProviderLoginResponse loginResponse = await _repository.signInWithProvider(event.method);
+      //     print('*** LoginBloc().federated.loginResponse=$loginResponse');
+      //     yield LoginSuccess();
+      //   } else {
+      //     // --- Handle not Federated logins (PHONE, Anonymous)
+      //     yield LoginInProgress();
 
-          // --- Handle Anonymous login
-          if (event.method == LoginMethod.ANONYMOUS) {
-            await _repository.signInAnonymously();
-          }
+      //     // --- Handle Anonymous login
+      //     if (event.method == LoginMethod.ANONYMOUS) {
+      //       await _repository.signInAnonymously();
+      //     }
 
-          // Login success...
-          yield LoginSuccess();
-        }
-      }
+      //     // Login success...
+      //     yield LoginSuccess();
+      //   }
+      // }
 
       // --- Handle phone login (Require SMS code)
       if (event is LoginWithPhoneRequireSMSCode) {

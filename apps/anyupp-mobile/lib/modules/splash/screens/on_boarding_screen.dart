@@ -3,7 +3,7 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:flutter/material.dart';
-
+import 'package:rxdart/rxdart.dart';
 import 'splash_screen.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -21,8 +21,8 @@ class _OnBoardingState extends State<OnBoarding> {
       child: StreamBuilder<String>(
         stream: _authRepository
             .getAuthenticatedUserProfileStream()
-            .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED"),
-        //.delay(Duration(seconds: 2)),
+            .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
+            .delay(Duration(seconds: 2)), // TODO ki lehet venni...
         builder: (context, snapshot) {
           print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');
           if (snapshot.hasData) {
