@@ -1,5 +1,7 @@
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 import { Observable, of } from 'rxjs';
+
+import { switchMap } from 'rxjs/operators';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
 
 export const regenerateUnitData = ({
   unitId,
@@ -8,14 +10,17 @@ export const regenerateUnitData = ({
   unitId: string;
   crudGraphqlClient: GraphqlApiClient;
 }): Observable<boolean> => {
-  console.log(
-    '### ~ file: regenerate-unit-data.resolver.ts ~ line 11 ~ crudGraphqlClient',
-    crudGraphqlClient,
+  // TODO: clear previously generated products for the given UNIT
+  // TODO: list all unitProducts+groupProducts+chainProducts for the given UNIT
+  // TODO: merge + calculate actual Prize for all the unitProducts
+  // TODO: store generatedProducts in the db
+
+  return clearGeneratedProductsForAUnit({ unitId, crudGraphqlClient }).pipe(
+    switchMap(() =>
+      listProductsWith3LayerForAUnit({ unitId, crudGraphqlClient }),
+    ),
   );
-  console.log(
-    '### ~ file: regenerate-unit-data.resolver.ts ~ line 11 ~ unitId',
-    unitId,
-  );
+
   // // TODO: use geoSearch for the units
   // return listActiveUnits(crudGraphqlClient).pipe(
   //   switchMap(units =>
@@ -50,6 +55,26 @@ export const regenerateUnitData = ({
   //   ),
   //   map(x => ({ items: x })),
   // );
+  return of(true);
+};
+
+const clearGeneratedProductsForAUnit = ({
+  unitId,
+  crudGraphqlClient,
+}: {
+  unitId: string;
+  crudGraphqlClient: GraphqlApiClient;
+}) => {
+  return of(true);
+};
+
+const listProductsWith3LayerForAUnit = ({
+  unitId,
+  crudGraphqlClient,
+}: {
+  unitId: string;
+  crudGraphqlClient: GraphqlApiClient;
+}) => {
   return of(true);
 };
 
