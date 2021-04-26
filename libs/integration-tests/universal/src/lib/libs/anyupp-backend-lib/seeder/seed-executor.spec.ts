@@ -113,7 +113,7 @@ describe('Seeder test', () => {
     }, 25000);
   });
 
-  it('should run complete seeder', done => {
+  it.skip('should run complete seeder', done => {
     seedAdminUser(AWS_CRUD_CONFIG.aws_user_pools_id)
       .pipe(switchMap(userId => seedBusinessData(userId)))
       // .pipe(
