@@ -67,7 +67,7 @@ class Menu extends StatelessWidget {
             'assets/icons/qr_code_scanner.svg',
             color: theme.indicator,
           ),
-          onPressed: () => Nav.to(SelectUnitQRCodeScannerScreen()),
+          onPressed: null, // TODO visszatenni majd Firebase nelkul () => Nav.to(SelectUnitQRCodeScannerScreen()),
         ),
         IconButton(
           icon: Icon(

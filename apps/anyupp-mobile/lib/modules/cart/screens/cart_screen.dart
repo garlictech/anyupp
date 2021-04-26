@@ -206,7 +206,7 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => cart.place == null
-                      ? Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
+                      ? null // TODO visszatenni majd Firebase nelkul  Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
                       : showSelectPaymentMethodBottomSheet(context),
                   child: cart.place == null
                       ? SvgPicture.asset(
@@ -232,10 +232,10 @@ class CartScreen extends StatelessWidget {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
-          child: CartListItemWidget(
-            unit: unit,
-            order: order,
-          ),
+        child: CartListItemWidget(
+          unit: unit,
+          order: order,
+        ),
         // child: Dismissible(
         //   key: Key(order.id.toString()),
         //   child: CartListItemWidget(

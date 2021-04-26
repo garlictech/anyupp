@@ -118,12 +118,13 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
             child: IconButton(
-              icon: Icon(Icons.refresh,
+              icon: Icon(
+                Icons.refresh,
                 color: Colors.black,
-               ),
+              ),
               onPressed: () {
                 // Nav.to(DataStoreDemoScreen());
-                 getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
               },
             ),
           ),
@@ -223,7 +224,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return InkWell(
       highlightColor: theme.indicator.withAlpha(128),
       hoverColor: theme.indicator.withAlpha(128),
-      onTap: () => Nav.to(SelectUnitQRCodeScannerScreen()),
+      onTap: null, // TODO visszatenni majd Firebase nelkul () => Nav.to(SelectUnitQRCodeScannerScreen()),
       // onTap: () => navigateTo(
       //             context,
       //             (_, __, ___) => UnitFoundByQRCodeScreen(
