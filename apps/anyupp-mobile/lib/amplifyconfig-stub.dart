@@ -2,8 +2,6 @@ import 'package:fa_prev/app-config.dart';
 
 String getAmplifyConfig() {
   String webDomain = Uri.parse(AppConfig.UserPoolDomain).host;
-  print('getAmplifyConfig().webDomain=$webDomain');
-
   return '''{
     "UserAgent": "aws-amplify-cli/2.0",
     "Version": "1.0",

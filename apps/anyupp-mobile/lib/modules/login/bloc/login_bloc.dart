@@ -111,24 +111,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle registration with email and password
       if (event is RegisterWithEmailAndPassword) {
         yield LoginInProgress();
-        getIt<LoginBloc>().add(SignUpErrorOccured("test", "test"));
-        // bool res = await _repository.registerUserWithEmailAndPassword(
-        //     event.email, event.password);
-        // if (res) {
-        // getIt<LoginBloc>().add(ChangeEmailFormUI(
-        //     ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-        //     animationCurve: Curves.easeIn));
-        // yield EmailFormUIChange(
-        //   ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-        //   animationDuration: Duration(milliseconds: 350),
-        //   animationCurve: Curves.bounceInOut,
-        // );
-        // await Future.delayed(Duration(seconds: 1));
-        // yield UserCreated();
-
-        // }
+        // getIt<LoginBloc>().add(SignUpErrorOccured("test", "test"));
+        bool res = await _repository.registerUserWithEmailAndPassword(
+            event.email, event.password);
+        if (res) {
+          getIt<LoginBloc>().add(ChangeEmailFormUI(
+              ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+              animationCurve: Curves.easeIn));
+          yield EmailFormUIChange(
+            ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
+            animationDuration: Duration(milliseconds: 350),
+            animationCurve: Curves.bounceInOut,
+          );
+          await Future.delayed(Duration(seconds: 1));
+          yield UserCreated();
+        }
         //print('**** LoginBloc.RegisterWithEmailAndPassword().finish()=$response');
-        //yield EmailRegistrationSuccess(event.email);
+        yield EmailRegistrationSuccess(event.email);
       }
       if (event is SignUpConfirm) {
         yield ConfirmCodeState(event.user);
@@ -208,6 +207,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         getIt<ExceptionBloc>().add(ShowException(le));
         yield LoginError(le.code, le.message);
       }
+    } on SignUpException catch (se) {
+      print('********* SignUpBloc.Exception()=$se');
+      getIt<ExceptionBloc>().add(ShowException(se));
+      yield SignUpError(se.code, se.message);
     } on Exception catch (e) {
       print('********* LoginBloc.Exception()=$e');
       getIt<ExceptionBloc>().add(ShowException(

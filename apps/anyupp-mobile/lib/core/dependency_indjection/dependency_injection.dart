@@ -1,4 +1,3 @@
-import 'package:fa_prev/app.dart';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -37,7 +36,7 @@ void _initCommon() {
 
   final Stripe stripe = Stripe(
     AppConfig.StripePublishableKey,
-    // returnUrlForSca: awsConfig['stripeReturnUrlForSca'] ?? 'todo',
+    returnUrlForSca: 'anyupp://stripe' ?? 'todo', // TODO
   );
 
   final CognitoService cognitoService = CognitoService(
@@ -52,7 +51,7 @@ void _initCommon() {
 
 void _initProviders() {
   // Providers
-  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider());
+  getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
   getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
         getIt<IAuthProvider>(),
@@ -63,10 +62,14 @@ void _initProviders() {
       () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
-  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
+        getIt<IAuthProvider>(),
+        getIt<CognitoService>(),
+      ));
   getIt.registerLazySingleton<IPhoneLoginProvider>(() => AwsPhoneLoginProvider());
   getIt.registerLazySingleton<IEmailLoginProvider>(() => AwsEmailLoginProvider(
         getIt<IAuthProvider>(),
+        getIt<CognitoService>(),
       ));
 
   // Login providers AWS

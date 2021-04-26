@@ -5,6 +5,7 @@ import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -564,7 +565,11 @@ class _LoginScreenState extends State<LoginScreen>
               //    getIt<LoginBloc>().add(LoginWithEmailAndPassword(null, null)); // TODO AWS WEB UI
 
             } else {
-              getIt<LoginBloc>().add(LoginWithMethod(method));
+              // getIt<LoginBloc>().add(LoginWithMethod(method));
+              Nav.to(SocialLoginScreen(
+                title: 'Facebook',
+                provider: 'Facebook',
+              ));
             }
           }),
     );

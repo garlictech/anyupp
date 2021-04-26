@@ -3,7 +3,7 @@ import { cartSeed } from '../fixtures/cart';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import {
-  amplifyGraphQlClient,
+  crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
@@ -11,7 +11,7 @@ import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 export const createTestCart = (
   overwrites: Partial<CrudApi.CreateCartInput> = {},
 ) =>
-  executeMutation(amplifyGraphQlClient)<CrudApi.CreateCartMutation>(
+  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateCartMutation>(
     CrudApiMutationDocuments.createCart,
     {
       input: {
@@ -31,7 +31,7 @@ export const createTestCart = (
   );
 
 export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
-  executeMutation(amplifyGraphQlClient)<CrudApi.DeleteCartMutation>(
+  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteCartMutation>(
     CrudApiMutationDocuments.deleteCart,
     {
       input: { id },

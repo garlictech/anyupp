@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateUnitProduct tests should require authentication to access 1`] = `[Error: GraphQL error: Not Authorized to access createUnitProduct on type Mutation]`;
+
+exports[`CreateUnitProduct tests with authenticated user should create unitProduct in the database 1`] = `
+Object {
+  "__typename": "UnitProduct",
+  "chainId": "chain_1_id",
+  "groupId": "group_c1_1_id",
+  "id": "unit_product_1_id",
+  "isVisible": true,
+  "laneId": null,
+  "parentId": "PARENT_ID",
+  "position": 0,
+  "takeaway": false,
+  "unitId": "unit_c1_g1_1_id",
+  "variants": Array [
+    Object {
+      "__typename": "ProductVariant",
+      "availabilities": Array [
+        Object {
+          "__typename": "Availability",
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 60,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "VARIANT_ID",
+      "isAvailable": true,
+      "pack": Object {
+        "__typename": "ProductVariantPack",
+        "size": 2,
+        "unit": "dl",
+      },
+      "position": 1,
+      "price": 11,
+      "refGroupPrice": null,
+      "variantName": Object {
+        "__typename": "LocalizedItem",
+        "de": null,
+        "en": "glass",
+        "hu": "pohár",
+      },
+    },
+  ],
+}
+`;

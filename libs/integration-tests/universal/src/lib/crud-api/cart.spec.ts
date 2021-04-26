@@ -1,15 +1,25 @@
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import { cartSeed } from '../fixtures/cart';
 import {
-  amplifyGraphQlClient,
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedCrudGraphQLClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createTestCart, deleteTestCart } from '../seeds/cart';
+import { testAdminUsername, testAdminUserPassword } from '../fixtures/user';
 
 describe('getCart test', () => {
+  let authHelper: AuthenticatdGraphQLClientWithUserId;
+
   beforeAll(async () => {
+    authHelper = await createAuthenticatedCrudGraphQLClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
+
     await combineLatest([
       // CleanUP
       deleteTestCart(),
@@ -22,8 +32,9 @@ describe('getCart test', () => {
       )
       .toPromise();
   }, 15000);
+
   it('successful query execution', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
       { id: cartSeed.cart_01.id },
     ).subscribe({
@@ -34,7 +45,7 @@ describe('getCart test', () => {
     });
   }, 15000);
   it('should return null for a not existing item', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
       { id: cartSeed.cartId_NotExisting },
     ).subscribe({
@@ -45,7 +56,7 @@ describe('getCart test', () => {
     });
   }, 10000);
   it('should throw error without id as input', done => {
-    executeQuery(amplifyGraphQlClient)<CrudApi.GetCartQuery>(
+    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
     ).subscribe({
       error(e) {

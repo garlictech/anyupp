@@ -9,6 +9,8 @@ class SignUpException extends AppException {
 
   static const INVALID_PASSWORD = 'INVALID_PASSWORD';
 
+   static const USER_EXISTS = 'USER_ALREADY_EXISTS';
+
   SignUpException({
     code,
     subCode,
@@ -25,8 +27,8 @@ class SignUpException extends AppException {
     );
   }
 
-  factory SignUpException.fromException(String code, Exception e) {
-    return SignUpException(code: SignUpException.CODE, subCode: code, message: e.toString(), details: e.runtimeType);
+  factory SignUpException.fromException(String code, String message, Exception e) {
+    return SignUpException(code: SignUpException.CODE, subCode: code, message: message, details: e.runtimeType);
   }
 
   @override

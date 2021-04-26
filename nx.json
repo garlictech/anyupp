@@ -176,6 +176,9 @@
     },
     "cicd": {
       "tags": ["type:backend", "platform:nodejs"]
+    },
+    "anyupp-backend-lib": {
+      "tags": ["type:backend", "platform:universal"]
     }
   }
 }

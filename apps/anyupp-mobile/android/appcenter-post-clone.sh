@@ -8,6 +8,9 @@ set -e
 # debug log
 set -x
 
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+
 cd ..
 git clone -b beta https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
@@ -16,6 +19,12 @@ flutter channel stable
 flutter doctor
 
 echo "Installed flutter to `pwd`/flutter"
+
+\ARTIFACT_NAME=$(git rev-parse HEAD).tgz
+echo "***** Teh build: ${APPCENTER_BRANCH}/${ARTIFACT_NAME}"
+
+aws s3 cp s3://anyupp-build-artifacts-${APPCENTER_BRANCH}/${ARTIFACT_NAME} .
+tar -zxf ${ARTIFACT_NAME}
 
 # build APK
 # if you get "Execution failed for task ':app:lintVitalRelease'." error, uncomment next two lines
@@ -27,7 +36,6 @@ flutter build apk --release
 #flutter build appbundle --release --build-number $APPCENTER_BUILD_ID
 
 # copy the APK where AppCenter will find it
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_
+cd apps/anyupp-mobile
+mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/flutter-apk/app-release.apk $_
 
-# copy the AAB where AppCenter will find it
-#mkdir -p android/app/build/outputs/bundle/; mv build/app/outputs/bundle/release/app-release.aab $_

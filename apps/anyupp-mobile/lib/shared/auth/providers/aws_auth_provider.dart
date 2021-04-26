@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 
@@ -15,45 +12,68 @@ import 'auth_provider_interface.dart';
 class AwsAuthProvider implements IAuthProvider {
   StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
-  CognitoCredentials _credentials;
-  // final CognitoService _service;
+  CognitoUser _cognitoUser;
+  final CognitoService _service;
 
-
-  AwsAuthProvider() {
+  AwsAuthProvider(this._service) {
     print('AwsAuthProvider().constructor()');
     getAuthenticatedUserProfile();
   }
 
-  CognitoCredentials get credentials => _credentials;
-
   @override
   Future<User> getAuthenticatedUserProfile() async {
     try {
-      // print('getAuthenticatedUserProfile().user=$_user');
-      if (_credentials != null && _user != null) {
+      // CognitoUser user = await _service.currentUser;
+      print('getAuthenticatedUserProfile().user=$_user');
+      if (_user != null) {
         return _user;
       }
-      _userController.add(null);
-      return null;
-
+      if (_user == null) {
+        _cognitoUser = null;
+        _user = null;
+        _userController.add(null);
+        return null;
+      }
+      return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
+      _user = null;
+      _cognitoUser = null;
       _userController.add(null);
       return null;
     } on Error catch (e) {
       print('getAuthenticatedUserProfile().error=$e');
+      _user = null;
+      _cognitoUser = null;
       _userController.add(null);
       return null;
     }
   }
 
-  Future<void> setCredentials(User user, CognitoCredentials credentials) async {
-    _credentials = credentials;
-    _user = user;
-    _userController.add(_user);
+  @override
+  Future<User> loginWithCognitoSession(CognitoUserSession session) async {
+    print('loginWithCognitoSession().session=$session');
+    try {
+      _cognitoUser = await _service.createCognitoUserFromSession(session);
+      print('loginWithCognitoSession().cognitoUser=$_cognitoUser');
+      _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+      print('loginWithCognitoSession().user=$_user');
+      _userController.add(_user);
+    } on Exception catch (e) {
+      print('loginWithCognitoSession().error=$e');
+      _cognitoUser = null;
+      _user = null;
+      _userController.add(_user);
+    }
     return _user;
   }
 
+  // Future<void> setCredentials(User user, CognitoCredentials credentials) async {
+  //   _credentials = credentials;
+  //   _user = user;
+  //   _userController.add(_user);
+  //   return _user;
+  // }
 
   // @override
   // Future<User> getAuthenticatedUserProfile() async {
@@ -103,56 +123,6 @@ class AwsAuthProvider implements IAuthProvider {
   //   }
   // }
 
-  // @override
-  // Future<User> getAuthenticatedUserProfile() async {
-  //   print('getAuthenticatedUserProfile().user=$_user');
-  //   try {
-  //     // AuthUser u = await Amplify.Auth.getCurrentUser();
-  //     // print('getAuthenticatedUserProfile().getCurrentUser=$u');
-
-  //     // _user = null;
-  //     CognitoUserSession session = await _service.getSession;
-  //     // CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
-  //     //   options: CognitoSessionOptions(getAWSCredentials: false),
-  //     // );
-  //     print('getAuthenticatedUserProfile().session.isSignedIn=${session?.isValid()}');
-  //     if (session == null) {
-  //       _user = null;
-  //       _userController.add(_user);
-  //       return null;
-  //     }
-  //     if (session.isValid()) {
-  //       if (session.idToken != null) {
-  //         print('getAuthenticatedUserProfile().idToken=${session.idToken}');
-  //         print('getAuthenticatedUserProfile().refreshToken=${session.refreshToken}');
-  //         print('getAuthenticatedUserProfile().accessToken=${session.accessToken}');
-  //       }
-
-  //       if (_user == null) {
-  //         CognitoUser user = await _service.currentUser;
-  //         _user = _userFromAttributes(await user.getUserAttributes());
-  //       } else {
-  //         // don't need to call _userController.add(_user);
-  //         return _user;
-  //       }
-  //     } else {
-  //       _user = null;
-
-  //     }
-  //     print('getAuthenticatedUserProfile().final.user=$_user');
-  //     _userController.add(_user);
-  //     return _user;
-  //   } on Exception catch (e) {
-  //     print('getAuthenticatedUserProfile().exception=$e');
-  //     _userController.add(null);
-  //     return null;
-  //   } on Error catch (e) {
-  //     print('getAuthenticatedUserProfile().error=$e');
-  //     _userController.add(null);
-  //     return null;
-  //   }
-  // }
-
   @override
   Stream<User> getAuthenticatedUserProfileStream() => _userController.stream;
 
@@ -166,22 +136,22 @@ class AwsAuthProvider implements IAuthProvider {
     await getAuthenticatedUserProfile();
   }
 
-  User _userFromAttributes(List<AuthUserAttribute> attributes) {
+  User _userFromAttributes(List<CognitoUserAttribute> attributes) {
     String email, name, id, login;
 
     for (int i = 0; i < attributes.length; i++) {
-      AuthUserAttribute a = attributes[i];
+      CognitoUserAttribute a = attributes[i];
       //print('\t attr[${a.userAttributeKey}]=${a.value}');
-      if (a.userAttributeKey == 'email') {
+      if (a.name == 'email') {
         email = a.value;
         name = email.split('@').first;
         continue;
       }
-      if (a.userAttributeKey == 'sub') {
+      if (a.name == 'sub') {
         id = a.value;
         continue;
       }
-      if (a.userAttributeKey == 'identities') {
+      if (a.name == 'identities') {
         List<dynamic> json = jsonDecode(a.value);
         login = json[0]['providerType'];
         continue;
@@ -228,15 +198,11 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<String> getAccessToken() async {
+    print('***** getAccessToken()');
     try {
-      CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
-        options: CognitoSessionOptions(getAWSCredentials: true),
-      );
-      // print('***** getAccessToken()=${session.userPoolTokens?.accessToken}');
-      // if (isTokenValid(session.userPoolTokens.accessToken)) {
-      //  return session.userPoolTokens?.accessToken;
-      // }
-      return session.userPoolTokens?.accessToken;
+      CognitoUserSession session = await _service.session;
+      print('***** getAccessToken().session=$session');
+      return session?.accessToken?.jwtToken;
     } on Exception catch (e) {
       print('***** getAccessToken().error=$e');
       return null;
@@ -246,11 +212,8 @@ class AwsAuthProvider implements IAuthProvider {
   @override
   Future<String> getIdToken() async {
     try {
-      CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
-        options: CognitoSessionOptions(getAWSCredentials: true),
-      );
-      // print('***** getIdToken()=${session.userPoolTokens?.idToken}');
-      return session.userPoolTokens?.idToken;
+      CognitoUserSession session = await _service.session;
+      return session?.idToken?.jwtToken;
     } on Exception catch (e) {
       print('***** getIdToken().error=$e');
       return null;
@@ -260,61 +223,7 @@ class AwsAuthProvider implements IAuthProvider {
   @override
   Future<void> clearUserSession() async {
     _user = null;
+    _cognitoUser = null;
     _userController.add(_user);
-  }
-
-  bool isTokenValid(String token) {
-    if (DateTime.now().add(Duration(minutes: 5)).isBefore(tokenExpiration(token))) {
-      return true;
-    }
-    return false;
-  }
-
-  DateTime tokenExpiration(String token) {
-    final parts = token.split('.');
-
-    if (parts.length != 3) {
-      throw GraphQLException(
-        code: GraphQLException.CODE,
-        subCode: 'AWS_INVALID_TOKEN',
-        message: 'Token format not valid. Token must contains 3 part, separated by .(dot)!',
-      );
-    }
-
-    final payloadMap = json.decode(_decodeBase64(parts[1]));
-
-    if (payloadMap is! Map<String, dynamic>) {
-      throw GraphQLException(
-        code: GraphQLException.CODE,
-        subCode: 'AWS_INVALID_TOKEN_PAYLOAD',
-        message: 'Token payload is not valid. Token payload must a valid base64 encoded JSON string!',
-      );
-    }
-    print('**** tokenExpiration.token=$token, exp=${payloadMap['exp'] * 1000}');
-
-    return DateTime.fromMillisecondsSinceEpoch(payloadMap['exp'] * 1000);
-  }
-
-  String _decodeBase64(String str) {
-    var output = str.replaceAll('-', '+').replaceAll('_', '/');
-
-    switch (output.length % 4) {
-      case 0:
-        break;
-      case 2:
-        output += '==';
-        break;
-      case 3:
-        output += '=';
-        break;
-      default:
-        throw GraphQLException(
-          code: GraphQLException.CODE,
-          subCode: 'AWS_INVALID Base64 String',
-          message: 'Token is not in a valid base64 format!',
-        );
-    }
-
-    return utf8.decode(base64Url.decode(output));
   }
 }
