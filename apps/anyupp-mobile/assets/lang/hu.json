@@ -47,13 +47,13 @@
       "dialogResetSentTitle": "Jelszó frissítve",
       "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
       "closeButton": "Bezárás",
-      "setMailTo" : "A kódot elküldtük a megadott email címre",
-      "checkInbox" : "Ellenőrizd a bejövő leveleidet!",
-      "enterToConfirm" : "A fiókod aktiválásához add meg a kódot.",
-      "codeNotReceived" : "Nem érkezett meg a kód?",
-      "resendCode" : "Kód újraküldése",
-      "verificationCode" : "Validációs Kód",
-      "confirmAccount" : "Fiók Aktiválása",
+      "setMailTo": "A kódot elküldtük a megadott email címre",
+      "checkInbox": "Ellenőrizd a bejövő leveleidet!",
+      "enterToConfirm": "A fiókod aktiválásához add meg a kódot.",
+      "codeNotReceived": "Nem érkezett meg a kód?",
+      "resendCode": "Kód újraküldése",
+      "verificationCode": "Validációs Kód",
+      "confirmAccount": "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
       "dialogConfirmedMessage": "A fiókodod aktiválva."
     },
@@ -341,9 +341,33 @@
       "title": "Login error",
       "description": "The given password is invalid."
     },
+    "INVALID_CREDENTIALS": {
+      "title": "Sign up error",
+      "description": "Invalid user or password. Try again."
+    },
     "ERROR_MISSING_EMAIL": {
       "title": "Login error",
       "description": "An email address must be provided."
+    },
+    "INVALID_PASSWORD": {
+      "title": "Sign up error",
+      "description": "Password did not conform with policy"
+    },
+    "INVALID_CONFIRMATION_CODE": {
+      "title": "Sign up error",
+      "description": "The given confirmation code is invalid, try to resend it"
+    },
+    "EXPIRED_CONFIRMATION_CODE" : {
+      "title" : "Invalid code",
+      "description" : "Invalid code provided, please request a code again."
+    },
+    "NOT_EMAIL_OR_PHONE" : {
+      "title" : "Sign up error",
+      "description" : "Username should be either an email or a phone number."
+    },
+    "USER_EMAIL_NOT_SAME" : {
+      "title" : "Sign up error",
+      "description" : "User email should be empty or same as username, since username attribute is email."
     }
   }
 }

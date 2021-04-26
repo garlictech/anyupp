@@ -1,5 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +43,8 @@ class _EmailRegisterDialogContentWidgetState
         }
         // print('PhoneDialogContentWidget.bloc.state=$state');
 
-        if (state is LoginInProgress) {
-          return _buildLoading(context,
-              message: trans('login.email.loginProgress'));
+        if (state is EmailLoginInProgress) {
+          return _buildLoading(context);
         }
 
         return _buildRegistrationForm(context);
@@ -168,8 +169,34 @@ class _EmailRegisterDialogContentWidgetState
     print('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-    getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
-        _emailController.text, _password1Controller.text));
+      bool isPhone = false;
+      if (LoginFormUtils.phoneValidator(context)
+              .call(_emailOrPhoneController.text) ==
+          null) {
+        isPhone = true;
+      }
+      bool isEmail = false;
+      if (LoginFormUtils.emailValidator(context)
+              .call(_emailOrPhoneController.text) ==
+          null) {
+        isEmail = true;
+      }
+      if (!isPhone && !isEmail) {
+        getIt<ExceptionBloc>().add(ShowException(SignUpException(
+            code: SignUpException.CODE,
+            subCode: SignUpException.NOT_EMAIL_OR_PHONE)));
+      } else if (isEmail &&
+          (_emailOrPhoneController.text != _emailController.text)) {
+        getIt<ExceptionBloc>().add(ShowException(SignUpException(
+            code: SignUpException.CODE,
+            subCode: SignUpException.USER_EMAIL_NOT_SAME)));
+      } else {
+        getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+            userEmail: isEmail ? _emailOrPhoneController.text : null,
+            userPhone: isPhone ? _emailOrPhoneController.text : null,
+            email: _emailController.text,
+            password: _password1Controller.text));
+      }
     }
   }
 }

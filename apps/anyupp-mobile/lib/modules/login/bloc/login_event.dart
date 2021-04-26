@@ -125,6 +125,25 @@ class StartLoginWithEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class ConfirmRegistration extends LoginEvent {
+  final String user;
+  final String code;
+
+  ConfirmRegistration(this.user, this.code);
+
+  @override
+  List<Object> get props => [user, code];
+}
+
+class ResendConfirmationCode extends LoginEvent {
+  final String user;
+
+  ResendConfirmationCode(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class SignUpConfirm extends LoginEvent {
   final String user;
 
@@ -162,10 +181,13 @@ class LoginWithEmailAndPassword extends LoginEvent {
 }
 
 class RegisterWithEmailAndPassword extends LoginEvent {
+  final String userEmail;
+  final String userPhone;
   final String email;
   final String password;
 
-  const RegisterWithEmailAndPassword(this.email, this.password);
+  const RegisterWithEmailAndPassword(
+      {this.userEmail, this.userPhone, this.email, this.password});
 
   @override
   List<Object> get props => [email, password];

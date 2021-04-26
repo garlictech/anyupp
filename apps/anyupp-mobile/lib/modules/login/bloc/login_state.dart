@@ -47,6 +47,20 @@ class LoginInProgress extends LoginState {
   List<Object> get props => [];
 }
 
+class EmailLoginInProgress extends LoginState {
+  const EmailLoginInProgress();
+
+  @override
+  List<Object> get props => [];
+}
+
+class PasswordResetInProgress extends LoginState {
+  const PasswordResetInProgress();
+
+  @override
+  List<Object> get props => [];
+}
+
 class LoginError extends LoginState {
   final String code;
   final String message;

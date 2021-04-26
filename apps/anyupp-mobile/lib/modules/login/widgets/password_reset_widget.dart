@@ -26,11 +26,15 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (BuildContext context, LoginState state) {
         if (state is LoginInProgress) {
-          return _buildLoading(context, message: trans('login.email.sendPasswordResetMessage'));
+          return _buildLoading(context,
+              message: trans('login.email.sendPasswordResetMessage'));
         }
 
         if (state is PasswordResetEmailSent) {
           return _buildEmailSentInfo(context);
+        }
+        if (state is PasswordResetInProgress) {
+          return _buildLoading(context);
         }
 
         return _buildResetPasswordForm(context);
@@ -82,8 +86,9 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                     // Sing in link button
                     InkWell(
                       onTap: () {
-                        getIt<LoginBloc>().add(
-                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                        getIt<LoginBloc>().add(ChangeEmailFormUI(
+                            ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                            animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),
@@ -133,7 +138,8 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
   }
 
   Widget _buildEmailSentInfo(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           padding: EdgeInsets.all(12.0),
@@ -152,16 +158,31 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                 ),
               ),
               // Phone number input field
-              Center(
-                child: Container(
-                    margin: EdgeInsets.only(top: 16.0, bottom: 26.0),
-                    child: Text(
-                      trans('login.email.dialogResetSentMessage'),
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18.0,
-                      ),
-                    )),
+              Container(
+                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                  child: Text(
+                    trans('login.email.dialogResetSentMessage'),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.0,
+                    ),
+                  )),
+              InkWell(
+                onTap: () {
+                  getIt<LoginBloc>().add(ChangeEmailFormUI(
+                      ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                      animationCurve: Curves.easeIn));
+                },
+                child: Text(
+                  trans('login.email.signIn'),
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    color: theme.highlight,
+                    fontWeight: FontWeight.normal,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
               // Buttons
             ],

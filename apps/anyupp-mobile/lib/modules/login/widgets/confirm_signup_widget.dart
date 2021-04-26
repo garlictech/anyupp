@@ -142,12 +142,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                           ),
                           InkWell(
                             onTap: () async {
-                              FocusScope.of(context).unfocus();
-                              getIt<LoginBloc>().add(CodeReSendining());
-                              await Future.delayed(Duration(seconds: 1));
-                              getIt<LoginBloc>()
-                                  .add(SentConfirmCodeEmail(user));
-                               getIt<LoginBloc>().add(SignUpConfirm(user));
+                              _resendCode(user);
                             },
                             child: Text(
                               trans('login.email.resendCode'),
@@ -281,12 +276,16 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
   }
 
   void _confirmSigInCode(String user) {
-    getIt<LoginBloc>().add(SignUpConfirmed());
-    // print('_confirmSigInCode()=${_confirmCodeController.text}');
-    // if (_formKey.currentState.validate()) {
-    //   _formKey.currentState.save();
-    //   getIt<LoginBloc>()
-    //       .add(SendPasswordResetEmail(_confirmCodeController.text));
-    // }
+    print('_confirmSigInCode()=${_confirmCodeController.text}');
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      getIt<LoginBloc>()
+          .add(ConfirmRegistration(user, _confirmCodeController.text));
+    }
+  }
+
+  void _resendCode(String user) {
+    print('_resendCode');
+    getIt<LoginBloc>().add(ResendConfirmationCode(user));
   }
 }

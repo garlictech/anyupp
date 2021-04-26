@@ -99,4 +99,9 @@ class LoginFormUtils {
         PatternValidator(r'(?=.*?[#?!@$%^&*-])',
             errorText: 'passwords must have at least one special character'),
       ]);
+
+  static FieldValidator phoneValidator(BuildContext context) => MultiValidator([
+        PatternValidator(r'^\+(?:[0-9]●?){6,14}[0-9]$',
+            errorText: "enter a valid phone number")
+      ]);
 }

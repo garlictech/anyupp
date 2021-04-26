@@ -77,7 +77,22 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     } on CognitoClientException catch (e) {
       // handle Wrong Username and Password and Cognito Client
       print('loginWithEmailAndPassword.CognitoClientException=$e');
-      rethrow;
+      if (e.code == 'UserNotConfirmedException') {
+        throw LoginException(
+            code: e.code,
+            message: email,
+            subCode: LoginException.UNCONFIRMED,
+            details: e.runtimeType);
+      }
+      if (e.code == 'NotAuthorizedException') {
+        throw LoginException(
+            code: e.code,
+            message: email,
+            subCode: LoginException.INVALID_CREDENTIALS,
+            details: e.runtimeType);
+      } else {
+        rethrow;
+      }
     } catch (e) {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
@@ -85,13 +100,23 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
 
   @override
   Future<bool> registerUserWithEmailAndPassword(
-      String email, String password) async {
+      String userEmail, String userPhone, String email, String password) async {
     try {
-      CognitoUserPoolData userPoolData = await _service.userPool.signUp(
-        email,
-        password,
-      );
-      return Future.value(userPoolData.userConfirmed);
+      List<AttributeArg> attributes = [];
+      if (userPhone != null) {
+        attributes.add(
+          AttributeArg(name: 'phone_number', value: userPhone),
+        );
+      }
+      if (userEmail != null) {
+        attributes.add(AttributeArg(name: 'email', value: userEmail));
+      }
+      CognitoUserPoolData userPoolData = await _service.userPool
+          .signUp(email, password, userAttributes: attributes);
+
+      if (userPoolData.user != null) {
+        return Future.value(true);
+      }
     } on CognitoClientException catch (e) {
       if (e.code == 'UsernameExistsException') {
         throw SignUpException.fromException(
@@ -99,35 +124,72 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       }
       if (e.code == 'InvalidPasswordException') {
         throw SignUpException.fromException(
-            SignUpException.USER_EXISTS, e.message, e);
+            SignUpException.INVALID_PASSWORD, e.message, e);
       }
+
       print(e.code);
     } on Exception catch (e) {
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
+    return Future.value(false);
 
     // TODO: implement registerUserWithEmailAndPassword
   }
 
   @override
-  Future<bool> confirmSignUp(String code, String userName) async {
-    // try {
-
-    // //   SignUpResult res = await _service Auth.confirmSignUp(
-    // //       confirmationCode: code, username: userName);
-    // //   return res.isSignUpComplete;
-    // // } on Exception catch (e) {
-    // //   throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
-    // }
-
-    // TODO: implement registerUserWithEmailAndPassword
+  Future<bool> confirmSignUp(
+    String userName,
+    String code,
+  ) async {
+    CognitoUser user = _service.createCognitoUser(userName);
+    bool registrationConfirmed = false;
+    try {
+      registrationConfirmed = await user.confirmRegistration(code);
+    } on CognitoClientException catch (e) {
+      if (e.code == 'ExpiredCodeException') {
+        throw SignUpException(
+            code: SignUpException.CODE,
+            subCode: SignUpException.INVALID_CONFIRMATION_CODE,
+            message: userName);
+      }
+    } on Exception catch (e) {
+      throw SignUpException.fromException(
+          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+    }
+    return Future.value(registrationConfirmed);
   }
 
   @override
-  Future<void> sendPasswordResetEmail(String email) {
-    // TODO: implement sendPasswordResetEmail
-    throw UnimplementedError();
+  Future<bool> resendConfirmationCode(String userName) async {
+    CognitoUser user = _service.createCognitoUser(userName);
+    bool codeResent = false;
+    try {
+      final status = await user.resendConfirmationCode();
+      if (status != null) {
+        codeResent = true;
+      }
+    } on Exception catch (e) {
+      throw SignUpException.fromException(
+          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+    }
+    return Future.value(codeResent);
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail(String userName) async {
+    CognitoUser user = _service.createCognitoUser(userName);
+    bool passwordResent = false;
+    try {
+      final data = await user.forgotPassword();
+      if (data != null) {
+        passwordResent = true;
+      }
+    } on Exception catch (e) {
+      throw SignUpException.fromException(
+          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+    }
+    return Future.value(passwordResent);
   }
 
   @override
