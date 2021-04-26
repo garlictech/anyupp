@@ -9,10 +9,13 @@ import {
 } from '@bgap/integration-tests/universal';
 
 describe('Testing cognito service', () => {
-  const service = new CognitoService();
-  const goodContext = 'GOOD_CONTEXT';
+  const dataService = {
+    initDataConnections: jest.fn()
+  };
+  const service = new CognitoService(<any>dataService);
+
+  const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
-  const goodGroupId = 'MY GROUP ID';
 
   beforeAll(() => {
     configureAmplifyWithUserPasswordAuthFlow();
@@ -28,12 +31,12 @@ describe('Testing cognito service', () => {
         tap((auth: CognitoUser) => {
           const token = auth?.getSignInUserSession()?.getIdToken();
           const decoded = token?.decodePayload();
-          expect(decoded?.groupId).toEqual(goodGroupId);
+          expect(decoded?.role).toEqual('superuser');
           expect(decoded?.['custom:context']).toEqual(goodContext);
         }),
       )
       .subscribe(() => done());
-  });
+  }, 15000);
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;

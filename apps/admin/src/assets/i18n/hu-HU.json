@@ -260,7 +260,8 @@
     "forgottenPassword": "Elfelejtett jelszó",
     "sendResetEmail": "Jelszó visszaállítás email küldése",
     "reminderSent": "Emlékeztető elküldve",
-    "reminderError": "Hiba az emlékeztető elküldésekor"
+    "reminderError": "Hiba az emlékeztető elküldésekor",
+    "confirmLogout": "Biztosan kijelentkezel?"
   },
   "roles": {
     "role": "Jog",

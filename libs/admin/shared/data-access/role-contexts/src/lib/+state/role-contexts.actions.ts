@@ -1,5 +1,4 @@
-import { IRoleContext } from 'libs/shared/types/src';
-
+import { IRoleContext } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
 
 export const init = createAction('[RoleContexts Page] Init');

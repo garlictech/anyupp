@@ -1,7 +1,7 @@
-import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
 import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -11,6 +11,7 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-admin-user-list',
   templateUrl: './admin-user-list.component.html',
   styleUrls: ['./admin-user-list.component.scss'],
@@ -21,7 +22,7 @@ export class AdminUserListComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService,
+    private _nbDialogService: NbDialogService
   ) {
     this.adminUsers$ = this._store.pipe(
       select(adminUsersSelectors.getAllAdminUsers),

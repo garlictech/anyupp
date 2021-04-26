@@ -8,8 +8,8 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
-import { pipeDebug } from '../../../../../../../shared/utils/src/lib/fn/utils';
 import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
+// import { pipeDebug } from '@bgap/shared/utils';
 
 describe('Admin user creation/deletion', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;
@@ -45,7 +45,7 @@ describe('Admin user creation/deletion', () => {
             }),
           ),
         ),
-        pipeDebug('### AFTER DELETE'),
+        // pipeDebug('### AFTER DELETE'),
         switchMap(() =>
           executeMutation(authHelper.graphQlClient)<
             AnyuppApi.CreateAdminUserMutation
@@ -62,7 +62,7 @@ describe('Admin user creation/deletion', () => {
             }),
           ),
         ),
-        pipeDebug('### AFTER CREATE MALFORMED'),
+        // pipeDebug('### AFTER CREATE MALFORMED'),
         switchMap(() =>
           executeMutation(authHelper.graphQlClient)<
             AnyuppApi.CreateAdminUserMutation
@@ -71,7 +71,7 @@ describe('Admin user creation/deletion', () => {
           }),
         ),
         map(result => result.createAdminUser),
-        pipeDebug('### AFTER CREATE'),
+        // pipeDebug('### AFTER CREATE'),
         switchMap(() =>
           executeMutation(authHelper.graphQlClient)<
             AnyuppApi.CreateAdminUserMutation
@@ -88,7 +88,7 @@ describe('Admin user creation/deletion', () => {
             }),
           ),
         ),
-        pipeDebug('### AFTER EXISTING USER'),
+        // pipeDebug('### AFTER EXISTING USER'),
         // Cleanup
         switchMap(() =>
           executeMutation(authHelper.graphQlClient)<
@@ -105,7 +105,7 @@ describe('Admin user creation/deletion', () => {
             }),
           ),
         ),
-        pipeDebug('### AFTER CLEANUP'),
+        // pipeDebug('### AFTER CLEANUP'),
         tap(result => expect(result).toMatchSnapshot('Cleanup')),
       )
       .subscribe(

@@ -1,7 +1,13 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, skipWhile } from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
@@ -12,11 +18,12 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-reports-body',
   templateUrl: './reports-body.component.html',
   styleUrls: ['./reports-body.component.scss'],
 })
-export class ReportsBodyComponent implements OnDestroy {
+export class ReportsBodyComponent implements OnInit, OnDestroy {
   public dateFormControl: FormControl;
   public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<
     IOrder[]
@@ -24,10 +31,15 @@ export class ReportsBodyComponent implements OnDestroy {
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>) {
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.dateFormControl = new FormControl();
+  }
 
+  ngOnInit(): void {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
@@ -36,6 +48,8 @@ export class ReportsBodyComponent implements OnDestroy {
       )
       .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
+
+        this._changeDetectorRef.detectChanges();
       });
 
     combineLatest([
@@ -54,6 +68,8 @@ export class ReportsBodyComponent implements OnDestroy {
         );
 
         this.dailyHistoryOrders$.next(dailyHistoryOrders);
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));

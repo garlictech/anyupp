@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -17,6 +19,7 @@ import { IOrder } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-reports-day-history',
   templateUrl: './reports-day-history.component.html',
   styleUrls: ['./reports-day-history.component.scss'],
@@ -32,6 +35,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -107,6 +111,8 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
           value: Math.round(dailyOrdersSum[currency] / this.uniqueUserCount).toFixed(2),
         });
       }
+
+      this._changeDetectorRef.detectChanges();
     });
 
 
@@ -122,6 +128,8 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
         ];
 
         this._chart.update();
+
+        this._changeDetectorRef.detectChanges();
       });
     */
 
@@ -131,6 +139,8 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
         this._chart.data.labels = this._translatedLabels();
         this._chart.update();
       });
+
+      this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

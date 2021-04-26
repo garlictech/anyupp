@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Amplify endpoints AUTH test should require authentication to access 1`] = `[Error: GraphQL error: Not Authorized to access getCart on type Query]`;

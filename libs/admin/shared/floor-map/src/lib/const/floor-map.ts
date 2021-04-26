@@ -19,7 +19,7 @@ export const FLOOR_MAP_config = {
 export const FLOOR_MAP_TEXT_config = {
   fontFamily: 'Arial',
   fontSize: 14,
-  fill: '#fff',
+  fill: '#ffffff',
   textAlign: 'center',
   originX: 'center',
   originY: 'center',

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
@@ -6,6 +6,7 @@ import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-product-availabilities',
   templateUrl: './form-product-availabilities.component.html',
 })
@@ -18,6 +19,7 @@ export class FormProductAvailabilitiesComponent {
   constructor(
     private _formsService: FormsService,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef
   ) {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
       (key): IKeyValue => ({
@@ -50,10 +52,14 @@ export class FormProductAvailabilitiesComponent {
     (<FormArray>this.availabilityFormArray)?.push(
       this._formsService.createProductAvailabilityFormGroup(),
     );
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public removeAvailability(idx: number): void {
     (<FormArray>this.availabilityFormArray)?.removeAt(idx);
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public onTypeChange(value: EVariantAvailabilityType, idx: number): void {
@@ -69,5 +75,7 @@ export class FormProductAvailabilitiesComponent {
         timeTo: '',
       });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

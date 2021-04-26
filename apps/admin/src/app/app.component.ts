@@ -1,20 +1,17 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import {
-  AuthService,
-  CognitoService,
-} from '@bgap/admin/shared/data-access/auth';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { CognitoService } from '@bgap/admin/shared/data-access/auth';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  onAuthUIStateChange,
-  CognitoUserInterface,
-  AuthState,
-} from '@aws-amplify/ui-components';
 
 @Component({
   selector: 'bgap-root',
   template: `
-    <amplify-authenticator *ngIf="authState !== 'signedin'" federated="">
+    <amplify-authenticator
+      *ngIf="authState !== eAuthState.SignedIn"
+      federated=""
+    >
       <amplify-sign-in #title header-text="AnyUPP Admin" slot="sign-in">
         <div slot="secondary-footer-content">
           <input
@@ -34,42 +31,54 @@ import {
         <div slot="federated-buttons"></div>
       </amplify-sign-in>
     </amplify-authenticator>
-    <router-outlet *ngIf="authState === 'signedin' && user"></router-outlet>
+    <router-outlet
+      *ngIf="authState === eAuthState.SignedIn && user"
+    ></router-outlet>
   `,
 })
-export class AppComponent implements OnInit, OnDestroy {
-  user?: CognitoUserInterface;
-  authState?: AuthState;
-  context = '';
+export class AppComponent {
+  public user?: CognitoUserInterface;
+  public authState?: AuthState;
+  public eAuthState = AuthState;
+  public context = '';
 
   constructor(
     private _translateService: TranslateService,
-    private _authService: AuthService,
-    private ref: ChangeDetectorRef,
-    private cognitoService: CognitoService,
+    private _cognitoService: CognitoService,
+    private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef
   ) {
-    this._authService.init();
-
     // This language will be used as a fallback when a translation isn't found in the current language
     this._translateService.setDefaultLang(DEFAULT_LANG);
 
     // The lang to use, if the lang isn't available, it will use the current loader to get them
     this._translateService.use(DEFAULT_LANG);
-  }
 
-  ngOnInit() {
-    onAuthUIStateChange((authState, authData) => {
+    onAuthUIStateChange((authState: AuthState, authData) => {
       this.authState = authState;
       this.user = authData as CognitoUserInterface;
-      this.ref.detectChanges();
+
+      if (authState === AuthState.SignedIn && this.user) {
+        const token = this.user.getSignInUserSession()?.getIdToken();
+        const decoded = token?.decodePayload();
+
+        // Initialize data connections only if we have decoded role (e.g. on page refresh)
+        // It's still empty after logging in - in this case we handle the role in the "handleContext" logic
+        if (decoded.role) {
+          this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role);
+        }
+        this._changeDetectorRef.detectChanges();
+      } else {
+        this._dataService.destroyDataConnection();
+      }
+    });
+
+    this._cognitoService.onSignOut(() => {
+      this._dataService.destroyDataConnection();
     });
   }
 
-  ngOnDestroy() {
-    return onAuthUIStateChange;
-  }
-
-  contextChanged(context: string) {
-    this.cognitoService.currentContext = context;
+  public contextChanged(context: string): void {
+    this._cognitoService.currentContext = context;
   }
 }

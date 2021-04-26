@@ -2,7 +2,7 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
@@ -16,6 +16,7 @@ import {
 import { EImageType, IChain } from '@bgap/shared/types';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-chain-form',
   templateUrl: './chain-form.component.html',
   styleUrls: ['./chain-form.component.scss'],
@@ -29,7 +30,7 @@ export class ChainFormComponent
   private _amplifyDataService: AmplifyDataService;
   private _logger: NGXLogger;
 
-  constructor(protected _injector: Injector) {
+  constructor(protected _injector: Injector, private _changeDetectorRef: ChangeDetectorRef) {
     super(_injector);
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);
@@ -50,15 +51,15 @@ export class ChainFormComponent
       ...addressFormGroup(this._formBuilder),
       style: this._formBuilder.group({
         colors: this._formBuilder.group({
-          backgroundLight: ['#fff', [Validators.required]],
-          backgroundDark: ['#fff', [Validators.required]],
-          textDark: ['#fff', [Validators.required]],
-          textLight: ['#fff', [Validators.required]],
-          borderDark: ['#fff', [Validators.required]],
-          borderLight: ['#fff', [Validators.required]],
-          indicator: ['#fff', [Validators.required]],
-          highlight: ['#fff', [Validators.required]],
-          disabled: ['#fff', [Validators.required]],
+          backgroundLight: ['#ffffff', [Validators.required]],
+          backgroundDark: ['#ffffff', [Validators.required]],
+          textDark: ['#ffffff', [Validators.required]],
+          textLight: ['#ffffff', [Validators.required]],
+          borderDark: ['#ffffff', [Validators.required]],
+          borderLight: ['#ffffff', [Validators.required]],
+          indicator: ['#ffffff', [Validators.required]],
+          highlight: ['#ffffff', [Validators.required]],
+          disabled: ['#ffffff', [Validators.required]],
         }),
         images: this._formBuilder.group({
           logo: [''],
@@ -82,6 +83,8 @@ export class ChainFormComponent
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public async submit(): Promise<void> {

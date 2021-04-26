@@ -22,6 +22,12 @@ export const anyuppGraphQLClient = GraphqlApiFp.createPublicClient(
   true,
 );
 
+export const anyuppAuthenticatedGraphqlClient = GraphqlApiFp.createAuthenticatedClient(
+  AWS_ANYUPP_CONFIG,
+  console,
+  true,
+);
+
 export const configureAmplifyWithUserPasswordAuthFlow = () => {
   Auth.configure({
     ...awsConfig,
@@ -43,11 +49,7 @@ export const createAuthenticatedAnyuppGraphQLClient = (
         id: user.attributes.sub,
         ...user.attributes,
       },
-      graphQlClient: GraphqlApiFp.createAuthenticatedClient(
-        AWS_ANYUPP_CONFIG,
-        console,
-        true,
-      ),
+      graphQlClient: anyuppAuthenticatedGraphqlClient,
     })),
   );
 };

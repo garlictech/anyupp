@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
@@ -25,11 +32,12 @@ interface IPaymentMethodKV {
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-edit',
   templateUrl: './order-edit.component.html',
   styleUrls: ['./order-edit.component.scss'],
 })
-export class OrderEditComponent implements OnDestroy {
+export class OrderEditComponent implements OnInit, OnDestroy {
   @Input() order!: IOrder;
   public paymentMethods: IPaymentMethodKV[] = [];
   public EOrderStatus = EOrderStatus;
@@ -37,16 +45,19 @@ export class OrderEditComponent implements OnDestroy {
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
-  private _adminUser?: IAdminUser;
+  private _loggedUser?: IAdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
     private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
+  }
 
+  ngOnInit(): void {
     Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
@@ -57,7 +68,9 @@ export class OrderEditComponent implements OnDestroy {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+        this._loggedUser = adminUser;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -67,6 +80,8 @@ export class OrderEditComponent implements OnDestroy {
           size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -108,8 +123,8 @@ export class OrderEditComponent implements OnDestroy {
 
   public updateOrderPaymentMethod(method: string): void {
     this._dataService.updateOrderPaymentMode(
-      this._adminUser?.settings?.selectedChainId || '',
-      this._adminUser?.settings?.selectedUnitId || '',
+      this._loggedUser?.settings?.selectedChainId || '',
+      this._loggedUser?.settings?.selectedUnitId || '',
       this.order.id,
       {
         paymentMethod: method,

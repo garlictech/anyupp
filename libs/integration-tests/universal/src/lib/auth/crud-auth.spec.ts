@@ -10,7 +10,7 @@ import {
 import { testAdminUsername, testAdminUserPassword } from '../fixtures';
 import { cartSeed } from '../fixtures/cart';
 
-describe('Amplify endpoints AUTH test', () => {
+describe('CRUD endpoints AUTH test', () => {
   it('should require authentication to access', done => {
     return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
       CrudApiQueryDocuments.getCart,
@@ -30,7 +30,7 @@ describe('Amplify endpoints AUTH test', () => {
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
-          expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
+          expect(x.getCart?.id).toEqual(cartSeed.cart_seeded_01_id);
           done();
         },
       });
@@ -54,7 +54,7 @@ describe('Amplify endpoints AUTH test', () => {
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
-          expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
+          expect(x.getCart?.id).toEqual(cartSeed.cart_seeded_01_id);
           done();
         },
       });

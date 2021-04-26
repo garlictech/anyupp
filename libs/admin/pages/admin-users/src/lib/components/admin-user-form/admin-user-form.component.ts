@@ -1,22 +1,18 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { awsConfig } from '@bgap/crud-gql/api';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { config } from '@bgap/shared/config';
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
-import { EImageType, IAdminUser } from '@bgap/shared/types';
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { clearDbProperties, contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { anyuppAuthenticatedGraphqlClient, executeMutation } from '@bgap/shared/graphql/api-client';
+import { EImageType, IAdminUser } from '@bgap/shared/types';
+
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-admin-user-form',
   templateUrl: './admin-user-form.component.html',
   styleUrls: ['./admin-user-form.component.scss'],
@@ -31,6 +27,7 @@ export class AdminUserFormComponent
     protected _injector: Injector,
     private _logger: NGXLogger,
     private _amplifyDataService: AmplifyDataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
   }
@@ -49,6 +46,8 @@ export class AdminUserFormComponent
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public async submit(): Promise<void> {
@@ -80,22 +79,10 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
-          const { AnyuppGraphqlApiKey, AnyuppGraphqlApiUrl } = config;
-          const appsyncConfig = {
-            ...awsConfig,
-            aws_appsync_graphqlEndpoint: AnyuppGraphqlApiUrl,
-            aws_appsync_apiKey: AnyuppGraphqlApiKey,
-          };
-          const AnyuppApiClient = GraphqlApiFp.createAuthenticatedClient(
-            appsyncConfig,
-            console,
-            true,
-          );
-
-          AnyuppApiClient.mutate(AnyuppApi.CreateAdminUser, {
-            input: { email, name, phone },
-          })
-            .pipe(map((result: any) => result.data.createAdminUser))
+          executeMutation(
+            anyuppAuthenticatedGraphqlClient,
+          )(AnyuppApi.CreateAdminUser, { input: { email, name, phone } })
+            .pipe(map((result: any) => result.createAdminUser))
             .subscribe(() => {
               this._toasterService.show(
                 EToasterType.SUCCESS,
@@ -178,5 +165,7 @@ export class AdminUserFormComponent
         'common.imageRemoveSuccess',
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 }
