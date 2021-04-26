@@ -18,6 +18,7 @@ export 'providers/social_login_provider_interface.dart';
 export 'providers/user_provider_interface.dart';
 export 'repository/login_repository.dart';
 export 'screens/login_screen.dart';
+export 'screens/social_login_screen.dart';
 export 'utils/login_form_utils.dart';
 export 'widgets/email_login_dialog.dart';
 export 'widgets/email_login_password_or_link_widget.dart';

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/app.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -535,6 +535,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
             } else {
               getIt<LoginBloc>().add(LoginWithMethod(method));
+              // Nav.to(SocialLoginScreen(
+              //   title: 'Facebook',
+              //   provider: 'Facebook',
+              // ));
             }
           }),
     );
@@ -549,28 +553,26 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       case LoginMethod.GOOGLE: provider = 'Google';break;
       case LoginMethod.APPLE: provider = 'SignInWithApple';break;
       default:
-        provider = 'COGNITO';
+        provider = 'Cognito';
     } 
-    var url = "${awsConfig['ConsumerUserPoolDomain']}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
-        "anyupp://signin/&response_type=CODE&client_id=${awsConfig['ConsumerNativeUserPoolClientId']}" +
+    var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
+        "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
     print('loginScreen.url=$url');
     return WebView(
       initialUrl: url,
-      userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
-          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (WebViewController webViewController) {
         _webViewController.complete(webViewController);
       },
       navigationDelegate: (NavigationRequest request) {
-        print('loginScreen.navigationDelegate().request=${request?.url}');
-        if (request.url.startsWith("anyupp://?code=")) {
-          String code = request.url.substring("anyupp://?code=".length);
+        print('SocialLoginScreen.navigationDelegate().request=$request');
+        if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+          var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+          // This is the authorization code!!!
           signUserInWithAuthCode(code);
           return NavigationDecision.prevent;
         }
-
         return NavigationDecision.navigate;
       },
       gestureNavigationEnabled: true,
@@ -586,5 +588,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   void signUserInWithAuthCode(String code) {
     print('loginScreen.signUserInWithAuthCode().code=$code');
+    getIt<LoginBloc>().add(CompleteLoginWithMethod(null, code));
+    // getIt<LoginRepository>().signUserInWithAuthCode(code);
   }
 }

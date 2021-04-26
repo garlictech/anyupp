@@ -25,7 +25,6 @@ class GraphQLClientService {
   }) : _authProvider = authProvider;
 
   Future<ValueNotifier<GraphQLClient>> getAmplifyClient({bool force = false}) async {
-    
     if (force == true) {
       await _amplifyClient?.dispose();
       _amplifyClient = null;
@@ -35,17 +34,15 @@ class GraphQLClientService {
       return _amplifyClient;
     }
 
-    
-
     String accessToken = await _authProvider.getAccessToken();
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
     // print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
     Map<String, String> headers;
     if (accessToken != null) {
       headers = {
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': accessToken, // 'Bearer $accessToken',
         'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {
@@ -103,7 +100,7 @@ class GraphQLClientService {
     String accessToken = await _authProvider.getAccessToken();
     print('getAdminGraphQLClient().accessToken=$accessToken');
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
 
     Map<String, String> headers;
     if (accessToken != null) {
