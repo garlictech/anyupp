@@ -1,6 +1,12 @@
 import * as fp from 'lodash/fp';
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { IProductCategory } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 

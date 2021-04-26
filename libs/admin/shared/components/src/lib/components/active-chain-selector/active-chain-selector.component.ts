@@ -1,6 +1,12 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -21,7 +27,11 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   private _loggedUser!: IAdminUser;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private _store: Store<any>,
+    private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.showIcon = false;
     this.chains$ = this._store.pipe(
       select(chainsSelectors.getAllChains),
@@ -48,7 +58,6 @@ export class ActiveChainSelectorComponent implements OnDestroy {
       this._loggedUser?.id &&
       chainId !== this._loggedUser?.settings?.selectedChainId
     ) {
-
       this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
         ...(this._loggedUser?.settings || {}),
         selectedChainId: chainId,

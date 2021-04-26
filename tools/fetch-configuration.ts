@@ -2,12 +2,12 @@ import * as AWS from 'aws-sdk';
 const region = 'eu-west-1';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
-import {flow, pipe} from 'fp-ts/lib/function';
-import {map} from 'rxjs/operators';
-import {GetParametersRequest, GetParametersResult} from 'aws-sdk/clients/ssm';
-import {bindNodeCallback, Observable, combineLatest} from 'rxjs';
+import { flow, pipe } from 'fp-ts/lib/function';
+import { map } from 'rxjs/operators';
+import { GetParametersRequest, GetParametersResult } from 'aws-sdk/clients/ssm';
+import { bindNodeCallback, Observable, combineLatest } from 'rxjs';
 
-const client = new AWS.SSM({region});
+const client = new AWS.SSM({ region });
 
 const project = process.argv[2];
 const stage = process.argv[3];
@@ -17,7 +17,7 @@ const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const targetFile = `${targetDir}/config.json`;
 const mobileAppConfigurationFile = `${__dirname}/../apps/anyupp-mobile/lib/awsconfiguration.dart`;
 
-fs.mkdirSync(targetDir, {recursive: true});
+fs.mkdirSync(targetDir, { recursive: true });
 
 const generatedParams = [
   'AnyuppGraphqlApiKey',
@@ -41,7 +41,7 @@ pipe(
       paramNames =>
         bindNodeCallback((params: GetParametersRequest, callback: any) =>
           client.getParameters(params, callback),
-        )({Names: paramNames}) as Observable<GetParametersResult>,
+        )({ Names: paramNames }) as Observable<GetParametersResult>,
     ),
   ),
   x => combineLatest(x),

@@ -1,11 +1,11 @@
-import {Construct} from '@aws-cdk/core';
+import { Construct } from '@aws-cdk/core';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as cdk from '@aws-cdk/core';
 import * as sst from '@serverless-stack/resources';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
-import {AutoDeleteBucket} from './auto-delete-bucket';
+import { AutoDeleteBucket } from './auto-delete-bucket';
 
 export interface WebsiteProps extends sst.StackProps {
   domainName: string;
@@ -29,7 +29,7 @@ export class WebsiteConstruct extends Construct {
       app.stage + '-' + props.siteSubDomain + '.' + props.domainName;
 
     this.websiteUrl = 'https://' + siteDomain;
-    new cdk.CfnOutput(this, 'Site', {value: this.websiteUrl});
+    new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
     const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
@@ -44,7 +44,7 @@ export class WebsiteConstruct extends Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
     });
 
-    new cdk.CfnOutput(this, 'Bucket', {value: siteBucket.bucketName});
+    new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
@@ -63,7 +63,7 @@ export class WebsiteConstruct extends Construct {
               domainName: siteBucket.bucketWebsiteDomainName,
               originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
             },
-            behaviors: [{isDefaultBehavior: true}],
+            behaviors: [{ isDefaultBehavior: true }],
           },
         ],
       },

@@ -10,7 +10,7 @@ import {
 
 describe('Testing cognito service', () => {
   const dataService = {
-    initDataConnections: jest.fn()
+    initDataConnections: jest.fn(),
   };
   const service = new CognitoService(<any>dataService);
 

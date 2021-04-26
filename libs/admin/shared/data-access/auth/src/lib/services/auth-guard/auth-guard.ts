@@ -2,7 +2,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateChild, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateChild,
+  Router,
+} from '@angular/router';
 import { EAdminRole } from '@bgap/shared/types';
 
 import { CognitoService } from '../cognito/cognito.service';
@@ -19,7 +23,6 @@ export class AuthGuard implements CanActivateChild {
   canActivateChild(
     next: ActivatedRouteSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
-
     return true;
 
     return this._cognitoService.getAuth().pipe(

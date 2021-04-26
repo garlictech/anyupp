@@ -1,7 +1,13 @@
 import { timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
@@ -43,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.resized = false;
     this.toggleFormControl = new FormControl(false);

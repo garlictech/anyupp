@@ -1,7 +1,7 @@
 import * as utils from './utils';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
-import {PipelineStackProps} from './utils';
+import { PipelineStackProps } from './utils';
 
 export class DevPullRequestBuildStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {

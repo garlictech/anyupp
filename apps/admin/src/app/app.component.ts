@@ -1,5 +1,9 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import {
+  AuthState,
+  CognitoUserInterface,
+  onAuthUIStateChange,
+} from '@aws-amplify/ui-components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
@@ -46,7 +50,7 @@ export class AppComponent {
     private _translateService: TranslateService,
     private _cognitoService: CognitoService,
     private _dataService: DataService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     // This language will be used as a fallback when a translation isn't found in the current language
     this._translateService.setDefaultLang(DEFAULT_LANG);
@@ -65,7 +69,10 @@ export class AppComponent {
         // Initialize data connections only if we have decoded role (e.g. on page refresh)
         // It's still empty after logging in - in this case we handle the role in the "handleContext" logic
         if (decoded.role) {
-          this._dataService.initDataConnections(this.user.attributes.sub || '', decoded.role);
+          this._dataService.initDataConnections(
+            this.user.attributes.sub || '',
+            decoded.role,
+          );
         }
         this._changeDetectorRef.detectChanges();
       } else {

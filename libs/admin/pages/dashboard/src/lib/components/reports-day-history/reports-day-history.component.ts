@@ -140,7 +140,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
         this._chart.update();
       });
 
-      this._changeDetectorRef.detectChanges();
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
