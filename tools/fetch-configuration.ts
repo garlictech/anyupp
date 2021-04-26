@@ -2,12 +2,12 @@ import * as AWS from 'aws-sdk';
 const region = 'eu-west-1';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
-import {flow, pipe} from 'fp-ts/lib/function';
-import {map} from 'rxjs/operators';
-import {GetParametersRequest, GetParametersResult} from 'aws-sdk/clients/ssm';
-import {bindNodeCallback, Observable, combineLatest} from 'rxjs';
+import { flow, pipe } from 'fp-ts/lib/function';
+import { map } from 'rxjs/operators';
+import { GetParametersRequest, GetParametersResult } from 'aws-sdk/clients/ssm';
+import { bindNodeCallback, Observable, combineLatest } from 'rxjs';
 
-const client = new AWS.SSM({region});
+const client = new AWS.SSM({ region });
 
 const project = process.argv[2];
 const stage = process.argv[3];
@@ -24,7 +24,7 @@ const amplifyConfig = JSON.parse(
   fs.readFileSync(amplifyMetaConfigFile, 'utf8'),
 );
 
-fs.mkdirSync(targetDir, {recursive: true});
+fs.mkdirSync(targetDir, { recursive: true });
 
 const generatedParams = [
   'AnyuppGraphqlApiKey',
@@ -48,7 +48,7 @@ pipe(
       paramNames =>
         bindNodeCallback((params: GetParametersRequest, callback: any) =>
           client.getParameters(params, callback),
-        )({Names: paramNames}) as Observable<GetParametersResult>,
+        )({ Names: paramNames }) as Observable<GetParametersResult>,
     ),
   ),
   x => combineLatest(x),
@@ -75,7 +75,7 @@ pipe(
         const bucketKeyName = Object.keys(amplifyConfig['storage'])[0];
         config['CrudGraphqlApiUrl'] =
           amplifyConfig['api'][apiKeyName]['output'][
-          'GraphQLAPIEndpointOutput'
+            'GraphQLAPIEndpointOutput'
           ];
         config['CrudGraphqlApiKey'] =
           amplifyConfig['api'][apiKeyName]['output']['GraphQLAPIKeyOutput'];

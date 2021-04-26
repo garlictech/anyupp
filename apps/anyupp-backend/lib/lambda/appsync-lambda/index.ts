@@ -1,4 +1,4 @@
-import {Context, Handler} from 'aws-lambda';
+import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 
 import {
@@ -8,7 +8,7 @@ import {
   stripeRequestHandler,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import {crudBackendGraphQLClient} from '@bgap/shared/graphql/api-client';
+import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
@@ -16,7 +16,7 @@ export interface AnyuppRequest {
 }
 
 // HOW TO IMPORT CRUD API TABLE ARNS
-import {tableConfig} from '@bgap/crud-gql/backend';
+import { tableConfig } from '@bgap/crud-gql/backend';
 console.log('THE UNIT TABLE ARN: ', tableConfig.Unit);
 
 const resolverMap = {
