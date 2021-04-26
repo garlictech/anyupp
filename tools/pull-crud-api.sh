@@ -113,6 +113,6 @@ RESULT+="}"
 
 echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 
-echo "Table config generated in $TABLE_CONFIG_NAME"
+echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 cat $TABLE_CONFIG_NAME
