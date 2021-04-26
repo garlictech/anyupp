@@ -1,6 +1,4 @@
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:flutter/foundation.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
@@ -8,11 +6,9 @@ import 'package:stripe_sdk/stripe_sdk_ui.dart';
 import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
-  // ignore: unused_field
-  final ValueNotifier<GraphQLClient> _client;
   final Stripe _stripe;
 
-  GraphQLStripePaymentProvider(this._client, this._stripe);
+  GraphQLStripePaymentProvider(this._stripe);
 
   @override
   Future<List<StripeCard>> getPaymentMethods() async {

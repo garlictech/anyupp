@@ -138,9 +138,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
             primary: theme.indicator,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-
             ),
-
           ),
           child: loading
               ? CenterLoadingWidget(
@@ -159,10 +157,14 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () {
                   if (!loading) {
-                    BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
-                      unit,
-                      _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
-                    ));
+                    if (_selectedPaymentMethod == PAYMENT_INAPP) {
+                      Nav.to(StripePaymentScreen());
+                    } else {
+                      // BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
+                      //   unit,
+                      //   _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                      // ));
+                    }
                   }
                 }
               : null,

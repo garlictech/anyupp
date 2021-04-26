@@ -59,7 +59,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
