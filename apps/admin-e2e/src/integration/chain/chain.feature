@@ -1,17 +1,16 @@
 # Feature: Create a new Chain
 
-#  Background: Steps to the Chain page
+#  Background: Login first
 #    Given I am on the login page
 #    When I fill out the input with id "username" with the "test@anyupp.com" value
 #    And I fill out the input with id "password" with the "Testtesttest12_" value
 #    And I click the "sign in" text
 #    When I click the "skip" text
 #    Then I should be on the dashboard page
-#    And the "Dashboard" title is displayed
 
-#  Scenario: Check form page
-#    When I click on the "menu" icon
-#    And I click on the "chains" icon
+#  Scenario: Steps to the Chain page
+#     When I click on the Chain selector
+#    And I click on the "menu" icon
 #    Then the "Chains" title is displayed
 
 #  Scenario: Check form page
