@@ -1,5 +1,4 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
-import { tap } from 'rxjs/operators';
 import { missingParametersError } from './errors';
 
 export const customNumberCompare = (field: string, desc = false) => (

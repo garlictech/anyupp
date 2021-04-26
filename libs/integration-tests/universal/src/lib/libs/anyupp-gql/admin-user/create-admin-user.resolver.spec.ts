@@ -8,7 +8,10 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 
-import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 // import { pipeDebug } from '@bgap/shared/utils';
 
 describe('Admin user creation/deletion', () => {

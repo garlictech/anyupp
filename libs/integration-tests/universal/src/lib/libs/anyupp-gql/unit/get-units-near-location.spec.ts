@@ -1,20 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { combineLatest, from } from 'rxjs';
-
-import {
-  anyuppGraphQLClient,
-  executeQuery,
-  crudBackendGraphQLClient,
-  createAuthenticatedAnyuppGraphQLClient,
-  AuthenticatdGraphQLClientWithUserId,
-} from '@bgap/shared/graphql/api-client';
-import { unitSeed } from '../../../fixtures/unit';
-import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
-import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
+import { combineLatest, from } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { testAdminUserPassword, testAdminUsername } from '../../../fixtures';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+  unitSeed,
+} from '@bgap/shared/fixtures';
+import {
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
+  crudBackendGraphQLClient,
+  executeQuery,
+} from '@bgap/shared/graphql/api-client';
+
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km

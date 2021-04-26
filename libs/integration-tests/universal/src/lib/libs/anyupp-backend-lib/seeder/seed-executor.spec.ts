@@ -1,6 +1,7 @@
 import {
   createTestAdminRoleContext,
   createTestRoleContext,
+  createTestUnitProduct,
   seedAdminUser,
   seedBusinessData,
 } from '@bgap/anyupp-backend-lib';
@@ -47,6 +48,34 @@ describe('Seeder test', () => {
       });
     }, 25000);
 
+    it.skip('should createTestUnitProduct work', done => {
+      createTestUnitProduct(1, 1, 1, 1, 1).subscribe({
+        next(result: any) {
+          expect(result).toHaveProperty('unitProduct');
+          expect(result).toHaveProperty('generatedProduct');
+          const {
+            createdAt: ca01,
+            updatedAt: ua01,
+            ...justCreatedUnitProduct
+          } = result.unitProduct;
+          const {
+            createdAt: ca02,
+            updatedAt: ua02,
+            ...justCreatedGeneratedObject
+          } = result.generatedProduct;
+          expect(ca01).not.toBeUndefined();
+          expect(ca02).not.toBeUndefined();
+          expect(ua01).not.toBeUndefined();
+          expect(ua02).not.toBeUndefined();
+          expect(justCreatedUnitProduct).toMatchSnapshot('Unit Product');
+          expect(justCreatedGeneratedObject).toMatchSnapshot(
+            'Generated Product',
+          );
+          done();
+        },
+      });
+    }, 25000);
+
     it.skip('should the seedBusinessData function run successfully', done => {
       seedBusinessData('USER_ID').subscribe({
         complete() {
@@ -84,7 +113,7 @@ describe('Seeder test', () => {
     }, 25000);
   });
 
-  it.skip('should run complete seeder', done => {
+  it('should run complete seeder', done => {
     seedAdminUser(AWS_CRUD_CONFIG.aws_user_pools_id)
       .pipe(switchMap(userId => seedBusinessData(userId)))
       // .pipe(

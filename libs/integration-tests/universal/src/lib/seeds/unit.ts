@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { unitSeed } from '../fixtures/unit';
-import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import {
   crudBackendGraphQLClient,
   executeMutation,

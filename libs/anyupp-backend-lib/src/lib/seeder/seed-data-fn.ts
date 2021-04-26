@@ -1,4 +1,4 @@
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
@@ -7,6 +7,7 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of } from 'rxjs';
+import { generatedProductSeed } from '@bgap/shared/fixtures';
 
 const generateChainId = (idx: number) => `chain_${idx}_id_seeded`;
 const generateGroupId = (chainIdx: number, idx: number) =>
@@ -42,7 +43,7 @@ const generateRoleContextId = (idx: number, role: EAdminRole) =>
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
   `admin_role_context_${idx}_${role}_id_seeded`;
 
-const deleteCreate = ({
+const deleteCreate = <CREATED_ITEM_TYPE>({
   input,
   deleteOperation,
   createOperation,
@@ -61,9 +62,12 @@ const deleteCreate = ({
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
     switchMap(() =>
-      executeMutation(crudBackendGraphQLClient)(createOperation, {
-        input,
-      }),
+      executeMutation(crudBackendGraphQLClient)<CREATED_ITEM_TYPE>(
+        createOperation,
+        {
+          input,
+        },
+      ),
     ),
   );
 
@@ -80,15 +84,15 @@ export const createTestChain = (chainIdx: number) => {
     phone: '1234567890',
     style: {
       colors: {
-        backgroundLight: '#ffffff',
-        backgroundDark: '#ffffff',
-        borderLight: '#ffffff',
-        borderDark: '#ffffff',
-        disabled: '#ffffff',
-        highlight: '#ffffff',
-        indicator: '#ffffff',
-        textLight: '#ffffff',
-        textDark: '#ffffff',
+        backgroundLight: '#FFFFFF',
+        backgroundDark: '#D6DDE0',
+        textDark: '#303030',
+        textLight: '#FFFFFF',
+        indicator: '#30BF60',
+        highlight: '#A8692A',
+        disabled: '#303030',
+        borderDark: '#E7E5D0',
+        borderLight: '#C3CACD',
       },
     },
   };
@@ -288,6 +292,9 @@ export const createTestGroupProduct = (
   });
 };
 
+/**
+ * Create UnitProduct and GeneratedProducts too
+ */
 export const createTestUnitProduct = (
   chainIdx: number,
   groupIdx: number,
@@ -332,11 +339,38 @@ export const createTestUnitProduct = (
       },
     ],
   };
-  return deleteCreate({
+  return deleteCreate<CrudApi.CreateUnitProductMutation>({
     input,
     deleteOperation: CrudApiMutationDocuments.deleteUnitProduct,
     createOperation: CrudApiMutationDocuments.createUnitProduct,
-  });
+  }).pipe(
+    map(x => x.createUnitProduct),
+    switchMap(unitProduct => {
+      console.log(
+        '### ~ file: seed-data-fn.ts ~ line 343 ~ unitProduct',
+        unitProduct,
+      );
+      const input: CrudApi.CreateGeneratedProductInput = {
+        ...generatedProductSeed.getGeneratedProduct({
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          id: unitProduct!.id,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          unitId: unitProduct!.unitId!,
+          productCategoryId: generateProductCategoryId(1, 1),
+        }),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        position: unitProduct!.position!,
+      };
+      return deleteCreate<CrudApi.CreateGeneratedProductMutation>({
+        input,
+        deleteOperation: CrudApiMutationDocuments.deleteGeneratedProduct,
+        createOperation: CrudApiMutationDocuments.createGeneratedProduct,
+      }).pipe(
+        map(x => x.createGeneratedProduct),
+        map(generatedProduct => ({ unitProduct, generatedProduct })),
+      );
+    }),
+  );
 };
 
 export const createTestCart = ({

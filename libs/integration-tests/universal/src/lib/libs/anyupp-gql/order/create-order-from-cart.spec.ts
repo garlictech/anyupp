@@ -7,7 +7,12 @@ import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
-  anyuppGraphQLClient,
+  cartSeed,
+  testAdminUsername,
+  testAdminUserPassword,
+  unitSeed,
+} from '@bgap/shared/fixtures';
+import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedAnyuppGraphQLClient,
   crudBackendGraphQLClient,
@@ -17,10 +22,7 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { ICart, IOrder } from '@bgap/shared/types';
 
-import { cartSeed } from '../../../fixtures/cart';
-import { unitSeed } from '../../../fixtures/unit';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
-import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 

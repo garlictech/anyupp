@@ -19,7 +19,7 @@ import {
   productSeed,
   testAdminUsername,
   testAdminUserPassword,
-} from '../../../fixtures';
+} from '@bgap/shared/fixtures';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {

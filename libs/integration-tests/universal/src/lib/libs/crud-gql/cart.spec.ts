@@ -1,13 +1,18 @@
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import {
+  cartSeed,
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedCrudGraphQLClient,
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
-import { combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { cartSeed } from '../../fixtures';
-import { testAdminUsername, testAdminUserPassword } from '../../fixtures/user';
+
 import { createTestCart, deleteTestCart } from '../../seeds/cart';
 
 describe('getCart test', () => {

@@ -1,36 +1,6 @@
-import * as geolib from 'geolib';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import { Observable, of } from 'rxjs';
 
-import * as fp from 'lodash/fp';
-import { combineLatest, EMPTY, iif, Observable, of, throwError } from 'rxjs';
-import {
-  catchError,
-  defaultIfEmpty,
-  filter,
-  map,
-  switchMap,
-} from 'rxjs/operators';
-
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import {
-  validateChain,
-  validateGetGroupCurrency,
-  validateUnit,
-} from '@bgap/shared/data-validators';
-import {
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
-import {
-  IChain,
-  IChainStyle,
-  IPaymentMode,
-  IUnit,
-  IWeeklySchedule,
-} from '@bgap/shared/types';
-import { removeTypeNameField } from '../../utils/graphql.utils';
-
-// TODO: add GEO_SEARCH
 export const regenerateUnitData = ({
   unitId,
   crudGraphqlClient,

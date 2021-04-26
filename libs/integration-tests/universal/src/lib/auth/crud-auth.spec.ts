@@ -7,8 +7,11 @@ import {
   executeQuery,
 } from '@bgap/shared/graphql/api-client';
 
-import { testAdminUsername, testAdminUserPassword } from '../fixtures';
-import { cartSeed } from '../fixtures/cart';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+  cartSeed,
+} from '@bgap/shared/fixtures';
 
 describe('CRUD endpoints AUTH test', () => {
   it('should require authentication to access', done => {

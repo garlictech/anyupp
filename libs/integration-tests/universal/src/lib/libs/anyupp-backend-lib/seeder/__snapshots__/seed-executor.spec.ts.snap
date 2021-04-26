@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Seeder test DB seeder should createTestUnitProduct work: Generated Product 1`] = `
+Object {
+  "__typename": "GeneratedProduct",
+  "description": Object {
+    "__typename": "LocalizedItem",
+    "de": null,
+    "en": "GENERATED_PRODUCT DESCRIPTION unit_product_c1_g1_1_id_seeded",
+    "hu": "GENERALT_TERMEK  LEIRAS unit_product_c1_g1_1_id_seeded",
+  },
+  "id": "unit_product_c1_g1_1_id_seeded",
+  "image": "public/seed/Weizenbier.jpeg",
+  "name": Object {
+    "__typename": "LocalizedItem",
+    "de": null,
+    "en": "GENERATED_PRODUCT_unit_product_c1_g1_1_id_seeded",
+    "hu": "GENERALT_TERMEK_unit_product_c1_g1_1_id_seeded",
+  },
+  "position": 1,
+  "productCategoryId": "product_category_c1_1_id_seeded",
+  "productType": "PRODUCT_TYPE",
+  "tax": 1,
+  "unitId": "unit_c1_g1_1_id_seeded",
+  "variants": Array [
+    Object {
+      "__typename": "GeneratedProductVariant",
+      "id": "generatedProductVariant_id_unit_product_c1_g1_1_id_seeded",
+      "pack": Object {
+        "__typename": "ProductVariantPack",
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 1,
+      "price": 1,
+      "variantName": Object {
+        "__typename": "LocalizedItem",
+        "de": null,
+        "en": "VARIANT_NAME_unit_product_c1_g1_1_id_seeded",
+        "hu": "VARIANT_NAME_unit_product_c1_g1_1_id_seeded",
+      },
+    },
+    Object {
+      "__typename": "GeneratedProductVariant",
+      "id": "generatedProductVariant_id_unit_product_c1_g1_1_id_seeded",
+      "pack": Object {
+        "__typename": "ProductVariantPack",
+        "size": 2,
+        "unit": "UNIT",
+      },
+      "position": 2,
+      "price": 2,
+      "variantName": Object {
+        "__typename": "LocalizedItem",
+        "de": null,
+        "en": "VARIANT_NAME_unit_product_c1_g1_1_id_seeded",
+        "hu": "VARIANT_NAME_unit_product_c1_g1_1_id_seeded",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Seeder test DB seeder should createTestUnitProduct work: Unit Product 1`] = `
+Object {
+  "__typename": "UnitProduct",
+  "chainId": "chain_1_id_seeded",
+  "groupId": "group_c1_1_id_seeded",
+  "groupProduct": null,
+  "id": "unit_product_c1_g1_1_id_seeded",
+  "isVisible": true,
+  "laneId": "lane_c1_g1_u1_1_id_seeded",
+  "parentId": "group_product_c1_g1_1_id_seeded",
+  "position": 1,
+  "takeaway": false,
+  "unitId": "unit_c1_g1_1_id_seeded",
+  "variants": Array [
+    Object {
+      "__typename": "ProductVariant",
+      "availabilities": Array [
+        Object {
+          "__typename": "Availability",
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 60,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "chain_product_variant_c1_p1_1_id_seeded",
+      "isAvailable": true,
+      "pack": Object {
+        "__typename": "ProductVariantPack",
+        "size": 2,
+        "unit": "dl",
+      },
+      "position": 1,
+      "price": 11,
+      "refGroupPrice": null,
+      "variantName": Object {
+        "__typename": "LocalizedItem",
+        "de": null,
+        "en": "glass",
+        "hu": "pohár",
+      },
+    },
+  ],
+}
+`;

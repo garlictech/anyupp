@@ -24,9 +24,13 @@ import {
   createTestUnitProduct,
   deleteTestAdminRoleContext,
 } from './seed-data-fn';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 
-const username = 'test@anyupp.com';
-const password = 'Testtesttest12_';
+const username = testAdminUsername;
+const password = testAdminUserPassword;
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
