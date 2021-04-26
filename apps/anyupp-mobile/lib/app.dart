@@ -1,12 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:catcher/catcher.dart';
-import 'package:fa_prev/amplifyconfig-stub.dart';
-import 'package:fa_prev/awsconfiguration.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +24,6 @@ import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-Map<String, dynamic> awsConfig = jsonDecode(AWSCONFIG);
 
 class MyApp extends StatefulWidget {
   @override
@@ -41,9 +32,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamSubscription _deeplinkSubscription;
-  StreamSubscription _amplifySubscription;
-  bool _amplifyInitialized = false;
-  String _amplifyError;
 
   @override
   void initState() {
@@ -56,47 +44,44 @@ class _MyAppState extends State<MyApp> {
     if (_deeplinkSubscription != null) {
       _deeplinkSubscription.cancel();
     }
-    if (_amplifySubscription != null) {
-      _amplifySubscription.cancel();
-    }
     super.dispose();
   }
 
   Future<void> _init() async {
     print('_init().start()');
-    await _initAmplify();
+    // await _initAmplify();
     // await _initAmplifyDataStore();
     // await initDependencyInjection();
     await _initDeepLinks();
     print('_init().end()');
   }
 
-  void _initAmplify() async {
-    print('_initAmplify().start()');
-    if (_amplifyInitialized == true) {
-      print('_initAmplify(): Amplify already initialized, skipping...');
-      return;
-    }
-    try {
-      await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
-      // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
-      await Amplify.configure(getAmplifyConfig(awsConfig));
-      print('_initAmplify().Amplify initialized successfully...');
-      setState(() {
-        _amplifyInitialized = true;
-      });
-    } on AmplifyAlreadyConfiguredException {
-      print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-      setState(() {
-        _amplifyInitialized = true;
-      });
-    } on Exception catch (e) {
-      print('_initAmplify().Error initializing Amplify: $e');
-      setState(() {
-        _amplifyInitialized = true;
-      });
-    }
-  }
+  // void _initAmplify() async {
+  //   print('_initAmplify().start()');
+  //   if (_amplifyInitialized == true) {
+  //     print('_initAmplify(): Amplify already initialized, skipping...');
+  //     return;
+  //   }
+  //   try {
+  //     await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
+  //     // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
+  //     await Amplify.configure(getAmplifyConfig());
+  //     print('_initAmplify().Amplify initialized successfully...');
+  //     setState(() {
+  //       _amplifyInitialized = true;
+  //     });
+  //   } on AmplifyAlreadyConfiguredException {
+  //     print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+  //     setState(() {
+  //       _amplifyInitialized = true;
+  //     });
+  //   } on Exception catch (e) {
+  //     print('_initAmplify().Error initializing Amplify: $e');
+  //     setState(() {
+  //       _amplifyInitialized = true;
+  //     });
+  //   }
+  // }
 
   // void _initAmplifyDataStore() async {
   //   print('_initAmplifyDataStore().start()');
@@ -169,138 +154,135 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return _amplifyInitialized
-        ? MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (BuildContext context) => getIt<AuthBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
-              BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
-              BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-              BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
-              BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
-              BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
-              BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
-              BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
-              BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (BuildContext context) => getIt<AuthBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
+        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
+        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
+      ],
+      child: BlocBuilder<LocaleBloc, LocaleState>(
+        builder: (context, LocaleState localeState) {
+          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
+          return MaterialApp(
+            title: 'AnyUpp',
+
+            /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
+            navigatorKey: Catcher.navigatorKey,
+            // Default theme settings TODO: do we need these?
+            theme: ThemeData(
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                indicatorColor: Colors.black,
+                primarySwatch: Colors.red,
+                primaryColor: Colors.black,
+                accentColor: Colors.white,
+                buttonColor: Colors.black,
+                hoverColor: Color(0xFFFFDB87),
+                highlightColor: Colors.white,
+                primaryColorLight: Color(0xFFFFDB87),
+                backgroundColor: Color(0xFFFFDB87),
+                bottomAppBarColor: Color(0xFF176E49)),
+
+            builder: (context, child) {
+              return MediaQuery(
+                child: child,
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              );
+            },
+
+            // The first app page
+            home: OnBoarding(),
+
+            // To hide the debug mark (in debugging and development modes)
+            debugShowCheckedModeBanner: false,
+
+            //
+            // Localization >>>
+            //
+            locale: locale,
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              AppLocalizations.delegate,
             ],
-            child: BlocBuilder<LocaleBloc, LocaleState>(
-              builder: (context, LocaleState localeState) {
-                var locale = (localeState is LocaleSelected) ? localeState.locale : null;
-                return MaterialApp(
-                  title: 'AnyUpp',
+            supportedLocales: SupportedLocales.locales,
+            localeListResolutionCallback: (List<Locale> userPreferredlocales, Iterable<Locale> appSupportedLocales) {
+              // userPreferredlocales: comes from the phone settings in the same order
+              // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 
-                  /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
-                  navigatorKey: Catcher.navigatorKey,
-                  // Default theme settings TODO: do we need these?
-                  theme: ThemeData(
-                      visualDensity: VisualDensity.adaptivePlatformDensity,
-                      indicatorColor: Colors.black,
-                      primarySwatch: Colors.red,
-                      primaryColor: Colors.black,
-                      accentColor: Colors.white,
-                      buttonColor: Colors.black,
-                      hoverColor: Color(0xFFFFDB87),
-                      highlightColor: Colors.white,
-                      primaryColorLight: Color(0xFFFFDB87),
-                      backgroundColor: Color(0xFFFFDB87),
-                      bottomAppBarColor: Color(0xFF176E49)),
+              // Try to find a userPreferred Local what is supported by the APP
+              for (Locale locale in userPreferredlocales) {
+                for (Locale supportedLocale in appSupportedLocales) {
+                  if (supportedLocale.languageCode == locale.languageCode &&
+                      supportedLocale.countryCode == locale.countryCode) {
+                    // Return the first userPreferred Local what is supported by the APP
+                    return supportedLocale;
+                  }
+                }
+              }
 
-                  builder: (context, child) {
-                    return MediaQuery(
-                      child: child,
-                      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                    );
-                  },
-
-                  // The first app page
-                  home: OnBoarding(),
-
-                  // To hide the debug mark (in debugging and development modes)
-                  debugShowCheckedModeBanner: false,
-
-                  //
-                  // Localization >>>
-                  //
-                  locale: locale,
-                  localizationsDelegates: [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    AppLocalizations.delegate,
-                  ],
-                  supportedLocales: SupportedLocales.locales,
-                  localeListResolutionCallback:
-                      (List<Locale> userPreferredlocales, Iterable<Locale> appSupportedLocales) {
-                    // userPreferredlocales: comes from the phone settings in the same order
-                    // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
-
-                    // Try to find a userPreferred Local what is supported by the APP
-                    for (Locale locale in userPreferredlocales) {
-                      for (Locale supportedLocale in appSupportedLocales) {
-                        if (supportedLocale.languageCode == locale.languageCode &&
-                            supportedLocale.countryCode == locale.countryCode) {
-                          // Return the first userPreferred Local what is supported by the APP
-                          return supportedLocale;
-                        }
-                      }
-                    }
-
-                    // OR return the first if there isn't any supported local in the user's locale list
-                    return appSupportedLocales.first;
-                  },
-                );
-              },
-            ),
-          )
-        : _buildAmplifyLoadingScreen();
-  }
-
-  Widget _buildAmplifyLoadingScreen() {
-    return MaterialApp(
-      title: 'AnyUpp',
-
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          indicatorColor: Colors.black,
-          primarySwatch: Colors.red,
-          primaryColor: Colors.black,
-          accentColor: Colors.white,
-          buttonColor: Colors.black,
-          hoverColor: Color(0xFFFFDB87),
-          highlightColor: Colors.white,
-          primaryColorLight: Color(0xFFFFDB87),
-          backgroundColor: Color(0xFFFFDB87),
-          bottomAppBarColor: Color(0xFF176E49)),
-
-      builder: (context, child) {
-        return MediaQuery(
-          child: child,
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        );
-      },
-
-      // The first app page
-      home: Stack(
-        children: [
-          SplashScreen(),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              _amplifyError ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ),
-        ],
+              // OR return the first if there isn't any supported local in the user's locale list
+              return appSupportedLocales.first;
+            },
+          );
+        },
       ),
     );
   }
+
+  // Widget _buildAmplifyLoadingScreen() {
+  //   return MaterialApp(
+  //     title: 'AnyUpp',
+
+  //     debugShowCheckedModeBanner: false,
+  //     theme: ThemeData(
+  //         visualDensity: VisualDensity.adaptivePlatformDensity,
+  //         indicatorColor: Colors.black,
+  //         primarySwatch: Colors.red,
+  //         primaryColor: Colors.black,
+  //         accentColor: Colors.white,
+  //         buttonColor: Colors.black,
+  //         hoverColor: Color(0xFFFFDB87),
+  //         highlightColor: Colors.white,
+  //         primaryColorLight: Color(0xFFFFDB87),
+  //         backgroundColor: Color(0xFFFFDB87),
+  //         bottomAppBarColor: Color(0xFF176E49)),
+
+  //     builder: (context, child) {
+  //       return MediaQuery(
+  //         child: child,
+  //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+  //       );
+  //     },
+
+  //     // The first app page
+  //     home: Stack(
+  //       children: [
+  //         SplashScreen(),
+  //         Align(
+  //           alignment: Alignment.bottomCenter,
+  //           child: Text(
+  //             _amplifyError ?? '',
+  //             style: GoogleFonts.poppins(
+  //               fontSize: 16.0,
+  //               color: Colors.white,
+  //               fontWeight: FontWeight.normal,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
