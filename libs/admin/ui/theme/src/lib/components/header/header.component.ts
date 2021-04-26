@@ -186,7 +186,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           callback: async (): Promise<void> => {
             this._cognitoService.signOut().subscribe(() => {
               this._ngZone.run(() => {
-                this._router.navigate(['admin/dashboard']);
+                this._router.navigate(['auth/login']);
               });
             });
           },

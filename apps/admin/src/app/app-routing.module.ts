@@ -1,10 +1,10 @@
-import { AdminLayoutComponent } from '@bgap/admin/ui/theme';
-
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MENU_ROLES } from '@bgap/admin/shared/utils';
-import { NotFoundComponent } from './not-found.component';
 import { AuthGuard } from '@bgap/admin/shared/data-access/auth';
+import { MENU_ROLES } from '@bgap/admin/shared/utils';
+import { AdminLayoutComponent } from '@bgap/admin/ui/theme';
+
+import { NotFoundComponent } from './not-found.component';
 
 const routes: Routes = [
   {
@@ -15,6 +15,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
@@ -110,6 +111,16 @@ const routes: Routes = [
         data: {
           roles: MENU_ROLES.ROLE_CONTEXTS,
         },
+      },
+    ],
+  },
+  {
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        loadChildren: () =>
+          import('@bgap/admin/pages/auth').then(m => m.AdminPagesAuthModule),
       },
     ],
   },
