@@ -95,7 +95,7 @@ const toGeneratedProductVariantType = (
   variant: IProductVariant,
   price: number,
 ): IGeneratedProductVariant => ({
-  // id: variant.id,
+  id: variant.id,
   variantName: variant.variantName,
   position: variant.position,
   pack: { size: variant.pack.size, unit: variant.pack.unit },
