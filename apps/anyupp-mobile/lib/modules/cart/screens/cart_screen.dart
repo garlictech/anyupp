@@ -1,21 +1,17 @@
-import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
-
-import 'package:fa_prev/modules/cart/cart.dart';
 
 class CartScreen extends StatelessWidget {
   @override

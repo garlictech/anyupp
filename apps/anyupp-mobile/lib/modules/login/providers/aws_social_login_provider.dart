@@ -52,6 +52,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<ProviderLoginResponse> signInWithApple() async {
     print('***** AwsSocialLoginProvider.signInWithApple()');
+    return null;
     // try {
     //   CognitoSignInResult res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.apple);
     //   print('***** AwsSocialLoginProvider.signInWithApple().CognitoSignInResult.isSignedIn=${res?.isSignedIn}');
@@ -162,6 +163,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   Future<ProviderLoginResponse> signInWithGoogle() async {
     print('***** AwsSocialLoginProvider.signInWithGoogle()');
+    return null;
     // try {
     //   CognitoSignInResult res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
     //   print('***** AwsSocialLoginProvider.signInWithGoogle().CognitoSignInResult.isSignedIn=${res?.isSignedIn}');

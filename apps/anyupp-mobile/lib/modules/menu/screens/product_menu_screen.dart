@@ -1,17 +1,15 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:fa_prev/modules/menu/menu.dart';
 import 'product_menu_tab_screen.dart';
-import 'package:fa_prev/shared/nav.dart';
 
 class Menu extends StatelessWidget {
   @override

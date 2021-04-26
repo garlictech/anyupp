@@ -5,12 +5,11 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:fa_prev/shared/locale/locale.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SocialLoginScreen extends StatefulWidget {
   final String title;
@@ -149,39 +148,6 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
               },
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingScreen() {
-    return Stack(
-      children: [
-        // BACKGROUND IMAGE
-        Positioned(
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          child: _buildBackground(),
-        ),
-        CenterLoadingWidget(),
-      ],
-    );
-  }
-
-  Widget _buildBackground() {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/anyapp_background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        // Set gradient black in image splash screen
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 0.65),
         ),
       ),
     );

@@ -1,11 +1,10 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fa_prev/app.dart';
 import 'package:fa_prev/app-config.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 
 class S3ImageWidget extends StatefulWidget {
   final String bucketImageKey;

@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
