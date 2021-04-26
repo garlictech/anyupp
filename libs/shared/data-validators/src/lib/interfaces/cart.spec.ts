@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
 import { CrudApi } from '@bgap/crud-gql/api';
 import { ICart } from '@bgap/shared/types';

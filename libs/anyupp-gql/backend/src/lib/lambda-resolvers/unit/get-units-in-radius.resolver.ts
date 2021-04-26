@@ -69,7 +69,8 @@ export const getUnitsInRadius = ({
                 inputLocation: location,
                 chainStyle: props.chain.style,
                 openingHours: {},
-                paymentModes: unit.paymentModes as any,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                paymentModes: unit.paymentModes as any, // TODO remove this any (CrudApi.paymentModes !== AnyuppApi.PaymentModes)
               }),
             ),
             defaultIfEmpty({} as AnyuppApi.GeoUnit),
@@ -109,12 +110,17 @@ const toGeoUnit = ({
   style: removeTypeNameField(chainStyle),
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),
-  openingHours: getOpeningOursForToday(/*openingHours*/),
+  openingHours: getOpeningOursForToday(openingHours),
   // paymentModes: paymentModes as AnyuppApi.PaymentMode[],
-  paymentModes: paymentModes as any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  paymentModes: paymentModes as any, // TODO remove this any (CrudApi.paymentModes !== AnyuppApi.PaymentModes)
 });
 
-const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => {
+const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {
+  console.log(
+    '### ~ file: get-units-in-radius.resolver.ts ~ line 118 ~ TODO: use real opening hours insted of the fix one',
+    openingHours,
+  );
   return '09:00 - 22:00';
 };
 

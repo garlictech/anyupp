@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DateTime } from 'luxon';
 import { IAvailability, EVariantAvailabilityType } from '@bgap/shared/types';
 import { calculatePriceFromAvailabilities } from './calculate-price';

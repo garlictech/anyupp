@@ -41,7 +41,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   const role = (adminUser?.roleContexts?.items || []).find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (i: any) =>
-      i?.roleContext?.contextId?.toLowerCase() === desiredContext?.toLowerCase(),
+      i?.roleContext?.contextId?.toLowerCase() ===
+      desiredContext?.toLowerCase(),
   );
 
   console.error('***** role', role);
@@ -50,7 +51,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
     // The given role has been assigned to the user
     const roleContent = fp.pick(
       ['role', 'chainId', 'groupId', 'unitId', 'contextId'],
-      <any>role.roleContext,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <any>role.roleContext, // TODO: remove this ANY
     );
 
     console.error('***** context OK', roleContent);

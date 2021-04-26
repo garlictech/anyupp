@@ -8,6 +8,14 @@ export const regenerateUnitData = ({
   unitId: string;
   crudGraphqlClient: GraphqlApiClient;
 }): Observable<boolean> => {
+  console.log(
+    '### ~ file: regenerate-unit-data.resolver.ts ~ line 11 ~ crudGraphqlClient',
+    crudGraphqlClient,
+  );
+  console.log(
+    '### ~ file: regenerate-unit-data.resolver.ts ~ line 11 ~ unitId',
+    unitId,
+  );
   // // TODO: use geoSearch for the units
   // return listActiveUnits(crudGraphqlClient).pipe(
   //   switchMap(units =>

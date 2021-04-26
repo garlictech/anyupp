@@ -119,8 +119,8 @@ export class GraphqlApiClient {
     variables?: Record<string, unknown>,
   ): Observable<ApolloQueryResult<T>> {
     return of('subscriber').pipe(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       switchMap(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         () => <any>this._client.subscribe({
             query: document,
             variables,

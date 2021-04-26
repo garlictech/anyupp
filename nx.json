@@ -181,7 +181,7 @@
       "tags": ["type:backend", "platform:universal"]
     },
     "shared-fixtures": {
-      "tags": []
+      "tags": ["type:utils", "platform:universal"]
     }
   }
 }

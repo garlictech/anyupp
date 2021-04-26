@@ -6,6 +6,7 @@ import axios from 'axios';
  *
  * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-responses.html
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sendResponse = async (props: any) => {
   const body = {
     Status: props.status,
