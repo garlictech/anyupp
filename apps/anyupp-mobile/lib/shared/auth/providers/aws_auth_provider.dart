@@ -205,7 +205,7 @@ class AwsAuthProvider implements IAuthProvider {
       }
 
       String token = session?.accessToken?.jwtToken;
-      print('***** getAccessToken().token=$token');
+      // print('***** getAccessToken().token=$token');
       return token;
     } on Exception catch (e) {
       print('***** getAccessToken().error=$e');
@@ -218,7 +218,7 @@ class AwsAuthProvider implements IAuthProvider {
     try {
       CognitoUserSession session = await _service.session;
       String token = session?.idToken?.jwtToken;
-      print('***** getIdToken().token=$token');
+      // print('***** getIdToken().token=$token');
       return token;
     } on Exception catch (e) {
       print('***** getIdToken().error=$e');

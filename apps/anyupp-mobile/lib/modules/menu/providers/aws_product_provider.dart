@@ -49,7 +49,7 @@ class AwsProductProvider implements IProductProvider {
 
   @override
   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) async* {
-    // print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
+    print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
     try {
       ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
@@ -59,7 +59,11 @@ class AwsProductProvider implements IProductProvider {
           'categoryId': categoryId,
         },
       ));
-
+      print('getProductList.result=$result');
+      if (result.hasException) {
+        print('getProductList().error=${result.exception}'); // TODO
+        yield null;
+      }
       List<dynamic> items = result.data['listGeneratedProducts']['items'];
       List<GeneratedProduct> results = [];
       if (items != null) {

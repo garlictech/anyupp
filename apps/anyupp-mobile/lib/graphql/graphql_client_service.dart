@@ -51,7 +51,7 @@ class GraphQLClientService {
         'host': Uri.parse(amplifyApiUrl).host,
       };
     }
-    print('GraphQLClientService.headers=$headers');
+    // print('GraphQLClientService.headers=$headers');
     final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
     final HttpLink _httpLink = HttpLink(
