@@ -85,7 +85,13 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         fetchPolicy: FetchPolicy.networkOnly,
       ));
       // print('_getFavorites().result.data=${result.data}');
-      // print('_getFavorites().result.exception=${result.exception}');
+      
+      if (result.hasException) {
+        print('_getFavorites().result.exception=${result.exception}');
+        // throw result.exception;
+        return [];
+      }
+
 
       List<dynamic> items = result.data['listFavoriteProducts']['items'];
       if (items == null || items.isEmpty) {
