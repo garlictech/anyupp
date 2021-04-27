@@ -1,6 +1,12 @@
 import * as fp from 'lodash/fp';
-import { Observable, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { iif, Observable, of, throwError } from 'rxjs';
+import {
+  catchError,
+  defaultIfEmpty,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import {
@@ -8,6 +14,7 @@ import {
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 import { IGeneratedProduct } from '@bgap/shared/types';
+
 import {
   executeBatchDelete,
   executeBatchPut,
@@ -85,10 +92,16 @@ export const deleteGeneratedProductsForAUnit = ({
   crudGraphqlClient: GraphqlApiClient;
 }) => {
   return listGeneratedProductsForUnits(crudGraphqlClient, [unitId]).pipe(
-    // pipeDebug('### LIST GENERATED PRODUCTS'),
-    map(generatedProducts => generatedProducts.map(x => x.id)),
-    // switchMap(executeBatchDelete('GeneratedProductTable')),
-    switchMap(executeBatchDelete(TABLE_NAME)),
+    switchMap(items =>
+      iif(
+        () => items.length > 0,
+        of(items).pipe(
+          map(generatedProducts => generatedProducts.map(x => x.id)),
+          switchMap(executeBatchDelete(TABLE_NAME)),
+        ),
+        of([]),
+      ),
+    ),
   );
 };
 
@@ -119,9 +132,9 @@ export const listGeneratedProductsForUnits = (
     input,
   ).pipe(
     map(x => x.listGeneratedProducts?.items),
-    // pipeDebug('### LIST ACTIVE UNITS'),
     filter(fp.negate(fp.isEmpty)),
-    // switchMap((items: []) => combineLatest(items.map(validateUnit))),
+    defaultIfEmpty([]),
+    // TODO: switchMap((items: []) => combineLatest(items.map(validateUnit))),
     catchError(err => {
       console.error(err);
       return throwError('Internal listGeneratedProducts query error');

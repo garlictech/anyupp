@@ -84,7 +84,7 @@ const unitProduct_0201_DIFFERENTUNIT: CrudApi.CreateUnitProductInput = {
 //   id: unit02_generatedProduct_02.id,
 // };
 
-describe('RegenerateUnitData mutation tests', () => {
+describe.skip('RegenerateUnitData mutation tests', () => {
   // let authHelper: AuthenticatdGraphQLClientWithUserId;
 
   beforeAll(async () => {
@@ -193,8 +193,6 @@ describe('RegenerateUnitData mutation tests', () => {
           );
         },
       });
-    // TODO: delete all the generatedProd for a unit
-    // TODO: listGeneratedProductForAUnit -> snapshot
     // TOOD: execute func
     // TODO: listGeneratedProductForAUnit -> snapshot
     // TOOD: modify unitProduct

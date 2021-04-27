@@ -7,23 +7,24 @@
 //     "totalRetryDelay": 0
 //   },
 //   "UnprocessedItems": {}
+// See https://medium.com/@ravishivt/batch-processing-with-rxjs-6408b0761f39
+// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/batchwriteitemcommand.html
 import { DateTime } from 'luxon';
 import { from } from 'rxjs';
-import { bufferCount, last, map, mergeMap, scan } from 'rxjs/operators';
-
-// }
+import { bufferCount, delay, map, mergeMap, toArray } from 'rxjs/operators';
 import {
   BatchWriteItemCommand,
-  BatchWriteItemCommandOutput,
   BatchWriteItemInput,
   DynamoDBClient,
   WriteRequest,
 } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
+import * as fp from 'lodash/fp';
 
 const DYNAMODB_BATCH_WRITE_ITEM_COUNT = 25;
-const DYNAMODB_CONCURRENT_OPERATION_COUNT = 2;
+const DYNAMODB_CONCURRENT_OPERATION_COUNT = 1;
+const DYNAMODB_OPERATION_DELAY = 1000;
 
 const toBatchDeleteParam = (id: string): WriteRequest => ({
   DeleteRequest: { Key: { id: { S: id } } },
@@ -54,11 +55,14 @@ const executeBatchWrite = (tablename: string) => (
     map(toBatchWriteIteminput(tablename)),
     // EXECUTE fix amount of the operation concurrently
     mergeMap(
-      params => from(dbClient.send(new BatchWriteItemCommand(params))),
+      params =>
+        from(dbClient.send(new BatchWriteItemCommand(params))).pipe(
+          delay(DYNAMODB_OPERATION_DELAY),
+        ),
       DYNAMODB_CONCURRENT_OPERATION_COUNT,
     ),
-    scan((acc: BatchWriteItemCommandOutput[], curr) => [...acc, curr], []),
-    last(),
+    toArray(),
+    map(fp.flatten),
   );
 };
 const toBatchWriteIteminput = (tablename: string) => (
