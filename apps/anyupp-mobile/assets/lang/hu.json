@@ -45,7 +45,7 @@
       "dialogEmailSentTitle": "Email elküldve",
       "dialogEmailSentMessage": "Nézd meg az email-jeid és kattints a linkre a bejelentkezéshez!",
       "dialogResetSentTitle": "Jelszó frissítve",
-      "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
+      "dialogResetSentMessage": "Elküldtük email-ben a jelszó megváltoztatásához szükséges kódot.",
       "closeButton": "Bezárás",
       "setMailTo": "A kódot elküldtük a megadott email címre",
       "checkInbox": "Ellenőrizd a bejövő leveleidet!",
@@ -55,7 +55,8 @@
       "verificationCode": "Validációs Kód",
       "confirmAccount": "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
-      "dialogConfirmedMessage": "A fiókodod aktiválva."
+      "dialogConfirmedMessage": "A fiókodod aktiválva.",
+      "enterCode" : "Enter Code"
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
@@ -296,6 +297,10 @@
     "ERROR_WRONG_PASSWORD": {
       "title": "Login error",
       "description": "The password is invalid or the user does not have a password."
+    },
+    "ERROR_PASSWORD_MISSMATCH": {
+      "title": "Login error",
+      "description": "The passwordS are not matching."
     },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",

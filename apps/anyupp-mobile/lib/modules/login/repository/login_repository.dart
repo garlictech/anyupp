@@ -1,8 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
-class LoginRepository
-    implements ISocialLoginProvider, IEmailLoginProvider {
+class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   final ICommonLoginProvider _commonLoginProvider;
   final ISocialLoginProvider _socialLoginProvider;
   final IEmailLoginProvider _emailLoginProvider;
@@ -78,7 +77,7 @@ class LoginRepository
   }
 
   @override
-  Future<void> sendPasswordResetEmail(String email) {
+  Future<bool> sendPasswordResetEmail(String email) {
     return _emailLoginProvider.sendPasswordResetEmail(email);
   }
 
@@ -90,5 +89,11 @@ class LoginRepository
   @override
   Future<bool> resendConfirmationCode(String user) {
     return _emailLoginProvider.resendConfirmationCode(user);
+  }
+
+  @override
+  Future<bool> confirmPassword(
+      String userName, String code, String newPassword) {
+    return _emailLoginProvider.confirmPassword(userName, code, newPassword);
   }
 }

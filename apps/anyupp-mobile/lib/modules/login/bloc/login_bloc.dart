@@ -112,8 +112,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle send password reset to email
       if (event is SendPasswordResetEmail) {
         yield PasswordResetInProgress();
-        await _repository.sendPasswordResetEmail(event.email);
-        yield PasswordResetEmailSent(event.email);
+        bool passwordSent =
+            await _repository.sendPasswordResetEmail(event.email);
+        if (passwordSent) {
+          getIt<LoginBloc>().add(PasswordResetEmailSent(event.email));
+        }
+      }
+
+      if (event is PasswordResetEmailSent) {
+        yield PasswordResetEmailSentState(event.email);
+      }
+
+      if (event is ConfirmPassword) {
+        yield ConfirmCodeSending();
+        bool success = false;
+
+        try {
+          success = await _repository.confirmPassword(
+              event.userName, event.code, event.password);
+        } on SignUpException catch (se) {
+          print('********* SignUpBloc.Exception()=$se');
+          getIt<ExceptionBloc>().add(ShowException(se));
+        } on Exception catch (e) {
+          print('********* LoginBloc.Exception()=$e');
+          getIt<ExceptionBloc>().add(ShowException(e));
+        }
+        if (success) {
+          yield PasswordReset();
+        } else {
+          getIt<LoginBloc>().add(PasswordResetEmailSent(event.userName));
+        }
       }
 
       // --- Handle external errors (eg. errors from repository)

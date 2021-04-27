@@ -86,9 +86,9 @@ class _LoginScreenState extends State<LoginScreen>
           // print('LoginScreen.listener.state=${state.ui}');
           double height = 0.0;
           switch (state.ui) {
-            // case LoginFormUI.SHOW_LOGIN_WITH_LINK:
-            //   height = 180.0;
-            //   break;
+            case LoginFormUI.SHOW_PASSWORD_CONFIRM:
+              height = 290.0;
+              break;
             case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
               height = 235.0;
               break;

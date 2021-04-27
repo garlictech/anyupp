@@ -51,7 +51,7 @@
       "dialogEmailSentTitle": "Email sent",
       "dialogEmailSentMessage": "Check your email and click on the link to login to AnyUpp!",
       "dialogResetSentTitle": "Password reset",
-      "dialogResetSentMessage": "Password reset email sent! Check your mail to finish password reset.",
+      "dialogResetSentMessage": "Password reset email sent! Check your mail for the confirmation code.",
       "closeButton": "Close",
       "setMailTo": "We have sent a code by email",
       "checkInbox": "Check your inbox!",
@@ -61,7 +61,8 @@
       "verificationCode": "Verification Code",
       "confirmAccount": "Confirm Account",
       "dialogConfirmedTitle": "Account Verified!",
-      "dialogConfirmedMessage": "Your account has been verified."
+      "dialogConfirmedMessage": "Your account has been verified.",
+      "enterCode" : "Enter Code"
     },
     "phone": {
       "loginProgress": "Login in progress...",
@@ -296,6 +297,10 @@
     "ERROR_WRONG_PASSWORD": {
       "title": "Login error",
       "description": "The password is invalid or the user does not have a password."
+    },
+    "ERROR_PASSWORD_MISSMATCH": {
+      "title": "Login error",
+      "description": "The passwordS are not matching."
     },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",

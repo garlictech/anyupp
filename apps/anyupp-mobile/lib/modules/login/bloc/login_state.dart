@@ -61,6 +61,13 @@ class PasswordResetInProgress extends LoginState {
   List<Object> get props => [];
 }
 
+class PasswordReset extends LoginState {
+  const PasswordReset();
+
+  @override
+  List<Object> get props => [];
+}
+
 class LoginError extends LoginState {
   final String code;
   final String message;
@@ -101,10 +108,10 @@ class EmailLinkSent extends LoginState {
   List<Object> get props => [email];
 }
 
-class PasswordResetEmailSent extends LoginState {
+class PasswordResetEmailSentState extends LoginState {
   final String email;
 
-  PasswordResetEmailSent(this.email);
+  PasswordResetEmailSentState(this.email);
 
   @override
   List<Object> get props => [email];

@@ -3,6 +3,7 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {
+  SHOW_PASSWORD_CONFIRM,
   SHOW_LOGIN_WITH_PASSWORD,
   SHOW_REGISTRATION,
   SHOW_FORGOT_PASSWORD,
@@ -146,7 +147,7 @@ class RegisterWithEmailAndPassword extends LoginEvent {
       {this.userEmail, this.userPhone, this.email, this.password});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [userEmail, userPhone, email, password];
 }
 
 class SendPasswordResetEmail extends LoginEvent {
@@ -156,6 +157,26 @@ class SendPasswordResetEmail extends LoginEvent {
 
   @override
   List<Object> get props => [email];
+}
+
+class PasswordResetEmailSent extends LoginEvent {
+  final String email;
+
+  const PasswordResetEmailSent(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+class ConfirmPassword extends LoginEvent {
+  final String userName;
+  final String code;
+  final String password;
+
+  const ConfirmPassword({this.userName, this.code, this.password});
+
+  @override
+  List<Object> get props => [userName, code, password];
 }
 
 class SentConfirmCodeEmail extends LoginEvent {

@@ -147,7 +147,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<void> sendPasswordResetEmail(String userName) async {
+  Future<bool> sendPasswordResetEmail(String userName) async {
     CognitoUser user = _service.createCognitoUser(userName);
     bool passwordResent = false;
     try {
@@ -160,5 +160,21 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(passwordResent);
+  }
+
+  @override
+  Future<bool> confirmPassword(String userName, String code, String newPassword) async {
+    CognitoUser user = _service.createCognitoUser(userName);
+    bool passwordConfirmed = false;
+    try {
+      final data = await user.confirmPassword(code, newPassword);
+      if (data != null) {
+        passwordConfirmed = true;
+      }
+    } on Exception catch (e) {
+      throw SignUpException.fromException(
+          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+    }
+    return Future.value(passwordConfirmed);
   }
 }
