@@ -93,6 +93,7 @@ export interface IUnitProduct {
   takeaway?: boolean;
   createdAt: string;
   updatedAt: string;
+  groupProduct?: IGroupProduct;
 }
 
 export interface IChainProduct {
@@ -116,6 +117,7 @@ export interface IGroupProduct {
   isVisible: boolean;
   tax: number;
   variants: [IProductVariant];
+  chainProduct?: IChainProduct;
 }
 
 export interface IProductOrderChangeEvent {

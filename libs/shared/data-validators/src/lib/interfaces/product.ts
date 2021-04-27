@@ -16,6 +16,7 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
+  groupProduct: Joi.object().allow(null), //TODO: use an exact schema
 };
 
 export const {

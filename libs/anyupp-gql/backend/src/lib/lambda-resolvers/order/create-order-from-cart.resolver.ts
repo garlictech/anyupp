@@ -20,7 +20,6 @@ import {
   IOrderItem,
   IPaymentMode,
   IPlace,
-  IUnitProduct,
   IUnit,
 } from '@bgap/shared/types';
 import {
@@ -28,7 +27,6 @@ import {
   validateGetGroupCurrency,
   validateOrder,
   validateUnit,
-  validateUnitProduct,
 } from '@bgap/shared/data-validators';
 
 import {
@@ -231,21 +229,12 @@ const getLaneIdForCartItem = (
   crudGraphqlClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
-  return getUnitProduct(crudGraphqlClient, productId).pipe(
-    map(product => product.laneId),
-  );
-};
-
-const getUnitProduct = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
-): Observable<IUnitProduct> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProduct,
+    CrudApiQueryDocuments.getUnitProductLaneId,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),
-    switchMap(validateUnitProduct),
+    map(product => product?.laneId || undefined),
   );
 };
 

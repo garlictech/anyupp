@@ -266,3 +266,11 @@ export const getRoleContext = /* GraphQL */ `
     }
   }
 `;
+
+export const getUnitProductLaneId = /* GraphQL */ `
+  query GetUnitProduct($id: ID!) {
+    getUnitProduct(id: $id) {
+      laneId
+    }
+  }
+`;
