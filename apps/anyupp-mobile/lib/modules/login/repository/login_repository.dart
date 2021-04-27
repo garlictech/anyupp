@@ -68,11 +68,6 @@ class LoginRepository
   Future<String> get email => _emailLoginProvider.email;
 
   @override
-  Future<bool> isSignInWithEmailLink(String emailLink) {
-    return _emailLoginProvider.isSignInWithEmailLink(emailLink);
-  }
-
-  @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(
       String email, String password) {
     return _emailLoginProvider.loginWithEmailAndPassword(email, password);
@@ -83,17 +78,6 @@ class LoginRepository
       String userEmail, String userPhone, String email, String password) {
     return _emailLoginProvider.registerUserWithEmailAndPassword(
         userEmail, userPhone, email, password);
-  }
-
-  @override
-  Future<void> sendSignInLinkToEmail(String email) {
-    return _emailLoginProvider.sendSignInLinkToEmail(email);
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithEmailLink(
-      String email, String emailLink) {
-    return _emailLoginProvider.signInWithEmailLink(email, emailLink);
   }
 
   /// Logout the user from the backend and all Social platforms

@@ -48,7 +48,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
           if (state is ConfirmCodeState) {
             return _buildSignUpConfirmForm(context, state.user);
           }
-          if (state is LoginInProgress) {
+          if (state is CodeReSendining) {
             _buildLoading(
               context,
             );

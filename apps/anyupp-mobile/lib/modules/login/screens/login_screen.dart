@@ -554,10 +554,6 @@ class _LoginScreenState extends State<LoginScreen>
           iconColor: iconColor,
           size: iOS ? 66.0 : 70.0,
           onTap: () {
-            if (method == LoginMethod.PHONE) {
-              // This dialog handle all the Login BloC calls by itself
-              LoginWithPhoneDialog.show(context, linkAccount: false);
-            }
             if (method == LoginMethod.EMAIL) {
               // This dialog handle all the Login BloC calls by itself
               //LoginWithEmailDialog.show(context, linkAccount: false);

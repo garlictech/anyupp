@@ -3,7 +3,6 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {
-  // SHOW_LOGIN_WITH_LINK,
   SHOW_LOGIN_WITH_PASSWORD,
   SHOW_REGISTRATION,
   SHOW_FORGOT_PASSWORD,
@@ -56,36 +55,6 @@ class CompleteLoginWithMethod extends LoginEvent {
   List<Object> get props => [method, code];
 }
 
-class LoginWithPhoneRequireSMSCode extends LoginEvent {
-  final String phoneNumber;
-  final bool linkAccount;
-
-  const LoginWithPhoneRequireSMSCode(this.phoneNumber, this.linkAccount);
-
-  @override
-  List<Object> get props => [phoneNumber, linkAccount];
-}
-
-class LoginWithPhoneSMSCodeArrived extends LoginEvent {
-  final String verificationId;
-  final String phoneNumber;
-
-  const LoginWithPhoneSMSCodeArrived(this.verificationId, this.phoneNumber);
-
-  @override
-  List<Object> get props => [verificationId, phoneNumber];
-}
-
-class LoginWithPhoneVerifySMSCode extends LoginEvent {
-  final String verificationId;
-  final String smsCode;
-
-  const LoginWithPhoneVerifySMSCode(this.verificationId, this.smsCode);
-
-  @override
-  List<Object> get props => [verificationId, smsCode];
-}
-
 class LinkCurrentAccountWithProvider extends LoginEvent {
   final LoginMethod providerToBeLinked;
 
@@ -110,10 +79,6 @@ class ResetLogin extends LoginEvent {
 
 class Logout extends LoginEvent {
   const Logout();
-}
-
-class PhoneLoginSuccess extends LoginEvent {
-  const PhoneLoginSuccess();
 }
 
 class StartLoginWithEmail extends LoginEvent {
@@ -159,15 +124,6 @@ class SignUpConfirmed extends LoginEvent {
 
 class CodeReSendining extends LoginEvent {
   const CodeReSendining();
-}
-
-class FinishLoginWithEmailLink extends LoginEvent {
-  final String emailLink;
-
-  FinishLoginWithEmailLink(this.emailLink);
-
-  @override
-  List<Object> get props => [emailLink];
 }
 
 class LoginWithEmailAndPassword extends LoginEvent {

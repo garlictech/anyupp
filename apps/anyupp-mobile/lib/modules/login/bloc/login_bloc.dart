@@ -18,11 +18,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     print('*** LoginBloc().mapEventToState=$event');
     try {
-      // if (event is LoginWithMethod) {
-      //   yield ShowSocialLoginWebView(event.method);
-      //   return;
-      // }
-
       // --- Handle logins
       if (event is LoginWithMethod) {
         yield LoginInProgress();
@@ -50,68 +45,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
 
-      // --- Handle phone login (Require SMS code)
-      if (event is LoginWithPhoneRequireSMSCode) {
-        yield LoginInProgress();
-        print('**** LoginBloc.signInWithPhone()=${event.phoneNumber}');
-        await _repository.signInWithPhone(event.phoneNumber, event.linkAccount);
-      }
-
-      // --- Handle phone login (SMS code arrived, need to show enter SMS code form)
-      if (event is LoginWithPhoneSMSCodeArrived) {
-        print(
-            '**** LoginBloc.LoginWithPhoneSMSCodeArrived()=${event.verificationId}');
-        yield NeedSMSCode(event.verificationId, event.phoneNumber);
-      }
-
-      // --- Handle phone login (Manually enter the SMS code)
-      if (event is LoginWithPhoneVerifySMSCode) {
-        print(
-            '**** LoginBloc.LoginWithPhoneVerifySMSCode().verificationId=${event.verificationId}, smsCode=${event.smsCode}');
-        await _repository.validateSMSCodeWithPhone(
-            event.verificationId, event.smsCode);
-        yield LoginSuccess();
-      }
-
-      // --- Handle phone link success
-      if (event is PhoneLoginSuccess) {
-        yield LoginSuccess();
-      }
-
-      // --- Handle start email login
-      if (event is StartLoginWithEmail) {
-        yield LoginInProgress();
-        await _repository.sendSignInLinkToEmail(event.email);
-        yield EmailLinkSent(event.email);
-      }
-
-      // --- Handle finish login with email link
-      if (event is FinishLoginWithEmailLink) {
-        bool isSignInWithEmailLink =
-            await _repository.isSignInWithEmailLink(event.emailLink);
-        if (isSignInWithEmailLink) {
-          yield LoginInProgress();
-          String email = await _repository.email;
-          ProviderLoginResponse response =
-              await _repository.signInWithEmailLink(email, event.emailLink);
-          print('**** LoginBloc.signInWithEmailLink().finish()=$response');
-          yield LoginSuccess();
-        }
-      }
-
       // --- Handle login with email and password
       if (event is LoginWithEmailAndPassword) {
         yield EmailLoginInProgress();
         ProviderLoginResponse response = await _repository
             .loginWithEmailAndPassword(event.email, event.password);
         print('**** LoginBloc.LoginWithEmailAndPassword().finish()=$response');
-        //yield LoginSuccess();
+        yield LoginSuccess();
       }
 
       // --- Handle registration with email and password
       if (event is RegisterWithEmailAndPassword) {
         yield EmailLoginInProgress();
-        // getIt<LoginBloc>().add(SignUpErrorOccured("test", "test"));
         bool res = await _repository.registerUserWithEmailAndPassword(
             event.userEmail, event.userPhone, event.email, event.password);
         if (res) {
@@ -119,11 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
               animationCurve: Curves.easeIn));
           getIt<LoginBloc>().add(SignUpConfirm(event.email));
-          // await Future.delayed(Duration(seconds: 1));
-          // yield UserCreated();
         }
-        //print('**** LoginBloc.RegisterWithEmailAndPassword().finish()=$response');
-        //yield EmailRegistrationSuccess(event.email);
       }
       if (event is ConfirmRegistration) {
         bool confirmed =
@@ -234,7 +175,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print('********* SignUpBloc.Exception()=$se');
       getIt<ExceptionBloc>().add(ShowException(se));
       yield SignUpError(se.code, se.message);
-      if (se.subCode == SignUpException.INVALID_CONFIRMATION_CODE) {
+      if (se.subCode == SignUpException.INVALID_CONFIRMATION_CODE ||
+          se.subCode == SignUpException.LIMIT_ECXEEDED) {
         getIt<LoginBloc>().add(SignUpConfirm(se.message));
       }
     } on Exception catch (e) {

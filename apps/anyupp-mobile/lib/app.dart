@@ -144,13 +144,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _handleEmailLoginLink(Uri uri) async {
-    String emailLink = uri.toString();
-    print('_initDeepLinks().emailLink=$emailLink');
-    bool isSignInWithEmailLink = await getIt<LoginRepository>().isSignInWithEmailLink(emailLink);
-    print('_initDeepLinks().isSignInWithEmailLink=$isSignInWithEmailLink');
-    if (isSignInWithEmailLink) {
-      getIt<LoginBloc>().add(FinishLoginWithEmailLink(emailLink));
-    }
+    // String emailLink = uri.toString();
+    // print('_initDeepLinks().emailLink=$emailLink');
+    // bool isSignInWithEmailLink = await getIt<LoginRepository>().isSignInWithEmailLink(emailLink);
+    // print('_initDeepLinks().isSignInWithEmailLink=$isSignInWithEmailLink');
+    // if (isSignInWithEmailLink) {
+    //   getIt<LoginBloc>().add(FinishLoginWithEmailLink(emailLink));
+    // }
   }
 
   @override

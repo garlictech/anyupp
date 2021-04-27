@@ -368,6 +368,10 @@
     "USER_EMAIL_NOT_SAME": {
       "title": "Sign up error",
       "description": "User email should be empty or same as username, since username attribute is email."
+    },
+    "LIMIT_EXCEEDED": {
+      "title": "Sign up error",
+      "description": "Resed limit exceeded."
     }
   }
 }

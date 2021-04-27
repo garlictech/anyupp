@@ -21,11 +21,6 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       (await SharedPreferences.getInstance()).getString('auth_email');
 
   @override
-  Future<bool> isSignInWithEmailLink(String emailLink) async {
-    return false;
-  }
-
-  @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(
       String email, String password) async {
     try {
@@ -34,7 +29,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           await user.authenticateUser(_service.getAuthDetails(email, password));
 
       if (session.isValid()) {
-        User user = await _authProvider.getAuthenticatedUserProfile();
+        User user = await _authProvider.loginWithCognitoSession(session);
         return ProviderLoginResponse(
           credential: null,
           user: user,
@@ -44,36 +39,6 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       throw LoginException(
           code: LoginException.INVALID_CREDENTIALS,
           message: 'Invalid credentials');
-    } on CognitoUserNewPasswordRequiredException catch (e) {
-      // handle New Password challenge
-      print(
-          'loginWithEmailAndPassword.CognitoUserNewPasswordRequiredException=$e');
-      rethrow;
-    } on CognitoUserMfaRequiredException catch (e) {
-      // handle SMS_MFA challenge
-      print('loginWithEmailAndPassword.CognitoUserMfaRequiredException=$e');
-      rethrow;
-    } on CognitoUserSelectMfaTypeException catch (e) {
-      // handle SELECT_MFA_TYPE challenge
-      print('loginWithEmailAndPassword.CognitoUserSelectMfaTypeException=$e');
-      rethrow;
-    } on CognitoUserMfaSetupException catch (e) {
-      // handle MFA_SETUP challenge
-      print('loginWithEmailAndPassword.CognitoUserMfaSetupException=$e');
-      rethrow;
-    } on CognitoUserTotpRequiredException catch (e) {
-      // handle SOFTWARE_TOKEN_MFA challenge
-      print('loginWithEmailAndPassword.CognitoUserTotpRequiredException=$e');
-      rethrow;
-    } on CognitoUserCustomChallengeException catch (e) {
-      // handle CUSTOM_CHALLENGE challenge
-      print('loginWithEmailAndPassword.CognitoUserCustomChallengeException=$e');
-      rethrow;
-    } on CognitoUserConfirmationNecessaryException catch (e) {
-      // handle User Confirmation Necessary
-      print(
-          'loginWithEmailAndPassword.CognitoUserConfirmationNecessaryException=$e');
-      rethrow;
     } on CognitoClientException catch (e) {
       // handle Wrong Username and Password and Cognito Client
       print('loginWithEmailAndPassword.CognitoClientException=$e');
@@ -133,8 +98,6 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(false);
-
-    // TODO: implement registerUserWithEmailAndPassword
   }
 
   @override
@@ -169,6 +132,13 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       if (status != null) {
         codeResent = true;
       }
+    } on CognitoClientException catch (e) {
+      if (e.code == 'LimitExceededException') {
+        throw SignUpException(
+            code: SignUpException.CODE,
+            subCode: SignUpException.LIMIT_ECXEEDED,
+            message: userName);
+      }
     } on Exception catch (e) {
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
@@ -190,18 +160,5 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(passwordResent);
-  }
-
-  @override
-  Future<void> sendSignInLinkToEmail(String email) {
-    // TODO: implement sendSignInLinkToEmail
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithEmailLink(
-      String email, String emailLink) {
-    // TODO: implement signInWithEmailLink
-    throw UnimplementedError();
   }
 }

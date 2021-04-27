@@ -357,17 +357,21 @@
       "title": "Sign up error",
       "description": "The given confirmation code is invalid, try to resend it"
     },
-    "EXPIRED_CONFIRMATION_CODE" : {
-      "title" : "Invalid code",
-      "description" : "Invalid code provided, please request a code again."
+    "EXPIRED_CONFIRMATION_CODE": {
+      "title": "Invalid code",
+      "description": "Invalid code provided, please request a code again."
     },
-    "NOT_EMAIL_OR_PHONE" : {
-      "title" : "Sign up error",
-      "description" : "Username should be either an email or a phone number."
+    "NOT_EMAIL_OR_PHONE": {
+      "title": "Sign up error",
+      "description": "Username should be either an email or a phone number."
     },
-    "USER_EMAIL_NOT_SAME" : {
-      "title" : "Sign up error",
-      "description" : "User email should be empty or same as username, since username attribute is email."
+    "USER_EMAIL_NOT_SAME": {
+      "title": "Sign up error",
+      "description": "User email should be empty or same as username, since username attribute is email."
+    },
+    "LIMIT_EXCEEDED": {
+      "title": "Sign up error",
+      "description": "Resed limit exceeded."
     }
   }
 }
