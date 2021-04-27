@@ -12,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'flutter_qr_code_scanner.dart';
+
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
   _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
@@ -223,7 +225,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return InkWell(
       highlightColor: theme.indicator.withAlpha(128),
       hoverColor: theme.indicator.withAlpha(128),
-      onTap: () => Nav.to(SelectUnitQRCodeScannerScreen()),
+      onTap: () => Nav.to(QRCodeScannerScreen()),
       // onTap: () => navigateTo(
       //             context,
       //             (_, __, ___) => UnitFoundByQRCodeScreen(
