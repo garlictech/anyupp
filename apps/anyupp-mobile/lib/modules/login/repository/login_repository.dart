@@ -2,28 +2,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
 class LoginRepository
-    implements IPhoneLoginProvider, ISocialLoginProvider, IEmailLoginProvider {
+    implements ISocialLoginProvider, IEmailLoginProvider {
   final ICommonLoginProvider _commonLoginProvider;
   final ISocialLoginProvider _socialLoginProvider;
-  final IPhoneLoginProvider _phoneLoginProvider;
   final IEmailLoginProvider _emailLoginProvider;
 
   LoginRepository(
     this._commonLoginProvider,
     this._socialLoginProvider,
     this._emailLoginProvider,
-    this._phoneLoginProvider,
   );
-
-  Future<void> signInWithPhone(String phoneNumber, bool linkAccount) async {
-    return _phoneLoginProvider.signInWithPhone(phoneNumber, linkAccount);
-  }
-
-  Future<void> validateSMSCodeWithPhone(
-      String verificationId, String smsCode) async {
-    return _phoneLoginProvider.validateSMSCodeWithPhone(
-        verificationId, smsCode);
-  }
 
   @override
   Future<bool> get appleSignInAvailable =>
