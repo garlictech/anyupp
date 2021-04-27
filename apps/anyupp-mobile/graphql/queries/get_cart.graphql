@@ -1,5 +1,5 @@
 query GetCurrentCartQuery($userId: ID!, $unitId: ID!) {
-listCarts(filter: {unitId: {eq: $unitId}, userId: {eq: $userId}}) {
+  listCarts(filter: { unitId: { eq: $unitId }, userId: { eq: $userId } }) {
     items {
       id
       items {

@@ -1,7 +1,7 @@
 import { App, Stack } from '@serverless-stack/resources';
-
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
+import { CognitoTriggersStack } from './app/cognito-triggers-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
@@ -40,6 +40,8 @@ export class AnyUppStack extends Stack {
     new SeederStack(scope, 'seeder', {
       adminUserPool: cognitoStack.adminUserPool,
     });
+
+    new CognitoTriggersStack(scope, 'cognitoTriggers');
   }
 }
 

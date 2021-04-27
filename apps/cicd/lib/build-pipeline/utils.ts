@@ -17,6 +17,7 @@ export interface PipelineStackProps extends sst.StackProps {
   readonly repoOwner: string;
   readonly repoBranch: string;
   readonly secretsManager: SecretsManagerStack;
+  readonly appcenterUser: iam.User;
 }
 
 export const appConfig = {
@@ -257,18 +258,7 @@ export const createCommonPipelineParts = (
     ],
   });
 
-  /* const serviceRole = new iam.Role(scope, 'CodePipelineServiceRole', {
-    assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
-  });
-
-  serviceRole.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ['*'],
-      resources: ['*'],
-    }),
-  );
-*/
+  buildArtifactBucket.grantRead(props.appcenterUser);
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
@@ -298,10 +288,10 @@ export const createCommonPipelineParts = (
         ],
       },
       {
-        stageName: 'SeederRemoval',
+        stageName: 'Finalization',
         actions: [
           new codepipeline_actions.CloudFormationDeleteStackAction({
-            actionName: `DeleteSeederStack`,
+            actionName: `DeleteSeeder`,
             stackName: `${utils.projectPrefix(stage)}-seeder`,
             adminPermissions: true,
           }),

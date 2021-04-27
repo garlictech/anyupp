@@ -30,7 +30,7 @@ const password = 'Testtesttest12_';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
-  region: 'eu-west-1',
+  region: process.env.AWS_REGION || '',
 });
 
 export const seedAdminUser = (UserPoolId: string): Observable<string> =>

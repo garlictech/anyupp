@@ -1,9 +1,7 @@
 import path from 'path';
-
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
 import * as sst from '@serverless-stack/resources';
-
 import { commonLambdaProps } from './lambda-common';
 import { Duration, CustomResource } from '@aws-cdk/core';
 import { Provider } from '@aws-cdk/custom-resources';

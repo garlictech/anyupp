@@ -128,5 +128,13 @@
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "artifacts"]
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "artifacts",
+    ".git",
+    "cyreport",
+    "coverage"
+  ]
 }

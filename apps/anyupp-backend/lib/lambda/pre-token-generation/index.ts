@@ -21,11 +21,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 
   const CrudApiClient = GraphqlApiFp.createBackendClient(
     awsConfig,
-    // TODO use process.env variables
-    'AKIAYIT7GMY5RXSLLQN3',
-    //process.env.AWS_ACCESS_KEY_ID || '',
-    'aYxNIqJ7O56ltpHb1Aq534bpv2r+Atpr1TUxiahx',
-    //process.env.AWS_SECRET_ACCESS_KEY || '',
+    process.env.AWS_ACCESS_KEY_ID || '',
+    process.env.AWS_SECRET_ACCESS_KEY || '',
     console,
   );
 
