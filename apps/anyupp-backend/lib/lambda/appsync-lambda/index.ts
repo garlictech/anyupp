@@ -15,10 +15,6 @@ export interface AnyuppRequest {
   payload: unknown;
 }
 
-// HOW TO IMPORT CRUD API TABLE ARNS
-import { tableConfig } from '@bgap/crud-gql/backend';
-console.log('THE UNIT TABLE ARN: ', tableConfig.Unit);
-
 const resolverMap = {
   getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
   updateStripeCard: stripeRequestHandler.updateStripeCard,
