@@ -118,6 +118,27 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
             child: IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                // Nav.to(DataStoreDemoScreen());
+                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+              },
+            ),
+          ),
+          Container(
+            width: 46.0,
+            height: 46.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 1.5,
+                color: Color(0x33857C18),
+              ),
+            ),
+            child: IconButton(
               icon: SvgPicture.asset(
                 'assets/icons/login.svg',
                 color: Colors.black,
@@ -167,12 +188,14 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               width: double.infinity,
               height: 52.0,
               margin: EdgeInsets.only(top: 16.0),
-              child: FlatButton(
-                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
-                color: Color(0xFFF3F2E7),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xFFF3F2E7),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
                 ),
+                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -201,7 +224,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return InkWell(
       highlightColor: theme.indicator.withAlpha(128),
       hoverColor: theme.indicator.withAlpha(128),
-      onTap: () => Nav.to(SelectUnitQRCodeScannerScreen()),
+      onTap: null, // TODO visszatenni majd Firebase nelkul () => Nav.to(SelectUnitQRCodeScannerScreen()),
       // onTap: () => navigateTo(
       //             context,
       //             (_, __, ___) => UnitFoundByQRCodeScreen(

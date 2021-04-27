@@ -1,7 +1,13 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -24,11 +30,12 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-ticket-list',
   templateUrl: './order-ticket-list.component.html',
   styleUrls: ['./order-ticket-list.component.scss'],
 })
-export class OrderTicketListComponent implements OnDestroy {
+export class OrderTicketListComponent implements OnInit, OnDestroy {
   public selectedOrder?: IOrder;
   public dashboardSettings!: IDashboardSettings;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
@@ -45,8 +52,13 @@ export class OrderTicketListComponent implements OnDestroy {
 
   private _orders: IOrder[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>) {
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this._store.pipe(
         select(ordersSelectors.getAllActiveOrders),
@@ -67,6 +79,8 @@ export class OrderTicketListComponent implements OnDestroy {
         this._refreshReadyOrders();
         this._refreshPaymentOrders();
         this._refreshFilteredOrders(ticketListType);
+
+        this._changeDetectorRef.detectChanges();
       },
     );
 
@@ -77,6 +91,8 @@ export class OrderTicketListComponent implements OnDestroy {
       )
       .subscribe((selectedOrder: IOrder | undefined): void => {
         this.selectedOrder = selectedOrder;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -88,6 +104,8 @@ export class OrderTicketListComponent implements OnDestroy {
           this.dashboardSettings.size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

@@ -1,3 +1,5 @@
+[![Appcenter Build status - IOS](https://build.appcenter.ms/v0.1/apps/b0bf2ec0-0acc-4871-a0e9-dcd93586fa05/branches/dev/badge)](https://appcenter.ms)
+
 # Anyupp
 
 See the official nx docs below, let's start with the Anyupp-specific stuff.
@@ -27,19 +29,22 @@ Install the following tools:
 - Amplify CLI - `npm i -g @aws-amplify/cli`
 - The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
 
-## Configuring the project
+## Configuring/building the project
 
 Use the `config` build targets for projects requiring configuration.
-Configuration involves code generation processes as well.
+Use the `build` build targets for projects requiring build/code generation.
 
-Currently, the following packages can be configured:
+**the graphql schemas**
 
-**the graphql schema**
+`nx build anyupp-gql-api`
 
-`nx config api-graphql-schema`
-
-Whenever the schema changes, you must execute the code generation phase for the
+Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
+
+`nx build-schema crud-backend --app=anyupp-backend --stage=dev`
+
+The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify)
+and generates client-side code to the `crud-gql/api` project. It does not deploy the backend!
 
 **the configs (and secrets)**
 
@@ -71,6 +76,8 @@ First, find a name for your app stack. It is important, as it will appear everyw
 In the examples below, we use APPNAME for the stack name. Then, choose an environment: dev, qa, prod. The difference
 between the stage environments are the different parameters in the parameter store.
 
+**WARNING** Don't use dots in the private stack name.
+
 ### Option 1: Create everything from scratch
 
 After cloning the repo, configure your environment. You need the following environment variables:
@@ -84,7 +91,7 @@ export EDITORNAME=vim
 
 Then, create an amplify app for admin:
 
-`nx init admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
+`nx init crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
 
 The stuff writes the amplify app id to parameter store, CDK will use it to fetch
 the amplify resources.
@@ -94,11 +101,11 @@ stack in the Parameter Store!
 
 Unfortunately, the SST tools we use to deploy the CDK stack do not support app name parametrization, so:
 
-- in `apps/infrastructure/anyupp-backend-stack/sst.json`, write your app name
+- in `apps/anyupp-backend/sst.json`, write your app name
   to the "name" field
-- in `infrastructure/anyupp-backend-stack/serverless.yml`, use the same name
+- in `anyupp-backend/serverless.yml`, use the same name
   in the `service` field
-- in `apps/admin-amplify-app/.graphqlconfig.yml`, use the same name
+- in `apps/crud-backend/.graphqlconfig.yml`, use the same name
   in the `schemaPath` field (...api/<APPNAME>/build...)
 - build and deploy the stack to the desired stage (it will use the stage-related
   parameters, secrets, etc:)
@@ -108,8 +115,8 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 !!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
 
 ```
-nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
-nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+nx build anyupp-backend --app=APPNAME --stage=dev
+nx deploy anyupp-backend --app=APPNAME --stage=dev
 ```
 
 **Be careful** and do NOT check in the mentioned two config files!
@@ -122,7 +129,7 @@ are not yet supported in headless mode :( So fill in the forms if required.
 Cognito part:
 
 ```
-cd apps/admin-amplify-app
+cd apps/crud-backend
 amplify remove auth
 amplify import auth
 ```
@@ -155,7 +162,7 @@ Use a Cognito user pool configured as a part of this project.
 
 - ? Enable conflict detection? `No`
 - ? Do you have an annotated GraphQL schema? `Yes`
-- ? Provide your schema file path: `../../libs/api/graphql/schema/src/schema/admin-api.graphql`
+- ? Provide your schema file path: `../../libs/crud-gql/backend/src/graphql/crud-api.graphql`
 
 Then, we should push the app, and generat code. Code generation steps:
 
@@ -165,10 +172,10 @@ amplify push
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
-- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/admin/amplify-api/src/lib/generated/graphql/**/*.graphql`
+- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.graphql`
 - ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
 - ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
-- ? Enter the file name for the generated code `../../libs/admin/amplify-api/src/lib/generated/api.ts`
+- ? Enter the file name for the generated code `../../libs/crud-gql/api/src/lib/generated/api.ts`
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 
 Then, answer `yes` to the _code generation/code overwrite_ questions.
@@ -177,7 +184,7 @@ So, for auth, add API key, IAM and user pool options. Select the annotated schem
 from your source tree.
 
 **WARNING** always synchronize the schema files between amplify and github! When you
-change the schema, apply the changes to `libs/api/graphql/schema/src/schema/admin-api.graphql`
+change the schema, apply the changes to `libs/crud-gql/backend/src/graphql/crud-api.graphql`
 as well!
 
 ### Option 2: Configure your project with existing resources
@@ -189,11 +196,16 @@ in the AWS console, use the shell scripts behind the angular commands as hints.
 
 First, pull the admin amplify app:
 
-`nx config admin-amplify-app --app APPNAME --stage STAGE` :exclamation: use your own app name
+`nx config crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
 
-example: `nx config admin-amplify-app --app anyupp-backend --stage dev` for the dev
+example: `nx config crud-backend --app anyupp-backend --stage dev` for the dev
 
 It pulls the admin Amplify project and connects it to the actual CDK resources.
+
+## CRUD api resources
+
+The above `nx config crud-backend` generates a config file `libs/crud-gql/backend/src/generated/table-config.json`
+containing the table names/arns of the crud backend.
 
 ## Building the project
 
@@ -205,9 +217,9 @@ Or, they should support it if needed, we have to add this support gradually. For
 some samples, see the build targets belonging to the examples in the
 `angular.json`.
 
-### Build the amplify app
+### Build the crud (amplify) app
 
-`nx config-schema admin-amplify-api --stage dev`
+`nx build-schema crud-backend --app=APPNAME --stage=dev`
 
 The command builds the _current_ configured app / stage.
 
@@ -215,30 +227,30 @@ The command builds the _current_ configured app / stage.
 
 Deploy the current app/stage:
 
-`nx deploy admin-amplify-api`
+`nx deploy crud-backend --app=APPNAME --stage=dev`
 
 To build the admin site for a given configuration:
 
 Building the stack:
 
-`nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx build anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 Deploying the stack:
 
-`nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx deploy anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
 
 ## Deleting the stack
 
 Destroy the admin amplify app:
 
-`nx remove admin-amplify-app`
+`nx remove crud-backend --app=APPNAME --stage=dev`
 
 **WARNING**: the command destroys the amplify app that is currently pulled! Both the local
 and the backend resources so be careful.
 
 Then, remove the CDK stack:
 
-`nx remove infrastructure-anyupp-backend-stack --stage ${STAGE}`
+`nx remove anyupp-backend --stage=dev`
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
@@ -246,15 +258,15 @@ Then, remove the CDK stack:
 
 The deployed admin sites:
 
-- DEV: https://dev.admin.anyupp-backend.anyupp.com/
-- QA: https://qa.admin.anyupp-backend.anyupp.com/
+- DEV: https://dev-admin-anyupp-backend.anyupp.com/
+- QA: https://qa-admin.-nyupp-backend.anyupp.com/
 
 Both systems have some minimal data seeded at deploy/creation time.
 
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
@@ -284,7 +296,8 @@ Execute all the integration tests:
 
 Execute on single integration test suite:
 
-`yarn jest -c libs/integration-tests/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/admin/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
 
@@ -415,6 +428,9 @@ Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
+Use `--exclude="PROJECT_NAME"` to exclude the int tests
+`nx affected:test --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal"`
+
 ### Using jest options [Nrwl - testing](https://nx.dev/latest/angular/cli/test#testfile)
 
 Run `nx test projectName --i --testFile=partOfASpecFileNameToTest --watch` to execute the unit tests on a single file in runInBand and watch mode.
@@ -500,14 +516,14 @@ The generator will collect the new resolver's name
 
 ### Update own backend stack
 
-1. Set stage name in apps/infrastructure/anyupp-backend-stack/sst.json (e.g. dev-petrot)
+1. Set stage name in apps/anyupp-backend/sst.json (e.g. dev-petrot)
 
 2. Download own config:
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
-   nx deploy infrastructure-anyupp-backend-stack --app=APPNAME --stage=dev
+   nx build anyupp-backend --app=APPNAME --stage=dev
+   nx deploy anyupp-backend --app=APPNAME --stage=dev
 
 ### Amplify - Admin
 
@@ -525,13 +541,13 @@ Parameters that are required in the parameter store for the mobile app are the f
 `'{STAGE}-{APPNAME}-region',` - Server region, eg eu-west-1
 `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
 `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
-`'{STAGE}-{APPNAME}-consumerUserPoolDomain',` - The domain of the User pool of the mobile app
-`'{STAGE}-{APPNAME}-consumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
-`'{STAGE}-{APPNAME}-GraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
-`'{STAGE}-{APPNAME}-GraphqlApiKey',` - Amplify GraphQL API key
+`'{STAGE}-{APPNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app
+`'{STAGE}-{APPNAME}-ConsumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
+`'{STAGE}-{APPNAME}-AnyuppGraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
+`'{STAGE}-{APPNAME}-AnyuppGraphqlApiKey',` - Amplify GraphQL API key
 `'{STAGE}-{APPNAME}-GraphqlAdminApiUrl',` - Admin GraphQL API http endpoint (start with https://)
 `'{STAGE}-{APPNAME}-GraphqlAdminApiKey',` - Admin GraphQL API key
-`'{STAGE}-{APPNAME}-stripePublishableKey',` - The publishable key for the Stripe API
+`'{STAGE}-{APPNAME}-StripePublishableKey',` - The publishable key for the Stripe API
 `'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
 `'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
 
@@ -571,3 +587,24 @@ Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a
 
 Build IOS app
 `nx buildIos anyupp-mobile`
+
+**Deploy to App Center**
+
+`nx publish-appcenter anyupp-mobile --stage=dev --platform=android`
+
+- stage is `dev`, `qa`, `prod`
+- platform is `android`, `ios`
+
+The tool assumes that you have a valid appcenter token in the `APP_CENTER_TOKEN`
+environment variable. The tool uses the current app image path, so
+be careful: if you want to publish QA, then build the app with QA config, then
+publish!
+
+## Tools
+
+### Reconfig the whole workspace
+
+`./tools/build-workspace.sh anyupp-backend dev`
+
+Before it, remove `apps/crud-api/amplify`. Ensure that all your changes are pushed or discard them.
+The command fethes the crud backend, the configurations and regenerates the code files.

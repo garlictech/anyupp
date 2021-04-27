@@ -309,16 +309,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   width: 46,
                   height: 46,
                   margin: EdgeInsets.only(right: 15),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor: theme.indicator,
+                      primary: theme.text2,
                     ),
                     onPressed: () {
                       _addOrder(variant);
                     },
-                    color: theme.indicator,
-                    textColor: theme.text2,
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder: (Widget child, Animation<double> animation) {

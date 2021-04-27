@@ -54,22 +54,22 @@ Object {
   "style": Object {
     "colors": Object {
       "__typename": "ChainStyleColors",
-      "backgroundDark": "#fff",
-      "backgroundLight": "#fff",
-      "borderDark": "#fff",
-      "borderLight": "#fff",
-      "disabled": "#fff",
-      "highlight": "#fff",
-      "indicator": "#fff",
-      "textDark": "#fff",
-      "textLight": "#fff",
+      "backgroundDark": "#ffffff",
+      "backgroundLight": "#ffffff",
+      "borderDark": "#ffffff",
+      "borderLight": "#ffffff",
+      "disabled": "#ffffff",
+      "highlight": "#ffffff",
+      "indicator": "#ffffff",
+      "textDark": "#ffffff",
+      "textLight": "#ffffff",
     },
     "images": null,
   },
 }
 `;
 
-exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remove appsync api call 1`] = `
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call 1`] = `
 Object {
   "__typename": "GeoUnit",
   "address": Object {
@@ -116,15 +116,15 @@ Object {
     "__typename": "ChainStyle",
     "colors": Object {
       "__typename": "ChainStyleColors",
-      "backgroundDark": "#fff",
-      "backgroundLight": "#fff",
-      "borderDark": "#fff",
-      "borderLight": "#fff",
-      "disabled": "#fff",
-      "highlight": "#fff",
-      "indicator": "#fff",
-      "textDark": "#fff",
-      "textLight": "#fff",
+      "backgroundDark": "#ffffff",
+      "backgroundLight": "#ffffff",
+      "borderDark": "#ffffff",
+      "borderLight": "#ffffff",
+      "disabled": "#ffffff",
+      "highlight": "#ffffff",
+      "indicator": "#ffffff",
+      "textDark": "#ffffff",
+      "textLight": "#ffffff",
     },
     "images": null,
   },

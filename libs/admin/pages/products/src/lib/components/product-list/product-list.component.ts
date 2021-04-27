@@ -49,8 +49,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public unitProducts: IProduct[] = [];
   public EProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
-  public adminUser?: IAdminUser;
 
+  private _loggedUser?: IAdminUser;
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
@@ -76,19 +76,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   get selectedChainId(): string | null | undefined {
-    return this.adminUser?.settings?.selectedChainId;
+    return this._loggedUser?.settings?.selectedChainId;
   }
 
   get selectedGroupId(): string | null | undefined {
-    return this.adminUser?.settings?.selectedGroupId;
+    return this._loggedUser?.settings?.selectedGroupId;
   }
 
   get selectedUnitId(): string | null | undefined {
-    return this.adminUser?.settings?.selectedUnitId;
+    return this._loggedUser?.settings?.selectedUnitId;
   }
 
   get selectedProductCategoryId(): string | null | undefined {
-    return this.adminUser?.settings?.selectedProductCategoryId;
+    return this._loggedUser?.settings?.selectedProductCategoryId;
   }
 
   ngOnInit(): void {
@@ -116,23 +116,23 @@ export class ProductListComponent implements OnInit, OnDestroy {
       ),
       this._store.pipe(
         select(loggedUserSelectors.getLoggedUser),
-        skipWhile((adminUser): boolean => !adminUser),
+        skipWhile((_loggedUser): boolean => !_loggedUser),
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([pendingGroupProducts, pendingUnitProducts, adminUser]: [
+        ([pendingGroupProducts, pendingUnitProducts, _loggedUser]: [
           IProduct[],
           IProduct[],
           IAdminUser,
         ]): void => {
-          this.adminUser = adminUser;
+          this._loggedUser = _loggedUser;
 
           this.pendingGroupProducts = [
             EAdminRole.SUPERUSER,
             EAdminRole.CHAIN_ADMIN,
             EAdminRole.GROUP_ADMIN,
-          ].includes(<EAdminRole>adminUser?.role)
+          ].includes(<EAdminRole>_loggedUser?.role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -172,7 +172,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public async unitProductPositionChange(
     $event: IProductOrderChangeEvent,
   ): Promise<void> {
-    if (this.adminUser?.settings?.selectedUnitId) {
+    if (this._loggedUser?.settings?.selectedUnitId) {
       const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
       if (

@@ -1,0 +1,291 @@
+### COMMON
+# TODO: extraxt these because the admin-api also contains these
+type Location @aws_cognito_user_pools {
+  lat: Float!
+  lng: Float!
+}
+
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+type Address @aws_cognito_user_pools {
+  address: String
+  city: String
+  country: String
+  title: String
+  postalCode: String
+  location: Location
+}
+
+type LocalizedItem @aws_cognito_user_pools {
+  en: String
+  de: String
+  hu: String
+}
+
+type PaymentMode @aws_cognito_user_pools {
+  name: String!
+  caption: String
+  method: PaymentMethod!
+}
+enum PaymentMethod {
+  CASH
+  CARD
+  INAPP
+}
+
+type ChainStyle @aws_cognito_user_pools {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors @aws_cognito_user_pools {
+  backgroundLight: String!
+  backgroundDark: String!
+  borderLight: String!
+  borderDark: String!
+  disabled: String!
+  highlight: String!
+  indicator: String!
+  textLight: String!
+  textDark: String!
+}
+
+type ChainStyleImages @aws_cognito_user_pools {
+  header: String
+  logo: String
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+### ADMIN_USER
+input CreateAdminUserInput {
+  email: String!
+  phone: String!
+  name: String!
+}
+
+### ORDER
+input CreateOrderFromCartInput {
+  id: ID!
+}
+
+# input PlaceInput {
+#   seat: String!
+#   table: String!
+# }
+
+### UNIT_PRODUCT
+
+type UnitProduct @aws_cognito_user_pools {
+  id: ID!
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+}
+
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input CreateUnitProductInput {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+}
+
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+}
+
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+### STRIPE
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+# https://stripe.com/docs/api/cards/object?lang=node
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+# type CardChecks {
+#   address_line1_check: String
+#   address_postal_code_check: String
+#   cvc_check: String
+# }
+
+# https://stripe.com/docs/api/metadata?lang=node
+# Updateable Stripe objects
+type StripeMetadata @aws_cognito_user_pools {
+  key: String!
+  value: String!
+}
+
+type StripeCard @aws_cognito_user_pools {
+  brand: CardBrand
+  # checks: CardChecks
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  name: String
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  # wallet: String # to do
+  # IMPLEMENTED INTERFACES
+  id: ID!
+  object: String!
+  metadata: [StripeMetadata!]!
+}
+
+input StartStripePaymentInput {
+  chainId: ID!
+  unitId: ID!
+  userId: ID!
+  paymentMethodId: ID!
+}
+
+type StartStripePaymentOutput {
+  clientSecret: String!
+  status: String!
+}
+
+input StripeCardUpdateInput {
+  id: ID!
+  exp_month: String
+  exp_year: String
+  # metadata: [StripeMetadata!]
+  default_for_currency: Boolean
+  name: String
+}
+
+input StripeCardDeleteInput {
+  id: ID!
+}
+
+### UNIT GEO_UNIT
+input GetUnitsNearLocationInput {
+  location: LocationInput!
+}
+type GeoUnit @aws_cognito_user_pools {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String!
+  address: Address!
+  style: ChainStyle!
+  paymentModes: [PaymentMode!]!
+  distance: Int!
+  openingHours: String!
+  currency: String!
+}
+type GeoUnitList @aws_cognito_user_pools {
+  items: [GeoUnit]
+}
+
+### OPERATIONS
+type Query {
+  # Stripe
+  getMyStripeCards: [StripeCard] @aws_cognito_user_pools
+  # Units
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
+    @aws_cognito_user_pools
+}
+
+### MUTATION
+type Mutation {
+  # AdminUser
+  createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
+  deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
+
+  # Order
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID!
+    @aws_cognito_user_pools
+
+  # Product
+  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+
+  # Stripe
+  startStripePayment(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput! @aws_cognito_user_pools
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
+    @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!
+    @aws_cognito_user_pools
+}

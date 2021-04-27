@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import { validateSchema } from '../validator/validate';
-import { IProduct, IUnitProduct } from '@bgap/shared/types';
+import { IUnitProduct } from '@bgap/shared/types';
 
 export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   __typename: Joi.string().valid('UnitProduct').optional(),
@@ -12,7 +12,7 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
   variants: Joi.array().required(), //TODO: use an exact schema
-  laneId: Joi.string().allow(null),
+  laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
@@ -21,4 +21,4 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
 export const {
   validate: validateUnitProduct,
   isType: isUnitProduct,
-} = validateSchema<IProduct>(unitProductSchema, 'UnitProduct');
+} = validateSchema<IUnitProduct>(unitProductSchema, 'UnitProduct');

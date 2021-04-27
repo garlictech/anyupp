@@ -16,11 +16,6 @@
 //   });
 
 // When('I fill out the {string} input with {string}', (dataTable) =>{
-    //     console.log(dataTable);
-    // });
-    //datatable
-    
-    // When('I click on the Chain selector', () =>{
-    //   cy.get('.sidebar-toggle').click({ timeout: 20000, force: true,});
-    //   cy.contains('nb-select', 'Chain').select('Demo chain');
-    // });
+//     console.log(dataTable);
+// });
+//datatable

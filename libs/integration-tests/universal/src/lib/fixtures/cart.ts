@@ -1,9 +1,10 @@
 import { EOrderStatus } from '@bgap/shared/types';
-import { AmplifyApi } from '@bgap/admin/amplify-api';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { unitProductSeed } from './unit-product';
 import { unitSeed } from './unit';
 
 const cartId_01 = 'cart_1_id';
+const cart_seeded_01_id = 'cart_1_id_seeded';
 const unitId_01 = unitSeed.unitId_seeded_01;
 const unitProductId_01 = unitProductSeed.unitProductId_seeded;
 
@@ -13,7 +14,7 @@ const variantId_01 = 'variant_1_id';
 const laneId_01 = 'lane_1_id';
 const userId_01 = 'user_1_id';
 
-const getOrderItem = (): AmplifyApi.OrderItemInput => ({
+const getOrderItem = (): CrudApi.OrderItemInput => ({
   productName: {
     en: 'Water',
     hu: 'Viz',
@@ -45,7 +46,7 @@ const getOrderItem = (): AmplifyApi.OrderItemInput => ({
   ],
 });
 
-// const cart_01: Required<AmplifyApi.CreateCartInput> = {
+// const cart_01: Required<CrudApi.CreateCartInput> = {
 const cart_01 = {
   id: cartId_01,
   userId: userId_01,
@@ -53,7 +54,7 @@ const cart_01 = {
   takeAway: false,
   paymentMode: {
     name: 'IN_APP',
-    method: AmplifyApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.INAPP,
   },
   place: {
     seat: 'SEAT',
@@ -63,6 +64,7 @@ const cart_01 = {
 };
 
 export const cartSeed = {
+  cart_seeded_01_id,
   cartId_NotExisting,
   cart_01,
 };

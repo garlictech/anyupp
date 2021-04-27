@@ -140,7 +140,7 @@ class OrderStateCardState extends State<OrderStateCard>
       left: getMarginLeft(animationValue),
       bottom: getMarginBottom(animationValue),
       child: Text(
-        _dateFormat.format(DateTime.fromMillisecondsSinceEpoch(widget.orderState.statusLog[0].ts)),
+        _dateFormat.format(DateTime.fromMillisecondsSinceEpoch(widget.orderState.statusLog[0].ts?.toInt() ?? 0)),
         style: TextStyle(
           fontSize: 12.0 * animationValue,
           color: Colors.grey,

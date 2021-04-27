@@ -2,7 +2,13 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
@@ -11,6 +17,7 @@ import { EImageType, IProductCategory } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-category-form',
   templateUrl: './product-category-form.component.html',
 })
@@ -26,7 +33,10 @@ export class ProductCategoryFormComponent
   private _amplifyDataService: AmplifyDataService;
   private _logger: NGXLogger;
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(_injector);
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);
@@ -68,6 +78,8 @@ export class ProductCategoryFormComponent
     if (this.productCategory) {
       this.dialogForm.patchValue(this.productCategory);
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public async submit(): Promise<void> {

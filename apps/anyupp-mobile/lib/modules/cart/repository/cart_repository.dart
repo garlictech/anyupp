@@ -25,7 +25,7 @@ class CartRepository {
         ),
         place: await getPlacePref() ?? Place(seat: '00', table: '00'), // TODO
         items: [
-          item.copyWith(quantity: 1),
+          item.copyWith(quantity: 0),
         ],
       );
     }

@@ -1,7 +1,7 @@
 import { Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 Then('I should see {string} sub-header', (title: string) => {
-  cy.contains('h3', title).should('exist');
+  cy.contains('h3', title).should('exist', { timeout: 15000 });
 });
 
 Then('the {string} title is displayed', (title: string) => {

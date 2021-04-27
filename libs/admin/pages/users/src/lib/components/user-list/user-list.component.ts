@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { usersSelectors } from '@bgap/admin/shared/data-access/users';
 import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -11,6 +11,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-user-list',
   templateUrl: './user-list.component.html',
 })

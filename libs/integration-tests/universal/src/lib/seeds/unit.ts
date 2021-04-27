@@ -3,19 +3,16 @@ import { unitSeed } from '../fixtures/unit';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import {
-  amplifyGraphQlClient,
+  crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import {
-  AmplifyApi,
-  AmplifyApiMutationDocuments,
-} from '@bgap/admin/amplify-api';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
-  overwrites: Partial<AmplifyApi.CreateUnitInput> = {},
+  overwrites: Partial<CrudApi.CreateUnitInput> = {},
 ) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.CreateUnitMutation>(
-    AmplifyApiMutationDocuments.createUnit,
+  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
+    CrudApiMutationDocuments.createUnit,
     {
       input: {
         ...unitSeed.unit_01,
@@ -34,8 +31,8 @@ export const createTestUnit = (
   );
 
 export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
-  executeMutation(amplifyGraphQlClient)<AmplifyApi.DeleteUnitMutation>(
-    AmplifyApiMutationDocuments.deleteUnit,
+  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitMutation>(
+    CrudApiMutationDocuments.deleteUnit,
     {
       input: { id },
     },

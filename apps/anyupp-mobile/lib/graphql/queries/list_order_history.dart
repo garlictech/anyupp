@@ -1,16 +1,12 @@
 const QUERY_LIST_ORDER_HISTORY = '''
 query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
-  listOrders(filter: {
+  listOrderHistorys(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId},
-    or: [
-      { status: { eq: PAID }},
-      { status: { eq: REJECTED }},
-    ]
+    unitId: {eq: \$unitId}
   }) {      
     items {
       id
-      paymentMethod {
+      paymentMode {
         caption
         name
         method
@@ -20,7 +16,6 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
         seat
         table
       }
-      staffId
       statusLog {
         status
         ts
@@ -33,7 +28,6 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
         tax
         taxSum
       }
-      takeAway
       unitId
       userId
       items {
@@ -56,7 +50,6 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
           ts
           userId
         }
-        takeAway
         variantId
         variantName {
           de

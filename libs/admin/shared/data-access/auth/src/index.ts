@@ -1,4 +1,4 @@
-import { AuthService } from './lib/services/auth/auth.service';
 import { CognitoService } from './lib/services/cognito/cognito.service';
+import { AuthGuard } from './lib/services/auth-guard/auth-guard';
 
-export { AuthService, CognitoService };
+export { CognitoService, AuthGuard };

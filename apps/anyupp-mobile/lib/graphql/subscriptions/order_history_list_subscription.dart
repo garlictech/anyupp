@@ -1,14 +1,12 @@
 const SUBSCRIPTION_ORDER_HISTORY_LIST = '''
-subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
+subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: String) {
   onOrderChanged(unitId: \$unitId, userId: \$userId) {
    	id
     unitId
     userId
-    status
     paymentIntention
-    staffId
     takeAway
-    paymentMethod {
+    paymentMode {
       caption
       name
       method
@@ -49,7 +47,6 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
         ts
         userId
       }
-      takeAway
       variantId
       variantName {
         de

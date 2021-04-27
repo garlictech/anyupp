@@ -42,14 +42,14 @@ cyreport
 .setup.sh
 .build
 .serverless
-/apps/infrastructure/anyupp-backend-stack/build
-/apps/infrastructure/build-pipeline-stack/build
-
-# The generated files
-generated
+/apps/anyupp-backend/build
+/apps/infrastructure/cicd/build
 
 # The config - don't commit!
 /libs/shared/config/src/lib/*/*
 cdk.out
 
-/apps/admin-amplify-app/amplify
+/apps/crud-backend/amplify
+/libs/anyupp-gql/api/src/lib/
+/libs/crud-gql/api/src/lib/generated/
+

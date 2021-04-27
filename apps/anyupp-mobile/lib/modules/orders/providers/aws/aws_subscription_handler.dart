@@ -31,7 +31,7 @@ class AwsSubscription<T extends Model> {
     this.subscriptionNodeName,
     this.modelFromJson,
     this.filterModel,
-  })  : _authProvider = authProvider;
+  }) : _authProvider = authProvider;
 
   Stream<List<T>> get stream => _listController?.stream;
 
@@ -41,20 +41,21 @@ class AwsSubscription<T extends Model> {
       if (_listController == null) {
         _listController = BehaviorSubject<List<T>>();
       }
-      await _listSubscription?.cancel();
+      // await _listSubscription?.cancel();
 
       _items = await _getList(variables);
-      print('**** startListSubscription[$listNodeName].items=$_items');
+      print('**** startListSubscription[$listNodeName].items=${_items?.length}');
       _listController.add(_items);
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription[$listNodeName].userId=${user.id}');
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       _listSubscription = _client.value
           .subscribe(
         SubscriptionOptions(
           document: gql(subscriptionQuery),
           variables: variables,
+          fetchPolicy: FetchPolicy.networkOnly, // TODO AWS atnezni
         ),
       )
           .listen((QueryResult result) async {
@@ -65,8 +66,9 @@ class AwsSubscription<T extends Model> {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
           print('**** startListSubscription[$listNodeName].item=$item');
           int index = _items.indexWhere((o) => o.id == item.id);
+          // print('**** startListSubscription[$listNodeName].index=$index');
           if (index != -1) {
-            bool isFiltered = filterModel(item);
+            bool isFiltered = true; // TODO filterModel(item) ?? true;
             if (isFiltered) {
               _items[index] = item;
               _listController.add(_items);
@@ -74,7 +76,13 @@ class AwsSubscription<T extends Model> {
               _items.removeAt(index);
               _listController.add(_items);
             }
+          } else {
+            _items.add(item);
+            _listController.add(_items);
           }
+        } else {
+          print('**** startListSubscription[$listNodeName].exception=${result.exception}');
+          _listController.add(_items);
         }
       }, onDone: () {
         print('**** startListSubscription[$listNodeName].onDone');
@@ -90,10 +98,11 @@ class AwsSubscription<T extends Model> {
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
     // print('_getList[$listNodeName]');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAppSyncGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(listQuery),
         variables: variables,
+        fetchPolicy: FetchPolicy.networkOnly,
       ));
       // print('_getList[$listNodeName].result.data=${result.data}');
       // print('_getList[$listNodeName].result.exception=${result.exception}');

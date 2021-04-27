@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
@@ -13,6 +13,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-group-list',
   templateUrl: './group-list.component.html',
 })

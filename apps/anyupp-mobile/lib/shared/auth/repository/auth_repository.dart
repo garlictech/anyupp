@@ -33,4 +33,14 @@ class AuthRepository implements IAuthProvider {
   Future<String> getIdToken() {
     return _authProvider.getIdToken();
   }
+
+  @override
+  Future<void> clearUserSession() {
+    return _authProvider.clearUserSession();
+  }
+
+  @override
+  Future<User> loginWithCognitoSession(CognitoUserSession session) {
+    return _authProvider.loginWithCognitoSession(session);
+  }
 }

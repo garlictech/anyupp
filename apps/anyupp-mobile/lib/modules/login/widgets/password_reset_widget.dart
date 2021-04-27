@@ -104,7 +104,13 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                     SizedBox(
                       width: double.infinity,
                       height: 52.0,
-                      child: RaisedButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF30BF60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
                         child: Text(
                           trans('login.email.buttonPasswordReset'),
                           style: GoogleFonts.poppins(
@@ -112,10 +118,6 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                             fontSize: 20.0,
                             fontWeight: FontWeight.normal,
                           ),
-                        ),
-                        color: Color(0xFF30BF60),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
                         ),
                         onPressed: () => _sendPasswordResetEmail(),
                       ),

@@ -20,4 +20,6 @@ abstract class ISocialLoginProvider {
 
   Future<bool> get appleSignInAvailable;
 
+  Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode);
+
 }

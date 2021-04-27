@@ -1,33 +1,32 @@
 import * as fp from 'lodash/fp';
-import { from, Observable, ObservableInput, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { Injectable } from '@angular/core';
-import { API, GraphQLResult } from '@aws-amplify/api';
-import Amplify from '@aws-amplify/core';
+import { Injectable, NgZone } from '@angular/core';
 import {
-  AmplifyApiMutationDocuments as Mutations, AmplifyApiQueryDocuments as Queries,
-  AmplifyApiSubscriptionDocuments as Subscriptions, awsConfig
-} from '@bgap/admin/amplify-api';
+  CrudApiMutationDocuments,
+  CrudApiQueryDocuments,
+  CrudApiSubscriptionDocuments,
+} from '@bgap/crud-gql/api';
+import {
+  crudAuthenticatedGraphqlClient,
+  executeMutation,
+  executeQuery,
+  executeSubscription,
+} from '@bgap/shared/graphql/api-client';
 import { IAmplifyModel } from '@bgap/shared/types';
 
-import { apiQueryTypes, listTypes, queryTypes, subscriptionTypes } from './types';
-
-interface ISubscriptionResult {
-  value?: {
-    data: subscriptionTypes;
-  };
-}
+import { listTypes, queryTypes, subscriptionTypes } from './types';
 
 interface ISubscriptionParams {
-  subscriptionName: keyof typeof Subscriptions;
+  subscriptionName: keyof typeof CrudApiSubscriptionDocuments;
   resetFn?: () => void;
   upsertFn: (data: unknown) => void;
   variables?: Record<string, unknown>;
 }
 
 interface IQueryParams {
-  queryName: keyof typeof Queries;
+  queryName: keyof typeof CrudApiQueryDocuments;
   variables?: Record<string, unknown>;
 }
 
@@ -37,112 +36,111 @@ interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
   providedIn: 'root',
 })
 export class AmplifyDataService {
-  public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
-    Amplify.configure(awsConfig);
+  constructor(private _ngZone: NgZone) {}
 
-    return from(
-      <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-        query: Queries[params.queryName] as string,
-        variables: params.variables,
-      }),
+  public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
+    return executeQuery(crudAuthenticatedGraphqlClient)(
+      CrudApiQueryDocuments[params.queryName],
+      params.variables,
     ).pipe(
       take(1),
-      tap(data => {
-        if (params.resetFn) {
-          params.resetFn();
-        }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      tap((data: any) => {
+        this._ngZone.run(() => {
+          if (params.resetFn) {
+            params.resetFn();
+          }
 
-        if (data.data?.[<keyof listTypes>params.queryName]?.items) {
-          (data.data?.[<keyof listTypes>params.queryName]?.items || []).forEach(
-            (d: unknown) => {
-              params.upsertFn(d);
-            },
-          );
-        } else if (data?.data?.[<keyof queryTypes>params.queryName]) {
-          params.upsertFn(data?.data?.[<keyof queryTypes>params.queryName]);
-        }
+          if (data?.[<keyof listTypes>params.queryName]?.items) {
+            (data?.[<keyof listTypes>params.queryName]?.items || []).forEach(
+              (d: unknown) => {
+                params.upsertFn(d);
+              },
+            );
+          } else if (data?.[<keyof queryTypes>params.queryName]) {
+            params.upsertFn(data?.[<keyof queryTypes>params.queryName]);
+          }
+        });
       }),
-      switchMap(
-        () => <ObservableInput<ISubscriptionResult>>API.graphql({
-            query: Subscriptions[params.subscriptionName],
-            variables: params.variables,
-          }),
-      ),
-      tap((data: ISubscriptionResult) => {
-        params.upsertFn(
-          data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
+      switchMap(() => {
+        return executeSubscription(crudAuthenticatedGraphqlClient)(
+          CrudApiSubscriptionDocuments[params.subscriptionName],
+          params.variables,
         );
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      tap((data: any) => {
+        this._ngZone.run(() => {
+          params.upsertFn(
+            data?.[<keyof subscriptionTypes>params.subscriptionName],
+          );
+        });
       }),
     );
   }
 
-  public async create(mutationName: keyof typeof Mutations, value: unknown) {
-    Amplify.configure(awsConfig);
-
-    return API.graphql({
-      query: Mutations[mutationName],
-      variables: { input: value },
-    });
+  public async create(
+    mutationName: keyof typeof CrudApiMutationDocuments,
+    value: unknown,
+  ) {
+    return executeMutation(
+      crudAuthenticatedGraphqlClient,
+    )(CrudApiMutationDocuments[mutationName], { input: value }).toPromise();
   }
 
   public async update<T>(
-    queryName: keyof typeof Queries,
-    mutationName: keyof typeof Mutations,
+    queryName: keyof typeof CrudApiQueryDocuments,
+    mutationName: keyof typeof CrudApiMutationDocuments,
     id: string,
     updaterFn: (data: unknown) => T,
   ) {
-    Amplify.configure(awsConfig);
-
-    const data: GraphQLResult<queryTypes> = await (<
-      Promise<GraphQLResult<queryTypes>>
-    >API.graphql({
-      query: Queries[<keyof queryTypes>queryName],
-      variables: { id },
-    }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await executeQuery(crudAuthenticatedGraphqlClient)<T>(
+      CrudApiQueryDocuments[<keyof queryTypes>queryName],
+      { id },
+    ).toPromise();
 
     const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
-      ...updaterFn(data?.data?.[<keyof queryTypes>queryName]),
+      ...updaterFn(data?.[<keyof queryTypes>queryName]),
       id,
     });
 
-    return API.graphql({
-      query: Mutations[mutationName],
-      variables: { input: modified },
-    });
+    return executeMutation(
+      crudAuthenticatedGraphqlClient,
+    )(CrudApiMutationDocuments[mutationName], { input: modified }).toPromise();
   }
 
-  public async delete(mutationName: keyof typeof Mutations, value: unknown) {
-    Amplify.configure(awsConfig);
-
-    return API.graphql({
-      query: Mutations[mutationName],
-      variables: { input: value },
-    });
+  public async delete(
+    mutationName: keyof typeof CrudApiMutationDocuments,
+    value: unknown,
+  ) {
+    return executeMutation(
+      crudAuthenticatedGraphqlClient,
+    )(CrudApiMutationDocuments[mutationName], { input: value }).toPromise();
   }
 
-  public query(params: IQueryParams) {
-    Amplify.configure(awsConfig);
-
-    return <Promise<GraphQLResult<apiQueryTypes>>>API.graphql({
-      query: Queries[params.queryName] as string,
-      variables: params.variables,
-    });
+  public query<T>(params: IQueryParams) {
+    return executeQuery(crudAuthenticatedGraphqlClient)<T>(
+      CrudApiQueryDocuments[params.queryName],
+      params.variables,
+    ).toPromise();
   }
 
   public subscribe$(params: ISubscriptionParams): Observable<unknown> {
-    Amplify.configure(awsConfig);
-
     return of('subscription').pipe(
-      switchMap(
-        () => <ObservableInput<ISubscriptionResult>>API.graphql({
-            query: Subscriptions[params.subscriptionName],
-            variables: params.variables,
-          }),
+      switchMap(() =>
+        executeSubscription(crudAuthenticatedGraphqlClient)(
+          CrudApiSubscriptionDocuments[params.subscriptionName],
+          params.variables,
+        ),
       ),
-      tap((data: ISubscriptionResult) => {
-        params.upsertFn(
-          data?.value?.data?.[<keyof subscriptionTypes>params.subscriptionName],
-        );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      tap((data: any) => {
+        this._ngZone.run(() => {
+          params.upsertFn(
+            data?.[<keyof subscriptionTypes>params.subscriptionName],
+          );
+        });
       }),
     );
   }

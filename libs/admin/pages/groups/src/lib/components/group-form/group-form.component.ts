@@ -1,7 +1,14 @@
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
@@ -20,6 +27,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
@@ -37,7 +45,10 @@ export class GroupFormComponent
   private _store: Store<any>;
   private chains: IChain[] = [];
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(_injector);
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);
@@ -94,6 +105,8 @@ export class GroupFormComponent
           }
         });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

@@ -26,168 +26,159 @@
   },
   "projects": {
     "admin": {
-      "implicitDependencies": ["infrastructure-anyupp-backend-stack"],
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "implicitDependencies": ["anyupp-backend"],
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-e2e": {
       "tags": [],
       "implicitDependencies": ["admin"]
     },
-    "api-graphql-schema": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
     "shared-types": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-config": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "api-utils": {
-      "tags": ["scope:shared", "type:utils", "platform:nest"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "admin-pages-admin-users": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-forms": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-components": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-pipes": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-utils": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-data": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-auth": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-ui-core": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-ui-theme": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-pages-chains": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-groups": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-units": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-users": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-products": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-product-categories": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-dashboard": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-auth": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-config": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-floor-map": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-data-access-orders": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-admin-users": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-chains": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-dashboard": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-groups": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-product-categories": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-products": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-units": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-users": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-logged-user": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-storage": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
-    },
-    "infrastructure-anyupp-backend-stack": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
-    },
-    "infrastructure-build-pipeline-stack": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "shared-utils": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "anyupp-mobile": {
-      "tags": ["scope:bgap", "type:application", "platform:flutter"]
+      "tags": ["type:application", "platform:flutter"]
     },
     "shared-secrets": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
-    },
-    "api-order": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "api-admin-user": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-graphql-api-client": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "api-graphql-resolver-mapping-templates": {
-      "tags": ["scope:bgap", "type:utils", "platform:nest"]
-    },
-    "api-stripe": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "api-unit": {
-      "tags": ["scope:bgap", "type:feature", "platform:nest"]
-    },
-    "admin-amplify-api": {
-      "tags": ["scope:shared", "type:utils", "platform:universal"]
-    },
-    "admin-amplify-app": {
-      "tags": ["scope:bgap", "type:server", "platform:nest"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "admin-pages-role-contexts": {
-      "tags": ["scope:bgap", "type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-data-access-role-contexts": {
-      "tags": ["scope:bgap", "type:utils", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "integration-tests-angular": {
-      "tags": ["scope:bgap", "type:integration-tests", "platform:angular"]
+      "tags": ["type:integration-tests", "platform:angular"]
     },
     "shared-data-validators": {
-      "tags": ["scope:bgap", "type:utils", "platform:universal"]
+      "tags": ["type:utils", "platform:universal"]
     },
     "integration-tests-universal": {
-      "tags": ["scope:bgap", "type:integration-tests", "platform:universal"]
+      "tags": ["type:integration-tests", "platform:universal"]
+    },
+    "crud-gql-backend": {
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "crud-gql-api": {
+      "tags": ["type:utils", "platform:universal"]
+    },
+    "anyupp-gql-api": {
+      "tags": ["type:utils", "platform:universal"]
+    },
+    "anyupp-gql-backend": {
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "crud-backend": {
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "anyupp-backend": {
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "cicd": {
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "anyupp-backend-lib": {
+      "tags": ["type:backend", "platform:universal"]
     }
   }
 }

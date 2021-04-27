@@ -34,6 +34,7 @@ class OrderRepository {
 
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
     await _provider.createAndSendOrderFromCart(unit, paymentMethod);
+    // await _provider.getCurrentCart(unit.chainId, unit.id);
   }
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId) async {

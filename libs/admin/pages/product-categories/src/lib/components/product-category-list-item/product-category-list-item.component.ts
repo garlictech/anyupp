@@ -1,12 +1,19 @@
 import * as fp from 'lodash/fp';
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { IProductCategory } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-category-list-item',
   templateUrl: './product-category-list-item.component.html',
   styleUrls: ['./product-category-list-item.component.scss'],

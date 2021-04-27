@@ -61,7 +61,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
             listener: (BuildContext context, StripePaymentState state) {
               print('StripePaymentScreen.listener().state=$state');
               if (state is StripeOperationSuccess) {
-                final scaffold = Scaffold.of(context);
+                final scaffold = ScaffoldMessenger.of(context);
                 scaffold.showSnackBar(SnackBar(
                   content: const Text('Payment Success!'),
                   action: SnackBarAction(
@@ -150,16 +150,17 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       child: SizedBox(
         width: double.infinity,
         height: 50.0,
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            side: BorderSide(
-              color: theme.indicator,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              side: BorderSide(
+                color: theme.indicator,
+              ),
             ),
+            primary: theme.indicator,
           ),
           onPressed: isLoading ? null : () => _startStripePayment(),
-          color: theme.indicator,
-          textColor: theme.text2,
           child: isLoading
               ? CenterLoadingWidget(
                   color: theme.highlight,
