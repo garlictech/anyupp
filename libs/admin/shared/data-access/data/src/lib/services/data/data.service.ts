@@ -7,7 +7,10 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import {
+  loggedUserActions,
+  loggedUserSelectors,
+} from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
@@ -17,8 +20,19 @@ import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,
-  IKeyValueObject, IOrder, IProduct, IProductCategory, IRoleContext, IUnit
+  EAdminRole,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserConnectedRoleContext,
+  IAdminUserSettings,
+  IChain,
+  IGroup,
+  IKeyValueObject,
+  IOrder,
+  IProduct,
+  IProductCategory,
+  IRoleContext,
+  IUnit,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -178,7 +192,7 @@ export class DataService {
   }
 
   private _subscribeToGroups(): void {
-  this._amplifyDataService
+    this._amplifyDataService
       .snapshotChanges$({
         queryName: 'listGroups',
         subscriptionName: 'onGroupsChange',
@@ -462,7 +476,9 @@ export class DataService {
       .subscribe$({
         subscriptionName: 'onAdminRoleContextsChange',
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
-          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<CrudApi.GetAdminUserQuery>({
+          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<
+            CrudApi.GetAdminUserQuery
+          >({
             queryName: 'getAdminUser',
             variables: {
               id: (<IAdminUserConnectedRoleContext>adminRoleContext)

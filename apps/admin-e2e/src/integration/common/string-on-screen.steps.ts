@@ -6,7 +6,7 @@ import { Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 // This CONTAINS selector is our friend from now
 Then('I should see {string} sub-header', (title: string) => {
-  cy.contains('h3', title).should('exist', { timeout: 15000 } );
+  cy.contains('h3', title).should('exist', { timeout: 15000 });
 });
 
 // Then('I should see {string} label', (title: string) => {

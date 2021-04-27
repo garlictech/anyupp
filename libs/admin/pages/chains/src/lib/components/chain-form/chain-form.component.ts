@@ -2,7 +2,13 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
@@ -30,7 +36,10 @@ export class ChainFormComponent
   private _amplifyDataService: AmplifyDataService;
   private _logger: NGXLogger;
 
-  constructor(protected _injector: Injector, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    protected _injector: Injector,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(_injector);
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);

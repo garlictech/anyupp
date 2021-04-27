@@ -80,3 +80,40 @@ amplify pull \
 --yes
 
 amplify codegen
+
+# ----------------------------------------------------------
+# Get the CRUD table config and write it to a generated file
+# ----------------------------------------------------------
+echo "Generating table config..."
+TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
+mkdir -p $TABLE_CONFIG_DIR
+TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
+
+APPID=$(amplify env get --name ${STAGE} --json | \
+  jq -r '.awscloudformation.AmplifyAppId')
+
+APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
+
+METAFILE=amplify/backend/amplify-meta.json
+API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
+
+DATA_SOURCES=$(aws appsync list-data-sources --api-id $API_ID | \
+  jq '.dataSources' | \
+  jq '.[] | select(.type == "AMAZON_DYNAMODB")')
+
+TABLE_NAMES=$(echo $DATA_SOURCES | jq ".dynamodbConfig.tableName" | tr -d '"')
+IFS=$'\n'
+RESULT="{\n"
+
+for name in $TABLE_NAMES; do
+  RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\": \"$name\",\n"
+done
+
+RESULT+="}"
+
+echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
+
+echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
+
+echo "Content:"
+cat $TABLE_CONFIG_NAME

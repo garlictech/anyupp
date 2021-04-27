@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 
@@ -11,7 +16,10 @@ export class FormWeeklyScheduleComponent {
   @Input() scheduleControl!: FormControl;
   public dayKeys: string[];
 
-  constructor(private _formsService: FormsService, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private _formsService: FormsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.dayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   }
 
