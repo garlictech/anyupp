@@ -10,7 +10,7 @@ import {
 
 describe('Testing cognito service', () => {
   const router = {
-    navigate: jest.fn()
+    navigate: jest.fn(),
   };
   const service = new CognitoService(<any>router);
 

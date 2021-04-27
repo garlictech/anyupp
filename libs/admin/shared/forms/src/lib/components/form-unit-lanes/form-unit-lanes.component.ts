@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { FormsService } from '../../services/forms/forms.service';
@@ -17,7 +23,11 @@ export class FormUnitLanesComponent implements OnInit {
   public usedLaneIds: string[];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _formsService: FormsService, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.usedLaneIds = [];
   }
 

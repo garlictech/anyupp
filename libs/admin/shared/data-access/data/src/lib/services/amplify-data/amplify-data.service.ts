@@ -3,9 +3,16 @@ import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-import { CrudApiMutationDocuments, CrudApiQueryDocuments, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
 import {
-  crudAuthenticatedGraphqlClient, executeMutation, executeQuery, executeSubscription
+  CrudApiMutationDocuments,
+  CrudApiQueryDocuments,
+  CrudApiSubscriptionDocuments,
+} from '@bgap/crud-gql/api';
+import {
+  crudAuthenticatedGraphqlClient,
+  executeMutation,
+  executeQuery,
+  executeSubscription,
 } from '@bgap/shared/graphql/api-client';
 import { IAmplifyModel } from '@bgap/shared/types';
 
@@ -88,9 +95,10 @@ export class AmplifyDataService {
     updaterFn: (data: unknown) => T,
   ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await executeQuery(
-      crudAuthenticatedGraphqlClient,
-    )<T>(CrudApiQueryDocuments[<keyof queryTypes>queryName], { id }).toPromise();
+    const data: any = await executeQuery(crudAuthenticatedGraphqlClient)<T>(
+      CrudApiQueryDocuments[<keyof queryTypes>queryName],
+      { id },
+    ).toPromise();
 
     const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
       ...updaterFn(data?.[<keyof queryTypes>queryName]),
@@ -129,9 +137,9 @@ export class AmplifyDataService {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
-        params.upsertFn(
-          data?.[<keyof subscriptionTypes>params.subscriptionName],
-        );
+          params.upsertFn(
+            data?.[<keyof subscriptionTypes>params.subscriptionName],
+          );
         });
       }),
     );

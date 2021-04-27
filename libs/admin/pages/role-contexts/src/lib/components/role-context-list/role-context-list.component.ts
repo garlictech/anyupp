@@ -22,7 +22,7 @@ export class RoleContextListComponent implements OnDestroy {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _nbDialogService: NbDialogService
+    private _nbDialogService: NbDialogService,
   ) {
     this.roleContexts$ = this._store.pipe(
       select(roleContextsSelectors.getAllRoleContexts),

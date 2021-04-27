@@ -1,6 +1,12 @@
 import { map } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
@@ -31,7 +37,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _amplifyDataService: AmplifyDataService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {

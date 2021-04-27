@@ -64,7 +64,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this._store.dispatch(floorMapActions.resetFloorMap());
   }
