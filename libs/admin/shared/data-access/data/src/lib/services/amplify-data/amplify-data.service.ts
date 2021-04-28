@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
+import { removeNestedTypeNameField } from '@bgap/admin/shared/utils';
 import { CrudApiMutationDocuments, CrudApiQueryDocuments, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
 import {
   crudAuthenticatedGraphqlClient, executeMutation, executeQuery, executeSubscription
@@ -47,11 +48,11 @@ export class AmplifyDataService {
           if (data?.[<keyof listTypes>params.queryName]?.items) {
             (data?.[<keyof listTypes>params.queryName]?.items || []).forEach(
               (d: unknown) => {
-                params.upsertFn(d);
+                params.upsertFn(removeNestedTypeNameField(d));
               },
             );
           } else if (data?.[<keyof queryTypes>params.queryName]) {
-            params.upsertFn(data?.[<keyof queryTypes>params.queryName]);
+            params.upsertFn(removeNestedTypeNameField(data?.[<keyof queryTypes>params.queryName]));
           }
         });
       }),
@@ -65,7 +66,7 @@ export class AmplifyDataService {
       tap((data: any) => {
         this._ngZone.run(() => {
           params.upsertFn(
-            data?.[<keyof subscriptionTypes>params.subscriptionName],
+            removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
           );
         });
       }),
@@ -93,7 +94,7 @@ export class AmplifyDataService {
     )<T>(CrudApiQueryDocuments[<keyof queryTypes>queryName], { id }).toPromise();
 
     const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
-      ...updaterFn(data?.[<keyof queryTypes>queryName]),
+      ...updaterFn(removeNestedTypeNameField(data?.[<keyof queryTypes>queryName])),
       id,
     });
 
@@ -130,7 +131,7 @@ export class AmplifyDataService {
       tap((data: any) => {
         this._ngZone.run(() => {
         params.upsertFn(
-          data?.[<keyof subscriptionTypes>params.subscriptionName],
+          removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
         );
         });
       }),

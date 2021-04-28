@@ -59,6 +59,8 @@ export class UnitListComponent implements OnInit, OnDestroy {
         this.units.map((unit): void => {
           unit._group = groups.find((g): boolean => g.id === unit.groupId);
         });
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

@@ -70,6 +70,7 @@ export const dayInterval = (value: string): IDayInterval => {
 export const reducer = (accumulator: number, currentValue: number): number =>
   accumulator + currentValue;
 
+// Remove undefined/null/emptyString recursively
 export const cleanObject = (obj: IKeyValueObject) => {
   const finalObj: IKeyValueObject = {};
 
@@ -78,9 +79,13 @@ export const cleanObject = (obj: IKeyValueObject) => {
       finalObj[key] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (<any[]>obj[key]).forEach(item => {
-        const itemObj = cleanObject(item);
-        if (Object.keys(itemObj).length) {
-          finalObj[key].push(itemObj);
+        if (typeof item === 'object') {
+          const itemObj = cleanObject(item);
+          if (Object.keys(itemObj).length) {
+            finalObj[key].push(itemObj);
+          }
+        } else {
+          finalObj[key].push(item);
         }
       });
     } else if (obj[key] && typeof obj[key] === 'object') {
