@@ -1,14 +1,29 @@
-import { combineLatest, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
+import {
+  delay,
+  switchMap,
+  tap,
+  catchError,
+  defaultIfEmpty,
+  filter,
+  map,
+} from 'rxjs/operators';
 
 import {
   listGeneratedProductsForUnits,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
-import { getSortedIds } from '@bgap/shared/utils';
-import { generatedProductSeed, productSeed } from '@bgap/shared/fixtures';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import {
+  crudBackendGraphQLClient,
+  executeQuery,
+  GraphqlApiClient,
+} from '@bgap/shared/graphql/api-client';
+import {
+  generatedProductSeed,
+  productSeed,
+  unitSeed,
+} from '@bgap/shared/fixtures';
 
 import {
   createTestChainProduct,
@@ -26,34 +41,14 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
+import { validateUnitProduct } from 'libs/shared/data-validators/src';
+import { IUnitProduct } from '@bgap/shared/types';
+import * as fp from 'lodash/fp';
 
-const unitId_01 = 'UNIT_ID_01';
-const unitId_02 = 'UNIT_ID_02';
-const unit01_generatedProduct_01 = {
-  ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_01}_01`,
-  unitId: unitId_01,
-};
-const unit01_generatedProduct_02 = {
-  ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_01}_02`,
-  unitId: unitId_01,
-};
-const unit01_generatedProduct_03_WONTBEREGENERATED = {
-  ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_01}_03`,
-  unitId: unitId_01,
-};
-const unit02_generatedProduct_01 = {
-  ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_02}_01`,
-  unitId: unitId_02,
-};
-// const unit02_generatedProduct_02 = {
-//   ...generatedProductSeed.base,
-//   id: `generatedProduct_u${unitId_02}_02`,
-//   unitId: unitId_02,
-// };
+const DYNAMODB_OPERATION_DELAY = 3000;
+
+const unitId_01 = unitSeed.unitId_seeded_01;
+const unitId_02 = 'UNIT_ID_02_REGENERATE';
 
 const chainProduct_01 = productSeed.chainProductBase;
 const groupProduct_01: CrudApi.CreateGroupProductInput = {
@@ -62,38 +57,57 @@ const groupProduct_01: CrudApi.CreateGroupProductInput = {
 };
 const unitProduct_0101: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: unit01_generatedProduct_01.id,
+  id: `unitProduct_u${unitId_01}_01`,
   parentId: groupProduct_01.id!,
+  unitId: unitId_01,
 };
 const unitProduct_0102: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: unit01_generatedProduct_02.id,
+  id: `unitProduct_u${unitId_01}_02`,
   parentId: groupProduct_01.id!,
+  unitId: unitId_01,
 };
 const unitProduct_0104_NEW: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
   id: 'unit01_have_not_been_here_before',
   parentId: groupProduct_01.id!,
+  unitId: unitId_01,
 };
 const unitProduct_0201_DIFFERENTUNIT: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: unit02_generatedProduct_01.id,
+  id: `unitProduct_u${unitId_02}_01`,
+  unitId: unitId_02,
 };
 // const unitProduct_0202: CrudApi.CreateUnitProductInput = {
 //   ...productSeed.unitProductBase,
 //   id: unit02_generatedProduct_02.id,
 // };
 
-describe.skip('RegenerateUnitData mutation tests', () => {
-  // let authHelper: AuthenticatdGraphQLClientWithUserId;
+const unit01_generatedProduct_01 = {
+  ...generatedProductSeed.base,
+  id: unitProduct_0101.id!,
+  unitId: unitId_01,
+};
+const unit01_generatedProduct_02 = {
+  ...generatedProductSeed.base,
+  id: unitProduct_0102.id!,
+  unitId: unitId_01,
+};
+// This generated prouduct won't have unit product with the same ID
+// so the updated/regnerated ProductList shouldn't contain it.
+const unit01_generatedProduct_03_WONTBEREGENERATED = {
+  ...generatedProductSeed.base,
+  id: `generatedProduct_u${unitId_01}_03_WONTBEREGENERATED`,
+  unitId: unitId_01,
+};
+const unit02_generatedProduct_01 = {
+  ...generatedProductSeed.base,
+  id: unitProduct_0201_DIFFERENTUNIT.id!,
+  unitId: unitId_02,
+};
 
+describe('RegenerateUnitData mutation tests', () => {
   beforeAll(async () => {
-    // authHelper = await createAuthenticatedAnyuppGraphQLClient(
-    //   testAdminUsername,
-    //   testAdminUserPassword,
-    // ).toPromise();
-    // console.warn(authHelper.userAttributes);
-
     await combineLatest([
       // CleanUP
       deleteTestChainProduct(chainProduct_01.id!),
@@ -109,8 +123,10 @@ describe.skip('RegenerateUnitData mutation tests', () => {
         unit01_generatedProduct_03_WONTBEREGENERATED.id,
       ),
       deleteTestGeneratedProduct(unit02_generatedProduct_01.id),
+      deleteTestGeneratedProduct(unitProduct_0104_NEW.id!),
     ])
       .pipe(
+        delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -137,24 +153,30 @@ describe.skip('RegenerateUnitData mutation tests', () => {
 
   it('should regenerate all the generated products for the unit', done => {
     // const listGeneratedProductsForGivenUnits = () =>
-    of('START')
+    combineLatest([
+      listGeneratedProductsForUnits({
+        crudGraphqlClient: crudBackendGraphQLClient,
+        unitIds: [unitId_01, unitId_02],
+        noCache: true,
+      }),
+      listProductsForUnits({
+        unitIds: [unitId_01, unitId_02],
+        crudGraphqlClient: crudBackendGraphQLClient,
+      }),
+    ])
       .pipe(
-        // check start state
-        switchMap(() =>
-          listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-            unitId_01,
-            unitId_02,
-          ]),
-        ),
         tap({
           next(result) {
-            expect(result.length).toEqual(4);
-            expect(getSortedIds(result)).toEqual([
-              unitProduct_0101.id,
-              unitProduct_0102.id,
+            const [generatedProducts, unitProducts] = result;
+            expect(unitProducts.length).toEqual(4);
+            const ids = generatedProducts.map(x => x.id);
+            expect(generatedProducts.length).toEqual(4);
+            expect(ids).toContainEqual(
               unit01_generatedProduct_03_WONTBEREGENERATED.id,
-              unitProduct_0201_DIFFERENTUNIT.id,
-            ]);
+            );
+            expect(ids).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+            expect(ids).toContainEqual(unitProduct_0101.id);
+            expect(ids).toContainEqual(unitProduct_0102.id);
           },
         }),
         switchMap(() =>
@@ -162,26 +184,36 @@ describe.skip('RegenerateUnitData mutation tests', () => {
             input: { id: unitId_01 },
           }),
         ),
+        catchError(err => {
+          console.error('START STATE CHECK ERROR', err);
+          return throwError(err);
+        }),
         // Check
+        delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
-          listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-            unitId_01,
-            unitId_02,
-          ]),
+          listGeneratedProductsForUnits({
+            crudGraphqlClient: crudBackendGraphQLClient,
+            unitIds: [unitId_01, unitId_02],
+            noCache: true,
+          }),
         ),
         tap({
           next(result) {
             expect(result.length).toEqual(4);
-            expect(getSortedIds(result)).toEqual([
-              unitProduct_0101.id,
-              unitProduct_0102.id,
-              unitProduct_0104_NEW.id,
-              unitProduct_0201_DIFFERENTUNIT.id,
-            ]);
+            const ids = result.map(x => x.id);
+
+            expect(ids).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+            expect(ids).toContainEqual(unitProduct_0104_NEW.id);
+            expect(ids).toContainEqual(unitProduct_0101.id);
+            expect(ids).toContainEqual(unitProduct_0102.id);
+
+            expect(
+              result.sort((a, b) => (a.id > b.id ? 1 : -1)),
+            ).toMatchSnapshot();
           },
         }),
       )
-      // TOOD: execute func
+      // execute func
       .subscribe({
         next() {
           done();
@@ -193,12 +225,40 @@ describe.skip('RegenerateUnitData mutation tests', () => {
           );
         },
       });
-    // TOOD: execute func
-    // TODO: listGeneratedProductForAUnit -> snapshot
-    // TOOD: modify unitProduct
-    // TOOD: modify groupProduct
-    // TOOD: modify chainProduct
-    // TOOD: execute func
-    // TODO: listGeneratedProductForAUnit -> snapshot
-  }, 15000);
+
+    // TODO: extra test scenario could be
+    // modify unitProduct
+    // modify groupProduct
+    // modify chainProduct
+    // execute func
+    // listGeneratedProductForAUnit -> snapshot
+  }, 25000);
 });
+
+const listProductsForUnits = ({
+  crudGraphqlClient,
+  unitIds,
+  noCache = false,
+}: {
+  crudGraphqlClient: GraphqlApiClient;
+  unitIds: Array<string>;
+  noCache?: boolean;
+}): Observable<Array<IUnitProduct>> => {
+  const input: CrudApi.ListGeneratedProductsQueryVariables = {
+    filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+  };
+  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitProductsQuery>(
+    CrudApiQueryDocuments.listUnitProducts,
+    input,
+    { fetchPolicy: 'no-cache' },
+  ).pipe(
+    map(x => x.listUnitProducts?.items),
+    filter(fp.negate(fp.isEmpty)),
+    defaultIfEmpty([]),
+    switchMap(items => combineLatest(items.map(validateUnitProduct))),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal listUnitProducts query error');
+    }),
+  );
+};

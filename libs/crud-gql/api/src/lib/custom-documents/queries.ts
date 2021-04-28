@@ -274,3 +274,71 @@ export const getUnitProductLaneId = /* GraphQL */ `
     }
   }
 `;
+export const getUnitAddress = /* GraphQL */ `
+  query GetUnit($id: ID!) {
+    getUnit(id: $id) {
+      id
+      address {
+        address
+        city
+        country
+        title
+        postalCode
+        location {
+          lat
+          lng
+        }
+      }
+    }
+  }
+`;
+
+// WITHOUT createdAt/updatedAT
+export const listGeneratedProducts = /* GraphQL */ `
+  query ListGeneratedProducts(
+    $filter: ModelGeneratedProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGeneratedProducts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        unitId
+        productCategoryId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productType
+        tax
+        position
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          price
+          position
+        }
+      }
+      nextToken
+    }
+  }
+`;

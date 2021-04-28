@@ -26,6 +26,7 @@ export const unitRequestHandler = {
   regenerateUnitData: (crudGraphqlClient: GraphqlApiClient) => (
     requestPayload: AnyuppApi.MutationRegenerateUnitDataArgs,
   ) => {
+    // TODO: validate input
     // return validatGetUnitsNearLocationInput(requestPayload)
     //   .pipe(
     //     switchMap(() =>

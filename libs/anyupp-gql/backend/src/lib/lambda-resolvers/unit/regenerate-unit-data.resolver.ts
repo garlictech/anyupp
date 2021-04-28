@@ -1,7 +1,26 @@
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
 
-import { switchMap } from 'rxjs/operators';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import {
+  catchError,
+  defaultIfEmpty,
+  filter,
+  map,
+  switchMap,
+  mapTo,
+} from 'rxjs/operators';
+import {
+  executeQuery,
+  GraphqlApiClient,
+} from '@bgap/shared/graphql/api-client';
+import { deleteGeneratedProductsForAUnit } from '../product';
+import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as fp from 'lodash/fp';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
+import { createGeneratedProducts } from '../product/generated-product';
+import { mergeAllProductLayers } from '../product/merge-product';
+import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
+import { getTimezoneFromLocation } from '../../utils';
+import { IGeneratedProduct } from '@bgap/shared/types';
 
 export const regenerateUnitData = ({
   unitId,
@@ -10,62 +29,47 @@ export const regenerateUnitData = ({
   unitId: string;
   crudGraphqlClient: GraphqlApiClient;
 }): Observable<boolean> => {
-  // TODO: clear previously generated products for the given UNIT
-  // TODO: list all unitProducts+groupProducts+chainProducts for the given UNIT
-  // TODO: merge + calculate actual Prize for all the unitProducts
-  // TODO: store generatedProducts in the db
-
-  return clearGeneratedProductsForAUnit({ unitId, crudGraphqlClient }).pipe(
+  // TODO: refactor: use mergeMap or something to flatten the pipe
+  // Clear previously generated products for the given UNIT
+  return deleteGeneratedProductsForAUnit({ unitId, crudGraphqlClient }).pipe(
     switchMap(() =>
+      // list all unitProducts+groupProducts+chainProducts for the given UNIT
       listProductsWith3LayerForAUnit({ unitId, crudGraphqlClient }),
     ),
+    switchMap(unitProducts =>
+      combineLatest([
+        of(
+          // merge product layers
+          unitProducts.map(unitProduct =>
+            mergeAllProductLayers({
+              chainProduct: unitProduct.groupProduct.chainProduct,
+              groupProduct: unitProduct.groupProduct,
+              unitProduct,
+            }),
+          ),
+        ),
+        getTimezoneForUnit({ unitId, crudGraphqlClient }),
+      ]),
+    ),
+    // calculate actual Prize for all the mergedProducts
+    map(([mergedProducts, unitTimeZone]) =>
+      mergedProducts.map(
+        mergedProduct =>
+          calculateActualPricesAndCheckActivity({
+            product: mergedProduct,
+            atTimeISO: new Date().toISOString(),
+            inTimeZone: unitTimeZone,
+          }) || null,
+      ),
+    ),
+    map(
+      productsToGenerate =>
+        productsToGenerate.filter(x => !!x) as IGeneratedProduct[],
+    ),
+    // store generatedProducts in the db
+    switchMap(createGeneratedProducts),
+    mapTo(true),
   );
-
-  // // TODO: use geoSearch for the units
-  // return listActiveUnits(crudGraphqlClient).pipe(
-  //   switchMap(units =>
-  //     combineLatest(
-  //       units.map(unit =>
-  //         getChain(crudGraphqlClient, unit.chainId).pipe(
-  //           switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
-  //           switchMap(chain =>
-  //             getGroupCurrency(crudGraphqlClient, unit.groupId).pipe(
-  //               map(currency => ({ chain, currency })),
-  //             ),
-  //           ),
-  //           map(props =>
-  //             toGeoUnit({
-  //               unit,
-  //               currency: props.currency,
-  //               inputLocation: location,
-  //               chainStyle: props.chain.style,
-  //               openingHours: {},
-  //               paymentModes: unit.paymentModes as any,
-  //             }),
-  //           ),
-  //           defaultIfEmpty({} as AnyuppApi.GeoUnit),
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  //   map(items =>
-  //     items
-  //       .filter(x => !!x.id) // Filter out the {} that comes for the e not active chains
-  //       .sort((a, b) => (a.distance > b.distance ? 1 : -1)),
-  //   ),
-  //   map(x => ({ items: x })),
-  // );
-  return of(true);
-};
-
-const clearGeneratedProductsForAUnit = ({
-  unitId,
-  crudGraphqlClient,
-}: {
-  unitId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}) => {
-  return of(true);
 };
 
 const listProductsWith3LayerForAUnit = ({
@@ -75,95 +79,40 @@ const listProductsWith3LayerForAUnit = ({
   unitId: string;
   crudGraphqlClient: GraphqlApiClient;
 }) => {
-  return of(true);
+  const input: CrudApi.ListUnitProductsQueryVariables = {
+    filter: { unitId: { eq: unitId } },
+  };
+  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitProductsQuery>(
+    CrudApiQueryDocuments.listUnitProducts,
+    input,
+    { fetchPolicy: 'no-cache' },
+  ).pipe(
+    map(x => x.listUnitProducts?.items),
+    filter(fp.negate(fp.isEmpty)),
+    defaultIfEmpty([]),
+    switchMap(items => combineLatest(items.map(validateUnitProduct))),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal listUnitProducts query error');
+    }),
+  );
 };
 
-// const toGeoUnit = ({
-//   unit,
-//   currency,
-//   inputLocation,
-//   chainStyle,
-//   openingHours,
-//   paymentModes,
-// }: {
-//   unit: IUnit;
-//   currency: string;
-//   inputLocation: AnyuppApi.LocationInput;
-//   chainStyle: IChainStyle;
-//   openingHours: IWeeklySchedule;
-//   paymentModes: IPaymentMode[];
-// }): AnyuppApi.GeoUnit => ({
-//   id: unit.id,
-//   groupId: unit.groupId,
-//   chainId: unit.chainId,
-//   name: unit.name,
-//   address: removeTypeNameField(unit.address),
-//   style: removeTypeNameField(chainStyle),
-//   currency,
-//   distance: geolib.getDistance(unit.address.location, inputLocation),
-//   openingHours: getOpeningOursForToday(/*openingHours*/),
-//   // paymentModes: paymentModes as AnyuppApi.PaymentMode[],
-//   paymentModes: paymentModes as any,
-// });
-
-// const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => {
-//   return '09:00 - 22:00';
-// };
-
-// const listActiveUnits = (
-//   crudGraphqlClient: GraphqlApiClient,
-// ): Observable<Array<IUnit>> => {
-//   const input: CrudApi.ListUnitsQueryVariables = {
-//     filter: { isActive: { eq: true } },
-//   };
-//   return executeQuery(crudGraphqlClient)<CrudApi.ListUnitsQuery>(
-//     CrudApiQueryDocuments.listUnits,
-//     input,
-//   ).pipe(
-//     map(x => x.listUnits?.items),
-//     // pipeDebug('### LIST ACTIVE UNITS'),
-//     filter(fp.negate(fp.isEmpty)),
-//     switchMap((items: []) => combineLatest(items.map(validateUnit))),
-//     catchError(err => {
-//       console.error(err);
-//       return throwError('Internal listActiveUnits query error');
-//     }),
-//   );
-// };
-
-// const getGroupCurrency = (
-//   crudGraphqlClient: GraphqlApiClient,
-//   id: string,
-// ): Observable<string> => {
-//   return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
-//     CrudApiQueryDocuments.getGroupCurrency,
-//     { id },
-//   ).pipe(
-//     map(x => x.getGroup),
-//     // pipeDebug(`### GET GROUP with id: ${id}`),
-//     switchMap(validateGetGroupCurrency),
-//     map(x => x.currency),
-//     catchError(err => {
-//       console.error(err);
-//       return throwError('Internal GroupCurrency query error');
-//     }),
-//   );
-// };
-
-// const getChain = (
-//   crudGraphqlClient: GraphqlApiClient,
-//   id: string,
-// ): Observable<IChain> => {
-//   return executeQuery(crudGraphqlClient)<CrudApi.GetChainQuery>(
-//     CrudApiQueryDocuments.getChain,
-//     { id },
-//   ).pipe(
-//     map(x => x.getChain),
-//     // pipeDebug(`### GET CHAIN with id: ${id}`),
-//     switchMap(validateChain),
-//     catchError(err => {
-//       console.error(err);
-//       return throwError('Internal Chain query error');
-//     }),
-//   );
-// };
+const getTimezoneForUnit = ({
+  unitId,
+  crudGraphqlClient,
+}: {
+  unitId: string;
+  crudGraphqlClient: GraphqlApiClient;
+}): Observable<string> => {
+  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
+    CrudApiQueryDocuments.getUnitAddress,
+    { id: unitId },
+  ).pipe(
+    map(response => response.getUnit),
+    filter(x => x !== null && x !== undefined),
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    map(unit => unit!.address.location),
+    map(getTimezoneFromLocation),
+  );
+};

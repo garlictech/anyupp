@@ -81,6 +81,8 @@ const toGeneratedProductType = (
   variants: IGeneratedProductVariant[],
 ): IGeneratedProduct => ({
   id: product.id,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  unitId: product.unitId!,
   productCategoryId: product.productCategoryId,
   name: product.name,
   description: product.description,

@@ -233,7 +233,7 @@ const getLaneIdForCartItem = (
     CrudApiQueryDocuments.getUnitProductLaneId,
     { id: productId },
   ).pipe(
-    map(product => product.getUnitProduct),
+    map(response => response.getUnitProduct),
     map(product => product?.laneId || undefined),
   );
 };

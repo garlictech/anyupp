@@ -47,6 +47,7 @@ export interface IGeneratedProductVariant {
 
 export interface IGeneratedProduct {
   id: string; // UnitProductId
+  unitId: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
   image: string;
@@ -55,6 +56,8 @@ export interface IGeneratedProduct {
   tax: number;
   variants: IGeneratedProductVariant[];
   productCategoryId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IProduct {
@@ -66,7 +69,7 @@ export interface IProduct {
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
-  image: string | null;
+  image?: string;
   productCategoryId: string;
   isVisible: boolean; // temp
   position: number;
@@ -91,9 +94,9 @@ export interface IUnitProduct {
   variants: IProductVariant[];
   laneId?: string;
   takeaway?: boolean;
+  groupProduct: IGroupProduct;
   createdAt: string;
   updatedAt: string;
-  groupProduct?: IGroupProduct;
 }
 
 export interface IChainProduct {
@@ -105,8 +108,10 @@ export interface IChainProduct {
   productCategoryId: string;
   productType: EProductType;
   isVisible: boolean;
-  image: string;
+  image?: string;
   variants: [IProductVariant];
+  createdAt: string;
+  updatedAt: string;
 }
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
@@ -117,7 +122,9 @@ export interface IGroupProduct {
   isVisible: boolean;
   tax: number;
   variants: [IProductVariant];
-  chainProduct?: IChainProduct;
+  chainProduct: IChainProduct;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IProductOrderChangeEvent {

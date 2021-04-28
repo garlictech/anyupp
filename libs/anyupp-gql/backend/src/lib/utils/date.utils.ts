@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const geoTz = require('geo-tz');
+
 import { DateTime } from 'luxon';
-import { IAvailability } from '@bgap/shared/types';
+import { IAvailability, ILocation } from '@bgap/shared/types';
 
 export const WEEK_DAYS: {
   MONDAY: number;
@@ -34,6 +37,10 @@ export const getSeasonalAvailabilityToTime = (
   DateTime.fromISO(`${availability.dayTo}T${availability.timeTo}`, {
     zone: inTimeZone,
   });
+
+export const getTimezoneFromLocation = (location: ILocation): string => {
+  return geoTz(location.lat, location.lng)[0];
+};
 
 // /**
 //  * Returns an environment and test type specific version of the timestamp Class

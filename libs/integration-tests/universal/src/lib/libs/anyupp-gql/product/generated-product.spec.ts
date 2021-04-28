@@ -94,18 +94,18 @@ describe('GenerateProduct tests', () => {
         .pipe(
           // CREATE
           switchMap(() =>
-            createGeneratedProducts({
-              products: [
-                unit03_generatedProduct_01,
-                unit03_generatedProduct_02,
-              ],
-            }),
+            createGeneratedProducts([
+              unit03_generatedProduct_01,
+              unit03_generatedProduct_02,
+            ]),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-              unitId_03,
-            ]),
+            listGeneratedProductsForUnits({
+              crudGraphqlClient: crudBackendGraphQLClient,
+              unitIds: [unitId_03],
+              noCache: true,
+            }),
           ),
           tap({
             next(result) {
@@ -125,10 +125,11 @@ describe('GenerateProduct tests', () => {
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-              unitId_02,
-              unitId_03,
-            ]),
+            listGeneratedProductsForUnits({
+              crudGraphqlClient: crudBackendGraphQLClient,
+              unitIds: [unitId_02, unitId_03],
+              noCache: true,
+            }),
           ),
           tap({
             next(result) {
@@ -156,14 +157,11 @@ describe('GenerateProduct tests', () => {
       expect(productIds).toHaveLength(PRODUCT_NUM_FOR_BATCH_CRUD);
       expect(fullProducts).toHaveLength(productIds.length);
 
-      of('CREATE_&_DELETE_MORE_THAN_25_ITEMS')
+      // CREATE_&_DELETE_MORE_THAN_25_ITEMS
+      of(fullProducts)
         .pipe(
           // CREATE
-          switchMap(() =>
-            createGeneratedProducts({
-              products: fullProducts,
-            }),
-          ),
+          switchMap(createGeneratedProducts),
           // Count the emission number
           scan((acc: number) => acc + 1, 0),
           tap({
@@ -175,9 +173,11 @@ describe('GenerateProduct tests', () => {
           }),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-              unitId_01,
-            ]),
+            listGeneratedProductsForUnits({
+              crudGraphqlClient: crudBackendGraphQLClient,
+              unitIds: [unitId_01],
+              noCache: true,
+            }),
           ),
           tap({
             next(result) {
@@ -199,10 +199,11 @@ describe('GenerateProduct tests', () => {
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(crudBackendGraphQLClient, [
-              unitId_01,
-              unitId_02,
-            ]),
+            listGeneratedProductsForUnits({
+              crudGraphqlClient: crudBackendGraphQLClient,
+              unitIds: [unitId_01, unitId_02],
+              noCache: true,
+            }),
           ),
           tap({
             // should delete all the generatedProducts for the unit01
