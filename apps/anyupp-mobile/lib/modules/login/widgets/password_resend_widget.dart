@@ -33,8 +33,9 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
         if (state is PasswordResetInProgress) {
           return _buildLoading(context);
         }
-        if (state is PasswordResetEmailSentState) {
-          return _buildEmailSentInfo(context, state.email);
+        if (state is PasswordResetInfoSentState) {
+          return _buildEmailSentInfo(
+              context, state.userName, state.deliveryMedium, state.destination);
         }
 
         return _buildResetPasswordForm(context);
@@ -62,7 +63,8 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
     );
   }
 
-  Widget _buildEmailSentInfo(BuildContext context, String email) {
+  Widget _buildEmailSentInfo(BuildContext context, String userName,
+      String deliveryMedium, String destination) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -86,7 +88,7 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
               Container(
                   margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
                   child: Text(
-                    trans('login.email.dialogResetSentMessage'),
+                    trans('login.email.dialogResetSentMessage') + destination,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 18.0,
@@ -97,7 +99,8 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                   getIt<LoginBloc>().add(ChangeEmailFormUI(
                       ui: LoginFormUI.SHOW_PASSWORD_CONFIRM,
                       animationCurve: Curves.easeIn));
-                  getIt<LoginBloc>().add(PasswordResetEmailSent(email));
+                  getIt<LoginBloc>().add(PasswordResetInfoSent(
+                      userName, deliveryMedium, destination));
                 },
                 child: Text(
                   trans('login.email.enterCode'),

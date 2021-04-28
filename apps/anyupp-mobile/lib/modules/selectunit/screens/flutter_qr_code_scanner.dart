@@ -43,9 +43,6 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
 
   AnimationController _animationController;
   bool _closeWindow = false;
-  bool _streaming = false;
-  String _barcodePictureFilePath;
-  Size _previewSize;
   AnimationState _currentState = AnimationState.search;
   CustomPainter _animationPainter;
   int _animationStart = DateTime.now().millisecondsSinceEpoch;

@@ -159,13 +159,16 @@ class SendPasswordResetEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
-class PasswordResetEmailSent extends LoginEvent {
-  final String email;
+class PasswordResetInfoSent extends LoginEvent {
+  final String userName;
+  final String deliveryMedium;
+  final String destination;
 
-  const PasswordResetEmailSent(this.email);
+  const PasswordResetInfoSent(
+      this.userName, this.deliveryMedium, this.destination);
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [userName, deliveryMedium, destination];
 }
 
 class ConfirmPassword extends LoginEvent {

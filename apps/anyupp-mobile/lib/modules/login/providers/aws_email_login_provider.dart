@@ -147,23 +147,26 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<bool> sendPasswordResetEmail(String userName) async {
+  Future<Map<String, dynamic>> sendPasswordResetEmail(String userName) async {
     CognitoUser user = _service.createCognitoUser(userName);
     bool passwordResent = false;
+    Map<String, dynamic> codeDeliveryDetails;
     try {
       final data = await user.forgotPassword();
       if (data != null) {
         passwordResent = true;
+        codeDeliveryDetails = data['CodeDeliveryDetails'];
       }
     } on Exception catch (e) {
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
-    return Future.value(passwordResent);
+    return Future.value(codeDeliveryDetails);
   }
 
   @override
-  Future<bool> confirmPassword(String userName, String code, String newPassword) async {
+  Future<bool> confirmPassword(
+      String userName, String code, String newPassword) async {
     CognitoUser user = _service.createCognitoUser(userName);
     bool passwordConfirmed = false;
     try {

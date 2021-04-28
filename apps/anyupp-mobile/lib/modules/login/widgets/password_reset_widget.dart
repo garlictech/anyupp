@@ -37,8 +37,8 @@ class _PasswordResetDialogContentWidgetState
       child: BlocBuilder<LoginBloc, LoginState>(
           builder: (BuildContext context, LoginState state) {
         // print('PhoneDialogContentWidget.bloc.state=$state');
-        if (state is PasswordResetEmailSentState) {
-          return _buildRegistrationForm(context, state.email);
+        if (state is PasswordResetInfoSentState) {
+          return _buildRegistrationForm(context, state.userName);
         }
         if (state is PasswordReset) {
           return _buildPasswordResetInfo(context);

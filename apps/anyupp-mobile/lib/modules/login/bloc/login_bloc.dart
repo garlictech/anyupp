@@ -112,15 +112,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle send password reset to email
       if (event is SendPasswordResetEmail) {
         yield PasswordResetInProgress();
-        bool passwordSent =
+        Map<String, dynamic> passwordSentInfo =
             await _repository.sendPasswordResetEmail(event.email);
-        if (passwordSent) {
-          getIt<LoginBloc>().add(PasswordResetEmailSent(event.email));
+        if (passwordSentInfo != null) {
+          getIt<LoginBloc>().add(PasswordResetInfoSent(
+              event.email,
+              passwordSentInfo['DeliveryMedium'],
+              passwordSentInfo['Destination']));
         }
       }
 
-      if (event is PasswordResetEmailSent) {
-        yield PasswordResetEmailSentState(event.email);
+      if (event is PasswordResetInfoSent) {
+        yield PasswordResetInfoSentState(
+            event.userName, event.deliveryMedium, event.destination);
       }
 
       if (event is ConfirmPassword) {
@@ -139,9 +143,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
         if (success) {
           yield PasswordReset();
-        } else {
-          getIt<LoginBloc>().add(PasswordResetEmailSent(event.userName));
-        }
+        } 
       }
 
       // --- Handle external errors (eg. errors from repository)

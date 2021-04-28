@@ -51,7 +51,7 @@
       "dialogEmailSentTitle": "Email sent",
       "dialogEmailSentMessage": "Check your email and click on the link to login to AnyUpp!",
       "dialogResetSentTitle": "Code sent",
-      "dialogResetSentMessage": "Password reset email sent! Check your mail for the confirmation code.",
+      "dialogResetSentMessage": "Password reset confirmation code sent to ",
       "dialogPasswordRefreshedTitle": "Password updated'",
       "dialogPasswordRefreshedMessage": "Your password has been updated, you can sign in now.",
       "closeButton": "Close",

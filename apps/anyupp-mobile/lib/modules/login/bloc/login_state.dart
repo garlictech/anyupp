@@ -108,13 +108,16 @@ class EmailLinkSent extends LoginState {
   List<Object> get props => [email];
 }
 
-class PasswordResetEmailSentState extends LoginState {
-  final String email;
+class PasswordResetInfoSentState extends LoginState {
+  final String userName;
+  final String deliveryMedium;
+  final String destination;
 
-  PasswordResetEmailSentState(this.email);
+  PasswordResetInfoSentState(
+      this.userName, this.deliveryMedium, this.destination);
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [userName];
 }
 
 class ConfirmCodeSending extends LoginState {

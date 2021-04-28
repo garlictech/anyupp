@@ -6,7 +6,7 @@ abstract class IEmailLoginProvider {
   Future<ProviderLoginResponse> loginWithEmailAndPassword(
       String email, String password);
   Future<String> get email;
-  Future<bool> sendPasswordResetEmail(String email);
+  Future<Map<String, dynamic>> sendPasswordResetEmail(String email);
   Future<bool> confirmSignUp(String user, String code);
   Future<bool> resendConfirmationCode(String user);
   Future<bool> confirmPassword(String userName, String code, String newPassword);

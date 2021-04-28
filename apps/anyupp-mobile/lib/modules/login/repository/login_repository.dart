@@ -77,7 +77,7 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   }
 
   @override
-  Future<bool> sendPasswordResetEmail(String email) {
+  Future<Map<String, dynamic>> sendPasswordResetEmail(String email) {
     return _emailLoginProvider.sendPasswordResetEmail(email);
   }
 
