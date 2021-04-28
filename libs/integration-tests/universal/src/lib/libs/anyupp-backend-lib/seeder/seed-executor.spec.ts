@@ -10,7 +10,9 @@ import {
   createTestChainProduct,
 } from '@bgap/anyupp-backend-lib';
 import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
-import { switchMap } from 'rxjs/operators';
+import { AWSError } from 'aws-sdk';
+import { of, throwError } from 'rxjs';
+import { catchError, switchMap, delay } from 'rxjs/operators';
 
 describe('Seeder test', () => {
   describe('DB seeder', () => {
@@ -115,15 +117,14 @@ describe('Seeder test', () => {
 
   it.skip('should run complete seeder', done => {
     seedAdminUser(AWS_CRUD_CONFIG.aws_user_pools_id)
-      .pipe(switchMap(userId => seedBusinessData(userId)))
-      // .pipe(
-      //   mapTo('SUCCESS'),
-      //   catchError((error: AWSError) => {
-      //     console.log("Probably 'normal' error: ", error);
-      //     return of('SUCCESS');
-      //   }),
-      // ),
-      // ])
+      .pipe(
+        delay(2000),
+        switchMap(userId => seedBusinessData(userId)),
+        catchError((error: AWSError) => {
+          console.error('SEEDING ERROR', JSON.stringify(error, undefined, 2));
+          return throwError('SUCCESS');
+        }),
+      )
       .subscribe({
         complete() {
           done();

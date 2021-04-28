@@ -6,7 +6,7 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, of, throwError } from 'rxjs';
 import { generatedProductSeed } from '@bgap/shared/fixtures';
 
 const generateChainId = (idx: number) => `chain_${idx}_id_seeded`;
@@ -58,7 +58,7 @@ const deleteCreate = <CREATED_ITEM_TYPE>({
     input: { id: input.id },
   }).pipe(
     catchError(error => {
-      console.error('Error during SEED data DELETION', error);
+      console.warn('Error during SEED data DELETION', error);
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
     switchMap(() =>
@@ -69,6 +69,10 @@ const deleteCreate = <CREATED_ITEM_TYPE>({
         },
       ),
     ),
+    catchError(error => {
+      console.error('Error during SEED data CREATION', error);
+      return throwError(error);
+    }),
   );
 
 export const createTestChain = (chainIdx: number) => {
@@ -346,10 +350,6 @@ export const createTestUnitProduct = (
   }).pipe(
     map(x => x.createUnitProduct),
     switchMap(unitProduct => {
-      console.log(
-        '### ~ file: seed-data-fn.ts ~ line 343 ~ unitProduct',
-        unitProduct,
-      );
       const input: CrudApi.CreateGeneratedProductInput = {
         ...generatedProductSeed.getGeneratedProduct({
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

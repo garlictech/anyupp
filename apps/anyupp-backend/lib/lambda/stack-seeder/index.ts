@@ -1,6 +1,6 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { delay, switchMap } from 'rxjs/operators';
 
 import { seedAdminUser, seedBusinessData } from '@bgap/anyupp-backend-lib';
 import { sendResponse } from '../lambda.utils';
@@ -19,6 +19,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     await seedAdminUser(AdminUserPoolId)
       .pipe(
+        delay(2000),
         switchMap(userId => seedBusinessData(userId)),
         //   mapTo('SUCCESS'),
         //   catchError((error: AWSError) => {
