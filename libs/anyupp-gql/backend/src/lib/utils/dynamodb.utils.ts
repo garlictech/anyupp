@@ -12,15 +12,12 @@
 import { DateTime } from 'luxon';
 import { from } from 'rxjs';
 import { bufferCount, delay, map, mergeMap, toArray } from 'rxjs/operators';
-import {
-  BatchWriteItemCommand,
-  BatchWriteItemInput,
-  DynamoDBClient,
-  WriteRequest,
-} from '@aws-sdk/client-dynamodb';
-import { marshall } from '@aws-sdk/util-dynamodb';
+
 import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
 import * as fp from 'lodash/fp';
+
+import AWS from 'aws-sdk';
+import { DocumentClient, WriteRequest } from 'aws-sdk/clients/dynamodb';
 
 const DYNAMODB_BATCH_WRITE_ITEM_COUNT = 25;
 const DYNAMODB_CONCURRENT_OPERATION_COUNT = 1;
@@ -33,7 +30,7 @@ const toBatchDeleteParam = (id: string): WriteRequest => ({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toBatchPutParam = (item: any): WriteRequest => ({
   PutRequest: {
-    Item: marshall({
+    Item: AWS.DynamoDB.Converter.marshall({
       ...item,
       createdAt: DateTime.utc().toString(),
       updatedAt: DateTime.utc().toString(),
@@ -45,7 +42,8 @@ const toBatchPutParam = (item: any): WriteRequest => ({
 const executeBatchWrite = (tablename: string) => (
   writeRequests: WriteRequest[],
 ) => {
-  const dbClient = new DynamoDBClient({
+  const dbClient = new AWS.DynamoDB({
+    apiVersion: '2012-08-10',
     region: AWS_CRUD_CONFIG.aws_appsync_region,
   });
 
@@ -56,7 +54,7 @@ const executeBatchWrite = (tablename: string) => (
     // EXECUTE fix amount of the operation concurrently
     mergeMap(
       params =>
-        from(dbClient.send(new BatchWriteItemCommand(params))).pipe(
+        from(dbClient.batchWriteItem(params).promise()).pipe(
           delay(DYNAMODB_OPERATION_DELAY),
         ),
       DYNAMODB_CONCURRENT_OPERATION_COUNT,
@@ -67,7 +65,7 @@ const executeBatchWrite = (tablename: string) => (
 };
 const toBatchWriteIteminput = (tablename: string) => (
   writeRequests: WriteRequest[],
-): BatchWriteItemInput => ({
+): DocumentClient.BatchWriteItemInput => ({
   RequestItems: {
     [tablename]: writeRequests,
   },
