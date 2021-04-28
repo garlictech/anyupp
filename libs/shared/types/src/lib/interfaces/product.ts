@@ -88,6 +88,7 @@ export interface IChainProduct {
   isVisible: boolean;
   image: string;
   variants: [IProductVariant];
+  allergens: string[];
 }
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
