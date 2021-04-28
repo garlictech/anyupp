@@ -301,7 +301,7 @@
       "description": "The password is invalid or the user does not have a password."
     },
     "ERROR_PASSWORD_MISSMATCH": {
-      "title": "Login error",
+      "title": "Signup error",
       "description": "The passwordS are not matching."
     },
     "ERROR_USER_MISMATCH": {

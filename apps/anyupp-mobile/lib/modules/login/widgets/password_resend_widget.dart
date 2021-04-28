@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
@@ -85,15 +86,13 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                 ),
               ),
               // Phone number input field
-              Container(
-                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                  child: Text(
-                    trans('login.email.dialogResetSentMessage') + destination,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                    ),
-                  )),
+              AutoSizeText(
+                trans('login.email.dialogResetSentMessage') + destination,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 18.0,
+                ),
+              ),
               InkWell(
                 onTap: () {
                   getIt<LoginBloc>().add(ChangeEmailFormUI(
@@ -136,7 +135,7 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                     // Email + passwords input fields
                     LoginFormUtils.buildTextField(
                       context,
-                      trans('login.email.emailOrPhoneFieldLabel'),
+                      trans('login.email.emailFieldLabel'),
                       _emailController,
                       TextInputType.emailAddress,
                       false,

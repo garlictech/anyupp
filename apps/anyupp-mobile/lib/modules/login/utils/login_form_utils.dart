@@ -96,8 +96,8 @@ class LoginFormUtils {
         RequiredValidator(errorText: 'password is required'),
         MinLengthValidator(8,
             errorText: 'password must be at least 8 digits long'),
-        PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-            errorText: 'passwords must have at least one special character'),
+        PatternValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$',
+            errorText: 'must have a number, an upper, a lower case letter'),
       ]);
 
   static FieldValidator phoneValidator(BuildContext context) => MultiValidator([

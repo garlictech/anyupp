@@ -16,6 +16,8 @@ class SignUpException extends AppException {
 
   static const USER_EMAIL_NOT_SAME = 'USER_EMAIL_NOT_SAME';
 
+  static const ERROR_PASSWORD_MISSMATCH = 'ERROR_PASSWORD_MISSMATCH';
+
   static const LIMIT_ECXEEDED = 'LIMIT_EXCEEDED';
 
   SignUpException({

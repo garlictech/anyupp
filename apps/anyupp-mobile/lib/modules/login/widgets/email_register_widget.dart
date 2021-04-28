@@ -18,14 +18,16 @@ class _EmailRegisterDialogContentWidgetState
     extends State<EmailRegisterDialogContentWidget> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
-  final _emailOrPhoneController = TextEditingController();
+  final _password2Controller = TextEditingController();
+  //final _emailOrPhoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _emailController.dispose();
     _password1Controller.dispose();
-    _emailOrPhoneController.dispose();
+    _password2Controller.dispose();
+    //_emailOrPhoneController.dispose();
     super.dispose();
   }
 
@@ -85,14 +87,14 @@ class _EmailRegisterDialogContentWidgetState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Email + passwords input fields
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.emailOrPhoneFieldLabel'),
-                      _emailOrPhoneController,
-                      TextInputType.text,
-                      false,
-                      LoginFormUtils.emailOrPhoneValidator(context),
-                    ),
+                    // LoginFormUtils.buildTextField(
+                    //   context,
+                    //   trans('login.email.emailFieldLabel'),
+                    //   _emailOrPhoneController,
+                    //   TextInputType.text,
+                    //   false,
+                    //   LoginFormUtils.emailValidator(context),
+                    // ),
                     LoginFormUtils.buildTextField(
                       context,
                       trans('login.email.emailFieldLabel'),
@@ -105,6 +107,14 @@ class _EmailRegisterDialogContentWidgetState
                       context,
                       trans('login.email.passwordFieldLabel'),
                       _password1Controller,
+                      TextInputType.text,
+                      true,
+                      LoginFormUtils.passwordValidator(context),
+                    ),
+                    LoginFormUtils.buildTextField(
+                      context,
+                      trans('login.email.password2FieldLabel'),
+                      _password2Controller,
                       TextInputType.text,
                       true,
                       LoginFormUtils.passwordValidator(context),
@@ -169,34 +179,45 @@ class _EmailRegisterDialogContentWidgetState
     print('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      bool isPhone = false;
-      if (LoginFormUtils.phoneValidator(context)
-              .call(_emailOrPhoneController.text) ==
-          null) {
-        isPhone = true;
-      }
-      bool isEmail = false;
-      if (LoginFormUtils.emailValidator(context)
-              .call(_emailOrPhoneController.text) ==
-          null) {
-        isEmail = true;
-      }
-      if (!isPhone && !isEmail) {
+      if (_password1Controller.text != _password2Controller.text) {
         getIt<ExceptionBloc>().add(ShowException(SignUpException(
             code: SignUpException.CODE,
-            subCode: SignUpException.NOT_EMAIL_OR_PHONE)));
-      } else if (isEmail &&
-          (_emailOrPhoneController.text != _emailController.text)) {
-        getIt<ExceptionBloc>().add(ShowException(SignUpException(
-            code: SignUpException.CODE,
-            subCode: SignUpException.USER_EMAIL_NOT_SAME)));
+            subCode: SignUpException.ERROR_PASSWORD_MISSMATCH)));
       } else {
         getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
-            userEmail: isEmail ? _emailOrPhoneController.text : null,
-            userPhone: isPhone ? _emailOrPhoneController.text : null,
+            userEmail: _emailController.text,
+            userPhone: null,
             email: _emailController.text,
             password: _password1Controller.text));
       }
+      // bool isPhone = false;
+      // if (LoginFormUtils.phoneValidator(context)
+      //         .call(_emailOrPhoneController.text) ==
+      //     null) {
+      //   isPhone = true;
+      // }
+      // bool isEmail = false;
+      // if (LoginFormUtils.emailValidator(context)
+      //         .call(_emailOrPhoneController.text) ==
+      //     null) {
+      //   isEmail = true;
+      // }
+      // if (!isPhone && !isEmail) {
+      //   getIt<ExceptionBloc>().add(ShowException(SignUpException(
+      //       code: SignUpException.CODE,
+      //       subCode: SignUpException.NOT_EMAIL_OR_PHONE)));
+      // } else if (isEmail &&
+      //     (_emailOrPhoneController.text != _emailController.text)) {
+      //   getIt<ExceptionBloc>().add(ShowException(SignUpException(
+      //       code: SignUpException.CODE,
+      //       subCode: SignUpException.USER_EMAIL_NOT_SAME)));
+      // } else {
+      //   getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+      //       userEmail: isEmail ? _emailOrPhoneController.text : null,
+      //       userPhone: isPhone ? _emailOrPhoneController.text : null,
+      //       email: _emailController.text,
+      //       password: _password1Controller.text));
+      // }
     }
   }
 }

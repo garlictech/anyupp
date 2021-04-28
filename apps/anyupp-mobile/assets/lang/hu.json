@@ -45,7 +45,7 @@
       "dialogEmailSentTitle": "Email elküldve",
       "dialogEmailSentMessage": "Nézd meg az email-jeid és kattints a linkre a bejelentkezéshez!",
       "dialogResetSentTitle": "Kód elküldve",
-      "dialogResetSentMessage": "Elküldtük email-ben a jelszó megváltoztatásához szükséges kódot.",
+      "dialogResetSentMessage": "Elküldtük email-ben a jelszó megváltoztatásához szükséges kódot ide: ",
       "dialogPasswordRefreshedTitle": "Jelszó frissítve",
       "dialogPasswordRefreshedMessage": "A jelszavadat frissítettük mostmár belépetsz vele.",
       "closeButton": "Bezárás",
@@ -301,8 +301,8 @@
       "description": "The password is invalid or the user does not have a password."
     },
     "ERROR_PASSWORD_MISSMATCH": {
-      "title": "Login error",
-      "description": "The passwordS are not matching."
+      "title": "Signup error",
+      "description": "The passwords are not matching."
     },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",

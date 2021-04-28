@@ -111,11 +111,11 @@ class _EmailLoginDialogContentWidgetState
                     // Email input field
                     LoginFormUtils.buildTextField(
                       context,
-                      trans('login.email.emailOrPhoneFieldLabel'),
+                      trans('login.email.emailFieldLabel'),
                       _emailController,
                       TextInputType.emailAddress,
                       false,
-                      LoginFormUtils.emailOrPhoneValidator(context),
+                      LoginFormUtils.emailValidator(context),
                     ),
                     AnimatedContainer(
                         height: LoginFormUtils.TEXTFIELD_HEIGHT,
