@@ -29,7 +29,7 @@
       "loginProgress": "Bejelentkezés...",
       "forgotPassword": "Elfelejtett helszó. . .",
       "emailFieldLabel": "Email",
-      "emailOrPhoneFieldLabel": "Email or Phone number",
+      "emailOrPhoneFieldLabel": "Email vagy Telefon szám",
       "passwordFieldLabel": "Jelszó",
       "password2FieldLabel": "Jelszó újra",
       "linkLoginWithLink": "Bejelentkezés email üzenetben. . .",
