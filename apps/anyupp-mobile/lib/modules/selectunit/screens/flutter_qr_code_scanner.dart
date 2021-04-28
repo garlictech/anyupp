@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
@@ -14,10 +15,11 @@ import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-
 class QRCodeScannerScreen extends StatefulWidget {
   final Color frameColor;
   final double traceMultiplier;
+  final Rectangle validRectangle;
+
   // TODO navigation hack, should replace with navigation bloc
   final bool navigateToCart;
 
@@ -25,21 +27,33 @@ class QRCodeScannerScreen extends StatefulWidget {
     this.navigateToCart = false,
     this.frameColor = kShrineScrim,
     this.traceMultiplier = 1.2,
+    this.validRectangle = const Rectangle(width: 150, height: 150),
   });
 
   @override
   State<StatefulWidget> createState() => _QRCodeScannerScreenState();
 }
 
-class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
+class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
+    with TickerProviderStateMixin {
   Barcode result;
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool flashState = false;
 
+  AnimationController _animationController;
+  bool _closeWindow = false;
+  bool _streaming = false;
+  String _barcodePictureFilePath;
+  Size _previewSize;
+  AnimationState _currentState = AnimationState.search;
+  CustomPainter _animationPainter;
+  int _animationStart = DateTime.now().millisecondsSinceEpoch;
+
   @override
   void initState() {
     setFlashState();
+    _switchAnimationState(AnimationState.search);
     // TODO: implement initState
     super.initState();
   }
@@ -47,6 +61,90 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
   Future<void> setFlashState() async {
     this.flashState = await controller.getFlashStatus();
     setState(() {});
+  }
+
+  void _initAnimation(Duration duration) {
+    setState(() {
+      _animationPainter = null;
+    });
+
+    _animationController?.dispose();
+    _animationController = AnimationController(duration: duration, vsync: this);
+  }
+
+  void _switchAnimationState(AnimationState newState) {
+    if (newState == AnimationState.search) {
+      _initAnimation(const Duration(milliseconds: 750));
+
+      _animationPainter = RectangleOutlinePainter(
+        animation: RectangleTween(
+          Rectangle(
+            width: widget.validRectangle.width,
+            height: widget.validRectangle.height,
+            color: Colors.white,
+          ),
+          Rectangle(
+            width: widget.validRectangle.width * widget.traceMultiplier,
+            height: widget.validRectangle.height * widget.traceMultiplier,
+            color: Colors.transparent,
+          ),
+        ).animate(_animationController),
+      );
+
+      _animationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          Future<void>.delayed(const Duration(milliseconds: 1600), () {
+            if (_currentState == AnimationState.search) {
+              _animationController.forward(from: 0);
+            }
+          });
+        }
+      });
+    } else if (newState == AnimationState.barcodeNear ||
+        newState == AnimationState.barcodeFound ||
+        newState == AnimationState.endSearch) {
+      double begin;
+      if (_currentState == AnimationState.barcodeNear) {
+        begin = lerpDouble(0.0, 0.5, _animationController.value);
+      } else if (_currentState == AnimationState.search) {
+        _initAnimation(const Duration(milliseconds: 500));
+        begin = 0.0;
+      }
+
+      _animationPainter = RectangleTracePainter(
+        rectangle: Rectangle(
+          width: widget.validRectangle.width,
+          height: widget.validRectangle.height,
+          color: newState == AnimationState.endSearch
+              ? Colors.transparent
+              : Colors.white,
+        ),
+        animation: Tween<double>(
+          begin: begin,
+          end: newState == AnimationState.barcodeNear ? 0.5 : 1.0,
+        ).animate(_animationController),
+      );
+
+      if (newState == AnimationState.barcodeFound) {
+        _animationController.addStatusListener((AnimationStatus status) {
+          if (status == AnimationStatus.completed) {
+            Future<void>.delayed(const Duration(milliseconds: 300), () {
+              if (_currentState != AnimationState.endSearch) {
+                _switchAnimationState(AnimationState.endSearch);
+                setState(() {});
+                // _showBottomSheet();
+              }
+            });
+          }
+        });
+      }
+    }
+
+    _currentState = newState;
+    if (newState != AnimationState.endSearch) {
+      _animationController.forward(from: 0);
+      _animationStart = DateTime.now().millisecondsSinceEpoch;
+    }
   }
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -67,6 +165,20 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
         body: Stack(
           children: <Widget>[
             _buildQrView(context),
+            Container(
+              constraints: const BoxConstraints.expand(),
+              child: CustomPaint(
+                painter: WindowPainter(
+                  windowSize: Size(widget.validRectangle.width,
+                      widget.validRectangle.height),
+                  outerFrameColor: widget.frameColor,
+                  closeWindow: _closeWindow,
+                  innerFrameColor: _currentState == AnimationState.endSearch
+                      ? Colors.transparent
+                      : kShrineFrameBrown,
+                ),
+              ),
+            ),
             Positioned(
               left: 0,
               right: 0,
@@ -97,6 +209,12 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
                 ),
               ),
             ),
+            Container(
+              constraints: const BoxConstraints.expand(),
+              child: CustomPaint(
+                painter: _animationPainter,
+              ),
+            ),
             AppBar(
               leading: IconButton(
                 icon: const Icon(Icons.close, color: Colors.white),
@@ -107,7 +225,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(
-                    flashState ? Icons.flash_off : Icons.flash_on,
+                    flashState ? Icons.flash_on : Icons.flash_off,
                     color: Colors.white,
                   ),
                   onPressed: () async {
@@ -132,22 +250,15 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 250.0
-        : 400.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: kShrineFrameBrown,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
+          //borderColor: kShrineFrameBrown,
+          borderRadius: 0,
+          borderLength: 0,
+          borderWidth: 0,
+          cutOutSize: widget.validRectangle.height),
     );
   }
 
@@ -188,6 +299,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
 
   @override
   void dispose() {
+    _currentState = AnimationState.endSearch;
+    _animationController?.dispose();
     controller?.dispose();
     super.dispose();
   }
