@@ -42,7 +42,7 @@ dependencies:
   cupertino_icons: ^0.1.3
   double_back_to_close_app: ^2.0.1
   equatable: ^2.0.0
-  firebase_ml_vision: ^0.9.10
+  # firebase_ml_vision: ^0.9.10
   flutter_bloc: ^7.0.0
   flutter_local_notifications: ^1.4.4+2
   flutter_login_facebook: ^1.0.1
@@ -79,8 +79,8 @@ dev_dependencies:
   # ferry_generator: ^0.3.3
   flutter_launcher_icons: ^0.8.0
 
-dependency_overrides:
-  sqflite: 1.3.0
+#dependency_overrides:
+  # sqflite: 1.3.0
   # analyzer: '0.39.14'
 
 flutter_icons:

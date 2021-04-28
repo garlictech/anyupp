@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'awsconfiguration.dart';
 
 class AppConfig {
-
   static String get Region => _config['Region'];
 
   static String get StripePublishableKey => _config['StripePublishableKey'];

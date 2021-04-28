@@ -11,8 +11,8 @@ class AwsCommonLoginProvider implements ICommonLoginProvider {
   @override
   Future<void> logoutFromBackend() async {
     try {
-      await _provider.clearUserSession();
       await _service.signOut();
+      await _provider.clearUserSession();
     } on Exception catch (e) {
       print('logoutFromBackend().error=$e');
       rethrow;

@@ -96,4 +96,8 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
       String userName, String code, String newPassword) {
     return _emailLoginProvider.confirmPassword(userName, code, newPassword);
   }
+
+  Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode) {
+    return _socialLoginProvider.signUserInWithAuthCode(authCode);
+  }
 }

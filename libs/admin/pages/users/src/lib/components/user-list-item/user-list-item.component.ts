@@ -1,12 +1,13 @@
 import * as fp from 'lodash/fp';
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-user-list-item',
   templateUrl: './user-list-item.component.html',
 })

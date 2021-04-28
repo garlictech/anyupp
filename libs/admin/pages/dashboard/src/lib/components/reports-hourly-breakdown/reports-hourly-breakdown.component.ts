@@ -4,6 +4,8 @@ import { combineLatest, Observable } from 'rxjs';
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -26,6 +28,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-reports-hourly-breakdown',
   templateUrl: './reports-hourly-breakdown.component.html',
   styleUrls: ['./reports-hourly-breakdown.component.scss'],
@@ -44,6 +47,7 @@ export class ReportsHourlyBreakdownComponent
     private _store: Store<any>,
     private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -197,6 +201,8 @@ export class ReportsHourlyBreakdownComponent
         ];
 
         this._chart.update();
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._translateService.onLangChange
@@ -224,7 +230,11 @@ export class ReportsHourlyBreakdownComponent
         );
 
         this._chart.update();
+
+        this._changeDetectorRef.detectChanges();
       });
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

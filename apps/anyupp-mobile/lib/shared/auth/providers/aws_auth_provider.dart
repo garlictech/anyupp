@@ -136,73 +136,77 @@ class AwsAuthProvider implements IAuthProvider {
     await getAuthenticatedUserProfile();
   }
 
-  User _userFromAttributes(List<CognitoUserAttribute> attributes) {
-    String email, name, id, login;
-
-    for (int i = 0; i < attributes.length; i++) {
-      CognitoUserAttribute a = attributes[i];
-      //print('\t attr[${a.userAttributeKey}]=${a.value}');
-      if (a.name == 'email') {
-        email = a.value;
-        name = email.split('@').first;
-        continue;
-      }
-      if (a.name == 'sub') {
-        id = a.value;
-        continue;
-      }
-      if (a.name == 'identities') {
-        List<dynamic> json = jsonDecode(a.value);
-        login = json[0]['providerType'];
-        continue;
-      }
-    }
-    User user = User(
-      id: id,
-      email: email,
-      name: name,
-      loginMethod: login,
-    );
-    return user;
-  }
-
   // User _userFromAttributes(List<CognitoUserAttribute> attributes) {
-  //   String email;
-  //   String name;
-  //   String subId;
-  //   String loginMethod;
+  //   String email, name, id, login;
+
   //   for (int i = 0; i < attributes.length; i++) {
   //     CognitoUserAttribute a = attributes[i];
-  //     // print('\t attr[${a.userAttributeKey}]=${a.value}');
+  //     //print('\t attr[${a.userAttributeKey}]=${a.value}');
   //     if (a.name == 'email') {
   //       email = a.value;
   //       name = email.split('@').first;
   //       continue;
   //     }
   //     if (a.name == 'sub') {
-  //       // TODO
-  //       subId = a.value;
+  //       id = a.value;
   //       continue;
   //     }
   //     if (a.name == 'identities') {
   //       List<dynamic> json = jsonDecode(a.value);
-  //       loginMethod = json.isNotEmpty
-  //           ? json[0]['providerType']
-  //           : 'UNKNOWN'; //LoginMethodUtils.stringToMethod(json[0]['providerType']);
+  //       login = json[0]['providerType'];
   //       continue;
   //     }
   //   }
-  //   User user = User(email: email, loginMethod: loginMethod, name: name, id: subId);
+  //   User user = User(
+  //     id: id,
+  //     email: email,
+  //     name: name,
+  //     loginMethod: login,
+  //   );
   //   return user;
   // }
 
+  User _userFromAttributes(List<CognitoUserAttribute> attributes) {
+    String email;
+    String name;
+    String subId;
+    String loginMethod;
+    for (int i = 0; i < attributes.length; i++) {
+      CognitoUserAttribute a = attributes[i];
+      // print('\t attr[${a.userAttributeKey}]=${a.value}');
+      if (a.name == 'email') {
+        email = a.value;
+        name = email.split('@').first;
+        continue;
+      }
+      if (a.name == 'sub') {
+        // TODO
+        subId = a.value;
+        continue;
+      }
+      if (a.name == 'identities') {
+        List<dynamic> json = jsonDecode(a.value);
+        loginMethod = json.isNotEmpty
+            ? json[0]['providerType']
+            : 'UNKNOWN'; //LoginMethodUtils.stringToMethod(json[0]['providerType']);
+        continue;
+      }
+    }
+    User user = User(email: email, loginMethod: loginMethod, name: name, id: subId);
+    return user;
+  }
+
   @override
   Future<String> getAccessToken() async {
-    print('***** getAccessToken()');
     try {
       CognitoUserSession session = await _service.session;
-      print('***** getAccessToken().session=$session');
-      return session?.accessToken?.jwtToken;
+      if (!session.isValid()) {
+        session = await (await _service.currentUser).getSession();
+      }
+
+      String token = session?.accessToken?.jwtToken;
+      print('***** getAccessToken().token=$token');
+      return token;
     } on Exception catch (e) {
       print('***** getAccessToken().error=$e');
       return null;
@@ -213,7 +217,9 @@ class AwsAuthProvider implements IAuthProvider {
   Future<String> getIdToken() async {
     try {
       CognitoUserSession session = await _service.session;
-      return session?.idToken?.jwtToken;
+      String token = session?.idToken?.jwtToken;
+      print('***** getIdToken().token=$token');
+      return token;
     } on Exception catch (e) {
       print('***** getIdToken().error=$e');
       return null;

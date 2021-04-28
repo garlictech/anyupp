@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
 import { IRoleContext } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -11,6 +11,7 @@ import { RoleContextFormComponent } from '../role-context-form/role-context-form
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-role-context-list',
   templateUrl: './role-context-list.component.html',
   styleUrls: ['./role-context-list.component.scss'],

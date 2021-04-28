@@ -15,6 +15,8 @@ import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+enum AnimationState { search, barcodeNear, barcodeFound, endSearch }
+
 class QRCodeScannerScreen extends StatefulWidget {
   final Color frameColor;
   final double traceMultiplier;

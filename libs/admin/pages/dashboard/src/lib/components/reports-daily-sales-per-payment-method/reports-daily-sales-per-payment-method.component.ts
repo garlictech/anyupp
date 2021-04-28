@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -19,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-reports-daily-sales-per-payment-method',
   templateUrl: './reports-daily-sales-per-payment-method.component.html',
   styleUrls: ['./reports-daily-sales-per-payment-method.component.scss'],
@@ -34,6 +37,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
   constructor(
     private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -110,6 +114,8 @@ export class ReportsDailySalesPerPaymentMethodComponent
         ];
 
         this._chart.update();
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._translateService.onLangChange
@@ -117,7 +123,11 @@ export class ReportsDailySalesPerPaymentMethodComponent
       .subscribe(() => {
         this._chart.data.labels = this._translatedLabels();
         this._chart.update();
+
+        this._changeDetectorRef.detectChanges();
       });
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

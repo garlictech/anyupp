@@ -1,7 +1,16 @@
+import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -9,6 +18,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
+  NbDialogService,
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
@@ -26,6 +36,7 @@ interface IMenuItem {
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
@@ -46,10 +57,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _themeService: NbThemeService,
     private _layoutService: LayoutService,
     private _breakpointService: NbMediaBreakpointsService,
-
+    private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
     private _cognitoService: CognitoService,
     private _translateService: TranslateService,
+    private _nbDialogService: NbDialogService,
+    private _router: Router,
+    private _ngZone: NgZone,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
 
@@ -62,7 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         title: 'Log out',
         langKey: 'header.logout',
         onClick: (): void => {
-          this._cognitoService.signOut();
+          this._signOut();
         },
       },
     ];
@@ -90,20 +104,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
       },
     ];
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this.adminUser = adminUser;
-      });
-
-    this._translateService.onLangChange.subscribe(
-      (event: LangChangeEvent): void => {
-        this.selectedLang = (event.lang || '').split('-')[0];
-        this._translateMenuItems();
-      },
-    );
-    this._translateMenuItems();
   }
 
   get userName(): string | undefined {
@@ -115,6 +115,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((adminUser: IAdminUser): void => {
+        this.adminUser = adminUser;
+
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this._translateService.onLangChange.subscribe(
+      (event: LangChangeEvent): void => {
+        this.selectedLang = (event.lang || '').split('-')[0];
+        this._translateMenuItems();
+      },
+    );
+    this._translateMenuItems();
+
     const { xl } = this._breakpointService.getBreakpointsMap();
     this._themeService
       .onMediaQueryChange()
@@ -122,10 +138,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
         untilDestroyed(this),
       )
-      .subscribe(
-        (isLessThanXl: boolean): boolean =>
-          (this.userPictureOnly = isLessThanXl),
-      );
+      .subscribe((isLessThanXl: boolean): boolean => {
+        this._changeDetectorRef.detectChanges();
+
+        return (this.userPictureOnly = isLessThanXl);
+      });
 
     this._menuService
       .onItemClick()
@@ -152,11 +169,45 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.languageMenu.forEach((item): void => {
       item.title = this._translateService.instant(item.langKey);
     });
+
+    this._changeDetectorRef.detectChanges();
+  }
+
+  private _signOut() {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
+      dialogClass: 'form-dialog',
+    });
+
+    dialog.componentRef.instance.options = {
+      message: 'auth.confirmLogout',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: async (): Promise<void> => {
+            this._cognitoService.signOut().subscribe(() => {
+              this._ngZone.run(() => {
+                this._router.navigate(['auth/login']);
+              });
+            });
+          },
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
   }
 
   public toggleSidebar(): boolean {
     this._sidebarService.toggle(true, 'menu-sidebar');
     this._layoutService.changeLayoutSize();
+
+    this._changeDetectorRef.detectChanges();
 
     return false;
   }

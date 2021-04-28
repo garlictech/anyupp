@@ -1,6 +1,12 @@
 import { combineLatest } from 'rxjs';
 
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
@@ -20,6 +26,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-admin-user-role-form',
   templateUrl: './admin-user-role-form.component.html',
   styleUrls: ['./admin-user-role-form.component.scss'],
@@ -37,6 +44,7 @@ export class AdminUserRoleFormComponent
     protected _injector: Injector,
     private _amplifyDataService: AmplifyDataService,
     private _nbDialogService: NbDialogService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
   }
@@ -60,6 +68,7 @@ export class AdminUserRoleFormComponent
         ]): void => {
           if (adminUser) {
             this.adminUser = adminUser;
+
             const contextIds = (adminUser.roleContexts?.items || []).map(
               i => i.roleContextId,
             );
@@ -72,6 +81,8 @@ export class AdminUserRoleFormComponent
                   value: roleContext.name,
                 }),
               );
+
+            this._changeDetectorRef.detectChanges();
           }
         },
       );
@@ -98,6 +109,8 @@ export class AdminUserRoleFormComponent
                 '',
                 'common.updateSuccessful',
               );
+
+              this._changeDetectorRef.detectChanges();
             } catch (error) {
               console.error('there was an error sending the query', error);
             }
@@ -123,11 +136,15 @@ export class AdminUserRoleFormComponent
           adminUserId: this.adminUser.id,
         });
 
+        this.dialogForm.patchValue({ roleContextId: '' });
+
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.insertSuccessful',
         );
+
+        this._changeDetectorRef.detectChanges();
         // this.close();
       } catch (error) {
         console.error('there was an error sending the query', error);

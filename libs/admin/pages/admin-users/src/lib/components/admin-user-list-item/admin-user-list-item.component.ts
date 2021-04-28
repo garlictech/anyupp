@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
@@ -8,6 +8,7 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
 import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-role-form.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-admin-user-list-item',
   templateUrl: './admin-user-list-item.component.html',
   styleUrls: ['./admin-user-list-item.component.scss'],

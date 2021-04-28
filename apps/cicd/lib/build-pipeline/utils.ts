@@ -7,7 +7,7 @@ import * as codestarnotifications from '@aws-cdk/aws-codestarnotifications';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import {SecretsManagerStack} from './secretsmanager-stack';
+import { SecretsManagerStack } from './secretsmanager-stack';
 import * as sst from '@serverless-stack/resources';
 import * as chatbot from '@aws-cdk/aws-chatbot';
 
@@ -75,8 +75,7 @@ export const createBuildProject = (
   cache: codebuild.Cache,
   stage: string,
 ): codebuild.PipelineProject => {
-  const adminConfig = stage === 'dev' ? '' : `--configuration=${stage}`;
-  const {adminSiteUrl} = utils.configurePipeline(stack, stage);
+  const { adminSiteUrl } = utils.configurePipeline(stack, stage);
 
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -92,18 +91,9 @@ export const createBuildProject = (
             'flutter doctor',
           ],
         },
-        pre_build: {
-          commands: [
-            `yarn nx config crud-backend --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx config shared-config --app=${appConfig.name} --stage=${stage}`,
-            `yarn nx build anyupp-gql-api --skip-nx-cache`,
-          ],
-        },
         build: {
           commands: [
-            `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
-            `yarn nx build admin ${adminConfig} --skip-nx-cache`,
-            `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${appConfig.name}`,
+            `sh ./tools/build-workspace.sh ${appConfig.name} ${stage}`,
             `yarn nx buildApk anyupp-mobile`,
           ],
         },
@@ -163,14 +153,14 @@ export const createBuildProject = (
 export const configurePipeline = (
   stack: sst.Stack,
   stage: string,
-): {adminSiteUrl: string} => {
+): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
     stack,
     'AdminSiteUrlParamDev',
     `/${stage}-${appConfig.name}/generated/AdminSiteUrl`,
   ).stringValue;
 
-  return {adminSiteUrl};
+  return { adminSiteUrl };
 };
 
 export const configurePipelineNotifications = (
@@ -267,23 +257,18 @@ export const createCommonPipelineParts = (
     ],
   });
 
-  build.addToRolePolicy(
+  /* const serviceRole = new iam.Role(scope, 'CodePipelineServiceRole', {
+    assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
+  });
+
+  serviceRole.addToPolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ['*'],
       resources: ['*'],
     }),
   );
-
-  build.role &&
-    build.role.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['*'],
-        resources: ['*'],
-      }),
-    );
-
+*/
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
@@ -333,19 +318,4 @@ export const createCommonPipelineParts = (
   );
 
   buildArtifactBucket.grantWrite(pipeline.role);
-
-  pipeline.addToRolePolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ['*'],
-      resources: ['*'],
-    }),
-  );
-  pipeline.role.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ['*'],
-      resources: ['*'],
-    }),
-  );
 };

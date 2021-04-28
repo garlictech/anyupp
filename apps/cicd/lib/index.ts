@@ -1,11 +1,11 @@
-import {App} from '@serverless-stack/resources';
-import {DevBuildPipelineStack} from './build-pipeline/dev-pipeline-stack';
-import {SecretsManagerStack} from './build-pipeline/secretsmanager-stack';
-import {DevPullRequestBuildStack} from './build-pipeline/dev-pull-request-stack';
-import {SlackNotificationsStack} from './build-pipeline/slack-notifications-stack';
-import {PipelineStackProps} from './build-pipeline/utils';
-import {CiStack} from './build-pipeline/ci-stack';
-import {QABuildPipelineStack} from './build-pipeline/qa-pipeline-stack';
+import { App } from '@serverless-stack/resources';
+import { DevBuildPipelineStack } from './build-pipeline/dev-pipeline-stack';
+import { SecretsManagerStack } from './build-pipeline/secretsmanager-stack';
+import { DevPullRequestBuildStack } from './build-pipeline/dev-pull-request-stack';
+import { SlackNotificationsStack } from './build-pipeline/slack-notifications-stack';
+import { PipelineStackProps } from './build-pipeline/utils';
+import { CiStack } from './build-pipeline/ci-stack';
+import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
 
 export default function main(app: App): void {
   const pipelineSecretsManagerArn =
@@ -51,7 +51,7 @@ export default function main(app: App): void {
     ...commonConfig,
   };
 
-  new CiStack(app, 'CiStack', {secretsManager: devSecretsManagerStack});
+  new CiStack(app, 'CiStack', { secretsManager: devSecretsManagerStack });
 
   new DevBuildPipelineStack(
     app,

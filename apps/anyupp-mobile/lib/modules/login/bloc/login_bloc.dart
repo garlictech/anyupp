@@ -39,10 +39,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           if (event.method == LoginMethod.ANONYMOUS) {
             await _repository.signInAnonymously();
           }
-
-          // Login success...
-          yield LoginSuccess();
         }
+      }
+
+      if (event is LoginWithMethod) {
+        yield ShowSocialLoginWebView(event.method);
+        return;
+      }
+
+      if (event is CompleteLoginWithMethod) {
+        ProviderLoginResponse response =
+            await _repository.signUserInWithAuthCode(event.code);
+        print('*** LoginBloc().federated.loginResponse=$response');
+        yield LoginSuccess();
       }
 
       // --- Handle login with email and password
@@ -143,7 +152,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
         if (success) {
           yield PasswordReset();
-        } 
+        }
       }
 
       // --- Handle external errors (eg. errors from repository)

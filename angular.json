@@ -1044,7 +1044,7 @@
       "root": "apps/anyupp-mobile",
       "sourceRoot": "apps/anyupp-mobile/lib",
       "architect": {
-        "analyze": {
+        "lint": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter analyze",

@@ -120,12 +120,13 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
             child: IconButton(
-              icon: Icon(Icons.refresh,
+              icon: Icon(
+                Icons.refresh,
                 color: Colors.black,
-               ),
+              ),
               onPressed: () {
                 // Nav.to(DataStoreDemoScreen());
-                 getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
               },
             ),
           ),

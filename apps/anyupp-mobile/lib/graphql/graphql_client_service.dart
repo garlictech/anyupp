@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -39,13 +36,13 @@ class GraphQLClientService {
 
     String accessToken = await _authProvider.getAccessToken();
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
-    accessToken = null;
+    // accessToken = null;
     // print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
     Map<String, String> headers;
     if (accessToken != null) {
       headers = {
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': accessToken, // 'Bearer $accessToken',
         'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {

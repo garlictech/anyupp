@@ -1,7 +1,7 @@
 import * as utils from './utils';
 import * as sst from '@serverless-stack/resources';
 import * as codebuild from '@aws-cdk/aws-codebuild';
-import {PipelineStackProps} from './utils';
+import { PipelineStackProps } from './utils';
 
 export class DevPullRequestBuildStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: PipelineStackProps) {
@@ -24,6 +24,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ],
     });
 
+    const generatedLibExcludes =
+      '--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api';
+
     const project = new codebuild.Project(
       this,
       'AnyUpp:DEV Verify Pull Request',
@@ -42,21 +45,12 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 'flutter doctor',
               ],
             },
-            pre_build: {
-              commands: [
-                `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx config crud-backend --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx build anyupp-gql-api --skip-nx-cache`,
-              ],
-            },
             build: {
               commands: [
-                `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
-                `yarn nx affected:lint --base=${stage} --with-deps`,
-                `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" --codeCoverage --coverageReporters=clover`,
-                `yarn nx build admin --skip-nx-cache`,
-                `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
+                `sh ./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
                 `yarn nx buildApk anyupp-mobile`,
+                `yarn nx affected:lint --base=${stage} ${generatedLibExcludes}`,
+                `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
               ],
             },
           },

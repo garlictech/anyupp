@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { FormsService } from '../../services/forms/forms.service';
@@ -7,6 +13,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-unit-lanes',
   templateUrl: './form-unit-lanes.component.html',
   styleUrls: ['./form-unit-lanes.component.scss'],
@@ -16,7 +23,11 @@ export class FormUnitLanesComponent implements OnInit {
   public usedLaneIds: string[];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _formsService: FormsService) {
+  constructor(
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.usedLaneIds = [];
   }
 
@@ -28,6 +39,8 @@ export class FormUnitLanesComponent implements OnInit {
       )
       .subscribe((laneIds: string[]): void => {
         this.usedLaneIds = laneIds;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -35,9 +48,13 @@ export class FormUnitLanesComponent implements OnInit {
     (<FormArray>this.lanesFormArray).push(
       this._formsService.createLaneFormGroup(),
     );
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public removeLane(idx: number): void {
     (<FormArray>this.lanesFormArray).removeAt(idx);
+
+    this._changeDetectorRef.detectChanges();
   }
 }

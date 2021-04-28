@@ -24,7 +24,6 @@ import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'shared/utils/deeplink_utils.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatefulWidget {
   @override
