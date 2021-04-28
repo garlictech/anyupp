@@ -14,7 +14,8 @@ import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { DEFAULT_LANG, removeNestedTypeNameField } from '@bgap/admin/shared/utils';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
   EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,

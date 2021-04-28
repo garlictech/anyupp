@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-import { removeNestedTypeNameField } from '@bgap/admin/shared/utils';
+import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { CrudApiMutationDocuments, CrudApiQueryDocuments, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
 import {
   crudAuthenticatedGraphqlClient, executeMutation, executeQuery, executeSubscription
