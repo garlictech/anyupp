@@ -261,7 +261,8 @@
     "sendResetEmail": "Jelszó visszaállítás email küldése",
     "reminderSent": "Emlékeztető elküldve",
     "reminderError": "Hiba az emlékeztető elküldésekor",
-    "confirmLogout": "Biztosan kijelentkezel?"
+    "confirmLogout": "Biztosan kijelentkezel?",
+    "invalidContext": "Érvénytelen jogkörnyezet"
   },
   "roles": {
     "role": "Jog",
