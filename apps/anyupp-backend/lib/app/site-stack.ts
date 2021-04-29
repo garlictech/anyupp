@@ -1,9 +1,9 @@
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import path from 'path';
-import {PROJECT_ROOT} from './settings';
-import {getFQParamName} from './utils';
-import {WebsiteConstruct} from './website-construct';
+import { PROJECT_ROOT } from './settings';
+import { getFQParamName } from './utils';
+import { WebsiteConstruct } from './website-construct';
 
 export interface SiteStackProps extends sst.StackProps {
   certificateArn: string;

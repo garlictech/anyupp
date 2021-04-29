@@ -1,15 +1,30 @@
 import { NGXLogger } from 'ngx-logger';
 import { pairwise, startWith, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { clearDbProperties, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import { EAdminRole, IChain, IKeyValue, IRoleContext } from '@bgap/shared/types';
+import {
+  clearDbProperties,
+  EToasterType,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
+import {
+  EAdminRole,
+  IChain,
+  IKeyValue,
+  IRoleContext,
+} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';

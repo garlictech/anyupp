@@ -1,6 +1,12 @@
 import { skipWhile, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import { IUnit } from '@bgap/shared/types';
@@ -17,7 +23,10 @@ export class ColorizedLaneIconComponent implements OnInit {
   public laneColor: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private _store: Store<any>,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.laneColor = DEFAULT_LANE_COLOR;
   }
 

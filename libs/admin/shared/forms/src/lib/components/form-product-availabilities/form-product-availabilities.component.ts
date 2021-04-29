@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
@@ -19,7 +24,7 @@ export class FormProductAvailabilitiesComponent {
   constructor(
     private _formsService: FormsService,
     private _translateService: TranslateService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
       (key): IKeyValue => ({
