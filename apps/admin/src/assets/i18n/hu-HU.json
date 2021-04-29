@@ -146,8 +146,20 @@
     "contains": "Összetétel",
     "allergens": {
       "title": "Allergének",
-      "lactose": "Laktóz",
-      "nuts": "Mogyoró"
+      "celery": "Zeller",
+      "crustaceans": "Rákfélék",
+      "egg": "Tojás",
+      "fish": "Hal",
+      "gluten": "Glutén",
+      "lupin": "Csillagfürt",
+      "milk": "Tej",
+      "molluscs": "Puhatestűek",
+      "mustard": "Mustár",
+      "peanut": "Földimogyoró",
+      "sesame": "Szezámmag",
+      "soya": "Szója",
+      "sulphites": "Szulfitok",
+      "treenuts": "Diófélék"
     },
     "ingredients": {
       "title": "Hozzávalók"

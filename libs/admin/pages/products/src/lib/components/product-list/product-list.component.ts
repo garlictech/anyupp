@@ -3,6 +3,7 @@ import { map, skipWhile, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -58,6 +59,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _amplifyDataService: AmplifyDataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
 
@@ -103,6 +105,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
+
+        this._changeDetectorRef.detectChanges();
       });
 
     combineLatest([
@@ -146,6 +150,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
             .subscribe((group: IGroup | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
+
+          this._changeDetectorRef.detectChanges();
         },
       );
   }

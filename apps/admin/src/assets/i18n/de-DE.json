@@ -146,8 +146,20 @@
     "contains": "Contains",
     "allergens": {
       "title": "Allergens",
-      "lactose": "Lactose",
-      "nuts": "Nuts"
+      "celery": "Celery",
+      "crustaceans": "Crustaceans",
+      "egg": "Egg",
+      "fish": "Fish",
+      "gluten": "Gluten",
+      "lupin": "Lupin",
+      "milk": "Milk",
+      "molluscs": "Molluscs",
+      "mustard": "Mustard",
+      "peanut": "Peanut",
+      "sesame": "Sesame",
+      "soya": "Soya",
+      "sulphites": "Sulphites",
+      "treenuts": "Treenuts"
     },
     "ingredients": {
       "title": "Ingredients"
