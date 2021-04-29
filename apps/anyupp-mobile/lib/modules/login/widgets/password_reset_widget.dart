@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';

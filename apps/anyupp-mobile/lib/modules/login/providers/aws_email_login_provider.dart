@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
@@ -149,12 +148,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<Map<String, dynamic>> sendPasswordResetEmail(String userName) async {
     CognitoUser user = _service.createCognitoUser(userName);
-    bool passwordResent = false;
     Map<String, dynamic> codeDeliveryDetails;
     try {
       final data = await user.forgotPassword();
       if (data != null) {
-        passwordResent = true;
         codeDeliveryDetails = data['CodeDeliveryDetails'];
       }
     } on Exception catch (e) {

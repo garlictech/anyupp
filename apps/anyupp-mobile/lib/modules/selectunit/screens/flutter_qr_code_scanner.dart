@@ -47,7 +47,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
   bool _closeWindow = false;
   AnimationState _currentState = AnimationState.search;
   CustomPainter _animationPainter;
-  int _animationStart = DateTime.now().millisecondsSinceEpoch;
+  int animationStart = DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState() {
@@ -142,7 +142,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
     _currentState = newState;
     if (newState != AnimationState.endSearch) {
       _animationController.forward(from: 0);
-      _animationStart = DateTime.now().millisecondsSinceEpoch;
+      animationStart = DateTime.now().millisecondsSinceEpoch;
     }
   }
 
