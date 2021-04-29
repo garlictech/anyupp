@@ -2,7 +2,13 @@ import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
@@ -27,7 +33,10 @@ export class ProductCategoryFormComponent
   private _amplifyDataService: AmplifyDataService;
   private _logger: NGXLogger;
 
-  constructor(protected _injector: Injector, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    protected _injector: Injector,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(_injector);
 
     this._amplifyDataService = this._injector.get(AmplifyDataService);

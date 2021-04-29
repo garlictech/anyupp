@@ -202,6 +202,11 @@ example: `nx config crud-backend --app anyupp-backend --stage dev` for the dev
 
 It pulls the admin Amplify project and connects it to the actual CDK resources.
 
+## CRUD api resources
+
+The above `nx config crud-backend` generates a config file `libs/crud-gql/backend/src/generated/table-config.json`
+containing the table names/arns of the crud backend.
+
 ## Building the project
 
 Like the config stage, we have to tell the system which stack (app) and stage you

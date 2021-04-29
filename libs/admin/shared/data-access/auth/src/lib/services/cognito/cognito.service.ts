@@ -2,10 +2,10 @@ import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
-import { DataService } from '@bgap/admin/shared/data-access/data';
-import { EAdminRole, IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class CognitoService {
     this._currentContext = context;
   }
 
-  constructor(private _dataService: DataService) {
+  constructor(private _router: Router) {
     Hub.listen('auth', data => {
       const { payload } = data;
 
@@ -119,11 +119,10 @@ export class CognitoService {
               )(session.getRefreshToken()),
             ),
             switchMap(() => this.getAuth()),
-            map(data => {
-              this._dataService.initDataConnections(
-                data?.user?.id || '',
-                <EAdminRole>data?.user?.role || EAdminRole.INACTIVE,
-              );
+            map(() => {
+              // Finally redirect to dashboard.
+              // The routeGuard will handle the data subscription
+              this._router.navigate(['admin/dashboard']);
             }),
           ),
         ),

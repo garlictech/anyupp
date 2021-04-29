@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
@@ -21,7 +26,10 @@ export class FormProductVariantsComponent {
 
   public EProductLevel = EProductLevel;
 
-  constructor(private _formsService: FormsService, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private _formsService: FormsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.allowAddVariant = true;
   }
 

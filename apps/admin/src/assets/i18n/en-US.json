@@ -257,7 +257,8 @@
     "sendResetEmail": "Send password reset mail",
     "reminderSent": "Reminder sent",
     "reminderError": "Reminder error",
-    "confirmLogout": "Are you sure you want to log out?"
+    "confirmLogout": "Are you sure you want to log out?",
+    "invalidContext": "Invalid context"
   },
   "print": {
     "items": "Items",

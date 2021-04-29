@@ -41,7 +41,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   const role = (adminUser?.roleContexts?.items || []).find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (i: any) =>
-      i?.roleContext?.contextId?.toLowerCase() === desiredContext?.toLowerCase(),
+      i?.roleContext?.contextId?.toLowerCase() ===
+      desiredContext?.toLowerCase(),
   );
 
   console.error('***** role', role);

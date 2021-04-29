@@ -1,6 +1,11 @@
 import { BehaviorSubject } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import {
   IFloorMapTableOrderObjects,
   IFloorMapTableOrders,
@@ -19,7 +24,10 @@ export class FloorMapOrdersComponent implements OnInit {
   public allTableOrders$!: BehaviorSubject<IFloorMapTableOrderObjects>;
   public tableOrders?: IFloorMapTableOrders;
 
-  constructor(private _nbDialogRef: NbDialogRef<unknown>, private _changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private _nbDialogRef: NbDialogRef<unknown>,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.allTableOrders$

@@ -44,7 +44,7 @@ export const createAuthenticatedCrudGraphQLClient = (
         id: user.attributes.sub,
         ...user.attributes,
       },
-      graphQlClient: crudAuthenticatedGraphqlClient
+      graphQlClient: crudAuthenticatedGraphqlClient,
     })),
   );
 };

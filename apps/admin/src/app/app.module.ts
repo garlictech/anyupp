@@ -1,4 +1,4 @@
-import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
+import { AmplifyService } from 'aws-amplify-angular';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { CommonModule, registerLocaleData } from '@angular/common';
@@ -7,7 +7,6 @@ import localeDe from '@angular/common/locales/de';
 import localeEnGb from '@angular/common/locales/en-GB';
 import localeHu from '@angular/common/locales/hu';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
@@ -42,7 +41,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AmplifyService } from 'aws-amplify-angular';
 import { NotFoundComponent } from './not-found.component';
 
 const NB_MODULES = [
@@ -92,11 +90,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     CommonModule,
     BrowserModule,
     AppRoutingModule,
-    AmplifyUIAngularModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       defaultLanguage: DEFAULT_LANG,
       loader: {
