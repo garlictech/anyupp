@@ -6,23 +6,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/shared/widgets.dart';
 
 import 'link_account_dialog.dart';
-import 'phone_login_dialog.dart';
 import 'social_login_button_widget.dart';
 
 import 'package:fa_prev/modules/login/login.dart';
 
 class UnlinkAccountsWidget extends StatelessWidget {
-
   final User user;
 
   const UnlinkAccountsWidget({Key key, @required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (BuildContext context, LoginState state) {
         return FutureBuilder<List<LoginMethod>>(
-          future: getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email),
-          builder: (BuildContext context, AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
+          future:
+              getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
             if (methodSnapshot.hasData) {
               print('**** User Login methods=${methodSnapshot.data}');
 
@@ -76,8 +77,8 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  
-  Widget _createLinkedSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createLinkedSocialButtonWidget(
+      BuildContext context, String icon, LoginMethod method, bool linked) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Badge(
@@ -95,7 +96,8 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  Widget _createSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createSocialButtonWidget(
+      BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
       method: method,
@@ -104,14 +106,9 @@ class UnlinkAccountsWidget extends StatelessWidget {
       iconSize: 32.0,
       onTap: !linked
           ? () {
-              if (method == LoginMethod.PHONE) {
-                LoginWithPhoneDialog.show(context, linkAccount: true);
-              } else {
-                getIt<LoginBloc>().add(LinkCurrentAccountWithProvider(method));
-              }
+              getIt<LoginBloc>().add(LinkCurrentAccountWithProvider(method));
             }
           : () => showUnlinkConfirmDialog(context, method),
     );
   }
-
 }
