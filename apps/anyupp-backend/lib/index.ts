@@ -15,10 +15,12 @@ export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
     const sites = new SiteStack(scope, 'sites', { certificateArn });
+
     const secretsManagerStack = new SecretsManagerStack(
       scope,
       'SecretsManagerStack',
     );
+
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
@@ -29,7 +31,7 @@ export class AnyUppStack extends Stack {
       facebookClientSecret: secretsManagerStack.facebookAppSecret,
     });
 
-    new AppsyncAppStack(scope, 'appsync', {
+    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       secretsManager: secretsManagerStack.secretsManager,
@@ -41,7 +43,10 @@ export class AnyUppStack extends Stack {
       adminUserPool: cognitoStack.adminUserPool,
     });
 
-    new CognitoTriggersStack(scope, 'cognitoTriggers');
+    new CognitoTriggersStack(scope, 'cognitoTriggers', {
+      appsyncApi: appsyncStack.api,
+      pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
+    });
   }
 }
 

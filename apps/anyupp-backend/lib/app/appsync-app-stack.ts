@@ -1,5 +1,4 @@
 import path from 'path';
-
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
@@ -26,8 +25,9 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
+  public api: appsync.GraphqlApi;
+
   private lambdaDs!: appsync.LambdaDataSource;
-  private api: appsync.GraphqlApi;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);

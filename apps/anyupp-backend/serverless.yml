@@ -42,3 +42,6 @@ functions:
 
   pre-token-generation:
     handler: lib/lambda/pre-token-generation/index.handler
+
+  cognito-trigger-setup:
+    handler: lib/lambda/cognito-trigger-setup/index.handler

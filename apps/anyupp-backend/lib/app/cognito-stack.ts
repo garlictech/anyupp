@@ -21,10 +21,13 @@ type poolLabel = 'Admin' | 'Consumer';
 export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
+  public pretokenTriggerLambda: lambda.Function;
 
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
+
+    this.pretokenTriggerLambda = this.createPretokenTriggerLambda();
 
     // Consumer resources
     this.consumerUserPool = this.createConsumerUserPool(app);
@@ -395,19 +398,6 @@ export class CognitoStack extends Stack {
   }
 
   private createAdminUserPool(app: App) {
-    const preTokenGenerationLambda = new lambda.Function(
-      this,
-      'AdminPreTokenGenerationLambda',
-      {
-        ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
-        handler: 'lib/lambda/pre-token-generation/index.handler',
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
-        ),
-      },
-    );
-
     const userPool = new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
       ...this.getCommonUserPoolProperties(),
@@ -442,12 +432,12 @@ export class CognitoStack extends Stack {
         phone: true,
       },
       lambdaTriggers: {
-        preTokenGeneration: preTokenGenerationLambda,
+        preTokenGeneration: this.pretokenTriggerLambda,
       },
     });
 
-    preTokenGenerationLambda.role &&
-      preTokenGenerationLambda.role.addToPolicy(
+    this.pretokenTriggerLambda.role &&
+      this.pretokenTriggerLambda.role.addToPolicy(
         new iam.PolicyStatement({
           actions: ['cognito-idp:AdminUpdateUserAttributes'],
           resources: ['*'],
@@ -455,6 +445,17 @@ export class CognitoStack extends Stack {
       );
 
     return userPool;
+  }
+
+  private createPretokenTriggerLambda() {
+    return new lambda.Function(this, 'AdminPreTokenGenerationLambda', {
+      ...commonLambdaProps,
+      // It must be relative to the serverless.yml file
+      handler: 'lib/lambda/pre-token-generation/index.handler',
+      code: lambda.Code.fromAsset(
+        path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+      ),
+    });
   }
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {

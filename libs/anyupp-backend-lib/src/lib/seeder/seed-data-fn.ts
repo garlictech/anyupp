@@ -57,7 +57,7 @@ const deleteCreate = ({
     input: { id: input.id },
   }).pipe(
     catchError(error => {
-      console.error('Error during SEED data DELETION', error);
+      console.warn('Problem with SEED data DELETION', error);
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
     switchMap(() =>

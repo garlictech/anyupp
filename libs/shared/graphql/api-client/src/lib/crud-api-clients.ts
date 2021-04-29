@@ -27,8 +27,8 @@ export const crudAuthenticatedGraphqlClient = GraphqlApiFp.createAuthenticatedCl
 
 export const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
   AWS_CRUD_CONFIG,
-  'AKIAYIT7GMY5RXSLLQN3', // TODO: process.env.AWS_ACCESS_KEY_ID || '',
-  'aYxNIqJ7O56ltpHb1Aq534bpv2r+Atpr1TUxiahx', // TODO: process.env.AWS_SECRET_ACCESS_KEY || '',
+  process.env.AWS_ACCESS_KEY_ID || '',
+  process.env.AWS_SECRET_ACCESS_KEY || '',
   console,
 );
 
