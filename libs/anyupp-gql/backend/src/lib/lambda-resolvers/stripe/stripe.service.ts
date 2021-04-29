@@ -129,10 +129,11 @@ export const startStripePayment = async (
 // });
 
 
-  // const stripe = await initStripe();
+  // 4. Change ORDER STATUSZ????
 
-  // const { chainId, unitId, userId, paymentMethodId } = input;
-  // console.log('### ~ file: stripe.service.ts ~ line 71 ~ input', input);
+  // 5. Create Transaction??
+
+
 
   return Promise.resolve({ clientSecret: 'clientSecret', status: 'status' });
 
