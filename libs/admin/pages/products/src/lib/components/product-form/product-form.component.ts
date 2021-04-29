@@ -1,5 +1,6 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import {
@@ -17,26 +18,28 @@ import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { ALLERGENS, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   EImageType,
   EProductLevel,
   EProductType,
   IAdminUserSettings,
+  IAllergen,
   IKeyValue,
   IProduct,
   IProductCategory,
   IProductVariant,
 } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 @UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
   templateUrl: './product-form.component.html',
+  styleUrls: ['./product-form.component.scss'],
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
@@ -46,6 +49,7 @@ export class ProductFormComponent
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
   public productTypes: IKeyValue[];
+  public allergens = ALLERGENS;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _store: Store<any>;
@@ -131,17 +135,20 @@ export class ProductFormComponent
       isVisible: ['', [Validators.required]],
       image: [''],
       variants: this._formBuilder.array([]),
+      allergens: [[]],
     });
 
     if (this.product) {
-      this.dialogForm.patchValue(fp.omit('variants', this.product));
+      this.dialogForm.patchValue(fp.omit('variants', cleanObject(this.product)));
 
-      this.product.variants.forEach((variant: IProductVariant): void => {
-        const variantGroup = this._formsService.createProductVariantFormGroup();
-        variantGroup.patchValue(variant);
+      (this.product.variants || []).forEach(
+        (variant: IProductVariant): void => {
+          const variantGroup = this._formsService.createProductVariantFormGroup();
+          variantGroup.patchValue(cleanObject(variant));
 
-        (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
-      });
+          (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
+        },
+      );
     } else {
       // Patch ProductCategoryID
       if (this._selectedProductCategoryId) {
@@ -263,4 +270,23 @@ export class ProductFormComponent
 
     this._changeDetectorRef.detectChanges();
   };
+
+  public allergenIsChecked(allergen: IAllergen): boolean {
+    return (
+      (this.dialogForm?.value.allergens || [])
+        .indexOf(allergen.id) >= 0
+    );
+  }
+
+  public toggleAllergen(allergen: IAllergen): void {
+    const allergensArr: string[] = this.dialogForm?.value.allergens;
+    const idx = allergensArr.indexOf(allergen.id);
+
+    if (idx < 0) {
+      allergensArr.push(allergen.id);
+    } else {
+      allergensArr.splice(idx, 1);
+    }
+    this.dialogForm?.controls.allergens.setValue(allergensArr);
+  }
 }
