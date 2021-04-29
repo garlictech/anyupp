@@ -92,4 +92,9 @@
       [status]="variant.isAvailable"
     ></bgap-status-led>
   </div>
+
+  <div class="clearfix"></div>
+
+  <img class="allergen" src="assets/images/allergens/{{ allergen }}.svg" *ngFor="let allergen of product.allergens">
+
 </div>
