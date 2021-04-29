@@ -16,8 +16,8 @@ export const mergeAllProductLayers = ({
   unitProduct: IUnitProduct;
 }): IProduct => {
   return {
-    ...(chainProduct || {}),
-    ...(groupProduct || {}),
+    ...chainProduct,
+    ...groupProduct,
     ...unitProduct,
 
     isVisible: calculateIsVisible(
@@ -25,7 +25,7 @@ export const mergeAllProductLayers = ({
       groupProduct?.isVisible,
       unitProduct?.isVisible,
     ),
-    variants: mergeVariantMaps(groupProduct?.variants, unitProduct?.variants),
+    variants: mergeVariantMaps(groupProduct.variants, unitProduct?.variants),
   };
 };
 

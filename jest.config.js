@@ -72,5 +72,6 @@ module.exports = {
     '<rootDir>/libs/anyupp-backend-lib',
     '<rootDir>/libs/admin/pages/modifiers-and-extras',
     '<rootDir>/libs/admin/shared/data-access/product-components',
+    '<rootDir>/libs/shared/fixtures',
   ],
 };

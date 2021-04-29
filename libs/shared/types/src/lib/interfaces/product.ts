@@ -34,8 +34,30 @@ export interface IProductVariant {
   isAvailable: boolean;
   price?: number; // generated
   availabilities: IAvailability[]; // unit edit
-  availableFrom: Date;
+  // availableFrom: Date;
   position: number;
+}
+export interface IGeneratedProductVariant {
+  id: string;
+  variantName: ILocalizedItem<string>;
+  price: number;
+  position: number;
+  pack: IProductVariantPack;
+}
+
+export interface IGeneratedProduct {
+  id: string; // UnitProductId
+  unitId: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: number;
+  productType: EProductType;
+  tax: number;
+  variants: IGeneratedProductVariant[];
+  productCategoryId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IProduct {
@@ -47,7 +69,7 @@ export interface IProduct {
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
-  image: string | null;
+  image?: string;
   productCategoryId: string;
   isVisible: boolean; // temp
   position: number;
@@ -73,6 +95,7 @@ export interface IUnitProduct {
   variants: IProductVariant[];
   laneId?: string;
   takeaway?: boolean;
+  groupProduct: IGroupProduct;
   createdAt: string;
   updatedAt: string;
 }
@@ -86,8 +109,10 @@ export interface IChainProduct {
   productCategoryId: string;
   productType: EProductType;
   isVisible: boolean;
-  image: string;
+  image?: string;
   variants: [IProductVariant];
+  createdAt: string;
+  updatedAt: string;
   allergens: string[];
 }
 
@@ -100,18 +125,9 @@ export interface IGroupProduct {
   isVisible: boolean;
   tax: number;
   variants: [IProductVariant];
-}
-
-export interface IGeneratedProduct {
-  id: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: number;
-  variants: IProductVariant[];
-  productCategoryId: string;
+  chainProduct: IChainProduct;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IProductOrderChangeEvent {

@@ -131,7 +131,8 @@
       ],
       "@bgap/admin/shared/data-access/product-components": [
         "libs/admin/shared/data-access/product-components/src/index.ts"
-      ]
+      ],
+      "@bgap/shared/fixtures": ["libs/shared/fixtures/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "artifacts"]

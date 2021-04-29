@@ -3,10 +3,11 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {
-  SHOW_LOGIN_WITH_LINK,
+  SHOW_PASSWORD_CONFIRM,
   SHOW_LOGIN_WITH_PASSWORD,
   SHOW_REGISTRATION,
   SHOW_FORGOT_PASSWORD,
+  SHOW_CONFIRM_SIGNUP
 }
 
 abstract class LoginEvent extends Equatable {
@@ -21,6 +22,16 @@ class LoginErrorOccured extends LoginEvent {
   final String message;
 
   const LoginErrorOccured(this.code, this.message);
+
+  @override
+  List<Object> get props => [code, message];
+}
+
+class SignUpErrorOccured extends LoginEvent {
+  final String code;
+  final String message;
+
+  const SignUpErrorOccured(this.code, this.message);
 
   @override
   List<Object> get props => [code, message];
@@ -43,36 +54,6 @@ class CompleteLoginWithMethod extends LoginEvent {
 
   @override
   List<Object> get props => [method, code];
-}
-
-class LoginWithPhoneRequireSMSCode extends LoginEvent {
-  final String phoneNumber;
-  final bool linkAccount;
-
-  const LoginWithPhoneRequireSMSCode(this.phoneNumber, this.linkAccount);
-
-  @override
-  List<Object> get props => [phoneNumber, linkAccount];
-}
-
-class LoginWithPhoneSMSCodeArrived extends LoginEvent {
-  final String verificationId;
-  final String phoneNumber;
-
-  const LoginWithPhoneSMSCodeArrived(this.verificationId, this.phoneNumber);
-
-  @override
-  List<Object> get props => [verificationId, phoneNumber];
-}
-
-class LoginWithPhoneVerifySMSCode extends LoginEvent {
-  final String verificationId;
-  final String smsCode;
-
-  const LoginWithPhoneVerifySMSCode(this.verificationId, this.smsCode);
-
-  @override
-  List<Object> get props => [verificationId, smsCode];
 }
 
 class LinkCurrentAccountWithProvider extends LoginEvent {
@@ -101,10 +82,6 @@ class Logout extends LoginEvent {
   const Logout();
 }
 
-class PhoneLoginSuccess extends LoginEvent {
-  const PhoneLoginSuccess();
-}
-
 class StartLoginWithEmail extends LoginEvent {
   final String email;
 
@@ -114,13 +91,40 @@ class StartLoginWithEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
-class FinishLoginWithEmailLink extends LoginEvent {
-  final String emailLink;
+class ConfirmRegistration extends LoginEvent {
+  final String user;
+  final String code;
 
-  FinishLoginWithEmailLink(this.emailLink);
+  ConfirmRegistration(this.user, this.code);
 
   @override
-  List<Object> get props => [emailLink];
+  List<Object> get props => [user, code];
+}
+
+class ResendConfirmationCode extends LoginEvent {
+  final String user;
+
+  ResendConfirmationCode(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class SignUpConfirm extends LoginEvent {
+  final String user;
+
+  SignUpConfirm(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class SignUpConfirmed extends LoginEvent {
+  const SignUpConfirmed();
+}
+
+class CodeReSendining extends LoginEvent {
+  const CodeReSendining();
 }
 
 class LoginWithEmailAndPassword extends LoginEvent {
@@ -134,13 +138,16 @@ class LoginWithEmailAndPassword extends LoginEvent {
 }
 
 class RegisterWithEmailAndPassword extends LoginEvent {
+  final String userEmail;
+  final String userPhone;
   final String email;
   final String password;
 
-  const RegisterWithEmailAndPassword(this.email, this.password);
+  const RegisterWithEmailAndPassword(
+      {this.userEmail, this.userPhone, this.email, this.password});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [userEmail, userPhone, email, password];
 }
 
 class SendPasswordResetEmail extends LoginEvent {
@@ -152,12 +159,48 @@ class SendPasswordResetEmail extends LoginEvent {
   List<Object> get props => [email];
 }
 
+class PasswordResetInfoSent extends LoginEvent {
+  final String userName;
+  final String deliveryMedium;
+  final String destination;
+
+  const PasswordResetInfoSent(
+      this.userName, this.deliveryMedium, this.destination);
+
+  @override
+  List<Object> get props => [userName, deliveryMedium, destination];
+}
+
+class ConfirmPassword extends LoginEvent {
+  final String userName;
+  final String code;
+  final String password;
+
+  const ConfirmPassword({this.userName, this.code, this.password});
+
+  @override
+  List<Object> get props => [userName, code, password];
+}
+
+class SentConfirmCodeEmail extends LoginEvent {
+  final String user;
+
+  const SentConfirmCodeEmail(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
 class ChangeEmailFormUI extends LoginEvent {
   final LoginFormUI ui;
   final Duration animationDuration;
   final Curve animationCurve;
 
-  ChangeEmailFormUI({this.ui, this.animationDuration, this.animationCurve = Curves.elasticIn});
+  ChangeEmailFormUI({
+    this.ui,
+    this.animationDuration,
+    this.animationCurve = Curves.elasticIn,
+  });
 
   @override
   List<Object> get props => [ui];

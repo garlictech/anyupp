@@ -6,28 +6,20 @@ import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
+import { resultTap } from './seed.util';
 
-export const deleteUnitProduct = (id: string) =>
+export const createTestUnitProduct = (input: CrudApi.CreateUnitProductInput) =>
+  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitProductMutation>(
+    CrudApiMutationDocuments.createUnitProduct,
+    {
+      input,
+    },
+  ).pipe(resultTap('UNIT_PRODUCT create', input.id!));
+
+export const deleteTestUnitProduct = (id: string) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitProductMutation>(
     CrudApiMutationDocuments.deleteUnitProduct,
     {
       input: { id },
     },
-  ).pipe(
-    tap({
-      next(unit) {
-        console.log(
-          '### UNIT_PRODUCT deleted with id: ' + unit.deleteUnitProduct?.id,
-        );
-      },
-    }),
-    catchError(err => {
-      console.error(
-        'Error during unit product delete with id:' + id,
-        err.message,
-      );
-      return throwError(
-        `Error during unit product delete with id: ${id}, Err: ${err.message}`,
-      );
-    }),
-  );
+  ).pipe(resultTap('UNIT_PRODUCT delete', id));

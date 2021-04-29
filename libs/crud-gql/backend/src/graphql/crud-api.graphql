@@ -352,6 +352,7 @@ type GroupProduct
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
+  chainProduct: ChainProduct @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -367,11 +368,12 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  groupProduct: GroupProduct @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
   id: ID!
-  variantName: LocalizedItem
+  variantName: LocalizedItem!
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean!
@@ -413,7 +415,15 @@ type GeneratedProduct
   # takeawayTax: Int!
   position: Int!
   image: String
-  variants: [ProductVariant!]!
+  variants: [GeneratedProductVariant!]!
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
 }
 
 type FavoriteProduct
