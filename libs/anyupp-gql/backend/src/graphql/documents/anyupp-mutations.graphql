@@ -1,0 +1,72 @@
+# mutation UpdateMyStripeCard($input: StripeCardUpdateInput!) {
+#   updateMyStripeCard(input: $input) {
+#     brand
+#     id
+#     country
+#     last4
+#     exp_year
+#     exp_month
+#     fingerprint
+#     three_d_secure
+#     name
+#     metadata {
+#       key
+#       value
+#     }
+#   }
+# }
+# mutation StartStripePayment($input: StartStripePaymentInput!) {
+#   startStripePayment(input: $input) {
+#     clientSecret
+#     status
+#   }
+# }
+
+mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
+  createOrderFromCart(input: $input)
+}
+mutation CreateAdminUser($input: CreateAdminUserInput!) {
+  createAdminUser(input: $input)
+}
+
+mutation DeleteAdminUser($userName: String!) {
+  deleteAdminUser(userName: $userName)
+}
+
+mutation CreateUnitProduct($input: CreateUnitProductInput!) {
+  createUnitProduct(input: $input) {
+    chainId
+    groupId
+    isVisible
+    id
+    laneId
+    parentId
+    position
+    takeaway
+    unitId
+    variants {
+      availabilities {
+        dayFrom
+        dayTo
+        price
+        timeFrom
+        timeTo
+        type
+      }
+      id
+      isAvailable
+      variantName {
+        de
+        hu
+        en
+      }
+      refGroupPrice
+      price
+      position
+      pack {
+        size
+        unit
+      }
+    }
+  }
+}

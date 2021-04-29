@@ -3,7 +3,7 @@ import { from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
-import { testAdminUsername } from '../../../fixtures';
+import { testAdminUsername } from '@bgap/shared/fixtures';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',

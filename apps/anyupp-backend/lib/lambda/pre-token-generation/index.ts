@@ -51,7 +51,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
     // The given role has been assigned to the user
     const roleContent = fp.pick(
       ['role', 'chainId', 'groupId', 'unitId', 'contextId'],
-      <any>role.roleContext,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <any>role.roleContext, // TODO: remove this ANY
     );
 
     console.error('***** context OK', roleContent);

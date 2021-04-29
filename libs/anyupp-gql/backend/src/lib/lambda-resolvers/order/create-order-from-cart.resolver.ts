@@ -7,7 +7,6 @@ import {
   CrudApiMutationDocuments,
   CrudApiQueryDocuments,
 } from '@bgap/crud-gql/api';
-import { removeTypeNameField } from '../../utils/graphql.utils';
 import { toFixed2Number } from '../../utils/number.utils';
 import {
   executeMutation,
@@ -21,7 +20,6 @@ import {
   IOrderItem,
   IPaymentMode,
   IPlace,
-  IUnitProduct,
   IUnit,
 } from '@bgap/shared/types';
 import {
@@ -29,7 +27,6 @@ import {
   validateGetGroupCurrency,
   validateOrder,
   validateUnit,
-  validateUnitProduct,
 } from '@bgap/shared/data-validators';
 
 import {
@@ -37,6 +34,7 @@ import {
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
   pipeDebug,
+  removeTypeNameField,
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
@@ -231,21 +229,12 @@ const getLaneIdForCartItem = (
   crudGraphqlClient: GraphqlApiClient,
   productId: string,
 ): Observable<string | undefined> => {
-  return getUnitProduct(crudGraphqlClient, productId).pipe(
-    map(product => product.laneId),
-  );
-};
-
-const getUnitProduct = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
-): Observable<IUnitProduct> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProduct,
+    CrudApiQueryDocuments.getUnitProductLaneId,
     { id: productId },
   ).pipe(
-    map(product => product.getUnitProduct),
-    switchMap(validateUnitProduct),
+    map(response => response.getUnitProduct),
+    map(product => product?.laneId || undefined),
   );
 };
 
