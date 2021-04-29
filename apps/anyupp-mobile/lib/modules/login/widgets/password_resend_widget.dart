@@ -1,50 +1,46 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PasswordResetDialogContentWidget extends StatefulWidget {
+class PasswordResetWidget extends StatefulWidget {
   @override
-  _PasswordResetDialogContentWidgetState createState() =>
-      _PasswordResetDialogContentWidgetState();
+  _PasswordResetWidgetState createState() => _PasswordResetWidgetState();
 }
 
-class _PasswordResetDialogContentWidgetState
-    extends State<PasswordResetDialogContentWidget> {
-  final _codeController = TextEditingController();
-  final _password1Controller = TextEditingController();
-  final _password2Controller = TextEditingController();
+class _PasswordResetWidgetState extends State<PasswordResetWidget> {
+  final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _codeController.dispose();
-    _password1Controller.dispose();
-    _password2Controller.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (BuildContext context, LoginState state) {
-      },
-      child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (BuildContext context, LoginState state) {
-        // print('PhoneDialogContentWidget.bloc.state=$state');
-        if (state is PasswordResetInfoSentState) {
-          return _buildRegistrationForm(context, state.userName);
-        }
-        if (state is PasswordReset) {
-          return _buildPasswordResetInfo(context);
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (BuildContext context, LoginState state) {
+        if (state is LoginInProgress) {
+          return _buildLoading(context,
+              message: trans('login.email.sendPasswordResetMessage'));
         }
 
-        return _buildLoading(context);
-      }),
+        if (state is PasswordResetInProgress) {
+          return _buildLoading(context);
+        }
+        if (state is PasswordResetInfoSentState) {
+          return _buildEmailSentInfo(
+              context, state.userName, state.deliveryMedium, state.destination);
+        }
+
+        return _buildResetPasswordForm(context);
+      },
     );
   }
 
@@ -68,7 +64,8 @@ class _PasswordResetDialogContentWidgetState
     );
   }
 
-  Widget _buildPasswordResetInfo(BuildContext context) {
+  Widget _buildEmailSentInfo(BuildContext context, String userName,
+      String deliveryMedium, String destination) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -79,7 +76,7 @@ class _PasswordResetDialogContentWidgetState
               Container(
                 margin: EdgeInsets.only(bottom: 16.0),
                 child: Text(
-                  trans('login.email.dialogPasswordRefreshedTitle'),
+                  trans('login.email.dialogResetSentTitle'),
                   textAlign: TextAlign.left,
                   style: GoogleFonts.poppins(
                     fontSize: 16.0,
@@ -89,23 +86,23 @@ class _PasswordResetDialogContentWidgetState
                 ),
               ),
               // Phone number input field
-              Container(
-                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                  child: Text(
-                    trans('login.email.dialogPasswordRefreshedMessage'),
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                    ),
-                  )),
+              AutoSizeText(
+                trans('login.email.dialogResetSentMessage') + destination,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 18.0,
+                ),
+              ),
               InkWell(
                 onTap: () {
                   getIt<LoginBloc>().add(ChangeEmailFormUI(
-                      ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                      ui: LoginFormUI.SHOW_PASSWORD_CONFIRM,
                       animationCurve: Curves.easeIn));
+                  getIt<LoginBloc>().add(PasswordResetInfoSent(
+                      userName, deliveryMedium, destination));
                 },
                 child: Text(
-                  trans('login.email.signIn'),
+                  trans('login.email.enterCode'),
                   textAlign: TextAlign.start,
                   style: GoogleFonts.poppins(
                     fontSize: 18,
@@ -123,7 +120,7 @@ class _PasswordResetDialogContentWidgetState
     );
   }
 
-  Widget _buildRegistrationForm(BuildContext context, String userName) {
+  Widget _buildResetPasswordForm(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Form(
@@ -133,32 +130,18 @@ class _PasswordResetDialogContentWidgetState
               Container(
                 padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    // Email + passwords input fields
                     LoginFormUtils.buildTextField(
                       context,
-                      trans('login.email.verificationCode'),
-                      _codeController,
+                      trans('login.email.emailFieldLabel'),
+                      _emailController,
                       TextInputType.emailAddress,
                       false,
-                      LoginFormUtils.confirmCodeValidator(context),
+                      LoginFormUtils.emailOrPhoneValidator(context),
                     ),
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.passwordFieldLabel'),
-                      _password1Controller,
-                      TextInputType.text,
-                      true,
-                      LoginFormUtils.passwordValidator(context),
-                    ),
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.password2FieldLabel'),
-                      _password2Controller,
-                      TextInputType.text,
-                      true,
-                      LoginFormUtils.passwordValidator(context),
-                    ),
+                    // Sing in link button
                     InkWell(
                       onTap: () {
                         getIt<LoginBloc>().add(ChangeEmailFormUI(
@@ -192,7 +175,6 @@ class _PasswordResetDialogContentWidgetState
                           ),
                         ),
                         child: Text(
-                          //transEx(context, 'payment.sendOrder'),
                           trans('login.email.buttonPasswordReset'),
                           style: GoogleFonts.poppins(
                             color: theme.text2,
@@ -200,13 +182,12 @@ class _PasswordResetDialogContentWidgetState
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                        onPressed: () => _sendRegistrationRequest(userName),
+                        onPressed: () => _sendPasswordResetEmail(),
                       ),
                     ),
                   ],
                 ),
               ),
-              // _buildCloseButton(context),
             ],
           ),
         ),
@@ -214,25 +195,11 @@ class _PasswordResetDialogContentWidgetState
     );
   }
 
-  void _sendRegistrationRequest(String userName) {
-    print('_sendRegistrationRequest()=${_codeController.text}');
+  void _sendPasswordResetEmail() {
+    print('_sendPasswordResetEmail()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      bool passwordsMatch = false;
-      if (_password2Controller.text == _password2Controller.text) {
-        passwordsMatch = true;
-      }
-
-      if (!passwordsMatch) {
-        getIt<ExceptionBloc>().add(ShowException(LoginException(
-            code: LoginException.CODE,
-            subCode: LoginException.ERROR_PASSWORD_MISMATCH)));
-      } else {
-        getIt<LoginBloc>().add(ConfirmPassword(
-            userName: userName,
-            code: _codeController.text,
-            password: _password1Controller.text));
-      }
+      getIt<LoginBloc>().add(SendPasswordResetEmail(_emailController.text));
     }
   }
 }
