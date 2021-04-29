@@ -110,10 +110,31 @@
 
       <!-- CONTAINS -->
 
-      <!--fieldset class="form" formGroupName="contains">
-        <legend class="label">{{ 'products.contains' | translate }}</legend>
+      <fieldset class="form">
+        <legend class="label">
+          {{ 'products.allergens.title' | translate }}
+        </legend>
 
-        <div formGroupName="allergens">
+        <div class="row allergens">
+          <div class="col-md-3" *ngFor="let allergen of allergens">
+            <nb-checkbox
+              class="mr-5 mb-3"
+              [checked]="allergenIsChecked(allergen)"
+              (checkedChange)="toggleAllergen(allergen)"
+            >
+              <label class="caption">
+                <span class="img-container">
+                  <img src="assets/images/allergens/{{ allergen.id }}.svg" />
+                </span>
+
+                {{ allergen.idx }}. {{ 'products.allergens.' + allergen.id | translate }}</label
+              >
+            </nb-checkbox>
+          </div>
+        </div>
+      </fieldset>
+
+      <!--div formGroupName="allergens">
           <label class="caption">{{
             'products.allergens.title' | translate
           }}</label>
@@ -143,8 +164,7 @@
             'products.ingredients.title' | translate
           }}</label>
           <div class="col-md-3">...</div>
-        </div>
-      </fieldset-->
+        </div-->
 
       <bgap-form-clickable-image-input
         [image]="productImage"

@@ -2,8 +2,8 @@ import { EProductType, EVariantAvailabilityType } from '../enums';
 import { ILocalizedItem } from './localized-item';
 
 export interface IAllergen {
-  lactose: boolean;
-  nuts: boolean;
+  id: string;
+  idx: number;
 }
 
 export interface IAvailability {
@@ -52,6 +52,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
+  allergens: string[];
   tax: number; // %
   laneId?: string;
   productType: EProductType;
@@ -87,6 +88,7 @@ export interface IChainProduct {
   isVisible: boolean;
   image: string;
   variants: [IProductVariant];
+  allergens: string[];
 }
 export interface IGroupProduct {
   __typename?: 'GroupProduct';

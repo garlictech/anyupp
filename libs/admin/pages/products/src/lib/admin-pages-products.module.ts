@@ -9,6 +9,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
   NbButtonModule,
   NbCardModule,
+  NbCheckboxModule,
   NbIconModule,
   NbInputModule,
   NbLayoutModule,
@@ -27,6 +28,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 const NB_MODULES = [
   NbLayoutModule,
   NbCardModule,
+  NbCheckboxModule,
   NbListModule,
   NbUserModule,
   NbIconModule,
