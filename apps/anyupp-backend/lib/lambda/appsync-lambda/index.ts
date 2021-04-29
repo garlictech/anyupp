@@ -16,7 +16,9 @@ export interface AnyuppRequest {
 }
 
 const resolverMap = {
-  getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
+  listStripeCards: stripeRequestHandler.listStripeCards(
+    crudBackendGraphQLClient,
+  ),
   updateStripeCard: stripeRequestHandler.updateStripeCard,
   deleteStripeCard: stripeRequestHandler.deleteStripeCard,
   createAdminUser: adminRequestHandler.createAdminUser,

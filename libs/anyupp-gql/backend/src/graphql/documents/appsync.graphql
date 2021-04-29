@@ -45,23 +45,31 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
   }
 }
 
-# query GetMyStripeCards {
-#   getMyStripeCards {
-#     brand
-#     id
-#     country
-#     last4
-#     exp_year
-#     exp_month
-#     fingerprint
-#     three_d_secure
-#     name
-#     metadata {
-#       key
-#       value
-#     }
-#   }
-# }
+query ListStripeCards {
+  listStripeCards {
+    id
+    brand
+    country
+    last4
+    exp_year
+    exp_month
+    fingerprint
+    three_d_secure
+    billing_details {
+      email
+      name
+      phone
+      address {
+        city
+        country
+        line1
+        line2
+        postal_code
+        state
+      }
+    }
+  }
+}
 
 # mutation UpdateMyStripeCard($input: StripeCardUpdateInput!) {
 #   updateMyStripeCard(input: $input) {
@@ -80,12 +88,14 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
 #     }
 #   }
 # }
-# mutation StartStripePayment($input: StartStripePaymentInput!) {
-#   startStripePayment(input: $input) {
-#     clientSecret
-#     status
-#   }
-# }
+
+mutation StartStripePayment($input: StartStripePaymentInput!) {
+  startStripePayment(input: $input) {
+    clientSecret
+    status
+  }
+}
+
 mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input)
 }

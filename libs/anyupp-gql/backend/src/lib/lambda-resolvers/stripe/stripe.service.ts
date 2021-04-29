@@ -5,6 +5,37 @@ import { SharedSecrets, getSecrets } from '@bgap/shared/secrets';
 import { isOfType } from '@bgap/shared/utils';
 
 import { mapStripeCardToCard, mapPaymentMethodToCard } from './stripe.utils';
+import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import { ListStripeCardsRequest } from './stripe-request-handler';
+
+export const listStripeCards = async (
+  crudGraphqlClient: GraphqlApiClient,
+  requestPayload: ListStripeCardsRequest,
+): Promise<AnyuppApi.StripeCard[]> => {
+  const stripe = await initStripe();
+
+
+    // 1. get userId
+    // 2. get User from DynamoDB
+    // 3. if exist user.customerID
+    //    3.1 return get paymentmethod list from Stripe
+    //    3.2 Create Customer in Stripe
+            // 3.2.1 return get paymentmethod list from Stripe
+
+  const { userId } = requestPayload as any; // TODO: kene type, de nem tudom generalni>  nx build-schema crud-backend --app=anyupp-backend --stage=dev ??
+
+  const stripeCustomerId = '';
+
+  return stripe.paymentMethods
+    .list({
+      customer: stripeCustomerId,
+      type: 'card',
+    })
+    .then(paymentMethods => {
+      return paymentMethods.data.map(mapPaymentMethodToCard);
+    })
+    .catch(handleStripeErrors);
+}
 
 // TODO: use stripe.customers.listSources https://stripe.com/docs/api/cards/list?lang=node
 export const getStripeCardsForCustomer = async (

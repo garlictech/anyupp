@@ -12,6 +12,7 @@ import {
   createOrderResolvers,
   createUnitResolvers,
   createProductResolvers,
+  createStripeResolvers
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
@@ -72,6 +73,7 @@ export class AppsyncAppStack extends sst.Stack {
     createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
     createProductResolvers(commonResolverInputs);
+    createStripeResolvers(commonResolverInputs);
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
