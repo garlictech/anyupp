@@ -3,39 +3,18 @@ import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  addressFormGroup,
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-  PAYMENT_MODES,
-  TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator,
+  addressFormGroup, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator
 } from '@bgap/admin/shared/utils';
-import {
-  ICustomDailySchedule,
-  IGroup,
-  IKeyValue,
-  ILane,
-  IPaymentMode,
-  IUnit,
-} from '@bgap/shared/types';
+import { ICustomDailySchedule, IGroup, IKeyValue, ILane, IPaymentMode, IUnit } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -146,7 +125,7 @@ export class UnitFormComponent
   ngOnInit(): void {
     if (this.unit) {
       this.dialogForm.patchValue(
-        clearDbProperties<IUnit>(fp.omit(['lanes'], this.unit)),
+        cleanObject(fp.omit(['lanes'], this.unit)),
       );
 
       // Parse openingHours object to temp array

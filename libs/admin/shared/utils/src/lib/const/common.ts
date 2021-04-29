@@ -1,5 +1,5 @@
 import { CrudApi } from '@bgap/crud-gql/api';
-import { EAdminRole, IPaymentMode } from '@bgap/shared/types';
+import { EAdminRole, IAllergen, IPaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
 export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
@@ -94,3 +94,62 @@ export const PAYMENT_MODES: IPaymentMode[] = [
 ];
 
 export const DEFAULT_LANE_COLOR = '#5B7AFF';
+
+export const ALLERGENS: IAllergen[] = [
+  {
+    id: 'gluten',
+    idx: 1,
+  },
+  {
+    id: 'crustaceans',
+    idx: 2,
+  },
+  {
+    id: 'egg',
+    idx: 3,
+  },
+  {
+    id: 'fish',
+    idx: 4,
+  },
+  {
+    id: 'peanut',
+    idx: 5,
+  },
+  {
+    id: 'milk',
+    idx: 6,
+  },
+  {
+    id: 'soya',
+    idx: 7,
+  },
+  {
+    id: 'treenuts',
+    idx: 8,
+  },
+  {
+    id: 'sulphites',
+    idx: 9,
+  },
+  {
+    id: 'mustard',
+    idx: 10,
+  },
+  {
+    id: 'celery',
+    idx: 11,
+  },
+  {
+    id: 'sesame',
+    idx: 12,
+  },
+  {
+    id: 'lupin',
+    idx: 13,
+  },
+  {
+    id: 'molluscs',
+    idx: 14,
+  },
+];

@@ -310,10 +310,24 @@ type ChainProduct
   isVisible: Boolean!
   image: String
   variants: [ProductVariant]
-  # extends: String
-  # ingredients
-  # tax: Int
-  # laneId: ID
+  allergens: [Allergen]
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
 }
 
 type GroupProduct
