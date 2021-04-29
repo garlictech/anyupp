@@ -16,6 +16,7 @@ export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
   variants: Joi.array().required(), //TODO: use an exact schema
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
+  allergens: Joi.array().items(Joi.string()),
 };
 
 export const {
