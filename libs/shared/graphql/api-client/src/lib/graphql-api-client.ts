@@ -120,6 +120,7 @@ export class GraphqlApiClient {
   ): Observable<ApolloQueryResult<T>> {
     return of('subscriber').pipe(
       switchMap(
+        // We won't lost the result type because of the defined T
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         () => <any>this._client.subscribe({
             query: document,

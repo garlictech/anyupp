@@ -261,10 +261,17 @@ The deployed admin sites:
 - DEV: https://dev-admin-anyupp-backend.anyupp.com/
 - QA: https://qa-admin.-nyupp-backend.anyupp.com/
 
+### Seeding
+
 Both systems have some minimal data seeded at deploy/creation time.
 
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
+
+To execute the seeder locally run the following command:
+`yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts`
+
+### Test user
 
 - A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 

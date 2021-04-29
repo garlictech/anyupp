@@ -74,6 +74,5 @@ const toBatchWriteIteminput = (tablename: string) => (
 export const executeBatchDelete = (tablename: string) => (ids: Array<string>) =>
   executeBatchWrite(tablename)(ids.map(toBatchDeleteParam));
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const executeBatchPut = (tablename: string) => (items: Array<any>) =>
+export const executeBatchPut = (tablename: string) => (items: Array<unknown>) =>
   executeBatchWrite(tablename)(items.map(toBatchPutParam));
