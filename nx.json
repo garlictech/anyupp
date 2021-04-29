@@ -179,6 +179,12 @@
     },
     "anyupp-backend-lib": {
       "tags": ["type:backend", "platform:universal"]
+    },
+    "admin-pages-modifiers-and-extras": {
+      "tags": ["type:website", "platform:angular"]
+    },
+    "admin-shared-data-access-product-components": {
+      "tags": ["type:utils", "platform:angular"]
     }
   }
 }

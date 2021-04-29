@@ -14,6 +14,7 @@ import {
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
+import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
@@ -32,6 +33,7 @@ import {
   IOrder,
   IProduct,
   IProductCategory,
+  IProductComponent,
   IRoleContext,
   IUnit,
 } from '@bgap/shared/types';
@@ -106,6 +108,9 @@ export class DataService {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
+          adminUserSettings?.selectedChainId || '',
+        );
+        this._subscribeToChainProductComponents(
           adminUserSettings?.selectedChainId || '',
         );
         this._subscribeToSelectedChainProducts(
@@ -247,6 +252,31 @@ export class DataService {
           this._store.dispatch(
             productCategoriesActions.upsertProductCategory({
               productCategory: <IProductCategory>productCategory,
+            }),
+          );
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
+  }
+
+  private _subscribeToChainProductComponents(chainId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listProductComponents',
+        subscriptionName: 'onProductComponentsChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(
+            productComponentsActions.resetProductComponents(),
+          );
+        },
+        upsertFn: (productComponent: unknown): void => {
+          this._store.dispatch(
+            productComponentsActions.upsertProductComponent({
+              productComponent: <IProductComponent>productComponent,
             }),
           );
         },

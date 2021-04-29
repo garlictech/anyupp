@@ -1,0 +1,65 @@
+<nb-card class="h-100 mb-0">
+  <nb-card-header>
+    <div class="float-left">
+      {{ 'modifiersAndExtras.listTitle' | translate }}
+    </div>
+
+    <div class="float-right">
+      <button
+        nbButton
+        class="float-right mr-2"
+        type="button"
+        shape="round"
+        size="small"
+        (click)="addItem()"
+      >
+        <nb-icon icon="plus-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="p-2">
+    <nb-tabset (changeTab)="selectTab($event)" fullWidth #tabset>
+      <nb-tab
+        [tabTitle]="'modifiersAndExtras.productComponents' | translate"
+        [tabId]="eModExtTab.PRODUCT_COMPONENTS"
+        [active]="selectedTab === eModExtTab.PRODUCT_COMPONENTS"
+
+      >
+        <ng-container *ngFor="let productComponent of productComponents$ | async">
+          <nb-list-item>
+            <bgap-product-component-list-item
+              class="w-100"
+              [productComponent]="productComponent"
+            ></bgap-product-component-list-item>
+          </nb-list-item>
+        </ng-container>
+      </nb-tab>
+      <nb-tab
+        [tabTitle]="'modifiersAndExtras.modExtSets' | translate"
+        [tabId]="eModExtTab.MOD_EXT_SETS"
+        [active]="selectedTab === eModExtTab.MOD_EXT_SETS"
+      >
+        <!--ng-container *ngIf="selectedGroupId">
+          <nb-list-item *ngFor="let product of pendingGroupProducts">
+            <bgap-product-list-item
+              class="w-100"
+              [pending]="true"
+              [product]="product"
+              [productLevel]="EProductLevel.GROUP"
+              [currency]="groupCurrency"
+            ></bgap-product-list-item>
+          </nb-list-item>
+          <nb-list-item *ngFor="let product of groupProducts$ | async">
+            <bgap-product-list-item
+              class="w-100"
+              [pending]="false"
+              [product]="product"
+              [productLevel]="EProductLevel.GROUP"
+              [currency]="groupCurrency"
+            ></bgap-product-list-item>
+          </nb-list-item>
+        </ng-container-->
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

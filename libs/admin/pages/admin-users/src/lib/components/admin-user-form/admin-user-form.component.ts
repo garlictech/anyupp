@@ -43,6 +43,12 @@ export class AdminUserFormComponent
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
+
+    this.dialogForm = this._formBuilder.group({
+      name: ['', [Validators.required]],
+      ...contactFormGroup(true),
+      profileImage: [''], // Just for file upload!!
+    });
   }
 
   get userImage(): string {
@@ -50,12 +56,6 @@ export class AdminUserFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      ...contactFormGroup(true),
-      profileImage: [''], // Just for file upload!!
-    });
-
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     }

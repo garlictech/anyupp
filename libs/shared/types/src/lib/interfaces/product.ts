@@ -90,6 +90,7 @@ export interface IChainProduct {
   variants: [IProductVariant];
   allergens: string[];
 }
+
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
   id: string;

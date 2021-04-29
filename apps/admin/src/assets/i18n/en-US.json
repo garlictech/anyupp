@@ -80,6 +80,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "productCategories": "Product categories",
+    "modifiersAndExtras": "Modifiers and Extras",
     "units": "Units",
     "groups": "Groups",
     "chains": "Chains",
@@ -197,6 +198,15 @@
     "listTitle": "Product categories (EN)",
     "editProductCategory": "Edit product category",
     "newProductCategory": "New product category"
+  },
+  "productComponents": {
+    "editProductComponent": "Edit product component",
+    "newProductComponent": "New product component"
+  },
+  "modifiersAndExtras": {
+    "listTitle": "Modifiers and Extras",
+    "productComponents": "Product components",
+    "modExtSets": "Modifiers and extra sets"
   },
   "groups": {
     "listTitle": "Groups",

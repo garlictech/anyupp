@@ -17,6 +17,7 @@ import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
 import { AdminSharedOrdersModule } from '@bgap/admin/shared/data-access/orders';
 import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/data-access/product-categories';
+import { AdminSharedProductComponentsModule } from '@bgap/admin/shared/data-access/product-components';
 import { AdminSharedProductsModule } from '@bgap/admin/shared/data-access/products';
 import { AdminSharedRoleContextsModule } from '@bgap/admin/shared/data-access/role-contexts';
 import { AdminSharedUnitsModule } from '@bgap/admin/shared/data-access/units';
@@ -26,13 +27,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
-  NbDialogModule,
-  NbGlobalPhysicalPosition,
-  NbLayoutModule,
-  NbMenuModule,
-  NbSidebarModule,
-  NbThemeModule,
-  NbToastrModule,
+  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -74,6 +69,7 @@ export const FEATURE_STORES = [
   AdminSharedUnitsModule,
   AdminSharedUsersModule,
   AdminSharedRoleContextsModule,
+  AdminSharedProductComponentsModule
 ];
 
 registerLocaleData(localeDe);

@@ -80,6 +80,7 @@
     "dashboard": "Vezérlőpult",
     "products": "Termékek",
     "productCategories": "Termék kategóriák",
+    "modifiersAndExtras": "Módosítók és extrák",
     "units": "Units",
     "groups": "Groups",
     "chains": "Chains",
@@ -197,6 +198,15 @@
     "listTitle": "Termék kategóriák",
     "editProductCategory": "Kategória szerkesztése",
     "newProductCategory": "Új kategória"
+  },
+  "productComponents": {
+    "editProductComponent": "Termék komponens szerkesztése",
+    "newProductComponent": "Új termék komponens"
+  },
+  "modifiersAndExtras": {
+    "listTitle": "Módosítók és extrák",
+    "productComponents": "Termék komponensek",
+    "modExtSets": "Módosító és extra szettek"
   },
   "groups": {
     "listTitle": "Groupok",

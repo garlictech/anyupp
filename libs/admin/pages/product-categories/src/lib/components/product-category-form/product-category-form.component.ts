@@ -27,22 +27,20 @@ export class ProductCategoryFormComponent
   public productCategory!: IProductCategory;
   public eImageType = EImageType;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
+
   private _selectedChainId?: string | undefined | null;
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
+
 
   constructor(
     protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
 
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-
-    this._store = this._injector.get(Store);
     this._store
       .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
       .subscribe((selectedChainId: string | undefined | null): void => {

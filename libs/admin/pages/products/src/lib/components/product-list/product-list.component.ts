@@ -48,7 +48,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public pendingUnitProducts: IProduct[] = [];
   public groupCurrency = '';
   public unitProducts: IProduct[] = [];
-  public EProductLevel = EProductLevel;
+  public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
   private _loggedUser?: IAdminUser;

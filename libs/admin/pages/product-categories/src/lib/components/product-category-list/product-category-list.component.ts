@@ -30,7 +30,6 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[] = [];
   private _sortedProductCategoryIds: string[] = [];
-  private _selectedChainId?: string | undefined | null;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,17 +51,6 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories;
         this._sortedProductCategoryIds = this.productCategories.map(p => p.id);
-
-        this._changeDetectorRef.detectChanges();
-      });
-
-    this._store
-      .pipe(
-        select(loggedUserSelectors.getSelectedChainId),
-        untilDestroyed(this),
-      )
-      .subscribe((selectedChainId: string | undefined | null): void => {
-        this._selectedChainId = selectedChainId;
 
         this._changeDetectorRef.detectChanges();
       });

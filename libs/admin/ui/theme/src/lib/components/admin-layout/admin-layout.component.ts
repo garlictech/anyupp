@@ -36,6 +36,12 @@ const menuItems = {
     link: '/admin/product-categories',
     roles: MENU_ROLES.PRODUCT_CATEGORIES,
   },
+  productModifiers: {
+    title: 'menu.modifiersAndExtras',
+    icon: 'pantone-outline',
+    link: '/admin/modifiers-and-extras',
+    roles: MENU_ROLES.MODIFIERS_AND_EXTRAS,
+  },
   units: {
     title: 'menu.units',
     icon: 'home-outline',
