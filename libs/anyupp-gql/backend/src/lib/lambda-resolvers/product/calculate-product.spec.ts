@@ -84,38 +84,39 @@ describe('calculatePricesAndCheckActivity method', () => {
         "description": Object {
           "en": "DESCRIPTION",
         },
-        "id": "unit_product_1_id",
+        "id": "chainProduct_id_",
         "image": "IMG",
         "name": Object {
           "en": "NAME",
         },
-        "position": 0,
+        "position": 1,
         "productCategoryId": "PROD_CAT_ID",
         "productType": "drink",
         "tax": 11,
+        "unitId": "unitId_",
         "variants": Array [
           Object {
+            "id": "chainProductVariant_id_1",
             "pack": Object {
-              "size": 2,
-              "unit": "dl",
+              "size": 1,
+              "unit": "UNIT",
             },
             "position": 1,
-            "price": 60,
+            "price": 1.5,
             "variantName": Object {
-              "en": "glass",
-              "hu": "pohár",
+              "en": "VARIANT_NAME_1",
             },
           },
           Object {
+            "id": "chainProductVariant_id_1",
             "pack": Object {
-              "size": 2,
-              "unit": "dl",
+              "size": 1,
+              "unit": "UNIT",
             },
             "position": 100,
-            "price": 60,
+            "price": 1.5,
             "variantName": Object {
-              "en": "glass",
-              "hu": "pohár",
+              "en": "VARIANT_NAME_1",
             },
           },
         ],
