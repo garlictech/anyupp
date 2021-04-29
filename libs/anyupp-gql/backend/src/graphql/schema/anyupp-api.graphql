@@ -223,6 +223,8 @@ type StripeCard @aws_cognito_user_pools {
 input StartStripePaymentInput {
   orderId: ID!
   paymentMethod: PaymentMethod!
+  savePaymentMethod: Boolean!
+  paymentMethodId: String
 }
 
 type StartStripePaymentOutput {

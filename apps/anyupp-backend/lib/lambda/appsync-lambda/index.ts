@@ -19,6 +19,9 @@ const resolverMap = {
   listStripeCards: stripeRequestHandler.listStripeCards(
     crudBackendGraphQLClient,
   ),
+  startStripePayment: stripeRequestHandler.startStripePayment(
+    crudBackendGraphQLClient,
+  ),
   updateStripeCard: stripeRequestHandler.updateStripeCard,
   deleteStripeCard: stripeRequestHandler.deleteStripeCard,
   createAdminUser: adminRequestHandler.createAdminUser,

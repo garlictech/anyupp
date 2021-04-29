@@ -5,10 +5,10 @@ import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
 ): AnyuppApi.StripeCard => ({
-  ...pm.card,
   id: pm.id,
-  metadata: convertCardMetadata(pm.metadata),
-  object: pm.object,
+  ...pm.card,
+  // metadata: convertCardMetadata(pm.metadata),
+  // object: pm.object,
   brand: convertBrand(pm.card),
   funding: convertFunding(pm.card),
   // AnyuppApi.CardBrand[pm.card?.brand as keyof typeof AnyuppApi.CardBrand],
@@ -24,7 +24,7 @@ export const mapStripeCardToCard = (
 ): AnyuppApi.StripeCard => ({
   ...card,
   // id: card.id,
-  metadata: convertCardMetadata(card.metadata),
+  // metadata: convertCardMetadata(card.metadata),
   // object: card.object,
   // brand: AnyuppApi.CardBrand[card.brand as keyof typeof AnyuppApi.CardBrand],
   // country: card.country,

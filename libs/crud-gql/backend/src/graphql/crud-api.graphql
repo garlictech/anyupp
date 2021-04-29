@@ -526,6 +526,13 @@ type Cart
   items: [OrderItem!]!
 }
 
+type User
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  stripeCustomerId: String!
+}
+
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])

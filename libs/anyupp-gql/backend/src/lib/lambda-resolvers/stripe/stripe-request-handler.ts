@@ -14,7 +14,7 @@ type UpdateStripeCardRequest = WithStripeCustomer &
   AnyuppApi.MutationUpdateMyStripeCardArgs;
 type DeleteStripeCardRequest = WithStripeCustomer &
   AnyuppApi.MutationDeleteMyStripeCardArgs;
-type StartStripePaymentRequest = WithStripeCustomer &
+type StartStripePaymentRequest = WithCognitoUser &
   AnyuppApi.MutationStartStripePaymentArgs;
 
 export type ListStripeCardsRequest = WithCognitoUser;
@@ -24,25 +24,25 @@ export const stripeRequestHandler = {
   listStripeCards: (crudGraphqlClient: GraphqlApiClient) => (requestPayload: ListStripeCardsRequest,
   ): Promise<AnyuppApi.StripeCard[]> => {
 
-    return stripeService.listStripeCards(crudGraphqlClient, requestPayload);
+    return stripeService.listStripeCards(crudGraphqlClient, requestPayload.userId);
   },
 
-  startStripePayment: (crudGraphqlClient: GraphqlApiClient) => (requestPayload: unknown,
+  startStripePayment: (crudGraphqlClient: GraphqlApiClient) => (requestPayload: StartStripePaymentRequest,
     ): Promise<AnyuppApi.StartStripePaymentOutput> => { // TODO
     const {
-      stripeCustomerId,
+      userId,
       input,
     } = requestPayload as StartStripePaymentRequest;
 
-    missingParametersCheck(requestPayload, ['stripeCustomerId']);
-    missingParametersCheck(input, [
-      'chainId',
-      'unitId',
-      'paymentMethod',
-      'userLocation',
-    ]);
+    // missingParametersCheck(requestPayload, ['stripeCustomerId']);
+    // missingParametersCheck(input, [
+    //   'chainId',
+    //   'unitId',
+    //   'paymentMethod',
+    //   'userLocation',
+    // ]);
 
-    return stripeService.startStripePayment(stripeCustomerId, input);
+    return stripeService.startStripePayment(crudGraphqlClient, userId, input);
   },
 
   getStripeCardsForCustomer(

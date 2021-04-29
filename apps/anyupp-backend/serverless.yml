@@ -1,5 +1,5 @@
 org: anyupp
-service: anyupp-backend
+service: gyurianyupp
 configValidationMode: error
 frameworkVersion: ^2.16.1
 
@@ -42,4 +42,3 @@ functions:
 
   pre-token-generation:
     handler: lib/lambda/pre-token-generation/index.handler
-
