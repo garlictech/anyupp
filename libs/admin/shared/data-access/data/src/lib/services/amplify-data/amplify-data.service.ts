@@ -3,22 +3,12 @@ import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-
-import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { CrudApiMutationDocuments, CrudApiQueryDocuments, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
-
 import {
-  CrudApiMutationDocuments,
-  CrudApiQueryDocuments,
-  CrudApiSubscriptionDocuments,
-} from '@bgap/crud-gql/api';
-import {
-  crudAuthenticatedGraphqlClient,
-  executeMutation,
-  executeQuery,
-  executeSubscription,
+  crudAuthenticatedGraphqlClient, executeMutation, executeQuery, executeSubscription
 } from '@bgap/shared/graphql/api-client';
 import { IAmplifyModel } from '@bgap/shared/types';
+import { removeNestedTypeNameField } from '@bgap/shared/utils';
 
 import { listTypes, queryTypes, subscriptionTypes } from './types';
 
@@ -141,11 +131,11 @@ export class AmplifyDataService {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
- 
+
         params.upsertFn(
           removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
         );
- 
+
         });
       }),
     );
