@@ -1,6 +1,5 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,

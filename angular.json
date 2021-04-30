@@ -1497,7 +1497,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
+            "lintFilePatterns": ["libs/admin/pages/modifiers-and-extras/**/*.ts"]
           }
         },
         "test": {
@@ -1519,7 +1519,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
+            "lintFilePatterns": ["libs/admin/shared/data-access/product-components/**/*.ts"]
           }
         },
         "test": {
