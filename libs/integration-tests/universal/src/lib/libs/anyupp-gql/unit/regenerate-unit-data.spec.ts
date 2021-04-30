@@ -45,7 +45,7 @@ import {
 import { validateUnitProduct } from 'libs/shared/data-validators/src';
 import { IUnitProduct } from '@bgap/shared/types';
 import * as fp from 'lodash/fp';
-import { getSortedIds } from '../../../../../../../shared/utils/src/lib/fn/graphql.utils';
+import { getSortedIds } from '@bgap/shared/utils';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 
