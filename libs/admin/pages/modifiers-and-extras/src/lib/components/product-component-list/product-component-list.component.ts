@@ -1,7 +1,7 @@
-import { productComponentsSelectors } from 'libs/admin/shared/data-access/product-components/src';
 import { Observable } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { IProductComponent } from '@bgap/shared/types';
 import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
