@@ -8,6 +8,7 @@ import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
   testAdminUsername,
   testAdminUserPassword,
+  testIdPrefix,
   unitSeed,
 } from '@bgap/shared/fixtures';
 import {
@@ -30,22 +31,22 @@ const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // dist
 const unitNotActive = {
   ...unitSeed.unit_01,
   isActive: false,
-  id: 'NOT_ACTIVE_UNIT',
+  id: `${testIdPrefix}NOT_ACTIVE_UNIT`,
 };
 
 const unit_01 = {
   ...unitSeed.unit_01,
-  id: 'unit_01',
+  id: `${testIdPrefix}unit_01`,
   address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_01]),
 };
 const unit_02 = {
   ...unitSeed.unit_01,
-  id: 'unit_02',
+  id: `${testIdPrefix}unit_02`,
   address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_02]),
 };
 const unit_03 = {
   ...unitSeed.unit_01,
-  id: 'unit_03',
+  id: `${testIdPrefix}unit_03`,
   address: fp.mergeAll([unitSeed.unit_01.address, userLoc]),
 };
 

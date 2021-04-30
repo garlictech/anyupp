@@ -113,7 +113,7 @@ export interface IChainProduct {
   variants: [IProductVariant];
   createdAt: string;
   updatedAt: string;
-  allergens: string[];
+  allergens?: string[];
 }
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
