@@ -2,7 +2,10 @@
   <nb-card-header>
     <div class="float-left">
       {{
-        (productComponent && productComponent.id ? 'productComponents.editProductComponent' : 'productComponents.newProductComponent') | translate
+        (productComponent && productComponent.id
+          ? 'productComponents.editProductComponent'
+          : 'productComponents.newProductComponent'
+        ) | translate
       }}
     </div>
     <button
@@ -31,9 +34,7 @@
             [control]="dialogForm.get('chainId')! | asFormControl"
           ></bgap-form-select>
         </div>
-        <div class="col-md-6">
-
-        </div>
+        <div class="col-md-6"></div>
       </div>
 
       <bgap-form-text-input
@@ -75,9 +76,6 @@
           {{ 'common.submit' | translate }}
         </button>
       </div>
-
     </form>
-
-    <pre>{{ dialogForm.value | json }}</pre>
   </nb-card-body>
 </nb-card>

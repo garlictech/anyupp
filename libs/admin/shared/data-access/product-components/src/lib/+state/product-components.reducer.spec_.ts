@@ -1,3 +1,4 @@
+/*
 import { ProductcomponentsEntity } from './productcomponents.models';
 import * as ProductcomponentsActions from './productcomponents.actions';
 import { State, initialState, reducer } from './productcomponents.reducer';
@@ -38,3 +39,4 @@ describe('Productcomponents Reducer', () => {
     });
   });
 });
+*/

@@ -1,3 +1,4 @@
+/*
 import { ProductcomponentsEntity } from './productcomponents.models';
 import {
   State,
@@ -68,3 +69,4 @@ describe('Productcomponents Selectors', () => {
     });
   });
 });
+*/
