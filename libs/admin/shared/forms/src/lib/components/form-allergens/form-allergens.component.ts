@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ALLERGENS } from '@bgap/admin/shared/utils';
 import { IAllergen } from '@bgap/shared/types';
-import { ALLERGENS } from 'libs/admin/shared/utils/src';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

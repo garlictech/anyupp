@@ -8,7 +8,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import {
   IProductCategory,

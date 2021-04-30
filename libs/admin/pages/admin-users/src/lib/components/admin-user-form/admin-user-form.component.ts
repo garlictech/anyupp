@@ -95,7 +95,6 @@ export class AdminUserFormComponent
           executeMutation(
             anyuppAuthenticatedGraphqlClient,
           )(AnyuppApi.CreateAdminUser, { input: { email, name, phone } })
-            .pipe(map((result: any) => result.createAdminUser))
             .subscribe(() => {
               this._toasterService.show(
                 EToasterType.SUCCESS,

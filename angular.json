@@ -1495,16 +1495,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/pages/modifiers-and-extras/tsconfig.lib.json",
-              "libs/admin/pages/modifiers-and-extras/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/pages/modifiers-and-extras/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
           }
         },
         "test": {
@@ -1524,16 +1517,9 @@
       "prefix": "bgap",
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/admin/shared/data-access/product-components/tsconfig.lib.json",
-              "libs/admin/shared/data-access/product-components/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/admin/shared/data-access/product-components/**/*"
-            ]
+            "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
           }
         },
         "test": {
