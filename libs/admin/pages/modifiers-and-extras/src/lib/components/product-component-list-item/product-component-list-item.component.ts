@@ -21,7 +21,7 @@ export class ProductComponentListItemComponent {
     private _nbDialogService: NbDialogService,
   ) {}
 
-  public editProduct(): void {
+  public editProductComponent(): void {
     const dialog = this._nbDialogService.open(ProductComponentFormComponent, {
       dialogClass: 'form-dialog',
     });
