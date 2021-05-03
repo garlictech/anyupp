@@ -1,4 +1,6 @@
-Feature: Login
+Feature: Authentication
+
+  This feature contains the login, the log out and the forgotten password tests
 
   Background: Login page
     Given I am on the login page
@@ -13,11 +15,12 @@ Feature: Login
     When I click the "skip" text
     Then I should be on the dashboard page
     And the "Dashboard" title is displayed
-    When I click the profile button
+    When I click on the profile button
     And I click on the "Log out" title
     And I click on the "OK" title
-    Then I should see "AnyUPP Admin" sub-header
-
+    Then I should be on the login page
+    And I should see "AnyUPP Admin" sub-header
+    
   Scenario: Forgotten password steps
     When I click the "Reset password" text
     Then I should see "Reset your password" sub-header

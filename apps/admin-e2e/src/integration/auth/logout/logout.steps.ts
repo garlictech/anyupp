@@ -1,9 +1,13 @@
-//import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+import { When, Then } from 'cypress-cucumber-preprocessor/steps';
 
-//When('I click on my {string} button', () =>{
-//    cy.get('menu').click()
-//});
+When('I click on the profile button', () =>{
+    cy.findByText('John Doe').click({force: true});
+});
 
-//Then('I should see {string} text', (title: string) =>{
-//    cy.findAllByText(title).should('exist');
-//});
+When('I click on the {string} title', (title: string) =>{
+    cy.contains(title).click({force: true});
+});
+
+Then('I should be on the login page', () => {
+    cy.url().should('include', '/login');
+  });
