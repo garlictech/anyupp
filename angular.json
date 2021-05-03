@@ -1497,7 +1497,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/pages/modifiers-and-extras/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/pages/modifiers-and-extras/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1519,7 +1521,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/product-components/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/product-components/**/*.ts"
+            ]
           }
         },
         "test": {
@@ -1550,6 +1554,32 @@
           "outputs": ["coverage/libs/shared/fixtures"],
           "options": {
             "jestConfig": "libs/shared/fixtures/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data-access-product-component-sets": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/product-component-sets",
+      "sourceRoot": "libs/admin/shared/data-access/product-component-sets/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/product-components/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/admin/shared/data-access/product-component-sets"
+          ],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/product-component-sets/jest.config.js",
             "passWithNoTests": true
           }
         }

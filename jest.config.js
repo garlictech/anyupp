@@ -73,5 +73,6 @@ module.exports = {
     '<rootDir>/libs/admin/pages/modifiers-and-extras',
     '<rootDir>/libs/admin/shared/data-access/product-components',
     '<rootDir>/libs/shared/fixtures',
+    '<rootDir>/libs/admin/shared/data-access/product-component-sets',
   ],
 };

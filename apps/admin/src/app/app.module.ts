@@ -37,6 +37,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
+import { AdminSharedProductComponentSetsModule } from '@bgap/admin/shared/data-access/product-component-sets';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -47,6 +48,7 @@ const NB_MODULES = [
     hasBackdrop: true,
     closeOnBackdropClick: false,
     hasScroll: true,
+    dialogClass: 'form-dialog',
   }),
   NbToastrModule.forRoot({
     duration: 1500,
@@ -69,7 +71,8 @@ export const FEATURE_STORES = [
   AdminSharedUnitsModule,
   AdminSharedUsersModule,
   AdminSharedRoleContextsModule,
-  AdminSharedProductComponentsModule
+  AdminSharedProductComponentsModule,
+  AdminSharedProductComponentSetsModule
 ];
 
 registerLocaleData(localeDe);

@@ -71,6 +71,16 @@ export class ProductComponentFormComponent
       description: [''],
       allergens: [[]],
     });
+
+    // Used for the validator
+    this._store
+      .pipe(
+        select(productComponentsSelectors.getAllProductComponents),
+        untilDestroyed(this),
+      )
+      .subscribe((productComponents: IProductComponent[]): void => {
+        this._productComponents = productComponents;
+      });
   }
 
   ngOnInit(): void {
@@ -100,16 +110,6 @@ export class ProductComponentFormComponent
         );
 
         this._changeDetectorRef.detectChanges();
-      });
-
-    // Used for the validator
-    this._store
-      .pipe(
-        select(productComponentsSelectors.getAllProductComponents),
-        untilDestroyed(this),
-      )
-      .subscribe((productComponents: IProductComponent[]): void => {
-        this._productComponents = productComponents;
       });
 
     this._changeDetectorRef.detectChanges();

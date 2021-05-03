@@ -308,6 +308,19 @@ type ProductComponent
   allergens: [Allergen]
 }
 
+### ProductComponent
+type ProductComponentSet
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  type: String!
+  name: LocalizedItem!
+  description: String
+  items: [ID]! # ProductComponent ID
+  maxSelection: Int # On extras
+}
+
 ### Product
 type ChainProduct
   @model
@@ -584,6 +597,11 @@ type Subscription {
   onProductComponentsChange: ProductComponent
     @aws_subscribe(
       mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange: ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )
     @aws_cognito_user_pools
   onChainProductChange: ChainProduct

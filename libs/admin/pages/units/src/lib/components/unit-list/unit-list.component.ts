@@ -69,11 +69,6 @@ export class UnitListComponent implements OnInit, OnDestroy {
   }
 
   public addUnit(): void {
-    this._nbDialogService.open(UnitFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(UnitFormComponent);
   }
 }

@@ -17,6 +17,9 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "delete": "Delete",
+    "add": "Add",
+    "moveDown": "Move down",
+    "moveUp": "Move up",
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
@@ -184,8 +187,6 @@
     "timeTo": "Time to",
     "addVariant": "Add variant",
     "addAvailability": "Add availability",
-    "moveDown": "Move down",
-    "moveUp": "Move up",
     "lane": "Lane",
     "productType": {
       "drink": "Drink",
@@ -203,10 +204,20 @@
     "editProductComponent": "Edit product component",
     "newProductComponent": "New product component"
   },
+  "productComponentSets": {
+    "editProductComponentSet": "Edit product component set",
+    "newProductComponentSet": "New product component set",
+    "productComponent": "Product component",
+    "type": {
+      "extras": "Extras",
+      "modifier": "Modifier"
+    },
+     "maxSelection": "Max selection"
+  },
   "modifiersAndExtras": {
     "listTitle": "Modifiers and Extras",
     "productComponents": "Product components",
-    "modExtSets": "Modifiers and extra sets"
+    "modExtSets": "Modifiers and extras"
   },
   "groups": {
     "listTitle": "Groups",

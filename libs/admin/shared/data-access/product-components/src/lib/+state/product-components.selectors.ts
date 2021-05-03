@@ -6,7 +6,6 @@ import {
   productComponentsAdapter,
 } from './product-components.reducer';
 
-// Lookup the 'ProductComponents' feature state managed by NgRx
 export const getProductComponentsState = createFeatureSelector<
   IProductComponentsState
 >(PRODUCT_COMPONENTS_FEATURE_KEY);

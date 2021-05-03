@@ -165,12 +165,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   public addProduct(): void {
-    const dialog = this._nbDialogService.open(ProductFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ProductFormComponent);
 
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }

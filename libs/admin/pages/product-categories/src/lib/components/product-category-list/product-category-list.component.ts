@@ -60,12 +60,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   }
 
   public addProductCategory(): void {
-    this._nbDialogService.open(ProductCategoryFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(ProductCategoryFormComponent);
   }
 
   public positionChange($event: IProductCategoryOrderChangeEvent): void {

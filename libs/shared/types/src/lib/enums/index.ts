@@ -8,6 +8,5 @@ export * from './image-type';
 export * from './variant-availability-type';
 export * from './order-status';
 export * from './nebular';
-export * from './product-level';
-export * from './product-type';
+export * from './product';
 export * from './transaction-type';

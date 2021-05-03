@@ -17,9 +17,7 @@ export class UserListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   editUser(): void {
-    const dialog = this._nbDialogService.open(UserFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(UserFormComponent);
 
     dialog.componentRef.instance.user = fp.cloneDeep(this.user);
   }

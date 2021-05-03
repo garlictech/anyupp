@@ -6,7 +6,6 @@ import {
   LOGGED_USER_FEATURE_KEY,
 } from './logged-user.reducer';
 
-// Lookup the 'Auth' feature state managed by NgRx
 export const getLoggedUserState = createFeatureSelector<ILoggedUserState>(
   LOGGED_USER_FEATURE_KEY,
 );

@@ -22,9 +22,7 @@ export class ProductComponentListItemComponent {
   ) {}
 
   public editProductComponent(): void {
-    const dialog = this._nbDialogService.open(ProductComponentFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ProductComponentFormComponent);
 
     dialog.componentRef.instance.productComponent = fp.cloneDeep(
       this.productComponent,

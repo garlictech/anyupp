@@ -188,6 +188,9 @@
     },
     "shared-fixtures": {
       "tags": ["type:utils", "platform:universal"]
+    },
+    "admin-shared-data-access-product-component-sets": {
+      "tags": ["type:utils", "platform:angular"]
     }
   }
 }
