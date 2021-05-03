@@ -35,7 +35,10 @@ export class AnyUppStack extends Stack {
       secretsManager: secretsManagerStack.secretsManager,
     });
 
-    new StripeStack(scope, 'stripe');
+    new StripeStack(scope, 'stripe', {
+      stripeSecretKey: secretsManagerStack.stripeSecretKey,
+      stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
+    });
 
     new SeederStack(scope, 'seeder', {
       adminUserPool: cognitoStack.adminUserPool,

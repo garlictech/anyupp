@@ -242,7 +242,10 @@ type Order
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
+  status: OrderStatus
   paymentIntention: Float
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 type OrderHistory
@@ -260,15 +263,25 @@ type OrderHistory
   paymentIntention: Float
   # EXTRA
   status: OrderStatus
+  # paymentStatus: PaymentStatus
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
+
+enum PaymentStatus {
+  WAITING_FOR_PAYMENT
+  SUCCESS
+  FAILED
+}
+
 enum OrderStatus {
   NONE
   PLACED
   PROCESSING
   READY
   SERVED
-  WAITING_FOR_PAYMENT
-  PAID
+  # WAITING_FOR_PAYMENT
+  # PAID
   # RECEIVED,
   FAILED
   REJECTED
@@ -434,6 +447,7 @@ type Unit
   lanes: [Lane]
   open: DateInterval
   openingHours: WeeklySchedule
+  merchantId: String
 }
 
 type DateInterval {
@@ -532,6 +546,22 @@ type User
   id: ID!
   stripeCustomerId: String!
 }
+
+type Transaction
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  order: Order! @connection(fields: ["orderId"])
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+}
+
 
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser

@@ -30,6 +30,7 @@ export const unitSchema: Joi.SchemaMap<IUnit> = {
   paymentModes: Joi.array().items(paymentModeSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
+  merchantId: Joi.string().allow(null),
   ...contactSchema,
   ...addressInfoSchema,
 };

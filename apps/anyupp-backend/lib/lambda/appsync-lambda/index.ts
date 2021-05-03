@@ -22,8 +22,6 @@ const resolverMap = {
   startStripePayment: stripeRequestHandler.startStripePayment(
     crudBackendGraphQLClient,
   ),
-  updateStripeCard: stripeRequestHandler.updateStripeCard,
-  deleteStripeCard: stripeRequestHandler.deleteStripeCard,
   createAdminUser: adminRequestHandler.createAdminUser,
   deleteAdminUser: adminRequestHandler.deleteAdminUser,
   createOrderFromCart: orderRequestHandler.createOrderFromCart(

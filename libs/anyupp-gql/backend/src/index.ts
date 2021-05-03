@@ -8,6 +8,7 @@ export { createStripeResolvers } from './lib/lambda-resolvers/stripe/stripe-reso
 export { stripeRequestHandler } from './lib/lambda-resolvers/stripe/stripe-request-handler';
 export { createProductResolvers } from './lib/lambda-resolvers/product/product-resolvers';
 export { productRequestHandler } from './lib/lambda-resolvers/product/product-request-handler';
+export { createStripeWebhookExpressApp } from './lib/lambda-resolvers/stripe/stripe-webhook-handler';
 
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };

@@ -1,15 +1,14 @@
 import Stripe from 'stripe';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { SharedSecrets, getSecrets } from '@bgap/shared/secrets';
-import { isOfType } from '@bgap/shared/utils';
 
-import { mapStripeCardToCard, mapPaymentMethodToCard } from './stripe.utils';
-import { executeMutation, executeQuery, GraphqlApiClient } from '@bgap/shared/graphql/api-client';
-import { ListStripeCardsRequest } from './stripe-request-handler';
-import { CrudApi, CrudApiMutationDocuments, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import { mapPaymentMethodToCard } from './stripe.utils';
+import { executeMutation, GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import { map } from 'rxjs/operators';
-import { IOrder, IUser } from '@bgap/shared/types';
+import { EOrderStatus, IOrder, IStatusLog, IUnit, IUser } from '@bgap/shared/types';
+import { calculateOrderSumPrice } from '../order/order.utils';
+import { loadOrder, loadUnit, loadUser } from './stripe-graphql-crud';
 
 export const listStripeCards = async (
   crudGraphqlClient: GraphqlApiClient,
@@ -105,129 +104,126 @@ export const startStripePayment = async (
     ', paymentMethodId=' + paymentMethodId +
     ', saveCard=' + savePaymentMethod);
 
+  if (!paymentMethodId) {
+    throw Error('Payment method is missing from request!');
+  }
+
   // 2. Load order
-  let order: IOrder = await loadOrder(crudGraphqlClient, orderId);
+  const order: IOrder = await loadOrder(crudGraphqlClient, orderId);
   console.log('startStripePayment().order.loaded=' + order?.id);
+
+  if (userId !== order.userId) {
+    throw Error('The Order must belongs to the user, the Order\'s userId field is not match with the logined User\'s id! Details: order.userId=' + order.userId + ' vs userId=' + userId);
+  }
 
   // 3. Load User
-  let user: IUser = await loadUser(crudGraphqlClient, userId);
-  console.log('startStripePayment().order.loaded=' + order?.id);
+  const user: IUser = await loadUser(crudGraphqlClient, userId);
+  console.log('startStripePayment().user.loaded=' + user?.id);
 
-  // 4. Calculate summary
+  // 4. Load unit
+  const unit: IUnit = await loadUnit(crudGraphqlClient, order.unitId);
+
+  // 5. Calculate summary
+  const price = calculateOrderSumPrice(order.items);
+  console.log('startStripePayment().calculate.price=' + price?.priceSum + ' ' + price?.currency);
+
+  // 6a. Create payment intent data
+  const paymentIntentData: Stripe.PaymentIntentCreateParams = {
+    amount: price.priceSum * 100,
+    currency: price.currency,
+    payment_method: paymentMethodId,
+    payment_method_types: ['card'],
+    customer: user.stripeCustomerId
+  }
+
+  // 6b. Add optional merchantId to the payment
+  if (unit.merchantId) {
+    paymentIntentData.application_fee_amount = 0;
+    paymentIntentData.transfer_data = {
+      destination: unit.merchantId
+    };
+  }
 
   // 5. Create payment intent
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: order.amount * 100,
-//     currency: order.currency,
-//     payment_method: input.paymentMethod,
-//     payment_method_types: ['card'],
-//     application_fee_amount: 0,
-//     transfer_data: {
-//         destination: DEMO_MARKET_ID
-//     },
-//     customer: DEMO_CUSTOMER_ID
-// });
+  const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
 
-
-  // 4. Change ORDER STATUSZ????
+  // 4. Change ORDER STATUS????
+  const log: IStatusLog =  order.statusLog;
+  log[Date.now()] = {
+    userId: userId,
+    status: EOrderStatus.PAID,  // TODO nem Paid lesz
+    ts: Date.now(),
+  };
 
   // 5. Create Transaction??
+  // executeMutation(crudGraphqlClient)<CrudApi.CreateTransactionMutation>(
+
+  // );
 
 
-
-  return Promise.resolve({ clientSecret: 'clientSecret', status: 'status' });
-
-  // return stripe.customers
-  //   .deleteSource(stripeCustomerId, input.id)
-  //   .then(response => {
-  //     if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
-  //       throw 'unknown Stripe response';
-  //     }
-  //     return response.deleted;
-  //   })
-  //   .catch(handleStripeErrors);
+  // 6. Return with client secret
+  return Promise.resolve({
+    clientSecret: paymentIntent.client_secret as string,
+    status: paymentIntent.status
+  });
 };
 
-const loadUser = async (crudGraphqlClient: GraphqlApiClient, userId: string): Promise<IUser> => {
-  const getUserVars: CrudApi.GetUserQueryVariables = {
-    id: userId,
-  };
 
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUserQuery>(
-    CrudApiQueryDocuments.getUser,
-    getUserVars,
-  ).pipe(
-    map(data => data.getUser as IUser),
-  ).toPromise();
-};
-
-const loadOrder = async (crudGraphqlClient: GraphqlApiClient, orderId: string): Promise<IOrder> => {
-  const getOrderVars: CrudApi.GetOrderQueryVariables = {
-    id: orderId,
-  };
-
-  return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
-    CrudApiQueryDocuments.getOrder,
-    getOrderVars,
-  ).pipe(
-    map(data => data.getOrder as IOrder),
-  ).toPromise();
-};
 
 // TODO: use stripe.customers.listSources https://stripe.com/docs/api/cards/list?lang=node
-export const getStripeCardsForCustomer = async (
-  stripeCustomerId: string,
-): Promise<AnyuppApi.StripeCard[]> => {
-  const stripe = await initStripe();
+// export const getStripeCardsForCustomer = async (
+//   stripeCustomerId: string,
+// ): Promise<AnyuppApi.StripeCard[]> => {
+//   const stripe = await initStripe();
 
-  return stripe.paymentMethods
-    .list({
-      customer: stripeCustomerId,
-      type: 'card',
-    })
-    .then(paymentMethods => {
-      return paymentMethods.data.map(mapPaymentMethodToCard);
-    })
-    .catch(handleStripeErrors);
-};
+//   return stripe.paymentMethods
+//     .list({
+//       customer: stripeCustomerId,
+//       type: 'card',
+//     })
+//     .then(paymentMethods => {
+//       return paymentMethods.data.map(mapPaymentMethodToCard);
+//     })
+//     .catch(handleStripeErrors);
+// };
 
-export const updateStripeCard = async (
-  stripeCustomerId: string,
-  input: AnyuppApi.StripeCardUpdateInput,
-): Promise<AnyuppApi.StripeCard> => {
-  const stripe = await initStripe();
+// export const updateStripeCard = async (
+//   stripeCustomerId: string,
+//   input: AnyuppApi.StripeCardUpdateInput,
+// ): Promise<AnyuppApi.StripeCard> => {
+//   const stripe = await initStripe();
 
-  return stripe.customers
-    .updateSource(stripeCustomerId, input.id, {
-      exp_month: input.exp_month || undefined,
-      exp_year: input.exp_year || undefined,
-      name: input.name || undefined,
-    })
-    .then(updatedCard => {
-      if (!isOfType<Stripe.Card>(updatedCard, 'object', 'card')) {
-        throw 'unknown Stripe response';
-      }
-      return mapStripeCardToCard(updatedCard);
-    })
-    .catch(handleStripeErrors);
-};
+//   return stripe.customers
+//     .updateSource(stripeCustomerId, input.id, {
+//       exp_month: input.exp_month || undefined,
+//       exp_year: input.exp_year || undefined,
+//       name: input.name || undefined,
+//     })
+//     .then(updatedCard => {
+//       if (!isOfType<Stripe.Card>(updatedCard, 'object', 'card')) {
+//         throw 'unknown Stripe response';
+//       }
+//       return mapStripeCardToCard(updatedCard);
+//     })
+//     .catch(handleStripeErrors);
+// };
 
-export const deleteStripeCard = async (
-  stripeCustomerId: string,
-  input: AnyuppApi.StripeCardDeleteInput,
-): Promise<boolean> => {
-  const stripe = await initStripe();
+// export const deleteStripeCard = async (
+//   stripeCustomerId: string,
+//   input: AnyuppApi.StripeCardDeleteInput,
+// ): Promise<boolean> => {
+//   const stripe = await initStripe();
 
-  return stripe.customers
-    .deleteSource(stripeCustomerId, input.id)
-    .then(response => {
-      if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
-        throw 'unknown Stripe response';
-      }
-      return response.deleted;
-    })
-    .catch(handleStripeErrors);
-};
+//   return stripe.customers
+//     .deleteSource(stripeCustomerId, input.id)
+//     .then(response => {
+//       if (!isOfType<Stripe.DeletedCard>(response, 'deleted')) {
+//         throw 'unknown Stripe response';
+//       }
+//       return response.deleted;
+//     })
+//     .catch(handleStripeErrors);
+// };
 
 // TODO
 const handleStripeErrors = (error: Stripe.StripeError) => {
@@ -282,9 +278,13 @@ const handleStripeErrors = (error: Stripe.StripeError) => {
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
 
-const initStripe = async () => {
-  const secrets: SharedSecrets = await getSecrets();
-  return new Stripe(secrets.stripeSecretKey, {
+export const initStripe = async () => {
+  const secret = process.env.STRIPE_SECRET_KEY;
+  console.log('initStripe.secret()=' + secret);
+  if (!secret) {
+    throw Error('Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY');
+  }
+  return new Stripe(secret, {
     apiVersion: '2020-08-27',
   });
 };
