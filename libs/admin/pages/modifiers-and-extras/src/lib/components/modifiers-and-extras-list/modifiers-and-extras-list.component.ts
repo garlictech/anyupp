@@ -1,7 +1,7 @@
-import { productComponentSetsSelectors } from 'libs/admin/shared/data-access/product-component-sets/src';
 import { Observable } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { IProductComponent, IProductComponentSet } from '@bgap/shared/types';
 import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';

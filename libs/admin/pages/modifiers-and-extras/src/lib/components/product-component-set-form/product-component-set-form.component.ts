@@ -1,4 +1,4 @@
-import { productComponentsSelectors } from 'libs/admin/shared/data-access/product-components/src';
+import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { NGXLogger } from 'ngx-logger';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';

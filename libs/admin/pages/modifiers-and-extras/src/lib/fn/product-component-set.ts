@@ -3,7 +3,7 @@ import {
   IKeyValue,
   IKeyValueObject,
   IProductComponent,
-} from 'libs/shared/types/src';
+} from '@bgap/shared/types';
 
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
