@@ -2,6 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/menu/screens/allergen_details_screen.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -79,19 +80,22 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
           if (user.profileImage == null)
-            Container(
-              width: 46.0,
-              height: 46.0,
-              decoration: BoxDecoration(
-                color: Color(0xFF857C18),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
+            GestureDetector(
+              onTap: () => Nav.to(AllergenDetailsScreen()),
+                          child: Container(
+                width: 46.0,
+                height: 46.0,
+                decoration: BoxDecoration(
+                  color: Color(0xFF857C18),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
                 ),
-              ),
-              child: Icon(
-                Icons.perm_identity,
-                size: 24.0,
-                color: Colors.white.withOpacity(0.7),
+                child: Icon(
+                  Icons.perm_identity,
+                  size: 24.0,
+                  color: Colors.white.withOpacity(0.7),
+                ),
               ),
             ),
           Padding(
