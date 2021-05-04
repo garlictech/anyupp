@@ -1,13 +1,15 @@
 import { CrudApi } from '@bgap/crud-gql/api';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { seededIdPrefix, testIdPrefix } from './common';
 
-const unitProductId_seeded_id = 'unit_product_c1_g1_1_id_seeded';
+const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
+const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 
 const getProductVariant = (
   idx: number,
   type: string,
 ): CrudApi.ProductVariantInput => ({
-  id: `${type}ProductVariant_id_${idx}`,
+  id: `${testIdPrefix}${type}ProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx,
   isAvailable: true,
@@ -27,7 +29,7 @@ const getProductVariant = (
 });
 
 export const chainProductBase: CrudApi.CreateChainProductInput = {
-  id: 'chainProduct_id_',
+  id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
   description: { en: 'DESCRIPTION' },
@@ -39,7 +41,7 @@ export const chainProductBase: CrudApi.CreateChainProductInput = {
 };
 
 export const groupProductBase: CrudApi.CreateGroupProductInput = {
-  id: 'generatedProduct_id_',
+  id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
   groupId: 'groupId_',
@@ -49,7 +51,7 @@ export const groupProductBase: CrudApi.CreateGroupProductInput = {
 };
 
 export const unitProductBase: CrudApi.CreateUnitProductInput = {
-  id: 'chainProduct_id_',
+  id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
   groupId: 'groupId_',
@@ -65,5 +67,6 @@ export const productSeed = {
   chainProductBase,
   groupProductBase,
   unitProductBase,
-  unitProductId_seeded_id,
+  unitProductId_seeded_id_01,
+  unitProductId_seeded_id_02,
 };

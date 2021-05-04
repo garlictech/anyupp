@@ -1,12 +1,13 @@
 import { CrudApi } from '@bgap/crud-gql/api';
 import { groupSeed } from './group';
 import { chainSeed } from './chain';
+import { seededIdPrefix, testIdPrefix } from './common';
 
-const unitId_01 = 'unit_1_id';
-const unitId_seeded_01 = 'unit_c1_g1_1_id_seeded';
-const unitId_seeded_02 = 'unit_c1_g1_2_id_seeded';
-const unitId_seeded_03 = 'unit_c1_g2_1_id_seeded';
-const unitId_NotExisting = 'NOT_EXISTING_UNIT';
+const unitId_01 = `${testIdPrefix}unit_1_id`;
+const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
+const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
+const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
+const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
 const unit_01: CrudApi.CreateUnitInput = {
   id: unitId_01,

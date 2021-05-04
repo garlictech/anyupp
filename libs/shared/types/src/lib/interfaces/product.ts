@@ -74,7 +74,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
-  allergens: string[];
+  allergens?: string[];
   tax: number; // %
   laneId?: string;
   productType: EProductType;
@@ -113,7 +113,7 @@ export interface IChainProduct {
   variants: [IProductVariant];
   createdAt: string;
   updatedAt: string;
-  allergens: string[];
+  allergens?: string[];
 }
 
 export interface IGroupProduct {

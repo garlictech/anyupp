@@ -22,6 +22,7 @@ import {
 import {
   generatedProductSeed,
   productSeed,
+  testIdPrefix,
   unitSeed,
 } from '@bgap/shared/fixtures';
 
@@ -44,11 +45,12 @@ import {
 import { validateUnitProduct } from 'libs/shared/data-validators/src';
 import { IUnitProduct } from '@bgap/shared/types';
 import * as fp from 'lodash/fp';
+import { getSortedIds } from '@bgap/shared/utils';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 
 const unitId_01 = unitSeed.unitId_seeded_01;
-const unitId_02 = 'UNIT_ID_02_REGENERATE';
+const unitId_02 = `${testIdPrefix}UNIT_ID_02_REGENERATE`;
 
 const chainProduct_01 = productSeed.chainProductBase;
 const groupProduct_01: CrudApi.CreateGroupProductInput = {
@@ -57,25 +59,25 @@ const groupProduct_01: CrudApi.CreateGroupProductInput = {
 };
 const unitProduct_0101: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: `unitProduct_u${unitId_01}_01`,
+  id: `${testIdPrefix}unitProduct_u${unitId_01}_01`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
 const unitProduct_0102: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: `unitProduct_u${unitId_01}_02`,
+  id: `${testIdPrefix}unitProduct_u${unitId_01}_02`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
 const unitProduct_0104_NEW: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: 'unit01_have_not_been_here_before',
+  id: `${testIdPrefix}unit01_have_not_been_here_before`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
 const unitProduct_0201_DIFFERENTUNIT: CrudApi.CreateUnitProductInput = {
   ...productSeed.unitProductBase,
-  id: `unitProduct_u${unitId_02}_01`,
+  id: `${testIdPrefix}unitProduct_u${unitId_02}_01`,
   unitId: unitId_02,
 };
 // const unitProduct_0202: CrudApi.CreateUnitProductInput = {
@@ -97,7 +99,7 @@ const unit01_generatedProduct_02 = {
 // so the updated/regnerated ProductList shouldn't contain it.
 const unit01_generatedProduct_03_WONTBEREGENERATED = {
   ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_01}_03_WONTBEREGENERATED`,
+  id: `${testIdPrefix}generatedProduct_u${unitId_01}_03_WONTBEREGENERATED`,
   unitId: unitId_01,
 };
 const unit02_generatedProduct_01 = {
@@ -168,15 +170,42 @@ describe('RegenerateUnitData mutation tests', () => {
         tap({
           next(result) {
             const [generatedProducts, unitProducts] = result;
-            expect(unitProducts.length).toEqual(4);
-            const ids = generatedProducts.map(x => x.id);
-            expect(generatedProducts.length).toEqual(4);
-            expect(ids).toContainEqual(
+            expect(unitProducts.length).toEqual(6);
+            expect(generatedProducts.length).toEqual(6);
+            const upIds = getSortedIds(unitProducts);
+            const genIds = getSortedIds(generatedProducts);
+
+            // Same ids in the generatedProduct
+            expect(genIds).toContainEqual(
+              productSeed.unitProductId_seeded_id_01,
+            );
+            expect(upIds).toContainEqual(
+              productSeed.unitProductId_seeded_id_01,
+            );
+            expect(genIds).toContainEqual(
+              productSeed.unitProductId_seeded_id_02,
+            );
+            expect(upIds).toContainEqual(
+              productSeed.unitProductId_seeded_id_02,
+            );
+            expect(genIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+            expect(upIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+            expect(genIds).toContainEqual(unitProduct_0101.id);
+            expect(upIds).toContainEqual(unitProduct_0101.id);
+            expect(genIds).toContainEqual(unitProduct_0102.id);
+            expect(upIds).toContainEqual(unitProduct_0102.id);
+            expect(genIds).toContainEqual(unitProduct_0102.id);
+            expect(upIds).toContainEqual(unitProduct_0102.id);
+
+            //extra
+            expect(genIds).toContainEqual(
               unit01_generatedProduct_03_WONTBEREGENERATED.id,
             );
-            expect(ids).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
-            expect(ids).toContainEqual(unitProduct_0101.id);
-            expect(ids).toContainEqual(unitProduct_0102.id);
+            expect(genIds).not.toContainEqual(unitProduct_0104_NEW.id);
+            expect(upIds).toContainEqual(unitProduct_0104_NEW.id);
+            expect(upIds).not.toContainEqual(
+              unit01_generatedProduct_03_WONTBEREGENERATED.id,
+            );
           },
         }),
         switchMap(() =>
@@ -185,7 +214,7 @@ describe('RegenerateUnitData mutation tests', () => {
           }),
         ),
         catchError(err => {
-          console.error('START STATE CHECK ERROR', err);
+          console.error('START STATE CHECK ERROR');
           return throwError(err);
         }),
         // Check
@@ -199,7 +228,7 @@ describe('RegenerateUnitData mutation tests', () => {
         ),
         tap({
           next(result) {
-            expect(result.length).toEqual(4);
+            expect(result.length).toEqual(6);
             const ids = result.map(x => x.id);
 
             expect(ids).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);

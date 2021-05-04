@@ -2,17 +2,18 @@ import { EOrderStatus } from '@bgap/shared/types';
 import { CrudApi } from '@bgap/crud-gql/api';
 import { unitSeed } from './unit';
 import { productSeed } from './product';
+import { seededIdPrefix, testIdPrefix } from './common';
 
-const cartId_01 = 'cart_1_id';
-const cart_seeded_01_id = 'cart_1_id_seeded';
+const cartId_01 = `${testIdPrefix}cart_1_id`;
+const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
 const unitId_01 = unitSeed.unitId_seeded_01;
-const unitProductId_01 = productSeed.unitProductId_seeded_id;
+const unitProductId_01 = productSeed.unitProductId_seeded_id_01;
 
 // fictional - not exsisting
-const cartId_NotExisting = 'NOT_EXSISTING_CART';
-const variantId_01 = 'variant_1_id';
-const laneId_01 = 'lane_1_id';
-const userId_01 = 'user_1_id';
+const cartId_NotExisting = `${testIdPrefix}NOT_EXSISTING_CART`;
+const variantId_01 = `${testIdPrefix}variant_1_id`;
+const laneId_01 = `${testIdPrefix}lane_1_id`;
+const userId_01 = `${testIdPrefix}user_1_id`;
 
 const getOrderItem = (): CrudApi.OrderItemInput => ({
   productName: {

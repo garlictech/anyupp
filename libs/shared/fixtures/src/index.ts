@@ -5,3 +5,4 @@ export * from './lib/product';
 export * from './lib/unit';
 export * from './lib/user';
 export * from './lib/generated-product';
+export * from './lib/common';
