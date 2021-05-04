@@ -9,7 +9,7 @@
         badgePosition="bottom right"
         badgeStatus="warning"
         [ngClass]="
-          dashboardSettings.ticketListType === EDashboardTicketListType.PLACED
+          dashboardSettings?.ticketListType === EDashboardTicketListType.PLACED
             ? 'active'
             : 'inactive'
         "
@@ -25,7 +25,7 @@
         badgePosition="bottom right"
         badgeStatus="info"
         [ngClass]="
-          dashboardSettings.ticketListType === EDashboardTicketListType.READY
+          dashboardSettings?.ticketListType === EDashboardTicketListType.READY
             ? 'active'
             : 'inactive'
         "
@@ -41,7 +41,7 @@
         badgePosition="bottom right"
         badgeStatus="danger"
         [ngClass]="
-          dashboardSettings.ticketListType ===
+          dashboardSettings?.ticketListType ===
           EDashboardTicketListType.PAYMENT_INTENTION
             ? 'active'
             : 'inactive'
@@ -61,7 +61,7 @@
         [order]="order"
         [showMarkers]="true"
         [selectedOrderUserId]="selectedOrder?.userId"
-        [ticketListType]="dashboardSettings.ticketListType"
+        [ticketListType]="dashboardSettings?.ticketListType"
       ></bgap-order-ticket-list-item>
     </nb-list-item>
   </nb-card-body>

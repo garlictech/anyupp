@@ -2,8 +2,8 @@ import { EProductType, EVariantAvailabilityType } from '../enums';
 import { ILocalizedItem } from './localized-item';
 
 export interface IAllergen {
-  lactose: boolean;
-  nuts: boolean;
+  id: string;
+  idx: number;
 }
 
 export interface IAvailability {
@@ -27,15 +27,37 @@ export interface IProductVariantPack {
 }
 
 export interface IProductVariant {
-  id?: string;
+  id: string;
   variantName: ILocalizedItem<string>;
   pack: IProductVariantPack;
   refGroupPrice: number;
   isAvailable: boolean;
   price?: number; // generated
   availabilities: IAvailability[]; // unit edit
-  availableFrom: Date;
+  // availableFrom: Date;
   position: number;
+}
+export interface IGeneratedProductVariant {
+  id: string;
+  variantName: ILocalizedItem<string>;
+  price: number;
+  position: number;
+  pack: IProductVariantPack;
+}
+
+export interface IGeneratedProduct {
+  id: string; // UnitProductId
+  unitId: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: number;
+  productType: EProductType;
+  tax: number;
+  variants: IGeneratedProductVariant[];
+  productCategoryId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IProduct {
@@ -47,12 +69,13 @@ export interface IProduct {
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
-  image: string | null;
+  image?: string;
   productCategoryId: string;
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
-  tax: string; // %
+  allergens?: string[];
+  tax: number; // %
   laneId?: string;
   productType: EProductType;
   takeaway?: boolean;
@@ -72,23 +95,58 @@ export interface IUnitProduct {
   variants: IProductVariant[];
   laneId?: string;
   takeaway?: boolean;
+  groupProduct: IGroupProduct;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface IGeneratedProduct {
+export interface IChainProduct {
+  __typename?: 'ChainProduct';
   id: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
+  chainId: string;
+  name: ILocalizedItem<string>;
   description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: string;
-  variants: IProductVariant[];
   productCategoryId: string;
+  productType: EProductType;
+  isVisible: boolean;
+  image?: string;
+  variants: [IProductVariant];
+  createdAt: string;
+  updatedAt: string;
+  allergens?: string[];
+}
+
+export interface IGroupProduct {
+  __typename?: 'GroupProduct';
+  id: string;
+  parentId: string;
+  chainId: string;
+  groupId: string;
+  isVisible: boolean;
+  tax: number;
+  variants: [IProductVariant];
+  chainProduct: IChainProduct;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IProductOrderChangeEvent {
   change: number;
   productId: string;
 }
+
+// export interface IGeneratedProductVariantsMap {
+//   [key: string]: IGeneratedProductVariant;
+// }
+
+// export interface IMergedProduct {
+//   productCategoryId: string;
+//   isVisible: boolean;
+//   variants: IProductVariant[];
+//   name: ILocalizedItem<string>;
+//   description: ILocalizedItem<string>;
+//   image: string;
+//   tax: number;
+//   position: number;
+//   productType: string;
+// }

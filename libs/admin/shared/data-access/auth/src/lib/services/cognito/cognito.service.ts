@@ -1,6 +1,8 @@
-import { bindNodeCallback, from, Observable, of } from 'rxjs';
+import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
@@ -19,7 +21,7 @@ export class CognitoService {
     this._currentContext = context;
   }
 
-  constructor() {
+  constructor(private _router: Router) {
     Hub.listen('auth', data => {
       const { payload } = data;
 
@@ -48,7 +50,19 @@ export class CognitoService {
   }
 
   public signOut(): Observable<boolean> {
-    return from(Auth.signOut()).pipe(mapTo(true));
+    return from(Auth.currentAuthenticatedUser()).pipe(
+      switchMap((user: CognitoUser) =>
+        merge([
+          from(
+            Auth.updateUserAttributes(user, {
+              'custom:context': '',
+            }),
+          ),
+          from(Auth.signOut()),
+        ]),
+      ),
+      mapTo(true),
+    );
   }
 
   // Register callback
@@ -78,6 +92,7 @@ export class CognitoService {
           user: {
             id: decoded?.sub,
             email: decoded?.email,
+            role: decoded?.role,
           },
         };
       }),
@@ -103,6 +118,12 @@ export class CognitoService {
                 ) => user.refreshSession(refreshToken, cb),
               )(session.getRefreshToken()),
             ),
+            switchMap(() => this.getAuth()),
+            map(() => {
+              // Finally redirect to dashboard.
+              // The routeGuard will handle the data subscription
+              this._router.navigate(['admin/dashboard']);
+            }),
           ),
         ),
       )

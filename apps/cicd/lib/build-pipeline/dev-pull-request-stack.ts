@@ -24,6 +24,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
       ],
     });
 
+    const generatedLibExcludes =
+      '--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api';
+
     const project = new codebuild.Project(
       this,
       'AnyUpp:DEV Verify Pull Request',
@@ -37,22 +40,17 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `sh ./tools/setup-aws-environment.sh`,
                 'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli',
-              ],
-            },
-            pre_build: {
-              commands: [
-                `yarn nx config shared-config --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx config crud-backend --app=${utils.appConfig.name} --stage=${stage}`,
-                `yarn nx build anyupp-gql-api --skip-nx-cache`,
+                'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+                'export PATH=$PATH:/tmp/flutter/bin',
+                'flutter doctor',
               ],
             },
             build: {
               commands: [
-                `yarn nx build-schema crud-backend --skip-nx-cache --stage=${stage}`,
-                `yarn nx affected:lint --base=${stage} --with-deps`,
-                `yarn nx affected:test --base=${stage} --with-deps --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" --codeCoverage --coverageReporters=clover`,
-                `yarn nx build admin --skip-nx-cache`,
-                `yarn nx build anyupp-backend --skip-nx-cache --stage=${stage} --app=${utils.appConfig.name}`,
+                `sh ./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
+                `yarn nx buildApk anyupp-mobile`,
+                `yarn nx affected:lint --base=${stage} ${generatedLibExcludes}`,
+                `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
               ],
             },
           },
@@ -70,8 +68,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
         }),
         environment: {
           buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-
-          //          buildImage: utils.getBuildImage(this),
+          computeType: codebuild.ComputeType.MEDIUM,
         },
       },
     );

@@ -1,10 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GOOGLE_API_KEY } from '@bgap/admin/shared/utils';
 import { ILocation } from '@bgap/shared/types';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-contact-group',
   templateUrl: './form-contact-group.component.html',
 })
@@ -12,7 +18,10 @@ export class FormContactGroupComponent {
   @Input() contactFormGroup!: FormGroup;
   @Input() showAddressForm?: boolean = true;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   public locateAddress(): void {
     const a = this.contactFormGroup?.value?.address?.address;
@@ -45,6 +54,8 @@ export class FormContactGroupComponent {
           location,
         },
       });
+
+      this._changeDetectorRef.detectChanges();
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { IChain } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -11,6 +11,7 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-chain-list',
   templateUrl: './chain-list.component.html',
   styleUrls: ['./chain-list.component.scss'],
@@ -34,11 +35,6 @@ export class ChainListComponent implements OnDestroy {
   }
 
   public addChain(): void {
-    this._nbDialogService.open(ChainFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(ChainFormComponent);
   }
 }

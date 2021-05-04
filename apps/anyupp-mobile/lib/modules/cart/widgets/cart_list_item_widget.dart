@@ -106,8 +106,17 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           width: 40,
                           height: 40,
-                          child: FlatButton(
-                            padding: EdgeInsets.all(0),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(0),
+                              shape: CircleBorder(
+                                side: BorderSide(
+                                  color: theme.border2.withOpacity(0.4),
+                                ),
+                              ),
+                              backgroundColor: Colors.transparent,
+                              primary: theme.text,
+                            ),
                             onPressed: () => _removeOrder(),
                             child: Text(
                               '-',
@@ -117,13 +126,6 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                 fontSize: 26,
                               ),
                             ),
-                            shape: CircleBorder(
-                              side: BorderSide(
-                                color: theme.border2.withOpacity(0.4),
-                              ),
-                            ),
-                            color: Colors.transparent,
-                            textColor: theme.text,
                           ),
                         ),
                         SizedBox(
@@ -132,8 +134,17 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         Container(
                           width: 40,
                           height: 40,
-                          child: FlatButton(
-                            padding: EdgeInsets.all(0),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(0),
+                              shape: CircleBorder(
+                                side: BorderSide(
+                                  color: theme.border2.withOpacity(0.4),
+                                ),
+                              ),
+                              backgroundColor: Colors.transparent,
+                              primary: theme.text,
+                            ),
                             onPressed: () => _addOrder(),
                             child: Text(
                               '+',
@@ -143,13 +154,6 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                 fontSize: 26,
                               ),
                             ),
-                            shape: CircleBorder(
-                              side: BorderSide(
-                                color: theme.border2.withOpacity(0.4),
-                              ),
-                            ),
-                            color: Colors.transparent,
-                            textColor: theme.text,
                           ),
                         ),
                       ],

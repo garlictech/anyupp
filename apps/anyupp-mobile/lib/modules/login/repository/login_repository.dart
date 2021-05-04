@@ -1,30 +1,20 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
-class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEmailLoginProvider {
-
+class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   final ICommonLoginProvider _commonLoginProvider;
   final ISocialLoginProvider _socialLoginProvider;
-  final IPhoneLoginProvider _phoneLoginProvider;
   final IEmailLoginProvider _emailLoginProvider;
 
   LoginRepository(
     this._commonLoginProvider,
     this._socialLoginProvider,
     this._emailLoginProvider,
-    this._phoneLoginProvider,
   );
 
-  Future<void> signInWithPhone(String phoneNumber, bool linkAccount) async {
-    return _phoneLoginProvider.signInWithPhone(phoneNumber, linkAccount);
-  }
-
-  Future<void> validateSMSCodeWithPhone(String verificationId, String smsCode) async {
-    return _phoneLoginProvider.validateSMSCodeWithPhone(verificationId, smsCode);
-  }
-
   @override
-  Future<bool> get appleSignInAvailable => _socialLoginProvider.appleSignInAvailable;
+  Future<bool> get appleSignInAvailable =>
+      _socialLoginProvider.appleSignInAvailable;
 
   @override
   bool isFederated(LoginMethod method) {
@@ -65,31 +55,19 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   Future<String> get email => _emailLoginProvider.email;
 
   @override
-  Future<bool> isSignInWithEmailLink(String emailLink) {
-    return _emailLoginProvider.isSignInWithEmailLink(emailLink);
-  }
-
-  @override
-  Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password) {
+  Future<ProviderLoginResponse> loginWithEmailAndPassword(
+      String email, String password) {
     return _emailLoginProvider.loginWithEmailAndPassword(email, password);
   }
 
   @override
-  Future<ProviderLoginResponse> registerUserWithEmailAndPassword(String email, String password) {
-    return _emailLoginProvider.registerUserWithEmailAndPassword(email, password);
+  Future<bool> registerUserWithEmailAndPassword(
+      String userEmail, String userPhone, String email, String password) {
+    return _emailLoginProvider.registerUserWithEmailAndPassword(
+        userEmail, userPhone, email, password);
   }
 
-  @override
-  Future<void> sendSignInLinkToEmail(String email) {
-    return _emailLoginProvider.sendSignInLinkToEmail(email);
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithEmailLink(String email, String emailLink) {
-    return _emailLoginProvider.signInWithEmailLink(email, emailLink);
-  }
-
-    /// Logout the user from the backend and all Social platforms
+  /// Logout the user from the backend and all Social platforms
   Future<void> logout() async {
     return Future.wait([
       (await SharedPreferences.getInstance()).clear(),
@@ -99,7 +77,27 @@ class LoginRepository implements IPhoneLoginProvider, ISocialLoginProvider, IEma
   }
 
   @override
-  Future<void> sendPasswordResetEmail(String email) {
+  Future<Map<String, dynamic>> sendPasswordResetEmail(String email) {
     return _emailLoginProvider.sendPasswordResetEmail(email);
+  }
+
+  @override
+  Future<bool> confirmSignUp(String user, String code) {
+    return _emailLoginProvider.confirmSignUp(user, code);
+  }
+
+  @override
+  Future<bool> resendConfirmationCode(String user) {
+    return _emailLoginProvider.resendConfirmationCode(user);
+  }
+
+  @override
+  Future<bool> confirmPassword(
+      String userName, String code, String newPassword) {
+    return _emailLoginProvider.confirmPassword(userName, code, newPassword);
+  }
+
+  Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode) {
+    return _socialLoginProvider.signUserInWithAuthCode(authCode);
   }
 }

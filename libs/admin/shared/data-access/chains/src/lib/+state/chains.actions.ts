@@ -1,10 +1,10 @@
 import { IChain } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
 
-export const init = createAction('[Chains Page] Init');
+export const init = createAction('[Chains] Init');
 
 export const upsertChain = createAction(
-  '[Chains] Upsert Chain',
+  '[Chains] Upsert chain',
   props<{ chain: IChain }>(),
 );
 

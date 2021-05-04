@@ -1,8 +1,13 @@
 import { map } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import {
   IProductCategory,
@@ -17,19 +22,20 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-category-list',
   templateUrl: './product-category-list.component.html',
 })
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[] = [];
   private _sortedProductCategoryIds: string[] = [];
-  private _selectedChainId?: string | undefined | null;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _amplifyDataService: AmplifyDataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -44,15 +50,8 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       .subscribe((productCategories: IProductCategory[]): void => {
         this.productCategories = productCategories;
         this._sortedProductCategoryIds = this.productCategories.map(p => p.id);
-      });
 
-    this._store
-      .pipe(
-        select(loggedUserSelectors.getSelectedChainId),
-        untilDestroyed(this),
-      )
-      .subscribe((selectedChainId: string | undefined | null): void => {
-        this._selectedChainId = selectedChainId;
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -61,12 +60,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   }
 
   public addProductCategory(): void {
-    this._nbDialogService.open(ProductCategoryFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(ProductCategoryFormComponent);
   }
 
   public positionChange($event: IProductCategoryOrderChangeEvent): void {
@@ -101,5 +95,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
         },
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

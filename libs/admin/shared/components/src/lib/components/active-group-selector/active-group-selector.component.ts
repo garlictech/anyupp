@@ -1,6 +1,12 @@
 import { Observable } from 'rxjs';
 
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -10,6 +16,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-active-group-selector',
   templateUrl: './active-group-selector.component.html',
   styleUrls: ['./active-group-selector.component.scss'],
@@ -17,10 +24,14 @@ import { select, Store } from '@ngrx/store';
 export class ActiveGroupSelectorComponent implements OnDestroy {
   @Input() showIcon: boolean;
   public groups$: Observable<IGroup[]>;
-  private _adminUser!: IAdminUser;
+  private _loggedUser!: IAdminUser;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService) {
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _dataService: DataService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.showIcon = false;
     this.groups$ = this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
@@ -29,13 +40,13 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this._adminUser = adminUser;
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
       });
   }
 
   get selectedGroupId(): string | null | undefined {
-    return this._adminUser?.settings?.selectedGroupId;
+    return this._loggedUser?.settings?.selectedGroupId;
   }
 
   ngOnDestroy(): void {
@@ -44,14 +55,16 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
 
   public onGroupSelected(groupId: string): void {
     if (
-      this._adminUser?.id &&
-      groupId !== this._adminUser?.settings?.selectedGroupId
+      this._loggedUser?.id &&
+      groupId !== this._loggedUser?.settings?.selectedGroupId
     ) {
-      this._dataService.updateAdminUserSettings(this._adminUser.id || '', {
-        ...(this._adminUser?.settings || {}),
+      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
+        ...(this._loggedUser?.settings || {}),
         selectedGroupId: groupId,
         selectedUnitId: null, // Reset unit id!
       });
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

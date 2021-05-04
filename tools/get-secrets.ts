@@ -35,16 +35,22 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
           encoding: 'base64',
         });
 
+        // Android keystore binary
+        fs.writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
+          encoding: 'base64',
+        });
+        console.log(`Secret config written to ${androidKeyStoreTargetFile}`);
+
         // Android key properties (key alias, password, path etc...)
         fs.writeFileSync(
           androidKeyPropertiesTargetFile,
           secret.androidKeyProperties,
           { encoding: 'base64' },
         );
+        console.log(
+          `Secret config written to ${androidKeyPropertiesTargetFile}`,
+        );
       }),
-      fp.tap(() =>
-        console.log(`Config written to ${firebaseServiceAccountKeyTargetFile}`),
-      ),
     );
   }
 });

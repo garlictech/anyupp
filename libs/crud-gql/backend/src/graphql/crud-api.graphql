@@ -1,10 +1,10 @@
 type Address {
-  address: String
-  city: String
-  country: String
+  address: String!
+  city: String!
+  country: String!
   title: String
-  postalCode: String
-  location: Location
+  postalCode: String!
+  location: Location!
 }
 
 type Location {
@@ -20,7 +20,9 @@ type LocalizedItem {
 
 ### AdminUser
 
-type AdminUser @model @auth(rules: [{ allow: public }]) {
+type AdminUser
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
@@ -45,7 +47,7 @@ type AdminUserSettings {
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
   id: ID!
@@ -57,7 +59,9 @@ type AdminRoleContext
 
 ### RoleContext
 
-type RoleContext @model @auth(rules: [{ allow: public }]) {
+type RoleContext
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
   role: String!
@@ -125,7 +129,7 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
 #   value: String!
 # }
 
-# type StripeCard @model @auth(rules: [{ allow: public }]) {
+# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   brand: CardBrand
 #   checks: CardChecks
 #   country: String
@@ -148,7 +152,9 @@ type RoleContext @model @auth(rules: [{ allow: public }]) {
 # }
 
 ### Chain
-type Chain @model @auth(rules: [{ allow: public }]) {
+type Chain
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -182,7 +188,9 @@ type ChainStyleImages {
 }
 
 ### Group
-type Group @model @auth(rules: [{ allow: public }]) {
+type Group
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: String!
@@ -211,8 +219,9 @@ type PriceShown {
 type OrderItem {
   productId: ID!
   variantId: ID!
-  created: Int
+  created: Float
   productName: LocalizedItem!
+  image: String
   priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog]
@@ -221,7 +230,9 @@ type OrderItem {
 }
 
 ### Order
-type Order @model @auth(rules: [{ allow: public }]) {
+type Order
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -234,7 +245,9 @@ type Order @model @auth(rules: [{ allow: public }]) {
   paymentIntention: Float
 }
 
-type OrderHistory @model @auth(rules: [{ allow: public }]) {
+type OrderHistory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -273,7 +286,9 @@ type Place {
 }
 
 ### ProductCategory
-type ProductCategory @model @auth(rules: [{ allow: public }]) {
+type ProductCategory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   description: LocalizedItem
@@ -282,8 +297,34 @@ type ProductCategory @model @auth(rules: [{ allow: public }]) {
   position: Int!
 }
 
+### ProductComponent
+type ProductComponent
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: String
+  allergens: [Allergen]
+}
+
+### ProductComponent
+type ProductComponentSet
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  type: String!
+  name: LocalizedItem!
+  description: String
+  items: [ID]! # ProductComponent ID
+  maxSelection: Int # On extras
+}
+
 ### Product
-type ChainProduct @model @auth(rules: [{ allow: public }]) {
+type ChainProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -293,13 +334,29 @@ type ChainProduct @model @auth(rules: [{ allow: public }]) {
   isVisible: Boolean!
   image: String
   variants: [ProductVariant]
-  # extends: String
-  # ingredients
-  # tax: Int
-  # laneId: ID
+  allergens: [Allergen]
 }
 
-type GroupProduct @model @auth(rules: [{ allow: public }]) {
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+type GroupProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent chainProduct ID
   chainId: ID!
@@ -308,9 +365,12 @@ type GroupProduct @model @auth(rules: [{ allow: public }]) {
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
+  chainProduct: ChainProduct @connection(fields: ["parentId"])
 }
 
-type UnitProduct @model @auth(rules: [{ allow: public }]) {
+type UnitProduct
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent groupProduct ID
   chainId: ID!
@@ -321,11 +381,12 @@ type UnitProduct @model @auth(rules: [{ allow: public }]) {
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  groupProduct: GroupProduct @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
   id: ID!
-  variantName: LocalizedItem
+  variantName: LocalizedItem!
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean!
@@ -351,7 +412,7 @@ type Availability {
 
 type GeneratedProduct
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productsByUnit", fields: ["unitId"])
   @key(
     name: "productsByUnitAndCategory"
@@ -367,12 +428,20 @@ type GeneratedProduct
   # takeawayTax: Int!
   position: Int!
   image: String
-  variants: [ProductVariant!]!
+  variants: [GeneratedProductVariant!]!
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
 }
 
 type FavoriteProduct
   @model
-  @auth(rules: [{ allow: public }])
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
   id: ID!
   userId: ID!
@@ -381,7 +450,9 @@ type FavoriteProduct
 }
 
 ### Unit
-type Unit @model @auth(rules: [{ allow: public }]) {
+type Unit
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -465,7 +536,7 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: public }]) {
+# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
 #   id: ID!
 #   # name: String
 #   # email: String
@@ -477,7 +548,9 @@ type Lane {
 
 ### Cart
 
-type Cart @model @auth(rules: [{ allow: public }]) {
+type Cart
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -490,10 +563,13 @@ type Cart @model @auth(rules: [{ allow: public }]) {
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_cognito_user_pools
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+    @aws_cognito_user_pools
   onRoleContextsChange: RoleContext
     @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
+    @aws_cognito_user_pools
   onAdminRoleContextsChange: AdminRoleContext
     @aws_subscribe(
       mutations: [
@@ -502,22 +578,41 @@ type Subscription {
         "deleteAdminRoleContext"
       ]
     )
+    @aws_cognito_user_pools
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
+    @aws_cognito_user_pools
   onGroupsChange: Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-  onUnitsChange: Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_cognito_user_pools
+  onUnitsChange: Unit
+    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
+    @aws_cognito_user_pools
+  onProductComponentsChange: ProductComponent
+    @aws_subscribe(
+      mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange: ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
+    )
+    @aws_cognito_user_pools
   onChainProductChange: ChainProduct
     @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+    @aws_cognito_user_pools
   onGroupProductChange: GroupProduct
     @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+    @aws_cognito_user_pools
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
@@ -528,6 +623,17 @@ type Subscription {
         "deleteGeneratedProduct"
       ]
     )
+    @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+    @aws_cognito_user_pools
+  onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
+    @aws_subscribe(
+      mutations: [
+        "createOrderHistory"
+        "updateOrderHistory"
+        "deleteOrderHistory"
+      ]
+    )
+    @aws_cognito_user_pools
 }

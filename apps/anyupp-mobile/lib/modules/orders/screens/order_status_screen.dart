@@ -196,11 +196,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                 SizedBox(
                   width: double.infinity,
                   height: 50.0,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                      side: BorderSide(
-                        color: theme.indicator,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: theme.indicator,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                        side: BorderSide(
+                          color: theme.indicator,
+                        ),
                       ),
                     ),
                     onPressed: () => Nav.to(StripePaymentScreen(
@@ -213,8 +216,6 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                     // onPressed: () => !(state is StripePaymentLoading)
                     //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.id, userSnapshot.data.id))
                     //     : null,
-                    color: theme.indicator,
-                    textColor: theme.text2,
                     child: Text(
                       '${trans('orders.stripepay')}',
                       style: GoogleFonts.poppins(
@@ -282,18 +283,19 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
               SizedBox(
                 width: double.infinity,
                 height: 50.0,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0.0),
-                    side: BorderSide(
-                      color: theme.indicator,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0.0),
+                      side: BorderSide(
+                        color: theme.indicator,
+                      ),
                     ),
+                    primary: theme.indicator,
                   ),
                   onPressed: () => !(state is SimplePayLoading)
                       ? getIt<SimplePayBloc>().add(StartSimplePayPayment(unit, order))
                       : null,
-                  color: theme.indicator,
-                  textColor: theme.text2,
                   child: (state is SimplePayLoading || state is SimplePayWebStarted)
                       ? CenterLoadingWidget(
                           color: theme.highlight,
@@ -324,16 +326,17 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
       child: BlocBuilder<PaymentBloc, BasePaymentState>(
         builder: (context, BasePaymentState state) {
           bool loading = state is PaymentInProgress;
-          return RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0.0),
-              side: BorderSide(
-                color: theme.indicator,
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.0),
+                side: BorderSide(
+                  color: theme.indicator,
+                ),
               ),
+              primary: theme.indicator,
             ),
             onPressed: () => loading ? null : getIt<PaymentBloc>().add(UserPaymentIntentionSignalAction(unit)),
-            color: theme.indicator,
-            textColor: theme.text2,
             child: loading
                 ? CenterLoadingWidget(
                     color: theme.highlight,

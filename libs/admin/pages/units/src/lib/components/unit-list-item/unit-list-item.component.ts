@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -9,6 +9,7 @@ import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.componen
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-unit-list-item',
   templateUrl: './unit-list-item.component.html',
   styleUrls: ['./unit-list-item.component.scss'],
@@ -23,17 +24,13 @@ export class UnitListItemComponent {
   ) {}
 
   public editUnit(): void {
-    const dialog = this._nbDialogService.open(UnitFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(UnitFormComponent);
 
     dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }
 
   public editUnitFloorMap(): void {
-    const dialog = this._nbDialogService.open(UnitFloorMapComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(UnitFloorMapComponent);
 
     dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }

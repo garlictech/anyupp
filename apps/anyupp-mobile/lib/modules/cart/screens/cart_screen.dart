@@ -1,22 +1,17 @@
-import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:flutter/foundation.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
-
-import 'package:fa_prev/modules/cart/cart.dart';
 
 class CartScreen extends StatelessWidget {
   @override
@@ -109,7 +104,7 @@ class CartScreen extends StatelessWidget {
             return StreamBuilder<Cart>(
               stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
-                print('CartScreen.snapshot=$snapshot');
+                // print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
                     return _buildCartListAndTotal(context, state.unit, snapshot.data);
@@ -197,16 +192,18 @@ class CartScreen extends StatelessWidget {
               Container(
                 width: 46,
                 height: 46,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    backgroundColor: theme.indicator,
+                    primary: theme.text2,
                   ),
                   onPressed: () => cart.place == null
-                      ? Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
+                      ? null // TODO visszatenni majd Firebase nelkul  Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
                       : showSelectPaymentMethodBottomSheet(context),
-                  color: theme.indicator,
-                  textColor: theme.text2,
                   child: cart.place == null
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',
@@ -231,18 +228,22 @@ class CartScreen extends StatelessWidget {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
-        child: Dismissible(
-          key: Key(order.id.toString()),
-          child: CartListItemWidget(
-            unit: unit,
-            order: order,
-          ),
-          onDismissed: (direction) {
-            BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.id, order));
-          },
-          // Setting the Dismissible background (appears on swipping)
-          background: Container(color: Colors.redAccent),
+        child: CartListItemWidget(
+          unit: unit,
+          order: order,
         ),
+        // child: Dismissible(
+        //   key: Key(order.id.toString()),
+        //   child: CartListItemWidget(
+        //     unit: unit,
+        //     order: order,
+        //   ),
+        //   onDismissed: (direction) {
+        //     BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.id, order));
+        //   },
+        //   // Setting the Dismissible background (appears on swipping)
+        //   background: Container(color: Colors.redAccent),
+        // ),
       ),
     );
   }

@@ -2,6 +2,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -44,6 +46,7 @@ import { Group } from 'fabric/fabric-impl';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-floor-map-body',
   templateUrl: './floor-map-body.component.html',
 })
@@ -61,6 +64,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this._store.dispatch(floorMapActions.resetFloorMap());
   }
@@ -161,6 +165,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           );
 
           fabricCanvas.renderAll();
+
+          this._changeDetectorRef.detectChanges();
         }
       });
   }
@@ -178,9 +184,6 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
       if (rawObject) {
         const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {
-          hasBackdrop: true,
-          closeOnBackdropClick: false,
-          hasScroll: true,
           dialogClass: 'floor-map-order-dialog',
         });
 
@@ -188,6 +191,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         dialog.componentRef.instance.seatId = rawObject.sID || '';
         dialog.componentRef.instance.allTableOrders$ = this._allTableOrders$;
       }
+
+      this._changeDetectorRef.detectChanges();
     }
   };
 }

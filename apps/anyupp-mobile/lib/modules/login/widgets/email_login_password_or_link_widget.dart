@@ -9,15 +9,15 @@ import 'package:fa_prev/modules/login/login.dart';
 
 class EmailLoginDialogContentWidget extends StatefulWidget {
   @override
-  _EmailLoginDialogContentWidgetState createState() => _EmailLoginDialogContentWidgetState();
+  _EmailLoginDialogContentWidgetState createState() =>
+      _EmailLoginDialogContentWidgetState();
 }
 
-class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentWidget> {
+class _EmailLoginDialogContentWidgetState
+    extends State<EmailLoginDialogContentWidget> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  bool _passwordMode = false;
 
   @override
   void dispose() {
@@ -34,11 +34,13 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
           // Navigator.of(context).pop();
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
         // print('EmailLoginDialogContentWidget.bloc.state=$state');
 
         if (state is LoginInProgress) {
-          return _buildLoading(context, message: trans('login.email.loginProgress'));
+          return _buildLoading(context,
+              message: trans('login.email.loginProgress'));
         }
 
         if (state is EmailLinkSent) {
@@ -81,31 +83,31 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                 padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
                 child: Column(
                   children: [
-                    Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
-                                animationCurve: Curves.easeOut,
-                              ));
-                            },
-                            child: Text(
-                              trans('login.email.forgotPassword'),
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: theme.highlight,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Stack(
+                    //   children: [
+                    //     Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: InkWell(
+                    //         onTap: () {
+                    //           getIt<LoginBloc>().add(ChangeEmailFormUI(
+                    //             ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
+                    //             animationCurve: Curves.easeOut,
+                    //           ));
+                    //         },
+                    //         child: Text(
+                    //           trans('login.email.forgotPassword'),
+                    //           textAlign: TextAlign.start,
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: theme.highlight,
+                    //             fontWeight: FontWeight.normal,
+                    //             decoration: TextDecoration.underline,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     // Email input field
                     LoginFormUtils.buildTextField(
                       context,
@@ -116,80 +118,83 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                       LoginFormUtils.emailValidator(context),
                     ),
                     AnimatedContainer(
-                      height: _passwordMode ? LoginFormUtils.TEXTFIELD_HEIGHT : 0,
-                      duration: Duration(milliseconds: 350),
-                      curve: Curves.fastOutSlowIn,
-                      child: _passwordMode
-                          ? LoginFormUtils.buildTextField(
-                              context,
-                              trans('login.email.passwordFieldLabel'),
-                              _passwordController,
-                              TextInputType.text,
-                              true,
-                              LoginFormUtils.passwordValidator(context),
-                            )
-                          : Container(),
-                    ),
-                    Stack(
+                        height: LoginFormUtils.TEXTFIELD_HEIGHT,
+                        duration: Duration(milliseconds: 350),
+                        curve: Curves.fastOutSlowIn,
+                        child: LoginFormUtils.buildTextField(
+                          context,
+                          trans('login.email.passwordFieldLabel'),
+                          _passwordController,
+                          TextInputType.text,
+                          true,
+                          LoginFormUtils.passwordValidator(context),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: () {
-                              final bool mode = !_passwordMode;
-                              setState(() {
-                                _passwordMode = mode;
-                              });
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: mode ? LoginFormUI.SHOW_LOGIN_WITH_PASSWORD : LoginFormUI.SHOW_LOGIN_WITH_LINK,
-                              ));
-                            },
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 350),
-                              transitionBuilder: (Widget child, Animation<double> animation) {
-                                return ScaleTransition(
-                                  child: child,
-                                  scale: animation,
-                                );
-                              },
-                              child: Text(
-                                _passwordMode
-                                    ? trans('login.email.linkLoginWithLink')
-                                    : trans('login.email.linkLoginWithPassword'),
-                                textAlign: TextAlign.start,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: theme.highlight,
-                                  fontWeight: FontWeight.normal,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                              ui: LoginFormUI.SHOW_FORGOT_PASSWORD,
+                              animationCurve: Curves.easeOut,
+                            ));
+                          },
+                          child: Text(
+                            trans('login.email.forgotPassword'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_REGISTRATION,
-                                animationCurve: Curves.easeOut,
-                              ));
-                            },
-                            child: Text(
-                              trans('login.email.linkRegister'),
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: theme.highlight,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.underline,
-                              ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                              ui: LoginFormUI.SHOW_REGISTRATION,
+                              animationCurve: Curves.easeOut,
+                            ));
+                          },
+                          child: Text(
+                            trans('login.email.linkRegister'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
+                    // Stack(
+                    //   children: [
+                    //     Align(
+                    //       alignment: Alignment.centerRight,
+                    //       child: InkWell(
+                    //         onTap: () {
+                    //           getIt<LoginBloc>().add(ChangeEmailFormUI(
+                    //             ui: LoginFormUI.SHOW_REGISTRATION,
+                    //             animationCurve: Curves.easeOut,
+                    //           ));
+                    //         },
+                    //         child: Text(
+                    //           trans('login.email.linkRegister'),
+                    //           textAlign: TextAlign.start,
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: theme.highlight,
+                    //             fontWeight: FontWeight.normal,
+                    //             decoration: TextDecoration.underline,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 8.0,
                     ),
@@ -198,32 +203,35 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                     SizedBox(
                       width: double.infinity,
                       height: 52.0,
-                      child: RaisedButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF30BF60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 350),
-                          transitionBuilder: (Widget child, Animation<double> animation) {
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
                             return ScaleTransition(
                               child: child,
                               scale: animation,
                             );
                           },
                           child: Text(
-                            _passwordMode ? trans('login.email.buttonLogin') : trans('login.email.buttonLoginLink'),
-                            key: ValueKey<String>('EMAIL_LOGIN_BUTTON[$_passwordMode]'),
+                            trans('login.email.buttonLogin'),
+                            key: ValueKey<String>('EMAIL_LOGIN_BUTTON'),
                             softWrap: false,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               color: theme.text2,
-                              fontSize: _passwordMode ? 20.0 : 18.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
-                        color: Color(0xFF30BF60),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        onPressed: () => _passwordMode ? _loginWithEmailAndPassword() : _sendEmailWithLoginLink(),
+                        onPressed: () => _loginWithEmailAndPassword(),
                       ),
                     ),
                   ],
@@ -274,19 +282,12 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
     );
   }
 
-  void _sendEmailWithLoginLink() {
-    print('_sendEmailWithLoginLink()=${_emailController.text}');
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      getIt<LoginBloc>().add(StartLoginWithEmail(_emailController.text));
-    }
-  }
-
   void _loginWithEmailAndPassword() {
     print('_loginWithEmailAndPassword()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      getIt<LoginBloc>().add(LoginWithEmailAndPassword(_emailController.text, _passwordController.text));
+      getIt<LoginBloc>().add(LoginWithEmailAndPassword(
+          _emailController.text, _passwordController.text));
     }
   }
 }

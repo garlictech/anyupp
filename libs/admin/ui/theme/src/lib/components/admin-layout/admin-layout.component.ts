@@ -1,6 +1,12 @@
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
@@ -29,6 +35,12 @@ const menuItems = {
     icon: 'grid-outline',
     link: '/admin/product-categories',
     roles: MENU_ROLES.PRODUCT_CATEGORIES,
+  },
+  productModifiers: {
+    title: 'menu.modifiersAndExtras',
+    icon: 'pantone-outline',
+    link: '/admin/modifiers-and-extras',
+    roles: MENU_ROLES.MODIFIERS_AND_EXTRAS,
   },
   units: {
     title: 'menu.units',
@@ -83,13 +95,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),
-        filter((adminUser): boolean => !!adminUser),
+        filter((adminUser): boolean => !!adminUser.role),
         debounceTime(10), // Language reload!
         untilDestroyed(this),
       )
@@ -98,17 +111,17 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          /*if ( TODO use roleContext check
-            menuItem.roles.includes(
-              this.adminUser?.roles?.role || EAdminRole.INACTIVE,
-            )
-          ) {*/
-          this.menu.push({
-            ...menuItem,
-            title: this._translateService.instant(menuItem.title),
-          });
-          // }
+          if (
+            menuItem.roles.includes(this.adminUser?.role || EAdminRole.INACTIVE)
+          ) {
+            this.menu.push({
+              ...menuItem,
+              title: this._translateService.instant(menuItem.title),
+            });
+          }
         });
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 

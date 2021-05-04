@@ -1,7 +1,13 @@
 import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -28,11 +34,12 @@ const laneFilter = (selectedLanes: string[]) => (
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-lanes-body',
   templateUrl: './lanes-body.component.html',
   styleUrls: ['./lanes-body.component.scss'],
 })
-export class LanesBodyComponent implements OnDestroy {
+export class LanesBodyComponent implements OnInit, OnDestroy {
   public placedItems: ILaneOrderItem[] = [];
   public processingItems: ILaneOrderItem[] = [];
   public readyItems: ILaneOrderItem[] = [];
@@ -46,7 +53,10 @@ export class LanesBodyComponent implements OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _translateService: TranslateService,
-  ) {
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this._store.pipe(
         select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)),
@@ -120,6 +130,7 @@ export class LanesBodyComponent implements OnDestroy {
               (i): boolean => typeof i.laneId === 'undefined',
             ).length,
           });
+          this._changeDetectorRef.detectChanges();
         },
       );
 
@@ -130,6 +141,8 @@ export class LanesBodyComponent implements OnDestroy {
           size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -153,5 +166,7 @@ export class LanesBodyComponent implements OnDestroy {
         }),
       );
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

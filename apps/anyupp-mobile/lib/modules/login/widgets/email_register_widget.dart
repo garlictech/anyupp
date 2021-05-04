@@ -1,5 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EmailRegisterDialogContentWidget extends StatefulWidget {
   @override
-  _EmailRegisterDialogContentWidgetState createState() => _EmailRegisterDialogContentWidgetState();
+  _EmailRegisterDialogContentWidgetState createState() =>
+      _EmailRegisterDialogContentWidgetState();
 }
 
-class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogContentWidget> {
+class _EmailRegisterDialogContentWidgetState
+    extends State<EmailRegisterDialogContentWidget> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
+  //final _emailOrPhoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -22,24 +27,26 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
     _emailController.dispose();
     _password1Controller.dispose();
     _password2Controller.dispose();
+    //_emailOrPhoneController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
-      listener: (BuildContext context, LoginState state) {
-        print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
+      listener: (BuildContext context, LoginState state) {},
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
         if (state is EmailRegistrationSuccess) {
-          getIt<LoginBloc>()
-              .add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_LINK, animationCurve: Curves.easeIn));
+          print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
+          getIt<LoginBloc>().add(ChangeEmailFormUI(
+              ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+              animationCurve: Curves.easeIn));
         }
-      },
-      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
         // print('PhoneDialogContentWidget.bloc.state=$state');
 
-        if (state is LoginInProgress) {
-          return _buildLoading(context, message: trans('login.email.loginProgress'));
+        if (state is EmailLoginInProgress) {
+          return _buildLoading(context);
         }
 
         return _buildRegistrationForm(context);
@@ -80,6 +87,14 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Email + passwords input fields
+                    // LoginFormUtils.buildTextField(
+                    //   context,
+                    //   trans('login.email.emailFieldLabel'),
+                    //   _emailOrPhoneController,
+                    //   TextInputType.text,
+                    //   false,
+                    //   LoginFormUtils.emailValidator(context),
+                    // ),
                     LoginFormUtils.buildTextField(
                       context,
                       trans('login.email.emailFieldLabel'),
@@ -107,8 +122,9 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                     // Sing in link button
                     InkWell(
                       onTap: () {
-                        getIt<LoginBloc>().add(
-                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_LINK, animationCurve: Curves.easeIn));
+                        getIt<LoginBloc>().add(ChangeEmailFormUI(
+                            ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                            animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),
@@ -129,7 +145,13 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                     SizedBox(
                       width: double.infinity,
                       height: 52.0,
-                      child: RaisedButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF30BF60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
                         child: Text(
                           //transEx(context, 'payment.sendOrder'),
                           trans('login.email.buttonRegister'),
@@ -138,10 +160,6 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                             fontSize: 20.0,
                             fontWeight: FontWeight.normal,
                           ),
-                        ),
-                        color: Color(0xFF30BF60),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
                         ),
                         onPressed: () => _sendRegistrationRequest(),
                       ),
@@ -161,7 +179,45 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
     print('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      getIt<LoginBloc>().add(RegisterWithEmailAndPassword(_emailController.text, _password1Controller.text));
+      if (_password1Controller.text != _password2Controller.text) {
+        getIt<ExceptionBloc>().add(ShowException(SignUpException(
+            code: SignUpException.CODE,
+            subCode: SignUpException.ERROR_PASSWORD_MISSMATCH)));
+      } else {
+        getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+            userEmail: _emailController.text,
+            userPhone: null,
+            email: _emailController.text,
+            password: _password1Controller.text));
+      }
+      // bool isPhone = false;
+      // if (LoginFormUtils.phoneValidator(context)
+      //         .call(_emailOrPhoneController.text) ==
+      //     null) {
+      //   isPhone = true;
+      // }
+      // bool isEmail = false;
+      // if (LoginFormUtils.emailValidator(context)
+      //         .call(_emailOrPhoneController.text) ==
+      //     null) {
+      //   isEmail = true;
+      // }
+      // if (!isPhone && !isEmail) {
+      //   getIt<ExceptionBloc>().add(ShowException(SignUpException(
+      //       code: SignUpException.CODE,
+      //       subCode: SignUpException.NOT_EMAIL_OR_PHONE)));
+      // } else if (isEmail &&
+      //     (_emailOrPhoneController.text != _emailController.text)) {
+      //   getIt<ExceptionBloc>().add(ShowException(SignUpException(
+      //       code: SignUpException.CODE,
+      //       subCode: SignUpException.USER_EMAIL_NOT_SAME)));
+      // } else {
+      //   getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
+      //       userEmail: isEmail ? _emailOrPhoneController.text : null,
+      //       userPhone: isPhone ? _emailOrPhoneController.text : null,
+      //       email: _emailController.text,
+      //       password: _password1Controller.text));
+      // }
     }
   }
 }

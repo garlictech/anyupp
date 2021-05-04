@@ -1,23 +1,22 @@
 import { ApolloQueryResult, QueryOptions } from 'apollo-client';
 import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import API from '@aws-amplify/api';
+import { from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
-import { buildRetryLogic } from '@bgap/shared/utils';
+// import { buildRetryLogic } from '@bgap/shared/utils';
 
 export class GraphqlApiClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _client: AWSAppSyncClient<any>;
   // See issue #348
-  private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
+  // private _graphqlRetryLogic: ReturnType<typeof buildRetryLogic>;
   constructor(
     private genericConfig: ICrudApiConfig,
     specificConfig: Partial<AWSAppSyncClientOptions>,
     private logger: ILogger,
   ) {
-    API.configure(genericConfig);
+    // API.configure(genericConfig);
 
     // TODO: the retrayable and retryDelayInMillisec functions is not good
     // for the current GraphQL client responses
@@ -52,11 +51,12 @@ export class GraphqlApiClient {
     //     return 2000;
     //   }
     // };
-    this._graphqlRetryLogic = buildRetryLogic({
-      // logger: this.logger,
-      // retryable,
-      // retryDelayInMillisec,
-    });
+    // This one works but not needed during development
+    // this._graphqlRetryLogic = buildRetryLogic({
+    //   // logger: this.logger,
+    //   // retryable,
+    //   // retryDelayInMillisec,
+    // });
     this._client = new AWSAppSyncClient({
       url: genericConfig.aws_appsync_graphqlEndpoint,
       region: genericConfig.aws_appsync_region,
@@ -78,7 +78,7 @@ export class GraphqlApiClient {
     // );
 
     // reconfig
-    API.configure(this.genericConfig);
+    // API.configure(this.genericConfig);
     return from(
       this._client.query({
         query: document,
@@ -86,11 +86,12 @@ export class GraphqlApiClient {
         ...options,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### QUERY AfterRetry'),
       map(x => x as ApolloQueryResult<T>),
     );
   }
+
   mutate<T = unknown>(
     document: DocumentNode,
     variables?: Record<string, unknown>,
@@ -100,15 +101,32 @@ export class GraphqlApiClient {
     //     document,
     //   )} called with variables ${JSON.stringify(variables, null, 2)}`,
     // );
-    API.configure(this.genericConfig);
+    // API.configure(this.genericConfig);
     return from(
       this._client.mutate({
         mutation: document,
         variables,
       }),
     ).pipe(
-      this._graphqlRetryLogic,
+      // this._graphqlRetryLogic,
       // pipeDebug('### MUTATION AfterRetry'),
+      map(x => x as ApolloQueryResult<T>),
+    );
+  }
+
+  subscribe<T = unknown>(
+    document: DocumentNode,
+    variables?: Record<string, unknown>,
+  ): Observable<ApolloQueryResult<T>> {
+    return of('subscriber').pipe(
+      switchMap(
+        // We won't lost the result type because of the defined T
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        () => <any>this._client.subscribe({
+            query: document,
+            variables,
+          }),
+      ),
       map(x => x as ApolloQueryResult<T>),
     );
   }

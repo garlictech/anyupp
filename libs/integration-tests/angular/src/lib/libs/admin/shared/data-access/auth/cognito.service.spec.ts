@@ -1,21 +1,24 @@
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
+import { from } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { configureAmplifyWithUserPasswordAuthFlow } from '@bgap/shared/graphql/api-client';
 import {
   testAdminUsername,
   testAdminUserPassword,
-  configureAmplify,
-} from '../../../../../common';
-import { from } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+} from '@bgap/shared/fixtures';
 
 describe('Testing cognito service', () => {
-  const service = new CognitoService();
-  const goodContext = 'GOOD_CONTEXT';
+  const router = {
+    navigate: jest.fn(),
+  };
+  const service = new CognitoService(<any>router);
+
+  const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
-  const goodGroupId = 'MY GROUP ID';
 
   beforeAll(() => {
-    configureAmplify();
+    configureAmplifyWithUserPasswordAuthFlow();
   });
 
   test('Test valid authorization', done => {
@@ -28,12 +31,12 @@ describe('Testing cognito service', () => {
         tap((auth: CognitoUser) => {
           const token = auth?.getSignInUserSession()?.getIdToken();
           const decoded = token?.decodePayload();
-          expect(decoded?.groupId).toEqual(goodGroupId);
+          expect(decoded?.role).toEqual('superuser');
           expect(decoded?.['custom:context']).toEqual(goodContext);
         }),
       )
       .subscribe(() => done());
-  });
+  }, 15000);
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;

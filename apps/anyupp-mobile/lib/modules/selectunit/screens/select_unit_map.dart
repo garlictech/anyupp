@@ -279,7 +279,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                     child: Center(
                       child: Text(
-                        (unit.distance / 1000).toStringAsFixed(3) + ' km',
+                        (unit.distance ??  0 / 1000).toStringAsFixed(3) + ' km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2, //const Color(0xffffffff),
@@ -401,7 +401,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(trans('selectUnitMap.permission.closeApp')),
               onPressed: () {
                 // Close this dialog
@@ -410,7 +410,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                 SystemChannels.platform.invokeMethod('SystemNavigator.pop');
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(trans('selectUnitMap.permission.backToMap')),
               onPressed: () {
                 // Close this dialog

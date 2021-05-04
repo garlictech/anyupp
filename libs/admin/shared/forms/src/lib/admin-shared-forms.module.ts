@@ -33,6 +33,7 @@ import { FormStaticTextComponent } from './components/form-static-text/form-stat
 import { FormTextInputComponent } from './components/form-text-input/form-text-input.component';
 import { FormUnitLanesComponent } from './components/form-unit-lanes/form-unit-lanes.component';
 import { FormWeeklyScheduleComponent } from './components/form-weekly-schedule/form-weekly-schedule.component';
+import { FormAllergensComponent } from './components/form-allergens/form-allergens.component';
 
 const NB_MODULES = [
   NbIconModule,
@@ -65,6 +66,7 @@ const COMPONENTS = [
   FormProductAvailabilitiesComponent,
   FormColorPickerComponent,
   FormStaticTextComponent,
+  FormAllergensComponent
 ];
 
 @NgModule({

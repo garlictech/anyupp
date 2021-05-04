@@ -51,10 +51,11 @@ Container createOkButton(ThemeChainData theme, BuildContext context) {
         color: theme.border,
       ),
     ),
-    child: FlatButton(
-      color: Colors.transparent,
-      padding: EdgeInsets.all(8.0),
-      splashColor: Colors.blueAccent,
+    child: TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        padding: EdgeInsets.all(8.0),
+      ),
       onPressed: () => Nav.pop(),
       child: Text(
         transEx(context, 'common.close'),

@@ -1,7 +1,14 @@
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
@@ -20,6 +27,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-group-form',
   templateUrl: './group-form.component.html',
 })
@@ -30,42 +38,18 @@ export class GroupFormComponent
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
   private chains: IChain[] = [];
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(_injector);
 
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-
-    this._store = this._injector.get(Store);
-    this._store
-      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
-        this.chains = chains;
-
-        this.chainOptions = this.chains.map(
-          (chain): IKeyValue => ({
-            key: chain.id,
-            value: chain.name,
-          }),
-        );
-      });
-
-    this.currencyOptions = ['EUR', 'HUF'].map(
-      (currency): IKeyValue => ({
-        key: currency,
-        value: currency,
-      }),
-    );
-  }
-
-  ngOnInit(): void {
     this.dialogForm = this._formBuilder.group({
       chainId: ['', [Validators.required]],
       name: ['', [Validators.required]],
@@ -81,7 +65,9 @@ export class GroupFormComponent
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder),
     });
+  }
 
+  ngOnInit(): void {
     if (this.group) {
       this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
     } else {
@@ -94,6 +80,30 @@ export class GroupFormComponent
           }
         });
     }
+
+    this._store
+      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
+      .subscribe((chains: IChain[]): void => {
+        this.chains = chains;
+
+        this.chainOptions = this.chains.map(
+          (chain): IKeyValue => ({
+            key: chain.id,
+            value: chain.name,
+          }),
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this.currencyOptions = ['EUR', 'HUF'].map(
+      (currency): IKeyValue => ({
+        key: currency,
+        value: currency,
+      }),
+    );
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

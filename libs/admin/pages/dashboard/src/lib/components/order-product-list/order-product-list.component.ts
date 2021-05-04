@@ -1,7 +1,14 @@
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
@@ -21,11 +28,12 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-product-list',
   templateUrl: './order-product-list.component.html',
   styleUrls: ['./order-product-list.component.scss'],
 })
-export class OrderProductListComponent {
+export class OrderProductListComponent implements OnInit, OnDestroy {
   @Input() selectedOrder?: IOrder;
   public generatedUnitProducts: IGeneratedProduct[];
   public productCategories: IProductCategory[] = [];
@@ -33,10 +41,16 @@ export class OrderProductListComponent {
   public groupCurrency = '';
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _orderService: OrderService) {
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _orderService: OrderService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.generatedUnitProducts = [];
+  }
 
+  ngOnInit(): void {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
@@ -44,6 +58,8 @@ export class OrderProductListComponent {
       )
       .subscribe((group: IGroup | undefined): void => {
         this.groupCurrency = group?.currency || '';
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -53,6 +69,8 @@ export class OrderProductListComponent {
           size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     combineLatest([
@@ -87,8 +105,14 @@ export class OrderProductListComponent {
           );
 
           this.selectedProductCategoryId = this.productCategories?.[0]?.id;
+
+          this._changeDetectorRef.detectChanges();
         },
       );
+  }
+
+  ngOnDestroy(): void {
+    // untilDestroyed uses it.
   }
 
   public onProductCategorySelected(productCategoryId: string): void {

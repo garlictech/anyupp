@@ -1,3 +1,5 @@
+[![Appcenter Build status - IOS](https://build.appcenter.ms/v0.1/apps/b0bf2ec0-0acc-4871-a0e9-dcd93586fa05/branches/dev/badge)](https://appcenter.ms)
+
 # Anyupp
 
 See the official nx docs below, let's start with the Anyupp-specific stuff.
@@ -34,7 +36,7 @@ Use the `build` build targets for projects requiring build/code generation.
 
 **the graphql schemas**
 
-`nx build anyupp-gql-api`
+`nx build anyupp-gql-api  --skip-nx-cache`
 
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
@@ -73,6 +75,8 @@ Check the invoked scripts for their internals and parameters!
 First, find a name for your app stack. It is important, as it will appear everywhere: amplify app names, CDK stack, etc.
 In the examples below, we use APPNAME for the stack name. Then, choose an environment: dev, qa, prod. The difference
 between the stage environments are the different parameters in the parameter store.
+
+**WARNING** Don't use dots in the private stack name.
 
 ### Option 1: Create everything from scratch
 
@@ -198,6 +202,11 @@ example: `nx config crud-backend --app anyupp-backend --stage dev` for the dev
 
 It pulls the admin Amplify project and connects it to the actual CDK resources.
 
+## CRUD api resources
+
+The above `nx config crud-backend` generates a config file `libs/crud-gql/backend/src/generated/table-config.json`
+containing the table names/arns of the crud backend.
+
 ## Building the project
 
 Like the config stage, we have to tell the system which stack (app) and stage you
@@ -249,15 +258,22 @@ Then, remove the CDK stack:
 
 The deployed admin sites:
 
-- DEV: https://dev.admin.anyupp-backend.anyupp.com/
-- QA: https://qa.admin.anyupp-backend.anyupp.com/
+- DEV: https://dev-admin-anyupp-backend.anyupp.com/
+- QA: https://qa-admin.-nyupp-backend.anyupp.com/
+
+### Seeding
 
 Both systems have some minimal data seeded at deploy/creation time.
 
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
 
-- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`
+To execute the seeder locally run the following command:
+`yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts`
+
+### Test user
+
+- A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/
@@ -287,7 +303,8 @@ Execute all the integration tests:
 
 Execute on single integration test suite:
 
-`yarn jest -c libs/integration-tests/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+`yarn jest -c libs/integration-tests/admin/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
 
@@ -417,6 +434,9 @@ Run `ng build my-app` to build the project. The build artifacts will be stored i
 Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
+
+Use `--exclude="PROJECT_NAME"` to exclude the int tests
+`nx affected:test --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal"`
 
 ### Using jest options [Nrwl - testing](https://nx.dev/latest/angular/cli/test#testfile)
 
@@ -574,3 +594,24 @@ Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a
 
 Build IOS app
 `nx buildIos anyupp-mobile`
+
+**Deploy to App Center**
+
+`nx publish-appcenter anyupp-mobile --stage=dev --platform=android`
+
+- stage is `dev`, `qa`, `prod`
+- platform is `android`, `ios`
+
+The tool assumes that you have a valid appcenter token in the `APP_CENTER_TOKEN`
+environment variable. The tool uses the current app image path, so
+be careful: if you want to publish QA, then build the app with QA config, then
+publish!
+
+## Tools
+
+### Reconfig the whole workspace
+
+`./tools/build-workspace.sh anyupp-backend dev`
+
+Before it, remove `apps/crud-api/amplify`. Ensure that all your changes are pushed or discard them.
+The command fethes the crud backend, the configurations and regenerates the code files.

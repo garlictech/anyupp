@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -19,6 +21,7 @@ interface IMarkerData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-google-map',
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.scss'],
@@ -33,7 +36,7 @@ export class GoogleMapComponent implements OnChanges {
   public center: google.maps.LatLngLiteral;
   public markerData: IMarkerData;
 
-  constructor() {
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {
     this.markerData = {
       options: {
         draggable: true,
@@ -59,6 +62,8 @@ export class GoogleMapComponent implements OnChanges {
     if (this.map) {
       this.map.center = this.markerData.location;
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public dragEnd($event: google.maps.MouseEvent): void {

@@ -1,0 +1,6 @@
+mutation CreateCartMutation($createCartInput: CreateCartInput!) {
+  createCart(input: $createCartInput)
+  {
+    id
+  }
+}

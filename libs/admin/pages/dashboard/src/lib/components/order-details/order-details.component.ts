@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   dashboardSelectors,
   IDashboardSettings,
@@ -25,11 +32,12 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-order-details',
   styleUrls: ['./order-details.component.scss'],
   templateUrl: './order-details.component.html',
 })
-export class OrderDetailsComponent implements OnDestroy {
+export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: IOrder;
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
@@ -43,9 +51,12 @@ export class OrderDetailsComponent implements OnDestroy {
     private _store: Store<any>,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
+  }
 
+  ngOnInit(): void {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
       .subscribe((dashboardSettings: IDashboardSettings): void => {
@@ -55,6 +66,8 @@ export class OrderDetailsComponent implements OnDestroy {
           this.dashboardSettings.size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
   }
 
@@ -85,6 +98,8 @@ export class OrderDetailsComponent implements OnDestroy {
           this.workingOrderStatus = false;
         },
       );
+
+      this._changeDetectorRef.detectChanges();
     }
   }
 
@@ -95,13 +110,13 @@ export class OrderDetailsComponent implements OnDestroy {
 
     if (status) {
       this._orderService.updateOrderItemStatus(this.order.id, status, idx);
+
+      this._changeDetectorRef.detectChanges();
     }
   }
 
   public resetOrderItemStatus(idx: number): void {
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: 'orders.confirmResetOrderItemStatus',
@@ -114,6 +129,8 @@ export class OrderDetailsComponent implements OnDestroy {
               EOrderStatus.PLACED,
               idx,
             );
+
+            this._changeDetectorRef.detectChanges();
           },
           status: 'success',
         },

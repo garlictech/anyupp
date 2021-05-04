@@ -1,7 +1,13 @@
 import { timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
@@ -24,6 +30,7 @@ import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -42,10 +49,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.resized = false;
     this.toggleFormControl = new FormControl(false);
+  }
 
+  ngOnInit(): void {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
       .subscribe((dashboardSettings: IDashboardSettings): void => {
@@ -55,6 +65,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.buttonSize = this.resized
           ? ENebularButtonSize.MEDIUM
           : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._store
@@ -67,10 +79,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.selectedUnit = unit;
 
         this.toggleFormControl.setValue(this.selectedUnit?.isAcceptingOrders);
-      });
-  }
 
-  ngOnInit(): void {
+        this._changeDetectorRef.detectChanges();
+      });
+
     timer(0, 1000)
       .pipe(untilDestroyed(this))
       .subscribe((): void => {
@@ -78,7 +90,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.time = `${zeroFill(date.getHours())}:${zeroFill(
           date.getMinutes(),
         )}:${zeroFill(date.getSeconds())}`;
+
+        this._changeDetectorRef.detectChanges();
       });
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -119,9 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public toggleAcceptingOrders($event: Event): void {
     $event.preventDefault();
 
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: this.selectedUnit?.isAcceptingOrders
