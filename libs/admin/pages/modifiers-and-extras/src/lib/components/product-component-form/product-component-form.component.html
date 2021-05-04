@@ -1,0 +1,81 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">
+      {{
+        (productComponent && productComponent.id
+          ? 'productComponents.editProductComponent'
+          : 'productComponents.newProductComponent'
+        ) | translate
+      }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
+      <div class="row">
+        <div class="col-md-6">
+          <bgap-form-select
+            caption="common.chain"
+            [localize]="false"
+            [options]="chainOptions"
+            [control]="dialogForm.get('chainId')! | asFormControl"
+          ></bgap-form-select>
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+
+      <bgap-form-text-input
+        caption="common.nameHU"
+        type="text"
+        [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+      ></bgap-form-text-input>
+      <bgap-form-text-input
+        caption="common.nameEN"
+        type="text"
+        [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+      ></bgap-form-text-input>
+      <bgap-form-text-input
+        caption="common.nameDE"
+        type="text"
+        [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+      ></bgap-form-text-input>
+
+      <bgap-form-text-input
+        caption="common.description"
+        type="text"
+        [control]="dialogForm.get('description')! | asFormControl"
+      ></bgap-form-text-input>
+
+      <!-- ALLERGENS -->
+      <bgap-form-allergens
+        [control]="dialogForm.get('allergens')! | asFormControl"
+      ></bgap-form-allergens>
+
+      <div class="mt-20">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

@@ -27,21 +27,21 @@ import { tap } from 'rxjs/operators';
 })
 export class UnitListComponent implements OnInit, OnDestroy {
   public units: IUnit[] = [];
-  public selectedChainId$!: Observable<string | undefined | null>;
+  public selectedChainId$: Observable<string | undefined | null>;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.selectedChainId$ = this._store.pipe(
       select(loggedUserSelectors.getSelectedChainId),
       untilDestroyed(this),
     );
+  }
 
+  ngOnInit(): void {
     combineLatest([
       this._store.pipe(
         select(groupsSelectors.getSelectedChainGroups),
@@ -69,11 +69,6 @@ export class UnitListComponent implements OnInit, OnDestroy {
   }
 
   public addUnit(): void {
-    this._nbDialogService.open(UnitFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(UnitFormComponent);
   }
 }

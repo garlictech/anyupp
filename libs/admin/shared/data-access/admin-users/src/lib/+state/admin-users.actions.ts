@@ -1,7 +1,7 @@
 import { IAdminUser } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
 
-export const init = createAction('[AdminUsers Page] Init');
+export const init = createAction('[AdminUsers] Init');
 
 export const upsertAdminUser = createAction(
   '[AdminUsers] Upsert admin user',

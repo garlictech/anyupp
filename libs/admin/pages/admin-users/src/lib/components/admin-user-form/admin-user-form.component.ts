@@ -1,6 +1,5 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -43,6 +42,12 @@ export class AdminUserFormComponent
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
+
+    this.dialogForm = this._formBuilder.group({
+      name: ['', [Validators.required]],
+      ...contactFormGroup(true),
+      profileImage: [''], // Just for file upload!!
+    });
   }
 
   get userImage(): string {
@@ -50,12 +55,6 @@ export class AdminUserFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      ...contactFormGroup(true),
-      profileImage: [''], // Just for file upload!!
-    });
-
     if (this.adminUser) {
       this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
     }
@@ -95,7 +94,6 @@ export class AdminUserFormComponent
           executeMutation(
             anyuppAuthenticatedGraphqlClient,
           )(AnyuppApi.CreateAdminUser, { input: { email, name, phone } })
-            .pipe(map((result: any) => result.createAdminUser))
             .subscribe(() => {
               this._toasterService.show(
                 EToasterType.SUCCESS,

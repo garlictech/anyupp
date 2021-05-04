@@ -6,7 +6,7 @@ import { configureAmplifyWithUserPasswordAuthFlow } from '@bgap/shared/graphql/a
 import {
   testAdminUsername,
   testAdminUserPassword,
-} from '@bgap/integration-tests/universal';
+} from '@bgap/shared/fixtures';
 
 describe('Testing cognito service', () => {
   const router = {

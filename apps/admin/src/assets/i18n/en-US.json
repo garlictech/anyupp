@@ -17,6 +17,9 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "delete": "Delete",
+    "add": "Add",
+    "moveDown": "Move down",
+    "moveUp": "Move up",
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
@@ -80,6 +83,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "productCategories": "Product categories",
+    "modifiersAndExtras": "Modifiers and Extras",
     "units": "Units",
     "groups": "Groups",
     "chains": "Chains",
@@ -183,8 +187,6 @@
     "timeTo": "Time to",
     "addVariant": "Add variant",
     "addAvailability": "Add availability",
-    "moveDown": "Move down",
-    "moveUp": "Move up",
     "lane": "Lane",
     "productType": {
       "drink": "Drink",
@@ -197,6 +199,25 @@
     "listTitle": "Product categories (EN)",
     "editProductCategory": "Edit product category",
     "newProductCategory": "New product category"
+  },
+  "productComponents": {
+    "editProductComponent": "Edit product component",
+    "newProductComponent": "New product component"
+  },
+  "productComponentSets": {
+    "editProductComponentSet": "Edit product component set",
+    "newProductComponentSet": "New product component set",
+    "productComponent": "Product component",
+    "type": {
+      "extras": "Extras",
+      "modifier": "Modifier"
+    },
+     "maxSelection": "Max selection"
+  },
+  "modifiersAndExtras": {
+    "listTitle": "Modifiers and Extras",
+    "productComponents": "Product components",
+    "modExtSets": "Modifiers and extras"
   },
   "groups": {
     "listTitle": "Groups",

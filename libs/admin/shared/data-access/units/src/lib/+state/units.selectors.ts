@@ -4,7 +4,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { IUnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
 
-// Lookup the 'Units' feature state managed by NgRx
 export const getUnitsState = createFeatureSelector<IUnitsState>(
   UNITS_FEATURE_KEY,
 );

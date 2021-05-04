@@ -33,17 +33,13 @@ export class ChainFormComponent
   public chain!: IChain;
   public eImageType = EImageType;
 
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
-
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger
   ) {
     super(_injector);
-
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
 
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
