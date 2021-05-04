@@ -7,41 +7,41 @@ import {
 } from '@bgap/shared/graphql/api-client';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of, throwError } from 'rxjs';
-import { generatedProductSeed } from '@bgap/shared/fixtures';
+import { generatedProductSeed, seededIdPrefix } from '@bgap/shared/fixtures';
 
-const generateChainId = (idx: number) => `chain_${idx}_id_seeded`;
+const generateChainId = (idx: number) => `${seededIdPrefix}chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
-  `group_c${chainIdx}_${idx}_id_seeded`;
+  `${seededIdPrefix}group_c${chainIdx}_${idx}_id`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
-  `unit_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
+  `${seededIdPrefix}unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateLaneId = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
   idx: number,
-) => `lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id_seeded`;
+) => `${seededIdPrefix}lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
 const generateProductCategoryId = (chainIdx: number, idx: number) =>
-  `product_category_c${chainIdx}_${idx}_id_seeded`;
+  `${seededIdPrefix}product_category_c${chainIdx}_${idx}_id`;
 const generateChainProductId = (chainIdx: number, idx: number) =>
-  `chain_product_c${chainIdx}_${idx}_id_seeded`;
+  `${seededIdPrefix}chain_product_c${chainIdx}_${idx}_id`;
 const generateGroupProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `group_product_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
+) => `${seededIdPrefix}group_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateUnitProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id_seeded`;
+) => `${seededIdPrefix}unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
-  `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id_seeded`;
-const generateCartId = (idx: number) => `cart_${idx}_id_seeded`;
-const generateUserId = (idx: number) => `user_${idx}_id_seeded`;
+  `${seededIdPrefix}chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
+const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
+const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: EAdminRole) =>
-  `role_context_${idx}_${role}_id_seeded`;
+  `${seededIdPrefix}role_context_${idx}_${role}_id`;
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
-  `admin_role_context_${idx}_${role}_id_seeded`;
+  `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
 
 const deleteCreate = <CREATED_ITEM_TYPE>({
   input,

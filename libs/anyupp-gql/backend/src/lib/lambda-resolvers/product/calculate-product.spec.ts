@@ -84,7 +84,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         "description": Object {
           "en": "DESCRIPTION",
         },
-        "id": "chainProduct_id_",
+        "id": "test_chainProduct_id_",
         "image": "IMG",
         "name": Object {
           "en": "NAME",
@@ -96,7 +96,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         "unitId": "unitId_",
         "variants": Array [
           Object {
-            "id": "chainProductVariant_id_1",
+            "id": "test_chainProductVariant_id_1",
             "pack": Object {
               "size": 1,
               "unit": "UNIT",
@@ -108,7 +108,7 @@ describe('calculatePricesAndCheckActivity method', () => {
             },
           },
           Object {
-            "id": "chainProductVariant_id_1",
+            "id": "test_chainProductVariant_id_1",
             "pack": Object {
               "size": 1,
               "unit": "UNIT",

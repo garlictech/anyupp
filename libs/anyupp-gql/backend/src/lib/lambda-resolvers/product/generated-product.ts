@@ -56,10 +56,6 @@ const deleteItems = (items: IGeneratedProduct[]) =>
 export const createGeneratedProducts = (
   products: CrudApi.CreateGeneratedProductInput[],
 ) => {
-  console.log(
-    '### ~ file: generated-product.ts ~ line 59 ~ products',
-    products,
-  );
   return executeBatchPut(TABLE_NAME)(products);
 };
 

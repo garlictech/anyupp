@@ -7,7 +7,7 @@ import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 import { getSortedIds } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
 import { scan, switchMap, tap, delay } from 'rxjs/operators';
-import { generatedProductSeed } from '@bgap/shared/fixtures';
+import { generatedProductSeed, testIdPrefix } from '@bgap/shared/fixtures';
 import {
   createTestGeneratedProduct,
   deleteTestGeneratedProduct,
@@ -18,22 +18,22 @@ const unitId_02 = 'UNIT_ID_02_BATCH';
 const unitId_03 = 'UNIT_ID_03_BATCH';
 const unit01_generatedProduct_01 = {
   ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_01}_01`,
+  id: `${testIdPrefix}generatedProduct_u${unitId_01}_01`,
   unitId: unitId_01,
 };
 const unit02_generatedProduct_01 = {
   ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_02}_01`,
+  id: `${testIdPrefix}generatedProduct_u${unitId_02}_01`,
   unitId: unitId_02,
 };
 const unit03_generatedProduct_01 = {
   ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_03}_01`,
+  id: `${testIdPrefix}generatedProduct_u${unitId_03}_01`,
   unitId: unitId_03,
 };
 const unit03_generatedProduct_02 = {
   ...generatedProductSeed.base,
-  id: `generatedProduct_u${unitId_03}_02`,
+  id: `${testIdPrefix}generatedProduct_u${unitId_03}_02`,
   unitId: unitId_03,
 };
 
@@ -41,7 +41,7 @@ const DYNAMODB_OPERATION_DELAY = 3000;
 const PRODUCT_NUM_FOR_BATCH_CRUD = 26; // should be > 25 because the batchSize is 25
 const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
   .map(id => id.toString().padStart(2, '0'))
-  .map(id => `ID_${id}`);
+  .map(id => `${testIdPrefix}ID_${id}`);
 
 describe('GenerateProduct tests', () => {
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {

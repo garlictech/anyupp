@@ -24,12 +24,12 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
-  "chainId": "chain_1_id_seeded",
+  "chainId": "seeded_chain_1_id",
   "currency": "EUR",
   "distance": 0,
-  "groupId": "group_c1_1_id_seeded",
-  "id": "unit_03",
-  "name": "Test unit #unit_1_id",
+  "groupId": "seeded_group_c1_1_id",
+  "id": "test_unit_03",
+  "name": "Test unit #test_unit_1_id",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {
@@ -85,12 +85,12 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
-  "chainId": "chain_1_id_seeded",
+  "chainId": "seeded_chain_1_id",
   "currency": "EUR",
   "distance": 0,
-  "groupId": "group_c1_1_id_seeded",
-  "id": "unit_03",
-  "name": "Test unit #unit_1_id",
+  "groupId": "seeded_group_c1_1_id",
+  "id": "test_unit_03",
+  "name": "Test unit #test_unit_1_id",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {
