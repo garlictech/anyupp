@@ -1,8 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
@@ -86,12 +83,13 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
             color: theme.text, //change your color here
           ),
           backgroundColor: theme.background,
-          title: Text(trans("allergens.title"),
-                   style: GoogleFonts.poppins(
-            color: Colors.black,
+          title: Text(
+            trans("allergens.title"),
+            style: GoogleFonts.poppins(
+              color: Colors.black,
+            ),
+            //getLocalizedText(context, widget.item.name),
           ),
-              //getLocalizedText(context, widget.item.name),
-              ),
         ),
         body: buildDetailsScreen(context),
       ),
@@ -133,7 +131,7 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
   Widget getAllergenGrids() {
     return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200.0,
+          maxCrossAxisExtent: 150.0,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
           childAspectRatio: 1.0,
@@ -149,7 +147,7 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
                   right: 4.0,
                 ),
                 padding: EdgeInsets.only(
-                  top: 22.0,
+                  top: 10.0,
                   bottom: 10.0,
                   left: 18.0,
                   right: 18.0,
@@ -166,26 +164,29 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
                     Expanded(
                         flex: 5,
                         child: Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: SvgPicture.asset(getAllergenSvgPath(value)),
                         )),
                     Expanded(
                         flex: 1,
-                        child: AutoSizeText(
-                          trans(value),
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            //fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF3C2F2F),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            trans("allergens.$value"),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              //fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3C2F2F),
+                            ),
                           ),
                         ))
                   ],
                 ),
               ),
               Positioned(
-                  top: 15,
-                  left: 25,
+                  top: 5,
+                  left: 15,
                   child: Text(
                     key.toString(),
                     textAlign: TextAlign.center,
