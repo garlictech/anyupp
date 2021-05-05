@@ -8,6 +8,7 @@ import {
 } from '@bgap/shared/types';
 import { calculateActualPricesAndCheckActivity } from './calculate-product';
 import { productSeed } from '@bgap/shared/fixtures';
+import { CrudApi } from 'libs/crud-gql/api/src';
 
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: any = {
@@ -22,6 +23,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     productCategoryId: 'PROD_CAT_ID',
     productType: EProductType.DRINK,
     //  chainId: 'CHAIN_ID',
+    allergens: [CrudApi.Allergen.peanut, CrudApi.Allergen.egg],
   };
   const timezone01 = 'Europe/London';
 
@@ -81,6 +83,10 @@ describe('calculatePricesAndCheckActivity method', () => {
     );
     expect(result).toMatchInlineSnapshot(`
       Object {
+        "allergens": Array [
+          "peanut",
+          "egg",
+        ],
         "description": Object {
           "en": "DESCRIPTION",
         },

@@ -250,6 +250,11 @@ export const createTestChainProduct = (
         },
       },
     ],
+    allergens: [
+      CrudApi.Allergen.egg,
+      CrudApi.Allergen.gluten,
+      CrudApi.Allergen.peanut,
+    ],
   };
   return deleteCreate({
     input,
