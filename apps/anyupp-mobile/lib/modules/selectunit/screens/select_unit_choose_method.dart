@@ -80,9 +80,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               ),
             ),
           if (user.profileImage == null)
-            GestureDetector(
-              onTap: () => Nav.to(AllergenDetailsScreen()),
-                          child: Container(
+            Container(
                 width: 46.0,
                 height: 46.0,
                 decoration: BoxDecoration(
@@ -97,7 +95,6 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                   color: Colors.white.withOpacity(0.7),
                 ),
               ),
-            ),
           Padding(
             padding: const EdgeInsets.only(
               left: 12.0,
