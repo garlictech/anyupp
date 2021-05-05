@@ -68,6 +68,7 @@ export interface IOrder {
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;
+  status: EOrderStatus;
 }
 
 export interface IDateIntervals {

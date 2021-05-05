@@ -34,14 +34,6 @@ export const stripeRequestHandler = {
       input,
     } = requestPayload as StartStripePaymentRequest;
 
-    // missingParametersCheck(requestPayload, ['stripeCustomerId']);
-    // missingParametersCheck(input, [
-    //   'chainId',
-    //   'unitId',
-    //   'paymentMethod',
-    //   'userLocation',
-    // ]);
-
     return stripeService.startStripePayment(crudGraphqlClient, userId, input);
   },
 
