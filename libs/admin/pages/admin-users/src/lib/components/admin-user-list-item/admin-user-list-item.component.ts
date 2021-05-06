@@ -19,26 +19,20 @@ export class AdminUserListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   editAdminUser(): void {
-    const dialog = this._nbDialogService.open(AdminUserFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(AdminUserFormComponent);
 
     dialog.componentRef.instance.adminUser = fp.cloneDeep(this.adminUser);
   }
 
   editAdminUserRoles(): void {
-    const dialog = this._nbDialogService.open(AdminUserRoleFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(AdminUserRoleFormComponent);
 
     dialog.componentRef.instance.adminUserId = this.adminUser.id || '';
   }
 
   public resetEmail(): void {
     /*
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: 'auth.sendResetEmail',

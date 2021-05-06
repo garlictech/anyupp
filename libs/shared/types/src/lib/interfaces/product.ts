@@ -115,6 +115,7 @@ export interface IChainProduct {
   updatedAt: string;
   allergens?: string[];
 }
+
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
   id: string;

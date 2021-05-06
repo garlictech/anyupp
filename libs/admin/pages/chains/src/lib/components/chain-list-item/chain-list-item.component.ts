@@ -21,9 +21,7 @@ export class ChainListItemComponent {
   }
 
   public editChain(): void {
-    const dialog = this._nbDialogService.open(ChainFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ChainFormComponent);
 
     dialog.componentRef.instance.chain = fp.cloneDeep(this.chain);
   }

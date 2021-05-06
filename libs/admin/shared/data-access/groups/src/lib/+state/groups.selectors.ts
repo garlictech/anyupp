@@ -8,7 +8,6 @@ import {
   IGroupsState,
 } from './groups.reducer';
 
-// Lookup the 'Groups' feature state managed by NgRx
 export const getGroupsState = createFeatureSelector<IGroupsState>(
   GROUPS_FEATURE_KEY,
 );

@@ -51,6 +51,17 @@ const routes: Routes = [
         },
       },
       {
+        path: 'modifiers-and-extras',
+        loadChildren: () =>
+          import('@bgap/admin/pages/modifiers-and-extras').then(
+            m => m.AdminPagesModifiersAndExtrasModule,
+          ),
+        canActivateChild: [AuthGuard],
+        data: {
+          roles: MENU_ROLES.MODIFIERS_AND_EXTRAS,
+        },
+      },
+      {
         path: 'groups',
         loadChildren: () =>
           import('@bgap/admin/pages/groups').then(

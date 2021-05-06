@@ -24,17 +24,13 @@ export class UnitListItemComponent {
   ) {}
 
   public editUnit(): void {
-    const dialog = this._nbDialogService.open(UnitFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(UnitFormComponent);
 
     dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }
 
   public editUnitFloorMap(): void {
-    const dialog = this._nbDialogService.open(UnitFloorMapComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(UnitFloorMapComponent);
 
     dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }

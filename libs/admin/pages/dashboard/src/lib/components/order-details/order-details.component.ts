@@ -116,9 +116,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   public resetOrderItemStatus(idx: number): void {
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: 'orders.confirmResetOrderItemStatus',
