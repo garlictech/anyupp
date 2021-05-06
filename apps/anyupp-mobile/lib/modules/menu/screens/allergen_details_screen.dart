@@ -113,7 +113,7 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
   }
 
   Widget getAllergenGrids() {
-    Map<int, String> allergens = GeneratedProduct.allergenMap;
+    Map<String, int> allergens = GeneratedProduct.allergenMap;
     return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 150.0,
@@ -122,12 +122,12 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
           childAspectRatio: 1.0,
         ),
         delegate: SliverChildBuilderDelegate((context, index) {
-          int key = allergens.keys.toList()[index];
-          String value = allergens[key];
+          String allergenName = allergens.keys.toList()[index];
+          int allergenIndex = allergens[allergenName];
           return allergenGridWidget(
-              allergen: trans("allergens.$value"),
-              index: allergens.keys.toList()[index],
-              assetPath: "assets/allergens/$value.svg",
+              allergen: trans("allergens.$allergenName"),
+              index: allergenIndex,
+              assetPath: "assets/allergens/$allergenName.svg",
               showName: true);
         }, childCount: allergens.keys.length));
   }

@@ -1,15 +1,15 @@
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/screens/allergen_details_screen.dart';
-import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
+import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/shared/nav.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -156,25 +155,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget buildDetailsScreen(BuildContext context, GeoUnit unit) {
-    List<Widget> allergenGrids = [];
-    List<String> allergens = widget.item.allergens;
-    if (allergens != null) {
-      for (String allergen in allergens) {
-        allergenGrids.add(Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: allergenGridWidget(
-                allergen: trans("allergens.$allergen"),
-                index: GeneratedProduct.allergenMap.keys.firstWhere(
-                    (k) => GeneratedProduct.allergenMap[k] == allergen,
-                    orElse: () => null),
-                assetPath: "assets/allergens/$allergen.svg"),
-          ),
-        ));
-      }
-    }
+    // List<Widget> allergenGrids = [];
+    // List<String> allergens = widget.item.allergens;
+    // if (allergens != null) {
+    //   for (String allergen in allergens) {
+    //     allergenGrids.add(Padding(
+    //       padding: const EdgeInsets.all(4.0),
+    //       child: Container(
+    //         height: 50,
+    //         width: 50,
+    //         child: allergenGridWidget(
+    //             allergen: trans("allergens.$allergen"),
+    //             index: GeneratedProduct.allergenMap[allergen],
+    //             assetPath: "assets/allergens/$allergen.svg"),
+    //       ),
+    //     ));
+    //   }
+    // }
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -213,38 +210,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       color: theme.text,
                     ),
                   ),
-                  allergenGrids.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () => Nav.to(AllergenDetailsScreen()),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(trans("allergens.title"),
-                                        style: GoogleFonts.poppins(
-                                          color: theme.highlight,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 13,
-                                        )),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      Icons.info,
-                                      color: theme.highlight,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                children: allergenGrids,
-                              )
-                            ],
-                          ),
-                        )
+                  widget.item.allergens.isNotEmpty
+                      ? AllergensWidget(widget.item.allergens)
                       : Container(),
                 ],
               ),

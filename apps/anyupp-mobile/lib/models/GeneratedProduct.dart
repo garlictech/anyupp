@@ -17,21 +17,21 @@ class GeneratedProduct extends Model {
   final String image;
   final List<ProductVariant> variants;
   final List<String> allergens;
-  static Map<int, String> allergenMap = {
-    1: 'gluten',
-    2: 'crustaceans',
-    3: 'egg',
-    4: 'fish',
-    5: 'peanut',
-    6: 'milk',
-    7: 'soya',
-    8: 'treenuts',
-    9: 'sulphites',
-    10: 'mustard',
-    11: 'celery',
-    12: 'sesame',
-    13: 'lupin',
-    14: 'molluscs',
+  static Map<String, int> allergenMap = {
+    'gluten': 1,
+    'crustaceans': 2,
+    'egg': 3,
+    'fish': 4,
+    'peanut': 5,
+    'milk': 6,
+    'soya': 7,
+    'treenuts': 8,
+    'sulphites': 9,
+    'mustard': 10,
+    'celery': 11,
+    'sesame': 12,
+    'lupin': 13,
+    'molluscs': 14,
   };
 
   @override
@@ -187,6 +187,6 @@ class GeneratedProduct extends Model {
         'position': position,
         'image': image,
         'variants': variants?.map((e) => e?.toJson())?.toList(),
-        "allergens" : allergens
+        "allergens": allergens
       };
 }
