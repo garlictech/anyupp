@@ -180,8 +180,17 @@
     "anyupp-backend-lib": {
       "tags": ["type:backend", "platform:universal"]
     },
+    "admin-pages-modifiers-and-extras": {
+      "tags": ["type:website", "platform:angular"]
+    },
+    "admin-shared-data-access-product-components": {
+      "tags": ["type:utils", "platform:angular"]
+    },
     "shared-fixtures": {
       "tags": ["type:utils", "platform:universal"]
+    },
+    "admin-shared-data-access-product-component-sets": {
+      "tags": ["type:utils", "platform:angular"]
     }
   }
 }

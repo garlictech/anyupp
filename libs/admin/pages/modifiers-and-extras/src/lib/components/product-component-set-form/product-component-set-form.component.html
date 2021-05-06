@@ -1,0 +1,177 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-left">
+      {{
+        (productComponentSet?.id
+          ? 'productComponentSets.editProductComponentSet'
+          : 'productComponentSets.newProductComponentSet'
+        ) | translate
+      }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      [formGroup]="dialogForm!"
+      (ngSubmit)="submit()"
+      [autocomplete]="false"
+    >
+      <div class="row">
+        <div class="col-md-6">
+          <bgap-form-select
+            caption="common.chain"
+            [localize]="false"
+            [options]="chainOptions"
+            [control]="dialogForm.get('chainId')! | asFormControl"
+          ></bgap-form-select>
+        </div>
+        <div class="col-md-6">
+          <bgap-form-select
+            caption="common.type"
+            [localize]="false"
+            [options]="typeOptions"
+            [control]="dialogForm.get('type')! | asFormControl"
+          ></bgap-form-select>
+        </div>
+      </div>
+
+      <bgap-form-text-input
+        caption="common.nameHU"
+        type="text"
+        [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+      ></bgap-form-text-input>
+      <bgap-form-text-input
+        caption="common.nameEN"
+        type="text"
+        [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+      ></bgap-form-text-input>
+      <bgap-form-text-input
+        caption="common.nameDE"
+        type="text"
+        [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+      ></bgap-form-text-input>
+
+      <bgap-form-text-input
+        caption="common.description"
+        type="text"
+        [control]="dialogForm.get('description')! | asFormControl"
+      ></bgap-form-text-input>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-md-6">
+          <bgap-form-select
+            caption="productComponentSets.productComponent"
+            [localize]="true"
+            [options]="productComponentOptions"
+            [control]="componentForm.get('productComponentId')! | asFormControl"
+          ></bgap-form-select>
+
+          <button
+            nbButton
+            size="small"
+            type="button"
+            status="primary"
+            (click)="addComponentToList()"
+            [disabled]="componentForm.invalid"
+          >
+            {{ 'common.add' | translate }}
+          </button>
+        </div>
+        <div
+          class="col-md-6"
+          [hidden]="
+            dialogForm.value?.type === eProductComponentSetType.MODIFIER
+          "
+        >
+          <bgap-form-text-input
+            caption="productComponentSets.maxSelection"
+            type="number"
+            [control]="dialogForm.get('maxSelection')! | asFormControl"
+          ></bgap-form-text-input>
+        </div>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <nb-list-item
+          *ngFor="
+            let componentId of dialogForm.value?.items || [];
+            let i = index;
+            first as isFirst;
+            last as isLast
+          "
+        >
+          <div class="w-100">
+            <div class="float-left">
+              <div class="subtitle-2">
+                {{ productComponentObject[componentId] | localize }}
+              </div>
+            </div>
+
+            <button
+              nbButton
+              shape="round"
+              status="danger"
+              size="tiny"
+              class="float-right mr-2"
+              type="button"
+              [title]="'common.delete' | translate"
+              (click)="removeComponentFromList(componentId)"
+            >
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </button>
+
+            <button
+              [hidden]="isLast"
+              nbButton
+              shape="round"
+              size="tiny"
+              type="button"
+              class="float-right mr-2"
+              [title]="'common.moveDown' | translate"
+              (click)="move(i, 1)"
+            >
+              <nb-icon icon="chevron-down"></nb-icon>
+            </button>
+            <button
+              [hidden]="isFirst"
+              nbButton
+              shape="round"
+              size="tiny"
+              type="button"
+              class="float-right mr-2"
+              [title]="'common.moveUp' | translate"
+              (click)="move(i, -1)"
+            >
+              <nb-icon icon="chevron-up"></nb-icon>
+            </button>
+          </div>
+        </nb-list-item>
+      </div>
+
+
+      <div class="mt-6">
+        <button
+          nbButton
+          size="small"
+          type="submit"
+          fullWidth
+          status="primary"
+          [disabled]="dialogForm.invalid"
+        >
+          {{ 'common.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

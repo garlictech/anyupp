@@ -54,23 +54,20 @@ export class ProductExtendFormComponent
   public productCategories$: Observable<IProductCategory[]>;
   public unitLanes: IKeyValue[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
-  private _formsService: FormsService;
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
   private _selectedChainId?: string;
   private _selectedGroupId?: string;
   private _selectedUnitId?: string;
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
+  ) {
     super(_injector);
 
-    this._formsService = this._injector.get(FormsService);
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-
-    this._store = this._injector.get(Store);
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
       .subscribe((userSettings: IAdminUserSettings | undefined): void => {
@@ -121,7 +118,9 @@ export class ProductExtendFormComponent
     }
 
     if (this.product) {
-      this.dialogForm.patchValue(fp.omit('variants', cleanObject(this.product)));
+      this.dialogForm.patchValue(
+        fp.omit('variants', cleanObject(this.product)),
+      );
 
       [...this.product.variants]
         .sort(customNumberCompare('position'))

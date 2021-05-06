@@ -27,9 +27,7 @@ export class ProductCategoryListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   public editProductCategory(): void {
-    const dialog = this._nbDialogService.open(ProductCategoryFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ProductCategoryFormComponent);
 
     dialog.componentRef.instance.productCategory = fp.cloneDeep(
       this.productCategory,

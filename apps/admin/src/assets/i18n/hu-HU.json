@@ -18,6 +18,9 @@
     "cancel": "Mégse",
     "delete": "Törlés",
     "ok": "OK",
+    "add": "Hozzáadás",
+    "moveDown": "Mozgatás lefelé",
+    "moveUp": "Mozgatás felfelé",
     "yes": "Igen",
     "no": "Nem",
     "email": "Email",
@@ -80,6 +83,7 @@
     "dashboard": "Vezérlőpult",
     "products": "Termékek",
     "productCategories": "Termék kategóriák",
+    "modifiersAndExtras": "Módosítók és extrák",
     "units": "Units",
     "groups": "Groups",
     "chains": "Chains",
@@ -183,8 +187,6 @@
     "timeTo": "Idő -ig",
     "addVariant": "Variáns hozzáadása",
     "addAvailability": "Elérhetőség hozzáadása",
-    "moveDown": "Mozgatás lefelé",
-    "moveUp": "Mozgatás felfelé",
     "lane": "Pálya",
     "productType": {
       "drink": "Ital",
@@ -197,6 +199,25 @@
     "listTitle": "Termék kategóriák",
     "editProductCategory": "Kategória szerkesztése",
     "newProductCategory": "Új kategória"
+  },
+  "productComponents": {
+    "editProductComponent": "Termék komponens szerkesztése",
+    "newProductComponent": "Új termék komponens"
+  },
+  "productComponentSets": {
+    "editProductComponentSet": "Termék komponens készlet szerkesztése",
+    "newProductComponentSet": "Új termék komponens készlet",
+    "productComponent": "Termék komponens",
+    "type": {
+      "extras": "Extrák",
+      "modifier": "Módosító"
+    },
+    "maxSelection": "Max. kiválaszható elem"
+  },
+  "modifiersAndExtras": {
+    "listTitle": "Módosítók és extrák",
+    "productComponents": "Termék komponensek",
+    "modExtSets": "Módosítók és extrák"
   },
   "groups": {
     "listTitle": "Groupok",

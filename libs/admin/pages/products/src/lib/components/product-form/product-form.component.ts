@@ -3,32 +3,15 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import { ALLERGENS, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import {
-  EImageType,
-  EProductLevel,
-  EProductType,
-  IAdminUserSettings,
-  IAllergen,
-  IKeyValue,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
+  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -38,8 +21,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
-  templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.scss'],
+  templateUrl: './product-form.component.html'
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
@@ -49,20 +31,46 @@ export class ProductFormComponent
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
   public productTypes: IKeyValue[];
-  public allergens = ALLERGENS;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
-  private _formsService: FormsService;
-  private _amplifyDataService: AmplifyDataService;
-  private _changeDetectorRef: ChangeDetectorRef;
-  private _logger: NGXLogger;
   private _selectedChainId = '';
   private _selectedGroupId = '';
   private _selectedProductCategoryId = '';
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _amplifyDataService: AmplifyDataService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _logger: NGXLogger,
+  ) {
     super(_injector);
+
+    this.dialogForm = this._formBuilder.group({
+      name: this._formBuilder.group(
+        {
+          hu: [''],
+          en: [''],
+          de: [''],
+        },
+        { validators: multiLangValidator },
+      ),
+      description: this._formBuilder.group(
+        {
+          hu: [''],
+          en: [''],
+          de: [''],
+        },
+        { validators: multiLangValidator },
+      ),
+      productCategoryId: ['', [Validators.required]],
+      productType: ['', [Validators.required]],
+      isVisible: ['', [Validators.required]],
+      image: [''],
+      variants: this._formBuilder.array([]),
+      allergens: [[]],
+    });
 
     this.productTypes = [
       {
@@ -78,12 +86,6 @@ export class ProductFormComponent
         value: 'products.productType.other',
       },
     ];
-
-    this._store = this._injector.get(Store);
-    this._formsService = this._injector.get(FormsService);
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-    this._changeDetectorRef = this._injector.get(ChangeDetectorRef);
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
@@ -113,33 +115,10 @@ export class ProductFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      name: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      productCategoryId: ['', [Validators.required]],
-      productType: ['', [Validators.required]],
-      isVisible: ['', [Validators.required]],
-      image: [''],
-      variants: this._formBuilder.array([]),
-      allergens: [[]],
-    });
-
     if (this.product) {
-      this.dialogForm.patchValue(fp.omit('variants', cleanObject(this.product)));
+      this.dialogForm.patchValue(
+        fp.omit('variants', cleanObject(this.product)),
+      );
 
       (this.product.variants || []).forEach(
         (variant: IProductVariant): void => {
@@ -270,23 +249,4 @@ export class ProductFormComponent
 
     this._changeDetectorRef.detectChanges();
   };
-
-  public allergenIsChecked(allergen: IAllergen): boolean {
-    return (
-      (this.dialogForm?.value.allergens || [])
-        .indexOf(allergen.id) >= 0
-    );
-  }
-
-  public toggleAllergen(allergen: IAllergen): void {
-    const allergensArr: string[] = this.dialogForm?.value.allergens;
-    const idx = allergensArr.indexOf(allergen.id);
-
-    if (idx < 0) {
-      allergensArr.push(allergen.id);
-    } else {
-      allergensArr.splice(idx, 1);
-    }
-    this.dialogForm?.controls.allergens.setValue(allergensArr);
-  }
 }
