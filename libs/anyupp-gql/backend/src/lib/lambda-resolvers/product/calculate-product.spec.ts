@@ -8,7 +8,7 @@ import {
 } from '@bgap/shared/types';
 import { calculateActualPricesAndCheckActivity } from './calculate-product';
 import { productSeed } from '@bgap/shared/fixtures';
-import { CrudApi } from 'libs/crud-gql/api/src';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: any = {
