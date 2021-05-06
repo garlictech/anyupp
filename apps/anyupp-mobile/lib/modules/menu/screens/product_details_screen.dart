@@ -4,6 +4,8 @@ import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/menu/screens/allergen_details_screen.dart';
+import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -21,7 +23,12 @@ class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
   final GeneratedProduct item;
-  ProductDetailsScreen({Key key, @required this.item, @required this.heroId, @required this.unit}) : super(key: key);
+  ProductDetailsScreen(
+      {Key key,
+      @required this.item,
+      @required this.heroId,
+      @required this.unit})
+      : super(key: key);
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -43,7 +50,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ));
 
     return NetworkConnectionWrapperWidget(
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+          builder: (context, state) {
         if (state is UnitSelected) {
           return _buildMain(context, state.unit);
         }
@@ -148,6 +156,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget buildDetailsScreen(BuildContext context, GeoUnit unit) {
+    List<Widget> allergenGrids = [];
+    List<String> allergens = widget.item.allergens;
+    if (allergens != null) {
+      for (String allergen in allergens) {
+        allergenGrids.add(Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            height: 50,
+            width: 50,
+            child: allergenGridWidget(
+                allergen: trans("allergens.$allergen"),
+                index: GeneratedProduct.allergenMap.keys.firstWhere(
+                    (k) => GeneratedProduct.allergenMap[k] == allergen,
+                    orElse: () => null),
+                assetPath: "assets/allergens/$allergen.svg"),
+          ),
+        ));
+      }
+    }
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -174,21 +201,61 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 left: 30.0,
                 bottom: 25.0,
               ),
-              child: Text(
-                getLocalizedText(context, widget.item.name).toUpperCase(),
-                textAlign: TextAlign.left,
-                style: GoogleFonts.poppins(
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.bold,
-                  color: theme.text,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    getLocalizedText(context, widget.item.name).toUpperCase(),
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.poppins(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: theme.text,
+                    ),
+                  ),
+                  allergenGrids.isNotEmpty
+                      ? GestureDetector(
+                          onTap: () => Nav.to(AllergenDetailsScreen()),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  children: [
+                                    Text(trans("allergens"),
+                                        style: GoogleFonts.poppins(
+                                          color: theme.highlight,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 13,
+                                        )),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Icon(
+                                      Icons.info,
+                                      color: theme.highlight,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: allergenGrids,
+                              )
+                            ],
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
             ),
           ),
           StreamBuilder<Cart>(
-            stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
+            stream: getIt<CartRepository>()
+                .getCurrentCartStream(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<Cart> snapshot) {
-              if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+              if (snapshot.connectionState != ConnectionState.waiting ||
+                  snapshot.hasData) {
                 return _buildVariantsList(snapshot.data, widget.item.variants);
               }
 
@@ -229,8 +296,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildVariantItem(BuildContext context, Cart cart, ProductVariant variant, GeoUnit unit) {
-    final int variantCountInCart = cart == null ? 0 : cart.variantCount(widget.item, variant);
+  Widget _buildVariantItem(
+      BuildContext context, Cart cart, ProductVariant variant, GeoUnit unit) {
+    final int variantCountInCart =
+        cart == null ? 0 : cart.variantCount(widget.item, variant);
 
     return Container(
       height: 76,
@@ -296,7 +365,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Container(
                   margin: EdgeInsets.only(right: 8.0),
                   child: Text(
-                    formatCurrency(variant.price, unit.currency ?? 'huf'), // TODO geounit!!
+                    formatCurrency(variant.price,
+                        unit.currency ?? 'huf'), // TODO geounit!!
                     textAlign: TextAlign.right,
                     style: GoogleFonts.poppins(
                       color: theme.highlight,
@@ -323,7 +393,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     },
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (Widget child, Animation<double> animation) {
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
                         return ScaleTransition(
                           child: child,
                           scale: animation,
@@ -331,7 +402,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       },
                       child: Text(
                         variantCountInCart == 0 ? '+' : 'x$variantCountInCart',
-                        key: ValueKey<String>('${variant.id}-$variantCountInCart'),
+                        key: ValueKey<String>(
+                            '${variant.id}-$variantCountInCart'),
                         softWrap: false,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
