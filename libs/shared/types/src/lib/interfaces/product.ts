@@ -1,3 +1,4 @@
+import { CrudApi } from '@bgap/crud-gql/api';
 import { EProductType, EVariantAvailabilityType } from '../enums';
 import { ILocalizedItem } from './localized-item';
 
@@ -56,6 +57,7 @@ export interface IGeneratedProduct {
   tax: number;
   variants: IGeneratedProductVariant[];
   productCategoryId: string;
+  allergens?: CrudApi.Allergen[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -74,7 +76,7 @@ export interface IProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
-  allergens?: string[];
+  allergens?: CrudApi.Allergen[];
   tax: number; // %
   laneId?: string;
   productType: EProductType;
@@ -113,7 +115,7 @@ export interface IChainProduct {
   variants: [IProductVariant];
   createdAt: string;
   updatedAt: string;
-  allergens?: string[];
+  allergens?: CrudApi.Allergen[];
 }
 
 export interface IGroupProduct {

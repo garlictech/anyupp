@@ -227,6 +227,7 @@ type OrderItem {
   statusLog: [StatusLog]
   variantName: LocalizedItem!
   laneId: ID
+  allergens: [Allergen]
 }
 
 ### Order
@@ -429,6 +430,7 @@ type GeneratedProduct
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
+  allergens: [Allergen]
 }
 
 type GeneratedProductVariant {

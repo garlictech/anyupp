@@ -1,3 +1,4 @@
+import { CrudApi } from '@bgap/crud-gql/api';
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
 import { IPaymentMode } from './payment';
@@ -32,6 +33,7 @@ export interface IOrderItem {
   variantName: ILocalizedItem<string>;
   image?: string;
   laneId?: string;
+  allergens?: CrudApi.Allergen[];
 }
 
 export interface ILaneOrderItem extends IOrderItem {
