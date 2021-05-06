@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export type queryTypes = CrudApi.GetAdminUserQuery &
   CrudApi.GetRoleContextQuery &

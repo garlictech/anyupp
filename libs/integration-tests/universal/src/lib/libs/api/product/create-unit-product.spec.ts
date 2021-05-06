@@ -2,7 +2,7 @@ import { combineLatest, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   crudGraphqlClient,
@@ -104,7 +104,7 @@ const getUnitProduct = (
   productId: string,
 ): Observable<IUnitProduct> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProduct,
+    CrudApi.getUnitProduct,
     { id: productId },
   ).pipe(
     map(product => product.getUnitProduct),

@@ -1,97 +1,77 @@
 import { AUTH_TYPE } from 'aws-appsync';
 
 import { Auth } from '@aws-amplify/auth';
-import { ICrudApiConfig, ILogger } from '@bgap/shared/types';
+import { ICrudApiConfig } from '@bgap/shared/types';
 
 import { GraphqlApiClient } from './graphql-api-client';
 
 export class GraphqlApiFp {
   static createAuthenticatedClient(
     config: ICrudApiConfig,
-    logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
-    return new GraphqlApiClient(
-      config,
-      {
-        auth: {
-          type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-          jwtToken: async () =>
-            (await Auth.currentSession()).getIdToken().getJwtToken(),
-        },
-        complexObjectsCredentials: () => Auth.currentCredentials(),
-        offlineConfig: {
-          keyPrefix: 'authenticated',
-        },
-        disableOffline,
+    return new GraphqlApiClient(config, {
+      auth: {
+        type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+        jwtToken: async () =>
+          (await Auth.currentSession()).getIdToken().getJwtToken(),
       },
-      logger,
-    );
+      complexObjectsCredentials: () => Auth.currentCredentials(),
+      offlineConfig: {
+        keyPrefix: 'authenticated',
+      },
+      disableOffline,
+    });
   }
 
   static createPublicClient(
     config: ICrudApiConfig,
-    logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
-    return new GraphqlApiClient(
-      config,
-      {
-        auth: {
-          type: AUTH_TYPE.API_KEY,
-          apiKey: config.aws_appsync_apiKey,
-        },
-        offlineConfig: {
-          keyPrefix: 'public',
-        },
-        disableOffline,
+    return new GraphqlApiClient(config, {
+      auth: {
+        type: AUTH_TYPE.API_KEY,
+        apiKey: config.aws_appsync_apiKey,
       },
-      logger,
-    );
+      offlineConfig: {
+        keyPrefix: 'public',
+      },
+      disableOffline,
+    });
   }
 
   static createAdminClient(
     config: ICrudApiConfig,
-    logger: ILogger,
     disableOffline: boolean,
   ): GraphqlApiClient {
-    return new GraphqlApiClient(
-      config,
-      {
-        auth: {
-          type: AUTH_TYPE.AWS_IAM,
-          credentials: () => Auth.currentCredentials(),
-        },
-        offlineConfig: {
-          keyPrefix: 'admin',
-        },
-        disableOffline,
+    return new GraphqlApiClient(config, {
+      auth: {
+        type: AUTH_TYPE.AWS_IAM,
+        credentials: () => Auth.currentCredentials(),
       },
-      logger,
-    );
+      offlineConfig: {
+        keyPrefix: 'admin',
+      },
+      disableOffline,
+    });
   }
 
   static createBackendClient(
     config: ICrudApiConfig,
     accessKeyId: string,
     secretAccessKey: string,
-    logger: ILogger,
   ): GraphqlApiClient {
-    return new GraphqlApiClient(
-      config,
-      {
-        url: config.aws_appsync_graphqlEndpoint,
-        region: config.aws_appsync_region,
-        auth: {
-          type: AUTH_TYPE.AWS_IAM,
-          credentials: {
-            accessKeyId,
-            secretAccessKey,
-          },
+    return new GraphqlApiClient(config, {
+      url: config.aws_appsync_graphqlEndpoint,
+      region: config.aws_appsync_region,
+      auth: {
+        type: AUTH_TYPE.AWS_IAM,
+        credentials: {
+          accessKeyId,
+          secretAccessKey,
         },
-        disableOffline: true,
       },
-      logger,
-    );
+      disableOffline: true,
+    });
   }
 }

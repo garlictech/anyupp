@@ -3,9 +3,12 @@ import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-import { CrudApiMutationDocuments, CrudApiQueryDocuments, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
+import { CrudApi, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
 import {
-  crudAuthenticatedGraphqlClient, executeMutation, executeQuery, executeSubscription
+  crudAuthenticatedGraphqlClient,
+  executeMutation,
+  executeQuery,
+  executeSubscription,
 } from '@bgap/shared/graphql/api-client';
 import { IAmplifyModel } from '@bgap/shared/types';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
@@ -20,7 +23,7 @@ interface ISubscriptionParams {
 }
 
 interface IQueryParams {
-  queryName: keyof typeof CrudApiQueryDocuments;
+  queryName: keyof typeof CrudApi;
   variables?: Record<string, unknown>;
 }
 
@@ -34,7 +37,7 @@ export class AmplifyDataService {
 
   public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
     return executeQuery(crudAuthenticatedGraphqlClient)(
-      CrudApiQueryDocuments[params.queryName],
+      CrudApi[params.queryName],
       params.variables,
     ).pipe(
       take(1),
@@ -52,7 +55,11 @@ export class AmplifyDataService {
               },
             );
           } else if (data?.[<keyof queryTypes>params.queryName]) {
-            params.upsertFn(removeNestedTypeNameField(data?.[<keyof queryTypes>params.queryName]));
+            params.upsertFn(
+              removeNestedTypeNameField(
+                data?.[<keyof queryTypes>params.queryName],
+              ),
+            );
           }
         });
       }),
@@ -66,56 +73,57 @@ export class AmplifyDataService {
       tap((data: any) => {
         this._ngZone.run(() => {
           params.upsertFn(
-            removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
+            removeNestedTypeNameField(
+              data?.[<keyof subscriptionTypes>params.subscriptionName],
+            ),
           );
         });
       }),
     );
   }
 
-  public async create(
-    mutationName: keyof typeof CrudApiMutationDocuments,
-    value: unknown,
-  ) {
-    return executeMutation(
-      crudAuthenticatedGraphqlClient,
-    )(CrudApiMutationDocuments[mutationName], { input: value }).toPromise();
+  public async create(mutationName: keyof typeof CrudApi, value: unknown) {
+    return executeMutation(crudAuthenticatedGraphqlClient)(
+      CrudApi[mutationName],
+      { input: value },
+    ).toPromise();
   }
 
   public async update<T>(
-    queryName: keyof typeof CrudApiQueryDocuments,
-    mutationName: keyof typeof CrudApiMutationDocuments,
+    queryName: keyof typeof CrudApi,
+    mutationName: keyof typeof CrudApi,
     id: string,
     updaterFn: (data: unknown) => T,
   ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await executeQuery(crudAuthenticatedGraphqlClient)<T>(
-      CrudApiQueryDocuments[<keyof queryTypes>queryName],
+      CrudApi[<keyof queryTypes>queryName],
       { id },
     ).toPromise();
 
     const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
-      ...updaterFn(removeNestedTypeNameField(data?.[<keyof queryTypes>queryName])),
+      ...updaterFn(
+        removeNestedTypeNameField(data?.[<keyof queryTypes>queryName]),
+      ),
       id,
     });
 
-    return executeMutation(
-      crudAuthenticatedGraphqlClient,
-    )(CrudApiMutationDocuments[mutationName], { input: modified }).toPromise();
+    return executeMutation(crudAuthenticatedGraphqlClient)(
+      CrudApi[mutationName],
+      { input: modified },
+    ).toPromise();
   }
 
-  public async delete(
-    mutationName: keyof typeof CrudApiMutationDocuments,
-    value: unknown,
-  ) {
-    return executeMutation(
-      crudAuthenticatedGraphqlClient,
-    )(CrudApiMutationDocuments[mutationName], { input: value }).toPromise();
+  public async delete(mutationName: keyof typeof CrudApi, value: unknown) {
+    return executeMutation(crudAuthenticatedGraphqlClient)(
+      CrudApi[mutationName],
+      { input: value },
+    ).toPromise();
   }
 
   public query<T>(params: IQueryParams) {
     return executeQuery(crudAuthenticatedGraphqlClient)<T>(
-      CrudApiQueryDocuments[params.queryName],
+      CrudApi[params.queryName],
       params.variables,
     ).toPromise();
   }
@@ -131,11 +139,11 @@ export class AmplifyDataService {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
-
-        params.upsertFn(
-          removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
-        );
-
+          params.upsertFn(
+            removeNestedTypeNameField(
+              data?.[<keyof subscriptionTypes>params.subscriptionName],
+            ),
+          );
         });
       }),
     );

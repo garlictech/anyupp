@@ -1127,6 +1127,7 @@ export const createChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1178,6 +1179,7 @@ export const updateChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1229,6 +1231,7 @@ export const deleteChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }

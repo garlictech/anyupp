@@ -4,7 +4,7 @@ import { IFloorMapData } from './floor-map';
 import { IGroup } from './group';
 import { ILocalizedItem } from './localized-item';
 import { IDateIntervals } from './order';
-import { IPaymentMode } from './payment';
+import { PaymentMode } from './payment';
 import { IWeeklySchedule } from './weekly-schedule';
 
 export interface IUnitSeat {
@@ -39,7 +39,7 @@ export interface IUnit extends IContact, IAddressInfo {
   openingHours?: IWeeklySchedule;
   lanes?: [ILane];
   floorMap?: IFloorMapData;
-  paymentModes?: IPaymentMode[];
+  paymentModes?: PaymentMode[];
   createdAt: string;
   updatedAt: string;
 }

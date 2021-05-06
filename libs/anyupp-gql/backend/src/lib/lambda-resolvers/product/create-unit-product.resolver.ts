@@ -2,7 +2,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   executeMutation,
@@ -28,7 +28,7 @@ const createUnitProductInDb = ({
   crudGraphqlClient: GraphqlApiClient;
 }): Observable<IUnitProduct> => {
   return executeMutation(crudGraphqlClient)<CrudApi.CreateUnitProductMutation>(
-    CrudApiMutationDocuments.createUnitProduct,
+    CrudApi.createUnitProduct,
     {
       input,
     },

@@ -678,6 +678,7 @@ export const getChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -714,6 +715,7 @@ export const listChainProducts = /* GraphQL */ `
           price
           position
         }
+        allergens
         createdAt
         updatedAt
       }

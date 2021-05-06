@@ -1,14 +1,24 @@
-import { catchError, switchMap } from 'rxjs/operators';
-
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import { catchError, delay, switchMap, tap } from 'rxjs/operators';
+import { awsConfig } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  crudBackendGraphQLClient,
   executeMutation,
+  GraphqlApiClient,
+  GraphqlApiFp,
 } from '@bgap/shared/graphql/api-client';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, concat, Observable, of } from 'rxjs';
+import { Reader } from 'fp-ts/lib/Reader';
 
-const generateChainId = (idx: number) => `chain_${idx}_id`;
+interface SeederDependencies {
+  crudBackendGraphQLClient: GraphqlApiClient;
+}
+
+type SeederReader<T> = Reader<SeederDependencies, Observable<T>>;
+
+export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
+
+const generateChainId = (idx: number): string => `chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
   `group_c${chainIdx}_${idx}_id`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
@@ -42,33 +52,50 @@ const generateRoleContextId = (idx: number, role: EAdminRole) =>
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
   `admin_role_context_${idx}_${role}_id`;
 
-const deleteCreate = ({
+type DeleteCreateInput<T> = {
+  input: T;
+  deleteOperation: string;
+  createOperation: string;
+  createDataPath: string;
+};
+
+const deleteCreate = <INPUT extends { id: string }, OUTPUT>({
   input,
   deleteOperation,
   createOperation,
-}: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  input: any;
-  deleteOperation: string;
-  createOperation: string;
-}) =>
-  // DELETE
-  executeMutation(crudBackendGraphQLClient)(deleteOperation, {
-    input: { id: input.id },
-  }).pipe(
+  createDataPath,
+}: DeleteCreateInput<INPUT>): SeederReader<OUTPUT> => deps =>
+  executeMutation<unknown, unknown>(
+    deleteOperation,
+    input.id,
+    // We dont read the return data here
+    'idontcare',
+  )(deps.crudBackendGraphQLClient).pipe(
     catchError(error => {
-      console.warn('Problem with SEED data DELETION', error);
+      console.warn(
+        'Problem with SEED data DELETION: create: ',
+        createOperation,
+        ' delete: ',
+        deleteOperation,
+        ' input: ',
+        input,
+        'error: ',
+        error,
+      );
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
+    delay(1000),
     switchMap(() =>
-      executeMutation(crudBackendGraphQLClient)(createOperation, {
+      executeMutation<INPUT, OUTPUT>(
+        createOperation,
+        createDataPath,
         input,
-      }),
+      )(deps.crudBackendGraphQLClient),
     ),
   );
 
 export const createTestChain = (chainIdx: number) => {
-  const input: CrudApi.CreateChainInput = {
+  const input: DeletableInput<CrudApi.CreateChainInput> = {
     id: generateChainId(chainIdx),
     name: `Test chain #${chainIdx}`,
     description: {
@@ -94,13 +121,14 @@ export const createTestChain = (chainIdx: number) => {
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteChain,
-    createOperation: CrudApiMutationDocuments.createChain,
+    deleteOperation: CrudApi.deleteChain,
+    createOperation: CrudApi.createChain,
+    createDataPath: 'createChain',
   });
 };
 
 export const createTestGroup = (chainIdx: number, groupIdx: number) => {
-  const input: CrudApi.CreateGroupInput = {
+  const input: DeletableInput<CrudApi.CreateGroupInput> = {
     id: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
     name: `Test group #${groupIdx}`,
@@ -112,8 +140,9 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => {
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteGroup,
-    createOperation: CrudApiMutationDocuments.createGroup,
+    deleteOperation: CrudApi.deleteGroup,
+    createOperation: CrudApi.createGroup,
+    createDataPath: 'createGroup',
   });
 };
 
@@ -122,7 +151,7 @@ export const createTestUnit = (
   groupIdx: number,
   unitIdx: number,
 ) => {
-  const input: CrudApi.CreateUnitInput = {
+  const input: DeletableInput<CrudApi.CreateUnitInput> = {
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
@@ -146,15 +175,15 @@ export const createTestUnit = (
     },
     paymentModes: [
       {
-        method: CrudApi.PaymentMethod.CASH,
+        method: CrudApi.PaymentMethod.cash,
         name: 'Cash',
       },
       {
-        method: CrudApi.PaymentMethod.CARD,
+        method: CrudApi.PaymentMethod.card,
         name: 'Card',
       },
       {
-        method: CrudApi.PaymentMethod.INAPP,
+        method: CrudApi.PaymentMethod.inapp,
         name: 'Stripe',
       },
     ],
@@ -177,8 +206,9 @@ export const createTestUnit = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteUnit,
-    createOperation: CrudApiMutationDocuments.createUnit,
+    deleteOperation: CrudApi.deleteUnit,
+    createOperation: CrudApi.createUnit,
+    createDataPath: 'createUnit',
   });
 };
 
@@ -186,7 +216,7 @@ export const createTestProductCategory = (
   chainIdx: number,
   productCategoryId: number,
 ) => {
-  const input: CrudApi.CreateProductCategoryInput = {
+  const input: DeletableInput<CrudApi.CreateProductCategoryInput> = {
     id: generateProductCategoryId(chainIdx, productCategoryId),
     chainId: generateChainId(chainIdx),
     name: {
@@ -202,8 +232,9 @@ export const createTestProductCategory = (
 
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteProductCategory,
-    createOperation: CrudApiMutationDocuments.createProductCategory,
+    deleteOperation: CrudApi.deleteProductCategory,
+    createOperation: CrudApi.createProductCategory,
+    createDataPath: 'createProductCategory',
   });
 };
 
@@ -212,7 +243,7 @@ export const createTestChainProduct = (
   productCategoryIdx: number,
   productIdx: number,
 ) => {
-  const input: CrudApi.CreateChainProductInput = {
+  const input: DeletableInput<CrudApi.CreateChainProductInput> = {
     id: generateChainProductId(chainIdx, productIdx),
     chainId: generateChainId(chainIdx),
     name: {
@@ -245,8 +276,9 @@ export const createTestChainProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteChainProduct,
-    createOperation: CrudApiMutationDocuments.createChainProduct,
+    deleteOperation: CrudApi.deleteChainProduct,
+    createOperation: CrudApi.createChainProduct,
+    createDataPath: 'createProductCategory',
   });
 };
 
@@ -256,7 +288,7 @@ export const createTestGroupProduct = (
   chainProductIdx: number,
   productIdx: number,
 ) => {
-  const input: CrudApi.CreateGroupProductInput = {
+  const input: DeletableInput<CrudApi.CreateGroupProductInput> = {
     id: generateGroupProductId(chainIdx, groupIdx, productIdx),
     parentId: generateChainProductId(chainIdx, chainProductIdx),
     chainId: generateChainId(chainIdx),
@@ -283,8 +315,9 @@ export const createTestGroupProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteGroupProduct,
-    createOperation: CrudApiMutationDocuments.createGroupProduct,
+    deleteOperation: CrudApi.deleteGroupProduct,
+    createOperation: CrudApi.createGroupProduct,
+    createDataPath: 'createGroupProduct',
   });
 };
 
@@ -295,7 +328,7 @@ export const createTestUnitProduct = (
   groupProductIdx: number,
   productIdx: number,
 ) => {
-  const input: CrudApi.CreateUnitProductInput = {
+  const input: DeletableInput<CrudApi.CreateUnitProductInput> = {
     id: generateUnitProductId(chainIdx, groupIdx, productIdx),
     parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
     chainId: generateChainId(chainIdx),
@@ -334,8 +367,9 @@ export const createTestUnitProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteUnitProduct,
-    createOperation: CrudApiMutationDocuments.createUnitProduct,
+    deleteOperation: CrudApi.deleteUnitProduct,
+    createOperation: CrudApi.createUnitProduct,
+    createDataPath: 'createUnitProduct',
   });
 };
 
@@ -354,13 +388,13 @@ export const createTestCart = ({
   userIdx: number;
   cartIdx: number;
 }) => {
-  const input: CrudApi.CreateCartInput = {
+  const input: DeletableInput<CrudApi.CreateCartInput> = {
     id: generateCartId(cartIdx),
     userId: generateUserId(userIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
     paymentMode: {
       name: 'INAPP',
-      method: CrudApi.PaymentMethod.INAPP,
+      method: CrudApi.PaymentMethod.inapp,
     },
     takeAway: false,
     items: [
@@ -389,8 +423,9 @@ export const createTestCart = ({
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApiMutationDocuments.deleteCart,
-    createOperation: CrudApiMutationDocuments.createCart,
+    deleteOperation: CrudApi.deleteCart,
+    createOperation: CrudApi.createCart,
+    createDataPath: 'createCart',
   });
 };
 
@@ -400,7 +435,14 @@ export const createTestRoleContext = (
   groupIdx: number,
   unitIdx: number,
 ) => {
-  const superuserInput: CrudApi.CreateRoleContextInput = {
+  console.debug('createTestRoleContext', {
+    roleContextIdx,
+    chainIdx,
+    groupIdx,
+    unitIdx,
+  });
+
+  const superuserInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
     name: {
       hu: `Test SUPERUSER role context #${roleContextIdx}`,
@@ -409,7 +451,7 @@ export const createTestRoleContext = (
     role: EAdminRole.SUPERUSER,
     contextId: 'SU_CTX_ID',
   };
-  const chainAdminInput: CrudApi.CreateRoleContextInput = {
+  const chainAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
     name: {
       hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
@@ -420,7 +462,7 @@ export const createTestRoleContext = (
     chainId: generateChainId(chainIdx),
   };
   const r3 = EAdminRole.GROUP_ADMIN;
-  const groupAdminInput: CrudApi.CreateRoleContextInput = {
+  const groupAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r3),
     name: {
       hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
@@ -432,7 +474,7 @@ export const createTestRoleContext = (
     groupId: generateGroupId(chainIdx, groupIdx),
   };
   const r4 = EAdminRole.UNIT_ADMIN;
-  const unitAdminInput: CrudApi.CreateRoleContextInput = {
+  const unitAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r4),
     name: {
       hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
@@ -445,7 +487,7 @@ export const createTestRoleContext = (
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
   };
   const r5 = EAdminRole.STAFF;
-  const staffInput: CrudApi.CreateRoleContextInput = {
+  const staffInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r5),
     name: {
       hu: `Test STAFF role context #${roleContextIdx}`,
@@ -477,36 +519,45 @@ export const createTestRoleContext = (
       }
     }
   `;
-  return combineLatest([
+  return concat(
     deleteCreate({
       input: superuserInput,
       deleteOperation: deleteRoleContext,
       createOperation: createRoleContext,
+      createDataPath: 'createRoleContext',
     }),
     deleteCreate({
       input: chainAdminInput,
       deleteOperation: deleteRoleContext,
       createOperation: createRoleContext,
+      createDataPath: 'createRoleContext',
     }),
     deleteCreate({
       input: groupAdminInput,
       deleteOperation: deleteRoleContext,
       createOperation: createRoleContext,
+      createDataPath: 'createRoleContext',
     }),
     deleteCreate({
       input: unitAdminInput,
       deleteOperation: deleteRoleContext,
       createOperation: createRoleContext,
+      createDataPath: 'createRoleContext',
     }),
     deleteCreate({
       input: staffInput,
       deleteOperation: deleteRoleContext,
       createOperation: createRoleContext,
+      createDataPath: 'createRoleContext',
     }),
-  ]);
+  ).pipe(tap(() => console.debug('createTestRoleContext SUCCESS')));
 };
 
-export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => {
+export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => ({
+  crudBackendGraphQLClient,
+}: {
+  crudBackendGraphQLClient: GraphqlApiClient;
+}) => {
   const deleteAdminRoleContext = /* GraphQL */ `
     mutation DeleteAdminRoleContext(
       $input: DeleteAdminRoleContextInput!
@@ -526,11 +577,11 @@ export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => {
     EAdminRole.CHAIN_ADMIN,
   );
   return combineLatest([
-    executeMutation(crudBackendGraphQLClient)(deleteAdminRoleContext, {
+    executeMutation(deleteAdminRoleContext, 'deleteAdminRoleContext', {
       input: {
         id: idSuper,
       },
-    }).pipe(
+    })(crudBackendGraphQLClient).pipe(
       catchError(err => {
         console.warn(
           `Can NOT delete the AdminRoleContext with id: ${idSuper}`,
@@ -539,11 +590,11 @@ export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => {
         return of('SUCCESS');
       }),
     ),
-    executeMutation(crudBackendGraphQLClient)(deleteAdminRoleContext, {
+    executeMutation(deleteAdminRoleContext, 'deleteAdminRoleContext', {
       input: {
         id: idChainAdmin,
       },
-    }).pipe(
+    })(crudBackendGraphQLClient).pipe(
       catchError(err => {
         console.warn(
           `Can NOT delete the AdminRoleContext with id: ${idChainAdmin}`,
@@ -559,7 +610,11 @@ export const createTestAdminRoleContext = (
   adminRoleContextIdx: number,
   roleContextIdx: number,
   adminUserId: string,
-) => {
+) => ({
+  crudBackendGraphQLClient,
+}: {
+  crudBackendGraphQLClient: GraphqlApiClient;
+}) => {
   const createAdminRoleContext = /* GraphQL */ `
     mutation CreateAdminRoleContext(
       $input: CreateAdminRoleContextInput!
@@ -585,11 +640,27 @@ export const createTestAdminRoleContext = (
   };
 
   return combineLatest([
-    executeMutation(crudBackendGraphQLClient)(createAdminRoleContext, {
+    executeMutation(createAdminRoleContext, 'createAdminRoleContext', {
       input: superuserInput,
-    }),
-    executeMutation(crudBackendGraphQLClient)(createAdminRoleContext, {
+    })(crudBackendGraphQLClient),
+    executeMutation(createAdminRoleContext, 'createAdminRoleContext', {
       input: chainAdminInput,
-    }),
+    })(crudBackendGraphQLClient),
   ]);
 };
+
+export interface SeederDeps {
+  crudBackendGraphQLClient: GraphqlApiClient;
+}
+
+export const createSeederDeps = (
+  awsAccesssKeyId: string,
+  awsSecretAccessKey: string,
+): SeederDeps => ({
+  crudBackendGraphQLClient: GraphqlApiFp.createBackendClient(
+    awsConfig,
+    awsAccesssKeyId,
+    awsSecretAccessKey,
+    console,
+  ),
+});

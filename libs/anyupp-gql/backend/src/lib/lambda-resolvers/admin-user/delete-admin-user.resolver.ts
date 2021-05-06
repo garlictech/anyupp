@@ -3,12 +3,11 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
 import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
-
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  crudBackendGraphQLClient,
   executeMutation,
+  GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -20,7 +19,7 @@ const UserPoolId = process.env.userPoolId || '';
 
 export const deleteAdminUser = (
   params: AnyuppApi.DeleteAdminUserMutationVariables,
-) => {
+) => (crudBackendGraphQLClient: GraphqlApiClient) => {
   console.debug('Resolver parameters: ', params);
   let userId: string;
 
@@ -53,7 +52,7 @@ export const deleteAdminUser = (
       switchMap(() =>
         executeMutation(crudBackendGraphQLClient)<
           CrudApi.DeleteAdminUserMutation
-        >(CrudApiMutationDocuments.deleteAdminUser, {
+        >(CrudApi.deleteAdminUser, {
           input: { id: userId },
         }),
       ),

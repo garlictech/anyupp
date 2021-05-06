@@ -1,6 +1,5 @@
 import { awsConfig } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
-import { ICrudApiConfig } from '@bgap/shared/types';
 import { GraphqlApiFp } from './graphql-api-fp';
 import { Auth } from 'aws-amplify';
 import { Observable, from } from 'rxjs';
@@ -9,8 +8,9 @@ import { AuthenticatdGraphQLClientWithUserId } from './common';
 
 // #############
 // ### AYUPP ###
-
-export const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
+/*
+export const AWS_ANYUPP_CONFIG: any = {
+  //export const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
   ...awsConfig,
   aws_appsync_apiKey: config.AnyuppGraphqlApiKey,
   aws_appsync_graphqlEndpoint: config.AnyuppGraphqlApiUrl,
@@ -18,13 +18,11 @@ export const AWS_ANYUPP_CONFIG: ICrudApiConfig = {
 
 export const anyuppGraphQLClient = GraphqlApiFp.createPublicClient(
   AWS_ANYUPP_CONFIG,
-  console,
   true,
 );
 
 export const anyuppAuthenticatedGraphqlClient = GraphqlApiFp.createAuthenticatedClient(
   AWS_ANYUPP_CONFIG,
-  console,
   true,
 );
 
@@ -53,3 +51,4 @@ export const createAuthenticatedAnyuppGraphQLClient = (
     })),
   );
 };
+*/

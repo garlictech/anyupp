@@ -1145,7 +1145,9 @@
           "outputs": ["coverage/libs/integration-tests/angular"],
           "options": {
             "jestConfig": "libs/integration-tests/angular/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "detectOpenHandles": true,
+            "forceExit": true
           }
         }
       }
@@ -1181,7 +1183,9 @@
           "outputs": ["coverage/libs/integration-tests/universal"],
           "options": {
             "jestConfig": "libs/integration-tests/universal/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "detectOpenHandles": true,
+            "forceExit": true
           }
         }
       }
@@ -1252,7 +1256,7 @@
           "options": {
             "commands": [
               {
-                "command": "yarn graphql-codegen --config tools/graphql-codegen.yml"
+                "command": "yarn graphql-codegen --config tools/graphql-codegen-anyupp.yml"
               }
             ]
           }

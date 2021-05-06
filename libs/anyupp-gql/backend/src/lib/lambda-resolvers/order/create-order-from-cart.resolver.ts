@@ -2,11 +2,7 @@ import { DateTime } from 'luxon';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
-import {
-  CrudApi,
-  CrudApiMutationDocuments,
-  CrudApiQueryDocuments,
-} from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { removeTypeNameField } from '../../utils/graphql.utils';
 import { toFixed2Number } from '../../utils/number.utils';
 import {
@@ -19,7 +15,7 @@ import {
   ICart,
   IOrder,
   IOrderItem,
-  IPaymentMode,
+  PaymentMode,
   IPlace,
   IUnitProduct,
   IUnit,
@@ -143,7 +139,7 @@ const toOrderInputFormat = ({
 }: {
   userId: string;
   unitId: string;
-  paymentMode: IPaymentMode;
+  paymentMode: PaymentMode;
   items: CrudApi.OrderItemInput[];
   place: IPlace | undefined;
 }): CrudApi.CreateOrderInput => {
@@ -240,10 +236,9 @@ const getUnitProduct = (
   crudGraphqlClient: GraphqlApiClient,
   productId: string,
 ): Observable<IUnitProduct> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProduct,
-    { id: productId },
-  ).pipe(
+  return executeQuery(CrudApi.getUnitProduct, 'getUnitProduct', {
+    id: productId,
+  })(crudGraphqlClient).pipe(
     map(product => product.getUnitProduct),
     switchMap(validateUnitProduct),
   );
@@ -268,12 +263,9 @@ const createOrderInDb = ({
   orderInput: CrudApi.CreateOrderInput;
   crudGraphqlClient: GraphqlApiClient;
 }): Observable<IOrder> => {
-  return executeMutation(crudGraphqlClient)<CrudApi.CreateOrderMutation>(
-    CrudApiMutationDocuments.createOrder,
-    {
-      input: orderInput,
-    },
-  ).pipe(
+  return executeMutation(CrudApi.createOrder, 'createOrder', {
+    input: orderInput,
+  })(crudGraphqlClient).pipe(
     map(x => x.createOrder),
     switchMap(validateOrder),
   );
@@ -283,9 +275,8 @@ const getUnit = (
   crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IUnit> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
-    CrudApiQueryDocuments.getUnit,
-    { id },
+  return executeQuery(CrudApi.getUnit, 'getUnit', { id })(
+    crudGraphqlClient,
   ).pipe(
     map(x => x.getUnit),
     switchMap(validateUnit),
@@ -300,9 +291,8 @@ const getCart = (
   crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<ICart> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
-    CrudApiQueryDocuments.getCart,
-    { id },
+  return executeQuery(CrudApi.getCart, 'getCart', { id })(
+    crudGraphqlClient,
   ).pipe(
     map(x => x.getCart),
     switchMap(validateCart),
@@ -318,7 +308,7 @@ const deleteCart = (
   id: string,
 ): Observable<boolean> => {
   return executeMutation(crudGraphqlClient)<CrudApi.DeleteCartMutation>(
-    CrudApiMutationDocuments.deleteCart,
+    CrudApi.deleteCart,
     { input: { id } },
   ).pipe(
     mapTo(true),
@@ -334,7 +324,7 @@ const getGroupCurrency = (
   id: string,
 ): Observable<string> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
-    CrudApiQueryDocuments.getGroupCurrency,
+    CrudApi.getGroupCurrency,
     { id },
   ).pipe(
     map(x => x.getGroup),

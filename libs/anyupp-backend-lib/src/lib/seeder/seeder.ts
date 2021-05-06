@@ -1,13 +1,12 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { combineLatest, concat, from, Observable, of } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMap } from 'rxjs/operators';
-
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import { concat, from, Observable, of } from 'rxjs';
+import { catchError, filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  crudBackendGraphQLClient,
   executeMutation,
+  GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 import { pipeDebug as pd } from '@bgap/shared/utils';
 
@@ -23,6 +22,7 @@ import {
   createTestUnit,
   createTestUnitProduct,
   deleteTestAdminRoleContext,
+  SeederDeps,
 } from './seed-data-fn';
 
 const username = 'test@anyupp.com';
@@ -33,7 +33,11 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: process.env.AWS_REGION || '',
 });
 
-export const seedAdminUser = (UserPoolId: string): Observable<string> =>
+export const seedAdminUser = (UserPoolId: string) => ({
+  crudBackendGraphQLClient,
+}: {
+  crudBackendGraphQLClient: GraphqlApiClient;
+}): Observable<string> =>
   pipe(
     {
       UserPoolId,
@@ -105,9 +109,9 @@ export const seedAdminUser = (UserPoolId: string): Observable<string> =>
     })),
     // pipeDebug('### User TO SAVE in Admin user table'),
     switchMap((input: CrudApi.CreateAdminUserInput) =>
-      executeMutation(crudBackendGraphQLClient)<
-        CrudApi.CreateAdminUserMutation
-      >(CrudApiMutationDocuments.createAdminUser, { input }).pipe(
+      executeMutation(CrudApi.createAdminUser, 'createAdminUser', { input })(
+        crudBackendGraphQLClient,
+      ).pipe(
         mapTo(input.id),
         catchError(err => {
           console.warn(
@@ -119,40 +123,62 @@ export const seedAdminUser = (UserPoolId: string): Observable<string> =>
       ),
     ),
     map(id => id || 'USER_ID_SHOULD_EXISTS_AT_END_OF_SEEDING'),
-
-    // pipeDebug('### User saved in Admin user table'),
-    // mapTo('SUCCESS'),
-    // catchError((error: AWSError) => {
-    //   console.log(
-    //     "Probably 'normal' error: ",
-    //     JSON.stringify(error, undefined, 2),
-    //   );
-    //   // return error.code === 'UsernameExistsException'
-    //   //   ? of('SUCCESS')
-    //   //   : throwError(error);
-    // }),
   );
 
-export const seedBusinessData = (userId: string) =>
+export const seedBusinessData = (userId: string) => (deps: SeederDeps) =>
   concat(
-    combineLatest([
+    concat(
       createTestRoleContext(1, 1, 1, 1).pipe(pd('### RoleContext SEED 01')),
-      createTestChain(1).pipe(pd('### Chain SEED 01')),
-      createTestGroup(1, 1).pipe(pd('### Group SEED 01')),
-      createTestGroup(1, 2).pipe(pd('### Group SEED 02')),
-      createTestGroup(2, 1).pipe(pd('### Group SEED 03')),
-      createTestUnit(1, 1, 1).pipe(pd('### Unit SEED 01')),
-      createTestUnit(1, 1, 2).pipe(pd('### Unit SEED 02')),
-      createTestUnit(1, 2, 1).pipe(pd('### Unit SEED 03')),
-      createTestProductCategory(1, 1).pipe(pd('### ProdCat SEED 01')),
-      createTestProductCategory(1, 2).pipe(pd('### ProdCat SEED 02')),
-      createTestChainProduct(1, 1, 1).pipe(pd('### ChainProduct SEED 01')),
-      createTestChainProduct(1, 1, 2).pipe(pd('### ChainProduct SEED 02')),
-      createTestChainProduct(1, 2, 3).pipe(pd('### ChainProduct SEED 03')),
-      createTestGroupProduct(1, 1, 1, 1).pipe(pd('### GroupProd SEED 01')),
-      createTestGroupProduct(1, 1, 2, 2).pipe(pd('### GroupProd SEED 02')),
-      createTestUnitProduct(1, 1, 1, 1, 1).pipe(pd('### UnitProd SEED 01')),
-      createTestUnitProduct(1, 1, 1, 2, 2).pipe(pd('### UnitProd SEED 02')),
+      createTestChain(1)(deps).pipe(pd('### Chain SEED 01')),
+      createTestGroup(1, 1)(deps).pipe(pd('### Group SEED 01')),
+      createTestGroup(1, 2)(deps).pipe(pd('### Group SEED 02')),
+      createTestGroup(2, 1)(deps).pipe(pd('### Group SEED 03')),
+      createTestUnit(1, 1, 1)(deps).pipe(pd('### Unit SEED 01')),
+      createTestUnit(1, 1, 2)(deps).pipe(pd('### Unit SEED 02')),
+      createTestUnit(1, 2, 1)(deps).pipe(pd('### Unit SEED 03')),
+      createTestProductCategory(1, 1)(deps).pipe(pd('### ProdCat SEED 01')),
+      createTestProductCategory(1, 2)(deps).pipe(pd('### ProdCat SEED 02')),
+      createTestChainProduct(
+        1,
+        1,
+        1,
+      )(deps).pipe(pd('### ChainProduct SEED 01')),
+      createTestChainProduct(
+        1,
+        1,
+        2,
+      )(deps).pipe(pd('### ChainProduct SEED 02')),
+      createTestChainProduct(
+        1,
+        2,
+        3,
+      )(deps).pipe(pd('### ChainProduct SEED 03')),
+      createTestGroupProduct(
+        1,
+        1,
+        1,
+        1,
+      )(deps).pipe(pd('### GroupProd SEED 01')),
+      createTestGroupProduct(
+        1,
+        1,
+        2,
+        2,
+      )(deps).pipe(pd('### GroupProd SEED 02')),
+      createTestUnitProduct(
+        1,
+        1,
+        1,
+        1,
+        1,
+      )(deps).pipe(pd('### UnitProd SEED 01')),
+      createTestUnitProduct(
+        1,
+        1,
+        1,
+        2,
+        2,
+      )(deps).pipe(pd('### UnitProd SEED 02')),
       createTestCart({
         chainIdx: 1,
         groupIdx: 1,
@@ -161,11 +187,13 @@ export const seedBusinessData = (userId: string) =>
         userIdx: 1,
         cartIdx: 1,
       }),
-    ]),
-    deleteTestAdminRoleContext(1).pipe(
+    ),
+    deleteTestAdminRoleContext(1)(deps).pipe(
       pd('### ADMIN_ROLE_CONTEXT SEED DELETE'),
     ),
-    createTestAdminRoleContext(1, 1, userId).pipe(
-      pd('### ADMIN_ROLE_CONTEXT SEED CREATE'),
-    ),
-  );
+    createTestAdminRoleContext(
+      1,
+      1,
+      userId,
+    )(deps).pipe(pd('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+  ).pipe(tap(x => console.log('seedBusinessData emitted: ', x)));

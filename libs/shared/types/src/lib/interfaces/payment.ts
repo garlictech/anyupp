@@ -1,12 +1,8 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 
 export interface IStripePayment {
   accountId: string;
 }
 
-export interface IPaymentMode {
-  __typename?: 'PaymentMode';
-  name: string;
-  caption?: string;
-  method: CrudApi.PaymentMethod;
-}
+export type PaymentMode = CrudApi.PaymentMode | AnyuppApi.PaymentMode;

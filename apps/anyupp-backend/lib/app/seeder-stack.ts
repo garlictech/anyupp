@@ -9,6 +9,7 @@ import * as cognito from '@aws-cdk/aws-cognito';
 
 export interface SeederStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
+  anyuppApiArn: string;
 }
 
 export class SeederStack extends sst.Stack {
@@ -35,6 +36,14 @@ export class SeederStack extends sst.Stack {
             'cognito-idp:AdminCreateUser',
           ],
           resources: [props.adminUserPool.userPoolArn],
+        }),
+      );
+
+    seederLambda.role &&
+      seederLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: ['*'],
+          resources: ['*'],
         }),
       );
 

@@ -1,33 +1,12 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import axios from 'axios';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
-import { seedAdminUser, seedBusinessData } from '@bgap/anyupp-backend-lib';
-
-/**
- * See the AWS documentation for more information on what needs to be contained in the
- * response of a custom resource.
- *
- * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-responses.html
- */
-const sendResponse = async (props: any) => {
-  const body = {
-    Status: props.status,
-    Reason: props.reason,
-    StackId: props.stackId,
-    RequestId: props.requestId,
-    LogicalResourceId: props.logicalResourceId,
-  };
-
-  const responseBody = JSON.stringify(body);
-  console.log({ responseBody });
-
-  await axios.put(props.responseUrl, responseBody, {
-    data: responseBody,
-    headers: { 'content-type': '', 'content-length': responseBody.length },
-  });
-};
+import {
+  createSeederDeps,
+  seedAdminUser,
+  seedBusinessData,
+} from '@bgap/anyupp-backend-lib';
+import { sendResponse } from '../utils/send-response';
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log('### EVENT:', JSON.stringify(event, null, 2));
@@ -39,17 +18,15 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    */
   const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
+  const seederDeps = createSeederDeps(
+    process.env.AWS_ACCESS_KEY_ID || '',
+    process.env.AWS_SECRET_ACCESS_KEY || '',
+  );
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await seedAdminUser(AdminUserPoolId)
+    await seedAdminUser(AdminUserPoolId)(seederDeps)
       .pipe(
-        switchMap(userId => seedBusinessData(userId)),
-        //   mapTo('SUCCESS'),
-        //   catchError((error: AWSError) => {
-        //     console.log("Probably 'normal' error: ", error);
-        //     return of('SUCCESS');
-        //   }),
-        // ),
+        switchMap(userId => seedBusinessData(userId)(seederDeps)),
         switchMap(() =>
           from(
             sendResponse({

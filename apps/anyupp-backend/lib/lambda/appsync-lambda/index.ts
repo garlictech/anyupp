@@ -1,5 +1,7 @@
+import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
+import { awsConfig } from '@bgap/crud-gql/api';
 
 import {
   adminRequestHandler,
@@ -8,35 +10,40 @@ import {
   stripeRequestHandler,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 
 export interface AnyuppRequest {
   handler: string;
   payload: unknown;
 }
 
-const resolverMap = {
-  getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
-  updateStripeCard: stripeRequestHandler.updateStripeCard,
-  deleteStripeCard: stripeRequestHandler.deleteStripeCard,
-  createAdminUser: adminRequestHandler.createAdminUser,
-  deleteAdminUser: adminRequestHandler.deleteAdminUser,
-  createOrderFromCart: orderRequestHandler.createOrderFromCart(
-    crudBackendGraphQLClient,
-  ),
-  getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
-    crudBackendGraphQLClient,
-  ),
-  createUnitProduct: productRequestHandler.createUnitProduct(
-    crudBackendGraphQLClient,
-  ),
-};
-
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  context: Context,
+  _context: Context,
 ): Promise<unknown> => {
+  const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
+    awsConfig,
+    process.env.AWS_ACCESS_KEY_ID || '',
+    process.env.AWS_SECRET_ACCESS_KEY || '',
+    console,
+  );
+
+  const resolverMap = {
+    getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
+    updateStripeCard: stripeRequestHandler.updateStripeCard,
+    deleteStripeCard: stripeRequestHandler.deleteStripeCard,
+    createAdminUser: adminRequestHandler.createAdminUser,
+    deleteAdminUser: adminRequestHandler.deleteAdminUser,
+    createOrderFromCart: orderRequestHandler.createOrderFromCart(
+      crudBackendGraphQLClient,
+    ),
+    getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
+      crudBackendGraphQLClient,
+    ),
+    createUnitProduct: productRequestHandler.createUnitProduct(
+      crudBackendGraphQLClient,
+    ),
+  };
   // console.debug(
   //   '**** Executing lambda with event',
   //   JSON.stringify(event, null, 2),

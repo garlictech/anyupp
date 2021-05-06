@@ -3,13 +3,9 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { executeMutation } from '@bgap/shared/graphql/api-client';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -58,7 +54,7 @@ export const createAdminUser = (
     switchMap((input: CrudApi.CreateAdminUserInput) =>
       executeMutation(crudBackendGraphQLClient)<
         CrudApi.CreateAdminUserMutation
-      >(CrudApiMutationDocuments.createAdminUser, {
+      >(CrudApi.createAdminUser, {
         input,
       }),
     ),

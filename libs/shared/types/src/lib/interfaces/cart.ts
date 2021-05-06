@@ -1,4 +1,4 @@
-import { IPaymentMode } from './payment';
+import { PaymentMode } from './payment';
 import { IOrderItem, IPlace } from './order';
 
 export interface ICart {
@@ -8,7 +8,7 @@ export interface ICart {
   unitId: string;
   takeAway: boolean;
   place?: IPlace;
-  paymentMode?: IPaymentMode;
+  paymentMode?: PaymentMode;
   items: Array<IOrderItem>;
   createdAt: string;
   updatedAt: string;

@@ -9,7 +9,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import {
   validateChain,
@@ -20,16 +20,10 @@ import {
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
-import {
-  IChain,
-  IChainStyle,
-  IPaymentMode,
-  IUnit,
-  IWeeklySchedule,
-} from '@bgap/shared/types';
+import { IChain, IChainStyle, PaymentMode, IUnit } from '@bgap/shared/types';
 import { removeTypeNameField } from '../../utils/graphql.utils';
 
-type listResponse<T> = {
+type ListResponse<T> = {
   items: Array<T>;
 };
 
@@ -40,7 +34,7 @@ export const getUnitsInRadius = ({
 }: {
   location: CrudApi.LocationInput;
   crudGraphqlClient: GraphqlApiClient;
-}): Observable<listResponse<AnyuppApi.GeoUnit>> => {
+}): Observable<ListResponse<AnyuppApi.GeoUnit>> => {
   // console.log(
   //   '### ~ file: getUnitsinRadius.resolver.ts ~ line 39 ~ INPUT PARAMS',
   //   JSON.stringify({
@@ -68,8 +62,8 @@ export const getUnitsInRadius = ({
                 currency: props.currency,
                 inputLocation: location,
                 chainStyle: props.chain.style,
-                openingHours: {},
-                paymentModes: unit.paymentModes as any,
+                //openingHours: {},
+                paymentModes: unit.paymentModes ?? [],
               }),
             ),
             defaultIfEmpty({} as AnyuppApi.GeoUnit),
@@ -91,15 +85,15 @@ const toGeoUnit = ({
   currency,
   inputLocation,
   chainStyle,
-  openingHours,
+  //openingHours,
   paymentModes,
 }: {
   unit: IUnit;
   currency: string;
   inputLocation: AnyuppApi.LocationInput;
   chainStyle: IChainStyle;
-  openingHours: IWeeklySchedule;
-  paymentModes: IPaymentMode[];
+  //openingHours: IWeeklySchedule;
+  paymentModes: PaymentMode[];
 }): AnyuppApi.GeoUnit => ({
   id: unit.id,
   groupId: unit.groupId,
@@ -111,7 +105,7 @@ const toGeoUnit = ({
   distance: geolib.getDistance(unit.address.location, inputLocation),
   openingHours: getOpeningOursForToday(/*openingHours*/),
   // paymentModes: paymentModes as AnyuppApi.PaymentMode[],
-  paymentModes: paymentModes as any,
+  paymentModes,
 });
 
 const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => {
@@ -121,15 +115,14 @@ const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => 
 const listActiveUnits = (
   crudGraphqlClient: GraphqlApiClient,
 ): Observable<Array<IUnit>> => {
-  const input: CrudApi.ListUnitsQueryVariables = {
+  const input: CrudApi.QueryListUnitsArgs = {
     filter: { isActive: { eq: true } },
   };
-  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitsQuery>(
-    CrudApiQueryDocuments.listUnits,
+  return executeQuery<CrudApi.QueryListUnitsArgs, ListResponse<IUnit>>(
+    CrudApi.listUnits,
     input,
-  ).pipe(
-    map(x => x.listUnits?.items),
-    // pipeDebug('### LIST ACTIVE UNITS'),
+  )(crudGraphqlClient).pipe(
+    map(x => x.items),
     filter(fp.negate(fp.isEmpty)),
     switchMap((items: []) => combineLatest(items.map(validateUnit))),
     catchError(err => {
@@ -143,12 +136,10 @@ const getGroupCurrency = (
   crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<string> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
-    CrudApiQueryDocuments.getGroupCurrency,
+  return executeQuery<CrudApi.QueryGetGroupArgs, CrudApi.Group>(
+    CrudApi.GetGroupCurrency,
     { id },
-  ).pipe(
-    map(x => x.getGroup),
-    // pipeDebug(`### GET GROUP with id: ${id}`),
+  )(crudGraphqlClient).pipe(
     switchMap(validateGetGroupCurrency),
     map(x => x.currency),
     catchError(err => {
@@ -162,12 +153,10 @@ const getChain = (
   crudGraphqlClient: GraphqlApiClient,
   id: string,
 ): Observable<IChain> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetChainQuery>(
-    CrudApiQueryDocuments.getChain,
+  return executeQuery<CrudApi.QueryGetChainArgs, CrudApi.Chain>(
+    CrudApi.getChain,
     { id },
-  ).pipe(
-    map(x => x.getChain),
-    // pipeDebug(`### GET CHAIN with id: ${id}`),
+  )(crudGraphqlClient).pipe(
     switchMap(validateChain),
     catchError(err => {
       console.error(err);

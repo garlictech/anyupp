@@ -1,6 +1,6 @@
 // import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   IOrderItem,
   IOrders,

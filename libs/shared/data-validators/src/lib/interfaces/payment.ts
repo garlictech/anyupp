@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
 import { paymentMethodSchema } from '../enums/enums';
-import { IPaymentMode } from '@bgap/shared/types';
+import { PaymentMode } from '@bgap/shared/types';
 
-export const paymentModeSchema: Joi.SchemaMap<IPaymentMode> = {
+export const paymentModeSchema: Joi.SchemaMap<PaymentMode> = {
   __typename: Joi.string().valid('PaymentMode').optional(),
   name: Joi.string().required(),
   caption: Joi.string().allow(null, ''),

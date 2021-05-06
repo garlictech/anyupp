@@ -1,7 +1,8 @@
 import { QueryOptions } from 'apollo-client';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import { pluck } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
 
 import { GraphqlApiClient } from './graphql-api-client';
 
@@ -12,27 +13,34 @@ export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
       `
     : gqlDocument;
 
-export const executeQuery = (client: GraphqlApiClient) => <T>(
+export const executeQuery = <INPUT, OUTPUT>(
   gqlDocument: string | DocumentNode,
-  variables?: Record<string, unknown>,
+  dataPath: string,
+  variables?: INPUT,
   queryOptions?: Partial<QueryOptions>,
-) =>
+) => (client: GraphqlApiClient) =>
   client
-    .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
-    .pipe(pluck('data'));
+    .query<INPUT, OUTPUT>(
+      toGraphQLDocument(gqlDocument),
+      variables,
+      queryOptions,
+    )
+    .pipe(map(fp.get(`data.${dataPath}`)));
 
-export const executeMutation = (client: GraphqlApiClient) => <T>(
+export const executeMutation = <INPUT, OUTPUT>(
   gqlDocument: string | DocumentNode,
-  variables?: Record<string, unknown>,
-) =>
+  dataPath: string,
+  variables?: INPUT,
+) => (client: GraphqlApiClient) =>
   client
-    .mutate<T>(toGraphQLDocument(gqlDocument), variables)
-    .pipe(pluck('data'));
+    .mutate<INPUT, OUTPUT>(toGraphQLDocument(gqlDocument), variables)
+    .pipe(map(fp.get(`data.${dataPath}`)));
 
-export const executeSubscription = (client: GraphqlApiClient) => <T>(
+export const executeSubscription = <INPUT, OUTPUT>(
   gqlDocument: string | DocumentNode,
-  variables?: Record<string, unknown>,
-) =>
+  dataPath: string,
+  variables?: INPUT,
+) => (client: GraphqlApiClient) =>
   client
-    .subscribe<T>(toGraphQLDocument(gqlDocument), variables)
-    .pipe(pluck('data'));
+    .subscribe<INPUT, OUTPUT>(toGraphQLDocument(gqlDocument), variables)
+    .pipe(map(fp.get(`data.${dataPath}`)));

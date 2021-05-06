@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CRUD sdk test An arbitrary CRUD: CREATE 1`] = `
+Object {
+  "__typename": "FavoriteProduct",
+  "createdAt": Any<String>,
+  "id": "CRUD_SDK_ID",
+  "product": null,
+  "unitId": "UNIT_BAR",
+  "updatedAt": Any<String>,
+  "userId": "USER_FOO",
+}
+`;
+
+exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `
+Object {
+  "__typename": "FavoriteProduct",
+  "createdAt": Any<String>,
+  "id": "CRUD_SDK_ID",
+  "product": null,
+  "unitId": "UNIT_BAR",
+  "updatedAt": Any<String>,
+  "userId": "UPDATED_USER",
+}
+`;
+
+exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
+Object {
+  "__typename": "FavoriteProduct",
+  "createdAt": Any<String>,
+  "id": "CRUD_SDK_ID",
+  "product": null,
+  "unitId": "UNIT_BAR",
+  "updatedAt": Any<String>,
+  "userId": "USER_FOO",
+}
+`;
+
+exports[`CRUD sdk test An arbitrary CRUD: READ AFTER DELETE - SHOULD BE NULL 1`] = `null`;
+
+exports[`CRUD sdk test An arbitrary CRUD: SHOULD BE NULL 1`] = `null`;
+
+exports[`CRUD sdk test An arbitrary CRUD: UPDATE 1`] = `
+Object {
+  "__typename": "FavoriteProduct",
+  "createdAt": Any<String>,
+  "id": "CRUD_SDK_ID",
+  "product": null,
+  "unitId": "UNIT_BAR",
+  "updatedAt": Any<String>,
+  "userId": "UPDATED_USER",
+}
+`;
+
+exports[`CRUD sdk test An arbitrary subscription 1`] = `
+Object {
+  "__typename": "AdminUser",
+  "createdAt": "2021-05-06T20:38:53.638Z",
+  "email": "a@a.hu",
+  "id": "ADMIN_USERCRUD_SDK_ID",
+  "name": "NAME2",
+  "phone": "phone",
+  "profileImage": null,
+  "roleContexts": Object {
+    "__typename": "ModelAdminRoleContextConnection",
+    "items": Array [],
+    "nextToken": null,
+  },
+  "settings": null,
+  "updatedAt": "2021-05-06T20:38:54.919Z",
+}
+`;
+
+exports[`CRUD sdk test An arbitrary subscription 2`] = `
+Object {
+  "__typename": "AdminUser",
+  "createdAt": "2021-05-06T20:38:53.638Z",
+  "email": "a@a.hu",
+  "id": "ADMIN_USERCRUD_SDK_ID",
+  "name": "NAME2",
+  "phone": "phone",
+  "profileImage": null,
+  "roleContexts": Object {
+    "__typename": "ModelAdminRoleContextConnection",
+    "items": Array [],
+    "nextToken": null,
+  },
+  "settings": null,
+  "updatedAt": "2021-05-06T20:38:54.919Z",
+}
+`;

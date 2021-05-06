@@ -41,6 +41,7 @@ export class AnyUppStack extends Stack {
 
     new SeederStack(scope, 'seeder', {
       adminUserPool: cognitoStack.adminUserPool,
+      anyuppApiArn: appsyncStack.api.arn,
     });
 
     new CognitoTriggersStack(scope, 'cognitoTriggers', {

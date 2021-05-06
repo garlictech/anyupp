@@ -1,4 +1,4 @@
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { cartSeed } from '../fixtures/cart';
 import {
   AuthenticatdGraphQLClientWithUserId,
@@ -35,7 +35,7 @@ describe('getCart test', () => {
 
   it('successful query execution', done => {
     executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApiQueryDocuments.getCart,
+      CrudApi.getCart,
       { id: cartSeed.cart_01.id },
     ).subscribe({
       next(x) {
@@ -46,7 +46,7 @@ describe('getCart test', () => {
   }, 15000);
   it('should return null for a not existing item', done => {
     executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApiQueryDocuments.getCart,
+      CrudApi.getCart,
       { id: cartSeed.cartId_NotExisting },
     ).subscribe({
       next(x) {
@@ -57,7 +57,7 @@ describe('getCart test', () => {
   }, 10000);
   it('should throw error without id as input', done => {
     executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApiQueryDocuments.getCart,
+      CrudApi.getCart,
     ).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();

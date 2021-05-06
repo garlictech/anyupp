@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { chainSeed } from './chain';
 import { groupSeed } from './group';
 import { unitSeed } from './unit';

@@ -1,35 +1,26 @@
-import { awsConfig } from '@bgap/crud-gql/api';
-import { ICrudApiConfig } from '@bgap/shared/types';
+/*import { awsConfig } from '@bgap/crud-gql/api';
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { configureAmplifyWithUserPasswordAuthFlow } from './anyupp-api-clients';
 import { GraphqlApiFp } from './graphql-api-fp';
 import { AuthenticatdGraphQLClientWithUserId } from './common';
-
+*/
 // ############
 // ### CRUD ###
-export const AWS_CRUD_CONFIG: ICrudApiConfig = {
+//export const AWS_CRUD_CONFIG: ICrudApiConfig = {
+/*export const AWS_CRUD_CONFIG: any = {
   ...awsConfig,
 };
 
 export const crudGraphqlClient = GraphqlApiFp.createPublicClient(
   AWS_CRUD_CONFIG,
-  console,
   true,
 );
 
 export const crudAuthenticatedGraphqlClient = GraphqlApiFp.createAuthenticatedClient(
   AWS_CRUD_CONFIG,
-  console,
   true,
-);
-
-export const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
-  AWS_CRUD_CONFIG,
-  process.env.AWS_ACCESS_KEY_ID || '',
-  process.env.AWS_SECRET_ACCESS_KEY || '',
-  console,
 );
 
 export const createAuthenticatedCrudGraphQLClient = (
@@ -48,3 +39,4 @@ export const createAuthenticatedCrudGraphQLClient = (
     })),
   );
 };
+*/

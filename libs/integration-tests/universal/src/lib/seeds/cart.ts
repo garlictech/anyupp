@@ -6,13 +6,13 @@ import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const createTestCart = (
   overwrites: Partial<CrudApi.CreateCartInput> = {},
 ) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateCartMutation>(
-    CrudApiMutationDocuments.createCart,
+    CrudApi.createCart,
     {
       input: {
         ...cartSeed.cart_01,
@@ -32,7 +32,7 @@ export const createTestCart = (
 
 export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteCartMutation>(
-    CrudApiMutationDocuments.deleteCart,
+    CrudApi.deleteCart,
     {
       input: { id },
     },

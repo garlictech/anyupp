@@ -3,17 +3,38 @@ import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  addressFormGroup,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, ILane, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  ILane,
+  PaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -124,9 +145,7 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(
-        cleanObject(fp.omit(['lanes'], this.unit)),
-      );
+      this.dialogForm.patchValue(cleanObject(fp.omit(['lanes'], this.unit)));
 
       // Parse openingHours object to temp array
       const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
@@ -218,16 +237,16 @@ export class UnitFormComponent
     }
   }
 
-  public paymentModeIsChecked(paymentMode: IPaymentMode): boolean {
+  public paymentModeIsChecked(paymentMode: PaymentMode): boolean {
     return (
       (this.dialogForm?.value.paymentModes || [])
-        .map((m: IPaymentMode): string => m.name)
+        .map((m: PaymentMode): string => m.name)
         .indexOf(paymentMode.name) >= 0
     );
   }
 
-  public togglePaymentMode(paymentMode: IPaymentMode): void {
-    const paymentModesArr: IPaymentMode[] = this.dialogForm?.value.paymentModes;
+  public togglePaymentMode(paymentMode: PaymentMode): void {
+    const paymentModesArr: PaymentMode[] = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
       .map((m): string => m.name)
       .indexOf(paymentMode.name);

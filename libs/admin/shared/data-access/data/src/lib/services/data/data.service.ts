@@ -19,7 +19,7 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EAdminRole,
   EOrderStatus,
@@ -487,7 +487,9 @@ export class DataService {
             },
           });
 
-          const adminUser: unknown = removeNestedTypeNameField(result?.getAdminUser);
+          const adminUser: unknown = removeNestedTypeNameField(
+            result?.getAdminUser,
+          );
 
           if (adminUser) {
             this._store.dispatch(

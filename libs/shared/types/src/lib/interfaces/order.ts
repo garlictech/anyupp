@@ -1,6 +1,6 @@
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
-import { IPaymentMode } from './payment';
+import { PaymentMode } from './payment';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';
@@ -60,7 +60,7 @@ export interface IOrder {
   userId: string;
   unitId: string;
   items: IOrderItem[];
-  paymentMode: IPaymentMode;
+  paymentMode: PaymentMode;
   statusLog: IStatusLog;
   sumPriceShown: IPriceShown;
   takeAway: boolean;

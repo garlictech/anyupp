@@ -6,13 +6,13 @@ import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
   overwrites: Partial<CrudApi.CreateUnitInput> = {},
 ) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
-    CrudApiMutationDocuments.createUnit,
+    CrudApi.createUnit,
     {
       input: {
         ...unitSeed.unit_01,
@@ -32,7 +32,7 @@ export const createTestUnit = (
 
 export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitMutation>(
-    CrudApiMutationDocuments.deleteUnit,
+    CrudApi.deleteUnit,
     {
       input: { id },
     },

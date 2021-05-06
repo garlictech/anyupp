@@ -1,5 +1,5 @@
 import { isCart, validateCart } from './cart';
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { ICart } from '@bgap/shared/types';
 
 const cart: ICart = {
@@ -7,7 +7,7 @@ const cart: ICart = {
   userId: 'USERID',
   unitId: 'UNITID',
   paymentMode: {
-    method: CrudApi.PaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.card,
     name: 'CARD',
   },
   takeAway: false,

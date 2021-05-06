@@ -1,10 +1,10 @@
 import { PreTokenGenerationTriggerHandler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
-import { map } from 'rxjs/operators';
-
 import Amplify from '@aws-amplify/core';
-import { CrudApi, CrudApiQueryDocuments, awsConfig } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { awsConfig } from '@bgap/crud-gql/api';
 import { executeQuery, GraphqlApiFp } from '@bgap/shared/graphql/api-client';
+import { pipe } from 'fp-ts/lib/function';
 
 export const handler: PreTokenGenerationTriggerHandler = async (
   event,
@@ -12,27 +12,21 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   callback,
 ) => {
   Amplify.configure(awsConfig);
-
-  console.error('***** event', event);
-
   const desiredContext = event.request.userAttributes['custom:context'];
 
-  console.error('***** desiredContext', desiredContext);
-
-  const CrudApiClient = GraphqlApiFp.createBackendClient(
+  const crudApiClient = GraphqlApiFp.createBackendClient(
     awsConfig,
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
     console,
   );
 
-  const adminUser = await executeQuery(CrudApiClient)<
-    CrudApi.GetAdminUserQuery
-  >(CrudApiQueryDocuments.getAdminUser, {
+  const adminUser = await executeQuery<
+    CrudApi.QueryGetAdminUserArgs,
+    CrudApi.AdminUser
+  >(CrudApi.getAdminUser, 'getAdminUser', {
     id: event.request.userAttributes.sub,
-  })
-    .pipe(map(result => result.getAdminUser))
-    .toPromise();
+  })(crudApiClient).toPromise();
 
   // Find the role
   const role = (adminUser?.roleContexts?.items || []).find(
@@ -42,16 +36,13 @@ export const handler: PreTokenGenerationTriggerHandler = async (
       desiredContext?.toLowerCase(),
   );
 
-  console.error('***** role', role);
-
   if (role?.roleContext) {
     // The given role has been assigned to the user
-    const roleContent = fp.pick(
-      ['role', 'chainId', 'groupId', 'unitId', 'contextId'],
-      <any>role.roleContext,
+    const roleContent = pipe(
+      role.roleContext,
+      fp.pick(['role', 'chainId', 'groupId', 'unitId', 'contextId']),
+      fp.pickBy(fp.negate(fp.isUndefined)),
     );
-
-    console.error('***** context OK', roleContent);
 
     event.response.claimsOverrideDetails = {
       claimsToAddOrOverride: {
@@ -59,8 +50,6 @@ export const handler: PreTokenGenerationTriggerHandler = async (
       },
     };
   } else {
-    console.error('***** context NOT ASSIGNED');
-
     // The user doesn't have an access to the given role
     event.response.claimsOverrideDetails = {
       claimsToAddOrOverride: {

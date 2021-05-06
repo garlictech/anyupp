@@ -1,5 +1,5 @@
 import { EOrderStatus } from '@bgap/shared/types';
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { unitProductSeed } from './unit-product';
 import { unitSeed } from './unit';
 
@@ -54,7 +54,7 @@ const cart_01 = {
   takeAway: false,
   paymentMode: {
     name: 'IN_APP',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
   place: {
     seat: 'SEAT',

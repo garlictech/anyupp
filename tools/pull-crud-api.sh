@@ -80,14 +80,15 @@ amplify pull \
 --yes
 
 amplify codegen
+yarn graphql-codegen --config tools/graphql-codegen-crud.yml
 
 # ----------------------------------------------------------
 # Get the CRUD table config and write it to a generated file
 # ----------------------------------------------------------
 echo "Generating table config..."
-TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
-mkdir -p $TABLE_CONFIG_DIR
-TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
+CRUD_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
+mkdir -p $CRUD_CONFIG_DIR
+TABLE_CONFIG_NAME="$CRUD_CONFIG_DIR/table-config.json"
 
 APPID=$(amplify env get --name ${STAGE} --json | \
   jq -r '.awscloudformation.AmplifyAppId')

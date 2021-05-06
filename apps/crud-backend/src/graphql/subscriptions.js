@@ -380,6 +380,7 @@ export const onChainProductChange = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1693,6 +1694,7 @@ export const onCreateChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1741,6 +1743,7 @@ export const onUpdateChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1789,6 +1792,7 @@ export const onDeleteChainProduct = /* GraphQL */ `
         }
         position
       }
+      allergens
       createdAt
       updatedAt
     }

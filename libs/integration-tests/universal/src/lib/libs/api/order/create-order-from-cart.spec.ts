@@ -5,7 +5,7 @@ import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   anyuppGraphQLClient,
   AuthenticatdGraphQLClientWithUserId,
@@ -139,7 +139,7 @@ const getOrder = (
   id: string,
 ): Observable<IOrder> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
-    CrudApiQueryDocuments.getOrder,
+    CrudApi.getOrder,
     { id },
   ).pipe(
     map(x => x.getOrder as IOrder),
@@ -155,7 +155,7 @@ const getCart = (
   id: string,
 ): Observable<ICart> => {
   return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
-    CrudApiQueryDocuments.getCart,
+    CrudApi.getCart,
     { id },
     { fetchPolicy: 'no-cache' },
   ).pipe(

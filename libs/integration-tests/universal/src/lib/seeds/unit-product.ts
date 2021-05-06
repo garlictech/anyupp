@@ -1,7 +1,7 @@
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   crudBackendGraphQLClient,
   executeMutation,
@@ -9,7 +9,7 @@ import {
 
 export const deleteUnitProduct = (id: string) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitProductMutation>(
-    CrudApiMutationDocuments.deleteUnitProduct,
+    CrudApi.deleteUnitProduct,
     {
       input: { id },
     },

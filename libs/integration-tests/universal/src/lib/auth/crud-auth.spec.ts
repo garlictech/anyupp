@@ -1,4 +1,4 @@
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   crudBackendGraphQLClient,
   crudGraphqlClient,
@@ -13,7 +13,7 @@ import { cartSeed } from '../fixtures/cart';
 describe('CRUD endpoints AUTH test', () => {
   it('should require authentication to access', done => {
     return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
-      CrudApiQueryDocuments.getCart,
+      CrudApi.getCart,
       { id: cartSeed.cart_seeded_01_id },
     ).subscribe({
       error(e) {
@@ -26,7 +26,7 @@ describe('CRUD endpoints AUTH test', () => {
   describe('IAM Auth', () => {
     it('should be able to execute a query with IAM authenticated graphql client', done => {
       executeQuery(crudBackendGraphQLClient)<CrudApi.GetCartQuery>(
-        CrudApiQueryDocuments.getCart,
+        CrudApi.getCart,
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {
@@ -50,7 +50,7 @@ describe('CRUD endpoints AUTH test', () => {
 
     it('should be able to execute a query with userpool authenticated graphql client', done => {
       executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-        CrudApiQueryDocuments.getCart,
+        CrudApi.getCart,
         { id: cartSeed.cart_seeded_01_id },
       ).subscribe({
         next(x) {

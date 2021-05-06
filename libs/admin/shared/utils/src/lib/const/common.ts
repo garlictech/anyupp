@@ -1,5 +1,5 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EAdminRole, IAllergen, IPaymentMode } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EAdminRole, IAllergen, PaymentMode } from '@bgap/shared/types';
 
 // TODO env enként külön
 export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
@@ -60,36 +60,36 @@ export const MENU_ROLES = {
   ],
 };
 
-export const PAYMENT_MODES: IPaymentMode[] = [
+export const PAYMENT_MODES: PaymentMode[] = [
   {
     name: 'Cash',
     caption: 'common.paymentModes.cash',
-    method: CrudApi.PaymentMethod.CASH,
+    method: CrudApi.PaymentMethod.cash,
   },
   {
     name: 'Card',
     caption: 'common.paymentModes.card',
-    method: CrudApi.PaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.card,
   },
   {
     name: 'Google Pay',
     caption: 'Google Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
     name: 'Apple Pay',
     caption: 'Apple Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
     name: 'Stripe',
     caption: 'Stripe',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
     name: 'Simple Pay',
     caption: 'Simple Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
 ];
 
