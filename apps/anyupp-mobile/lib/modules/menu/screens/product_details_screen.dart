@@ -223,7 +223,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
                                   children: [
-                                    Text(trans("allergens"),
+                                    Text(trans("allergens.title"),
                                         style: GoogleFonts.poppins(
                                           color: theme.highlight,
                                           fontWeight: FontWeight.normal,
