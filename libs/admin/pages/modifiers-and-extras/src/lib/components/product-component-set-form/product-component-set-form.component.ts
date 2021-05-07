@@ -10,12 +10,12 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties, EToasterType, getProductComponentObject, getProductComponentOptions, maxSelectionValidator,
-  multiLangValidator
+  EToasterType, getProductComponentObject, getProductComponentOptions, maxSelectionValidator, multiLangValidator
 } from '@bgap/admin/shared/utils';
 import {
   EProductComponentSetType, IChain, IGroup, IKeyValue, IKeyValueObject, IProductComponent, IProductComponentSet
 } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -84,7 +84,7 @@ export class ProductComponentSetFormComponent
   ngOnInit(): void {
     if (this.productComponentSet) {
       this.dialogForm.patchValue(
-        clearDbProperties<IProductComponentSet>(this.productComponentSet),
+        cleanObject(this.productComponentSet),
       );
     } else {
       // Patch ChainId

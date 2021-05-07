@@ -85,6 +85,7 @@ export class FormsService {
   public createProductConfigSetItemFormGroup = (productLevel: EProductLevel): FormGroup => {
     const groupConfig: Record<string, unknown> = {
       productComponentId: ['', Validators.required],
+      position: [0, Validators.required],
     };
 
     if (productLevel !== EProductLevel.CHAIN) {

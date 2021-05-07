@@ -36,12 +36,13 @@ export interface IProductConfigComponent {
   productComponentId: string;
   refGroupPrice?: number;
   price?: number;
+  position: number;
 }
 
 export interface IProductConfigSet {
   productSetId: string;
   items: IProductConfigComponent[];
-  position?: number;
+  position: number;
 }
 
 export interface IGeneratedProductVariant {

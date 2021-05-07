@@ -11,7 +11,7 @@ import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-product-availabilities',
   templateUrl: './form-product-availabilities.component.html',
 })

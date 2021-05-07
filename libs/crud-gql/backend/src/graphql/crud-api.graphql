@@ -326,12 +326,13 @@ type ProductConfigComponent {
   productComponentId: ID!
   refGroupPrice: Int
   price: Int
+  position: Int!
 }
 
 type ProductConfigSet {
   productSetId: ID!
-  items: [ProductConfigComponent]
-  position: Int
+  items: [ProductConfigComponent]!
+  position: Int!
 }
 
 ### Product

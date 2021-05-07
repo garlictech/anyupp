@@ -2,10 +2,13 @@ import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { getProductComponentSetOptions } from '@bgap/admin/shared/utils';
-import { EProductLevel, IKeyValue, IProductComponentSet, IProductConfigSet } from '@bgap/shared/types';
+import {
+  EProductLevel, IKeyValue, IProductComponentSet, IProductConfigComponent, IProductConfigSet
+} from '@bgap/shared/types';
+import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -20,6 +23,7 @@ import { FormsService } from '../../services/forms/forms.service';
 export class FormProductComponentsComponent implements OnInit, OnDestroy {
   @Input() componentFormArray!: FormArray;
   @Input() productLevel!: EProductLevel;
+  @Input() currency?: string;
   public eProductLevel = EProductLevel;
 
   public componentSetForm!: FormGroup;
@@ -78,12 +82,18 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
       const componentSetGroup = this._formsService.createProductConfigSetFormGroup();
       componentSetGroup.patchValue({
         productSetId: componentSet.id,
+        position: this.componentFormArray.value.length + 1,
       });
 
-      componentSet.items.forEach(componentId => {
-        const itemGroup = this._formsService.createProductConfigSetItemFormGroup(this.productLevel);
-        itemGroup.patchValue({ productComponentId: componentId });
-         (componentSetGroup.controls.items as FormArray).push(itemGroup);
+      componentSet.items.forEach((componentId, i) => {
+        const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
+          this.productLevel,
+        );
+        itemGroup.patchValue({
+          productComponentId: componentId,
+          position: i + 1,
+        });
+        (componentSetGroup.controls.items as FormArray).push(itemGroup);
       });
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
@@ -97,10 +107,50 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
   public removeComponentSetFromList(idx: number) {
     (<FormArray>this.componentFormArray)?.removeAt(idx);
 
+    (<FormArray>this.componentFormArray)?.controls.forEach(
+      (g: AbstractControl, i: number): void => {
+        g.patchValue({ position: i + 1 });
+      },
+    );
+
     this._changeDetectorRef.detectChanges();
   }
 
-  public move(idx: number, change: number) {
-    console.error('TODO move', idx, change);
+  public move(idx: number, change: number): void {
+    const arr = this.componentFormArray?.value;
+    const movingItem = arr[idx];
+
+    if (
+      (idx >= 0 && change === 1 && idx < arr.length - 1) ||
+      (change === -1 && idx > 0)
+    ) {
+      arr.splice(idx, 1);
+      arr.splice(idx + change, 0, movingItem);
+      arr.forEach((componentSet: IProductConfigSet, pos: number): void => {
+        componentSet.position = pos + 1;
+      });
+
+      arr.sort(customNumberCompare('position'));
+
+      (<FormArray>this.componentFormArray)?.controls.forEach(
+        (g: AbstractControl, i: number): void => {
+          g.patchValue(arr[i]);
+          (g.get('items') as FormArray).clear();
+
+          (arr[i]?.items || []).forEach(
+            (item: IProductConfigComponent): void => {
+              const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
+                this.productLevel,
+              );
+              itemGroup.patchValue(item);
+
+              (g.get('items') as FormArray).push(itemGroup);
+            },
+          );
+        },
+      );
+    }
+
+    this._changeDetectorRef.detectChanges();
   }
 }

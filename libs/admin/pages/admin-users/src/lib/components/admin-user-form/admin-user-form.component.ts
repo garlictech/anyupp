@@ -22,6 +22,7 @@ import {
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,7 +57,7 @@ export class AdminUserFormComponent
 
   ngOnInit(): void {
     if (this.adminUser) {
-      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
+      this.dialogForm.patchValue(cleanObject(this.adminUser));
     }
 
     this._changeDetectorRef.detectChanges();

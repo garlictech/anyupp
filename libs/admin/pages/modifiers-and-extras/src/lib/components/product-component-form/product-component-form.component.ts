@@ -1,36 +1,16 @@
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
-import {
-  IChain,
-  IGroup,
-  IKeyValue,
-  IProductComponent,
-} from '@bgap/shared/types';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { IChain, IGroup, IKeyValue, IProductComponent } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -86,7 +66,7 @@ export class ProductComponentFormComponent
   ngOnInit(): void {
     if (this.productComponent) {
       this.dialogForm.patchValue(
-        clearDbProperties<IProductComponent>(this.productComponent),
+        cleanObject(this.productComponent),
       );
     } else {
       // Patch ChainId

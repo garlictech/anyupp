@@ -26,6 +26,8 @@ import {
   ILane,
   IProduct,
   IProductCategory,
+  IProductConfigComponent,
+  IProductConfigSet,
   IProductVariant,
   IUnit,
 } from '@bgap/shared/types';
@@ -101,6 +103,7 @@ export class ProductExtendFormComponent
     this.dialogForm = this._formBuilder.group({
       isVisible: [''],
       variants: this._formBuilder.array([]),
+      configSets: this._formBuilder.array([]),
     });
 
     if (this.productLevel === EProductLevel.GROUP) {
@@ -119,9 +122,10 @@ export class ProductExtendFormComponent
 
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit('variants', cleanObject(this.product)),
+        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
+      // Patch variants
       [...this.product.variants]
         .sort(customNumberCompare('position'))
         .forEach((variant: IProductVariant): void => {
@@ -138,6 +142,29 @@ export class ProductExtendFormComponent
 
           (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
         });
+
+       // Patch configSets
+       (this.product.configSets || []).forEach(
+        (configSet: IProductConfigSet): void => {
+          const configSetGroup = this._formsService.createProductConfigSetFormGroup();
+          configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
+
+          (configSet.items || []).forEach((item: IProductConfigComponent) => {
+            const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
+              this.productLevel,
+            );
+            configSetItemGroup.patchValue(cleanObject(item));
+
+            (configSetGroup.controls.items as FormArray).push(
+              configSetItemGroup,
+            );
+          });
+
+          (this.dialogForm?.controls.configSets as FormArray).push(
+            configSetGroup,
+          );
+        },
+      );
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
 

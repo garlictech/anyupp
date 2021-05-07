@@ -11,7 +11,14 @@
     </div>
   </div>
   <div class="col-md-3">
-    <!--*ngIf="productLevel === eProductLevel.GROUP"-->
+    <bgap-form-static-text
+      *ngIf="productLevel === eProductLevel.UNIT"
+      caption="products.refPrice"
+      [value]="
+      item.value.refGroupPrice | currencyFormatter: currency!
+    "
+    ></bgap-form-static-text>
+
     <bgap-form-text-input
       *ngIf="productLevel === eProductLevel.GROUP"
       caption="products.refPrice"
