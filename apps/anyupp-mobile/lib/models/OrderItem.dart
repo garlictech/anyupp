@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 
 import 'core/model_base.dart';
 
-
 @immutable
 class OrderItem extends Model {
   final String id;
@@ -18,6 +17,7 @@ class OrderItem extends Model {
   final bool takeAway;
   final String orderItemsId;
   final String image;
+  final List<String> allergens;
 
   @override
   String getId() {
@@ -35,7 +35,8 @@ class OrderItem extends Model {
       this.variantName,
       this.takeAway,
       this.orderItemsId,
-      this.image});
+      this.image,
+      this.allergens});
 
   factory OrderItem(
       {String id,
@@ -48,7 +49,8 @@ class OrderItem extends Model {
       LocalizedItem variantName,
       bool takeAway,
       String orderItemsId,
-      String image}) {
+      String image,
+      List<String> allergens}) {
     return OrderItem._internal(
         id: id == null ? UUID.getUUID() : id,
         productId: productId,
@@ -60,7 +62,8 @@ class OrderItem extends Model {
         variantName: variantName,
         takeAway: takeAway,
         orderItemsId: orderItemsId,
-        image: image);
+        image: image,
+        allergens: allergens);
   }
 
   bool equals(Object other) {
@@ -81,7 +84,8 @@ class OrderItem extends Model {
         variantName == other.variantName &&
         takeAway == other.takeAway &&
         orderItemsId == other.orderItemsId &&
-        image == image;
+        image == image &&
+        ListEquality().equals(allergens, other.allergens);
   }
 
   @override
@@ -110,6 +114,7 @@ class OrderItem extends Model {
         "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
     buffer.write("orderItemsId=" + "$orderItemsId" + ", ");
     buffer.write("image=" + "$image");
+    buffer.write(allergens.toString());
     buffer.write("}");
 
     return buffer.toString();
@@ -126,7 +131,8 @@ class OrderItem extends Model {
       LocalizedItem variantName,
       bool takeAway,
       String orderItemsId,
-      String image}) {
+      String image,
+      List<String> allergens}) {
     return OrderItem(
         id: id ?? this.id,
         productId: productId ?? this.productId,
@@ -138,7 +144,8 @@ class OrderItem extends Model {
         variantName: variantName ?? this.variantName,
         takeAway: takeAway ?? this.takeAway,
         orderItemsId: orderItemsId ?? this.orderItemsId,
-        image : image ?? this.image);
+        image: image ?? this.image,
+        allergens: allergens ?? this.allergens);
   }
 
   OrderItem.fromJson(Map<String, dynamic> json)
@@ -150,14 +157,12 @@ class OrderItem extends Model {
                 Map<String, dynamic>.from(json['productName']))
             : null,
         priceShown = json['priceShown'] != null
-            ? PriceShown.fromJson(
-                Map<String, dynamic>.from(json['priceShown']))
+            ? PriceShown.fromJson(Map<String, dynamic>.from(json['priceShown']))
             : null,
         quantity = json['quantity'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List)
-                .map(
-                    (e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
+                .map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         variantName = json['variantName'] != null
@@ -166,7 +171,9 @@ class OrderItem extends Model {
             : null,
         takeAway = json['takeAway'],
         orderItemsId = json['orderItemsId'],
-        image = json['image'];
+        image = json['image'],
+        //TODO replace with real item
+        allergens = ['mustard'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -180,5 +187,6 @@ class OrderItem extends Model {
         'takeAway': takeAway,
         'orderItemsId': orderItemsId,
         'image': image,
+        'allergens': allergens
       };
 }
