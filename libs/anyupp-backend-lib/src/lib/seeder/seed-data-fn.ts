@@ -661,6 +661,5 @@ export const createSeederDeps = (
     awsConfig,
     awsAccesssKeyId,
     awsSecretAccessKey,
-    console,
   ),
 });
