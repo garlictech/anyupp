@@ -90,6 +90,7 @@ const toGeneratedProductType = (
   productType: product.productType,
   tax: product.tax,
   position: product.position,
+  allergens: product.allergens,
   variants,
 });
 
