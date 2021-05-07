@@ -38,7 +38,7 @@ class _EmailLoginDialogContentWidgetState
           builder: (BuildContext context, LoginState state) {
         // print('EmailLoginDialogContentWidget.bloc.state=$state');
 
-        if (state is LoginInProgress) {
+        if (state is EmailLoginInProgress) {
           return _buildLoading(context,
               message: trans('login.email.loginProgress'));
         }
