@@ -6,6 +6,7 @@ Feature: Authentication
     Given I am on the login page
     Then I should see "AnyUPP Admin" sub-header
 
+@focus
   Scenario: Login and log out
     When I fill out the input with id "username" with the "test@anyupp.com" value
     And I fill out the input with id "password" with the "Testtesttest12_" value
@@ -20,11 +21,11 @@ Feature: Authentication
     And I click on the "OK" title
     Then I should be on the login page
     And I should see "AnyUPP Admin" sub-header
-    
+
   Scenario: Forgotten password steps
     When I click the "Reset password" text
     Then I should see "Reset your password" sub-header
     When I fill out the username input with the "test@anyupp.com" value
-    Then I should see "Send code" text
+    Then I should see "Send Code" text
     And I click the "Back to Sign In" text
     Then I should see "AnyUPP Admin" sub-header

@@ -19,8 +19,8 @@ Feature: Create a new Chain
 
  Scenario: Create new chain
    When I click on the plus button
-   And I click on the Active checkbox
-   And I fill out the "Name" input with "test chain"
+   And I click on the "Active" checkbox
+   And I fill out the "Name" input with "test chain 3"
    And I fill out the "Description (HU)" input with "test description"
    And I fill out the "Description (EN)" input with "test description"
    And I fill out the "Description (DE)" input with "test description"
@@ -42,7 +42,7 @@ Feature: Create a new Chain
    And I click on the "Indicator" picker fill out with "#ffaeec"
    And I click on the "Disabled" picker fill out with "#ffaeec"
    And I click on the submit button
-   Then I should see "test chain" text
+   Then I should see "test chain 3" text
    And I should see "test description" text
    And I should see "test@anyupp.com" text
    And I should see "1234567890" text

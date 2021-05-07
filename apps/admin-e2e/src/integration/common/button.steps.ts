@@ -17,6 +17,7 @@ When('I click on the {string} text', (text: string) => {
     cy.contains('a', text).click({force: true});
 });
 
+// TODO: I need title
 When('I click on the plus button', () => {
     cy.get('nb-icon[icon="plus-outline"]').click();
 });
@@ -34,22 +35,29 @@ When('I click on the submit button', () => {
     // cy.findAllByLabelText('Submit').click();
 });
 
-When('I click on the Active checkbox', () => {
-    cy.findByRole('checkbox').check({force: true});
-});
+When('I click on the {string} checkbox', (checkboxName: string) => {
+    cy.findAllByLabelText(checkboxName).check({force: true});
+  });
+// checkbox step
 
 When('I click on the {string} button', (map: string) => {
     cy.findAllByText(map).click({force: true});
 });
 // locate on map button
 
-// When('I click on the {string} selector', (value: string) => {
-    // cy.contains('button', value).click({force: true});
-//     cy.findByRole('button').contains(value).click({force: true});
-// });
+When('I click on the {string} selector', (value: string) => {
+    cy.contains('button', value).click({force: true});
+    // cy.findByRole('button').contains(value).click({force: true});
+});
 // selector step
 
-// When('I select {string}', (value: string) => {
-//         cy.contains('nb-option', value).click();
-//     });
+When('I select {string}', (value: string) => {
+    cy.contains('nb-option', value).click();
+});
 // selector step
+
+When('I click the selector to set {string}', (value: string) =>{
+    cy.get('.select-button').last().click();
+    cy.findAllByText(value).last().click();
+});
+// for parent chain/group, and currency selectors
