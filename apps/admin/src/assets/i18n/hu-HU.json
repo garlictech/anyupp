@@ -165,9 +165,8 @@
       "sulphites": "Szulfitok",
       "treenuts": "Diófélék"
     },
-    "ingredients": {
-      "title": "Hozzávalók"
-    },
+    "productConfigurations": "Termék konfigurációk",
+    "productModifierSet": "Termékmódosító készlet",
     "variants": "Variánsok",
     "packSize": "Pack size",
     "packUnit": "Pack unit",
@@ -208,6 +207,7 @@
     "editProductComponentSet": "Termék komponens készlet szerkesztése",
     "newProductComponentSet": "Új termék komponens készlet",
     "productComponent": "Termék komponens",
+    "productComponents": "Termék komponensek",
     "type": {
       "extras": "Extrák",
       "modifier": "Módosító"

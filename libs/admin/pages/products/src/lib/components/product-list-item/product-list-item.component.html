@@ -63,6 +63,11 @@
     <nb-icon icon="download-outline"></nb-icon>
   </button>
 </ng-container>
+
+<div class="clearfix"></div>
+
+<bgap-allergens class="ml-5 d-inline-block" [allergens]="product.allergens || []"></bgap-allergens>
+
 <div class="clearfix"></div>
 
 <div class="caption ml-5">
@@ -94,7 +99,4 @@
   </div>
 
   <div class="clearfix"></div>
-
-  <img class="allergen" src="assets/images/allergens/{{ allergen }}.svg" *ngFor="let allergen of product.allergens">
-
 </div>

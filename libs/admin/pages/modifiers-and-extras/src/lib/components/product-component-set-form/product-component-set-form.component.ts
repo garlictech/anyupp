@@ -1,50 +1,23 @@
-import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { NGXLogger } from 'ngx-logger';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
-  EToasterType,
-  multiLangValidator,
+  clearDbProperties, EToasterType, getProductComponentObject, getProductComponentOptions, maxSelectionValidator,
+  multiLangValidator
 } from '@bgap/admin/shared/utils';
 import {
-  EProductComponentSetType,
-  IChain,
-  IGroup,
-  IKeyValue,
-  IKeyValueObject,
-  IProductComponent,
-  IProductComponentSet,
+  EProductComponentSetType, IChain, IGroup, IKeyValue, IKeyValueObject, IProductComponent, IProductComponentSet
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import {
-  getProductComponentObject,
-  getProductComponentOptions,
-  maxSelectionValidator,
-} from '../../fn';
 
 @UntilDestroy()
 @Component({
@@ -63,8 +36,6 @@ export class ProductComponentSetFormComponent
   public productComponentObject: IKeyValueObject = {};
   public eProductComponentSetType = EProductComponentSetType;
 
-  private _productComponentSets: IProductComponentSet[] = [];
-
   constructor(
     protected _injector: Injector,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,13 +53,13 @@ export class ProductComponentSetFormComponent
         maxSelection: [''],
         name: this._formBuilder.group(
           {
-            hu: ['', [this._uniqueNameValidator('hu')]],
-            en: ['', [this._uniqueNameValidator('en')]],
-            de: ['', [this._uniqueNameValidator('de')]],
+            hu: ['', [Validators.maxLength(40)]],
+            en: ['', [Validators.maxLength(40)]],
+            de: ['', [Validators.maxLength(40)]],
           },
           { validators: multiLangValidator },
         ),
-        description: [''],
+        description: ['', [Validators.required]],
         items: [[]],
       },
       { validators: maxSelectionValidator },
@@ -108,16 +79,6 @@ export class ProductComponentSetFormComponent
         value: 'productComponentSets.type.modifier',
       },
     ];
-
-    // Used for the validator
-    this._store
-      .pipe(
-        select(productComponentSetsSelectors.getAllProductComponentSets),
-        untilDestroyed(this),
-      )
-      .subscribe((productComponentSets: IProductComponentSet[]): void => {
-        this._productComponentSets = productComponentSets;
-      });
   }
 
   ngOnInit(): void {
@@ -178,16 +139,6 @@ export class ProductComponentSetFormComponent
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
-
-  private _uniqueNameValidator = (lang: string): ValidatorFn => (
-    control: AbstractControl,
-  ): ValidationErrors | null => {
-    const names = this._productComponentSets
-      .filter(c => c.id !== this.productComponentSet?.id)
-      .map(c => c.name[lang]);
-
-    return names.includes(control.value) ? { existing: true } : null;
-  };
 
   public addComponentToList(): void {
     const componentIdsArr: string[] = this.dialogForm.controls['items'].value;

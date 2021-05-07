@@ -2,12 +2,8 @@ import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  multiLangValidator,
-  productAvailabilityValidator,
-  TIME_FORMAT_PATTERN,
-} from '@bgap/admin/shared/utils';
-import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { multiLangValidator, productAvailabilityValidator, TIME_FORMAT_PATTERN } from '@bgap/admin/shared/utils';
+import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +70,31 @@ export class FormsService {
       name: ['', [Validators.required]],
       color: ['#ffffff', [Validators.required]],
     });
+  };
+
+  public createProductConfigSetFormGroup = (): FormGroup => {
+    const groupConfig = {
+      productSetId: [''],
+      items: this._formBuilder.array([]),
+      position: [0],
+    };
+
+    return this._formBuilder.group(groupConfig);
+  };
+
+  public createProductConfigSetItemFormGroup = (productLevel: EProductLevel): FormGroup => {
+    const groupConfig: Record<string, unknown> = {
+      productComponentId: ['', Validators.required],
+    };
+
+    if (productLevel !== EProductLevel.CHAIN) {
+      groupConfig.refGroupPrice = ['', Validators.required]
+    }
+
+    if (productLevel === EProductLevel.UNIT) {
+      groupConfig.price = ['', Validators.required]
+    }
+
+    return this._formBuilder.group(groupConfig);
   };
 }

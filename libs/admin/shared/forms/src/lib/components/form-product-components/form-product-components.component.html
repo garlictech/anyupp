@@ -1,0 +1,107 @@
+<fieldset class="form mb-4">
+  <legend class="label">
+    {{ 'products.productConfigurations' | translate }}
+  </legend>
+
+  <div class="row">
+    <div class="col-md-6">
+      <bgap-form-select
+        caption="products.productModifierSet"
+        [localize]="true"
+        [options]="productComponentSetOptions"
+        [control]="
+          componentSetForm.get('productComponentSetId')! | asFormControl
+        "
+      ></bgap-form-select>
+
+      <button
+        nbButton
+        size="small"
+        type="button"
+        status="primary"
+        (click)="addComponentSetToList()"
+        [disabled]="componentSetForm.invalid"
+      >
+        {{ 'common.add' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="mb-3 mt-3">
+    <ng-container
+      *ngFor="
+        let componentSet of (componentFormArray | iterableAbstractControls) ||
+          [];
+        let i = index;
+        first as isFirst;
+        last as isLast
+      "
+    >
+      <nb-list-item
+        class="d-block pb-4"
+        *ngIf="
+          componentSet.value.productSetId
+            | productComponentSetInfo
+            | async as componentSetInfo
+        "
+      >
+        <div class="w-100">
+          <div class="float-left">
+            <div class="subtitle-2">
+              {{ componentSetInfo.name | localize }}
+            </div>
+          </div>
+
+          <button
+            nbButton
+            shape="round"
+            status="danger"
+            size="tiny"
+            class="float-right mr-2"
+            type="button"
+            [title]="'common.delete' | translate"
+            (click)="removeComponentSetFromList(i)"
+          >
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+
+          <button
+            [hidden]="isLast"
+            nbButton
+            shape="round"
+            size="tiny"
+            type="button"
+            class="float-right mr-2"
+            [title]="'common.moveDown' | translate"
+            (click)="move(i, 1)"
+          >
+            <nb-icon icon="chevron-down"></nb-icon>
+          </button>
+          <button
+            [hidden]="isFirst"
+            nbButton
+            shape="round"
+            size="tiny"
+            type="button"
+            class="float-right mr-2"
+            [title]="'common.moveUp' | translate"
+            (click)="move(i, -1)"
+          >
+            <nb-icon icon="chevron-up"></nb-icon>
+          </button>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="caption mb-2">
+          {{ componentSetInfo.description }}
+        </div>
+
+        <bgap-form-product-component-item
+          [itemFormArray]="componentSet.get('items')! | asFormArray"
+          [productLevel]="productLevel"
+        ></bgap-form-product-component-item>
+      </nb-list-item>
+    </ng-container>
+  </div>
+</fieldset>

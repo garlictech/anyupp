@@ -62,9 +62,9 @@ export class ProductComponentFormComponent
       chainId: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
-          hu: ['', [this._uniqueNameValidator('hu')]],
-          en: ['', [this._uniqueNameValidator('en')]],
-          de: ['', [this._uniqueNameValidator('de')]],
+          hu: ['', [Validators.maxLength(40), this._uniqueNameValidator('hu')]],
+          en: ['', [Validators.maxLength(40), this._uniqueNameValidator('en')]],
+          de: ['', [Validators.maxLength(40), this._uniqueNameValidator('de')]],
         },
         { validators: multiLangValidator },
       ),

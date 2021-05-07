@@ -316,9 +316,22 @@ type ProductComponentSet
   chainId: ID!
   type: String!
   name: LocalizedItem!
-  description: String
+  description: String!
   items: [ID]! # ProductComponent ID
   maxSelection: Int # On extras
+}
+
+### ProductConfigSet
+type ProductConfigComponent {
+  productComponentId: ID!
+  refGroupPrice: Int
+  price: Int
+}
+
+type ProductConfigSet {
+  productSetId: ID!
+  items: [ProductConfigComponent]
+  position: Int
 }
 
 ### Product
@@ -335,6 +348,7 @@ type ChainProduct
   image: String
   variants: [ProductVariant]
   allergens: [Allergen]
+  configSets: [ProductConfigSet]
 }
 
 enum Allergen {
@@ -365,6 +379,7 @@ type GroupProduct
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
+  configSets: [ProductConfigSet]
   chainProduct: ChainProduct @connection(fields: ["parentId"])
 }
 
@@ -381,6 +396,7 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  configSets: [ProductConfigSet]
   groupProduct: GroupProduct @connection(fields: ["parentId"])
 }
 

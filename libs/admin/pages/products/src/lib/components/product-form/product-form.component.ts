@@ -3,15 +3,33 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
+import {
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  EProductType,
+  IAdminUserSettings,
+  IKeyValue,
+  IProduct,
+  IProductCategory,
+  IProductConfigComponent,
+  IProductConfigSet,
+  IProductVariant,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -21,7 +39,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
-  templateUrl: './product-form.component.html'
+  templateUrl: './product-form.component.html',
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
@@ -70,6 +88,7 @@ export class ProductFormComponent
       image: [''],
       variants: this._formBuilder.array([]),
       allergens: [[]],
+      configSets: this._formBuilder.array([]),
     });
 
     this.productTypes = [
@@ -117,15 +136,39 @@ export class ProductFormComponent
   ngOnInit(): void {
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit('variants', cleanObject(this.product)),
+        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
+      // Patch variants
       (this.product.variants || []).forEach(
         (variant: IProductVariant): void => {
           const variantGroup = this._formsService.createProductVariantFormGroup();
           variantGroup.patchValue(cleanObject(variant));
 
           (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
+        },
+      );
+
+      // Patch configSets
+      (this.product.configSets || []).forEach(
+        (configSet: IProductConfigSet): void => {
+          const configSetGroup = this._formsService.createProductConfigSetFormGroup();
+          configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
+
+          (configSet.items || []).forEach((item: IProductConfigComponent) => {
+            const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
+              this.productLevel,
+            );
+            configSetItemGroup.patchValue(cleanObject(item));
+
+            (configSetGroup.controls.items as FormArray).push(
+              configSetItemGroup,
+            );
+          });
+
+          (this.dialogForm?.controls.configSets as FormArray).push(
+            configSetGroup,
+          );
         },
       );
     } else {
@@ -162,7 +205,9 @@ export class ProductFormComponent
           );
           this.close();
         } catch (error) {
-          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
+          this._logger.error(
+            `CHAIN PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
+          );
         }
       } else {
         try {

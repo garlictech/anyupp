@@ -1,16 +1,8 @@
-import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -18,11 +10,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
-  NbDialogService,
-  NbMediaBreakpointsService,
-  NbMenuService,
-  NbSidebarService,
-  NbThemeService,
+  NbDialogService, NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -130,19 +118,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
     );
     this._translateMenuItems();
-
-    const { xl } = this._breakpointService.getBreakpointsMap();
-    this._themeService
-      .onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
-        untilDestroyed(this),
-      )
-      .subscribe((isLessThanXl: boolean): boolean => {
-        this._changeDetectorRef.detectChanges();
-
-        return (this.userPictureOnly = isLessThanXl);
-      });
 
     this._menuService
       .onItemClick()
