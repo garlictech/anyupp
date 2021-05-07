@@ -1,5 +1,3 @@
-import { multiLangValidator } from 'libs/admin/shared/utils/src';
-import { cleanObject, customNumberCompare } from 'libs/shared/utils/src';
 import * as fp from 'lodash/fp';
 
 import { Injectable } from '@angular/core';
@@ -10,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormsService } from '@bgap/admin/shared/forms';
+import { multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   EProductLevel,
   IProduct,
@@ -17,6 +16,7 @@ import {
   IProductConfigSet,
   IProductVariant,
 } from '@bgap/shared/types';
+import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
