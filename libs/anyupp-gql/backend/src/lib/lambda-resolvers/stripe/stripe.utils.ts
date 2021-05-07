@@ -6,17 +6,17 @@ export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
 ): AnyuppApi.StripeCard => ({
   id: pm.id,
-  ...pm.card,
-  // metadata: convertCardMetadata(pm.metadata),
-  // object: pm.object,
+  country: pm.card?.country,
+  last4: pm.card?.last4,
+  exp_month: pm.card?.exp_month,
+  exp_year: pm.card?.exp_year,
+  checks: {
+    address_line1_check: pm.card?.checks?.address_line1_check,
+    address_postal_code_check: pm.card?.checks?.address_postal_code_check,
+    cvc_check: pm.card?.checks?.cvc_check,
+  },
   brand: convertBrand(pm.card),
   funding: convertFunding(pm.card),
-  // AnyuppApi.CardBrand[pm.card?.brand as keyof typeof AnyuppApi.CardBrand],
-  // country: pm.card?.country,
-  // funding:
-  //   AnyuppApi.CardFundingType[
-  //     pm.card?.funding as keyof typeof AnyuppApi.CardFundingType
-  //   ],
 });
 
 export const mapStripeCardToCard = (

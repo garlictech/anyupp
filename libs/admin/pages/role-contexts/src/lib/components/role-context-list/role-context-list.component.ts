@@ -35,11 +35,6 @@ export class RoleContextListComponent implements OnDestroy {
   }
 
   addRoleContext(): void {
-    this._nbDialogService.open(RoleContextFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(RoleContextFormComponent);
   }
 }

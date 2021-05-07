@@ -1,51 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { unitSeed } from '../fixtures/unit';
-import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import {
   crudBackendGraphQLClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import { resultTap } from './seed.util';
 
-export const createTestUnit = (
-  overwrites: Partial<CrudApi.CreateUnitInput> = {},
-) =>
+export const createTestUnit = (input: CrudApi.CreateUnitInput) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
     CrudApiMutationDocuments.createUnit,
     {
-      input: {
-        ...unitSeed.unit_01,
-        ...overwrites,
-      },
+      input,
     },
-  ).pipe(
-    tap({
-      next(unit) {
-        console.log('### new UNIT created with id: ' + unit.createUnit?.id);
-      },
-      error(err) {
-        console.error('Error during test unit creation: ', err.message);
-      },
-    }),
-  );
+  ).pipe(resultTap('UNIT create', input.id!));
 
-export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
+export const deleteTestUnit = (id: string) =>
   executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitMutation>(
     CrudApiMutationDocuments.deleteUnit,
-    {
-      input: { id },
-    },
-  ).pipe(
-    tap({
-      next(unit) {
-        console.log('### UNIT deleted with id: ' + unit.deleteUnit?.id);
-      },
-    }),
-    catchError(err => {
-      console.error('Error during unit delete with id:' + id, err.message);
-      return throwError(
-        `Error during unit delete with id: ${id}, Err: ${err.message}`,
-      );
-    }),
-  );
+    { input: { id } },
+  ).pipe(resultTap('UNIT delete', id));

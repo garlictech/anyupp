@@ -18,9 +18,7 @@ export class GroupListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   public editGroup(): void {
-    const dialog = this._nbDialogService.open(GroupFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(GroupFormComponent);
 
     dialog.componentRef.instance.group = fp.cloneDeep(this.group);
   }

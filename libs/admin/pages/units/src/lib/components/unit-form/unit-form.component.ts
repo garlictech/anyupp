@@ -31,23 +31,19 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
-  private _formsService: FormsService;
   private _groups: IGroup[] = [];
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
 
   constructor(
     protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
 
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-    this._store = this._injector.get(Store);
-    this._formsService = this._injector.get(FormsService);
     this._store
       .pipe(
         select(groupsSelectors.getSelectedChainGroups),

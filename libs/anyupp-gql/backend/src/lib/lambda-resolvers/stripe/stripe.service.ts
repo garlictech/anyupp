@@ -20,7 +20,7 @@ export const listStripeCards = async (
 
   // 2. get User from DynamoDB
   const user: IUser = await loadAndConnectUserForStripe(stripe, crudGraphqlClient, userId);
-  console.log('listStripeCards().user=' + user);
+  console.log('listStripeCards().user=' + user + ', customerId=' + user?.stripeCustomerId);
 
   if (!user || !user.stripeCustomerId) {
     throw Error('User initialization failed. User must have a stripeCustomerId property!');
@@ -33,7 +33,9 @@ export const listStripeCards = async (
       type: 'card',
     })
     .then(paymentMethods => {
-      return paymentMethods.data.map(mapPaymentMethodToCard);
+      const cards = paymentMethods.data.map(mapPaymentMethodToCard);
+      console.log('listStripeCards.cards=' + JSON.stringify(cards, null, 2));
+      return cards;
     })
     .catch(handleStripeErrors);
 }
@@ -208,7 +210,7 @@ const handleStripeErrors = (error: Stripe.StripeError) => {
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
 export const initStripe = async () => {
   const secret = process.env.STRIPE_SECRET_KEY;
-  console.log('initStripe.secret()=' + secret);
+  // console.log('initStripe.secret()=' + secret);
   if (!secret) {
     throw Error('Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY');
   }

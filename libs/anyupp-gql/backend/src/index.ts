@@ -10,5 +10,7 @@ export { createProductResolvers } from './lib/lambda-resolvers/product/product-r
 export { productRequestHandler } from './lib/lambda-resolvers/product/product-request-handler';
 export { createStripeWebhookExpressApp } from './lib/lambda-resolvers/stripe/stripe-webhook-handler';
 
+export * from './lib/lambda-resolvers/product';
+
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };

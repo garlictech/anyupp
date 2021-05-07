@@ -11,12 +11,12 @@ input LocationInput {
 }
 
 type Address @aws_cognito_user_pools {
-  address: String
-  city: String
-  country: String
-  title: String
-  postalCode: String
-  location: Location
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: Location!
 }
 
 type LocalizedItem @aws_cognito_user_pools {
@@ -76,6 +76,11 @@ input CreateOrderFromCartInput {
   id: ID!
 }
 
+## UNIT
+input RegenerateUnitDataInput {
+  id: ID!
+}
+
 # input PlaceInput {
 #   seat: String!
 #   table: String!
@@ -98,7 +103,7 @@ type UnitProduct @aws_cognito_user_pools {
 
 type ProductVariant @aws_cognito_user_pools {
   id: ID!
-  variantName: LocalizedItem
+  variantName: LocalizedItem!
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean!
@@ -135,7 +140,7 @@ input CreateUnitProductInput {
 
 input ProductVariantInput {
   id: ID!
-  variantName: LocalizedItemInput
+  variantName: LocalizedItemInput!
   pack: ProductVariantPackInput
   refGroupPrice: Float
   isAvailable: Boolean!
@@ -286,6 +291,9 @@ type Mutation {
 
   # Product
   createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+  # Unit
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @aws_cognito_user_pools
 
   # Stripe

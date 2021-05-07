@@ -34,11 +34,6 @@ export class UserListComponent implements OnDestroy {
   }
 
   addUser(): void {
-    this._nbDialogService.open(UserFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(UserFormComponent);
   }
 }

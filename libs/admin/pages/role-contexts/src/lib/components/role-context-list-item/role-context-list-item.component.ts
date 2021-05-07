@@ -17,9 +17,7 @@ export class RoleContextListItemComponent {
   constructor(private _nbDialogService: NbDialogService) {}
 
   editRoleContext(): void {
-    const dialog = this._nbDialogService.open(RoleContextFormComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(RoleContextFormComponent);
 
     dialog.componentRef.instance.roleContext = fp.cloneDeep(this.roleContext);
   }

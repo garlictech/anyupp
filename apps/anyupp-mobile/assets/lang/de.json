@@ -104,7 +104,7 @@
     "method": {
       "cash": "Cash at register",
       "creditCard": "Credit card at register",
-      "inAppPayment": "Pay by Card via SimplePay (preferred)"
+      "inAppPayment": "Pay by Card via Stripe (preferred)"
     },
     "sendOrder": "PLACE ORDER",
     "orderPlaced": "Order successfully received.",

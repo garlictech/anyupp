@@ -29,22 +29,36 @@
       "loginProgress": "Bejelentkezés...",
       "forgotPassword": "Elfelejtett helszó. . .",
       "emailFieldLabel": "Email",
+      "emailOrPhoneFieldLabel": "Email vagy Telefon szám",
       "passwordFieldLabel": "Jelszó",
       "password2FieldLabel": "Jelszó újra",
       "linkLoginWithLink": "Bejelentkezés email üzenetben. . .",
       "linkLoginWithPassword": "Bejelentkezés jelszóval. . .",
+      "signIn": "Belépés",
       "linkSignIn": "Belépés. . .",
       "linkRegister": "Regisztráció. . .",
       "buttonLogin": "Belépés",
       "buttonLoginLink": "Belépési link elküldése",
       "buttonRegister": "Regisztráció",
-      "buttonPasswordReset": "Jelszó reset email küldése",
-      "sendPasswordResetMessage": "Jelszó reset email küldése folyamatban...",
+      "buttonPasswordReset": "Jelszó vissza állítása",
+      "sendPasswordResetMessage": "Jelszó vissza állítása folyamatban...",
       "dialogEmailSentTitle": "Email elküldve",
       "dialogEmailSentMessage": "Nézd meg az email-jeid és kattints a linkre a bejelentkezéshez!",
-      "dialogResetSentTitle": "Jelszó frissítve",
-      "dialogResetSentMessage": "Elküldüt email-ben a jelszó megváltoztatásához járó linket! Nyisd meg és kattints rá a módosítás befejezéséhez.",
-      "closeButton": "Bezárás"
+      "dialogResetSentTitle": "Kód elküldve",
+      "dialogResetSentMessage": "Elküldtük email-ben a jelszó megváltoztatásához szükséges kódot ide: ",
+      "dialogPasswordRefreshedTitle": "Jelszó frissítve",
+      "dialogPasswordRefreshedMessage": "A jelszavadat frissítettük mostmár belépetsz vele.",
+      "closeButton": "Bezárás",
+      "setMailTo": "A kódot elküldtük a megadott email címre",
+      "checkInbox": "Ellenőrizd a bejövő leveleidet!",
+      "enterToConfirm": "A fiókod aktiválásához add meg a kódot.",
+      "codeNotReceived": "Nem érkezett meg a kód?",
+      "resendCode": "Kód újraküldése",
+      "verificationCode": "Validációs Kód",
+      "confirmAccount": "Fiók Aktiválása",
+      "dialogConfirmedTitle": "Fiók aktiválva!",
+      "dialogConfirmedMessage": "A fiókodod aktiválva.",
+      "enterCode" : "Enter Code"
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
@@ -136,7 +150,7 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával",
-      "inAppPayment": "Kártyás fizetés SimplePay-jel (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-al (ajánlott)"
     },
     "sendOrder": "RENDELÉS",
     "orderPlaced": "Köszönjük, átvettük a rendelésed!",
@@ -286,6 +300,10 @@
       "title": "Login error",
       "description": "The password is invalid or the user does not have a password."
     },
+    "ERROR_PASSWORD_MISSMATCH": {
+      "title": "Signup error",
+      "description": "The passwords are not matching."
+    },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",
       "description": "The supplied credentials do not correspond to the previously signed in user."
@@ -330,9 +348,37 @@
       "title": "Login error",
       "description": "The given password is invalid."
     },
+    "INVALID_CREDENTIALS": {
+      "title": "Sign up error",
+      "description": "Invalid user or password. Try again."
+    },
     "ERROR_MISSING_EMAIL": {
       "title": "Login error",
       "description": "An email address must be provided."
+    },
+    "INVALID_PASSWORD": {
+      "title": "Sign up error",
+      "description": "Password did not conform with policy"
+    },
+    "INVALID_CONFIRMATION_CODE": {
+      "title": "Sign up error",
+      "description": "The given confirmation code is invalid, try to resend it"
+    },
+    "EXPIRED_CONFIRMATION_CODE": {
+      "title": "Invalid code",
+      "description": "Invalid code provided, please request a code again."
+    },
+    "NOT_EMAIL_OR_PHONE": {
+      "title": "Sign up error",
+      "description": "Username should be either an email or a phone number."
+    },
+    "USER_EMAIL_NOT_SAME": {
+      "title": "Sign up error",
+      "description": "User email should be empty or same as username, since username attribute is email."
+    },
+    "LIMIT_EXCEEDED": {
+      "title": "Sign up error",
+      "description": "Resed limit exceeded."
     }
   }
 }

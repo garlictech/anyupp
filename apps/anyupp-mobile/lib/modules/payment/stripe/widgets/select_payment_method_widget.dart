@@ -1,3 +1,5 @@
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -20,10 +22,16 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   StripePaymentMethod _selectedCard;
 
   @override
+  void initState() {
+    super.initState();
+    getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
-      height: 480.0,
+      padding: EdgeInsets.all(0.0),
+      //height: 480.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -47,14 +55,9 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
                 backgroundColor: Colors.transparent,
                 padding: EdgeInsets.all(8.0),
               ),
-              onPressed: widget.onItemSelected == null
-                  ? () => Nav.pop()
-                  : () {
-                      Nav.pop();
-                      widget.onItemSelected(_selectedCard);
-                    },
+              onPressed: () => Nav.pop(),
               child: Text(
-                trans('common.select'),
+                trans('common.close'),
                 style: GoogleFonts.poppins(
                   fontSize: 14.0,
                   color: theme.text,
@@ -70,7 +73,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   Widget _buildPaymentMethodList(BuildContext context) {
     return BlocBuilder<StripePaymentBloc, StripePaymentState>(
       builder: (context, StripePaymentState state) {
-        print('SelectStripePaymentMethodWidget.state=$state');
+        // print('SelectStripePaymentMethodWidget.state=$state');
         if (state is StripePaymentMethodsList) {
           if (state.data == null) {
             return NoPaymentMethodsWidget();
@@ -79,9 +82,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
             methods: state.data ?? [],
             onItemSelected: (StripePaymentMethod method) {
               print('SelectStripePaymentMethodWidget.Card selected=$method');
-              setState(() {
-                _selectedCard = method;
-              });
+              widget.onItemSelected(method);
             },
           );
         }

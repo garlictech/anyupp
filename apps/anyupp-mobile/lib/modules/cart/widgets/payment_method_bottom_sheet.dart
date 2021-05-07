@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void showSelectPaymentMethodBottomSheet(BuildContext context) {
+void showSelectPaymentMethodBottomSheet(BuildContext context, Cart cart) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -30,12 +30,17 @@ void showSelectPaymentMethodBottomSheet(BuildContext context) {
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return PaymentMethodSelectionBottomSheetWidget();
+      return PaymentMethodSelectionBottomSheetWidget(cart: cart);
     },
   );
 }
 
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
+
+  final Cart cart;
+
+  const PaymentMethodSelectionBottomSheetWidget({Key key, this.cart}) : super(key: key);
+
   @override
   _PaymentMethodSelectionBottomSheetWidgetState createState() => _PaymentMethodSelectionBottomSheetWidgetState();
 }
@@ -105,7 +110,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
             children: [
               // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
               _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
-                  "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
+                  "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
               if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
@@ -158,8 +163,9 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               ? () {
                   if (!loading) {
                     if (_selectedPaymentMethod == PAYMENT_INAPP) {
-                      Nav.to(StripePaymentScreen());
+                      Nav.to(StripePaymentScreen(cart: widget.cart));
                     } else {
+                      // TODO a kps fizetes...
                       // BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
                       //   unit,
                       //   _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
@@ -173,18 +179,18 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     });
   }
 
-  String _getPaymentMethodNameFromNumberValue(int value) {
-    switch (value) {
-      case PAYMENT_INAPP:
-        return 'INAPP';
-      case PAYMENT_CASH:
-        return 'CASH';
-      case PAYMENT_CARD:
-        return 'CARD';
-      default:
-        return 'UNKNOWN';
-    }
-  }
+  // String _getPaymentMethodNameFromNumberValue(int value) {
+  //   switch (value) {
+  //     case PAYMENT_INAPP:
+  //       return 'INAPP';
+  //     case PAYMENT_CASH:
+  //       return 'CASH';
+  //     case PAYMENT_CARD:
+  //       return 'CARD';
+  //     default:
+  //       return 'UNKNOWN';
+  //   }
+  // }
 
   Widget _buildSelectPaymentMethodBottomSheetRadioItem(BuildContext context, String title, String icon, int value,
       [Widget info]) {
@@ -261,7 +267,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                 ),
               ],
             ),
-            if (isSelected && info != null) ...[info, SizedBox(height: 14.0)]
+            // if (isSelected && info != null) ...[info, SizedBox(height: 14.0)]
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import { IUnit } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
 
-export const init = createAction('[Units Page] Init');
+export const init = createAction('[Units] Init');
 
 export const upsertUnit = createAction(
   '[Units] Upsert Unit',

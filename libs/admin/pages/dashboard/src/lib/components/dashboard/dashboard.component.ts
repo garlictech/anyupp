@@ -135,9 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public toggleAcceptingOrders($event: Event): void {
     $event.preventDefault();
 
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: this.selectedUnit?.isAcceptingOrders

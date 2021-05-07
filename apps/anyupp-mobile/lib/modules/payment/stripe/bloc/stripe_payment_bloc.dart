@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:flutter/services.dart';
@@ -19,21 +20,22 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Handle payment method list
       if (event is PaymentMethodListEvent) {
         yield StripePaymentLoading();
+        List<StripePaymentMethod> methods = await _paymentRepository.getPaymentMethods();
         // List<GetCustomerStripeCards$Query$StripeCard> methods = await _paymentRepository.getPaymentMethods();
-        // yield StripePaymentMethodsList(methods);
+        yield StripePaymentMethodsList(methods);
       }
 
       // --- Handle start payment with existing card
       if (event is StartStripePaymentWithExistingCardEvent) {
          yield StripePaymentLoading();
-        await _paymentRepository.startStripePaymentWithExistingCard(event.chainId, event.unitId, event.userId, event.paymentMethodId);
+        await _paymentRepository.startStripePaymentWithExistingCard(event.cart, event.paymentMethodId);
          yield StripeOperationSuccess();
       }
 
        // --- Handle start payment without new card
       if (event is StartStripePaymentWithNewCardEvent) {
          yield StripePaymentLoading();
-         await _paymentRepository.startStripePaymentWithNewCard(event.chainId, event.unitId, event.userId, event.stripeCard, event.saveCard);
+         await _paymentRepository.startStripePaymentWithNewCard(event.cart, event.stripeCard, event.saveCard);
          yield StripeOperationSuccess();
       }
 

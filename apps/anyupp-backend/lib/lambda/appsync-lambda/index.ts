@@ -30,6 +30,9 @@ const resolverMap = {
   getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
     crudBackendGraphQLClient,
   ),
+  regenerateUnitData: unitRequestHandler.regenerateUnitData(
+    crudBackendGraphQLClient,
+  ),
   createUnitProduct: productRequestHandler.createUnitProduct(
     crudBackendGraphQLClient,
   ),

@@ -206,13 +206,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                         ),
                       ),
                     ),
-                    onPressed: () => Nav.to(StripePaymentScreen(
-                      chainId: unit.chainId,
-                      unitId: unit.id,
-                      userId: userSnapshot.data.id,
-                      order: order,
-                      sum: sum,
-                    )),
+                    onPressed: null,
+                    // onPressed: () => Nav.to(StripePaymentScreen(
+                    //   chainId: unit.chainId,
+                    //   unitId: unit.id,
+                    //   userId: userSnapshot.data.id,
+                    //   order: order,
+                    //   sum: sum,
+                    // )),
                     // onPressed: () => !(state is StripePaymentLoading)
                     //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.id, userSnapshot.data.id))
                     //     : null,

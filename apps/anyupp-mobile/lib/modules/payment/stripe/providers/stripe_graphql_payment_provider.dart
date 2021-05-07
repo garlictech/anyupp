@@ -1,4 +1,10 @@
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/graphql.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
@@ -7,107 +13,115 @@ import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   final Stripe _stripe;
+  final IOrdersProvider _ordersProvider;
 
-  GraphQLStripePaymentProvider(this._stripe);
+  GraphQLStripePaymentProvider(this._stripe, this._ordersProvider);
 
   @override
-  Future<List<StripeCard>> getPaymentMethods() async {
-    return null;
-    // print('getPaymentMethods().start().doc=${GetCustomerStripeCardsQuery().document.definitions}');
-    // final results = await _client.query(
-    //   QueryOptions(
-    //     document: GetCustomerStripeCardsQuery().document,
-    //     variables: GetCustomerStripeCardsArguments(
-    //       customerId: 'cus_HqrrboxTxefVa3',
-    //     ).toJson(),
-    //   ),
-    // );
-    // print(results);
-    // if (results.hasException) {
-    //   throw results.exception;
-    // } else {
-    //   return GetCustomerStripeCards$Query.fromJson(results.data).getCustomerStripeCards;
-    // }
+  Future<List<StripePaymentMethod>> getPaymentMethods() async {
+    print('getPaymentMethods().start()');
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_LIST_PAYMENT_METHODS),
+        variables: {},
+      ));
+
+      print('getPaymentMethods.response.data=$result');
+      if (result.hasException) {
+        print('getPaymentMethods.error=${result.exception}');
+        throw result.exception;
+      }
+
+      List<dynamic> items = result.data['listStripeCards'];
+      List<StripePaymentMethod> results = [];
+      if (items != null) {
+        for (int i = 0; i < items.length; i++) {
+          results.add(StripePaymentMethod.fromMap(Map<String, dynamic>.from(items[i])));
+        }
+      }
+      // results.add(createPaymentMethod(Map<String,dynamic>.from(card)));
+      print('getPaymentMethods.results=${results.length}');
+      return results;
+    } catch (err) {
+      print('err charging user: ${err.toString()}');
+      rethrow;
+    }
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(
-      String chainId, String unitId, String userId, String paymentMethodId) async {
-    print('startStripePayment().start()=$chainId, $unitId, $userId');
-    // final result = await client.mutate(MutationOptions(
-    //   documentNode: StartStripePaymentMutation(
-    //     variables: StartStripePaymentArguments(chainId: chainId, unitId: unitId, userId: userId),
-    //   ).document,
-    // ));
-    // final result = await _client.mutate(MutationOptions(
-    //   document: StartStripePaymentMutation().document,
-    //   variables: StartStripePaymentArguments(
-    //     chainId: chainId,
-    //     unitId: unitId,
-    //     userId: userId,
-    //   ).toJson(),
-    // ));
-    // if (result.hasException) {
-    //   print('startStripePayment().error=${result.exception}');
-    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    // } else {
-    //   print('startStripePayment().result=${result.data}');
-    //   return '${result.data["startStripePayment"]}';
-    // }
+  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
+    print('startStripePaymentWithExistingCard().start()=$cart');
+
+    String orderId = await _ordersProvider.createAndSendOrderFromCart();
+    print('startStripePaymentWithExistingCard().orderId=$orderId');
+    if (orderId == null) {
+      throw StripeException(
+          code: StripeException.UNKNOWN_ERROR, message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
+    }
+
+    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+    QueryResult result = await _client.value.mutate(MutationOptions(
+      document: gql(MUTATION_START_PAYMENT),
+      variables: {
+        'orderId': orderId,
+        'paymentMethod': 'INAPP',
+        'paymentMethodId': paymentMethodId,
+        'savePaymentMethod': false,
+      },
+    ));
+
+    print('startStripePaymentWithExistingCard.response.data=$result');
+    if (result.hasException) {
+      print('startStripePaymentWithExistingCard.error=${result.exception}');
+      throw result.exception;
+    }
+
+    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    print('startStripePaymentWithExistingCard.clientSecret=$clientSecret');
+
+    print('startStripePaymentWithExistingCard.confirmPayment().start()');
+    Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
+    print('startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
+
     return null;
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(
-      String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard) async {
-    print('startStripePaymentWithNewCard().start()=$chainId, $unitId, $userId, $stripeCard');
+  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
+    print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
+   String orderId = await _ordersProvider.createAndSendOrderFromCart();
+    print('startStripePaymentWithNewCard().orderId=$orderId');
+    if (orderId == null) {
+      throw StripeException(
+          code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
+    }
+
+    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+    QueryResult result = await _client.value.mutate(MutationOptions(
+      document: gql(MUTATION_START_PAYMENT),
+      variables: {
+        'orderId': orderId,
+        'paymentMethod': 'INAPP',
+        'savePaymentMethod': saveCard,
+      },
+    ));
+
+    print('startStripePaymentWithNewCard.response.data=$result');
+    if (result.hasException) {
+      print('startStripePaymentWithNewCard.error=${result.exception}');
+      throw result.exception;
+    }
+
+    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    print('startStripePaymentWithNewCard.clientSecret=$clientSecret');
+
+    print('startStripePaymentWithNewCard.confirmPayment().start()');
+    Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret);
+    print('startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
+
     return null;
-    // final result = await _client.mutate(MutationOptions(
-    //   document: StartStripePaymentMutation().document,
-    //   variables: StartStripePaymentArguments(
-    //     chainId: chainId,
-    //     unitId: unitId,
-    //     userId: userId,
-    //   ).toJson(),
-    // ));
-
-    // if (result.hasException) {
-    //   print('startStripePaymentWithNewCard().error=${result.exception}');
-    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    // }
-
-    // print('startStripePaymentWithNewCard().result=${result.data}');
-    // final String clientSecret = result.data['startStripePayment'];
-    // print('startStripePaymentWithNewCard().client_secret=$clientSecret');
-
-    // // TODO 3D ellenorzes!!!
-    // // if (result['status'] == 'requires_action') { 
-    // //   paymentIntentRes = await confirmPayment3DSecure(clientSecret, paymentMethodId);
-    // // } 
-    // Map<String, dynamic> params = {
-    //   'payment_method_data': stripeCard.toPaymentMethod()
-    // };
-
-    // if (saveCard) {
-    //   params['setup_future_usage'] = 'off_session';
-    // }
-
-    //  //Map<String, dynamic> params = stripeCard.toPaymentMethod();
-    //  print('startStripePaymentWithNewCard().params=$params');
-
-    //  Map<String, dynamic> paymentResponse = await _stripe.api.confirmPaymentIntent(clientSecret, data: params);
-    //  print('startStripePaymentWithNewCard().paymentResponse=$paymentResponse');
-    //  if (paymentResponse['status'] == 'succeeded') {
-    //    return paymentResponse['status'];
-    //  }
-
-    // // await _stripe.api.
-
-    // // return '$clientSecret';
-
-    // // TODO nem string lesz a response!!!
-    // return paymentResponse['status'];
   }
 
   @override
@@ -117,33 +131,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       // _stripe.api.createPaymentMethodFromCard();
       final paymentMethod = await _stripe.api.createPaymentMethodFromCard(card);
       print('createPaymentMethodFromCard().paymentMethod=$paymentMethod');
-    return false;
-
-      // final result = await http.post(
-      //   "URL/payment-intent",
-      //   body: jsonEncode(
-      //     {
-      //       'payment_method_id': paymentMethod['id'],
-      //       'email': emailAddress,
-      //       'amount': totalPrice,
-      //       'currencyCode': currencyCode,
-      //     },
-      //   ),
-      //   headers: {
-      //     HttpHeaders.contentTypeHeader: ContentType.json.value,
-      //   },
-      // );
-
-      // if (result.statusCode == HttpStatus.ok) {
-      //   final body = json.decode(result.body) ?? {};
-      //   final success = body['success'];
-
-      //   if (success) {
-      //     Map<String, dynamic> result = await _stripe.api.retrievePaymentIntent(
-      //       body['client_secret'],
-      //     );
-      //   }
-      // }
+      return false;
     } on Exception catch (e) {
       throw StripeException.fromException(StripeException.UNKNOWN_ERROR, e);
     }
