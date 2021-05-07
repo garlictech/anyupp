@@ -222,6 +222,7 @@ const convertCartOrderToOrderItem = ({
     variantName: removeTypeNameField(cartItem.variantName),
     statusLog: createStatusLog(userId),
     laneId,
+    allergens: cartItem.allergens,
   };
 };
 

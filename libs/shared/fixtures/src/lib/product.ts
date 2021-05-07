@@ -38,6 +38,7 @@ export const chainProductBase: CrudApi.CreateChainProductInput = {
   isVisible: true,
   image: 'IMAGE',
   variants: [getProductVariant(1, 'chain'), getProductVariant(2, 'chain')],
+  allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
 export const groupProductBase: CrudApi.CreateGroupProductInput = {

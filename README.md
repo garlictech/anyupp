@@ -304,7 +304,7 @@ Execute all the integration tests:
 Execute on single integration test suite:
 
 `yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
-`yarn jest -c libs/integration-tests/admin/jest.config.js admin`
+`yarn jest -c libs/integration-tests/angular/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
 
