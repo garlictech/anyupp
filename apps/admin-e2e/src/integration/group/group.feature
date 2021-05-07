@@ -11,21 +11,21 @@ Feature: Create or update Group
    When I click on the menu icon
    And I click on the "Groups" text
    Then the "Groups" title is displayed
+   When I click on the "Chain" selector
+   And I select "test chain updated"
 
  Scenario: Check form page
-   When I click on the plus button
+   And I click on the plus button
    Then the "New group" title is displayed
    When I click on the close button
 
  Scenario: Create new group
- Fill out the mandatory fields
    When I click on the plus button
    And I click the selector to set "HUF"
-   And I click the selector to set "test chain updated"
-   And I fill out the "Name" input with "test group"
-   And I fill out the "Description (EN)" input with "test descripton"
-   And I fill out the "Description (HU)" input with "test leiras"
-   And I fill out the "Description (DE)" input with "test descripton"
+   And I fill out the "Name" input with "test group 1"
+   And I fill out the "Description (HU)" input with "test descripton 1"
+   And I fill out the "Description (EN)" input with "test descripton 1"
+   And I fill out the "Description (DE)" input with "test descripton 1"
    And I fill out the "Email" input with "test@anyupp.com"
    And I fill out the "Phone" input with "1234567890"
    And I fill out the "Title" input with "test title"
@@ -34,20 +34,21 @@ Feature: Create or update Group
    And I fill out the "City" input with "Budapest"
    And I fill out the "Address" input with "Kis u. 45."
    And I click on the "Locate on map" button
-  #  And I click on the submit button
-  #  Then I should see the "test group" label
-  #  And I should see "test descripton" text
-  #  And I should see "test@anyupp.com" text
-  #  And I should see "1234567890" text
+   And I click on the submit button
+   And I click on the "Group" selector
+   And I select "test group 1"
+   Then I should see "test group 1" text
+   And I should see "test descripton 1" text
+   And I should see "test@anyupp.com" text
+   And I should see "1234567890" text
 
  Scenario: Update the Group
    When I click on the first Edit button
-   And I set the currency to "EUR"
-   And I set the parent chain to "test chain updated"
-   And I fill out the "Name" input with "test group updated"
-   And I fill out the "Description (EN)" input with "test descripton updated"
-   And I fill out the "Description (HU)" input with "test leiras updated"
-   And I fill out the "Description (DE)" input with "test descripton updated"
+   And I click the selector to set "EUR"
+   And I fill out the "Name" input with "test group 1 updated"
+   And I fill out the "Description (EN)" input with "test descripton 1 updated"
+   And I fill out the "Description (HU)" input with "test descripton 1 updated"
+   And I fill out the "Description (DE)" input with "test descripton 1 updated"
    And I fill out the "Email" input with "test123@anyupp.com"
    And I fill out the "Phone" input with "1234567890123"
    And I fill out the "Title" input with "test title updated"
@@ -56,8 +57,10 @@ Feature: Create or update Group
    And I fill out the "City" input with "Budapest"
    And I fill out the "Address" input with "Kis u. 42."
    And I click on the "Locate on map" button
-  #  And I click on the submit button
-  #  Then I should see the "test group updated" label
-  #  And I should see "test descripton updated" text
-  #  And I should see "test123@anyupp.com" text
-  #  And I should see "1234567890123" text
+   And I click on the submit button
+   And I click on the "Group" selector
+   And I select "test group 1 updated"
+   Then I should see "test group 1 updated" text
+   And I should see "test descripton 1 updated" text
+   And I should see "test123@anyupp.com" text
+   And I should see "1234567890123" text
