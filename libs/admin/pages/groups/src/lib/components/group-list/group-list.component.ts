@@ -46,11 +46,6 @@ export class GroupListComponent implements OnDestroy {
   }
 
   public addGroup(): void {
-    this._nbDialogService.open(GroupFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(GroupFormComponent);
   }
 }

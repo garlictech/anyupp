@@ -83,7 +83,6 @@ void _initRepositories() {
         getIt<ICommonLoginProvider>(),
         getIt<ISocialLoginProvider>(),
         getIt<IEmailLoginProvider>(),
-        getIt<IPhoneLoginProvider>(),
       ));
   getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<IProductProvider>()));
   getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));

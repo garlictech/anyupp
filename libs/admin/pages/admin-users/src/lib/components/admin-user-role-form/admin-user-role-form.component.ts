@@ -89,9 +89,7 @@ export class AdminUserRoleFormComponent
   }
 
   public removeRole(roleContext: IAdminUserConnectedRoleContext) {
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: 'roles.confirmRemoveRoleContext',

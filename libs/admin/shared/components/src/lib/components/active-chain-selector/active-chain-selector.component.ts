@@ -26,8 +26,8 @@ export class ActiveChainSelectorComponent implements OnDestroy {
   public chains$: Observable<IChain[]>;
   private _loggedUser!: IAdminUser;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,

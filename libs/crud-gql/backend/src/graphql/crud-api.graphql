@@ -227,6 +227,7 @@ type OrderItem {
   statusLog: [StatusLog]
   variantName: LocalizedItem!
   laneId: ID
+  allergens: [Allergen]
 }
 
 ### Order
@@ -297,6 +298,30 @@ type ProductCategory
   position: Int!
 }
 
+### ProductComponent
+type ProductComponent
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: String
+  allergens: [Allergen]
+}
+
+### ProductComponent
+type ProductComponentSet
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  type: String!
+  name: LocalizedItem!
+  description: String
+  items: [ID]! # ProductComponent ID
+  maxSelection: Int # On extras
+}
+
 ### Product
 type ChainProduct
   @model
@@ -310,10 +335,24 @@ type ChainProduct
   isVisible: Boolean!
   image: String
   variants: [ProductVariant]
-  # extends: String
-  # ingredients
-  # tax: Int
-  # laneId: ID
+  allergens: [Allergen]
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
 }
 
 type GroupProduct
@@ -327,6 +366,7 @@ type GroupProduct
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
+  chainProduct: ChainProduct @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -342,11 +382,12 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  groupProduct: GroupProduct @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
   id: ID!
-  variantName: LocalizedItem
+  variantName: LocalizedItem!
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean!
@@ -388,7 +429,16 @@ type GeneratedProduct
   # takeawayTax: Int!
   position: Int!
   image: String
-  variants: [ProductVariant!]!
+  variants: [GeneratedProductVariant!]!
+  allergens: [Allergen]
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
 }
 
 type FavoriteProduct
@@ -544,6 +594,16 @@ type Subscription {
   onProductCategoriesChange: ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentsChange: ProductComponent
+    @aws_subscribe(
+      mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange: ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )
     @aws_cognito_user_pools
   onChainProductChange: ChainProduct

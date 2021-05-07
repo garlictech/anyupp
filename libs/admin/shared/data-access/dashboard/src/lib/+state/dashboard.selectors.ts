@@ -14,7 +14,6 @@ import {
   IDashboardSettings,
 } from './dashboard.reducer';
 
-// Lookup the 'Dashboard' feature state managed by NgRx
 export const getDashboardState = createFeatureSelector<DashboardState>(
   DASHBOARD_FEATURE_KEY,
 );

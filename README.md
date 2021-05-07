@@ -36,7 +36,7 @@ Use the `build` build targets for projects requiring build/code generation.
 
 **the graphql schemas**
 
-`nx build anyupp-gql-api`
+`nx build anyupp-gql-api  --skip-nx-cache`
 
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
@@ -261,10 +261,17 @@ The deployed admin sites:
 - DEV: https://dev-admin-anyupp-backend.anyupp.com/
 - QA: https://qa-admin.-nyupp-backend.anyupp.com/
 
+### Seeding
+
 Both systems have some minimal data seeded at deploy/creation time.
 
 **IMPORTANT**: the seed process is executed only when the seed stack or its
 dependencies deployed/modified!
+
+To execute the seeder locally run the following command:
+`yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts`
+
+### Test user
 
 - A test user: username: `test@anyupp.com`, password: `Testtesttest12_`, context: `SU_CTX_ID`
 
@@ -297,7 +304,7 @@ Execute all the integration tests:
 Execute on single integration test suite:
 
 `yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
-`yarn jest -c libs/integration-tests/admin/jest.config.js admin`
+`yarn jest -c libs/integration-tests/angular/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
 

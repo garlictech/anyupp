@@ -5,6 +5,7 @@ import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import { regenerateUnitData } from './regenerate-unit-data.resolver';
 
 // HANDLER
 export const unitRequestHandler = {
@@ -21,6 +22,23 @@ export const unitRequestHandler = {
         ),
       )
       .toPromise();
+  },
+  regenerateUnitData: (crudGraphqlClient: GraphqlApiClient) => (
+    requestPayload: AnyuppApi.MutationRegenerateUnitDataArgs,
+  ) => {
+    // TODO: validate input
+    // return validatGetUnitsNearLocationInput(requestPayload)
+    //   .pipe(
+    //     switchMap(() =>
+    return (
+      regenerateUnitData({
+        crudGraphqlClient,
+        unitId: requestPayload.input.id,
+      })
+        //   ),
+        // )
+        .toPromise()
+    );
   },
 };
 

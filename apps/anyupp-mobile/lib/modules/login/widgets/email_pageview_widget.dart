@@ -1,4 +1,6 @@
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/login/widgets/confirm_signup_widget.dart';
+import 'package:fa_prev/modules/login/widgets/password_reset_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,11 +8,12 @@ typedef LoginPageViewIndexChangedCallback = void Function({int selectedIndex});
 
 class EmailLoginPageViewWidget extends StatefulWidget {
   @override
-  _EmailLoginPageViewWidgetState createState() => _EmailLoginPageViewWidgetState();
+  _EmailLoginPageViewWidgetState createState() =>
+      _EmailLoginPageViewWidgetState();
 }
 
 class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
-  final PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +28,11 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: [
+          PasswordResetDialogContentWidget(),
+          PasswordResetWidget(),
           EmailLoginDialogContentWidget(),
           EmailRegisterDialogContentWidget(),
-          PasswordResetWidget(),
+          ConfirmSignUpWidget(),
         ],
       ),
     );
@@ -36,18 +41,25 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
   void setPage(EmailFormUIChange state) {
     int index = 0;
     switch (state.ui) {
-      case LoginFormUI.SHOW_LOGIN_WITH_LINK:
-      case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
+      case LoginFormUI.SHOW_PASSWORD_CONFIRM:
         index = 0;
         break;
-      case LoginFormUI.SHOW_REGISTRATION:
+      case LoginFormUI.SHOW_FORGOT_PASSWORD:
         index = 1;
         break;
-      case LoginFormUI.SHOW_FORGOT_PASSWORD:
+      case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
         index = 2;
         break;
+      case LoginFormUI.SHOW_REGISTRATION:
+        index = 3;
+        break;
+
+      case LoginFormUI.SHOW_CONFIRM_SIGNUP:
+        index = 4;
+        break;
     }
-    print('setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
+    print(
+        'setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
 
     _pageController.animateToPage(
       index,

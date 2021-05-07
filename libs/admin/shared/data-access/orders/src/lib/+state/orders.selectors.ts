@@ -15,7 +15,6 @@ import {
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 
-// Lookup the 'Orders' feature state managed by NgRx
 export const getOrdersState = createFeatureSelector<IOrdersState>(
   ORDERS_FEATURE_KEY,
 );

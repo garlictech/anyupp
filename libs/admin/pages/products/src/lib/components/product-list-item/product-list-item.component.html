@@ -31,7 +31,7 @@
         nbButton
         shape="round"
         size="tiny"
-        [title]="'products.moveDown' | translate"
+        [title]="'common.moveDown' | translate"
         class="float-right mr-2"
         (click)="moveDown()"
       >
@@ -42,7 +42,7 @@
         nbButton
         shape="round"
         size="tiny"
-        [title]="'products.moveUp' | translate"
+        [title]="'common.moveUp' | translate"
         class="float-right mr-2"
         (click)="moveUp()"
       >
@@ -92,4 +92,9 @@
       [status]="variant.isAvailable"
     ></bgap-status-led>
   </div>
+
+  <div class="clearfix"></div>
+
+  <img class="allergen" src="assets/images/allergens/{{ allergen }}.svg" *ngFor="let allergen of product.allergens">
+
 </div>

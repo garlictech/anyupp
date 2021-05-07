@@ -3,6 +3,7 @@ import { map, skipWhile, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -47,7 +48,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public pendingUnitProducts: IProduct[] = [];
   public groupCurrency = '';
   public unitProducts: IProduct[] = [];
-  public EProductLevel = EProductLevel;
+  public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
   private _loggedUser?: IAdminUser;
@@ -58,6 +59,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _nbDialogService: NbDialogService,
     private _amplifyDataService: AmplifyDataService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.UNIT;
 
@@ -103,6 +105,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((unitProducts: IProduct[]): void => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
+
+        this._changeDetectorRef.detectChanges();
       });
 
     combineLatest([
@@ -146,6 +150,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
             .subscribe((group: IGroup | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
+
+          this._changeDetectorRef.detectChanges();
         },
       );
   }
@@ -159,12 +165,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   public addProduct(): void {
-    const dialog = this._nbDialogService.open(ProductFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ProductFormComponent);
 
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }

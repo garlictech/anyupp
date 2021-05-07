@@ -7,12 +7,11 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
+import { productComponentSetsActions } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
@@ -20,20 +19,10 @@ import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserConnectedRoleContext,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IRoleContext,
-  IUnit,
+  EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,
+  IKeyValueObject, IOrder, IProduct, IProductCategory, IProductComponent, IProductComponentSet, IRoleContext, IUnit
 } from '@bgap/shared/types';
+import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -105,6 +94,12 @@ export class DataService {
         this._settingsChanged$.next(true);
 
         this._subscribeToChainProductCategories(
+          adminUserSettings?.selectedChainId || '',
+        );
+        this._subscribeToChainProductComponents(
+          adminUserSettings?.selectedChainId || '',
+        );
+        this._subscribeToChainProductComponentSets(
           adminUserSettings?.selectedChainId || '',
         );
         this._subscribeToSelectedChainProducts(
@@ -246,6 +241,56 @@ export class DataService {
           this._store.dispatch(
             productCategoriesActions.upsertProductCategory({
               productCategory: <IProductCategory>productCategory,
+            }),
+          );
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
+  }
+
+  private _subscribeToChainProductComponents(chainId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listProductComponents',
+        subscriptionName: 'onProductComponentsChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(
+            productComponentsActions.resetProductComponents(),
+          );
+        },
+        upsertFn: (productComponent: unknown): void => {
+          this._store.dispatch(
+            productComponentsActions.upsertProductComponent({
+              productComponent: <IProductComponent>productComponent,
+            }),
+          );
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
+  }
+
+  private _subscribeToChainProductComponentSets(chainId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listProductComponentSets',
+        subscriptionName: 'onProductComponentSetsChange',
+        variables: {
+          filter: { chainId: { eq: chainId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(
+            productComponentSetsActions.resetProductComponentSets(),
+          );
+        },
+        upsertFn: (productComponentSet: unknown): void => {
+          this._store.dispatch(
+            productComponentSetsActions.upsertProductComponentSet({
+              productComponentSet: <IProductComponentSet>productComponentSet,
             }),
           );
         },
@@ -486,7 +531,7 @@ export class DataService {
             },
           });
 
-          const adminUser: unknown = result?.getAdminUser;
+          const adminUser: unknown = removeNestedTypeNameField(result?.getAdminUser);
 
           if (adminUser) {
             this._store.dispatch(

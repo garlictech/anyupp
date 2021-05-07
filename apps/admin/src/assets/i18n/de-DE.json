@@ -17,6 +17,9 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "delete": "Delete",
+    "add": "Add",
+    "moveDown": "Move down",
+    "moveUp": "Move up",
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
@@ -80,6 +83,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "productCategories": "Product categories",
+    "modifiersAndExtras": "Modifiers and Extras",
     "units": "Units",
     "groups": "Groups",
     "chains": "Chains",
@@ -146,8 +150,20 @@
     "contains": "Contains",
     "allergens": {
       "title": "Allergens",
-      "lactose": "Lactose",
-      "nuts": "Nuts"
+      "celery": "Celery",
+      "crustaceans": "Crustaceans",
+      "egg": "Egg",
+      "fish": "Fish",
+      "gluten": "Gluten",
+      "lupin": "Lupin",
+      "milk": "Milk",
+      "molluscs": "Molluscs",
+      "mustard": "Mustard",
+      "peanut": "Peanut",
+      "sesame": "Sesame",
+      "soya": "Soya",
+      "sulphites": "Sulphites",
+      "treenuts": "Treenuts"
     },
     "ingredients": {
       "title": "Ingredients"
@@ -171,8 +187,6 @@
     "timeTo": "Time to",
     "addVariant": "Add variant",
     "addAvailability": "Add availability",
-    "moveDown": "Move down",
-    "moveUp": "Move up",
     "lane": "Lane",
     "productType": {
       "drink": "Drink",
@@ -185,6 +199,25 @@
     "listTitle": "Product categories (EN)",
     "editProductCategory": "Edit product category",
     "newProductCategory": "New product category"
+  },
+  "productComponents": {
+    "editProductComponent": "Edit product component",
+    "newProductComponent": "New product component"
+  },
+  "productComponentSets": {
+    "editProductComponentSet": "Edit product component set",
+    "newProductComponentSet": "New product component set",
+    "productComponent": "Product component",
+    "type": {
+      "extras": "Extras",
+      "modifier": "Modifier"
+    },
+    "maxSelection": "Max selection"
+  },
+  "modifiersAndExtras": {
+    "listTitle": "Modifiers and Extras",
+    "productComponents": "Product components",
+    "modExtSets": "Modifiers and extras"
   },
   "groups": {
     "listTitle": "Groups",
@@ -257,7 +290,8 @@
     "sendResetEmail": "Send password reset mail",
     "reminderSent": "Reminder sent",
     "reminderError": "Reminder error",
-    "confirmLogout": "Are you sure you want to log out?"
+    "confirmLogout": "Are you sure you want to log out?",
+    "invalidContext": "Invalid context"
   },
   "print": {
     "items": "Items",

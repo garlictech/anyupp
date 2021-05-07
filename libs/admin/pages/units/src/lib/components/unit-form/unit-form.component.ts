@@ -3,39 +3,18 @@ import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import {
-  addressFormGroup,
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-  PAYMENT_MODES,
-  TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator,
+  addressFormGroup, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator
 } from '@bgap/admin/shared/utils';
-import {
-  ICustomDailySchedule,
-  IGroup,
-  IKeyValue,
-  ILane,
-  IPaymentMode,
-  IUnit,
-} from '@bgap/shared/types';
+import { ICustomDailySchedule, IGroup, IKeyValue, ILane, IPaymentMode, IUnit } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -52,23 +31,19 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
-  private _formsService: FormsService;
   private _groups: IGroup[] = [];
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
 
   constructor(
     protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
 
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-    this._store = this._injector.get(Store);
-    this._formsService = this._injector.get(FormsService);
     this._store
       .pipe(
         select(groupsSelectors.getSelectedChainGroups),
@@ -146,7 +121,7 @@ export class UnitFormComponent
   ngOnInit(): void {
     if (this.unit) {
       this.dialogForm.patchValue(
-        clearDbProperties<IUnit>(fp.omit(['lanes'], this.unit)),
+        cleanObject(fp.omit(['lanes'], this.unit)),
       );
 
       // Parse openingHours object to temp array

@@ -7,7 +7,6 @@ import {
   adminUsersAdapter,
 } from './admin-users.reducer';
 
-// Lookup the 'AdminUsers' feature state managed by NgRx
 export const getAdminUsersState = createFeatureSelector<
   IAdminUsersPartialState,
   IAdminUsersState

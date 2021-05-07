@@ -8,7 +8,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import {
   IProductCategory,
@@ -30,7 +29,6 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
   public productCategories: IProductCategory[] = [];
   private _sortedProductCategoryIds: string[] = [];
-  private _selectedChainId?: string | undefined | null;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,17 +53,6 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
 
         this._changeDetectorRef.detectChanges();
       });
-
-    this._store
-      .pipe(
-        select(loggedUserSelectors.getSelectedChainId),
-        untilDestroyed(this),
-      )
-      .subscribe((selectedChainId: string | undefined | null): void => {
-        this._selectedChainId = selectedChainId;
-
-        this._changeDetectorRef.detectChanges();
-      });
   }
 
   ngOnDestroy(): void {
@@ -73,12 +60,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   }
 
   public addProductCategory(): void {
-    this._nbDialogService.open(ProductCategoryFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(ProductCategoryFormComponent);
   }
 
   public positionChange($event: IProductCategoryOrderChangeEvent): void {

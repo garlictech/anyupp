@@ -12,7 +12,6 @@ import {
   unitProductsAdapter,
 } from './products.reducer';
 
-// Lookup the 'Products' feature state managed by NgRx
 export const getProductsState = createFeatureSelector<IProductsState>(
   PRODUCTS_FEATURE_KEY,
 );

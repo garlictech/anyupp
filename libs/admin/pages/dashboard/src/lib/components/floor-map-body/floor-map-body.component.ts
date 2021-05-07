@@ -184,9 +184,6 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
       if (rawObject) {
         const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {
-          hasBackdrop: true,
-          closeOnBackdropClick: false,
-          hasScroll: true,
           dialogClass: 'floor-map-order-dialog',
         });
 
