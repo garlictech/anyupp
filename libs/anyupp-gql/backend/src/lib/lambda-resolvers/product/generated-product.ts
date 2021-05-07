@@ -22,7 +22,7 @@ import {
   executeBatchPut,
 } from '../../utils/dynamodb.utils';
 
-const TABLE_NAME = tableConfig.GeneratedProduct;
+const TABLE_NAME = tableConfig.GeneratedProduct.tableName;
 
 export const deleteGeneratedProductsForAUnit = ({
   unitId,
