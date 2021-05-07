@@ -12,7 +12,6 @@ import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
   contactFormGroup,
   EToasterType,
 } from '@bgap/admin/shared/utils';

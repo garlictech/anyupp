@@ -1,14 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { FormsService } from '../../services/forms/forms.service';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
 import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
+
+import { FormsService } from '../../services/forms/forms.service';
 
 @Component({
   // changeDetection: ChangeDetectionStrategy.OnPush,
