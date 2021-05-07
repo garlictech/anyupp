@@ -1,4 +1,4 @@
-import { EProductType, IKeyValue } from 'libs/shared/types/src';
+import { EProductType, IKeyValue } from '@bgap/shared/types';
 
 export const PRODUCT_TYPES: IKeyValue[] = [
   {
