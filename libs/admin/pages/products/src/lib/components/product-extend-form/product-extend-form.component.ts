@@ -3,41 +3,22 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
-import { FormArray, FormControl, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormArray } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  ILane,
-  IProduct,
-  IProductCategory,
-  IProductConfigComponent,
-  IProductConfigSet,
-  IProductVariant,
-  IUnit,
+  EProductLevel, IAdminUserSettings, IKeyValue, ILane, IProduct, IProductCategory, IUnit
 } from '@bgap/shared/types';
-import {
-  cleanObject,
-  customNumberCompare,
-  objectToArray,
-} from '@bgap/shared/utils';
+import { cleanObject, objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { ProductFormService } from '../../services/product-form/product-form.service';
 
 @UntilDestroy()
 @Component({
@@ -64,7 +45,7 @@ export class ProductExtendFormComponent
     protected _injector: Injector,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _formsService: FormsService,
+    private _productFormService: ProductFormService,
     private _amplifyDataService: AmplifyDataService,
     private _logger: NGXLogger,
   ) {
@@ -100,70 +81,24 @@ export class ProductExtendFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      isVisible: [''],
-      variants: this._formBuilder.array([]),
-      configSets: this._formBuilder.array([]),
-    });
-
-    if (this.productLevel === EProductLevel.GROUP) {
-      this.dialogForm.addControl(
-        'tax',
-        new FormControl('', Validators.required),
-      );
-    }
-    if (this.productLevel === EProductLevel.UNIT) {
-      this.dialogForm.addControl('laneId', new FormControl(''));
-      this.dialogForm.addControl(
-        'takeaway',
-        new FormControl(false, Validators.required),
-      );
-    }
+     this.dialogForm = this._productFormService.createProductExtendFormGroup(
+      this.productLevel,
+    );
 
     if (this.product) {
       this.dialogForm.patchValue(
         fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
-      // Patch variants
-      [...this.product.variants]
-        .sort(customNumberCompare('position'))
-        .forEach((variant: IProductVariant): void => {
-          const variantGroup = this._formsService.createProductVariantFormGroup();
-          variantGroup.patchValue(cleanObject(variant));
+      this._productFormService.patchExtendedProductVariants(
+        this.product,
+        this.dialogForm?.controls.variants as FormArray,
+      );
 
-          (variant?.availabilities || []).forEach((availability): void => {
-            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-            availabilityGroup.patchValue(cleanObject(availability));
-            (variantGroup.controls.availabilities as FormArray).push(
-              availabilityGroup,
-            );
-          });
-
-          (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
-        });
-
-       // Patch configSets
-       (this.product.configSets || []).forEach(
-        (configSet: IProductConfigSet): void => {
-          const configSetGroup = this._formsService.createProductConfigSetFormGroup();
-          configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
-
-          (configSet.items || []).forEach((item: IProductConfigComponent) => {
-            const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
-              this.productLevel,
-            );
-            configSetItemGroup.patchValue(cleanObject(item));
-
-            (configSetGroup.controls.items as FormArray).push(
-              configSetItemGroup,
-            );
-          });
-
-          (this.dialogForm?.controls.configSets as FormArray).push(
-            configSetGroup,
-          );
-        },
+      this._productFormService.patchConfigSet(
+        this.product,
+        this.productLevel,
+        this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
