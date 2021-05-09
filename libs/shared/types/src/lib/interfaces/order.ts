@@ -1,6 +1,7 @@
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
 import { IPaymentMode } from './payment';
+import { ITransaction } from './transaction';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';
@@ -17,7 +18,10 @@ export interface IStatusLogItem {
   ts?: number; // after objectToArray(statusLog, 'ts')
 }
 export interface IStatusLog {
-  [timestamp: number]: IStatusLogItem;
+  // [timestamp: number]: IStatusLogItem;
+  userId: string;
+  status: EOrderStatus;
+  ts?: number; // after objectToArray(statusLog, 'ts')
 }
 
 export interface IOrderItem {
@@ -27,7 +31,7 @@ export interface IOrderItem {
   priceShown: IPriceShown;
   productId: string;
   quantity: number;
-  statusLog: IStatusLog;
+  statusLog: [IStatusLog];
   variantId: string;
   variantName: ILocalizedItem<string>;
   image?: string;
@@ -61,14 +65,15 @@ export interface IOrder {
   unitId: string;
   items: IOrderItem[];
   paymentMode: IPaymentMode;
-  statusLog: IStatusLog;
+  statusLog: [IStatusLog];
   sumPriceShown: IPriceShown;
   takeAway: boolean;
   place?: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;
-  status: EOrderStatus;
+  transaction?: ITransaction;
+  transactionId?: string;
 }
 
 export interface IDateIntervals {

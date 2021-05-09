@@ -26,6 +26,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
   AnimationController controller;
 
   final List<String> statusList = [
+    'NONE',
     'PLACED',
     'PROCESSING',
     'READY',

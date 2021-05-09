@@ -80,7 +80,7 @@ class AwsOrderProvider implements IOrdersProvider {
       print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
       String id;
       if (result.data != null && result.data['createOrderFromCart'] != null) {
-        id = result.data['createOrderFromCart']['id'];
+        id = result.data['createOrderFromCart'];
         print('AwsOrderProvider.createAndSendOrderFromCart().id=$id');
       }
       _cart = null;
@@ -269,6 +269,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> stopOrderListSubscription() async {
+    print('stopOrderListSubscription()');
     await _subOrderList.stopListSubscription();
   }
 
@@ -285,6 +286,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> stopOrderHistoryListSubscription() async {
+    print('stopOrderHistoryListSubscription()');
     await _subOrderHistoryList.stopListSubscription();
   }
 

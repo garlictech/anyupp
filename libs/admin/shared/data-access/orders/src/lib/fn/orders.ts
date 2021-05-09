@@ -10,7 +10,7 @@ import {
   IUnit,
 } from '@bgap/shared/types';
 
-export const currentStatus = (status: IStatusLog): EOrderStatus => {
+export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
   const statusArr = Object.values(status || {});
   const lastElement = statusArr[statusArr.length - 1];
 

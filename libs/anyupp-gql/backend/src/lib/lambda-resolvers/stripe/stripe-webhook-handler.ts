@@ -66,7 +66,6 @@ export const createStripeWebhookExpressApp = () => {
         intent = event.data.object as Stripe.PaymentIntent;
         handleSuccessTransaction(crudBackendGraphQLClient, intent.id);
         console.log("***** Stripe webhook.Succeeded:", intent.id);
-
         break;
       case 'payment_intent.payment_failed':
         intent = event.data.object as Stripe.PaymentIntent;
@@ -91,7 +90,7 @@ const handleSuccessTransaction = async (crudGraphqlClient: GraphqlApiClient, tra
   const transaction = await loadTransaction(crudGraphqlClient, transactionId);
   if (transaction) {
     await updateTransactionState(crudGraphqlClient, transaction.id, CrudApi.PaymentStatus.SUCCESS);
-    await updateOrderState(crudGraphqlClient, transaction.orderId, CrudApi.OrderStatus.PLACED);
+    await updateOrderState(crudGraphqlClient, transaction.orderId, transaction.userId, CrudApi.OrderStatus.PLACED);
     console.log('***** handleSuccessTransaction().success()');
   }
 

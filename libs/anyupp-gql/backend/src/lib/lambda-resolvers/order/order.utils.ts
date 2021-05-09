@@ -26,7 +26,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
     return empty;
   }
   return items.reduce((sum, item) => {
-    const [key, lastStatus] = getActualStatusLogItem(item.statusLog);
+    const [key, lastStatus] = getActualStatusLogItem(item.statusLog[item.statusLog.length - 1]); // TODO StatusLog vs [StatusLog]
 
     // TODO: if (!key || lastStatus?.status === EOrderStatus.REJECTED) {
     if (!key || lastStatus?.status === 'REJECTED') {

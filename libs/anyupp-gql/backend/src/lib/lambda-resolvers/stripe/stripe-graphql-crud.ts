@@ -163,11 +163,15 @@ export const updateTransactionState = async (crudGraphqlClient: GraphqlApiClient
  * @param status the new status of the Order
  * @returns an instance of IOrder interface, filled with the updated transaction's data
  */
- export const updateOrderState = async (crudGraphqlClient: GraphqlApiClient, id: string, status: CrudApi.OrderStatus): Promise<IOrder> => {
+ export const updateOrderState = async (crudGraphqlClient: GraphqlApiClient, id: string, userId: string, status: CrudApi.OrderStatus): Promise<IOrder> => {
   const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
     input: {
       id: id,
-      status: status,
+      statusLog: [{
+        status: status,
+        ts: Date.now(),
+        userId: userId
+      }],
     }
   };
   return executeMutation(crudGraphqlClient)<CrudApi.UpdateOrderMutation>(

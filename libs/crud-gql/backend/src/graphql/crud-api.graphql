@@ -242,7 +242,6 @@ type Order
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
-  status: OrderStatus
   paymentIntention: Float
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])

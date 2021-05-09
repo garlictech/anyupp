@@ -72,8 +72,10 @@ export const startStripePayment = async (
     throw Error('The Order must belongs to the user, the Order\'s userId field is not match with the logined User\'s id! Details: order.userId=' + order.userId + ' vs userId=' + userId);
   }
 
-  if (order.status != EOrderStatus.NONE) {
-    throw Error('Order status must be OrderStatus.NONE if you want to pay the order! Current status:' + order.status + ', id=' + order.id);
+  const status = order.statusLog[order.statusLog.length - 1];
+
+  if (status.status != EOrderStatus.NONE) {
+    throw Error('Order status must be OrderStatus.NONE if you want to pay the order! Current status:' + status + ', id=' + order.id);
   }
 
   // 3. Load User
@@ -123,7 +125,7 @@ export const startStripePayment = async (
   console.log('startStripePayment().payment intent created=' + paymentIntent.id);
 
   // 4. Change ORDER STATUS
-  updateOrderState(crudGraphqlClient, order.id, CrudApi.OrderStatus.NONE);
+  updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE);
 
   // 5. Create Transaction
   const createTransactionVars: CrudApi.CreateTransactionMutationVariables = {

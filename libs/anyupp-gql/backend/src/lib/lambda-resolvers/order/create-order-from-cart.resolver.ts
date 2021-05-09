@@ -157,7 +157,7 @@ const toOrderInputFormat = ({
     place: removeTypeNameField(place),
     unitId,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to PLACED
-    status: paymentMode.method == CrudApi.PaymentMethod.INAPP ? CrudApi.OrderStatus.NONE : CrudApi.OrderStatus.PLACED,
+    // status: CrudApi.OrderStatus.NONE,
   };
 };
 
@@ -242,7 +242,7 @@ const getLaneIdForCartItem = (
 
 const createStatusLog = (
   userId: string,
-  status: EOrderStatus = EOrderStatus.PLACED,
+  status: EOrderStatus = EOrderStatus.NONE,
 ): Array<CrudApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];

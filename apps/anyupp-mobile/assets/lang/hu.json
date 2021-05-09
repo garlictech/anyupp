@@ -133,6 +133,7 @@
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {
+      "NONE": "VÁR",
       "PLACED": "BEADVA",
       "PROCESSING": "FOLYAMATBAN",
       "READY": "KÉSZ",
