@@ -112,7 +112,7 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 
 :exclamation: use your own app name
 
-!!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
+!!! Before the next command probably you should regenerate the anyupp/crud schema or the next command: `nx build anyupp-backend...` wont work
 
 ```
 nx build anyupp-backend --app=APPNAME --stage=dev
@@ -136,7 +136,7 @@ amplify import auth
 
 - Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
-- Select the native client (in this point it should assume well which client is the native one)
+- Select the NATIVE client (in this point it should assume well which client is the native one)
 
 Appsync part:
 
@@ -172,7 +172,7 @@ amplify push
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
-- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.graphql`
+- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts`
 - ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
 - ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
 - ? Enter the file name for the generated code `../../libs/crud-gql/api/src/lib/generated/api.ts`
@@ -545,7 +545,7 @@ You need to upload some keys to the secretmanager and some paramaters to the par
 ### Mobile app parameters
 
 Parameters that are required in the parameter store for the mobile app are the followings:
-`'{STAGE}-{APPNAME}-region',` - Server region, eg eu-west-1
+`'{STAGE}-{APPNAME}-Region',` - Server region, eg eu-west-1
 `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
 `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
 `'{STAGE}-{APPNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app
