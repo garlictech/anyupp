@@ -291,6 +291,14 @@
   "affiliate": {
     "advertisement": "Hirdetés"
   },
+  "validators" : {
+    "required" : "Ez a mező szükséges",
+    "enterValidEmail" : "érvényes email címet adj meg",
+    "eneterValidPhone" : "érvényes telefonszmot adj meg",
+    "passwordIsRequired" : "jelszó megadása szükséges",
+    "passwordValidatorText" : "Tartalmaznia kell számot, nagy és kis betűt",
+    "passwordLengthError" : "a jelszónak legalább 8 karakter hosszúnak kell lennie"
+  },
   "error": {
     "title": "Hiba",
     "description": "A művelet során hiba történt!",

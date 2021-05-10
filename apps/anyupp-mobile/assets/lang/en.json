@@ -291,6 +291,14 @@
   "affiliate": {
     "advertisement": "Advertisement"
   },
+  "validators" : {
+    "required" : "this field is required",
+    "enterValidEmail" : "enter a valid email address",
+    "eneterValidPhone" : "enter a valid phone number",
+    "passwordIsRequired" : "password is required",
+    "passwordValidatorText" : "must have a number, an upper, a lower case letter",
+    "passwordLengthError" : "password must be at least 8 digits long"
+  },
   "error": {
     "title": "Error",
     "description": "An error happened during the process!",
