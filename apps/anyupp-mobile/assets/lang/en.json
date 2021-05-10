@@ -123,6 +123,24 @@
     "emptyCartLine1": "Your cart is empty",
     "emptyCartLine2": "Add some products to your cart."
   },
+  "allergens": {
+    "title": "Allergens",
+    "celery": "Celery",
+    "crustaceans": "Crustaceans",
+    "egg": "Egg",
+    "fish": "Fish",
+    "gluten": "Gluten",
+    "lupin": "Lupin",
+    "milk": "Milk",
+    "molluscs": "Molluscs",
+    "mustard": "Mustard",
+    "peanut": "Peanut",
+    "sesame": "Sesame",
+    "soya": "Soya",
+    "sulphites": "Sulphites",
+    "treenuts": "Treenuts",
+    "disclaimer" : "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
+  },
   "favorites": {
     "noFavorites": "No favorites added yet"
   },

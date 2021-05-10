@@ -10,15 +10,16 @@ import * as cdk from '@aws-cdk/core';
 import {
   createAdminUserResolvers,
   createOrderResolvers,
-  createUnitResolvers,
   createProductResolvers,
   createStripeResolvers
+  createUnitResolvers,
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
 import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
+import { tableConfig } from '@bgap/crud-gql/backend';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -125,9 +126,9 @@ export class AppsyncAppStack extends sst.Stack {
       },
     });
 
-    apiLambda.role &&
+    if (apiLambda.role) {
       apiLambda.role.addToPolicy(
-        // TODO: replace this deprecated function usage
+        // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
             'cognito-idp:AdminCreateUser',
@@ -137,6 +138,22 @@ export class AppsyncAppStack extends sst.Stack {
           resources: [props.adminUserPool.userPoolArn],
         }),
       );
+      apiLambda.role.addToPolicy(
+        new iam.PolicyStatement({
+          actions: [
+            'dynamodb:BatchGetItem',
+            'dynamodb:BatchWriteItem',
+            'dynamodb:PutItem',
+            'dynamodb:DeleteItem',
+            'dynamodb:GetItem',
+            'dynamodb:Scan',
+            'dynamodb:Query',
+            'dynamodb:UpdateItem',
+          ],
+          resources: [tableConfig.GeneratedProduct.tableArn],
+        }),
+      );
+    }
 
     props.secretsManager.grantRead(apiLambda);
     this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);

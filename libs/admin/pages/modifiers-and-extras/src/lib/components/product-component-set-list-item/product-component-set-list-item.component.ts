@@ -11,8 +11,7 @@ import { ProductComponentSetFormComponent } from '../product-component-set-form/
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-component-set-list-item',
-  templateUrl: './product-component-set-list-item.component.html',
-  styleUrls: ['./product-component-set-list-item.component.scss'],
+  templateUrl: './product-component-set-list-item.component.html'
 })
 export class ProductComponentSetListItemComponent {
   @Input() productComponentSet!: IProductComponentSet;

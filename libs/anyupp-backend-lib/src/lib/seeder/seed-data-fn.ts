@@ -136,7 +136,7 @@ export const createTestUnit = (
     chainId: generateChainId(chainIdx),
     isActive: true,
     isAcceptingOrders: true,
-    name: `Test unit #${unitIdx}`,
+    name: `Seeded unit #${chainIdx}${groupIdx}${unitIdx}`,
     address: {
       address: 'Ág u. 1.',
       city: 'Budapest',
@@ -206,6 +206,7 @@ export const createTestProductCategory = (
       en: `Test product category #${productCategoryId} description`,
     },
     position: productCategoryId,
+    image: 'https://picsum.photos/100',
   };
 
   return deleteCreate({
@@ -249,6 +250,12 @@ export const createTestChainProduct = (
           hu: 'pohár',
         },
       },
+    ],
+    image: 'https://picsum.photos/100',
+    allergens: [
+      CrudApi.Allergen.egg,
+      CrudApi.Allergen.gluten,
+      CrudApi.Allergen.peanut,
     ],
   };
   return deleteCreate({
@@ -418,6 +425,7 @@ export const createTestCart = ({
           hu: 'pohár',
         },
         laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+        image: 'https://picsum.photos/100',
       },
     ],
   };

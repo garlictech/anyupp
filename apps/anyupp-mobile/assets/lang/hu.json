@@ -123,6 +123,24 @@
     "emptyCartLine1": "A kosarad még üres.",
     "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!"
   },
+  "allergens": {
+    "title": "Allergének",
+    "celery": "Zeller",
+    "crustaceans": "Rákfélék",
+    "egg": "Tojás",
+    "fish": "Hal",
+    "gluten": "Glutén",
+    "lupin": "Csillagfürt",
+    "milk": "Tej",
+    "molluscs": "Puhatestűek",
+    "mustard": "Mustár",
+    "peanut": "Földimogyoró",
+    "sesame": "Szezámmag",
+    "soya": "Szója",
+    "sulphites": "Szulfitok",
+    "treenuts": "Diófélék",
+    "disclaimer" : "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
+  },
   "favorites": {
     "noFavorites": "Még nincsenek kedvenceid"
   },

@@ -1,27 +1,15 @@
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  addressFormGroup,
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
+import { addressFormGroup, contactFormGroup, EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -69,7 +57,7 @@ export class GroupFormComponent
 
   ngOnInit(): void {
     if (this.group) {
-      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
+      this.dialogForm.patchValue(cleanObject(this.group));
     } else {
       // Patch ChainId
       this._store

@@ -10,7 +10,6 @@ import { IAllergen } from '@bgap/shared/types';
   styleUrls: ['./form-allergens.component.scss'],
 })
 export class FormAllergensComponent {
-  @Input() caption = ''; // Language key!!!
   @Input() control!: FormControl;
 
   public allergens = ALLERGENS;

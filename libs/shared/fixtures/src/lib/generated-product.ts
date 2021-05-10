@@ -37,6 +37,7 @@ const getGeneratedProduct = ({
     getGeneratedProductVariant(1, id),
     getGeneratedProductVariant(2, id),
   ],
+  image: 'https://picsum.photos/100',
 });
 
 const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
@@ -48,8 +49,15 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
   productType: 'PRODUCT_TYPE',
   tax: 1,
   position: 1,
-  image: 'public/seed/Weizenbier.jpeg',
+  image: 'https://picsum.photos/100',
   variants: [getGeneratedProductVariant(1), getGeneratedProductVariant(2)],
+  allergens: [
+    CrudApi.Allergen.egg,
+    CrudApi.Allergen.gluten,
+    CrudApi.Allergen.milk,
+    CrudApi.Allergen.soya,
+    CrudApi.Allergen.peanut,
+  ],
 };
 
 export const generatedProductSeed = {

@@ -28,6 +28,7 @@ export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
   variantName: localizedItemSchema.required(),
   laneId: Joi.string().allow(null, ''),
   image: Joi.string().allow(null, ''),
+  allergens: Joi.array().items(Joi.string()).optional().allow(null),
 };
 
 export const placeSchema: Joi.SchemaMap<IPlace> = {

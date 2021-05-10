@@ -34,7 +34,7 @@
 
       <nb-user
         [nbContextMenu]="userMenu"
-        [onlyPicture]="userPictureOnly"
+        [onlyPicture]="false"
         [name]="userName || ''"
         [picture]="(userImage || '' | awsStoragePath | async) || ''"
       ></nb-user>
