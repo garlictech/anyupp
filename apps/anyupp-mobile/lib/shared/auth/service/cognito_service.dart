@@ -73,11 +73,17 @@ class CognitoService {
   Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
     CognitoUserSession session = await _loadSessionFromCache();
     if (session != null) {
+      try {
       if (session.isValid()) {
         final user = CognitoUser(null, userPool, signInUserSession: session);
         _userSession = session;
         return user;
       } else {
+        final user = CognitoUser(null, userPool, signInUserSession: session);
+        _userSession = await user.refreshSession(session.refreshToken);
+        return user;
+      }
+      } on Exception catch(e) {
         final user = CognitoUser(null, userPool, signInUserSession: session);
         _userSession = await user.refreshSession(session.refreshToken);
         return user;
