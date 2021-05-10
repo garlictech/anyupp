@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,20 +61,22 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 final scaffold = ScaffoldMessenger.of(context);
                 scaffold.showSnackBar(SnackBar(
                   content: const Text('Payment Success!'),
-                  action: SnackBarAction(
-                      label: 'Close',
-                      onPressed: () {
-                        scaffold.hideCurrentSnackBar();
-                        Nav.pop();
-                      }),
+                  // action: SnackBarAction(
+                  //     label: 'Close',
+                  //     onPressed: () {
+                  //       scaffold.hideCurrentSnackBar();
+                  //       // Nav.pop();
+                  //     }),
                 ));
+                Nav.pop();
+                Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
               builder: (context, StripePaymentState state) {
-                if (state is StripeOperationSuccess) {
-                  return _buildPaymentSuccess(context);
-                }
+                // if (state is StripeOperationSuccess) {
+                //   return _buildPaymentSuccess(context);
+                // }
 
                 if (state is StripeError) {
                   return _buildPaymentFailed(context, state.code, state.message);
