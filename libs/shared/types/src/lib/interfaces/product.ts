@@ -105,6 +105,7 @@ export interface IUnitProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
+  configSets?: IProductConfigSet[];
   laneId?: string;
   takeaway?: boolean;
   groupProduct: IGroupProduct;
@@ -122,7 +123,8 @@ export interface IChainProduct {
   productType: EProductType;
   isVisible: boolean;
   image?: string;
-  variants: [IProductVariant];
+  variants: IProductVariant[];
+  configSets?: IProductConfigSet[];
   createdAt: string;
   updatedAt: string;
   allergens?: CrudApi.Allergen[];
@@ -136,7 +138,8 @@ export interface IGroupProduct {
   groupId: string;
   isVisible: boolean;
   tax: number;
-  variants: [IProductVariant];
+  variants: IProductVariant[];
+  configSets?: IProductConfigSet[];
   chainProduct: IChainProduct;
   createdAt: string;
   updatedAt: string;
