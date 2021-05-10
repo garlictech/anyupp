@@ -11,8 +11,7 @@ import { ProductComponentFormComponent } from '../product-component-form/product
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-component-list-item',
-  templateUrl: './product-component-list-item.component.html',
-  styleUrls: ['./product-component-list-item.component.scss'],
+  templateUrl: './product-component-list-item.component.html'
 })
 export class ProductComponentListItemComponent {
   @Input() productComponent!: IProductComponent;

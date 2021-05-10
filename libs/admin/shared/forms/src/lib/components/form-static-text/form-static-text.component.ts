@@ -8,6 +8,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class FormStaticTextComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() staticCaption?: string; // Language key!!!
+  @Input() staticCaption?: string;
   @Input() value = '';
 }

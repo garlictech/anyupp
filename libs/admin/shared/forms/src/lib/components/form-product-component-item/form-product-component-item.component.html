@@ -1,0 +1,37 @@
+<div class="row" *ngFor="let item of itemFormArray | iterableAbstractControls">
+  <div
+    class="col-md-6 pt-3"
+    *ngIf="
+      item.value.productComponentId | productComponentInfo | async as component
+    "
+  >
+    <div class="paragraph-2 mb-1">{{ component?.name || {} | localize }}</div>
+    <div>
+      <bgap-allergens [allergens]="component.allergens"></bgap-allergens>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <bgap-form-static-text
+      *ngIf="productLevel === eProductLevel.UNIT"
+      caption="products.refPrice"
+      [value]="
+      item.value.refGroupPrice | currencyFormatter: currency!
+    "
+    ></bgap-form-static-text>
+
+    <bgap-form-text-input
+      *ngIf="productLevel === eProductLevel.GROUP"
+      caption="products.refPrice"
+      type="number"
+      [control]="item.get('refGroupPrice')! | asFormControl"
+    ></bgap-form-text-input>
+  </div>
+  <div class="col-md-3">
+    <bgap-form-text-input
+      *ngIf="productLevel === eProductLevel.UNIT"
+      caption="products.price"
+      type="number"
+      [control]="item.get('price')! | asFormControl"
+    ></bgap-form-text-input>
+  </div>
+</div>

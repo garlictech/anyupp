@@ -6,7 +6,7 @@ export interface IProductComponentSet {
   chainId: string;
   type: EProductComponentSetType;
   name: ILocalizedItem<string>;
-  description?: string;
+  description: string;
   items: string[];
   maxSelection?: number;
 }

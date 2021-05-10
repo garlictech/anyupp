@@ -4,24 +4,27 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
-import { FormArray, Validators } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType, EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { PRODUCT_TYPES } from '../../const';
+import { ProductFormService } from '../../services/product-form/product-form.service';
+
 @UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
-  templateUrl: './product-form.component.html'
+  templateUrl: './product-form.component.html',
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
@@ -30,68 +33,28 @@ export class ProductFormComponent
   public product!: IProduct;
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
-  public productTypes: IKeyValue[];
+  public productTypes: IKeyValue[] = PRODUCT_TYPES;
 
   private _selectedChainId = '';
-  private _selectedGroupId = '';
   private _selectedProductCategoryId = '';
 
   constructor(
     protected _injector: Injector,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
-    private _formsService: FormsService,
+    private _productFormService: ProductFormService,
     private _amplifyDataService: AmplifyDataService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _logger: NGXLogger,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      name: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      productCategoryId: ['', [Validators.required]],
-      productType: ['', [Validators.required]],
-      isVisible: ['', [Validators.required]],
-      image: [''],
-      variants: this._formBuilder.array([]),
-      allergens: [[]],
-    });
-
-    this.productTypes = [
-      {
-        key: EProductType.DRINK,
-        value: 'products.productType.drink',
-      },
-      {
-        key: EProductType.FOOD,
-        value: 'products.productType.food',
-      },
-      {
-        key: EProductType.OTHER,
-        value: 'products.productType.other',
-      },
-    ];
+    this.dialogForm = this._productFormService.createProductFormGroup();
 
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
       .subscribe((userSettings: IAdminUserSettings | undefined): void => {
         this._selectedChainId = userSettings?.selectedChainId || '';
-        this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedProductCategoryId =
           userSettings?.selectedProductCategoryId || '';
       });
@@ -117,16 +80,18 @@ export class ProductFormComponent
   ngOnInit(): void {
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit('variants', cleanObject(this.product)),
+        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
-      (this.product.variants || []).forEach(
-        (variant: IProductVariant): void => {
-          const variantGroup = this._formsService.createProductVariantFormGroup();
-          variantGroup.patchValue(cleanObject(variant));
+      this._productFormService.patchProductVariants(
+        this.product,
+        this.dialogForm?.controls.variants as FormArray,
+      );
 
-          (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
-        },
+      this._productFormService.patchConfigSet(
+        this.product,
+        this.productLevel,
+        this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
       // Patch ProductCategoryID
@@ -162,7 +127,9 @@ export class ProductFormComponent
           );
           this.close();
         } catch (error) {
-          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
+          this._logger.error(
+            `CHAIN PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
+          );
         }
       } else {
         try {
