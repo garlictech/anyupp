@@ -11,7 +11,7 @@ import {
   createAdminUserResolvers,
   createOrderResolvers,
   createProductResolvers,
-  createStripeResolvers
+  createStripeResolvers,
   createUnitResolvers,
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
