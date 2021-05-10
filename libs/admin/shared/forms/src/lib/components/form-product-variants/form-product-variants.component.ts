@@ -24,7 +24,7 @@ export class FormProductVariantsComponent {
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
 
-  public EProductLevel = EProductLevel;
+  public eProductLevel = EProductLevel;
 
   constructor(
     private _formsService: FormsService,

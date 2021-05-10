@@ -165,9 +165,8 @@
       "sulphites": "Sulphites",
       "treenuts": "Treenuts"
     },
-    "ingredients": {
-      "title": "Ingredients"
-    },
+    "productConfigurations": "Product configurations",
+    "productModifierSet": "Product modifier set",
     "variants": "Variants",
     "packSize": "Pack size",
     "packUnit": "Pack unit",
@@ -208,6 +207,7 @@
     "editProductComponentSet": "Edit product component set",
     "newProductComponentSet": "New product component set",
     "productComponent": "Product component",
+    "productComponents": "Product components",
     "type": {
       "extras": "Extras",
       "modifier": "Modifier"
