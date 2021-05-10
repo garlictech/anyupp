@@ -61,7 +61,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _amplifyDataService: AmplifyDataService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.selectedProductLevel = EProductLevel.UNIT;
+    this.selectedProductLevel = EProductLevel.CHAIN;
 
     this.groupProducts$ = this._store.pipe(
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),

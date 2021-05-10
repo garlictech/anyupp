@@ -1,4 +1,5 @@
 import { CrudApi } from '@bgap/crud-gql/api';
+
 import { EProductType, EVariantAvailabilityType } from '../enums';
 import { ILocalizedItem } from './localized-item';
 
@@ -14,12 +15,6 @@ export interface IAvailability {
   timeFrom?: string;
   timeTo?: string;
   price: number;
-}
-
-export interface IProductIngredients {
-  alcohol: number;
-  allergens: IAllergen;
-  caffeine: number;
 }
 
 export interface IProductVariantPack {
@@ -38,6 +33,20 @@ export interface IProductVariant {
   // availableFrom: Date;
   position: number;
 }
+
+export interface IProductConfigComponent {
+  productComponentId: string;
+  refGroupPrice?: number;
+  price?: number;
+  position: number;
+}
+
+export interface IProductConfigSet {
+  productSetId: string;
+  items: IProductConfigComponent[];
+  position: number;
+}
+
 export interface IGeneratedProductVariant {
   id: string;
   variantName: ILocalizedItem<string>;
@@ -77,6 +86,7 @@ export interface IProduct {
   position: number;
   variants: IProductVariant[];
   allergens?: CrudApi.Allergen[];
+  configSets?: IProductConfigSet[];
   tax: number; // %
   laneId?: string;
   productType: EProductType;

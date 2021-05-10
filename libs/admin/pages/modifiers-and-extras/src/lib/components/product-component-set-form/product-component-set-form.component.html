@@ -66,99 +66,104 @@
         [control]="dialogForm.get('description')! | asFormControl"
       ></bgap-form-text-input>
 
-      <hr />
+      <fieldset class="form mb-4">
+        <legend class="label">
+          {{ 'productComponentSets.productComponents' | translate }}
+        </legend>
 
-      <div class="row">
-        <div class="col-md-6">
-          <bgap-form-select
-            caption="productComponentSets.productComponent"
-            [localize]="true"
-            [options]="productComponentOptions"
-            [control]="componentForm.get('productComponentId')! | asFormControl"
-          ></bgap-form-select>
-
-          <button
-            nbButton
-            size="small"
-            type="button"
-            status="primary"
-            (click)="addComponentToList()"
-            [disabled]="componentForm.invalid"
-          >
-            {{ 'common.add' | translate }}
-          </button>
-        </div>
-        <div
-          class="col-md-6"
-          [hidden]="
-            dialogForm.value?.type === eProductComponentSetType.MODIFIER
-          "
-        >
-          <bgap-form-text-input
-            caption="productComponentSets.maxSelection"
-            type="number"
-            [control]="dialogForm.get('maxSelection')! | asFormControl"
-          ></bgap-form-text-input>
-        </div>
-      </div>
-
-      <div class="mb-3 mt-3">
-        <nb-list-item
-          *ngFor="
-            let componentId of dialogForm.value?.items || [];
-            let i = index;
-            first as isFirst;
-            last as isLast
-          "
-        >
-          <div class="w-100">
-            <div class="float-left">
-              <div class="subtitle-2">
-                {{ productComponentObject[componentId] | localize }}
-              </div>
-            </div>
+        <div class="row">
+          <div class="col-md-6">
+            <bgap-form-select
+              caption="productComponentSets.productComponent"
+              [localize]="true"
+              [options]="productComponentOptions"
+              [control]="
+                componentForm.get('productComponentId')! | asFormControl
+              "
+            ></bgap-form-select>
 
             <button
               nbButton
-              shape="round"
-              status="danger"
-              size="tiny"
-              class="float-right mr-2"
+              size="small"
               type="button"
-              [title]="'common.delete' | translate"
-              (click)="removeComponentFromList(componentId)"
+              status="primary"
+              (click)="addComponentToList()"
+              [disabled]="componentForm.invalid"
             >
-              <nb-icon icon="trash-2-outline"></nb-icon>
-            </button>
-
-            <button
-              [hidden]="isLast"
-              nbButton
-              shape="round"
-              size="tiny"
-              type="button"
-              class="float-right mr-2"
-              [title]="'common.moveDown' | translate"
-              (click)="move(i, 1)"
-            >
-              <nb-icon icon="chevron-down"></nb-icon>
-            </button>
-            <button
-              [hidden]="isFirst"
-              nbButton
-              shape="round"
-              size="tiny"
-              type="button"
-              class="float-right mr-2"
-              [title]="'common.moveUp' | translate"
-              (click)="move(i, -1)"
-            >
-              <nb-icon icon="chevron-up"></nb-icon>
+              {{ 'common.add' | translate }}
             </button>
           </div>
-        </nb-list-item>
-      </div>
+          <div
+            class="col-md-6"
+            [hidden]="
+              dialogForm.value?.type === eProductComponentSetType.MODIFIER
+            "
+          >
+            <bgap-form-text-input
+              caption="productComponentSets.maxSelection"
+              type="number"
+              [control]="dialogForm.get('maxSelection')! | asFormControl"
+            ></bgap-form-text-input>
+          </div>
+        </div>
 
+        <div class="mb-3 mt-3">
+          <nb-list-item
+            *ngFor="
+              let componentId of dialogForm.value?.items || [];
+              let i = index;
+              first as isFirst;
+              last as isLast
+            "
+          >
+            <div class="w-100">
+              <div class="float-left">
+                <div class="subtitle-2">
+                  {{ productComponentObject[componentId] | localize }}
+                </div>
+              </div>
+
+              <button
+                nbButton
+                shape="round"
+                status="danger"
+                size="tiny"
+                class="float-right mr-2"
+                type="button"
+                [title]="'common.delete' | translate"
+                (click)="removeComponentFromList(componentId)"
+              >
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </button>
+
+              <button
+                [hidden]="isLast"
+                nbButton
+                shape="round"
+                size="tiny"
+                type="button"
+                class="float-right mr-2"
+                [title]="'common.moveDown' | translate"
+                (click)="move(i, 1)"
+              >
+                <nb-icon icon="chevron-down"></nb-icon>
+              </button>
+              <button
+                [hidden]="isFirst"
+                nbButton
+                shape="round"
+                size="tiny"
+                type="button"
+                class="float-right mr-2"
+                [title]="'common.moveUp' | translate"
+                (click)="move(i, -1)"
+              >
+                <nb-icon icon="chevron-up"></nb-icon>
+              </button>
+            </div>
+          </nb-list-item>
+        </div>
+      </fieldset>
 
       <div class="mt-6">
         <button

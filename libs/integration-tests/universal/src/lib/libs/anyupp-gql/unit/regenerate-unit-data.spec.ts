@@ -42,7 +42,7 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
-import { validateUnitProduct } from 'libs/shared/data-validators/src';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
 import { IUnitProduct } from '@bgap/shared/types';
 import * as fp from 'lodash/fp';
 import { getSortedIds } from '@bgap/shared/utils';

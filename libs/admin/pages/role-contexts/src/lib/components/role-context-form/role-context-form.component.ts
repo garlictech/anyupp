@@ -1,30 +1,16 @@
 import { NGXLogger } from 'ngx-logger';
 import { pairwise, startWith, take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
-import {
-  EAdminRole,
-  IChain,
-  IKeyValue,
-  IRoleContext,
-} from '@bgap/shared/types';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { EAdminRole, IChain, IKeyValue, IRoleContext } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -90,7 +76,7 @@ export class RoleContextFormComponent
 
     if (this.roleContext) {
       this.dialogForm.patchValue(
-        clearDbProperties<IRoleContext>(this.roleContext),
+        cleanObject(this.roleContext),
       );
 
       this._refreshGroupOptionsByChainId(this.roleContext.chainId || '');
