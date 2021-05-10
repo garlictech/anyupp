@@ -216,20 +216,3 @@ const getCart = (
     }),
   );
 };
-
-// const getUnit = (
-//   crudGraphqlClient: GraphqlApiClient,
-//   id: string,
-// ): Observable<IUnit> => {
-//   return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
-//     CrudApiQueryDocuments.getUnit,
-//     { id },
-//     { fetchPolicy: 'no-cache' },
-//   ).pipe(
-//     map(x => x.getUnit as IUnit),
-//     catchError(err => {
-//       console.error(err);
-//       return throwError('Internal Unit query error');
-//     }),
-//   );
-// };
