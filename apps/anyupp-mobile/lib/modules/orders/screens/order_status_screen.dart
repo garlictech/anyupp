@@ -44,7 +44,6 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
   @override
   void dispose() {
     getIt<OrderBloc>().add(StopOrderListSubscription());
-    getIt<OrderBloc>().add(StopOrderHistoryListSubscription());
     super.dispose();
   }
 

@@ -29,8 +29,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
     'NONE',
     'PLACED',
     'PROCESSING',
-    'READY',
-    'PAID',
+    'READY'
   ];
 
   @override
