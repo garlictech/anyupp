@@ -4,7 +4,7 @@ import { IFloorMapData } from './floor-map';
 import { IGroup } from './group';
 import { ILocalizedItem } from './localized-item';
 import { IDateIntervals } from './order';
-import { PaymentMode } from './payment';
+import { PaymentMode } from '@bgap/anyupp-gql/api';
 import { IWeeklySchedule } from './weekly-schedule';
 
 export interface IUnitSeat {

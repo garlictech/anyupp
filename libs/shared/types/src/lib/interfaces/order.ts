@@ -1,6 +1,6 @@
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
-import { PaymentMode } from './payment';
+import { PaymentMode } from '@bgap/anyupp-gql/api';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';

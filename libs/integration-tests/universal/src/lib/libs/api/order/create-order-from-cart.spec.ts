@@ -3,7 +3,7 @@
 import { combineLatest, from, Observable, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {

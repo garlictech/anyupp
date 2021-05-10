@@ -1,8 +1,6 @@
 import { AUTH_TYPE } from 'aws-appsync';
-
 import { Auth } from '@aws-amplify/auth';
 import { ICrudApiConfig } from '@bgap/shared/types';
-
 import { GraphqlApiClient } from './graphql-api-client';
 
 export class GraphqlApiFp {

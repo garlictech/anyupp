@@ -17,7 +17,7 @@ import {
   contactFormGroup,
   EToasterType,
 } from '@bgap/admin/shared/utils';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   anyuppAuthenticatedGraphqlClient,
   executeMutation,

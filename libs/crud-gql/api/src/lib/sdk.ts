@@ -6,7 +6,7 @@ import {
   QueryOptions,
   SubscriptionOptions,
 } from 'apollo-client';
-import { from, Observable, Observer } from 'rxjs';
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 
@@ -16,7 +16,7 @@ const documentNodeError = new Error(
   'DocumentNode passed to CRUD Client must contain single query or mutation',
 );
 
-export type ApolloRequesterOptions<V, R> =
+type ApolloRequesterOptions<V, R> =
   | Omit<QueryOptions<V>, 'variables' | 'query'>
   | Omit<MutationOptions<R, V>, 'variables' | 'mutation'>
   | Omit<SubscriptionOptions<V>, 'variables' | 'subscription'>;
@@ -113,17 +113,3 @@ export function getSdkAmplify(client: AWSAppSyncClient<any>) {
 }
 
 export type AmplifySdk = ReturnType<typeof getSdkAmplify>;
-
-export const fromApolloSubscription = <T = unknown>(subscription: {
-  subscribe: (arg: Observer<T>) => { unsubscribe: () => void };
-}): Observable<T> => {
-  return new Observable<T>(observer => {
-    const subs = subscription.subscribe({
-      next: (x: T) => observer.next(x),
-      error: (error: unknown) => observer.error(error),
-      complete: () => observer.complete(),
-    });
-
-    return () => subs.unsubscribe();
-  });
-};

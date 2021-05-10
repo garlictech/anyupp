@@ -3,26 +3,23 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { executeMutation } from '@bgap/shared/graphql/api-client';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AdminUserResolverDeps } from './utils';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
 });
 
-const UserPoolId = process.env.userPoolId || '';
-
 export const createAdminUser = (
   vars: AnyuppApi.CreateAdminUserMutationVariables,
-) => {
+) => (deps: AdminUserResolverDeps) => {
   console.debug('Resolver parameters: ', vars);
   const Username = vars.input.email || vars.input.phone || '';
 
   return pipe(
     {
-      UserPoolId: UserPoolId,
+      UserPoolId: deps.userPoolId,
       Username,
     },
     params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
@@ -31,7 +28,7 @@ export const createAdminUser = (
       from(
         cognitoidentityserviceprovider
           .adminGetUser({
-            UserPoolId,
+            UserPoolId: deps.userPoolId,
             Username,
           })
           .promise(),
@@ -51,13 +48,7 @@ export const createAdminUser = (
       email: vars.input.email,
       phone: vars.input.phone,
     })),
-    switchMap((input: CrudApi.CreateAdminUserInput) =>
-      executeMutation(crudBackendGraphQLClient)<
-        CrudApi.CreateAdminUserMutation
-      >(CrudApi.createAdminUser, {
-        input,
-      }),
-    ),
+    switchMap(input => deps.crudSdk.CreateAdminUser({ input })),
     map(data => data.createAdminUser?.id),
   ).toPromise();
 };

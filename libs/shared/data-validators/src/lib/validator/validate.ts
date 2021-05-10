@@ -7,8 +7,8 @@ export const validationOptions: Joi.ValidationOptions = {
   abortEarly: false,
 };
 export interface SchemaValidation<T> {
-  validate: (arg: unknown) => Observable<T>;
-  isType: (arg: unknown) => boolean;
+  validate: (_arg: unknown) => Observable<T>;
+  isType: (_arg: unknown) => boolean;
 }
 export const validateSchema = <REQUIRED_TYPE>(
   schema: Joi.SchemaMap,
@@ -26,11 +26,6 @@ export const validateSchema = <REQUIRED_TYPE>(
           );
 
           return throwError(
-            // fp.map((x: Joi.ValidationErrorItem) => ({
-            //   message: x.message,
-            //   path: x.path,
-            //   exception: x.type,
-            // }))(err.details),
             `${schemaName} Object Validation Error: ` +
               fp.flow(
                 fp.map((x: Joi.ValidationErrorItem) => x.message),
@@ -43,4 +38,16 @@ export const validateSchema = <REQUIRED_TYPE>(
       return !Joi.object(schema).validate(arg).error;
     },
   };
+};
+
+export const validateGqlList = <ITEM>(
+  itemSchema: Joi.SchemaMap,
+  label: string,
+) => {
+  const listSchema = {
+    items: Joi.array().items(itemSchema),
+    nextToken: Joi.string().optional(),
+  };
+
+  return validateSchema<ITEM[]>(listSchema, label);
 };

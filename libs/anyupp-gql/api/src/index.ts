@@ -1,2 +1,1 @@
-import * as AnyuppApi from './lib/generated/anyupp-api';
-export { AnyuppApi };
+export * from './lib/generated/anyupp-api';

@@ -1,4 +1,4 @@
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { missingParametersCheck } from '@bgap/shared/utils';
 import * as stripeService from './stripe.service';
 

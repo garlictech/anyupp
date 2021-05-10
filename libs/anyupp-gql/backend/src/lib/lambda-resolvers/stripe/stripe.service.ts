@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { SharedSecrets, getSecrets } from '@bgap/shared/secrets';
 import { isOfType } from '@bgap/shared/utils';
 

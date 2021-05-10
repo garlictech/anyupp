@@ -1,24 +1,16 @@
 import { DateTime } from 'luxon';
-import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { removeTypeNameField } from '../../utils/graphql.utils';
 import { toFixed2Number } from '../../utils/number.utils';
-import {
-  executeMutation,
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
+
 import {
   EOrderStatus,
-  ICart,
-  IOrder,
   IOrderItem,
-  PaymentMode,
   IPlace,
   IUnitProduct,
-  IUnit,
 } from '@bgap/shared/types';
 import {
   validateCart,
@@ -36,46 +28,28 @@ import {
 } from '@bgap/shared/utils';
 
 import { calculateOrderSumPrice } from './order.utils';
+import { OrderResolverDeps } from './utils';
+import { PaymentMode } from '@bgap/anyupp-gql/api';
 
 export const createOrderFromCart = ({
   userId,
   cartId,
-  crudGraphqlClient,
 }: {
   userId: string;
   cartId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<string> => {
-  // console.log(
-  //   '### ~ file: order.service.ts ~ line 39 ~ INPUT PARAMS',
-  //   JSON.stringify({
-  //     userId,
-  //     cartId,
-  //   }),
-  //   undefined,
-  //   2,
-  // );
-
-  return getCart(crudGraphqlClient, cartId).pipe(
-    // CART.USERID CHECK
+}) => (deps: OrderResolverDeps) => {
+  return getCart(cartId)(deps).pipe(
     switchMap(cart =>
       cart.userId === userId ? of(cart) : throwError(getCartIsMissingError()),
     ),
     switchMap(cart =>
-      getUnit(crudGraphqlClient, cart.unitId).pipe(
-        // TODO: ??? create catchError and custom error
-        // pipeDebug('### UNIT'),
-        map(unit => ({ cart, unit })),
-      ),
+      getUnit(cart.unitId)(deps).pipe(map(unit => ({ cart, unit }))),
     ),
     switchMap(props =>
-      getGroupCurrency(crudGraphqlClient, props.unit?.groupId).pipe(
-        // TODO: ??? create catchError and custom error
+      getGroupCurrency(props.unit?.groupId)(deps).pipe(
         map(currency => ({ ...props, currency })),
       ),
     ),
-    // pipeDebug('### CURRENCY + UNIT'),
-    // INSPECTIONS
     switchMap(props =>
       props.unit.isAcceptingOrders
         ? of(props)
@@ -97,11 +71,10 @@ export const createOrderFromCart = ({
     //     // }
     switchMap(props =>
       getOrderItems({
-        crudGraphqlClient: crudGraphqlClient,
         userId,
         currency: props.currency,
         cartItems: props.cart.items,
-      }).pipe(map(items => ({ ...props, items }))),
+      })(deps).pipe(map(items => ({ ...props, items }))),
     ),
     map(props => ({
       ...props,
@@ -115,14 +88,13 @@ export const createOrderFromCart = ({
       }),
     })),
     switchMap(props =>
-      createOrderInDb({
-        orderInput: props.orderInput,
-        crudGraphqlClient: crudGraphqlClient,
-      }).pipe(map(x => ({ ...props, orderId: x.id as string }))),
+      createOrderInDb(props.orderInput)(deps).pipe(
+        map(x => ({ ...props, orderId: x.id as string })),
+      ),
     ),
     // Remove the cart from the db after the order has been created successfully
     switchMap(props =>
-      deleteCart(crudGraphqlClient, props.cart.id).pipe(
+      from(deps.crudSdk.DeleteCart({ input: { id: props.cart.id } })).pipe(
         mapTo(props.orderId),
         pipeDebug('### Response'),
       ),
@@ -161,16 +133,14 @@ const getOrderItems = ({
   userId,
   cartItems,
   currency,
-  crudGraphqlClient,
 }: {
   userId: string;
   cartItems: IOrderItem[];
   currency: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<CrudApi.OrderItemInput[]> => {
+}) => (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
-      getLaneIdForCartItem(crudGraphqlClient, cartItem.productId).pipe(
+      getLaneIdForCartItem(cartItem.productId)(deps).pipe(
         map(laneId =>
           convertCartOrderToOrderItem({
             userId,
@@ -223,26 +193,18 @@ const convertCartOrderToOrderItem = ({
   };
 };
 
-const getLaneIdForCartItem = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
+const getLaneIdForCartItem = (productId: string) => (
+  deps: OrderResolverDeps,
 ): Observable<string | undefined> => {
-  return getUnitProduct(crudGraphqlClient, productId).pipe(
-    map(product => product.laneId),
-  );
+  return getUnitProduct(productId)(deps).pipe(map(product => product.laneId));
 };
 
-const getUnitProduct = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
-): Observable<IUnitProduct> => {
-  return executeQuery(CrudApi.getUnitProduct, 'getUnitProduct', {
-    id: productId,
-  })(crudGraphqlClient).pipe(
-    map(product => product.getUnitProduct),
+const getUnitProduct = (productId: string) => (
+  deps: OrderResolverDeps,
+): Observable<IUnitProduct> =>
+  from(deps.crudSdk.GetUnitProduct({ id: productId })).pipe(
     switchMap(validateUnitProduct),
   );
-};
 
 const createStatusLog = (
   userId: string,
@@ -255,84 +217,17 @@ const createStatusLog = (
 // const getStaffId = async (unitId: string): Promise<string> => {
 //   return Promise.resolve('STAFF_ID');
 // };
+const createOrderInDb = (input: CrudApi.CreateOrderInput) => (
+  deps: OrderResolverDeps,
+) => from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
 
-const createOrderInDb = ({
-  orderInput,
-  crudGraphqlClient,
-}: {
-  orderInput: CrudApi.CreateOrderInput;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<IOrder> => {
-  return executeMutation(CrudApi.createOrder, 'createOrder', {
-    input: orderInput,
-  })(crudGraphqlClient).pipe(
-    map(x => x.createOrder),
-    switchMap(validateOrder),
-  );
-};
+const getUnit = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetUnit({ id })).pipe(switchMap(validateUnit));
 
-const getUnit = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<IUnit> => {
-  return executeQuery(CrudApi.getUnit, 'getUnit', { id })(
-    crudGraphqlClient,
-  ).pipe(
-    map(x => x.getUnit),
-    switchMap(validateUnit),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Unit query error');
-    }),
-  );
-};
+const getCart = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetCart({ id })).pipe(switchMap(validateCart));
 
-const getCart = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<ICart> => {
-  return executeQuery(CrudApi.getCart, 'getCart', { id })(
-    crudGraphqlClient,
-  ).pipe(
-    map(x => x.getCart),
-    switchMap(validateCart),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Cart query error');
-    }),
-  );
-};
-
-const deleteCart = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<boolean> => {
-  return executeMutation(crudGraphqlClient)<CrudApi.DeleteCartMutation>(
-    CrudApi.deleteCart,
-    { input: { id } },
-  ).pipe(
-    mapTo(true),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Cart Delete error');
-    }),
-  );
-};
-
-const getGroupCurrency = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<string> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
-    CrudApi.getGroupCurrency,
-    { id },
-  ).pipe(
-    map(x => x.getGroup),
+const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetGroupCurrency({ id })).pipe(
     switchMap(validateGetGroupCurrency),
-    map(x => x.currency),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal GroupCurrency query error');
-    }),
   );
-};

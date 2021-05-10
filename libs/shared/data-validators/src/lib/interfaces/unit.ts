@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-import { validateSchema } from '../validator/validate';
+import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
 import { ILane, IUnit } from '@bgap/shared/types';
@@ -38,3 +38,8 @@ export const { validate: validateUnit, isType: isUnit } = validateSchema<IUnit>(
   unitSchema,
   'Unit',
 );
+
+export const {
+  validate: validateUnitList,
+  isType: isUnitList,
+} = validateGqlList<IUnit>(unitSchema, 'UnitList');

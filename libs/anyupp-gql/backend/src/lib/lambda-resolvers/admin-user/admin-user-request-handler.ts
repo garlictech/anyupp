@@ -1,19 +1,18 @@
 import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
-
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
-
 import { createAdminUser } from './create-admin-user.resolver';
 import { deleteAdminUser } from './delete-admin-user.resolver';
+import { AdminUserResolverDeps } from './utils';
 
 // HANDLER
-export const adminRequestHandler = {
+export const adminRequestHandler = (deps: AdminUserResolverDeps) => ({
   createAdminUser: (
     requestPayload: AnyuppApi.CreateAdminUserMutationVariables,
   ) => {
     return validatCreateAdminUserInput(requestPayload)
-      .pipe(switchMap(() => createAdminUser(requestPayload)))
+      .pipe(switchMap(() => createAdminUser(requestPayload)(deps)))
       .toPromise();
   },
 
@@ -21,10 +20,10 @@ export const adminRequestHandler = {
     requestPayload: AnyuppApi.DeleteAdminUserMutationVariables,
   ) => {
     return validatDeleteAdminuserInput(requestPayload)
-      .pipe(switchMap(() => deleteAdminUser(requestPayload)))
+      .pipe(switchMap(() => deleteAdminUser(requestPayload)(deps)))
       .toPromise();
   },
-};
+});
 
 // INPUT VALIDATORS
 // CREATE

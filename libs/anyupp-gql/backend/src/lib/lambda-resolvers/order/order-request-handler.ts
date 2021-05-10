@@ -1,7 +1,6 @@
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { missingParametersCheck } from '@bgap/shared/utils';
-
+import { OrderResolverDeps } from './utils';
 import { createOrderFromCart } from './create-order-from-cart.resolver';
 
 interface WithAuthenticatedUser {
@@ -10,10 +9,8 @@ interface WithAuthenticatedUser {
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
   AnyuppApi.MutationCreateOrderFromCartArgs;
 
-export const orderRequestHandler = {
-  createOrderFromCart: (crudGraphqlClient: GraphqlApiClient) => (
-    requestPayload: CreateOrderFromCartRequest,
-  ) => {
+export const orderRequestHandler = (deps: OrderResolverDeps) => ({
+  createOrderFromCart: (requestPayload: CreateOrderFromCartRequest) => {
     missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
       'userId',
       'input',
@@ -26,7 +23,6 @@ export const orderRequestHandler = {
     return createOrderFromCart({
       userId: requestPayload.userId,
       cartId: requestPayload.input.id,
-      crudGraphqlClient,
-    }).toPromise();
+    })(deps).toPromise();
   },
-};
+});

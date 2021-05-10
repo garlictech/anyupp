@@ -1,4 +1,4 @@
-import { PaymentMode } from './payment';
+import { PaymentMode } from '@bgap/anyupp-gql/api';
 import { IOrderItem, IPlace } from './order';
 
 export interface ICart {

@@ -1,12 +1,10 @@
 import {
   AmplifySdk,
-  awsConfig,
   fromApolloSubscription,
-  getSdkAmplify,
+  getCrudSdkForIAM,
   OnAdminUserChangeSubscription,
 } from '@bgap/crud-gql/api';
 import { from, interval, of } from 'rxjs';
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 
 describe('CRUD sdk test', () => {
@@ -15,14 +13,7 @@ describe('CRUD sdk test', () => {
   beforeAll(() => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-
-    const x = GraphqlApiFp.createBackendClient(
-      awsConfig,
-      accessKeyId,
-      secretAccessKey,
-    );
-    const awsClient = x._client;
-    sdk = getSdkAmplify(awsClient);
+    sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
   });
 
   test('An arbitrary CRUD', done => {

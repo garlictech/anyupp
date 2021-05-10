@@ -1,11 +1,11 @@
-import { awsConfig } from '@bgap/crud-gql/api';
-import { config } from '@bgap/shared/config';
+//import { awsConfig } from '@bgap/crud-gql/api';
+/*import { config } from '@bgap/shared/config';
 import { GraphqlApiFp } from './graphql-api-fp';
 import { Auth } from 'aws-amplify';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthenticatdGraphQLClientWithUserId } from './common';
-
+*/
 // #############
 // ### AYUPP ###
 /*

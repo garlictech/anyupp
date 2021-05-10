@@ -13,7 +13,7 @@ import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { testAdminUserPassword, testAdminUsername } from '../../../fixtures';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km

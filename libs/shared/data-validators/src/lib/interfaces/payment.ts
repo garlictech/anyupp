@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import { paymentMethodSchema } from '../enums/enums';
-import { PaymentMode } from '@bgap/shared/types';
+import { PaymentMode } from '@bgap/anyupp-gql/api';
 
 export const paymentModeSchema: Joi.SchemaMap<PaymentMode> = {
   __typename: Joi.string().valid('PaymentMode').optional(),

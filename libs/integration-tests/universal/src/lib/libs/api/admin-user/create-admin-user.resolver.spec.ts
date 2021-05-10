@@ -1,7 +1,7 @@
 import { of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   AuthenticatdGraphQLClientWithUserId,
   createAuthenticatedAnyuppGraphQLClient,

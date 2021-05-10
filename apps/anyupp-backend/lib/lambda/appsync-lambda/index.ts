@@ -1,7 +1,6 @@
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
-import { awsConfig } from '@bgap/crud-gql/api';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 
 import {
   adminRequestHandler,
@@ -21,36 +20,38 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _context: Context,
 ): Promise<unknown> => {
-  const crudBackendGraphQLClient = GraphqlApiFp.createBackendClient(
-    awsConfig,
-    process.env.AWS_ACCESS_KEY_ID || '',
-    process.env.AWS_SECRET_ACCESS_KEY || '',
-  );
+  const userPoolId = process.env.userPoolId || '';
+  const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
+  const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
+  const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+
+  const adminUserRequestHandlers = adminRequestHandler({
+    userPoolId,
+    crudSdk,
+  });
+
+  const orderRequestHandlers = orderRequestHandler({
+    crudSdk,
+  });
+
+  const unitRequestHandlers = unitRequestHandler({
+    crudSdk,
+  });
+
+  const productRequestHandlers = productRequestHandler({
+    crudSdk,
+  });
 
   const resolverMap = {
     getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
     updateStripeCard: stripeRequestHandler.updateStripeCard,
     deleteStripeCard: stripeRequestHandler.deleteStripeCard,
-    createAdminUser: adminRequestHandler.createAdminUser,
-    deleteAdminUser: adminRequestHandler.deleteAdminUser,
-    createOrderFromCart: orderRequestHandler.createOrderFromCart(
-      crudBackendGraphQLClient,
-    ),
-    getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
-      crudBackendGraphQLClient,
-    ),
-    createUnitProduct: productRequestHandler.createUnitProduct(
-      crudBackendGraphQLClient,
-    ),
+    createAdminUser: adminUserRequestHandlers.createAdminUser,
+    deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
+    createOrderFromCart: orderRequestHandlers.createOrderFromCart,
+    getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
+    createUnitProduct: productRequestHandlers.createUnitProduct,
   };
-  // console.debug(
-  //   '**** Executing lambda with event',
-  //   JSON.stringify(event, null, 2),
-  // );
-  // console.debug(
-  //   '**** Executing lambda with context',
-  //   JSON.stringify(context, null, 2),
-  // );
 
   const resolver = fp.get(event.handler, resolverMap);
 
