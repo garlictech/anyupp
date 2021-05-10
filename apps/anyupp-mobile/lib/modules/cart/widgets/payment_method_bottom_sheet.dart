@@ -164,6 +164,30 @@ class _PaymentMethodSelectionBottomSheetWidgetState
   Widget _buildSendCartButton(BuildContext context, GeoUnit unit) {
     return BlocBuilder<CartBloc, BaseCartState>(builder: (context, state) {
       bool loading = state is CartLoadingState;
+      Widget buttonChild = Text(
+        trans('payment.sendOrder'),
+        style: GoogleFonts.poppins(
+          fontSize: 18,
+          color: theme.text2,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+      if (loading) {
+        buttonChild = CenterLoadingWidget(
+          color: theme.highlight,
+          size: 20.0,
+          strokeWidth: 2.0,
+        );
+      } else if (wantsInvoce) {
+        buttonChild = Text(
+          trans('payment.paymentInfo.invoicing.invoice_info'),
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            color: theme.text2,
+            fontWeight: FontWeight.w700,
+          ),
+        );
+      }
 
       return Container(
         height: 90.0,
@@ -181,30 +205,18 @@ class _PaymentMethodSelectionBottomSheetWidgetState
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: loading
-              ? CenterLoadingWidget(
-                  color: theme.highlight,
-                  size: 20.0,
-                  strokeWidth: 2.0,
-                )
-              : Text(
-                  trans('payment.sendOrder'),
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    color: theme.text2,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+          child: buttonChild,
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () {
                   if (!loading) {
+                    String payMentMethod = _getPaymentMethodNameFromNumberValue(
+                        _selectedPaymentMethod);
                     if (wantsInvoce) {
-                      showInvoiceFormBottomSheet(context);
+                      showInvoiceFormBottomSheet(context, payMentMethod);
                     } else {
                       BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
                         unit,
-                        _getPaymentMethodNameFromNumberValue(
-                            _selectedPaymentMethod),
+                        payMentMethod,
                       ));
                     }
                   }

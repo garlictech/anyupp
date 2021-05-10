@@ -1,9 +1,16 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget customCountryPickerWidget(
-    BuildContext context, String labelKey, TextEditingController conteroller) {
+  ThemeChainData theme,
+  BuildContext context,
+  String labelKey,
+  TextEditingController nameController,
+  TextEditingController codeController,
+) {
+  String initialValue = codeController.text;
   return Padding(
     padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
     child: Container(
@@ -38,6 +45,13 @@ Widget customCountryPickerWidget(
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF3C2F2F),
               ),
+              boxDecoration: BoxDecoration(
+                color: theme.background,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+              ),
               searchDecoration: InputDecoration(
                 alignLabelWithHint: true,
                 contentPadding: const EdgeInsets.only(
@@ -69,15 +83,16 @@ Widget customCountryPickerWidget(
                 ),
               ),
               padding: EdgeInsets.all(0.0),
-              onInit: (CountryCode code) => conteroller.text = code.name,
+              onInit: (CountryCode code) => nameController.text = code.name,
               //alignLeft: true,
 
-              onChanged: (CountryCode countryCode) =>
-                  conteroller.text = countryCode.name,
+              onChanged: (CountryCode countryCode) {
+                codeController.text = countryCode.code;
+                nameController.text = countryCode.name;
+              },
               showDropDownButton: true,
               // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-              initialSelection: 'HU',
-              favorite: ['+39', 'FR'],
+              initialSelection: initialValue,
               // optional. Shows only country name and flag
               showCountryOnly: true,
               // optional. Shows only country name and flag when popup is closed.
