@@ -14,7 +14,7 @@ export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
     : gqlDocument;
 
 export const executeQuery = <INPUT, OUTPUT>(
-  gqlDocument: string | DocumentNode,
+  gqlDocument: DocumentNode,
   dataPath: string,
   variables?: INPUT,
   queryOptions?: Partial<QueryOptions>,

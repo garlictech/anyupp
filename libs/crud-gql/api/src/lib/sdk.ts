@@ -6,7 +6,7 @@ import {
   QueryOptions,
   SubscriptionOptions,
 } from 'apollo-client';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 
@@ -112,4 +112,32 @@ export function getSdkAmplify(client: AWSAppSyncClient<any>) {
   return getSdk(requester);
 }
 
-export type AmplifySdk = ReturnType<typeof getSdkAmplify>;
+type RawAmplifySdk = ReturnType<typeof getSdkAmplify>;
+type TypeWithGeneric<T> = Promise<T> | Observable<T>;
+type extractGeneric<Type> = Type extends TypeWithGeneric<infer X> ? X : never;
+type decideMonad<T, K> = T extends Promise<K> ? Promise<K> : Observable<K>;
+
+type ReplaceReturnType<T extends (...a: any) => any, TNewReturn> = (
+  ...a: Parameters<T>
+) => NonNullable<TNewReturn>;
+
+type extractMethod<T extends keyof RawAmplifySdk> = ReturnType<
+  RawAmplifySdk[T]
+>;
+
+type extractReturnType<T extends keyof RawAmplifySdk> = extractGeneric<
+  extractMethod<T>
+>;
+
+type StrippedReturnType<T extends keyof RawAmplifySdk> = extractReturnType<
+  T
+>[keyof extractGeneric<extractMethod<T>>];
+
+type ElementMapper<T extends keyof RawAmplifySdk> = ReplaceReturnType<
+  RawAmplifySdk[T],
+  decideMonad<ReturnType<RawAmplifySdk[T]>, StrippedReturnType<T>>
+>;
+
+export type AmplifySdk = {
+  [Method in keyof ReturnType<typeof getSdkAmplify>]: ElementMapper<Method>;
+};

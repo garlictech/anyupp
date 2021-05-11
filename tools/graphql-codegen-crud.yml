@@ -15,8 +15,12 @@ generates:
       - typescript-operations
       - typescript-document-nodes
       - typescript-generic-sdk
+      - named-operations-object
     config:
       declarationKind: 'interface'
+      immutableTypes: true,
+      defaultScalarType: unknown,
+      skipTypename: true,
       namingConvention:
         enumValues: change-case#lowerCase
       usingObservableFrom: "import { Observable } from 'rxjs';"

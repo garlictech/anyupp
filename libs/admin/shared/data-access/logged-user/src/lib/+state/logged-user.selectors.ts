@@ -56,3 +56,8 @@ export const getSelectedLanguage = createSelector(
   (state: ILoggedUserState): string | undefined | null =>
     state.loggedUser?.settings?.selectedLanguage,
 );
+
+export const getCurrentContextRole = createSelector(
+  getLoggedUserState,
+  (state: ILoggedUserState) => state.currentContextRole,
+);

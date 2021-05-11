@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
-import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { concat, from, Observable, of, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, switchMapTo, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
@@ -39,11 +39,14 @@ import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+import {fromApolloSubscription, getCrudSdkForUserPool} from '@bgap/crud-gql/api';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
+  private crudSdk: CrudApi.AmplifySdk;
   private _destroyConnection$: Subject<boolean> = new Subject<boolean>();
   private _settingsChanged$: Subject<boolean> = new Subject<boolean>();
   private _rolesChanged$: Subject<boolean> = new Subject<boolean>();
@@ -54,7 +57,9 @@ export class DataService {
     private _store: Store<any>,
     private _amplifyDataService: AmplifyDataService,
     private _translateService: TranslateService,
-  ) {}
+  ) {
+    this.crudSdk = getCrudSdkForUserPool();
+  }
 
   public async initDataConnections<IAdminUser>(
     userId: string,
@@ -63,6 +68,24 @@ export class DataService {
     // Prevent multiple initialization on login
     if (this._dataConnectionInitialized) return;
 
+    const dataSource$ = this.crudSdk.OnAdminUserChange({id: userId})
+
+    concat(from(this.crudSdk.GetAdminUser({id: userId})),
+      fromApolloSubscription(dataSource$)
+    ).pipe(
+      tap(loggedUser =>
+          this._store.dispatch(
+            loggedUserActions.loadLoggedUserSuccess({
+              loggedUser: {
+                ...(<IAdminUser>loggedUser),
+                role: currentContextRole,
+              },
+            }),
+          );
+
+      )
+    )
+    
     this._amplifyDataService
       .snapshotChanges$({
         queryName: 'getAdminUser',
@@ -477,15 +500,15 @@ export class DataService {
       .subscribe$({
         subscriptionName: 'onAdminRoleContextsChange',
         upsertFn: async (adminRoleContext: unknown): Promise<void> => {
-          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<
-            CrudApi.GetAdminUserQuery
-          >({
-            queryName: 'getAdminUser',
-            variables: {
-              id: (<IAdminUserConnectedRoleContext>adminRoleContext)
-                .adminUserId,
+          const result: CrudApi.GetAdminUserQuery = await this._amplifyDataService.query<CrudApi.GetAdminUserQuery>(
+            {
+              queryName: 'getAdminUser',
+              variables: {
+                id: (<IAdminUserConnectedRoleContext>adminRoleContext)
+                  .adminUserId,
+              },
             },
-          });
+          );
 
           const adminUser: unknown = removeNestedTypeNameField(
             result?.getAdminUser,

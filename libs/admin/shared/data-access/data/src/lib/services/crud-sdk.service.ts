@@ -1,11 +1,25 @@
-import * as fp from 'lodash/fp';
+import { Injectable } from '@angular/core';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CrudSdkService {
+  public sdk: CrudApi.AmplifySdk;
+
+  constructor() {
+    this.sdk = getCrudSdkForUserPool();
+  }
+}
+
+/*import * as fp from 'lodash/fp';
 import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-import { CrudApi, CrudApiSubscriptionDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  crudAuthenticatedGraphqlClient,
   executeMutation,
   executeQuery,
   executeSubscription,
@@ -14,32 +28,41 @@ import { IAmplifyModel } from '@bgap/shared/types';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
 
 import { listTypes, queryTypes, subscriptionTypes } from './types';
+import { AngularApi, getCrudSdkForUserPool } from '@bgap/crud-gql/api';
+import { DocumentNode } from 'graphql';
 
 interface ISubscriptionParams {
-  subscriptionName: keyof typeof CrudApiSubscriptionDocuments;
+  subscriptionName: string;
   resetFn?: () => void;
   upsertFn: (data: unknown) => void;
   variables?: Record<string, unknown>;
 }
 
 interface IQueryParams {
-  queryName: keyof typeof CrudApi;
+  query: DocumentNode;
   variables?: Record<string, unknown>;
 }
 
 interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
 
-@Injectable({
-  providedIn: 'root',
+@injectable({
+  providedin: 'root',
 })
 export class AmplifyDataService {
-  constructor(private _ngZone: NgZone) {}
+  private crudSdk: CrudApi.AmplifySdk;
 
-  public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
-    return executeQuery(crudAuthenticatedGraphqlClient)(
-      CrudApi[params.queryName],
+  constructor(private _ngZone: NgZone, private sdk: AngularApi.OnAdminUserChangeGQL ) {
+    this.crudSdk = getCrudSdkForUserPool();
+
+    this.sdk.subscribe({id: 'lofasz'})
+  }
+
+  /*public snapshotChanges$(params: ISnapshotParams): Observable<unknown> {
+    return executeQuery(
+      params.query,
+      <keyof queryTypes>params.queryName,
       params.variables,
-    ).pipe(
+    )(this.crudAuthenticatedGraphqlClient).pipe(
       take(1),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
@@ -81,6 +104,8 @@ export class AmplifyDataService {
       }),
     );
   }
+
+
 
   public async create(mutationName: keyof typeof CrudApi, value: unknown) {
     return executeMutation(crudAuthenticatedGraphqlClient)(
@@ -147,5 +172,6 @@ export class AmplifyDataService {
         });
       }),
     );
-  }
 }
+}
+  */

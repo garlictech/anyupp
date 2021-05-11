@@ -19,7 +19,10 @@ describe('CRUD sdk test', () => {
   test('An arbitrary CRUD', done => {
     const id = 'CRUD_SDK_ID';
 
-    const toMatchSnapshot = (x: Record<string, unknown>, name: string) =>
+    const toMatchSnapshot = (
+      x: Record<string, unknown> | undefined | null,
+      name: string,
+    ) =>
       expect(x).toMatchSnapshot(
         {
           createdAt: expect.any(String),
@@ -71,9 +74,7 @@ describe('CRUD sdk test', () => {
     const id = 'ADMIN_USERCRUD_SDK_ID';
     const dataSource$ = sdk.OnAdminUserChange({ id });
 
-    const subs$ = fromApolloSubscription<OnAdminUserChangeSubscription>(
-      dataSource$,
-    ).pipe(
+    const subs$ = fromApolloSubscription(dataSource$).pipe(
       tap(result => {
         expect(result).toMatchSnapshot();
       }),

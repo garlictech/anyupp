@@ -1,29 +1,18 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { cartSeed } from '../fixtures/cart';
-import {
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedCrudGraphQLClient,
-  executeQuery,
-} from '@bgap/shared/graphql/api-client';
-import { combineLatest } from 'rxjs';
+import { combineLatest, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createTestCart, deleteTestCart } from '../seeds/cart';
 import { testAdminUsername, testAdminUserPassword } from '../fixtures/user';
+import { createAuthenticatedCrudSdk } from '../../crud-api-clients';
 
 describe('getCart test', () => {
-  let authHelper: AuthenticatdGraphQLClientWithUserId;
+  const authSdk = createAuthenticatedCrudSdk(
+    testAdminUsername,
+    testAdminUserPassword,
+  );
 
   beforeAll(async () => {
-    authHelper = await createAuthenticatedCrudGraphQLClient(
-      testAdminUsername,
-      testAdminUserPassword,
-    ).toPromise();
-    console.warn(authHelper.userAttributes);
-
-    await combineLatest([
-      // CleanUP
-      deleteTestCart(),
-    ])
+    await combineLatest([deleteTestCart()])
       .pipe(
         switchMap(() =>
           // Seeding
@@ -33,36 +22,44 @@ describe('getCart test', () => {
       .toPromise();
   }, 15000);
 
+  afterAll(async () => {
+    await deleteTestCart().toPromise();
+  });
+
   it('successful query execution', done => {
-    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApi.getCart,
-      { id: cartSeed.cart_01.id },
-    ).subscribe({
-      next(x) {
-        expect(x.getCart?.id).toEqual(cartSeed.cart_01.id);
-        done();
-      },
-    });
+    authSdk
+      .pipe(switchMap(sdk => from(sdk.GetCart({ id: cartSeed.cart_01.id }))))
+      .subscribe({
+        next(x) {
+          expect(x?.id).toEqual(cartSeed.cart_01.id);
+          done();
+        },
+      });
   }, 15000);
+
   it('should return null for a not existing item', done => {
-    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApi.getCart,
-      { id: cartSeed.cartId_NotExisting },
-    ).subscribe({
-      next(x) {
-        expect(x.getCart).toBeNull();
-        done();
-      },
-    });
+    authSdk
+      .pipe(
+        switchMap(sdk =>
+          from(sdk.GetCart({ id: cartSeed.cartId_NotExisting })),
+        ),
+      )
+      .subscribe({
+        next(x) {
+          expect(x).toBeNull();
+          done();
+        },
+      });
   }, 10000);
+
   it('should throw error without id as input', done => {
-    executeQuery(authHelper.graphQlClient)<CrudApi.GetCartQuery>(
-      CrudApi.getCart,
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
+    authSdk
+      .pipe(switchMap(sdk => from(sdk.GetCart(undefined as any))))
+      .subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
   }, 15000);
 });

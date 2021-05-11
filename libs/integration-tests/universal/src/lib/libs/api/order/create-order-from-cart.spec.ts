@@ -1,44 +1,32 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { combineLatest, from, Observable, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  anyuppGraphQLClient,
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedAnyuppGraphQLClient,
-  crudBackendGraphQLClient,
-  executeMutation,
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
 import { ICart, IOrder } from '@bgap/shared/types';
-
 import { cartSeed } from '../../../fixtures/cart';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
 import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
+import { createAuthenticatedCrudSdk } from '../../../../crud-api-clients';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 
 describe('CreatCartFromOrder mutation test', () => {
-  let authHelper: AuthenticatdGraphQLClientWithUserId;
+  const authSdk = createAuthenticatedCrudSdk(
+    testAdminUsername,
+    testAdminUserPassword,
+  );
 
-  beforeAll(async () => {
-    authHelper = await createAuthenticatedAnyuppGraphQLClient(
-      testAdminUsername,
-      testAdminUserPassword,
-    ).toPromise();
-    console.warn(authHelper.userAttributes);
-
-    await combineLatest([
+  const cleanup = () =>
+    combineLatest([
       // CleanUP
       deleteTestCart(),
       deleteTestCart(cartWithNotExistingUNIT),
-    ])
+    ]);
+
+  beforeAll(async () => {
+    await cleanup()
       .pipe(
         switchMap(() =>
           // Seeding
@@ -54,25 +42,33 @@ describe('CreatCartFromOrder mutation test', () => {
       .toPromise();
   });
 
+  afterAll(async () => {
+    await cleanup().toPromise();
+  });
+
   it('should create an order from a valid cart', done => {
     const cartId = cartSeed.cart_01.id;
     const userId = cartSeed.cart_01.userId;
     const unitId = cartSeed.cart_01.unitId;
 
-    from(
-      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
-        userId,
-        input: { id: cartId },
-      }),
-    )
+    authSdk
       .pipe(
-        // check order has been truly created
-        filter(x => !!x),
-        switchMap(newOrderId =>
-          combineLatest([
-            getOrder(crudBackendGraphQLClient, newOrderId!),
-            getCart(crudBackendGraphQLClient, cartId),
-          ]),
+        switchMap(crudSdk =>
+          from(
+            orderRequestHandler({ crudSdk }).createOrderFromCart({
+              userId,
+              input: { id: cartId },
+            }),
+          ).pipe(
+            // check order has been truly created
+            filter(x => !!x),
+            switchMap(newOrderId =>
+              combineLatest([
+                from(crudSdk.GetOrder({ id: newOrderId })),
+                from(crudSdk.GetCart({ id: cartId })),
+              ]),
+            ),
+          ),
         ),
       )
       .subscribe({
@@ -131,38 +127,3 @@ describe('CreatCartFromOrder mutation test', () => {
     });
   }, 15000);
 });
-
-// TODO: ?? relocate somewhere like a data-access lib
-// because this is a duplication of the one tha is in the order.service.ts
-const getOrder = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<IOrder> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
-    CrudApi.getOrder,
-    { id },
-  ).pipe(
-    map(x => x.getOrder as IOrder),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Order query error');
-    }),
-  );
-};
-
-const getCart = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<ICart> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
-    CrudApi.getCart,
-    { id },
-    { fetchPolicy: 'no-cache' },
-  ).pipe(
-    map(x => x.getCart as ICart),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Cart query error');
-    }),
-  );
-};

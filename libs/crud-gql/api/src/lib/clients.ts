@@ -1,17 +1,27 @@
-import { GraphqlApiFp } from '@bgap/shared/graphql/api-client';
-import { getSdkAmplify } from './sdk';
+import {
+  GraphqlApiClient,
+  GraphqlApiFp,
+} from '@bgap/shared/graphql/api-client';
+import { AmplifySdk, getSdkAmplify } from './sdk';
 
 import awsmobile from './generated/aws-exports';
+import { pipe } from 'fp-ts/function';
+
+const createSdk = (gqlClient: GraphqlApiClient) =>
+  (getSdkAmplify(gqlClient._client) as unknown) as AmplifySdk;
 
 export const getCrudSdkForIAM = (
   awsAccesskeyId: string,
   awsSecretAccessKey: string,
-) => {
-  const x = GraphqlApiFp.createBackendClient(
-    awsmobile,
-    awsAccesskeyId,
-    awsSecretAccessKey,
+) =>
+  pipe(
+    GraphqlApiFp.createBackendClient(
+      awsmobile,
+      awsAccesskeyId,
+      awsSecretAccessKey,
+    ),
+    createSdk,
   );
-  const awsClient = x._client;
-  return getSdkAmplify(awsClient);
-};
+
+export const getCrudSdkForUserPool = () =>
+  pipe(GraphqlApiFp.createAuthenticatedClient(awsmobile, true), createSdk);
