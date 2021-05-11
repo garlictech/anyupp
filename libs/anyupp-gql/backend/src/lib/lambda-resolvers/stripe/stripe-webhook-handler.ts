@@ -12,7 +12,7 @@ export const createStripeWebhookExpressApp = () => {
   // declare a new express app
   const app = express();
 
-  // app.use(bodyParser.json())
+  //app.use(bodyParser.json())
   app.use(awsServerlessExpressMiddleware.eventContext());
 
   // Enable CORS for all methods
@@ -22,11 +22,14 @@ export const createStripeWebhookExpressApp = () => {
     next();
   });
 
-  app.use(bodyParser.json({
-    verify: (req, res, buf) => {
-      (req as any).rawBody = buf.toString();
-    }
-  }));
+  app.use('/webhook', bodyParser.raw({type: "*/*"}))
+
+  // app.use(bodyParser.json({
+  //   verify: (req, res, buf) => {
+  //     console.log('***** Stripe webhook.buf=' + buf?.toString());
+  //     (req as any).rawBody = buf.toString();
+  //   }
+  // }));
 
 
   app.post('/webhook', async function (request, response) {
@@ -42,16 +45,17 @@ export const createStripeWebhookExpressApp = () => {
     }
 
     const sig = request.headers['stripe-signature'];
-    console.log('***** Stripe webhook.stripe.sig=' + sig);
+    // console.log('***** Stripe webhook.stripe.sig=' + sig);
     if (!sig) {
       throw Error('Stripe signature header not found in the request!');
     }
+    // console.log('***** Stripe webhook.stripe.body=' + request.body);
 
 
     // console.log('***** Stripe webhook.request=' + request);
     let event: Stripe.Event;
     try {
-      event = stripe.webhooks.constructEvent((request as any).rawBody, sig, endpointSecret);
+      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
       console.log('***** Stripe webhook.event=' + event['type']);
     } catch (err) {
       console.log('***** Stripe webhook.error=' + err);
@@ -64,14 +68,14 @@ export const createStripeWebhookExpressApp = () => {
     switch (event['type']) {
       case 'payment_intent.succeeded':
         intent = event.data.object as Stripe.PaymentIntent;
-        handleSuccessTransaction(crudBackendGraphQLClient, intent.id);
+        await handleSuccessTransaction(crudBackendGraphQLClient, intent.id);
         console.log("***** Stripe webhook.Succeeded:", intent.id);
         break;
       case 'payment_intent.payment_failed':
         intent = event.data.object as Stripe.PaymentIntent;
         // let message = intent.last_payment_error || intent.last_payment_error.message;
+        await handleFailedTransaction(crudBackendGraphQLClient, intent.id);
         console.log('***** Stripe webhook.Failed:', intent.id, intent.last_payment_error?.message);
-        handleFailedTransaction(crudBackendGraphQLClient, intent.id);
         break;
     }
 
@@ -86,14 +90,16 @@ export const createStripeWebhookExpressApp = () => {
 };
 
 const handleSuccessTransaction = async (crudGraphqlClient: GraphqlApiClient, transactionId: string) => {
-  console.log('***** handleSuccessTransaction()');
+  console.log('***** handleSuccessTransaction().id=' + transactionId);
   const transaction = await loadTransaction(crudGraphqlClient, transactionId);
+  // console.log('***** handleSuccessTransaction().transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(crudGraphqlClient, transaction.id, CrudApi.PaymentStatus.SUCCESS);
     await updateOrderState(crudGraphqlClient, transaction.orderId, transaction.userId, CrudApi.OrderStatus.PLACED);
     console.log('***** handleSuccessTransaction().success()');
+  } else {
+    console.log('***** handleSuccessTransaction().Warning!!!! No transaction found with id=' + transactionId);
   }
-
 }
 
 const handleFailedTransaction = async (crudGraphqlClient: GraphqlApiClient, transactionId: string) => {
