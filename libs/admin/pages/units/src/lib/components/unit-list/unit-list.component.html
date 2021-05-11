@@ -9,6 +9,7 @@
       shape="round"
       size="small"
       class="float-right"
+      [disabled]="!(selectedGroupId$ | async)"
       (click)="addUnit()"
     >
       <nb-icon icon="plus-outline"></nb-icon>
