@@ -1,7 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'cognito_local_storage.dart';
 
 class CognitoService {
@@ -50,10 +48,8 @@ class CognitoService {
   Future<bool> get isSessionValid async => (await session)?.isValid() ?? false;
 
   Future<void> init() async {
+    await this.currentUser;
     _cognitoUser = await _userPool.getCurrentUser();
-    if (_cognitoUser != null) {
-      _userSession = await _cognitoUser.getSession();
-    }
   }
 
   CognitoUser createCognitoUser(String username) {
