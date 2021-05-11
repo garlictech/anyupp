@@ -1,5 +1,6 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cognito_local_storage.dart';
 
@@ -8,15 +9,25 @@ class CognitoService {
   final String userPoolId;
   final String clientId;
   final String identityPoolId;
+  CognitoLocalStorage storage;
 
   CognitoUserPool _userPool;
 
-  CognitoService({@required this.region, @required this.identityPoolId, @required this.userPoolId, @required this.clientId}) {
+  CognitoUser _cognitoUser;
+
+  CognitoService(
+      {@required this.region,
+      @required this.identityPoolId,
+      @required this.userPoolId,
+      @required this.clientId,
+      @required prefs}) {
+    this.storage = CognitoLocalStorage(prefs);
     _userPool = CognitoUserPool(
       userPoolId,
       clientId,
-      storage: CognitoLocalStorage('anyupp:'),
+      storage: storage,
     );
+    init();
   }
 
   CognitoUserSession _userSession;
@@ -25,11 +36,25 @@ class CognitoService {
 
   CognitoUserPool get userPool => _userPool;
 
-  Future<CognitoUser> get currentUser async => _userPool?.getCurrentUser();
+  Future<CognitoUser> get currentUser async {
+    _cognitoUser = await _userPool.getCurrentUser();
+    if (_cognitoUser != null) {
+      _userSession = await _cognitoUser.getSession();
+    }
+
+    return _cognitoUser;
+  }
 
   // Future<CognitoUserSession> get getSession async => (await currentUser)?.getSession();
 
   Future<bool> get isSessionValid async => (await session)?.isValid() ?? false;
+
+  Future<void> init() async {
+    _cognitoUser = await _userPool.getCurrentUser();
+    if (_cognitoUser != null) {
+      _userSession = await _cognitoUser.getSession();
+    }
+  }
 
   CognitoUser createCognitoUser(String username) {
     return CognitoUser(username, userPool);
@@ -51,31 +76,38 @@ class CognitoService {
       }
 
       return true;
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       print('signOut().error=$e');
       return false;
     }
   }
 
-    Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session) async {
-    final user = CognitoUser(null, userPool, signInUserSession: session);
+  Future<CognitoUser> createCognitoUserFromSession(
+      CognitoUserSession session) async {
+    final user = CognitoUser("external", userPool,
+        signInUserSession: session, storage: storage);
     _userSession = session;
     return user;
   }
 
-  Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
+  Future<CognitoCredentials> loginWithCredentials(
+      String accessToken, String provider) async {
     print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
-    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool);
+    CognitoCredentials credentials =
+        CognitoCredentials(identityPoolId, userPool);
     await credentials.getAwsCredentials(accessToken, provider);
-    print('loginWithCredentials().credentials.userIdentityId=${credentials?.userIdentityId}');
-    print('loginWithCredentials().credentials.accessKeyId=${credentials?.accessKeyId}');
-    print('loginWithCredentials().credentials.secretAccessKey=${credentials?.secretAccessKey}');
-    print('loginWithCredentials().credentials.sessionToken=${credentials?.sessionToken}');
+    print(
+        'loginWithCredentials().credentials.userIdentityId=${credentials?.userIdentityId}');
+    print(
+        'loginWithCredentials().credentials.accessKeyId=${credentials?.accessKeyId}');
+    print(
+        'loginWithCredentials().credentials.secretAccessKey=${credentials?.secretAccessKey}');
+    print(
+        'loginWithCredentials().credentials.sessionToken=${credentials?.sessionToken}');
     // print('loginWithCredentials().userPool.getCurrentUser=${_userPool.getCurrentUser()}');
 
     // CognitoUser user = CognitoUser(credentials.userIdentityId, _userPool, storage: userPool.storage);
-    
-   
+
     // print('loginWithCredentials().user=$user');
     // AuthenticationDetails authDetails = AuthenticationDetails(
     //   username: credentials.userIdentityId,
@@ -90,7 +122,6 @@ class CognitoService {
     // final access2Token = CognitoAccessToken(accessToken);
     // final session = CognitoUserSession(idToken, access2Token);
     // final user = CognitoUser(null, userPool, signInUserSession: session);
-
     return credentials;
   }
 }
