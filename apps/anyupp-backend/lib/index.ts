@@ -32,6 +32,8 @@ export class AnyUppStack extends Stack {
     new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
+      stripeSecretKey: secretsManagerStack.stripeSecretKey,
+      stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
       secretsManager: secretsManagerStack.secretsManager,
     });
 

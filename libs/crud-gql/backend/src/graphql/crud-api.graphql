@@ -568,15 +568,16 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   id: ID!
-#   # name: String
-#   # email: String
-#   # phone: String
-#   # profileImage: String
-#   # login: String
-#   # stripeCustomerId: String
-# }
+type User
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+}
 
 ### Cart
 
@@ -590,13 +591,6 @@ type Cart
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
-}
-
-type User
-  @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  stripeCustomerId: String!
 }
 
 type Transaction

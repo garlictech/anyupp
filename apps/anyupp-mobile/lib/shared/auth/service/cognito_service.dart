@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,7 +82,7 @@ class CognitoService {
         _userSession = await user.refreshSession(session.refreshToken);
         return user;
       }
-      } on Exception catch(e) {
+      } on Exception {
         final user = CognitoUser(null, userPool, signInUserSession: session);
         _userSession = await user.refreshSession(session.refreshToken);
         return user;

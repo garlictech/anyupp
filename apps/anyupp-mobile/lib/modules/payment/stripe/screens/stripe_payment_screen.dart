@@ -252,21 +252,21 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
     );
   }
 
-  Widget _buildPaymentSuccess(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            'assets/animations/26421-payment-succesful.json',
-            width: 300,
-            height: 300,
-            fit: BoxFit.fill,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildPaymentSuccess(BuildContext context) {
+  //   return Center(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Lottie.asset(
+  //           'assets/animations/26421-payment-succesful.json',
+  //           width: 300,
+  //           height: 300,
+  //           fit: BoxFit.fill,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildPaymentFailed(BuildContext context, String code, String message) {
     return Center(

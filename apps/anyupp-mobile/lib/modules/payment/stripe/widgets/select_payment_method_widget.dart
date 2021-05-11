@@ -19,7 +19,7 @@ class SelectStripePaymentMethodWidget extends StatefulWidget {
 }
 
 class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMethodWidget> {
-  StripePaymentMethod _selectedCard;
+  // StripePaymentMethod _selectedCard;
 
   @override
   void initState() {

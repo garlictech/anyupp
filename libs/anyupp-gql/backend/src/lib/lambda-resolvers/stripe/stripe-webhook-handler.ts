@@ -10,21 +10,21 @@ import { initStripe } from './stripe.service';
 export const createStripeWebhookExpressApp = () => {
 
   // declare a new express app
-  const app = express()
+  const app = express();
 
   // app.use(bodyParser.json())
-  app.use(awsServerlessExpressMiddleware.eventContext())
+  app.use(awsServerlessExpressMiddleware.eventContext());
 
   // Enable CORS for all methods
   app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header("Access-Control-Allow-Headers", "*")
-    next()
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    next();
   });
 
   app.use(bodyParser.json({
     verify: (req, res, buf) => {
-      (req as any).rawBody = buf.toString()
+      (req as any).rawBody = buf.toString();
     }
   }));
 

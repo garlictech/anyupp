@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
-import 'package:fa_prev/modules/payment/stripe/screens/stripe_payment_screen.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/enum.dart';
@@ -189,7 +188,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           }
 
           return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, UnitSelectState unitState) {
-            final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
+            // final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
 
             return Column(
               children: [

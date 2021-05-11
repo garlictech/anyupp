@@ -1,4 +1,8 @@
-export interface IUser {
-  id: string,
-  stripeCustomerId?: string,
+import { IContact } from "./contact";
+
+export interface IUser extends IContact {
+  id: string;
+  name: string;
+  profileImage: string;
+  stripeCustomerId?: string;
 }

@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
 
 import 'package:rxdart/rxdart.dart';
