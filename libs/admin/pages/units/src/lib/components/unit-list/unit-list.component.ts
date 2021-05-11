@@ -28,6 +28,7 @@ import { tap } from 'rxjs/operators';
 export class UnitListComponent implements OnInit, OnDestroy {
   public units: IUnit[] = [];
   public selectedChainId$: Observable<string | undefined | null>;
+  public selectedGroupId$: Observable<string | undefined | null>;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +38,11 @@ export class UnitListComponent implements OnInit, OnDestroy {
   ) {
     this.selectedChainId$ = this._store.pipe(
       select(loggedUserSelectors.getSelectedChainId),
+      untilDestroyed(this),
+    );
+
+    this.selectedGroupId$ = this._store.pipe(
+      select(loggedUserSelectors.getSelectedGroupId),
       untilDestroyed(this),
     );
   }
