@@ -1,5 +1,4 @@
 export * from './admin-role';
-export * from './allergen';
 export * from './dashboard-list-type';
 export * from './dashboard-size';
 export * from './firebase';
