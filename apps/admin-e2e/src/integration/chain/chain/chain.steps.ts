@@ -5,7 +5,6 @@ When('I click on the {string} picker fill out with {string}', (title: string, co
     cy.get('.form-control-group').contains(title).click();
     cy.get('.hex-text input').last().clear({force: true}).type(color, {force: true});
 });
-// color picker step
 
 Then('I should see {int} color picker with {string}', (num: number, color: string) =>{
     cy.findAllByText(color).should('have.length', num);

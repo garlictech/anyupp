@@ -6,7 +6,6 @@ Feature: Authentication
     Given I am on the login page
     Then I should see "AnyUPP Admin" sub-header
 
-@focus
   Scenario: Login and log out
     When I fill out the input with id "username" with the "test@anyupp.com" value
     And I fill out the input with id "password" with the "Testtesttest12_" value
