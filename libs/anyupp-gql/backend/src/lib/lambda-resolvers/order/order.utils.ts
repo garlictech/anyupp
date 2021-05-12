@@ -2,11 +2,11 @@
 // import { toFixed2Number } from "../utils";
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
+  EOrderStatus,
   IOrderItem,
   IOrders,
   IPriceShown,
   IStatusLog,
-  IStatusLogItem,
 } from '@bgap/shared/types';
 import { toFixed2Number } from '../../utils/number.utils';
 
@@ -26,10 +26,9 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
     return empty;
   }
   return items.reduce((sum, item) => {
-    const [key, lastStatus] = getActualStatusLogItem(item.statusLog[item.statusLog.length - 1]); // TODO StatusLog vs [StatusLog]
+    const lastStatus = currentStatus(item.statusLog);
 
-    // TODO: if (!key || lastStatus?.status === EOrderStatus.REJECTED) {
-    if (!key || lastStatus?.status === 'REJECTED') {
+    if (lastStatus === EOrderStatus.REJECTED) {
       return sum;
     }
     return {
@@ -56,20 +55,10 @@ export const sumOrders = (orders: IOrders): number => {
   }, 0);
 };
 
-export const getActualStatusLogItem = (
-  statusLog: IStatusLog,
-): [string, IStatusLogItem] | [] => {
-  const statusLogs = Object.entries(statusLog);
-  if (statusLogs.length > 0) {
-    return statusLogs.pop() || [];
+export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+  if (!status || status.length === 0) {
+    return EOrderStatus.NONE;
   }
-  return [];
-};
-
-export const getActualStatus = (
-  statusLog: IStatusLog,
-  // TODO: ): EOrderStatus | undefined => {
-): string | undefined => {
-  const [, logItem] = getActualStatusLogItem(statusLog);
-  return logItem?.status;
+  const lastElement = status[status.length - 1];
+  return lastElement?.status || EOrderStatus.NONE;
 };

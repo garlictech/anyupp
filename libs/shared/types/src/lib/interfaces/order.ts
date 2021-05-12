@@ -13,13 +13,7 @@ export interface IPriceShown {
   taxSum: number;
 }
 
-export interface IStatusLogItem {
-  userId: string;
-  status: EOrderStatus;
-  ts?: number; // after objectToArray(statusLog, 'ts')
-}
 export interface IStatusLog {
-  // [timestamp: number]: IStatusLogItem;
   userId: string;
   status: EOrderStatus;
   ts?: number; // after objectToArray(statusLog, 'ts')
@@ -32,7 +26,7 @@ export interface IOrderItem {
   priceShown: IPriceShown;
   productId: string;
   quantity: number;
-  statusLog: [IStatusLog];
+  statusLog: IStatusLog[];
   variantId: string;
   variantName: ILocalizedItem<string>;
   image?: string;
