@@ -173,7 +173,9 @@ class OrderItem extends Model {
         orderItemsId = json['orderItemsId'],
         image = json['image'],
         //TODO replace with real item
-        allergens = ['mustard'];
+        allergens = json['allergens'] is List
+            ? (json['allergens'] as List).map((e) => e as String).toList()
+            : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,

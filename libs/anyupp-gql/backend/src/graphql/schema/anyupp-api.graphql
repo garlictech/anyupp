@@ -186,45 +186,53 @@ enum CardFundingType {
   unknown
 }
 
-# type CardChecks {
-#   address_line1_check: String
-#   address_postal_code_check: String
-#   cvc_check: String
-# }
-
 # https://stripe.com/docs/api/metadata?lang=node
 # Updateable Stripe objects
-type StripeMetadata @aws_cognito_user_pools {
-  key: String!
-  value: String!
+
+type BillingDetails {
+  email: String
+  name: String
+  phone: String
+  address: BillingAddress
+}
+
+type BillingAddress {
+  city: String
+  country: String
+  line1: String
+  line2: String
+  postal_code: String
+  state: String
+}
+
+type CardChecks {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
 }
 
 type StripeCard @aws_cognito_user_pools {
+  id: String!
   brand: CardBrand
-  # checks: CardChecks
+  checks: CardChecks
   country: String
   last4: String
   exp_month: Int
   exp_year: Int
-  name: String
   fingerprint: String
   funding: CardFundingType
   three_d_secure: String
-  # wallet: String # to do
-  # IMPLEMENTED INTERFACES
-  id: ID!
-  object: String!
-  metadata: [StripeMetadata!]!
+  billing_details: BillingDetails
 }
 
 input StartStripePaymentInput {
-  chainId: ID!
-  unitId: ID!
-  userId: ID!
-  paymentMethodId: ID!
+  orderId: ID!
+  paymentMethod: PaymentMethod!
+  savePaymentMethod: Boolean!
+  paymentMethodId: String
 }
 
-type StartStripePaymentOutput {
+type StartStripePaymentOutput @aws_cognito_user_pools {
   clientSecret: String!
   status: String!
 }
@@ -265,7 +273,7 @@ type GeoUnitList @aws_cognito_user_pools {
 ### OPERATIONS
 type Query {
   # Stripe
-  getMyStripeCards: [StripeCard] @aws_cognito_user_pools
+  listStripeCards: [StripeCard] @aws_cognito_user_pools
   # Units
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_cognito_user_pools
@@ -278,22 +286,15 @@ type Mutation {
   deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
 
   # Order
-  createOrderFromCart(input: CreateOrderFromCartInput!): ID!
-    @aws_cognito_user_pools
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID! @aws_cognito_user_pools
 
   # Product
-  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
-    @aws_cognito_user_pools
+  createUnitProduct(input: CreateUnitProductInput!): UnitProduct! @aws_cognito_user_pools
   # Unit
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @aws_cognito_user_pools
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_cognito_user_pools
 
   # Stripe
-  startStripePayment(
-    input: StartStripePaymentInput!
-  ): StartStripePaymentOutput! @aws_cognito_user_pools
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
-    @aws_cognito_user_pools
-  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!
-    @aws_cognito_user_pools
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput! @aws_cognito_user_pools
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard! @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean! @aws_cognito_user_pools
 }

@@ -1,4 +1,3 @@
-
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -26,9 +25,9 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       CognitoUser user = _service.createCognitoUser(email);
       CognitoUserSession session =
           await user.authenticateUser(_service.getAuthDetails(email, password));
-
       if (session.isValid()) {
         User user = await _authProvider.loginWithCognitoSession(session);
+        await _service;
         return ProviderLoginResponse(
           credential: null,
           user: user,

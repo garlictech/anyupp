@@ -1,7 +1,7 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/InvoiceInfo.dart';
 
 abstract class IOrdersProvider {
-
   Future<Cart> getCurrentCart(String chainId, String unitId);
 
   Stream<Cart> getCurrentCartStream(String chainId, String unitId);
@@ -14,7 +14,7 @@ abstract class IOrdersProvider {
 
   Stream<List<Order>> getOrderHistory(String chainId, String unitId);
 
-  Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod);
+  Future<String> createAndSendOrderFromCart();
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId);
 
@@ -25,4 +25,6 @@ abstract class IOrdersProvider {
   Future<void> startOrderHistoryListSubscription(String chainId, String unitId);
 
   Future<void> stopOrderHistoryListSubscription();
+
+  Future<bool> addInvoiceInfo(InvoiceInfo invioceInfo);
 }

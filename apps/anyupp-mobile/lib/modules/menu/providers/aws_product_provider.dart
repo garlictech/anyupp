@@ -29,7 +29,8 @@ class AwsProductProvider implements IProductProvider {
       print('getProductCategoryList.result=$result');
       if (result.hasException) {
         print('getProductCategoryList().error=${result.exception}'); // TODO
-        yield null;
+        // yield null;
+        throw result.exception;
       }
 
       List<dynamic> items = result.data['listProductCategorys']['items'];
@@ -59,7 +60,11 @@ class AwsProductProvider implements IProductProvider {
           'categoryId': categoryId,
         },
       ));
-
+      // print('getProductList.result=$result');
+      if (result.hasException) {
+        print('getProductList().error=${result.exception}'); // TODO
+        yield null;
+      }
       List<dynamic> items = result.data['listGeneratedProducts']['items'];
       List<GeneratedProduct> results = [];
       if (items != null) {

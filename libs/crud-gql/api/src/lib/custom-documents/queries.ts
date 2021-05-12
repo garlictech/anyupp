@@ -24,10 +24,6 @@ export const listAdminUsers = /* GraphQL */ `
         roleContexts {
           items {
             id
-            roleContextId
-            adminUserId
-            createdAt
-            updatedAt
             roleContext {
               id
               contextId
@@ -40,8 +36,6 @@ export const listAdminUsers = /* GraphQL */ `
               chainId
               groupId
               unitId
-              createdAt
-              updatedAt
             }
           }
           nextToken
@@ -73,10 +67,6 @@ export const getAdminUser = /* GraphQL */ `
       roleContexts {
         items {
           id
-          roleContextId
-          adminUserId
-          createdAt
-          updatedAt
           roleContext {
             id
             contextId
@@ -89,8 +79,6 @@ export const getAdminUser = /* GraphQL */ `
             chainId
             groupId
             unitId
-            createdAt
-            updatedAt
           }
         }
         nextToken
@@ -111,10 +99,6 @@ export const getAdminRoleContext = /* GraphQL */ `
         id
         name
         email
-        phone
-        profileImage
-        createdAt
-        updatedAt
       }
       roleContext {
         id
@@ -128,8 +112,6 @@ export const getAdminRoleContext = /* GraphQL */ `
         chainId
         groupId
         unitId
-        createdAt
-        updatedAt
       }
     }
   }
@@ -156,10 +138,6 @@ export const listAdminRoleContexts = /* GraphQL */ `
           id
           name
           email
-          phone
-          profileImage
-          createdAt
-          updatedAt
         }
         roleContext {
           id
@@ -173,8 +151,6 @@ export const listAdminRoleContexts = /* GraphQL */ `
           chainId
           groupId
           unitId
-          createdAt
-          updatedAt
         }
       }
       nextToken
@@ -206,18 +182,10 @@ export const listRoleContexts = /* GraphQL */ `
         adminUsers {
           items {
             id
-            roleContextId
-            adminUserId
-            createdAt
-            updatedAt
             adminUser {
               id
               name
               email
-              phone
-              profileImage
-              createdAt
-              updatedAt
             }
           }
           nextToken
@@ -247,18 +215,10 @@ export const getRoleContext = /* GraphQL */ `
       adminUsers {
         items {
           id
-          roleContextId
-          adminUserId
-          createdAt
-          updatedAt
           adminUser {
             id
             name
             email
-            phone
-            profileImage
-            createdAt
-            updatedAt
           }
         }
         nextToken

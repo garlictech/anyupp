@@ -64,7 +64,7 @@
       "confirmAccount": "Confirm Account",
       "dialogConfirmedTitle": "Account Verified!",
       "dialogConfirmedMessage": "Your account has been verified.",
-      "enterCode" : "Enter Code"
+      "enterCode": "Enter Code"
     },
     "phone": {
       "loginProgress": "Login in progress...",
@@ -139,7 +139,7 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
-    "disclaimer" : "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
+    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
     "noFavorites": "No favorites added yet"
@@ -151,6 +151,7 @@
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "status": {
+      "NONE": "WAITING",
       "PLACED": "PLACED",
       "PROCESSING": "PROCESSING",
       "READY": "READY",
@@ -168,7 +169,7 @@
     "method": {
       "cash": "Cash at register",
       "creditCard": "Credit card at register",
-      "inAppPayment": "Pay by Card via SimplePay (preferred)"
+      "inAppPayment": "Pay by Card via Stripe (preferred)"
     },
     "sendOrder": "PLACE ORDER",
     "orderPlaced": "Order successfully received.",
@@ -176,6 +177,17 @@
       "simplePay": {
         "prefix": "By selecting this payment method I indicate that I agree to the contents of the following documents.",
         "paymentInfo": "Payment information"
+      },
+      "invoicing": {
+        "want_invoice" : "I want a VAT invoice",
+        "invoice_info": "Invoice Info",
+        "name_or_company": "Name/Company name",
+        "tax_id": "Tax ID Number",
+        "country": "Country",
+        "zip": "Zip Code",
+        "city": "City",
+        "street address": "Street address",
+        "invoice_email": "Invoice Email"
       }
     },
     "simplePayStatus": {
@@ -273,11 +285,20 @@
       "logout": "Logout",
       "settings": "Settings",
       "regulations": "Regulations",
-      "language": "Language"
+      "language": "Language",
+      "payment": "Payment and invoicing"
     }
   },
   "affiliate": {
     "advertisement": "Advertisement"
+  },
+  "validators" : {
+    "required" : "this field is required",
+    "enterValidEmail" : "enter a valid email address",
+    "eneterValidPhone" : "enter a valid phone number",
+    "passwordIsRequired" : "password is required",
+    "passwordValidatorText" : "must have a number, an upper, a lower case letter",
+    "passwordLengthError" : "password must be at least 8 digits long"
   },
   "error": {
     "title": "Error",

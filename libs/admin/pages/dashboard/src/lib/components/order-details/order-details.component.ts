@@ -71,7 +71,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getButtonStatus(status: IStatusLog): string {
+  public getButtonStatus(status: IStatusLog[]): string { // TODO EZ TOMB, EDDIG Sima StatusLog volt, hogyan mukodott eddig?
     return getStatusColor(currentStatusFn(status));
   }
 
