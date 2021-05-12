@@ -646,7 +646,7 @@ class _LoginScreenState extends State<LoginScreen>
               .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
             var code = request.url
                 .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
-            //For some reasion there is an extra # at the end of the url in case of first login.
+            //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
             //Remove it so it will be a valid url
             code = code.split("#").first;
             // This is the authorization code!!!
