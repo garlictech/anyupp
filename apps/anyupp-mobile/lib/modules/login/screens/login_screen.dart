@@ -575,11 +575,9 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-
-
   Widget _buildSocialLoginWebView(LoginMethod method) {
-      Completer<WebViewController> _webViewController =
-      Completer<WebViewController>();
+    Completer<WebViewController> _webViewController =
+        Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -597,6 +595,7 @@ class _LoginScreenState extends State<LoginScreen>
     var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
         "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
+
     print('loginScreen.url=$url');
     return Scaffold(
       appBar: AppBar(
@@ -647,6 +646,9 @@ class _LoginScreenState extends State<LoginScreen>
               .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
             var code = request.url
                 .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+            //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
+            //Remove it so it will be a valid url
+            code = code.split("#").first;
             // This is the authorization code!!!
             signUserInWithAuthCode(code);
             return NavigationDecision.prevent;
