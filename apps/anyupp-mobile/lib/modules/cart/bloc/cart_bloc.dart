@@ -17,19 +17,21 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
   Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
     try {
       if (action is GetCurrentCartAction) {
-        Cart cart = await _cartRepository.getCurrentCart(action.chainId, action.unitId);
+        Cart cart =
+            await _cartRepository.getCurrentCart(action.chainId, action.unitId);
         yield CurrentCartState(cart);
       }
 
       if (action is AddProductToCartAction) {
         // _currentCart.addProductToCart(action.product, action.variant);
-        Cart cart = await _cartRepository.addProductToCart(action.unit, action.order);
+        Cart cart =
+            await _cartRepository.addProductToCart(action.unit, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is RemoveProductFromCartAction) {
-        Cart cart =
-            await _cartRepository.removeProductFromCart(action.chainId, action.unitId, action.order);
+        Cart cart = await _cartRepository.removeProductFromCart(
+            action.chainId, action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -40,13 +42,15 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is RemoveOrderFromCartAction) {
-        Cart cart = await _cartRepository.removeOrderFromCart(action.chainId, action.unitId, action.order);
+        Cart cart = await _cartRepository.removeOrderFromCart(
+            action.chainId, action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is CreateAndSendOrder) {
         yield CartLoadingState();
-        await _cartRepository.createAndSendOrderFromCart(action.unit, action.paymentMethod);
+        await _cartRepository.createAndSendOrderFromCart(
+            action.unit, action.paymentMethod);
         yield EmptyCartState();
       }
 
@@ -59,14 +63,20 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
         await _cartRepository.clearCart(action.user, action.unit);
         yield EmptyCartState();
       }
+      if (action is AddInvoiceInfo) {
+        await _cartRepository.addInvoiceInfo(action.invoiceInfo);
+      }
     } on PlatformException catch (e) {
-      getIt<ExceptionBloc>().add(ShowException(CartException.fromPlatformException(e)));
+      getIt<ExceptionBloc>()
+          .add(ShowException(CartException.fromPlatformException(e)));
       yield CartErrorState(code: e.code, message: e.message);
       // TODO: we don't use thie serror state
       // TODO: we don't use cart states either but a live stream in the cartScreen
     } on Exception catch (e) {
-      getIt<ExceptionBloc>().add(ShowException(CartException.fromException(CartException.UNKNOWN_ERROR, e)));
-      yield CartErrorState(code: CartException.UNKNOWN_ERROR, message: e.toString());
+      getIt<ExceptionBloc>().add(ShowException(
+          CartException.fromException(CartException.UNKNOWN_ERROR, e)));
+      yield CartErrorState(
+          code: CartException.UNKNOWN_ERROR, message: e.toString());
     }
   }
 }

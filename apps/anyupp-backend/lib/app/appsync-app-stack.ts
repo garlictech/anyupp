@@ -11,6 +11,7 @@ import {
   createAdminUserResolvers,
   createOrderResolvers,
   createProductResolvers,
+  createStripeResolvers,
   createUnitResolvers,
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
@@ -23,6 +24,8 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
   consumerUserPool: cognito.UserPool;
+  stripeSecretKey: string;
+  stripeSigningSecret: string;
   secretsManager: sm.ISecret;
 }
 
@@ -73,6 +76,7 @@ export class AppsyncAppStack extends sst.Stack {
     createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
     createProductResolvers(commonResolverInputs);
+    createStripeResolvers(commonResolverInputs);
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -121,7 +125,9 @@ export class AppsyncAppStack extends sst.Stack {
       environment: {
         userPoolId: props.adminUserPool.userPoolId,
         secretName: props.secretsManager.secretName,
-      },
+        STRIPE_SECRET_KEY: props.stripeSecretKey,
+        STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+    },
     });
 
     if (apiLambda.role) {
@@ -148,7 +154,10 @@ export class AppsyncAppStack extends sst.Stack {
             'dynamodb:Query',
             'dynamodb:UpdateItem',
           ],
-          resources: [tableConfig.GeneratedProduct.tableArn],
+          resources: [
+            tableConfig.GeneratedProduct.tableArn,
+            tableConfig.Unit.tableArn,
+          ],
         }),
       );
     }

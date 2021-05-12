@@ -173,8 +173,9 @@ class GeneratedProduct extends Model {
             : null,
 
         //TODO add real field
-
-        allergens = ["mustard", "egg", "soya"];
+        allergens = json['allergens'] is List
+            ? (json['allergens'] as List).map((e) => e as String).toList()
+            : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,

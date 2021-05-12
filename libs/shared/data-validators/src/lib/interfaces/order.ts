@@ -42,6 +42,7 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
+  orderNum: Joi.string().allow(null, ''),
   items: Joi.array().items(orderItemSchema),
   paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
@@ -49,6 +50,8 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema).required(),
   paymentIntention: Joi.number().allow(null),
+  transactionId: Joi.string().allow(null),
+  transaction: Joi.object().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

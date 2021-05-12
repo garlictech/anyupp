@@ -6,7 +6,6 @@ import {
   filter,
   map,
   switchMap,
-  tap,
 } from 'rxjs/operators';
 
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
@@ -17,10 +16,7 @@ import {
 import { IGeneratedProduct } from '@bgap/shared/types';
 import { tableConfig } from '@bgap/crud-gql/backend';
 
-import {
-  executeBatchDelete,
-  executeBatchPut,
-} from '../../utils/dynamodb.utils';
+import { createItems, deleteItems } from '../../database';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.tableName;
 
@@ -36,27 +32,18 @@ export const deleteGeneratedProductsForAUnit = ({
     unitIds: [unitId],
     noCache: true,
   }).pipe(
-    switchMap(items => iif(() => items.length > 0, deleteItems(items), of([]))),
+    switchMap(items =>
+      iif(() => items.length > 0, deleteGeneratedProductsItems(items), of([])),
+    ),
   );
 };
-
-const deleteItems = (items: IGeneratedProduct[]) =>
-  of(items).pipe(
-    map(generatedProducts => generatedProducts.map(x => x.id)),
-    switchMap(executeBatchDelete(TABLE_NAME)),
-    tap({
-      next() {
-        console.log(
-          `deleteGeneratedProductsForAUnit EXECUTED ${items.length} item deleted`,
-        );
-      },
-    }),
-  );
+const deleteGeneratedProductsItems = (items: IGeneratedProduct[]) =>
+  deleteItems(TABLE_NAME)(items);
 
 export const createGeneratedProducts = (
   products: CrudApi.CreateGeneratedProductInput[],
 ) => {
-  return executeBatchPut(TABLE_NAME)(products);
+  return createItems(TABLE_NAME)(products);
 };
 
 export const listGeneratedProductsForUnits = ({

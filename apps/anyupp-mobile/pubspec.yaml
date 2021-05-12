@@ -70,6 +70,7 @@ dependencies:
   webview_flutter: ^2.0.2
   auto_size_text: ^2.1.0
   flutter_user_agent: ^1.2.2
+  country_code_picker: ^2.0.1
 
 dev_dependencies:
   flutter_test:
