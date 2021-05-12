@@ -1,28 +1,22 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { unitSeed } from '../fixtures/unit';
 import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
+import { from, throwError } from 'rxjs';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
   overwrites: Partial<CrudApi.CreateUnitInput> = {},
-) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateUnitMutation>(
-    CrudApi.createUnit,
-    {
+) => (crudSdk: CrudApi.AmplifySdk) =>
+  from(
+    crudSdk.CreateUnit({
       input: {
         ...unitSeed.unit_01,
         ...overwrites,
       },
-    },
+    }),
   ).pipe(
     tap({
       next(unit) {
-        console.log('### new UNIT created with id: ' + unit.createUnit?.id);
+        console.log('### new UNIT created with id: ' + unit?.id);
       },
       error(err) {
         console.error('Error during test unit creation: ', err.message);
@@ -30,16 +24,17 @@ export const createTestUnit = (
     }),
   );
 
-export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitMutation>(
-    CrudApi.deleteUnit,
-    {
+export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) => (
+  crudSdk: CrudApi.AmplifySdk,
+) =>
+  from(
+    crudSdk.DeleteUnit({
       input: { id },
-    },
+    }),
   ).pipe(
     tap({
       next(unit) {
-        console.log('### UNIT deleted with id: ' + unit.deleteUnit?.id);
+        console.log('### UNIT deleted with id: ' + unit?.id);
       },
     }),
     catchError(err => {

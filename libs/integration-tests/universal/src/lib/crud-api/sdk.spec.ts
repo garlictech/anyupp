@@ -1,14 +1,19 @@
-import {
-  AmplifySdk,
-  fromApolloSubscription,
-  getCrudSdkForIAM,
-  OnAdminUserChangeSubscription,
-} from '@bgap/crud-gql/api';
+import { AmplifySdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { fromApolloSubscription } from '@bgap/gql-sdk';
 import { from, interval, of } from 'rxjs';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 
 describe('CRUD sdk test', () => {
   let sdk: AmplifySdk;
+
+  const toMatchSnapshot = (x: any, name?: string) =>
+    expect(x).toMatchSnapshot(
+      {
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      },
+      name,
+    );
 
   beforeAll(() => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
@@ -18,18 +23,6 @@ describe('CRUD sdk test', () => {
 
   test('An arbitrary CRUD', done => {
     const id = 'CRUD_SDK_ID';
-
-    const toMatchSnapshot = (
-      x: Record<string, unknown> | undefined | null,
-      name: string,
-    ) =>
-      expect(x).toMatchSnapshot(
-        {
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-        },
-        name,
-      );
 
     of(1)
       .pipe(
@@ -75,9 +68,7 @@ describe('CRUD sdk test', () => {
     const dataSource$ = sdk.OnAdminUserChange({ id });
 
     const subs$ = fromApolloSubscription(dataSource$).pipe(
-      tap(result => {
-        expect(result).toMatchSnapshot();
-      }),
+      tap(x => toMatchSnapshot(x)),
       take(1),
     );
 

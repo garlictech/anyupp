@@ -1,15 +1,9 @@
-import { combineLatest, Observable, throwError } from 'rxjs';
+import { combineLatest, from, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
-  crudGraphqlClient,
-  anyuppGraphQLClient,
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedAnyuppGraphQLClient,
-  executeMutation,
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
@@ -21,34 +15,30 @@ import {
   unitProductSeed,
 } from '../../../fixtures';
 import { deleteUnitProduct } from '../../../seeds/unit-product';
+import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
   input: unitProductSeed.unitProduct_01,
 } as any;
 
 describe('CreateUnitProduct tests', () => {
+  const authAnyuppSdk = createAuthenticatedAnyuppSdk(
+    testAdminUsername,
+    testAdminUserPassword,
+  );
+
   it('should require authentication to access', done => {
-    return executeMutation(anyuppGraphQLClient)<
-      AnyuppApi.CreateUnitProductMutation
-    >(AnyuppApi.CreateUnitProduct, input).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
+    authAnyuppSdk
+      .pipe(switchMap(sdk => from(sdk.CreateUnitProduct(input))))
+      .subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
   }, 25000);
 
   describe('with authenticated user', () => {
-    let authHelper: AuthenticatdGraphQLClientWithUserId;
-
-    beforeAll(async () => {
-      authHelper = await createAuthenticatedAnyuppGraphQLClient(
-        testAdminUsername,
-        testAdminUserPassword,
-      ).toPromise();
-      console.warn(authHelper.userAttributes);
-    });
-    // let authenticatedApsyncGraphQLClient;
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
@@ -69,7 +59,27 @@ describe('CreateUnitProduct tests', () => {
         .toPromise();
     });
 
-    it.skip('should create unitProduct in the database', done => {
+    afterAll(async () => {
+      await combineLatest([
+        // CleanUP
+        deleteUnitProduct(input.input.id),
+      ])
+        // .pipe(
+        //   switchMap(() =>
+        //     // Seeding
+        //     // combineLatest([
+        //       // createTestCart(),
+        //       // createTestCart({
+        //       //   id: cartWithNotExistingUNIT,
+        //       //   unitId: unitSeed.unitId_NotExisting,
+        //       // }),
+        //     // ]),
+        //   ),
+        // )
+        .toPromise();
+    });
+
+    /*it.skip('should create unitProduct in the database', done => {
       return (
         executeMutation(authHelper.graphQlClient)<
           AnyuppApi.CreateUnitProductMutation
@@ -96,10 +106,10 @@ describe('CreateUnitProduct tests', () => {
           })
       );
     }, 25000);
+  });*/
   });
 });
-
-const getUnitProduct = (
+/*const getUnitProduct = (
   crudGraphqlClient: GraphqlApiClient,
   productId: string,
 ): Observable<IUnitProduct> => {
@@ -113,5 +123,5 @@ const getUnitProduct = (
       console.error(err);
       return throwError('Unit is missing');
     }),
-  );
-};
+  );*/
+//};

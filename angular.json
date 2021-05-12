@@ -1491,6 +1491,27 @@
           }
         }
       }
+    },
+    "gql-sdk": {
+      "root": "libs/gql-sdk",
+      "sourceRoot": "libs/gql-sdk/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/gql-sdk/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/gql-sdk"],
+          "options": {
+            "jestConfig": "libs/gql-sdk/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

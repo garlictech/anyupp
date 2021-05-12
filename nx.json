@@ -179,6 +179,9 @@
     },
     "anyupp-backend-lib": {
       "tags": ["type:backend", "platform:universal"]
+    },
+    "gql-sdk": {
+      "tags": ["type:utils", "platform:universal"]
     }
   }
 }

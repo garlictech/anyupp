@@ -49,6 +49,6 @@ export const createAdminUser = (
       phone: vars.input.phone,
     })),
     switchMap(input => deps.crudSdk.CreateAdminUser({ input })),
-    map(data => data.createAdminUser?.id),
+    map(data => data?.id),
   ).toPromise();
 };

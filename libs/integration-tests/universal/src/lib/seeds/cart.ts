@@ -1,28 +1,22 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { cartSeed } from '../fixtures/cart';
 import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { from, throwError } from 'rxjs';
+import { AmplifySdk, CreateCartInput } from '@bgap/crud-gql/api';
 
-export const createTestCart = (
-  overwrites: Partial<CrudApi.CreateCartInput> = {},
+export const createTestCart = (overwrites: Partial<CreateCartInput> = {}) => (
+  crudSdk: AmplifySdk,
 ) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateCartMutation>(
-    CrudApi.createCart,
-    {
+  from(
+    crudSdk.CreateCart({
       input: {
         ...cartSeed.cart_01,
         ...overwrites,
       },
-    },
+    }),
   ).pipe(
     tap({
       next(cart) {
-        console.log('### new CART created with id: ' + cart.createCart?.id);
+        console.log('### new CART created with id: ' + cart?.id);
       },
       error(err) {
         console.error('Error during test cart creation: ', err.message);
@@ -30,16 +24,17 @@ export const createTestCart = (
     }),
   );
 
-export const deleteTestCart = (id: string = cartSeed.cart_01.id!) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteCartMutation>(
-    CrudApi.deleteCart,
-    {
+export const deleteTestCart = (id: string = cartSeed.cart_01.id!) => (
+  crudSdk: AmplifySdk,
+) =>
+  from(
+    crudSdk.DeleteCart({
       input: { id },
-    },
+    }),
   ).pipe(
     tap({
       next(cart) {
-        console.log('### CART deleted with id: ' + cart.deleteCart?.id);
+        console.log('### CART deleted with id: ' + cart?.id);
       },
     }),
     catchError(err => {

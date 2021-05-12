@@ -1,7 +1,6 @@
 import * as geolib from 'geolib';
 import { combineLatest, EMPTY, from, iif, Observable, of } from 'rxjs';
 import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
@@ -10,7 +9,6 @@ import {
   validateUnitList,
 } from '@bgap/shared/data-validators';
 import { IChain, IChainStyle, IUnit } from '@bgap/shared/types';
-import { removeTypeNameField } from '../../utils/graphql.utils';
 import { UnitsResolverDeps } from './utils';
 
 type ListResponse<T> = {
@@ -80,8 +78,8 @@ const toGeoUnit = ({
   groupId: unit.groupId,
   chainId: unit.chainId,
   name: unit.name,
-  address: removeTypeNameField(unit.address),
-  style: removeTypeNameField(chainStyle),
+  address: unit.address,
+  style: chainStyle,
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),
   openingHours: getOpeningOursForToday(/*openingHours*/),

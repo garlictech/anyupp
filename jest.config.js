@@ -70,5 +70,6 @@ module.exports = {
     '<rootDir>/libs/appsync-gql/api',
     '<rootDir>/libs/crud-gql/api',
     '<rootDir>/libs/anyupp-backend-lib',
+    '<rootDir>/libs/gql-sdk',
   ],
 };

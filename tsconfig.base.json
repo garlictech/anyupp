@@ -125,7 +125,8 @@
       "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],
       "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
-      "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"]
+      "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
+      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"]
     }
   },
   "exclude": [

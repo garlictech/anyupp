@@ -1,31 +1,25 @@
 import { PreTokenGenerationTriggerHandler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 import Amplify from '@aws-amplify/core';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { awsConfig } from '@bgap/crud-gql/api';
-import { executeQuery, GraphqlApiFp } from '@bgap/shared/graphql/api-client';
+import { awsConfig, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
 
 export const handler: PreTokenGenerationTriggerHandler = async (
   event,
-  context,
+  _context,
   callback,
 ) => {
   Amplify.configure(awsConfig);
   const desiredContext = event.request.userAttributes['custom:context'];
 
-  const crudApiClient = GraphqlApiFp.createBackendClient(
-    awsConfig,
+  const sdk = getCrudSdkForIAM(
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
   );
 
-  const adminUser = await executeQuery<
-    CrudApi.QueryGetAdminUserArgs,
-    CrudApi.AdminUser
-  >(CrudApi.getAdminUser, 'getAdminUser', {
+  const adminUser = await sdk.GetAdminUser({
     id: event.request.userAttributes.sub,
-  })(crudApiClient).toPromise();
+  });
 
   // Find the role
   const role = (adminUser?.roleContexts?.items || []).find(

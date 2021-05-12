@@ -1,9 +1,7 @@
 import { DateTime } from 'luxon';
 import { combineLatest, from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
-
 import * as CrudApi from '@bgap/crud-gql/api';
-import { removeTypeNameField } from '../../utils/graphql.utils';
 import { toFixed2Number } from '../../utils/number.utils';
 
 import {
@@ -113,18 +111,18 @@ const toOrderInputFormat = ({
   unitId: string;
   paymentMode: PaymentMode;
   items: CrudApi.OrderItemInput[];
-  place: IPlace | undefined;
+  place?: IPlace;
 }): CrudApi.CreateOrderInput => {
   return {
     userId,
     takeAway: false,
-    paymentMode: removeTypeNameField(paymentMode),
+    paymentMode,
     // created: DateTime.utc().toMillis(),
     items: items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
-    place: removeTypeNameField(place),
+    place: place,
     unitId,
   };
 };
@@ -170,7 +168,7 @@ const convertCartOrderToOrderItem = ({
   return {
     // ...cartItem,
     // created: DateTime.utc().toMillis(),
-    productName: removeTypeNameField(cartItem.productName),
+    productName: cartItem.productName,
     priceShown: {
       currency,
       pricePerUnit: cartItem.priceShown.pricePerUnit,
@@ -187,7 +185,7 @@ const convertCartOrderToOrderItem = ({
     productId: cartItem.productId,
     quantity: cartItem.quantity,
     variantId: cartItem.variantId,
-    variantName: removeTypeNameField(cartItem.variantName),
+    variantName: cartItem.variantName,
     statusLog: createStatusLog(userId),
     laneId,
   };

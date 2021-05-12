@@ -2,8 +2,8 @@ import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
   createAuthenticatedCrudSdk,
-  createIamSdk,
-} from '../../crud-api-clients';
+  createIamCrudSdk,
+} from '../../api-clients';
 import { testAdminUsername, testAdminUserPassword } from '../fixtures';
 import { cartSeed } from '../fixtures/cart';
 
@@ -13,7 +13,7 @@ describe('CRUD endpoints AUTH test', async () => {
     testAdminUserPassword,
   );
 
-  const iamSdk = createIamSdk();
+  const iamSdk = createIamCrudSdk();
 
   it('should require authentication to access', done => {
     authSdk

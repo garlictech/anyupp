@@ -55,7 +55,7 @@ Object {
 exports[`CRUD sdk test An arbitrary subscription 1`] = `
 Object {
   "__typename": "AdminUser",
-  "createdAt": "2021-05-06T20:38:53.638Z",
+  "createdAt": Any<String>,
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
@@ -67,14 +67,14 @@ Object {
     "nextToken": null,
   },
   "settings": null,
-  "updatedAt": "2021-05-06T20:38:54.919Z",
+  "updatedAt": Any<String>,
 }
 `;
 
 exports[`CRUD sdk test An arbitrary subscription 2`] = `
 Object {
   "__typename": "AdminUser",
-  "createdAt": "2021-05-06T20:38:53.638Z",
+  "createdAt": Any<String>,
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
@@ -86,6 +86,6 @@ Object {
     "nextToken": null,
   },
   "settings": null,
-  "updatedAt": "2021-05-06T20:38:54.919Z",
+  "updatedAt": Any<String>,
 }
 `;

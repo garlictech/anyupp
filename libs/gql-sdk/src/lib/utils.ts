@@ -1,8 +1,13 @@
 import { Observable, Observer } from 'rxjs';
 
-export const fromApolloSubscription = <T = unknown>(subscription: {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type SubsType<T> = {
   subscribe: (_arg: Observer<T>) => { unsubscribe: () => void };
-}): Observable<T> => {
+};
+
+export const fromApolloSubscription = <T>(
+  subscription: SubsType<T>,
+): Observable<T> => {
   return new Observable<T>(observer => {
     const subs = subscription.subscribe({
       next: (x: T) => observer.next(x),

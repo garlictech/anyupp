@@ -1,4 +1,4 @@
-import {
+/*import {
   createTestAdminRoleContext,
   createTestRoleContext,
   seedAdminUser,
@@ -8,12 +8,11 @@ import {
   createTestChain,
   createTestChainProduct,
 } from '@bgap/anyupp-backend-lib';
-import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
 import { switchMap } from 'rxjs/operators';
-
+*/
 describe('Seeder test', () => {
   describe('DB seeder', () => {
-    it.skip('should createTestChain work', done => {
+    /*it.skip('should createTestChain work', done => {
       createTestChain(1).subscribe({
         next(result: any) {
           expect(result).toHaveProperty('createChain');
@@ -101,4 +100,6 @@ describe('Seeder test', () => {
         },
       });
   }, 25000);
+  */
+  });
 });

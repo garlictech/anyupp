@@ -1,9 +1,9 @@
 import { cartSeed } from '../fixtures/cart';
-import { combineLatest, from } from 'rxjs';
+import { combineLatest, concat, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createTestCart, deleteTestCart } from '../seeds/cart';
 import { testAdminUsername, testAdminUserPassword } from '../fixtures/user';
-import { createAuthenticatedCrudSdk } from '../../crud-api-clients';
+import { createAuthenticatedCrudSdk } from '../../api-clients';
 
 describe('getCart test', () => {
   const authSdk = createAuthenticatedCrudSdk(
@@ -12,18 +12,15 @@ describe('getCart test', () => {
   );
 
   beforeAll(async () => {
-    await combineLatest([deleteTestCart()])
+    await authSdk
       .pipe(
-        switchMap(() =>
-          // Seeding
-          combineLatest([createTestCart()]),
-        ),
+        switchMap(sdk => concat(deleteTestCart()(sdk), createTestCart()(sdk))),
       )
       .toPromise();
   }, 15000);
 
   afterAll(async () => {
-    await deleteTestCart().toPromise();
+    await authSdk.pipe(switchMap(sdk => deleteTestCart()(sdk))).toPromise();
   });
 
   it('successful query execution', done => {

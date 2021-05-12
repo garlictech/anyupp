@@ -1,24 +1,16 @@
-import { throwError } from 'rxjs';
+import { AmplifySdk } from 'libs/crud-gql/api/src';
+import { from, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
-
-export const deleteUnitProduct = (id: string) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteUnitProductMutation>(
-    CrudApi.deleteUnitProduct,
-    {
+export const deleteUnitProduct = (id: string) => (crudSdk: AmplifySdk) =>
+  from(
+    crudSdk.DeleteUnitProduct({
       input: { id },
-    },
+    }),
   ).pipe(
     tap({
       next(unit) {
-        console.log(
-          '### UNIT_PRODUCT deleted with id: ' + unit.deleteUnitProduct?.id,
-        );
+        console.log('### UNIT_PRODUCT deleted with id: ' + unit?.id);
       },
     }),
     catchError(err => {

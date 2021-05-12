@@ -3,7 +3,6 @@ export * from './lib/generated/graphql/queries';
 export * from './lib/generated/graphql/subscriptions';
 export * from './lib/generated/api';
 export { AmplifySdk } from './lib/sdk';
-export * from './lib/utils';
 export * from './lib/clients';
 
 import awsmobile from './lib/generated/aws-exports';

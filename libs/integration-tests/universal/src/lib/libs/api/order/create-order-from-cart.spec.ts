@@ -1,19 +1,25 @@
-import { combineLatest, from, Observable, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, from } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { ICart, IOrder } from '@bgap/shared/types';
 import { cartSeed } from '../../../fixtures/cart';
 import { unitSeed } from '../../../fixtures/unit';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
 import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
-import { createAuthenticatedCrudSdk } from '../../../../crud-api-clients';
+import {
+  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
+} from '../../../../api-clients';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
 
 describe('CreatCartFromOrder mutation test', () => {
-  const authSdk = createAuthenticatedCrudSdk(
+  const authCrudSdk = createAuthenticatedCrudSdk(
+    testAdminUsername,
+    testAdminUserPassword,
+  );
+
+  const authAnyuppSdk = createAuthenticatedAnyuppSdk(
     testAdminUsername,
     testAdminUserPassword,
   );
@@ -51,7 +57,7 @@ describe('CreatCartFromOrder mutation test', () => {
     const userId = cartSeed.cart_01.userId;
     const unitId = cartSeed.cart_01.unitId;
 
-    authSdk
+    authCrudSdk
       .pipe(
         switchMap(crudSdk =>
           from(
@@ -74,8 +80,8 @@ describe('CreatCartFromOrder mutation test', () => {
       .subscribe({
         next([order, cart]) {
           expect(order).not.toBeNull();
-          expect(order.userId).toEqual(userId);
-          expect(order.unitId).toEqual(unitId);
+          expect(order?.userId).toEqual(userId);
+          expect(order?.unitId).toEqual(unitId);
           expect(cart).toBeNull();
           done();
         },
@@ -85,45 +91,65 @@ describe('CreatCartFromOrder mutation test', () => {
   it("should fail in case the cart is not the user's", done => {
     const cartId = cartSeed.cart_01.id;
     const userId = 'DIFFERENT_USER';
-    from(
-      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
-        userId,
-        input: { id: cartId },
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
+
+    authCrudSdk
+      .pipe(
+        switchMap(crudSdk =>
+          from(
+            orderRequestHandler({ crudSdk }).createOrderFromCart({
+              userId,
+              input: { id: cartId },
+            }),
+          ),
+        ),
+      )
+      .subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
   }, 15000);
 
   it('should fail without a unit', done => {
     const cartId = cartWithNotExistingUNIT;
     const userId = cartSeed.cart_01.userId;
-    from(
-      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
-        userId,
-        input: { id: cartId },
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
+
+    authCrudSdk
+      .pipe(
+        switchMap(crudSdk =>
+          from(
+            orderRequestHandler({ crudSdk }).createOrderFromCart({
+              userId,
+              input: { id: cartId },
+            }),
+          ),
+        ),
+      )
+      .subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
   }, 15000);
 
   it('should fail without a cart', done => {
-    executeMutation(authHelper.graphQlClient)<
-      AnyuppApi.CreateOrderFromCartMutation
-    >(AnyuppApi.CreateOrderFromCart, {
-      input: { id: cartSeed.cartId_NotExisting },
-    }).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
+    authAnyuppSdk
+      .pipe(
+        switchMap(sdk =>
+          from(
+            sdk.CreateOrderFromCart({
+              input: { id: cartSeed.cartId_NotExisting },
+            }),
+          ),
+        ),
+      )
+      .subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
   }, 15000);
 });
