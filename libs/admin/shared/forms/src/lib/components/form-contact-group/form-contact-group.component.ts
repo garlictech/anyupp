@@ -1,12 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { GOOGLE_API_KEY } from '@bgap/admin/shared/utils';
+import { config } from '@bgap/shared/config';
 import { ILocation } from '@bgap/shared/types';
 
 @Component({
@@ -32,7 +27,7 @@ export class FormContactGroupComponent {
 
     this._httpClient
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${GOOGLE_API_KEY}`,
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${config.GoogleApiKey}`,
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((response: any): void => {

@@ -1,9 +1,6 @@
 import { CrudApi } from '@bgap/crud-gql/api';
 import { EAdminRole, IAllergen, IPaymentMode } from '@bgap/shared/types';
 
-// TODO env enként külön
-export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
-
 export const DEFAULT_LANG = 'en-US';
 
 export const WEEKLY_VARIANT_AVAILABILITY = {

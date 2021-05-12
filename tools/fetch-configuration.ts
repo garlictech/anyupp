@@ -35,7 +35,7 @@ const generatedParams = [
   'ConsumerUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
-const fixParams = ['StripePublishableKey', 'Region'].map(
+const fixParams = ['StripePublishableKey', 'Region', 'GoogleApiKey'].map(
   paramName => `/${prefix}/${paramName}`,
 );
 
