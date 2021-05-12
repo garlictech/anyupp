@@ -199,6 +199,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () {
                   if (!loading) {
+                    print('_selectedPaymentMethod=$_selectedPaymentMethod');
                     if (_selectedPaymentMethod == PAYMENT_INAPP) {
                       Nav.to(StripePaymentScreen(cart: widget.cart));
                     } else {
