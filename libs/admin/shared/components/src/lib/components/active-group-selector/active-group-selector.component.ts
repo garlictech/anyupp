@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
@@ -21,7 +22,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './active-group-selector.component.html',
   styleUrls: ['./active-group-selector.component.scss'],
 })
-export class ActiveGroupSelectorComponent implements OnDestroy {
+export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
   public groups$: Observable<IGroup[]>;
   private _loggedUser!: IAdminUser;
@@ -37,16 +38,20 @@ export class ActiveGroupSelectorComponent implements OnDestroy {
       select(groupsSelectors.getSelectedChainGroups),
       untilDestroyed(this),
     );
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
-        this._loggedUser = loggedUser;
-      });
   }
 
   get selectedGroupId(): string | null | undefined {
     return this._loggedUser?.settings?.selectedGroupId;
+  }
+
+  ngOnInit(): void {
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
+
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
