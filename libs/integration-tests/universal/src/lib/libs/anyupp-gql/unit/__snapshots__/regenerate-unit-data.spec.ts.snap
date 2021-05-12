@@ -11,7 +11,7 @@ Array [
       "hu": "Teszt chain termék #1 leírás",
     },
     "id": "seeded_unit_product_c1_g1_1_id",
-    "image": "",
+    "image": "https://picsum.photos/100",
     "name": Object {
       "__typename": "LocalizedItem",
       "de": null,
@@ -52,7 +52,7 @@ Array [
       "hu": "Teszt chain termék #2 leírás",
     },
     "id": "seeded_unit_product_c1_g1_2_id",
-    "image": "",
+    "image": "https://picsum.photos/100",
     "name": Object {
       "__typename": "LocalizedItem",
       "de": null,
@@ -369,7 +369,7 @@ Array [
       "hu": "LEIRAS",
     },
     "id": "test_unitProduct_utest_UNIT_ID_02_REGENERATE_01",
-    "image": "public/seed/Weizenbier.jpeg",
+    "image": "https://picsum.photos/100",
     "name": Object {
       "__typename": "LocalizedItem",
       "de": null,

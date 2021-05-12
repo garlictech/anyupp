@@ -134,9 +134,9 @@ export const createStripeResolverFunctions = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "getStripeCardsForCustomer",
+          "handler": "startStripePayment",
           "payload": {
-            "stripeCustomerId": $util.toJson($ctx.stash.stripeCustomerId),
+            "userId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub),
             "input": $util.toJson($ctx.arguments.input)
           }
         }

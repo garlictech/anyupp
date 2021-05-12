@@ -14,12 +14,12 @@ import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
-  clearDbProperties,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
 import { EImageType, IChain } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,7 +84,7 @@ export class ChainFormComponent
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
+      this.dialogForm.patchValue(cleanObject(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }

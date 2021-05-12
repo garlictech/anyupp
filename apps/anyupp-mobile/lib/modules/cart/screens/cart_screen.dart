@@ -163,7 +163,9 @@ class CartScreen extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
-          child: AllergensWidget(cartAllergens.values.toList()),
+          child: cartAllergens.keys.toList().isNotEmpty
+              ? AllergensWidget(cartAllergens.values.toList())
+              : Container(),
         ),
 
         // TOTAL
@@ -221,7 +223,7 @@ class CartScreen extends StatelessWidget {
                   ),
                   onPressed: () => cart.place == null
                       ? null // TODO visszatenni majd Firebase nelkul  Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
-                      : showSelectPaymentMethodBottomSheet(context),
+                      : showSelectPaymentMethodBottomSheet(context, cart),
                   child: cart.place == null
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',

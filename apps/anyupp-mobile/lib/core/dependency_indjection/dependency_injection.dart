@@ -15,9 +15,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
@@ -31,7 +29,7 @@ Future<void> initDependencyInjection() async {
   _initBlocs();
 }
 
-void _initCommon() {
+void _initCommon() async {
   print('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(
@@ -59,7 +57,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(

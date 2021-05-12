@@ -1,19 +1,41 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  addressFormGroup,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, ILane, IPaymentMode, IUnit } from '@bgap/shared/types';
+import {
+  ICustomDailySchedule,
+  IGroup,
+  IKeyValue,
+  ILane,
+  IPaymentMode,
+  IUnit,
+} from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -26,7 +48,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class UnitFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
@@ -43,22 +65,6 @@ export class UnitFormComponent
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
-      )
-      .subscribe((groups: IGroup[]): void => {
-        this._groups = groups;
-
-        this.groupOptions = this._groups.map(
-          (group: IGroup): IKeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        );
-      });
 
     this.dialogForm = this._formBuilder.group({
       groupId: ['', [Validators.required]],
@@ -120,9 +126,7 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(
-        cleanObject(fp.omit(['lanes'], this.unit)),
-      );
+      this.dialogForm.patchValue(cleanObject(fp.omit(['lanes'], this.unit)));
 
       // Parse openingHours object to temp array
       const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
@@ -148,10 +152,14 @@ export class UnitFormComponent
     } else {
       // Patch ChainId
       this._store
-        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
+        .pipe(
+          select(loggedUserSelectors.getSelectedChainId),
+          take(1),
+          delay(200),
+        )
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm.patchValue({ chainId: selectedChainId });
 
             this._changeDetectorRef.detectChanges();
           }
@@ -162,16 +170,34 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
-            this.dialogForm?.controls.groupId.patchValue(selectedGroupId);
-
-            this._changeDetectorRef.detectChanges();
+            this.dialogForm.patchValue({ groupId: selectedGroupId });
           }
         });
 
-      this.dialogForm.controls.isActive.patchValue(false);
+      this.dialogForm.patchValue({ isActive: false });
     }
 
-    this._changeDetectorRef.detectChanges();
+    this._store
+      .pipe(
+        select(groupsSelectors.getSelectedChainGroups),
+        untilDestroyed(this),
+      )
+      .subscribe((groups: IGroup[]): void => {
+        this._groups = groups;
+
+        this.groupOptions = this._groups.map(
+          (group: IGroup): IKeyValue => ({
+            key: group.id,
+            value: group.name,
+          }),
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
+  }
+
+  ngOnDestroy(): void {
+    // untilDestroyed uses it.
   }
 
   public async submit(): Promise<void> {

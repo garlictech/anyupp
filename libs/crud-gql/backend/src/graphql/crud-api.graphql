@@ -237,6 +237,7 @@ type Order
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -244,6 +245,8 @@ type Order
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 type OrderHistory
@@ -261,15 +264,25 @@ type OrderHistory
   paymentIntention: Float
   # EXTRA
   status: OrderStatus
+  # paymentStatus: PaymentStatus
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
+
+enum PaymentStatus {
+  WAITING_FOR_PAYMENT
+  SUCCESS
+  FAILED
+}
+
 enum OrderStatus {
   NONE
   PLACED
   PROCESSING
   READY
   SERVED
-  WAITING_FOR_PAYMENT
-  PAID
+  # WAITING_FOR_PAYMENT
+  # PAID
   # RECEIVED,
   FAILED
   REJECTED
@@ -317,9 +330,23 @@ type ProductComponentSet
   chainId: ID!
   type: String!
   name: LocalizedItem!
-  description: String
+  description: String!
   items: [ID]! # ProductComponent ID
   maxSelection: Int # On extras
+}
+
+### ProductConfigSet
+type ProductConfigComponent {
+  productComponentId: ID!
+  refGroupPrice: Int
+  price: Int
+  position: Int!
+}
+
+type ProductConfigSet {
+  productSetId: ID!
+  items: [ProductConfigComponent]!
+  position: Int!
 }
 
 ### Product
@@ -336,6 +363,7 @@ type ChainProduct
   image: String
   variants: [ProductVariant]
   allergens: [Allergen]
+  configSets: [ProductConfigSet]
 }
 
 enum Allergen {
@@ -366,6 +394,7 @@ type GroupProduct
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
+  configSets: [ProductConfigSet]
   chainProduct: ChainProduct @connection(fields: ["parentId"])
 }
 
@@ -382,6 +411,7 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  configSets: [ProductConfigSet]
   groupProduct: GroupProduct @connection(fields: ["parentId"])
 }
 
@@ -458,6 +488,7 @@ type Unit
   id: ID!
   groupId: ID!
   chainId: ID!
+  lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
   name: String!
@@ -470,6 +501,7 @@ type Unit
   lanes: [Lane]
   open: DateInterval
   openingHours: WeeklySchedule
+  merchantId: String
 }
 
 type DateInterval {
@@ -538,15 +570,16 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   id: ID!
-#   # name: String
-#   # email: String
-#   # phone: String
-#   # profileImage: String
-#   # login: String
-#   # stripeCustomerId: String
-# }
+type User
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+}
 
 ### Cart
 
@@ -561,6 +594,22 @@ type Cart
   paymentMode: PaymentMode
   items: [OrderItem!]!
 }
+
+type Transaction
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  order: Order! @connection(fields: ["orderId"])
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+}
+
 
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser

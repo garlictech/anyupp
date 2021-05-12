@@ -2,6 +2,7 @@ import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/modules/menu/screens/allergen_details_screen.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
@@ -12,7 +13,7 @@ class AllergensWidget extends StatelessWidget {
   final List<String> allergens;
   AllergensWidget(this.allergens);
 
-  List<Widget> getAllergenGrids(BuildContext context ){
+  List<Widget> getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
     if (allergens != null) {
       for (String allergen in allergens) {
@@ -38,6 +39,7 @@ class AllergensWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => Nav.to(AllergenDetailsScreen()),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -59,8 +61,12 @@ class AllergensWidget extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: getAllergenGrids(context),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: getAllergenGrids(context),
+            ),
           )
         ],
       ),

@@ -23,3 +23,4 @@ export 'models/User.dart';
 export 'models/core/model_base.dart';
 export 'models/core/uuid.dart';
 export 'models/core/parsers.dart';
+export 'models/StripePaymentMethod.dart';

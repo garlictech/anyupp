@@ -36,7 +36,7 @@ describe('Testing cognito service', () => {
         }),
       )
       .subscribe(() => done());
-  }, 15000);
+  }, 25000);
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;

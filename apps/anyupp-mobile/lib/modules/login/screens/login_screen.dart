@@ -575,10 +575,11 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  final Completer<WebViewController> _webViewController =
-      Completer<WebViewController>();
+
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
+      Completer<WebViewController> _webViewController =
+      Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -597,26 +598,63 @@ class _LoginScreenState extends State<LoginScreen>
         "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
     print('loginScreen.url=$url');
-    return WebView(
-      userAgent: _userAgent,
-      initialUrl: url,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (WebViewController webViewController) {
-        _webViewController.complete(webViewController);
-      },
-      navigationDelegate: (NavigationRequest request) {
-        print('SocialLoginScreen.navigationDelegate().request=$request');
-        if (request.url
-            .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-          var code = request.url
-              .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
-          // This is the authorization code!!!
-          signUserInWithAuthCode(code);
-          return NavigationDecision.prevent;
-        }
-        return NavigationDecision.navigate;
-      },
-      gestureNavigationEnabled: true,
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.only(
+            left: 8.0,
+            top: 4.0,
+            bottom: 4.0,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 1,
+                color: theme.border2,
+              ),
+            ),
+            child: BackButton(
+              onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
+              color: theme.text,
+            ),
+          ),
+        ),
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: theme.text, //change your color here
+        ),
+        backgroundColor: theme.background,
+        title: Text(
+          trans("login.email.signIn"),
+          style: GoogleFonts.poppins(
+            color: Colors.black,
+          ),
+          //getLocalizedText(context, widget.item.name),
+        ),
+      ),
+      body: WebView(
+        key: UniqueKey(),
+        userAgent: _userAgent,
+        initialUrl: url,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) {
+          _webViewController.complete(webViewController);
+        },
+        navigationDelegate: (NavigationRequest request) {
+          print('SocialLoginScreen.navigationDelegate().request=$request');
+          if (request.url
+              .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+            var code = request.url
+                .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+            // This is the authorization code!!!
+            signUserInWithAuthCode(code);
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
+        },
+        gestureNavigationEnabled: true,
+      ),
     );
   }
 

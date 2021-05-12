@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { IProductComponentSet } from '@bgap/shared/types';
 
 import {
   IProductComponentSetsState,
@@ -26,3 +27,9 @@ export const getProductComponentSetsEntities = createSelector(
   getProductComponentSetsState,
   (state: IProductComponentSetsState) => selectEntities(state),
 );
+
+export const getProductComponentSetById = (id: string) => {
+  return createSelector(getAllProductComponentSets, (productComponentSets: IProductComponentSet[]): IProductComponentSet | undefined =>
+  productComponentSets.find((productComponentSet): boolean => productComponentSet.id === id),
+  );
+};

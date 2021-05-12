@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
@@ -21,7 +22,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './active-unit-selector.component.html',
   styleUrls: ['./active-unit-selector.component.scss'],
 })
-export class ActiveUnitSelectorComponent implements OnDestroy {
+export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
   public units$: Observable<IUnit[]>;
   private _loggedUser!: IAdminUser;
@@ -37,16 +38,20 @@ export class ActiveUnitSelectorComponent implements OnDestroy {
       select(unitsSelectors.getSelectedGroupUnits),
       untilDestroyed(this),
     );
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
-        this._loggedUser = loggedUser;
-      });
   }
 
   get selectedUnitId(): string | null | undefined {
     return this._loggedUser?.settings?.selectedUnitId;
+  }
+
+  ngOnInit(): void {
+    this._store
+    .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+    .subscribe((loggedUser: IAdminUser): void => {
+      this._loggedUser = loggedUser;
+
+      this._changeDetectorRef.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

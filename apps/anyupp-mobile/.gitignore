@@ -29,7 +29,7 @@
 .pub-cache/
 .pub/
 /build/
-.fvm/flutter_sdk
+.fvm/
 pubspec.lock
 
 # Web related
@@ -47,6 +47,7 @@ app.*.map.json
 # Environments
 .env*
 env/**
+
 
 # Google service secret files
 android/app/google-services.json
@@ -86,3 +87,4 @@ amplifytools.xcconfig
 android/*.jks
 android/key.properties
 lib/awsconfiguration.dart
+
