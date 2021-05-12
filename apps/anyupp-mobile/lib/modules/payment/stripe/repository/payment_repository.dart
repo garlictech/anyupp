@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
@@ -8,7 +9,7 @@ class StripePaymentRepository implements IStripePaymentProvider {
   StripePaymentRepository(this._paymentProvider);
 
   @override
-  Future<List<StripeCard>> getPaymentMethods() {
+  Future<List<StripePaymentMethod>> getPaymentMethods() {
     return _paymentProvider.getPaymentMethods();
   }
 
@@ -18,12 +19,12 @@ class StripePaymentRepository implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(String chainId, String unitId, String userId, String paymentMethodId) {
-    return _paymentProvider.startStripePaymentWithExistingCard(chainId, unitId, userId, paymentMethodId);
+  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) {
+    return _paymentProvider.startStripePaymentWithExistingCard(cart, paymentMethodId);
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard) {
-    return _paymentProvider.startStripePaymentWithNewCard(chainId, unitId, userId, stripeCard, saveCard);
+  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) {
+    return _paymentProvider.startStripePaymentWithNewCard(cart, stripeCard, saveCard);
   }
 }

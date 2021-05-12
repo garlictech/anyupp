@@ -192,7 +192,7 @@ const getOrder = (
     CrudApiQueryDocuments.getOrder,
     { id },
   ).pipe(
-    map(x => x.getOrder as IOrder),
+    map(x => x.getOrder as unknown as IOrder), // TODO unknown!
     catchError(err => {
       console.error(err);
       return throwError('Internal Order query error');
@@ -209,7 +209,7 @@ const getCart = (
     { id },
     { fetchPolicy: 'no-cache' },
   ).pipe(
-    map(x => x.getCart as ICart),
+    map(x => x.getCart as unknown as ICart), // TODO unknown!
     catchError(err => {
       console.error(err);
       return throwError('Internal Cart query error');

@@ -15,10 +15,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
@@ -39,14 +36,12 @@ void _initCommon() async {
     AppConfig.StripePublishableKey,
     returnUrlForSca: 'anyupp://stripe' ?? 'todo', // TODO
   );
-  final sharedPreferences = await SharedPreferences.getInstance();
 
   final CognitoService cognitoService = CognitoService(
     region: AppConfig.Region,
     userPoolId: AppConfig.UserPoolId,
     identityPoolId: AppConfig.IdentityPoolId,
     clientId: AppConfig.UserPoolClientId,
-    prefs: sharedPreferences
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);
@@ -62,7 +57,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(

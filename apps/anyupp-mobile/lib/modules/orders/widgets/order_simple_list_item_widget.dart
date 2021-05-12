@@ -26,25 +26,27 @@ class OrderSimpleListItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                getLocalizedText(context, orderItem.productName),
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: theme.text,
-                  fontWeight: FontWeight.w700,
+          Expanded(
+                      child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getLocalizedText(context, orderItem.productName),
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: theme.text,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Text(
-                '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: theme.text,
+                Text(
+                  '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: theme.text,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Text(
             formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'),  // TODO geounit!!

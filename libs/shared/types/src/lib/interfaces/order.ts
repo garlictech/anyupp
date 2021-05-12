@@ -2,6 +2,7 @@ import { CrudApi } from '@bgap/crud-gql/api';
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
 import { IPaymentMode } from './payment';
+import { ITransaction } from './transaction';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';
@@ -12,13 +13,10 @@ export interface IPriceShown {
   taxSum: number;
 }
 
-export interface IStatusLogItem {
+export interface IStatusLog {
   userId: string;
   status: EOrderStatus;
   ts?: number; // after objectToArray(statusLog, 'ts')
-}
-export interface IStatusLog {
-  [timestamp: number]: IStatusLogItem;
 }
 
 export interface IOrderItem {
@@ -28,7 +26,7 @@ export interface IOrderItem {
   priceShown: IPriceShown;
   productId: string;
   quantity: number;
-  statusLog: IStatusLog;
+  statusLog: IStatusLog[];
   variantId: string;
   variantName: ILocalizedItem<string>;
   image?: string;
@@ -64,13 +62,15 @@ export interface IOrder {
   orderNum?: string;
   items: IOrderItem[];
   paymentMode: IPaymentMode;
-  statusLog: IStatusLog;
+  statusLog: [IStatusLog];
   sumPriceShown: IPriceShown;
   takeAway: boolean;
   place?: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;
+  transaction?: ITransaction;
+  transactionId?: string;
 }
 
 export interface IDateIntervals {

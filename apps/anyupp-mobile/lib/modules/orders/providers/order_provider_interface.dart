@@ -14,7 +14,7 @@ abstract class IOrdersProvider {
 
   Stream<List<Order>> getOrderHistory(String chainId, String unitId);
 
-  Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod);
+  Future<String> createAndSendOrderFromCart();
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId);
 

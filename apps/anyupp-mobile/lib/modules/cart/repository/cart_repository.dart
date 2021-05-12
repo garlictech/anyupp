@@ -111,9 +111,8 @@ class CartRepository {
     return _ordersProvider.getCurrentCartStream(chainId, unitId);
   }
 
-  Future<void> createAndSendOrderFromCart(
-      GeoUnit unit, String paymentMethod) async {
-    await _ordersProvider.createAndSendOrderFromCart(unit, paymentMethod);
+  Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
+    await _ordersProvider.createAndSendOrderFromCart();
   }
 
   Future<Cart> clearCart(User user, GeoUnit unit) async {
