@@ -10,11 +10,12 @@ import {
   IUnit,
 } from '@bgap/shared/types';
 
-export const currentStatus = (status: IStatusLog): EOrderStatus => {
-  const statusArr = Object.values(status || {});
-  const lastElement = statusArr[statusArr.length - 1];
-
-  return lastElement?.status || 'UNDEFINED';
+export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+  if (!status || status.length === 0) {
+    return EOrderStatus.NONE;
+  }
+  const lastElement = status[status.length - 1];
+  return lastElement?.status || EOrderStatus.NONE;
 };
 
 export const getNextOrderStatus = (

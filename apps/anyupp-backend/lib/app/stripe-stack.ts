@@ -7,8 +7,13 @@ import path from 'path';
 import * as ssm from '@aws-cdk/aws-ssm';
 import { getFQParamName } from './utils';
 
+export interface StripeStackProps extends sst.StackProps {
+  stripeSecretKey: string;
+  stripeSigningSecret: string;
+}
+
 export class StripeStack extends sst.Stack {
-  constructor(scope: sst.App, id: string) {
+  constructor(scope: sst.App, id: string, props: StripeStackProps) {
     super(scope, id);
 
     const stripeWebhookLambda = new lambda.Function(
@@ -21,6 +26,10 @@ export class StripeStack extends sst.Stack {
         code: lambda.Code.fromAsset(
           path.join(__dirname, '../../.serverless/stripe-webhook.zip'),
         ),
+        environment: {
+          STRIPE_SECRET_KEY: props.stripeSecretKey,
+          STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+        }
       },
     );
 

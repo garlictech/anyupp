@@ -151,6 +151,7 @@
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {
+      "NONE": "VÁR",
       "PLACED": "BEADVA",
       "PROCESSING": "FOLYAMATBAN",
       "READY": "KÉSZ",
@@ -168,7 +169,7 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával",
-      "inAppPayment": "Kártyás fizetés SimplePay-jel (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-al (ajánlott)"
     },
     "sendOrder": "RENDELÉS",
     "orderPlaced": "Köszönjük, átvettük a rendelésed!",

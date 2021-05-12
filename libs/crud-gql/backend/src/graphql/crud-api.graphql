@@ -245,6 +245,8 @@ type Order
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 type OrderHistory
@@ -262,15 +264,25 @@ type OrderHistory
   paymentIntention: Float
   # EXTRA
   status: OrderStatus
+  # paymentStatus: PaymentStatus
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
+
+enum PaymentStatus {
+  WAITING_FOR_PAYMENT
+  SUCCESS
+  FAILED
+}
+
 enum OrderStatus {
   NONE
   PLACED
   PROCESSING
   READY
   SERVED
-  WAITING_FOR_PAYMENT
-  PAID
+  # WAITING_FOR_PAYMENT
+  # PAID
   # RECEIVED,
   FAILED
   REJECTED
@@ -489,6 +501,7 @@ type Unit
   lanes: [Lane]
   open: DateInterval
   openingHours: WeeklySchedule
+  merchantId: String
 }
 
 type DateInterval {
@@ -557,15 +570,16 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   id: ID!
-#   # name: String
-#   # email: String
-#   # phone: String
-#   # profileImage: String
-#   # login: String
-#   # stripeCustomerId: String
-# }
+type User
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+}
 
 ### Cart
 
@@ -580,6 +594,22 @@ type Cart
   paymentMode: PaymentMode
   items: [OrderItem!]!
 }
+
+type Transaction
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  order: Order! @connection(fields: ["orderId"])
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+}
+
 
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser

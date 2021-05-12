@@ -41,6 +41,7 @@ export interface IUnit extends IContact, IAddressInfo {
   lanes?: [ILane];
   floorMap?: IFloorMapData;
   paymentModes?: IPaymentMode[];
+  merchantId?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -59,8 +59,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Future<void> createAndSendOrderFromCart(
-      GeoUnit unit, String paymentMethod) async {
+  Future<String> createAndSendOrderFromCart() async {
     print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
       ValueNotifier<GraphQLClient> _client =
@@ -79,17 +78,19 @@ class AwsOrderProvider implements IOrdersProvider {
         // throw Exception(result.exception);
         _cart = null;
         _cartController.add(null);
-        return;
+        return null;
       }
 
-      print(
-          'AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+      print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+      String id;
       if (result.data != null && result.data['createOrderFromCart'] != null) {
-        String id = result.data['createOrderFromCart']['id'];
+        id = result.data['createOrderFromCart'];
         print('AwsOrderProvider.createAndSendOrderFromCart().id=$id');
       }
       _cart = null;
       _cartController.add(null);
+      return id;
+
     } on Exception catch (e) {
       print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
       rethrow;
@@ -304,6 +305,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> stopOrderListSubscription() async {
+    print('stopOrderListSubscription()');
     await _subOrderList.stopListSubscription();
   }
 
@@ -321,6 +323,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> stopOrderHistoryListSubscription() async {
+    print('stopOrderHistoryListSubscription()');
     await _subOrderHistoryList.stopListSubscription();
   }
 

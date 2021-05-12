@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,13 +15,10 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 
 class StripePaymentScreen extends StatefulWidget {
-  final String chainId;
-  final String unitId;
-  final String userId;
-  final Order order;
-  final double sum;
 
-  const StripePaymentScreen({Key key, this.chainId, this.unitId, this.userId, this.order, this.sum}) : super(key: key);
+  final Cart cart;
+
+  const StripePaymentScreen({Key key, this.cart}) : super(key: key);
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();
@@ -28,17 +26,16 @@ class StripePaymentScreen extends StatefulWidget {
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
   StripeCard _cardData;
-  // GlobalKey<FormState> _formKey;
+  StripePaymentMethod _paymentMethod;
+  GlobalKey<FormState> _formKey;
   CardForm _form;
   bool _saveCard = false;
 
   _StripePaymentScreenState() {
-    _cardData = StripeCard(number: '5555555555554444', expMonth: 12, expYear: 23, cvc: '111', last4: '4444');
-    _form = CardForm(
-      card: _cardData,
-    );
-    // _cardData = _form.card;
-    // _formKey = _form.formKey;
+    // _cardData = StripeCard(number: '5555555555554444', expMonth: 12, expYear: 23, cvc: '111', last4: '4444');
+    _form = CardForm();
+    _cardData = _form.card;
+    _formKey = _form.formKey;
   }
 
   @override
@@ -59,25 +56,27 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
           appBar: _buildAppBar(context),
           body: BlocListener<StripePaymentBloc, StripePaymentState>(
             listener: (BuildContext context, StripePaymentState state) {
-              print('StripePaymentScreen.listener().state=$state');
+              // print('StripePaymentScreen.listener().state=$state');
               if (state is StripeOperationSuccess) {
                 final scaffold = ScaffoldMessenger.of(context);
                 scaffold.showSnackBar(SnackBar(
                   content: const Text('Payment Success!'),
-                  action: SnackBarAction(
-                      label: 'Close',
-                      onPressed: () {
-                        scaffold.hideCurrentSnackBar();
-                        Nav.pop();
-                      }),
+                  // action: SnackBarAction(
+                  //     label: 'Close',
+                  //     onPressed: () {
+                  //       scaffold.hideCurrentSnackBar();
+                  //       // Nav.pop();
+                  //     }),
                 ));
+                Nav.pop();
+                Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
               builder: (context, StripePaymentState state) {
-                if (state is StripeOperationSuccess) {
-                  return _buildPaymentSuccess(context);
-                }
+                // if (state is StripeOperationSuccess) {
+                //   return _buildPaymentSuccess(context);
+                // }
 
                 if (state is StripeError) {
                   return _buildPaymentFailed(context, state.code, state.message);
@@ -91,51 +90,57 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 // if (state is StripePaymentLoading) {
                 //   return CenterLoadingWidget();
                 // }
-                return _buildPaywithCardForm(context, state);
+                return _buildPaymentMethodForm(context, state);
               },
             ),
           )),
     );
   }
 
-  Widget _buildPaywithCardForm(BuildContext context, StripePaymentState state) {
+  Widget _buildPaymentMethodForm(BuildContext context, StripePaymentState state) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
-          this._form,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Checkbox(
-                activeColor: theme.border2,
-                checkColor: theme.highlight,
-                value: _saveCard,
-                onChanged: (value) {
-                  setState(() {
-                    _saveCard = value;
-                    print('Save card=$_saveCard');
-                  });
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _saveCard = !_saveCard;
-                    print('Save card=$_saveCard');
-                  });
-                },
-                child: Text(
-                  'Save card for later use',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: theme.text,
-                    fontWeight: FontWeight.w500,
+          _paymentMethod == null
+              ? this._form
+              : PaymentMethodCardWidget(
+                  method: _paymentMethod,
+                ),
+          if (_paymentMethod == null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Checkbox(
+                  activeColor: theme.border2,
+                  checkColor: theme.highlight,
+                  value: _saveCard,
+                  onChanged: (value) {
+                    setState(() {
+                      _saveCard = value;
+                      print('Save card=$_saveCard');
+                    });
+                  },
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _saveCard = !_saveCard;
+                      print('Save card=$_saveCard');
+                    });
+                  },
+                  child: Text(
+                    'Save card for later use',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: theme.text,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          // Spacer(),
           _buildPayButton(context, state),
         ],
       ),
@@ -226,13 +231,16 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
             ),
             child: IconButton(
               icon: Icon(
-                Icons.add,
+                Icons.credit_card,
                 color: theme.text,
               ),
               tooltip: 'Add new card',
               // onPressed: () => Nav.to(StripeAddPaymentMethodScreen()),
               onPressed: () => showSelectStripePaymentDialog(context, onItemSelected: (StripePaymentMethod method) {
                 print('Selected payment method=$method');
+                setState(() {
+                  _paymentMethod = method;
+                });
               }),
             ),
           ),
@@ -244,21 +252,21 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
     );
   }
 
-  Widget _buildPaymentSuccess(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            'assets/animations/26421-payment-succesful.json',
-            width: 300,
-            height: 300,
-            fit: BoxFit.fill,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildPaymentSuccess(BuildContext context) {
+  //   return Center(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Lottie.asset(
+  //           'assets/animations/26421-payment-succesful.json',
+  //           width: 300,
+  //           height: 300,
+  //           fit: BoxFit.fill,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildPaymentFailed(BuildContext context, String code, String message) {
     return Center(
@@ -277,22 +285,21 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   }
 
   void _startStripePayment() {
-    getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
-      chainId: widget.chainId,
-      unitId: widget.unitId,
-      userId: widget.userId,
-      stripeCard: this._cardData,
-    ));
-
-    // TODO ezt majd visszatenni
-    // if (_formKey.currentState.validate()) {
-    //   _formKey.currentState.save();
-    //   getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
-    //     chainId: widget.chainId,
-    //     unitId: widget.unitId,
-    //     userId: widget.userId,
-    //     stripeCard: this._cardData,
-    //   ));
-    // }
+    print('_startStripePayment().cart=${widget.cart}');
+    if (_paymentMethod != null) {
+      getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
+          cart: widget.cart,
+          paymentMethodId: _paymentMethod.id,
+        ));
+    } else {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
+          cart: widget.cart,
+          stripeCard: this._cardData,
+          saveCard: this._saveCard,
+        ));
+      }
+    }
   }
 }

@@ -144,7 +144,7 @@ Appsync part:
 amplify add api
 ```
 
-Answere these questions
+Answer these questions
 
 - ? Please select from one of the below mentioned services: `GraphQL`
 - ? Provide API name: `APPNAME` :exclamation: use your own app name
@@ -163,6 +163,21 @@ Use a Cognito user pool configured as a part of this project.
 - ? Enable conflict detection? `No`
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/crud-gql/backend/src/graphql/crud-api.graphql`
+
+
+```
+amplify add storage
+```
+
+- ? Please select from one of the below mentioned services: `Content (Images, audio, video, etc.)`
+- ? Please provide a friendly name for your resource that will be used to label this category in the project: `anyuppstorage`
+- ? Please provide bucket name: `anyupp-images`
+- ? Who should have access: `Auth and guest users`
+- ? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection) `read`
+- ? What kind of access do you want for Guest users? `read`
+- ? Do you want to add a Lambda Trigger for your S3 Bucket? `(y/N)`
+
+
 
 Then, we should push the app, and generat code. Code generation steps:
 
