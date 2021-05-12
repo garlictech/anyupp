@@ -8,6 +8,7 @@ export class ParamsStack extends sst.Stack {
   public googleClientId: string;
   public facebookAppId: string;
   public stripePublishableKey: string;
+  public googleApiKey: string;
 
   constructor(scope: sst.App, id: string) {
     super(scope, id);
@@ -51,5 +52,20 @@ export class ParamsStack extends sst.Stack {
       value: this.stripePublishableKey,
       exportName: app.logicalPrefixedName('stripePublishableKey'),
     });
+
+    this.googleApiKey = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      'googleApiKeyParam',
+      {
+        parameterName: `/${app.stage}-${rootAppName}/GoogleApiKey`,
+      },
+    ).stringValue;
+
+    new CfnOutput(this, 'googleApiKeyOutput', {
+      value: this.googleApiKey,
+      exportName: app.logicalPrefixedName('googleApiKey'),
+    });
+
+
   }
 }

@@ -338,8 +338,8 @@ type ProductComponentSet
 ### ProductConfigSet
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Int
-  price: Int
+  refGroupPrice: Float
+  price: Float
   position: Int!
 }
 
