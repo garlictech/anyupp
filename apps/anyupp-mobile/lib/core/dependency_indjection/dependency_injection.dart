@@ -4,6 +4,7 @@ import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
@@ -125,4 +126,5 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => MainNavigationBloc());
 }
