@@ -65,6 +65,9 @@ class AwsSubscription<T extends Model> {
         if (!result.hasException) {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
           print('**** startListSubscription[$listNodeName].item=$item');
+          if (_items == null) {
+            _items = [];
+          }
           int index = _items.indexWhere((o) => o.id == item.id);
           // print('**** startListSubscription[$listNodeName].index=$index');
           if (index != -1) {

@@ -3,6 +3,7 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -15,10 +16,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void showSelectPaymentMethodBottomSheet(BuildContext context, Cart cart) {
+Future<T> showSelectPaymentMethodBottomSheet<T>(BuildContext context, Cart cart) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
-  showModalBottomSheet(
+  return showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -61,7 +62,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
         if (state is EmptyCartState) {
           // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
           Nav.pop();
-          Nav.replace(MainNavigation(pageIndex: 2));
+          // Nav.replace(MainNavigation(pageIndex: 2));
+          getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
           _showDialog(context);
         } else if (state is CartErrorState) {
           Nav.pop();
@@ -197,10 +199,11 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           ),
           child: buttonChild,
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
-              ? () {
+              ? () async {
                   if (!loading) {
                     print('_selectedPaymentMethod=$_selectedPaymentMethod');
                     if (_selectedPaymentMethod == PAYMENT_INAPP) {
+                      Nav.pop();
                       Nav.to(StripePaymentScreen(cart: widget.cart));
                     } else {
                       // TODO betenni a helyere!!! # atnezni
