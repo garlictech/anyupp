@@ -26,8 +26,6 @@ export class GroupFormComponent
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
-  private chains: IChain[] = [];
-
   constructor(
     protected _injector: Injector,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,7 +62,7 @@ export class GroupFormComponent
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.patchValue({ chainId: selectedChainId});
           }
         });
     }
@@ -72,9 +70,7 @@ export class GroupFormComponent
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
       .subscribe((chains: IChain[]): void => {
-        this.chains = chains;
-
-        this.chainOptions = this.chains.map(
+        this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
             value: chain.name,

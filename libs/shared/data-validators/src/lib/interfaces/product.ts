@@ -14,6 +14,7 @@ export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
   productType: Joi.string().required(), // TODO: use enumschema
   image: Joi.string().allow(null),
   variants: Joi.array().required(), //TODO: use an exact schema
+  configSets: Joi.array().optional().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
   allergens: Joi.array().items(Joi.string()).optional().allow(null),
@@ -33,6 +34,7 @@ export const groupProductSchema: Joi.SchemaMap<IGroupProduct> = {
   isVisible: Joi.boolean().required(),
   tax: Joi.number().required(),
   variants: Joi.array().required(), //TODO: use an exact schema
+  configSets: Joi.array().optional().allow(null),
   chainProduct: Joi.object(chainProductSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
@@ -53,6 +55,7 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
   variants: Joi.array().required(), //TODO: use an exact schema
+  configSets: Joi.array().optional().allow(null),
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   groupProduct: Joi.object(groupProductSchema).allow(null),

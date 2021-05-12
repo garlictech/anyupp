@@ -115,6 +115,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (event: LangChangeEvent): void => {
         this.selectedLang = (event.lang || '').split('-')[0];
         this._translateMenuItems();
+
+        this._changeDetectorRef.detectChanges();
       },
     );
     this._translateMenuItems();

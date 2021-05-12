@@ -69,7 +69,7 @@ export class DataService {
       })
       .subscribe(
         () => {
-          /* SUCCESS */
+          / * SUCCESS * /
         },
         err => {
           console.error('snapshotChanges$ err', err);
@@ -531,7 +531,9 @@ export class DataService {
             },
           });
 
-          const adminUser: unknown = removeNestedTypeNameField(result?.getAdminUser);
+          const adminUser: unknown = removeNestedTypeNameField(
+            result?.getAdminUser,
+          );
 
           if (adminUser) {
             this._store.dispatch(
@@ -764,10 +766,7 @@ export class DataService {
           selectedLanguage: language,
         };
 
-        return fp.pick(
-          ['id', 'name', 'profileImage', 'settings'],
-          <IAdminUser>adminUser,
-        );
+        return fp.pick(['id', 'settings'], <IAdminUser>adminUser);
       },
     );
   }
