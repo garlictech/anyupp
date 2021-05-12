@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
