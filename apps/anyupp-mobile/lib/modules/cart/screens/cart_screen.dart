@@ -163,7 +163,9 @@ class CartScreen extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
-          child: AllergensWidget(cartAllergens.values.toList()),
+          child: cartAllergens.keys.toList().isNotEmpty
+              ? AllergensWidget(cartAllergens.values.toList())
+              : Container(),
         ),
 
         // TOTAL

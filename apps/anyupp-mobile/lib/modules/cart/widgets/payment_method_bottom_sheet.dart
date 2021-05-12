@@ -2,6 +2,7 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -37,14 +38,17 @@ void showSelectPaymentMethodBottomSheet(BuildContext context) {
 
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
   @override
-  _PaymentMethodSelectionBottomSheetWidgetState createState() => _PaymentMethodSelectionBottomSheetWidgetState();
+  _PaymentMethodSelectionBottomSheetWidgetState createState() =>
+      _PaymentMethodSelectionBottomSheetWidgetState();
 }
 
-class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodSelectionBottomSheetWidget> {
+class _PaymentMethodSelectionBottomSheetWidgetState
+    extends State<PaymentMethodSelectionBottomSheetWidget> {
   static const int PAYMENT_UNKNOWN = -1;
   static const int PAYMENT_INAPP = 0;
   static const int PAYMENT_CASH = 1;
   static const int PAYMENT_CARD = 2;
+  bool wantsInvoce = false;
 
   int _selectedPaymentMethod = PAYMENT_UNKNOWN;
 
@@ -104,14 +108,51 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
-              _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
-                  "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
+              _buildSelectPaymentMethodBottomSheetRadioItem(
+                  context,
+                  trans('payment.method.inAppPayment'),
+                  "assets/icons/simplepay-logo.svg",
+                  PAYMENT_INAPP,
+                  createSimplePaymentInfo()),
+              if (unit.paymentModes != null &&
+                  unit.paymentModes.contains('CASH'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
-                    context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CARD'))
+                    context,
+                    trans('payment.method.cash'),
+                    "assets/icons/cash_on_delivery_icon.svg",
+                    PAYMENT_CASH),
+              if (unit.paymentModes != null &&
+                  unit.paymentModes.contains('CARD'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
-                    context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
+                    context,
+                    trans('payment.method.creditCard'),
+                    "assets/icons/credit_card_icon.svg",
+                    PAYMENT_CARD),
+              Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      trans('payment.paymentInfo.invoicing.want_invoice'),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: theme.text,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Switch(
+                        activeColor: theme.highlight,
+                        value: wantsInvoce,
+                        onChanged: (value) {
+                          setState(() {
+                            this.wantsInvoce = value;
+                          });
+                        })
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -123,6 +164,30 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   Widget _buildSendCartButton(BuildContext context, GeoUnit unit) {
     return BlocBuilder<CartBloc, BaseCartState>(builder: (context, state) {
       bool loading = state is CartLoadingState;
+      Widget buttonChild = Text(
+        trans('payment.sendOrder'),
+        style: GoogleFonts.poppins(
+          fontSize: 18,
+          color: theme.text2,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+      if (loading) {
+        buttonChild = CenterLoadingWidget(
+          color: theme.highlight,
+          size: 20.0,
+          strokeWidth: 2.0,
+        );
+      } else if (wantsInvoce) {
+        buttonChild = Text(
+          trans('payment.paymentInfo.invoicing.invoice_info'),
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            color: theme.text2,
+            fontWeight: FontWeight.w700,
+          ),
+        );
+      }
 
       return Container(
         height: 90.0,
@@ -138,31 +203,22 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
             primary: theme.indicator,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-
             ),
-
           ),
-          child: loading
-              ? CenterLoadingWidget(
-                  color: theme.highlight,
-                  size: 20.0,
-                  strokeWidth: 2.0,
-                )
-              : Text(
-                  trans('payment.sendOrder'),
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    color: theme.text2,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+          child: buttonChild,
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () {
                   if (!loading) {
-                    BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
-                      unit,
-                      _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
-                    ));
+                    String payMentMethod = _getPaymentMethodNameFromNumberValue(
+                        _selectedPaymentMethod);
+                    if (wantsInvoce) {
+                      showInvoiceFormBottomSheet(context, payMentMethod);
+                    } else {
+                      BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
+                        unit,
+                        payMentMethod,
+                      ));
+                    }
                   }
                 }
               : null,
@@ -184,7 +240,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     }
   }
 
-  Widget _buildSelectPaymentMethodBottomSheetRadioItem(BuildContext context, String title, String icon, int value,
+  Widget _buildSelectPaymentMethodBottomSheetRadioItem(
+      BuildContext context, String title, String icon, int value,
       [Widget info]) {
     final isSelected = _selectedPaymentMethod == value;
     return InkWell(
@@ -344,7 +401,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               decoration: TextDecoration.underline,
               color: theme.text,
             ),
-            recognizer: TapGestureRecognizer()..onTap = () => showSimpleDialog(context),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => showSimpleDialog(context),
           ),
         ],
       ),

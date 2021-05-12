@@ -18,6 +18,7 @@ import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
@@ -31,19 +32,21 @@ Future<void> initDependencyInjection() async {
   _initBlocs();
 }
 
-void _initCommon() {
+void _initCommon() async {
   print('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(
     AppConfig.StripePublishableKey,
     returnUrlForSca: 'anyupp://stripe' ?? 'todo', // TODO
   );
+  final sharedPreferences = await SharedPreferences.getInstance();
 
   final CognitoService cognitoService = CognitoService(
     region: AppConfig.Region,
     userPoolId: AppConfig.UserPoolId,
     identityPoolId: AppConfig.IdentityPoolId,
     clientId: AppConfig.UserPoolClientId,
+    prefs: sharedPreferences
   );
   getIt.registerLazySingleton<CognitoService>(() => cognitoService);
   getIt.registerLazySingleton<Stripe>(() => stripe);

@@ -1,34 +1,43 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Map<String, String> _storage = {};
-
+/// Extend CognitoStorage with Shared Preferences to persist account
+/// login sessions
 class CognitoLocalStorage extends CognitoStorage {
-  String prefix;
-  CognitoLocalStorage(this.prefix);
-
-  @override
-  Future setItem(String key, value) async {
-    _storage[prefix + key] = json.encode(value);
-    return _storage[prefix + key];
-  }
+  final SharedPreferences _prefs;
+  CognitoLocalStorage(this._prefs);
 
   @override
   Future getItem(String key) async {
-    if (_storage[prefix + key] != null) {
-      return json.decode(_storage[prefix + key]);
+    String item;
+    try {
+      item = json.decode(_prefs.getString(key));
+    } catch (e) {
+      return null;
+    }
+    return item;
+  }
+
+  @override
+  Future setItem(String key, value) async {
+    await _prefs.setString(key, json.encode(value));
+    return getItem(key);
+  }
+
+  @override
+  Future removeItem(String key) async {
+    final item = getItem(key);
+    if (item != null) {
+      await _prefs.remove(key);
+      return item;
     }
     return null;
   }
 
   @override
-  Future removeItem(String key) async {
-    return _storage.remove(prefix + key);
-  }
-
-  @override
   Future<void> clear() async {
-    _storage = {};
+    await _prefs.clear();
   }
 }

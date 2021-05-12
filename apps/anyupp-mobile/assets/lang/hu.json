@@ -58,7 +58,7 @@
       "confirmAccount": "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
       "dialogConfirmedMessage": "A fiókodod aktiválva.",
-      "enterCode" : "Enter Code"
+      "enterCode": "Enter Code"
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
@@ -139,7 +139,7 @@
     "soya": "Szója",
     "sulphites": "Szulfitok",
     "treenuts": "Diófélék",
-    "disclaimer" : "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
+    "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
   },
   "favorites": {
     "noFavorites": "Még nincsenek kedvenceid"
@@ -176,6 +176,17 @@
       "simplePay": {
         "prefix": "Ezt a fizetési módot választva tudomásul veszem az alábbi dokumentumokban leírtakat",
         "paymentInfo": "SimplePay vásárlói tájékoztató"
+      },
+      "invoicing": {
+        "want_invoice": "Áfás számlát kérek",
+        "invoice_info": "Számla Információ",
+        "name_or_company": "Név/Cég név",
+        "tax_id": "Adószám",
+        "country": "Ország",
+        "zip": "Irányítószám",
+        "city": "Város",
+        "street_address": "Utca cím",
+        "invoice_email": "Számla email"
       }
     },
     "simplePayStatus": {
@@ -273,11 +284,20 @@
       "logout": "Kijelentkezés",
       "settings": "Beállítások",
       "regulations": "Szabályzatok",
-      "language": "Nyelv"
+      "language": "Nyelv",
+      "payment": "Fizetés és számla adatok"
     }
   },
   "affiliate": {
     "advertisement": "Hirdetés"
+  },
+  "validators" : {
+    "required" : "Ez a mező szükséges",
+    "enterValidEmail" : "érvényes email címet adj meg",
+    "eneterValidPhone" : "érvényes telefonszmot adj meg",
+    "passwordIsRequired" : "jelszó megadása szükséges",
+    "passwordValidatorText" : "Tartalmaznia kell számot, nagy és kis betűt",
+    "passwordLengthError" : "a jelszónak legalább 8 karakter hosszúnak kell lennie"
   },
   "error": {
     "title": "Hiba",

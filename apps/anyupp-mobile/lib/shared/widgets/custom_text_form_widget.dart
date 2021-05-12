@@ -1,12 +1,9 @@
-import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginFormUtils {
-  static const double TEXTFIELD_HEIGHT = 60.0;
-
-  static Widget buildTextField(
+Widget customTextFormWidget(
     BuildContext context,
     String labelKey,
     TextEditingController controller,
@@ -71,37 +68,3 @@ class LoginFormUtils {
       ),
     );
   }
-
-  static FieldValidator emailOrPhoneValidator(BuildContext context) =>
-      MultiValidator([
-        RequiredValidator(errorText: transEx(context, 'validators.required')),
-      ]);
-
-  static FieldValidator confirmCodeValidator(BuildContext context) =>
-      MultiValidator([
-        RequiredValidator(errorText: transEx(context, 'validators.required')),
-      ]);
-
-  static FieldValidator emailValidator(BuildContext context) => MultiValidator([
-        EmailValidator(
-            errorText: transEx(context, 'validators.enterValidEmail')),
-        RequiredValidator(
-            errorText:
-                transEx(context, transEx(context, 'validators.required'))),
-      ]);
-
-  static FieldValidator passwordValidator(BuildContext context) =>
-      MultiValidator([
-        RequiredValidator(
-            errorText: transEx(context, 'validators.passwordIsRequired')),
-        MinLengthValidator(8,
-            errorText: transEx(context, 'validators.passwordLengthError')),
-        PatternValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$',
-            errorText: transEx(context, 'validators.passwordValidatorText')),
-      ]);
-
-  static FieldValidator phoneValidator(BuildContext context) => MultiValidator([
-        PatternValidator(r'^\+(?:[0-9]●?){6,14}[0-9]$',
-            errorText: transEx(context, 'validators.eneterValidPhone'))
-      ]);
-}
