@@ -326,8 +326,8 @@ type ProductComponentSet
 ### ProductConfigSet
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Int
-  price: Int
+  refGroupPrice: Float
+  price: Float
   position: Int!
 }
 
@@ -335,6 +335,25 @@ type ProductConfigSet {
   productSetId: ID!
   items: [ProductConfigComponent]!
   position: Int!
+}
+
+type GeneratedProductConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  position: Int!
+  name: LocalizedItem!
+  description: String
+  allergens: [Allergen]
+}
+
+type GeneratedProductConfigSet {
+  # TODO: do we need setId too?
+  name: LocalizedItem!
+  description: String!
+  position: Int!
+  type: String!
+  maxSelection: Int
+  items: [GeneratedProductConfigComponent]!
 }
 
 ### Product
@@ -449,6 +468,7 @@ type GeneratedProduct
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
 }
 
 type GeneratedProductVariant {
