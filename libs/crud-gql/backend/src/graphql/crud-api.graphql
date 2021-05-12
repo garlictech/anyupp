@@ -237,6 +237,7 @@ type Order
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -475,6 +476,7 @@ type Unit
   id: ID!
   groupId: ID!
   chainId: ID!
+  lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
   name: String!

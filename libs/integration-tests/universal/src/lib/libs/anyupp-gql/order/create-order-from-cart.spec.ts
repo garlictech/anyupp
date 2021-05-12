@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { combineLatest, from, Observable, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
@@ -10,6 +10,7 @@ import {
   cartSeed,
   testAdminUsername,
   testAdminUserPassword,
+  testIdPrefix,
   unitSeed,
 } from '@bgap/shared/fixtures';
 import {
@@ -20,11 +21,22 @@ import {
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
-import { ICart, IOrder } from '@bgap/shared/types';
+import { ICart, IOrder, RequiredId } from '@bgap/shared/types';
 
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const cartWithNotExistingUNIT = 'cartWithNotExistingUnit_id';
+const cart_01: RequiredId<CrudApi.CreateCartInput> = {
+  ...cartSeed.cart_01,
+  id: `${testIdPrefix}cart_1_id`,
+  unitId: unitSeed.unit_01.id,
+};
+const cart_02: RequiredId<CrudApi.CreateCartInput> = {
+  ...cartSeed.cart_01,
+  id: `${testIdPrefix}cart_2_id`,
+  unitId: unitSeed.unit_01.id,
+};
 
 describe('CreatCartFromOrder mutation test', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;
@@ -38,14 +50,18 @@ describe('CreatCartFromOrder mutation test', () => {
 
     await combineLatest([
       // CleanUP
-      deleteTestCart(cartSeed.cart_01.id),
+      deleteTestCart(cart_01.id),
+      deleteTestCart(cart_02.id),
       deleteTestCart(cartWithNotExistingUNIT),
+      deleteTestUnit(unitSeed.unit_01.id),
     ])
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestCart(cartSeed.cart_01),
+            createTestUnit(unitSeed.unit_01),
+            createTestCart(cart_01),
+            createTestCart(cart_02),
             createTestCart({
               ...cartSeed.cart_01,
               id: cartWithNotExistingUNIT,
@@ -58,39 +74,70 @@ describe('CreatCartFromOrder mutation test', () => {
   });
 
   it('should create an order from a valid cart', done => {
-    const cartId = cartSeed.cart_01.id;
-    const userId = cartSeed.cart_01.userId;
-    const unitId = cartSeed.cart_01.unitId;
+    const userId = cart_01.userId;
+    const unitId = cart_01.unitId;
 
-    from(
-      orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
-        userId,
-        input: { id: cartId },
-      }),
-    )
+    of('START')
       .pipe(
+        // First ORDER with 01 as orderNum
+        switchMap(() =>
+          from(
+            orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
+              userId,
+              input: { id: cart_01.id },
+            }),
+          ),
+        ),
         // check order has been truly created
         filter(x => !!x),
         switchMap(newOrderId =>
           combineLatest([
             getOrder(crudBackendGraphQLClient, newOrderId!),
-            getCart(crudBackendGraphQLClient, cartId),
+            getCart(crudBackendGraphQLClient, cart_01.id),
           ]),
         ),
+        tap({
+          next([{ createdAt, updatedAt, ...order }, cart]) {
+            expect(order).not.toBeNull();
+            expect(order.userId).toEqual(userId);
+            expect(order.unitId).toEqual(unitId);
+            expect(order.orderNum).toEqual(
+              `${cart_01.place?.table}${cart_01.place?.seat}01`,
+            );
+            expect(cart).toBeNull();
+          },
+        }),
+        // Secound ORDER with 02 as orderNum
+        switchMap(() =>
+          from(
+            orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
+              userId,
+              input: { id: cart_02.id },
+            }),
+          ),
+        ),
+        switchMap(newOrderId =>
+          combineLatest([
+            getOrder(crudBackendGraphQLClient, newOrderId!),
+            getCart(crudBackendGraphQLClient, cart_01.id),
+          ]),
+        ),
+        tap({
+          next([{ createdAt, updatedAt, ...order }, cart]) {
+            expect(order).not.toBeNull();
+            expect(order.orderNum).toEqual(
+              `${cart_01.place?.table}${cart_01.place?.seat}02`,
+            );
+            expect(cart).toBeNull();
+            done();
+          },
+        }),
       )
-      .subscribe({
-        next([order, cart]) {
-          expect(order).not.toBeNull();
-          expect(order.userId).toEqual(userId);
-          expect(order.unitId).toEqual(unitId);
-          expect(cart).toBeNull();
-          done();
-        },
-      });
+      .subscribe();
   }, 30000);
 
   it("should fail in case the cart is not the user's", done => {
-    const cartId = cartSeed.cart_01.id;
+    const cartId = cart_01.id;
     const userId = 'DIFFERENT_USER';
     from(
       orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
@@ -107,7 +154,7 @@ describe('CreatCartFromOrder mutation test', () => {
 
   it('should fail without a unit', done => {
     const cartId = cartWithNotExistingUNIT;
-    const userId = cartSeed.cart_01.userId;
+    const userId = cart_01.userId;
     from(
       orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
         userId,
