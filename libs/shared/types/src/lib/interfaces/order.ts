@@ -61,6 +61,7 @@ export interface IOrder {
   id: string;
   userId: string;
   unitId: string;
+  orderNum?: string;
   items: IOrderItem[];
   paymentMode: IPaymentMode;
   statusLog: IStatusLog;

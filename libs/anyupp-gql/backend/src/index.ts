@@ -8,6 +8,7 @@ export { createStripeResolvers } from './lib/lambda-resolvers/stripe/stripe-reso
 export { stripeRequestHandler } from './lib/lambda-resolvers/stripe/stripe-request-handler';
 
 export * from './lib/lambda-resolvers/product';
+export * from './lib/database';
 
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };
