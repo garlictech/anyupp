@@ -154,7 +154,10 @@ export class AppsyncAppStack extends sst.Stack {
             'dynamodb:Query',
             'dynamodb:UpdateItem',
           ],
-          resources: [tableConfig.GeneratedProduct.tableArn],
+          resources: [
+            tableConfig.GeneratedProduct.tableArn,
+            tableConfig.Unit.tableArn,
+          ],
         }),
       );
     }

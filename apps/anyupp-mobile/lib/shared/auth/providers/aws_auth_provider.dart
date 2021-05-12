@@ -34,10 +34,14 @@ class AwsAuthProvider implements IAuthProvider {
         return _user;
       }
       if (_user == null) {
-        _cognitoUser = null;
-        _user = null;
-        _userController.add(null);
-        return null;
+        _cognitoUser = await _service.currentUser;
+        if (_cognitoUser == null) {
+          _user = null;
+        } else {
+          _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+        }
+        _userController.add(_user);
+        return _user;
       }
       return _user;
     } on Exception catch (e) {
@@ -114,7 +118,8 @@ class AwsAuthProvider implements IAuthProvider {
         continue;
       }
     }
-    User user = User(email: email, loginMethod: loginMethod, name: name, id: subId);
+    User user =
+        User(email: email, loginMethod: loginMethod, name: name, id: subId);
     return user;
   }
 

@@ -9,6 +9,7 @@ export { stripeRequestHandler } from './lib/lambda-resolvers/stripe/stripe-reque
 export { createStripeWebhookExpressApp } from './lib/lambda-resolvers/stripe/stripe-webhook-handler';
 export * from './lib/lambda-resolvers/order/order.utils';
 export * from './lib/lambda-resolvers/product';
+export * from './lib/database';
 
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };

@@ -29,7 +29,7 @@ Future<void> initDependencyInjection() async {
   _initBlocs();
 }
 
-void _initCommon() {
+void _initCommon() async {
   print('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(

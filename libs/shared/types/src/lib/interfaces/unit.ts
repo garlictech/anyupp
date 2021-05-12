@@ -31,6 +31,7 @@ export interface IUnit extends IContact, IAddressInfo {
   id: string;
   groupId: string;
   chainId: string;
+  lastOrderNum?: number;
   isActive: boolean;
   isAcceptingOrders: boolean;
   name: string;

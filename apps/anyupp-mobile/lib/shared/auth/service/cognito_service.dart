@@ -12,6 +12,7 @@ class CognitoService {
   final String userPoolId;
   final String clientId;
   final String identityPoolId;
+  CognitoLocalStorage storage;
 
   CognitoUserPool _userPool;
 
@@ -20,9 +21,12 @@ class CognitoService {
     _userPool = CognitoUserPool(
       userPoolId,
       clientId,
-      storage: CognitoLocalStorage('anyupp:'),
+      storage: storage,
     );
+    init();
   }
+
+  CognitoUser _cognitoUser;
 
   CognitoUserSession _userSession;
 
@@ -30,11 +34,23 @@ class CognitoService {
 
   CognitoUserPool get userPool => _userPool;
 
-  Future<CognitoUser> get currentUser async => _userPool?.getCurrentUser();
+  Future<CognitoUser> get currentUser async {
+    _cognitoUser = await _userPool.getCurrentUser();
+    if (_cognitoUser != null) {
+      _userSession = await _cognitoUser.getSession();
+    }
+
+    return _cognitoUser;
+  }
 
   // Future<CognitoUserSession> get getSession async => (await currentUser)?.getSession();
 
   Future<bool> get isSessionValid async => (await session)?.isValid() ?? false;
+
+  Future<void> init() async {
+    await this.currentUser;
+    _cognitoUser = await _userPool.getCurrentUser();
+  }
 
   CognitoUser createCognitoUser(String username) {
     return CognitoUser(username, userPool);
@@ -118,7 +134,8 @@ class CognitoService {
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
     print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
-    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool);
+    CognitoCredentials credentials =
+        CognitoCredentials(identityPoolId, userPool);
     await credentials.getAwsCredentials(accessToken, provider);
     print('loginWithCredentials().credentials.userIdentityId=${credentials?.userIdentityId}');
     print('loginWithCredentials().credentials.accessKeyId=${credentials?.accessKeyId}');

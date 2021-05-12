@@ -27,6 +27,7 @@ export const unitSchema: Joi.SchemaMap<IUnit> = {
   openingHours: Joi.object().allow(null),
   lanes: Joi.array().items(laneSchema).allow(null),
   floorMap: Joi.object(floorMapSchema).allow(null),
+  lastOrderNum: Joi.number().allow(null),
   paymentModes: Joi.array().items(paymentModeSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),

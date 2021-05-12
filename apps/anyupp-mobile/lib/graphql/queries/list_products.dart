@@ -24,6 +24,7 @@ query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
       productCategoryId
       productType
       tax
+      allergens
       variants {
         id
         position
