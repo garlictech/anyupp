@@ -648,7 +648,7 @@ class _LoginScreenState extends State<LoginScreen>
                 .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
             //For some reasion there is an extra # at the end of the url in case of first login.
             //Remove it so it will be a valid url
-            code = removeTrailing("#", code);
+            code = code.split("#").first;
             // This is the authorization code!!!
             signUserInWithAuthCode(code);
             return NavigationDecision.prevent;
@@ -658,12 +658,6 @@ class _LoginScreenState extends State<LoginScreen>
         gestureNavigationEnabled: true,
       ),
     );
-  }
-
-  String removeTrailing(String pattern, String from) {
-    int i = from.length;
-    while (from.startsWith(pattern, i - pattern.length)) i -= pattern.length;
-    return from.substring(0, i);
   }
 
   // ignore: unused_element
