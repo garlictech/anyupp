@@ -58,6 +58,11 @@
     "insertSuccessful": "Sikeres beszúrás",
     "updateSuccessful": "Sikeres frissítés",
     "removeSuccessful": "Sikeres törlés",
+    "imageUploadError": "Sikertelen képfeltöltés",
+    "imageRemoveError": "Sikertelen kép törlés",
+    "insertError": "Sikertelen beszúrás",
+    "updateError": "Sikertelen frissítés",
+    "removeError": "Sikertelen törlés",
     "days": {
       "mon": "Hétfő",
       "tue": "Kedd",
