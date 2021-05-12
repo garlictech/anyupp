@@ -10,6 +10,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import * as fp from 'lodash/fp';
 import {
   getOrdersByUser,
   getTableOrders,
@@ -78,7 +79,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         }),
         filter((unit: IUnit | undefined): boolean => !!unit),
         tap((unit: IUnit | undefined): void => {
-          this.unit = unit;
+          this.unit = fp.cloneDeep(unit);
         }),
         switchMap(
           (): Observable<boolean> =>

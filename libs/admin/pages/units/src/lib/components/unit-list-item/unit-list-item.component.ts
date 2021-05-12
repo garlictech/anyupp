@@ -1,7 +1,9 @@
 import * as fp from 'lodash/fp';
+import { NGXLogger } from 'ngx-logger';
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
+import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import { IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
@@ -21,6 +23,9 @@ export class UnitListItemComponent {
   constructor(
     private _nbDialogService: NbDialogService,
     private _dataService: DataService,
+    private _toasterService: ToasterService,
+    private _logger: NGXLogger,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   public editUnit(): void {
@@ -35,10 +40,26 @@ export class UnitListItemComponent {
     dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
   }
 
-  public regenerateData(): void {
+  public async regenerateData(): Promise<void> {
     this.workingGenerateStatus = true;
-    this._dataService.regenerateUnitData(this.unit.id).then((): void => {
-      this.workingGenerateStatus = false;
-    });
+
+    try {
+      await this._dataService.regenerateUnitData(this.unit.id);
+
+      this._toasterService.show(
+        EToasterType.SUCCESS,
+        '',
+        'common.updateSuccessful',
+      );
+    } catch (err) {
+      this._toasterService.show(EToasterType.DANGER, '', 'common.updateError');
+
+      this._logger.error(
+        `REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`,
+      );
+    }
+
+    this.workingGenerateStatus = false;
+    this._changeDetectorRef.detectChanges();
   }
 }

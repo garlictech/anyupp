@@ -52,6 +52,7 @@ export const configurePermissions = (
     'GoogleClientId',
     'StripePublishableKey',
     'FacebookAppId',
+    'GoogleApiKey',
   ].map(paramName => `/${prefix}/${paramName}`);
 
   resources.forEach((resource, index) => {

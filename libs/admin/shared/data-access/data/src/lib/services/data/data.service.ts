@@ -7,7 +7,10 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import {
+  loggedUserActions,
+  loggedUserSelectors,
+} from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productComponentSetsActions } from '@bgap/admin/shared/data-access/product-component-sets';
@@ -18,9 +21,27 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { CrudApi } from '@bgap/crud-gql/api';
+import { RegenerateUnitData } from '@bgap/anyupp-gql/api';
 import {
-  EAdminRole, EOrderStatus, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup,
-  IKeyValueObject, IOrder, IProduct, IProductCategory, IProductComponent, IProductComponentSet, IRoleContext, IUnit
+  anyuppAuthenticatedGraphqlClient,
+  executeMutation,
+} from '@bgap/shared/graphql/api-client';
+import {
+  EAdminRole,
+  EOrderStatus,
+  IAdminUser,
+  IAdminUserConnectedRoleContext,
+  IAdminUserSettings,
+  IChain,
+  IGroup,
+  IKeyValueObject,
+  IOrder,
+  IProduct,
+  IProductCategory,
+  IProductComponent,
+  IProductComponentSet,
+  IRoleContext,
+  IUnit,
 } from '@bgap/shared/types';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
@@ -69,7 +90,7 @@ export class DataService {
       })
       .subscribe(
         () => {
-          / * SUCCESS * /
+          / * SUCCESS * /;
         },
         err => {
           console.error('snapshotChanges$ err', err);
@@ -131,7 +152,6 @@ export class DataService {
     this._subscribeToGroups();
     this._subscribeToUnits();
     // this._subscribeToUsers(); TODO not used?
-    this._subscribeToRoleContext();
     this._subscribeToAdminUsers();
     this._subscribeToAdminRoleContexts();
 
@@ -164,6 +184,7 @@ export class DataService {
           );
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -183,6 +204,7 @@ export class DataService {
           );
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -202,6 +224,7 @@ export class DataService {
           );
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -221,6 +244,7 @@ export class DataService {
           );
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -513,6 +537,7 @@ export class DataService {
           );
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -544,6 +569,7 @@ export class DataService {
           }
         },
       })
+      .pipe(takeUntil(this._destroyConnection$))
       .subscribe();
   }
 
@@ -593,16 +619,10 @@ export class DataService {
     );
   }
 
-  // TODO refactor
   public regenerateUnitData(unitId: string): Promise<unknown> {
-    /*const callable = this._angularFireFunctions.httpsCallable(
-      `regenerateUnitData`,
-    );
-
-    return callable({
-      unitId,
-    }).toPromise();*/
-    return of({ unitId }).toPromise();
+    return executeMutation(
+      anyuppAuthenticatedGraphqlClient,
+    )(RegenerateUnitData, { input: { id: unitId } }).toPromise();
   }
 
   //
