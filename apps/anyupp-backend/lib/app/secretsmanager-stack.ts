@@ -13,6 +13,8 @@ const secretsManagerArns: Record<string, string> = {
 export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
   public facebookAppSecret: string;
+  public stripeSecretKey: string;
+  public stripeSigningSecret: string;
   public secretsManager: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
@@ -33,14 +35,23 @@ export class SecretsManagerStack extends sst.Stack {
     const googleClientSecret = this.secretsManager.secretValueFromJson(
       'googleClientSecret',
     );
-
     this.googleClientSecret = googleClientSecret.toString();
 
     const facebookAppSecret = this.secretsManager.secretValueFromJson(
       'facebookAppSecret',
     );
-
     this.facebookAppSecret = facebookAppSecret.toString();
+
+    //--- get Stripe secret keys
+    const stripeSecretKey = this.secretsManager.secretValueFromJson(
+      'stripeSecretKey',
+    );
+    this.stripeSecretKey = stripeSecretKey.toString();
+
+    const stripeSigningSecret = this.secretsManager.secretValueFromJson(
+      'stripeSigningSecret',
+    );
+    this.stripeSigningSecret = stripeSigningSecret.toString();
 
     new CfnOutput(this, 'SecretsManager', {
       value: this.secretsManager.secretArn,

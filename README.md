@@ -112,7 +112,7 @@ Unfortunately, the SST tools we use to deploy the CDK stack do not support app n
 
 :exclamation: use your own app name
 
-!!! Before the next command probably you should regenerate the appsync/grahpql schema or the next command: `nx build infra...` wont work
+!!! Before the next command probably you should regenerate the anyupp/crud schema or the next command: `nx build anyupp-backend...` wont work
 
 ```
 nx build anyupp-backend --app=APPNAME --stage=dev
@@ -136,7 +136,7 @@ amplify import auth
 
 - Choose `Cognito User Pool and Identity Pool`
 - Select your new user pool (STAGE-APPNAME-admin-user-pool)
-- Select the native client (in this point it should assume well which client is the native one)
+- Select the NATIVE client (in this point it should assume well which client is the native one)
 
 Appsync part:
 
@@ -144,7 +144,7 @@ Appsync part:
 amplify add api
 ```
 
-Answere these questions
+Answer these questions
 
 - ? Please select from one of the below mentioned services: `GraphQL`
 - ? Provide API name: `APPNAME` :exclamation: use your own app name
@@ -164,6 +164,21 @@ Use a Cognito user pool configured as a part of this project.
 - ? Do you have an annotated GraphQL schema? `Yes`
 - ? Provide your schema file path: `../../libs/crud-gql/backend/src/graphql/crud-api.graphql`
 
+
+```
+amplify add storage
+```
+
+- ? Please select from one of the below mentioned services: `Content (Images, audio, video, etc.)`
+- ? Please provide a friendly name for your resource that will be used to label this category in the project: `anyuppstorage`
+- ? Please provide bucket name: `anyupp-images`
+- ? Who should have access: `Auth and guest users`
+- ? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection) `read`
+- ? What kind of access do you want for Guest users? `read`
+- ? Do you want to add a Lambda Trigger for your S3 Bucket? `(y/N)`
+
+
+
 Then, we should push the app, and generat code. Code generation steps:
 
 ```
@@ -172,7 +187,7 @@ amplify push
 
 - ? Do you want to generate code for your newly created GraphQL API `Yes`
 - ? Choose the code generation language target `typescript`
-- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.graphql`
+- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts`
 - ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
 - ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
 - ? Enter the file name for the generated code `../../libs/crud-gql/api/src/lib/generated/api.ts`
@@ -545,7 +560,7 @@ You need to upload some keys to the secretmanager and some paramaters to the par
 ### Mobile app parameters
 
 Parameters that are required in the parameter store for the mobile app are the followings:
-`'{STAGE}-{APPNAME}-region',` - Server region, eg eu-west-1
+`'{STAGE}-{APPNAME}-Region',` - Server region, eg eu-west-1
 `'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
 `'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
 `'{STAGE}-{APPNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app

@@ -56,6 +56,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
           en
           hu
         }
+        allergens
       }
     }
   }

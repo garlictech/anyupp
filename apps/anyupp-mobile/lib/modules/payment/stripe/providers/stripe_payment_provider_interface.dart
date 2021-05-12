@@ -1,12 +1,13 @@
-import 'package:stripe_sdk/src/models/card.dart';
+import 'package:fa_prev/models.dart';
+import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 abstract class IStripePaymentProvider {
 
-  Future<List<StripeCard>> getPaymentMethods();
+  Future<List<StripePaymentMethod>> getPaymentMethods();
 
-  Future<String> startStripePaymentWithExistingCard(String chainId, String unitId, String userId, String paymentMethodId);
+  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId);
 
-  Future<String> startStripePaymentWithNewCard(String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard);
+  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard);
 
   Future<bool> createPaymentMethodFromCard(String secret, StripeCard card);
 
