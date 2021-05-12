@@ -2,6 +2,7 @@ import { CrudApi } from '@bgap/crud-gql/api';
 import { groupSeed } from './group';
 import { chainSeed } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
+import { RequiredId } from '@bgap/shared/types';
 
 const unitId_01 = `${testIdPrefix}unit_1_id`;
 const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
@@ -9,7 +10,7 @@ const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
 const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
-const unit_01: CrudApi.CreateUnitInput = {
+const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   id: unitId_01,
   groupId: groupSeed.groupId_seeded_01,
   chainId: chainSeed.chainId_seeded_01,

@@ -42,6 +42,7 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
+  orderNum: Joi.string().allow(null, ''),
   items: Joi.array().items(orderItemSchema),
   paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
