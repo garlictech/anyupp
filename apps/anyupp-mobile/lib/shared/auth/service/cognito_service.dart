@@ -86,24 +86,25 @@ class CognitoService {
   }
 
   Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
-    CognitoUserSession session = await _loadSessionFromCache();
-    if (session != null) {
-      try {
-      if (session.isValid()) {
-        final user = CognitoUser(null, userPool, signInUserSession: session);
-        _userSession = session;
-        return user;
-      } else {
-        final user = CognitoUser(null, userPool, signInUserSession: session);
-        _userSession = await user.refreshSession(session.refreshToken);
-        return user;
+    try {
+      CognitoUserSession session = await _loadSessionFromCache();
+      if (session != null) {
+        if (session.isValid()) {
+          final user = CognitoUser(null, userPool, signInUserSession: session);
+          _userSession = session;
+          return user;
+        } else {
+          final user = CognitoUser(null, userPool, signInUserSession: session);
+          _userSession = await user.refreshSession(session.refreshToken);
+          return user;
+        }
       }
-      } on Exception {
-        final user = CognitoUser(null, userPool, signInUserSession: session);
-        _userSession = await user.refreshSession(session.refreshToken);
-        return user;
-      }
+    } on Exception {
+      final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
+      _userSession = await user.refreshSession(session.refreshToken);
+      return user;
     }
+
     _userSession = null;
     return null;
   }
@@ -134,8 +135,7 @@ class CognitoService {
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
     print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
-    CognitoCredentials credentials =
-        CognitoCredentials(identityPoolId, userPool);
+    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool);
     await credentials.getAwsCredentials(accessToken, provider);
     print('loginWithCredentials().credentials.userIdentityId=${credentials?.userIdentityId}');
     print('loginWithCredentials().credentials.accessKeyId=${credentials?.accessKeyId}');
