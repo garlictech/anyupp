@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { pluck } from 'rxjs/operators';
 
 import { GraphqlApiClient } from './graphql-api-client';
+import { pipeDebug } from '@bgap/shared/utils';
 
 export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
   typeof gqlDocument === 'string'
@@ -18,7 +19,10 @@ export const executeQuery = (client: GraphqlApiClient) => <T>(
   queryOptions?: Partial<QueryOptions>,
 ) =>
   client
-    .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
+    // .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
+    .query<T>(toGraphQLDocument(gqlDocument), variables, {
+      fetchPolicy: 'no-cache',
+    })
     .pipe(pluck('data'));
 
 export const executeMutation = (client: GraphqlApiClient) => <T>(
