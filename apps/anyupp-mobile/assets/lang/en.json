@@ -280,6 +280,7 @@
   "profile": {
     "menu": {
       "contact": "Contact Us",
+      "transactions": "Transactions",
       "about": "About",
       "cards": "Saved cards",
       "logout": "Logout",
