@@ -121,7 +121,10 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, image, <IAdminUser>data),
+          (data: unknown) => ({
+            id: (<IAdminUser>data).id,
+            profileImage: image
+          })
         );
 
         this._toasterService.show(
@@ -156,7 +159,10 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, null, <IAdminUser>data),
+          (data: unknown) => ({
+            id: (<IAdminUser>data).id,
+            profileImage: null
+          })
         );
 
         this._toasterService.show(

@@ -2,7 +2,7 @@
   class="float-left"
   [name]="productCategory.name | localize"
   [title]="productCategory.description | localize"
-  [picture]="(productCategory.image || '' | awsStoragePath | async) || ''"
+  [picture]="(productCategory.image || '' | awsStoragePath) || ''"
 ></nb-user>
 
 <button
