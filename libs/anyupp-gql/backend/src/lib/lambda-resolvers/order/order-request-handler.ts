@@ -15,14 +15,15 @@ export const orderRequestHandler = (deps: OrderResolverDeps) => ({
       'userId',
       'input',
     ]);
+    // TODO use validator instead
     missingParametersCheck<AnyuppApi.CreateOrderFromCartInput>(
       requestPayload.input,
       ['id'],
     );
 
-    return createOrderFromCart({
-      userId: requestPayload.userId,
-      cartId: requestPayload.input.id,
-    })(deps).toPromise();
+    return createOrderFromCart(
+      requestPayload.userId,
+      requestPayload.input.id,
+    )(deps).toPromise();
   },
 });

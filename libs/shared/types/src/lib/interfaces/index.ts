@@ -15,6 +15,8 @@ export * from './logger';
 export * from './order';
 export * from './payment';
 export * from './product-category';
+export * from './product-component';
+export * from './product-component-set';
 export * from './product';
 export * from './role-context';
 export * from './transaction';

@@ -21,10 +21,11 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   const seederDeps = createSeederDeps(
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
+    AdminUserPoolId,
   );
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await seedAdminUser(AdminUserPoolId)(seederDeps)
+    await seedAdminUser(seederDeps)
       .pipe(
         switchMap(userId => seedBusinessData(userId)(seederDeps)),
         switchMap(() =>

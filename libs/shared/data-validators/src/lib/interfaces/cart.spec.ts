@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ICart } from '@bgap/shared/types';
@@ -24,7 +25,12 @@ const cart: ICart = {
       },
       productId: 'PRODUCTID',
       quantity: 100,
-      statusLog: [],
+      statusLog: [
+        {
+          status: EOrderStatus.NONE,
+          userId: 'USERID',
+        },
+      ],
       variantId: 'VARIANTID',
       variantName: { en: 'EN' },
       laneId: 'LANEID',
@@ -57,7 +63,12 @@ describe('Cart validaton test', () => {
               "en": "EN",
             },
             "quantity": 100,
-            "statusLog": Array [],
+            "statusLog": Array [
+              Object {
+                "status": "NONE",
+                "userId": "USERID",
+              },
+            ],
             "variantId": "VARIANTID",
             "variantName": Object {
               "en": "EN",

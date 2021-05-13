@@ -22,7 +22,7 @@ import {
   ENebularButtonSize,
   EOrderStatus,
   ILaneOrderItem,
-  IStatusLogItem,
+  IStatusLog,
   IUnit,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -70,13 +70,11 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
     if (this.orderItem.currentStatus === EOrderStatus.PROCESSING) {
-      const processingInfo = (<IStatusLogItem[]>(
+      const processingInfo = (<IStatusLog[]>(
         objectToArray(this.orderItem.statusLog, 'ts')
       ))
         .reverse() // <-- Find the LAST processing status
-        .find(
-          (t: IStatusLogItem): boolean => t.status === EOrderStatus.PROCESSING,
-        );
+        .find((t: IStatusLog): boolean => t.status === EOrderStatus.PROCESSING);
 
       timer(0, 1000)
         .pipe(untilDestroyed(this))

@@ -1,6 +1,5 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -12,17 +11,14 @@ import {
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   anyuppAuthenticatedGraphqlClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
 import { EImageType, IAdminUser } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +39,12 @@ export class AdminUserFormComponent
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
+
+    this.dialogForm = this._formBuilder.group({
+      name: ['', [Validators.required]],
+      ...contactFormGroup(true),
+      profileImage: [''], // Just for file upload!!
+    });
   }
 
   get userImage(): string {
@@ -50,14 +52,8 @@ export class AdminUserFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      ...contactFormGroup(true),
-      profileImage: [''], // Just for file upload!!
-    });
-
     if (this.adminUser) {
-      this.dialogForm.patchValue(clearDbProperties<IAdminUser>(this.adminUser));
+      this.dialogForm.patchValue(cleanObject(this.adminUser));
     }
 
     this._changeDetectorRef.detectChanges();
@@ -92,19 +88,20 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
-          executeMutation(
-            anyuppAuthenticatedGraphqlClient,
-          )(AnyuppApi.CreateAdminUser, { input: { email, name, phone } })
-            .pipe(map((result: any) => result.createAdminUser))
-            .subscribe(() => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful',
-              );
+          executeMutation(anyuppAuthenticatedGraphqlClient)(
+            AnyuppApi.CreateAdminUser,
+            {
+              input: { email, name, phone },
+            },
+          ).subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
 
-              this.close();
-            });
+            this.close();
+          });
         } catch (error) {
           this._logger.error(
             `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,

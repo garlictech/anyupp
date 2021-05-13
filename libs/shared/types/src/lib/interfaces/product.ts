@@ -15,12 +15,6 @@ export interface IAvailability {
   price: number;
 }
 
-export interface IProductIngredients {
-  alcohol: number;
-  allergens: IAllergen;
-  caffeine: number;
-}
-
 export interface IProductVariantPack {
   size: number;
   unit: string;
@@ -34,8 +28,45 @@ export interface IProductVariant {
   isAvailable: boolean;
   price?: number; // generated
   availabilities: IAvailability[]; // unit edit
-  availableFrom: Date;
+  // availableFrom: Date;
   position: number;
+}
+
+export interface IProductConfigComponent {
+  productComponentId: string;
+  refGroupPrice?: number;
+  price?: number;
+  position: number;
+}
+
+export interface IProductConfigSet {
+  productSetId: string;
+  items: IProductConfigComponent[];
+  position: number;
+}
+
+export interface IGeneratedProductVariant {
+  id: string;
+  variantName: ILocalizedItem<string>;
+  price: number;
+  position: number;
+  pack: IProductVariantPack;
+}
+
+export interface IGeneratedProduct {
+  id: string; // UnitProductId
+  unitId: string;
+  name: ILocalizedItem<string>; // chain edit, group readonly
+  description: ILocalizedItem<string>;
+  image: string;
+  position: number;
+  productType: EProductType;
+  tax: number;
+  variants: IGeneratedProductVariant[];
+  productCategoryId: string;
+  allergens?: Allergen[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IProduct {
@@ -47,12 +78,13 @@ export interface IProduct {
   extends?: string;
   name: ILocalizedItem<string>; // chain edit, group readonly
   description: ILocalizedItem<string>;
-  image: string | null;
+  image?: string;
   productCategoryId: string;
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
-  allergens: string[];
+  allergens?: Allergen[];
+  configSets?: IProductConfigSet[];
   tax: number; // %
   laneId?: string;
   productType: EProductType;
@@ -71,10 +103,30 @@ export interface IUnitProduct {
   isVisible: boolean; // temp
   position: number;
   variants: IProductVariant[];
+  configSets?: IProductConfigSet[];
   laneId?: string;
   takeaway?: boolean;
+  groupProduct: IGroupProduct;
   createdAt: string;
   updatedAt: string;
+}
+
+// Duplicate from the crud api :(
+export enum Allergen {
+  celery = 'celery',
+  crustaceans = 'crustaceans',
+  egg = 'egg',
+  fish = 'fish',
+  gluten = 'gluten',
+  lupin = 'lupin',
+  milk = 'milk',
+  molluscs = 'molluscs',
+  mustard = 'mustard',
+  peanut = 'peanut',
+  sesame = 'sesame',
+  soya = 'soya',
+  sulphites = 'sulphites',
+  treenuts = 'treenuts',
 }
 
 export interface IChainProduct {
@@ -86,10 +138,14 @@ export interface IChainProduct {
   productCategoryId: string;
   productType: EProductType;
   isVisible: boolean;
-  image: string;
-  variants: [IProductVariant];
-  allergens: string[];
+  image?: string;
+  variants: IProductVariant[];
+  configSets?: IProductConfigSet[];
+  createdAt: string;
+  updatedAt: string;
+  allergens?: Allergen[];
 }
+
 export interface IGroupProduct {
   __typename?: 'GroupProduct';
   id: string;
@@ -98,19 +154,11 @@ export interface IGroupProduct {
   groupId: string;
   isVisible: boolean;
   tax: number;
-  variants: [IProductVariant];
-}
-
-export interface IGeneratedProduct {
-  id: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: number;
   variants: IProductVariant[];
-  productCategoryId: string;
+  configSets?: IProductConfigSet[];
+  chainProduct: IChainProduct;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IProductOrderChangeEvent {

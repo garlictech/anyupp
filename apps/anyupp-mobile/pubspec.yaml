@@ -34,6 +34,7 @@ dependencies:
   awesome_card: ^1.1.0
   badges: ^1.1.1
   barcode_scan: ^3.0.1
+  qr_code_scanner: ^0.4.0
   cached_network_image: ^2.2.0+1
   camera: ^0.5.8+7
   catcher: ^0.3.23
@@ -67,6 +68,9 @@ dependencies:
   url_launcher: ^5.7.4
   uuid: ^2.2.0
   webview_flutter: ^2.0.2
+  auto_size_text: ^2.1.0
+  flutter_user_agent: ^1.2.2
+  country_code_picker: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +107,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/flags/
+    - assets/allergens/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

@@ -113,8 +113,8 @@ type extractGeneric<Type> = Type extends TypeWithGeneric<infer X> ? X : never;
 type decideMonad<T, K> = T extends Promise<any> ? Promise<K> : Observable<K>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ReplaceReturnType<T extends (...a: any) => any, TNewReturn> = (
-  ...a: Parameters<T>
+type ReplaceReturnType<T extends (..._a: any) => any, TNewReturn> = (
+  ..._a: Parameters<T>
 ) => NonNullable<TNewReturn>;
 
 type extractMethod<

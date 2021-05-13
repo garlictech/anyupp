@@ -1,6 +1,4 @@
-import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -11,6 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -127,22 +126,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (event: LangChangeEvent): void => {
         this.selectedLang = (event.lang || '').split('-')[0];
         this._translateMenuItems();
+
+        this._changeDetectorRef.detectChanges();
       },
     );
     this._translateMenuItems();
-
-    const { xl } = this._breakpointService.getBreakpointsMap();
-    this._themeService
-      .onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
-        untilDestroyed(this),
-      )
-      .subscribe((isLessThanXl: boolean): boolean => {
-        this._changeDetectorRef.detectChanges();
-
-        return (this.userPictureOnly = isLessThanXl);
-      });
 
     this._menuService
       .onItemClick()
@@ -174,9 +162,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private _signOut() {
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent, {
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
       message: 'auth.confirmLogout',

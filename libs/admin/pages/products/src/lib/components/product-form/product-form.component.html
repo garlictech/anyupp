@@ -102,69 +102,19 @@
         </div>
       </div>
 
-      <!-- VARIANTS -->
       <bgap-form-product-variants
         [productLevel]="productLevel"
         [variantFormArray]="dialogForm.get('variants')! | asFormArray"
       ></bgap-form-product-variants>
 
-      <!-- CONTAINS -->
+      <bgap-form-allergens
+        [control]="dialogForm.get('allergens')! | asFormControl"
+      ></bgap-form-allergens>
 
-      <fieldset class="form">
-        <legend class="label">
-          {{ 'products.allergens.title' | translate }}
-        </legend>
-
-        <div class="row allergens">
-          <div class="col-md-3" *ngFor="let allergen of allergens">
-            <nb-checkbox
-              class="mr-5 mb-3"
-              [checked]="allergenIsChecked(allergen)"
-              (checkedChange)="toggleAllergen(allergen)"
-            >
-              <label class="caption">
-                <span class="img-container">
-                  <img src="assets/images/allergens/{{ allergen.id }}.svg" />
-                </span>
-
-                {{ allergen.idx }}. {{ 'products.allergens.' + allergen.id | translate }}</label
-              >
-            </nb-checkbox>
-          </div>
-        </div>
-      </fieldset>
-
-      <!--div formGroupName="allergens">
-          <label class="caption">{{
-            'products.allergens.title' | translate
-          }}</label>
-
-          <div class="row">
-            <div class="col-md-3">
-              <bgap-form-checkbox
-                caption="products.allergens.lactose"
-                [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('lactose')!
-                    | asFormControl
-                "
-              ></bgap-form-checkbox>
-            </div>
-            <div class="col-md-3">
-              <bgap-form-checkbox
-                caption="products.allergens.nuts"
-                [control]="
-                  dialogForm.get('contains')!.get('allergens')!.get('nuts')!
-                    | asFormControl
-                "
-              ></bgap-form-checkbox>
-            </div>
-          </div>
-
-          <label class="caption">{{
-            'products.ingredients.title' | translate
-          }}</label>
-          <div class="col-md-3">...</div>
-        </div-->
+      <bgap-form-product-components
+        [productLevel]="productLevel"
+        [componentFormArray]="dialogForm.get('configSets')! | asFormArray"
+      ></bgap-form-product-components>
 
       <bgap-form-clickable-image-input
         [image]="productImage"

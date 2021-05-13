@@ -17,7 +17,7 @@ custom:
   sstApp: ${self:custom.stage}-anyupp-backend
   bundle:
     packager: yarn
-    linting: true
+    linting: false
     sourcemaps: true
     caching: true
 

@@ -17,6 +17,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "removeComments": true,
+    "incremental": true,
+    "watch": true,
     "target": "es2015",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
@@ -126,7 +129,17 @@
       "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
-      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"]
+      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
+      "@bgap/admin/pages/modifiers-and-extras": [
+        "libs/admin/pages/modifiers-and-extras/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/product-components": [
+        "libs/admin/shared/data-access/product-components/src/index.ts"
+      ],
+      "@bgap/shared/fixtures": ["libs/shared/fixtures/src/index.ts"],
+      "@bgap/admin/shared/data-access/product-component-sets": [
+        "libs/admin/shared/data-access/product-component-sets/src/index.ts"
+      ]
     }
   },
   "exclude": [

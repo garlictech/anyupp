@@ -6,7 +6,6 @@ import {
   roleContextsAdapter,
 } from './role-contexts.reducer';
 
-// Lookup the 'RoleContexts' feature state managed by NgRx
 export const getRoleContextsState = createFeatureSelector<
   RoleContextsPartialState,
   IRoleContextsState

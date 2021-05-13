@@ -9,7 +9,10 @@
         class="float-right"
       ></bgap-active-product-category-selector>
       <button
-        [disabled]="selectedProductLevel !== EProductLevel.CHAIN"
+        [disabled]="
+          selectedProductLevel !== eProductLevel.CHAIN ||
+          !selectedProductCategoryId
+        "
         nbButton
         class="float-right mr-2"
         type="button"
@@ -25,8 +28,8 @@
     <nb-tabset (changeTab)="selectLevel($event)" fullWidth #tabset>
       <nb-tab
         [tabTitle]="'products.chainProducts' | translate"
-        [tabId]="EProductLevel.CHAIN"
-        [active]="selectedProductLevel === EProductLevel.CHAIN"
+        [tabId]="eProductLevel.CHAIN"
+        [active]="selectedProductLevel === eProductLevel.CHAIN"
         [disabled]="!selectedChainId"
       >
         <ng-container *ngFor="let product of chainProducts$ | async">
@@ -36,7 +39,7 @@
             <bgap-product-list-item
               class="w-100"
               [product]="product"
-              [productLevel]="EProductLevel.CHAIN"
+              [productLevel]="eProductLevel.CHAIN"
               [currency]="groupCurrency"
             ></bgap-product-list-item>
           </nb-list-item>
@@ -44,8 +47,8 @@
       </nb-tab>
       <nb-tab
         [tabTitle]="'products.groupProducts' | translate"
-        [tabId]="EProductLevel.GROUP"
-        [active]="selectedProductLevel === EProductLevel.GROUP"
+        [tabId]="eProductLevel.GROUP"
+        [active]="selectedProductLevel === eProductLevel.GROUP"
         [badgeText]="
           (pendingGroupProducts || []).length > 0 && selectedGroupId
             ? pendingGroupProducts.length.toString()
@@ -60,7 +63,7 @@
               class="w-100"
               [pending]="true"
               [product]="product"
-              [productLevel]="EProductLevel.GROUP"
+              [productLevel]="eProductLevel.GROUP"
               [currency]="groupCurrency"
             ></bgap-product-list-item>
           </nb-list-item>
@@ -69,7 +72,7 @@
               class="w-100"
               [pending]="false"
               [product]="product"
-              [productLevel]="EProductLevel.GROUP"
+              [productLevel]="eProductLevel.GROUP"
               [currency]="groupCurrency"
             ></bgap-product-list-item>
           </nb-list-item>
@@ -77,8 +80,8 @@
       </nb-tab>
       <nb-tab
         [tabTitle]="'products.unitProducts' | translate"
-        [tabId]="EProductLevel.UNIT"
-        [active]="selectedProductLevel === EProductLevel.UNIT"
+        [tabId]="eProductLevel.UNIT"
+        [active]="selectedProductLevel === eProductLevel.UNIT"
         [badgeText]="
           (pendingUnitProducts || []).length > 0 && selectedUnitId
             ? pendingUnitProducts.length.toString()
@@ -93,7 +96,7 @@
               class="w-100"
               [pending]="true"
               [product]="product"
-              [productLevel]="EProductLevel.UNIT"
+              [productLevel]="eProductLevel.UNIT"
               [currency]="groupCurrency"
             ></bgap-product-list-item>
           </nb-list-item>
@@ -107,7 +110,7 @@
             <bgap-product-list-item
               class="w-100"
               [product]="product"
-              [productLevel]="EProductLevel.UNIT"
+              [productLevel]="eProductLevel.UNIT"
               [currency]="groupCurrency"
               (positionChange)="unitProductPositionChange($event)"
               [isFirst]="isFirst"

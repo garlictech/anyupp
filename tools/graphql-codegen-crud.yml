@@ -1,7 +1,7 @@
 overwrite: true
 schema:
+  - libs/gql-sdk/src/schema/aws.graphql
   - apps/crud-backend/amplify/backend/api/anyuppzsolt/build/schema.graphql
-  - libs/anyupp-gql/backend/src/graphql/schema/schema.codegen.graphql
 documents:
   - libs/crud-gql/api/src/lib/documents/*.graphql
   - libs/crud-gql/api/src/lib/generated/graphql/*.ts
@@ -13,14 +13,11 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-document-nodes
       - typescript-generic-sdk
-      - named-operations-object
     config:
       declarationKind: 'interface'
-      immutableTypes: true,
-      defaultScalarType: unknown,
-      skipTypename: true,
+      defaultScalarType: unknown
+      skipTypename: true
       namingConvention:
         enumValues: change-case#lowerCase
       usingObservableFrom: "import { Observable } from 'rxjs';"

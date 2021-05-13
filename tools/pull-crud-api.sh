@@ -6,21 +6,30 @@ APPNAME=$1
 STAGE=$2
 EDITORNAME=${EDITORNAME:-vim}
 AWS_PROFILE=${AWS_PROFILE:-default}
+echo "APPNAME=$APPNAME"
+echo "STAGE=$STAGE"
+echo "EDITORNAME=$EDITORNAME"
+echo "AWS_PROFILE=$AWS_PROFILE"
 
 APPID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId" | \
   jq -r '.Parameter.Value')
+echo "APPID=$APPID"
 
 USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
   jq -r '.Parameter.Value')
+echo "USERPOOLID=$USERPOOLID"
 
 IDENTITYPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
   jq -r '.Parameter.Value')
+echo "IDENTITYPOOLID=$IDENTITYPOOLID"
 
 WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
   jq -r '.Parameter.Value')
+echo "WEBCLIENTID=$WEBCLIENTID"
 
 NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminNativeUserPoolClientId" | \
   jq -r '.Parameter.Value')
+echo "NATIVECLIENTID=$NATIVECLIENTID"
 
 ANGULARconfig="{\
 \"SourceDir\":\"../../libs/crud-gql/api/src/lib/generated\",\
@@ -80,6 +89,7 @@ amplify pull \
 --yes
 
 amplify codegen
+rm -f libs/crud-gql/api/src/lib/generated/api.ts
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
 
 # ----------------------------------------------------------

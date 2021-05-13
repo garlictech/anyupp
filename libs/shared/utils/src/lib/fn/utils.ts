@@ -1,5 +1,4 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
-import { tap } from 'rxjs/operators';
 import { missingParametersError } from './errors';
 
 export const customNumberCompare = (field: string, desc = false) => (
@@ -134,7 +133,6 @@ export const removeNestedTypeNameField = (obj: any) => {
   return finalObj;
 };
 
-
 /**
  * Generic type guard, to narrow types
  *
@@ -168,20 +166,6 @@ export const missingParametersCheck = <T>(
     }
   }
   return true;
-};
-
-export const pipeDebug = <T>(tag: string) => {
-  return tap<T>({
-    next(value) {
-      console.log(`[${tag}: Next]`, JSON.stringify(value, undefined, 2));
-    },
-    error(error) {
-      console.log(`[${tag}: Error]`, JSON.stringify(error, undefined, 2));
-    },
-    complete() {
-      console.log(`[${tag}]: Complete`);
-    },
-  });
 };
 
 export const randomString = (length: number) =>

@@ -1,0 +1,58 @@
+Feature: Product categories
+
+Background: Login and steps to the Categories
+   Given I am on the login page
+   When I fill out the input with id "username" with the "test@anyupp.com" value
+   And I fill out the input with id "password" with the "Testtesttest12_" value
+   And I fill out the "Context" input with the "SU_CTX_ID" id
+   And I click the "sign in" text
+   When I click the "skip" text
+   Then I should be on the dashboard page
+   And I click on the menu icon
+   And I click on the "Product categories" text
+   Then the "Product categories (EN)" title is displayed
+   When I click on the "Chain" selector
+   And I select "test chain updated"
+   And I click on the "Group" selector
+   And I select "test group updated"
+   And I click on the "Unit" selector
+   And I select "test unit updated"
+
+ Scenario: Add new category
+   When I click on the plus button
+   And I fill out the "Name (EN)" input with "test category"
+   And I fill out the "Name (HU)" input with "test category"
+   And I fill out the "Name (DE)" input with "test category"
+   And I fill out the "Description (EN)" input with "test description"
+   And I fill out the "Description (HU)" input with "test description"
+   And I fill out the "Description (EN)" input with "test description"
+   And I click on the submit button
+   Then I should see the "test category" label
+   And I should see "test description" text
+
+ Scenario: Update category
+   When I click on the first Edit button
+   And I fill out the "Name (EN)" input with "test category updated"
+   And I fill out the "Name (HU)" input with "test category updated"
+   And I fill out the "Name (DE)" input with "test category updated"
+   And I fill out the "Description (EN)" input with "test description updated"
+   And I fill out the "Description (HU)" input with "test description updated"
+   And I fill out the "Description (EN)" input with "test description updated"
+   And I click on the submit button
+   Then I should see the "test category updated" label
+   And I should see "test description updated" text
+
+  Scenario: Add an other category
+   When I click on the plus button
+   And I fill out the "Name (EN)" input with "test category 2"
+   And I fill out the "Name (HU)" input with "test category 2"
+   And I fill out the "Name (DE)" input with "test category 2"
+   And I fill out the "Description (EN)" input with "test description 2"
+   And I fill out the "Description (HU)" input with "test description 2"
+   And I fill out the "Description (EN)" input with "test description 2"
+   And I click on the submit button
+   Then I should see the "test category 2" label
+   And I should see "test description 2" text
+
+Scenario: Change list position
+#TODO:

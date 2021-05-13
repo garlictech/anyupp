@@ -1,6 +1,7 @@
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 
 import {
   adminRequestHandler,
@@ -24,6 +25,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
   const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
   const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+  const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
@@ -42,14 +44,19 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     crudSdk,
   });
 
+  const stripeRequestHandlers = stripeRequestHandler({
+    crudSdk,
+    anyuppSdk,
+  });
+
   const resolverMap = {
-    getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
-    updateStripeCard: stripeRequestHandler.updateStripeCard,
-    deleteStripeCard: stripeRequestHandler.deleteStripeCard,
+    listStripeCards: stripeRequestHandlers.listStripeCards,
+    startStripePayment: stripeRequestHandlers.startStripePayment,
     createAdminUser: adminUserRequestHandlers.createAdminUser,
     deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
     createOrderFromCart: orderRequestHandlers.createOrderFromCart,
     getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
+    regenerateUnitData: unitRequestHandlers.regenerateUnitData,
     createUnitProduct: productRequestHandlers.createUnitProduct,
   };
 

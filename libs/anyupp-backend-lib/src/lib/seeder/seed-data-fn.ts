@@ -1,76 +1,66 @@
 import { catchError, delay, switchMap, tap } from 'rxjs/operators';
-import { awsConfig } from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  executeMutation,
-  GraphqlApiClient,
-  GraphqlApiFp,
-} from '@bgap/shared/graphql/api-client';
+
 import { EProductType, EAdminRole } from '@bgap/shared/types';
-import { combineLatest, concat, Observable, of } from 'rxjs';
+import { seededIdPrefix } from '@bgap/shared/fixtures';
+import { combineLatest, concat, from, Observable, of } from 'rxjs';
 import { Reader } from 'fp-ts/lib/Reader';
 
-interface SeederDependencies {
-  crudBackendGraphQLClient: GraphqlApiClient;
+export interface SeederDependencies {
+  crudSdk: CrudApi.AmplifySdk;
+  userPoolId: string;
 }
 
 type SeederReader<T> = Reader<SeederDependencies, Observable<T>>;
 
 export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
 
-const generateChainId = (idx: number): string => `chain_${idx}_id`;
+const generateChainId = (idx: number) => `${seededIdPrefix}chain_${idx}_id`;
 const generateGroupId = (chainIdx: number, idx: number) =>
-  `group_c${chainIdx}_${idx}_id`;
+  `${seededIdPrefix}group_c${chainIdx}_${idx}_id`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
-  `unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
+  `${seededIdPrefix}unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateLaneId = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
   idx: number,
-) => `lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
+) => `${seededIdPrefix}lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
 const generateProductCategoryId = (chainIdx: number, idx: number) =>
-  `product_category_c${chainIdx}_${idx}_id`;
+  `${seededIdPrefix}product_category_c${chainIdx}_${idx}_id`;
 const generateChainProductId = (chainIdx: number, idx: number) =>
-  `chain_product_c${chainIdx}_${idx}_id`;
+  `${seededIdPrefix}chain_product_c${chainIdx}_${idx}_id`;
 const generateGroupProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `group_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
+) => `${seededIdPrefix}group_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateUnitProductId = (
   chainIdx: number,
   groupIdx: number,
   idx: number,
-) => `unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
+) => `${seededIdPrefix}unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
 const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
-  `chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
-const generateCartId = (idx: number) => `cart_${idx}_id_seeded`;
-const generateUserId = (idx: number) => `user_${idx}_id`;
+  `${seededIdPrefix}chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
+const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
+const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: EAdminRole) =>
-  `role_context_${idx}_${role}_id`;
+  `${seededIdPrefix}role_context_${idx}_${role}_id`;
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
-  `admin_role_context_${idx}_${role}_id`;
+  `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
 
 type DeleteCreateInput<T> = {
   input: T;
-  deleteOperation: string;
-  createOperation: string;
-  createDataPath: string;
+  deleteOperation: keyof CrudApi.AmplifySdk;
+  createOperation: keyof CrudApi.AmplifySdk;
 };
 
 const deleteCreate = <INPUT extends { id: string }, OUTPUT>({
   input,
   deleteOperation,
   createOperation,
-  createDataPath,
 }: DeleteCreateInput<INPUT>): SeederReader<OUTPUT> => deps =>
-  executeMutation<unknown, unknown>(
-    deleteOperation,
-    input.id,
-    // We dont read the return data here
-    'idontcare',
-  )(deps.crudBackendGraphQLClient).pipe(
+  from(deps.crudSdk[deleteOperation]).pipe(
     catchError(error => {
       console.warn(
         'Problem with SEED data DELETION: create: ',
@@ -85,13 +75,7 @@ const deleteCreate = <INPUT extends { id: string }, OUTPUT>({
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
     delay(1000),
-    switchMap(() =>
-      executeMutation<INPUT, OUTPUT>(
-        createOperation,
-        createDataPath,
-        input,
-      )(deps.crudBackendGraphQLClient),
-    ),
+    switchMap(() => from(deps.crudSdk[createOperation])),
   );
 
 export const createTestChain = (chainIdx: number) => {
@@ -107,23 +91,22 @@ export const createTestChain = (chainIdx: number) => {
     phone: '1234567890',
     style: {
       colors: {
-        backgroundLight: '#ffffff',
-        backgroundDark: '#ffffff',
-        borderLight: '#ffffff',
-        borderDark: '#ffffff',
-        disabled: '#ffffff',
-        highlight: '#ffffff',
-        indicator: '#ffffff',
-        textLight: '#ffffff',
-        textDark: '#ffffff',
+        backgroundLight: '#FFFFFF',
+        backgroundDark: '#D6DDE0',
+        textDark: '#303030',
+        textLight: '#FFFFFF',
+        indicator: '#30BF60',
+        highlight: '#A8692A',
+        disabled: '#303030',
+        borderDark: '#E7E5D0',
+        borderLight: '#C3CACD',
       },
     },
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteChain,
-    createOperation: CrudApi.createChain,
-    createDataPath: 'createChain',
+    deleteOperation: 'DeleteChain',
+    createOperation: 'CreateChain',
   });
 };
 
@@ -140,9 +123,8 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => {
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteGroup,
-    createOperation: CrudApi.createGroup,
-    createDataPath: 'createGroup',
+    deleteOperation: 'DeleteGroup',
+    createOperation: 'CreateGroup',
   });
 };
 
@@ -157,7 +139,7 @@ export const createTestUnit = (
     chainId: generateChainId(chainIdx),
     isActive: true,
     isAcceptingOrders: true,
-    name: `Test unit #${unitIdx}`,
+    name: `Seeded unit #${chainIdx}${groupIdx}${unitIdx}`,
     address: {
       address: 'Ág u. 1.',
       city: 'Budapest',
@@ -206,9 +188,8 @@ export const createTestUnit = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteUnit,
-    createOperation: CrudApi.createUnit,
-    createDataPath: 'createUnit',
+    deleteOperation: 'DeleteUnit',
+    createOperation: 'CreateUnit',
   });
 };
 
@@ -228,13 +209,13 @@ export const createTestProductCategory = (
       en: `Test product category #${productCategoryId} description`,
     },
     position: productCategoryId,
+    image: 'https://picsum.photos/100',
   };
 
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteProductCategory,
-    createOperation: CrudApi.createProductCategory,
-    createDataPath: 'createProductCategory',
+    deleteOperation: 'DeleteProductCategory',
+    createOperation: 'CreateProductCategory',
   });
 };
 
@@ -273,12 +254,17 @@ export const createTestChainProduct = (
         },
       },
     ],
+    image: 'https://picsum.photos/100',
+    allergens: [
+      CrudApi.Allergen.egg,
+      CrudApi.Allergen.gluten,
+      CrudApi.Allergen.peanut,
+    ],
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteChainProduct,
-    createOperation: CrudApi.createChainProduct,
-    createDataPath: 'createProductCategory',
+    deleteOperation: 'DeleteChainProduct',
+    createOperation: 'CreateChainProduct',
   });
 };
 
@@ -315,12 +301,14 @@ export const createTestGroupProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteGroupProduct,
-    createOperation: CrudApi.createGroupProduct,
-    createDataPath: 'createGroupProduct',
+    deleteOperation: 'DeleteGroupProduct',
+    createOperation: 'CreateGroupProduct',
   });
 };
 
+/**
+ * Create UnitProduct and GeneratedProducts too
+ */
 export const createTestUnitProduct = (
   chainIdx: number,
   groupIdx: number,
@@ -367,9 +355,8 @@ export const createTestUnitProduct = (
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteUnitProduct,
-    createOperation: CrudApi.createUnitProduct,
-    createDataPath: 'createUnitProduct',
+    deleteOperation: 'DeleteUnitProduct',
+    createOperation: 'CreateUnitProduct',
   });
 };
 
@@ -418,14 +405,15 @@ export const createTestCart = ({
           hu: 'pohár',
         },
         laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+        image: 'https://picsum.photos/100',
+        statusLog: [],
       },
     ],
   };
   return deleteCreate({
     input,
-    deleteOperation: CrudApi.deleteCart,
-    createOperation: CrudApi.createCart,
-    createDataPath: 'createCart',
+    deleteOperation: 'DeleteCart',
+    createOperation: 'CreateCart',
   });
 };
 
@@ -499,75 +487,39 @@ export const createTestRoleContext = (
     groupId: generateGroupId(chainIdx, groupIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
   };
-  const deleteRoleContext = /* GraphQL */ `
-    mutation DeleteRoleContext(
-      $input: DeleteRoleContextInput!
-      $condition: ModelRoleContextConditionInput
-    ) {
-      deleteRoleContext(input: $input, condition: $condition) {
-        id
-      }
-    }
-  `;
-  const createRoleContext = /* GraphQL */ `
-    mutation CreateRoleContext(
-      $input: CreateRoleContextInput!
-      $condition: ModelRoleContextConditionInput
-    ) {
-      createRoleContext(input: $input, condition: $condition) {
-        id
-      }
-    }
-  `;
+
   return concat(
     deleteCreate({
       input: superuserInput,
-      deleteOperation: deleteRoleContext,
-      createOperation: createRoleContext,
-      createDataPath: 'createRoleContext',
+      deleteOperation: 'DeleteRoleContext',
+      createOperation: 'CreateRoleContext',
     }),
     deleteCreate({
       input: chainAdminInput,
-      deleteOperation: deleteRoleContext,
-      createOperation: createRoleContext,
-      createDataPath: 'createRoleContext',
+      deleteOperation: 'DeleteRoleContext',
+      createOperation: 'CreateRoleContext',
     }),
     deleteCreate({
       input: groupAdminInput,
-      deleteOperation: deleteRoleContext,
-      createOperation: createRoleContext,
-      createDataPath: 'createRoleContext',
+      deleteOperation: 'DeleteRoleContext',
+      createOperation: 'CreateRoleContext',
     }),
     deleteCreate({
       input: unitAdminInput,
-      deleteOperation: deleteRoleContext,
-      createOperation: createRoleContext,
-      createDataPath: 'createRoleContext',
+      deleteOperation: 'DeleteRoleContext',
+      createOperation: 'CreateRoleContext',
     }),
     deleteCreate({
       input: staffInput,
-      deleteOperation: deleteRoleContext,
-      createOperation: createRoleContext,
-      createDataPath: 'createRoleContext',
+      deleteOperation: 'DeleteRoleContext',
+      createOperation: 'CreateRoleContext',
     }),
   ).pipe(tap(() => console.debug('createTestRoleContext SUCCESS')));
 };
 
-export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => ({
-  crudBackendGraphQLClient,
-}: {
-  crudBackendGraphQLClient: GraphqlApiClient;
-}) => {
-  const deleteAdminRoleContext = /* GraphQL */ `
-    mutation DeleteAdminRoleContext(
-      $input: DeleteAdminRoleContextInput!
-      $condition: ModelAdminRoleContextConditionInput
-    ) {
-      deleteAdminRoleContext(input: $input, condition: $condition) {
-        id
-      }
-    }
-  `;
+export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => (
+  deps: SeederDependencies,
+) => {
   const idSuper = generateAdminRoleContextId(
     adminRoleContextIdx,
     EAdminRole.SUPERUSER,
@@ -576,55 +528,38 @@ export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => ({
     adminRoleContextIdx,
     EAdminRole.CHAIN_ADMIN,
   );
-  return combineLatest([
-    executeMutation(deleteAdminRoleContext, 'deleteAdminRoleContext', {
-      input: {
-        id: idSuper,
-      },
-    })(crudBackendGraphQLClient).pipe(
-      catchError(err => {
-        console.warn(
-          `Can NOT delete the AdminRoleContext with id: ${idSuper}`,
-          err,
-        );
-        return of('SUCCESS');
+
+  return concat(
+    from(
+      deps.crudSdk.DeleteAdminRoleContext({
+        input: {
+          id: idSuper,
+        },
       }),
     ),
-    executeMutation(deleteAdminRoleContext, 'deleteAdminRoleContext', {
-      input: {
-        id: idChainAdmin,
-      },
-    })(crudBackendGraphQLClient).pipe(
-      catchError(err => {
-        console.warn(
-          `Can NOT delete the AdminRoleContext with id: ${idChainAdmin}`,
-          err,
-        );
-        return of('SUCCESS');
+    from(
+      deps.crudSdk.DeleteAdminRoleContext({
+        input: {
+          id: idChainAdmin,
+        },
       }),
     ),
-  ]);
+  ).pipe(
+    catchError(err => {
+      console.warn(
+        `Can NOT delete the AdminRoleContext with id: ${idChainAdmin}`,
+        err,
+      );
+      return of('SUCCESS');
+    }),
+  );
 };
 
 export const createTestAdminRoleContext = (
   adminRoleContextIdx: number,
   roleContextIdx: number,
   adminUserId: string,
-) => ({
-  crudBackendGraphQLClient,
-}: {
-  crudBackendGraphQLClient: GraphqlApiClient;
-}) => {
-  const createAdminRoleContext = /* GraphQL */ `
-    mutation CreateAdminRoleContext(
-      $input: CreateAdminRoleContextInput!
-      $condition: ModelAdminRoleContextConditionInput
-    ) {
-      createAdminRoleContext(input: $input, condition: $condition) {
-        id
-      }
-    }
-  `;
+) => (deps: SeederDependencies) => {
   const superuserInput: CrudApi.CreateAdminRoleContextInput = {
     id: generateAdminRoleContextId(adminRoleContextIdx, EAdminRole.SUPERUSER),
     adminUserId,
@@ -640,26 +575,16 @@ export const createTestAdminRoleContext = (
   };
 
   return combineLatest([
-    executeMutation(createAdminRoleContext, 'createAdminRoleContext', {
-      input: superuserInput,
-    })(crudBackendGraphQLClient),
-    executeMutation(createAdminRoleContext, 'createAdminRoleContext', {
-      input: chainAdminInput,
-    })(crudBackendGraphQLClient),
+    from(deps.crudSdk.CreateAdminRoleContext({ input: superuserInput })),
+    from(deps.crudSdk.CreateAdminRoleContext({ input: chainAdminInput })),
   ]);
 };
-
-export interface SeederDeps {
-  crudBackendGraphQLClient: GraphqlApiClient;
-}
 
 export const createSeederDeps = (
   awsAccesssKeyId: string,
   awsSecretAccessKey: string,
-): SeederDeps => ({
-  crudBackendGraphQLClient: GraphqlApiFp.createBackendClient(
-    awsConfig,
-    awsAccesssKeyId,
-    awsSecretAccessKey,
-  ),
+  userPoolId: string,
+): SeederDependencies => ({
+  userPoolId,
+  crudSdk: CrudApi.getCrudSdkForIAM(awsAccesssKeyId, awsSecretAccessKey),
 });

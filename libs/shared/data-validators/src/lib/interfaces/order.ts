@@ -28,6 +28,7 @@ export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
   variantName: localizedItemSchema.required(),
   laneId: Joi.string().allow(null, ''),
   image: Joi.string().allow(null, ''),
+  allergens: Joi.array().items(Joi.string()).optional().allow(null),
 };
 
 export const placeSchema: Joi.SchemaMap<IPlace> = {
@@ -41,6 +42,7 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
+  orderNum: Joi.string().allow(null, ''),
   items: Joi.array().items(orderItemSchema),
   paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
@@ -48,6 +50,8 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
   takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema).required(),
   paymentIntention: Joi.number().allow(null),
+  transactionId: Joi.string().allow(null),
+  transaction: Joi.object().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 
 /* eslint-disable @typescript-eslint/dot-notation */
 import {
@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   Component,
   Injector,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
@@ -47,43 +48,23 @@ import { select, Store } from '@ngrx/store';
 })
 export class UnitFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   public unit!: IUnit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
-  private _formsService: FormsService;
   private _groups: IGroup[] = [];
-  private _amplifyDataService: AmplifyDataService;
-  private _logger: NGXLogger;
 
   constructor(
     protected _injector: Injector,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private _store: Store<any>,
+    private _formsService: FormsService,
+    private _amplifyDataService: AmplifyDataService,
+    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
-
-    this._amplifyDataService = this._injector.get(AmplifyDataService);
-    this._logger = this._injector.get(NGXLogger);
-    this._store = this._injector.get(Store);
-    this._formsService = this._injector.get(FormsService);
-    this._store
-      .pipe(
-        select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
-      )
-      .subscribe((groups: IGroup[]): void => {
-        this._groups = groups;
-
-        this.groupOptions = this._groups.map(
-          (group: IGroup): IKeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        );
-      });
 
     this.dialogForm = this._formBuilder.group({
       groupId: ['', [Validators.required]],
@@ -171,10 +152,14 @@ export class UnitFormComponent
     } else {
       // Patch ChainId
       this._store
-        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
+        .pipe(
+          select(loggedUserSelectors.getSelectedChainId),
+          take(1),
+          delay(200),
+        )
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm.patchValue({ chainId: selectedChainId });
 
             this._changeDetectorRef.detectChanges();
           }
@@ -185,16 +170,34 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
-            this.dialogForm?.controls.groupId.patchValue(selectedGroupId);
-
-            this._changeDetectorRef.detectChanges();
+            this.dialogForm.patchValue({ groupId: selectedGroupId });
           }
         });
 
-      this.dialogForm.controls.isActive.patchValue(false);
+      this.dialogForm.patchValue({ isActive: false });
     }
 
-    this._changeDetectorRef.detectChanges();
+    this._store
+      .pipe(
+        select(groupsSelectors.getSelectedChainGroups),
+        untilDestroyed(this),
+      )
+      .subscribe((groups: IGroup[]): void => {
+        this._groups = groups;
+
+        this.groupOptions = this._groups.map(
+          (group: IGroup): IKeyValue => ({
+            key: group.id,
+            value: group.name,
+          }),
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
+  }
+
+  ngOnDestroy(): void {
+    // untilDestroyed uses it.
   }
 
   public async submit(): Promise<void> {

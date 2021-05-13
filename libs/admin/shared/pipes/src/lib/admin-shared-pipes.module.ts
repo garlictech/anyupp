@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { AsFormArrayPipe } from './as-form-array/as-form-array.pipe';
+import { AsFormControlPipe } from './as-form-control/as-form-control.pipe';
+import { AsFormGroupPipe } from './as-form-group/as-form-group.pipe';
+import { AwsStoragePathPipe } from './aws-storage-path/aws-storage-path';
 import { CurrencyFormatterPipe } from './currency-formatter/currency-formatter.pipe';
+import { IterableAbstractControlsPipe } from './iterable-abstract-controls/iterable-abstract-controls.pipe';
 import { LocalizePipe } from './localize/localize.pipe';
 import { LocalizedDatePipe } from './localized-date/localized-date.pipe';
 import { ObjectToArrayPipe } from './object-to-array/object-to-array.pipe';
+import { ProductComponentInfoPipe } from './product-component-info/product-component-info';
+import { ProductComponentSetInfoPipe } from './product-component-set-info/product-component-set-info';
 import { RoleEntityNamesPipe } from './role-entity-names/role-entity-names.pipe';
 import { SecToHmsPipe } from './sec-to-hms/sec-to-hms.pipe';
-import { AsFormControlPipe } from './as-form-control/as-form-control.pipe';
-import { AsFormArrayPipe } from './as-form-array/as-form-array.pipe';
-import { AsFormGroupPipe } from './as-form-group/as-form-group.pipe';
-import { IterableAbstractControlsPipe } from './iterable-abstract-controls/iterable-abstract-controls.pipe';
-import { AwsStoragePathPipe } from './aws-storage-path/aws-storage-path';
 
 const PIPES = [
   LocalizePipe,
@@ -25,6 +27,8 @@ const PIPES = [
   AsFormGroupPipe,
   IterableAbstractControlsPipe,
   AwsStoragePathPipe,
+  ProductComponentInfoPipe,
+  ProductComponentSetInfoPipe,
 ];
 
 @NgModule({

@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -21,7 +22,8 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './active-product-category-selector.component.html',
   styleUrls: ['./active-product-category-selector.component.scss'],
 })
-export class ActiveProductCategorySelectorComponent implements OnDestroy {
+export class ActiveProductCategorySelectorComponent
+  implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
   public productCategories$: Observable<IProductCategory[]>;
   private _loggedUser!: IAdminUser;
@@ -37,16 +39,20 @@ export class ActiveProductCategorySelectorComponent implements OnDestroy {
       select(productCategoriesSelectors.getAllProductCategories),
       untilDestroyed(this),
     );
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
-        this._loggedUser = loggedUser;
-      });
   }
 
   get selectedProductCategoryId(): string | null | undefined {
     return this._loggedUser?.settings?.selectedProductCategoryId;
+  }
+
+  ngOnInit(): void {
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
+
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {

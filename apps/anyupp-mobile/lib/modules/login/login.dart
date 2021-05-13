@@ -26,7 +26,6 @@ export 'widgets/email_pageview_widget.dart';
 export 'widgets/email_register_widget.dart';
 export 'widgets/link_account_dialog.dart';
 export 'widgets/logout_confirm_dialog.dart';
-export 'widgets/password_reset_widget.dart';
-export 'widgets/phone_login_dialog.dart';
+export 'widgets/password_resend_widget.dart';
 export 'widgets/social_login_button_widget.dart';
 export 'widgets/unlink_accounts_widget.dart';

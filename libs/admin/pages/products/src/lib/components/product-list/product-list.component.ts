@@ -48,7 +48,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public pendingUnitProducts: IProduct[] = [];
   public groupCurrency = '';
   public unitProducts: IProduct[] = [];
-  public EProductLevel = EProductLevel;
+  public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
   private _loggedUser?: IAdminUser;
@@ -61,7 +61,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private _amplifyDataService: AmplifyDataService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.selectedProductLevel = EProductLevel.UNIT;
+    this.selectedProductLevel = EProductLevel.CHAIN;
 
     this.groupProducts$ = this._store.pipe(
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
@@ -165,12 +165,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   public addProduct(): void {
-    const dialog = this._nbDialogService.open(ProductFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    const dialog = this._nbDialogService.open(ProductFormComponent);
 
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }

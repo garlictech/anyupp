@@ -1,6 +1,8 @@
 import { EOrderStatus } from '../enums';
 import { ILocalizedItem } from './localized-item';
 import { PaymentMode } from '@bgap/anyupp-gql/api';
+import { ITransaction } from './transaction';
+import { Allergen } from './product';
 
 export interface IPriceShown {
   __typename?: 'PriceShown';
@@ -11,13 +13,10 @@ export interface IPriceShown {
   taxSum: number;
 }
 
-export interface IStatusLogItem {
+export interface IStatusLog {
   userId: string;
   status: EOrderStatus;
   ts?: number; // after objectToArray(statusLog, 'ts')
-}
-export interface IStatusLog {
-  [timestamp: number]: IStatusLogItem;
 }
 
 export interface IOrderItem {
@@ -27,11 +26,12 @@ export interface IOrderItem {
   priceShown: IPriceShown;
   productId: string;
   quantity: number;
-  statusLog: IStatusLog;
+  statusLog: IStatusLog[];
   variantId: string;
   variantName: ILocalizedItem<string>;
   image?: string;
   laneId?: string;
+  allergens?: Allergen[];
 }
 
 export interface ILaneOrderItem extends IOrderItem {
@@ -59,15 +59,18 @@ export interface IOrder {
   id: string;
   userId: string;
   unitId: string;
+  orderNum?: string;
   items: IOrderItem[];
   paymentMode: PaymentMode;
-  statusLog: IStatusLog;
+  statusLog: [IStatusLog];
   sumPriceShown: IPriceShown;
   takeAway: boolean;
   place?: IPlace;
   paymentIntention?: number;
   createdAt: string;
   updatedAt: string;
+  transaction?: ITransaction;
+  transactionId?: string;
 }
 
 export interface IDateIntervals {

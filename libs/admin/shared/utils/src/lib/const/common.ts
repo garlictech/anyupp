@@ -34,6 +34,7 @@ export const MENU_ROLES = {
     EAdminRole.UNIT_ADMIN,
   ],
   PRODUCT_CATEGORIES: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
+  MODIFIERS_AND_EXTRAS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
   UNITS: [
     EAdminRole.SUPERUSER,
     EAdminRole.CHAIN_ADMIN,

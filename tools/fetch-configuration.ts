@@ -72,7 +72,13 @@ pipe(
       }),
       fp.tap(config => {
         const apiKeyName = Object.keys(amplifyConfig['api'])[0];
+        if (!amplifyConfig['storage']) {
+          throw Error(
+            'No bucket configured for this Amplify project! amplify-meta.json must have a "bucket": section.',
+          );
+        }
         const bucketKeyName = Object.keys(amplifyConfig['storage'])[0];
+        config['Stage'] = stage;
         config['CrudGraphqlApiUrl'] =
           amplifyConfig['api'][apiKeyName]['output'][
             'GraphQLAPIEndpointOutput'

@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 
 import 'core/model_base.dart';
 
-
 @immutable
 class GeneratedProduct extends Model {
   final String id;
@@ -17,6 +16,23 @@ class GeneratedProduct extends Model {
   final int position;
   final String image;
   final List<ProductVariant> variants;
+  final List<String> allergens;
+  static Map<String, int> allergenMap = {
+    'gluten': 1,
+    'crustaceans': 2,
+    'egg': 3,
+    'fish': 4,
+    'peanut': 5,
+    'milk': 6,
+    'soya': 7,
+    'treenuts': 8,
+    'sulphites': 9,
+    'mustard': 10,
+    'celery': 11,
+    'sesame': 12,
+    'lupin': 13,
+    'molluscs': 14,
+  };
 
   @override
   String getId() {
@@ -33,7 +49,8 @@ class GeneratedProduct extends Model {
       this.tax,
       this.position,
       this.image,
-      this.variants});
+      this.variants,
+      this.allergens});
 
   factory GeneratedProduct(
       {String id,
@@ -45,7 +62,8 @@ class GeneratedProduct extends Model {
       int tax,
       int position,
       String image,
-      List<ProductVariant> variants}) {
+      List<ProductVariant> variants,
+      List<String> allergens}) {
     return GeneratedProduct._internal(
         id: id == null ? UUID.getUUID() : id,
         unitId: unitId,
@@ -56,7 +74,8 @@ class GeneratedProduct extends Model {
         tax: tax,
         position: position,
         image: image,
-        variants: variants != null ? List.unmodifiable(variants) : variants);
+        variants: variants != null ? List.unmodifiable(variants) : variants,
+        allergens: allergens);
   }
 
   bool equals(Object other) {
@@ -76,7 +95,8 @@ class GeneratedProduct extends Model {
         tax == other.tax &&
         position == other.position &&
         image == other.image &&
-        DeepCollectionEquality().equals(variants, other.variants);
+        DeepCollectionEquality().equals(variants, other.variants) &&
+        ListEquality().equals(allergens, other.allergens);
   }
 
   @override
@@ -114,7 +134,8 @@ class GeneratedProduct extends Model {
       int tax,
       int position,
       String image,
-      List<ProductVariant> variants}) {
+      List<ProductVariant> variants,
+      List<String> allergens}) {
     return GeneratedProduct(
         id: id ?? this.id,
         unitId: unitId ?? this.unitId,
@@ -125,7 +146,8 @@ class GeneratedProduct extends Model {
         tax: tax ?? this.tax,
         position: position ?? this.position,
         image: image ?? this.image,
-        variants: variants ?? this.variants);
+        variants: variants ?? this.variants,
+        allergens: allergens ?? this.allergens);
   }
 
   GeneratedProduct.fromJson(Map<String, dynamic> json)
@@ -133,8 +155,7 @@ class GeneratedProduct extends Model {
         unitId = json['unitId'],
         productCategoryId = json['productCategoryId'],
         name = json['name'] != null
-            ? LocalizedItem.fromJson(
-                Map<String, dynamic>.from(json['name']))
+            ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['name']))
             : null,
         description = json['description'] != null
             ? LocalizedItem.fromJson(
@@ -149,6 +170,11 @@ class GeneratedProduct extends Model {
                 .map((e) =>
                     ProductVariant.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
+            : null,
+
+        //TODO add real field
+        allergens = json['allergens'] is List
+            ? (json['allergens'] as List).map((e) => e as String).toList()
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -161,6 +187,7 @@ class GeneratedProduct extends Model {
         'tax': tax,
         'position': position,
         'image': image,
-        'variants': variants?.map((e) => e?.toJson())?.toList()
+        'variants': variants?.map((e) => e?.toJson())?.toList(),
+        "allergens": allergens
       };
 }

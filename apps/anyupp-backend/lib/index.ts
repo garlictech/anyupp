@@ -34,10 +34,15 @@ export class AnyUppStack extends Stack {
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
+      stripeSecretKey: secretsManagerStack.stripeSecretKey,
+      stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
       secretsManager: secretsManagerStack.secretsManager,
     });
 
-    new StripeStack(scope, 'stripe');
+    new StripeStack(scope, 'stripe', {
+      stripeSecretKey: secretsManagerStack.stripeSecretKey,
+      stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
+    });
 
     new SeederStack(scope, 'seeder', {
       adminUserPool: cognitoStack.adminUserPool,

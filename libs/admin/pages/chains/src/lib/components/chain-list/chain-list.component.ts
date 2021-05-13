@@ -35,11 +35,6 @@ export class ChainListComponent implements OnDestroy {
   }
 
   public addChain(): void {
-    this._nbDialogService.open(ChainFormComponent, {
-      hasBackdrop: true,
-      closeOnBackdropClick: false,
-      hasScroll: true,
-      dialogClass: 'form-dialog',
-    });
+    this._nbDialogService.open(ChainFormComponent);
   }
 }

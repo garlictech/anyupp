@@ -14,17 +14,14 @@ import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  clearDbProperties,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
+import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
 import {
   EAdminRole,
   IChain,
   IKeyValue,
   IRoleContext,
 } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -89,9 +86,7 @@ export class RoleContextFormComponent
     );
 
     if (this.roleContext) {
-      this.dialogForm.patchValue(
-        clearDbProperties<IRoleContext>(this.roleContext),
-      );
+      this.dialogForm.patchValue(cleanObject(this.roleContext));
 
       this._refreshGroupOptionsByChainId(this.roleContext.chainId || '');
       this._refreshUnitOptionsByGroupId(this.roleContext.groupId || '');

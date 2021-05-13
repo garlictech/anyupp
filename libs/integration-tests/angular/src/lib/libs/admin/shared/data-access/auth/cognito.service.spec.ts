@@ -6,7 +6,7 @@ import { configureAmplifyWithUserPasswordAuthFlow } from '@bgap/shared/graphql/a
 import {
   testAdminUsername,
   testAdminUserPassword,
-} from '@bgap/integration-tests/universal';
+} from '@bgap/shared/fixtures';
 
 describe('Testing cognito service', () => {
   const router = {
@@ -36,7 +36,7 @@ describe('Testing cognito service', () => {
         }),
       )
       .subscribe(() => done());
-  }, 15000);
+  }, 25000);
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;

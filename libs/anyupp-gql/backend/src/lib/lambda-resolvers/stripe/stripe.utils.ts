@@ -1,22 +1,29 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { Stripe } from 'stripe';
 import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
+import { AmplifySdk } from '@bgap/crud-gql/api';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+
+export interface StripeResolverDeps {
+  crudSdk: AmplifySdk;
+  anyuppSdk: AnyuppSdk;
+}
 
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
 ): AnyuppApi.StripeCard => ({
-  ...pm.card,
   id: pm.id,
-  metadata: convertCardMetadata(pm.metadata),
-  object: pm.object,
+  country: pm.card?.country,
+  last4: pm.card?.last4,
+  exp_month: pm.card?.exp_month,
+  exp_year: pm.card?.exp_year,
+  checks: {
+    address_line1_check: pm.card?.checks?.address_line1_check,
+    address_postal_code_check: pm.card?.checks?.address_postal_code_check,
+    cvc_check: pm.card?.checks?.cvc_check,
+  },
   brand: convertBrand(pm.card),
   funding: convertFunding(pm.card),
-  // AnyuppApi.CardBrand[pm.card?.brand as keyof typeof AnyuppApi.CardBrand],
-  // country: pm.card?.country,
-  // funding:
-  //   AnyuppApi.CardFundingType[
-  //     pm.card?.funding as keyof typeof AnyuppApi.CardFundingType
-  //   ],
 });
 
 export const mapStripeCardToCard = (
@@ -24,7 +31,7 @@ export const mapStripeCardToCard = (
 ): AnyuppApi.StripeCard => ({
   ...card,
   // id: card.id,
-  metadata: convertCardMetadata(card.metadata),
+  // metadata: convertCardMetadata(card.metadata),
   // object: card.object,
   // brand: AnyuppApi.CardBrand[card.brand as keyof typeof AnyuppApi.CardBrand],
   // country: card.country,
@@ -39,8 +46,8 @@ export const mapStripeCardToCard = (
   // exp_month: card.exp_month,
 });
 
-const convertCardMetadata = (metadata: Stripe.Metadata | null) =>
-  Object.entries(metadata || {}).map(mapMetadataToObjectArray);
+//const convertCardMetadata = (metadata: Stripe.Metadata | null) =>
+//  Object.entries(metadata || {}).map(mapMetadataToObjectArray);
 
 const convertBrand = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
@@ -54,10 +61,10 @@ const convertFunding = (
   ];
 
 // [key, value] => {key:key, value:value}
-const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
+/*const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
   key,
   value,
-});
+});*/
 
 // https://stripe.com/docs/currencies#special-cases
 export const amountConversionForStripe = (value: number, currency: string) => {

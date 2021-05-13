@@ -8,19 +8,17 @@ import {
   validateGetGroupCurrency,
   validateUnitList,
 } from '@bgap/shared/data-validators';
-import { IChain, IChainStyle, IUnit } from '@bgap/shared/types';
+
+import { IChain, IChainStyle } from '@bgap/shared/types';
 import { UnitsResolverDeps } from './utils';
+import { Maybe } from '@bgap/crud-gql/api';
 
 type ListResponse<T> = {
   items: Array<T>;
 };
 
 // TODO: add GEO_SEARCH
-export const getUnitsInRadius = ({
-  location,
-}: {
-  location: CrudApi.LocationInput;
-}) => (
+export const getUnitsInRadius = (location: CrudApi.LocationInput) => (
   deps: UnitsResolverDeps,
 ): Observable<ListResponse<AnyuppApi.GeoUnit>> => {
   // TODO: use geoSearch for the units
@@ -41,8 +39,7 @@ export const getUnitsInRadius = ({
                 currency: props.currency,
                 inputLocation: location,
                 chainStyle: props.chain.style,
-                //openingHours: {},
-                paymentModes: unit.paymentModes ?? [],
+                paymentModes: unit.paymentModes ? [...unit.paymentModes] : [],
               }),
             ),
             defaultIfEmpty({} as AnyuppApi.GeoUnit),
@@ -67,33 +64,34 @@ const toGeoUnit = ({
   //openingHours,
   paymentModes,
 }: {
-  unit: IUnit;
+  unit: CrudApi.Unit;
   currency: string;
   inputLocation: AnyuppApi.LocationInput;
   chainStyle: IChainStyle;
   //openingHours: IWeeklySchedule;
-  paymentModes: CrudApi.PaymentMode[];
+  paymentModes: Maybe<CrudApi.PaymentMode>[] | undefined | null;
 }): AnyuppApi.GeoUnit => ({
   id: unit.id,
   groupId: unit.groupId,
   chainId: unit.chainId,
   name: unit.name,
-  address: unit.address,
+  address: unit.address || {},
   style: chainStyle,
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),
-  openingHours: getOpeningOursForToday(/*openingHours*/),
-  // paymentModes: paymentModes as AnyuppApi.PaymentMode[],
-  paymentModes,
+  paymentModes: paymentModes,
+  openingHours: '09:00 - 22:00',
 });
 
-const getOpeningOursForToday = (/* openingHours: IWeeklySchedule */): string => {
+/*const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {
+  console.log(
+    '### ~ file: get-units-in-radius.resolver.ts ~ line 118 ~ TODO: use real opening hours insted of the fix one',
+    openingHours,
+  );
   return '09:00 - 22:00';
 };
-
-const listActiveUnits = () => (
-  deps: UnitsResolverDeps,
-): Observable<Array<IUnit>> =>
+*/
+const listActiveUnits = () => (deps: UnitsResolverDeps) =>
   from(deps.crudSdk.ListUnits({ filter: { isActive: { eq: true } } })).pipe(
     switchMap(validateUnitList),
   );

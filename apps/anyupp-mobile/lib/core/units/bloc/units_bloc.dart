@@ -88,6 +88,9 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       if (geoUnits == null || geoUnits.isEmpty) {
         yield UnitsNoNearUnit();
       } else {
+        geoUnits.forEach((element) {
+          print('\tunit[${element.id}]=${element.name}');
+        });
         yield UnitsLoaded(geoUnits);
       }
     } on PlatformException catch (e) {

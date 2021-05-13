@@ -7,7 +7,7 @@ import {
   productAvailabilityValidator,
   TIME_FORMAT_PATTERN,
 } from '@bgap/admin/shared/utils';
-import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +74,34 @@ export class FormsService {
       name: ['', [Validators.required]],
       color: ['#ffffff', [Validators.required]],
     });
+  };
+
+  public createProductConfigSetFormGroup = (): FormGroup => {
+    const groupConfig = {
+      productSetId: [''],
+      items: this._formBuilder.array([]),
+      position: [0],
+    };
+
+    return this._formBuilder.group(groupConfig);
+  };
+
+  public createProductConfigSetItemFormGroup = (
+    productLevel: EProductLevel,
+  ): FormGroup => {
+    const groupConfig: Record<string, unknown> = {
+      productComponentId: ['', Validators.required],
+      position: [0, Validators.required],
+    };
+
+    if (productLevel !== EProductLevel.CHAIN) {
+      groupConfig.refGroupPrice = ['', Validators.required];
+    }
+
+    if (productLevel === EProductLevel.UNIT) {
+      groupConfig.price = ['', Validators.required];
+    }
+
+    return this._formBuilder.group(groupConfig);
   };
 }

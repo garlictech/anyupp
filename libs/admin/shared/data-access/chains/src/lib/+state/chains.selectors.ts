@@ -8,7 +8,6 @@ import {
   IChainsState,
 } from './chains.reducer';
 
-// Lookup the 'Chains' feature state managed by NgRx
 export const getChainsState = createFeatureSelector<IChainsState>(
   CHAINS_FEATURE_KEY,
 );

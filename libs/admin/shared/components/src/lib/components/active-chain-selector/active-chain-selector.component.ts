@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { DataService } from '@bgap/admin/shared/data-access/data';
@@ -21,13 +22,13 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './active-chain-selector.component.html',
   styleUrls: ['./active-chain-selector.component.scss'],
 })
-export class ActiveChainSelectorComponent implements OnDestroy {
+export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
   public chains$: Observable<IChain[]>;
   private _loggedUser!: IAdminUser;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -37,16 +38,20 @@ export class ActiveChainSelectorComponent implements OnDestroy {
       select(chainsSelectors.getAllChains),
       untilDestroyed(this),
     );
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
-        this._loggedUser = loggedUser;
-      });
   }
 
   get selectedChainId(): string | null | undefined {
     return this._loggedUser?.settings?.selectedChainId;
+  }
+
+  ngOnInit(): void {
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe((loggedUser: IAdminUser): void => {
+        this._loggedUser = loggedUser;
+
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
