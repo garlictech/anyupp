@@ -98,9 +98,6 @@ TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
 mkdir -p $TABLE_CONFIG_DIR
 TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
 
-APPID=$(amplify env get --name ${STAGE} --json | \
-  jq -r '.awscloudformation.AmplifyAppId')
-
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 
 METAFILE=amplify/backend/amplify-meta.json
@@ -115,7 +112,9 @@ IFS=$'\n'
 RESULT="{\n"
 
 for name in $TABLE_NAMES; do
-  RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\": \"$name\",\n"
+  RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\":\n"
+  TABLE_INFO=$(aws dynamodb describe-table --table-name $name --output json | jq "{TableArn: .Table.TableArn, TableName: .Table.TableName, LatestStreamArn: .Table.LatestStreamArn}")
+  RESULT+="  $TABLE_INFO,\n"
 done
 
 RESULT+="}"
