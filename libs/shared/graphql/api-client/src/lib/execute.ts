@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import { pluck } from 'rxjs/operators';
 
 import { GraphqlApiClient } from './graphql-api-client';
-import { pipeDebug } from '@bgap/shared/utils';
 
 export const toGraphQLDocument = (gqlDocument: string | DocumentNode) =>
   typeof gqlDocument === 'string'
