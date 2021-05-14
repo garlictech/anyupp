@@ -207,6 +207,23 @@
         "title": "Sikeres tranzakció.",
         "description": "SimplePay tranzakció azonosító: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Kártyaszám",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Hibás kártyaszám!"
+      },
+      "expiry": {
+        "label": "Lejárati dátum",
+        "hint": "MM/YY",
+        "validationError": "Hibás lejárati dátum!"
+      },
+      "cvc": {
+        "label": "CVC kód",
+        "hint": "XXX",
+        "validationError": "Hibás CVC kód"
+      }
     }
   },
   "selectUnit": {

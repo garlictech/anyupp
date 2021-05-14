@@ -207,6 +207,23 @@
         "title": "Transaction successfully completed",
         "description": "SimplePay transaction ID: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Card number",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Card number is invalid"
+      },
+      "expiry": {
+        "label": "Expiration Date",
+        "hint": "MM/YY",
+        "validationError": "Card expirity date invalid"
+      },
+      "cvc": {
+        "label": "CVC",
+        "hint": "XXX",
+        "validationError": "Card CVC is invalid"
+      }
     }
   },
   "selectUnit": {
