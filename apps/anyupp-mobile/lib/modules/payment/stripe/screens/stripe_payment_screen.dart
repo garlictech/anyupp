@@ -27,11 +27,9 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   StripeCard _cardData;
   StripePaymentMethod _paymentMethod;
   GlobalKey<FormState> _formKey;
-  // CardForm _form;
   bool _saveCard = false;
 
   _StripePaymentScreenState() {
-    // _cardData = StripeCard(number: '5555555555554444', expMonth: 12, expYear: 23, cvc: '111', last4: '4444');
     _formKey = GlobalKey<FormState>();
   }
 
@@ -53,7 +51,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
           appBar: _buildAppBar(context),
           body: BlocListener<StripePaymentBloc, StripePaymentState>(
             listener: (BuildContext context, StripePaymentState state) {
-              // print('StripePaymentScreen.listener().state=$state');
               if (state is StripeOperationSuccess) {
                 final scaffold = ScaffoldMessenger.of(context);
                 scaffold.showSnackBar(SnackBar(
@@ -67,7 +64,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 ));
                 Nav.pop();
                 getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
-                //Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
@@ -133,7 +129,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   onChanged: (value) {
                     setState(() {
                       _saveCard = value;
-                      print('Save card=$_saveCard');
                     });
                   },
                 ),
@@ -141,7 +136,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   onTap: () {
                     setState(() {
                       _saveCard = !_saveCard;
-                      print('Save card=$_saveCard');
                     });
                   },
                   child: Text(
