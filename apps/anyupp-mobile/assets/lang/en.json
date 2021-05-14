@@ -179,7 +179,7 @@
         "paymentInfo": "Payment information"
       },
       "invoicing": {
-        "want_invoice" : "I want a VAT invoice",
+        "want_invoice": "I want a VAT invoice",
         "invoice_info": "Invoice Info",
         "name_or_company": "Name/Company name",
         "tax_id": "Tax ID Number",
@@ -288,18 +288,23 @@
       "regulations": "Regulations",
       "language": "Language",
       "payment": "Payment and invoicing"
+    },
+    "transactions": {
+      "status": "Status",
+      "paymentMethod": "Payment Method",
+      "noTransactions" : "No Transactions"
     }
   },
   "affiliate": {
     "advertisement": "Advertisement"
   },
-  "validators" : {
-    "required" : "this field is required",
-    "enterValidEmail" : "enter a valid email address",
-    "eneterValidPhone" : "enter a valid phone number",
-    "passwordIsRequired" : "password is required",
-    "passwordValidatorText" : "must have a number, an upper, a lower case letter",
-    "passwordLengthError" : "password must be at least 8 digits long"
+  "validators": {
+    "required": "this field is required",
+    "enterValidEmail": "enter a valid email address",
+    "eneterValidPhone": "enter a valid phone number",
+    "passwordIsRequired": "password is required",
+    "passwordValidatorText": "must have a number, an upper, a lower case letter",
+    "passwordLengthError": "password must be at least 8 digits long"
   },
   "error": {
     "title": "Error",

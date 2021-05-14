@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen>
   final double _backgroundAnimationSize = 50.0;
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
-  String _userAgent = '<unknown>';
+  // String _userAgent = '<unknown>';
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
@@ -71,9 +71,9 @@ class _LoginScreenState extends State<LoginScreen>
         .then((value) => _switchAnimation());
   }
 
-  Future<void> setUserAgent() async {
-    _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
-  }
+  // Future<void> setUserAgent() async {
+  //   _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+  // }
 
   @override
   void dispose() {

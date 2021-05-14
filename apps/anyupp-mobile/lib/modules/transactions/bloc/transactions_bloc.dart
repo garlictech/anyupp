@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models/TransActionItem.dart';
 import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
 
-part 'transactions_event.dart';
-part 'transactions_state.dart';
+import 'transactions_event.dart';
+import 'transactions_state.dart';
+import '../transactions.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final TransactionsRepository _transactionsRepository;
@@ -17,8 +16,8 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     TransactionsEvent event,
   ) async* {
     if (event is LoadTransactions) {
-      List<TransactionItem> transActionItems = await _transactionsRepository
-          .getTransactions(event.unitId);
+      dynamic transActionItems =
+          await _transactionsRepository.getTransactions(event.unitId);
       yield TransactionsLoadedState(items: transActionItems);
     }
 

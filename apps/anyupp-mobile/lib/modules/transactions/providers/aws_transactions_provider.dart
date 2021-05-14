@@ -1,8 +1,9 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/graphql/graphql_client_service.dart';
 import 'package:fa_prev/graphql/queries/list_transactions.dart';
+import 'package:fa_prev/models/TransactionItem.dart';
 
-import 'package:fa_prev/models/TransActionItem.dart';
+
 import 'package:fa_prev/models/User.dart';
 import 'package:fa_prev/modules/transactions/providers/transactions_provider_interface.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
@@ -22,10 +23,10 @@ class AwsTransactionsProvider implements ITransactionProvider {
           await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_LIST_TRANSACTIONS),
-        // variables: {
-        //   'userId': user.id,
-        // //  'unitId': unitId,
-        // },
+        variables: {
+          'userId': user.id,
+        //  'unitId': unitId,
+        },
         fetchPolicy: FetchPolicy.networkOnly,
       ));
       // print('_getFavorites().result.data=${result.data}');
@@ -44,7 +45,6 @@ class AwsTransactionsProvider implements ITransactionProvider {
             .add(TransactionItem.fromMap(Map<String, dynamic>.from(items[i])));
       }
 
-      // print('***** getFavoritesList().favorites=$favorites');
       return transactions;
     } on Exception catch (e) {
       print('AwsTransactionsProvider.listTransactions.Exception: $e');

@@ -1,4 +1,7 @@
-part of 'transactions_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:fa_prev/models/TransactionItem.dart';
+
+
 
 abstract class TransactionsState extends Equatable {
   const TransactionsState();
@@ -7,7 +10,7 @@ abstract class TransactionsState extends Equatable {
   List<Object> get props => [];
 }
 
-class TransactionsInitial extends TransactionsState{}
+class TransactionsInitial extends TransactionsState {}
 
 class TransactionsLoadedState extends TransactionsState {
   final List<TransactionItem> items;

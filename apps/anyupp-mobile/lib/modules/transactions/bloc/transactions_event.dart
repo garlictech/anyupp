@@ -1,4 +1,5 @@
-part of 'transactions_bloc.dart';
+
+import 'package:equatable/equatable.dart';
 
 abstract class TransactionsEvent extends Equatable {
   const TransactionsEvent();
