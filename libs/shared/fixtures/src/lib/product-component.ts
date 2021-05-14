@@ -1,8 +1,8 @@
 import { CrudApi } from '@bgap/crud-gql/api';
-import { seededIdPrefix, testIdPrefix } from './common';
-import { EProductComponentSetType } from '@bgap/shared/types';
+import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+
 import { chainSeed } from './chain';
-import { RequiredId } from '../../../types/src/lib/helpers';
+import { seededIdPrefix, testIdPrefix } from './common';
 
 const prodCompId_01 = `${seededIdPrefix}product_component_01_id`;
 const prodCompId_02 = `${seededIdPrefix}product_component_02_id`;
@@ -37,7 +37,7 @@ const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
 
 const getComponentSet = ({
   id,
-  itemIds,
+  itemIds = [],
 }: {
   id: string;
   itemIds: string[];
@@ -95,6 +95,7 @@ const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
     id: prodCompSetId_02,
     itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
   }),
+  items: [prodCompId_01, prodCompId_02, prodCompId_03],
   chainId: chainSeed.chainId_seeded_01,
   type: EProductComponentSetType.MODIFIER,
 };
@@ -106,11 +107,11 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         position: 1,
-        productComponentId: seededProdCompSet_01.items[0]!,
+        productComponentId: seededProdCompSet_01.items[0],
       },
       {
         position: 2,
-        productComponentId: seededProdCompSet_01.items[1]!,
+        productComponentId: seededProdCompSet_01.items[1],
       },
     ],
   },
@@ -120,15 +121,15 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         position: 1,
-        productComponentId: seededProdCompSet_02.items[0]!,
+        productComponentId: seededProdCompSet_02.items[0],
       },
       {
         position: 2,
-        productComponentId: seededProdCompSet_02.items[1]!,
+        productComponentId: seededProdCompSet_02.items[1],
       },
       {
         position: 3,
-        productComponentId: seededProdCompSet_02.items[2]!,
+        productComponentId: seededProdCompSet_02.items[2],
       },
     ],
   },
@@ -138,11 +139,11 @@ const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
     ...chainConfigSets[0],
     items: [
       {
-        ...chainConfigSets[0].items[0]!,
+        ...chainConfigSets[0].items[0],
         refGroupPrice: -1.5,
       },
       {
-        ...chainConfigSets[0].items[1]!,
+        ...chainConfigSets[0].items[1],
         refGroupPrice: 2.8,
       },
     ],
@@ -151,15 +152,15 @@ const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
     ...chainConfigSets[1],
     items: [
       {
-        ...chainConfigSets[1].items[0]!,
+        ...chainConfigSets[1].items[0],
         refGroupPrice: 1,
       },
       {
-        ...chainConfigSets[1].items[1]!,
+        ...chainConfigSets[1].items[1],
         refGroupPrice: -1.8,
       },
       {
-        ...chainConfigSets[1].items[2]!,
+        ...chainConfigSets[1].items[2],
         refGroupPrice: 0,
       },
     ],
@@ -170,12 +171,12 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     ...groupConfigSets[0],
     items: [
       {
-        ...groupConfigSets[0].items[0]!,
-        price: groupConfigSets[0].items[0]!.refGroupPrice! * 1.2,
+        ...groupConfigSets[0].items[0],
+        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
       },
       {
-        ...groupConfigSets[0].items[1]!,
-        price: groupConfigSets[0].items[0]!.refGroupPrice! * 1.2,
+        ...groupConfigSets[0].items[1],
+        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
       },
     ],
   },
@@ -183,16 +184,16 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     ...groupConfigSets[1],
     items: [
       {
-        ...groupConfigSets[1].items[0]!,
-        price: groupConfigSets[0].items[0]!.refGroupPrice! * 1.2,
+        ...groupConfigSets[1].items[0],
+        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
       },
       {
-        ...groupConfigSets[1].items[1]!,
-        price: groupConfigSets[0].items[0]!.refGroupPrice! * 1.2,
+        ...groupConfigSets[1].items[1],
+        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
       },
       {
-        ...groupConfigSets[1].items[2]!,
-        price: groupConfigSets[0].items[0]!.refGroupPrice! * 1.2,
+        ...groupConfigSets[1].items[2],
+        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
       },
     ],
   },
@@ -209,18 +210,18 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     items: [
       {
         // unitConfigSets[0].items[0] == seededProdComp_01
-        productComponentId: unitConfigSets[0].items[0]!.productComponentId,
-        price: unitConfigSets[0].items[0]!.price!,
-        position: unitConfigSets[0].items[0]!.position,
+        productComponentId: unitConfigSets[0].items[0].productComponentId,
+        price: unitConfigSets[0].items[0].price!,
+        position: unitConfigSets[0].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
         // unitConfigSets[0].items[1] == seededProdComp_02
-        productComponentId: unitConfigSets[0].items[1]!.productComponentId,
-        price: unitConfigSets[0].items[1]!.price!,
-        position: unitConfigSets[0].items[1]!.position,
+        productComponentId: unitConfigSets[0].items[1].productComponentId,
+        price: unitConfigSets[0].items[1].price!,
+        position: unitConfigSets[0].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
@@ -237,27 +238,27 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     items: [
       {
         // unitConfigSets[1].items[0] == seededProdComp_01
-        productComponentId: unitConfigSets[1].items[0]!.productComponentId,
-        price: unitConfigSets[1].items[0]!.price!,
-        position: unitConfigSets[1].items[0]!.position,
+        productComponentId: unitConfigSets[1].items[0].productComponentId,
+        price: unitConfigSets[1].items[0].price!,
+        position: unitConfigSets[1].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
         // unitConfigSets[1].items[1] == seededProdComp_02
-        productComponentId: unitConfigSets[1].items[1]!.productComponentId,
-        price: unitConfigSets[1].items[1]!.price!,
-        position: unitConfigSets[1].items[1]!.position,
+        productComponentId: unitConfigSets[1].items[1].productComponentId,
+        price: unitConfigSets[1].items[1].price!,
+        position: unitConfigSets[1].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
       },
       {
         // unitConfigSets[1].items[2] == seededProdComp_03
-        productComponentId: unitConfigSets[1].items[2]!.productComponentId,
-        price: unitConfigSets[1].items[2]!.price!,
-        position: unitConfigSets[1].items[2]!.position,
+        productComponentId: unitConfigSets[1].items[2].productComponentId,
+        price: unitConfigSets[1].items[2].price!,
+        position: unitConfigSets[1].items[2].position,
         name: seededProdComp_03.name,
         description: seededProdComp_03.description,
         allergens: seededProdComp_03.allergens,
