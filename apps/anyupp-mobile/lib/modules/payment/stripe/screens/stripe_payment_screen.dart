@@ -145,7 +145,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                     });
                   },
                   child: Text(
-                    'Save card for later use',
+                    trans('payment.stripe.save_card'),
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: theme.text,
@@ -227,7 +227,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       ),
       backgroundColor: theme.background,
       title: Text(
-        'Pay with Stripe',
+        trans('payment.stripe.title'),
         style: GoogleFonts.poppins(color: theme.text),
       ),
       actions: <Widget>[
@@ -249,7 +249,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 Icons.credit_card,
                 color: theme.text,
               ),
-              tooltip: 'Add new card',
+              tooltip: trans('payment.stripe.add_card_tooltip'),
               // onPressed: () => Nav.to(StripeAddPaymentMethodScreen()),
               onPressed: () => showSelectStripePaymentDialog(context, onItemSelected: (StripePaymentMethod method) {
                 print('Selected payment method=$method');

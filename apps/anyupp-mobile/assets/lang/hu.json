@@ -224,6 +224,11 @@
         "hint": "XXX",
         "validationError": "Hibás CVC kód"
       }
+    },
+    "stripe": {
+      "title": "Fizetés online",
+      "add_card_tooltip": "Új kártya",
+      "save_card": "Kártya elmentése"
     }
   },
   "selectUnit": {

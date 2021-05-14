@@ -224,6 +224,11 @@
         "hint": "XXX",
         "validationError": "Card CVC is invalid"
       }
+    },
+    "stripe": {
+      "title": "Pay with Stripe",
+      "add_card_tooltip": "Add new card",
+      "save_card": "Save card for later use"
     }
   },
   "selectUnit": {
