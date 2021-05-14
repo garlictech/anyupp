@@ -98,20 +98,17 @@ TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
 mkdir -p $TABLE_CONFIG_DIR
 echo "mkdir -p $TABLE_CONFIG_DIR"
 TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
-echo "TABLE_CONFIG_NAME=$TABLE_CONFIG_NAME"
 
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 echo "APINAME=$APINAME"
 
 METAFILE=amplify/backend/amplify-meta.json
-echo "METAFILE=$METAFILE"
 API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
 echo "API_ID=$API_ID"
 
 DATA_SOURCES=$(aws appsync list-data-sources --api-id $API_ID | \
   jq '.dataSources' | \
   jq '.[] | select(.type == "AMAZON_DYNAMODB")')
-echo "DATA_SOURCES=$DATA_SOURCES"
 
 TABLE_NAMES=$(echo $DATA_SOURCES | jq ".dynamodbConfig.tableName" | tr -d '"')
 echo "TABLE_NAMES=$TABLE_NAMES"
@@ -119,16 +116,14 @@ IFS=$'\n'
 RESULT="{\n"
 
 for name in $TABLE_NAMES; do
-  echo "name=$name"
   RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\":\n"
   TABLE_INFO=$(aws dynamodb describe-table --table-name $name --output json | jq "{TableArn: .Table.TableArn, TableName: .Table.TableName, LatestStreamArn: .Table.LatestStreamArn}")
-  echo "TABLE_INFO=$TABLE_INFO"
   RESULT+="  $TABLE_INFO,\n"
 done
 
 RESULT+="}"
 
-echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
+echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
