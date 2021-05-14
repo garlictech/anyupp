@@ -37,6 +37,11 @@ const cart_02: RequiredId<CrudApi.CreateCartInput> = {
   id: `${testIdPrefix}cart_2_id`,
   unitId: unitSeed.unit_01.id,
 };
+const cart_03: RequiredId<CrudApi.CreateCartInput> = {
+  ...cartSeed.cart_01,
+  id: `${testIdPrefix}cart_3_id`,
+  unitId: unitSeed.unit_01.id,
+};
 
 describe('CreatCartFromOrder mutation test', () => {
   let authHelper: AuthenticatdGraphQLClientWithUserId;
@@ -52,6 +57,7 @@ describe('CreatCartFromOrder mutation test', () => {
       // CleanUP
       deleteTestCart(cart_01.id),
       deleteTestCart(cart_02.id),
+      deleteTestCart(cart_03.id),
       deleteTestCart(cartWithNotExistingUNIT),
       deleteTestUnit(unitSeed.unit_01.id),
     ])
@@ -62,6 +68,7 @@ describe('CreatCartFromOrder mutation test', () => {
             createTestUnit(unitSeed.unit_01),
             createTestCart(cart_01),
             createTestCart(cart_02),
+            createTestCart(cart_03),
             createTestCart({
               ...cartSeed.cart_01,
               id: cartWithNotExistingUNIT,
@@ -137,7 +144,7 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 30000);
 
   it("should fail in case the cart is not the user's", done => {
-    const cartId = cart_01.id;
+    const cartId = cart_03.id;
     const userId = 'DIFFERENT_USER';
     from(
       orderRequestHandler.createOrderFromCart(crudBackendGraphQLClient)({
@@ -192,7 +199,7 @@ const getOrder = (
     CrudApiQueryDocuments.getOrder,
     { id },
   ).pipe(
-    map(x => x.getOrder as unknown as IOrder), // TODO unknown!
+    map(x => (x.getOrder as unknown) as IOrder), // TODO unknown!
     catchError(err => {
       console.error(err);
       return throwError('Internal Order query error');
@@ -209,7 +216,7 @@ const getCart = (
     { id },
     { fetchPolicy: 'no-cache' },
   ).pipe(
-    map(x => x.getCart as unknown as ICart), // TODO unknown!
+    map(x => (x.getCart as unknown) as ICart), // TODO unknown!
     catchError(err => {
       console.error(err);
       return throwError('Internal Cart query error');

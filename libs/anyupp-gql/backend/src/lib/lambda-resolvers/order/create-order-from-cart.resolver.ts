@@ -39,7 +39,7 @@ import { incrementOrderNum } from '../../database';
 import { toFixed2Number } from '../../utils';
 import { calculateOrderSumPrice } from './order.utils';
 
-const UNIT_TABLE_NAME = tableConfig.Unit.tableName;
+const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
 export const createOrderFromCart = ({
   userId,
