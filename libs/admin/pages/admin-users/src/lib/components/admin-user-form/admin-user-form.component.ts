@@ -122,7 +122,6 @@ export class AdminUserFormComponent
           'updateAdminUser',
           this.adminUser.id,
           (data: unknown) => ({
-            id: (<IAdminUser>data).id,
             profileImage: image
           })
         );
@@ -160,7 +159,6 @@ export class AdminUserFormComponent
           'updateAdminUser',
           this.adminUser.id,
           (data: unknown) => ({
-            id: (<IAdminUser>data).id,
             profileImage: null
           })
         );
