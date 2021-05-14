@@ -107,8 +107,8 @@ API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
 echo "API_ID=$API_ID"
 
 DATA_SOURCES=$(aws appsync list-data-sources --api-id $API_ID | \
-  jq '.dataSources' | \
-  jq '.[] | select(.type == "AMAZON_DYNAMODB")')
+  jq ".dataSources" | \
+  jq ".[] | select(.type == \"AMAZON_DYNAMODB\")")
 
 TABLE_NAMES=$(echo $DATA_SOURCES | jq ".dynamodbConfig.tableName" | tr -d '"')
 echo "TABLE_NAMES=$TABLE_NAMES"
@@ -125,11 +125,11 @@ done
 # Remove the last , from the JSON because it won't be valid
 # echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 # On the CI the SED is not working so this CLOSING TAG is a workaround
-RESULT+='"  _closing_tag": "dont use me"\n}'
+RESULT+="\"  _closing_tag\": \"dont use me\"\n}"
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 echo "Content:"
 cat $TABLE_CONFIG_NAME
-echo "EEEEND after: cat TABLE_CONFIG_NAME ($TABLE_CONFIG_NAME)"
+echo "Table config generation ENDED"
