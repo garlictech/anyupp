@@ -96,33 +96,41 @@ amplify codegen
 echo "Generating table config..."
 TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
 mkdir -p $TABLE_CONFIG_DIR
+echo "mkdir -p $TABLE_CONFIG_DIR"
 TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
 
-APPID=$(amplify env get --name ${STAGE} --json | \
-  jq -r '.awscloudformation.AmplifyAppId')
-
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
+echo "APINAME=$APINAME"
 
 METAFILE=amplify/backend/amplify-meta.json
 API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
+echo "API_ID=$API_ID"
 
 DATA_SOURCES=$(aws appsync list-data-sources --api-id $API_ID | \
-  jq '.dataSources' | \
-  jq '.[] | select(.type == "AMAZON_DYNAMODB")')
+  jq ".dataSources" | \
+  jq ".[] | select(.type == \"AMAZON_DYNAMODB\")")
 
 TABLE_NAMES=$(echo $DATA_SOURCES | jq ".dynamodbConfig.tableName" | tr -d '"')
+echo "TABLE_NAMES=$TABLE_NAMES"
 IFS=$'\n'
-RESULT="{\n"
+RESULT="{"
 
 for name in $TABLE_NAMES; do
-  RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\": \"$name\",\n"
+  RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\":"
+  TABLE_INFO=$(aws dynamodb describe-table --table-name $name --output json | jq "{TableArn: .Table.TableArn, TableName: .Table.TableName, LatestStreamArn: .Table.LatestStreamArn}")
+  RESULT+="  $TABLE_INFO,"
 done
 
-RESULT+="}"
+# RESULT+="}"
+# Remove the last , from the JSON because it won't be valid
+# echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 
-echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
+# On the CI the SED is not working so this CLOSING TAG is a workaround
+RESULT+="\"  _closing_tag\": \"dont use me\"}"
+echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 echo "Content:"
 cat $TABLE_CONFIG_NAME
+echo "Table config generation ENDED"

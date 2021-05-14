@@ -34,8 +34,7 @@ export const incrementOrderNum = <Table>(tableName: string) => (
   return executeUpdateItem<Pick<IUnit, 'lastOrderNum'>>({
     TableName: tableName,
     Key: { id: { S: id } },
-    // UpdateExpression: 'set lastOrderNum = lastOrderNum + :val',
-    UpdateExpression: 'add lastOrderNum :val',
+    UpdateExpression: 'add lastOrderNum :val', // IF the lastOrderNum not exist on the UNIT the ADD operator initialized it as 0 so the first orderNum will be 1 in this case
     ExpressionAttributeValues: {
       ':val': { N: '1' },
     },

@@ -127,7 +127,7 @@ export class AppsyncAppStack extends sst.Stack {
         secretName: props.secretsManager.secretName,
         STRIPE_SECRET_KEY: props.stripeSecretKey,
         STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
-    },
+      },
     });
 
     if (apiLambda.role) {
@@ -155,8 +155,8 @@ export class AppsyncAppStack extends sst.Stack {
             'dynamodb:UpdateItem',
           ],
           resources: [
-            tableConfig.GeneratedProduct.tableArn,
-            tableConfig.Unit.tableArn,
+            tableConfig.GeneratedProduct.TableArn,
+            tableConfig.Unit.TableArn,
           ],
         }),
       );
