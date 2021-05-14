@@ -15,80 +15,80 @@ APPID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/CrudApiAppI
   jq -r '.Parameter.Value')
 echo "APPID=$APPID"
 
-USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
-  jq -r '.Parameter.Value')
-echo "USERPOOLID=$USERPOOLID"
+# USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
+#   jq -r '.Parameter.Value')
+# echo "USERPOOLID=$USERPOOLID"
 
-IDENTITYPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
-  jq -r '.Parameter.Value')
-echo "IDENTITYPOOLID=$IDENTITYPOOLID"
+# IDENTITYPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
+#   jq -r '.Parameter.Value')
+# echo "IDENTITYPOOLID=$IDENTITYPOOLID"
 
-WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
-  jq -r '.Parameter.Value')
-echo "WEBCLIENTID=$WEBCLIENTID"
+# WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
+#   jq -r '.Parameter.Value')
+# echo "WEBCLIENTID=$WEBCLIENTID"
 
-NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminNativeUserPoolClientId" | \
-  jq -r '.Parameter.Value')
-echo "NATIVECLIENTID=$NATIVECLIENTID"
+# NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminNativeUserPoolClientId" | \
+#   jq -r '.Parameter.Value')
+# echo "NATIVECLIENTID=$NATIVECLIENTID"
 
-ANGULARconfig="{\
-\"SourceDir\":\"../../libs/crud-gql/api/src/lib/generated\",\
-\"DistributionDir\":\"../../dist/apps/admin\",\
-\"BuildCommand\":\"yarn nx build admin\",\
-\"StartCommand\":\"yarn nx serve admin\"\
-}"
+# ANGULARconfig="{\
+# \"SourceDir\":\"../../libs/crud-gql/api/src/lib/generated\",\
+# \"DistributionDir\":\"../../dist/apps/admin\",\
+# \"BuildCommand\":\"yarn nx build admin\",\
+# \"StartCommand\":\"yarn nx serve admin\"\
+# }"
 
-AUTHconfig="{\
-\"userPoolId\":\"$USERPOOLID\",\
-\"identityPoolId\":\"$IDENTITYPOOLID\",\
-\"webClientId\":\"$WEBCLIENTID\",\
-\"nativeClientId\":\"$NATIVECLIENTID\"\
-}"
+# AUTHconfig="{\
+# \"userPoolId\":\"$USERPOOLID\",\
+# \"identityPoolId\":\"$IDENTITYPOOLID\",\
+# \"webClientId\":\"$WEBCLIENTID\",\
+# \"nativeClientId\":\"$NATIVECLIENTID\"\
+# }"
 
-AWSCLOUDFORMATIONconfig="{\
-\"configLevel\":\"project\",\
-\"useProfile\":true,\
-\"profileName\":\"${AWS_PROFILE}\"\
-}"
+# AWSCLOUDFORMATIONconfig="{\
+# \"configLevel\":\"project\",\
+# \"useProfile\":true,\
+# \"profileName\":\"${AWS_PROFILE}\"\
+# }"
 
-AMPLIFY="{\
-\"projectName\":\"amplifyadmin\",\
-\"appId\":\"$APPID\",\
-\"envName\":\"${STAGE}\",\
-\"defaultEditor\":\"${EDITORNAME}\"\
-}"
+# AMPLIFY="{\
+# \"projectName\":\"amplifyadmin\",\
+# \"appId\":\"$APPID\",\
+# \"envName\":\"${STAGE}\",\
+# \"defaultEditor\":\"${EDITORNAME}\"\
+# }"
 
-FRONTEND="{\
-\"frontend\":\"javascript\",\
-\"framework\":\"none\",\
-\"config\":$ANGULARconfig\
-}"
+# FRONTEND="{\
+# \"frontend\":\"javascript\",\
+# \"framework\":\"none\",\
+# \"config\":$ANGULARconfig\
+# }"
 
-PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONconfig\
-}"
+# PROVIDERS="{\
+# \"awscloudformation\":$AWSCLOUDFORMATIONconfig\
+# }"
 
-CODEGEN="{\
-\"generateCode\":true,\
-\"codeLanguage\":\"javascript\",\
-\"fileNamePattern\":\"../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts\",\
-\"generatedFileName\":\"../../libs/crud-gql/api/src/lib/generated/api.ts\",\
-\"maxDepth\":10,\
-\"generateDocs\":true\
-}"
+# CODEGEN="{\
+# \"generateCode\":true,\
+# \"codeLanguage\":\"javascript\",\
+# \"fileNamePattern\":\"../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts\",\
+# \"generatedFileName\":\"../../libs/crud-gql/api/src/lib/generated/api.ts\",\
+# \"maxDepth\":10,\
+# \"generateDocs\":true\
+# }"
 
-CATEGORIES="{\
-\"auth\":$AUTHconfig\
-}"
+# CATEGORIES="{\
+# \"auth\":$AUTHconfig\
+# }"
 
-amplify pull \
---amplify $AMPLIFY \
---frontend $FRONTEND \
---providers $PROVIDERS \
---categories $CATEGORIES \
---yes
+# amplify pull \
+# --amplify $AMPLIFY \
+# --frontend $FRONTEND \
+# --providers $PROVIDERS \
+# --categories $CATEGORIES \
+# --yes
 
-amplify codegen
+# amplify codegen
 
 # ----------------------------------------------------------
 # Get the CRUD table config and write it to a generated file
@@ -121,8 +121,11 @@ for name in $TABLE_NAMES; do
   RESULT+="  $TABLE_INFO,\n"
 done
 
-RESULT+="}"
-
+# RESULT+="}"
+# Remove the last , from the JSON because it won't be valid
+# echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
+# On the CI the SED is not working so this CLOSING TAG is a workaround
+RESULT+='"  _closing_tag": "dont use me"\n}'
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
