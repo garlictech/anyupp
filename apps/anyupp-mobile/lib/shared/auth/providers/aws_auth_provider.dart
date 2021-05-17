@@ -6,6 +6,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth_provider_interface.dart';
 
@@ -158,6 +159,8 @@ class AwsAuthProvider implements IAuthProvider {
     _user = null;
     _cognitoUser = null;
     _userController.add(_user);
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    await sp.clear();
   }
 
 }

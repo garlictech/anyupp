@@ -1,6 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,7 +69,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   //     }),
                 ));
                 Nav.pop();
-                Nav.replace(MainNavigation(pageIndex: 2));
+                getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
+                //Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(

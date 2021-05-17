@@ -20,12 +20,11 @@ export const executeQuery = <INPUT, OUTPUT>(
   queryOptions?: Partial<QueryOptions>,
 ) => (client: GraphqlApiClient) =>
   client
-    .query<INPUT, OUTPUT>(
-      toGraphQLDocument(gqlDocument),
-      variables,
-      queryOptions,
-    )
-    .pipe(map(fp.get(`data.${dataPath}`)));
+    // .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
+    .query<T>(toGraphQLDocument(gqlDocument), variables, {
+      fetchPolicy: 'no-cache',
+    })
+    .pipe(pluck('data'));
 
 export const executeMutation = <INPUT, OUTPUT>(
   gqlDocument: string | DocumentNode,

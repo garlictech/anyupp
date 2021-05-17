@@ -1,4 +1,3 @@
-import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 import {
@@ -120,7 +119,9 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, image, <IAdminUser>data),
+          (data: unknown) => ({
+            profileImage: image,
+          }),
         );
 
         this._toasterService.show(
@@ -155,7 +156,9 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, null, <IAdminUser>data),
+          (data: unknown) => ({
+            profileImage: null,
+          }),
         );
 
         this._toasterService.show(

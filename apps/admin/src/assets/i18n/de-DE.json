@@ -58,6 +58,11 @@
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
     "removeSuccessful": "Remove successful",
+    "imageUploadError": "Image uploaded error",
+    "imageRemoveError": "Image remove error",
+    "insertError": "Insert error",
+    "updateError": "Update error",
+    "removeError": "Remove error",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",

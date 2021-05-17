@@ -6,7 +6,7 @@ Array [
     "__typename": "GeneratedProduct",
     "description": Object {
       "__typename": "LocalizedItem",
-      "de": "",
+      "de": null,
       "en": "Test chain termék #1 description",
       "hu": "Teszt chain termék #1 leírás",
     },
@@ -14,7 +14,7 @@ Array [
     "image": "https://picsum.photos/100",
     "name": Object {
       "__typename": "LocalizedItem",
-      "de": "",
+      "de": null,
       "en": "Test chain product #1 name",
       "hu": "Teszt chain termék #1 név",
     },
@@ -384,7 +384,7 @@ Array [
     "variants": Array [
       Object {
         "__typename": "GeneratedProductVariant",
-        "id": "test_generatedProductVariant_id_undefined",
+        "id": "test_generatedProductVariant_id_pundefined_1",
         "pack": Object {
           "__typename": "ProductVariantPack",
           "size": 1,
@@ -401,7 +401,7 @@ Array [
       },
       Object {
         "__typename": "GeneratedProductVariant",
-        "id": "test_generatedProductVariant_id_undefined",
+        "id": "test_generatedProductVariant_id_pundefined_2",
         "pack": Object {
           "__typename": "ProductVariantPack",
           "size": 2,

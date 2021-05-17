@@ -1,3 +1,4 @@
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
@@ -87,14 +88,15 @@ class Menu extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (theme?.images?.header != null)
-                  ImageWidget(
-                    //width: 200,
-                    height: 40,
-                    url: theme?.images?.header,
-                    errorWidget: Icon(Icons.error),
-                    fit: BoxFit.fitHeight,
-                  ),
+                ImageWidget(
+                  //width: 200,
+                  height: 40,
+                  url: theme?.images?.header != null
+                      ? theme?.images?.header
+                      : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
+                  errorWidget: Icon(Icons.error),
+                  fit: BoxFit.fitHeight,
+                ),
               ],
             ),
           ),

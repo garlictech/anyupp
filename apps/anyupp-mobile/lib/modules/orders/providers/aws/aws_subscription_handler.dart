@@ -38,9 +38,9 @@ class AwsSubscription<T extends Model> {
   Future<void> startListSubscription({Map<String, dynamic> variables}) async {
     print('**** startListSubscription[$listNodeName].variables=$variables');
     try {
-      if (_listController == null) {
-        _listController = BehaviorSubject<List<T>>();
-      }
+      // if (_listController == null) {
+      //   _listController = BehaviorSubject<List<T>>();
+      // }
       // await _listSubscription?.cancel();
 
       _items = await _getList(variables);
@@ -65,6 +65,9 @@ class AwsSubscription<T extends Model> {
         if (!result.hasException) {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
           print('**** startListSubscription[$listNodeName].item=$item');
+          if (_items == null) {
+            _items = [];
+          }
           int index = _items.indexWhere((o) => o.id == item.id);
           // print('**** startListSubscription[$listNodeName].index=$index');
           if (index != -1) {
@@ -132,8 +135,8 @@ class AwsSubscription<T extends Model> {
   Future<void> stopListSubscription() async {
     print('**** stopListSubscription()');
     await _listSubscription?.cancel();
-    await _listController?.close();
+    // await _listController?.close();
     _listSubscription = null;
-    _listController = null;
+    // _listController = null;
   }
 }

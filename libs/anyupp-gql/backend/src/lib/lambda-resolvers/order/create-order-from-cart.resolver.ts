@@ -22,7 +22,7 @@ import { toFixed2Number } from '../../utils';
 import { calculateOrderSumPrice } from './order.utils';
 import { OrderResolverDeps } from './utils';
 
-const UNIT_TABLE_NAME = tableConfig.Unit.tableName;
+const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
 export const createOrderFromCart = (userId: string, cartId: string) => (
   deps: OrderResolverDeps,

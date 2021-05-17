@@ -1,6 +1,12 @@
 import { catchError, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
+import {
+  unitSeed,
+  groupSeed,
+  chainSeed,
+  seededIdPrefix,
+} from '@bgap/shared/fixtures';
 import { seededIdPrefix } from '@bgap/shared/fixtures';
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
@@ -61,29 +67,10 @@ const deleteCreate = (
 export const createTestChain = (chainIdx: number) => (
   deps: SeederDependencies,
 ) => {
-  const input: DeletableInput<CrudApi.CreateChainInput> = {
+  const input: CrudApi.CreateChainInput = {
+    ...chainSeed.chainBase,
     id: generateChainId(chainIdx),
-    name: `Test chain #${chainIdx}`,
-    description: {
-      hu: `Teszt lánc #${chainIdx} leírás`,
-      en: `Test chain #${chainIdx} description`,
-    },
-    isActive: true,
-    email: `info@chain${chainIdx}.com`,
-    phone: '1234567890',
-    style: {
-      colors: {
-        backgroundLight: '#FFFFFF',
-        backgroundDark: '#D6DDE0',
-        textDark: '#303030',
-        textLight: '#FFFFFF',
-        indicator: '#30BF60',
-        highlight: '#A8692A',
-        disabled: '#303030',
-        borderDark: '#E7E5D0',
-        borderLight: '#C3CACD',
-      },
-    },
+    name: `Seeded chain #${chainIdx}`,
   };
   return deleteCreate(
     () => deps.crudSdk.DeleteChain({ input: { id: input.id } }),
@@ -94,14 +81,11 @@ export const createTestChain = (chainIdx: number) => (
 export const createTestGroup = (chainIdx: number, groupIdx: number) => (
   deps: SeederDependencies,
 ) => {
-  const input: DeletableInput<CrudApi.CreateGroupInput> = {
+  const input: CrudApi.CreateGroupInput = {
+    ...groupSeed.groupBase,
     id: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
-    name: `Test group #${groupIdx}`,
-    description: {
-      hu: `Teszt group #${groupIdx} leírás`,
-      en: `Test group #${groupIdx} description`,
-    },
+    name: `Seeded group #${groupIdx}`,
     currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
   };
   return deleteCreate(
@@ -131,43 +115,13 @@ export const createTestUnit = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
-) => (deps: SeederDependencies) => {
-  const input: DeletableInput<CrudApi.CreateUnitInput> = {
+) => {
+  const input: CrudApi.CreateUnitInput = {
+    ...unitSeed.unitBase,
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
-    isActive: true,
-    isAcceptingOrders: true,
     name: `Seeded unit #${chainIdx}${groupIdx}${unitIdx}`,
-    address: {
-      address: 'Ág u. 1.',
-      city: 'Budapest',
-      country: 'Magyarország',
-      title: 'HQ',
-      postalCode: '1021',
-      location: {
-        lat: 47,
-        lng: 19,
-      },
-    },
-    description: {
-      hu: `Teszt unit #${unitIdx} leírás`,
-      en: `Test unit #${unitIdx} description`,
-    },
-    paymentModes: [
-      {
-        method: CrudApi.PaymentMethod.cash,
-        name: 'Cash',
-      },
-      {
-        method: CrudApi.PaymentMethod.card,
-        name: 'Card',
-      },
-      {
-        method: CrudApi.PaymentMethod.inapp,
-        name: 'Stripe',
-      },
-    ],
     lanes: [
       {
         color: '#e72222',
@@ -180,10 +134,6 @@ export const createTestUnit = (
         name: 'konyha',
       },
     ],
-    open: {
-      from: '08:00',
-      to: '18:00',
-    },
   };
   return deleteCreate(
     () => deps.crudSdk.DeleteUnit({ input: { id: input.id } }),

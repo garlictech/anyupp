@@ -8,7 +8,7 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 import { createItems, deleteItems } from '../../database';
 import { UnitsResolverDeps } from '../unit/utils';
 
-const TABLE_NAME = tableConfig.GeneratedProduct.tableName;
+const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
 export const deleteGeneratedProductsForAUnit = (unitId: string) => (
   deps: UnitsResolverDeps,

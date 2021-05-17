@@ -28,7 +28,7 @@ const getProductVariant = (
   position: idx,
 });
 
-export const chainProductBase: CrudApi.CreateChainProductInput = {
+const chainProductBase: CrudApi.CreateChainProductInput = {
   id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
@@ -41,7 +41,7 @@ export const chainProductBase: CrudApi.CreateChainProductInput = {
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
-export const groupProductBase: CrudApi.CreateGroupProductInput = {
+const groupProductBase: CrudApi.CreateGroupProductInput = {
   id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -51,7 +51,7 @@ export const groupProductBase: CrudApi.CreateGroupProductInput = {
   variants: [getProductVariant(1, 'group'), getProductVariant(2, 'group')],
 };
 
-export const unitProductBase: CrudApi.CreateUnitProductInput = {
+const unitProductBase: CrudApi.CreateUnitProductInput = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',

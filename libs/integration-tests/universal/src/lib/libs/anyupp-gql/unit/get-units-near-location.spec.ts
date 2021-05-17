@@ -6,6 +6,24 @@ import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { createIamAnyuppSdk, createIamCrudSdk } from '../../../../api-clients';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+  testIdPrefix,
+  unitSeed,
+  groupSeed,
+  chainSeed,
+} from '@bgap/shared/fixtures';
+import {
+  AuthenticatdGraphQLClientWithUserId,
+  createAuthenticatedAnyuppGraphQLClient,
+  crudBackendGraphQLClient,
+  executeQuery,
+} from '@bgap/shared/graphql/api-client';
+
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import { createTestChain, deleteTestChain } from '../../../seeds/chain';
+import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -50,11 +68,27 @@ describe('GetUnitsNearLocation tests', async () => {
   const crudSdk = createIamCrudSdk();
 
   beforeAll(async () => {
-    await cleanup
+    authHelper = await createAuthenticatedAnyuppGraphQLClient(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    console.warn(authHelper.userAttributes);
+
+    await combineLatest([
+      // CleanUP
+      deleteTestUnit(unitNotActive.id),
+      deleteTestUnit(unit_01.id),
+      deleteTestUnit(unit_02.id),
+      deleteTestUnit(unit_03.id),
+      deleteTestGroup(groupSeed.group_01.id),
+      deleteTestChain(chainSeed.chain_01.id),
+    ])
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
+            createTestGroup(groupSeed.group_01),
+            createTestChain(chainSeed.chain_01),
             createTestUnit(unitNotActive),
             createTestUnit(unit_01),
             createTestUnit(unit_02),

@@ -5,7 +5,7 @@ const getGeneratedProductVariant = (
   idx: number,
   productId?: string,
 ): CrudApi.GeneratedProductVariantInput => ({
-  id: `${testIdPrefix}generatedProductVariant_id_${productId}`,
+  id: `${testIdPrefix}generatedProductVariant_id_p${productId}_${idx}`,
   variantName: {
     en: `VARIANT_NAME_${productId || idx}`,
     hu: `VARIANT_NAME_${productId || idx}`,

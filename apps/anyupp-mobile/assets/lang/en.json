@@ -280,6 +280,7 @@
   "profile": {
     "menu": {
       "contact": "Contact Us",
+      "transactions": "Transactions",
       "about": "About",
       "cards": "Saved cards",
       "logout": "Logout",
@@ -287,6 +288,11 @@
       "regulations": "Regulations",
       "language": "Language",
       "payment": "Payment and invoicing"
+    },
+    "transactions": {
+      "status": "Status",
+      "paymentMethod": "Payment Method",
+      "noTransactions": "No Transactions"
     }
   },
   "affiliate": {

@@ -244,7 +244,7 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
-    print('_buildCartItem()=$order');
+    // print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

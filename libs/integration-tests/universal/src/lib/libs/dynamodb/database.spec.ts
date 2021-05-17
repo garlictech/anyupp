@@ -10,7 +10,7 @@ import { RequiredId } from '@bgap/shared/types';
 
 import { createTestUnit, deleteTestUnit } from '../../seeds/unit';
 
-const UNIT_TABLE_NAME = tableConfig.Unit.tableName;
+const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   ...unitSeed.unit_01,
