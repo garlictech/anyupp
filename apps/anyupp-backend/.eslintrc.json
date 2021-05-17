@@ -1,11 +1,5 @@
 {
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": [
-    "!**/*",
-    ".build",
-    ".serverless",
-    "cdk.out",
-    "../../libs/anyupp-gql/api/src/lib/generated"
-  ],
+  "ignorePatterns": ["!**/*", ".build", ".serverless", "cdk.out"],
   "rules": {}
 }

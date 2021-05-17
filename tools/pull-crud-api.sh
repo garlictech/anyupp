@@ -120,7 +120,7 @@ for name in $TABLE_NAMES; do
   RESULT+="  \"$(cut -d '-' -f 1 <<< "$name" )\": \"$name\",\n"
 done
 
-RESULT+="}"
+RESULT+='"  _closing_tag": "dont use me"\n}'
 
 echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 

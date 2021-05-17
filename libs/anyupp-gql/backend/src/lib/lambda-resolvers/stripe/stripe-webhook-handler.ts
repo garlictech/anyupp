@@ -106,19 +106,19 @@ const handleSuccessTransaction = (transactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
   console.log('***** handleSuccessTransaction().id=' + transactionId);
-  const transaction = await loadTransaction(transactionId)(deps);
+  const transaction = await loadTransaction(transactionId)(deps).toPromise();
   // console.log('***** handleSuccessTransaction().transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(
       transaction.id,
       CrudApi.PaymentStatus.success,
-    )(deps);
+    )(deps).toPromise();
 
     await updateOrderState(
       transaction.orderId,
       transaction.userId,
       CrudApi.OrderStatus.placed,
-    )(deps);
+    )(deps).toPromise();
     console.log('***** handleSuccessTransaction().success()');
   } else {
     console.log(
@@ -132,12 +132,12 @@ const handleFailedTransaction = (transactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
   console.log('***** handleFailedTransaction()');
-  const transaction = await loadTransaction(transactionId)(deps);
+  const transaction = await loadTransaction(transactionId)(deps).toPromise();
   if (transaction) {
     await updateTransactionState(
       transaction.id,
       CrudApi.PaymentStatus.failed,
-    )(deps);
+    )(deps).toPromise();
     console.log('***** handleFailedTransaction().success()');
   }
 };

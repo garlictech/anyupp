@@ -610,6 +610,7 @@ export const createOrder = /* GraphQL */ `
       id
       userId
       unitId
+      orderNum
       items {
         productId
         variantId
@@ -639,6 +640,7 @@ export const createOrder = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -663,8 +665,42 @@ export const createOrder = /* GraphQL */ `
         table
       }
       paymentIntention
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -677,6 +713,7 @@ export const updateOrder = /* GraphQL */ `
       id
       userId
       unitId
+      orderNum
       items {
         productId
         variantId
@@ -706,6 +743,7 @@ export const updateOrder = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -730,8 +768,42 @@ export const updateOrder = /* GraphQL */ `
         table
       }
       paymentIntention
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -744,6 +816,7 @@ export const deleteOrder = /* GraphQL */ `
       id
       userId
       unitId
+      orderNum
       items {
         productId
         variantId
@@ -773,6 +846,7 @@ export const deleteOrder = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -797,8 +871,42 @@ export const deleteOrder = /* GraphQL */ `
         table
       }
       paymentIntention
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -840,6 +948,7 @@ export const createOrderHistory = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -865,8 +974,42 @@ export const createOrderHistory = /* GraphQL */ `
       }
       paymentIntention
       status
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -908,6 +1051,7 @@ export const updateOrderHistory = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -933,8 +1077,42 @@ export const updateOrderHistory = /* GraphQL */ `
       }
       paymentIntention
       status
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -976,6 +1154,7 @@ export const deleteOrderHistory = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       paymentMode {
         name
@@ -1001,8 +1180,42 @@ export const deleteOrderHistory = /* GraphQL */ `
       }
       paymentIntention
       status
+      transactionId
       createdAt
       updatedAt
+      transaction {
+        id
+        userId
+        orderId
+        type
+        total
+        currency
+        status
+        externalTransactionId
+        createdAt
+        updatedAt
+        order {
+          id
+          userId
+          unitId
+          orderNum
+          takeAway
+          paymentIntention
+          transactionId
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          phone
+          profileImage
+          stripeCustomerId
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -1081,6 +1294,132 @@ export const deleteProductCategory = /* GraphQL */ `
     }
   }
 `;
+export const createProductComponent = /* GraphQL */ `
+  mutation CreateProductComponent(
+    $input: CreateProductComponentInput!
+    $condition: ModelProductComponentConditionInput
+  ) {
+    createProductComponent(input: $input, condition: $condition) {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description
+      allergens
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateProductComponent = /* GraphQL */ `
+  mutation UpdateProductComponent(
+    $input: UpdateProductComponentInput!
+    $condition: ModelProductComponentConditionInput
+  ) {
+    updateProductComponent(input: $input, condition: $condition) {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description
+      allergens
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteProductComponent = /* GraphQL */ `
+  mutation DeleteProductComponent(
+    $input: DeleteProductComponentInput!
+    $condition: ModelProductComponentConditionInput
+  ) {
+    deleteProductComponent(input: $input, condition: $condition) {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description
+      allergens
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createProductComponentSet = /* GraphQL */ `
+  mutation CreateProductComponentSet(
+    $input: CreateProductComponentSetInput!
+    $condition: ModelProductComponentSetConditionInput
+  ) {
+    createProductComponentSet(input: $input, condition: $condition) {
+      id
+      chainId
+      type
+      name {
+        en
+        de
+        hu
+      }
+      description
+      items
+      maxSelection
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateProductComponentSet = /* GraphQL */ `
+  mutation UpdateProductComponentSet(
+    $input: UpdateProductComponentSetInput!
+    $condition: ModelProductComponentSetConditionInput
+  ) {
+    updateProductComponentSet(input: $input, condition: $condition) {
+      id
+      chainId
+      type
+      name {
+        en
+        de
+        hu
+      }
+      description
+      items
+      maxSelection
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteProductComponentSet = /* GraphQL */ `
+  mutation DeleteProductComponentSet(
+    $input: DeleteProductComponentSetInput!
+    $condition: ModelProductComponentSetConditionInput
+  ) {
+    deleteProductComponentSet(input: $input, condition: $condition) {
+      id
+      chainId
+      type
+      name {
+        en
+        de
+        hu
+      }
+      description
+      items
+      maxSelection
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createChainProduct = /* GraphQL */ `
   mutation CreateChainProduct(
     $input: CreateChainProductInput!
@@ -1128,6 +1467,16 @@ export const createChainProduct = /* GraphQL */ `
         position
       }
       allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
     }
@@ -1180,6 +1529,16 @@ export const updateChainProduct = /* GraphQL */ `
         position
       }
       allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
     }
@@ -1232,6 +1591,16 @@ export const deleteChainProduct = /* GraphQL */ `
         position
       }
       allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
     }
@@ -1273,8 +1642,50 @@ export const createGroupProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        allergens
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1314,8 +1725,50 @@ export const updateGroupProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        allergens
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1355,8 +1808,50 @@ export const deleteGroupProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        allergens
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1399,8 +1894,50 @@ export const createUnitProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+        chainProduct {
+          id
+          chainId
+          productCategoryId
+          productType
+          isVisible
+          image
+          allergens
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -1443,8 +1980,50 @@ export const updateUnitProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+        chainProduct {
+          id
+          chainId
+          productCategoryId
+          productType
+          isVisible
+          image
+          allergens
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -1487,8 +2066,50 @@ export const deleteUnitProduct = /* GraphQL */ `
         }
         position
       }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+        }
+        position
+      }
       createdAt
       updatedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        variants {
+          id
+          refGroupPrice
+          isAvailable
+          price
+          position
+        }
+        configSets {
+          productSetId
+          position
+        }
+        createdAt
+        updatedAt
+        chainProduct {
+          id
+          chainId
+          productCategoryId
+          productType
+          isVisible
+          image
+          allergens
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `;
@@ -1526,19 +2147,10 @@ export const createGeneratedProduct = /* GraphQL */ `
           size
           unit
         }
-        refGroupPrice
-        isAvailable
         price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1578,19 +2190,10 @@ export const updateGeneratedProduct = /* GraphQL */ `
           size
           unit
         }
-        refGroupPrice
-        isAvailable
         price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1630,19 +2233,10 @@ export const deleteGeneratedProduct = /* GraphQL */ `
           size
           unit
         }
-        refGroupPrice
-        isAvailable
         price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
         position
       }
+      allergens
       createdAt
       updatedAt
     }
@@ -1679,11 +2273,10 @@ export const createFavoriteProduct = /* GraphQL */ `
         image
         variants {
           id
-          refGroupPrice
-          isAvailable
           price
           position
         }
+        allergens
         createdAt
         updatedAt
       }
@@ -1721,11 +2314,10 @@ export const updateFavoriteProduct = /* GraphQL */ `
         image
         variants {
           id
-          refGroupPrice
-          isAvailable
           price
           position
         }
+        allergens
         createdAt
         updatedAt
       }
@@ -1763,11 +2355,10 @@ export const deleteFavoriteProduct = /* GraphQL */ `
         image
         variants {
           id
-          refGroupPrice
-          isAvailable
           price
           position
         }
+        allergens
         createdAt
         updatedAt
       }
@@ -1783,6 +2374,7 @@ export const createUnit = /* GraphQL */ `
       id
       groupId
       chainId
+      lastOrderNum
       isActive
       isAcceptingOrders
       name
@@ -1870,6 +2462,7 @@ export const createUnit = /* GraphQL */ `
           to
         }
       }
+      merchantId
       createdAt
       updatedAt
     }
@@ -1884,6 +2477,7 @@ export const updateUnit = /* GraphQL */ `
       id
       groupId
       chainId
+      lastOrderNum
       isActive
       isAcceptingOrders
       name
@@ -1971,6 +2565,7 @@ export const updateUnit = /* GraphQL */ `
           to
         }
       }
+      merchantId
       createdAt
       updatedAt
     }
@@ -1985,6 +2580,7 @@ export const deleteUnit = /* GraphQL */ `
       id
       groupId
       chainId
+      lastOrderNum
       isActive
       isAcceptingOrders
       name
@@ -2072,6 +2668,58 @@ export const deleteUnit = /* GraphQL */ `
           to
         }
       }
+      merchantId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      profileImage
+      stripeCustomerId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      profileImage
+      stripeCustomerId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      profileImage
+      stripeCustomerId
       createdAt
       updatedAt
     }
@@ -2125,6 +2773,7 @@ export const createCart = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       createdAt
       updatedAt
@@ -2179,6 +2828,7 @@ export const updateCart = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       createdAt
       updatedAt
@@ -2233,9 +2883,256 @@ export const deleteCart = /* GraphQL */ `
           hu
         }
         laneId
+        allergens
       }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createTransaction = /* GraphQL */ `
+  mutation CreateTransaction(
+    $input: CreateTransactionInput!
+    $condition: ModelTransactionConditionInput
+  ) {
+    createTransaction(input: $input, condition: $condition) {
+      id
+      userId
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      createdAt
+      updatedAt
+      order {
+        id
+        userId
+        unitId
+        orderNum
+        items {
+          productId
+          variantId
+          created
+          image
+          quantity
+          laneId
+          allergens
+        }
+        paymentMode {
+          name
+          caption
+          method
+        }
+        statusLog {
+          userId
+          status
+          ts
+        }
+        sumPriceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
+        takeAway
+        place {
+          seat
+          table
+        }
+        paymentIntention
+        transactionId
+        createdAt
+        updatedAt
+        transaction {
+          id
+          userId
+          orderId
+          type
+          total
+          currency
+          status
+          externalTransactionId
+          createdAt
+          updatedAt
+        }
+      }
+      user {
+        id
+        name
+        email
+        phone
+        profileImage
+        stripeCustomerId
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateTransaction = /* GraphQL */ `
+  mutation UpdateTransaction(
+    $input: UpdateTransactionInput!
+    $condition: ModelTransactionConditionInput
+  ) {
+    updateTransaction(input: $input, condition: $condition) {
+      id
+      userId
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      createdAt
+      updatedAt
+      order {
+        id
+        userId
+        unitId
+        orderNum
+        items {
+          productId
+          variantId
+          created
+          image
+          quantity
+          laneId
+          allergens
+        }
+        paymentMode {
+          name
+          caption
+          method
+        }
+        statusLog {
+          userId
+          status
+          ts
+        }
+        sumPriceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
+        takeAway
+        place {
+          seat
+          table
+        }
+        paymentIntention
+        transactionId
+        createdAt
+        updatedAt
+        transaction {
+          id
+          userId
+          orderId
+          type
+          total
+          currency
+          status
+          externalTransactionId
+          createdAt
+          updatedAt
+        }
+      }
+      user {
+        id
+        name
+        email
+        phone
+        profileImage
+        stripeCustomerId
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteTransaction = /* GraphQL */ `
+  mutation DeleteTransaction(
+    $input: DeleteTransactionInput!
+    $condition: ModelTransactionConditionInput
+  ) {
+    deleteTransaction(input: $input, condition: $condition) {
+      id
+      userId
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      createdAt
+      updatedAt
+      order {
+        id
+        userId
+        unitId
+        orderNum
+        items {
+          productId
+          variantId
+          created
+          image
+          quantity
+          laneId
+          allergens
+        }
+        paymentMode {
+          name
+          caption
+          method
+        }
+        statusLog {
+          userId
+          status
+          ts
+        }
+        sumPriceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
+        takeAway
+        place {
+          seat
+          table
+        }
+        paymentIntention
+        transactionId
+        createdAt
+        updatedAt
+        transaction {
+          id
+          userId
+          orderId
+          type
+          total
+          currency
+          status
+          externalTransactionId
+          createdAt
+          updatedAt
+        }
+      }
+      user {
+        id
+        name
+        email
+        phone
+        profileImage
+        stripeCustomerId
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

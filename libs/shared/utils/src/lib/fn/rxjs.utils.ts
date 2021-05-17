@@ -1,5 +1,13 @@
-import { Observable, OperatorFunction, pipe, UnaryFunction } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import {
+  Observable,
+  of,
+  OperatorFunction,
+  pipe,
+  throwError,
+  UnaryFunction,
+} from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
 
 export const pipeDebug = <T>(tag: string) => {
   return tap<T>({
@@ -24,5 +32,15 @@ export function filterNullish<T>(): UnaryFunction<
       T | null | undefined,
       T
     >,
+  );
+}
+
+export function throwIfEmptyValue<T>(
+  message = 'Unexpected empty value',
+): UnaryFunction<Observable<T | null | undefined>, Observable<T>> {
+  return pipe(
+    switchMap(x =>
+      fp.isEmpty(x) ? throwError(new Error(message)) : of(x),
+    ) as OperatorFunction<T | null | undefined, T>,
   );
 }

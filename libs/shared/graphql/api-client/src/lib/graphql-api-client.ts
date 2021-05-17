@@ -16,6 +16,7 @@ export class GraphqlApiClient {
       url: genericConfig.aws_appsync_graphqlEndpoint,
       region: genericConfig.aws_appsync_region,
       ...specificConfig,
+      cacheOptions: {},
     } as AWSAppSyncClientOptions);
   }
 

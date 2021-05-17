@@ -1,5 +1,5 @@
 projects:
-  anyuppbackend:
+  anyuppzsolt:
     schemaPath: amplify/backend/api/anyuppzsolt/build/schema.graphql
     includes:
       - ../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts
@@ -13,18 +13,6 @@ projects:
         region: eu-west-1
         apiId: null
         maxDepth: 4
-  anyuppzsolt:
-    schemaPath: >-
-      Users/molnarzs/ActualProjects/bgap/anyupp/libs/crud-gql/api/src/lib/generated/graphql/schema.json
-    includes:
-      - src/graphql/**/*.js
-    excludes:
-      - ./amplify/**
-    extensions:
-      amplify:
-        codeGenTarget: javascript
-        generatedFileName: ''
-        docsFilePath: src/graphql
 extensions:
   amplify:
     version: 3

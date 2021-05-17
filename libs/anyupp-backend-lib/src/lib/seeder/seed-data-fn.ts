@@ -1,17 +1,14 @@
-import { catchError, delay, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
-
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { seededIdPrefix } from '@bgap/shared/fixtures';
-import { combineLatest, concat, from, Observable, of } from 'rxjs';
-import { Reader } from 'fp-ts/lib/Reader';
+import { combineLatest, concat, Observable, of } from 'rxjs';
+import { pipe } from 'fp-ts/lib/function';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.AmplifySdk;
   userPoolId: string;
 }
-
-type SeederReader<T> = Reader<SeederDependencies, Observable<T>>;
 
 export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
 
@@ -49,36 +46,21 @@ const generateRoleContextId = (idx: number, role: EAdminRole) =>
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
   `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
 
-type DeleteCreateInput<T> = {
-  input: T;
-  deleteOperation: keyof CrudApi.AmplifySdk;
-  createOperation: keyof CrudApi.AmplifySdk;
-};
-
-const deleteCreate = <INPUT extends { id: string }, OUTPUT>({
-  input,
-  deleteOperation,
-  createOperation,
-}: DeleteCreateInput<INPUT>): SeederReader<OUTPUT> => deps =>
-  from(deps.crudSdk[deleteOperation]).pipe(
+const deleteCreate = (
+  deleteOperation: () => Observable<unknown>,
+  createOperation: () => Observable<unknown>,
+): Observable<unknown> =>
+  deleteOperation().pipe(
     catchError(error => {
-      console.warn(
-        'Problem with SEED data DELETION: create: ',
-        createOperation,
-        ' delete: ',
-        deleteOperation,
-        ' input: ',
-        input,
-        'error: ',
-        error,
-      );
+      console.warn('Problem with SEED data DELETION: ', error);
       return of('STILL TRY TO CREATE IT PLEASE');
     }),
-    delay(1000),
-    switchMap(() => from(deps.crudSdk[createOperation])),
+    switchMap(() => createOperation()),
   );
 
-export const createTestChain = (chainIdx: number) => {
+export const createTestChain = (chainIdx: number) => (
+  deps: SeederDependencies,
+) => {
   const input: DeletableInput<CrudApi.CreateChainInput> = {
     id: generateChainId(chainIdx),
     name: `Test chain #${chainIdx}`,
@@ -103,14 +85,15 @@ export const createTestChain = (chainIdx: number) => {
       },
     },
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteChain',
-    createOperation: 'CreateChain',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteChain({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateChain({ input }),
+  );
 };
 
-export const createTestGroup = (chainIdx: number, groupIdx: number) => {
+export const createTestGroup = (chainIdx: number, groupIdx: number) => (
+  deps: SeederDependencies,
+) => {
   const input: DeletableInput<CrudApi.CreateGroupInput> = {
     id: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
@@ -121,18 +104,34 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => {
     },
     currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteGroup',
-    createOperation: 'CreateGroup',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteGroup({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateGroup({ input }),
+  );
+};
+
+export const createAdminUser = (adminUserId: string, email: string) => (
+  deps: SeederDependencies,
+) => {
+  const input: DeletableInput<CrudApi.CreateAdminUserInput> = {
+    id: adminUserId,
+    name: 'John Doe',
+    email,
+    phone: '123123213',
+    profileImage:
+      'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
+  };
+  return deleteCreate(
+    () => deps.crudSdk.DeleteAdminUser({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateAdminUser({ input }),
+  );
 };
 
 export const createTestUnit = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateUnitInput> = {
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
@@ -186,17 +185,16 @@ export const createTestUnit = (
       to: '18:00',
     },
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteUnit',
-    createOperation: 'CreateUnit',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUnit({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateUnit({ input }),
+  );
 };
 
 export const createTestProductCategory = (
   chainIdx: number,
   productCategoryId: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateProductCategoryInput> = {
     id: generateProductCategoryId(chainIdx, productCategoryId),
     chainId: generateChainId(chainIdx),
@@ -212,18 +210,17 @@ export const createTestProductCategory = (
     image: 'https://picsum.photos/100',
   };
 
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteProductCategory',
-    createOperation: 'CreateProductCategory',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteProductCategory({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateProductCategory({ input }),
+  );
 };
 
 export const createTestChainProduct = (
   chainIdx: number,
   productCategoryIdx: number,
   productIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateChainProductInput> = {
     id: generateChainProductId(chainIdx, productIdx),
     chainId: generateChainId(chainIdx),
@@ -261,11 +258,10 @@ export const createTestChainProduct = (
       CrudApi.Allergen.peanut,
     ],
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteChainProduct',
-    createOperation: 'CreateChainProduct',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateChainProduct({ input }),
+  );
 };
 
 export const createTestGroupProduct = (
@@ -273,7 +269,7 @@ export const createTestGroupProduct = (
   groupIdx: number,
   chainProductIdx: number,
   productIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateGroupProductInput> = {
     id: generateGroupProductId(chainIdx, groupIdx, productIdx),
     parentId: generateChainProductId(chainIdx, chainProductIdx),
@@ -299,11 +295,10 @@ export const createTestGroupProduct = (
       },
     ],
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteGroupProduct',
-    createOperation: 'CreateGroupProduct',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateGroupProduct({ input }),
+  );
 };
 
 /**
@@ -315,7 +310,7 @@ export const createTestUnitProduct = (
   unitIdx: number,
   groupProductIdx: number,
   productIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateUnitProductInput> = {
     id: generateUnitProductId(chainIdx, groupIdx, productIdx),
     parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
@@ -353,11 +348,10 @@ export const createTestUnitProduct = (
       },
     ],
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteUnitProduct',
-    createOperation: 'CreateUnitProduct',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateUnitProduct({ input }),
+  );
 };
 
 export const createTestCart = ({
@@ -374,7 +368,7 @@ export const createTestCart = ({
   productIdx: number;
   userIdx: number;
   cartIdx: number;
-}) => {
+}) => (deps: SeederDependencies) => {
   const input: DeletableInput<CrudApi.CreateCartInput> = {
     id: generateCartId(cartIdx),
     userId: generateUserId(userIdx),
@@ -410,11 +404,10 @@ export const createTestCart = ({
       },
     ],
   };
-  return deleteCreate({
-    input,
-    deleteOperation: 'DeleteCart',
-    createOperation: 'CreateCart',
-  });
+  return deleteCreate(
+    () => deps.crudSdk.DeleteCart({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateCart({ input }),
+  );
 };
 
 export const createTestRoleContext = (
@@ -422,7 +415,7 @@ export const createTestRoleContext = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   console.debug('createTestRoleContext', {
     roleContextIdx,
     chainIdx,
@@ -488,70 +481,22 @@ export const createTestRoleContext = (
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
   };
 
-  return concat(
-    deleteCreate({
-      input: superuserInput,
-      deleteOperation: 'DeleteRoleContext',
-      createOperation: 'CreateRoleContext',
-    }),
-    deleteCreate({
-      input: chainAdminInput,
-      deleteOperation: 'DeleteRoleContext',
-      createOperation: 'CreateRoleContext',
-    }),
-    deleteCreate({
-      input: groupAdminInput,
-      deleteOperation: 'DeleteRoleContext',
-      createOperation: 'CreateRoleContext',
-    }),
-    deleteCreate({
-      input: unitAdminInput,
-      deleteOperation: 'DeleteRoleContext',
-      createOperation: 'CreateRoleContext',
-    }),
-    deleteCreate({
-      input: staffInput,
-      deleteOperation: 'DeleteRoleContext',
-      createOperation: 'CreateRoleContext',
-    }),
-  ).pipe(tap(() => console.debug('createTestRoleContext SUCCESS')));
-};
-
-export const deleteTestAdminRoleContext = (adminRoleContextIdx: number) => (
-  deps: SeederDependencies,
-) => {
-  const idSuper = generateAdminRoleContextId(
-    adminRoleContextIdx,
-    EAdminRole.SUPERUSER,
-  );
-  const idChainAdmin = generateAdminRoleContextId(
-    adminRoleContextIdx,
-    EAdminRole.CHAIN_ADMIN,
-  );
+  const handleRoleContext = <INPUT extends CrudApi.CreateRoleContextInput>(
+    input: INPUT,
+  ) =>
+    deleteCreate(
+      () => deps.crudSdk.DeleteRoleContext({ input: { id: input.id } }),
+      () => deps.crudSdk.CreateRoleContext({ input }),
+    );
 
   return concat(
-    from(
-      deps.crudSdk.DeleteAdminRoleContext({
-        input: {
-          id: idSuper,
-        },
-      }),
-    ),
-    from(
-      deps.crudSdk.DeleteAdminRoleContext({
-        input: {
-          id: idChainAdmin,
-        },
-      }),
-    ),
-  ).pipe(
-    catchError(err => {
-      console.warn(
-        `Can NOT delete the AdminRoleContext with id: ${idChainAdmin}`,
-        err,
-      );
-      return of('SUCCESS');
-    }),
+    ...[
+      superuserInput,
+      chainAdminInput,
+      groupAdminInput,
+      unitAdminInput,
+      staffInput,
+    ].map(x => handleRoleContext(x)),
   );
 };
 
@@ -574,10 +519,15 @@ export const createTestAdminRoleContext = (
     ),
   };
 
-  return combineLatest([
-    from(deps.crudSdk.CreateAdminRoleContext({ input: superuserInput })),
-    from(deps.crudSdk.CreateAdminRoleContext({ input: chainAdminInput })),
-  ]);
+  return pipe(
+    [superuserInput, chainAdminInput].map(input =>
+      deleteCreate(
+        () => deps.crudSdk.DeleteAdminRoleContext({ input: { id: input.id } }),
+        () => deps.crudSdk.CreateAdminRoleContext({ input }),
+      ),
+    ),
+    combineLatest,
+  );
 };
 
 export const createSeederDeps = (

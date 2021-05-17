@@ -1,6 +1,6 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { delay, switchMap, takeLast } from 'rxjs/operators';
 import {
   createSeederDeps,
   seedAdminUser,
@@ -9,7 +9,7 @@ import {
 import { sendResponse } from '../utils/send-response';
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
-  console.log('### EVENT:', JSON.stringify(event, null, 2));
+  console.debug('SEEDER handler event:', JSON.stringify(event, null, 2));
 
   /**
    * See the AWS documentation for more information passed in the request for a custom resource.
@@ -19,6 +19,8 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
   const seederDeps = createSeederDeps(
+    //'AKIAYIT7GMY5WQZFXOOX',
+    //'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
     AdminUserPoolId,
@@ -27,7 +29,9 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     await seedAdminUser(seederDeps)
       .pipe(
+        delay(2000),
         switchMap(userId => seedBusinessData(userId)(seederDeps)),
+        takeLast(1),
         switchMap(() =>
           from(
             sendResponse({

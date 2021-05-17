@@ -31,7 +31,7 @@ export class CognitoTriggersStack extends sst.Stack {
     );
 
     triggerSetupLambda.role &&
-      triggerSetupLambda.role.addToPolicy(
+      triggerSetupLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: [
             'iam:GetPolicy',

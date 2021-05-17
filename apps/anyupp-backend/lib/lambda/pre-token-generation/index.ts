@@ -17,9 +17,11 @@ export const handler: PreTokenGenerationTriggerHandler = async (
     process.env.AWS_SECRET_ACCESS_KEY || '',
   );
 
-  const adminUser = await sdk.GetAdminUser({
-    id: event.request.userAttributes.sub,
-  });
+  const adminUser = await sdk
+    .GetAdminUser({
+      id: event.request.userAttributes.sub,
+    })
+    .toPromise();
 
   // Find the role
   const role = (adminUser?.roleContexts?.items || []).find(

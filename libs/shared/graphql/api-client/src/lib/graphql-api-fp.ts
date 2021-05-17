@@ -59,6 +59,8 @@ export class GraphqlApiFp {
     accessKeyId: string,
     secretAccessKey: string,
   ): GraphqlApiClient {
+    Auth.configure();
+
     return new GraphqlApiClient(config, {
       url: config.aws_appsync_graphqlEndpoint,
       region: config.aws_appsync_region,

@@ -5,7 +5,7 @@ import {
   QueryOptions,
   SubscriptionOptions,
 } from 'apollo-client';
-import { from, Observable } from 'rxjs';
+import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 
@@ -79,20 +79,24 @@ export const getSdkRequester = (client: AWSAppSyncClient<any>) => <R, V>(
 
   switch (definition.operation) {
     case 'mutation': {
-      return from(
-        client.mutate<R>({
-          mutation: doc,
-          variables,
-        }),
+      return defer(() =>
+        from(
+          client.mutate<R>({
+            mutation: doc,
+            variables,
+          }),
+        ),
       ).pipe(map(processResponse));
     }
     case 'query': {
-      return from(
-        client.query<R>({
-          query: doc,
-          variables,
-          ...options,
-        }),
+      return defer(() =>
+        from(
+          client.query<R>({
+            query: doc,
+            variables,
+            ...options,
+          }),
+        ),
       ).pipe(map(processResponse));
     }
     case 'subscription': {
@@ -110,7 +114,7 @@ export const getSdkRequester = (client: AWSAppSyncClient<any>) => <R, V>(
 type TypeWithGeneric<T> = Promise<T> | Observable<T>;
 type extractGeneric<Type> = Type extends TypeWithGeneric<infer X> ? X : never;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type decideMonad<T, K> = T extends Promise<any> ? Promise<K> : Observable<K>;
+//type decideMonad<T, K> = T extends Promise<any> ? Promise<K> : Observable<K>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReplaceReturnType<T extends (..._a: any) => any, TNewReturn> = (
@@ -139,7 +143,4 @@ export type SdkMethodMapper<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   SDK extends Record<string, any>,
   T extends keyof SDK
-> = ReplaceReturnType<
-  SDK[T],
-  decideMonad<ReturnType<SDK[T]>, StrippedReturnType<SDK, T>>
->;
+> = ReplaceReturnType<SDK[T], Observable<StrippedReturnType<SDK, T>>>;

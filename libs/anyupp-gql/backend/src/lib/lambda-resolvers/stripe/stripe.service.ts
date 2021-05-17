@@ -75,7 +75,7 @@ export const startStripePayment = (
   }
 
   // 2. Load order
-  const order = await loadOrder(orderId)(deps);
+  const order = await loadOrder(orderId)(deps).toPromise();
   console.log('startStripePayment().order.loaded=' + order?.id);
 
   if (order == null) {
@@ -112,7 +112,7 @@ export const startStripePayment = (
   }
 
   // 4. Load unit
-  const unit = await loadUnit(order.unitId)(deps);
+  const unit = await loadUnit(order.unitId)(deps).toPromise();
 
   // 5. Calculate summary
   const price = calculateOrderSumPrice(order.items || []);
@@ -178,7 +178,9 @@ export const startStripePayment = (
       type: 'STRIPE',
     },
   };
-  const transaction = await createTransaction(createTransactionVars)(deps);
+  const transaction = await createTransaction(createTransactionVars)(
+    deps,
+  ).toPromise();
 
   console.log('startStripePayment().transaction=' + transaction?.id);
 
@@ -193,7 +195,7 @@ const loadAndConnectUserForStripe = (stripe: Stripe, userId: string) => async (
   deps: StripeResolverDeps,
 ) => {
   console.log('loadAndConnectUserForStripe().start()=' + userId);
-  let user = await loadUser(userId)(deps);
+  let user = await loadUser(userId)(deps).toPromise();
   console.log('loadAndConnectUserForStripe().user=' + user);
 
   if (!user || !user.stripeCustomerId) {
@@ -208,14 +210,14 @@ const loadAndConnectUserForStripe = (stripe: Stripe, userId: string) => async (
 
     if (!user) {
       console.log('loadAndConnectUserForStripe().creating user.');
-      user = await createUser(userId, stripeResponse.id)(deps);
+      user = await createUser(userId, stripeResponse.id)(deps).toPromise();
       console.log('loadAndConnectUserForStripe().User created=' + user?.id);
     } else if (!user.stripeCustomerId) {
       console.log(
         'loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' +
           stripeResponse.id,
       );
-      user = await updateUser(userId, stripeResponse.id)(deps);
+      user = await updateUser(userId, stripeResponse.id)(deps).toPromise();
       console.log(
         'loadAndConnectUserForStripe().User stripe customer id created=' +
           user?.id,

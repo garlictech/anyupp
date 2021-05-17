@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -6,14 +5,14 @@ import {
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { combineLatest, from, of } from 'rxjs';
+import { concat, defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
   delay,
-  filter,
   map,
   mapTo,
   switchMap,
+  takeLast,
 } from 'rxjs/operators';
 import {
   createTestAdminRoleContext,
@@ -26,9 +25,10 @@ import {
   createTestRoleContext,
   createTestUnit,
   createTestUnitProduct,
-  deleteTestAdminRoleContext,
+  createAdminUser,
   SeederDependencies,
 } from './seed-data-fn';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 const username = testAdminUsername;
 const password = testAdminUserPassword;
@@ -37,17 +37,6 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: process.env.AWS_REGION || '',
 });
-
-export const createAdminUser = /* GraphQL */ `
-  mutation CreateAdminUser(
-    $input: CreateAdminUserInput!
-    $condition: ModelAdminUserConditionInput
-  ) {
-    createAdminUser(input: $input, condition: $condition) {
-      id
-    }
-  }
-`;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
@@ -67,7 +56,7 @@ export const seedAdminUser = (deps: SeederDependencies) =>
     },
     // CREATE user in Cognito
     params =>
-      from(
+      defer(() =>
         cognitoidentityserviceprovider.adminCreateUser(params).promise(),
       ).pipe(
         switchMap(() =>
@@ -83,11 +72,12 @@ export const seedAdminUser = (deps: SeederDependencies) =>
           ),
         ),
         catchError(err => {
-          console.warn(
-            'Probably normal error during cognito user creation: ',
-            err,
-          );
-          return of({});
+          if (err?.code === 'UsernameExistsException') {
+            console.warn('Admin user in Cognito already exists, no problem');
+            return of({});
+          } else {
+            return throwError(err);
+          }
         }),
       ),
     // pipeDebug('### Cognito user CREATED'),
@@ -110,40 +100,26 @@ export const seedAdminUser = (deps: SeederDependencies) =>
         attr => attr?.Value,
       ),
     ),
-    filter(fp.negate(fp.isEmpty)),
-    map((adminUserId: string) => ({
-      id: adminUserId || '',
-      name: 'John Doe',
-      email: username,
-      phone: '123123213',
-      profileImage:
-        'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
-    })),
-    // pipeDebug('### User TO SAVE in Admin user table'),
-    switchMap((input: CrudApi.CreateAdminUserInput) =>
-      from(deps.crudSdk.CreateAdminUser({ input })).pipe(
-        mapTo(input.id),
-        catchError(err => {
-          console.warn(
-            'Probably normal error during Admin user creation in db: ',
-            err,
-          );
-          return of(input.id);
-        }),
-      ),
+    throwIfEmptyValue(),
+    switchMap(adminUserId =>
+      createAdminUser(adminUserId, username)(deps).pipe(mapTo(adminUserId)),
     ),
-    map(id => id || 'USER_ID_SHOULD_EXISTS_AT_END_OF_SEEDING'),
   );
 
 export const seedBusinessData = (userId: string) => (
   deps: SeederDependencies,
 ) =>
-  createTestRoleContext(1, 1, 1, 1)
-    .pipe(ce('### RoleContext SEED 01'), delay(2000))
+  createTestRoleContext(
+    1,
+    1,
+    1,
+    1,
+  )(deps)
     .pipe(
+      ce('### RoleContext SEED 01'),
+      delay(1000),
       switchMap(() =>
-        combineLatest([
-          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
+        concat(
           createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
           createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
           createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
@@ -201,15 +177,10 @@ export const seedBusinessData = (userId: string) => (
             userIdx: 1,
             cartIdx: 1,
           })(deps),
-        ]),
-      ),
-      delay(2000),
-      switchMap(() =>
-        deleteTestAdminRoleContext(1)(deps).pipe(
-          ce('### ADMIN_ROLE_CONTEXT SEED DELETE'),
+          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
         ),
       ),
-      delay(2000),
+      takeLast(1),
       switchMap(() =>
         createTestAdminRoleContext(
           1,
