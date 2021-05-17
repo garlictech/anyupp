@@ -3,6 +3,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/modules/transactions/screens/transactions_screen.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -99,6 +100,7 @@ class _ProfileState extends State<Profile> {
           ),
           createOptionMenu(trans('profile.menu.about'), () => Nav.to(AboutApp()), true),
           createOptionMenu(trans('profile.menu.settings'), () => Nav.to(SettingsScreen()), true),
+          createOptionMenu(trans('profile.menu.transactions'), () => Nav.to(TransactionsScreen()), true),
           // createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true), // TODO Removed
           createOptionMenu(trans('profile.menu.regulations'), () => launch('https://www.anyupp.com/privacy/'), true),
           createOptionMenu(trans('profile.menu.logout'), () => showConfirmLogoutDialog(context), false),
