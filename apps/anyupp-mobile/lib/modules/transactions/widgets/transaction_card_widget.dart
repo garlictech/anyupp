@@ -1,0 +1,192 @@
+import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+class TransactionCard extends StatelessWidget {
+  final TransactionItem transactionItem;
+
+  TransactionCard({Key key, this.transactionItem}) : super(key: key);
+  final DateFormat parser = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 16.0,
+        left: 12.0,
+        right: 12.0,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          14.0,
+        ),
+        border: Border.all(
+          width: 1.5,
+          color: theme.border2,
+        ),
+        color: theme.background,
+      ),
+      child: Container(
+        padding: EdgeInsets.all(0.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            _buildTransactionHeader(context),
+            _buildDivider(context),
+            _buildTransactionDeatails(context),
+            _buildFooter(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider(BuildContext context) {
+    return Divider(
+      color: theme.disabled.withOpacity(0.4),
+      height: 1.5,
+    );
+  }
+
+  Widget _buildTransactionHeader(BuildContext context) {
+    DateTime dateTime = parser.parseUTC(transactionItem.createdAt);
+
+    return ClipRect(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0),
+            ),
+            color: theme.background2),
+        padding: EdgeInsets.only(
+          top: 14.0,
+          bottom: 14.0,
+          left: 20.0,
+          right: 20.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
+              ),
+              child: Text(
+                formatter.format(dateTime),
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: theme.text,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTransactionDeatails(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        bottom: 20.0,
+        left: 20.0,
+        right: 20.0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                trans(context, 'profile.transactions.status'),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: theme.text,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                transactionItem.status,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: theme.text,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                trans(context, 'profile.transactions.paymentMethod'),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: theme.text,
+                ),
+              ),
+              Text(
+                transactionItem.type,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: theme.text,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(14.0),
+          bottomRight: Radius.circular(14.0),
+        ),
+        color: theme.background2,
+      ),
+      padding: EdgeInsets.only(
+        top: 12.0,
+        bottom: 20.0,
+        left: 20.0,
+        right: 20.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            trans(context, 'orders.totalCost'),
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: theme.text,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            formatCurrency(transactionItem.total,
+                transactionItem.currency ?? 'huf'), // TODO geounit!!
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: theme.text,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
