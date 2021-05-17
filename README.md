@@ -628,5 +628,5 @@ publish!
 
 `./tools/build-workspace.sh anyupp-backend dev`
 
-Before it, remove `apps/crud-api/amplify`. Ensure that all your changes are pushed or discard them.
+Before it, remove `apps/crud-backend/amplify`. Ensure that all your changes are pushed or discard them.
 The command fethes the crud backend, the configurations and regenerates the code files.
