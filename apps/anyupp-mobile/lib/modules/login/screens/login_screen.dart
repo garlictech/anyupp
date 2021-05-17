@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -36,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen>
   final double _backgroundAnimationSize = 50.0;
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
-  String _userAgent = '<unknown>';
+  // String _userAgent = '<unknown>';
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
@@ -71,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen>
         .then((value) => _switchAnimation());
   }
 
-  Future<void> setUserAgent() async {
-    _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
-  }
+  // Future<void> setUserAgent() async {
+  //   _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+  // }
 
   @override
   void dispose() {
@@ -634,10 +632,11 @@ class _LoginScreenState extends State<LoginScreen>
       ),
       body: WebView(
         key: UniqueKey(),
-        userAgent: _userAgent,
+        userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
+            'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
         initialUrl: url,
         javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
+        onWebViewCreated: (WebViewController webViewController) async{
           _webViewController.complete(webViewController);
         },
         navigationDelegate: (NavigationRequest request) {

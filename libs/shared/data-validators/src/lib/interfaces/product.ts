@@ -12,7 +12,7 @@ export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
   description: localizedItemSchema.required(),
   productCategoryId: Joi.string().required(),
   productType: Joi.string().required(), // TODO: use enumschema
-  image: Joi.string().allow(null),
+  image: Joi.string().allow(null, ''),
   variants: Joi.array().required(), //TODO: use an exact schema
   configSets: Joi.array().optional().allow(null),
   createdAt: Joi.string().required(),
