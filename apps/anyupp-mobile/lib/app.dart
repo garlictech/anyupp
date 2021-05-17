@@ -24,6 +24,7 @@ import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
+import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
 
 class MyApp extends StatefulWidget {
@@ -91,12 +92,20 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
-        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
-        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
-        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<UnitSelectBloc>(
+            create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(
+            create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(
+            create: (context) => getIt<TransactionsBloc>()),
+        BlocProvider<LoginBloc>(
+            create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<SimplePayBloc>(
+            create: (BuildContext context) => getIt<SimplePayBloc>()),
+        BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<AffiliateBloc>(
+            create: (BuildContext context) => getIt<AffiliateBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
