@@ -9,7 +9,7 @@ class TransactionsRepository {
 
   TransactionsRepository(this._provider);
 
-  Future<List<TransactionItem>> getTransactions(String unitId) {
-    return _provider.getTransactions(unitId);
+  Future<List<TransactionItem>> getTransactions() {
+    return _provider.getTransactions();
   }
 }

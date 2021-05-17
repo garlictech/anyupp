@@ -9,6 +9,11 @@ abstract class TransactionsEvent extends Equatable {
 }
 
 class LoadTransactions extends TransactionsEvent {
-  final String unitId;
-  const LoadTransactions(this.unitId);
+
+  const LoadTransactions();
+}
+
+class Loading extends TransactionsEvent {
+
+  const Loading();
 }

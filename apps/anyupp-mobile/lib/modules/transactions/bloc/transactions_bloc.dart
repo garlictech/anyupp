@@ -15,9 +15,12 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   Stream<TransactionsState> mapEventToState(
     TransactionsEvent event,
   ) async* {
+    if (event is Loading) {
+      yield LoadingState();
+    }
     if (event is LoadTransactions) {
       dynamic transActionItems =
-          await _transactionsRepository.getTransactions(event.unitId);
+          await _transactionsRepository.getTransactions();
       yield TransactionsLoadedState(items: transActionItems);
     }
 

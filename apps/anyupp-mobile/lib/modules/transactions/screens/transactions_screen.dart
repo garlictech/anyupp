@@ -25,15 +25,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
+    getIt<TransactionsBloc>().add(Loading());
+    getIt<TransactionsBloc>().add(LoadTransactions());
+
   }
 
   void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     _refreshController.loadComplete();
   }
 
@@ -60,14 +57,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     return BlocBuilder<TransactionsBloc, TransactionsState>(
       builder: (context, state) {
         if (state is TransactionsInitial) {
-          getIt<TransactionsBloc>().add(LoadTransactions(unit.id));
+          getIt<TransactionsBloc>().add(LoadTransactions());
         }
         if (state is TransactionsLoadedState) {
-          if (state.items.isEmpty) {
-            return _buildEmptyList(context);
-          } else {
-            return _buildList(state.items);
-          }
+          _refreshController.refreshCompleted();
+          return _buildList(state.items);
+          // }
         }
         return CenterLoadingWidget();
       },
@@ -78,7 +73,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     return AnimationLimiter(
         child: SmartRefresher(
       enablePullDown: true,
-      enablePullUp: true,
       header: WaterDropHeader(),
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus mode) {
@@ -103,25 +97,27 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       controller: _refreshController,
       onRefresh: _onRefresh,
       onLoading: _onLoading,
-      child: ListView.builder(
-        itemCount: list.length,
-        scrollDirection: Axis.vertical,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, position) {
-          return AnimationConfiguration.staggeredList(
-            position: position,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: TransactionCard(
-                  transactionItem: list[position],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+      child: list.isNotEmpty
+          ? ListView.builder(
+              itemCount: list.length,
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, position) {
+                return AnimationConfiguration.staggeredList(
+                  position: position,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: TransactionCard(
+                        transactionItem: list[position],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
+          : _buildEmptyList(context),
     ));
   }
 

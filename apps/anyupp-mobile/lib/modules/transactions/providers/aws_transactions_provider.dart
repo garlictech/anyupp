@@ -15,8 +15,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
 
   AwsTransactionsProvider(this._authProvider);
 
-  Future<List<TransactionItem>> getTransactions(String unitId) async {
-    print('_getFavorites().unitId=$unitId');
+  Future<List<TransactionItem>> getTransactions() async {
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
       ValueNotifier<GraphQLClient> _client =
