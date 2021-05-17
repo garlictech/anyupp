@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fa_prev/models/Order.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -33,4 +34,11 @@ class StartGetOrderHistoryListSubscription extends BaseOrderAction {
 
 class StopOrderHistoryListSubscription extends BaseOrderAction {
   const StopOrderHistoryListSubscription();
+}
+
+class LoadOrderDetail extends BaseOrderAction {
+  final String orderId;
+  LoadOrderDetail({this.orderId});
+  @override
+  List<Object> get props => [orderId];
 }

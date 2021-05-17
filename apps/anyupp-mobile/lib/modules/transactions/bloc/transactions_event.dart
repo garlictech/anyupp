@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class TransactionsEvent extends Equatable {
@@ -9,11 +8,10 @@ abstract class TransactionsEvent extends Equatable {
 }
 
 class LoadTransactions extends TransactionsEvent {
-
   const LoadTransactions();
 }
 
 class Loading extends TransactionsEvent {
-
   const Loading();
 }
+

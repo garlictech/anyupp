@@ -292,7 +292,8 @@
     "transactions": {
       "status": "Status",
       "paymentMethod": "Payment Method",
-      "noTransactions" : "No Transactions"
+      "noTransactions" : "No Transactions",
+      "details" : "Details"
     }
   },
   "affiliate": {

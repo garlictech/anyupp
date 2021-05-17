@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
 
 abstract class TransactionsState extends Equatable {
@@ -23,3 +24,5 @@ class LoadingState extends TransactionsState {
   @override
   List<Object> get props => [];
 }
+
+

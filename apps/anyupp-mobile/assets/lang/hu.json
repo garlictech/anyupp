@@ -292,7 +292,8 @@
     "transactions"  :{
       "status": "Státusz",
       "paymentMethod" : "Vásárlás módja",
-      "noTransactions" : "Nincsenek tranzakciók"
+      "noTransactions" : "Nincsenek tranzakciók",
+      "details" : "Részletek"
     }
   },
   "affiliate": {

@@ -1,7 +1,12 @@
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/transactions/screens/order_details_screen.dart';
+import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -71,7 +76,7 @@ class TransactionCard extends StatelessWidget {
           right: 20.0,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -85,6 +90,28 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                getIt<OrderBloc>()
+                    .add(LoadOrderDetail(orderId: transactionItem.orderId));
+                Nav.to(OrderDetailsScreen());
+              },
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text:
+                          trans(context, 'profile.transactions.details') + ' ',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.0,
+                        color: Color(0x993C2F2F),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

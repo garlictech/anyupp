@@ -48,11 +48,16 @@ class OrderRepository {
     await _provider.stopOrderListSubscription();
   }
 
-    Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
+  Future<void> startOrderHistoryListSubscription(
+      String chainId, String unitId) async {
     await _provider.startOrderHistoryListSubscription(chainId, unitId);
   }
 
   Future<void> stopOrderHistoryListSubscription() async {
     await _provider.stopOrderHistoryListSubscription();
+  }
+
+  Future<Order> getOrder(String orderId) async{
+    return _provider.getOrder(orderId);
   }
 }

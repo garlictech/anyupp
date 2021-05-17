@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/models/GeoUnit.dart';
+import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
 import 'package:fa_prev/modules/transactions/widgets/transaction_card_widget.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
@@ -27,7 +28,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   void _onRefresh() async {
     getIt<TransactionsBloc>().add(Loading());
     getIt<TransactionsBloc>().add(LoadTransactions());
-
   }
 
   void _onLoading() async {
@@ -46,7 +46,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           if (state is UnitSelected) {
             return _buildTransactions(context, state.unit);
           }
-
           return CenterLoadingWidget();
         },
       ),
