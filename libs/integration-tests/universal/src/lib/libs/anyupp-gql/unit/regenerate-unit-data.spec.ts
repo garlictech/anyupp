@@ -170,8 +170,6 @@ describe('RegenerateUnitData mutation tests', () => {
         tap({
           next(result) {
             const [generatedProducts, unitProducts] = result;
-            expect(unitProducts.length).toEqual(6);
-            expect(generatedProducts.length).toEqual(6);
             const upIds = getSortedIds(unitProducts);
             const genIds = getSortedIds(generatedProducts);
 
@@ -228,16 +226,24 @@ describe('RegenerateUnitData mutation tests', () => {
         ),
         tap({
           next(result) {
-            expect(result.length).toEqual(6);
+            const expectedGeneratedIds = [
+              productSeed.unitProductId_seeded_id_01,
+              productSeed.unitProductId_seeded_id_02,
+              unitProduct_0201_DIFFERENTUNIT.id,
+              unitProduct_0104_NEW.id,
+              unitProduct_0101.id,
+              unitProduct_0102.id,
+            ];
             const ids = result.map(x => x.id);
 
-            expect(ids).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
-            expect(ids).toContainEqual(unitProduct_0104_NEW.id);
-            expect(ids).toContainEqual(unitProduct_0101.id);
-            expect(ids).toContainEqual(unitProduct_0102.id);
+            expectedGeneratedIds.forEach(id => {
+              expect(ids).toContainEqual(id);
+            });
 
             expect(
-              result.sort((a, b) => (a.id > b.id ? 1 : -1)),
+              result
+                .filter(x => expectedGeneratedIds.includes(x.id))
+                .sort((a, b) => (a.id > b.id ? 1 : -1)),
             ).toMatchSnapshot();
           },
         }),
