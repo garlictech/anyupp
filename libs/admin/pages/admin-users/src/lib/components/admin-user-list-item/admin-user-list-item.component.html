@@ -1,7 +1,7 @@
 <nb-user
   class="float-left role-border {{ adminUser.role?.toLowerCase() }}"
   [name]="adminUser.name || ''"
-  [picture]="(adminUser.profileImage || '' | awsStoragePath | async) || ''"
+  [picture]="(adminUser.profileImage || '' | awsStoragePath) || ''"
 ></nb-user>
 
 <button

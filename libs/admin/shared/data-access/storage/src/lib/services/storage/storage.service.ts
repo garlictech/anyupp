@@ -20,15 +20,7 @@ export class StorageService {
         level: 'public',
         contentType: file.type,
       })
-      .then(
-        (success: IStorageResponse) => success.key,
-        /*
-        this._amplifyService
-          .storage()
-          .get(success.key, { expires: 604800 }) // 1 week
-          .then((filePath: string) => key),
-        */
-      );
+      .then((success: IStorageResponse) => success.key);
   }
 
   public removeFile(key: string): Promise<void> {
