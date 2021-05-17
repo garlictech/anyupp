@@ -95,7 +95,7 @@ const handleSuccessTransaction = async (crudGraphqlClient: GraphqlApiClient, tra
   // console.log('***** handleSuccessTransaction().transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(crudGraphqlClient, transaction.id, CrudApi.PaymentStatus.SUCCESS);
-    await updateOrderState(crudGraphqlClient, transaction.orderId, transaction.userId, CrudApi.OrderStatus.PLACED);
+    await updateOrderState(crudGraphqlClient, transaction.orderId, transaction.userId, CrudApi.OrderStatus.PLACED, transaction.id);
     console.log('***** handleSuccessTransaction().success()');
   } else {
     console.log('***** handleSuccessTransaction().Warning!!!! No transaction found with id=' + transactionId);
@@ -111,8 +111,3 @@ const handleFailedTransaction = async (crudGraphqlClient: GraphqlApiClient, tran
     console.log('***** handleFailedTransaction().success()');
   }
 }
-
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
-// module.exports = app

@@ -59,7 +59,9 @@ export const loadUser = async (crudGraphqlClient: GraphqlApiClient, userId: stri
   };
   return executeQuery(crudGraphqlClient)<CrudApi.GetUserQuery>(
     CrudApiQueryDocuments.getUser,
-    getUserVars,
+    getUserVars, {
+      fetchPolicy: 'network-only'
+    }
   ).pipe(
     map(data => data.getUser as IUser),
   ).toPromise();
@@ -77,7 +79,9 @@ export const loadOrder = async (crudGraphqlClient: GraphqlApiClient, orderId: st
   };
   return executeQuery(crudGraphqlClient)<CrudApi.GetOrderQuery>(
     CrudApiQueryDocuments.getOrder,
-    getOrderVars,
+    getOrderVars, {
+      fetchPolicy: 'network-only'
+    }
   ).pipe(
     map(data => data.getOrder as unknown as IOrder), // TODO unknown?!
   ).toPromise();
@@ -95,7 +99,9 @@ export const loadUnit = async (crudGraphqlClient: GraphqlApiClient, unitId: stri
   };
   return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
     CrudApiQueryDocuments.getUnit,
-    getUnitVars,
+    getUnitVars, {
+      fetchPolicy: 'network-only'
+    }
   ).pipe(
     map(data => data.getUnit as IUnit),
   ).toPromise();
@@ -161,13 +167,18 @@ export const updateTransactionState = async (crudGraphqlClient: GraphqlApiClient
  * @param crudGraphqlClient CRUD GraphQL client
  * @param id the ID of the Order to be updated
  * @param status the new status of the Order
+ * @param transactionId the ID of the Transaction belongs to the Order
  * @returns an instance of IOrder interface, filled with the updated transaction's data
  */
- export const updateOrderState = async (crudGraphqlClient: GraphqlApiClient, id: string, userId: string, status: CrudApi.OrderStatus): Promise<IOrder> => {
+ export const updateOrderState = async (crudGraphqlClient: GraphqlApiClient, id: string, userId: string, status: CrudApi.OrderStatus, transactionId: string): Promise<IOrder> => {
+
+  const order: IOrder = await loadOrder(crudGraphqlClient, id);
   const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
     input: {
       id: id,
-      statusLog: [{
+      transactionId: transactionId,
+      statusLog: [ 
+        ...order.statusLog.map(status => status as CrudApi.StatusLogInput), {
         status: status,
         ts: Date.now(),
         userId: userId

@@ -119,15 +119,12 @@ export const startStripePayment = async (
     console.log('***** startPayment().Payment method ' + paymentMethod.id + ' attached to customer: ' + user.stripeCustomerId);
   }
 
-  // 5. Create payment intent
+  // 7. Create payment intent
   console.log('startStripePayment().creating payment intent.');
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
   console.log('startStripePayment().payment intent created=' + paymentIntent.id);
 
-  // 4. Change ORDER STATUS
-  updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE);
-
-  // 5. Create Transaction
+  // 8. Create Transaction
   const createTransactionVars: CrudApi.CreateTransactionMutationVariables = {
     input: {
       id: paymentIntent.id,
@@ -142,6 +139,9 @@ export const startStripePayment = async (
   };
   const transaction = await createTransaction(crudGraphqlClient, createTransactionVars);
   console.log('startStripePayment().transaction=' + transaction.id);
+
+  // 9. Update ORDER STATUS
+  updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE, transaction.id);
 
 
   // 6. Return with client secret

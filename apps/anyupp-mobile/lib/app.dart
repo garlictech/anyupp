@@ -20,6 +20,7 @@ import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
+import 'modules/main/main.dart';
 import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
@@ -181,6 +182,8 @@ class _MyAppState extends State<MyApp> {
             create: (BuildContext context) => getIt<ThemeBloc>()),
         BlocProvider<AffiliateBloc>(
             create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<MainNavigationBloc>(
+            create: (BuildContext context) => getIt<MainNavigationBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
