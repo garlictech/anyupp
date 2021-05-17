@@ -1,4 +1,3 @@
-import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
 import {
@@ -11,10 +10,7 @@ import {
 import { Validators } from '@angular/forms';
 import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import {
   anyuppAuthenticatedGraphqlClient,
@@ -93,16 +89,17 @@ export class AdminUserFormComponent
 
           executeMutation(
             anyuppAuthenticatedGraphqlClient,
-          )(AnyuppApi.CreateAdminUser, { input: { email, name, phone } })
-            .subscribe(() => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful',
-              );
+          )(AnyuppApi.CreateAdminUser, {
+            input: { email, name, phone },
+          }).subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
 
-              this.close();
-            });
+            this.close();
+          });
         } catch (error) {
           this._logger.error(
             `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
@@ -121,7 +118,9 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, image, <IAdminUser>data),
+          (data: unknown) => ({
+            profileImage: image,
+          }),
         );
 
         this._toasterService.show(
@@ -156,7 +155,9 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => fp.set(`profileImage`, null, <IAdminUser>data),
+          (data: unknown) => ({
+            profileImage: null,
+          }),
         );
 
         this._toasterService.show(
