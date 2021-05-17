@@ -26,12 +26,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
 
   @override
   void initState() {
+    getIt<OrderBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
-    Future.delayed(Duration(seconds: 1)).then(
-      (value) => getIt<OrderBloc>().add(
-        StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id),
-      ),
-    );
+    // Future.delayed(Duration(seconds: 1)).then(
+    //   (value) => getIt<OrderBloc>().add(
+    //     StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id),
+    //   ),
+    // );
   }
 
   @override

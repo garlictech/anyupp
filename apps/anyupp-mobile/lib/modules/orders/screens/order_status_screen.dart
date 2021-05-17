@@ -32,12 +32,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
 
   @override
   void initState() {
+    print('initState.StartGetOrderListSubscription()');
+    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
-    Future.delayed(Duration(seconds: 1)).then(
-      (value) => getIt<OrderBloc>().add(
-        StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
-      ),
-    );
+    // Future.delayed(Duration(seconds: 1)).then(
+    //   (value) => getIt<OrderBloc>().add(
+    //     StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
+    //   ),
+    // );
   }
 
   @override
@@ -56,6 +58,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           return StreamBuilder<List<Order>>(
             stream: _orderRepository.getCurrentOrders(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
+              print('Screen.startListSubscription().state=$orderState');
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
                 if (orderState.data == null || orderState.data.isEmpty) {
                   return _noOrder();
