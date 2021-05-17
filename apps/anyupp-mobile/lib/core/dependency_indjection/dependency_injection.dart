@@ -9,6 +9,9 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/modules/transactions/bloc/transactions_bloc.dart';
+import 'package:fa_prev/modules/transactions/providers/aws_transactions_provider.dart';
+import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
 import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -70,6 +73,7 @@ void _initProviders() {
         getIt<IAuthProvider>(),
         getIt<CognitoService>(),
       ));
+   getIt.registerLazySingleton<AwsTransactionsProvider>(() => AwsTransactionsProvider(getIt<IAuthProvider>()));
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
@@ -88,6 +92,8 @@ void _initRepositories() {
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
+    getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));
+
 
   // Repostories
   getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<IAffiliateProvider>()));
@@ -113,6 +119,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AuthBloc(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ExceptionBloc());
   getIt.registerLazySingleton(() => UnitSelectBloc());
+  getIt.registerLazySingleton(() => TransactionsBloc(getIt<TransactionsRepository>()));
   getIt.registerLazySingleton(() => UnitsBloc(getIt<UnitRepository>(), getIt<LocationRepository>()));
   getIt.registerLazySingleton(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));

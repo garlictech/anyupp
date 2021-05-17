@@ -25,6 +25,7 @@ import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
+import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
 
 class MyApp extends StatefulWidget {
@@ -174,6 +175,8 @@ class _MyAppState extends State<MyApp> {
             create: (context) => getIt<UnitSelectBloc>()),
         BlocProvider<FavoritesBloc>(
             create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(
+            create: (context) => getIt<TransactionsBloc>()),
         BlocProvider<LoginBloc>(
             create: (BuildContext context) => getIt<LoginBloc>()),
         BlocProvider<SimplePayBloc>(

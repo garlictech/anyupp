@@ -96,7 +96,6 @@ amplify codegen
 echo "Generating table config..."
 TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
 mkdir -p $TABLE_CONFIG_DIR
-echo "mkdir -p $TABLE_CONFIG_DIR"
 TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
 
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
@@ -111,7 +110,6 @@ DATA_SOURCES=$(aws appsync list-data-sources --api-id $API_ID | \
   jq ".[] | select(.type == \"AMAZON_DYNAMODB\")")
 
 TABLE_NAMES=$(echo $DATA_SOURCES | jq ".dynamodbConfig.tableName" | tr -d '"')
-echo "TABLE_NAMES=$TABLE_NAMES"
 IFS=$'\n'
 RESULT="{"
 
