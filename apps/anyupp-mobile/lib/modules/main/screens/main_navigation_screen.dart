@@ -159,7 +159,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   elevation: 8,
                   duration: Duration(seconds: 1),
                   content: Text(
-                    'Tap back again to exit app.',
+                    trans('common.exit'),
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                     ),

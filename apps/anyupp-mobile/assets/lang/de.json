@@ -5,7 +5,8 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok"
+    "ok": "Ok",
+    "exit": "Tap back again to exit app."
   },
   "locale": {
     "EN": "English",
