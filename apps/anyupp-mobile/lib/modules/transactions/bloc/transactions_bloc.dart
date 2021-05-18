@@ -9,8 +9,7 @@ import 'transactions_state.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final TransactionsRepository _transactionsRepository;
-  TransactionsBloc(this._transactionsRepository)
-      : super(TransactionsInitial());
+  TransactionsBloc(this._transactionsRepository) : super(TransactionsInitial());
 
   @override
   Stream<TransactionsState> mapEventToState(
@@ -20,8 +19,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       yield LoadingState();
     }
     if (event is LoadTransactions) {
-      dynamic transActionItems =
-          await _transactionsRepository.getTransactions();
+      dynamic transActionItems = await _transactionsRepository.getTransactions();
       yield TransactionsLoadedState(items: transActionItems);
     }
   }

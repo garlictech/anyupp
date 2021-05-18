@@ -26,8 +26,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
     }
 
     if (event is StartGetOrderHistoryListSubscription) {
-      await _repository.startOrderHistoryListSubscription(
-          event.chainId, event.unitId);
+      await _repository.startOrderHistoryListSubscription(event.chainId, event.unitId);
       yield OrderSubscriptionsState('OrderHistoryList', true);
     }
 

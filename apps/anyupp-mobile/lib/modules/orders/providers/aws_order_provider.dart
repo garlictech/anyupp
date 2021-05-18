@@ -401,6 +401,7 @@ class AwsOrderProvider implements IOrdersProvider {
               'status': 'PLACED',
               'ts': 1.0,
             },
+            "allergens" : item.allergens,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,
