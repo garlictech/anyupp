@@ -4,7 +4,7 @@ import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middlewa
 import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
-import { loadTransaction, updateOrderState, updateTransactionState } from './stripe-graphql-crud';
+import { loadTransactionByExternalTransactionId, updateOrderState, updateTransactionState } from './stripe-graphql-crud';
 import { initStripe } from './stripe.service';
 
 export const createStripeWebhookExpressApp = () => {
@@ -23,20 +23,12 @@ export const createStripeWebhookExpressApp = () => {
   });
 
   app.use('/webhook', bodyParser.raw({type: "*/*"}))
-
-  // app.use(bodyParser.json({
-  //   verify: (req, res, buf) => {
-  //     console.log('***** Stripe webhook.buf=' + buf?.toString());
-  //     (req as any).rawBody = buf.toString();
-  //   }
-  // }));
-
-
   app.post('/webhook', async function (request, response) {
 
     console.log('***** Stripe webhook.start()');
+    // console.log('***** Stripe webhook.request=' + request);
     const stripe = await initStripe();
-    console.log('***** Stripe webhook. Stripe initialized()');
+    // console.log('***** Stripe webhook. Stripe initialized()');
 
     const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
     // console.log('***** Stripe webhook.stripeSigningSecret=' + endpointSecret);
@@ -49,14 +41,13 @@ export const createStripeWebhookExpressApp = () => {
     if (!sig) {
       throw Error('Stripe signature header not found in the request!');
     }
-    // console.log('***** Stripe webhook.stripe.body=' + request.body);
 
 
-    // console.log('***** Stripe webhook.request=' + request);
     let event: Stripe.Event;
     try {
+      // console.log('***** Stripe webhook.creating stripe event with ' + sig);
       event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-      console.log('***** Stripe webhook.event=' + event['type']);
+      console.log('***** Stripe webhook.event.created=' + event['type']);
     } catch (err) {
       console.log('***** Stripe webhook.error=' + err);
       // invalid signature
@@ -89,23 +80,23 @@ export const createStripeWebhookExpressApp = () => {
   return app;
 };
 
-const handleSuccessTransaction = async (crudGraphqlClient: GraphqlApiClient, transactionId: string) => {
-  console.log('***** handleSuccessTransaction().id=' + transactionId);
-  const transaction = await loadTransaction(crudGraphqlClient, transactionId);
-  // console.log('***** handleSuccessTransaction().transaction=' + transaction);
+const handleSuccessTransaction = async (crudGraphqlClient: GraphqlApiClient, externalTransactionId: string) => {
+  console.log('***** handleSuccessTransaction().id=' + externalTransactionId);
+  const transaction = await loadTransactionByExternalTransactionId(crudGraphqlClient, externalTransactionId);
+  // console.log('***** handleSuccessTransaction().loaded.transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(crudGraphqlClient, transaction.id, CrudApi.PaymentStatus.SUCCESS);
     await updateOrderState(crudGraphqlClient, transaction.orderId, transaction.userId, CrudApi.OrderStatus.PLACED, transaction.id);
-    console.log('***** handleSuccessTransaction().success()');
+    // console.log('***** handleSuccessTransaction().success()');
   } else {
-    console.log('***** handleSuccessTransaction().Warning!!!! No transaction found with id=' + transactionId);
+    console.log('***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' + externalTransactionId);
   }
 }
 
-const handleFailedTransaction = async (crudGraphqlClient: GraphqlApiClient, transactionId: string) => {
+const handleFailedTransaction = async (crudGraphqlClient: GraphqlApiClient, externalTransactionId: string) => {
 
-  console.log('***** handleFailedTransaction()');
-  const transaction = await loadTransaction(crudGraphqlClient, transactionId);
+  console.log('***** handleFailedTransaction().id=' + externalTransactionId);
+  const transaction = await loadTransactionByExternalTransactionId(crudGraphqlClient, externalTransactionId);
   if (transaction) {
     await updateTransactionState(crudGraphqlClient, transaction.id, CrudApi.PaymentStatus.FAILED);
     console.log('***** handleFailedTransaction().success()');

@@ -61,7 +61,7 @@ export const startStripePayment = async (
   }
 
   // 2. Load order
-  const order: IOrder = await loadOrder(crudGraphqlClient, orderId);
+  let order: IOrder = await loadOrder(crudGraphqlClient, orderId);
   console.log('startStripePayment().order.loaded=' + order?.id);
 
   if (order == null) {
@@ -120,14 +120,13 @@ export const startStripePayment = async (
   }
 
   // 7. Create payment intent
-  console.log('startStripePayment().creating payment intent.');
+  // console.log('startStripePayment().creating payment intent.');
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
   console.log('startStripePayment().payment intent created=' + paymentIntent.id);
 
   // 8. Create Transaction
   const createTransactionVars: CrudApi.CreateTransactionMutationVariables = {
     input: {
-      id: paymentIntent.id,
       userId: userId,
       orderId: orderId,
       currency: order.sumPriceShown.currency,
@@ -138,10 +137,12 @@ export const startStripePayment = async (
     }
   };
   const transaction = await createTransaction(crudGraphqlClient, createTransactionVars);
-  console.log('startStripePayment().transaction=' + transaction.id);
+  console.log('startStripePayment().transaction.id=' + transaction.id);
 
   // 9. Update ORDER STATUS
-  updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE, transaction.id);
+  // console.log('startStripePayment().updateOrderState.order=' + order.id);
+  order = await updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE, transaction.id);
+  console.log('startStripePayment().updateOrderState.done()=' + order?.id);
 
 
   // 6. Return with client secret
@@ -163,12 +164,12 @@ const loadAndConnectUserForStripe = async (stripe: Stripe, crudGraphqlClient: Gr
     console.log('loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id);
 
     if (!user) {
-      console.log('loadAndConnectUserForStripe().creating user.')
+      // console.log('loadAndConnectUserForStripe().creating user.')
       user = await createUser(crudGraphqlClient, userId, stripeResponse.id);
       console.log('loadAndConnectUserForStripe().User created=' + user.id);
     } else
       if (!user.stripeCustomerId) {
-        console.log('loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' + stripeResponse.id);
+        // console.log('loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' + stripeResponse.id);
         user = await updateUser(crudGraphqlClient, userId, stripeResponse.id);
         console.log('loadAndConnectUserForStripe().User stripe customer id created=' + user.id);
       }

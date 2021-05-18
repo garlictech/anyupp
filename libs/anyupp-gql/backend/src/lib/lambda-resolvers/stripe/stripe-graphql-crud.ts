@@ -83,7 +83,7 @@ export const loadOrder = async (crudGraphqlClient: GraphqlApiClient, orderId: st
       fetchPolicy: 'network-only'
     }
   ).pipe(
-    map(data => data.getOrder as unknown as IOrder), // TODO unknown?!
+    map(data => data.getOrder as IOrder), // TODO unknown?!
   ).toPromise();
 };
 
@@ -108,20 +108,24 @@ export const loadUnit = async (crudGraphqlClient: GraphqlApiClient, unitId: stri
 };
 
 /**
- * Load a signle Transaction from CRUD GraphQL endpoint by it's ID
+ * Load a signle Transaction from CRUD GraphQL endpoint by it's external transaction ID
  * @param crudGraphqlClient CRUD GraphQL client
- * @param transactionId the ID of the Transaction to be loaded
+ * @param externalTransactionId the external ID of the Transaction to be loaded
  * @returns an instance of ITransaction interface, filled with the loaded transaction's data
  */
- export const loadTransaction = async (crudGraphqlClient: GraphqlApiClient, transactionId: string): Promise<ITransaction> => {
-  const getUnitVars: CrudApi.GetTransactionQueryVariables = {
-    id: transactionId,
+ export const loadTransactionByExternalTransactionId = async (crudGraphqlClient: GraphqlApiClient, externalTransactionId: string): Promise<ITransaction | null> => {
+  // console.log('loadTransactionByExternalTransactionId.external_id=' + externalTransactionId)
+  const listTransactionListVars: CrudApi.ListTransactionsQueryVariables = {
+    filter: {
+      externalTransactionId: { eq: externalTransactionId }
+    },
   };
-  return executeQuery(crudGraphqlClient)<CrudApi.GetTransactionQuery>(
-    CrudApiQueryDocuments.getTransaction,
-    getUnitVars,
+  return executeQuery(crudGraphqlClient)<CrudApi.ListTransactionsQuery>(
+    CrudApiQueryDocuments.listTransactions,
+    listTransactionListVars,
   ).pipe(
-    map(data => data.getTransaction as unknown as ITransaction),
+    map(data => data.listTransactions?.items as Array<ITransaction>),
+    map(data => data && data.length > 0 ? data[0] : null),
   ).toPromise();
 };
 
@@ -136,7 +140,7 @@ export const createTransaction = async (crudGraphqlClient: GraphqlApiClient, tra
     CrudApiMutationDocuments.createTransaction,
     transaction,
   ).pipe(
-    map(data => data.createTransaction as unknown as ITransaction),
+    map(data => data.createTransaction as ITransaction),
   ).toPromise();
 }
 
@@ -158,7 +162,7 @@ export const updateTransactionState = async (crudGraphqlClient: GraphqlApiClient
     CrudApiMutationDocuments.updateTransaction,
     updateTransactionVars,
   ).pipe(
-    map(data => data.updateTransaction as unknown as ITransaction), // TODO unknown?!
+    map(data => data.updateTransaction as ITransaction),
   ).toPromise();
 }
 
@@ -171,14 +175,13 @@ export const updateTransactionState = async (crudGraphqlClient: GraphqlApiClient
  * @returns an instance of IOrder interface, filled with the updated transaction's data
  */
  export const updateOrderState = async (crudGraphqlClient: GraphqlApiClient, id: string, userId: string, status: CrudApi.OrderStatus, transactionId: string): Promise<IOrder> => {
-
-  const order: IOrder = await loadOrder(crudGraphqlClient, id);
+  console.log('***** updateOrderState().id=' + id + ', state=' + status + ', transactionId=' + transactionId + ', userId=' + userId);
   const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
     input: {
       id: id,
       transactionId: transactionId,
-      statusLog: [ 
-        ...order.statusLog.map(status => status as CrudApi.StatusLogInput), {
+      statusLog: 
+      [{
         status: status,
         ts: Date.now(),
         userId: userId
@@ -189,6 +192,8 @@ export const updateTransactionState = async (crudGraphqlClient: GraphqlApiClient
     CrudApiMutationDocuments.updateOrder,
     updateOrderVars,
   ).pipe(
-    map(data => data.updateOrder as unknown as IOrder), // TODO unknown?!
+    // pipeDebug('***** updateOrderState'),
+    map(data => data.updateOrder as IOrder),
+    // pipeDebug('***** updateOrderState2'),
   ).toPromise();
 }
