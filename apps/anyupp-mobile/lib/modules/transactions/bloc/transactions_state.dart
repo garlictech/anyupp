@@ -23,3 +23,5 @@ class LoadingState extends TransactionsState {
   @override
   List<Object> get props => [];
 }
+
+
