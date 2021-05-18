@@ -162,7 +162,9 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe((selectedLanguage: string | undefined | null): void => {
-        this._translateService.use(selectedLanguage || DEFAULT_LANG);
+        const lang = selectedLanguage || DEFAULT_LANG;
+        this._translateService.use(lang);
+        localStorage.setItem('selectedLanguage', lang);
       });
 
     this._dataConnectionInitialized = true;
@@ -620,9 +622,10 @@ export class DataService {
   }
 
   public regenerateUnitData(unitId: string): Promise<unknown> {
-    return executeMutation(
-      anyuppAuthenticatedGraphqlClient,
-    )(RegenerateUnitData, { input: { id: unitId } }).toPromise();
+    return executeMutation(anyuppAuthenticatedGraphqlClient)(
+      RegenerateUnitData,
+      { input: { id: unitId } },
+    ).toPromise();
   }
 
   //
