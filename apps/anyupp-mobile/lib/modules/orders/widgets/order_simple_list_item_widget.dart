@@ -27,7 +27,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-                      child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -49,7 +49,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'),  // TODO geounit!!
+            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'), // TODO geounit!!
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,

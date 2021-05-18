@@ -210,7 +210,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       color: theme.text,
                     ),
                   ),
-                  widget.item.allergens.isNotEmpty
+                  widget.item.allergens != null && widget.item.allergens.isNotEmpty
                       ? AllergensWidget(widget.item.allergens)
                       : Container(),
                 ],

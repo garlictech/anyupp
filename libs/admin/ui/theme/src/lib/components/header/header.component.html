@@ -27,16 +27,19 @@
         shape="round"
         class="mr-2"
         status="control"
+        [title]="'common.languageSelector' | translate"
         [nbContextMenu]="languageMenu"
+        data-testid="languageMenu"
       >
         {{ selectedLang }}
       </button>
 
       <nb-user
         [nbContextMenu]="userMenu"
+        data-testid="userMenu"
         [onlyPicture]="false"
         [name]="userName || ''"
-        [picture]="(userImage || '' | awsStoragePath | async) || ''"
+        [picture]="(userImage || '' | awsStoragePath) || ''"
       ></nb-user>
     </nb-action>
   </nb-actions>

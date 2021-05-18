@@ -35,11 +35,12 @@
     "from": "From",
     "to": "To",
     "language": "Language",
+    "languageSelector": "Language selector",
     "type": "Type",
     "lang": {
-      "english": "English",
-      "german": "German",
-      "hungarian": "Hungarian"
+      "english": "Englisch",
+      "german": "Deutsche",
+      "hungarian": "Ungarisch"
     },
     "productCategory": "Product category",
     "productType": "Product type",
@@ -58,6 +59,11 @@
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
     "removeSuccessful": "Remove successful",
+    "imageUploadError": "Image uploaded error",
+    "imageRemoveError": "Image remove error",
+    "insertError": "Insert error",
+    "updateError": "Update error",
+    "removeError": "Remove error",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",

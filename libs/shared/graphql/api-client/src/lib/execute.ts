@@ -18,7 +18,10 @@ export const executeQuery = (client: GraphqlApiClient) => <T>(
   queryOptions?: Partial<QueryOptions>,
 ) =>
   client
-    .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
+    // .query<T>(toGraphQLDocument(gqlDocument), variables, queryOptions)
+    .query<T>(toGraphQLDocument(gqlDocument), variables, {
+      fetchPolicy: 'no-cache',
+    })
     .pipe(pluck('data'));
 
 export const executeMutation = (client: GraphqlApiClient) => <T>(

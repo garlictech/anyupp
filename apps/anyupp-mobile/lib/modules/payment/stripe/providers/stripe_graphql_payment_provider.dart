@@ -57,7 +57,8 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithExistingCard().orderId=$orderId');
     if (orderId == null) {
       throw StripeException(
-          code: StripeException.UNKNOWN_ERROR, message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
+          code: StripeException.UNKNOWN_ERROR,
+          message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
 
     ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
@@ -91,7 +92,12 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
-   String orderId = await _ordersProvider.createAndSendOrderFromCart();
+
+    Map<String, dynamic> paymentMethod = await _stripe.api.createPaymentMethodFromCard(stripeCard);
+    String paymentMethodId = paymentMethod['id'];
+    print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
+
+    String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithNewCard().orderId=$orderId');
     if (orderId == null) {
       throw StripeException(
@@ -104,6 +110,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       variables: {
         'orderId': orderId,
         'paymentMethod': 'INAPP',
+        'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
       },
     ));

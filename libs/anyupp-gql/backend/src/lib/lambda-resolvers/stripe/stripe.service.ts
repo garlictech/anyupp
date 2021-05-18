@@ -113,7 +113,7 @@ export const startStripePayment = async (
   // 6c. Save card for later use
   if (savePaymentMethod === true) {
     const paymentMethod = await stripe.paymentMethods.attach(
-      input.paymentMethod,
+      input.paymentMethodId as string,
       { customer: user.stripeCustomerId }
     );
     console.log('***** startPayment().Payment method ' + paymentMethod.id + ' attached to customer: ' + user.stripeCustomerId);

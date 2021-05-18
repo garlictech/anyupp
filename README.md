@@ -173,7 +173,7 @@ amplify add storage
 - ? Please provide a friendly name for your resource that will be used to label this category in the project: `anyuppstorage`
 - ? Please provide bucket name: `anyupp-images`
 - ? Who should have access: `Auth and guest users`
-- ? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection) `read`
+- ? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection) `read, write, delete`
 - ? What kind of access do you want for Guest users? `read`
 - ? Do you want to add a Lambda Trigger for your S3 Bucket? `(y/N)`
 

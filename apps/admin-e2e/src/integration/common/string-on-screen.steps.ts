@@ -9,12 +9,14 @@ Then('the {string} title is displayed', (title: string) => {
 });
 
 Then('I should see {string} text', (text: string) => {
-  // cy.contains(value, { matchCase: false }).should('exist');
   cy.findAllByText(text).should('exist');
 });
 
 When('I click the {string} text', (value: string) => {
-  cy.contains(value, { matchCase: false }).click({ timeout: 20000, force: true,});
+  cy.contains(value, { matchCase: false }).click({
+    timeout: 20000,
+    force: true,
+  });
 });
 
 Then('I should see the {string} label', (label: string) => {

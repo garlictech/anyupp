@@ -35,6 +35,7 @@
     "from": "From",
     "to": "To",
     "language": "Language",
+    "languageSelector": "Language selector",
     "type": "Type",
     "lang": {
       "english": "English",
@@ -58,6 +59,11 @@
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
     "removeSuccessful": "Remove successful",
+    "imageUploadError": "Image uploaded error",
+    "imageRemoveError": "Image remove error",
+    "insertError": "Insert error",
+    "updateError": "Update error",
+    "removeError": "Remove error",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",
@@ -212,7 +218,7 @@
       "extras": "Extras",
       "modifier": "Modifier"
     },
-     "maxSelection": "Max selection"
+    "maxSelection": "Max selection"
   },
   "modifiersAndExtras": {
     "listTitle": "Modifiers and Extras",
