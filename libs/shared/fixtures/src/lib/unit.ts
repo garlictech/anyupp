@@ -10,10 +10,7 @@ const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
 const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
-const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
-  id: unitId_01,
-  groupId: groupSeed.groupId_seeded_01,
-  chainId: chainSeed.chainId_seeded_01,
+const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Test unit #${unitId_01}`,
@@ -64,7 +61,15 @@ const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   },
 };
 
+const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupSeed.group_01.id,
+  chainId: chainSeed.chain_01.id,
+};
+
 export const unitSeed = {
+  unitBase,
   unit_01,
   unitId_NotExisting,
   unitId_seeded_01,
