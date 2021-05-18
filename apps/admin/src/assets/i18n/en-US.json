@@ -35,6 +35,7 @@
     "from": "From",
     "to": "To",
     "language": "Language",
+    "languageSelector": "Language selector",
     "type": "Type",
     "lang": {
       "english": "English",
@@ -217,7 +218,7 @@
       "extras": "Extras",
       "modifier": "Modifier"
     },
-     "maxSelection": "Max selection"
+    "maxSelection": "Max selection"
   },
   "modifiersAndExtras": {
     "listTitle": "Modifiers and Extras",

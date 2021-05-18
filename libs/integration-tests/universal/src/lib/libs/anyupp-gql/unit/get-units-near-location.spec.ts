@@ -10,6 +10,8 @@ import {
   testAdminUserPassword,
   testIdPrefix,
   unitSeed,
+  groupSeed,
+  chainSeed,
 } from '@bgap/shared/fixtures';
 import {
   AuthenticatdGraphQLClientWithUserId,
@@ -19,6 +21,8 @@ import {
 } from '@bgap/shared/graphql/api-client';
 
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import { createTestChain, deleteTestChain } from '../../../seeds/chain';
+import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -66,11 +70,15 @@ describe('GetUnitsNearLocation tests', () => {
       deleteTestUnit(unit_01.id),
       deleteTestUnit(unit_02.id),
       deleteTestUnit(unit_03.id),
+      deleteTestGroup(groupSeed.group_01.id),
+      deleteTestChain(chainSeed.chain_01.id),
     ])
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
+            createTestGroup(groupSeed.group_01),
+            createTestChain(chainSeed.chain_01),
             createTestUnit(unitNotActive),
             createTestUnit(unit_01),
             createTestUnit(unit_02),
@@ -218,8 +226,7 @@ describe('GetUnitsNearLocation tests', () => {
     expect(foundItems[0].distance).toEqual(0);
     expect(foundItems[1].distance).toEqual(74);
     expect(foundItems[2].distance).toEqual(153);
-    // The rest is in the same location so we don't know their order
-    expect(foundItems[3].distance).toEqual(54649);
+
     expect(foundItems[0]).toMatchSnapshot();
   };
 });
