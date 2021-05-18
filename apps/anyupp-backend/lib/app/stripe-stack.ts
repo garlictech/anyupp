@@ -23,6 +23,8 @@ export class StripeStack extends sst.Stack {
         ...commonLambdaProps,
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/stripe-webhook/index.handler',
+        timeout: cdk.Duration.seconds(30),
+        memorySize: 512,
         code: lambda.Code.fromAsset(
           path.join(__dirname, '../../.serverless/stripe-webhook.zip'),
         ),

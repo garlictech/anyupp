@@ -8,11 +8,12 @@ import {
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import { combineLatest, of, throwError } from 'rxjs';
 import {
-  unitSeed,
-  groupSeed,
   chainSeed,
   generatedProductSeed,
+  groupSeed,
+  productComponentSetSeed,
   seededIdPrefix,
+  unitSeed,
 } from '@bgap/shared/fixtures';
 
 const generateChainId = (idx: number) => `${seededIdPrefix}chain_${idx}_id`;
@@ -207,6 +208,8 @@ export const createTestChainProduct = (
       CrudApi.Allergen.gluten,
       CrudApi.Allergen.peanut,
     ],
+    // Use existing ProductComponentSet
+    configSets: productComponentSetSeed.seededChainProductConfigSets,
   };
   return deleteCreate({
     input,
@@ -245,6 +248,7 @@ export const createTestGroupProduct = (
         refGroupPrice: productIdx * 50,
       },
     ],
+    configSets: productComponentSetSeed.seededGroupProductConfigSets,
   };
   return deleteCreate({
     input,
@@ -299,6 +303,7 @@ export const createTestUnitProduct = (
         ],
       },
     ],
+    configSets: productComponentSetSeed.seededUnitProductConfigSets,
   };
   return deleteCreate<CrudApi.CreateUnitProductMutation>({
     input,
@@ -317,6 +322,7 @@ export const createTestUnitProduct = (
         }),
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         position: unitProduct!.position!,
+        configSets: productComponentSetSeed.generatedProductConfigSets,
       };
       return deleteCreate<CrudApi.CreateGeneratedProductMutation>({
         input,
@@ -584,4 +590,52 @@ export const createTestAdminRoleContext = (
       input: chainAdminInput,
     }),
   ]);
+};
+
+/**
+ * Seed ComponentSets and their ProductComponents
+ * @param chainIdx
+ * @param type
+ * @param componentSetIdx
+ */
+export const createComponentSets = ({ chainIdx }: { chainIdx: number }) => {
+  return of('START SEED').pipe(
+    // CREATE PRODUCT COMPONENTS
+    switchMap(() => {
+      return deleteCreate<CrudApi.CreateProductComponentMutation>({
+        input: productComponentSetSeed.seededProdComp_01,
+        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
+        createOperation: CrudApiMutationDocuments.createProductComponent,
+      });
+    }),
+    switchMap(() => {
+      return deleteCreate<CrudApi.CreateProductComponentMutation>({
+        input: productComponentSetSeed.seededProdComp_02,
+        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
+        createOperation: CrudApiMutationDocuments.createProductComponent,
+      });
+    }),
+    switchMap(() => {
+      return deleteCreate<CrudApi.CreateProductComponentMutation>({
+        input: productComponentSetSeed.seededProdComp_03,
+        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
+        createOperation: CrudApiMutationDocuments.createProductComponent,
+      });
+    }),
+    // CREATE COMPONENT SETS
+    switchMap(() => {
+      return deleteCreate<CrudApi.CreateProductComponentSetMutation>({
+        input: productComponentSetSeed.seededProdCompSet_01,
+        deleteOperation: CrudApiMutationDocuments.deleteProductComponentSet,
+        createOperation: CrudApiMutationDocuments.createProductComponentSet,
+      });
+    }),
+    switchMap(() => {
+      return deleteCreate<CrudApi.CreateProductComponentSetMutation>({
+        input: productComponentSetSeed.seededProdCompSet_02,
+        deleteOperation: CrudApiMutationDocuments.deleteProductComponentSet,
+        createOperation: CrudApiMutationDocuments.createProductComponentSet,
+      });
+    }),
+  );
 };
