@@ -63,7 +63,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   //     }),
                 ));
                 Nav.pop();
-                getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
+                getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+                //Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
