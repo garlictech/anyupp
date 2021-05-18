@@ -3,7 +3,6 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/transactions/screens/order_details_screen.dart';
-import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';

@@ -1,9 +1,11 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/models/GeoUnit.dart';
-import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/modules/transactions/widgets/transaction_card_widget.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
@@ -11,9 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/modules/transactions/transactions.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TransactionsScreen extends StatefulWidget {
