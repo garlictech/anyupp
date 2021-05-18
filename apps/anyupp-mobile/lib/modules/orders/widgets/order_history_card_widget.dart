@@ -82,7 +82,7 @@ class OrderHistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${order.id.split("-").last}',
+                '${order.orderNum}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,

@@ -99,19 +99,11 @@ class OrderItem extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("productId=" + "$productId" + ", ");
     buffer.write("variantId=" + "$variantId" + ", ");
-    buffer.write("productName=" +
-        (productName != null ? productName.toString() : "null") +
-        ", ");
-    buffer.write("priceShown=" +
-        (priceShown != null ? priceShown.toString() : "null") +
-        ", ");
-    buffer.write(
-        "quantity=" + (quantity != null ? quantity.toString() : "null") + ", ");
-    buffer.write("variantName=" +
-        (variantName != null ? variantName.toString() : "null") +
-        ", ");
-    buffer.write(
-        "takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
+    buffer.write("productName=" + (productName != null ? productName.toString() : "null") + ", ");
+    buffer.write("priceShown=" + (priceShown != null ? priceShown.toString() : "null") + ", ");
+    buffer.write("quantity=" + (quantity != null ? quantity.toString() : "null") + ", ");
+    buffer.write("variantName=" + (variantName != null ? variantName.toString() : "null") + ", ");
+    buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
     buffer.write("orderItemsId=" + "$orderItemsId" + ", ");
     buffer.write("image=" + "$image");
     buffer.write(allergens.toString());
@@ -152,30 +144,21 @@ class OrderItem extends Model {
       : id = json['id'],
         productId = json['productId'],
         variantId = json['variantId'],
-        productName = json['productName'] != null
-            ? LocalizedItem.fromJson(
-                Map<String, dynamic>.from(json['productName']))
-            : null,
-        priceShown = json['priceShown'] != null
-            ? PriceShown.fromJson(Map<String, dynamic>.from(json['priceShown']))
-            : null,
+        productName =
+            json['productName'] != null ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['productName'])) : null,
+        priceShown =
+            json['priceShown'] != null ? PriceShown.fromJson(Map<String, dynamic>.from(json['priceShown'])) : null,
         quantity = json['quantity'],
         statusLog = json['statusLog'] is List
-            ? (json['statusLog'] as List)
-                .map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
-                .toList()
+            ? (json['statusLog'] as List).map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e))).toList()
             : null,
-        variantName = json['variantName'] != null
-            ? LocalizedItem.fromJson(
-                Map<String, dynamic>.from(json['variantName']))
-            : null,
+        variantName =
+            json['variantName'] != null ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['variantName'])) : null,
         takeAway = json['takeAway'],
         orderItemsId = json['orderItemsId'],
         image = json['image'],
         //TODO replace with real item
-        allergens = json['allergens'] is List
-            ? (json['allergens'] as List).map((e) => e as String).toList()
-            : null;
+        allergens = json['allergens'] is List ? (json['allergens'] as List).map((e) => e as String).toList() : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,

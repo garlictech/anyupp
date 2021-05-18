@@ -405,6 +405,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           tax: 0,
           taxSum: 0,
         ),
+        allergens: widget.item.allergens,
         productName: widget.item.name,
         takeAway: false,
         variantName: variant.variantName,

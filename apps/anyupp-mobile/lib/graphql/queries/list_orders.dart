@@ -6,6 +6,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   }) {
     items {
       id
+      orderNum
       paymentMode {
         caption
         name
