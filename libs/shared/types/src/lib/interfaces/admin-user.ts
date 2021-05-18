@@ -26,7 +26,7 @@ export interface IAdminUserConnectedRoleContextList {
 export interface IAdminUser extends IAmplifyModel {
   id?: string;
   name?: string;
-  profileImage?: string;
+  profileImage?: string | null;
   role?: EAdminRole; // Filled from token
   roleContexts?: IAdminUserConnectedRoleContextList; // Filled with GQL connection
   settings?: IAdminUserSettings;
