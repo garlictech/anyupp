@@ -610,7 +610,6 @@ type Transaction
   externalTransactionId: String
 }
 
-
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])

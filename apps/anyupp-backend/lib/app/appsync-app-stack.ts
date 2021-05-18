@@ -13,6 +13,7 @@ import {
   createProductResolvers,
   createStripeResolvers,
   createUnitResolvers,
+  createUserResolvers,
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
@@ -77,6 +78,7 @@ export class AppsyncAppStack extends sst.Stack {
     createUnitResolvers(commonResolverInputs);
     createProductResolvers(commonResolverInputs);
     createStripeResolvers(commonResolverInputs);
+    createUserResolvers(commonResolverInputs);
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -138,8 +140,12 @@ export class AppsyncAppStack extends sst.Stack {
             'cognito-idp:AdminCreateUser',
             'cognito-idp:AdminGetUser',
             'cognito-idp:AdminDeleteUser',
+            'cognito-idp:AdminSetUserPassword',
           ],
-          resources: [props.adminUserPool.userPoolArn],
+          resources: [
+            props.adminUserPool.userPoolArn,
+            props.consumerUserPool.userPoolArn,
+          ],
         }),
       );
       apiLambda.role.addToPolicy(
