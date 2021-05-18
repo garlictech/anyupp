@@ -20,6 +20,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import {
+  createComponentSets,
   createTestAdminRoleContext,
   createTestCart,
   createTestChain,
@@ -165,6 +166,9 @@ export const seedBusinessData = (userId: string) =>
           createTestUnit(1, 1, 1).pipe(ce('### Unit SEED 01')),
           createTestUnit(1, 1, 2).pipe(ce('### Unit SEED 02')),
           createTestUnit(1, 2, 1).pipe(ce('### Unit SEED 03')),
+
+          createComponentSets({ chainIdx: 1 }),
+
           createTestProductCategory(1, 1).pipe(ce('### ProdCat SEED 01')),
           createTestProductCategory(1, 2).pipe(ce('### ProdCat SEED 02')),
           createTestChainProduct(1, 1, 1).pipe(ce('### ChainProduct SEED 01')),
@@ -174,6 +178,7 @@ export const seedBusinessData = (userId: string) =>
           createTestGroupProduct(1, 1, 2, 2).pipe(ce('### GroupProd SEED 02')),
           createTestUnitProduct(1, 1, 1, 1, 1).pipe(ce('### UnitProd SEED 01')),
           createTestUnitProduct(1, 1, 1, 2, 2).pipe(ce('### UnitProd SEED 02')),
+
           createTestCart({
             chainIdx: 1,
             groupIdx: 1,
