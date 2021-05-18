@@ -62,7 +62,7 @@ export interface IOrder {
   orderNum?: string;
   items: IOrderItem[];
   paymentMode: IPaymentMode;
-  statusLog: [IStatusLog];
+  statusLog: IStatusLog[];
   sumPriceShown: IPriceShown;
   takeAway: boolean;
   place?: IPlace;
