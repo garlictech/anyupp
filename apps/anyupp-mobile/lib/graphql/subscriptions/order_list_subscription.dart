@@ -2,6 +2,7 @@ const SUBSCRIPTION_ORDER_LIST = '''
 subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
   onOrderChanged(unitId: \$unitId, userId: \$userId) {
    	id
+    orderNum
     unitId
     userId
     paymentIntention

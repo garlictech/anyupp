@@ -5,7 +5,8 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok"
+    "ok": "Ok",
+    "exit": "Tap back again to exit app."
   },
   "locale": {
     "EN": "English",
@@ -207,6 +208,28 @@
         "title": "Transaction successfully completed",
         "description": "SimplePay transaction ID: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Card number",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Card number is invalid"
+      },
+      "expiry": {
+        "label": "Expiration Date",
+        "hint": "MM/YY",
+        "validationError": "Card expirity date invalid"
+      },
+      "cvc": {
+        "label": "CVC",
+        "hint": "XXX",
+        "validationError": "Card CVC is invalid"
+      }
+    },
+    "stripe": {
+      "title": "Pay with Stripe",
+      "add_card_tooltip": "Add new card",
+      "save_card": "Save card for later use"
     }
   },
   "selectUnit": {
@@ -292,7 +315,8 @@
     "transactions": {
       "status": "Status",
       "paymentMethod": "Payment Method",
-      "noTransactions" : "No Transactions"
+      "noTransactions": "No Transactions",
+      "details": "Details"
     }
   },
   "affiliate": {
