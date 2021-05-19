@@ -46,7 +46,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}

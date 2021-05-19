@@ -10,19 +10,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  IGeneratedProduct,
-  IGroup,
-  IOrder,
-  IProduct,
-  IProductCategory,
-} from '@bgap/shared/types';
+import { EDashboardSize, ENebularButtonSize, IOrder } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -35,16 +27,14 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderProductListComponent implements OnInit, OnDestroy {
   @Input() selectedOrder?: IOrder;
-  public generatedUnitProducts: IGeneratedProduct[];
-  public productCategories: IProductCategory[] = [];
+  public generatedUnitProducts: Product[];
+  public productCategories: ProductCategory[] = [];
   public selectedProductCategoryId = '';
   public groupCurrency = '';
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _orderService: OrderService,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.generatedUnitProducts = [];
@@ -56,7 +46,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
       )
-      .subscribe((group: IGroup | undefined): void => {
+      .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
@@ -86,19 +76,16 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(
         ([productCategories, generatedUnitProducts]: [
-          IProductCategory[],
-          IProduct[],
+          ProductCategory[],
+          Product[],
         ]): void => {
-          this.generatedUnitProducts = <IGeneratedProduct[]>(
-            generatedUnitProducts
-          );
+          this.generatedUnitProducts = generatedUnitProducts;
 
           this.productCategories = productCategories.filter(
-            (category: IProductCategory): boolean => {
+            (category: ProductCategory): boolean => {
               return (
                 this.generatedUnitProducts.filter(
-                  (p: IGeneratedProduct): boolean =>
-                    p.productCategoryId === category.id,
+                  p => p.productCategoryId === category.id,
                 ).length > 0
               );
             },
@@ -119,10 +106,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(
-    product: IGeneratedProduct,
-    variantId: string,
-  ): void {
+  public addProductVariant(product: Product, variantId: string): void {
     console.error('TODO addProductVariant', product, variantId);
     /* TODO variant object refactor
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(

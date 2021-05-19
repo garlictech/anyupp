@@ -10,7 +10,7 @@ import { customNumberCompare } from '@bgap/shared/utils';
 import {
   EProductLevel,
   IAvailability,
-  IProductVariant,
+  ProductVariant,
 } from '@bgap/shared/types';
 
 @Component({
@@ -51,7 +51,7 @@ export class FormProductVariantsComponent {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((variant: IProductVariant, pos: number): void => {
+      arr.forEach((variant: ProductVariant, pos: number): void => {
         variant.position = pos + 1;
       });
 

@@ -31,17 +31,16 @@ import {
 } from '@bgap/admin/shared/floor-map';
 import { objectToArray } from '@bgap/shared/utils';
 import {
-  IFloorMapDataObject,
   IFloorMapTableOrderObjects,
   IFloorMapTableOrders,
   IFloorMapUserOrderObjects,
   IOrder,
-  IUnit,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import * as CrudApi from '@bgap/crud-gql/api';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 import { Group } from 'fabric/fabric-impl';
 
@@ -54,7 +53,7 @@ import { Group } from 'fabric/fabric-impl';
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
   @ViewChild('floorMap') floorMapEl!: ElementRef;
 
-  public unit?: IUnit;
+  public unit?: CrudApi.Unit;
 
   private _allTableOrders: IFloorMapTableOrderObjects = {};
   private _allTableOrders$: BehaviorSubject<
@@ -63,7 +62,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -77,8 +76,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         tap((): void => {
           this.unit = undefined;
         }),
-        filter((unit: IUnit | undefined): boolean => !!unit),
-        tap((unit: IUnit | undefined): void => {
+        filter((unit: CrudApi.Unit | undefined): boolean => !!unit),
+        tap((unit: CrudApi.Unit | undefined): void => {
           this.unit = fp.cloneDeep(unit);
         }),
         switchMap(
@@ -124,8 +123,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       )
       .subscribe((orders: IOrder[]): void => {
         if (this.unit?.floorMap?.objects) {
-          const floorMapRawObjects: IFloorMapDataObject[] = <
-            IFloorMapDataObject[]
+          const floorMapRawObjects: CrudApi.FloorMapDataObject[] = <
+            CrudApi.FloorMapDataObject[]
           >objectToArray(this.unit.floorMap.objects, 'id');
           const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
           const ordersByUser: IFloorMapUserOrderObjects = getOrdersByUser(
@@ -139,11 +138,11 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           // tableOrders contains ALL seats!
           Object.values(this._allTableOrders).forEach(
             (tableOrder: IFloorMapTableOrders): void => {
-              const rawObj: IFloorMapDataObject = <IFloorMapDataObject>(
-                floorMapRawObjects.find(
-                  (o: IFloorMapDataObject): boolean =>
-                    getTableSeatId(o) === tableOrder.tsID,
-                )
+              const rawObj: CrudApi.FloorMapDataObject = <
+                CrudApi.FloorMapDataObject
+              >floorMapRawObjects.find(
+                (o: CrudApi.FloorMapDataObject): boolean =>
+                  getTableSeatId(o) === tableOrder.tsID,
               );
 
               const fabricObj: Group = <Group>getObjectById(rawObj?.id || '');
@@ -179,9 +178,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _onMouseUp = (e: any): void => {
     if (e.target.type.indexOf('seat') === 0) {
-      const rawObject: IFloorMapDataObject = <IFloorMapDataObject>(
-        this.unit?.floorMap?.objects[e.target?.id]
-      );
+      const rawObject: CrudApi.FloorMapDataObject = <
+        CrudApi.FloorMapDataObject
+      >this.unit?.floorMap?.objects?.[e.target?.id];
 
       if (rawObject) {
         const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {

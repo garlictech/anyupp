@@ -1,37 +1,39 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { IProductComponent } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import {
-  IProductComponentsState,
+  ProductComponentsState,
   PRODUCT_COMPONENTS_FEATURE_KEY,
   productComponentsAdapter,
 } from './product-components.reducer';
 
 export const getProductComponentsState = createFeatureSelector<
-  IProductComponentsState
+  ProductComponentsState
 >(PRODUCT_COMPONENTS_FEATURE_KEY);
 
 const { selectAll, selectEntities } = productComponentsAdapter.getSelectors();
 
 export const getProductComponentsError = createSelector(
   getProductComponentsState,
-  (state: IProductComponentsState) => state.error,
+  (state: ProductComponentsState) => state.error,
 );
 
 export const getAllProductComponents = createSelector(
   getProductComponentsState,
-  (state: IProductComponentsState) => selectAll(state),
+  (state: ProductComponentsState) => selectAll(state),
 );
 
 export const getProductComponentsEntities = createSelector(
   getProductComponentsState,
-  (state: IProductComponentsState) => selectEntities(state),
+  (state: ProductComponentsState) => selectEntities(state),
 );
 
 export const getProductComponentById = (id: string) => {
   return createSelector(
     getAllProductComponents,
-    (productComponents: IProductComponent[]): IProductComponent | undefined =>
+    (
+      productComponents: CrudApi.ProductComponent[],
+    ): CrudApi.ProductComponent | undefined =>
       productComponents.find(
         (productComponent): boolean => productComponent.id === id,
       ),

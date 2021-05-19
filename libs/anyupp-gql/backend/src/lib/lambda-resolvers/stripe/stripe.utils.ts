@@ -1,11 +1,11 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { Stripe } from 'stripe';
 import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
-import { AmplifySdk } from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 
 export interface StripeResolverDeps {
-  crudSdk: AmplifySdk;
+  crudSdk: CrudSdk;
   anyuppSdk: AnyuppSdk;
 }
 

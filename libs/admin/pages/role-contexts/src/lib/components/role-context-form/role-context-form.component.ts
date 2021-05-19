@@ -1,6 +1,5 @@
 import { NGXLogger } from 'ngx-logger';
 import { pairwise, startWith, take } from 'rxjs/operators';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,17 +9,13 @@ import {
 } from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import {
-  EAdminRole,
-  IChain,
-  IKeyValue,
-  IRoleContext,
-} from '@bgap/shared/types';
+import { EAdminRole, IKeyValue, IRoleContext } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -48,11 +43,11 @@ export class RoleContextFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
+    private _store: Store,
     private _logger: NGXLogger,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -96,7 +91,7 @@ export class RoleContextFormComponent
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]) => {
+      .subscribe((chains: CrudApi.Chain[]) => {
         this.chainOptions = chains.map(chain => ({
           key: chain.id,
           value: chain.name,
@@ -208,12 +203,14 @@ export class RoleContextFormComponent
     if (this.dialogForm?.valid) {
       if (this.roleContext?.id) {
         try {
-          await this._amplifyDataService.update<IRoleContext>(
-            'getRoleContext',
-            'updateRoleContext',
-            this.roleContext.id,
-            () => this.dialogForm.value,
-          );
+          await this.crudSdk.sdk
+            .UpdateRoleContext({
+              input: {
+                id: this.roleContext.id,
+                ...this.dialogForm.value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -229,10 +226,14 @@ export class RoleContextFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createRoleContext', {
-            ...this.dialogForm?.value,
-            contextId: Math.random().toString(36).substring(2, 8),
-          });
+          await this.crudSdk.sdk
+            .CreateRoleContext({
+              input: {
+                ...this.dialogForm?.value,
+                contextId: Math.random().toString(36).substring(2, 8),
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,

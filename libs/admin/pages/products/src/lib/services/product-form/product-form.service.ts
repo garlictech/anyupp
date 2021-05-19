@@ -1,5 +1,6 @@
 import * as fp from 'lodash/fp';
 
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Injectable } from '@angular/core';
 import {
   FormArray,
@@ -9,14 +10,9 @@ import {
 } from '@angular/forms';
 import { FormsService } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
-import {
-  EProductLevel,
-  IProduct,
-  IProductConfigComponent,
-  IProductConfigSet,
-  IProductVariant,
-} from '@bgap/shared/types';
+import { EProductLevel } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
+import { pipe } from 'fp-ts/lib/function';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
@@ -74,8 +70,8 @@ export class ProductFormService {
     return dialogForm;
   }
 
-  public patchProductVariants(product: IProduct, variants: FormArray): void {
-    (product.variants || []).forEach((variant: IProductVariant): void => {
+  public patchProductVariants(product: Product, variants: FormArray): void {
+    (product.variants || []).forEach((variant: ProductVariant): void => {
       const variantGroup = this._formsService.createProductVariantFormGroup();
       variantGroup.patchValue(cleanObject(variant));
 
@@ -84,43 +80,50 @@ export class ProductFormService {
   }
 
   public patchExtendedProductVariants(
-    product: IProduct,
+    product: CrudApi.ChainProduct,
     variants: FormArray,
   ): void {
-    [...product.variants]
-      .sort(customNumberCompare('position'))
-      .forEach((variant: IProductVariant): void => {
+    pipe(
+      [...(product.variants || [])],
+      fp.filter<CrudApi.ProductVariant>(x => !!x),
+      x => x.sort(customNumberCompare('position')),
+      fp.forEach<CrudApi.ProductVariant>(variant => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(cleanObject(variant));
 
-        (variant?.availabilities || []).forEach((availability): void => {
-          const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-          availabilityGroup.patchValue(cleanObject(availability));
-          (variantGroup.controls.availabilities as FormArray).push(
-            availabilityGroup,
-          );
+        (variant?.availabilities || []).forEach(availability => {
+          if (availability) {
+            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
+            availabilityGroup.patchValue(cleanObject(availability));
+            (variantGroup.controls.availabilities as FormArray).push(
+              availabilityGroup,
+            );
+          }
         });
 
         variants.push(variantGroup);
-      });
+      }),
+    );
   }
 
   public patchConfigSet(
-    product: IProduct,
+    product: CrudApi.ChainProduct,
     productLevel: EProductLevel,
     configSets: FormArray,
   ): void {
-    (product.configSets || []).forEach((configSet: IProductConfigSet): void => {
+    (product.configSets || []).forEach(configSet => {
       const configSetGroup = this._formsService.createProductConfigSetFormGroup();
       configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
 
-      (configSet.items || []).forEach((item: IProductConfigComponent) => {
-        const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
-          productLevel,
-        );
-        configSetItemGroup.patchValue(cleanObject(item));
+      (configSet?.items || []).forEach(item => {
+        if (item) {
+          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
+            productLevel,
+          );
+          configSetItemGroup.patchValue(cleanObject(item));
 
-        (configSetGroup.controls.items as FormArray).push(configSetItemGroup);
+          (configSetGroup.controls.items as FormArray).push(configSetItemGroup);
+        }
       });
 
       configSets.push(configSetGroup);

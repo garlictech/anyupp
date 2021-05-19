@@ -12,9 +12,10 @@ import { FormControl } from '@angular/forms';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { dayInterval } from '@bgap/shared/utils';
-import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types';
+import { IKeyValueObject, IOrder } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +34,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
@@ -46,7 +47,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe((group: IGroup | undefined): void => {
+      .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();

@@ -13,8 +13,10 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   const desiredContext = event.request.userAttributes['custom:context'];
 
   const sdk = getCrudSdkForIAM(
-    process.env.AWS_ACCESS_KEY_ID || '',
-    process.env.AWS_SECRET_ACCESS_KEY || '',
+    'AKIAYIT7GMY5WQZFXOOX',
+    'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
+    //process.env.AWS_ACCESS_KEY_ID || '',
+    //process.env.AWS_SECRET_ACCESS_KEY || '',
   );
 
   const adminUser = await sdk

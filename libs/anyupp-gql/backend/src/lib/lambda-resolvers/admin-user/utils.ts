@@ -1,6 +1,6 @@
-import { AmplifySdk } from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export interface AdminUserResolverDeps {
   userPoolId: string;
-  crudSdk: AmplifySdk;
+  crudSdk: CrudSdk;
 }

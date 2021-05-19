@@ -14,9 +14,7 @@ import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
 })
 export class FormsService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(
-    /*private _store: Store<any>,*/ private _formBuilder: FormBuilder,
-  ) {}
+  constructor(/*private _store: Store,*/ private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {

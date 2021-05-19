@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,9 +9,11 @@ import {
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { IAdminUser, IProductCategory } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { Observable } from 'rxjs';
+import { filterNullish } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -25,12 +25,12 @@ import { select, Store } from '@ngrx/store';
 export class ActiveProductCategorySelectorComponent
   implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
-  public productCategories$: Observable<IProductCategory[]>;
-  private _loggedUser!: IAdminUser;
+  public productCategories$: Observable<CrudApi.ProductCategory[]>;
+  private _loggedUser!: CrudApi.AdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -47,8 +47,12 @@ export class ActiveProductCategorySelectorComponent
 
   ngOnInit(): void {
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        filterNullish(),
+        untilDestroyed(this),
+      )
+      .subscribe(loggedUser => {
         this._loggedUser = loggedUser;
 
         this._changeDetectorRef.detectChanges();

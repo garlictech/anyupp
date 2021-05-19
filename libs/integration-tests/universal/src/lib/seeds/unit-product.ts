@@ -1,4 +1,4 @@
-import { AmplifySdk } from 'libs/crud-gql/api/src';
+import { CrudSdk } from 'libs/crud-gql/api/src';
 import { from, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 

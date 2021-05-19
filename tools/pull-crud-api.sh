@@ -131,6 +131,3 @@ echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
-echo "Content:"
-cat $TABLE_CONFIG_NAME
-echo "Table config generation ENDED"

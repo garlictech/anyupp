@@ -1,7 +1,6 @@
 import * as printJS from 'print-js';
 import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,15 +12,14 @@ import {
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
-  IChain,
   ICurrencyValue,
   IKeyValueObject,
   IOrder,
   IOrderItem,
   IPlace,
   IPriceShown,
-  IUnit,
 } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -35,8 +33,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderPrintComponent implements OnInit, OnChanges {
   @Input() orders!: IOrder[];
-  public unit?: IUnit;
-  public chain?: IChain;
+  public unit?: CrudApi.Unit;
+  public chain?: CrudApi.Chain;
   public now = '';
   public parsedOrders: IOrderItem[] = [];
   public parsedVats: IPriceShown[] = [];
@@ -44,8 +42,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public place?: IPlace;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogRef: NbDialogRef<unknown>,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -68,7 +65,10 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         take(1),
       ),
     ]).subscribe(
-      ([chain, unit]: [IChain | undefined, IUnit | undefined]): void => {
+      ([chain, unit]: [
+        CrudApi.Chain | undefined,
+        CrudApi.Unit | undefined,
+      ]): void => {
         this.chain = chain;
         this.unit = unit;
 

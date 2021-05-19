@@ -73,7 +73,7 @@ export const loadOrder = (orderId: string) => (deps: StripeResolverDeps) => {
  * Load a signle Unit from CRUD GraphQL endpoint by it's ID
  * @param crudGraphqlClient CRUD GraphQL client
  * @param unitId the ID of the Unit to be loaded
- * @returns an instance of IUnit interface, filled with the loaded unit's data
+ * @returns an instance of CrudApi.Unit interface, filled with the loaded unit's data
  */
 export const loadUnit = (unitId: string) => (deps: StripeResolverDeps) => {
   const getUnitVars: CrudApi.GetUnitQueryVariables = {

@@ -1,5 +1,5 @@
 import { combineLatest } from 'rxjs';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,19 +10,14 @@ import {
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import {
-  IAdminUser,
-  IAdminUserConnectedRoleContext,
-  IKeyValue,
-  IRoleContext,
-} from '@bgap/shared/types';
+import { IKeyValue } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 
 @UntilDestroy()
 @Component({
@@ -35,16 +30,16 @@ export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public adminUserId = '';
-  public adminUser: IAdminUser = {};
+  public adminUser?: CrudApi.AdminUser;
   public roleContextOptions: IKeyValue[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     protected _injector: Injector,
-    private _amplifyDataService: AmplifyDataService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
   ) {
     super(_injector);
   }
@@ -55,40 +50,35 @@ export class AdminUserRoleFormComponent
     });
 
     combineLatest([
-      this._store.pipe(
-        select(adminUsersSelectors.getAdminUserById(this.adminUserId)),
+      this._store.select(
+        adminUsersSelectors.getAdminUserById(this.adminUserId),
       ),
-      this._store.pipe(select(roleContextsSelectors.getAllRoleContexts)),
+      this._store.select(roleContextsSelectors.getAllRoleContexts),
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(
-        ([adminUser, roleContexts]: [
-          IAdminUser | undefined,
-          IRoleContext[],
-        ]): void => {
-          if (adminUser) {
-            this.adminUser = adminUser;
+      .subscribe(([adminUser, roleContexts]): void => {
+        if (adminUser) {
+          this.adminUser = adminUser;
 
-            const contextIds = (adminUser.roleContexts?.items || []).map(
-              i => i.roleContextId,
+          const contextIds = (adminUser.roleContexts?.items || []).map(
+            i => i?.roleContextId,
+          );
+
+          this.roleContextOptions = roleContexts
+            .filter(c => !contextIds.includes(c.id))
+            .map(
+              (roleContext): IKeyValue => ({
+                key: roleContext.id,
+                value: roleContext.name,
+              }),
             );
 
-            this.roleContextOptions = roleContexts
-              .filter(c => !contextIds.includes(c.id))
-              .map(
-                (roleContext): IKeyValue => ({
-                  key: roleContext.id,
-                  value: roleContext.name,
-                }),
-              );
-
-            this._changeDetectorRef.detectChanges();
-          }
-        },
-      );
+          this._changeDetectorRef.detectChanges();
+        }
+      });
   }
 
-  public removeRole(roleContext: IAdminUserConnectedRoleContext) {
+  public removeRole(roleContext: CrudApi.AdminRoleContext) {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
@@ -98,9 +88,15 @@ export class AdminUserRoleFormComponent
           label: 'common.ok',
           callback: async (): Promise<void> => {
             try {
-              await this._amplifyDataService.delete('deleteAdminRoleContext', {
-                id: roleContext.id,
-              });
+              await this.crudSdk.sdk
+                .DeleteAdminRoleContext({
+                  input: {
+                    id:
+                      roleContext?.id ??
+                      'FIXME IT IS FROm AN UNHANDLED NULL CASE!',
+                  },
+                })
+                .toPromise();
 
               this._toasterService.show(
                 EToasterType.SUCCESS,
@@ -129,10 +125,16 @@ export class AdminUserRoleFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       try {
-        await this._amplifyDataService.create('createAdminRoleContext', {
-          ...this.dialogForm?.value,
-          adminUserId: this.adminUser.id,
-        });
+        await this.crudSdk.sdk
+          .CreateAdminRoleContext({
+            input: {
+              ...this.dialogForm?.value,
+              adminUserId:
+                this.adminUser?.id ??
+                'FIXME IT IS FROm AN UNHANDLED NULL CASE!',
+            },
+          })
+          .toPromise();
 
         this.dialogForm.patchValue({ roleContextId: '' });
 

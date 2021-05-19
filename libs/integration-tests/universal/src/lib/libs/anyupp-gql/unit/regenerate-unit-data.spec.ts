@@ -1,11 +1,10 @@
-import { combineLatest, Observable, of, throwError } from 'rxjs';
+import { combineLatest, Observable, throwError } from 'rxjs';
 import {
   delay,
   switchMap,
   tap,
   catchError,
   defaultIfEmpty,
-  filter,
   map,
 } from 'rxjs/operators';
 
@@ -13,12 +12,6 @@ import {
   listGeneratedProductsForUnits,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
 import {
   generatedProductSeed,
   productSeed,
@@ -43,9 +36,8 @@ import {
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
-import { IUnitProduct } from '@bgap/shared/types';
-import * as fp from 'lodash/fp';
-import { getSortedIds } from '@bgap/shared/utils';
+import { filterNullish, getSortedIds } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 
@@ -109,7 +101,11 @@ const unit02_generatedProduct_01 = {
 };
 
 describe('RegenerateUnitData mutation tests', () => {
+  let publicCrudSdk: CrudApi.CrudSdk;
+
   beforeAll(async () => {
+    publicCrudSdk = CrudApi.getCrudSdkPublic();
+
     await combineLatest([
       // CleanUP
       deleteTestChainProduct(chainProduct_01.id!),
@@ -156,15 +152,10 @@ describe('RegenerateUnitData mutation tests', () => {
   it('should regenerate all the generated products for the unit', done => {
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
-      listGeneratedProductsForUnits({
-        crudGraphqlClient: crudBackendGraphQLClient,
-        unitIds: [unitId_01, unitId_02],
-        noCache: true,
+      listGeneratedProductsForUnits([unitId_01, unitId_02])({
+        crudSdk: publicCrudSdk,
       }),
-      listProductsForUnits({
-        unitIds: [unitId_01, unitId_02],
-        crudGraphqlClient: crudBackendGraphQLClient,
-      }),
+      listProductsForUnits(publicCrudSdk, [unitId_01, unitId_02]),
     ])
       .pipe(
         tap({
@@ -207,7 +198,7 @@ describe('RegenerateUnitData mutation tests', () => {
           },
         }),
         switchMap(() =>
-          unitRequestHandler.regenerateUnitData(crudBackendGraphQLClient)({
+          unitRequestHandler({ crudSdk: publicCrudSdk }).regenerateUnitData({
             input: { id: unitId_01 },
           }),
         ),
@@ -218,10 +209,8 @@ describe('RegenerateUnitData mutation tests', () => {
         // Check
         delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
-          listGeneratedProductsForUnits({
-            crudGraphqlClient: crudBackendGraphQLClient,
-            unitIds: [unitId_01, unitId_02],
-            noCache: true,
+          listGeneratedProductsForUnits([unitId_01, unitId_02])({
+            crudSdk: publicCrudSdk,
           }),
         ),
         tap({
@@ -270,30 +259,24 @@ describe('RegenerateUnitData mutation tests', () => {
   }, 25000);
 });
 
-const listProductsForUnits = ({
-  crudGraphqlClient,
-  unitIds,
-  noCache = false,
-}: {
-  crudGraphqlClient: GraphqlApiClient;
-  unitIds: Array<string>;
-  noCache?: boolean;
-}): Observable<Array<IUnitProduct>> => {
+const listProductsForUnits = (
+  sdk: CrudApi.CrudSdk,
+  unitIds: string[],
+): Observable<Array<CrudApi.UnitProduct>> => {
   const input: CrudApi.ListGeneratedProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
   };
-  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitProductsQuery>(
-    CrudApiQueryDocuments.listUnitProducts,
-    input,
-    { fetchPolicy: 'no-cache' },
-  ).pipe(
-    map(x => x.listUnitProducts?.items),
-    filter(fp.negate(fp.isEmpty)),
-    defaultIfEmpty([]),
-    switchMap(items => combineLatest(items.map(validateUnitProduct))),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal listUnitProducts query error');
-    }),
-  );
+  return sdk
+    .ListUnitProducts(input)
+    .pipe(
+      filterNullish(),
+      map(x => x.items),
+      filterNullish(),
+      switchMap(items => combineLatest(items.map(x => validateUnitProduct(x)))),
+      catchError(err => {
+        console.error(err);
+        return throwError('Internal listUnitProducts query error');
+      }),
+    )
+    .pipe(defaultIfEmpty([] as CrudApi.UnitProduct[]));
 };

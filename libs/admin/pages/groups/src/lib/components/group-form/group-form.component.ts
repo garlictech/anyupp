@@ -1,6 +1,8 @@
 import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,7 +13,6 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
@@ -20,7 +21,7 @@ import {
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
-import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
+import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -34,17 +35,16 @@ import { select, Store } from '@ngrx/store';
 export class GroupFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
-  public group!: IGroup;
+  public group!: CrudApi.Group;
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
+    private _store: Store,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -81,7 +81,7 @@ export class GroupFormComponent
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
+      .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
@@ -110,12 +110,14 @@ export class GroupFormComponent
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
         try {
-          await this._amplifyDataService.update<IGroup>(
-            'getGroup',
-            'updateGroup',
-            this.group.id,
-            () => this.dialogForm.value,
-          );
+          await this.crudSdk.sdk
+            .UpdateGroup({
+              input: {
+                id: this.group.id,
+                ...this.dialogForm.value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -129,10 +131,9 @@ export class GroupFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createGroup',
-            this.dialogForm?.value,
-          );
+          await this.crudSdk.sdk
+            .CreateGroup({ input: this.dialogForm.value })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,

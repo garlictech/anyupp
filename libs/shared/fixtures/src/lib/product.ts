@@ -5,10 +5,7 @@ import { seededIdPrefix, testIdPrefix } from './common';
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
 const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 
-const getProductVariant = (
-  idx: number,
-  type: string,
-): CrudApi.ProductVariantInput => ({
+const getProductVariant = (idx: number, type: string): ProductVariantInput => ({
   id: `${testIdPrefix}${type}ProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx,

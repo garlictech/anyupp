@@ -131,7 +131,7 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     if (apiLambda.role) {
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
@@ -142,7 +142,7 @@ export class AppsyncAppStack extends sst.Stack {
           resources: [props.adminUserPool.userPoolArn],
         }),
       );
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: [
             'dynamodb:BatchGetItem',

@@ -1,4 +1,4 @@
-import { IProduct } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
   Action,
@@ -13,35 +13,33 @@ import * as ProductsActions from './products.actions';
 
 export const PRODUCTS_FEATURE_KEY = 'products';
 
-export type IProductEntityState = EntityState<IProduct>;
-
-export interface IProductsState {
-  chainProducts: IProductEntityState;
-  groupProducts: IProductEntityState;
-  unitProducts: IProductEntityState;
-  generatedUnitProducts: IProductEntityState;
+export interface ProductsState {
+  chainProducts: EntityState<CrudApi.ChainProduct>;
+  groupProducts: EntityState<CrudApi.GroupProduct>;
+  unitProducts: EntityState<CrudApi.UnitProduct>;
+  generatedUnitProducts: EntityState<CrudApi.GeneratedProduct>;
 }
 
 export interface ProductsPartialState {
-  readonly [PRODUCTS_FEATURE_KEY]: IProductsState;
+  readonly [PRODUCTS_FEATURE_KEY]: ProductsState;
 }
 
 //
 // CHAIN
 //
 
-export const chainProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
-  IProduct
+export const chainProductsAdapter: EntityAdapter<CrudApi.ChainProduct> = createEntityAdapter<
+  CrudApi.ChainProduct
 >();
 
-export const initialChainProductState: IProductEntityState = chainProductsAdapter.getInitialState(
+export const initialChainProductState = chainProductsAdapter.getInitialState(
   {},
 );
 
 const chainProductsReducer = createReducer(
   initialChainProductState,
-  on(ProductsActions.upsertChainProduct, (state, { product }) =>
-    chainProductsAdapter.upsertOne(product, state),
+  on(ProductsActions.upsertChainsProducts, (state, { products }) =>
+    chainProductsAdapter.upsertMany(products, state),
   ),
 );
 
@@ -49,18 +47,18 @@ const chainProductsReducer = createReducer(
 // GROUP
 //
 
-export const groupProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
-  IProduct
+export const groupProductsAdapter: EntityAdapter<CrudApi.GroupProduct> = createEntityAdapter<
+  CrudApi.GroupProduct
 >();
 
-export const initialGroupProductState: IProductEntityState = groupProductsAdapter.getInitialState(
+export const initialGroupProductState = groupProductsAdapter.getInitialState(
   {},
 );
 
 const groupProductsReducer = createReducer(
   initialGroupProductState,
-  on(ProductsActions.upsertGroupProduct, (state, { product }) =>
-    groupProductsAdapter.upsertOne(product, state),
+  on(ProductsActions.upsertGroupProducts, (state, { products }) =>
+    groupProductsAdapter.upsertMany(products, state),
   ),
 );
 
@@ -68,18 +66,16 @@ const groupProductsReducer = createReducer(
 // UNIT
 //
 
-export const unitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
-  IProduct
+export const unitProductsAdapter: EntityAdapter<CrudApi.UnitProduct> = createEntityAdapter<
+  CrudApi.UnitProduct
 >();
 
-export const initialUnitProductState: IProductEntityState = unitProductsAdapter.getInitialState(
-  {},
-);
+export const initialUnitProductState = unitProductsAdapter.getInitialState({});
 
 const unitProductsReducer = createReducer(
   initialUnitProductState,
-  on(ProductsActions.upsertUnitProduct, (state, { product }) =>
-    unitProductsAdapter.upsertOne(product, state),
+  on(ProductsActions.upsertUnitProducts, (state, { products }) =>
+    unitProductsAdapter.upsertMany(products, state),
   ),
 );
 
@@ -87,35 +83,35 @@ const unitProductsReducer = createReducer(
 // UNIT
 //
 
-export const generatedUnitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
-  IProduct
+export const generatedUnitProductsAdapter: EntityAdapter<Product> = createEntityAdapter<
+  Product
 >();
 
-export const initialGeneratedUnitProductState: IProductEntityState = generatedUnitProductsAdapter.getInitialState(
+export const initialGeneratedUnitProductState = generatedUnitProductsAdapter.getInitialState(
   {},
 );
 
 const generatedUnitProductsReducer = createReducer(
   initialGeneratedUnitProductState,
-  on(ProductsActions.upsertGeneratedProduct, (state, { product }) =>
-    generatedUnitProductsAdapter.upsertOne(product, state),
+  on(ProductsActions.upsertGeneratedProducts, (state, { products }) =>
+    generatedUnitProductsAdapter.upsertMany(products, state),
   ),
 );
 
-const reducerMap: ActionReducerMap<IProductsState> = {
+const reducerMap: ActionReducerMap<ProductsState> = {
   chainProducts: chainProductsReducer,
   groupProducts: groupProductsReducer,
   unitProducts: unitProductsReducer,
   generatedUnitProducts: generatedUnitProductsReducer,
 };
 
-const combinedReducer: ActionReducer<IProductsState> = combineReducers(
+const combinedReducer: ActionReducer<ProductsState> = combineReducers(
   reducerMap,
 );
 
 export function productsReducer(
-  state: IProductsState | undefined,
+  state: ProductsState | undefined,
   action: Action,
-): IProductsState {
+): ProductsState {
   return combinedReducer(state, action);
 }

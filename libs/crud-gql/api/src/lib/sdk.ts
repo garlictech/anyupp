@@ -4,11 +4,11 @@ import { flow } from 'fp-ts/lib/function';
 
 export const getSdkAmplify = flow(getSdkRequester, getSdk);
 
-type RawAmplifySdk = ReturnType<typeof getSdkAmplify>;
+type RawCrudSdk = ReturnType<typeof getSdkAmplify>;
 
-export type AmplifySdk = {
+export type CrudSdk = {
   [Method in keyof ReturnType<typeof getSdkAmplify>]: SdkMethodMapper<
-    RawAmplifySdk,
+    RawCrudSdk,
     Method
   >;
 };

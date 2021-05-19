@@ -1,22 +1,19 @@
 import * as Joi from 'joi';
 import * as CrudApi from '@bgap/crud-gql/api';
-
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
-import { ILane, IUnit } from '@bgap/shared/types';
 import { floorMapSchema } from './floor-map';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
 
 export const laneSchema: Joi.SchemaMap<ILane> = {
-  __typename: Joi.string().valid('Lane').optional(),
   id: Joi.string().allow(null, ''),
   name: Joi.string().required(),
   color: Joi.string().required(),
 };
-export const unitSchema: Joi.SchemaMap<IUnit> = {
-  __typename: Joi.string().valid('Unit').optional(),
+
+export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   id: Joi.string().required(),
   groupId: Joi.string().required(),
   chainId: Joi.string().required(),
@@ -37,10 +34,9 @@ export const unitSchema: Joi.SchemaMap<IUnit> = {
   ...addressInfoSchema,
 };
 
-export const { validate: validateUnit, isType: isUnit } = validateSchema<IUnit>(
-  unitSchema,
-  'Unit',
-);
+export const { validate: validateUnit, isType: isUnit } = validateSchema<
+  CrudApi.Unit
+>(unitSchema, 'Unit');
 
 export const {
   validate: validateUnitList,

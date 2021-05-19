@@ -33,7 +33,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -118,7 +118,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
     combineLatest([this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)), this.orders$])
       .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
+      .subscribe(([products, orders]: [Product[], IOrder[]]): void => {
         const counts = this._countOrders(products, orders);
 
         this._chart.data.datasets[0].data = [

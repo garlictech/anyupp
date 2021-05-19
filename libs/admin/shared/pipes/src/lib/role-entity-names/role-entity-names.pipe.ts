@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 })
 export class RoleEntityNamesPipe implements PipeTransform {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>) {}
+  constructor(private _store: Store) {}
 
   transform(roleContext: IRoleContext): Observable<string> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

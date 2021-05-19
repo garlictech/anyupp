@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
-import { IProductComponent, IProductComponentSet } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   NbDialogService,
   NbTabComponent,
@@ -37,12 +37,12 @@ export class ModifiersAndExtrasListComponent implements OnDestroy {
 
   public eModExtTab = EModExtTab;
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
-  public productComponents$: Observable<IProductComponent[]>;
-  public productComponentSets$: Observable<IProductComponentSet[]>;
+  public productComponents$: Observable<CrudApi.ProductComponent[]>;
+  public productComponentSets$: Observable<CrudApi.ProductComponentSet[]>;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
     this.productComponents$ = this._store.pipe(

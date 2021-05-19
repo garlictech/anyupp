@@ -1,10 +1,10 @@
-import { AmplifySdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { fromApolloSubscription } from '@bgap/gql-sdk';
 import { from, interval, of } from 'rxjs';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 
 describe('CRUD sdk test', () => {
-  let sdk: AmplifySdk;
+  let sdk: CrudSdk;
 
   const toMatchSnapshot = (x: any, name?: string) =>
     expect(x).toMatchSnapshot(

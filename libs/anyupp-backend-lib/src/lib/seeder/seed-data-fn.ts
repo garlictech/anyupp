@@ -7,12 +7,11 @@ import {
   chainSeed,
   seededIdPrefix,
 } from '@bgap/shared/fixtures';
-import { seededIdPrefix } from '@bgap/shared/fixtures';
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
 
 export interface SeederDependencies {
-  crudSdk: CrudApi.AmplifySdk;
+  crudSdk: CrudApi.CrudSdk;
   userPoolId: string;
 }
 
@@ -115,7 +114,7 @@ export const createTestUnit = (
   chainIdx: number,
   groupIdx: number,
   unitIdx: number,
-) => {
+) => (deps: SeederDependencies) => {
   const input: CrudApi.CreateUnitInput = {
     ...unitSeed.unitBase,
     id: generateUnitId(chainIdx, groupIdx, unitIdx),

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
@@ -22,7 +22,7 @@ import { UnitFormComponent } from '../unit-form/unit-form.component';
   styleUrls: ['./unit-list-item.component.scss'],
 })
 export class UnitListItemComponent {
-  @Input() unit!: IUnit;
+  @Input() unit!: CrudApi.Unit;
   public workingGenerateStatus = false;
 
   constructor(

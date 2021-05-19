@@ -1,13 +1,15 @@
-import { EAdminRole, IAdminUser } from '@bgap/shared/types';
+import { EAdminRole } from '@bgap/shared/types';
 import { Action, createReducer, on } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import * as LoggedUserActions from './logged-user.actions';
 
 export const LOGGED_USER_FEATURE_KEY = 'loggedUser';
 
 export interface ILoggedUserState {
-  loggedUser?: IAdminUser;
+  loggedUser?: CrudApi.AdminUser;
   currentContextRole?: EAdminRole;
+  role?: EAdminRole; // Filled from token
 }
 
 export interface LoggedUserPartialState {

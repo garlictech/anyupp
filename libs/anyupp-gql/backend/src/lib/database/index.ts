@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import {
   executeBatchDelete,
@@ -31,7 +31,7 @@ export const incrementOrderNum = (tableName: string) => (
   modulo = 100,
 ): Observable<number | undefined> => {
   // TODO: extract this logic somewhere as Increment
-  return executeUpdateItem<Pick<IUnit, 'lastOrderNum'>>({
+  return executeUpdateItem<Pick<CrudApi.Unit, 'lastOrderNum'>>({
     TableName: tableName,
     Key: { id: { S: id } },
     UpdateExpression: 'add lastOrderNum :val', // IF the lastOrderNum not exist on the UNIT the ADD operator initialized it as 0 so the first orderNum will be 1 in this case

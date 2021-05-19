@@ -143,10 +143,9 @@ export const startStripePayment = (
 
   // 6c. Save card for later use
   if (savePaymentMethod === true) {
-    const paymentMethod = await stripe.paymentMethods.attach(
-      input.paymentMethodId as string,
-      { customer: user.stripeCustomerId },
-    );
+    await stripe.paymentMethods.attach(input.paymentMethodId as string, {
+      customer: user.stripeCustomerId,
+    });
   }
 
   // 5. Create payment intent

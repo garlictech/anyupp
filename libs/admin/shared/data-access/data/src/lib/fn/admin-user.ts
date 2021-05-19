@@ -1,8 +1,8 @@
-// import { EAdminRole, IAdminUser } from '@bgap/shared/types';
+// import { EAdminRole,  } from '@bgap/shared/types';
 /*
 export const chainAdminFilter = (
-  // checkedAdminUser: IAdminUser,
-  // loggedAdminRole: EAdminRole, // IAdminUserRole,
+  // checkedAdminUser: 
+  // loggedAdminRole: EAdminRole, // Role,
 ): boolean => {
   return true;
 
@@ -25,8 +25,8 @@ export const chainAdminFilter = (
 };
 
 export const groupAdminFilter = (
-  checkedAdminUser: IAdminUser,
-  loggedAdminRole: EAdminRole, // IAdminUserRole,
+  checkedAdminUser: 
+  loggedAdminRole: EAdminRole, // Role,
 ): boolean => {
   return true;
 
@@ -48,8 +48,8 @@ export const groupAdminFilter = (
 };
 
 export const unitAdminFilter = (
-  checkedAdminUser: IAdminUser,
-  loggedAdminRole: EAdminRole, // IAdminUserRole,
+  checkedAdminUser: 
+  loggedAdminRole: EAdminRole, // Role,
 ): boolean => {
   return true;
 

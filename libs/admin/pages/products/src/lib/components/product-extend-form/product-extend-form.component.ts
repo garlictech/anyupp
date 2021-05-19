@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { skipWhile, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -10,24 +10,17 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  ILane,
-  IProduct,
-  IProductCategory,
-  IUnit,
-} from '@bgap/shared/types';
-import { cleanObject, objectToArray } from '@bgap/shared/utils';
+import { EProductLevel, IKeyValue } from '@bgap/shared/types';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { ProductFormService } from '../../services/product-form/product-form.service';
 
@@ -40,12 +33,12 @@ import { ProductFormService } from '../../services/product-form/product-form.ser
 export class ProductExtendFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public product!: IProduct;
+  public product!: Product;
   public productLevel!: EProductLevel;
   public eProductLevel = EProductLevel;
   public editing = false;
   public currency!: string;
-  public productCategories$: Observable<IProductCategory[]>;
+  public productCategories$: Observable<CrudApi.ProductCategory[]>;
   public unitLanes: IKeyValue[] = [];
 
   private _selectedChainId?: string;
@@ -54,17 +47,20 @@ export class ProductExtendFormComponent
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private crudSdk: CrudSdkService,
+    private _store: Store,
     private _productFormService: ProductFormService,
-    private _amplifyDataService: AmplifyDataService,
     private _logger: NGXLogger,
   ) {
     super(_injector);
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUserSettings),
+        take(1),
+        filterNullish(),
+      )
+      .subscribe((userSettings: CrudApi.AdminUserSettings): void => {
         this._selectedChainId = userSettings?.selectedChainId || '';
         this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedUnitId = userSettings?.selectedUnitId || '';
@@ -76,19 +72,16 @@ export class ProductExtendFormComponent
     );
 
     this._store
-      .pipe(
-        select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: IUnit | undefined): boolean => !unit),
-        take(1),
-      )
-      .subscribe((unit: IUnit | undefined): void => {
-        this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
-          (lane): IKeyValue => ({
-            key: lane.id || '',
-            value: lane.name,
-          }),
-        );
-      });
+      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
+      .subscribe(
+        unit =>
+          (this.unitLanes = unit.lanes
+            ? unit.lanes.map(lane => ({
+                key: lane?.id || '',
+                value: lane?.name,
+              }))
+            : []),
+      );
   }
 
   ngOnInit(): void {
@@ -126,16 +119,18 @@ export class ProductExtendFormComponent
 
       if (this.editing) {
         try {
-          await this._amplifyDataService.update<IProduct>(
-            this.productLevel === EProductLevel.GROUP
-              ? 'getGroupProduct'
-              : 'getUnitProduct',
-            this.productLevel === EProductLevel.GROUP
-              ? 'updateGroupProduct'
-              : 'updateUnitProduct',
-            this.product.id,
-            () => value,
-          );
+          const input = {
+            input: {
+              id: this.product.id,
+              ...value,
+            },
+          };
+
+          if (this.productLevel === EProductLevel.GROUP) {
+            await this.crudSdk.sdk.UpdateGroupProduct(input).toPromise();
+          } else {
+            await this.crudSdk.sdk.UpdateUnitProduct(input).toPromise();
+          }
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -159,12 +154,15 @@ export class ProductExtendFormComponent
         }
 
         try {
-          await this._amplifyDataService.create(
-            this.productLevel === EProductLevel.GROUP
-              ? 'createGroupProduct'
-              : 'createUnitProduct',
-            value,
-          );
+          const input = {
+            input: value,
+          };
+
+          if (this.productLevel === EProductLevel.GROUP) {
+            await this.crudSdk.sdk.CreateGroupProduct(input).toPromise();
+          } else {
+            await this.crudSdk.sdk.CreateUnitProduct(input).toPromise();
+          }
 
           this._toasterService.show(
             EToasterType.SUCCESS,

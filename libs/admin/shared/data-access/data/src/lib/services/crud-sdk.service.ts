@@ -6,7 +6,7 @@ import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
   providedIn: 'root',
 })
 export class CrudSdkService {
-  public sdk: CrudApi.AmplifySdk;
+  public sdk: CrudApi.CrudSdk;
 
   constructor() {
     this.sdk = getCrudSdkForUserPool();
@@ -49,7 +49,7 @@ interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
   providedin: 'root',
 })
 export class AmplifyDataService {
-  private crudSdk: CrudApi.AmplifySdk;
+  private crudSdk: CrudApi.CrudSdk;
 
   constructor(private _ngZone: NgZone, private sdk: AngularApi.OnAdminUserChangeGQL ) {
     this.crudSdk = getCrudSdkForUserPool();

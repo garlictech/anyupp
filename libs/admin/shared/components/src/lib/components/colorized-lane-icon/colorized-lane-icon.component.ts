@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
-import { IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -24,7 +24,7 @@ export class ColorizedLaneIconComponent implements OnInit {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.laneColor = DEFAULT_LANE_COLOR;
@@ -34,10 +34,10 @@ export class ColorizedLaneIconComponent implements OnInit {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: IUnit | undefined): boolean => !unit),
+        skipWhile((unit: CrudApi.Unit | undefined): boolean => !unit),
         take(1),
       )
-      .subscribe((unit: IUnit | undefined): void => {
+      .subscribe((unit: CrudApi.Unit | undefined): void => {
         this.laneColor =
           unit?.lanes?.find(l => l.id === this.laneId)?.color ||
           DEFAULT_LANE_COLOR;

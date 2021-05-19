@@ -1,3 +1,4 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
   EOrderStatus,
@@ -7,7 +8,6 @@ import {
   ILaneOrderItem,
   IOrder,
   IStatusLog,
-  IUnit,
 } from '@bgap/shared/types';
 
 export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
@@ -65,10 +65,10 @@ export const getPrevOrderItemStatus = (
 
 export const getOrderLaneColor = (
   orderItem: ILaneOrderItem,
-  unit: IUnit,
+  unit: CrudApi.Unit,
 ): string => {
   return unit?.lanes && orderItem.laneId
-    ? unit.lanes.find(l => l.id === orderItem.laneId)?.color ||
+    ? unit.lanes.find(l => l?.id === orderItem.laneId)?.color ||
         DEFAULT_LANE_COLOR
     : DEFAULT_LANE_COLOR;
 };

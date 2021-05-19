@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IAdminUser } from '@bgap/shared/types';
+import {} from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
@@ -14,7 +14,7 @@ import { AdminUserRoleFormComponent } from '../admin-user-role-form/admin-user-r
   styleUrls: ['./admin-user-list-item.component.scss'],
 })
 export class AdminUserListItemComponent {
-  @Input() adminUser!: IAdminUser;
+  @Input() adminUser!: CrudApi.AdminUser;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

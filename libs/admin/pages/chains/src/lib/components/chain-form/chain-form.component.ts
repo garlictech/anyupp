@@ -1,7 +1,5 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-
-/* eslint-disable @typescript-eslint/dot-notation */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,7 +8,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
@@ -18,8 +15,11 @@ import {
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
-import { EImageType, IChain } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
+import { EImageType } from '@bgap/shared/types';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,13 +30,13 @@ import { cleanObject } from '@bgap/shared/utils';
 export class ChainFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public chain!: IChain;
+  public chain?: CrudApi.Chain;
   public eImageType = EImageType;
 
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _amplifyDataService: AmplifyDataService,
+    private crudSdk: CrudSdkService,
     private _logger: NGXLogger,
   ) {
     super(_injector);
@@ -74,11 +74,11 @@ export class ChainFormComponent
     });
   }
 
-  get logoImage(): string | undefined {
+  get logoImage() {
     return this.chain?.style?.images?.logo;
   }
 
-  get headerImage(): string | undefined {
+  get headerImage() {
     return this.chain?.style?.images?.header;
   }
 
@@ -96,12 +96,14 @@ export class ChainFormComponent
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
         try {
-          await this._amplifyDataService.update<IChain>(
-            'getChain',
-            'updateChain',
-            this.chain.id,
-            () => this.dialogForm.value,
-          );
+          await this.crudSdk.sdk
+            .UpdateChain({
+              input: {
+                id: this.chain.id,
+                ...this.dialogForm.value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -114,10 +116,9 @@ export class ChainFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createChain',
-            this.dialogForm?.value,
-          );
+          await this.crudSdk.sdk
+            .CreateChain({ input: this.dialogForm?.value })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -142,13 +143,7 @@ export class ChainFormComponent
 
     if (this.chain?.id) {
       try {
-        await this._amplifyDataService.update<IChain>(
-          'getChain',
-          'updateChain',
-          this.chain.id,
-          (data: unknown) =>
-            fp.set(`style.images.${param}`, image, <IChain>data),
-        );
+        await this.updateImageStyles(param, image);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -175,12 +170,7 @@ export class ChainFormComponent
     )).setValue('');
 
     if (this.chain?.id) {
-      await this._amplifyDataService.update<IChain>(
-        'getChain',
-        'updateChain',
-        this.chain.id,
-        (data: unknown) => fp.set(`style.images.${param}`, null, <IChain>data),
-      );
+      await this.updateImageStyles(param, null);
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -189,4 +179,22 @@ export class ChainFormComponent
       );
     }
   };
+
+  private async updateImageStyles(param: string, image: string | null) {
+    await this.crudSdk.sdk
+      .GetChain({
+        id:
+          this.chain?.id ||
+          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
+      })
+      .pipe(
+        filterNullish(),
+        switchMap(data =>
+          this.crudSdk.sdk.UpdateChain({
+            input: fp.set(`style.images.${param}`, image, data),
+          }),
+        ),
+      )
+      .toPromise();
+  }
 }

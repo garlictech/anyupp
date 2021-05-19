@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IProductComponentSet } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
@@ -14,7 +14,7 @@ import { ProductComponentSetFormComponent } from '../product-component-set-form/
   templateUrl: './product-component-set-list-item.component.html',
 })
 export class ProductComponentSetListItemComponent {
-  @Input() productComponentSet!: IProductComponentSet;
+  @Input() productComponentSet!: CrudApi.ProductComponentSet;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

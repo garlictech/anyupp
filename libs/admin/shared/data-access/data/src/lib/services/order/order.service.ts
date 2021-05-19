@@ -1,18 +1,11 @@
 import { skipWhile } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { currentStatus } from '@bgap/admin/shared/data-access/orders';
-import {
-  EOrderStatus,
-  IAdminUser,
-  IGroup,
-  IOrder,
-  IOrderItem,
-  IGeneratedProduct,
-} from '@bgap/shared/types';
+import { EOrderStatus, IOrder, IOrderItem } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { DataService } from '../data/data.service';
 
@@ -20,14 +13,14 @@ import { DataService } from '../data/data.service';
   providedIn: 'root',
 })
 export class OrderService {
-  private _adminUser?: IAdminUser;
+  private _adminUser?: CrudApi.AdminUser;
   private _groupCurrency?: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService) {
+  constructor(private _store: Store, private _dataService: DataService) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
-      .subscribe((adminUser: IAdminUser): void => {
+      .subscribe(adminUser => {
         this._adminUser = adminUser;
       });
 
@@ -36,7 +29,7 @@ export class OrderService {
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
       )
-      .subscribe((group: IGroup | undefined): void => {
+      .subscribe((group: CrudApi.Group | undefined): void => {
         this._groupCurrency = group?.currency;
       });
   }
@@ -74,7 +67,7 @@ export class OrderService {
 
   public addProductVariant(
     order: IOrder,
-    product: IGeneratedProduct,
+    product: CrudApi.GeneratedProduct,
     variantId: string,
   ): void {
     // const now = new Date().getTime();

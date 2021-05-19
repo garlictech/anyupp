@@ -7,7 +7,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { IProductCategory } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
@@ -19,7 +19,7 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   styleUrls: ['./product-category-list-item.component.scss'],
 })
 export class ProductCategoryListItemComponent {
-  @Input() productCategory!: IProductCategory;
+  @Input() productCategory!: ProductCategory;
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();

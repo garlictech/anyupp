@@ -1,4 +1,4 @@
-import { IProduct } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createAction, props } from '@ngrx/store';
 
 export const resetChainProducts = createAction(
@@ -14,22 +14,22 @@ export const resetGeneratedUnitProducts = createAction(
   '[ProductList] Reset generated unit products',
 );
 
-export const upsertChainProduct = createAction(
+export const upsertChainsProducts = createAction(
   '[ProductList] Upsert Chain Product',
-  props<{ product: IProduct }>(),
+  props<{ products: CrudApi.ChainProduct[] }>(),
 );
 
-export const upsertGroupProduct = createAction(
-  '[ProductList] Upsert Group Product',
-  props<{ product: IProduct }>(),
+export const upsertGroupProducts = createAction(
+  '[ProductList] Upsert Group Products',
+  props<{ products: CrudApi.GroupProduct[] }>(),
 );
 
-export const upsertUnitProduct = createAction(
-  '[ProductList] Upsert Unit Product',
-  props<{ product: IProduct }>(),
+export const upsertUnitProducts = createAction(
+  '[ProductList] Upsert Unit Products',
+  props<{ products: CrudApi.UnitProduct[] }>(),
 );
 
-export const upsertGeneratedProduct = createAction(
-  '[ProductList] Upsert Generated Product',
-  props<{ product: IProduct }>(),
+export const upsertGeneratedProducts = createAction(
+  '[ProductList] Upsert Generated Products',
+  props<{ products: Product[] }>(),
 );

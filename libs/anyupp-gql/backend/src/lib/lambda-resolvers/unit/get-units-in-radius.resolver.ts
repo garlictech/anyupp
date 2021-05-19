@@ -1,5 +1,5 @@
 import * as geolib from 'geolib';
-import { combineLatest, EMPTY, from, iif, Observable, of } from 'rxjs';
+import { combineLatest, EMPTY, from, Observable, of } from 'rxjs';
 import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
@@ -8,8 +8,6 @@ import {
   validateGetGroupCurrency,
   validateUnitList,
 } from '@bgap/shared/data-validators';
-
-import { IChain, IChainStyle } from '@bgap/shared/types';
 import { UnitsResolverDeps } from './utils';
 import { Maybe } from '@bgap/crud-gql/api';
 
@@ -27,7 +25,7 @@ export const getUnitsInRadius = (location: CrudApi.LocationInput) => (
       combineLatest(
         units.map(unit =>
           getChain(unit.chainId)(deps).pipe(
-            switchMap(chain => iif(() => chain.isActive, of(chain), EMPTY)),
+            switchMap(chain => (chain.isActive ? of(chain) : EMPTY)),
             switchMap(chain =>
               getGroupCurrency(unit.groupId)(deps).pipe(
                 map(currency => ({ chain, currency })),
@@ -67,7 +65,7 @@ const toGeoUnit = ({
   unit: CrudApi.Unit;
   currency: string;
   inputLocation: AnyuppApi.LocationInput;
-  chainStyle: IChainStyle;
+  chainStyle: CrudApi.ChainStyle;
   //openingHours: IWeeklySchedule;
   paymentModes: Maybe<CrudApi.PaymentMode>[] | undefined | null;
 }): AnyuppApi.GeoUnit => ({
@@ -105,5 +103,5 @@ const getGroupCurrency = (id: string) => (
 
 const getChain = (id: string) => (
   deps: UnitsResolverDeps,
-): Observable<IChain> =>
+): Observable<CrudApi.Chain> =>
   from(deps.crudSdk.GetChain({ id })).pipe(switchMap(validateChain));

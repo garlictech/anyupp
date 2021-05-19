@@ -20,8 +20,8 @@ import {
   IKeyValueObject,
   IOrder,
   IOrderAmounts,
-  IProduct,
 } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -43,7 +43,7 @@ export class ReportsDailySalesPerTypeComponent
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _translateService: TranslateService,
     private _currencyFormatter: CurrencyFormatterPipe,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -116,7 +116,7 @@ export class ReportsDailySalesPerTypeComponent
       this.orders$,
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
+      .subscribe(([products, orders]: [Product[], IOrder[]]): void => {
         const amounts = this._orderAmounts(products, orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
@@ -146,7 +146,7 @@ export class ReportsDailySalesPerTypeComponent
     // untilDestroyed uses it.
   }
 
-  private _orderAmounts(products: IProduct[], orders: IOrder[]) {
+  private _orderAmounts(products: Product[], orders: IOrder[]) {
     const amounts: IOrderAmounts = {
       [EProductType.DRINK]: 0,
       [EProductType.FOOD]: 0,

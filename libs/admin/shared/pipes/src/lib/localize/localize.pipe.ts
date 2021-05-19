@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class LocalizePipe implements PipeTransform {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>) {}
+  constructor(private _store: Store) {}
 
   transform(value: ILocalizedItem<string>): string {
     if (!value) {

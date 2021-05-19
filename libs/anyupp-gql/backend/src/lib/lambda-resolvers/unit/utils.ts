@@ -1,5 +1,5 @@
-import { AmplifySdk } from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export interface UnitsResolverDeps {
-  crudSdk: AmplifySdk;
+  crudSdk: CrudSdk;
 }

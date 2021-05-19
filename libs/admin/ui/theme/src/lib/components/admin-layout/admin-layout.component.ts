@@ -1,20 +1,16 @@
-import { debounceTime, filter } from 'rxjs/operators';
-
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
-import { EAdminRole, IAdminUser } from '@bgap/shared/types';
+import { EAdminRole } from '@bgap/shared/types';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { filterNullish } from '@bgap/shared/utils';
+import { combineLatest } from 'rxjs';
 
 const menuItems = {
   dashboard: {
@@ -87,33 +83,36 @@ const menuItems = {
   styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
-  public adminUser?: IAdminUser;
+  public adminUser?: CrudApi.AdminUser;
   public env = environment;
   public menu: NbMenuItem[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this._store
+    combineLatest([
+      this._store
+        .select(loggedUserSelectors.getLoggedUserRole)
+        .pipe(filterNullish()),
+      this._store
+        .select(loggedUserSelectors.getLoggedUser)
+        .pipe(filterNullish()),
+    ])
       .pipe(
-        select(loggedUserSelectors.getLoggedUser),
-        filter((adminUser): boolean => !!adminUser.role),
         debounceTime(10), // Language reload!
         untilDestroyed(this),
       )
-      .subscribe((adminUser: IAdminUser): void => {
+      .subscribe(([role, adminUser]) => {
         this.adminUser = adminUser;
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (
-            menuItem.roles.includes(this.adminUser?.role || EAdminRole.INACTIVE)
-          ) {
+          if (menuItem.roles.includes(role || EAdminRole.INACTIVE)) {
             this.menu.push({
               ...menuItem,
               title: this._translateService.instant(menuItem.title),
@@ -125,7 +124,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

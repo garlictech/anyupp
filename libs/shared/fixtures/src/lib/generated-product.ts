@@ -4,7 +4,7 @@ import { testIdPrefix } from './common';
 const getGeneratedProductVariant = (
   idx: number,
   productId?: string,
-): CrudApi.GeneratedProductVariantInput => ({
+): ProductVariantInput => ({
   id: `${testIdPrefix}generatedProductVariant_id_p${productId}_${idx}`,
   variantName: {
     en: `VARIANT_NAME_${productId || idx}`,

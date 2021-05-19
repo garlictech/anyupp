@@ -3,8 +3,8 @@
 import {
   EProductType,
   EVariantAvailabilityType,
-  IProduct,
-  IProductVariant,
+  Product,
+  ProductVariant,
 } from '@bgap/shared/types';
 import { calculateActualPricesAndCheckActivity } from './calculate-product';
 import { productSeed } from '@bgap/shared/fixtures';
@@ -12,7 +12,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: any = {
-    // const baseProduct: IProduct = {
+    // const baseProduct: Product = {
     ...productSeed.unitProductBase,
     tax: 11,
     name: { en: 'NAME' },
@@ -28,7 +28,7 @@ describe('calculatePricesAndCheckActivity method', () => {
   const timezone01 = 'Europe/London';
 
   it('should return a minimal representation of the product in the correct format', () => {
-    const notActiveVariant: IProductVariant = {
+    const notActiveVariant: ProductVariant = {
       ...baseProduct.variants[0],
       availabilities: [
         {
@@ -41,11 +41,11 @@ describe('calculatePricesAndCheckActivity method', () => {
         },
       ],
     };
-    const anotherActiveVariant: IProductVariant = {
+    const anotherActiveVariant: ProductVariant = {
       ...baseProduct.variants[0],
       position: 100,
     };
-    const product: IProduct = {
+    const product: Product = {
       ...baseProduct,
       variants: [
         baseProduct.variants[0],
@@ -171,7 +171,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       });
 
       it('should remove the variant in case it is not Available', () => {
-        const variant: IProductVariant = {
+        const variant: ProductVariant = {
           id: 'VAR_ID',
           variantName: { en: 'variantName' },
           pack: { size: 1, unit: 'unit' },
@@ -207,7 +207,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
 
     describe('calculate actual variant price for each variants', () => {
-      const variant: IProductVariant = {
+      const variant: ProductVariant = {
         id: 'VAR_ID',
         variantName: { en: 'variantName' },
         pack: { size: 1, unit: 'unit' },
@@ -216,7 +216,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         position: 1,
         refGroupPrice: 0,
       };
-      const minimalProductWithSingleActiveVariant: Partial<IProduct> = {
+      const minimalProductWithSingleActiveVariant: Partial<Product> = {
         id: 'PROD_ID',
         isVisible: true,
         name: { en: 'prodName' },

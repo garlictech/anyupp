@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,13 +15,10 @@ import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
-import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
   NbDialogService,
-  NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
-  NbThemeService,
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -41,21 +38,18 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public groups$?: Observable<IGroup[]>;
-  public adminUser?: IAdminUser;
+  public groups$?: Observable<CrudApi.Group[]>;
+  public adminUser?: CrudApi.AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
   public selectedLang: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _sidebarService: NbSidebarService,
     private _menuService: NbMenuService,
-    private _themeService: NbThemeService,
     private _layoutService: LayoutService,
-    private _breakpointService: NbMediaBreakpointsService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
     private _cognitoService: CognitoService,
@@ -116,7 +110,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .subscribe(adminUser => {
         this.adminUser = adminUser;
 
         this._changeDetectorRef.detectChanges();
@@ -144,7 +138,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }

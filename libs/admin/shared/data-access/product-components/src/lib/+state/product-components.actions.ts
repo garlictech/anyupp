@@ -1,11 +1,11 @@
-import { IProductComponent } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const init = createAction('[ProductComponents] Init');
 
-export const upsertProductComponent = createAction(
-  '[ProductComponents] Upsert product component',
-  props<{ productComponent: IProductComponent }>(),
+export const upsertProductComponents = createAction(
+  '[ProductComponents] Upsert product components',
+  props<{ productComponents: CrudApi.ProductComponent[] }>(),
 );
 
 export const resetProductComponents = createAction(

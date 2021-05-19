@@ -38,7 +38,7 @@ export class FloorMapEditorComponent
   public EUnitMapObjectType = EUnitMapObjectType;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
+  constructor(private _store: Store, private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     const w = this.floorMap?.w || 800;

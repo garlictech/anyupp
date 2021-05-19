@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -18,12 +17,13 @@ import {
   EDashboardSize,
   ENebularButtonSize,
   EOrderStatus,
-  IAdminUser,
   IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as fp from 'lodash/fp';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { filterNullish } from '@bgap/shared/utils';
 
 interface IPaymentMethodKV {
   key: string;
@@ -45,11 +45,11 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
-  private _loggedUser?: IAdminUser;
+  private _loggedUser?: CrudApi.AdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _orderService: OrderService,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -66,8 +66,12 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     });
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        untilDestroyed(this),
+        filterNullish(),
+      )
+      .subscribe((adminUser: CrudApi.AdminUser): void => {
         this._loggedUser = adminUser;
 
         this._changeDetectorRef.detectChanges();

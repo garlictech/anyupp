@@ -5,7 +5,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 
 export const createTestUnit = (
   overwrites: Partial<CrudApi.CreateUnitInput> = {},
-) => (crudSdk: CrudApi.AmplifySdk) =>
+) => (crudSdk: CrudApi.CrudSdk) =>
   from(
     crudSdk.CreateUnit({
       input: {
@@ -25,7 +25,7 @@ export const createTestUnit = (
   );
 
 export const deleteTestUnit = (id: string = unitSeed.unit_01.id!) => (
-  crudSdk: CrudApi.AmplifySdk,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
   from(
     crudSdk.DeleteUnit({

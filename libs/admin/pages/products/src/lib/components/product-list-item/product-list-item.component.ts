@@ -14,14 +14,11 @@ import {
   EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
-  IAdminUser,
-  IProduct,
-  IProductVariant,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 
@@ -33,7 +30,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   styleUrls: ['./product-list-item.component.scss'],
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
-  @Input() product!: IProduct;
+  @Input() product!: Product;
   @Input() pending = false;
   @Input() productLevel!: EProductLevel;
   @Input() currency = '';
@@ -46,15 +43,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public EVariantAvailabilityType = EVariantAvailabilityType;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit(): void {
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser | undefined): void => {
+      .pipe(select(loggedUserSelectors.getLoggedUserRole), untilDestroyed(this))
+      .subscribe(role => {
         this.hasRoleToEdit = true;
 
         switch (this.productLevel) {
@@ -62,14 +58,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
-            ].includes(loggedUser?.role || EAdminRole.INACTIVE);
+            ].includes(role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
               EAdminRole.SUPERUSER,
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
-            ].includes(loggedUser?.role || EAdminRole.INACTIVE);
+            ].includes(role || EAdminRole.INACTIVE);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
@@ -77,7 +73,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
               EAdminRole.CHAIN_ADMIN,
               EAdminRole.GROUP_ADMIN,
               EAdminRole.UNIT_ADMIN,
-            ].includes(loggedUser?.role || EAdminRole.INACTIVE);
+            ].includes(role || EAdminRole.INACTIVE);
             break;
           default:
             break;
@@ -89,7 +85,7 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  get variantsArray(): IProductVariant[] {
+  get variantsArray(): ProductVariant[] {
     return Object.values(this.product.variants || {});
   }
 

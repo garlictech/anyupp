@@ -1,10 +1,10 @@
 import { EAdminRole } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
-import * as CrudSdk from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const loadLoggedUserSuccess = createAction(
   '[LoggedUser/API] Load LoggedUser Success',
-  props<{ loggedUser: CrudSdk.AdminUser | { role: EAdminRole } }>(),
+  props<{ loggedUser: CrudApi.AdminUser }>(),
 );
 
 export const resetLoggedUser = createAction(

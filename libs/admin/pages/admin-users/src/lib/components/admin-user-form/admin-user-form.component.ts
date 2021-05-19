@@ -16,7 +16,7 @@ import {
   anyuppAuthenticatedGraphqlClient,
   executeMutation,
 } from '@bgap/shared/graphql/api-client';
-import { EImageType, IAdminUser } from '@bgap/shared/types';
+import { EImageType } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 
 @Component({
@@ -28,7 +28,7 @@ import { cleanObject } from '@bgap/shared/utils';
 export class AdminUserFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public adminUser!: IAdminUser;
+  public adminUser!: CrudApi.AdminUser;
   public eImageType = EImageType;
 
   constructor(
@@ -62,7 +62,7 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          await this._amplifyDataService.update<IAdminUser>(
+          await this._amplifyDataService.update<>(
             'getAdminUser',
             'updateAdminUser',
             this.adminUser.id,
@@ -115,7 +115,7 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this._amplifyDataService.update<IAdminUser>(
+        await this._amplifyDataService.update<>(
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
@@ -152,7 +152,7 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this._amplifyDataService.update<IAdminUser>(
+        await this._amplifyDataService.update<>(
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,

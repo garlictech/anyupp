@@ -1,10 +1,11 @@
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { IAdminUserSettings, IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { IUnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
+import { UnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
 
-export const getUnitsState = createFeatureSelector<IUnitsState>(
+export const getUnitsState = createFeatureSelector<UnitsState>(
   UNITS_FEATURE_KEY,
 );
 
@@ -12,26 +13,26 @@ const { selectAll, selectEntities } = unitsAdapter.getSelectors();
 
 export const getUnitsError = createSelector(
   getUnitsState,
-  (state: IUnitsState) => state.error,
+  (state: UnitsState) => state.error,
 );
 
-export const getAllUnits = createSelector(getUnitsState, (state: IUnitsState) =>
+export const getAllUnits = createSelector(getUnitsState, (state: UnitsState) =>
   selectAll(state),
 );
 
 export const getUnitsEntities = createSelector(
   getUnitsState,
-  (state: IUnitsState) => selectEntities(state),
+  (state: UnitsState) => selectEntities(state),
 );
 
 export const getUnitById = (id: string) => {
-  return createSelector(getAllUnits, (units: IUnit[]): IUnit | undefined =>
-    units.find((unit): boolean => unit.id === id),
-  );
+  return createSelector(getAllUnits, (units: CrudApi.Unit[]):
+    | CrudApi.Unit
+    | undefined => units.find((unit): boolean => unit.id === id));
 };
 
 export const getUnitsByGroupId = (groupId: string) => {
-  return createSelector(getAllUnits, (units: IUnit[]): IUnit[] =>
+  return createSelector(getAllUnits, (units: CrudApi.Unit[]): CrudApi.Unit[] =>
     units.filter((unit): boolean => unit.groupId === groupId),
   );
 };
@@ -39,7 +40,10 @@ export const getUnitsByGroupId = (groupId: string) => {
 export const getSelectedGroupUnits = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllUnits,
-  (userSettings: IAdminUserSettings | undefined, units: IUnit[]): IUnit[] =>
+  (
+    userSettings: CrudApi.AdminUserSettings | undefined,
+    units: CrudApi.Unit[],
+  ): CrudApi.Unit[] =>
     units.filter(
       (unit): boolean => unit.groupId === userSettings?.selectedGroupId,
     ),
@@ -49,8 +53,8 @@ export const getSelectedUnit = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllUnits,
   (
-    userSettings: IAdminUserSettings | undefined,
-    units: IUnit[],
-  ): IUnit | undefined =>
+    userSettings: CrudApi.AdminUserSettings | undefined,
+    units: CrudApi.Unit[],
+  ): CrudApi.Unit | undefined =>
     units.find((unit): boolean => unit.id === userSettings?.selectedUnitId),
 );

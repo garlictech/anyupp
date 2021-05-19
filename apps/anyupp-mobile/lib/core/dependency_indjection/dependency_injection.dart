@@ -58,8 +58,8 @@ void _initProviders() {
   getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
         getIt<IAuthProvider>(),
       ));
-  getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
-  getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
+  getIt.registerLazySingleton<ProductProvider>(() => AwsProductProvider());
+  getIt.registerLazySingleton<CrudApi.UnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
       () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
@@ -87,9 +87,9 @@ void _initRepositories() {
         getIt<ISocialLoginProvider>(),
         getIt<IEmailLoginProvider>(),
       ));
-  getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<IProductProvider>()));
+  getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<ProductProvider>()));
   getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
-  getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
+  getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<CrudApi.UnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
     getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));

@@ -1,6 +1,5 @@
 import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,17 +17,11 @@ import {
 } from '@angular/forms';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { getProductComponentSetOptions } from '@bgap/admin/shared/utils';
-import {
-  EProductLevel,
-  IKeyValue,
-  IProductComponentSet,
-  IProductConfigComponent,
-  IProductConfigSet,
-} from '@bgap/shared/types';
+import { EProductLevel, IKeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { FormsService } from '../../services/forms/forms.service';
 
 @UntilDestroy()
@@ -46,11 +39,11 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
   public componentSetForm!: FormGroup;
   public productComponentSetOptions: IKeyValue[] = [];
 
-  private _productComponentSets: IProductComponentSet[] = [];
+  private _productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -72,8 +65,8 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(
         ([productComponentSets, items]: [
-          IProductComponentSet[],
-          IProductConfigSet[],
+          CrudApi.ProductComponentSet[],
+          CrudApi.ProductConfigSet[],
         ]): void => {
           this._productComponentSets = productComponentSets;
           this.productComponentSetOptions = getProductComponentSetOptions(
@@ -143,9 +136,11 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((componentSet: IProductConfigSet, pos: number): void => {
-        componentSet.position = pos + 1;
-      });
+      arr.forEach(
+        (componentSet: CrudApi.ProductConfigSet, pos: number): void => {
+          componentSet.position = pos + 1;
+        },
+      );
 
       arr.sort(customNumberCompare('position'));
 
@@ -155,7 +150,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
           (g.get('items') as FormArray).clear();
 
           (arr[i]?.items || []).forEach(
-            (item: IProductConfigComponent): void => {
+            (item: CrudApi.ProductConfigComponent): void => {
               const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
                 this.productLevel,
               );

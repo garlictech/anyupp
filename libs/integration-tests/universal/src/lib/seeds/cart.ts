@@ -1,10 +1,10 @@
 import { cartSeed } from '../fixtures/cart';
 import { tap, catchError } from 'rxjs/operators';
 import { from, throwError } from 'rxjs';
-import { AmplifySdk, CreateCartInput } from '@bgap/crud-gql/api';
+import { CrudSdk, CreateCartInput } from '@bgap/crud-gql/api';
 
 export const createTestCart = (overwrites: Partial<CreateCartInput> = {}) => (
-  crudSdk: AmplifySdk,
+  crudSdk: CrudSdk,
 ) =>
   from(
     crudSdk.CreateCart({
@@ -25,7 +25,7 @@ export const createTestCart = (overwrites: Partial<CreateCartInput> = {}) => (
   );
 
 export const deleteTestCart = (id: string = cartSeed.cart_01.id!) => (
-  crudSdk: AmplifySdk,
+  crudSdk: CrudSdk,
 ) =>
   from(
     crudSdk.DeleteCart({

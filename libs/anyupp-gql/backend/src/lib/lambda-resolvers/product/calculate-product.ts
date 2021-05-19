@@ -1,8 +1,8 @@
 import {
   IGeneratedProduct,
   IGeneratedProductVariant,
-  IProduct,
-  IProductVariant,
+  Product,
+  ProductVariant,
 } from '@bgap/shared/types';
 import { calculatePriceFromAvailabilities } from './calculate-price';
 import { DateTime } from 'luxon';
@@ -12,7 +12,7 @@ export const calculateActualPricesAndCheckActivity = ({
   atTimeISO,
   inTimeZone,
 }: {
-  product: IProduct;
+  product: Product;
   atTimeISO: string;
   inTimeZone: string;
 }): IGeneratedProduct | undefined => {
@@ -33,10 +33,10 @@ export const calculateActualPricesAndCheckActivity = ({
   return toGeneratedProductType(product, variantsWithActualPrices);
 };
 
-export const isProductVisibleAndHasAnyAvailableVariant = (product: IProduct) =>
+export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) =>
   product.isVisible && !!isAnyVariantAvailable(product.variants);
 
-const isAnyVariantAvailable = (variants: IProductVariant[]) => {
+const isAnyVariantAvailable = (variants: ProductVariant[]) => {
   if (!variants) {
     return false;
   }
@@ -53,7 +53,7 @@ const calculateActualPriceForEachVariant = ({
   atTimeISO,
   inTimeZone,
 }: {
-  variants: IProductVariant[];
+  variants: ProductVariant[];
   atTimeISO: string;
   inTimeZone: string;
 }): IGeneratedProductVariant[] => {
@@ -77,7 +77,7 @@ const calculateActualPriceForEachVariant = ({
 };
 
 const toGeneratedProductType = (
-  product: IProduct,
+  product: Product,
   variants: IGeneratedProductVariant[],
 ): IGeneratedProduct => ({
   id: product.id,
@@ -95,7 +95,7 @@ const toGeneratedProductType = (
 });
 
 const toGeneratedProductVariantType = (
-  variant: IProductVariant,
+  variant: ProductVariant,
   price: number,
 ): IGeneratedProductVariant => ({
   id: variant.id,

@@ -40,13 +40,13 @@
       "tags": ["type:utils", "platform:universal"]
     },
     "admin-pages-admin-users": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-forms": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-components": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-pipes": {
       "tags": ["type:website", "platform:angular"]
