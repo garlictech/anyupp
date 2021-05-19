@@ -36,7 +36,7 @@ Use the `build` build targets for projects requiring build/code generation.
 
 **the graphql schemas**
 
-`nx build anyupp-gql-api  --skip-nx-cache`
+`nx build anyupp-gql-api --skip-nx-cache`
 
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
@@ -274,7 +274,7 @@ Then, remove the CDK stack:
 The deployed admin sites:
 
 - DEV: https://dev-admin-anyupp-backend.anyupp.com/
-- QA: https://qa-admin.-nyupp-backend.anyupp.com/
+- QA: https://qa-admin-anyupp-backend.anyupp.com/
 
 ### Seeding
 
@@ -339,7 +339,7 @@ yarn nx e2e admin-e2e --watch
 To launch cypress and execute the admin test on the REMOTE admin without the starting the admin locally.
 
 ```
-yarn nx e2e-remote admin-e2e --watch --baseUrl=https://qa.admin.anyupp-backend.anyupp.com/
+yarn nx e2e-remote admin-e2e --watch --baseUrl=https://qa-admin-anyupp-backend.anyupp.com
 ```
 
 All the reports and videos recording the test execution are generated in the `cyreport` folder of the project root. To generate a nice html report out of them:
@@ -628,5 +628,5 @@ publish!
 
 `./tools/build-workspace.sh anyupp-backend dev`
 
-Before it, remove `apps/crud-api/amplify`. Ensure that all your changes are pushed or discard them.
+Before it, remove `apps/crud-backend/amplify`. Ensure that all your changes are pushed or discard them.
 The command fethes the crud backend, the configurations and regenerates the code files.

@@ -331,7 +331,7 @@ type ProductComponentSet
   type: String!
   name: LocalizedItem!
   description: String!
-  items: [ID]! # ProductComponent ID
+  items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
 }
 
@@ -345,8 +345,27 @@ type ProductConfigComponent {
 
 type ProductConfigSet {
   productSetId: ID!
-  items: [ProductConfigComponent]!
+  items: [ProductConfigComponent!]!
   position: Int!
+}
+
+type GeneratedProductConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  position: Int!
+  name: LocalizedItem!
+  description: String
+  allergens: [Allergen]
+}
+
+type GeneratedProductConfigSet {
+  # TODO: do we need setId too?
+  name: LocalizedItem!
+  description: String!
+  position: Int!
+  type: String!
+  maxSelection: Int
+  items: [GeneratedProductConfigComponent!]!
 }
 
 ### Product
@@ -461,6 +480,7 @@ type GeneratedProduct
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
 }
 
 type GeneratedProductVariant {
@@ -610,7 +630,6 @@ type Transaction
   externalTransactionId: String
 }
 
-
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
@@ -663,6 +682,15 @@ type Subscription {
     @aws_cognito_user_pools
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange: GeneratedProduct
+    @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"])
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrderHistorysChange: OrderHistory
+    @aws_subscribe(mutations: ["createOrderHistory", "updateOrderHistory"])
     @aws_cognito_user_pools
 
   # Added for the Mobile Application

@@ -24,10 +24,11 @@ class StripePaymentScreen extends StatefulWidget {
 }
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
-  StripeCard _cardData;
+
   StripePaymentMethod _paymentMethod;
   GlobalKey<FormState> _formKey;
   bool _saveCard = false;
+  CardForm _form;
 
   _StripePaymentScreenState() {
     _formKey = GlobalKey<FormState>();
@@ -36,11 +37,31 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   @override
   void initState() {
     super.initState();
-    getIt<StripePaymentBloc>().add(ResetStripePaymentState());
+        getIt<StripePaymentBloc>().add(ResetStripePaymentState());
   }
 
   @override
   Widget build(BuildContext context) {
+
+    this._form = CardForm(
+      cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
+      cardNumberDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.card_number.label'),
+        hintText: trans('payment.cardFields.card_number.hint'),
+      ),
+      cardExpiryErrorText: trans('payment.cardFields.expiry.validationError'),
+      cardExpiryDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.expiry.label'),
+        hintText: trans('payment.cardFields.expiry.hint'),
+      ),
+      cardCvcErrorText: trans('payment.cardFields.cvc.validationError'),
+      cardCvcDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.cvc.label'),
+        hintText: trans('payment.cardFields.cvc.hint'),
+      ),
+    );
+    this._formKey = _form.formKey;
+    
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: theme.background,
       statusBarIconBrightness: Brightness.dark,
@@ -63,7 +84,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   //     }),
                 ));
                 Nav.pop();
-                getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
+                getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+                //Nav.replace(MainNavigation(pageIndex: 2));
               }
             },
             child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
@@ -97,24 +119,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       child: Column(
         children: [
           _paymentMethod == null
-              ? CardForm(
-                  formKey: _formKey,
-                  cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
-                  cardNumberDecoration: InputDecoration(
-                    labelText: trans('payment.cardFields.card_number.label'),
-                    hintText: trans('payment.cardFields.card_number.hint'),
-                  ),
-                  cardExpiryErrorText: trans('payment.cardFields.expiry.validationError'),
-                  cardExpiryDecoration: InputDecoration(
-                    labelText: trans('payment.cardFields.expiry.label'),
-                    hintText: trans('payment.cardFields.expiry.hint'),
-                  ),
-                  cardCvcErrorText: trans('payment.cardFields.cvc.validationError'),
-                  cardCvcDecoration: InputDecoration(
-                    labelText: trans('payment.cardFields.cvc.label'),
-                    hintText: trans('payment.cardFields.cvc.hint'),
-                  ),
-                )
+              ? this._form
               : PaymentMethodCardWidget(
                   method: _paymentMethod,
                 ),
@@ -261,22 +266,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
     );
   }
 
-  // Widget _buildPaymentSuccess(BuildContext context) {
-  //   return Center(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Lottie.asset(
-  //           'assets/animations/26421-payment-succesful.json',
-  //           width: 300,
-  //           height: 300,
-  //           fit: BoxFit.fill,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildPaymentFailed(BuildContext context, String code, String message) {
     return Center(
       child: Column(
@@ -294,7 +283,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   }
 
   void _startStripePayment() {
-    print('_startStripePayment().cart=${widget.cart}');
+    print('_startStripePayment().cart=${_form.card}');
     if (_paymentMethod != null) {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         cart: widget.cart,
@@ -305,7 +294,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
         _formKey.currentState.save();
         getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
           cart: widget.cart,
-          stripeCard: this._cardData,
+          stripeCard: _form.card,
           saveCard: this._saveCard,
         ));
       }

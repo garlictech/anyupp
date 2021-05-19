@@ -5,7 +5,7 @@ import { IUser } from './user';
 export interface ITransaction {
   // createdAt: firebase.firestore.Timestamp;
   id: string;
-  unitId: string;
+  // unitId: string;
   userId: string;
   user?: IUser | null;
   orderId: string;
