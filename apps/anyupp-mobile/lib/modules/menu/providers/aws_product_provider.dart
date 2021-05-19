@@ -63,7 +63,7 @@ class AwsProductProvider implements IProductProvider {
       // print('getProductList.result=$result');
       if (result.hasException) {
         print('getProductList().error=${result.exception}'); // TODO
-        yield null;
+        throw result.exception;
       }
       List<dynamic> items = result.data['listGeneratedProducts']['items'];
       List<GeneratedProduct> results = [];
