@@ -5,6 +5,7 @@ import 'package:fa_prev/graphql/graphql-queries.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/graphql/mutations/add_invoice_info.dart';
 import 'package:fa_prev/graphql/queries/get_cart.dart';
+import 'package:fa_prev/graphql/queries/get_order.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:fa_prev/modules/orders/providers/aws/aws_subscription_handler.dart';
@@ -12,6 +13,7 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'order_provider_interface.dart';
 
 class AwsOrderProvider implements IOrdersProvider {
@@ -330,6 +332,44 @@ class AwsOrderProvider implements IOrdersProvider {
   @override
   Stream<List<Order>> getOrderHistory(String chainId, String unitId) =>
       _subOrderHistoryList.stream;
+  
+  @override
+  Future<Order> getOrder(String orderId) async{
+        try {
+      ValueNotifier<GraphQLClient> _client =
+          await getIt<GraphQLClientService>().getAmplifyClient();
+      QueryResult result = await _client.value.query(QueryOptions(
+        document: gql(QUERY_GET_ORDER),
+        variables: {
+          'orderId': orderId,
+        },
+        fetchPolicy: FetchPolicy.networkOnly,
+      ));
+
+      print('AwsOrderProvider.getOrder().result()=$result');
+      if (result.data == null) {
+        return null;
+      }
+      if (result.hasException) {
+        throw GraphQLException(
+          message: result.exception.toString(),
+        );
+      }
+
+      dynamic item = result.data['getOrder'];
+      if (item != null) {
+        Order order = Order.fromJson(Map<String, dynamic>.from(item));
+        print('AwsOrderProvider.getOrder()=$order');
+        return order;
+      }
+
+      return null;
+    } on Exception catch (e) {
+      print('AwsOrderProvider.getOrder.Exception: $e');
+      rethrow;
+    }
+    
+  }
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(
       Cart cart, String name) {
@@ -361,6 +401,7 @@ class AwsOrderProvider implements IOrdersProvider {
               'status': 'PLACED',
               'ts': 1.0,
             },
+            "allergens" : item.allergens,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,
