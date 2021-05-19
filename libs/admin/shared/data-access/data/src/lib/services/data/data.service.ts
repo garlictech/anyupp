@@ -21,7 +21,7 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { CrudApi } from '@bgap/crud-gql/api';
-import { RegenerateUnitData } from '@bgap/anyupp-gql/api';
+import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import {
   anyuppAuthenticatedGraphqlClient,
   executeMutation,
@@ -622,10 +622,9 @@ export class DataService {
   }
 
   public regenerateUnitData(unitId: string): Promise<unknown> {
-    return executeMutation(anyuppAuthenticatedGraphqlClient)(
-      RegenerateUnitData,
-      { input: { id: unitId } },
-    ).toPromise();
+    return executeMutation(
+      anyuppAuthenticatedGraphqlClient,
+    )(AnyuppApi.RegenerateUnitData, { input: { id: unitId } }).toPromise();
   }
 
   //
