@@ -143,7 +143,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
               // body: pages[_selectedIndex],
               body: BlocListener<MainNavigationBloc, MainNavigationState>(
                 listener: (BuildContext context, MainNavigationState state) {
-                  print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                  // print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
                   _navigateToPage(state.pageIndex);
                 },
                 child: DoubleBackToCloseApp(
@@ -151,7 +151,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                     elevation: 8,
                     duration: Duration(seconds: 1),
                     content: Text(
-                      'Tap back again to exit app.',
+                      trans('common.exit'),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                       ),
