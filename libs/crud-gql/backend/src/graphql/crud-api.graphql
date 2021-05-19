@@ -683,6 +683,15 @@ type Subscription {
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
     @aws_cognito_user_pools
+  onGeneratedProductChange: GeneratedProduct
+    @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"])
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrderHistorysChange: OrderHistory
+    @aws_subscribe(mutations: ["createOrderHistory", "updateOrderHistory"])
+    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
