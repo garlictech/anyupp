@@ -120,6 +120,7 @@ export const seedBusinessData = (userId: string) => (
       delay(1000),
       switchMap(() =>
         concat(
+          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
           createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
           createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
           createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),

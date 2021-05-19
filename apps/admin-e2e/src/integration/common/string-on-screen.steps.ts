@@ -9,7 +9,6 @@ Then('the {string} title is displayed', (title: string) => {
 });
 
 Then('I should see {string} text', (text: string) => {
-  // cy.contains(value, { matchCase: false }).should('exist');
   cy.findAllByText(text).should('exist');
 });
 

@@ -24,7 +24,8 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
+
 import {
   EAdminRole,
   EOrderStatus,
@@ -150,7 +151,9 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe((selectedLanguage: string | undefined | null): void => {
-        this._translateService.use(selectedLanguage || DEFAULT_LANG);
+        const lang = selectedLanguage || DEFAULT_LANG;
+        this._translateService.use(lang);
+        localStorage.setItem('selectedLanguage', lang);
       });
 
     this._dataConnectionInitialized = true;
@@ -515,9 +518,7 @@ export class DataService {
     /* return this.anyuppSdk.sdk.RegenerateUnitData
     return executeMutation(
       anyuppAuthenticatedGraphqlClient,
-    )( RegenerateUnitDataRegenerateUnitData, { input: { id: unitId } }).toPromise();
-    */
-    return of({});
+    )(AnyuppApi.RegenerateUnitData, { input: { id: unitId } }).toPromise();
   }
 
   //

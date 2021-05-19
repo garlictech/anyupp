@@ -27,4 +27,6 @@ abstract class IOrdersProvider {
   Future<void> stopOrderHistoryListSubscription();
 
   Future<bool> addInvoiceInfo(InvoiceInfo invioceInfo);
+
+  Future<Order> getOrder(String orderId);
 }

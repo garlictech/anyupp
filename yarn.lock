@@ -11736,6 +11736,11 @@ cypress-cucumber-preprocessor@^4.0.0:
     minimist "^1.2.5"
     through "^2.3.8"
 
+cypress-localstorage-commands@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-1.4.4.tgz#96ebce71b78895bd34a96c6d424b5de18a257b82"
+  integrity sha512-j502dbaQxTkz8iXYPClpYn2AIFyMZvvODNNHVZVoKBSkKOEuWAx3/RT4RvH0naV4/T05oUw2O9Cm5VxeZbyxiw==
+
 cypress@6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-6.2.1.tgz#27d5fbcf008c698c390fdb0c03441804176d06c4"

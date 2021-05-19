@@ -163,6 +163,11 @@ input AvailabilityInput {
   price: Float!
 }
 
+type CreateAnonymUserOutput {
+  email: String!
+  pwd: String!
+}
+
 ### STRIPE
 # STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
 
@@ -284,7 +289,8 @@ type Mutation {
   # AdminUser
   createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
   deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
-
+  # User
+  createAnonymUser: CreateAnonymUserOutput! # public endpoint
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID!
     @aws_cognito_user_pools

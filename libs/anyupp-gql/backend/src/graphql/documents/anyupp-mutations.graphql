@@ -75,3 +75,10 @@ mutation CreateUnitProduct($input: CreateUnitProductInput!) {
 mutation RegenerateUnitData($input: RegenerateUnitDataInput!) {
   regenerateUnitData(input: $input)
 }
+
+mutation CreateAnonymUser {
+  createAnonymUser {
+    email
+    pwd
+  }
+}

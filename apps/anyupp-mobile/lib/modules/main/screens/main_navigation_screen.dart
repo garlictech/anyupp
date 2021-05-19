@@ -96,6 +96,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
   @override
   void didChangeDependencies() {
+    // print('***** MainNaevigationScreen.didChangeDependencies()');
     super.didChangeDependencies();
     if (_pageOptions == null) {
       _pageOptions = [
@@ -107,11 +108,18 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         MainPageOptions(showAppBar: false, appBarText: trans('main.menu.cart'), systemBarColor: theme.background),
       ];
       _navigateToPage(widget.pageIndex);
+    } else {
+      MainNavigationState navState = getIt<MainNavigationBloc>().state;
+      if (navState is MainNavaigationNeed) {
+        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
+        _navigateToPage(navState.pageIndex);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     // --- This build method called again AFTER the product screen build run. So it set the statusbar color back.
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     if (ModalRoute.of(context).isCurrent) {
@@ -122,97 +130,96 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     }
 
     // The main scaffold for the whole application
-    return BlocProvider(
-      create: (BuildContext context) => getIt<MainNavigationBloc>(),
-      child: BlocBuilder<ThemeBloc, ThemeState>(builder: (context, ThemeState themeState) {
-        var theme = themeState.theme;
-        return SafeArea(
-          child: NetworkConnectionWrapperWidget(
-            child: Scaffold(
-              // Depending on the boolean showAppBar, you can control the appearance of the appBar
-              appBar: _pageOptions[_selectedIndex].showAppBar
-                  ? AppBar(
-                      title: Text(_pageOptions[_selectedIndex].appBarText,
-                          style: TextStyle(color: Theme.of(context).accentColor)),
-                      centerTitle: false,
-                      leading: Container(),
-                    )
-                  : null,
+    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, ThemeState themeState) {
+      var theme = themeState.theme;
+      return SafeArea(
+        child: NetworkConnectionWrapperWidget(
+          child: Scaffold(
+            // Depending on the boolean showAppBar, you can control the appearance of the appBar
+            appBar: _pageOptions[_selectedIndex].showAppBar
+                ? AppBar(
+                    title: Text(_pageOptions[_selectedIndex].appBarText,
+                        style: TextStyle(color: Theme.of(context).accentColor)),
+                    centerTitle: false,
+                    leading: Container(),
+                  )
+                : null,
 
-              // Opening the selected page
-              // body: pages[_selectedIndex],
-              body: BlocListener<MainNavigationBloc, MainNavigationState>(
+            // Opening the selected page
+            // body: pages[_selectedIndex],
+            body: BlocListener<MainNavigationBloc, MainNavigationState>(
                 listener: (BuildContext context, MainNavigationState state) {
-                  print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                  _navigateToPage(state.pageIndex);
+                  if (state is MainNavaigationNeed) {
+                    print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                    _navigateToPage(state.pageIndex);
+                  }
                 },
                 child: DoubleBackToCloseApp(
-                  snackBar: SnackBar(
-                    elevation: 8,
-                    duration: Duration(seconds: 1),
-                    content: Text(
-                      'Tap back again to exit app.',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Color(0xAA880000),
-                  ),
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: _pages,
-                  ),
-//        child: _pages[_selectedIndex],
-                ),
-              ),
-              floatingActionButton: ScaleTransition(
-                scale: animation,
-                child: FloatingActionButton(
-                  heroTag: null,
+                snackBar: SnackBar(
                   elevation: 8,
-                  backgroundColor: theme.indicator,
-                  child: CartIconWidget(
-                    color: theme.text2,
-                    badgeColor: theme.indicator,
-                    badgeStyle: GoogleFonts.poppins(
-                      fontSize: 12.0,
-                      color: theme.text2,
+                  duration: Duration(seconds: 1),
+                  content: Text(
+                    trans('common.exit'),
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
                     ),
-                    onTapped: () {
-                      _navigateToPage(4);
-                    },
                   ),
-                  onPressed: () {
-                    // _onItemTapped(2);
-                  },
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Color(0xAA880000),
                 ),
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: BottomAppBar(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _createBottomBarIconWithText(0, Icons.restaurant, 'main.bottomTitles.menu'),
-                    _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
-                    SizedBox(
-                      width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
-                    ),
-                    _createOrdersBottomBarIconWithTextAndBadge(),
-                    _createBottomBarIconWithText(3, Icons.person, 'main.bottomTitles.profile'),
-                  ],
+                child: IndexedStack(
+                  index: _selectedIndex,
+                  children: _pages,
                 ),
-                shape: CircularNotchedRectangle(),
-                color: theme.background,
-                notchMargin: 4.0,
-                elevation: 18.0,
+//        child: _pages[_selectedIndex],
               ),
             ),
+            floatingActionButton: ScaleTransition(
+              scale: animation,
+              child: FloatingActionButton(
+                heroTag: null,
+                elevation: 8,
+                backgroundColor: theme.indicator,
+                child: CartIconWidget(
+                  color: theme.text2,
+                  badgeColor: theme.indicator,
+                  badgeStyle: GoogleFonts.poppins(
+                    fontSize: 12.0,
+                    color: theme.text2,
+                  ),
+                  onTapped: () {
+                    _navigateToPage(4);
+                  },
+                ),
+                onPressed: () {
+                  // _onItemTapped(2);
+                },
+              ),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomAppBar(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _createBottomBarIconWithText(0, Icons.restaurant, 'main.bottomTitles.menu'),
+                  _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+                  ),
+                  _createOrdersBottomBarIconWithTextAndBadge(),
+                  _createBottomBarIconWithText(3, Icons.person, 'main.bottomTitles.profile'),
+                ],
+              ),
+              shape: CircularNotchedRectangle(),
+              color: theme.background,
+              notchMargin: 4.0,
+              elevation: 18.0,
+            ),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget _createOrdersBottomBarIconWithTextAndBadge() {

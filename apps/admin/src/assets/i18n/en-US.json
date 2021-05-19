@@ -35,6 +35,7 @@
     "from": "From",
     "to": "To",
     "language": "Language",
+    "languageSelector": "Language selector",
     "type": "Type",
     "lang": {
       "english": "English",

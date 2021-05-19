@@ -7,6 +7,7 @@ import 'core/model_base.dart';
 @immutable
 class Order extends Model {
   final String id;
+  final String orderNum;
   final String userId;
   final String unitId;
   final List<OrderItem> items;
@@ -27,6 +28,7 @@ class Order extends Model {
 
   const Order._internal(
       {@required this.id,
+      @required this.orderNum,
       @required this.userId,
       @required this.unitId,
       this.items,
@@ -42,6 +44,7 @@ class Order extends Model {
 
   factory Order(
       {String id,
+      @required String orderNum,
       @required String userId,
       @required String unitId,
       List<OrderItem> items,
@@ -56,6 +59,7 @@ class Order extends Model {
       OrderStatus status}) {
     return Order._internal(
         id: id == null ? UUID.getUUID() : id,
+        orderNum: orderNum,
         userId: userId,
         unitId: unitId,
         items: items != null ? List.unmodifiable(items) : items,
@@ -79,6 +83,7 @@ class Order extends Model {
     if (identical(other, this)) return true;
     return other is Order &&
         id == other.id &&
+        orderNum == other.orderNum &&
         userId == other.userId &&
         unitId == other.unitId &&
         DeepCollectionEquality().equals(items, other.items) &&
@@ -102,6 +107,7 @@ class Order extends Model {
 
     buffer.write("Order {");
     buffer.write("id=" + "$id" + ", ");
+    buffer.write("orderNum=" + "$orderNum" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
     buffer.write("paymentMethod=" +
@@ -127,6 +133,7 @@ class Order extends Model {
 
   Order copyWith(
       {String id,
+      String orderItem,
       String userId,
       String unitId,
       List<OrderItem> items,
@@ -141,6 +148,7 @@ class Order extends Model {
       OrderStatus status}) {
     return Order(
         id: id ?? this.id,
+        orderNum: orderNum ?? this.orderNum,
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
         items: items ?? this.items,
@@ -157,12 +165,12 @@ class Order extends Model {
 
   Order.fromJson(Map<String, dynamic> json)
       : id = json['id'],
+      orderNum = json['orderNum'],
         userId = json['userId'],
         unitId = json['unitId'],
         items = json['items'] is List
             ? (json['items'] as List)
-                .map(
-                    (e) => OrderItem.fromJson(Map<String, dynamic>.from(e)))
+                .map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         paymentMethod = json['paymentMethod'] != null
@@ -181,8 +189,7 @@ class Order extends Model {
         paymentIntention = json['paymentIntention'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List)
-                .map(
-                    (e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
+                .map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         created = json['created'],
@@ -191,6 +198,7 @@ class Order extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'orderNum' : orderNum,
         'userId': userId,
         'unitId': unitId,
         'items': items?.map((e) => e?.toJson())?.toList(),

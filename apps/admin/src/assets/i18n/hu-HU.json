@@ -35,6 +35,7 @@
     "from": "-tól",
     "to": "-ig",
     "language": "Nyelv",
+    "languageSelector": "Nyelvválasztó",
     "type": "Típus",
     "lang": {
       "english": "Angol",
@@ -97,7 +98,7 @@
     "roleContexts": "Jogkörnyezetek"
   },
   "header": {
-    "profile": "Profile",
+    "profile": "Profil",
     "logout": "Kijelentkezés"
   },
   "dashboard": {

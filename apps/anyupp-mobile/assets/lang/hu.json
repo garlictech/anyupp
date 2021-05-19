@@ -5,7 +5,8 @@
     "piece": "db",
     "close": "Bezár",
     "select": "Kiválaszt",
-    "ok": "Rendben"
+    "ok": "Rendben",
+    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez..."
   },
   "locale": {
     "EN": "English",
@@ -207,6 +208,28 @@
         "title": "Sikeres tranzakció.",
         "description": "SimplePay tranzakció azonosító: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Kártyaszám",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Hibás kártyaszám!"
+      },
+      "expiry": {
+        "label": "Lejárati dátum",
+        "hint": "MM/YY",
+        "validationError": "Hibás lejárati dátum!"
+      },
+      "cvc": {
+        "label": "CVC kód",
+        "hint": "XXX",
+        "validationError": "Hibás CVC kód"
+      }
+    },
+    "stripe": {
+      "title": "Fizetés online",
+      "add_card_tooltip": "Új kártya",
+      "save_card": "Kártya elmentése"
     }
   },
   "selectUnit": {
@@ -292,7 +315,8 @@
     "transactions": {
       "status": "Státusz",
       "paymentMethod": "Vásárlás módja",
-      "noTransactions": "Nincsenek tranzakciók"
+      "noTransactions": "Nincsenek tranzakciók",
+      "details": "Részletek"
     }
   },
   "affiliate": {

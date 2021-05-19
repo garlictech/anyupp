@@ -226,8 +226,7 @@ describe('GetUnitsNearLocation tests', async () => {
     expect(foundItems[0].distance).toEqual(0);
     expect(foundItems[1].distance).toEqual(74);
     expect(foundItems[2].distance).toEqual(153);
-    // The rest is in the same location so we don't know their order
-    expect(foundItems[3].distance).toEqual(54649);
+
     expect(foundItems[0]).toMatchSnapshot();
   };
 });
