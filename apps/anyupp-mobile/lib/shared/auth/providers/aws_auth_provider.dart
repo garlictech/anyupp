@@ -60,12 +60,11 @@ class AwsAuthProvider implements IAuthProvider {
     }
   }
 
-
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session) async {
+  Future<User> loginWithCognitoSession(CognitoUserSession session, {String username}) async {
     print('loginWithCognitoSession().session=$session');
     try {
-      _cognitoUser = await _service.createCognitoUserFromSession(session);
+      _cognitoUser = await _service.createCognitoUserFromSession(session, username);
       await _cognitoUser.cacheTokens();
       print('loginWithCognitoSession().cognitoUser=$_cognitoUser');
       _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
@@ -100,11 +99,18 @@ class AwsAuthProvider implements IAuthProvider {
     String loginMethod;
     for (int i = 0; i < attributes.length; i++) {
       CognitoUserAttribute a = attributes[i];
+      if (a.name == 'name') {
+        if (a.name != null) {
+          name = a.value;
+        }
+      }
       // print('\t attr[${a.userAttributeKey}]=${a.value}');
       if (a.name == 'email') {
         email = a.value;
-        name = email.split('@').first;
-        continue;
+        if (name == null) {
+          name = email.split('@').first;
+          continue;
+        }
       }
       if (a.name == 'sub') {
         // TODO
@@ -119,8 +125,7 @@ class AwsAuthProvider implements IAuthProvider {
         continue;
       }
     }
-    User user =
-        User(email: email, loginMethod: loginMethod, name: name, id: subId);
+    User user = User(email: email, loginMethod: loginMethod, name: name, id: subId);
     return user;
   }
 
@@ -162,5 +167,4 @@ class AwsAuthProvider implements IAuthProvider {
     SharedPreferences sp = await SharedPreferences.getInstance();
     await sp.clear();
   }
-
 }

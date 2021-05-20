@@ -89,16 +89,19 @@ class GraphQLClientService {
     return _amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getGraphQLClient() async {
-    print('getAdminGraphQLClient().url=$graphqlApiUrl');
-    if (_graphqlClient != null) {
-      return _graphqlClient;
+  Future<ValueNotifier<GraphQLClient>> getGraphQLClient({bool useApi = false}) async {
+    String accessToken;
+    if (!useApi) {
+      print('getAdminGraphQLClient().url=$graphqlApiUrl');
+      if (_graphqlClient != null) {
+        return _graphqlClient;
+      }
+      _graphqlClient?.dispose();
+
+      accessToken = await _authProvider.getAccessToken();
+      print('getAdminGraphQLClient().accessToken=$accessToken');
     }
 
-    _graphqlClient?.dispose();
-
-    String accessToken = await _authProvider.getAccessToken();
-    print('getAdminGraphQLClient().accessToken=$accessToken');
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
 
@@ -126,12 +129,15 @@ class GraphQLClientService {
 
     // final Link _link = _httpLink;
     Link _link = _authLink.concat(_httpLink);
-
-    _graphqlClient = ValueNotifier(GraphQLClient(
+    ValueNotifier<GraphQLClient> graphqlClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
       link: _link,
     ));
 
-    return _graphqlClient;
+    if (!useApi) {
+      _graphqlClient = graphqlClient;
+    }
+
+    return graphqlClient;
   }
 }
