@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<bool> setPlacePref(Place place) async {
   // print('**** setPlacePref=$place');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.setString('PLACE', place.toString());
+  return prefs.setString('PLACE', json.encode(place.toJson()));
 }
 
 Future<Place> getPlacePref() async {
