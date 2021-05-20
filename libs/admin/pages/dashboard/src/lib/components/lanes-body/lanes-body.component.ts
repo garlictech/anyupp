@@ -18,7 +18,6 @@ import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
   IDetailedLane,
   ILaneOrderItem,
 } from '@bgap/shared/types';
@@ -58,15 +57,21 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)),
-      ),
-      this._store.pipe(
         select(
-          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING),
+          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.placed),
         ),
       ),
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY)),
+        select(
+          ordersSelectors.getLaneOrderItemsByStatus(
+            CrudApi.OrderStatus.processing,
+          ),
+        ),
+      ),
+      this._store.pipe(
+        select(
+          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.ready),
+        ),
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),

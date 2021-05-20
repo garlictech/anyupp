@@ -3,7 +3,7 @@ import AWSAppSyncClient, { AWSAppSyncClientOptions } from 'aws-appsync/lib';
 import { DocumentNode } from 'graphql';
 import { from, Observable } from 'rxjs';
 import { FetchResult } from 'apollo-link';
-import { ICrudApiConfig } from '@bgap/shared/types';
+import { ICrudApiConfig } from './types';
 
 export class GraphqlApiClient {
   public _client: AWSAppSyncClient<Record<string, never>>;

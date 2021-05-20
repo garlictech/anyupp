@@ -1,21 +1,15 @@
-// import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
+// import { PriceShown, Order, StatusLog, CrudApi.OrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EOrderStatus,
-  IOrderItem,
-  IOrders,
-  IPriceShown,
-  IStatusLog,
-} from '@bgap/shared/types';
+import { IOrders } from '@bgap/shared/types';
 import { toFixed2Number } from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (
   items: CrudApi.OrderItemInput[],
-): IPriceShown => roundSums(sumItems(items as IOrderItem[]));
+): CrudApi.PriceShown => roundSums(sumItems(items));
 
-const sumItems = (items: IOrderItem[]): IPriceShown => {
-  const empty: IPriceShown = {
+const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
+  const empty: CrudApi.PriceShown = {
     currency: '',
     priceSum: 0,
     pricePerUnit: 0,
@@ -28,7 +22,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
   return items.reduce((sum, item) => {
     const lastStatus = currentStatus(item.statusLog);
 
-    if (lastStatus === EOrderStatus.REJECTED) {
+    if (lastStatus === CrudApi.OrderStatus.rejected) {
       return sum;
     }
     return {
@@ -41,7 +35,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
   }, empty);
 };
 
-const roundSums = (price: IPriceShown) => {
+const roundSums = (price: CrudApi.PriceShown) => {
   return {
     ...price,
     priceSum: toFixed2Number(price.priceSum),
@@ -55,10 +49,12 @@ export const sumOrders = (orders: IOrders): number => {
   }, 0);
 };
 
-export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+export const currentStatus = (
+  status: CrudApi.Maybe<CrudApi.StatusLog>[],
+): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
-    return EOrderStatus.NONE;
+    return CrudApi.OrderStatus.none;
   }
   const lastElement = status[status.length - 1];
-  return lastElement?.status || EOrderStatus.NONE;
+  return lastElement?.status || CrudApi.OrderStatus.none;
 };

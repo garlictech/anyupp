@@ -278,9 +278,9 @@
     "confirmResetOrderItemStatus": "Are you sure you reset the status?",
     "userOrdersCount": "{{ count }} order(s)",
     "status": {
-      "PLACED": "Placed",
-      "PROCESSING": "Processing",
-      "READY": "Ready",
+      "placed": "Placed",
+      "processing": "Processing",
+      "ready": "Ready",
       "SERVED": "Served",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "PAID": "Paid",

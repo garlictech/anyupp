@@ -1,20 +1,15 @@
-import { EVariantAvailabilityType } from '../enums';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export interface IAllergen {
   id: string;
   idx: number;
 }
 
-export interface IAvailability {
-  type: EVariantAvailabilityType;
-  dayFrom: string;
-  dayTo?: string;
-  timeFrom?: string;
-  timeTo?: string;
-  price: number;
-}
-
 export interface IProductOrderChangeEvent {
   change: number;
   productId: string;
 }
+
+export type Product = CrudApi.UnitProduct &
+  CrudApi.ChainProduct &
+  CrudApi.GroupProduct;

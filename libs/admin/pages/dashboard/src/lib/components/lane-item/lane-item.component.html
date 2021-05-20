@@ -10,9 +10,10 @@
       class="p-1 subtitle-2 font-larger position-relative"
       [ngClass]="{
         'col-12 col-xl-6':
-          orderItem.currentStatus === EOrderStatus.PROCESSING ||
-          orderItem.currentStatus === EOrderStatus.READY,
-        'col-12 col-xl-8': orderItem.currentStatus === EOrderStatus.PLACED
+          orderItem.currentStatus === CrudApi.OrderStatus.processing ||
+          orderItem.currentStatus === CrudApi.OrderStatus.ready,
+        'col-12 col-xl-8':
+          orderItem.currentStatus === CrudApi.OrderStatus.placed
       }"
     >
       <nb-user
@@ -29,7 +30,7 @@
     </div>
 
     <div
-      *ngIf="orderItem.currentStatus === EOrderStatus.PROCESSING"
+      *ngIf="orderItem.currentStatus === CrudApi.OrderStatus.processing"
       class="col-2 col-xl-2 m-auto"
     >
       <nb-badge
@@ -42,8 +43,8 @@
     <div class="p-1 col-8 col-xl-3 text-right">
       <button
         *ngIf="
-          orderItem.currentStatus === EOrderStatus.PROCESSING ||
-          orderItem.currentStatus === EOrderStatus.READY
+          orderItem.currentStatus === CrudApi.OrderStatus.processing ||
+          orderItem.currentStatus === CrudApi.OrderStatus.ready
         "
         nbButton
         status="warning"
@@ -56,8 +57,8 @@
       </button>
       <button
         *ngIf="
-          orderItem.currentStatus === EOrderStatus.PLACED ||
-          orderItem.currentStatus === EOrderStatus.PROCESSING
+          orderItem.currentStatus === CrudApi.OrderStatus.placed ||
+          orderItem.currentStatus === CrudApi.OrderStatus.processing
         "
         nbButton
         status="success"

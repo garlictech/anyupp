@@ -153,9 +153,9 @@
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {
       "NONE": "VÁR",
-      "PLACED": "BEADVA",
-      "PROCESSING": "FOLYAMATBAN",
-      "READY": "KÉSZ",
+      "placed": "BEADVA",
+      "processing": "FOLYAMATBAN",
+      "ready": "KÉSZ",
       "PAID": "FIZETVE",
       "REJECTED": "TÖRÖLVE"
     },
@@ -385,11 +385,11 @@
       "title": "Login error",
       "description": "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address."
     },
-    "ERROR_EMAIL_ALREADY_IN_USE": {
+    "ERROR_EMAIL_ALready_IN_USE": {
       "title": "Login error",
       "description": "The email address is already in use by another account."
     },
-    "ERROR_CREDENTIAL_ALREADY_IN_USE": {
+    "ERROR_CREDENTIAL_ALready_IN_USE": {
       "title": "Login error",
       "description": "This credential is already associated with a different user account."
     },

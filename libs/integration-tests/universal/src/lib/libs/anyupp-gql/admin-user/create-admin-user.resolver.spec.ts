@@ -1,7 +1,10 @@
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { from, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
-import { testAdminUsername, testAdminUserPassword } from '../../../fixtures';
 
 describe('Admin user creation/deletion', () => {
   const authAnyuppSdk = createAuthenticatedAnyuppSdk(
@@ -15,65 +18,60 @@ describe('Admin user creation/deletion', () => {
     authAnyuppSdk
       .pipe(
         switchMap(sdk =>
-          from(sdk.DeleteAdminUser({ userName })).pipe(
+          sdk.DeleteAdminUser({ userName }).pipe(
             catchError((err: Error) => {
-              console.log(
-                '### ~ file: create-admin-user.resolver.spec.ts ~ line 39 ~ catchError ~ err',
-                err,
-              );
               if (!err.message.includes('User does not exist')) {
                 console.warn('Probably normal error: ', err);
+                return of(err);
               }
-              return of({ fesf: 'FOOOOO' });
+              return throwError(err);
             }),
-            switchMap(() =>
-              from(
-                sdk.CreateAdminUser({
+            /*            switchMap(() =>
+              sdk
+                .CreateAdminUser({
                   input: {
                     email: 'foobar',
                     name: 'Mekk elek',
                     phone: '12356666',
                   },
-                }),
-              ).pipe(
-                catchError(err => {
-                  expect(err).toMatchSnapshot('Malformed email error');
-                  return of(err);
-                }),
-              ),
+                })
+                .pipe(
+                  catchError(err => {
+                    expect(err).toMatchSnapshot('Malformed email error');
+                    return of(err);
+                  }),
+                ),
             ),
             switchMap(() =>
-              from(
-                sdk.CreateAdminUser({
+              sdk.CreateAdminUser({
+                input: {
+                  email: userName,
+                  name: 'Mekk Elek',
+                  phone: '123456',
+                },
+              }),
+            ),
+            switchMap(() =>
+              sdk
+                .CreateAdminUser({
                   input: {
                     email: userName,
                     name: 'Mekk Elek',
                     phone: '123456',
                   },
-                }),
-              ),
-            ),
-            switchMap(() =>
-              from(
-                sdk.CreateAdminUser({
-                  input: {
-                    email: userName,
-                    name: 'Mekk Elek',
-                    phone: '123456',
-                  },
-                }),
-              ).pipe(
-                catchError(err => {
-                  expect(err).toMatchSnapshot(
-                    'Should not create existing user',
-                  );
-                  return of({});
-                }),
-              ),
+                })
+                .pipe(
+                  catchError(err => {
+                    expect(err).toMatchSnapshot(
+                      'Should not create existing user',
+                    );
+                    return of({});
+                  }),
+                ),
             ),
             // Cleanup
             switchMap(() =>
-              from(sdk.DeleteAdminUser({ userName })).pipe(
+              sdk.DeleteAdminUser({userName}).pipe(
                 catchError((err: Error) => {
                   console.log(
                     '### ~ file: create-admin-user.resolver.spec.ts ~ line 102 ~ catchError ~ err',
@@ -82,7 +80,7 @@ describe('Admin user creation/deletion', () => {
                   return throwError(err);
                 }),
               ),
-            ),
+            ),*/
             tap(result => expect(result).toMatchSnapshot('Cleanup')),
           ),
         ),

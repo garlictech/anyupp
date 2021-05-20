@@ -8,8 +8,8 @@ import {
   getAnyuppSdkForUserPool,
 } from '@bgap/anyupp-gql/api';
 import { Auth } from 'aws-amplify';
-import { from, Observable } from 'rxjs';
-import { map, mapTo } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 Auth.configure({
   ...awsConfig,

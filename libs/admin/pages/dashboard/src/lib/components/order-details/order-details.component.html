@@ -31,7 +31,9 @@
         "
       >
         <button
-          *ngIf="currentStatus(orderItem.statusLog) === EOrderStatus.SERVED"
+          *ngIf="
+            currentStatus(orderItem.statusLog) === CrudApi.OrderStatus.SERVED
+          "
           nbButton
           class="mr-2"
           [status]="getPlacedButtonStatus()"

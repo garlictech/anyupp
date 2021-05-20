@@ -38,6 +38,7 @@ import {
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import { filterNullish, getSortedIds } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 
@@ -45,29 +46,31 @@ const unitId_01 = unitSeed.unitId_seeded_01;
 const unitId_02 = `${testIdPrefix}UNIT_ID_02_REGENERATE`;
 
 const chainProduct_01 = productSeed.chainProductBase;
-const groupProduct_01: CrudApi.CreateGroupProductInput = {
+const groupProduct_01: CrudApi.CreateGroupProductInput & { id: string } = {
   ...productSeed.groupProductBase,
   parentId: chainProduct_01.id!,
 };
-const unitProduct_0101: CrudApi.CreateUnitProductInput = {
+const unitProduct_0101: CrudApi.CreateUnitProductInput & { id: string } = {
   ...productSeed.unitProductBase,
   id: `${testIdPrefix}unitProduct_u${unitId_01}_01`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
-const unitProduct_0102: CrudApi.CreateUnitProductInput = {
+const unitProduct_0102: CrudApi.CreateUnitProductInput & { id: string } = {
   ...productSeed.unitProductBase,
   id: `${testIdPrefix}unitProduct_u${unitId_01}_02`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
-const unitProduct_0104_NEW: CrudApi.CreateUnitProductInput = {
+const unitProduct_0104_NEW: CrudApi.CreateUnitProductInput & { id: string } = {
   ...productSeed.unitProductBase,
   id: `${testIdPrefix}unit01_have_not_been_here_before`,
   parentId: groupProduct_01.id!,
   unitId: unitId_01,
 };
-const unitProduct_0201_DIFFERENTUNIT: CrudApi.CreateUnitProductInput = {
+const unitProduct_0201_DIFFERENTUNIT: CrudApi.CreateUnitProductInput & {
+  id: string;
+} = {
   ...productSeed.unitProductBase,
   id: `${testIdPrefix}unitProduct_u${unitId_02}_01`,
   unitId: unitId_02,
@@ -102,26 +105,29 @@ const unit02_generatedProduct_01 = {
 
 describe('RegenerateUnitData mutation tests', () => {
   let publicCrudSdk: CrudApi.CrudSdk;
+  let iamCrudSdk: CrudApi.CrudSdk;
 
   beforeAll(async () => {
     publicCrudSdk = CrudApi.getCrudSdkPublic();
+    iamCrudSdk = createIamCrudSdk();
 
     await combineLatest([
       // CleanUP
-      deleteTestChainProduct(chainProduct_01.id!),
-      deleteTestGroupProduct(groupProduct_01.id!),
-      deleteTestUnitProduct(unitProduct_0101.id!),
-      deleteTestUnitProduct(unitProduct_0102.id!),
-      deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id!),
-      deleteTestUnitProduct(unitProduct_0104_NEW.id!),
+      deleteTestChainProduct(chainProduct_01.id, iamCrudSdk),
+      deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0101.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0104_NEW.id, iamCrudSdk),
       // // generated
-      deleteTestGeneratedProduct(unit01_generatedProduct_01.id),
-      deleteTestGeneratedProduct(unit01_generatedProduct_02.id),
+      deleteTestGeneratedProduct(unit01_generatedProduct_01.id, iamCrudSdk),
+      deleteTestGeneratedProduct(unit01_generatedProduct_02.id, iamCrudSdk),
       deleteTestGeneratedProduct(
         unit01_generatedProduct_03_WONTBEREGENERATED.id,
+        iamCrudSdk,
       ),
-      deleteTestGeneratedProduct(unit02_generatedProduct_01.id),
-      deleteTestGeneratedProduct(unitProduct_0104_NEW.id!),
+      deleteTestGeneratedProduct(unit02_generatedProduct_01.id, iamCrudSdk),
+      deleteTestGeneratedProduct(unitProduct_0104_NEW.id, iamCrudSdk),
     ])
       .pipe(
         delay(DYNAMODB_OPERATION_DELAY),
@@ -129,20 +135,21 @@ describe('RegenerateUnitData mutation tests', () => {
           // Seeding
           combineLatest([
             // CREATE CHAIN/GROUP/UNIT products
-            createTestChainProduct(chainProduct_01),
-            createTestGroupProduct(groupProduct_01),
-            createTestUnitProduct(unitProduct_0101),
-            createTestUnitProduct(unitProduct_0102),
+            createTestChainProduct(chainProduct_01, iamCrudSdk),
+            createTestGroupProduct(groupProduct_01, iamCrudSdk),
+            createTestUnitProduct(unitProduct_0101, iamCrudSdk),
+            createTestUnitProduct(unitProduct_0102, iamCrudSdk),
             // we don't have const unitProduct_0103 because it won't be in the new generated list
-            createTestUnitProduct(unitProduct_0104_NEW),
-            createTestUnitProduct(unitProduct_0201_DIFFERENTUNIT),
+            createTestUnitProduct(unitProduct_0104_NEW, iamCrudSdk),
+            createTestUnitProduct(unitProduct_0201_DIFFERENTUNIT, iamCrudSdk),
             // simulate that we have previously generated products
-            createTestGeneratedProduct(unit01_generatedProduct_01),
-            createTestGeneratedProduct(unit01_generatedProduct_02),
+            createTestGeneratedProduct(unit01_generatedProduct_01, iamCrudSdk),
+            createTestGeneratedProduct(unit01_generatedProduct_02, iamCrudSdk),
             createTestGeneratedProduct(
               unit01_generatedProduct_03_WONTBEREGENERATED,
+              iamCrudSdk,
             ),
-            createTestGeneratedProduct(unit02_generatedProduct_01),
+            createTestGeneratedProduct(unit02_generatedProduct_01, iamCrudSdk),
           ]),
         ),
       )

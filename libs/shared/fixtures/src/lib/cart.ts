@@ -1,4 +1,3 @@
-import { EOrderStatus } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { unitSeed } from './unit';
 import { productSeed } from './product';
@@ -41,7 +40,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
   statusLog: [
     {
       userId: userId_01,
-      status: EOrderStatus.PLACED,
+      status: CrudApi.OrderStatus.placed,
       ts: 1234,
     },
   ],

@@ -1,4 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { map } from 'rxjs/operators';
 import { StripeResolverDeps } from './stripe.utils';
 
 /**
@@ -18,7 +19,7 @@ export const createUser = (userId: string, stripeCustomerId: string) => (
     },
   };
 
-  return deps.crudSdk.CreateUser(createUserVars);
+  return deps.crudSdk.CreateUser(createUserVars).toPromise();
 };
 
 /**
@@ -38,7 +39,7 @@ export const updateUser = (userId: string, stripeCustomerId: string) => (
     },
   };
 
-  return deps.crudSdk.UpdateUser(updateUserVars);
+  return deps.crudSdk.UpdateUser(updateUserVars).toPromise();
 };
 
 /**
@@ -52,9 +53,11 @@ export const loadUser = (userId: string) => (deps: StripeResolverDeps) => {
     id: userId,
   };
 
-  return deps.crudSdk.GetUser(getUserVars, {
-    fetchPolicy: 'network-only',
-  });
+  return deps.crudSdk
+    .GetUser(getUserVars, {
+      fetchPolicy: 'network-only',
+    })
+    .toPromise();
 };
 
 /**
@@ -68,9 +71,11 @@ export const loadOrder = (orderId: string) => (deps: StripeResolverDeps) => {
     id: orderId,
   };
 
-  return deps.crudSdk.GetOrder(getOrderVars, {
-    fetchPolicy: 'network-only',
-  });
+  return deps.crudSdk
+    .GetOrder(getOrderVars, {
+      fetchPolicy: 'network-only',
+    })
+    .toPromise();
 };
 
 /**
@@ -84,9 +89,11 @@ export const loadUnit = (unitId: string) => (deps: StripeResolverDeps) => {
     id: unitId,
   };
 
-  return deps.crudSdk.GetUnit(getUnitVars, {
-    fetchPolicy: 'network-only',
-  });
+  return deps.crudSdk
+    .GetUnit(getUnitVars, {
+      fetchPolicy: 'network-only',
+    })
+    .toPromise();
 };
 
 /**
@@ -95,23 +102,20 @@ export const loadUnit = (unitId: string) => (deps: StripeResolverDeps) => {
  * @param externalTransactionId the external ID of the Transaction to be loaded
  * @returns an instance of ITransaction interface, filled with the loaded transaction's data
  */
-export const loadTransactionByExternalTransactionId = async (
-  crudGraphqlClient: GraphqlApiClient,
+export const loadTransactionByExternalTransactionId = (
   externalTransactionId: string,
-): Promise<ITransaction | null> => {
+) => (deps: StripeResolverDeps) => {
   // console.log('loadTransactionByExternalTransactionId.external_id=' + externalTransactionId)
   const listTransactionListVars: CrudApi.ListTransactionsQueryVariables = {
     filter: {
       externalTransactionId: { eq: externalTransactionId },
     },
   };
-  return executeQuery(crudGraphqlClient)<CrudApi.ListTransactionsQuery>(
-    CrudApiQueryDocuments.listTransactions,
-    listTransactionListVars,
-  )
+  return deps.crudSdk
+    .ListTransactions(listTransactionListVars)
     .pipe(
-      map(data => data.listTransactions?.items as Array<ITransaction>),
-      map(data => (data && data.length > 0 ? data[0] : null)),
+      map(data => data?.items),
+      map(data => (data && data?.length > 0 ? data[0] : null)),
     )
     .toPromise();
 };
@@ -122,17 +126,10 @@ export const loadTransactionByExternalTransactionId = async (
  * @param transaction the Transaction object to be created
  * @returns an instance of ITransaction interface, filled with the created transaction's data
  */
-export const createTransaction = async (
-  crudGraphqlClient: GraphqlApiClient,
+export const createTransaction = (
   transaction: CrudApi.CreateTransactionMutationVariables,
-): Promise<ITransaction> => {
-  return executeMutation(crudGraphqlClient)<CrudApi.CreateTransactionMutation>(
-    CrudApiMutationDocuments.createTransaction,
-    transaction,
-  )
-    .pipe(map(data => data.createTransaction as ITransaction))
-    .toPromise();
-};
+) => (deps: StripeResolverDeps) =>
+  deps.crudSdk.CreateTransaction(transaction).toPromise();
 
 /**
  * Update Transaction status in the database with the GraphQL CRUD endpoint
@@ -151,12 +148,8 @@ export const updateTransactionState = (
       status,
     },
   };
-  return executeMutation(crudGraphqlClient)<CrudApi.UpdateTransactionMutation>(
-    CrudApiMutationDocuments.updateTransaction,
-    updateTransactionVars,
-  )
-    .pipe(map(data => data.updateTransaction as ITransaction))
-    .toPromise();
+
+  return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
 };
 
 /**
@@ -167,13 +160,12 @@ export const updateTransactionState = (
  * @param transactionId the ID of the Transaction belongs to the Order
  * @returns an instance of IOrder interface, filled with the updated transaction's data
  */
-export const updateOrderState = async (
-  crudGraphqlClient: GraphqlApiClient,
+export const updateOrderState = (
   id: string,
   userId: string,
   status: CrudApi.OrderStatus,
   transactionId: string,
-): Promise<IOrder> => {
+) => (deps: StripeResolverDeps) => {
   console.log(
     '***** updateOrderState().id=' +
       id +
@@ -190,21 +182,12 @@ export const updateOrderState = async (
       transactionId: transactionId,
       statusLog: [
         {
-          status: status,
+          status,
           ts: Date.now(),
           userId: userId,
         },
       ],
     },
   };
-  return executeMutation(crudGraphqlClient)<CrudApi.UpdateOrderMutation>(
-    CrudApiMutationDocuments.updateOrder,
-    updateOrderVars,
-  )
-    .pipe(
-      // pipeDebug('***** updateOrderState'),
-      map(data => data.updateOrder as IOrder),
-      // pipeDebug('***** updateOrderState2'),
-    )
-    .toPromise();
+  return deps.crudSdk.UpdateOrder(updateOrderVars).toPromise();
 };

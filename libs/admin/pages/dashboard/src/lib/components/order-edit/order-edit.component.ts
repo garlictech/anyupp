@@ -13,12 +13,7 @@ import {
 import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IOrder,
-} from '@bgap/shared/types';
+import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as fp from 'lodash/fp';
@@ -38,9 +33,8 @@ interface IPaymentMethodKV {
   styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnInit, OnDestroy {
-  @Input() order!: IOrder;
+  @Input() order!: CrudApi.Order;
   public paymentMethods: IPaymentMethodKV[] = [];
-  public EOrderStatus = EOrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
@@ -99,7 +93,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
 
   public removeOrder(): void {
     this._orderService
-      .updateOrderStatus(fp.cloneDeep(this.order), EOrderStatus.REJECTED)
+      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.rejected)
       .then(
         (): void => {
           this.workingOrderStatus = false;
@@ -120,7 +114,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public removeOrderItem(idx: number): void {
     this._orderService.updateOrderItemStatus(
       this.order.id,
-      EOrderStatus.REJECTED,
+      CrudApi.OrderStatus.rejected,
       idx,
     );
   }

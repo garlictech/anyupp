@@ -11,7 +11,10 @@ import {
 } from '@bgap/shared/fixtures';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
 import { AnyuppSdk, getAnyuppSdkPublic } from '@bgap/anyupp-gql/api';
-import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
   input: productSeed.unitProductBase,
@@ -21,6 +24,7 @@ describe('CreateUnitProduct tests', () => {
   let publicAnyuppSdk: AnyuppSdk;
   let authAnyuppSdk: AnyuppSdk;
   let publicCrudSdk: CrudApi.CrudSdk;
+  let iamCrudSdk: CrudApi.CrudSdk;
 
   beforeAll(async () => {
     publicAnyuppSdk = getAnyuppSdkPublic();
@@ -29,6 +33,7 @@ describe('CreateUnitProduct tests', () => {
       testAdminUserPassword,
     ).toPromise();
     publicCrudSdk = CrudApi.getCrudSdkPublic();
+    iamCrudSdk = createIamCrudSdk();
   });
 
   it('should require authentication to access', done => {
@@ -45,7 +50,7 @@ describe('CreateUnitProduct tests', () => {
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
-        deleteTestUnitProduct(input.input.id),
+        deleteTestUnitProduct(input.input.id, iamCrudSdk),
       ])
         // .pipe(
         //   switchMap(() =>

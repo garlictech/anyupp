@@ -94,29 +94,25 @@ export const createStripeWebhookExpressApp = () => {
   return app;
 };
 
-const handleSuccessTransaction = async (
-  crudGraphqlClient: GraphqlApiClient,
-  externalTransactionId: string,
+const handleSuccessTransaction = (externalTransactionId: string) => async (
+  deps: StripeResolverDeps,
 ) => {
   console.log('***** handleSuccessTransaction().id=' + externalTransactionId);
   const transaction = await loadTransactionByExternalTransactionId(
-    crudGraphqlClient,
     externalTransactionId,
-  );
+  )(deps);
   // console.log('***** handleSuccessTransaction().loaded.transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(
-      crudGraphqlClient,
       transaction.id,
-      CrudApi.PaymentStatus.SUCCESS,
-    );
+      CrudApi.PaymentStatus.success,
+    )(deps);
     await updateOrderState(
-      crudGraphqlClient,
       transaction.orderId,
       transaction.userId,
-      CrudApi.OrderStatus.PLACED,
+      CrudApi.OrderStatus.placed,
       transaction.id,
-    );
+    )(deps);
     // console.log('***** handleSuccessTransaction().success()');
   } else {
     console.log(
@@ -126,20 +122,18 @@ const handleSuccessTransaction = async (
   }
 };
 
-const handleFailedTransaction = async (
-  crudGraphqlClient: GraphqlApiClient,
-  externalTransactionId: string,
+const handleFailedTransaction = (externalTransactionId: string) => async (
+  deps: StripeResolverDeps,
 ) => {
   console.log('***** handleFailedTransaction().id=' + externalTransactionId);
   const transaction = await loadTransactionByExternalTransactionId(
-    crudGraphqlClient,
     externalTransactionId,
-  );
+  )(deps);
   if (transaction) {
     await updateTransactionState(
       transaction.id,
       CrudApi.PaymentStatus.failed,
-    )(deps).toPromise();
+    )(deps);
     console.log('***** handleFailedTransaction().success()');
   }
 };

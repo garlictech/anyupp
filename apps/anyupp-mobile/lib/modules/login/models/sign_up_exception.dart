@@ -10,7 +10,7 @@ class SignUpException extends AppException {
 
   static const INVALID_CONFIRMATION_CODE = 'INVALID_CONFIRMATION_CODE';
 
-  static const USER_EXISTS = 'USER_ALREADY_EXISTS';
+  static const USER_EXISTS = 'USER_ALready_EXISTS';
 
   static const NOT_EMAIL_OR_PHONE = 'NOT_EMAIL_OR_PHONE';
 

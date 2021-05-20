@@ -1,6 +1,5 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EOrderStatus } from '@bgap/shared/types';
 import Stripe from 'stripe';
 import { calculateOrderSumPrice } from '../order/order.utils';
 import {
@@ -75,7 +74,7 @@ export const startStripePayment = (
   }
 
   // 2. Load order
-  const order = await loadOrder(orderId)(deps).toPromise();
+  let order = await loadOrder(orderId)(deps);
   console.log('startStripePayment().order.loaded=' + order?.id);
 
   if (order == null) {
@@ -93,7 +92,7 @@ export const startStripePayment = (
 
   const status = order.statusLog[order.statusLog.length - 1];
 
-  if (status.status != EOrderStatus.NONE) {
+  if (status.status != CrudApi.OrderStatus.none) {
     throw Error(
       'Order status must be OrderStatus.NONE if you want to pay the order! Current status:' +
         status +
@@ -112,7 +111,7 @@ export const startStripePayment = (
   }
 
   // 4. Load unit
-  const unit = await loadUnit(order.unitId)(deps).toPromise();
+  const unit = await loadUnit(order.unitId)(deps);
 
   // 5. Calculate summary
   const price = calculateOrderSumPrice(order.items || []);
@@ -167,21 +166,21 @@ export const startStripePayment = (
       type: 'STRIPE',
     },
   };
-  const transaction = await createTransaction(
-    crudGraphqlClient,
-    createTransactionVars,
-  );
-  console.log('startStripePayment().transaction.id=' + transaction.id);
+  const transaction = await createTransaction(createTransactionVars)(deps);
+  console.log('startStripePayment().transaction.id=' + transaction?.id);
+
+  if (!transaction) {
+    throw new Error('Transaction not created');
+  }
 
   // 9. Update ORDER STATUS
   // console.log('startStripePayment().updateOrderState.order=' + order.id);
   order = await updateOrderState(
-    crudGraphqlClient,
     order.id,
     userId,
-    CrudApi.OrderStatus.NONE,
+    CrudApi.OrderStatus.none,
     transaction.id,
-  );
+  )(deps);
   console.log('startStripePayment().updateOrderState.done()=' + order?.id);
 
   console.log('startStripePayment().transaction=' + transaction?.id);
@@ -197,7 +196,7 @@ const loadAndConnectUserForStripe = (stripe: Stripe, userId: string) => async (
   deps: StripeResolverDeps,
 ) => {
   console.log('loadAndConnectUserForStripe().start()=' + userId);
-  let user = await loadUser(userId)(deps).toPromise();
+  let user = await loadUser(userId)(deps);
   console.log('loadAndConnectUserForStripe().user=' + user);
 
   if (!user || !user.stripeCustomerId) {
@@ -212,14 +211,14 @@ const loadAndConnectUserForStripe = (stripe: Stripe, userId: string) => async (
 
     if (!user) {
       // console.log('loadAndConnectUserForStripe().creating user.')
-      user = await createUser(crudGraphqlClient, userId, stripeResponse.id);
-      console.log('loadAndConnectUserForStripe().User created=' + user.id);
+      user = await createUser(userId, stripeResponse.id)(deps);
+      console.log('loadAndConnectUserForStripe().User created=' + user?.id);
     } else if (!user.stripeCustomerId) {
       // console.log('loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' + stripeResponse.id);
-      user = await updateUser(crudGraphqlClient, userId, stripeResponse.id);
+      user = await updateUser(userId, stripeResponse.id)(deps);
       console.log(
         'loadAndConnectUserForStripe().User stripe customer id created=' +
-          user.id,
+          user?.id,
       );
     }
   }

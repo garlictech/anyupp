@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,8 +22,6 @@ import {
   EDashboardSize,
   EDashboardTicketListType,
   ENebularButtonSize,
-  EOrderStatus,
-  IOrder,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -36,21 +34,21 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-ticket-list.component.scss'],
 })
 export class OrderTicketListComponent implements OnInit, OnDestroy {
-  public selectedOrder?: IOrder;
+  public selectedOrder?: CrudApi.Order;
   public dashboardSettings!: IDashboardSettings;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   public EDashboardTicketListType = EDashboardTicketListType;
 
-  public filteredOrders: IOrder[] = [];
-  public placedOrders: IOrder[] = [];
-  public readyOrders: IOrder[] = [];
-  public paymentOrders: IOrder[] = [];
+  public filteredOrders: CrudApi.Order[] = [];
+  public placedOrders: CrudApi.Order[] = [];
+  public readyOrders: CrudApi.Order[] = [];
+  public paymentOrders: CrudApi.Order[] = [];
 
   public uniquePaymentUsersCount = 0;
   public uniqueReadyOrdersCount = 0;
 
-  private _orders: IOrder[] = [];
+  private _orders: CrudApi.Order[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +68,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
       ),
     ]).subscribe(
       ([activeOrders, ticketListType]: [
-        IOrder[],
+        CrudApi.Order[],
         EDashboardTicketListType,
       ]): void => {
         this._orders = activeOrders;
@@ -89,7 +87,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         select(dashboardSelectors.getSelectedActiveOrder()),
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: IOrder | undefined): void => {
+      .subscribe((selectedOrder: CrudApi.Order | undefined): void => {
         this.selectedOrder = selectedOrder;
 
         this._changeDetectorRef.detectChanges();
@@ -116,8 +114,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   private _refreshPlacedOrders(): void {
     this.placedOrders = [
       ...this._orders.filter(
-        (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) !== EOrderStatus.READY,
+        (o: CrudApi.Order): boolean =>
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.ready,
       ),
     ];
   }
@@ -125,8 +123,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   private _refreshReadyOrders(): void {
     this.readyOrders = [
       ...this._orders.filter(
-        (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) === EOrderStatus.READY,
+        (o: CrudApi.Order): boolean =>
+          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.ready,
       ),
     ];
 
@@ -137,13 +135,13 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
   private _refreshPaymentOrders(): void {
     const uniquePaymentUsers = this._orders
-      .filter((o: IOrder): boolean => (o.paymentIntention || 0) > 0)
-      .map((o: IOrder): string => o.userId)
+      .filter((o: CrudApi.Order): boolean => (o.paymentIntention || 0) > 0)
+      .map((o: CrudApi.Order): string => o.userId)
       .filter((v, i, a): boolean => a.indexOf(v) === i); // unique filter
 
     this.uniquePaymentUsersCount = uniquePaymentUsers.length;
     this.paymentOrders = [
-      ...this._orders.filter((o: IOrder): boolean =>
+      ...this._orders.filter((o: CrudApi.Order): boolean =>
         uniquePaymentUsers.includes(o.userId),
       ),
     ];
@@ -151,12 +149,12 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
   private _refreshFilteredOrders(listType: EDashboardTicketListType): void {
     switch (listType) {
-      case EDashboardTicketListType.PLACED:
+      case EDashboardTicketListType.placed:
         this.filteredOrders = this.placedOrders.sort(
           customNumberCompare('created'),
         );
         break;
-      case EDashboardTicketListType.READY:
+      case EDashboardTicketListType.ready:
         this.filteredOrders = this.readyOrders;
         break;
       case EDashboardTicketListType.PAYMENT_INTENTION:
@@ -179,7 +177,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
       });
   }
 
-  public selectOrder(order: IOrder): void {
+  public selectOrder(order: CrudApi.Order): void {
     const selectedOrder = this._orders.find((o): boolean => o.id === order?.id);
 
     this._store.dispatch(
@@ -201,7 +199,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public trackByFn(index: number, item: IOrder): string {
+  public trackByFn(_index: number, item: CrudApi.Order): string {
     return item.id;
   }
 }

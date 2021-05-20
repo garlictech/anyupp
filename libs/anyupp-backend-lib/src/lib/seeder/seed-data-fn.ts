@@ -1,4 +1,4 @@
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType, EAdminRole } from '@bgap/shared/types';
 import {
@@ -11,6 +11,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
+import { filterNullish } from '@bgap/shared/utils';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -53,10 +54,10 @@ const generateRoleContextId = (idx: number, role: EAdminRole) =>
 const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
   `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
 
-const deleteCreate = (
-  deleteOperation: () => Observable<unknown>,
-  createOperation: () => Observable<unknown>,
-): Observable<unknown> =>
+const deleteCreate = <T, K>(
+  deleteOperation: () => Observable<T>,
+  createOperation: () => Observable<K>,
+): Observable<K> =>
   deleteOperation().pipe(
     catchError(error => {
       console.warn('Problem with SEED data DELETION: ', error);
@@ -303,33 +304,25 @@ export const createTestUnitProduct = (
     ],
     configSets: productComponentSetSeed.seededUnitProductConfigSets,
   };
-  return deleteCreate<CrudApi.CreateUnitProductMutation>({
-    input,
-    deleteOperation: CrudApiMutationDocuments.deleteUnitProduct,
-    createOperation: CrudApiMutationDocuments.createUnitProduct,
-  }).pipe(
-    map(x => x.createUnitProduct),
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.CreateUnitProduct({ input }),
+  ).pipe(
+    filterNullish(),
     switchMap(unitProduct => {
       const input: CrudApi.CreateGeneratedProductInput = {
         ...generatedProductSeed.getGeneratedProduct({
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          id: unitProduct!.id,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          unitId: unitProduct!.unitId!,
+          id: unitProduct.id,
+          unitId: unitProduct.unitId,
           productCategoryId: generateProductCategoryId(1, 1),
         }),
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        position: unitProduct!.position!,
+        position: unitProduct.position,
         configSets: productComponentSetSeed.generatedProductConfigSets,
       };
-      return deleteCreate<CrudApi.CreateGeneratedProductMutation>({
-        input,
-        deleteOperation: CrudApiMutationDocuments.deleteGeneratedProduct,
-        createOperation: CrudApiMutationDocuments.createGeneratedProduct,
-      }).pipe(
-        map(x => x.createGeneratedProduct),
-        map(generatedProduct => ({ unitProduct, generatedProduct })),
-      );
+      return deleteCreate(
+        () => deps.crudSdk.DeleteGeneratedProduct({ input: { id: input.id } }),
+        () => deps.crudSdk.CreateGeneratedProduct({ input }),
+      ).pipe(map(generatedProduct => ({ unitProduct, generatedProduct })));
     }),
   );
 };
@@ -510,50 +503,73 @@ export const createTestAdminRoleContext = (
   );
 };
 
-/**
- * Seed ComponentSets and their ProductComponents
- * @param chainIdx
- * @param type
- * @param componentSetIdx
- */
-export const createComponentSets = ({ chainIdx }: { chainIdx: number }) => {
-  return of('START SEED').pipe(
-    // CREATE PRODUCT COMPONENTS
-    switchMap(() => {
-      return deleteCreate<CrudApi.CreateProductComponentMutation>({
+export const createComponentSets = (deps: SeederDependencies) => {
+  return deleteCreate(
+    () =>
+      deps.crudSdk.DeleteProductComponent({
+        input: { id: productComponentSetSeed.seededProdComp_01.id },
+      }),
+    () =>
+      deps.crudSdk.CreateProductComponent({
         input: productComponentSetSeed.seededProdComp_01,
-        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
-        createOperation: CrudApiMutationDocuments.createProductComponent,
-      });
-    }),
-    switchMap(() => {
-      return deleteCreate<CrudApi.CreateProductComponentMutation>({
-        input: productComponentSetSeed.seededProdComp_02,
-        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
-        createOperation: CrudApiMutationDocuments.createProductComponent,
-      });
-    }),
-    switchMap(() => {
-      return deleteCreate<CrudApi.CreateProductComponentMutation>({
-        input: productComponentSetSeed.seededProdComp_03,
-        deleteOperation: CrudApiMutationDocuments.deleteProductComponent,
-        createOperation: CrudApiMutationDocuments.createProductComponent,
-      });
-    }),
-    // CREATE COMPONENT SETS
-    switchMap(() => {
-      return deleteCreate<CrudApi.CreateProductComponentSetMutation>({
-        input: productComponentSetSeed.seededProdCompSet_01,
-        deleteOperation: CrudApiMutationDocuments.deleteProductComponentSet,
-        createOperation: CrudApiMutationDocuments.createProductComponentSet,
-      });
-    }),
-    switchMap(() => {
-      return deleteCreate<CrudApi.CreateProductComponentSetMutation>({
-        input: productComponentSetSeed.seededProdCompSet_02,
-        deleteOperation: CrudApiMutationDocuments.deleteProductComponentSet,
-        createOperation: CrudApiMutationDocuments.createProductComponentSet,
-      });
-    }),
+      }),
+  ).pipe(
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductComponent({
+            input: { id: productComponentSetSeed.seededProdComp_02.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductComponent({
+            input: productComponentSetSeed.seededProdComp_02,
+          }),
+      ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductComponent({
+            input: { id: productComponentSetSeed.seededProdComp_03.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductComponent({
+            input: productComponentSetSeed.seededProdComp_03,
+          }),
+      ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductComponentSet({
+            input: { id: productComponentSetSeed.seededProdCompSet_01.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductComponent({
+            input: productComponentSetSeed.seededProdCompSet_01,
+          }),
+      ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductComponentSet({
+            input: { id: productComponentSetSeed.seededProdCompSet_02.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductComponent({
+            input: productComponentSetSeed.seededProdCompSet_02,
+          }),
+      ),
+    ),
   );
 };
+
+export const createSeederDeps = (
+  awsAccesssKeyId: string,
+  awsSecretAccessKey: string,
+  userPoolId: string,
+): SeederDependencies => ({
+  userPoolId,
+  crudSdk: CrudApi.getCrudSdkForIAM(awsAccesssKeyId, awsSecretAccessKey),
+});

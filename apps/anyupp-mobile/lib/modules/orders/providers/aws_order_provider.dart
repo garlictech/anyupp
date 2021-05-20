@@ -34,9 +34,9 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       // filterModel: (model) =>
-      //     model.status == OrderStatus.PLACED ||
-      //     model.status == OrderStatus.PROCESSING ||
-      //     model.status == OrderStatus.READY,
+      //     model.status == OrderStatus.placed ||
+      //     model.status == OrderStatus.processing ||
+      //     model.status == OrderStatus.ready,
     );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -398,7 +398,7 @@ class AwsOrderProvider implements IOrdersProvider {
             },
             'statusLog': {
               'userId': cart.userId,
-              'status': 'PLACED',
+              'status': 'placed',
               'ts': 1.0,
             },
             "allergens" : item.allergens,

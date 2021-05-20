@@ -4,7 +4,6 @@ import { localizedItemSchema } from './localized-item';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 export const groupSchema: Joi.SchemaMap<CrudApi.Group> = {
-  __typename: Joi.string().valid('Group').optional(),
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   name: Joi.string().required(),

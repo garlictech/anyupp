@@ -1,3 +1,4 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import { concat, Observable, of, Subject } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -24,15 +25,8 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { CrudApi } from '@bgap/crud-gql/api';
 
-import {
-  EAdminRole,
-  EOrderStatus,
-  IKeyValueObject,
-  IOrder,
-  IRoleContext,
-} from '@bgap/shared/types';
+import { EAdminRole, IKeyValueObject, IRoleContext } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -245,7 +239,7 @@ export class DataService {
         filter: { chainId: { eq: chainId } },
       }),
       this.crudSdk.sdk.OnProductCategoriesChange(),
-      (productCategorys: ProductCategory[]) =>
+      (productCategorys: CrudApi.ProductCategory[]) =>
         productCategoriesActions.upsertProductCategorys({ productCategorys }),
     );
   }
@@ -293,6 +287,8 @@ export class DataService {
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
     // TODO: eliminate the any
+    // There must be a confusion in the schema, eliminate it pls
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this._doSubscription<any>(
       productsActions.resetGroupProducts(),
 
@@ -374,7 +370,7 @@ export class DataService {
           this._store.dispatch(
             ordersActions.upsertActiveOrder({
               order: {
-                ...(<IOrder>data.payload.val()),
+                ...(<CrudApi.Order>data.payload.val()),
                 id: data.key || '',
               },
             }),
@@ -417,7 +413,7 @@ export class DataService {
           this._store.dispatch(
             ordersActions.upsertHistoryOrder({
               order: {
-                ...(<IOrder>data.payload.val()),
+                ...(<CrudApi.Order>data.payload.val()),
                 id: data.key || '',
               },
             }),
@@ -514,11 +510,8 @@ export class DataService {
     return this.crudSdk.sdk.UpdateUnit({ input: unit });
   }
 
-  public regenerateUnitData(unitId: string): Observable<unknown> {
-    /* return this.anyuppSdk.sdk.RegenerateUnitData
-    return executeMutation(
-      anyuppAuthenticatedGraphqlClient,
-    )(AnyuppApi.RegenerateUnitData, { input: { id: unitId } }).toPromise();
+  public regenerateUnitData(unitId: string) {
+    return this.anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
   //
@@ -546,7 +539,7 @@ export class DataService {
     chainId: string,
     unitId: string,
     orderId: string,
-    status: EOrderStatus,
+    status: CrudApi.OrderStatus,
   ): Promise<unknown> {
     return of({ chainId, unitId, orderId, status }).toPromise();
 
@@ -569,7 +562,7 @@ export class DataService {
     chainId: string,
     unitId: string,
     orderId: string,
-    value: IOrder | IKeyValueObject,
+    value: CrudApi.Order | IKeyValueObject,
   ): Promise<unknown> {
     return of({
       chainId,

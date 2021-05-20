@@ -278,9 +278,9 @@
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
     "userOrdersCount": "{{ count }} rendelés",
     "status": {
-      "PLACED": "Placed",
-      "PROCESSING": "Processing",
-      "READY": "Ready",
+      "placed": "Placed",
+      "processing": "Processing",
+      "ready": "Ready",
       "SERVED": "Served",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "PAID": "Paid",

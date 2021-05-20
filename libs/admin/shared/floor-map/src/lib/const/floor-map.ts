@@ -72,29 +72,29 @@ export const FLOOR_MAP_OBJECT_COMMON_DEFAULTS = {
 };
 
 export const FLOOR_MAP_OBJECT_DEFAULTS = {
-  [EUnitMapObjectType.TABLE_RECTANGLE]: {
+  [CrudApi.UnitMapObjectType.table_r]: {
     w: 150,
     h: 60,
   },
-  [EUnitMapObjectType.TABLE_CIRCLE]: {
+  [CrudApi.UnitMapObjectType.table_c]: {
     r: 30,
   },
-  [EUnitMapObjectType.SEAT_RECTANGLE]: {
+  [CrudApi.UnitMapObjectType.seat_r]: {
     w: 30,
     h: 30,
   },
-  [EUnitMapObjectType.SEAT_CIRCLE]: {
+  [CrudApi.UnitMapObjectType.seat_c]: {
     r: 15,
   },
-  [EUnitMapObjectType.COUNTER]: {
+  [CrudApi.UnitMapObjectType.counter]: {
     w: 180,
     h: 60,
   },
-  [EUnitMapObjectType.WALL]: {
+  [CrudApi.UnitMapObjectType.wall]: {
     w: 10,
     h: 60,
   },
-  [EUnitMapObjectType.LABEL]: {
+  [CrudApi.UnitMapObjectType.label]: {
     w: 150,
     h: 60,
     c: '..........',

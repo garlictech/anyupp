@@ -20,10 +20,10 @@ export class OrderTicketListItemComponent {
   /*
   ngOnChanges(): void {
     this.readyCount =
-      this.ticketListType === EDashboardTicketListType.PLACED
+      this.ticketListType === EDashboardTicketListType.placed
         ? this.order.items.filter(
             (i: IOrderItem): boolean =>
-              currentStatus(i.statusLog) === EOrderStatus.READY
+              currentStatus(i.statusLog) === CrudApi.OrderStatus.ready
           ).length
         : 0; // Show badhe only in placed list
   }

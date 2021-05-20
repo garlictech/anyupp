@@ -1,13 +1,16 @@
+import {
+  cartSeed,
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../api-clients';
-import { testAdminUsername, testAdminUserPassword } from '../fixtures';
-import { cartSeed } from '../fixtures/cart';
 
-describe('CRUD endpoints AUTH test', async () => {
+describe('CRUD endpoints AUTH test', () => {
   const authSdk = createAuthenticatedCrudSdk(
     testAdminUsername,
     testAdminUserPassword,
@@ -17,9 +20,7 @@ describe('CRUD endpoints AUTH test', async () => {
 
   it('should require authentication to access', done => {
     authSdk
-      .pipe(
-        switchMap(sdk => from(sdk.GetCart({ id: cartSeed.cart_seeded_01_id }))),
-      )
+      .pipe(switchMap(sdk => sdk.GetCart({ id: cartSeed.cart_seeded_01_id })))
       .subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -30,7 +31,7 @@ describe('CRUD endpoints AUTH test', async () => {
 
   describe('IAM Auth', () => {
     it('should be able to execute a query with IAM authenticated graphql client', done => {
-      from(iamSdk.GetCart({ id: cartSeed.cart_seeded_01_id })).subscribe({
+      iamSdk.GetCart({ id: cartSeed.cart_seeded_01_id }).subscribe({
         next(x) {
           expect(x?.id).toEqual(cartSeed.cart_seeded_01_id);
           done();

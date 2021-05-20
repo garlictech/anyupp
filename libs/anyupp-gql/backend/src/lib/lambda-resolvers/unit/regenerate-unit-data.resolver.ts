@@ -8,7 +8,6 @@ import { createGeneratedProducts } from '../product/generated-product';
 import { mergeAllProductLayers } from '../product/merge-product';
 import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
 import { getTimezoneFromLocation } from '../../utils';
-import { IGeneratedProduct } from '@bgap/shared/types';
 import { UnitsResolverDeps } from './utils';
 import { filterNullish } from '@bgap/shared/utils';
 
@@ -25,14 +24,20 @@ export const regenerateUnitData = (unitId: string) => (
     switchMap(unitProducts =>
       combineLatest([
         of(
-          // merge product layers
-          unitProducts.map(unitProduct =>
-            mergeAllProductLayers({
+          unitProducts.map(unitProduct => {
+            if (
+              !unitProduct.groupProduct?.chainProduct ||
+              !unitProduct.groupProduct
+            ) {
+              throw new Error('HANDLE ME: objects expected, got nullish');
+            }
+
+            return mergeAllProductLayers({
               chainProduct: unitProduct.groupProduct.chainProduct,
               groupProduct: unitProduct.groupProduct,
               unitProduct,
-            }),
-          ),
+            });
+          }),
         ),
         getTimezoneForUnit(unitId)(deps),
       ]),
@@ -50,7 +55,7 @@ export const regenerateUnitData = (unitId: string) => (
     ),
     map(
       productsToGenerate =>
-        productsToGenerate.filter(x => !!x) as IGeneratedProduct[],
+        productsToGenerate.filter(x => !!x) as CrudApi.GeneratedProduct[],
     ),
     // store generatedProducts in the db
     switchMap(createGeneratedProducts),

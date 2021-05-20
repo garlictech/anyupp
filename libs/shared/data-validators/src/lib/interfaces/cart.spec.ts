@@ -27,7 +27,7 @@ const cart: ICart = {
       quantity: 100,
       statusLog: [
         {
-          status: EOrderStatus.NONE,
+          status: CrudApi.OrderStatus.NONE,
           userId: 'USERID',
         },
       ],

@@ -7,7 +7,7 @@ export enum EDashboardListMode {
 }
 
 export enum EDashboardTicketListType {
-  PLACED = 'placed',
-  READY = 'ready',
+  placed = 'placed',
+  ready = 'ready',
   PAYMENT_INTENTION = 'paymentIntention',
 }

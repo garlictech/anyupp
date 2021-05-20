@@ -22,13 +22,12 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
-  IOrder,
   IStatusLog,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -38,16 +37,14 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
-  @Input() order!: IOrder;
+  @Input() order!: CrudApi.Order;
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
-  public EOrderStatus = EOrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
@@ -77,7 +74,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getPlacedButtonStatus(): string {
-    return getStatusColor(EOrderStatus.PLACED);
+    return getStatusColor(CrudApi.OrderStatus.placed);
   }
 
   ngOnDestroy(): void {
@@ -127,7 +124,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
               this.order.id,
-              EOrderStatus.PLACED,
+              CrudApi.OrderStatus.placed,
               idx,
             );
 

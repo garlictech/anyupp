@@ -1,11 +1,13 @@
 import { combineLatest, from } from 'rxjs';
-import { unitSeed } from '../../../fixtures/unit';
-import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { filter, map, switchMap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { createIamAnyuppSdk, createIamCrudSdk } from '../../../../api-clients';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -14,12 +16,6 @@ import {
   groupSeed,
   chainSeed,
 } from '@bgap/shared/fixtures';
-import {
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedAnyuppGraphQLClient,
-  crudBackendGraphQLClient,
-  executeQuery,
-} from '@bgap/shared/graphql/api-client';
 
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
@@ -56,47 +52,48 @@ const unit_03 = {
 };
 
 describe('GetUnitsNearLocation tests', async () => {
-  const cleanup = combineLatest([
-    // CleanUP
-    deleteTestUnit(unitNotActive.id),
-    deleteTestUnit(unit_01.id),
-    deleteTestUnit(unit_02.id),
-    deleteTestUnit(unit_03.id),
-  ]);
-
   const anyuppSdk = createIamAnyuppSdk();
   const crudSdk = createIamCrudSdk();
 
-  beforeAll(async () => {
-    authHelper = await createAuthenticatedAnyuppGraphQLClient(
-      testAdminUsername,
-      testAdminUserPassword,
-    ).toPromise();
-    console.warn(authHelper.userAttributes);
+  const cleanup = combineLatest([
+    // CleanUP
+    deleteTestUnit(unitNotActive.id, crudSdk),
+    deleteTestUnit(unit_01.id, crudSdk),
+    deleteTestUnit(unit_02.id, crudSdk),
+    deleteTestUnit(unit_03.id, crudSdk),
+  ]);
 
-    await combineLatest([
-      // CleanUP
-      deleteTestUnit(unitNotActive.id),
-      deleteTestUnit(unit_01.id),
-      deleteTestUnit(unit_02.id),
-      deleteTestUnit(unit_03.id),
-      deleteTestGroup(groupSeed.group_01.id),
-      deleteTestChain(chainSeed.chain_01.id),
-    ])
-      .pipe(
-        switchMap(() =>
-          // Seeding
-          combineLatest([
-            createTestGroup(groupSeed.group_01),
-            createTestChain(chainSeed.chain_01),
-            createTestUnit(unitNotActive),
-            createTestUnit(unit_01),
-            createTestUnit(unit_02),
-            createTestUnit(unit_03),
-          ]),
+  const authAnyuppSdk = createAuthenticatedAnyuppSdk(
+    testAdminUsername,
+    testAdminUserPassword,
+  );
+
+  beforeAll(done => {
+    authAnyuppSdk
+      .pipe(() =>
+        combineLatest([
+          // CleanUP
+          deleteTestUnit(unitNotActive.id, crudSdk),
+          deleteTestUnit(unit_01.id, crudSdk),
+          deleteTestUnit(unit_02.id, crudSdk),
+          deleteTestUnit(unit_03.id, crudSdk),
+          deleteTestGroup(groupSeed.group_01.id, crudSdk),
+          deleteTestChain(chainSeed.chain_01.id, crudSdk),
+        ]).pipe(
+          switchMap(() =>
+            // Seeding
+            combineLatest([
+              createTestGroup(groupSeed.group_01, crudSdk),
+              createTestChain(chainSeed.chain_01, crudSdk),
+              createTestUnit(unitNotActive, crudSdk),
+              createTestUnit(unit_01, crudSdk),
+              createTestUnit(unit_02, crudSdk),
+              createTestUnit(unit_03, crudSdk),
+            ]),
+          ),
         ),
       )
-      .toPromise();
+      .subscribe(() => done());
   }, 10000);
 
   afterAll(async () => {

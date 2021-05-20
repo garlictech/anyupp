@@ -27,9 +27,9 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
 
   final List<String> statusList = [
     'NONE',
-    'PLACED',
-    'PROCESSING',
-    'READY'
+    'placed',
+    'processing',
+    'ready'
   ];
 
   @override

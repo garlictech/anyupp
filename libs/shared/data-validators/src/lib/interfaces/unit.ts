@@ -7,7 +7,7 @@ import { floorMapSchema } from './floor-map';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
 
-export const laneSchema: Joi.SchemaMap<ILane> = {
+export const laneSchema: Joi.SchemaMap<CrudApi.Lane> = {
   id: Joi.string().allow(null, ''),
   name: Joi.string().required(),
   color: Joi.string().required(),

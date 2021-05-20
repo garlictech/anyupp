@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 
 import { chainSeed } from './chain';
@@ -108,10 +108,14 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_01.items[0],
+        refGroupPrice: 1.2,
+        price: 2.3,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_01.items[1],
+        refGroupPrice: 1.2,
+        price: 2.3,
       },
     ],
   },
@@ -122,14 +126,20 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_02.items[0],
+        refGroupPrice: 1.2,
+        price: 2.3,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_02.items[1],
+        refGroupPrice: 1.2,
+        price: 2.3,
       },
       {
         position: 3,
         productComponentId: seededProdCompSet_02.items[2],
+        refGroupPrice: 1.2,
+        price: 2.3,
       },
     ],
   },
@@ -172,11 +182,11 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         ...groupConfigSets[0].items[0],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[0].items[1],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
     ],
   },
@@ -185,15 +195,15 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         ...groupConfigSets[1].items[0],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[1].items[1],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[1].items[2],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
     ],
   },
@@ -211,7 +221,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[0].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[0].items[0].productComponentId,
-        price: unitConfigSets[0].items[0].price!,
+        price: unitConfigSets[0].items[0].price,
         position: unitConfigSets[0].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
@@ -220,7 +230,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[0].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[0].items[1].productComponentId,
-        price: unitConfigSets[0].items[1].price!,
+        price: unitConfigSets[0].items[1].price,
         position: unitConfigSets[0].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
@@ -239,7 +249,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[1].items[0].productComponentId,
-        price: unitConfigSets[1].items[0].price!,
+        price: unitConfigSets[1].items[0].price,
         position: unitConfigSets[1].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
@@ -248,7 +258,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[1].items[1].productComponentId,
-        price: unitConfigSets[1].items[1].price!,
+        price: unitConfigSets[1].items[1].price,
         position: unitConfigSets[1].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
@@ -257,7 +267,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[2] == seededProdComp_03
         productComponentId: unitConfigSets[1].items[2].productComponentId,
-        price: unitConfigSets[1].items[2].price!,
+        price: unitConfigSets[1].items[2].price,
         position: unitConfigSets[1].items[2].position,
         name: seededProdComp_03.name,
         description: seededProdComp_03.description,

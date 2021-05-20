@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
@@ -8,7 +8,6 @@ import {
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
-import { EOrderStatus } from '@bgap/shared/types';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -103,7 +102,9 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
     ),
     // Remove the cart from the db after the order has been created successfully
     switchMap(props =>
-      deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
+      deps.crudSdk
+        .DeleteCart({ input: { id: props.cart.id } })
+        .pipe(mapTo(props.orderId)),
     ),
   );
 };
@@ -135,7 +136,7 @@ const toOrderInputFormat = ({
     sumPriceShown: calculateOrderSumPrice(items),
     place: place,
     unitId,
-    // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to PLACED
+    // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };
 };
@@ -208,7 +209,7 @@ const getLaneIdForCartItem = (productId: string) => (deps: OrderResolverDeps) =>
 
 const createStatusLog = (
   userId: string,
-  status: EOrderStatus = EOrderStatus.NONE,
+  status: CrudApi.OrderStatus = CrudApi.OrderStatus.none,
 ): Array<CrudApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];

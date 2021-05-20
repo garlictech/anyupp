@@ -1,11 +1,7 @@
-import {
-  IGeneratedProduct,
-  IGeneratedProductVariant,
-  Product,
-  ProductVariant,
-} from '@bgap/shared/types';
+import { Product } from '@bgap/shared/types';
 import { calculatePriceFromAvailabilities } from './calculate-price';
 import { DateTime } from 'luxon';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
@@ -15,9 +11,13 @@ export const calculateActualPricesAndCheckActivity = ({
   product: Product;
   atTimeISO: string;
   inTimeZone: string;
-}): IGeneratedProduct | undefined => {
+}): CrudApi.CreateGeneratedProductInput | undefined => {
   if (!isProductVisibleAndHasAnyAvailableVariant(product)) {
     return undefined;
+  }
+
+  if (!product.variants) {
+    throw new Error('HANDLE ME: product.variants is undefined');
   }
 
   const variantsWithActualPrices = calculateActualPriceForEachVariant({
@@ -33,16 +33,23 @@ export const calculateActualPricesAndCheckActivity = ({
   return toGeneratedProductType(product, variantsWithActualPrices);
 };
 
-export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) =>
-  product.isVisible && !!isAnyVariantAvailable(product.variants);
+export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) => {
+  if (!product.variants) {
+    throw new Error('HANDLE ME: product.variants cannot be nullish');
+  }
 
-const isAnyVariantAvailable = (variants: ProductVariant[]) => {
+  return product.isVisible && !!isAnyVariantAvailable(product.variants);
+};
+
+const isAnyVariantAvailable = (
+  variants: CrudApi.Maybe<CrudApi.ProductVariant>[],
+) => {
   if (!variants) {
     return false;
   }
 
   return variants.reduce(
-    (prev, product) => (product.isAvailable ? prev + 1 : prev),
+    (prev, product) => (product?.isAvailable ? prev + 1 : prev),
     0,
   );
 };
@@ -53,14 +60,21 @@ const calculateActualPriceForEachVariant = ({
   atTimeISO,
   inTimeZone,
 }: {
-  variants: ProductVariant[];
+  variants: CrudApi.Maybe<CrudApi.ProductVariant>[];
   atTimeISO: string;
   inTimeZone: string;
-}): IGeneratedProductVariant[] => {
+}): CrudApi.GeneratedProductVariant[] => {
   return variants.reduce((activeVariants, variant) => {
-    if (!variant.isAvailable) {
+    if (!variant?.isAvailable) {
       return activeVariants;
     }
+
+    if (!variant.availabilities) {
+      throw new Error(
+        'HANDLE ME: variant.availabilities expected having value',
+      );
+    }
+
     const variantPrice: number | undefined = calculatePriceFromAvailabilities(
       variant.availabilities,
       DateTime.fromISO(atTimeISO).setZone(inTimeZone),
@@ -73,16 +87,15 @@ const calculateActualPriceForEachVariant = ({
       ...activeVariants,
       toGeneratedProductVariantType(variant, variantPrice),
     ];
-  }, <IGeneratedProductVariant[]>[]);
+  }, <CrudApi.GeneratedProductVariant[]>[]);
 };
 
 const toGeneratedProductType = (
   product: Product,
-  variants: IGeneratedProductVariant[],
-): IGeneratedProduct => ({
+  variants: CrudApi.GeneratedProductVariant[],
+): CrudApi.CreateGeneratedProductInput => ({
   id: product.id,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  unitId: product.unitId!,
+  unitId: product.unitId,
   productCategoryId: product.productCategoryId,
   name: product.name,
   description: product.description,
@@ -95,12 +108,18 @@ const toGeneratedProductType = (
 });
 
 const toGeneratedProductVariantType = (
-  variant: ProductVariant,
+  variant: CrudApi.ProductVariant,
   price: number,
-): IGeneratedProductVariant => ({
-  id: variant.id,
-  variantName: variant.variantName,
-  position: variant.position,
-  pack: { size: variant.pack.size, unit: variant.pack.unit },
-  price,
-});
+): CrudApi.GeneratedProductVariant => {
+  if (!variant?.pack) {
+    throw new Error('HANDLE ME: variant.pack expected to be an object');
+  }
+
+  return {
+    id: variant.id,
+    variantName: variant.variantName,
+    position: variant.position,
+    pack: { size: variant.pack.size, unit: variant.pack.unit },
+    price,
+  };
+};
