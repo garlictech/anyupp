@@ -10,7 +10,7 @@ abstract class ISocialLoginProvider {
 
   Future<ProviderLoginResponse> signInWithFacebook();
 
-  Future<ProviderLoginResponse> signInAnonymously();
+  // Future<ProviderLoginResponse> signInAnonymously();
 
   Future<void> logout();
 

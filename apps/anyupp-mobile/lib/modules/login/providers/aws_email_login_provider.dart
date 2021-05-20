@@ -1,9 +1,14 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/graphql/graphql_client_service.dart';
+import 'package:fa_prev/graphql/mutations/create_anonym_user.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
 import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/shared/auth.dart';
+import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'email_login_provider_interface.dart';
@@ -15,18 +20,16 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   AwsEmailLoginProvider(this._authProvider, this._service);
 
   @override
-  Future<String> get email async =>
-      (await SharedPreferences.getInstance()).getString('auth_email');
+  Future<String> get email async => (await SharedPreferences.getInstance()).getString('auth_email');
 
   @override
-  Future<ProviderLoginResponse> loginWithEmailAndPassword(
-      String email, String password) async {
+  Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password,
+      {bool isAnonymus = false}) async {
     try {
       CognitoUser user = _service.createCognitoUser(email);
-      CognitoUserSession session =
-          await user.authenticateUser(_service.getAuthDetails(email, password));
+      CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
       if (session.isValid()) {
-        User user = await _authProvider.loginWithCognitoSession(session);
+        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : null);
         await _service;
         return ProviderLoginResponse(
           credential: null,
@@ -34,30 +37,49 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         );
       }
 
-      throw LoginException(
-          code: LoginException.INVALID_CREDENTIALS,
-          message: 'Invalid credentials');
+      throw LoginException(code: LoginException.INVALID_CREDENTIALS, message: 'Invalid credentials');
     } on CognitoClientException catch (e) {
       // handle Wrong Username and Password and Cognito Client
       print('loginWithEmailAndPassword.CognitoClientException=$e');
       if (e.code == 'UserNotConfirmedException') {
-        throw LoginException(
-            code: e.code,
-            message: email,
-            subCode: LoginException.UNCONFIRMED,
-            details: e.runtimeType);
+        throw LoginException(code: e.code, message: email, subCode: LoginException.UNCONFIRMED, details: e.runtimeType);
       }
       if (e.code == 'NotAuthorizedException') {
         throw LoginException(
-            code: e.code,
-            message: email,
-            subCode: LoginException.INVALID_CREDENTIALS,
-            details: e.runtimeType);
+            code: e.code, message: email, subCode: LoginException.INVALID_CREDENTIALS, details: e.runtimeType);
       } else {
         rethrow;
       }
     } catch (e) {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
+    }
+  }
+
+  @override
+  Future<ProviderLoginResponse> signInAnonymously() async {
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient(useApi: true);
+
+      QueryResult result = await _client.value.mutate(
+        MutationOptions(document: gql(MUTATION_CREATE_ANONYM_USER), variables: {}),
+      );
+      if (result.hasException) {
+        print('AwsOrderProvider.addInvoiceInfo().exception=${result.exception}');
+        throw LoginException(
+            code: LoginException.CODE,
+            message: "Failed to Create Anonymus user",
+            subCode: LoginException.INVALID_ANONYMUS_USER,
+            details: "Couldn't create anonymus user.");
+      }
+      String email = result.data['createAnonymUser']['email'];
+      String pwd = result.data['createAnonymUser']['pwd'];
+      if (email != null && pwd != null) {
+        return loginWithEmailAndPassword(email, pwd, isAnonymus: true);
+      }
+      return null;
+    } on Exception catch (e) {
+      print('AwsOrderProvider.addInvoiceInfo().exception=$e');
+      rethrow;
     }
   }
 
@@ -74,26 +96,22 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       if (userEmail != null) {
         attributes.add(AttributeArg(name: 'email', value: userEmail));
       }
-      CognitoUserPoolData userPoolData = await _service.userPool
-          .signUp(email, password, userAttributes: attributes);
+      CognitoUserPoolData userPoolData = await _service.userPool.signUp(email, password, userAttributes: attributes);
 
       if (userPoolData.user != null) {
         return Future.value(true);
       }
     } on CognitoClientException catch (e) {
       if (e.code == 'UsernameExistsException') {
-        throw SignUpException.fromException(
-            SignUpException.USER_EXISTS, e.message, e);
+        throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message, e);
       }
       if (e.code == 'InvalidPasswordException') {
-        throw SignUpException.fromException(
-            SignUpException.INVALID_PASSWORD, e.message, e);
+        throw SignUpException.fromException(SignUpException.INVALID_PASSWORD, e.message, e);
       }
 
       print(e.code);
     } on Exception catch (e) {
-      throw SignUpException.fromException(
-          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(false);
   }
@@ -110,13 +128,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     } on CognitoClientException catch (e) {
       if (e.code == 'ExpiredCodeException') {
         throw SignUpException(
-            code: SignUpException.CODE,
-            subCode: SignUpException.INVALID_CONFIRMATION_CODE,
-            message: userName);
+            code: SignUpException.CODE, subCode: SignUpException.INVALID_CONFIRMATION_CODE, message: userName);
       }
     } on Exception catch (e) {
-      throw SignUpException.fromException(
-          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(registrationConfirmed);
   }
@@ -132,14 +147,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       }
     } on CognitoClientException catch (e) {
       if (e.code == 'LimitExceededException') {
-        throw SignUpException(
-            code: SignUpException.CODE,
-            subCode: SignUpException.LIMIT_ECXEEDED,
-            message: userName);
+        throw SignUpException(code: SignUpException.CODE, subCode: SignUpException.LIMIT_ECXEEDED, message: userName);
       }
     } on Exception catch (e) {
-      throw SignUpException.fromException(
-          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(codeResent);
   }
@@ -154,15 +165,13 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         codeDeliveryDetails = data['CodeDeliveryDetails'];
       }
     } on Exception catch (e) {
-      throw SignUpException.fromException(
-          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(codeDeliveryDetails);
   }
 
   @override
-  Future<bool> confirmPassword(
-      String userName, String code, String newPassword) async {
+  Future<bool> confirmPassword(String userName, String code, String newPassword) async {
     CognitoUser user = _service.createCognitoUser(userName);
     bool passwordConfirmed = false;
     try {
@@ -171,8 +180,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         passwordConfirmed = true;
       }
     } on Exception catch (e) {
-      throw SignUpException.fromException(
-          SignUpException.UNKNOWN_ERROR, e.toString(), e);
+      throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
     return Future.value(passwordConfirmed);
   }

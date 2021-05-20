@@ -80,20 +80,20 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
             ),
           if (user.profileImage == null)
             Container(
-                width: 46.0,
-                height: 46.0,
-                decoration: BoxDecoration(
-                  color: Color(0xFF857C18),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                ),
-                child: Icon(
-                  Icons.perm_identity,
-                  size: 24.0,
-                  color: Colors.white.withOpacity(0.7),
+              width: 46.0,
+              height: 46.0,
+              decoration: BoxDecoration(
+                color: Color(0xFF857C18),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
               ),
+              child: Icon(
+                Icons.perm_identity,
+                size: 24.0,
+                color: Colors.white.withOpacity(0.7),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.only(
               left: 12.0,

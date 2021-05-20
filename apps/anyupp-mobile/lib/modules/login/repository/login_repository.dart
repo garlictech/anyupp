@@ -23,7 +23,7 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
 
   @override
   Future<ProviderLoginResponse> signInAnonymously() {
-    return _socialLoginProvider.signInAnonymously();
+    return _emailLoginProvider.signInAnonymously();
   }
 
   @override
