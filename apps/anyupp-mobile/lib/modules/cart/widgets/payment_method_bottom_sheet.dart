@@ -1,12 +1,12 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<T> showSelectPaymentMethodBottomSheet<T>(BuildContext context, Cart cart) {
@@ -64,8 +63,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
           Nav.pop();
           // Nav.replace(MainNavigation(pageIndex: 2));
-          getIt<MainNavigationBloc>().add(MainNavigationEvent(pageIndex: 2));
-          _showDialog(context);
+          // getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+          // _showDialog(context);
         } else if (state is CartErrorState) {
           Nav.pop();
         }
@@ -323,46 +322,46 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     );
   }
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return SimpleDialog(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    width: 64.0,
-                    height: 64.0,
+  // void _showDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (context) {
+  //       return SimpleDialog(
+  //         children: <Widget>[
+  //           Padding(
+  //             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: <Widget>[
+  //                 SizedBox(
+  //                   width: 64.0,
+  //                   height: 64.0,
 
-                    // Check mark animation
-                    child: SuccessAnimationWidget(),
-                  ),
+  //                   // Check mark animation
+  //                   child: SuccessAnimationWidget(),
+  //                 ),
 
-                  // Display message to the user
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Text(
-                      trans('payment.orderPlaced'),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
+  //                 // Display message to the user
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(top: 30.0),
+  //                   child: Text(
+  //                     trans('payment.orderPlaced'),
+  //                     style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontSize: 15.0,
+  //                       fontWeight: FontWeight.w500,
+  //                     ),
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget createSimplePaymentInfo() {
     return RichText(
