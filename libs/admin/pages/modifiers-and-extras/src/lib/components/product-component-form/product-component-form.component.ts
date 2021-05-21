@@ -102,7 +102,7 @@ export class ProductComponentFormComponent
   private _uniqueNameValidator(lang: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const names = this._productComponents
-        .filter(c => c.id !== this.productComponent?.id)
+        .filter(c => c.id !== this.productComponent?.id && c.name[lang].trim() !== '')
         .map(c => c.name[lang]);
 
       return names.includes(control.value) ? { existing: true } : null;

@@ -4,7 +4,7 @@ import { startWith } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
-import { getProductComponentSetOptions } from '@bgap/admin/shared/utils';
+import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import {
   EProductLevel, IKeyValue, IProductComponentSet, IProductConfigComponent, IProductConfigSet
 } from '@bgap/shared/types';
@@ -36,6 +36,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
+    private _localizePipe: LocalizePipe,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.componentSetForm = this._formBuilder.group({
@@ -59,7 +60,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
           IProductConfigSet[],
         ]): void => {
           this._productComponentSets = productComponentSets;
-          this.productComponentSetOptions = getProductComponentSetOptions(
+          this.productComponentSetOptions = this._getProductComponentSetOptions(
             productComponentSets,
             items.map(i => i.productSetId),
           );
@@ -153,4 +154,21 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
     this._changeDetectorRef.detectChanges();
   }
+
+  private _getProductComponentSetOptions(
+    productComponentSets: IProductComponentSet[],
+    items: string[],
+  ) {
+    return productComponentSets
+      .filter(
+        productComponentSet => !(items || []).includes(productComponentSet.id),
+      )
+      .map(
+        (productComponentSet): IKeyValue => ({
+          key: productComponentSet.id,
+          value: `${this._localizePipe.transform(productComponentSet.name)} (${productComponentSet.description})`,
+        }),
+      );
+  }
+
 }
