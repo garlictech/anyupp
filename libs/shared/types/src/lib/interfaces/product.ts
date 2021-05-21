@@ -36,8 +36,8 @@ export interface IProductVariant {
 
 export interface IProductConfigComponent {
   productComponentId: string;
-  refGroupPrice?: number;
-  price?: number;
+  refGroupPrice: number;
+  price: number;
   position: number;
 }
 
@@ -45,30 +45,6 @@ export interface IProductConfigSet {
   productSetId: string;
   items: IProductConfigComponent[];
   position: number;
-}
-
-export interface IGeneratedProductVariant {
-  id: string;
-  variantName: ILocalizedItem<string>;
-  price: number;
-  position: number;
-  pack: IProductVariantPack;
-}
-
-export interface IGeneratedProduct {
-  id: string; // UnitProductId
-  unitId: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: number;
-  variants: IGeneratedProductVariant[];
-  productCategoryId: string;
-  allergens?: CrudApi.Allergen[];
-  createdAt?: string;
-  updatedAt?: string;
 }
 
 export interface IProduct {
@@ -150,9 +126,17 @@ export interface IProductOrderChangeEvent {
   productId: string;
 }
 
-// export interface IGeneratedProductVariantsMap {
-//   [key: string]: IGeneratedProductVariant;
-// }
+export type ProductVariantWithPrice = Omit<IProductVariant, 'price'> &
+  Required<Pick<IProductVariant, 'price'>>;
+export type ProductWithPrices = Omit<IProduct, 'variants'> & {
+  variants: ProductVariantWithPrice[];
+};
+export interface ProductComponentSetMap {
+  [key: string]: Required<CrudApi.ProductComponentSet>;
+}
+export interface ProductComponentMap {
+  [key: string]: Required<CrudApi.ProductComponent>;
+}
 
 // export interface IMergedProduct {
 //   productCategoryId: string;

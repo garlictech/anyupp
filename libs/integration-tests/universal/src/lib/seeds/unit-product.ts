@@ -1,6 +1,3 @@
-import { throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-
 import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
 import {
   crudBackendGraphQLClient,

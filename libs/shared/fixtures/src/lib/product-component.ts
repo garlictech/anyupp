@@ -17,14 +17,22 @@ const getProductComponent = ({
 }): RequiredId<CrudApi.CreateProductComponentInput> => ({
   ...productComponentBase,
   id,
-  name: { en: `PRODUCT_COMPONENT_${id}`, hu: `TERMEK_KOMPONENS_${id}` },
+  name: {
+    en: `PRODUCT_COMPONENT_${id}`,
+    de: `PRODUCT_COMPONENT_${id}`,
+    hu: `TERMEK_KOMPONENS_${id}`,
+  },
   description: `PRODUCT_COMPONENT DESCRIPTION ${id}`,
 });
 
 const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
   id: `${testIdPrefix}product_component_id_`,
   chainId: 'chainId_',
-  name: { en: 'PRODUCT_COMPONENT', hu: 'TERMEK_KOMPONENS' },
+  name: {
+    en: 'PRODUCT_COMPONENT',
+    de: 'PRODUCT_COMPONENT',
+    hu: 'TERMEK_KOMPONENS',
+  },
   description: 'DESCRIPTION',
   allergens: [
     CrudApi.Allergen.egg,
@@ -37,23 +45,32 @@ const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
 
 const getComponentSet = ({
   id,
+  chainId,
   itemIds = [],
 }: {
   id: string;
+  chainId: string;
   itemIds: string[];
 }): RequiredId<CrudApi.CreateProductComponentSetInput> => ({
   ...productComponentSetBase,
   id,
   items: itemIds,
   maxSelection: itemIds.length,
-  name: { en: `PRODUCT_COMPONENT_SET_${id}`, hu: `KOMPONENS_SET_${id}` },
+  chainId,
+  name: {
+    en: `PRODUCT_COMPONENT_SET_${id}`,
+    de: `PRODUCT_COMPONENT_SET_${id}`,
+    hu: `KOMPONENS_SET_${id}`,
+  },
   description: `PRODUCT_COMPONENT DESCRIPTION ${id}`,
 });
 
-const productComponentSetBase: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+const productComponentSetBase: Omit<
+  RequiredId<CrudApi.CreateProductComponentSetInput>,
+  'chainId'
+> = {
   id: `${testIdPrefix}product_component_set_id_`,
-  chainId: 'chainId_',
-  name: { en: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
+  name: { en: 'COMPONENT_SET', de: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
   description: 'DESCRIPTION',
   type: EProductComponentSetType.EXTRAS,
   items: [],
@@ -84,19 +101,18 @@ const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
 const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_01,
+    chainId: chainSeed.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02],
   }),
-  chainId: chainSeed.chainId_seeded_01,
   type: EProductComponentSetType.EXTRAS,
 };
 
 const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_02,
+    chainId: chainSeed.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
   }),
-  items: [prodCompId_01, prodCompId_02, prodCompId_03],
-  chainId: chainSeed.chainId_seeded_01,
   type: EProductComponentSetType.MODIFIER,
 };
 
@@ -108,10 +124,14 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_01.items[0],
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_01.items[1],
+        refGroupPrice: 0,
+        price: 0,
       },
     ],
   },
@@ -122,14 +142,20 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_02.items[0],
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_02.items[1],
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 3,
         productComponentId: seededProdCompSet_02.items[2],
+        refGroupPrice: 0,
+        price: 0,
       },
     ],
   },
@@ -211,7 +237,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[0].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[0].items[0].productComponentId,
-        price: unitConfigSets[0].items[0].price!,
+        price: unitConfigSets[0].items[0].price,
         position: unitConfigSets[0].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
@@ -220,7 +246,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[0].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[0].items[1].productComponentId,
-        price: unitConfigSets[0].items[1].price!,
+        price: unitConfigSets[0].items[1].price,
         position: unitConfigSets[0].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
@@ -239,7 +265,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[1].items[0].productComponentId,
-        price: unitConfigSets[1].items[0].price!,
+        price: unitConfigSets[1].items[0].price,
         position: unitConfigSets[1].items[0].position,
         name: seededProdComp_01.name,
         description: seededProdComp_01.description,
@@ -248,7 +274,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[1].items[1].productComponentId,
-        price: unitConfigSets[1].items[1].price!,
+        price: unitConfigSets[1].items[1].price,
         position: unitConfigSets[1].items[1].position,
         name: seededProdComp_02.name,
         description: seededProdComp_02.description,
@@ -257,7 +283,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
       {
         // unitConfigSets[1].items[2] == seededProdComp_03
         productComponentId: unitConfigSets[1].items[2].productComponentId,
-        price: unitConfigSets[1].items[2].price!,
+        price: unitConfigSets[1].items[2].price,
         position: unitConfigSets[1].items[2].position,
         name: seededProdComp_03.name,
         description: seededProdComp_03.description,

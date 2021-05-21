@@ -5,25 +5,109 @@ import {
   EVariantAvailabilityType,
   IProduct,
   IProductVariant,
+  ProductComponentMap,
+  ProductComponentSetMap,
 } from '@bgap/shared/types';
-import { calculateActualPricesAndCheckActivity } from './calculate-product';
-import { productSeed } from '@bgap/shared/fixtures';
+import {
+  calculateActualPricesAndCheckActivity,
+  toCreateGeneratedProductInputType,
+} from './calculate-product';
 import { CrudApi } from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct: any = {
-    // const baseProduct: IProduct = {
-    ...productSeed.unitProductBase,
+  const baseProduct: IProduct = {
+    id: 'PRODUCT_ID',
+    chainId: 'CHAIN_ID',
+    groupId: 'GROUP_ID',
+    unitId: 'UNIT_ID',
     tax: 11,
     name: { en: 'NAME' },
     description: { en: 'DESCRIPTION' },
     image: 'IMG',
-    // , createdAt: "CREATED_AT",
-    //  updatedAt: "UPDATED_AT",
+    createdAt: 'CREATED_AT',
+    updatedAt: 'UPDATED_AT',
     productCategoryId: 'PROD_CAT_ID',
     productType: EProductType.DRINK,
-    //  chainId: 'CHAIN_ID',
+    position: 1,
+    isVisible: true,
     allergens: [CrudApi.Allergen.peanut, CrudApi.Allergen.egg],
+    variants: [
+      {
+        id: `VARIANT_ID_01`,
+        variantName: { en: `VARIANT_NAME_01` },
+        refGroupPrice: 1,
+        isAvailable: true,
+        pack: { size: 1, unit: 'UNIT' },
+        price: 1,
+        availabilities: [
+          {
+            dayFrom: '',
+            dayTo: '',
+            price: 1 * 1.5,
+            timeFrom: '',
+            timeTo: '',
+            type: EVariantAvailabilityType.ALWAYS,
+          },
+        ],
+        position: 1,
+      },
+    ],
+    configSets: [
+      {
+        productSetId: 'PROUDCT_SET_01',
+        items: [
+          {
+            productComponentId: 'PRODUCT_COMPONENT_ID_01',
+            refGroupPrice: 1,
+            price: 1,
+            position: 1,
+          },
+          {
+            productComponentId: 'PRODUCT_COMPONENT_ID_02',
+            refGroupPrice: 2,
+            price: 2,
+            position: 2,
+          },
+        ],
+        position: 1,
+      },
+    ],
+  };
+  const prodComponentMap: ProductComponentMap = {
+    ['PRODUCT_COMPONENT_ID_01']: {
+      __typename: 'ProductComponent',
+      id: 'PRODUCT_COMPONENT_ID_01',
+      chainId: 'CHAIN_ID',
+      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_NAME' },
+      description: 'PRODUCT_COMP_DESC',
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+    },
+    ['PRODUCT_COMPONENT_ID_02']: {
+      __typename: 'ProductComponent',
+      id: 'PRODUCT_COMPONENT_ID_02',
+      chainId: 'CHAIN_ID',
+      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_NAME' },
+      description: 'PRODUCT_COMP_DESC',
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+    },
+  };
+  const prodComponentSetMap: ProductComponentSetMap = {
+    ['PROUDCT_SET_01']: {
+      __typename: 'ProductComponentSet',
+      id: 'PROUDCT_SET_01',
+      chainId: 'CHAIN_ID',
+      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_SET_NAME' },
+      description: 'PRODUCT_COMP_SET_DESC',
+      type: 'PRODUCT_COMP_SET_TYPE',
+      maxSelection: 1,
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+      items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
+    },
   };
   const timezone01 = 'Europe/London';
 
@@ -34,7 +118,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         {
           dayFrom: '2020-07-17',
           dayTo: '2020-07-19',
-          price: '2',
+          price: 2,
           timeFrom: '00:00',
           timeTo: '23:59',
           type: EVariantAvailabilityType.SEASONAL,
@@ -60,74 +144,46 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
     const activeVariantIdx = 0;
 
+    if (!result) {
+      throw 'CalculatedProduct is undefined';
+    }
+
     expect(result).not.toBeUndefined();
     expect(result).toHaveProperty('name');
     expect(result).toHaveProperty('description');
     expect(result).toHaveProperty('image');
     expect(result).toHaveProperty('position', baseProduct.position);
     expect(result).toHaveProperty('tax', baseProduct.tax);
+    expect(result).toHaveProperty('allergens');
+    expect(result).toHaveProperty('configSets');
+    // Variants
     expect(result).toHaveProperty('variants');
-    expect(result?.variants.length).toEqual(2);
-    expect(result?.variants[activeVariantIdx]).toHaveProperty('variantName');
-    expect(result?.variants[activeVariantIdx]).toHaveProperty('price');
-    expect(result?.variants[activeVariantIdx]).toHaveProperty(
+    expect(result.variants.length).toEqual(2);
+    expect(result.variants[activeVariantIdx]).toHaveProperty('variantName');
+    expect(result.variants[activeVariantIdx]).toHaveProperty('price');
+    expect(result.variants[activeVariantIdx]).toHaveProperty(
       'position',
       product.variants[activeVariantIdx].position,
     );
-    expect(result!.variants[activeVariantIdx]).toHaveProperty('pack', {
+    expect(result.variants[activeVariantIdx]).toHaveProperty('pack', {
       size: product.variants[activeVariantIdx].pack.size,
       unit: product.variants[activeVariantIdx].pack.unit,
     });
-    expect(result!.variants[activeVariantIdx]).not.toHaveProperty(
-      'availabilities',
+    // expect(result!.variants[activeVariantIdx]).not.toHaveProperty(
+    //   'availabilities',
+    // );
+    expect(result).toMatchSnapshot(
+      `Result of calculateActualPricesAndCheckActivity with ONLY the variants with ACTIVE prices`,
     );
-    expect(result).toMatchInlineSnapshot(`
-      Object {
-        "allergens": Array [
-          "peanut",
-          "egg",
-        ],
-        "description": Object {
-          "en": "DESCRIPTION",
-        },
-        "id": "test_chainProduct_id_",
-        "image": "IMG",
-        "name": Object {
-          "en": "NAME",
-        },
-        "position": 1,
-        "productCategoryId": "PROD_CAT_ID",
-        "productType": "drink",
-        "tax": 11,
-        "unitId": "unitId_",
-        "variants": Array [
-          Object {
-            "id": "test_chainProductVariant_id_1",
-            "pack": Object {
-              "size": 1,
-              "unit": "UNIT",
-            },
-            "position": 1,
-            "price": 1.5,
-            "variantName": Object {
-              "en": "VARIANT_NAME_1",
-            },
-          },
-          Object {
-            "id": "test_chainProductVariant_id_1",
-            "pack": Object {
-              "size": 1,
-              "unit": "UNIT",
-            },
-            "position": 100,
-            "price": 1.5,
-            "variantName": Object {
-              "en": "VARIANT_NAME_1",
-            },
-          },
-        ],
-      }
-    `);
+    expect(
+      toCreateGeneratedProductInputType({
+        product: result,
+        unitId: baseProduct.unitId!,
+        productConfigSets: result.configSets,
+        productComponentSetMap: prodComponentSetMap,
+        productComponentMap: prodComponentMap,
+      }),
+    ).toMatchSnapshot(`Result of toCreateGeneratedProductInputType`);
   });
 
   describe('isVisible', () => {

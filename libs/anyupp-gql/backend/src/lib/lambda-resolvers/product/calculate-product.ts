@@ -1,11 +1,17 @@
-import {
-  IGeneratedProduct,
-  IGeneratedProductVariant,
-  IProduct,
-  IProductVariant,
-} from '@bgap/shared/types';
-import { calculatePriceFromAvailabilities } from './calculate-price';
 import { DateTime } from 'luxon';
+
+import {
+  IProduct,
+  IProductConfigSet,
+  IProductVariant,
+  ProductComponentMap,
+  ProductComponentSetMap,
+  ProductVariantWithPrice,
+  ProductWithPrices,
+} from '@bgap/shared/types';
+
+import { calculatePriceFromAvailabilities } from './calculate-price';
+import { CrudApi } from 'libs/crud-gql/api/src';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
@@ -15,7 +21,7 @@ export const calculateActualPricesAndCheckActivity = ({
   product: IProduct;
   atTimeISO: string;
   inTimeZone: string;
-}): IGeneratedProduct | undefined => {
+}): ProductWithPrices | undefined => {
   if (!isProductVisibleAndHasAnyAvailableVariant(product)) {
     return undefined;
   }
@@ -30,7 +36,10 @@ export const calculateActualPricesAndCheckActivity = ({
     return undefined;
   }
 
-  return toGeneratedProductType(product, variantsWithActualPrices);
+  return {
+    ...product,
+    variants: variantsWithActualPrices,
+  };
 };
 
 export const isProductVisibleAndHasAnyAvailableVariant = (product: IProduct) =>
@@ -56,7 +65,7 @@ const calculateActualPriceForEachVariant = ({
   variants: IProductVariant[];
   atTimeISO: string;
   inTimeZone: string;
-}): IGeneratedProductVariant[] => {
+}): ProductVariantWithPrice[] => {
   return variants.reduce((activeVariants, variant) => {
     if (!variant.isAvailable) {
       return activeVariants;
@@ -69,20 +78,25 @@ const calculateActualPriceForEachVariant = ({
       return activeVariants;
     }
 
-    return [
-      ...activeVariants,
-      toGeneratedProductVariantType(variant, variantPrice),
-    ];
-  }, <IGeneratedProductVariant[]>[]);
+    return [...activeVariants, { ...variant, price: variantPrice }];
+  }, <ProductVariantWithPrice[]>[]);
 };
 
-const toGeneratedProductType = (
-  product: IProduct,
-  variants: IGeneratedProductVariant[],
-): IGeneratedProduct => ({
+export const toCreateGeneratedProductInputType = ({
+  product,
+  unitId,
+  productComponentSetMap,
+  productComponentMap,
+  productConfigSets,
+}: {
+  product: ProductWithPrices;
+  unitId: string;
+  productComponentSetMap: ProductComponentSetMap;
+  productComponentMap: ProductComponentMap;
+  productConfigSets?: IProductConfigSet[];
+}): CrudApi.CreateGeneratedProductInput => ({
   id: product.id,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  unitId: product.unitId!,
+  unitId,
   productCategoryId: product.productCategoryId,
   name: product.name,
   description: product.description,
@@ -91,16 +105,62 @@ const toGeneratedProductType = (
   tax: product.tax,
   position: product.position,
   allergens: product.allergens,
-  variants,
+  configSets: productConfigSets?.map(configSet =>
+    toGeneratedProductConfigSetInput({
+      productConfigSet: configSet,
+      productComponentSetMap,
+      productComponentMap,
+    }),
+  ),
+  variants: product.variants.map(toGeneratedProductVariantInputType),
 });
 
-const toGeneratedProductVariantType = (
-  variant: IProductVariant,
-  price: number,
-): IGeneratedProductVariant => ({
+const toGeneratedProductVariantInputType = (
+  variant: ProductVariantWithPrice,
+): CrudApi.GeneratedProductVariantInput => ({
   id: variant.id,
   variantName: variant.variantName,
   position: variant.position,
   pack: { size: variant.pack.size, unit: variant.pack.unit },
-  price,
+  price: variant.price,
 });
+
+const toGeneratedProductConfigSetInput = ({
+  productConfigSet,
+  productComponentSetMap,
+  productComponentMap,
+}: {
+  productConfigSet: IProductConfigSet;
+  productComponentSetMap: ProductComponentSetMap;
+  productComponentMap: ProductComponentMap;
+}): CrudApi.GeneratedProductConfigSetInput => {
+  const productComponentSet =
+    productComponentSetMap[productConfigSet.productSetId];
+  if (!productComponentSet) {
+    throw `productComponentSet with id ${productConfigSet.productSetId} is missing from the componentSetMap`;
+  }
+
+  return {
+    position: productConfigSet.position,
+    name: productComponentSet.name,
+    description: productComponentSet.description,
+    type: productComponentSet.type,
+    maxSelection: productComponentSet.maxSelection,
+    items: productConfigSet.items.map(confComponent => {
+      const productComponent =
+        productComponentMap[confComponent.productComponentId];
+      if (!productComponent) {
+        throw `productComponent with id ${confComponent.productComponentId} is missing from the componentMap`;
+      }
+      return {
+        productComponentId: confComponent.productComponentId,
+        price: confComponent.price,
+        position: confComponent.position,
+        // comes from the productComponent itself (referenced by productComponentId)
+        name: productComponent.name,
+        description: productComponent.description,
+        allergens: productComponent.allergens,
+      };
+    }),
+  };
+};

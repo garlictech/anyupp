@@ -3,6 +3,8 @@ import { validateSchema } from '../validator/validate';
 import { IUnitProduct, IGroupProduct, IChainProduct } from '@bgap/shared/types';
 import { localizedItemSchema } from './localized-item';
 
+export const allergenListSchema = Joi.array().items(Joi.string());
+
 export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
   __typename: Joi.string().valid('ChainProduct').optional(),
   id: Joi.string().required(),
@@ -17,7 +19,7 @@ export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
   configSets: Joi.array().optional().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
-  allergens: Joi.array().items(Joi.string()).optional().allow(null),
+  allergens: allergenListSchema.allow(null),
 };
 
 export const {

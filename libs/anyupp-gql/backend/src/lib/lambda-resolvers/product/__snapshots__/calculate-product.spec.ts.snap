@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of calculateActualPricesAndCheckActivity with ONLY the variants with ACTIVE prices 1`] = `
+Object {
+  "allergens": Array [
+    "peanut",
+    "egg",
+  ],
+  "chainId": "CHAIN_ID",
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": 1,
+          "price": 1,
+          "productComponentId": "PRODUCT_COMPONENT_ID_01",
+          "refGroupPrice": 1,
+        },
+        Object {
+          "position": 2,
+          "price": 2,
+          "productComponentId": "PRODUCT_COMPONENT_ID_02",
+          "refGroupPrice": 2,
+        },
+      ],
+      "position": 1,
+      "productSetId": "PROUDCT_SET_01",
+    },
+  ],
+  "createdAt": "CREATED_AT",
+  "description": Object {
+    "en": "DESCRIPTION",
+  },
+  "groupId": "GROUP_ID",
+  "id": "PRODUCT_ID",
+  "image": "IMG",
+  "isVisible": true,
+  "name": Object {
+    "en": "NAME",
+  },
+  "position": 1,
+  "productCategoryId": "PROD_CAT_ID",
+  "productType": "drink",
+  "tax": 11,
+  "unitId": "UNIT_ID",
+  "updatedAt": "UPDATED_AT",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "VARIANT_ID_01",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "refGroupPrice": 1,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "VARIANT_ID_01",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 100,
+      "price": 1.5,
+      "refGroupPrice": 1,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+  ],
+}
+`;
+
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateGeneratedProductInputType 1`] = `
+Object {
+  "allergens": Array [
+    "peanut",
+    "egg",
+  ],
+  "configSets": Array [
+    Object {
+      "description": "PRODUCT_COMP_SET_DESC",
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "fish",
+          ],
+          "description": "PRODUCT_COMP_DESC",
+          "name": Object {
+            "__typename": "LocalizedItem",
+            "en": "PRODUCT_COMP_NAME",
+          },
+          "position": 1,
+          "price": 1,
+          "productComponentId": "PRODUCT_COMPONENT_ID_01",
+        },
+        Object {
+          "allergens": Array [
+            "egg",
+            "fish",
+          ],
+          "description": "PRODUCT_COMP_DESC",
+          "name": Object {
+            "__typename": "LocalizedItem",
+            "en": "PRODUCT_COMP_NAME",
+          },
+          "position": 2,
+          "price": 2,
+          "productComponentId": "PRODUCT_COMPONENT_ID_02",
+        },
+      ],
+      "maxSelection": 1,
+      "name": Object {
+        "__typename": "LocalizedItem",
+        "en": "PRODUCT_COMP_SET_NAME",
+      },
+      "position": 1,
+      "type": "PRODUCT_COMP_SET_TYPE",
+    },
+  ],
+  "description": Object {
+    "en": "DESCRIPTION",
+  },
+  "id": "PRODUCT_ID",
+  "image": "IMG",
+  "name": Object {
+    "en": "NAME",
+  },
+  "position": 1,
+  "productCategoryId": "PROD_CAT_ID",
+  "productType": "drink",
+  "tax": 11,
+  "unitId": "UNIT_ID",
+  "variants": Array [
+    Object {
+      "id": "VARIANT_ID_01",
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+    Object {
+      "id": "VARIANT_ID_01",
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 100,
+      "price": 1.5,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+  ],
+}
+`;

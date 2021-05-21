@@ -15,12 +15,23 @@ import {
 import { deleteGeneratedProductsForAUnit } from '../product';
 import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
+import {
+  validateProductComponent,
+  validateProductComponentSet,
+  validateUnitProduct,
+} from '@bgap/shared/data-validators';
 import { createGeneratedProducts } from '../product/generated-product';
 import { mergeAllProductLayers } from '../product/merge-product';
-import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
+import {
+  calculateActualPricesAndCheckActivity,
+  toCreateGeneratedProductInputType,
+} from '../product/calculate-product';
 import { getTimezoneFromLocation } from '../../utils';
-import { IGeneratedProduct } from '@bgap/shared/types';
+import {
+  ProductComponentMap,
+  ProductComponentSetMap,
+  ProductWithPrices,
+} from '@bgap/shared/types';
 
 export const regenerateUnitData = ({
   unitId,
@@ -49,25 +60,62 @@ export const regenerateUnitData = ({
           ),
         ),
         getTimezoneForUnit({ unitId, crudGraphqlClient }),
-      ]),
-    ),
-    // calculate actual Prize for all the mergedProducts
-    map(([mergedProducts, unitTimeZone]) =>
-      mergedProducts.map(
-        mergedProduct =>
-          calculateActualPricesAndCheckActivity({
-            product: mergedProduct,
-            atTimeISO: new Date().toISOString(),
-            inTimeZone: unitTimeZone,
-          }) || null,
+        getProductComponentSetMap({
+          chainId: unitProducts[0].chainId, // all the unitProduct for the same unit has the same chainID
+          crudGraphqlClient,
+        }),
+        getProductComponentMap({
+          chainId: unitProducts[0].chainId, // all the unitProduct for the same unit has the same chainID
+          crudGraphqlClient,
+        }).pipe(defaultIfEmpty({})),
+      ]).pipe(
+        // calculate actual Prize for all the mergedProducts
+        map(
+          ([
+            mergedProducts,
+            unitTimeZone,
+            productComponentSetMap,
+            productComponentMap,
+          ]) => ({
+            mergedProducts,
+            unitTimeZone,
+            productComponentSetMap,
+            productComponentMap,
+          }),
+        ),
+        map(props => ({
+          ...props,
+          products: props.mergedProducts.reduce((prev, curr) => {
+            const mergedProduct = calculateActualPricesAndCheckActivity({
+              product: curr,
+              atTimeISO: new Date().toISOString(),
+              inTimeZone: props.unitTimeZone,
+            });
+            if (mergedProduct === undefined) {
+              return prev;
+            }
+            return [...prev, mergedProduct];
+          }, <ProductWithPrices[]>[]),
+        })),
+        map(props => {
+          return props.products.map(product =>
+            toCreateGeneratedProductInputType({
+              product,
+              unitId: unitProducts[0].unitId,
+              productConfigSets: product.configSets,
+              productComponentSetMap: props.productComponentSetMap,
+              productComponentMap: props.productComponentMap,
+            }),
+          );
+        }),
       ),
-    ),
-    map(
-      productsToGenerate =>
-        productsToGenerate.filter(x => !!x) as IGeneratedProduct[],
     ),
     // store generatedProducts in the db
     switchMap(createGeneratedProducts),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal listUnitProducts query error');
+    }),
     mapTo(true),
   );
 };
@@ -116,3 +164,88 @@ const getTimezoneForUnit = ({
     map(getTimezoneFromLocation),
   );
 };
+
+const getProductComponentSetMap = ({
+  chainId,
+  crudGraphqlClient,
+}: {
+  chainId: string;
+  crudGraphqlClient: GraphqlApiClient;
+}): Observable<ProductComponentSetMap> => {
+  const input: CrudApi.ListProductComponentSetsQueryVariables = {
+    filter: { chainId: { eq: chainId } },
+  };
+  return executeQuery(crudGraphqlClient)<CrudApi.ListProductComponentSetsQuery>(
+    CrudApiQueryDocuments.listProductComponentSets,
+    input,
+    { fetchPolicy: 'no-cache' },
+  ).pipe(
+    // TODO: choose one:
+    map(response => response.listProductComponentSets?.items),
+    filter(fp.negate(fp.isEmpty)),
+    defaultIfEmpty([]),
+    switchMap(items => combineLatest(items.map(validateProductComponentSet))),
+    // IN CASE YOU ARE A CHEATER :)
+    // map(
+    //   response =>
+    //     response.listProductComponentSets?.items as Required<
+    //       CrudApi.ProductComponentSet
+    //     >[],
+    // ),
+    //
+    // ALMOST WORKS:
+    // [### getProductComponentSetMap 4: Error] "listProductComponentSet Object Validation Error: \"nextToken\" must be a string, \"__typename\" is not allowed"
+    // switchMap(
+    //   validateGqlList<Required<CrudApi.ProductComponentSet>[]>(
+    //     productComponentSetSchema,
+    //     'ProductComponentSet',
+    //   ).validate,
+    // ),
+    map(prodCompSets =>
+      prodCompSets.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
+    ),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal lisProductComponentSets query error');
+    }),
+  );
+};
+const getProductComponentMap = ({
+  chainId,
+  crudGraphqlClient,
+}: {
+  chainId: string;
+  crudGraphqlClient: GraphqlApiClient;
+}): Observable<ProductComponentMap> => {
+  const input: CrudApi.ListProductComponentsQueryVariables = {
+    filter: { chainId: { eq: chainId } },
+  };
+  return executeQuery(crudGraphqlClient)<CrudApi.ListProductComponentsQuery>(
+    CrudApiQueryDocuments.listProductComponents,
+    input,
+    { fetchPolicy: 'no-cache' },
+  ).pipe(
+    map(response => response.listProductComponents?.items),
+    filter(fp.negate(fp.isEmpty)),
+    defaultIfEmpty([]),
+    switchMap(items => combineLatest(items.map(validateProductComponent))),
+    catchError(err => {
+      console.error(err);
+      return throwError('Internal lisProductComponents query error');
+    }),
+    map(prodComps =>
+      prodComps.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
+    ),
+  );
+};
+
+// export const validateGqlList = <T>(
+//   itemSchema: Joi.SchemaMap,
+//   label: string,
+// ) => {
+//   const listSchema = {
+//     items: Joi.array().items(itemSchema),
+//     nextToken: Joi.string().optional(),
+//   };
+//   return validateSchema<T>(listSchema, `list${label}`);
+// };

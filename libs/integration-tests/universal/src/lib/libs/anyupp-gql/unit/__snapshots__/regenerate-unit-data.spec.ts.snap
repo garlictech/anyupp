@@ -4,95 +4,18 @@ exports[`RegenerateUnitData mutation tests should regenerate all the generated p
 Array [
   Object {
     "__typename": "GeneratedProduct",
-    "description": Object {
-      "__typename": "LocalizedItem",
-      "de": null,
-      "en": "Test chain termék #1 description",
-      "hu": "Teszt chain termék #1 leírás",
-    },
-    "id": "seeded_unit_product_c1_g1_1_id",
-    "image": "https://picsum.photos/100",
-    "name": Object {
-      "__typename": "LocalizedItem",
-      "de": null,
-      "en": "Test chain product #1 name",
-      "hu": "Teszt chain termék #1 név",
-    },
-    "position": 1,
-    "productCategoryId": "seeded_product_category_c1_1_id",
-    "productType": "drink",
-    "tax": 27,
-    "unitId": "seeded_unit_c1_g1_1_id",
-    "variants": Array [
-      Object {
-        "__typename": "GeneratedProductVariant",
-        "id": "seeded_chain_product_variant_c1_p1_1_id",
-        "pack": Object {
-          "__typename": "ProductVariantPack",
-          "size": 2,
-          "unit": "dl",
-        },
-        "position": 1,
-        "price": 60,
-        "variantName": Object {
-          "__typename": "LocalizedItem",
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
-        },
-      },
+    "allergens": Array [
+      "egg",
+      "gluten",
     ],
-  },
-  Object {
-    "__typename": "GeneratedProduct",
-    "description": Object {
-      "__typename": "LocalizedItem",
-      "de": null,
-      "en": "Test chain termék #2 description",
-      "hu": "Teszt chain termék #2 leírás",
-    },
-    "id": "seeded_unit_product_c1_g1_2_id",
-    "image": "https://picsum.photos/100",
-    "name": Object {
-      "__typename": "LocalizedItem",
-      "de": null,
-      "en": "Test chain product #2 name",
-      "hu": "Teszt chain termék #2 név",
-    },
-    "position": 2,
-    "productCategoryId": "seeded_product_category_c1_1_id",
-    "productType": "food",
-    "tax": 27,
-    "unitId": "seeded_unit_c1_g1_1_id",
-    "variants": Array [
-      Object {
-        "__typename": "GeneratedProductVariant",
-        "id": "seeded_chain_product_variant_c1_p2_1_id",
-        "pack": Object {
-          "__typename": "ProductVariantPack",
-          "size": 2,
-          "unit": "dl",
-        },
-        "position": 1,
-        "price": 120,
-        "variantName": Object {
-          "__typename": "LocalizedItem",
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
-        },
-      },
-    ],
-  },
-  Object {
-    "__typename": "GeneratedProduct",
+    "configSets": null,
     "description": Object {
       "__typename": "LocalizedItem",
       "de": null,
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_unit01_have_not_been_here_before",
+    "id": "test_REGEN_unit01_have_not_been_here_before",
     "image": "IMAGE",
     "name": Object {
       "__typename": "LocalizedItem",
@@ -178,13 +101,139 @@ Array [
   },
   Object {
     "__typename": "GeneratedProduct",
+    "allergens": Array [
+      "egg",
+      "gluten",
+    ],
+    "configSets": Array [
+      Object {
+        "__typename": "GeneratedProductConfigSet",
+        "description": "PRODUCT_COMPONENT DESCRIPTION test_REGEN_prodCompSet_01",
+        "items": Array [
+          Object {
+            "__typename": "GeneratedProductConfigComponent",
+            "allergens": Array [
+              "egg",
+              "gluten",
+              "milk",
+              "soya",
+              "peanut",
+            ],
+            "description": "PRODUCT_COMPONENT DESCRIPTION seeded_product_component_01_id",
+            "name": Object {
+              "__typename": "LocalizedItem",
+              "de": "PRODUCT_COMPONENT_seeded_product_component_01_id",
+              "en": "PRODUCT_COMPONENT_seeded_product_component_01_id",
+              "hu": "TERMEK_KOMPONENS_seeded_product_component_01_id",
+            },
+            "position": 1,
+            "price": 0,
+            "productComponentId": "test_REGEN_prodComp_01",
+          },
+          Object {
+            "__typename": "GeneratedProductConfigComponent",
+            "allergens": Array [
+              "sesame",
+              "treenuts",
+            ],
+            "description": "PRODUCT_COMPONENT DESCRIPTION seeded_product_component_02_id",
+            "name": Object {
+              "__typename": "LocalizedItem",
+              "de": "PRODUCT_COMPONENT_seeded_product_component_02_id",
+              "en": "PRODUCT_COMPONENT_seeded_product_component_02_id",
+              "hu": "TERMEK_KOMPONENS_seeded_product_component_02_id",
+            },
+            "position": 2,
+            "price": 0,
+            "productComponentId": "test_REGEN_prodComp_02",
+          },
+        ],
+        "maxSelection": 2,
+        "name": Object {
+          "__typename": "LocalizedItem",
+          "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+          "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+          "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_01",
+        },
+        "position": 1,
+        "type": "extras",
+      },
+      Object {
+        "__typename": "GeneratedProductConfigSet",
+        "description": "PRODUCT_COMPONENT DESCRIPTION test_REGEN_prodCompSet_02",
+        "items": Array [
+          Object {
+            "__typename": "GeneratedProductConfigComponent",
+            "allergens": Array [
+              "egg",
+              "gluten",
+              "milk",
+              "soya",
+              "peanut",
+            ],
+            "description": "PRODUCT_COMPONENT DESCRIPTION seeded_product_component_01_id",
+            "name": Object {
+              "__typename": "LocalizedItem",
+              "de": "PRODUCT_COMPONENT_seeded_product_component_01_id",
+              "en": "PRODUCT_COMPONENT_seeded_product_component_01_id",
+              "hu": "TERMEK_KOMPONENS_seeded_product_component_01_id",
+            },
+            "position": 1,
+            "price": 0,
+            "productComponentId": "test_REGEN_prodComp_01",
+          },
+          Object {
+            "__typename": "GeneratedProductConfigComponent",
+            "allergens": Array [
+              "sesame",
+              "treenuts",
+            ],
+            "description": "PRODUCT_COMPONENT DESCRIPTION seeded_product_component_02_id",
+            "name": Object {
+              "__typename": "LocalizedItem",
+              "de": "PRODUCT_COMPONENT_seeded_product_component_02_id",
+              "en": "PRODUCT_COMPONENT_seeded_product_component_02_id",
+              "hu": "TERMEK_KOMPONENS_seeded_product_component_02_id",
+            },
+            "position": 2,
+            "price": 0,
+            "productComponentId": "test_REGEN_prodComp_02",
+          },
+          Object {
+            "__typename": "GeneratedProductConfigComponent",
+            "allergens": Array [
+              "mustard",
+            ],
+            "description": "PRODUCT_COMPONENT DESCRIPTION seeded_product_component_03_id",
+            "name": Object {
+              "__typename": "LocalizedItem",
+              "de": "PRODUCT_COMPONENT_seeded_product_component_03_id",
+              "en": "PRODUCT_COMPONENT_seeded_product_component_03_id",
+              "hu": "TERMEK_KOMPONENS_seeded_product_component_03_id",
+            },
+            "position": 3,
+            "price": 0,
+            "productComponentId": "test_REGEN_prodComp_03",
+          },
+        ],
+        "maxSelection": 3,
+        "name": Object {
+          "__typename": "LocalizedItem",
+          "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+          "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+          "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_02",
+        },
+        "position": 2,
+        "type": "modifier",
+      },
+    ],
     "description": Object {
       "__typename": "LocalizedItem",
       "de": null,
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_unitProduct_useeded_unit_c1_g1_1_id_01",
+    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_01",
     "image": "IMAGE",
     "name": Object {
       "__typename": "LocalizedItem",
@@ -270,13 +319,18 @@ Array [
   },
   Object {
     "__typename": "GeneratedProduct",
+    "allergens": Array [
+      "egg",
+      "gluten",
+    ],
+    "configSets": null,
     "description": Object {
       "__typename": "LocalizedItem",
       "de": null,
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_unitProduct_useeded_unit_c1_g1_1_id_02",
+    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_02",
     "image": "IMAGE",
     "name": Object {
       "__typename": "LocalizedItem",
@@ -362,13 +416,21 @@ Array [
   },
   Object {
     "__typename": "GeneratedProduct",
+    "allergens": Array [
+      "egg",
+      "gluten",
+      "milk",
+      "soya",
+      "peanut",
+    ],
+    "configSets": null,
     "description": Object {
       "__typename": "LocalizedItem",
       "de": null,
       "en": "DESCRIPTION",
       "hu": "LEIRAS",
     },
-    "id": "test_unitProduct_utest_UNIT_ID_02_REGENERATE_01",
+    "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_02_01",
     "image": "https://picsum.photos/100",
     "name": Object {
       "__typename": "LocalizedItem",
@@ -380,7 +442,7 @@ Array [
     "productCategoryId": "productCategoryId_",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "test_UNIT_ID_02_REGENERATE",
+    "unitId": "test_REGEN_UNIT_ID_02",
     "variants": Array [
       Object {
         "__typename": "GeneratedProductVariant",
