@@ -24,6 +24,8 @@ import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 
+const TEST_NAME = 'GEOUNIT_';
+
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
 const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // distance from userLoc: 0.153.. km
@@ -179,6 +181,9 @@ describe('GetUnitsNearLocation tests', () => {
         successfullExecutionChecks(foundItems);
         done();
       },
+      error(err) {
+        console.error(`${TEST_NAME}Test ERROR`, err);
+      },
     });
   }, 15000);
 
@@ -210,14 +215,14 @@ describe('GetUnitsNearLocation tests', () => {
           successfullExecutionChecks(foundItems);
           done();
         },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
       });
   }, 15000);
 
   const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
     const ids = foundItems.map(x => x.id);
-    expect(ids).toContain(unitSeed.unitId_seeded_01);
-    expect(ids).toContain(unitSeed.unitId_seeded_02);
-    expect(ids).toContain(unitSeed.unitId_seeded_03);
     expect(ids).not.toContain(unitNotActive.id);
 
     expect(foundItems[0].id).toEqual(unit_03.id);

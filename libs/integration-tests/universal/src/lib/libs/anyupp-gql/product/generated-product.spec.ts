@@ -43,7 +43,7 @@ const DYNAMODB_OPERATION_DELAY = 3000;
 const PRODUCT_NUM_FOR_BATCH_CRUD = 26; // should be > 25 because the batchSize is 25
 const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
   .map(id => id.toString().padStart(2, '0'))
-  .map(id => `${testIdPrefix}ID_${id}`);
+  .map(id => `${testIdPrefix}${TEST_NAME}ID_${id}`);
 
 describe('GenerateProduct tests', () => {
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
@@ -151,10 +151,7 @@ describe('GenerateProduct tests', () => {
             done();
           },
           error(err) {
-            console.error(
-              '### ~ file: generated-product.spec.ts ~ line 160 ~ error ~ err',
-              err,
-            );
+            console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
     }, 25000);
@@ -236,10 +233,7 @@ describe('GenerateProduct tests', () => {
             done();
           },
           error(err) {
-            console.error(
-              '### ~ file: generated-product.spec.ts ~ line 236 ~ error ~ err',
-              err,
-            );
+            console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
     }, 25000);
