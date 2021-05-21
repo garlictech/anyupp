@@ -10,8 +10,8 @@ export const resetGroupProducts = createAction(
 export const resetUnitProducts = createAction(
   '[ProductList] Reset unit products',
 );
-export const resetGeneratedUnitProducts = createAction(
-  '[ProductList] Reset generated unit products',
+export const resetGeneratedProducts = createAction(
+  '[ProductList] Reset generated products',
 );
 
 export const upsertChainProduct = createAction(

@@ -10,3 +10,8 @@ export interface IPaymentMode {
   caption?: string;
   method: CrudApi.PaymentMethod;
 }
+
+export interface IPaymentMethodKV {
+  key: string;
+  value: CrudApi.PaymentMethod;
+}

@@ -20,7 +20,6 @@ import {
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
 import {
-  EOrderStatus,
   ICart,
   IOrder,
   IOrderItem,
@@ -244,7 +243,7 @@ const getLaneIdForCartItem = (
 
 const createStatusLog = (
   userId: string,
-  status: EOrderStatus = EOrderStatus.NONE,
+  status: CrudApi.OrderStatus = CrudApi.OrderStatus.NONE,
 ): Array<CrudApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];

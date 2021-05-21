@@ -1,30 +1,15 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
-  currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
-  getOrderLaneColor,
-  getPrevOrderItemStatus,
+  currentStatus as currentStatusFn, getNextOrderStatus, getOrderLaneColor, getPrevOrderItemStatus
 } from '@bgap/admin/shared/data-access/orders';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { ENebularButtonSize, ILaneOrderItem, IStatusLog, IUnit } from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
-import {
-  ENebularButtonSize,
-  EOrderStatus,
-  ILaneOrderItem,
-  IStatusLog,
-  IUnit,
-} from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -41,7 +26,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() unit!: IUnit;
 
   public currentStatus = currentStatusFn;
-  public EOrderStatus = EOrderStatus;
+  public EOrderStatus = CrudApi.OrderStatus;
   public processingTimer = 0;
 
   constructor(
@@ -69,13 +54,13 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
-    if (this.orderItem.currentStatus === EOrderStatus.PROCESSING) {
+    if (this.orderItem.currentStatus === CrudApi.OrderStatus.PROCESSING) {
       const processingInfo = (<IStatusLog[]>(
         objectToArray(this.orderItem.statusLog, 'ts')
       ))
         .reverse() // <-- Find the LAST processing status
         .find(
-          (t: IStatusLog): boolean => t.status === EOrderStatus.PROCESSING,
+          (t: IStatusLog): boolean => t.status === CrudApi.OrderStatus.PROCESSING,
         );
 
       timer(0, 1000)
@@ -97,8 +82,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveForward(): void {
     this._orderService.updateOrderItemStatus(
       this.orderItem?.orderId || '',
-      <EOrderStatus>(
-        getNextOrderItemStatus(<EOrderStatus>this.orderItem?.currentStatus)
+      <CrudApi.OrderStatus>(
+        getNextOrderStatus(<CrudApi.OrderStatus>this.orderItem?.currentStatus)
       ),
       <number>this.orderItem.idx,
     );
@@ -109,8 +94,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   public moveBack(): void {
     this._orderService.updateOrderItemStatus(
       <string>(<ILaneOrderItem>this.orderItem).orderId,
-      <EOrderStatus>(
-        getPrevOrderItemStatus(<EOrderStatus>this.orderItem?.currentStatus)
+      <CrudApi.OrderStatus>(
+        getPrevOrderItemStatus(<CrudApi.OrderStatus>this.orderItem?.currentStatus)
       ),
       <number>this.orderItem.idx,
     );

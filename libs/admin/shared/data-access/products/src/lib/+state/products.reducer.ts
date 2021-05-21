@@ -19,7 +19,7 @@ export interface IProductsState {
   chainProducts: IProductEntityState;
   groupProducts: IProductEntityState;
   unitProducts: IProductEntityState;
-  generatedUnitProducts: IProductEntityState;
+  generatedProducts: IProductEntityState;
 }
 
 export interface ProductsPartialState {
@@ -43,6 +43,7 @@ const chainProductsReducer = createReducer(
   on(ProductsActions.upsertChainProduct, (state, { product }) =>
     chainProductsAdapter.upsertOne(product, state),
   ),
+  on(ProductsActions.resetChainProducts, state => chainProductsAdapter.removeAll(state)),
 );
 
 //
@@ -62,6 +63,7 @@ const groupProductsReducer = createReducer(
   on(ProductsActions.upsertGroupProduct, (state, { product }) =>
     groupProductsAdapter.upsertOne(product, state),
   ),
+  on(ProductsActions.resetGroupProducts, state => groupProductsAdapter.removeAll(state)),
 );
 
 //
@@ -81,32 +83,34 @@ const unitProductsReducer = createReducer(
   on(ProductsActions.upsertUnitProduct, (state, { product }) =>
     unitProductsAdapter.upsertOne(product, state),
   ),
+  on(ProductsActions.resetUnitProducts, state => unitProductsAdapter.removeAll(state)),
 );
 
 //
-// UNIT
+// GENERATED
 //
 
-export const generatedUnitProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
+export const generatedProductsAdapter: EntityAdapter<IProduct> = createEntityAdapter<
   IProduct
 >();
 
-export const initialGeneratedUnitProductState: IProductEntityState = generatedUnitProductsAdapter.getInitialState(
+export const initialGeneratedProductState: IProductEntityState = generatedProductsAdapter.getInitialState(
   {},
 );
 
-const generatedUnitProductsReducer = createReducer(
-  initialGeneratedUnitProductState,
+const generatedProductsReducer = createReducer(
+  initialGeneratedProductState,
   on(ProductsActions.upsertGeneratedProduct, (state, { product }) =>
-    generatedUnitProductsAdapter.upsertOne(product, state),
+    generatedProductsAdapter.upsertOne(product, state),
   ),
+  on(ProductsActions.resetGeneratedProducts, state => generatedProductsAdapter.removeAll(state)),
 );
 
 const reducerMap: ActionReducerMap<IProductsState> = {
   chainProducts: chainProductsReducer,
   groupProducts: groupProductsReducer,
   unitProducts: unitProductsReducer,
-  generatedUnitProducts: generatedUnitProductsReducer,
+  generatedProducts: generatedProductsReducer,
 };
 
 const combinedReducer: ActionReducer<IProductsState> = combineReducers(

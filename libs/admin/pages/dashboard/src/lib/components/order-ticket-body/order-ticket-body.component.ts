@@ -1,27 +1,10 @@
 import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
 
-// import * as printJS from 'print-js';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-  IDashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { dashboardActions, dashboardSelectors, IDashboardSettings } from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import {
-  EDashboardListMode,
-  EDashboardSize,
-  ENebularButtonSize,
-  IOrder,
-  IOrderSum,
-} from '@bgap/shared/types';
+import { EDashboardListMode, EDashboardSize, ENebularButtonSize, IOrder, IOrderSum, IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -36,6 +19,7 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
+  @Input() unit?: IUnit;
   public dashboardSettings!: IDashboardSettings;
   public selectedOrder?: IOrder;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;

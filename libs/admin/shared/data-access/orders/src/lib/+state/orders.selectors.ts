@@ -1,12 +1,8 @@
-import { currentStatus as currentStatusFn } from '../fn';
-import {
-  EOrderStatus,
-  ILaneOrderItem,
-  IOrder,
-  IOrderItem,
-} from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { ILaneOrderItem, IOrder, IOrderItem } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { currentStatus as currentStatusFn } from '../fn';
 import {
   activeOrdersAdapter,
   historyOrdersAdapter,
@@ -55,7 +51,7 @@ export const getActiveOrdersCountByUserId = (userId: string) => {
   );
 };
 
-export const getLaneOrderItemsByStatus = (status: EOrderStatus) => {
+export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
   return createSelector(
     getAllActiveOrders,
     (orders: IOrder[]): ILaneOrderItem[] => {

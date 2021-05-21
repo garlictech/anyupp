@@ -1,5 +1,5 @@
 import * as fp from 'lodash/fp';
-import { Observable, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -7,10 +7,7 @@ import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
-import {
-  loggedUserActions,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserActions, loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersActions } from '@bgap/admin/shared/data-access/orders';
 import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
 import { productComponentSetsActions } from '@bgap/admin/shared/data-access/product-component-sets';
@@ -20,28 +17,12 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { CrudApi } from '@bgap/crud-gql/api';
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { anyuppAuthenticatedGraphqlClient, executeMutation } from '@bgap/shared/graphql/api-client';
 import {
-  anyuppAuthenticatedGraphqlClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
-import {
-  EAdminRole,
-  EOrderStatus,
-  IAdminUser,
-  IAdminUserConnectedRoleContext,
-  IAdminUserSettings,
-  IChain,
-  IGroup,
-  IKeyValueObject,
-  IOrder,
-  IProduct,
-  IProductCategory,
-  IProductComponent,
-  IProductComponentSet,
-  IRoleContext,
-  IUnit,
+  EAdminRole, IAdminUser, IAdminUserConnectedRoleContext, IAdminUserSettings, IChain, IGroup, IKeyValueObject, IOrder,
+  IProduct, IProductCategory, IProductComponent, IProductComponentSet, IRoleContext, IUnit
 } from '@bgap/shared/types';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
@@ -132,18 +113,12 @@ export class DataService {
         this._subscribeToSelectedUnitProducts(
           adminUserSettings?.selectedUnitId || '',
         );
-
-        /*
-        this
-          ._subscribeToGeneratedUnitProducts
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-        this
-          ._subscribeToSelectedUnitOrders
-          // adminUserSettings?.selectedChainId || '',
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-          */
+        this._subscribeToGeneratedUnitProducts(
+          adminUserSettings?.selectedUnitId || '',
+        );
+        this._subscribeToSelectedUnitOrders(
+          adminUserSettings?.selectedUnitId || '',
+        );
       });
 
     // Lists
@@ -151,7 +126,6 @@ export class DataService {
     this._subscribeToChains();
     this._subscribeToGroups();
     this._subscribeToUnits();
-    // this._subscribeToUsers(); TODO not used?
     this._subscribeToAdminUsers();
     this._subscribeToAdminRoleContexts();
 
@@ -394,69 +368,54 @@ export class DataService {
       .subscribe();
   }
 
-  // TODO refactor
-  private _subscribeToGeneratedUnitProducts(/*unitId: string*/): void {
-    /*
-    this._angularFireDatabase
-      .object(`/generated/productList/units/${unitId}/productCategories`) // TODO list?
-      .valueChanges()
-      .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: IKeyValueObject | unknown): void => {
-        const products: IProduct[] = [];
-
-        if (data) {
-          Object.keys(<IKeyValueObject>data).forEach(
-            (productCategoryId: string): void => {
-              const categoryValue = (<IKeyValueObject>data)[productCategoryId]
-                ?.products;
-
-              Object.keys(categoryValue).forEach((productId: string): void => {
-                products.push({
-                  ...categoryValue[productId],
-                  id: productId,
-                  productCategoryId,
-                });
-              });
-            },
+  private _subscribeToGeneratedUnitProducts(unitId: string): void {
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listGeneratedProducts',
+        subscriptionName: 'onGeneratedProductChange',
+        variables: {
+          filter: { unitId: { eq: unitId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(productsActions.resetGeneratedProducts());
+        },
+        upsertFn: (product: unknown): void => {
+          this._store.dispatch(
+            productsActions.upsertGeneratedProduct({
+              product: <IProduct>product,
+            }),
           );
-        }
-
-        this._store.dispatch(
-          productsActions.loadGeneratedUnitProductsSuccess({
-            products,
-          }),
-        );
-      });
-      */
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
   }
 
-  // TODO refactor
-  private _subscribeToSelectedUnitOrders(): /*chainId: string,
-    unitId: string,*/
-  void {
-    /*
-    this._angularFireDatabase
-      .list(`/orders/chains/${chainId}/units/${unitId}/active`)
-      .stateChanges()
-      .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
-          this._store.dispatch(
-            ordersActions.removeActiveOrder({
-              orderId: data.key || '',
-            }),
-          );
-        } else {
+  private _subscribeToSelectedUnitOrders(unitId: string): void {
+    console.error('handle insert/remove events!!');
+
+    this._amplifyDataService
+      .snapshotChanges$({
+        queryName: 'listOrders',
+        subscriptionName: 'onOrdersChange',
+        variables: {
+          filter: { unitId: { eq: unitId } },
+        },
+        resetFn: () => {
+          this._store.dispatch(ordersActions.resetActiveOrders());
+        },
+        upsertFn: (order: unknown): void => {
           this._store.dispatch(
             ordersActions.upsertActiveOrder({
-              order: {
-                ...(<IOrder>data.payload.val()),
-                id: data.key || '',
-              },
+              order: <IOrder>order,
             }),
           );
-        }
-      });
+        },
+      })
+      .pipe(takeUntil(this._settingsChanged$))
+      .subscribe();
+
+    /*
 
     this._store
       .pipe(
@@ -501,27 +460,6 @@ export class DataService {
         }
       });*/
   }
-
-  /*
-  private _subscribeToUsers(): void {
-    this._amplifyDataService
-      .snapshotChanges$({
-        queryName: 'listUsers',
-        subscriptionName: 'onUsersChange',
-        resetFn: () => {
-          this._store.dispatch(usersActions.resetUsers());
-        },
-        upsertFn: (user: unknown): void => {
-          this._store.dispatch(
-            usersActions.upsertUser({
-              user: <IUser>user,
-            }),
-          );
-        },
-      })
-      .subscribe();
-  }
-  */
 
   private _subscribeToAdminUsers(): void {
     this._amplifyDataService
@@ -593,7 +531,7 @@ export class DataService {
     this._store.dispatch(productsActions.resetChainProducts());
     this._store.dispatch(productsActions.resetGroupProducts());
     this._store.dispatch(productsActions.resetUnitProducts());
-    this._store.dispatch(productsActions.resetGeneratedUnitProducts());
+    this._store.dispatch(productsActions.resetGeneratedProducts());
     this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
 
@@ -608,144 +546,16 @@ export class DataService {
     unitId: string,
     value: IKeyValueObject,
   ): Promise<void> {
-    await this._amplifyDataService.update(
-      'getUnit',
-      'updateUnit',
-      unitId,
-      (unit: unknown) => {
-        return {
-          ...(<IUnit>unit),
-          ...value,
-        };
-      },
-    );
+    await this._amplifyDataService.patch('updateUnit', {
+      id: unitId,
+      ...value,
+    });
   }
 
   public regenerateUnitData(unitId: string): Promise<unknown> {
     return executeMutation(
       anyuppAuthenticatedGraphqlClient,
     )(AnyuppApi.RegenerateUnitData, { input: { id: unitId } }).toPromise();
-  }
-
-  //
-  // Order
-  //
-
-  // TODO refactor
-  public getActiveOrder$(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-  ): Observable<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-    }); /* this._angularFireDatabase
-      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .valueChanges()
-      .pipe(take(1));*/
-  }
-
-  // TODO refactor
-  public insertOrderStatus(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    status: EOrderStatus,
-  ): Promise<unknown> {
-    return of({ chainId, unitId, orderId, status }).toPromise();
-
-    /*
-    const callable = this._angularFireFunctions.httpsCallable(
-      `setNewOrderStatus`,
-    );
-
-    return callable({
-      chainId,
-      unitId,
-      orderId,
-      status,
-    }).toPromise();
-    */
-  }
-
-  // TODO refactor
-  public updateOrderPaymentMode(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    value: IOrder | IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .update(value);*/
-  }
-
-  // TODO refactor
-  public insertOrderItemStatus(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
-      )
-      .update(value);*/
-  }
-  // TODO refactor
-  public updateOrderItemQuantityAndPrice(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
-      )
-      .update(value);*/
-  }
-  // TODO refactor
-  public addOrderItem(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
-      )
-      .update(value);*/
   }
 
   //

@@ -17,14 +17,14 @@ import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
   EDashboardTicketListType,
   ENebularButtonSize,
-  EOrderStatus,
   IOrder,
 } from '@bgap/shared/types';
+import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -44,8 +44,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
   public filteredOrders: IOrder[] = [];
   public placedOrders: IOrder[] = [];
-  public readyOrders: IOrder[] = [];
-  public paymentOrders: IOrder[] = [];
+  public manualPaymentOrders: IOrder[] = [];
+  public problematicOrders: IOrder[] = [];
 
   public uniquePaymentUsersCount = 0;
   public uniqueReadyOrdersCount = 0;
@@ -76,8 +76,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         this._orders = activeOrders;
 
         this._refreshPlacedOrders();
-        this._refreshReadyOrders();
-        this._refreshPaymentOrders();
+        this._refreshManualPaymentOrders();
+        this._refreshProblematicOrders();
         this._refreshFilteredOrders(ticketListType);
 
         this._changeDetectorRef.detectChanges();
@@ -114,37 +114,42 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   }
 
   private _refreshPlacedOrders(): void {
+    // 1. tab: minden ami processed és served között státuszban van
     this.placedOrders = [
+      ...this._orders.filter((o: IOrder): boolean => {
+        const currentStatus = currentStatusFn(o.statusLog);
+
+        return (
+          currentStatus !== CrudApi.OrderStatus.NONE &&
+          currentStatus !== CrudApi.OrderStatus.SERVED
+        );
+      }),
+    ];
+  }
+
+  private _refreshManualPaymentOrders(): void {
+    // 2. tab: cash vagy card fizetéssel jelölt nem success fizetés
+    // és nem rejected order bármilyen státusszal (ezekhez megy a fizetőpincér,
+    // és ezek között lehet olyan, ami már az első tabon is szerepel)
+    this.manualPaymentOrders = [
       ...this._orders.filter(
         (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) !== EOrderStatus.READY,
+          (o.paymentMode.method === CrudApi.PaymentMethod.CARD ||
+            o.paymentMode.method === CrudApi.PaymentMethod.CASH) &&
+          o.transaction?.status !== CrudApi.PaymentStatus.SUCCESS &&
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.REJECTED,
       ),
     ];
   }
 
-  private _refreshReadyOrders(): void {
-    this.readyOrders = [
+  private _refreshProblematicOrders(): void {
+    // 3. tab: NONE status, nem sikeres fizetés, (nem rejected order) -
+    // 3 tab gyakorlatilag a problémás vagy szemét orderek, amikben lehet így turkálni
+    this.problematicOrders = [
       ...this._orders.filter(
         (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) === EOrderStatus.READY,
-      ),
-    ];
-
-    this.uniqueReadyOrdersCount = this.readyOrders.filter(
-      (v, i, a): boolean => a.indexOf(v) === i,
-    ).length;
-  }
-
-  private _refreshPaymentOrders(): void {
-    const uniquePaymentUsers = this._orders
-      .filter((o: IOrder): boolean => (o.paymentIntention || 0) > 0)
-      .map((o: IOrder): string => o.userId)
-      .filter((v, i, a): boolean => a.indexOf(v) === i); // unique filter
-
-    this.uniquePaymentUsersCount = uniquePaymentUsers.length;
-    this.paymentOrders = [
-      ...this._orders.filter((o: IOrder): boolean =>
-        uniquePaymentUsers.includes(o.userId),
+          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.NONE &&
+          o.transaction?.status !== CrudApi.PaymentStatus.SUCCESS,
       ),
     ];
   }
@@ -157,10 +162,10 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         );
         break;
       case EDashboardTicketListType.READY:
-        this.filteredOrders = this.readyOrders;
+        this.filteredOrders = this.manualPaymentOrders;
         break;
       case EDashboardTicketListType.PAYMENT_INTENTION:
-        this.filteredOrders = this.paymentOrders.sort(
+        this.filteredOrders = this.problematicOrders.sort(
           customNumberCompare('paymentIntention'),
         );
         break;

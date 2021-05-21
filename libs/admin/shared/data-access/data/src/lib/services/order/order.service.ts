@@ -1,20 +1,22 @@
-import { skipWhile } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
+import { skipWhile, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { currentStatus } from '@bgap/admin/shared/data-access/orders';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EOrderStatus,
   IAdminUser,
+  IGeneratedProduct,
   IGroup,
   IOrder,
-  IOrderItem,
-  IGeneratedProduct,
+  IPaymentMode,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
-import { DataService } from '../data/data.service';
+import { AmplifyDataService } from '../amplify-data/amplify-data.service';
+import { clearDbProperties } from 'libs/admin/shared/utils/src';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +26,10 @@ export class OrderService {
   private _groupCurrency?: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>, private _dataService: DataService) {
+  constructor(
+    private _store: Store<any>,
+    private _amplifyDataService: AmplifyDataService,
+  ) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe((adminUser: IAdminUser): void => {
@@ -42,6 +47,7 @@ export class OrderService {
   }
 
   public updateQuantity(order: IOrder, idx: number, value: number): void {
+    /*
     order.items[idx].quantity += value;
 
     if (order.items[idx].quantity > 0) {
@@ -64,12 +70,13 @@ export class OrderService {
         )
         .then((): void => {
           if (
-            currentStatus(order.items[idx].statusLog) === EOrderStatus.REJECTED
+            currentStatus(order.items[idx].statusLog) === CrudApi.OrderStatus.REJECTED
           ) {
-            this.updateOrderItemStatus(order.id, EOrderStatus.PLACED, idx);
+            this.updateOrderItemStatus(order.id, CrudApi.OrderStatus.PLACED, idx);
           }
         });
     }
+    */
   }
 
   public addProductVariant(
@@ -112,34 +119,87 @@ export class OrderService {
     );*/
   }
 
+  public updateOrderPaymentMode(
+    orderId: string,
+    paymentMode: IPaymentMode,
+  ): Promise<unknown> {
+    return this._amplifyDataService.patch('updateOrder', {
+      id: orderId,
+      paymentMode,
+    });
+  }
+
   public updateOrderStatus(
     order: IOrder,
-    status: EOrderStatus,
+    status: CrudApi.OrderStatus,
   ): Promise<unknown> {
-    return this._dataService.insertOrderStatus(
-      this._adminUser?.settings?.selectedChainId || '',
-      this._adminUser?.settings?.selectedUnitId || '',
-      order.id,
-      status,
-    );
+    return this._amplifyDataService.patch('updateOrder', {
+      id: order.id,
+      statusLog: [
+        { status, ts: new Date().getTime(), userId: this._adminUser?.id || '' },
+      ],
+    });
   }
 
   public updateOrderItemStatus(
     orderId: string,
-    status: EOrderStatus,
+    status: CrudApi.OrderStatus,
     idx: number,
-  ): Promise<unknown> {
-    return this._dataService.insertOrderItemStatus(
-      this._adminUser?.settings?.selectedChainId || '',
-      this._adminUser?.settings?.selectedUnitId || '',
-      orderId,
-      idx,
-      {
-        [new Date().valueOf()]: {
-          status,
-          userId: this._adminUser?.id || '',
+  ): void {
+    this._store
+      .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
+      .subscribe(
+        async (order: IOrder | undefined): Promise<void> => {
+          if (order) {
+            const _order = fp.cloneDeep(order);
+            _order.items[idx].statusLog.push({
+              status,
+              ts: new Date().getTime(),
+              userId: this._adminUser?.id || '',
+            });
+
+            await this._amplifyDataService.patch('updateOrder', {
+              id: orderId,
+              items: _order.items,
+            });
+          }
         },
-      },
-    );
+      );
+  }
+
+  public updateOrderTransactionStatus(
+    transactionId: string,
+    status: CrudApi.PaymentStatus,
+  ): Promise<unknown> {
+    return this._amplifyDataService.patch('updateTransaction', {
+      id: transactionId,
+      status,
+    });
+  }
+
+  public async moveOrderToHistory(order: IOrder, status: CrudApi.OrderStatus) {
+    console.error('moveOrderToHistory order', order);
+
+    const historyOrder = fp.omit(['createdAt', 'updatedAt', 'orderNum'], fp.cloneDeep(order));
+    const statusObject = {
+      status,
+      ts: new Date().getTime(),
+      userId: this._adminUser?.id || '',
+    };
+
+    historyOrder.items.forEach(item => {
+      item.statusLog.push(statusObject);
+    });
+    historyOrder.statusLog = [statusObject];
+
+    console.error('moveOrderToHistory historyOrder', historyOrder);
+
+    try {
+      await this._amplifyDataService.create('createOrderHistory', historyOrder);
+    } catch (err) {
+      console.error('errr', err);
+    }
+
+    console.error('READY');
   }
 }

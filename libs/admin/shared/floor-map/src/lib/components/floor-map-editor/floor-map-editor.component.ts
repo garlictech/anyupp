@@ -1,26 +1,14 @@
 import { debounceTime } from 'rxjs/operators';
 
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {
-  EUnitMapObjectType,
-  IFloorMapData,
-  IFloorMapDataObject,
-} from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
+import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
 import * as floorMapActions from '../../+state/floor-map.actions';
-import {
-  FLOOR_MAP_OBJECT_DEFAULTS,
-  FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
-} from '../../const';
+import { FLOOR_MAP_OBJECT_COMMON_DEFAULTS, FLOOR_MAP_OBJECT_DEFAULTS } from '../../const';
 import * as floorMapFuncs from '../../fn';
 
 @UntilDestroy()
@@ -35,7 +23,7 @@ export class FloorMapEditorComponent
   @Input() floorMap?: IFloorMapData;
   public dimensionForm!: FormGroup;
   public objectForm!: FormGroup;
-  public EUnitMapObjectType = EUnitMapObjectType;
+  public EUnitMapObjectType = CrudApi.UnitMapObjectType;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store<any>, private _formBuilder: FormBuilder) {}
@@ -130,7 +118,7 @@ export class FloorMapEditorComponent
     // untilDestroyed uses it.
   }
 
-  public addObject(objectType: EUnitMapObjectType): void {
+  public addObject(objectType: CrudApi.UnitMapObjectType): void {
     const id = floorMapFuncs.generateId();
     const rawDataObject: IFloorMapDataObject = {
       id,

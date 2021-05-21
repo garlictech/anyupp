@@ -1,13 +1,15 @@
+import Stripe from 'stripe';
+
 import { AnyuppApi } from '@bgap/anyupp-gql/api';
 import { CrudApi } from '@bgap/crud-gql/api';
 import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
-import { EOrderStatus, IOrder, IUnit, IUser } from '@bgap/shared/types';
-import Stripe from 'stripe';
+import { IOrder, IUnit, IUser } from '@bgap/shared/types';
+
 import { calculateOrderSumPrice } from '../order/order.utils';
-import { createTransaction, createUser, loadOrder, loadUnit, loadUser, updateOrderState, updateUser } from './stripe-graphql-crud';
+import {
+  createTransaction, createUser, loadOrder, loadUnit, loadUser, updateOrderState, updateUser
+} from './stripe-graphql-crud';
 import { mapPaymentMethodToCard } from './stripe.utils';
-
-
 
 export const listStripeCards = async (
   crudGraphqlClient: GraphqlApiClient,
@@ -74,7 +76,7 @@ export const startStripePayment = async (
 
   const status = order.statusLog[order.statusLog.length - 1];
 
-  if (status.status != EOrderStatus.NONE) {
+  if (status.status != CrudApi.OrderStatus.NONE) {
     throw Error('Order status must be OrderStatus.NONE if you want to pay the order! Current status:' + status + ', id=' + order.id);
   }
 

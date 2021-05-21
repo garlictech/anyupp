@@ -112,7 +112,7 @@ export class ReportsDailySalesPerTypeComponent
     );
 
     combineLatest([
-      this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)),
+      this._store.pipe(select(productsSelectors.getAllGeneratedProducts)),
       this.orders$,
     ])
       .pipe(untilDestroyed(this))

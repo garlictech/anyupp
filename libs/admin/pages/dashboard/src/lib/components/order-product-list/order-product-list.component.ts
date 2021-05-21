@@ -79,7 +79,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         untilDestroyed(this),
       ),
       this._store.pipe(
-        select(productsSelectors.getAllGeneratedUnitProducts),
+        select(productsSelectors.getAllGeneratedProducts),
         untilDestroyed(this),
       ),
     ])
@@ -144,11 +144,11 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         currentStatus(
           (<IOrder>this.selectedOrder).items[<number>existingVariantOrderIdx]
             .statusLog,
-        ) === EOrderStatus.REJECTED
+        ) === CrudApi.OrderStatus.REJECTED
       ) {
         this._orderService.updateOrderItemStatus(
           (<IOrder>this.selectedOrder).id,
-          EOrderStatus.PLACED,
+          CrudApi.OrderStatus.PLACED,
           <number>existingVariantOrderIdx,
         );
       }

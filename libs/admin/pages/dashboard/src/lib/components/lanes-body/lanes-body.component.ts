@@ -19,7 +19,7 @@ import { objectToArray } from '@bgap/shared/utils';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
+
   IDetailedLane,
   ILaneOrderItem,
   IUnit,
@@ -27,6 +27,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem,
@@ -59,15 +60,15 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)),
+        select(ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.PLACED)),
       ),
       this._store.pipe(
         select(
-          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING),
+          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.PROCESSING),
         ),
       ),
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY)),
+        select(ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.READY)),
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),

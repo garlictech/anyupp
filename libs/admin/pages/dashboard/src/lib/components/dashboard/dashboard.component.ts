@@ -145,8 +145,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._dataService.updateUnit((<IUnit>this.selectedUnit).id, {
-              isAcceptingOrders: !(<IUnit>this.selectedUnit).isAcceptingOrders,
+            this._dataService.updateUnit(this.selectedUnit?.id || '', {
+              isAcceptingOrders: !this.selectedUnit?.isAcceptingOrders,
             });
           },
           status: 'success',

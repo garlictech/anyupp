@@ -23,7 +23,7 @@ export class OrderTicketListItemComponent {
       this.ticketListType === EDashboardTicketListType.PLACED
         ? this.order.items.filter(
             (i: IOrderItem): boolean =>
-              currentStatus(i.statusLog) === EOrderStatus.READY
+              currentStatus(i.statusLog) === CrudApi.OrderStatus.READY
           ).length
         : 0; // Show badhe only in placed list
   }

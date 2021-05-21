@@ -2,13 +2,12 @@ import { fabric } from 'fabric';
 
 import { customStringCompare } from '@bgap/shared/utils';
 import {
-  EUnitMapObjectType,
   IFabricGroup,
   IFabricObjectProperties,
   IFloorMapData,
   IFloorMapDataObject,
 } from '@bgap/shared/types';
-
+import { CrudApi } from '@bgap/crud-gql/api';
 import { fabricCanvas } from './floor-map-canvas';
 import {
   createBar,
@@ -76,19 +75,19 @@ export const createObject = (
   mapObject: IFloorMapDataObject,
 ): fabric.Group | undefined => {
   switch (mapObject.t) {
-    case EUnitMapObjectType.TABLE_RECTANGLE:
+    case CrudApi.UnitMapObjectType.table_r:
       return createTableRect(mapObject);
-    case EUnitMapObjectType.TABLE_CIRCLE:
+    case CrudApi.UnitMapObjectType.table_c:
       return createTableCircle(mapObject);
-    case EUnitMapObjectType.SEAT_RECTANGLE:
+    case CrudApi.UnitMapObjectType.seat_r:
       return createSeatRect(mapObject);
-    case EUnitMapObjectType.SEAT_CIRCLE:
+    case CrudApi.UnitMapObjectType.seat_c:
       return createSeatCircle(mapObject);
-    case EUnitMapObjectType.COUNTER:
+    case CrudApi.UnitMapObjectType.counter:
       return createBar(mapObject);
-    case EUnitMapObjectType.WALL:
+    case CrudApi.UnitMapObjectType.wall:
       return createWall(mapObject);
-    case EUnitMapObjectType.LABEL:
+    case CrudApi.UnitMapObjectType.label:
       return createLabel(mapObject);
     default:
       return undefined;

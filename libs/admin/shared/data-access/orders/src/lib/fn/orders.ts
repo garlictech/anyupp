@@ -1,6 +1,5 @@
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  EOrderStatus,
   IFloorMapTableOrderObjects,
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
@@ -9,55 +8,43 @@ import {
   IStatusLog,
   IUnit,
 } from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
 
-export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+export const currentStatus = (status: IStatusLog[]): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
-    return EOrderStatus.NONE;
+    return CrudApi.OrderStatus.NONE;
   }
   const lastElement = status[status.length - 1];
-  return lastElement?.status || EOrderStatus.NONE;
+  return lastElement?.status || CrudApi.OrderStatus.NONE;
 };
 
 export const getNextOrderStatus = (
-  currStatus: EOrderStatus,
-): EOrderStatus | undefined => {
+  currStatus: CrudApi.OrderStatus,
+): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
-    case EOrderStatus.PLACED:
-      return EOrderStatus.PROCESSING;
-    case EOrderStatus.PROCESSING:
-      return EOrderStatus.READY;
-    case EOrderStatus.READY:
-      return EOrderStatus.PAID;
-    default:
-      return;
-  }
-};
-
-export const getNextOrderItemStatus = (
-  currStatus: EOrderStatus,
-): EOrderStatus | undefined => {
-  switch (currStatus) {
-    case EOrderStatus.PLACED:
-      return EOrderStatus.PROCESSING;
-    case EOrderStatus.PROCESSING:
-      return EOrderStatus.READY;
-    case EOrderStatus.READY:
-      return EOrderStatus.SERVED;
+    case CrudApi.OrderStatus.NONE:
+      return CrudApi.OrderStatus.PLACED;
+    case CrudApi.OrderStatus.PLACED:
+      return CrudApi.OrderStatus.PROCESSING;
+    case CrudApi.OrderStatus.PROCESSING:
+      return CrudApi.OrderStatus.READY;
+    case CrudApi.OrderStatus.READY:
+      return CrudApi.OrderStatus.SERVED;
     default:
       return;
   }
 };
 
 export const getPrevOrderItemStatus = (
-  currStatus: EOrderStatus,
-): EOrderStatus | undefined => {
+  currStatus: CrudApi.OrderStatus,
+): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
-    case EOrderStatus.SERVED:
-      return EOrderStatus.READY;
-    case EOrderStatus.READY:
-      return EOrderStatus.PROCESSING;
-    case EOrderStatus.PROCESSING:
-      return EOrderStatus.PLACED;
+    case CrudApi.OrderStatus.SERVED:
+      return CrudApi.OrderStatus.READY;
+    case CrudApi.OrderStatus.READY:
+      return CrudApi.OrderStatus.PROCESSING;
+    case CrudApi.OrderStatus.PROCESSING:
+      return CrudApi.OrderStatus.PLACED;
     default:
       return;
   }
@@ -73,37 +60,37 @@ export const getOrderLaneColor = (
     : DEFAULT_LANE_COLOR;
 };
 
-export const getStatusColor = (status: EOrderStatus): string => {
+export const getStatusColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
-    case EOrderStatus.PLACED:
+    case CrudApi.OrderStatus.NONE:
+      return 'danger';
+    case CrudApi.OrderStatus.PLACED:
       return 'warning';
-    case EOrderStatus.PROCESSING:
+    case CrudApi.OrderStatus.PROCESSING:
       return 'primary';
-    case EOrderStatus.READY:
+    case CrudApi.OrderStatus.READY:
       return 'info';
-    case EOrderStatus.PAID:
+    case CrudApi.OrderStatus.SERVED:
       return 'success';
-    case EOrderStatus.SERVED:
-      return 'success';
-    case EOrderStatus.REJECTED:
+    case CrudApi.OrderStatus.FAILED:
+      return 'danger';
+    case CrudApi.OrderStatus.REJECTED:
       return 'danger';
     default:
       return '';
   }
 };
 
-export const getLowestStatus = (statuses: EOrderStatus[]): EOrderStatus => {
+export const getLowestStatus = (statuses: CrudApi.OrderStatus[]): CrudApi.OrderStatus => {
   const SORTED_ORDER_STATUSES = [
-    EOrderStatus.PLACED,
-    EOrderStatus.PROCESSING,
-    EOrderStatus.READY,
-    EOrderStatus.SERVED,
-    EOrderStatus.WAITING_FOR_PAYMENT,
-    EOrderStatus.PAID,
+    CrudApi.OrderStatus.PLACED,
+    CrudApi.OrderStatus.PROCESSING,
+    CrudApi.OrderStatus.READY,
+    CrudApi.OrderStatus.SERVED
   ];
 
   const statusIndices: number[] = statuses
-    .map((s: EOrderStatus): number => SORTED_ORDER_STATUSES.indexOf(s))
+    .map((s: CrudApi.OrderStatus): number => SORTED_ORDER_STATUSES.indexOf(s))
     .filter((idx: number): boolean => idx >= 0);
 
   return SORTED_ORDER_STATUSES[Math.min(...statusIndices)];
@@ -164,7 +151,7 @@ export const getTableOrders = (
         .map((o): boolean => o.hasPaymentIntention)
         .some((i): boolean => !!i),
       lowestStatus: getLowestStatus(
-        userOrders.map((o): EOrderStatus => o.lowestStatus),
+        userOrders.map((o): CrudApi.OrderStatus => o.lowestStatus),
       ),
     };
   });

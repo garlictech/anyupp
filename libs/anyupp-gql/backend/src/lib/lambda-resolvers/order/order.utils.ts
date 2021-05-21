@@ -1,13 +1,13 @@
-// import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
+// import { PriceShown, Order, StatusLog, CrudApi.OrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
 import { CrudApi } from '@bgap/crud-gql/api';
 import {
-  EOrderStatus,
   IOrderItem,
   IOrders,
   IPriceShown,
   IStatusLog,
 } from '@bgap/shared/types';
+
 import { toFixed2Number } from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (
@@ -28,7 +28,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
   return items.reduce((sum, item) => {
     const lastStatus = currentStatus(item.statusLog);
 
-    if (lastStatus === EOrderStatus.REJECTED) {
+    if (lastStatus === CrudApi.OrderStatus.REJECTED) {
       return sum;
     }
     return {
@@ -55,10 +55,10 @@ export const sumOrders = (orders: IOrders): number => {
   }, 0);
 };
 
-export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+export const currentStatus = (status: IStatusLog[]): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
-    return EOrderStatus.NONE;
+    return CrudApi.OrderStatus.NONE;
   }
   const lastElement = status[status.length - 1];
-  return lastElement?.status || EOrderStatus.NONE;
+  return lastElement?.status || CrudApi.OrderStatus.NONE;
 };

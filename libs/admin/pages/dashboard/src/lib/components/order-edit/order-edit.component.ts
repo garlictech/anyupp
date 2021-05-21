@@ -1,3 +1,5 @@
+import * as fp from 'lodash/fp';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,29 +8,22 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,
 } from '@bgap/admin/shared/data-access/dashboard';
-import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
   IOrder,
+  IPaymentMethodKV,
+  IPaymentMode,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as fp from 'lodash/fp';
-
-interface IPaymentMethodKV {
-  key: string;
-  value: CrudApi.PaymentMethod;
-}
 
 @UntilDestroy()
 @Component({
@@ -40,18 +35,15 @@ interface IPaymentMethodKV {
 export class OrderEditComponent implements OnInit, OnDestroy {
   @Input() order!: IOrder;
   public paymentMethods: IPaymentMethodKV[] = [];
-  public EOrderStatus = EOrderStatus;
+  public EOrderStatus = CrudApi.OrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
-
-  private _loggedUser?: IAdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _orderService: OrderService,
-    private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
@@ -64,14 +56,6 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
       });
     });
-
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this._loggedUser = adminUser;
-
-        this._changeDetectorRef.detectChanges();
-      });
 
     this._store
       .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
@@ -95,7 +79,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
 
   public removeOrder(): void {
     this._orderService
-      .updateOrderStatus(fp.cloneDeep(this.order), EOrderStatus.REJECTED)
+      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.REJECTED)
       .then(
         (): void => {
           this.workingOrderStatus = false;
@@ -116,19 +100,12 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public removeOrderItem(idx: number): void {
     this._orderService.updateOrderItemStatus(
       this.order.id,
-      EOrderStatus.REJECTED,
+      CrudApi.OrderStatus.REJECTED,
       idx,
     );
   }
 
-  public updateOrderPaymentMethod(method: string): void {
-    this._dataService.updateOrderPaymentMode(
-      this._loggedUser?.settings?.selectedChainId || '',
-      this._loggedUser?.settings?.selectedUnitId || '',
-      this.order.id,
-      {
-        paymentMethod: method,
-      },
-    );
+  public updateOrderPaymentMethod(paymentMode: IPaymentMode): void {
+    this._orderService.updateOrderPaymentMode(this.order.id, paymentMode);
   }
 }

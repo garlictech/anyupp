@@ -1,3 +1,5 @@
+import { NGXLogger } from 'ngx-logger';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,29 +8,31 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
   dashboardSelectors,
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
-import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
   currentStatus as currentStatusFn,
-  getNextOrderItemStatus,
   getNextOrderStatus,
   getStatusColor,
 } from '@bgap/admin/shared/data-access/orders';
+import { CrudApi } from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
   IOrder,
+  IPaymentMode,
   IStatusLog,
+  IUnit,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { stat } from 'fs';
 
 @UntilDestroy()
 @Component({
@@ -39,9 +43,11 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: IOrder;
+  @Input() unit?: IUnit;
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
-  public EOrderStatus = EOrderStatus;
+  public EOrderStatus = CrudApi.OrderStatus;
+  public EPaymentStatus = CrudApi.PaymentStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
@@ -51,6 +57,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     private _store: Store<any>,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
+    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
@@ -71,40 +78,43 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getButtonStatus(status: IStatusLog[]): string { // TODO EZ TOMB, EDDIG Sima StatusLog volt, hogyan mukodott eddig?
+  get currentOrderStatus() {
+    return currentStatusFn(this.order.statusLog);
+  }
+
+  public getButtonStatus(status: IStatusLog[]): string {
     return getStatusColor(currentStatusFn(status));
   }
 
   public getPlacedButtonStatus(): string {
-    return getStatusColor(EOrderStatus.PLACED);
+    return getStatusColor(CrudApi.OrderStatus.PLACED);
   }
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
 
-  public updateOrderStatus(): void {
+  public async updateOrderStatus(): Promise<void> {
     const status = getNextOrderStatus(currentStatusFn(this.order.statusLog));
 
     if (status) {
       this.workingOrderStatus = true;
 
-      this._orderService.updateOrderStatus(this.order, status).then(
-        (): void => {
-          this.workingOrderStatus = false;
-        },
-        (err): void => {
-          console.error(err);
-          this.workingOrderStatus = false;
-        },
-      );
+      try {
+        if (status === CrudApi.OrderStatus.SERVED) {
+          await this._orderService.moveOrderToHistory(this.order, status);
+        } else {
+          await this._orderService.updateOrderStatus(this.order, status);
+        }
+      } catch (err) {}
 
+      this.workingOrderStatus = false;
       this._changeDetectorRef.detectChanges();
     }
   }
 
   public updateOrderItemStatus(idx: number): void {
-    const status = getNextOrderItemStatus(
+    const status = getNextOrderStatus(
       currentStatusFn(this.order.items[idx].statusLog),
     );
 
@@ -112,6 +122,37 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this._orderService.updateOrderItemStatus(this.order.id, status, idx);
 
       this._changeDetectorRef.detectChanges();
+    }
+  }
+
+  public updateOrderPaymentMethod(paymentMode: IPaymentMode): void {
+    this._orderService.updateOrderPaymentMode(this.order.id, paymentMode);
+  }
+
+  public async updateTransactionStatus(
+    status: CrudApi.PaymentStatus,
+  ): Promise<void> {
+    if (this.order.transactionId) {
+      try {
+        await this._orderService.updateOrderTransactionStatus(
+          this.order.transactionId,
+          status,
+        );
+
+        if (
+          status === CrudApi.PaymentStatus.SUCCESS &&
+          currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.NONE
+        ) {
+          this._orderService.updateOrderStatus(
+            this.order,
+            CrudApi.OrderStatus.PLACED,
+          );
+        }
+      } catch (err) {
+        this._logger.error(
+          `UPDATE ORDER TRANSACTION ERROR: ${JSON.stringify(err)}`,
+        );
+      }
     }
   }
 
@@ -126,7 +167,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
               this.order.id,
-              EOrderStatus.PLACED,
+              CrudApi.OrderStatus.PLACED,
               idx,
             );
 

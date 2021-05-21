@@ -4,7 +4,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
   chainProductsAdapter,
-  generatedUnitProductsAdapter,
+  generatedProductsAdapter,
   groupProductsAdapter,
   IProductEntityState,
   IProductsState,
@@ -204,23 +204,23 @@ export const getUnitProductLaneIds = () => {
 
 // GENERATED UNIT PRODUCTS
 
-const generatedUnitProductListSelector = createSelector(
+const generatedProductListSelector = createSelector(
   getProductsState,
-  (state: IProductsState): IProductEntityState => state.generatedUnitProducts,
+  (state: IProductsState): IProductEntityState => state.generatedProducts,
 );
-export const getAllGeneratedUnitProducts = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProducts = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectAll;
-export const getAllGeneratedUnitProductIds = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProductIds = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectIds;
-export const getAllGeneratedUnitProductCount = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProductCount = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectTotal;
 
 export const getGeneratedProductImageById = (id: string) => {
   return createSelector(
-    getAllGeneratedUnitProducts,
+    getAllGeneratedProducts,
     (products: IProduct[]): string =>
       products.find(product => product.id === id)?.image || '',
   );

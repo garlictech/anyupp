@@ -52,7 +52,7 @@
           ></button>
         </div>
 
-        <button
+        <!--button
           *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
           nbButton
           class="float-right mt-1"
@@ -61,7 +61,7 @@
           (click)="editSelectedOrder()"
         >
           <nb-icon icon="edit-outline"></nb-icon>
-        </button>
+        </button-->
 
         <button
           nbSpinnerStatus="control"
@@ -85,6 +85,7 @@
                 dashboardSettings.listMode === EDashboardListMode.HISTORY)
             "
             [order]="selectedOrder"
+            [unit]="unit"
           ></bgap-order-details>
 
           <ng-container

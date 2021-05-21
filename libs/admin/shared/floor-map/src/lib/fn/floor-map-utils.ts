@@ -1,5 +1,6 @@
 import { fabric } from 'fabric';
-import { EOrderStatus } from '@bgap/shared/types';
+
+import { CrudApi } from '@bgap/crud-gql/api';
 import { IFloorMapData, IFloorMapDataObject } from '@bgap/shared/types';
 
 export const generateId = (): string => {
@@ -85,13 +86,13 @@ export const getTableSeatIds = (data: IFloorMapData): string[] =>
     .filter((o: IFloorMapDataObject): boolean => o?.t?.indexOf('seat') === 0)
     .map((o: IFloorMapDataObject): string => getTableSeatId(o));
 
-export const getStatusBgColor = (status: EOrderStatus): string => {
+export const getStatusBgColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
-    case EOrderStatus.PLACED:
+    case CrudApi.OrderStatus.PLACED:
       return '#ffaa00'; // === color-warning-500
-    case EOrderStatus.PROCESSING:
+    case CrudApi.OrderStatus.PROCESSING:
       return '#3366ff'; // === color-primary-500
-    case EOrderStatus.READY:
+    case CrudApi.OrderStatus.READY:
       return '#ea3bf0'; // === color-info-500
     default:
       return '';

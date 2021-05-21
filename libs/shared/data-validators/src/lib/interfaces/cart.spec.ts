@@ -1,7 +1,8 @@
+import { CrudApi } from '@bgap/crud-gql/api';
+import { ICart } from '@bgap/shared/types';
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EOrderStatus, ICart } from '@bgap/shared/types';
 
 const cart: ICart = {
   id: 'ID',
@@ -27,7 +28,7 @@ const cart: ICart = {
       quantity: 100,
       statusLog: [
         {
-          status: EOrderStatus.NONE,
+          status: CrudApi.OrderStatus.NONE,
           userId: 'USERID',
         },
       ],

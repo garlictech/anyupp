@@ -7,7 +7,7 @@ import {
   FLOOR_MAP_ENABLED_GROUP_OPTIONS,
   FLOOR_MAP_TEXT_config,
 } from '../const';
-import { EUnitMapObjectType } from '@bgap/shared/types';
+import { CrudApi } from '@bgap/crud-gql/api';
 import { IFloorMapDataObject } from '@bgap/shared/types';
 
 import { fabricCanvas, fabricEditMode } from './floor-map-canvas';
@@ -44,7 +44,7 @@ export const createTableRect = (
   const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_config);
 
   return new fabric.Group([bg, caption], {
-    type: EUnitMapObjectType.TABLE_RECTANGLE,
+    type: CrudApi.UnitMapObjectType.table_r,
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -65,7 +65,7 @@ export const createTableCircle = (
     left: rawObject.x,
     top: rawObject.y,
     id: rawObject.id,
-    type: EUnitMapObjectType.TABLE_CIRCLE,
+    type: CrudApi.UnitMapObjectType.table_c,
     ..._commonGroupOptions(),
   });
   group.setControlsVisibility(FLOOR_MAP_CIRCLE_CONTROLS);
@@ -87,7 +87,7 @@ export const createSeatRect = (
   const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_config);
 
   return new fabric.Group([bg, caption], {
-    type: EUnitMapObjectType.SEAT_RECTANGLE,
+    type: CrudApi.UnitMapObjectType.seat_r,
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -108,7 +108,7 @@ export const createSeatCircle = (
     left: rawObject.x,
     top: rawObject.y,
     id: rawObject.id,
-    type: EUnitMapObjectType.SEAT_CIRCLE,
+    type: CrudApi.UnitMapObjectType.seat_c,
     ..._commonGroupOptions(),
   });
   group.setControlsVisibility(FLOOR_MAP_CIRCLE_CONTROLS);
@@ -126,7 +126,7 @@ export const createBar = (rawObject: IFloorMapDataObject): fabric.Group => {
   const caption = new fabric.IText(rawObject.c || '', FLOOR_MAP_TEXT_config);
 
   return new fabric.Group([bg, caption], {
-    type: EUnitMapObjectType.COUNTER,
+    type: CrudApi.UnitMapObjectType.counter,
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -140,7 +140,7 @@ export const createWall = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 
   return new fabric.Group([bg], {
-    type: EUnitMapObjectType.WALL,
+    type: CrudApi.UnitMapObjectType.wall,
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -160,7 +160,7 @@ export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 
   return new fabric.Group([bg, caption], {
-    type: EUnitMapObjectType.LABEL,
+    type: CrudApi.UnitMapObjectType.label,
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });

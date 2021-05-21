@@ -26,8 +26,8 @@
     <div class="text-right p-2 col-8 col-md-3 m-auto">
       <ng-container
         *ngIf="
-          dashboardSettings.listMode === EDashboardListMode.CURRENT ||
-          dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
+          dashboardSettings?.listMode === EDashboardListMode.CURRENT ||
+          dashboardSettings?.listMode === EDashboardListMode.FLOOR_MAP
         "
       >
         <button
@@ -57,7 +57,7 @@
       <nb-badge
         class="font-larger p-2 position-static"
         [status]="getButtonStatus(orderItem.statusLog)"
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+        *ngIf="dashboardSettings?.listMode === EDashboardListMode.HISTORY"
         [text]="currentStatus(orderItem.statusLog)"
       ></nb-badge>
     </div>
@@ -68,9 +68,52 @@
 
 <div class="row p-0 m-0">
   <div class="col-1 text-right p-2 m-auto font-larger"><strong>Σ</strong></div>
-  <div class="col-6 text-right p-2 m-auto font-larger caption-2">
+  <div class="col-5 p-2 m-auto">
+    <ng-container *ngIf="order.transaction?.status === EPaymentStatus.WAITING_FOR_PAYMENT">
+      <button
+        nbButton
+        class="float-left mr-2"
+        status="danger"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateTransactionStatus(EPaymentStatus.FAILED)"
+      >
+        {{
+          'common.transactionStatus.FAILED' | translate
+        }}
+      </button>
+
+      <button
+        nbButton
+        class="float-right mr-1"
+        status="success"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateTransactionStatus(EPaymentStatus.SUCCESS)"
+      >
+        {{
+          'common.transactionStatus.SUCCESS' | translate
+        }}
+      </button>
+    </ng-container>
+  </div>
+  <div class="col-1 text-right p-2 m-auto font-larger caption-2">
     {{ order.paymentMode.method }}
   </div>
+  <!--  *ngIf="currentOrderStatus === OrderStatus.NONE"-->
+  <!--div class="col-6 m-auto">
+    <button
+      *ngFor="let mode of unit?.paymentModes"
+      nbButton
+      class="float-right mr-1"
+      [status]="order.paymentMode.name === mode.name ? 'success' : 'basic'"
+      [size]="buttonSize"
+      shape="round"
+      (click)="updateOrderPaymentMethod(mode)"
+    >
+      {{ ('common.paymentModes.' + mode.name) | translate }}
+    </button>
+  </div-->
 
   <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
     {{
@@ -84,8 +127,9 @@
       nbSpinnerStatus="control"
       [disabled]="workingOrderStatus"
       *ngIf="
-        dashboardSettings.listMode === EDashboardListMode.CURRENT ||
-        dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
+        (dashboardSettings?.listMode === EDashboardListMode.CURRENT ||
+        dashboardSettings?.listMode === EDashboardListMode.FLOOR_MAP) &&
+        order.transaction?.status !== EPaymentStatus.WAITING_FOR_PAYMENT
       "
       nbButton
       [status]="getButtonStatus(order.statusLog)"
@@ -96,9 +140,10 @@
     >
       {{ currentStatus(order.statusLog) }}
     </button>
+
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+      *ngIf="dashboardSettings?.listMode === EDashboardListMode.HISTORY"
       [text]="currentStatus(order.statusLog)"
       [status]="getButtonStatus(order.statusLog)"
     ></nb-badge>

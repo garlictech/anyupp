@@ -1,5 +1,5 @@
 import { CrudApi } from '@bgap/crud-gql/api';
-import { EOrderStatus } from '../enums';
+
 import { ILocalizedItem } from './localized-item';
 import { IPaymentMode } from './payment';
 import { ITransaction } from './transaction';
@@ -15,7 +15,7 @@ export interface IPriceShown {
 
 export interface IStatusLog {
   userId: string;
-  status: EOrderStatus;
+  status: CrudApi.OrderStatus;
   ts?: number; // after objectToArray(statusLog, 'ts')
 }
 
@@ -41,7 +41,7 @@ export interface ILaneOrderItem extends IOrderItem {
   laneColor?: string;
   image?: string;
   place?: IPlace;
-  currentStatus?: EOrderStatus;
+  currentStatus?: CrudApi.OrderStatus;
 }
 
 export interface IPlace {

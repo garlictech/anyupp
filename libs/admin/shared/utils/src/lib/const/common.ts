@@ -1,5 +1,5 @@
 import { CrudApi } from '@bgap/crud-gql/api';
-import { EAdminRole, IAllergen, IPaymentMode } from '@bgap/shared/types';
+import { EAdminRole, ETransactionType, IAllergen, IPaymentMode } from '@bgap/shared/types';
 
 export const DEFAULT_LANG = 'en-US';
 
@@ -60,32 +60,32 @@ export const MENU_ROLES = {
 
 export const PAYMENT_MODES: IPaymentMode[] = [
   {
-    name: 'Cash',
-    caption: 'common.paymentModes.cash',
+    name: ETransactionType.CASH,
+    caption: 'common.paymentModes.CASH',
     method: CrudApi.PaymentMethod.CASH,
   },
   {
-    name: 'Card',
-    caption: 'common.paymentModes.card',
+    name: ETransactionType.CARD,
+    caption: 'common.paymentModes.CARD',
     method: CrudApi.PaymentMethod.CARD,
   },
   {
-    name: 'Google Pay',
+    name: ETransactionType.GOOGLE_PAY,
     caption: 'Google Pay',
     method: CrudApi.PaymentMethod.INAPP,
   },
   {
-    name: 'Apple Pay',
+    name: ETransactionType.APPLE_PAY,
     caption: 'Apple Pay',
     method: CrudApi.PaymentMethod.INAPP,
   },
   {
-    name: 'Stripe',
+    name: ETransactionType.STRIPE,
     caption: 'Stripe',
     method: CrudApi.PaymentMethod.INAPP,
   },
   {
-    name: 'Simple Pay',
+    name: ETransactionType.SIMPLE,
     caption: 'Simple Pay',
     method: CrudApi.PaymentMethod.INAPP,
   },

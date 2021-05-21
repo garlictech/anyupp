@@ -1,6 +1,7 @@
 import { fabric } from 'fabric';
 
-import { EOrderStatus } from '../enums';
+import { CrudApi } from '@bgap/crud-gql/api';
+
 import { IOrder } from './order';
 
 export interface IFloorMapDataObject {
@@ -30,7 +31,7 @@ export interface IFloorMapUserOrders {
   orders: IOrder[];
   lastOrder: IOrder;
   hasPaymentIntention: boolean;
-  lowestStatus: EOrderStatus;
+  lowestStatus: CrudApi.OrderStatus;
 }
 
 export interface IFloorMapUserOrderObjects {
@@ -41,7 +42,7 @@ export interface IFloorMapTableOrders {
   tsID: string;
   userOrders: IFloorMapUserOrders[];
   hasPaymentIntention: boolean;
-  lowestStatus: EOrderStatus;
+  lowestStatus: CrudApi.OrderStatus;
 }
 
 export interface IFloorMapTableOrderObjects {
