@@ -255,6 +255,7 @@ type OrderHistory
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -262,9 +263,6 @@ type OrderHistory
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
-  # EXTRA
-  status: OrderStatus
-  # paymentStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }
@@ -281,9 +279,6 @@ enum OrderStatus {
   PROCESSING
   READY
   SERVED
-  # WAITING_FOR_PAYMENT
-  # PAID
-  # RECEIVED,
   FAILED
   REJECTED
 }
