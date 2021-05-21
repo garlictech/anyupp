@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { CrudApi } from 'libs/crud-gql/api/src';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';

@@ -2,7 +2,7 @@ type Address {
   address: String!
   city: String!
   country: String!
-  title: String
+  title: String!
   postalCode: String!
   location: Location!
 }
@@ -224,7 +224,7 @@ type OrderItem {
   image: String
   priceShown: PriceShown!
   quantity: Int!
-  statusLog: [StatusLog]
+  statusLog: [StatusLog!]
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
@@ -338,8 +338,8 @@ type ProductComponentSet
 ### ProductConfigSet
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Float
-  price: Float
+  refGroupPrice: Float!
+  price: Float!
   position: Int!
 }
 
@@ -684,7 +684,9 @@ type Subscription {
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
     @aws_cognito_user_pools
   onGeneratedProductChange: GeneratedProduct
-    @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"])
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
     @aws_cognito_user_pools
   onOrdersChange: Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])

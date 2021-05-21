@@ -11,7 +11,7 @@ import {
 } from '@bgap/shared/types';
 
 import { calculatePriceFromAvailabilities } from './calculate-price';
-import { CrudApi } from 'libs/crud-gql/api/src';
+import { CrudApi } from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,

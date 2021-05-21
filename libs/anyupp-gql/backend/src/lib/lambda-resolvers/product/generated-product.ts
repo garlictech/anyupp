@@ -13,7 +13,6 @@ import {
   executeQuery,
   GraphqlApiClient,
 } from '@bgap/shared/graphql/api-client';
-import { IGeneratedProduct } from '@bgap/shared/types';
 import { tableConfig } from '@bgap/crud-gql/backend';
 
 import { createItems, deleteItems } from '../../database';
@@ -37,8 +36,9 @@ export const deleteGeneratedProductsForAUnit = ({
     ),
   );
 };
-const deleteGeneratedProductsItems = (items: IGeneratedProduct[]) =>
-  deleteItems(TABLE_NAME)(items);
+const deleteGeneratedProductsItems = (
+  items: Required<CrudApi.GeneratedProduct>[],
+) => deleteItems(TABLE_NAME)(items);
 
 export const createGeneratedProducts = (
   products: CrudApi.CreateGeneratedProductInput[],
@@ -54,9 +54,10 @@ export const listGeneratedProductsForUnits = ({
   crudGraphqlClient: GraphqlApiClient;
   unitIds: Array<string>;
   noCache?: boolean;
-}): Observable<Array<IGeneratedProduct>> => {
+}): Observable<Array<Required<CrudApi.GeneratedProduct>>> => {
   const input: CrudApi.ListGeneratedProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+    limit: 200, // TODO <==??????????
   };
   return executeQuery(crudGraphqlClient)<CrudApi.ListGeneratedProductsQuery>(
     CrudApiQueryDocuments.listGeneratedProducts,
@@ -66,7 +67,7 @@ export const listGeneratedProductsForUnits = ({
     map(x => x.listGeneratedProducts?.items),
     filter(fp.negate(fp.isEmpty)),
     defaultIfEmpty([]),
-    // TODO: switchMap((items: []) => combineLatest(items.map(validateUnit))),
+    // TODO: !!! switchMap((items: []) => combineLatest(items.map(validateUnit))),
     catchError(err => {
       console.error(err);
       return throwError('Internal listGeneratedProducts query error');
