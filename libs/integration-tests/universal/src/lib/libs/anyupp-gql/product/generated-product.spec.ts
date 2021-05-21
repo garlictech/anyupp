@@ -4,7 +4,7 @@ import {
   listGeneratedProductsForUnits,
 } from '@bgap/anyupp-gql/backend';
 import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
-import { getSortedIds } from '@bgap/shared/utils';
+import { getSortedIds, pipeDebug } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
 import { scan, switchMap, tap, delay } from 'rxjs/operators';
 import { generatedProductSeed, testIdPrefix } from '@bgap/shared/fixtures';
@@ -13,12 +13,14 @@ import {
   deleteTestGeneratedProduct,
 } from '../../../seeds/generated-product';
 
-const unitId_01 = 'UNIT_ID_01_BATCH';
-const unitId_02 = 'UNIT_ID_02_BATCH';
-const unitId_03 = 'UNIT_ID_03_BATCH';
+const TEST_NAME = 'BATCH_';
+
+const unitId_01 = `${TEST_NAME}UNIT_ID_01`;
+const unitId_02 = `${TEST_NAME}UNIT_ID_02`;
+const unitId_03 = `${TEST_NAME}UNIT_ID_03`;
 const unit01_generatedProduct_01 = {
   ...generatedProductSeed.base,
-  id: `${testIdPrefix}generatedProduct_u${unitId_01}_01`,
+  id: `${testIdPrefix}${TEST_NAME}generatedProduct_u${unitId_01}_01`,
   unitId: unitId_01,
 };
 const unit02_generatedProduct_01 = {
@@ -46,7 +48,7 @@ const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
 describe('GenerateProduct tests', () => {
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
     deleteGeneratedProductsForAUnit({
-      unitId: unitId_01,
+      unitId: 'WONT_BE_THERE_ANY_GENERATED_PROD_WITH_THIS_UNITID_FOR_SURE',
       crudGraphqlClient: crudBackendGraphQLClient,
     }).subscribe({
       next() {
@@ -99,6 +101,7 @@ describe('GenerateProduct tests', () => {
               unit03_generatedProduct_02,
             ]),
           ),
+          pipeDebug('### After CreateGeneratedProducts'),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
             listGeneratedProductsForUnits({
@@ -115,14 +118,16 @@ describe('GenerateProduct tests', () => {
               ]);
             },
           }),
+          pipeDebug('### After listGeneratedProductsForUnits - unitId_03'),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
             deleteGeneratedProductsForAUnit({
-              unitId: unitId_03,
+              unitId: unit03_generatedProduct_01.unitId,
               crudGraphqlClient: crudBackendGraphQLClient,
             }),
           ),
+          pipeDebug('### After deleteGeneratedProductsForAUnit'),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
             listGeneratedProductsForUnits({
@@ -139,10 +144,17 @@ describe('GenerateProduct tests', () => {
               ]);
             },
           }),
+          pipeDebug('### END'),
         )
         .subscribe({
           next() {
             done();
+          },
+          error(err) {
+            console.error(
+              '### ~ file: generated-product.spec.ts ~ line 160 ~ error ~ err',
+              err,
+            );
           },
         });
     }, 25000);
@@ -171,6 +183,7 @@ describe('GenerateProduct tests', () => {
               expect(emissionCount).toEqual(1);
             },
           }),
+          pipeDebug('### After createGeneratedProducts'),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
             listGeneratedProductsForUnits({
@@ -189,6 +202,7 @@ describe('GenerateProduct tests', () => {
               );
             },
           }),
+          pipeDebug('### After listGeneratedProductsForUnits'),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
@@ -197,6 +211,7 @@ describe('GenerateProduct tests', () => {
               crudGraphqlClient: crudBackendGraphQLClient,
             }),
           ),
+          pipeDebug('### After deleteGeneratedProductsForAUnit'),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
             listGeneratedProductsForUnits({
@@ -214,10 +229,17 @@ describe('GenerateProduct tests', () => {
               ]);
             },
           }),
+          pipeDebug('### END'),
         )
         .subscribe({
           next() {
             done();
+          },
+          error(err) {
+            console.error(
+              '### ~ file: generated-product.spec.ts ~ line 236 ~ error ~ err',
+              err,
+            );
           },
         });
     }, 25000);

@@ -59,6 +59,7 @@ class AwsOrderProvider implements IOrdersProvider {
     _cart = null;
     _cartController.add(null);
   }
+  
 
   @override
   Future<String> createAndSendOrderFromCart() async {

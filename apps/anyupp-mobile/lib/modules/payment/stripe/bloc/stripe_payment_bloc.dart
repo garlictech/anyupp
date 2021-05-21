@@ -25,6 +25,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentMethodsList(methods);
       }
 
+      // --- Handle start payment with external method
+      if (event is StartExternalPaymentEvent) {
+         yield StripePaymentLoading();
+        await _paymentRepository.startExternalPayment(event.cart, event.paymentMethod);
+         yield StripeOperationSuccess();
+      }
+
       // --- Handle start payment with existing card
       if (event is StartStripePaymentWithExistingCardEvent) {
          yield StripePaymentLoading();

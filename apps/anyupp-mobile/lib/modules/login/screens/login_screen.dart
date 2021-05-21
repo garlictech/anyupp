@@ -457,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 //: Colors.blueAccent,
                                 onPressed:
-                                    null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                    () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
