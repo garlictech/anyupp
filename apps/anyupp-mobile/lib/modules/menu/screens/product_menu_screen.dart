@@ -3,7 +3,9 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +68,7 @@ class Menu extends StatelessWidget {
             'assets/icons/qr_code_scanner.svg',
             color: theme.indicator,
           ),
-          onPressed: null, // TODO visszatenni majd Firebase nelkul () => Nav.to(SelectUnitQRCodeScannerScreen()),
+          onPressed: () => Nav.to(QRCodeScannerScreen()),
         ),
         IconButton(
           icon: Icon(
