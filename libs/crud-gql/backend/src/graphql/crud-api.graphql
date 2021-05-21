@@ -204,7 +204,7 @@ type Group
 ### OrderItem
 type StatusLog {
   userId: ID!
-  status: String!
+  status: OrderStatus!
   ts: Float!
 }
 
