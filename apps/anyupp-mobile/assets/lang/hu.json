@@ -162,7 +162,7 @@
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
-    "stripepay": "Pay with Stripe"
+    "stripepay": "Fizetés Stripe-al"
   },
   "payment": {
     "title": "FIZETÉS",
