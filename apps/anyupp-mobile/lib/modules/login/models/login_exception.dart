@@ -38,6 +38,8 @@ class LoginException extends AppException {
 
   static const UNCONFIRMED = 'UNCONFIRMED';
 
+  static const INVALID_ANONYMUS_USER = 'INVALID_ANONYMUS_USER';
+
   LoginException({
     code,
     subCode,
