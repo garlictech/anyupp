@@ -1,14 +1,29 @@
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import {
-  currentStatus as currentStatusFn, getNextOrderStatus, getOrderLaneColor, getPrevOrderItemStatus
+  currentStatus as currentStatusFn,
+  getNextOrderStatus,
+  getOrderLaneColor,
+  getPrevOrderItemStatus,
 } from '@bgap/admin/shared/data-access/orders';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CrudApi } from '@bgap/crud-gql/api';
-import { ENebularButtonSize, ILaneOrderItem, IStatusLog, IUnit } from '@bgap/shared/types';
+import {
+  ENebularButtonSize,
+  ILaneOrderItem,
+  IStatusLog,
+  IUnit,
+} from '@bgap/shared/types';
 import { objectToArray } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -60,7 +75,8 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ))
         .reverse() // <-- Find the LAST processing status
         .find(
-          (t: IStatusLog): boolean => t.status === CrudApi.OrderStatus.PROCESSING,
+          (t: IStatusLog): boolean =>
+            t.status === CrudApi.OrderStatus.PROCESSING,
         );
 
       timer(0, 1000)
@@ -92,13 +108,17 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   }
 
   public moveBack(): void {
-    this._orderService.updateOrderItemStatus(
-      <string>(<ILaneOrderItem>this.orderItem).orderId,
-      <CrudApi.OrderStatus>(
-        getPrevOrderItemStatus(<CrudApi.OrderStatus>this.orderItem?.currentStatus)
-      ),
-      <number>this.orderItem.idx,
-    );
+    const prevStatus = this.orderItem?.currentStatus
+      ? getPrevOrderItemStatus(this.orderItem?.currentStatus)
+      : undefined;
+
+    if (prevStatus) {
+      this._orderService.updateOrderItemStatus(
+        <string>(<ILaneOrderItem>this.orderItem).orderId,
+        prevStatus,
+        <number>this.orderItem.idx,
+      );
+    }
 
     this._changeDetectorRef.detectChanges();
   }

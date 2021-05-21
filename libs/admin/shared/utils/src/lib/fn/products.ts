@@ -38,18 +38,3 @@ export const getProductComponentObject = (
   productComponents.forEach(p => (productComponentObject[p.id] = p.name));
   return productComponentObject;
 };
-
-export const getProductComponentSetOptions = (
-  productComponentSets: IProductComponentSet[],
-  items: string[],
-) =>
-  productComponentSets
-    .filter(
-      productComponentSet => !(items || []).includes(productComponentSet.id),
-    )
-    .map(
-      (productComponentSet): IKeyValue => ({
-        key: productComponentSet.id,
-        value: productComponentSet.name,
-      }),
-    );

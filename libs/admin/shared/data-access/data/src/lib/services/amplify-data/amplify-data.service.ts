@@ -65,9 +65,11 @@ export class AmplifyDataService {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((data: any) => {
         this._ngZone.run(() => {
-          params.upsertFn(
-            removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
-          );
+          if (data?.[<keyof subscriptionTypes>params.subscriptionName]) {
+            params.upsertFn(
+              removeNestedTypeNameField(data?.[<keyof subscriptionTypes>params.subscriptionName]),
+            );
+          }
         });
       }),
     );
