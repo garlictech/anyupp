@@ -106,7 +106,7 @@ export class AmplifyDataService {
   }
 
   // Update some fields
-  public async patch<T>(
+  public async patch(
     mutationName: keyof typeof CrudApiMutationDocuments,
     input: Record<string, unknown>
   ) {

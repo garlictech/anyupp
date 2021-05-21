@@ -74,7 +74,8 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   public updateQuantity(idx: number, value: number): void {
-    this._orderService.updateQuantity(fp.cloneDeep(this.order), idx, value);
+    console.error('updateQuantity', idx, value);
+    // this._orderService.updateQuantity(fp.cloneDeep(this.order), idx, value);
   }
 
   public removeOrder(): void {

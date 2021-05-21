@@ -16,17 +16,16 @@ import {
 import { select, Store } from '@ngrx/store';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
-import { clearDbProperties } from 'libs/admin/shared/utils/src';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
   private _adminUser?: IAdminUser;
-  private _groupCurrency?: string;
+  // private _groupCurrency?: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store<any>,
     private _amplifyDataService: AmplifyDataService,
   ) {
@@ -36,6 +35,7 @@ export class OrderService {
         this._adminUser = adminUser;
       });
 
+    /*
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
@@ -44,9 +44,10 @@ export class OrderService {
       .subscribe((group: IGroup | undefined): void => {
         this._groupCurrency = group?.currency;
       });
+    */
   }
 
-  public updateQuantity(order: IOrder, idx: number, value: number): void {
+  public updateQuantity(/*order: IOrder, idx: number, value: number*/): void {
     /*
     order.items[idx].quantity += value;
 

@@ -32,7 +32,6 @@ import {
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { stat } from 'fs';
 
 @UntilDestroy()
 @Component({
@@ -106,7 +105,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         } else {
           await this._orderService.updateOrderStatus(this.order, status);
         }
-      } catch (err) {}
+      } catch (err) {
+        // log error
+      }
 
       this.workingOrderStatus = false;
       this._changeDetectorRef.detectChanges();
