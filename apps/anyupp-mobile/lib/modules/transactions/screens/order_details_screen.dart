@@ -18,9 +18,8 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: appBar(theme,
-            onBackButtonPressed: () => Nav.pop(),
-            title: trans(context, 'profile.transactions.details')),
+        appBar:
+            appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans(context, 'profile.transactions.details')),
         // The appBar head text
         backgroundColor: theme.background,
         body: BlocBuilder<OrderBloc, BaseOrderState>(
@@ -81,10 +80,6 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildOrderHeader(BuildContext context, Order order) {
-    String ordered = DF_SHORT.format(order.created != null
-        ? DateTime.fromMillisecondsSinceEpoch(order.created)
-        : DateTime.now());
-
     return ClipRect(
       child: Container(
         decoration: BoxDecoration(
@@ -107,7 +102,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 right: 20.0,
               ),
               child: Text(
-                ordered,
+                order.getFormattedDate(),
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
@@ -161,8 +156,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: AutoSizeText(
-                  formatCurrency(item.priceShown.priceSum,
-                      item.priceShown.currency ?? 'huf'),
+                  formatCurrency(item.priceShown.priceSum, item.priceShown.currency ?? 'huf'),
                   style: GoogleFonts.poppins(
                     //fontSize: 14,
                     color: theme.text,
@@ -183,8 +177,7 @@ class OrderDetailsScreen extends StatelessWidget {
         left: 20.0,
         right: 20.0,
       ),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch, children: itemRows),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: itemRows),
     );
   }
 
@@ -215,8 +208,7 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum,
-                order.sumPriceShown.currency ?? 'huf'), // TODO geounit!!
+            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'huf'), // TODO geounit!!
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

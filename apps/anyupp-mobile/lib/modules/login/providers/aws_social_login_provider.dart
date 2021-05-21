@@ -42,12 +42,12 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     return;
   }
 
-  @override
-  Future<ProviderLoginResponse> signInAnonymously() async {
-    print('***** AwsSocialLoginProvider.signInAnonymously()');
-    return null;
-    // throw UnimplementedError();
-  }
+  // @override
+  // Future<ProviderLoginResponse> signInAnonymously() async {
+  //   print('***** AwsSocialLoginProvider.signInAnonymously()');
+  //   return null;
+  //   // throw UnimplementedError();
+  // }
 
   @override
   Future<ProviderLoginResponse> signInWithApple() async {
@@ -113,8 +113,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     } on Exception catch (e) {
       throw LoginException.fromException('UNKNOWN_ERROR', e);
     }
-  }  
-
+  }
 
   @override
   Future<ProviderLoginResponse> signInWithFacebook() async {
