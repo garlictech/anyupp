@@ -96,13 +96,17 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   }
 
   public moveForward(): void {
-    this._orderService.updateOrderItemStatus(
-      this.orderItem?.orderId || '',
-      <CrudApi.OrderStatus>(
-        getNextOrderStatus(<CrudApi.OrderStatus>this.orderItem?.currentStatus)
-      ),
-      <number>this.orderItem.idx,
-    );
+    const nextStatus = this.orderItem?.currentStatus
+      ? getNextOrderStatus(this.orderItem?.currentStatus)
+      : undefined;
+
+      if (nextStatus && this.orderItem.idx) {
+        this._orderService.updateOrderItemStatus(
+          this.orderItem?.orderId || '',
+          nextStatus,
+          this.orderItem.idx,
+        );
+      }
 
     this._changeDetectorRef.detectChanges();
   }
@@ -112,11 +116,11 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ? getPrevOrderItemStatus(this.orderItem?.currentStatus)
       : undefined;
 
-    if (prevStatus) {
+    if (prevStatus && this.orderItem.idx) {
       this._orderService.updateOrderItemStatus(
-        <string>(<ILaneOrderItem>this.orderItem).orderId,
+        this.orderItem.orderId || '',
         prevStatus,
-        <number>this.orderItem.idx,
+        this.orderItem.idx,
       );
     }
 

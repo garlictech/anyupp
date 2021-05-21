@@ -2,8 +2,7 @@ import {
   EProductComponentSetType,
   IKeyValue,
   IKeyValueObject,
-  IProductComponent,
-  IProductComponentSet,
+  IProductComponent
 } from '@bgap/shared/types';
 
 import { AbstractControl, ValidationErrors } from '@angular/forms';

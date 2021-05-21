@@ -118,7 +118,7 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => ({
+          () => ({
             profileImage: image,
           }),
         );
@@ -155,7 +155,7 @@ export class AdminUserFormComponent
           'getAdminUser',
           'updateAdminUser',
           this.adminUser.id,
-          (data: unknown) => ({
+          () => ({
             profileImage: null,
           }),
         );
