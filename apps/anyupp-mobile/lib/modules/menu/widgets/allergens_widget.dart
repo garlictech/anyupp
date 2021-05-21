@@ -11,7 +11,10 @@ import 'allergen_grid_widget.dart';
 
 class AllergensWidget extends StatelessWidget {
   final List<String> allergens;
-  AllergensWidget(this.allergens);
+  final double size;
+  final double fontSize;
+  final double iconBorderRadius;
+  AllergensWidget({this.allergens , this.size = 50, this.fontSize = 16.0, this.iconBorderRadius = 12.0});
 
   List<Widget> getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
@@ -20,12 +23,15 @@ class AllergensWidget extends StatelessWidget {
         allergenGrids.add(Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
-            height: 50,
-            width: 50,
+            height: size,
+            width: size,
             child: allergenGridWidget(
-                allergen: trans(context, "allergens.$allergen"),
-                index: GeneratedProduct.allergenMap[allergen],
-                assetPath: "assets/allergens/$allergen.svg"),
+              allergen: trans(context, "allergens.$allergen"),
+              index: GeneratedProduct.allergenMap[allergen],
+              assetPath: "assets/allergens/$allergen.svg",
+              borderRadius: iconBorderRadius,
+              fontSize: fontSize,
+            ),
           ),
         ));
       }

@@ -11,7 +11,7 @@ class Order extends Model {
   final String userId;
   final String unitId;
   final List<OrderItem> items;
-  final PaymentMode paymentMethod;
+  final PaymentMode paymentMode;
   final String staffId;
   final PriceShown sumPriceShown;
   final bool takeAway;
@@ -32,7 +32,7 @@ class Order extends Model {
       @required this.userId,
       @required this.unitId,
       this.items,
-      this.paymentMethod,
+      this.paymentMode,
       this.staffId,
       this.sumPriceShown,
       this.takeAway,
@@ -48,7 +48,7 @@ class Order extends Model {
       @required String userId,
       @required String unitId,
       List<OrderItem> items,
-      PaymentMode paymentMethod,
+      PaymentMode paymentMode,
       String staffId,
       PriceShown sumPriceShown,
       bool takeAway,
@@ -63,7 +63,7 @@ class Order extends Model {
         userId: userId,
         unitId: unitId,
         items: items != null ? List.unmodifiable(items) : items,
-        paymentMethod: paymentMethod,
+        paymentMode: paymentMode,
         staffId: staffId,
         sumPriceShown: sumPriceShown,
         takeAway: takeAway,
@@ -87,7 +87,7 @@ class Order extends Model {
         userId == other.userId &&
         unitId == other.unitId &&
         DeepCollectionEquality().equals(items, other.items) &&
-        paymentMethod == other.paymentMethod &&
+        paymentMode == other.paymentMode &&
         staffId == other.staffId &&
         sumPriceShown == other.sumPriceShown &&
         takeAway == other.takeAway &&
@@ -110,8 +110,8 @@ class Order extends Model {
     buffer.write("orderNum=" + "$orderNum" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("paymentMethod=" +
-        (paymentMethod != null ? paymentMethod.toString() : "null") +
+    buffer.write("paymentMode=" +
+        (paymentMode != null ? paymentMode.toString() : "null") +
         ", ");
     buffer.write("staffId=" + "$staffId" + ", ");
     buffer.write("sumPriceShown=" +
@@ -137,7 +137,7 @@ class Order extends Model {
       String userId,
       String unitId,
       List<OrderItem> items,
-      PaymentMode paymentMethod,
+      PaymentMode paymentMode,
       String staffId,
       PriceShown sumPriceShown,
       bool takeAway,
@@ -152,7 +152,7 @@ class Order extends Model {
         userId: userId ?? this.userId,
         unitId: unitId ?? this.unitId,
         items: items ?? this.items,
-        paymentMethod: paymentMethod ?? this.paymentMethod,
+        paymentMode: paymentMode ?? this.paymentMode,
         staffId: staffId ?? this.staffId,
         sumPriceShown: sumPriceShown ?? this.sumPriceShown,
         takeAway: takeAway ?? this.takeAway,
@@ -173,9 +173,9 @@ class Order extends Model {
                 .map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        paymentMethod = json['paymentMethod'] != null
+        paymentMode = json['paymentMode'] != null
             ? PaymentMode.fromJson(
-                Map<String, dynamic>.from(json['paymentMethod']))
+                Map<String, dynamic>.from(json['paymentMode']))
             : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null
@@ -202,7 +202,7 @@ class Order extends Model {
         'userId': userId,
         'unitId': unitId,
         'items': items?.map((e) => e?.toJson())?.toList(),
-        'paymentMethod': paymentMethod?.toJson(),
+        'paymentMode': paymentMode?.toJson(),
         'staffId': staffId,
         'sumPriceShown': sumPriceShown?.toJson(),
         'takeAway': takeAway,

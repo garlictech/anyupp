@@ -17,6 +17,7 @@ class GeneratedProduct extends Model {
   final String image;
   final List<ProductVariant> variants;
   final List<String> allergens;
+  final List<GeneratedProductConfigSet> configSets;
   static Map<String, int> allergenMap = {
     'gluten': 1,
     'crustaceans': 2,
@@ -50,7 +51,8 @@ class GeneratedProduct extends Model {
       this.position,
       this.image,
       this.variants,
-      this.allergens});
+      this.allergens,
+      this.configSets});
 
   factory GeneratedProduct(
       {String id,
@@ -63,7 +65,8 @@ class GeneratedProduct extends Model {
       int position,
       String image,
       List<ProductVariant> variants,
-      List<String> allergens}) {
+      List<String> allergens,
+      List<GeneratedProductConfigSet> configSets}) {
     return GeneratedProduct._internal(
         id: id == null ? UUID.getUUID() : id,
         unitId: unitId,
@@ -75,7 +78,8 @@ class GeneratedProduct extends Model {
         position: position,
         image: image,
         variants: variants != null ? List.unmodifiable(variants) : variants,
-        allergens: allergens);
+        allergens: allergens,
+        configSets: configSets);
   }
 
   bool equals(Object other) {
@@ -96,7 +100,8 @@ class GeneratedProduct extends Model {
         position == other.position &&
         image == other.image &&
         DeepCollectionEquality().equals(variants, other.variants) &&
-        ListEquality().equals(allergens, other.allergens);
+        ListEquality().equals(allergens, other.allergens) &&
+        ListEquality().equals(configSets, other.configSets);
   }
 
   @override
@@ -118,7 +123,8 @@ class GeneratedProduct extends Model {
     buffer.write("tax=" + (tax != null ? tax.toString() : "null") + ", ");
     buffer.write(
         "position=" + (position != null ? position.toString() : "null") + ", ");
-    buffer.write("image=" + "$image");
+    buffer.write("image=" + "$image,");
+    buffer.write("configSets=" + "$configSets");
     buffer.write("}");
 
     return buffer.toString();
@@ -135,7 +141,8 @@ class GeneratedProduct extends Model {
       int position,
       String image,
       List<ProductVariant> variants,
-      List<String> allergens}) {
+      List<String> allergens,
+      List<GeneratedProductConfigSet> configSets}) {
     return GeneratedProduct(
         id: id ?? this.id,
         unitId: unitId ?? this.unitId,
@@ -147,7 +154,8 @@ class GeneratedProduct extends Model {
         position: position ?? this.position,
         image: image ?? this.image,
         variants: variants ?? this.variants,
-        allergens: allergens ?? this.allergens);
+        allergens: allergens ?? this.allergens,
+        configSets: configSets ?? this.configSets);
   }
 
   GeneratedProduct.fromJson(Map<String, dynamic> json)
@@ -175,6 +183,11 @@ class GeneratedProduct extends Model {
         //TODO add real field
         allergens = json['allergens'] is List
             ? (json['allergens'] as List).map((e) => e as String).toList()
+            : null,
+        configSets = json['configSets'] is List ? (json['configSets'] as List)
+                .map((e) =>
+                    GeneratedProductConfigSet.fromJson(e))
+                .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -188,6 +201,7 @@ class GeneratedProduct extends Model {
         'position': position,
         'image': image,
         'variants': variants?.map((e) => e?.toJson())?.toList(),
+        'configSets': configSets?.map((e) => e?.toJson())?.toList(),
         "allergens": allergens
       };
 }
