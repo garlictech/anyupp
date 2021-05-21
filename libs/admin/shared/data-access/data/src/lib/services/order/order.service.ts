@@ -1,18 +1,11 @@
 import * as fp from 'lodash/fp';
-import { skipWhile, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { CrudApi } from '@bgap/crud-gql/api';
-import {
-  IAdminUser,
-  IGeneratedProduct,
-  IGroup,
-  IOrder,
-  IPaymentMode,
-} from '@bgap/shared/types';
+import { IAdminUser, IGeneratedProduct, IOrder, IPaymentMode } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 import { AmplifyDataService } from '../amplify-data/amplify-data.service';
