@@ -32,7 +32,7 @@ import { select, Store } from '@ngrx/store';
 export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem!: ILaneOrderItem;
   @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
-  @Input() unit!: CrudApi.Unit;
+  @Input() unit?: CrudApi.Unit;
 
   public currentStatus = currentStatusFn;
   public processingTimer = 0;
@@ -60,6 +60,10 @@ export class LaneItemComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
+    if (!this.unit) {
+      throw new Error('HANDLE ME: unexpected nullish');
+    }
+
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
     if (this.orderItem.currentStatus === CrudApi.OrderStatus.processing) {
@@ -82,6 +86,10 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
+  }
+
+  public isOrderItemStatus(status: keyof typeof CrudApi.OrderStatus): boolean {
+    return this.orderItem.currentStatus === CrudApi.OrderStatus[status];
   }
 
   public moveForward(): void {

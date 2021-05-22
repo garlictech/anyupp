@@ -129,4 +129,13 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       },
     );
   }
+
+  public isCurrentStatus(
+    orderItem: CrudApi.OrderItem,
+    status: keyof typeof CrudApi.OrderStatus,
+  ): boolean {
+    return (
+      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+    );
+  }
 }

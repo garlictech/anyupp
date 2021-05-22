@@ -1,18 +1,16 @@
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-
 import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
-  IOrder,
 } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-
 import {
   DASHBOARD_FEATURE_KEY,
   DashboardState,
   IDashboardSettings,
 } from './dashboard.reducer';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const getDashboardState = createFeatureSelector<DashboardState>(
   DASHBOARD_FEATURE_KEY,
@@ -24,8 +22,8 @@ export const getSelectedActiveOrder = () => {
     ordersSelectors.getAllActiveOrders,
     (
       selectedOrderId: string | undefined,
-      activeOrders: IOrder[],
-    ): IOrder | undefined => {
+      activeOrders: CrudApi.Order[],
+    ): CrudApi.Order | undefined => {
       return activeOrders.find(
         (order): boolean => order.id === selectedOrderId,
       );
@@ -39,8 +37,8 @@ export const getSelectedHistoryOrder = () => {
     ordersSelectors.getAllHistoryOrders,
     (
       selectedOrderId: string | undefined,
-      historyOrders: IOrder[],
-    ): IOrder | undefined => {
+      historyOrders: CrudApi.Order[],
+    ): CrudApi.Order | undefined => {
       return historyOrders?.find(
         (order): boolean => order.id === selectedOrderId,
       );

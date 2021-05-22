@@ -1,4 +1,3 @@
-export * from './admin-role';
 export * from './dashboard-list-type';
 export * from './dashboard-size';
 export * from './floor-map';

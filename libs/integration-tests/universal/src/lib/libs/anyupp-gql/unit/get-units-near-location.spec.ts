@@ -1,11 +1,10 @@
 import { combineLatest, from } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   createAuthenticatedAnyuppSdk,
-  createIamAnyuppSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import {
@@ -20,6 +19,7 @@ import {
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
+import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -51,8 +51,7 @@ const unit_03 = {
   address: fp.mergeAll([unitSeed.unit_01.address, userLoc]),
 };
 
-describe('GetUnitsNearLocation tests', async () => {
-  const anyuppSdk = createIamAnyuppSdk();
+describe('GetUnitsNearLocation tests', () => {
   const crudSdk = createIamCrudSdk();
 
   const cleanup = combineLatest([
@@ -63,34 +62,33 @@ describe('GetUnitsNearLocation tests', async () => {
     deleteTestUnit(unit_03.id, crudSdk),
   ]);
 
-  const authAnyuppSdk = createAuthenticatedAnyuppSdk(
-    testAdminUsername,
-    testAdminUserPassword,
-  );
+  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
-  beforeAll(done => {
-    authAnyuppSdk
-      .pipe(() =>
-        combineLatest([
-          // CleanUP
-          deleteTestUnit(unitNotActive.id, crudSdk),
-          deleteTestUnit(unit_01.id, crudSdk),
-          deleteTestUnit(unit_02.id, crudSdk),
-          deleteTestUnit(unit_03.id, crudSdk),
-          deleteTestGroup(groupSeed.group_01.id, crudSdk),
-          deleteTestChain(chainSeed.chain_01.id, crudSdk),
-        ]).pipe(
-          switchMap(() =>
-            // Seeding
-            combineLatest([
-              createTestGroup(groupSeed.group_01, crudSdk),
-              createTestChain(chainSeed.chain_01, crudSdk),
-              createTestUnit(unitNotActive, crudSdk),
-              createTestUnit(unit_01, crudSdk),
-              createTestUnit(unit_02, crudSdk),
-              createTestUnit(unit_03, crudSdk),
-            ]),
-          ),
+  beforeAll(async done => {
+    authAnyuppSdk = await createAuthenticatedAnyuppSdk(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
+    combineLatest([
+      // CleanUP
+      deleteTestUnit(unitNotActive.id, crudSdk),
+      deleteTestUnit(unit_01.id, crudSdk),
+      deleteTestUnit(unit_02.id, crudSdk),
+      deleteTestUnit(unit_03.id, crudSdk),
+      deleteTestGroup(groupSeed.group_01.id, crudSdk),
+      deleteTestChain(chainSeed.chain_01.id, crudSdk),
+    ])
+      .pipe(
+        switchMap(() =>
+          // Seeding
+          combineLatest([
+            createTestGroup(groupSeed.group_01, crudSdk),
+            createTestChain(chainSeed.chain_01, crudSdk),
+            createTestUnit(unitNotActive, crudSdk),
+            createTestUnit(unit_01, crudSdk),
+            createTestUnit(unit_02, crudSdk),
+            createTestUnit(unit_03, crudSdk),
+          ]),
         ),
       )
       .subscribe(() => done());
@@ -129,8 +127,9 @@ describe('GetUnitsNearLocation tests', async () => {
 
     it('should throw without a lat arg in the location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lat: '12' } },
+        input: { location: { lat: 12 } },
       } as any;
+
       from(
         unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
@@ -158,8 +157,9 @@ describe('GetUnitsNearLocation tests', async () => {
     it('should throw without valid location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
-      } as any;
-      from(anyuppSdk.GetUnitsNearLocation(input)).subscribe({
+      };
+
+      authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -173,6 +173,7 @@ describe('GetUnitsNearLocation tests', async () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
+
     // To test with the local appsync code
     from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)).subscribe(
       {
@@ -191,30 +192,25 @@ describe('GetUnitsNearLocation tests', async () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    from(anyuppSdk.GetUnitsNearLocation(input))
+    authAnyuppSdk
+      .GetUnitsNearLocation(input)
       .pipe(
-        map(x => x?.items),
-        filter(x => !!x),
+        filterNullish(),
+        map(result => result.items),
+        filterNullishElements(),
+        throwIfEmpty(),
       )
       .subscribe({
         next(result) {
-          if (!result || result === null) {
-            throw 'Missing result';
-          }
-          const foundItems: Array<AnyuppApi.GeoUnit> = result as Array<
-            AnyuppApi.GeoUnit
-          >;
-          successfullExecutionChecks(foundItems);
+          successfullExecutionChecks(result);
           done();
         },
       });
   }, 15000);
 
   const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
+    debugger;
     const ids = foundItems.map(x => x.id);
-    expect(ids).toContain(unitSeed.unitId_seeded_01);
-    expect(ids).toContain(unitSeed.unitId_seeded_02);
-    expect(ids).toContain(unitSeed.unitId_seeded_03);
     expect(ids).not.toContain(unitNotActive.id);
 
     expect(foundItems[0].id).toEqual(unit_03.id);

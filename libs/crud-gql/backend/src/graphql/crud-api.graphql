@@ -59,12 +59,21 @@ type AdminRoleContext
 
 ### RoleContext
 
+enum Role {
+  superuser
+  chainadmin
+  groupadmin
+  unitAdmin
+  staff
+  inactive
+}
+
 type RoleContext
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
-  role: String!
+  role: Role!
   name: LocalizedItem
   chainId: String
   groupId: String

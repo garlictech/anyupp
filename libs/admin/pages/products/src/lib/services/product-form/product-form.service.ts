@@ -1,5 +1,4 @@
 import * as fp from 'lodash/fp';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Injectable } from '@angular/core';
 import {
@@ -10,7 +9,7 @@ import {
 } from '@angular/forms';
 import { FormsService } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
-import { EProductLevel } from '@bgap/shared/types';
+import { EProductLevel, Product } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 
@@ -71,8 +70,12 @@ export class ProductFormService {
   }
 
   public patchProductVariants(product: Product, variants: FormArray): void {
-    (product.variants || []).forEach((variant: ProductVariant): void => {
+    (product.variants || []).forEach(variant => {
       const variantGroup = this._formsService.createProductVariantFormGroup();
+
+      if (!variant) {
+        throw new Error('HANDLE ME: variant cannot be NULL');
+      }
       variantGroup.patchValue(cleanObject(variant));
 
       variants.push(variantGroup);
@@ -80,7 +83,7 @@ export class ProductFormService {
   }
 
   public patchExtendedProductVariants(
-    product: CrudApi.ChainProduct,
+    product: Product,
     variants: FormArray,
   ): void {
     pipe(
@@ -107,7 +110,7 @@ export class ProductFormService {
   }
 
   public patchConfigSet(
-    product: CrudApi.ChainProduct,
+    product: Product,
     productLevel: EProductLevel,
     configSets: FormArray,
   ): void {

@@ -49,7 +49,7 @@
       "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-pipes": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-utils": {
       "tags": ["type:utils", "platform:angular"]

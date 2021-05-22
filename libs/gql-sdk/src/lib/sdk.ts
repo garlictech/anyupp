@@ -8,8 +8,26 @@ import {
 import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
+import { fromApolloSubscription } from './utils';
 
 const validDocDefOps = ['mutation', 'query', 'subscription'];
+
+// This is a low-level data manipulation algorythm where we process the
+// types runtime, not in compile time.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const removeProps = (obj: any, keys: string[]) => {
+  if (obj instanceof Array) {
+    obj.forEach(item => removeProps(item, keys));
+  } else if (typeof obj === 'object' && obj !== null) {
+    Object.getOwnPropertyNames(obj).forEach(key => {
+      if (keys.indexOf(key) !== -1) {
+        delete obj[key];
+      } else {
+        removeProps(obj[key], keys);
+      }
+    });
+  }
+};
 
 const documentNodeError = new Error(
   'DocumentNode passed to CRUD Client must contain single query or mutation',
@@ -73,8 +91,11 @@ export const getSdkRequester = (client: AWSAppSyncClient<any>) => <R, V>(
     if (!fp.has(fieldName, data)) {
       throw new Error('No data presented in the GraphQL response');
     }
-
-    return data[fieldName];
+    // ... and we get rid of __typename-s at the source :)
+    // We mutate the original data here!
+    const dataField = data[fieldName];
+    removeProps(dataField, ['__typename']);
+    return dataField;
   };
 
   switch (definition.operation) {
@@ -100,13 +121,15 @@ export const getSdkRequester = (client: AWSAppSyncClient<any>) => <R, V>(
       ).pipe(map(processResponse));
     }
     case 'subscription': {
-      return client
-        .subscribe({
-          query: doc,
-          variables,
-          fetchPolicy: options?.fetchPolicy,
-        })
-        .map(processResponse);
+      return fromApolloSubscription(
+        client
+          .subscribe({
+            query: doc,
+            variables,
+            fetchPolicy: options?.fetchPolicy,
+          })
+          .map(processResponse),
+      );
     }
   }
 };

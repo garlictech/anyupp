@@ -1,4 +1,4 @@
-import { EAdminRole } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
@@ -22,7 +22,7 @@ export const getLoggedUserSettings = createSelector(
 
 export const getLoggedUserRole = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): EAdminRole | undefined => state.loggedUser?.role,
+  (state: ILoggedUserState): CrudApi.Role | undefined => state.role,
 );
 
 export const getSelectedChainId = createSelector(

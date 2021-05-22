@@ -5,7 +5,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   activeOrdersAdapter,
   historyOrdersAdapter,
-  IOrderEntityState,
   IOrdersState,
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
@@ -19,7 +18,7 @@ export const getOrdersState = createFeatureSelector<IOrdersState>(
 
 const activeOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.active,
+  state => state.active,
 );
 export const getAllActiveOrders = activeOrdersAdapter.getSelectors(
   activeOrderListSelector,
@@ -69,15 +68,13 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
             (orderItem: CrudApi.OrderItem): boolean =>
               currentStatusFn(orderItem.statusLog) === status,
           )
-          .map(
-            (orderItem: CrudApi.OrderItem): ILaneOrderItem => ({
-              ...orderItem,
-              orderId: order.id,
-              userId: order.userId,
-              place: order.place,
-              currentStatus: status,
-            }),
-          ),
+          .map((orderItem: CrudApi.OrderItem) => ({
+            ...orderItem,
+            orderId: order.id,
+            userId: order.userId,
+            place: order.place,
+            currentStatus: status,
+          })),
       );
     });
 
@@ -89,7 +86,7 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
 
 const historyOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.history,
+  state => state.history,
 );
 export const getAllHistoryOrders = historyOrdersAdapter.getSelectors(
   historyOrderListSelector,

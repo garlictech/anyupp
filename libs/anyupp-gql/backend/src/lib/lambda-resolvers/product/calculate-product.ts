@@ -93,19 +93,34 @@ const calculateActualPriceForEachVariant = ({
 const toGeneratedProductType = (
   product: Product,
   variants: CrudApi.GeneratedProductVariant[],
-): CrudApi.CreateGeneratedProductInput => ({
-  id: product.id,
-  unitId: product.unitId,
-  productCategoryId: product.productCategoryId,
-  name: product.name,
-  description: product.description,
-  image: product.image || '',
-  productType: product.productType,
-  tax: product.tax,
-  position: product.position,
-  allergens: product.allergens,
-  variants,
-});
+): CrudApi.CreateGeneratedProductInput => {
+  if (
+    !(
+      product.unitId &&
+      product.productCategoryId &&
+      product.name &&
+      product.productType &&
+      product.tax &&
+      product.position
+    )
+  ) {
+    throw new Error("HANDLE ME: undefined's mut be handled");
+  }
+
+  return {
+    id: product.id,
+    unitId: product.unitId,
+    productCategoryId: product.productCategoryId,
+    name: product.name,
+    description: product.description,
+    image: product.image || '',
+    productType: product.productType,
+    tax: product.tax,
+    position: product.position,
+    allergens: product.allergens,
+    variants,
+  };
+};
 
 const toGeneratedProductVariantType = (
   variant: CrudApi.ProductVariant,

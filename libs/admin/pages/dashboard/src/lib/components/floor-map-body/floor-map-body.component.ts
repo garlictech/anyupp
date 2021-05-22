@@ -34,12 +34,10 @@ import {
   IFloorMapTableOrderObjects,
   IFloorMapTableOrders,
   IFloorMapUserOrderObjects,
-  IOrder,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 import { Group } from 'fabric/fabric-impl';
@@ -51,7 +49,7 @@ import { Group } from 'fabric/fabric-impl';
   templateUrl: './floor-map-body.component.html',
 })
 export class FloorMapBodyComponent implements OnInit, OnDestroy {
-  @ViewChild('floorMap') floorMapEl!: ElementRef;
+  @ViewChild('floorMap') floorMapEl?: ElementRef;
 
   public unit?: CrudApi.Unit;
 
@@ -116,12 +114,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           )).style.transformOrigin = 'top left';
         }),
         switchMap(
-          (): Observable<IOrder[]> =>
+          (): Observable<CrudApi.Order[]> =>
             this._store.pipe(select(ordersSelectors.getAllActiveOrders)),
         ),
         untilDestroyed(this),
       )
-      .subscribe((orders: IOrder[]): void => {
+      .subscribe((orders: CrudApi.Order[]): void => {
         if (this.unit?.floorMap?.objects) {
           const floorMapRawObjects: CrudApi.FloorMapDataObject[] = <
             CrudApi.FloorMapDataObject[]

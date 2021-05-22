@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'order_provider_interface.dart';
 
-class AwsOrderProvider implements IOrdersProvider {
+class AwsOrderProvider implements CrudApi.OrdersProvider {
   final IAuthProvider _authProvider;
 
   StreamController<Cart> _cartController = BehaviorSubject<Cart>();

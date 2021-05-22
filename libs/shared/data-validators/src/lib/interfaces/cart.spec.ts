@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { ICart } from '@bgap/shared/types';
 
-const cart: ICart = {
+const cart: CrudApi.Cart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
@@ -27,8 +26,9 @@ const cart: ICart = {
       quantity: 100,
       statusLog: [
         {
-          status: CrudApi.OrderStatus.NONE,
+          status: CrudApi.OrderStatus.none,
           userId: 'USERID',
+          ts: 1.2,
         },
       ],
       variantId: 'VARIANTID',
@@ -66,6 +66,7 @@ describe('Cart validaton test', () => {
             "statusLog": Array [
               Object {
                 "status": "NONE",
+                "ts": 1.2,
                 "userId": "USERID",
               },
             ],

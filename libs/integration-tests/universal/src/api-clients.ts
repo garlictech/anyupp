@@ -11,22 +11,31 @@ import { Auth } from 'aws-amplify';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-Auth.configure({
-  ...awsConfig,
-  // See: https://github.com/aws-amplify/amplify-js/issues/6552#issuecomment-682259256
-  authenticationFlowType: 'USER_PASSWORD_AUTH',
-  aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
-});
+const authConfig = () =>
+  Auth.configure({
+    ...awsConfig,
+    // See: https://github.com/aws-amplify/amplify-js/issues/6552#issuecomment-682259256
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
+    aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+  });
 
 export const createAuthenticatedCrudSdk = (
   userName: string,
   password: string,
-) => from(Auth.signIn(userName, password)).pipe(map(getCrudSdkForUserPool));
+) => {
+  authConfig();
+  return from(Auth.signIn(userName, password)).pipe(map(getCrudSdkForUserPool));
+};
 
 export const createAuthenticatedAnyuppSdk = (
   userName: string,
   password: string,
-) => from(Auth.signIn(userName, password)).pipe(map(getAnyuppSdkForUserPool));
+) => {
+  authConfig();
+  return from(Auth.signIn(userName, password)).pipe(
+    map(getAnyuppSdkForUserPool),
+  );
+};
 
 export const createIamCrudSdk = () =>
   getCrudSdkForIAM(

@@ -31,5 +31,5 @@ export const upsertUnitProducts = createAction(
 
 export const upsertGeneratedProducts = createAction(
   '[ProductList] Upsert Generated Products',
-  props<{ products: Product[] }>(),
+  props<{ products: CrudApi.GeneratedProduct[] }>(),
 );

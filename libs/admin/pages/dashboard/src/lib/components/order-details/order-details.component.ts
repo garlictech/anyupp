@@ -39,7 +39,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: CrudApi.Order;
   public dashboardSettings!: IDashboardSettings;
-  public EDashboardListMode = EDashboardListMode;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
@@ -141,5 +140,18 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         },
       ],
     };
+  }
+
+  public isListMode(status: keyof typeof EDashboardListMode): boolean {
+    return this.dashboardSettings.listMode === EDashboardListMode[status];
+  }
+
+  public isStatusLog(
+    orderItem: CrudApi.OrderItem,
+    status: keyof typeof CrudApi.OrderStatus,
+  ): boolean {
+    return (
+      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+    );
   }
 }

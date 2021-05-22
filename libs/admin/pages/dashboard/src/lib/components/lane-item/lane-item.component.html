@@ -10,10 +10,8 @@
       class="p-1 subtitle-2 font-larger position-relative"
       [ngClass]="{
         'col-12 col-xl-6':
-          orderItem.currentStatus === CrudApi.OrderStatus.processing ||
-          orderItem.currentStatus === CrudApi.OrderStatus.ready,
-        'col-12 col-xl-8':
-          orderItem.currentStatus === CrudApi.OrderStatus.placed
+          isOrderItemStatus('processing') || isOrderItemStatus('ready'),
+        'col-12 col-xl-8': isOrderItemStatus('placed')
       }"
     >
       <nb-user
@@ -29,10 +27,7 @@
       {{ orderItem.quantity }}x
     </div>
 
-    <div
-      *ngIf="orderItem.currentStatus === CrudApi.OrderStatus.processing"
-      class="col-2 col-xl-2 m-auto"
-    >
+    <div *ngIf="isOrderItemStatus('processing')" class="col-2 col-xl-2 m-auto">
       <nb-badge
         class="font-larger p-2 position-static"
         [text]="processingTimer | secToHms"
@@ -42,10 +37,7 @@
 
     <div class="p-1 col-8 col-xl-3 text-right">
       <button
-        *ngIf="
-          orderItem.currentStatus === CrudApi.OrderStatus.processing ||
-          orderItem.currentStatus === CrudApi.OrderStatus.ready
-        "
+        *ngIf="isOrderItemStatus('processing') || isOrderItemStatus('ready')"
         nbButton
         status="warning"
         [size]="buttonSize"
@@ -56,10 +48,7 @@
         <nb-icon class="smaller-icon" icon="arrow-left-outline"></nb-icon>
       </button>
       <button
-        *ngIf="
-          orderItem.currentStatus === CrudApi.OrderStatus.placed ||
-          orderItem.currentStatus === CrudApi.OrderStatus.processing
-        "
+        *ngIf="isOrderItemStatus('processing') || isOrderItemStatus('placed')"
         nbButton
         status="success"
         [size]="buttonSize"

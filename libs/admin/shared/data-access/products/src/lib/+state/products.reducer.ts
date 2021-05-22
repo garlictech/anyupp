@@ -8,6 +8,7 @@ import {
   createReducer,
   on,
 } from '@ngrx/store';
+//import {Product} from '@bgap/shared/types';
 
 import * as ProductsActions from './products.actions';
 
@@ -83,8 +84,8 @@ const unitProductsReducer = createReducer(
 // UNIT
 //
 
-export const generatedUnitProductsAdapter: EntityAdapter<Product> = createEntityAdapter<
-  Product
+export const generatedUnitProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> = createEntityAdapter<
+  CrudApi.GeneratedProduct
 >();
 
 export const initialGeneratedUnitProductState = generatedUnitProductsAdapter.getInitialState(

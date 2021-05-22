@@ -1,5 +1,5 @@
 import * as geolib from 'geolib';
-import { combineLatest, EMPTY, from, Observable, of } from 'rxjs';
+import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
@@ -10,17 +10,21 @@ import {
 } from '@bgap/shared/data-validators';
 import { UnitsResolverDeps } from './utils';
 import { Maybe } from '@bgap/crud-gql/api';
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 
 type ListResponse<T> = {
   items: Array<T>;
+  nextToken?: string;
 };
 
 // TODO: add GEO_SEARCH
+// TODO handle nextToken in the list!
 export const getUnitsInRadius = (location: CrudApi.LocationInput) => (
   deps: UnitsResolverDeps,
 ): Observable<ListResponse<AnyuppApi.GeoUnit>> => {
   // TODO: use geoSearch for the units
   return listActiveUnits()(deps).pipe(
+    filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
     switchMap(units =>
       combineLatest(
         units.map(unit =>
@@ -90,18 +94,19 @@ const toGeoUnit = ({
 };
 */
 const listActiveUnits = () => (deps: UnitsResolverDeps) =>
-  from(deps.crudSdk.ListUnits({ filter: { isActive: { eq: true } } })).pipe(
-    switchMap(validateUnitList),
-  );
+  deps.crudSdk
+    .ListUnits({ filter: { isActive: { eq: true } } })
+    .pipe(switchMap(validateUnitList));
 
 const getGroupCurrency = (id: string) => (
   deps: UnitsResolverDeps,
 ): Observable<string> =>
-  from(deps.crudSdk.GetGroupCurrency({ id })).pipe(
+  deps.crudSdk.GetGroupCurrency({ id }).pipe(
     switchMap(validateGetGroupCurrency),
+    map(currency => currency.currency),
   );
 
 const getChain = (id: string) => (
   deps: UnitsResolverDeps,
 ): Observable<CrudApi.Chain> =>
-  from(deps.crudSdk.GetChain({ id })).pipe(switchMap(validateChain));
+  deps.crudSdk.GetChain({ id }).pipe(switchMap(validateChain));

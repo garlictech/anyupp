@@ -47,7 +47,8 @@ export class UnitFloorMapComponent
 
   public submit(): void {
     this._dataService
-      .updateUnit(this.unit.id, { floorMap: floorMapLib.mapRawData })
+      .updateUnit({ id: this.unit.id, floorMap: floorMapLib.mapRawData })
+      .toPromise()
       .then(
         (): void => {
           this._toasterService.show(

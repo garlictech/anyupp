@@ -6,7 +6,7 @@ import {
   throwError,
   UnaryFunction,
 } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { defaultIfEmpty, filter, map, switchMap, tap } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 
 export const pipeDebug = <T>(tag: string) => {
@@ -32,6 +32,33 @@ export function filterNullish<T>(): UnaryFunction<
       T | null | undefined,
       T
     >,
+  );
+}
+
+export function filterNullishWithDefault<T>(
+  defaultValue: T,
+): UnaryFunction<Observable<T | null | undefined>, Observable<T>> {
+  return pipe(
+    filter(x => x != null && x !== undefined) as OperatorFunction<
+      T | null | undefined,
+      T
+    >,
+    defaultIfEmpty(defaultValue),
+  );
+}
+
+export function filterNullishGraphqlListWithDefault<T>(
+  defaultValue: T[],
+): UnaryFunction<
+  Observable<{ items: T[] | null | undefined; nextToken?: string }>,
+  Observable<T[]>
+> {
+  return pipe(
+    filterNullishWithDefault<{ items: T[] | null | undefined }>({
+      items: defaultValue,
+    }),
+    map(listResult => listResult.items),
+    filterNullishWithDefault<T[]>(defaultValue),
   );
 }
 

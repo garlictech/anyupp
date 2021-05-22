@@ -1,5 +1,5 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,14 +11,13 @@ import {
 } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
-  EAdminRole,
   EProductLevel,
   EVariantAvailabilityType,
+  Product,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 
@@ -30,7 +29,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   styleUrls: ['./product-list-item.component.scss'],
 })
 export class ProductListItemComponent implements OnInit, OnDestroy {
-  @Input() product!: Product;
+  @Input() product?: Product;
   @Input() pending = false;
   @Input() productLevel!: EProductLevel;
   @Input() currency = '';
@@ -56,24 +55,24 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
         switch (this.productLevel) {
           case EProductLevel.CHAIN:
             this.hasRoleToEdit = [
-              EAdminRole.SUPERUSER,
-              EAdminRole.CHAIN_ADMIN,
-            ].includes(role || EAdminRole.INACTIVE);
+              CrudApi.Role.superuser,
+              CrudApi.Role.chainadmin,
+            ].includes(role || CrudApi.Role.inactive);
             break;
           case EProductLevel.GROUP:
             this.hasRoleToEdit = [
-              EAdminRole.SUPERUSER,
-              EAdminRole.CHAIN_ADMIN,
-              EAdminRole.GROUP_ADMIN,
-            ].includes(role || EAdminRole.INACTIVE);
+              CrudApi.Role.superuser,
+              CrudApi.Role.chainadmin,
+              CrudApi.Role.groupadmin,
+            ].includes(role || CrudApi.Role.inactive);
             break;
           case EProductLevel.UNIT:
             this.hasRoleToEdit = [
-              EAdminRole.SUPERUSER,
-              EAdminRole.CHAIN_ADMIN,
-              EAdminRole.GROUP_ADMIN,
-              EAdminRole.UNIT_ADMIN,
-            ].includes(role || EAdminRole.INACTIVE);
+              CrudApi.Role.superuser,
+              CrudApi.Role.chainadmin,
+              CrudApi.Role.groupadmin,
+              CrudApi.Role.unitadmin,
+            ].includes(role || CrudApi.Role.inactive);
             break;
           default:
             break;
@@ -85,8 +84,8 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  get variantsArray(): ProductVariant[] {
-    return Object.values(this.product.variants || {});
+  get variantsArray() {
+    return Object.values(this.product?.variants || {});
   }
 
   public editProduct(): void {
@@ -108,6 +107,10 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public extendProduct(): void {
     const dialog = this._nbDialogService.open(ProductExtendFormComponent);
 
+    if (!this.product) {
+      throw new Error('HANDLE ME: this.product cannot be nullish');
+    }
+
     dialog.componentRef.instance.product = { ...this.product };
     dialog.componentRef.instance.productLevel = this.productLevel;
     dialog.componentRef.instance.editing = false;
@@ -117,14 +120,14 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   public moveUp(): void {
     this.positionChange.emit({
       change: -1,
-      productId: this.product.id,
+      productId: this.product?.id,
     });
   }
 
   public moveDown(): void {
     this.positionChange.emit({
       change: 1,
-      productId: this.product.id,
+      productId: this.product?.id,
     });
   }
 }

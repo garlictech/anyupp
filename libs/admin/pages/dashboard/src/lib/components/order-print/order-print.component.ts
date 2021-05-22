@@ -11,14 +11,7 @@ import {
 } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import {
-  ICurrencyValue,
-  IKeyValueObject,
-  IOrder,
-  IOrderItem,
-  IPlace,
-  IPriceShown,
-} from '@bgap/shared/types';
+import { ICurrencyValue, IKeyValueObject } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
@@ -32,14 +25,14 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-print.component.scss'],
 })
 export class OrderPrintComponent implements OnInit, OnChanges {
-  @Input() orders!: IOrder[];
+  @Input() orders!: CrudApi.Order[];
   public unit?: CrudApi.Unit;
   public chain?: CrudApi.Chain;
   public now = '';
-  public parsedOrders: IOrderItem[] = [];
-  public parsedVats: IPriceShown[] = [];
+  public parsedOrders: CrudApi.OrderItem[] = [];
+  public parsedVats: CrudApi.PriceShown[] = [];
   public sum: ICurrencyValue;
-  public place?: IPlace;
+  public place?: CrudApi.Place | null;
 
   constructor(
     private _store: Store,
@@ -94,13 +87,13 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     const vats: IKeyValueObject = {};
     let lastOrderTime = 0;
 
-    this.orders.forEach((order: IOrder): void => {
+    this.orders.forEach((order: CrudApi.Order): void => {
       if (new Date(order.createdAt).getTime() > lastOrderTime) {
         this.place = order.place;
         lastOrderTime = new Date(order.createdAt).getTime();
       }
 
-      order.items.forEach((item: IOrderItem): void => {
+      order.items.forEach((item: CrudApi.OrderItem): void => {
         // Collect items
         if (variants[item.variantId]) {
           variants[item.variantId].quantity += item.quantity;

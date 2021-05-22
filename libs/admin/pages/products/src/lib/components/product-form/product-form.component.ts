@@ -17,7 +17,12 @@ import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import { EImageType, EProductLevel, IKeyValue } from '@bgap/shared/types';
+import {
+  EImageType,
+  EProductLevel,
+  IKeyValue,
+  Product,
+} from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -35,7 +40,7 @@ export class ProductFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
-  public product!: Product;
+  public product?: Product;
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
   public productTypes: IKeyValue[] = PRODUCT_TYPES;
@@ -82,7 +87,7 @@ export class ProductFormComponent
   }
 
   get productImage(): string {
-    return this.product?.image || '';
+    return fp.get('image', this.product) ?? '';
   }
 
   ngOnInit(): void {

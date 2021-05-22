@@ -9,7 +9,7 @@ import { EVariantAvailabilityType } from '@bgap/shared/types';
   styleUrls: ['./variant-availability-badge.component.scss'],
 })
 export class VariantAvailabilityBadgeComponent {
-  @Input() availability!: CrudApi.Availability;
+  @Input() availability?: CrudApi.Maybe<CrudApi.Availability>;
   @Input() currency = '';
 
   public EVariantAvailabilityType = EVariantAvailabilityType;

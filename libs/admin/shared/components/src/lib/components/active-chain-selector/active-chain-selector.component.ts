@@ -8,10 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import {
-  LoggedUser,
-  loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -28,7 +25,7 @@ import { DataService } from '@bgap/admin/shared/data-access/data';
 export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
   public chains$: Observable<CrudApi.Chain[]>;
-  private _loggedUser!: LoggedUser;
+  private _loggedUser!: CrudApi.AdminUser;
 
   constructor(
     private _store: Store,

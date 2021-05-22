@@ -28,7 +28,7 @@ import * as floorMapFuncs from '../../fn';
 export class FloorMapEditorComponent
   implements OnInit, OnDestroy, AfterViewInit {
   @Input() editMode?: boolean;
-  @Input() floorMap?: CrudApi.FloorMapData;
+  @Input() floorMap?: CrudApi.Maybe<CrudApi.FloorMapData>;
   public dimensionForm!: FormGroup;
   public objectForm!: FormGroup;
   public EUnitMapObjectType = CrudApi.UnitMapObjectType;
@@ -126,11 +126,11 @@ export class FloorMapEditorComponent
     // untilDestroyed uses it.
   }
 
-  public addObject(objectType: CrudApi.UnitMapObjectType): void {
+  public addObject(objectType: keyof typeof CrudApi.UnitMapObjectType): void {
     const id = floorMapFuncs.generateId();
     const rawDataObject: CrudApi.FloorMapDataObject = {
       id,
-      t: objectType,
+      t: CrudApi.UnitMapObjectType[objectType],
       ...FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
       ...FLOOR_MAP_OBJECT_DEFAULTS[objectType],
     };

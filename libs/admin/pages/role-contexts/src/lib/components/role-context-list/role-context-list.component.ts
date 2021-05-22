@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
-import { IRoleContext } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -17,10 +16,9 @@ import { RoleContextFormComponent } from '../role-context-form/role-context-form
   styleUrls: ['./role-context-list.component.scss'],
 })
 export class RoleContextListComponent implements OnDestroy {
-  public roleContexts$: Observable<IRoleContext[]>;
+  public roleContexts$: Observable<CrudApi.RoleContext[]>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {

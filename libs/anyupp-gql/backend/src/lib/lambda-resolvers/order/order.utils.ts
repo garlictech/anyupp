@@ -1,7 +1,6 @@
 // import { PriceShown, Order, StatusLog, CrudApi.OrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IOrders } from '@bgap/shared/types';
 import { toFixed2Number } from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (
@@ -43,7 +42,7 @@ const roundSums = (price: CrudApi.PriceShown) => {
   };
 };
 
-export const sumOrders = (orders: IOrders): number => {
+export const sumOrders = (orders: CrudApi.Order[]): number => {
   return Object.values(orders).reduce((result, order) => {
     return result + order.sumPriceShown.priceSum;
   }, 0);

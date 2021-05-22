@@ -1,4 +1,5 @@
 import { ALLERGENS } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
@@ -9,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   styleUrls: ['./allergens.component.scss'],
 })
 export class AllergensComponent {
-  @Input() allergens!: string[];
+  @Input() allergens?: CrudApi.Maybe<CrudApi.Allergen>[] | null;
   public allergenMap: Map<string, number>;
 
   constructor() {

@@ -1,10 +1,16 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { fromApolloSubscription } from '@bgap/gql-sdk';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from 'libs/shared/fixtures/src';
 import { from, interval, of } from 'rxjs';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
+import { createAuthenticatedCrudSdk } from '../../../api-clients';
 
 describe('CRUD sdk test', () => {
   let sdk: CrudSdk;
+  let authSdk: CrudSdk;
 
   const toMatchSnapshot = (x: any, name?: string) =>
     expect(x).toMatchSnapshot(
@@ -15,10 +21,14 @@ describe('CRUD sdk test', () => {
       name,
     );
 
-  beforeAll(() => {
+  beforeAll(async () => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
     sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
+    authSdk = await createAuthenticatedCrudSdk(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
   });
 
   test('An arbitrary CRUD', done => {
@@ -65,9 +75,9 @@ describe('CRUD sdk test', () => {
 
   test('An arbitrary subscription', done => {
     const id = 'ADMIN_USERCRUD_SDK_ID';
-    const dataSource$ = sdk.OnAdminUserChange({ id });
+    const dataSource$ = authSdk.OnAdminUserChange({ id });
 
-    const subs$ = fromApolloSubscription(dataSource$).pipe(
+    const subs$ = dataSource$.pipe(
       tap(x => toMatchSnapshot(x)),
       take(1),
     );
@@ -76,22 +86,18 @@ describe('CRUD sdk test', () => {
 
     of(1)
       .pipe(
-        switchMap(() => from(sdk.DeleteAdminUser({ input: { id } }))),
+        switchMap(() => authSdk.DeleteAdminUser({ input: { id } })),
         switchMap(() =>
-          from(
-            sdk.CreateAdminUser({
-              input: { id, name: 'NAME', phone: 'phone', email: 'a@a.hu' },
-            }),
-          ),
+          authSdk.CreateAdminUser({
+            input: { id, name: 'NAME', phone: 'phone', email: 'a@a.hu' },
+          }),
         ),
         switchMapTo(interval(1000)),
         takeUntil(subs$),
         switchMap(() =>
-          from(
-            sdk.UpdateAdminUser({
-              input: { id, name: 'NAME2', email: 'a@a.hu' },
-            }),
-          ),
+          authSdk.UpdateAdminUser({
+            input: { id, name: 'NAME2', email: 'a@a.hu' },
+          }),
         ),
       )
       .subscribe({

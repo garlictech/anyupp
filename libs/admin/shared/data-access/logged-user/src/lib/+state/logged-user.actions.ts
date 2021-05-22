@@ -1,4 +1,3 @@
-import { EAdminRole } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';
 
@@ -13,5 +12,5 @@ export const resetLoggedUser = createAction(
 
 export const setCurrentContextRole = createAction(
   '[LoggedUser/API] Set the current context',
-  props<{ currentContextRole: EAdminRole }>(),
+  props<{ currentContextRole: CrudApi.Role }>(),
 );

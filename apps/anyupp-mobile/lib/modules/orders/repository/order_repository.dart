@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:fa_prev/modules/orders/orders.dart';
 
 class OrderRepository {
-  final IOrdersProvider _provider;
+  final CrudApi.OrdersProvider _provider;
 
   OrderRepository(this._provider);
 

@@ -12,7 +12,6 @@ import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
-  removeTypeNameField,
 } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 
@@ -79,7 +78,7 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
     switchMap(props =>
       getOrderItems({
         userId,
-        currency: props.currency,
+        currency: props.currency.currency,
         cartItems: props.cart.items,
       })(deps).pipe(map(items => ({ ...props, items }))),
     ),
@@ -128,7 +127,7 @@ const toOrderInputFormat = ({
     userId,
     takeAway: false,
     orderNum,
-    paymentMode: removeTypeNameField(paymentMode),
+    paymentMode,
     // created: DateTime.utc().toMillis(),
     items: items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
@@ -178,7 +177,7 @@ const convertCartOrderToOrderItem = ({
   laneId: string | null | undefined;
 }): CrudApi.OrderItemInput => {
   return {
-    productName: removeTypeNameField(cartItem.productName),
+    productName: cartItem.productName,
     priceShown: {
       currency,
       pricePerUnit: cartItem.priceShown.pricePerUnit,
@@ -216,7 +215,7 @@ const createStatusLog = (
 
 // TODO: get staff id from somewhere
 // const getStaffId = async (unitId: string): Promise<string> => {
-//   return Promise.resolve('STAFF_ID');
+//   return Promise.resolve('staff_ID');
 // };
 const createOrderInDb = (input: CrudApi.CreateOrderInput) => (
   deps: OrderResolverDeps,

@@ -15,7 +15,7 @@ import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import { EAdminRole, IKeyValue, IRoleContext } from '@bgap/shared/types';
+import { IKeyValue, IRoleContext } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -31,12 +31,12 @@ import { TranslateService } from '@ngx-translate/core';
 export class RoleContextFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public roleContext!: IRoleContext;
+  public roleContext?: CrudApi.RoleContext;
   public roleOptions: IKeyValue[];
   public chainOptions: IKeyValue[] = [];
   public groupOptions: IKeyValue[] = [];
   public unitOptions: IKeyValue[] = [];
-  public eAdminRole = EAdminRole;
+  public eAdminRole = CrudApi.Role;
   public chainDisabled = true;
   public groupDisabled = true;
   public unitDisabled = true;
@@ -51,11 +51,11 @@ export class RoleContextFormComponent
   ) {
     super(_injector);
 
-    this.roleOptions = Object.keys(EAdminRole).map(
+    this.roleOptions = Object.keys(CrudApi.Role).map(
       (key): IKeyValue => ({
-        key: EAdminRole[<keyof typeof EAdminRole>key].toString(),
+        key: CrudApi.Role[<keyof typeof CrudApi.Role>key].toString(),
         value: this._translateService.instant(
-          `roles.${EAdminRole[<keyof typeof EAdminRole>key]}`,
+          `roles.${CrudApi.Role[<keyof typeof CrudApi.Role>key]}`,
         ),
       }),
     );
@@ -72,7 +72,7 @@ export class RoleContextFormComponent
           },
           { validators: multiLangValidator },
         ),
-        role: [EAdminRole.INACTIVE, [Validators.required]],
+        role: [CrudApi.Role.inactive, [Validators.required]],
         chainId: [''],
         groupId: [''],
         unitId: [''],
@@ -86,7 +86,7 @@ export class RoleContextFormComponent
       this._refreshGroupOptionsByChainId(this.roleContext.chainId || '');
       this._refreshUnitOptionsByGroupId(this.roleContext.groupId || '');
 
-      this._refreshDisabledFields(this.roleContext.role);
+      this._refreshDisabledFields(this.roleContext?.role);
     }
 
     this._store
@@ -162,17 +162,17 @@ export class RoleContextFormComponent
 
   private _roleLevelValidator = (control: AbstractControl): unknown => {
     switch (control.value.role) {
-      case EAdminRole.INACTIVE:
-      case EAdminRole.SUPERUSER:
+      case CrudApi.Role.inactive:
+      case CrudApi.Role.superuser:
         return null;
-      case EAdminRole.CHAIN_ADMIN:
+      case CrudApi.Role.chainadmin:
         return control.value.chainId ? null : { empty: true };
-      case EAdminRole.GROUP_ADMIN:
+      case CrudApi.Role.groupadmin:
         return control.value.chainId && control.value.groupId
           ? null
           : { empty: true };
-      case EAdminRole.UNIT_ADMIN:
-      case EAdminRole.STAFF:
+      case CrudApi.Role.unitadmin:
+      case CrudApi.Role.staff:
         return control.value.chainId &&
           control.value.groupId &&
           control.value.unitId
@@ -183,18 +183,18 @@ export class RoleContextFormComponent
     }
   };
 
-  private _refreshDisabledFields(role: EAdminRole) {
+  private _refreshDisabledFields(role: CrudApi.Role) {
     this.chainDisabled = [
-      EAdminRole.SUPERUSER,
-      EAdminRole.INACTIVE,
+      CrudApi.Role.superuser,
+      CrudApi.Role.inactive,
       /* + new roles */
     ].includes(role);
     this.groupDisabled =
       this.chainDisabled ||
-      [EAdminRole.CHAIN_ADMIN /* + new roles */].includes(role);
+      [CrudApi.Role.chainadmin /* + new roles */].includes(role);
     this.unitDisabled =
       this.groupDisabled ||
-      [EAdminRole.GROUP_ADMIN /* + new roles */].includes(role);
+      [CrudApi.Role.groupadmin /* + new roles */].includes(role);
 
     this._changeDetectorRef.detectChanges();
   }

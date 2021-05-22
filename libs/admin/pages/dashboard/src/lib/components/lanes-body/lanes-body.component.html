@@ -5,13 +5,13 @@
         class="mr-3"
         status="light"
         s
-        [checked]="selectedLanes.includes(lane.id!)"
+        [checked]="selectedLanes.includes(lane?.id!)"
         *ngFor="let lane of unitLanes"
-        (checkedChange)="toggleLane(lane.id!)"
-        ><span [ngStyle]="{ color: lane.color }"
-          >{{ lane.name }} ({{ lane.placedCount }}/{{ lane.processingCount }}/{{
-            lane.readyCount
-          }})</span
+        (checkedChange)="toggleLane(lane?.id!)"
+        ><span [ngStyle]="{ color: lane?.color }"
+          >{{ lane?.name }} ({{ lane?.placedCount }}/{{
+            lane?.processingCount
+          }}/{{ lane?.readyCount }})</span
         ></nb-checkbox
       >
     </nb-card-header>

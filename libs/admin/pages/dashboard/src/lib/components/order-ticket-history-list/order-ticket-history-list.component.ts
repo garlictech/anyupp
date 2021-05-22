@@ -17,7 +17,7 @@ import {
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import { customNumberCompare } from '@bgap/shared/utils';
-import { IOrder } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -28,8 +28,8 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './order-ticket-history-list.component.html',
 })
 export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
-  public selectedOrder?: IOrder;
-  public dailyOrders: IOrder[] = [];
+  public selectedOrder?: CrudApi.Order;
+  public dailyOrders: CrudApi.Order[] = [];
   public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatusFn;
 
@@ -55,7 +55,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
         select(dashboardSelectors.getSelectedHistoryOrder()),
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: IOrder | undefined): void => {
+      .subscribe((selectedOrder: CrudApi.Order | undefined): void => {
         this.selectedOrder = selectedOrder;
 
         this._changeDetectorRef.detectChanges();
@@ -63,7 +63,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
 
     this._store
       .pipe(select(ordersSelectors.getAllHistoryOrders), untilDestroyed(this))
-      .subscribe((historyOrders: IOrder[]): void => {
+      .subscribe((historyOrders: CrudApi.Order[]): void => {
         this.dailyOrders = historyOrders.sort(customNumberCompare('created'));
 
         if (!this.selectedOrder) {
@@ -86,7 +86,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     // untilDestroyed uses it.
   }
 
-  public selectOrder(order: IOrder): void {
+  public selectOrder(order: CrudApi.Order): void {
     const selectedOrder = this.dailyOrders.find(
       (o): boolean => o.id === order?.id,
     );

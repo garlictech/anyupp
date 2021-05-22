@@ -14,7 +14,7 @@ export class ProductComponentInfoPipe implements PipeTransform {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store) {}
 
-  transform(componentId: string): Observable<CrudApi.ProductComponent> {
+  transform(componentId?: string | null): Observable<CrudApi.ProductComponent> {
     return of(componentId).pipe(
       filter(fp.negate(fp.isEmpty)),
       switchMap(id =>

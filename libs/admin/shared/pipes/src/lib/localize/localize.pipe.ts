@@ -1,6 +1,5 @@
-import { ILocalizedItem } from '@bgap/shared/types';
 import { take } from 'rxjs/operators';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Pipe, PipeTransform } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
@@ -14,7 +13,7 @@ export class LocalizePipe implements PipeTransform {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store) {}
 
-  transform(value: ILocalizedItem<string>): string {
+  transform(value: CrudApi.LocalizedItem | null | undefined): string {
     if (!value) {
       return '';
     }

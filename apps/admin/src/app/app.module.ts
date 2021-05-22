@@ -1,6 +1,4 @@
-import { AmplifyService } from 'aws-amplify-angular';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -128,7 +126,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       serverLogLevel: NgxLoggerLevel.ERROR,
     }),
   ],
-  providers: [AmplifyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

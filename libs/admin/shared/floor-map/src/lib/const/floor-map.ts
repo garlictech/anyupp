@@ -1,4 +1,4 @@
-import { EUnitMapObjectType } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const FLOOR_MAP_config = {
   grid: 10,

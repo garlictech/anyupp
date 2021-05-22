@@ -1,5 +1,4 @@
 import { NGXLogger } from 'ngx-logger';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,16 +7,15 @@ import {
   OnInit,
 } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import {
-  anyuppAuthenticatedGraphqlClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  CrudSdkService,
+  AnyuppSdkService,
+} from '@bgap/admin/shared/data-access/data';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,8 +32,9 @@ export class AdminUserFormComponent
   constructor(
     protected _injector: Injector,
     private _logger: NGXLogger,
-    private _amplifyDataService: AmplifyDataService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
+    private anyuppSdk: AnyuppSdkService,
   ) {
     super(_injector);
 
@@ -62,12 +61,14 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          await this._amplifyDataService.update<>(
-            'getAdminUser',
-            'updateAdminUser',
-            this.adminUser.id,
-            () => this.dialogForm.value,
-          );
+          await this.crudSdk.sdk
+            .UpdateAdminUser({
+              input: {
+                id: this.adminUser.id,
+                ...this.dialogForm.value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -87,20 +88,19 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
-          executeMutation(anyuppAuthenticatedGraphqlClient)(
-            AnyuppApi.CreateAdminUser,
-            {
+          this.anyuppSdk.sdk
+            .CreateAdminUser({
               input: { email, name, phone },
-            },
-          ).subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
+            })
+            .subscribe(() => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.insertSuccessful',
+              );
 
-            this.close();
-          });
+              this.close();
+            });
         } catch (error) {
           this._logger.error(
             `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
@@ -115,14 +115,14 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this._amplifyDataService.update<>(
-          'getAdminUser',
-          'updateAdminUser',
-          this.adminUser.id,
-          (data: unknown) => ({
-            profileImage: image,
-          }),
-        );
+        await this.crudSdk.sdk
+          .UpdateAdminUser({
+            input: {
+              id: this.adminUser.id,
+              profileImage: image,
+            },
+          })
+          .toPromise();
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -152,14 +152,14 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this._amplifyDataService.update<>(
-          'getAdminUser',
-          'updateAdminUser',
-          this.adminUser.id,
-          (data: unknown) => ({
-            profileImage: null,
-          }),
-        );
+        await this.crudSdk.sdk
+          .UpdateAdminUser({
+            input: {
+              id: this.adminUser.id,
+              profileImage: null,
+            },
+          })
+          .toPromise();
 
         this._toasterService.show(
           EToasterType.SUCCESS,

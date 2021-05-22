@@ -19,7 +19,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./colorized-lane-icon.component.scss'],
 })
 export class ColorizedLaneIconComponent implements OnInit {
-  @Input() laneId!: string;
+  @Input() laneId?: string | null;
   public laneColor: string;
 
   constructor(
@@ -39,7 +39,7 @@ export class ColorizedLaneIconComponent implements OnInit {
       )
       .subscribe((unit: CrudApi.Unit | undefined): void => {
         this.laneColor =
-          unit?.lanes?.find(l => l.id === this.laneId)?.color ||
+          unit?.lanes?.find(l => l?.id === this.laneId)?.color ||
           DEFAULT_LANE_COLOR;
 
         this._changeDetectorRef.detectChanges();

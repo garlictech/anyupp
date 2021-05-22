@@ -111,7 +111,6 @@ describe('GenerateProduct tests', () => {
               ]);
             },
           }),
-          pipeDebug('### After listGeneratedProductsForUnits - unitId_03'),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
@@ -132,7 +131,6 @@ describe('GenerateProduct tests', () => {
               ]);
             },
           }),
-          pipeDebug('### END'),
         )
         .subscribe({
           next() {
@@ -178,13 +176,8 @@ describe('GenerateProduct tests', () => {
             next(result) {
               expect(getSortedIds(result)).toEqual(productIds);
               expect(result).toHaveLength(fullProducts.length);
-              expect(result[0]).toHaveProperty(
-                '__typename',
-                'GeneratedProduct',
-              );
             },
           }),
-          pipeDebug('### After listGeneratedProductsForUnits'),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),

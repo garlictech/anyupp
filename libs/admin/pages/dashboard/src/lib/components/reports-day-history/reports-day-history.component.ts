@@ -15,7 +15,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { IOrder } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +26,7 @@ import { IOrder } from '@bgap/shared/types';
 })
 export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<IOrder[]>;
+  @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -99,7 +99,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
     );
 
     /*
-    this.orders$.pipe(untilDestroyed(this)).subscribe((orders: IOrder[]): void => {
+    this.orders$.pipe(untilDestroyed(this)).subscribe((orders: CrudApi.Order[]): void => {
       this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
       this.userStats = [];
 
@@ -118,7 +118,7 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
     combineLatest([this._store.pipe(select(productsSelectors.getAllGeneratedUnitProducts)), this.orders$])
       .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]: [Product[], IOrder[]]): void => {
+      .subscribe(([products, orders]: [Product[], CrudApi.Order[]]): void => {
         const counts = this._countOrders(products, orders);
 
         this._chart.data.datasets[0].data = [

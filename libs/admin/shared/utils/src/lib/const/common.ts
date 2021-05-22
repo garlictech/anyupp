@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { PaymentMode } from '@bgap/crud-gql/api';
-import { EAdminRole, IAllergen } from '@bgap/shared/types';
+import { IAllergen } from '@bgap/shared/types';
 
 export const DEFAULT_LANG = 'en-US';
 
@@ -18,44 +18,44 @@ export const TIME_FORMAT_PATTERN = '^([0-1][0-9]|2[0-3]):[0-5][0-9]$';
 
 export const MENU_ROLES = {
   DASHBOARD: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
-    EAdminRole.STAFF,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
+    CrudApi.Role.staff,
   ],
   PRODUCTS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
-  PRODUCT_CATEGORIES: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
-  MODIFIERS_AND_EXTRAS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
+  PRODUCT_CATEGORIES: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
+  MODIFIERS_AND_EXTRAS: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
   UNITS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
   GROUPS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
   ],
-  CHAINS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
-  USERS: [EAdminRole.SUPERUSER],
+  CHAINS: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
+  USERS: [CrudApi.Role.superuser],
   ADMINS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
   ROLE_CONTEXTS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
 };
 

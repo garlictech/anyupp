@@ -20,13 +20,12 @@ describe('Admin user creation/deletion', () => {
         switchMap(sdk =>
           sdk.DeleteAdminUser({ userName }).pipe(
             catchError((err: Error) => {
-              if (!err.message.includes('User does not exist')) {
-                console.warn('Probably normal error: ', err);
-                return of(err);
+              if (err.message.includes('User does not exist')) {
+                return of({});
               }
               return throwError(err);
             }),
-            /*            switchMap(() =>
+            switchMap(() =>
               sdk
                 .CreateAdminUser({
                   input: {
@@ -38,7 +37,7 @@ describe('Admin user creation/deletion', () => {
                 .pipe(
                   catchError(err => {
                     expect(err).toMatchSnapshot('Malformed email error');
-                    return of(err);
+                    return of({});
                   }),
                 ),
             ),
@@ -70,26 +69,11 @@ describe('Admin user creation/deletion', () => {
                 ),
             ),
             // Cleanup
-            switchMap(() =>
-              sdk.DeleteAdminUser({userName}).pipe(
-                catchError((err: Error) => {
-                  console.log(
-                    '### ~ file: create-admin-user.resolver.spec.ts ~ line 102 ~ catchError ~ err',
-                    err,
-                  );
-                  return throwError(err);
-                }),
-              ),
-            ),*/
+            switchMap(() => sdk.DeleteAdminUser({ userName })),
             tap(result => expect(result).toMatchSnapshot('Cleanup')),
           ),
         ),
       )
-      .subscribe(
-        () => done(),
-        e => {
-          throw e;
-        },
-      );
-  }, 40000);
+      .subscribe(() => done());
+  }, 20000);
 });

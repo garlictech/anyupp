@@ -25,16 +25,13 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-
-import { EAdminRole, IKeyValueObject, IRoleContext } from '@bgap/shared/types';
+import { IKeyValueObject } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  AnyuppSdkService,
-  CrudSdkService,
-} from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '../crud-sdk.service';
 import { TypedAction } from '@ngrx/store/src/models';
+import { AnyuppSdkService } from '../anyupp-sdk.service';
 import { UpdateAdminUserInput } from '@bgap/crud-gql/api';
 
 @Injectable({
@@ -55,7 +52,7 @@ export class DataService {
 
   public async initDataConnections(
     userId: string,
-    currentContextRole: EAdminRole,
+    currentContextRole: CrudApi.Role,
   ): Promise<void> {
     // Prevent multiple initialization on login
     if (this._dataConnectionInitialized) return;
@@ -157,15 +154,21 @@ export class DataService {
     this._store.dispatch(roleContextActions.resetRoleContexts());
 
     concat(
-      this.crudSdk.sdk.ListRoleContexts(),
-      this.crudSdk.sdk.OnRoleContextsChange(),
+      this.crudSdk.sdk.ListRoleContexts().pipe(
+        filterNullish(),
+        map(result => result.items),
+      ),
+      this.crudSdk.sdk.OnRoleContextsChange().pipe(
+        filterNullish(),
+        map(context => [context]),
+      ),
     )
       .pipe(
-        filterNullish(),
-        tap(roleContext =>
+        filterNullishElements<CrudApi.RoleContext>(),
+        tap(roleContexts =>
           this._store.dispatch(
-            roleContextActions.upsertRoleContext({
-              roleContext: <IRoleContext>roleContext,
+            roleContextActions.upsertRoleContexts({
+              roleContexts,
             }),
           ),
         ),

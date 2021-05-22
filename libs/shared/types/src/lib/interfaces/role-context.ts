@@ -1,11 +1,11 @@
-import { EAdminRole } from '../enums';
 import { ILocalizedItem } from './localized-item';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export interface IRoleContext {
   id: string;
   contextId: string;
   name: ILocalizedItem<string>;
-  role: EAdminRole;
+  role: CrudApi.Role;
   chainId: string;
   groupId?: string;
   unitId?: string;

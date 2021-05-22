@@ -25,8 +25,8 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   _context: Context,
 ): Promise<unknown> => {
   const userPoolId = process.env.userPoolId || '';
-  const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
-  const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
+  const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
+  const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
   const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
   const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 

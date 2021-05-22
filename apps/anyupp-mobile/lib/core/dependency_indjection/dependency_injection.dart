@@ -57,14 +57,14 @@ void _initProviders() {
   // Providers
   getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
   getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
+  getIt.registerLazySingleton<CrudApi.OrdersProvider>(() => AwsOrderProvider(
         getIt<IAuthProvider>(),
       ));
   getIt.registerLazySingleton<ProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<CrudApi.UnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
-  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<IOrdersProvider>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<CrudApi.OrdersProvider>()));
+  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<CrudApi.OrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
@@ -91,7 +91,7 @@ void _initRepositories() {
         getIt<IEmailLoginProvider>(),
       ));
   getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<ProductProvider>()));
-  getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
+  getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<CrudApi.OrdersProvider>()));
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<CrudApi.UnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
@@ -102,7 +102,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
-  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<CrudApi.OrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(
       () => StripePaymentRepository(getIt<IStripePaymentProvider>(), getIt<IExternalPaymentProvider>()));
 }

@@ -15,7 +15,7 @@ import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/produ
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import { EProductLevel, IKeyValue } from '@bgap/shared/types';
+import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -33,7 +33,7 @@ import { ProductFormService } from '../../services/product-form/product-form.ser
 export class ProductExtendFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public product!: Product;
+  public product?: Product;
   public productLevel!: EProductLevel;
   public eProductLevel = EProductLevel;
   public editing = false;
@@ -117,14 +117,22 @@ export class ProductExtendFormComponent
     if (this.dialogForm?.valid) {
       const value = { ...this.dialogForm?.value };
 
+      if (!this.product) {
+        throw new Error('HANDLE ME: product cannot be undefined');
+      }
+
       if (this.editing) {
         try {
-          const input = {
+          const input = !{
             input: {
               id: this.product.id,
               ...value,
             },
           };
+
+          if (!input) {
+            throw new Error('HANDLE ME: input cannot be undefined');
+          }
 
           if (this.productLevel === EProductLevel.GROUP) {
             await this.crudSdk.sdk.UpdateGroupProduct(input).toPromise();

@@ -11,7 +11,7 @@ import {
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { EAdminRole, EProductLevel } from '@bgap/shared/types';
+import { EProductLevel } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import {
   NbDialogService,
@@ -35,12 +35,15 @@ import { IProductOrderChangeEvent } from '@bgap/shared/types';
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts$: Observable<Product[]>;
-  public groupProducts$: Observable<Product[]>;
-  public pendingGroupProducts: Product[] = [];
-  public pendingUnitProducts: Product[] = [];
+  public chainProducts$: Observable<CrudApi.ChainProduct[]>;
+  public groupProducts$: Observable<CrudApi.GroupProduct[]>;
+  // TODO this is weird, check is pls. we call it groupProduct but use it as
+  // chainproduct
+  public pendingGroupProducts: CrudApi.ChainProduct[] = [];
+  //public pendingGroupProducts: CrudApi.GroupProduct[] = [];
+  public pendingUnitProducts: CrudApi.UnitProduct[] = [];
   public groupCurrency = '';
-  public unitProducts: Product[] = [];
+  public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
@@ -62,9 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     this.chainProducts$ = this._store.pipe(
       select(productsSelectors.getChainProductsOfSelectedCategory()),
-      map((products): Product[] =>
-        products.sort(customNumberCompare('position')),
-      ),
+      map(products => products.sort(customNumberCompare('position'))),
       untilDestroyed(this),
     );
   }
@@ -89,12 +90,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
-        map((products): Product[] =>
-          products.sort(customNumberCompare('position')),
-        ),
+        map(products => products.sort(customNumberCompare('position'))),
         untilDestroyed(this),
       )
-      .subscribe((unitProducts: Product[]): void => {
+      .subscribe(unitProducts => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
 
@@ -119,18 +118,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([pendingGroupProducts, pendingUnitProducts, _loggedUser, role]: [
-          Product[],
-          Product[],
-          CrudApi.AdminUser,
-          EAdminRole,
+        ([
+          pendingGroupProducts,
+          pendingUnitProducts,
+          _loggedUser,
+          role,
         ]): void => {
           this._loggedUser = _loggedUser;
 
           this.pendingGroupProducts = [
-            EAdminRole.SUPERUSER,
-            EAdminRole.CHAIN_ADMIN,
-            EAdminRole.GROUP_ADMIN,
+            CrudApi.Role.superuser,
+            CrudApi.Role.chainadmin,
+            CrudApi.Role.groupadmin,
           ].includes(role)
             ? pendingGroupProducts
             : [];

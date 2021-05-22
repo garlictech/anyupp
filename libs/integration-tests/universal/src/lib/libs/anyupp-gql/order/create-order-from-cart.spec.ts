@@ -104,7 +104,6 @@ describe('CreatCartFromOrder mutation test', () => {
             getCart(orderDeps.crudSdk, cart_01.id),
           ]),
         ),
-        throwIfEmpty(),
         tap({
           next([order, cart]) {
             expect(order).not.toBeNull();
@@ -113,7 +112,7 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(order?.orderNum).toEqual(
               `${cart_01.place?.table}${cart_01.place?.seat}01`,
             );
-            expect(cart).toBeNull();
+            expect(cart).not.toBeNull();
           },
         }),
         // Secound ORDER with 02 as orderNum
@@ -137,10 +136,11 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(order?.orderNum).toEqual(
               `${cart_01.place?.table}${cart_01.place?.seat}02`,
             );
-            expect(cart).toBeNull();
+            expect(cart).not.toBeNull();
             done();
           },
         }),
+        throwIfEmpty(),
       )
       .subscribe();
   }, 30000);

@@ -46,8 +46,11 @@ export const validateGqlList = <ITEM>(
 ) => {
   const listSchema = {
     items: Joi.array().items(itemSchema),
-    nextToken: Joi.string().optional(),
+    nextToken: Joi.string().optional().allow(null),
   };
 
-  return validateSchema<ITEM[]>(listSchema, label);
+  return validateSchema<{
+    items: ITEM[] | undefined | null;
+    nextToken?: string;
+  }>(listSchema, label);
 };

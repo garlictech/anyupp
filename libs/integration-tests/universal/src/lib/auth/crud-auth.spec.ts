@@ -1,32 +1,18 @@
-import {
-  cartSeed,
-  testAdminUsername,
-  testAdminUserPassword,
-} from '@bgap/shared/fixtures';
-import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import {
-  createAuthenticatedCrudSdk,
-  createIamCrudSdk,
-} from '../../api-clients';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { cartSeed } from '@bgap/shared/fixtures';
+import { createIamCrudSdk } from '../../api-clients';
 
 describe('CRUD endpoints AUTH test', () => {
-  const authSdk = createAuthenticatedCrudSdk(
-    testAdminUsername,
-    testAdminUserPassword,
-  );
-
+  const crudSdk = CrudApi.getCrudSdkPublic();
   const iamSdk = createIamCrudSdk();
 
   it('should require authentication to access', done => {
-    authSdk
-      .pipe(switchMap(sdk => sdk.GetCart({ id: cartSeed.cart_seeded_01_id })))
-      .subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
+    crudSdk.GetCart({ id: cartSeed.cart_seeded_01_id }).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
   }, 15000);
 
   describe('IAM Auth', () => {

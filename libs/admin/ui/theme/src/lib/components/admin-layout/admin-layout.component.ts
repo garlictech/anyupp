@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
-import { EAdminRole } from '@bgap/shared/types';
+import {} from '@bgap/shared/types';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
@@ -112,7 +112,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (menuItem.roles.includes(role || EAdminRole.INACTIVE)) {
+          if (menuItem.roles.includes(role || CrudApi.Role.inactive)) {
             this.menu.push({
               ...menuItem,
               title: this._translateService.instant(menuItem.title),

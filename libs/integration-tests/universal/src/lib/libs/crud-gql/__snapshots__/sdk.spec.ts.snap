@@ -2,7 +2,6 @@
 
 exports[`CRUD sdk test An arbitrary CRUD: CREATE 1`] = `
 Object {
-  "__typename": "FavoriteProduct",
   "createdAt": Any<String>,
   "id": "CRUD_SDK_ID",
   "product": null,
@@ -14,7 +13,6 @@ Object {
 
 exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `
 Object {
-  "__typename": "FavoriteProduct",
   "createdAt": Any<String>,
   "id": "CRUD_SDK_ID",
   "product": null,
@@ -26,7 +24,6 @@ Object {
 
 exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
 Object {
-  "__typename": "FavoriteProduct",
   "createdAt": Any<String>,
   "id": "CRUD_SDK_ID",
   "product": null,
@@ -42,7 +39,6 @@ exports[`CRUD sdk test An arbitrary CRUD: SHOULD BE NULL 1`] = `null`;
 
 exports[`CRUD sdk test An arbitrary CRUD: UPDATE 1`] = `
 Object {
-  "__typename": "FavoriteProduct",
   "createdAt": Any<String>,
   "id": "CRUD_SDK_ID",
   "product": null,
@@ -54,7 +50,6 @@ Object {
 
 exports[`CRUD sdk test An arbitrary subscription 1`] = `
 Object {
-  "__typename": "AdminUser",
   "createdAt": Any<String>,
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
@@ -62,7 +57,6 @@ Object {
   "phone": "phone",
   "profileImage": null,
   "roleContexts": Object {
-    "__typename": "ModelAdminRoleContextConnection",
     "items": Array [],
     "nextToken": null,
   },
@@ -73,7 +67,6 @@ Object {
 
 exports[`CRUD sdk test An arbitrary subscription 2`] = `
 Object {
-  "__typename": "AdminUser",
   "createdAt": Any<String>,
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
@@ -81,7 +74,6 @@ Object {
   "phone": "phone",
   "profileImage": null,
   "roleContexts": Object {
-    "__typename": "ModelAdminRoleContextConnection",
     "items": Array [],
     "nextToken": null,
   },

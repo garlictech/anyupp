@@ -22,7 +22,7 @@ import { UnitFormComponent } from '../unit-form/unit-form.component';
   styleUrls: ['./unit-list-item.component.scss'],
 })
 export class UnitListItemComponent {
-  @Input() unit!: CrudApi.Unit;
+  @Input() unit?: CrudApi.Unit;
   public workingGenerateStatus = false;
 
   constructor(
@@ -36,20 +36,26 @@ export class UnitListItemComponent {
   public editUnit(): void {
     const dialog = this._nbDialogService.open(UnitFormComponent);
 
-    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    if (this.unit) {
+      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    }
   }
 
   public editUnitFloorMap(): void {
     const dialog = this._nbDialogService.open(UnitFloorMapComponent);
 
-    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    if (this.unit) {
+      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    }
   }
 
   public async regenerateData(): Promise<void> {
     this.workingGenerateStatus = true;
 
     try {
-      await this._dataService.regenerateUnitData(this.unit.id);
+      if (this.unit) {
+        await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
+      }
 
       this._toasterService.show(
         EToasterType.SUCCESS,

@@ -64,7 +64,7 @@ export const loadUser = (userId: string) => (deps: StripeResolverDeps) => {
  * Load a signle Order from CRUD GraphQL endpoint by it's ID
  * @param crudGraphqlClient CRUD GraphQL client
  * @param orderId the ID of the Order to be loaded
- * @returns an instance of IOrder interface, filled with the loaded order's data
+ * @returns an instance of CrudApi.Order interface, filled with the loaded order's data
  */
 export const loadOrder = (orderId: string) => (deps: StripeResolverDeps) => {
   const getOrderVars: CrudApi.GetOrderQueryVariables = {
@@ -158,7 +158,7 @@ export const updateTransactionState = (
  * @param id the ID of the Order to be updated
  * @param status the new status of the Order
  * @param transactionId the ID of the Transaction belongs to the Order
- * @returns an instance of IOrder interface, filled with the updated transaction's data
+ * @returns an instance of CrudApi.Order interface, filled with the updated transaction's data
  */
 export const updateOrderState = (
   id: string,

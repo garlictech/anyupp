@@ -1,6 +1,5 @@
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
@@ -40,10 +39,7 @@ export const getUnitsByGroupId = (groupId: string) => {
 export const getSelectedGroupUnits = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllUnits,
-  (
-    userSettings: CrudApi.AdminUserSettings | undefined,
-    units: CrudApi.Unit[],
-  ): CrudApi.Unit[] =>
+  (userSettings, units: CrudApi.Unit[]): CrudApi.Unit[] =>
     units.filter(
       (unit): boolean => unit.groupId === userSettings?.selectedGroupId,
     ),
@@ -52,9 +48,6 @@ export const getSelectedGroupUnits = createSelector(
 export const getSelectedUnit = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   getAllUnits,
-  (
-    userSettings: CrudApi.AdminUserSettings | undefined,
-    units: CrudApi.Unit[],
-  ): CrudApi.Unit | undefined =>
+  (userSettings, units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
     units.find((unit): boolean => unit.id === userSettings?.selectedUnitId),
 );

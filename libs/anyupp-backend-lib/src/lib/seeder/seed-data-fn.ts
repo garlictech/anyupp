@@ -1,6 +1,6 @@
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, EAdminRole } from '@bgap/shared/types';
+import { EProductType } from '@bgap/shared/types';
 import {
   chainSeed,
   generatedProductSeed,
@@ -49,9 +49,9 @@ const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
   `${seededIdPrefix}chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
 const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
-const generateRoleContextId = (idx: number, role: EAdminRole) =>
+const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (idx: number, role: EAdminRole) =>
+const generateAdminRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
 
 const deleteCreate = <T, K>(
@@ -397,42 +397,42 @@ export const createTestRoleContext = (
   });
 
   const superuserInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-    id: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
+    id: generateRoleContextId(roleContextIdx, CrudApi.Role.superuser),
     name: {
-      hu: `Test SUPERUSER role context #${roleContextIdx}`,
-      en: `Test SUPERUSER role context #${roleContextIdx}`,
+      hu: `Test superuser role context #${roleContextIdx}`,
+      en: `Test superuser role context #${roleContextIdx}`,
     },
-    role: EAdminRole.SUPERUSER,
+    role: CrudApi.Role.superuser,
     contextId: 'SU_CTX_ID',
   };
-  const chainAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-    id: generateRoleContextId(roleContextIdx, EAdminRole.CHAIN_ADMIN),
+  const chainadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
+    id: generateRoleContextId(roleContextIdx, CrudApi.Role.chainadmin),
     name: {
-      hu: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
-      en: `Test CHAIN_ADMIN role context #${roleContextIdx}`,
+      hu: `Test chainadmin role context #${roleContextIdx}`,
+      en: `Test chainadmin role context #${roleContextIdx}`,
     },
-    role: EAdminRole.CHAIN_ADMIN,
+    role: CrudApi.Role.chainadmin,
     contextId: 'CA_CTX_ID',
     chainId: generateChainId(chainIdx),
   };
-  const r3 = EAdminRole.GROUP_ADMIN;
-  const groupAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
+  const r3 = CrudApi.Role.groupadmin;
+  const groupadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r3),
     name: {
-      hu: `Test GROUP_ADMIN role context #${roleContextIdx}`,
-      en: `Test GROUP_ADMIN role context #${roleContextIdx}`,
+      hu: `Test groupadmin role context #${roleContextIdx}`,
+      en: `Test groupadmin role context #${roleContextIdx}`,
     },
     role: r3,
     contextId: 'GA_CTX_ID',
     chainId: generateChainId(chainIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
   };
-  const r4 = EAdminRole.UNIT_ADMIN;
+  const r4 = CrudApi.Role.unitadmin;
   const unitAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r4),
     name: {
-      hu: `Test UNIT_ADMIN role context #${roleContextIdx}`,
-      en: `Test UNIT_ADMIN role context #${roleContextIdx}`,
+      hu: `Test unitadmin role context #${roleContextIdx}`,
+      en: `Test unitadmin role context #${roleContextIdx}`,
     },
     role: r4,
     contextId: 'UA_CTX_ID',
@@ -440,12 +440,12 @@ export const createTestRoleContext = (
     groupId: generateGroupId(chainIdx, groupIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
   };
-  const r5 = EAdminRole.STAFF;
+  const r5 = CrudApi.Role.staff;
   const staffInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
     id: generateRoleContextId(roleContextIdx, r5),
     name: {
-      hu: `Test STAFF role context #${roleContextIdx}`,
-      en: `Test STAFF role context #${roleContextIdx}`,
+      hu: `Test staff role context #${roleContextIdx}`,
+      en: `Test staff role context #${roleContextIdx}`,
     },
     role: r5,
     contextId: 'STF_CTX_ID',
@@ -465,8 +465,8 @@ export const createTestRoleContext = (
   return concat(
     ...[
       superuserInput,
-      chainAdminInput,
-      groupAdminInput,
+      chainadminInput,
+      groupadminInput,
       unitAdminInput,
       staffInput,
     ].map(x => handleRoleContext(x)),
@@ -479,21 +479,27 @@ export const createTestAdminRoleContext = (
   adminUserId: string,
 ) => (deps: SeederDependencies) => {
   const superuserInput: CrudApi.CreateAdminRoleContextInput = {
-    id: generateAdminRoleContextId(adminRoleContextIdx, EAdminRole.SUPERUSER),
-    adminUserId,
-    roleContextId: generateRoleContextId(roleContextIdx, EAdminRole.SUPERUSER),
-  };
-  const chainAdminInput: CrudApi.CreateAdminRoleContextInput = {
-    id: generateAdminRoleContextId(adminRoleContextIdx, EAdminRole.CHAIN_ADMIN),
+    id: generateAdminRoleContextId(adminRoleContextIdx, CrudApi.Role.superuser),
     adminUserId,
     roleContextId: generateRoleContextId(
       roleContextIdx,
-      EAdminRole.CHAIN_ADMIN,
+      CrudApi.Role.superuser,
+    ),
+  };
+  const chainadminInput: CrudApi.CreateAdminRoleContextInput = {
+    id: generateAdminRoleContextId(
+      adminRoleContextIdx,
+      CrudApi.Role.chainadmin,
+    ),
+    adminUserId,
+    roleContextId: generateRoleContextId(
+      roleContextIdx,
+      CrudApi.Role.chainadmin,
     ),
   };
 
   return pipe(
-    [superuserInput, chainAdminInput].map(input =>
+    [superuserInput, chainadminInput].map(input =>
       deleteCreate(
         () => deps.crudSdk.DeleteAdminRoleContext({ input: { id: input.id } }),
         () => deps.crudSdk.CreateAdminRoleContext({ input }),

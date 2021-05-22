@@ -14,10 +14,10 @@ import {
 } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { IOrder, IOrderAmounts } from '@bgap/shared/types';
 import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
+import { IOrderAmounts } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +29,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ReportsDailySalesPerPaymentMethodComponent
   implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<IOrder[]>;
+  @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -104,7 +104,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
     this.orders$
       .pipe(untilDestroyed(this))
-      .subscribe((orders: IOrder[]): void => {
+      .subscribe((orders: CrudApi.Order[]): void => {
         const amounts = this._orderAmounts(orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
@@ -134,7 +134,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
     // untilDestroyed uses it.
   }
 
-  private _orderAmounts(orders: IOrder[]) {
+  private _orderAmounts(orders: CrudApi.Order[]) {
     const amounts: IOrderAmounts = {
       [CrudApi.PaymentMethod.card]: 0,
       [CrudApi.PaymentMethod.cash]: 0,

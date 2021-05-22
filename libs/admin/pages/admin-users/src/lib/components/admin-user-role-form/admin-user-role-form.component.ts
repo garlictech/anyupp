@@ -78,7 +78,7 @@ export class AdminUserRoleFormComponent
       });
   }
 
-  public removeRole(roleContext: CrudApi.AdminRoleContext) {
+  public removeRole(roleContext: CrudApi.Maybe<CrudApi.AdminRoleContext>) {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {

@@ -8,7 +8,7 @@ import 'package:fa_prev/shared/utils/place_preferences.dart';
 
 class CartRepository {
   final IAuthProvider _authProvider;
-  final IOrdersProvider _ordersProvider;
+  final CrudApi.OrdersProvider _ordersProvider;
 
   CartRepository(this._ordersProvider, this._authProvider);
 
