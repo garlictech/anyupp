@@ -50,7 +50,7 @@ cyreport
 cdk.out
 
 /apps/crud-backend/amplify
-/libs/anyupp-gql/api/src/lib/
+/libs/anyupp-gql/api/src/lib/generated
 /libs/crud-gql/api/src/lib/generated/
 
 #amplify
