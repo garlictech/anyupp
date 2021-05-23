@@ -1,10 +1,9 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
-import { fromApolloSubscription } from '@bgap/gql-sdk';
 import {
   testAdminUsername,
   testAdminUserPassword,
 } from 'libs/shared/fixtures/src';
-import { from, interval, of } from 'rxjs';
+import { interval, of } from 'rxjs';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
 
@@ -36,35 +35,31 @@ describe('CRUD sdk test', () => {
 
     of(1)
       .pipe(
-        switchMap(() => from(sdk.DeleteFavoriteProduct({ input: { id } }))),
+        switchMap(() => sdk.DeleteFavoriteProduct({ input: { id } })),
         switchMap(() =>
-          from(sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' })),
+          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
         ),
         tap(x => expect(x).toMatchSnapshot('SHOULD BE NULL')),
         switchMap(() =>
-          from(
-            sdk.CreateFavoriteProduct({
-              input: { id, userId: 'USER_FOO', unitId: 'UNIT_BAR' },
-            }),
-          ),
+          sdk.CreateFavoriteProduct({
+            input: { id, userId: 'USER_FOO', unitId: 'UNIT_BAR' },
+          }),
         ),
         tap(x => toMatchSnapshot(x, 'CREATE')),
         switchMap(() =>
-          from(sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' })),
+          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
         ),
         tap(x => toMatchSnapshot(x, 'READ')),
         switchMap(() =>
-          from(
-            sdk.UpdateFavoriteProduct({
-              input: { id, userId: 'UPDATED_USER' },
-            }),
-          ),
+          sdk.UpdateFavoriteProduct({
+            input: { id, userId: 'UPDATED_USER' },
+          }),
         ),
         tap(x => toMatchSnapshot(x, 'UPDATE')),
-        switchMap(() => from(sdk.DeleteFavoriteProduct({ input: { id } }))),
+        switchMap(() => sdk.DeleteFavoriteProduct({ input: { id } })),
         tap(x => toMatchSnapshot(x, 'DELETE')),
         switchMap(() =>
-          from(sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' })),
+          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
         ),
         tap(x =>
           expect(x).toMatchSnapshot('READ AFTER DELETE - SHOULD BE NULL'),
@@ -101,8 +96,9 @@ describe('CRUD sdk test', () => {
         ),
       )
       .subscribe({
-        complete: () => {
+        complete: async () => {
           subsSubs.unsubscribe();
+          await authSdk.DeleteAdminUser({ input: { id } }).toPromise();
           done();
         },
       });

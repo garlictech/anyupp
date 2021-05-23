@@ -55,11 +55,12 @@ describe('GetUnitsNearLocation tests', () => {
   const crudSdk = createIamCrudSdk();
 
   const cleanup = combineLatest([
-    // CleanUP
     deleteTestUnit(unitNotActive.id, crudSdk),
     deleteTestUnit(unit_01.id, crudSdk),
     deleteTestUnit(unit_02.id, crudSdk),
     deleteTestUnit(unit_03.id, crudSdk),
+    deleteTestGroup(groupSeed.group_01.id, crudSdk),
+    deleteTestChain(chainSeed.chain_01.id, crudSdk),
   ]);
 
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
@@ -69,15 +70,7 @@ describe('GetUnitsNearLocation tests', () => {
       testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
-    combineLatest([
-      // CleanUP
-      deleteTestUnit(unitNotActive.id, crudSdk),
-      deleteTestUnit(unit_01.id, crudSdk),
-      deleteTestUnit(unit_02.id, crudSdk),
-      deleteTestUnit(unit_03.id, crudSdk),
-      deleteTestGroup(groupSeed.group_01.id, crudSdk),
-      deleteTestChain(chainSeed.chain_01.id, crudSdk),
-    ])
+    cleanup
       .pipe(
         switchMap(() =>
           // Seeding
@@ -209,7 +202,6 @@ describe('GetUnitsNearLocation tests', () => {
   }, 15000);
 
   const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
-    debugger;
     const ids = foundItems.map(x => x.id);
     expect(ids).not.toContain(unitNotActive.id);
 

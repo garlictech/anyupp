@@ -30,6 +30,7 @@ type PaymentMode @aws_cognito_user_pools {
   caption: String
   method: PaymentMethod!
 }
+
 enum PaymentMethod {
   CASH
   CARD

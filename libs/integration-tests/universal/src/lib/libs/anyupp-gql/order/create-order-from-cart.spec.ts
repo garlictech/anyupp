@@ -1,4 +1,4 @@
-import { combineLatest, defer, from, of } from 'rxjs';
+import { combineLatest, defer, from } from 'rxjs';
 import { switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
@@ -60,7 +60,6 @@ describe('CreatCartFromOrder mutation test', () => {
     ).toPromise();
     cleanup
       .pipe(
-        tap(x => console.warn(x)),
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -86,7 +85,7 @@ describe('CreatCartFromOrder mutation test', () => {
     await cleanup.toPromise();
   });
 
-  it('should create an order from a valid cart', done => {
+  it.only('should create an order from a valid cart', done => {
     const userId = cart_01.userId;
     const unitId = cart_01.unitId;
 

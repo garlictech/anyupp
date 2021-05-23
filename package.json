@@ -49,10 +49,6 @@
     "@aws-amplify/ui-angular": "^1.0.6",
     "@nebular/eva-icons": "^7.0.0",
     "@nebular/theme": "^7.0.0",
-    "@nestjs/common": "^7.0.0",
-    "@nestjs/core": "^7.0.0",
-    "@nestjs/graphql": "^7.9.4",
-    "@nestjs/platform-express": "^7.0.0",
     "@ngneat/until-destroy": "^8.0.3",
     "@ngrx/effects": "10.0.0",
     "@ngrx/entity": "10.0.0",
@@ -85,10 +81,10 @@
     "fp-ts": "^2.9.5",
     "geo-tz": "^6.0.1",
     "geolib": "^3.3.1",
-    "graphql": "^15.4.0",
+    "graphql": "15.5.0",
     "graphql-subscriptions": "^1.1.0",
     "graphql-tag": "^2.11.0",
-    "graphql-tools": "^7.0.2",
+    "graphql-tools": "7.0.5",
     "isomorphic-fetch": "^3.0.0",
     "lodash-es": "^4.17.15",
     "luxon": "^1.26.0",
@@ -114,15 +110,13 @@
     "@babel/core": "^7.4.4",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
-    "@graphql-codegen/cli": "^1.6.1",
-    "@graphql-codegen/introspection": "^1.13.1",
-    "@graphql-codegen/named-operations-object": "^1.18.2",
-    "@graphql-codegen/typescript": "^1.13.1",
-    "@graphql-codegen/typescript-document-nodes": "^1.7.0",
-    "@graphql-codegen/typescript-generic-sdk": "^1.17.10",
-    "@graphql-codegen/typescript-operations": "^1.13.1",
-    "@nestjs/schematics": "^7.0.0",
-    "@nestjs/testing": "^7.0.0",
+    "@graphql-codegen/cli": "1.6.1",
+    "@graphql-codegen/introspection": "1.13.1",
+    "@graphql-codegen/named-operations-object": "1.18.2",
+    "@graphql-codegen/typescript": "1.13.1",
+    "@graphql-codegen/typescript-document-nodes": "1.7.0",
+    "@graphql-codegen/typescript-generic-sdk": "1.17.10",
+    "@graphql-codegen/typescript-operations": "1.13.1",
     "@ngrx/schematics": "10.0.0",
     "@ngrx/store-devtools": "10.0.0",
     "@nrwl/cli": "11.0.20",
@@ -192,5 +186,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "resloves": {
+    "graphql-tools": "7.0.5"
   }
 }

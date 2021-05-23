@@ -63,7 +63,7 @@ enum Role {
   superuser
   chainadmin
   groupadmin
-  unitAdmin
+  unitadmin
   staff
   inactive
 }

@@ -14,3 +14,8 @@ export const setCurrentContextRole = createAction(
   '[LoggedUser/API] Set the current context',
   props<{ currentContextRole: CrudApi.Role }>(),
 );
+
+export const setLoggedUserRole = createAction(
+  '[LoggedUser/API] Set the logged user role',
+  props<{ role: CrudApi.Role }>(),
+);

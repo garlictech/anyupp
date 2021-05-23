@@ -4,7 +4,6 @@ import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
-  validateGetGroupCurrency,
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
@@ -228,9 +227,7 @@ const getCart = (id: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetCart({ id })).pipe(switchMap(validateCart));
 
 const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetGroupCurrency({ id })).pipe(
-    switchMap(validateGetGroupCurrency),
-  );
+  from(deps.crudSdk.GetGroupCurrency({ id }));
 
 const getNextOrderNum = (tableName: string) => ({
   unitId,

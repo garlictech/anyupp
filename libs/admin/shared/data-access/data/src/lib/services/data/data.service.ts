@@ -52,30 +52,32 @@ export class DataService {
 
   public async initDataConnections(
     userId: string,
-    currentContextRole: CrudApi.Role,
+    role: CrudApi.Role,
   ): Promise<void> {
     // Prevent multiple initialization on login
     if (this._dataConnectionInitialized) return;
 
     concat(
       this.crudSdk.sdk.GetAdminUser({ id: userId }),
-
       this.crudSdk.sdk.OnAdminUserChange({ id: userId }),
-    ).pipe(
-      filterNullish(),
-      tap(loggedUser => {
-        this._store.dispatch(
-          loggedUserActions.loadLoggedUserSuccess({
-            loggedUser,
-          }),
-        );
-        this._store.dispatch(
-          loggedUserActions.setCurrentContextRole({
-            currentContextRole,
-          }),
-        );
-      }),
-    );
+    )
+      .pipe(
+        takeUntil(this._destroyConnection$),
+        filterNullish(),
+        tap(loggedUser => {
+          this._store.dispatch(
+            loggedUserActions.loadLoggedUserSuccess({
+              loggedUser,
+            }),
+          );
+          this._store.dispatch(
+            loggedUserActions.setLoggedUserRole({
+              role,
+            }),
+          );
+        }),
+      )
+      .subscribe();
 
     this._store
       .pipe(

@@ -1,7 +1,10 @@
+---
+to: tools/graphql-codegen-crud.yml
+---
 overwrite: true
 schema:
   - libs/gql-sdk/src/schema/aws.graphql
-  - apps/crud-backend/amplify/backend/api/anyuppzsolt/build/schema.graphql
+  - apps/crud-backend/amplify/backend/api/<%= h.changeCase.lower(h.changeCase.camelCase(app)) %>/build/schema.graphql
 documents:
   - libs/crud-gql/api/src/lib/documents/*.graphql
   - libs/crud-gql/api/src/lib/generated/graphql/*.ts

@@ -34,6 +34,10 @@ const reducer = createReducer(
       currentContextRole,
     }),
   ),
+  on(LoggedUserActions.setLoggedUserRole, (state, { role }) => ({
+    ...state,
+    role,
+  })),
 );
 
 export function loggedUserReducer(
