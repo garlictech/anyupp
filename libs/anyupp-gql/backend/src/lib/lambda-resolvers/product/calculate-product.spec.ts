@@ -224,7 +224,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         position: 1,
         refGroupPrice: 0,
       };
-      const minimalProductWithSingleActiveVariant: Partial<Product> = {
+      const minimalProductWithSingleActiveVariant: Product = {
         id: 'PROD_ID',
         isVisible: true,
         name: { en: 'prodName' },
@@ -235,6 +235,10 @@ describe('calculatePricesAndCheckActivity method', () => {
         tax: 0,
         position: 2,
         variants: [{ ...variant }, { ...variant }],
+        chainId: 'foobar',
+        createdAt: '1',
+        updatedAt: '2',
+        unitId: 'foobar',
       };
 
       it('should return undefined in case none of the variants have active availability', () => {
@@ -282,8 +286,7 @@ describe('calculatePricesAndCheckActivity method', () => {
           },
         ];
         const result = calculateActualPricesAndCheckActivity({
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          product: input as any,
+          product: input,
           atTimeISO: new Date().toISOString(),
           inTimeZone: timezone01,
         });

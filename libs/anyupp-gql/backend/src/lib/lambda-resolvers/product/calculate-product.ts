@@ -100,11 +100,11 @@ const toGeneratedProductType = (
       product.productCategoryId &&
       product.name &&
       product.productType &&
-      product.tax &&
-      product.position
+      product.tax !== undefined &&
+      product.position !== undefined
     )
   ) {
-    throw new Error("HANDLE ME: undefined's mut be handled");
+    throw new Error("HANDLE ME: undefined's must be handled");
   }
 
   return {
