@@ -77,7 +77,7 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
     switchMap(props =>
       getOrderItems({
         userId,
-        currency: props.currency.currency,
+        currency: props?.currency?.currency ?? 'fabatka (handle this nullish)',
         cartItems: props.cart.items,
       })(deps).pipe(map(items => ({ ...props, items }))),
     ),
