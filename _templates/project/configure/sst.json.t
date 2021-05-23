@@ -1,3 +1,6 @@
+---
+to: apps/anyupp-backend/sst.json 
+---
 {
   "name": "anyupp-zsolt",
   "type": "@serverless-stack/resources",
