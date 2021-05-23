@@ -34,6 +34,33 @@ Install the following tools:
 Use the `config` build targets for projects requiring configuration.
 Use the `build` build targets for projects requiring build/code generation.
 
+**the whole project**
+
+At this point we use [hygen](https://www.hygen.io/) to generate those project files
+that contains app names or stage names in theit content and cannot be parametrized
+by any other ways.
+
+```
+ yarn hygen project configure --app=my-app-name
+```
+
+Mind, that the app names must be concsistent througout the project, for example:
+
+```
+ yarn hygen project configure --app=anyupp-backend
+```
+
+Here, `anyupp-backend` is the name of both the crud and anyupp apis, etc.
+
+The `tools/build-workspace.sh` script supports this part, so it generates the project
+for you
+
+TRICK: to force overwrite files:
+
+```
+HYGEN_OVERWRITE=1 yarn hygen project configure --app anyupp-zsolt
+```
+
 **the graphql schemas**
 
 `nx build anyupp-gql-api --skip-nx-cache`
@@ -305,7 +332,7 @@ database!
 
 ## Integration tests
 
-We collect all teh integration tests to `libs/integration-test` and develop/execute
+We collect all the integration tests to `libs/integration-test` and develop/execute
 them with jest. We must separete them from the other components, because we don't want
 to interfere with the unit tests.
 

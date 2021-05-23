@@ -77,4 +77,6 @@ amplifytools.xcconfig
 
 # The generated files with hygen
 apps/anyupp-backend/sst.json
+apps/anyupp-backend/serverless.yml
+apps/crud-backend/.graphqlconfig.yml
 

@@ -1,5 +1,8 @@
+---
+to: apps/anyupp-backend/serverless.yml
+---
 org: anyupp
-service: anyupp-backend
+service: <%= app %>
 configValidationMode: error
 frameworkVersion: ^2.16.1
 
@@ -14,7 +17,7 @@ custom:
   # commands. Or falls back to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Name of the SST app that's deploying our infrastructure
-  sstApp: ${self:custom.stage}-anyupp-backend
+  sstApp: ${self:custom.stage}-<%= app %>
   bundle:
     packager: yarn
     linting: false

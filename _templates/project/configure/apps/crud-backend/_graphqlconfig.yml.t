@@ -1,6 +1,9 @@
+---
+to: apps/crud-backend/.graphqlconfig.yml 
+---
 projects:
   anyuppzsolt:
-    schemaPath: amplify/backend/api/anyuppzsolt/build/schema.graphql
+    schemaPath: amplify/backend/api/<%= h.changeCase.lower(h.changeCase.camelCase(app)) %>/build/schema.graphql
     includes:
       - ../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts
     excludes:
