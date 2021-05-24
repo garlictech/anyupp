@@ -42,22 +42,3 @@ export const getSeasonalAvailabilityToTime = (
 export const getTimezoneFromLocation = (location: ILocation): string => {
   return geoTz(location.lat, location.lng)[0];
 };
-
-// /**
-//  * Returns an environment and test type specific version of the timestamp Class
-//  * to be able to run the same code in prod and testing environments
-//  *
-//  * see:
-//  *  https://code.luasoftware.com/tutorials/google-cloud-firestore/firestore-timestamp-invalid-data/
-//  *  https://github.com/firebase/firebase-js-sdk/issues/1615
-//  */
-// export const timestampFactory = (fContext?: FunctionContext) => {
-//     // CHECK this: Where will the console log show up?
-//     // 1 - In the emulator's terminal => testType === internal
-//     // 2 - In the test runner's terminal => testType === external
-//     if (config.stage === "emulator" && fContext?.testType === ETestType.EXTERNAL) {
-//         return firebase.firestore.Timestamp;
-//     } else {
-//         return fbAdmin.firestore.Timestamp;
-//     }
-// };

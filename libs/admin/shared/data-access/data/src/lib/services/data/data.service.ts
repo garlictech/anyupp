@@ -319,114 +319,6 @@ export class DataService {
     );
   }
 
-  // TODO refactor
-  //private _subscribeToGeneratedUnitProducts(/*unitId: string*/): void {
-  /*
-    this._angularFireDatabase
-      .object(`/generated/productList/units/${unitId}/productCategories`) // TODO list?
-      .valueChanges()
-      .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data: IKeyValueObject | unknown): void => {
-        const products: IProduct[] = [];
-
-        if (data) {
-          Object.keys(<IKeyValueObject>data).forEach(
-            (productCategoryId: string): void => {
-              const categoryValue = (<IKeyValueObject>data)[productCategoryId]
-                ?.products;
-
-              Object.keys(categoryValue).forEach((productId: string): void => {
-                products.push({
-                  ...categoryValue[productId],
-                  id: productId,
-                  productCategoryId,
-                });
-              });
-            },
-          );
-        }
-
-        this._store.dispatch(
-          productsActions.loadGeneratedUnitProductsSuccess({
-            products,
-          }),
-        );
-      });
-      */
-  //}
-
-  // TODO refactor
-  //private _subscribeToSelectedUnitOrders(): /*chainId: string,
-  //  unitId: string,*/
-  //void {
-  /*
-    this._angularFireDatabase
-      .list(`/orders/chains/${chainId}/units/${unitId}/active`)
-      .stateChanges()
-      .pipe(takeUntil(this._settingsChanged$))
-      .subscribe((data): void => {
-        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
-          this._store.dispatch(
-            ordersActions.removeActiveOrder({
-              orderId: data.key || '',
-            }),
-          );
-        } else {
-          this._store.dispatch(
-            ordersActions.upsertActiveOrder({
-              order: {
-                ...(<CrudApi.Order>data.payload.val()),
-                id: data.key || '',
-              },
-            }),
-          );
-        }
-      });
-
-    this._store
-      .pipe(
-        select(dashboardSelectors.getSelectedHistoryDate),
-        tap(() => {
-          this._store.dispatch(
-            ordersActions.setAllHistoryOrders({
-              orders: [],
-            }),
-          );
-        }),
-        switchMap((historyDate: number) => {
-          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-
-          return this._angularFireDatabase
-            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
-              ref
-                .orderByChild('created')
-                .startAt(dayIntervals.from)
-                .endAt(dayIntervals.to),
-            )
-            .stateChanges();
-        }),
-        takeUntil(this._settingsChanged$),
-      )
-      .subscribe((data): void => {
-        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
-          this._store.dispatch(
-            ordersActions.removeHistoryOrder({
-              orderId: data.key || '',
-            }),
-          );
-        } else {
-          this._store.dispatch(
-            ordersActions.upsertHistoryOrder({
-              order: {
-                ...(<CrudApi.Order>data.payload.val()),
-                id: data.key || '',
-              },
-            }),
-          );
-        }
-      });*/
-  //}
-
   /*
   private _subscribeToUsers(): void {
     this._amplifyDataService
@@ -533,10 +425,7 @@ export class DataService {
       chainId,
       unitId,
       orderId,
-    }); /* this._angularFireDatabase
-      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .valueChanges()
-      .pipe(take(1));*/
+    });
   }
 
   // TODO refactor
@@ -547,19 +436,6 @@ export class DataService {
     status: CrudApi.OrderStatus,
   ): Promise<unknown> {
     return of({ chainId, unitId, orderId, status }).toPromise();
-
-    /*
-    const callable = this._angularFireFunctions.httpsCallable(
-      `setNewOrderStatus`,
-    );
-
-    return callable({
-      chainId,
-      unitId,
-      orderId,
-      status,
-    }).toPromise();
-    */
   }
 
   // TODO refactor
@@ -574,9 +450,7 @@ export class DataService {
       unitId,
       orderId,
       value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(`/orders/chains/${chainId}/units/${unitId}/active/${orderId}`)
-      .update(value);*/
+    }).toPromise();
   }
 
   // TODO refactor
@@ -593,11 +467,7 @@ export class DataService {
       orderId,
       idx,
       value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}/statusLog`,
-      )
-      .update(value);*/
+    }).toPromise();
   }
   // TODO refactor
   public updateOrderItemQuantityAndPrice(
@@ -613,12 +483,9 @@ export class DataService {
       orderId,
       idx,
       value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
-      )
-      .update(value);*/
+    }).toPromise();
   }
+
   // TODO refactor
   public addOrderItem(
     chainId: string,
@@ -633,11 +500,7 @@ export class DataService {
       orderId,
       idx,
       value,
-    }).toPromise(); /* this._angularFireDatabase
-      .object(
-        `/orders/chains/${chainId}/units/${unitId}/active/${orderId}/items/${idx}`,
-      )
-      .update(value);*/
+    }).toPromise();
   }
 
   //

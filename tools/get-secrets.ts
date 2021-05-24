@@ -11,8 +11,6 @@ const stage = process.argv[3];
 
 const secretName = `${project}-${stage}-secrets`;
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
-const firebaseConfigTargetFile = `${targetDir}/firebase.config.json`;
-const firebaseServiceAccountKeyTargetFile = `${targetDir}/firebase-service-account-key.json`;
 const androidKeyStoreTargetFile = `${__dirname}/../apps/anyupp-mobile/android/anyupp-keystore.jks`;
 const androidKeyPropertiesTargetFile = `${__dirname}/../apps/anyupp-mobile/android/key.properties`;
 
