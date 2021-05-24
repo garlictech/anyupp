@@ -93,7 +93,7 @@ class OrderHistoryCard extends StatelessWidget {
                   right: 20.0,
                 ),
                 child: Text(
-                  DF_SHORT.format(order.created != null ? DateTime.fromMillisecondsSinceEpoch(order.created) : DateTime.now()),
+                  order.getFormattedDate(),
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: theme.text,
