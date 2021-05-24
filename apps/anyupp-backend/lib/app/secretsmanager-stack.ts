@@ -15,6 +15,7 @@ export class SecretsManagerStack extends sst.Stack {
   public facebookAppSecret: string;
   public stripeSecretKey: string;
   public stripeSigningSecret: string;
+  public appleSigninKey: string;
   public secretsManager: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
@@ -52,6 +53,11 @@ export class SecretsManagerStack extends sst.Stack {
       'stripeSigningSecret',
     );
     this.stripeSigningSecret = stripeSigningSecret.toString();
+
+    const appleSigninKey = this.secretsManager.secretValueFromJson(
+      'appleSigninKey',
+    );
+    this.appleSigninKey = appleSigninKey.toString();
 
     new CfnOutput(this, 'SecretsManager', {
       value: this.secretsManager.secretArn,

@@ -14,6 +14,9 @@ export interface CognitoStackProps extends StackProps {
   googleClientSecret: string;
   facebookClientId: string;
   facebookClientSecret: string;
+  appleSigninKey: string;
+  appleTeamId: string;
+  appleKeyId: string;
 }
 
 type poolLabel = 'Admin' | 'Consumer';
@@ -72,6 +75,23 @@ export class CognitoStack extends Stack {
       },
     );
 
+    const appleIdProvider = new cognito.UserPoolIdentityProviderApple(
+      this,
+      'Apple',
+      {
+        userPool: this.consumerUserPool,
+        clientId: props.googleClientId,
+        attributeMapping: {
+          email: cognito.ProviderAttribute.APPLE_EMAIL,
+          fullname: cognito.ProviderAttribute.APPLE_NAME,
+        },
+        teamId: props.appleTeamId,
+        keyId: props.appleKeyId,
+        privateKey: props.appleSigninKey,
+        scopes: ['name', 'email', 'openid'],
+      },
+    );
+
     const {
       consumerWebClient,
       consumerNativeClient,
@@ -79,8 +99,10 @@ export class CognitoStack extends Stack {
 
     consumerWebClient.node.addDependency(googleIdProvider);
     consumerWebClient.node.addDependency(facebookIdProvider);
+    consumerWebClient.node.addDependency(appleIdProvider);
     consumerNativeClient.node.addDependency(googleIdProvider);
     consumerNativeClient.node.addDependency(facebookIdProvider);
+    consumerNativeClient.node.addDependency(appleIdProvider);
 
     // Export values
     this.createUserPoolOutputs(

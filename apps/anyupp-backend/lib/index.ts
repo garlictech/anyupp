@@ -29,6 +29,9 @@ export class AnyUppStack extends Stack {
       googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,
       facebookClientSecret: secretsManagerStack.facebookAppSecret,
+      appleSigninKey: secretsManagerStack.appleSigninKey,
+      appleTeamId: paramsStack.appleTeamId,
+      appleKeyId: paramsStack.appleKeyId,
     });
 
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
