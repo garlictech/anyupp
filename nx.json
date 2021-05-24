@@ -19,6 +19,7 @@
       "options": {
         "accessToken": "ZmQxOTFkZTQtODBhYi00MmVlLTgxZmMtYTkwYmUwZDBjNTIwfHJlYWQtd3JpdGU=",
         "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "runtimeCacheInputs": ["node -v"],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }

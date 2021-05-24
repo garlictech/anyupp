@@ -1267,7 +1267,8 @@
                 "command": "yarn graphql-codegen --config tools/graphql-codegen-anyupp.yml"
               }
             ]
-          }
+          },
+          "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
         }
       }
     },
@@ -1306,7 +1307,12 @@
             "commands": [
               "sh ../../tools/pull-crud-api.sh '{args.app}' '{args.stage}'"
             ]
-          }
+          },
+          "outputs": [
+            "apps/crud-backend/amplify",
+            "libs/crud-gql/api/src/lib/generated",
+            "libs/crud-gql/backend/src/generated"
+          ]
         },
         "init": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1342,7 +1348,8 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": ["sh ../../tools/build-schema-crud-api.sh {args.stage}"]
-          }
+          },
+          "outputs": ["libs/crud-gql/api/src/lib/generated"]
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1380,7 +1387,11 @@
               "yarn sst cdk synth"
             ]
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "apps/anyupp-backend/cdk.out",
+            "apps/anyupp-backend/.build",
+            "apps/anyupp-backend/.serverless"
+          ]
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1440,7 +1451,12 @@
             "main": "apps/cicd/src/main.ts",
             "tsConfig": "apps/cicd/tsconfig.app.json",
             "assets": ["apps/cicd/src/assets"]
-          }
+          },
+          "outputs": [
+            "apps/cicd/cdk.out",
+            "apps/cicd/.build",
+            "apps/cicd/.serverless"
+          ]
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",

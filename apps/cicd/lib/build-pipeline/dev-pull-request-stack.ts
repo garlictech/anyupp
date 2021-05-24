@@ -55,6 +55,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 'npx cowsay "YOUR PR IS SUPERCOOL!!!"',
               ],
             },
+            'runtime-versions': {
+              nodejs: 14,
+            },
           },
           env: {
             'secrets-manager': {

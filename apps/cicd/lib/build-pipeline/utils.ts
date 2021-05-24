@@ -118,6 +118,9 @@ export const createBuildProject = (
             'yarn cypress:generate:html:report',
           ],
         },
+        'runtime-versions': {
+          nodejs: 14,
+        },
       },
       artifacts: {
         files: ['apps/anyupp-backend/cdk.out/**/*'],
