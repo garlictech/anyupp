@@ -63,7 +63,7 @@ HYGEN_OVERWRITE=1 yarn hygen project configure --app anyupp-zsolt
 
 **the graphql schemas**
 
-`nx build anyupp-gql-api --skip-nx-cache`
+`nx build-schema anyupp-gql-api --skip-nx-cache`
 
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.

@@ -8,7 +8,7 @@ STAGE=$2
 HYGEN_OVERWRITE=1 yarn hygen project configure --app=$APPNAME
 yarn nx config crud-backend --app=$APPNAME --stage=$STAGE
 yarn nx config shared-config --app=$APPNAME --stage=$STAGE
-yarn nx build anyupp-gql-api 
+yarn nx build-schema anyupp-gql-api 
 yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 
 if [ $STAGE = 'dev' ]; then

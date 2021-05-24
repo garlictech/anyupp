@@ -1259,7 +1259,7 @@
             "passWithNoTests": true
           }
         },
-        "build": {
+        "build-schema": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
