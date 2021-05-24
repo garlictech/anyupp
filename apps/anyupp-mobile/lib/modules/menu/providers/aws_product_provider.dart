@@ -9,7 +9,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'product_provider_interface.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 
-class AwsProductProvider implements ProductProvider {
+class AwsProductProvider implements IProductProvider {
   @override
   Stream<List<ProductCategory>> getProductCategoryList(String chainId, String unitId) {
     print('***** getProductCategoryList().start().chainId=$chainId, unitId=$unitId');

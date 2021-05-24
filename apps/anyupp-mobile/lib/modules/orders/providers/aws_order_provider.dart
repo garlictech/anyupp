@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'order_provider_interface.dart';
 
-class AwsOrderProvider implements CrudApi.OrdersProvider {
+class AwsOrderProvider implements IOrdersProvider {
   final IAuthProvider _authProvider;
 
   StreamController<Cart> _cartController = BehaviorSubject<Cart>();
@@ -34,9 +34,9 @@ class AwsOrderProvider implements CrudApi.OrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       // filterModel: (model) =>
-      //     model.status == OrderStatus.placed ||
-      //     model.status == OrderStatus.processing ||
-      //     model.status == OrderStatus.ready,
+      //     model.status == OrderStatus.PLACED ||
+      //     model.status == OrderStatus.PROCESSING ||
+      //     model.status == OrderStatus.READY,
     );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -399,7 +399,7 @@ class AwsOrderProvider implements CrudApi.OrdersProvider {
             },
             'statusLog': {
               'userId': cart.userId,
-              'status': 'placed',
+              'status': 'PLACED',
               'ts': 1.0,
             },
             "allergens" : item.allergens,

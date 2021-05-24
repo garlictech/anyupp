@@ -51,14 +51,14 @@ export class SeederStack extends sst.Stack {
       ],
     });
 
-    /*seederLambda.role &&
+    seederLambda.role &&
       seederLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: ['appsync:GraphQL'],
           resources: ['*'],
         }),
       );
-*/
+
     const provider = new Provider(this, 'StackSeederProvider', {
       onEventHandler: seederLambda,
     });

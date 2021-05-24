@@ -3,7 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UnitRepository {
-  final CrudApi.UnitProvider _unitProvider;
+  final IUnitProvider _unitProvider;
 
   UnitRepository(this._unitProvider);
 

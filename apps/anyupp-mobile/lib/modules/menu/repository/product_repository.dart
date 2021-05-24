@@ -3,7 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 
 class ProductRepository  {
-  final ProductProvider _provider;
+  final IProductProvider _provider;
 
   ProductRepository(this._provider);
 

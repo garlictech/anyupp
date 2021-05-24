@@ -19,10 +19,10 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
   const seederDeps = createSeederDeps(
-    'AKIAYIT7GMY5WQZFXOOX',
-    'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
-    //process.env.AWS_ACCESS_KEY_ID || '',
-    //process.env.AWS_SECRET_ACCESS_KEY || '',
+    //'AKIAYIT7GMY5WQZFXOOX',
+    //'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
+    process.env.AWS_ACCESS_KEY_ID || '',
+    process.env.AWS_SECRET_ACCESS_KEY || '',
     AdminUserPoolId,
   );
 

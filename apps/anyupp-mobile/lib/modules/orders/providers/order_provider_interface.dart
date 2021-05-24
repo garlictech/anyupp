@@ -1,7 +1,7 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/InvoiceInfo.dart';
 
-abstract class CrudApi.OrdersProvider {
+abstract class IOrdersProvider {
   Future<Cart> getCurrentCart(String chainId, String unitId);
 
   Stream<Cart> getCurrentCartStream(String chainId, String unitId);

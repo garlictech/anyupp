@@ -13,7 +13,7 @@ import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   final Stripe _stripe;
-  final CrudApi.OrdersProvider _ordersProvider;
+  final IOrdersProvider _ordersProvider;
 
   GraphQLStripePaymentProvider(this._stripe, this._ordersProvider);
 

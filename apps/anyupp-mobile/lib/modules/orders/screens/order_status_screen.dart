@@ -99,7 +99,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     List<Order> onlineOrders = [];
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
-      if (status == 'ready') {
+      if (status == 'READY') {
         if (order.paymentMethod.method == 'CARD' || order.paymentMethod.method == 'CASH') {
           // --- Payable
           if (order.paymentIntention == null) {

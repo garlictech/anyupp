@@ -42,7 +42,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             _buildOrderHeader(context, order),
             _buildDivider(context),
             OrderStatusFooter(order: order),
-            // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
+            // status == OrderStatus.READY ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
           ],

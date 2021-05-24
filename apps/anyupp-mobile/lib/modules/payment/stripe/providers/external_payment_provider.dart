@@ -10,7 +10,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ExternalPaymentProvider implements IExternalPaymentProvider {
 
-  final CrudApi.OrdersProvider _ordersProvider;
+  final IOrdersProvider _ordersProvider;
 
   ExternalPaymentProvider(this._ordersProvider);
 

@@ -1,6 +1,6 @@
 import 'package:fa_prev/models.dart';
 
-abstract class ProductProvider {
+abstract class IProductProvider {
   
   Stream<List<ProductCategory>> getProductCategoryList(String chainId, String unitId);
 
