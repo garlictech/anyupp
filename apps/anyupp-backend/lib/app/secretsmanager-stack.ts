@@ -1,13 +1,15 @@
-import * as sst from '@serverless-stack/resources';
 import * as sm from '@aws-cdk/aws-secretsmanager';
-import { App } from '@serverless-stack/resources';
 import { CfnOutput } from '@aws-cdk/core';
+import * as sst from '@serverless-stack/resources';
+import { App } from '@serverless-stack/resources';
 
 const secretsManagerArns: Record<string, string> = {
   dev:
     'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
   qa:
     'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
+  appleSigninKey:
+    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:apple-signin-private-key-eHFjFn',
 };
 
 export class SecretsManagerStack extends sst.Stack {
@@ -33,6 +35,14 @@ export class SecretsManagerStack extends sst.Stack {
       },
     );
 
+    const appleSigninKeySecret = sm.Secret.fromSecretAttributes(
+      this,
+      'AppleSigninKey',
+      {
+        secretArn: secretsManagerArns.appleSigninKey,
+      },
+    );
+
     const googleClientSecret = this.secretsManager.secretValueFromJson(
       'googleClientSecret',
     );
@@ -54,10 +64,7 @@ export class SecretsManagerStack extends sst.Stack {
     );
     this.stripeSigningSecret = stripeSigningSecret.toString();
 
-    const appleSigninKey = this.secretsManager.secretValueFromJson(
-      'appleSigninKey',
-    );
-    this.appleSigninKey = appleSigninKey.toString();
+    this.appleSigninKey = appleSigninKeySecret.secretValue.toString();
 
     new CfnOutput(this, 'SecretsManager', {
       value: this.secretsManager.secretArn,

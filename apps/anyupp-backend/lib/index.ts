@@ -32,6 +32,7 @@ export class AnyUppStack extends Stack {
       appleSigninKey: secretsManagerStack.appleSigninKey,
       appleTeamId: paramsStack.appleTeamId,
       appleKeyId: paramsStack.appleKeyId,
+      appleServiceId: paramsStack.appleServiceId,
     });
 
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {

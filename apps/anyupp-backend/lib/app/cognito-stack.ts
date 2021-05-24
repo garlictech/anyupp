@@ -17,6 +17,7 @@ export interface CognitoStackProps extends StackProps {
   appleSigninKey: string;
   appleTeamId: string;
   appleKeyId: string;
+  appleServiceId: string;
 }
 
 type poolLabel = 'Admin' | 'Consumer';
@@ -80,7 +81,7 @@ export class CognitoStack extends Stack {
       'Apple',
       {
         userPool: this.consumerUserPool,
-        clientId: props.googleClientId,
+        clientId: props.appleServiceId,
         attributeMapping: {
           email: cognito.ProviderAttribute.APPLE_EMAIL,
           fullname: cognito.ProviderAttribute.APPLE_NAME,
@@ -326,6 +327,7 @@ export class CognitoStack extends Stack {
         cognito.UserPoolClientIdentityProvider.GOOGLE,
         cognito.UserPoolClientIdentityProvider.FACEBOOK,
         cognito.UserPoolClientIdentityProvider.COGNITO,
+        cognito.UserPoolClientIdentityProvider.APPLE,
       ],
     };
 

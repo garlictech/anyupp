@@ -11,6 +11,7 @@ export class ParamsStack extends sst.Stack {
   public googleApiKey: string;
   public appleTeamId: string;
   public appleKeyId: string;
+  public appleServiceId: string;
 
   constructor(scope: sst.App, id: string) {
     super(scope, id);
@@ -92,6 +93,19 @@ export class ParamsStack extends sst.Stack {
     new CfnOutput(this, 'appleKeyIdOutput', {
       value: this.appleKeyId,
       exportName: app.logicalPrefixedName('appleKeyId'),
+    });
+
+    this.appleServiceId = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      'appleServiceIdParam',
+      {
+        parameterName: `/${app.stage}-${rootAppName}/AppleServiceId`,
+      },
+    ).stringValue;
+
+    new CfnOutput(this, 'appleServiceIdOutput', {
+      value: this.appleServiceId,
+      exportName: app.logicalPrefixedName('appleServiceId'),
     });
   }
 }
