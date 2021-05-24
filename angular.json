@@ -1044,7 +1044,7 @@
         "publish-appcenter": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "sh ../../tools/publish-to-appcenter.sh '{args.stage}' '{args.platform}'",
+            "command": "../../tools/publish-to-appcenter.sh '{args.stage}' '{args.platform}'",
             "cwd": "apps/anyupp-mobile"
           }
         }
@@ -1305,7 +1305,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/pull-crud-api.sh '{args.app}' '{args.stage}'"
+              "../../tools/pull-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           },
           "outputs": [
@@ -1320,7 +1320,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/init-crud-api.sh '{args.app}' '{args.stage}'"
+              "../../tools/init-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },
@@ -1329,7 +1329,7 @@
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
-            "commands": ["sh ../../tools/reconfig-crud-api.sh"]
+            "commands": ["../../tools/reconfig-crud-api.sh"]
           }
         },
         "remove": {
@@ -1338,7 +1338,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/ remove-crud-api.sh '{args.app}' '{args.stage}'"
+              "../../tools/ remove-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },
@@ -1347,7 +1347,7 @@
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
-            "commands": ["sh ../../tools/build-schema-crud-api.sh {args.stage}"]
+            "commands": ["../../tools/build-schema-crud-api.sh {args.stage}"]
           },
           "outputs": ["libs/crud-gql/api/src/lib/generated"]
         },
@@ -1357,7 +1357,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "sh ../../tools/deploy-crud-api.sh '{args.app}' '{args.stage}'"
+              "../../tools/deploy-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },

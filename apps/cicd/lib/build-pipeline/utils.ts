@@ -88,7 +88,7 @@ export const createBuildProject = (
             nodejs: 14,
           },
           commands: [
-            `sh ./tools/setup-aws-environment.sh`,
+            `./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli appcenter-cli',
             'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
@@ -98,7 +98,7 @@ export const createBuildProject = (
         },
         build: {
           commands: [
-            `sh ./tools/build-workspace.sh ${appConfig.name} ${stage}`,
+            `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
             `yarn nx buildApk anyupp-mobile`,
           ],
         },
@@ -111,9 +111,9 @@ export const createBuildProject = (
             )}/`,
             `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
             `echo 'Pushing Android APK to appcenter'`,
-            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
+            `./tools/publish-to-appcenter.sh ${stage} android`,
             `echo 'Triggering ios app build in appcenter...'`,
-            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
+            `./tools/trigger-appcenter-builds.sh ${stage} ios`,
             `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
             `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
             `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,

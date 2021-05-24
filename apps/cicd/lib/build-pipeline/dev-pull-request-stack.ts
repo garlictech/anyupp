@@ -40,7 +40,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 nodejs: 14,
               },
               commands: [
-                `sh ./tools/setup-aws-environment.sh`,
+                `./tools/setup-aws-environment.sh`,
                 'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli cowsay',
                 'npx cowsay "STARTING PR CHECK"',
@@ -51,7 +51,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             },
             build: {
               commands: [
-                `sh ./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
+                `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
                 `yarn nx buildApk anyupp-mobile`,
                 `yarn nx affected:lint --base=${stage} ${generatedLibExcludes}`,
                 `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
