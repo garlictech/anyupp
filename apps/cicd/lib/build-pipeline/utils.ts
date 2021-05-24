@@ -84,6 +84,9 @@ export const createBuildProject = (
       version: '0.2',
       phases: {
         install: {
+          'runtime-versions': {
+            nodejs: 14,
+          },
           commands: [
             `sh ./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
@@ -117,9 +120,6 @@ export const createBuildProject = (
             'yarn cucumber:report',
             'yarn cypress:generate:html:report',
           ],
-        },
-        'runtime-versions': {
-          nodejs: 14,
         },
       },
       artifacts: {

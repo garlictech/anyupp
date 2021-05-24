@@ -36,6 +36,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
           version: '0.2',
           phases: {
             install: {
+              'runtime-versions': {
+                nodejs: 14,
+              },
               commands: [
                 `sh ./tools/setup-aws-environment.sh`,
                 'yarn --frozen-lockfile',
@@ -54,9 +57,6 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
                 'npx cowsay "YOUR PR IS SUPERCOOL!!!"',
               ],
-            },
-            'runtime-versions': {
-              nodejs: 14,
             },
           },
           env: {
