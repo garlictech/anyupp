@@ -36,12 +36,10 @@ export class DevPullRequestBuildStack extends sst.Stack {
           version: '0.2',
           phases: {
             install: {
-              'runtime-versions': {
-                nodejs: 14,
-              },
               commands: [
                 'chmod +x ./tools/*.sh',
                 `./tools/setup-aws-environment.sh`,
+                './tools/install-nodejs-14.sh',
                 'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli cowsay',
                 'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
@@ -73,7 +71,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           },
         }),
         environment: {
-          buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+          buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
           computeType: codebuild.ComputeType.MEDIUM,
         },
       },
