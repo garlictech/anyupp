@@ -40,6 +40,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 nodejs: 14,
               },
               commands: [
+                'chmod +x ./tools/*.sh',
                 `./tools/setup-aws-environment.sh`,
                 'yarn --frozen-lockfile',
                 'npm install -g @aws-amplify/cli cowsay',
