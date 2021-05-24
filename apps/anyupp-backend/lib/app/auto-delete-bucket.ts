@@ -30,7 +30,7 @@ export class AutoDeleteBucket extends Bucket {
     // allow the bucket contents to be read and deleted by the lambda
     this.grantReadWrite(adlambda);
 
-    const provider = new Provider(this, 'ElasticsearchIndexProvider', {
+    const provider = new Provider(this, 'AutoBucketProvider', {
       onEventHandler: adlambda,
     });
 
