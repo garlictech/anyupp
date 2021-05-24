@@ -75,7 +75,7 @@ export const createTestChain = (chainIdx: number) => (
     name: `Seeded chain #${chainIdx}`,
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteChain({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteChain({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateChain({ input }),
   );
 };
@@ -91,7 +91,7 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => (
     currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteGroup({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteGroup({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateGroup({ input }),
   );
 };
@@ -108,7 +108,7 @@ export const createAdminUser = (adminUserId: string, email: string) => (
       'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteAdminUser({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteAdminUser({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateAdminUser({ input }),
   );
 };
@@ -138,7 +138,7 @@ export const createTestUnit = (
     ],
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteUnit({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateUnit({ input }),
   );
 };
@@ -163,7 +163,7 @@ export const createTestProductCategory = (
   };
 
   return deleteCreate(
-    () => deps.crudSdk.DeleteProductCategory({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteProductCategory({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateProductCategory({ input }),
   );
 };
@@ -213,7 +213,7 @@ export const createTestChainProduct = (
     configSets: productComponentSetSeed.seededChainProductConfigSets,
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateChainProduct({ input }),
   );
 };
@@ -251,7 +251,7 @@ export const createTestGroupProduct = (
     configSets: productComponentSetSeed.seededGroupProductConfigSets,
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateGroupProduct({ input }),
   );
 };
@@ -305,7 +305,7 @@ export const createTestUnitProduct = (
     configSets: productComponentSetSeed.seededUnitProductConfigSets,
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateUnitProduct({ input }),
   ).pipe(
     filterNullish(),
@@ -320,7 +320,10 @@ export const createTestUnitProduct = (
         configSets: productComponentSetSeed.generatedProductConfigSets,
       };
       return deleteCreate(
-        () => deps.crudSdk.DeleteGeneratedProduct({ input: { id: input.id } }),
+        () =>
+          deps.crudSdk.DeleteGeneratedProduct({
+            input: { id: input.id ?? '' },
+          }),
         () => deps.crudSdk.CreateGeneratedProduct({ input }),
       ).pipe(map(generatedProduct => ({ unitProduct, generatedProduct })));
     }),
@@ -378,7 +381,7 @@ export const createTestCart = ({
     ],
   };
   return deleteCreate(
-    () => deps.crudSdk.DeleteCart({ input: { id: input.id } }),
+    () => deps.crudSdk.DeleteCart({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateCart({ input }),
   );
 };
@@ -458,7 +461,7 @@ export const createTestRoleContext = (
     input: INPUT,
   ) =>
     deleteCreate(
-      () => deps.crudSdk.DeleteRoleContext({ input: { id: input.id } }),
+      () => deps.crudSdk.DeleteRoleContext({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateRoleContext({ input }),
     );
 
@@ -501,7 +504,10 @@ export const createTestAdminRoleContext = (
   return pipe(
     [superuserInput, chainadminInput].map(input =>
       deleteCreate(
-        () => deps.crudSdk.DeleteAdminRoleContext({ input: { id: input.id } }),
+        () =>
+          deps.crudSdk.DeleteAdminRoleContext({
+            input: { id: input.id ?? '' },
+          }),
         () => deps.crudSdk.CreateAdminRoleContext({ input }),
       ),
     ),
@@ -513,7 +519,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
   return deleteCreate(
     () =>
       deps.crudSdk.DeleteProductComponent({
-        input: { id: productComponentSetSeed.seededProdComp_01.id },
+        input: { id: productComponentSetSeed.seededProdComp_01.id ?? '' },
       }),
     () =>
       deps.crudSdk.CreateProductComponent({
@@ -524,7 +530,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetSeed.seededProdComp_02.id },
+            input: { id: productComponentSetSeed.seededProdComp_02.id ?? '' },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
@@ -536,7 +542,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetSeed.seededProdComp_03.id },
+            input: { id: productComponentSetSeed.seededProdComp_03.id ?? '' },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
@@ -548,7 +554,9 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponentSet({
-            input: { id: productComponentSetSeed.seededProdCompSet_01.id },
+            input: {
+              id: productComponentSetSeed.seededProdCompSet_01.id ?? '',
+            },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
@@ -560,7 +568,9 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponentSet({
-            input: { id: productComponentSetSeed.seededProdCompSet_02.id },
+            input: {
+              id: productComponentSetSeed.seededProdCompSet_02.id ?? '',
+            },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
