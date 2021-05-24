@@ -24,6 +24,5 @@ generates:
       namingConvention:
         enumValues: change-case#lowerCase
       usingObservableFrom: "import { Observable } from 'rxjs';"
-      pureMagicComment: true
       scalars:
         AWSDateTime: string

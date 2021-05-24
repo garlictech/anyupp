@@ -91,25 +91,25 @@ export const createBuildProject = (
             `./tools/setup-aws-environment.sh`,
             'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli appcenter-cli',
-            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            'export PATH=$PATH:/tmp/flutter/bin',
-            'flutter doctor',
           ],
         },
         build: {
           commands: [
             `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
+            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+            `yarn nx deploy crud-backend`,
+            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+            'export PATH=$PATH:/tmp/flutter/bin',
+            'flutter doctor',
             `yarn nx buildApk anyupp-mobile`,
           ],
         },
         post_build: {
           commands: [
-            `yarn nx deploy crud-backend`,
             'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
             `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
               stage,
             )}/`,
-            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
             `echo 'Pushing Android APK to appcenter'`,
             `./tools/publish-to-appcenter.sh ${stage} android`,
             `echo 'Triggering ios app build in appcenter...'`,

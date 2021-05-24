@@ -91,10 +91,6 @@ amplify pull \
 --categories $CATEGORIES \
 --yes
 
-amplify codegen
-rm -f libs/crud-gql/api/src/lib/generated/api.ts
-yarn graphql-codegen --config tools/graphql-codegen-crud.yml
-
 # ----------------------------------------------------------
 # Get the CRUD table config and write it to a generated file
 # ----------------------------------------------------------
