@@ -81,6 +81,9 @@ CATEGORIES="{\
 \"auth\":$AUTHconfig\
 }"
 
+rm -rf amplify
+echo "Existing Amplify app deleted."
+
 amplify pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
