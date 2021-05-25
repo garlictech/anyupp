@@ -18,7 +18,7 @@ import { EImageType } from '@bgap/shared/types';
 })
 export class FormClickableImageInputComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() image?: string;
+  @Input() image?: string | null;
   @Input() maxSize = 400;
   @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;

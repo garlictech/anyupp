@@ -1,4 +1,3 @@
-import { EAdminRole, IAdminUser, IAdminUserSettings } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
@@ -12,18 +11,17 @@ export const getLoggedUserState = createFeatureSelector<ILoggedUserState>(
 
 export const getLoggedUser = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUser => state.loggedUser || {},
+  (state: ILoggedUserState) => state.loggedUser,
 );
 
 export const getLoggedUserSettings = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): IAdminUserSettings | undefined =>
-    state.loggedUser?.settings,
+  (state: ILoggedUserState) => state.loggedUser?.settings,
 );
 
 export const getLoggedUserRole = createSelector(
   getLoggedUserState,
-  (state: ILoggedUserState): EAdminRole | undefined => state.loggedUser?.role,
+  (state: ILoggedUserState) => state.role,
 );
 
 export const getSelectedChainId = createSelector(
@@ -54,4 +52,9 @@ export const getSelectedLanguage = createSelector(
   getLoggedUserState,
   (state: ILoggedUserState): string | undefined | null =>
     state.loggedUser?.settings?.selectedLanguage,
+);
+
+export const getCurrentContextRole = createSelector(
+  getLoggedUserState,
+  (state: ILoggedUserState) => state.currentContextRole,
 );

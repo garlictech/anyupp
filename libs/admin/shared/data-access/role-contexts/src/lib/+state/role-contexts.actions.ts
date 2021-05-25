@@ -1,11 +1,11 @@
-import { IRoleContext } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const init = createAction('[RoleContexts] Init');
 
-export const upsertRoleContext = createAction(
-  '[RoleContexts] Upsert role context',
-  props<{ roleContext: IRoleContext }>(),
+export const upsertRoleContexts = createAction(
+  '[RoleContexts] Upsert role contexts',
+  props<{ roleContexts: CrudApi.RoleContext[] }>(),
 );
 
 export const resetRoleContexts = createAction(

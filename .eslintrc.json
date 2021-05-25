@@ -21,15 +21,15 @@
                 "sourceTag": "platform:angular",
                 "onlyDependOnLibsWithTags": [
                   "platform:universal",
-                  "platform:angular"
+                  "platform:angular",
+                  "platform:flutter"
                 ]
               },
               {
                 "sourceTag": "platform:ionic",
                 "onlyDependOnLibsWithTags": [
                   "platform:universal",
-                  "platform:angular",
-                  "platform:ionic"
+                  "platform:angular"
                 ]
               },
               {
@@ -71,7 +71,15 @@
       "parserOptions": {
         "project": "./tsconfig.*?.json"
       },
-      "rules": {}
+      "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

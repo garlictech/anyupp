@@ -2,10 +2,9 @@ import {
   EProductComponentSetType,
   IKeyValue,
   IKeyValueObject,
-  IProductComponent,
-  IProductComponentSet,
 } from '@bgap/shared/types';
 
+import * as CrudApi from '@bgap/crud-gql/api';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export const maxSelectionValidator = (
@@ -19,7 +18,7 @@ export const maxSelectionValidator = (
     : { missing: true };
 
 export const getProductComponentOptions = (
-  productComponents: IProductComponent[],
+  productComponents: CrudApi.ProductComponent[],
   items: string[],
 ) =>
   productComponents
@@ -32,7 +31,7 @@ export const getProductComponentOptions = (
     );
 
 export const getProductComponentObject = (
-  productComponents: IProductComponent[],
+  productComponents: CrudApi.ProductComponent[],
 ) => {
   const productComponentObject: IKeyValueObject = {};
   productComponents.forEach(p => (productComponentObject[p.id] = p.name));
@@ -40,7 +39,7 @@ export const getProductComponentObject = (
 };
 
 export const getProductComponentSetOptions = (
-  productComponentSets: IProductComponentSet[],
+  productComponentSets: CrudApi.ProductComponentSet[],
   items: string[],
 ) =>
   productComponentSets

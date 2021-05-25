@@ -1,26 +1,23 @@
-import { IAdminUser } from '@bgap/shared/types';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import {} from '@bgap/shared/types';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import * as AdminUsersActions from './admin-users.actions';
 
 export const ADMIN_USERS_FEATURE_KEY = 'adminUsers';
 
-export interface IAdminUsersState extends EntityState<IAdminUser> {
+export interface AdminUsersState extends EntityState<CrudApi.AdminUser> {
   error?: string | null; // last known error (if any)
 }
 
-export interface IAdminUsersPartialState {
-  readonly [ADMIN_USERS_FEATURE_KEY]: IAdminUsersState;
+export interface AdminUsersPartialState {
+  readonly [ADMIN_USERS_FEATURE_KEY]: AdminUsersState;
 }
 
-export const adminUsersAdapter: EntityAdapter<IAdminUser> = createEntityAdapter<
-  IAdminUser
->();
+export const adminUsersAdapter = createEntityAdapter<CrudApi.AdminUser>();
 
-export const initialState: IAdminUsersState = adminUsersAdapter.getInitialState(
-  {},
-);
+export const initialState = adminUsersAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
@@ -28,8 +25,8 @@ const reducer = createReducer(
     ...state,
     error: null,
   })),
-  on(AdminUsersActions.upsertAdminUser, (state, { adminUser }) =>
-    adminUsersAdapter.upsertOne(adminUser, state),
+  on(AdminUsersActions.upsertAdminUsers, (state, { adminUsers }) =>
+    adminUsersAdapter.upsertMany(adminUsers, state),
   ),
   on(AdminUsersActions.resetAdminUsers, state =>
     adminUsersAdapter.removeAll(state),
@@ -37,7 +34,7 @@ const reducer = createReducer(
 );
 
 export function adminUsersReducer(
-  state: IAdminUsersState | undefined,
+  state: AdminUsersState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

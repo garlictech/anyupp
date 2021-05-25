@@ -1,29 +1,23 @@
-import { DateTime } from 'luxon';
-
-import {
-  IProduct,
-  IProductConfigSet,
-  IProductVariant,
-  ProductComponentMap,
-  ProductComponentSetMap,
-  ProductVariantWithPrice,
-  ProductWithPrices,
-} from '@bgap/shared/types';
-
+import { Product, ProductWithPrices } from '@bgap/shared/types';
 import { calculatePriceFromAvailabilities } from './calculate-price';
-import { CrudApi } from '@bgap/crud-gql/api';
+import { DateTime } from 'luxon';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
   atTimeISO,
   inTimeZone,
 }: {
-  product: IProduct;
+  product: Product;
   atTimeISO: string;
   inTimeZone: string;
 }): ProductWithPrices | undefined => {
   if (!isProductVisibleAndHasAnyAvailableVariant(product)) {
     return undefined;
+  }
+
+  if (!product.variants) {
+    throw new Error('HANDLE ME: product.variants is undefined');
   }
 
   const variantsWithActualPrices = calculateActualPriceForEachVariant({
@@ -42,16 +36,23 @@ export const calculateActualPricesAndCheckActivity = ({
   };
 };
 
-export const isProductVisibleAndHasAnyAvailableVariant = (product: IProduct) =>
-  product.isVisible && !!isAnyVariantAvailable(product.variants);
+export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) => {
+  if (!product.variants) {
+    throw new Error('HANDLE ME: product.variants cannot be nullish');
+  }
 
-const isAnyVariantAvailable = (variants: IProductVariant[]) => {
+  return product.isVisible && !!isAnyVariantAvailable(product.variants);
+};
+
+const isAnyVariantAvailable = (
+  variants: CrudApi.Maybe<CrudApi.ProductVariant>[],
+) => {
   if (!variants) {
     return false;
   }
 
   return variants.reduce(
-    (prev, product) => (product.isAvailable ? prev + 1 : prev),
+    (prev, product) => (product?.isAvailable ? prev + 1 : prev),
     0,
   );
 };
@@ -62,14 +63,21 @@ const calculateActualPriceForEachVariant = ({
   atTimeISO,
   inTimeZone,
 }: {
-  variants: IProductVariant[];
+  variants: CrudApi.Maybe<CrudApi.ProductVariant>[];
   atTimeISO: string;
   inTimeZone: string;
 }): ProductVariantWithPrice[] => {
   return variants.reduce((activeVariants, variant) => {
-    if (!variant.isAvailable) {
+    if (!variant?.isAvailable) {
       return activeVariants;
     }
+
+    if (!variant.availabilities) {
+      throw new Error(
+        'HANDLE ME: variant.availabilities expected having value',
+      );
+    }
+
     const variantPrice: number | undefined = calculatePriceFromAvailabilities(
       variant.availabilities,
       DateTime.fromISO(atTimeISO).setZone(inTimeZone),
@@ -94,36 +102,55 @@ export const toCreateGeneratedProductInputType = ({
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
   productConfigSets?: IProductConfigSet[];
-}): CrudApi.CreateGeneratedProductInput => ({
-  id: product.id,
-  unitId,
-  productCategoryId: product.productCategoryId,
-  name: product.name,
-  description: product.description,
-  image: product.image || '',
-  productType: product.productType,
-  tax: product.tax,
-  position: product.position,
-  allergens: product.allergens,
-  configSets: productConfigSets?.map(configSet =>
-    toGeneratedProductConfigSetInput({
-      productConfigSet: configSet,
-      productComponentSetMap,
-      productComponentMap,
-    }),
-  ),
-  variants: product.variants.map(toGeneratedProductVariantInputType),
-});
+}): CrudApi.CreateGeneratedProductInput => {
+  if (
+    !(
+      product.unitId &&
+      product.productCategoryId &&
+      product.name &&
+      product.productType &&
+      product.tax !== undefined &&
+      product.position !== undefined
+    )
+  ) {
+    throw new Error("HANDLE ME: undefined's must be handled");
+  }
+  return {
+    id: product.id,
+    unitId,
+    productCategoryId: product.productCategoryId,
+    name: product.name,
+    description: product.description,
+    image: product.image || '',
+    productType: product.productType,
+    tax: product.tax,
+    position: product.position,
+    allergens: product.allergens,
+    configSets: productConfigSets?.map(configSet =>
+      toGeneratedProductConfigSetInput({
+        productConfigSet: configSet,
+        productComponentSetMap,
+        productComponentMap,
+      }),
+    ),
+    variants: product.variants.map(toGeneratedProductVariantInputType),
+  };
+};
 
 const toGeneratedProductVariantInputType = (
   variant: ProductVariantWithPrice,
-): CrudApi.GeneratedProductVariantInput => ({
-  id: variant.id,
-  variantName: variant.variantName,
-  position: variant.position,
-  pack: { size: variant.pack.size, unit: variant.pack.unit },
-  price: variant.price,
-});
+): CrudApi.GeneratedProductVariantInput => {
+  if (!variant?.pack) {
+    throw new Error('HANDLE ME: variant.pack expected to be an object');
+  }
+  return {
+    id: variant.id,
+    variantName: variant.variantName,
+    position: variant.position,
+    pack: { size: variant.pack.size, unit: variant.pack.unit },
+    price: variant.price,
+  };
+};
 
 const toGeneratedProductConfigSetInput = ({
   productConfigSet,

@@ -1,4 +1,4 @@
-import { IOrder } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createAction, props } from '@ngrx/store';
 
 export const resetActiveOrders = createAction(
@@ -9,11 +9,11 @@ export const resetHistoryOrders = createAction(
 );
 export const setAllActiveOrders = createAction(
   '[OrderList] Set all active orders',
-  props<{ orders: IOrder[] }>(),
+  props<{ orders: CrudApi.Order[] }>(),
 );
 export const upsertActiveOrder = createAction(
   '[OrderList] Upsert active order',
-  props<{ order: IOrder }>(),
+  props<{ order: CrudApi.Order }>(),
 );
 export const removeActiveOrder = createAction(
   '[OrderList] Remove active order',
@@ -21,11 +21,11 @@ export const removeActiveOrder = createAction(
 );
 export const setAllHistoryOrders = createAction(
   '[OrderList] Set all history orders',
-  props<{ orders: IOrder[] }>(),
+  props<{ orders: CrudApi.Order[] }>(),
 );
 export const upsertHistoryOrder = createAction(
   '[OrderList] Upsert history order',
-  props<{ order: IOrder }>(),
+  props<{ order: CrudApi.Order }>(),
 );
 export const removeHistoryOrder = createAction(
   '[OrderList] Remove history order',

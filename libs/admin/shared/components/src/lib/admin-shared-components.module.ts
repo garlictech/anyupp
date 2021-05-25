@@ -63,7 +63,7 @@ const COMPONENTS = [
   StatusLedComponent,
   ColorizedLaneIconComponent,
   ContactComponent,
-  AllergensComponent
+  AllergensComponent,
 ];
 
 @NgModule({

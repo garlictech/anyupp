@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CrudApi } from '@bgap/crud-gql/api';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -14,16 +13,12 @@ import {
 import { DataService, OrderService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  EOrderStatus,
-  IAdminUser,
-  IOrder,
-} from '@bgap/shared/types';
+import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as fp from 'lodash/fp';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { filterNullish } from '@bgap/shared/utils';
 
 interface IPaymentMethodKV {
   key: string;
@@ -38,18 +33,17 @@ interface IPaymentMethodKV {
   styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnInit, OnDestroy {
-  @Input() order!: IOrder;
+  @Input() order!: CrudApi.Order;
   public paymentMethods: IPaymentMethodKV[] = [];
-  public EOrderStatus = EOrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
-  private _loggedUser?: IAdminUser;
+  private _loggedUser?: CrudApi.AdminUser;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _orderService: OrderService,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -66,8 +60,12 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     });
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        untilDestroyed(this),
+        filterNullish(),
+      )
+      .subscribe((adminUser: CrudApi.AdminUser): void => {
         this._loggedUser = adminUser;
 
         this._changeDetectorRef.detectChanges();
@@ -95,7 +93,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
 
   public removeOrder(): void {
     this._orderService
-      .updateOrderStatus(fp.cloneDeep(this.order), EOrderStatus.REJECTED)
+      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.rejected)
       .then(
         (): void => {
           this.workingOrderStatus = false;
@@ -116,7 +114,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public removeOrderItem(idx: number): void {
     this._orderService.updateOrderItemStatus(
       this.order.id,
-      EOrderStatus.REJECTED,
+      CrudApi.OrderStatus.rejected,
       idx,
     );
   }
@@ -129,6 +127,15 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       {
         paymentMethod: method,
       },
+    );
+  }
+
+  public isCurrentStatus(
+    orderItem: CrudApi.OrderItem,
+    status: keyof typeof CrudApi.OrderStatus,
+  ): boolean {
+    return (
+      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
     );
   }
 }

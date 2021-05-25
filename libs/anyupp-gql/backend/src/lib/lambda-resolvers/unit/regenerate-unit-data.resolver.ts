@@ -1,19 +1,7 @@
-import { combineLatest, Observable, of, throwError } from 'rxjs';
-
-import {
-  catchError,
-  defaultIfEmpty,
-  filter,
-  map,
-  switchMap,
-  mapTo,
-} from 'rxjs/operators';
-import {
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { combineLatest, from, Observable, of } from 'rxjs';
+import { defaultIfEmpty, filter, map, switchMap, mapTo } from 'rxjs/operators';
 import { deleteGeneratedProductsForAUnit } from '../product';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';
 import {
   validateProductComponent,
@@ -27,47 +15,44 @@ import {
   toCreateGeneratedProductInputType,
 } from '../product/calculate-product';
 import { getTimezoneFromLocation } from '../../utils';
-import {
-  ProductComponentMap,
-  ProductComponentSetMap,
-  ProductWithPrices,
-} from '@bgap/shared/types';
+import { UnitsResolverDeps } from './utils';
+import { filterNullish } from '@bgap/shared/utils';
 
-export const regenerateUnitData = ({
-  unitId,
-  crudGraphqlClient,
-}: {
-  unitId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<boolean> => {
+export const regenerateUnitData = (unitId: string) => (
+  deps: UnitsResolverDeps,
+): Observable<boolean> => {
   // TODO: refactor: use mergeMap or something to flatten the pipe
   // Clear previously generated products for the given UNIT
-  return deleteGeneratedProductsForAUnit({ unitId, crudGraphqlClient }).pipe(
+  return deleteGeneratedProductsForAUnit(unitId)(deps).pipe(
     switchMap(() =>
       // list all unitProducts+groupProducts+chainProducts for the given UNIT
-      listProductsWith3LayerForAUnit({ unitId, crudGraphqlClient }),
+      listProductsWith3LayerForAUnit(unitId)(deps),
     ),
     switchMap(unitProducts =>
       combineLatest([
         of(
-          // merge product layers
-          unitProducts.map(unitProduct =>
-            mergeAllProductLayers({
+          unitProducts.map(unitProduct => {
+            if (
+              !unitProduct.groupProduct?.chainProduct ||
+              !unitProduct.groupProduct
+            ) {
+              throw new Error('HANDLE ME: objects expected, got nullish');
+            }
+
+            return mergeAllProductLayers({
               chainProduct: unitProduct.groupProduct.chainProduct,
               groupProduct: unitProduct.groupProduct,
               unitProduct,
-            }),
-          ),
+            });
+          }),
         ),
-        getTimezoneForUnit({ unitId, crudGraphqlClient }),
+        getTimezoneForUnit(unitId)(deps),
         getProductComponentSetMap({
           chainId: unitProducts[0].chainId, // all the unitProduct for the same unit has the same chainID
-          crudGraphqlClient,
-        }),
+        })(deps),
         getProductComponentMap({
           chainId: unitProducts[0].chainId, // all the unitProduct for the same unit has the same chainID
-          crudGraphqlClient,
-        }).pipe(defaultIfEmpty({})),
+        })(deps).pipe(defaultIfEmpty({})),
       ]).pipe(
         // calculate actual Prize for all the mergedProducts
         map(
@@ -120,50 +105,31 @@ export const regenerateUnitData = ({
   );
 };
 
-const listProductsWith3LayerForAUnit = ({
-  unitId,
-  crudGraphqlClient,
-}: {
-  unitId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}) => {
+const listProductsWith3LayerForAUnit = (unitId: string) => (
+  deps: UnitsResolverDeps,
+) => {
   const input: CrudApi.ListUnitProductsQueryVariables = {
     filter: { unitId: { eq: unitId } },
   };
-  return executeQuery(crudGraphqlClient)<CrudApi.ListUnitProductsQuery>(
-    CrudApiQueryDocuments.listUnitProducts,
-    input,
-    { fetchPolicy: 'no-cache' },
+
+  return from(
+    deps.crudSdk.ListUnitProducts(input, { fetchPolicy: 'no-cache' }),
   ).pipe(
-    map(x => x.listUnitProducts?.items),
+    map(x => x?.items),
     filter(fp.negate(fp.isEmpty)),
     defaultIfEmpty([]),
     switchMap(items => combineLatest(items.map(validateUnitProduct))),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal listUnitProducts query error');
-    }),
   );
 };
 
-const getTimezoneForUnit = ({
-  unitId,
-  crudGraphqlClient,
-}: {
-  unitId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<string> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
-    CrudApiQueryDocuments.getUnitAddress,
-    { id: unitId },
-  ).pipe(
-    map(response => response.getUnit),
-    filter(x => x !== null && x !== undefined),
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    map(unit => unit!.address.location),
+const getTimezoneForUnit = (unitId: string) => (
+  deps: UnitsResolverDeps,
+): Observable<string> =>
+  from(deps.crudSdk.GetUnit({ id: unitId })).pipe(
+    map(unit => unit?.address?.location),
+    filterNullish(),
     map(getTimezoneFromLocation),
   );
-};
 
 const getProductComponentSetMap = ({
   chainId,

@@ -8,6 +8,8 @@ import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
+import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider.dart';
+import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/transactions/bloc/transactions_bloc.dart';
 import 'package:fa_prev/modules/transactions/providers/aws_transactions_provider.dart';
@@ -62,6 +64,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
       () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
+  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
@@ -73,7 +76,7 @@ void _initProviders() {
         getIt<IAuthProvider>(),
         getIt<CognitoService>(),
       ));
-   getIt.registerLazySingleton<AwsTransactionsProvider>(() => AwsTransactionsProvider(getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<AwsTransactionsProvider>(() => AwsTransactionsProvider(getIt<IAuthProvider>()));
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
@@ -92,8 +95,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
-    getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));
-
+  getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));
 
   // Repostories
   getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<IAffiliateProvider>()));
@@ -101,7 +103,8 @@ void _initRepositories() {
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
+  getIt.registerLazySingleton<StripePaymentRepository>(
+      () => StripePaymentRepository(getIt<IStripePaymentProvider>(), getIt<IExternalPaymentProvider>()));
 }
 
 void _initServices() {

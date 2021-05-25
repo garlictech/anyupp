@@ -17,11 +17,9 @@ import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import {
   EProductType,
   IKeyValueObject,
-  IOrder,
   IOrderAmount,
-  IOrderItem,
-  IProduct,
 } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,7 +34,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ReportsHourlyBreakdownComponent
   implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<IOrder[]>;
+  @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -44,7 +42,7 @@ export class ReportsHourlyBreakdownComponent
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -184,7 +182,7 @@ export class ReportsHourlyBreakdownComponent
       this.orders$,
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]: [IProduct[], IOrder[]]): void => {
+      .subscribe(([products, orders]): void => {
         this._amounts = this._orderAmounts(products, orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
@@ -241,7 +239,10 @@ export class ReportsHourlyBreakdownComponent
     // untilDestroyed uses it.
   }
 
-  private _orderAmounts(products: IProduct[], orders: IOrder[]): IOrderAmount {
+  private _orderAmounts(
+    products: CrudApi.GeneratedProduct[],
+    orders: CrudApi.Order[],
+  ): IOrderAmount {
     const amounts: IOrderAmount = {
       [EProductType.DRINK]: new Array(24).fill(0),
       [EProductType.FOOD]: new Array(24).fill(0),
@@ -257,7 +258,7 @@ export class ReportsHourlyBreakdownComponent
 
     orders.forEach(o => {
       const hour = new Date(o.createdAt || 0).getHours();
-      o.items?.forEach((i: IOrderItem) => {
+      o.items?.forEach((i: CrudApi.OrderItem) => {
         amounts[<EProductType>productTypeMap[i.productId]][hour] +=
           i.priceShown.priceSum;
         amounts['sum'][hour] += i.priceShown.priceSum;

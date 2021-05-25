@@ -1,10 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Admin user creation/deletion Admin user should be created/deleted: Cleanup 1`] = `
-Object {
-  "deleteAdminUser": true,
-}
-`;
+exports[`Admin user creation/deletion Admin user should be created/deleted: Cleanup 1`] = `true`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted: Malformed email error 1`] = `[Error: GraphQL error: Username should be either an email or a phone number.]`;
 

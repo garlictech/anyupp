@@ -34,7 +34,7 @@ export const initialState: DashboardState = {
     size: EDashboardSize.NORMAL,
     orderEditing: false,
     showAllUserOrders: false,
-    ticketListType: EDashboardTicketListType.PLACED,
+    ticketListType: EDashboardTicketListType.placed,
     selectedLanes: ['default'],
     historyDate: new Date().getTime(),
   },

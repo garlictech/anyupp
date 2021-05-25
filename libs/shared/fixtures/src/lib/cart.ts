@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { unitSeed } from './unit';
 import { productSeed } from './product';
 import { seededIdPrefix, testIdPrefix } from './common';
@@ -40,7 +40,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
   statusLog: [
     {
       userId: userId_01,
-      status: CrudApi.OrderStatus.PLACED,
+      status: CrudApi.OrderStatus.placed,
       ts: 1234,
     },
   ],
@@ -54,7 +54,7 @@ const cart_01 = {
   takeAway: false,
   paymentMode: {
     name: 'IN_APP',
-    method: CrudApi.PaymentMethod.INAPP,
+    method: CrudApi.PaymentMethod.inapp,
   },
   place: {
     seat: 'SEAT',

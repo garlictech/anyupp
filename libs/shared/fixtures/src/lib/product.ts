@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EVariantAvailabilityType, RequiredId } from '@bgap/shared/types';
 import { seededIdPrefix, testIdPrefix } from './common';
 

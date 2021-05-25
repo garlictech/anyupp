@@ -23,10 +23,7 @@ const server = awsServerlessExpress.createServer(app);
 //   queryStringParameters: StripeWebhookRequest;
 // }
 
-export const handler: Handler = async (
-  event,
-  context,
-) => {
+export const handler: Handler = async (event, context) => {
   console.log('Stripe webhook called with ', event);
   return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
 
@@ -34,7 +31,7 @@ export const handler: Handler = async (
   // const param =
   //   event?.queryStringParameters?.param ||
   //   'https://media.giphy.com/media/20k1punZ5bpmM/giphy-downsized.gif';
-//
+  //
   // return {
   //   body: JSON.stringify({ status: `All good for ${param}` }),
   //   statusCode: 200,

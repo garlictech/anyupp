@@ -1,19 +1,29 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EToasterType } from '@bgap/admin/shared/utils';
 import {
-  EImageType, EProductLevel, IAdminUserSettings, IKeyValue, IProduct, IProductCategory
+  EImageType,
+  EProductLevel,
+  IKeyValue,
+  Product,
 } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -30,7 +40,7 @@ export class ProductFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
-  public product!: IProduct;
+  public product?: Product;
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
   public productTypes: IKeyValue[] = PRODUCT_TYPES;
@@ -40,10 +50,9 @@ export class ProductFormComponent
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _productFormService: ProductFormService,
-    private _amplifyDataService: AmplifyDataService,
+    private crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _logger: NGXLogger,
   ) {
@@ -52,8 +61,12 @@ export class ProductFormComponent
     this.dialogForm = this._productFormService.createProductFormGroup();
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUserSettings),
+        take(1),
+        filterNullish(),
+      )
+      .subscribe((userSettings: CrudApi.AdminUserSettings): void => {
         this._selectedChainId = userSettings?.selectedChainId || '';
         this._selectedProductCategoryId =
           userSettings?.selectedProductCategoryId || '';
@@ -61,7 +74,7 @@ export class ProductFormComponent
 
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
-      map((productCategories: IProductCategory[]) =>
+      map((productCategories: CrudApi.ProductCategory[]) =>
         productCategories.map(
           (productCategory): IKeyValue => ({
             key: productCategory.id,
@@ -74,7 +87,7 @@ export class ProductFormComponent
   }
 
   get productImage(): string {
-    return this.product?.image || '';
+    return fp.get('image', this.product) ?? '';
   }
 
   ngOnInit(): void {
@@ -113,12 +126,14 @@ export class ProductFormComponent
 
       if (this.product?.id) {
         try {
-          await this._amplifyDataService.update<IProduct>(
-            'getChainProduct',
-            'updateChainProduct',
-            this.product.id,
-            () => value,
-          );
+          await this.crudSdk.sdk
+            .UpdateChainProduct({
+              input: {
+                id: this.product.id,
+                ...value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -133,7 +148,9 @@ export class ProductFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createChainProduct', value);
+          await this.crudSdk.sdk
+            .CreateChainProduct({ input: value })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -156,12 +173,7 @@ export class ProductFormComponent
     // Update existing user's image
     if (this.product?.id) {
       try {
-        await this._amplifyDataService.update<IProduct>(
-          'getChainProduct',
-          'updateChainProduct',
-          this.product.id,
-          (data: unknown) => fp.set(`image`, image, <IProduct>data),
-        );
+        await this.updateImageStyles(image);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -189,12 +201,7 @@ export class ProductFormComponent
 
     if (this.product?.id) {
       try {
-        await this._amplifyDataService.update<IProduct>(
-          'getChainProduct',
-          'updateChainProduct',
-          this.product.id,
-          (data: unknown) => fp.set(`image`, null, <IProduct>data),
-        );
+        await this.updateImageStyles(null);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -216,4 +223,22 @@ export class ProductFormComponent
 
     this._changeDetectorRef.detectChanges();
   };
+
+  private async updateImageStyles(image: string | null) {
+    await this.crudSdk.sdk
+      .GetChainProduct({
+        id:
+          this.product?.id ||
+          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
+      })
+      .pipe(
+        filterNullish(),
+        switchMap(data =>
+          this.crudSdk.sdk.UpdateChainProduct({
+            input: fp.set(`image`, image, data),
+          }),
+        ),
+      )
+      .toPromise();
+  }
 }

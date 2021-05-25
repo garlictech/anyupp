@@ -17,6 +17,7 @@ export interface PipelineStackProps extends sst.StackProps {
   readonly repoOwner: string;
   readonly repoBranch: string;
   readonly secretsManager: SecretsManagerStack;
+  readonly appcenterUser: iam.User;
 }
 
 export const appConfig = {
@@ -84,37 +85,39 @@ export const createBuildProject = (
       phases: {
         install: {
           commands: [
-            `sh ./tools/setup-aws-environment.sh`,
+            'chmod +x ./tools/*.sh',
+            `./tools/setup-aws-environment.sh`,
+            './tools/install-nodejs-14.sh',
             'yarn --frozen-lockfile',
             'npm install -g @aws-amplify/cli appcenter-cli',
-            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            'export PATH=$PATH:/tmp/flutter/bin',
-            'flutter doctor',
           ],
         },
         build: {
           commands: [
-            `sh ./tools/build-workspace.sh ${appConfig.name} ${stage}`,
+            `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
+            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+            `yarn nx deploy crud-backend`,
+            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+            'export PATH=$PATH:/tmp/flutter/bin',
+            'flutter doctor',
             `yarn nx buildApk anyupp-mobile`,
           ],
         },
         post_build: {
           commands: [
-            `yarn nx deploy crud-backend`,
             'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
             `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
               stage,
             )}/`,
-            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+            `echo 'Pushing Android APK to appcenter'`,
+            `./tools/publish-to-appcenter.sh ${stage} android`,
+            `echo 'Triggering ios app build in appcenter...'`,
+            `./tools/trigger-appcenter-builds.sh ${stage} ios`,
             `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
             `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
             `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
             'yarn cucumber:report',
             'yarn cypress:generate:html:report',
-            `echo 'Pushing APK to appcenter'`,
-            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
-            `echo 'Triggering ios app build in appcenter...'`,
-            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
           ],
         },
       },
@@ -258,18 +261,7 @@ export const createCommonPipelineParts = (
     ],
   });
 
-  /* const serviceRole = new iam.Role(scope, 'CodePipelineServiceRole', {
-    assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
-  });
-
-  serviceRole.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ['*'],
-      resources: ['*'],
-    }),
-  );
-*/
+  buildArtifactBucket.grantRead(props.appcenterUser);
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
@@ -299,10 +291,10 @@ export const createCommonPipelineParts = (
         ],
       },
       {
-        stageName: 'SeederRemoval',
+        stageName: 'Finalization',
         actions: [
           new codepipeline_actions.CloudFormationDeleteStackAction({
-            actionName: `DeleteSeederStack`,
+            actionName: `DeleteSeeder`,
             stackName: `${utils.projectPrefix(stage)}-seeder`,
             adminPermissions: true,
           }),

@@ -1,5 +1,4 @@
-import { IOrder } from '@bgap/shared/types';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 /*
 export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKeyValueObject => {
   const dailyOrdersSum: IKeyValueObject = {};
@@ -16,7 +15,9 @@ export const getDailyOrdersSumPerCurrency = (dailyHistoryOrders: IOrder[]): IKey
 };
 */
 
-export const getDailyOrdersSum = (dailyHistoryOrders: IOrder[]): number => {
+export const getDailyOrdersSum = (
+  dailyHistoryOrders: CrudApi.Order[],
+): number => {
   let sum = 0;
 
   dailyHistoryOrders.forEach(o => {

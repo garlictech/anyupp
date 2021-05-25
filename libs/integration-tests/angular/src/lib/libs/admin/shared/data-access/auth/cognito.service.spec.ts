@@ -2,23 +2,29 @@ import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { from } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { configureAmplifyWithUserPasswordAuthFlow } from '@bgap/shared/graphql/api-client';
 import {
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
+import { awsConfig } from '@bgap/crud-gql/api';
 
 describe('Testing cognito service', () => {
   const router = {
     navigate: jest.fn(),
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const service = new CognitoService(<any>router);
 
   const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
 
   beforeAll(() => {
-    configureAmplifyWithUserPasswordAuthFlow();
+    Auth.configure({
+      ...awsConfig,
+      // See: https://github.com/aws-amplify/amplify-js/issues/6552#issuecomment-682259256
+      authenticationFlowType: 'USER_PASSWORD_AUTH',
+      aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+    });
   });
 
   test('Test valid authorization', done => {

@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as fp from 'lodash/fp';
 import { combineLatest, from } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import { filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
+import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -13,16 +15,11 @@ import {
   groupSeed,
   chainSeed,
 } from '@bgap/shared/fixtures';
-import {
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedAnyuppGraphQLClient,
-  crudBackendGraphQLClient,
-  executeQuery,
-} from '@bgap/shared/graphql/api-client';
 
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
+import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 
 const TEST_NAME = 'GEOUNIT_';
 
@@ -57,47 +54,50 @@ const unit_03 = {
 };
 
 describe('GetUnitsNearLocation tests', () => {
-  let authHelper: AuthenticatdGraphQLClientWithUserId;
+  const crudSdk = createIamCrudSdk();
 
-  beforeAll(async () => {
-    authHelper = await createAuthenticatedAnyuppGraphQLClient(
+  const cleanup = combineLatest([
+    deleteTestUnit(unitNotActive.id, crudSdk),
+    deleteTestUnit(unit_01.id, crudSdk),
+    deleteTestUnit(unit_02.id, crudSdk),
+    deleteTestUnit(unit_03.id, crudSdk),
+    deleteTestGroup(groupSeed.group_01.id, crudSdk),
+    deleteTestChain(chainSeed.chain_01.id, crudSdk),
+  ]);
+
+  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
+
+  beforeAll(async done => {
+    authAnyuppSdk = await createAuthenticatedAnyuppSdk(
       testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
-    console.warn(authHelper.userAttributes);
-
-    await combineLatest([
-      // CleanUP
-      deleteTestUnit(unitNotActive.id),
-      deleteTestUnit(unit_01.id),
-      deleteTestUnit(unit_02.id),
-      deleteTestUnit(unit_03.id),
-      deleteTestGroup(groupSeed.group_01.id),
-      deleteTestChain(chainSeed.chain_01.id),
-    ])
+    cleanup
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestGroup(groupSeed.group_01),
-            createTestChain(chainSeed.chain_01),
-            createTestUnit(unitNotActive),
-            createTestUnit(unit_01),
-            createTestUnit(unit_02),
-            createTestUnit(unit_03),
+            createTestGroup(groupSeed.group_01, crudSdk),
+            createTestChain(chainSeed.chain_01, crudSdk),
+            createTestUnit(unitNotActive, crudSdk),
+            createTestUnit(unit_01, crudSdk),
+            createTestUnit(unit_02, crudSdk),
+            createTestUnit(unit_03, crudSdk),
           ]),
         ),
       )
-      .toPromise();
+      .subscribe(() => done());
   }, 10000);
+
+  afterAll(async () => {
+    await cleanup.toPromise();
+  });
 
   describe('input validation', () => {
     it('should throw without a input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
-          input,
-        ),
+        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -105,14 +105,13 @@ describe('GetUnitsNearLocation tests', () => {
         },
       });
     }, 15000);
+
     it('should throw without a location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: {},
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
-          input,
-        ),
+        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -120,14 +119,14 @@ describe('GetUnitsNearLocation tests', () => {
         },
       });
     }, 15000);
+
     it('should throw without a lat arg in the location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lat: '12' } },
+        input: { location: { lat: 12 } },
       } as any;
+
       from(
-        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
-          input,
-        ),
+        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -135,14 +134,13 @@ describe('GetUnitsNearLocation tests', () => {
         },
       });
     }, 15000);
+
     it('should throw without a lng arg in the location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '12' } },
       } as any;
       from(
-        unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(
-          input,
-        ),
+        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -150,14 +148,13 @@ describe('GetUnitsNearLocation tests', () => {
         },
       });
     }, 15000);
+
     it('should throw without valid location input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
-      } as any;
+      };
 
-      executeQuery(authHelper.graphQlClient)<
-        AnyuppApi.GetUnitsNearLocationQuery
-      >(AnyuppApi.GetUnitsNearLocation, input).subscribe({
+      authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -171,20 +168,21 @@ describe('GetUnitsNearLocation tests', () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
+
     // To test with the local appsync code
-    from(
-      unitRequestHandler.getUnitsNearLocation(crudBackendGraphQLClient)(input),
-    ).subscribe({
-      next(result) {
-        expect(result).toHaveProperty('items');
-        const foundItems: Array<AnyuppApi.GeoUnit> = result.items;
-        successfullExecutionChecks(foundItems);
-        done();
+    from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)).subscribe(
+      {
+        next(result) {
+          expect(result).toHaveProperty('items');
+          const foundItems: Array<AnyuppApi.GeoUnit> = result.items;
+          successfullExecutionChecks(foundItems);
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
       },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
+    );
   }, 15000);
 
   // TODO: create test with A NOT ACTIVE CHAIN
@@ -192,27 +190,17 @@ describe('GetUnitsNearLocation tests', () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    executeQuery(authHelper.graphQlClient)<AnyuppApi.GetUnitsNearLocationQuery>(
-      AnyuppApi.GetUnitsNearLocation,
-      input,
-    )
+    authAnyuppSdk
+      .GetUnitsNearLocation(input)
       .pipe(
-        map(x => x.getUnitsNearLocation?.items),
-        filter(x => !!x),
+        filterNullish(),
+        map(result => result.items),
+        filterNullishElements(),
+        throwIfEmpty(),
       )
       .subscribe({
         next(result) {
-          if (!result || result === null) {
-            throw 'Missing result';
-          }
-          // console.log(
-          //   '### ~ file: get-units-near-location.spec.ts ~ line 88 ~ next ~ foundItems',
-          //   JSON.stringify(result, undefined, 2),
-          // );
-          const foundItems: Array<AnyuppApi.GeoUnit> = result as Array<
-            AnyuppApi.GeoUnit
-          >;
-          successfullExecutionChecks(foundItems);
+          successfullExecutionChecks(result);
           done();
         },
         error(err) {

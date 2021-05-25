@@ -1,8 +1,8 @@
-// import { EAdminRole, IAdminUser } from '@bgap/shared/types';
+// import {   } from '@bgap/shared/types';
 /*
-export const chainAdminFilter = (
-  // checkedAdminUser: IAdminUser,
-  // loggedAdminRole: EAdminRole, // IAdminUserRole,
+export const chainadminFilter = (
+  // checkedAdminUser: 
+  // loggedAdminRole: CrudApi.Role, // Role,
 ): boolean => {
   return true;
 
@@ -15,18 +15,18 @@ export const chainAdminFilter = (
   );
   // Chain admin shows only the group/unit admins and the staffs of his chains
   return [
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
-    EAdminRole.STAFF,
-  ].includes(checkedAdminUser.roles?.role || EAdminRole.INACTIVE)
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
+    CrudApi.Role.staff,
+  ].includes(checkedAdminUser.roles?.role || CrudApi.Role.inactive)
     ? fp.intersection(loggedAdminChainIds, currentAdminChainIds).length > 0
     : false;
 
 };
 
-export const groupAdminFilter = (
-  checkedAdminUser: IAdminUser,
-  loggedAdminRole: EAdminRole, // IAdminUserRole,
+export const groupadminFilter = (
+  checkedAdminUser: 
+  loggedAdminRole: CrudApi.Role, // Role,
 ): boolean => {
   return true;
 
@@ -39,8 +39,8 @@ export const groupAdminFilter = (
   );
 
   // Group admin shows only the group/unit admins and the staffs of his chains
-  return [EAdminRole.UNIT_ADMIN, EAdminRole.STAFF].includes(
-    checkedAdminUser.roles?.role || EAdminRole.INACTIVE,
+  return [CrudApi.Role.unitadmin, CrudApi.Role.staff].includes(
+    checkedAdminUser.roles?.role || CrudApi.Role.inactive,
   )
     ? fp.intersection(loggedAdminGroupIds, currentAdminGroupIds).length > 0
     : false;
@@ -48,8 +48,8 @@ export const groupAdminFilter = (
 };
 
 export const unitAdminFilter = (
-  checkedAdminUser: IAdminUser,
-  loggedAdminRole: EAdminRole, // IAdminUserRole,
+  checkedAdminUser: 
+  loggedAdminRole: CrudApi.Role, // Role,
 ): boolean => {
   return true;
 
@@ -62,7 +62,7 @@ export const unitAdminFilter = (
   );
 
   // Unit admin shows only the group/unit admins and the staffs of his chains
-  return checkedAdminUser.role === EAdminRole.STAFF
+  return checkedAdminUser.role === CrudApi.Role.staff
     ? fp.intersection(loggedAdminUnitIds, currentAdminUnitIds).length > 0
     : false;
 

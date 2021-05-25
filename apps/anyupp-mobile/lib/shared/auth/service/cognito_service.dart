@@ -78,8 +78,8 @@ class CognitoService {
     }
   }
 
-  Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session) async {
-    final user = CognitoUser(null, userPool, signInUserSession: session);
+  Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
+    final user = CognitoUser(userName, userPool, signInUserSession: session);
     _userSession = session;
     await _saveSessionToCache();
     return user;

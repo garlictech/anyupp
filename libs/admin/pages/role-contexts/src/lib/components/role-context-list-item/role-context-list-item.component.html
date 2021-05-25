@@ -1,9 +1,9 @@
 <div class="float-left">
   <div class="subtitle-2">
-    {{ roleContext.name | localize }} &bull; {{ roleContext.contextId }}
+    {{ roleContext?.name | localize }} &bull; {{ roleContext?.contextId }}
   </div>
   <div class="caption">
-    {{ 'roles.' + roleContext.role | translate }} @
+    {{ 'roles.' + roleContext?.role | translate }} @
     {{ roleContext | roleEntityNames | async }}
   </div>
 </div>

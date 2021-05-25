@@ -1,12 +1,11 @@
 import * as Joi from 'joi';
 import { validateSchema } from '../validator/validate';
-import { IUnitProduct, IGroupProduct, IChainProduct } from '@bgap/shared/types';
 import { localizedItemSchema } from './localized-item';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const allergenListSchema = Joi.array().items(Joi.string());
 
-export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
-  __typename: Joi.string().valid('ChainProduct').optional(),
+export const chainProductSchema: Joi.SchemaMap<CrudApi.ChainProduct> = {
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
@@ -25,10 +24,9 @@ export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
 export const {
   validate: validateChainProduct,
   isType: isChainProduct,
-} = validateSchema<IChainProduct>(chainProductSchema, 'ChainProduct');
+} = validateSchema<CrudApi.ChainProduct>(chainProductSchema, 'ChainProduct');
 
-export const groupProductSchema: Joi.SchemaMap<IGroupProduct> = {
-  __typename: Joi.string().valid('GroupProduct').optional(),
+export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   id: Joi.string().required(),
   parentId: Joi.string().required(),
   chainId: Joi.string().required(),
@@ -45,10 +43,9 @@ export const groupProductSchema: Joi.SchemaMap<IGroupProduct> = {
 export const {
   validate: validateGroupProduct,
   isType: isGroupProduct,
-} = validateSchema<IGroupProduct>(groupProductSchema, 'GroupProduct');
+} = validateSchema<CrudApi.GroupProduct>(groupProductSchema, 'GroupProduct');
 
-export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
-  __typename: Joi.string().valid('UnitProduct').optional(),
+export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   id: Joi.string().required(),
   parentId: Joi.string().required(),
   chainId: Joi.string().required(),
@@ -68,4 +65,4 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
 export const {
   validate: validateUnitProduct,
   isType: isUnitProduct,
-} = validateSchema<IUnitProduct>(unitProductSchema, 'UnitProduct');
+} = validateSchema<CrudApi.UnitProduct>(unitProductSchema, 'UnitProduct');

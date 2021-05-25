@@ -24,14 +24,9 @@
       }}
     </div>
     <div class="text-right p-2 col-8 col-md-3 m-auto">
-      <ng-container
-        *ngIf="
-          dashboardSettings.listMode === EDashboardListMode.CURRENT ||
-          dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
-        "
-      >
+      <ng-container *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')">
         <button
-          *ngIf="currentStatus(orderItem.statusLog) === EOrderStatus.SERVED"
+          *ngIf="isStatusLog(orderItem, 'served')"
           nbButton
           class="mr-2"
           [status]="getPlacedButtonStatus()"
@@ -57,7 +52,7 @@
       <nb-badge
         class="font-larger p-2 position-static"
         [status]="getButtonStatus(orderItem.statusLog)"
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+        *ngIf="isListMode('HISTORY')"
         [text]="currentStatus(orderItem.statusLog)"
       ></nb-badge>
     </div>
@@ -83,10 +78,7 @@
       [nbSpinner]="workingOrderStatus"
       nbSpinnerStatus="control"
       [disabled]="workingOrderStatus"
-      *ngIf="
-        dashboardSettings.listMode === EDashboardListMode.CURRENT ||
-        dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
-      "
+      *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')"
       nbButton
       [status]="getButtonStatus(order.statusLog)"
       [size]="buttonSize"
@@ -98,7 +90,7 @@
     </button>
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+      *ngIf="isListMode('HISTORY')"
       [text]="currentStatus(order.statusLog)"
       [status]="getButtonStatus(order.statusLog)"
     ></nb-badge>

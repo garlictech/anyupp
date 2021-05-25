@@ -28,7 +28,7 @@ const PIPES = [
   IterableAbstractControlsPipe,
   AwsStoragePathPipe,
   ProductComponentInfoPipe,
-  ProductComponentSetInfoPipe
+  ProductComponentSetInfoPipe,
 ];
 
 @NgModule({

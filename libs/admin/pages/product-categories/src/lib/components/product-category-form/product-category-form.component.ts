@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,12 +9,14 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import { EImageType, IProductCategory } from '@bgap/shared/types';
+import { EImageType } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { filterNullish } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,20 +26,17 @@ import { select, Store } from '@ngrx/store';
 export class ProductCategoryFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public productCategory!: IProductCategory;
+  public productCategory?: CrudApi.ProductCategory;
   public eImageType = EImageType;
-
 
   private _selectedChainId?: string | undefined | null;
 
-
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
+    private _store: Store,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -90,12 +89,14 @@ export class ProductCategoryFormComponent
 
       if (this.productCategory?.id) {
         try {
-          await this._amplifyDataService.update<IProductCategory>(
-            'getProductCategory',
-            'updateProductCategory',
-            this.productCategory.id,
-            () => value,
-          );
+          await this.crudSdk.sdk
+            .UpdateProductCategory({
+              input: {
+                id: this.productCategory.id,
+                ...value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -108,7 +109,9 @@ export class ProductCategoryFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createProductCategory', value);
+          await this.crudSdk.sdk
+            .CreateProductCategory({ input: value })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -128,12 +131,7 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       try {
-        await this._amplifyDataService.update<IProductCategory>(
-          'getProductCategory',
-          'updateProductCategory',
-          this.productCategory.id,
-          (data: unknown) => fp.set(`image`, image, <IProductCategory>data),
-        );
+        await this.updateImageStyles(image);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -159,12 +157,7 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       try {
-        await this._amplifyDataService.update<IProductCategory>(
-          'getProductCategory',
-          'updateProductCategory',
-          this.productCategory.id,
-          (data: unknown) => fp.set(`image`, null, <IProductCategory>data),
-        );
+        await this.updateImageStyles(null);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -184,4 +177,22 @@ export class ProductCategoryFormComponent
       );
     }
   };
+
+  private async updateImageStyles(image: string | null) {
+    await this.crudSdk.sdk
+      .GetProductCategory({
+        id:
+          this.productCategory?.id ||
+          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
+      })
+      .pipe(
+        filterNullish(),
+        switchMap(data =>
+          this.crudSdk.sdk.UpdateProductCategory({
+            input: fp.set(`images`, image, data),
+          }),
+        ),
+      )
+      .toPromise();
+  }
 }

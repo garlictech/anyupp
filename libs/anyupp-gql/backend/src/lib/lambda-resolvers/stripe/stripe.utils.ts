@@ -1,6 +1,13 @@
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { Stripe } from 'stripe';
 import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+
+export interface StripeResolverDeps {
+  crudSdk: CrudSdk;
+  anyuppSdk: AnyuppSdk;
+}
 
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
@@ -39,8 +46,8 @@ export const mapStripeCardToCard = (
   // exp_month: card.exp_month,
 });
 
-const convertCardMetadata = (metadata: Stripe.Metadata | null) =>
-  Object.entries(metadata || {}).map(mapMetadataToObjectArray);
+//const convertCardMetadata = (metadata: Stripe.Metadata | null) =>
+//  Object.entries(metadata || {}).map(mapMetadataToObjectArray);
 
 const convertBrand = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
@@ -54,10 +61,10 @@ const convertFunding = (
   ];
 
 // [key, value] => {key:key, value:value}
-const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
+/*const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({
   key,
   value,
-});
+});*/
 
 // https://stripe.com/docs/currencies#special-cases
 export const amountConversionForStripe = (value: number, currency: string) => {

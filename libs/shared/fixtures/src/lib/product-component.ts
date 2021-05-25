@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 
 import { chainSeed } from './chain';
@@ -198,11 +198,11 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         ...groupConfigSets[0].items[0],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[0].items[1],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
     ],
   },
@@ -211,15 +211,15 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
     items: [
       {
         ...groupConfigSets[1].items[0],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[1].items[1],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
       {
         ...groupConfigSets[1].items[2],
-        price: groupConfigSets[0].items[0].refGroupPrice! * 1.2,
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
     ],
   },

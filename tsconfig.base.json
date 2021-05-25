@@ -6,22 +6,27 @@
   },
   "compilerOptions": {
     "rootDir": ".",
+    "outDir": "./dist/out",
     "strict": true,
-    "noImplicitAny": true,
     "sourceMap": true,
     "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
     "moduleResolution": "node",
+    "incremental": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "removeComments": true,
+    "downlevelIteration": true,
     "target": "es2015",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
     "types": ["node"],
-    "lib": ["es2017", "dom"],
+    "lib": ["es2015", "es2016", "es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
@@ -126,6 +131,7 @@
       "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
+      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
       "@bgap/admin/pages/modifiers-and-extras": [
         "libs/admin/pages/modifiers-and-extras/src/index.ts"
       ],
@@ -138,5 +144,13 @@
       ]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "artifacts"]
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "artifacts",
+    ".git",
+    "cyreport",
+    "coverage"
+  ]
 }

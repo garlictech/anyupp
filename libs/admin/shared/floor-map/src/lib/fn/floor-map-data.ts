@@ -1,13 +1,8 @@
 import { fabric } from 'fabric';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { customStringCompare } from '@bgap/shared/utils';
-import {
-  EUnitMapObjectType,
-  IFabricGroup,
-  IFabricObjectProperties,
-  IFloorMapData,
-  IFloorMapDataObject,
-} from '@bgap/shared/types';
+import { IFabricGroup, IFabricObjectProperties } from '@bgap/shared/types';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {
@@ -26,7 +21,7 @@ import {
   getObjectText,
 } from './floor-map-utils';
 
-export let mapRawData: IFloorMapData;
+export let mapRawData: CrudApi.FloorMapData;
 
 export const initRawData = (w: number, h: number): void => {
   mapRawData = {
@@ -36,22 +31,26 @@ export const initRawData = (w: number, h: number): void => {
   };
 };
 
-export const loadRawData = (data: IFloorMapData): void => {
+export const loadRawData = (data: CrudApi.FloorMapData): void => {
   mapRawData = Object.assign(mapRawData, data);
 
-  (<IFloorMapDataObject[]>data.objects)
+  (<CrudApi.FloorMapDataObject[]>data.objects)
     // Sort by type for z-indexing
     .sort(customStringCompare('t', true))
-    .forEach((rawData: IFloorMapDataObject): void => {
+    .forEach((rawData: CrudApi.FloorMapDataObject): void => {
       _drawObject(rawData, false);
     });
 };
 
 export const loadRawDataObject = (
-  rawData: IFloorMapDataObject,
+  rawData: CrudApi.FloorMapDataObject,
   setActive: boolean,
 ): void => {
-  const dataIdx = mapRawData.objects.map(d => d.id).indexOf(rawData.id);
+  const dataIdx = mapRawData?.objects?.map(d => d.id).indexOf(rawData.id);
+
+  if (dataIdx === undefined || !mapRawData?.objects) {
+    throw new Error('HANDLE ME: dataIdx cannot be undefined');
+  }
 
   if (dataIdx < 0) {
     mapRawData.objects.push(rawData);
@@ -62,7 +61,10 @@ export const loadRawDataObject = (
   _drawObject(rawData, setActive);
 };
 
-const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
+const _drawObject = (
+  o: CrudApi.FloorMapDataObject,
+  setActive: boolean,
+): void => {
   const obj: fabric.Group = <fabric.Group>createObject(o);
 
   fabricCanvas.add(obj);
@@ -73,22 +75,22 @@ const _drawObject = (o: IFloorMapDataObject, setActive: boolean): void => {
 };
 
 export const createObject = (
-  mapObject: IFloorMapDataObject,
+  mapObject: CrudApi.FloorMapDataObject,
 ): fabric.Group | undefined => {
   switch (mapObject.t) {
-    case EUnitMapObjectType.TABLE_RECTANGLE:
+    case CrudApi.UnitMapObjectType.table_r:
       return createTableRect(mapObject);
-    case EUnitMapObjectType.TABLE_CIRCLE:
+    case CrudApi.UnitMapObjectType.table_c:
       return createTableCircle(mapObject);
-    case EUnitMapObjectType.SEAT_RECTANGLE:
+    case CrudApi.UnitMapObjectType.seat_r:
       return createSeatRect(mapObject);
-    case EUnitMapObjectType.SEAT_CIRCLE:
+    case CrudApi.UnitMapObjectType.seat_c:
       return createSeatCircle(mapObject);
-    case EUnitMapObjectType.COUNTER:
+    case CrudApi.UnitMapObjectType.counter:
       return createBar(mapObject);
-    case EUnitMapObjectType.WALL:
+    case CrudApi.UnitMapObjectType.wall:
       return createWall(mapObject);
-    case EUnitMapObjectType.LABEL:
+    case CrudApi.UnitMapObjectType.label:
       return createLabel(mapObject);
     default:
       return undefined;
@@ -100,6 +102,10 @@ export const removeActiveObject = (): void => {
   const obj: any = fabricCanvas.getActiveObject();
 
   if (obj) {
+    if (!mapRawData?.objects) {
+      throw new Error('HANDLE ME: data cannot be undefined');
+    }
+
     const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
 
     if (objectIdx >= 0) {
@@ -117,6 +123,10 @@ export const copyActiveObject = (): void => {
   const obj = fabricCanvas.getActiveObject();
 
   if (obj) {
+    if (!mapRawData?.objects) {
+      throw new Error('HANDLE ME: data cannot be undefined');
+    }
+
     const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
 
     if (objectIdx >= 0) {
@@ -149,26 +159,30 @@ export const setTextToActiveObject = (text: string): void => {
 };
 
 export const setRawDataField = (
-  key: keyof IFloorMapDataObject,
+  key: keyof CrudApi.FloorMapDataObject,
   value: string | number,
 ): void => {
   const obj = fabricCanvas.getActiveObject();
+  if (!mapRawData?.objects) {
+    throw new Error('HANDLE ME: data cannot be undefined');
+  }
 
   if (obj) {
     const objectIdx = mapRawData.objects.map(o => o.id).indexOf(obj.id);
 
     if (objectIdx >= 0) {
+      // That's horror TODO please ASAP
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      mapRawData.objects[objectIdx][key] = <any>value;
+      (mapRawData as any).objects[objectIdx][key] = value;
     }
   }
 };
 
 export const getRawDataField = (
   obj: IFabricGroup,
-  key: keyof IFloorMapDataObject,
+  key: keyof CrudApi.FloorMapDataObject,
 ): string | number =>
-  mapRawData.objects.find(o => o.id === obj.id)?.[key] || '';
+  mapRawData?.objects?.find(o => o.id === obj.id)?.[key] || '';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
@@ -190,6 +204,10 @@ export const updateObjectMapRawData = (e: any): void => {
   );
 
   if (objectProperties) {
+    if (!mapRawData?.objects) {
+      throw new Error('HANDLE ME: data cannot be undefined');
+    }
+
     const objectIdx = mapRawData.objects
       .map(o => o.id)
       .indexOf(objectProperties.id);
