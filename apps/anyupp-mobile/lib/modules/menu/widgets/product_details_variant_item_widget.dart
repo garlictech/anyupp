@@ -115,6 +115,7 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
                       Nav.to(ProductConfiguratorScreen(
                         cart: widget.cart,
                         product: widget.product,
+                        variant: widget.variant,
                         unit: widget.unit,
                       ),
                       //duration: Duration(milliseconds: 100),

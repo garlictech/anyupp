@@ -6,6 +6,7 @@ import 'utils/http_utils.dart';
 class DioTokenInterceptor extends InterceptorsWrapper {
   final Dio _dio;
   SharedPreferences _prefs;
+  // IAuthProvider _provider;
 
   DioTokenInterceptor(this._dio) {
     SharedPreferences.getInstance().then((preferences) => _prefs = preferences);
@@ -51,6 +52,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
          return super.onError(dioError);
       }
       print('==>Refresh token=' + refreshToken);
+
+      // await _provider.getAuthenticatedUserProfile();
 
       // Response response = await _dio.put(URL_ROOT + 'auth/refresh', data: {
       //   'refresh_token': refreshToken

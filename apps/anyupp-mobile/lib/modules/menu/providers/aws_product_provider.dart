@@ -66,8 +66,8 @@ class AwsProductProvider implements IProductProvider {
         Map<String, dynamic> json = Map<String, dynamic>.from(items[i]);
         // TODO ADD HACKED CONFIGURATIONS SETS!!!!
         try {
-        json['configSets'] = generateDummyConfigSets();
-        results.add(GeneratedProduct.fromJson(json));
+          json['configSets'] = generateDummyConfigSets();
+          results.add(GeneratedProduct.fromJson(json));
         } on Error catch (e) {
           print('listGeneratedProducts.error()');
           FlutterError.dumpErrorToConsole(FlutterErrorDetails(exception: e));
@@ -84,11 +84,10 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
     {
       'productSetId': 'modifier#1',
       'name': {
-        'hu': 'Normál hamburger',
-        'en': 'Normál hamburger',
-        'de': 'Normál hamburger',
+        'hu': 'Hamburgerhús',
+        'en': 'Hamburgerhús',
+        'de': 'Hamburgerhús',
       },
-      'description': 'Normál hamburger verzió',
       'position': 0,
       'type': 'product_modifier',
       'maxSelection': 0,
@@ -98,77 +97,61 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
           'price': 0.0,
           'position': 1,
           'name': {
-            'hu': 'Marhahúspogácsa',
-            'en': 'Marhahúspogácsa',
-            'de': 'Marhahúspogácsa',
+            'hu': 'Marhahúspogácsa (alap)',
+            'en': 'Marhahúspogácsa (alap)',
+            'de': 'Marhahúspogácsa (alap)',
           },
           'description': '20 dkg Marhahúspogácsa',
         },
-         {
+        {
           'productComponentId': 'Modifier1#productComponentId#2',
-          'price': 0.0,
+          'price': 150.0,
           'position': 2,
           'name': {
-            'hu': 'Hamburger buci',
-            'en': 'Hamburger buci',
-            'de': 'Hamburger buci',
+            'hu': 'Lávaköves csirkemell',
+            'en': 'Lávaköves csirkemell',
+            'de': 'Lávaköves csirkemell',
           },
-          'description': 'Klasszikus hamburger buci hazai lisztből',
           'allergens': ['gluten']
         },
         {
           'productComponentId': 'Modifier1#productComponentId#3',
-          'price': 0.0,
+          'price': 100.0,
           'position': 3,
           'name': {
-            'hu': 'Vegyes csalamádé saláta',
-            'en': 'Vegyes csalamádé saláta',
-            'de': 'Vegyes csalamádé saláta',
+            'hu': 'Vegetáriánus pogácsa',
+            'en': 'Vegetáriánus pogácsa',
+            'de': 'Vegetáriánus pogácsa',
           },
-          'description': 'Vegyes csalamádé saláta',
           'allergens': ['celery']
         },
-        {
-          'productComponentId': 'Modifier1#productComponentId#4',
-          'price': 0.0,
-          'position': 4,
-          'name': {
-            'hu': 'Mustár, ketchup, majonéz',
-            'en': 'Mustár, ketchup, majonéz',
-            'de': 'Mustár, ketchup, majonéz',
-          },
-          'description': 'Mustár, ketchup, majonéz',
-          'allergens': ['egg', 'mustard']
-        }
-     ]
+      ]
     },
     {
       'productSetId': 'modifier#2',
       'name': {
-        'hu': 'Vegetariánus',
-        'en': 'Vegetariánus',
-        'de': 'Vegetariánus',
+        'hu': 'Buci',
+        'en': 'Buci',
+        'de': 'Buci',
       },
-      'description': 'Vegetáriánus verzió',
       'position': 1,
       'type': 'product_modifier',
       'maxSelection': 3,
       'items': [
         {
           'productComponentId': 'Modifier2#productComponentId#1',
-          'price': 250.0,
+          'price': 0.0,
           'position': 1,
           'name': {
-            'hu': 'Vega húspogácsa',
-            'en': 'Vega húspogácsa',
-            'de': 'Vega húspogácsa',
+            'hu': 'Hamburger buci (alap)',
+            'en': 'Hamburger buci (alap)',
+            'de': 'Hamburger buci (alap)',
           },
-          'description': 'Húsmentes, de húsízű pogácsa',
           'allergens': ['egg', 'peanut'],
         },
-         {
+        {
           'productComponentId': 'Modifier2#productComponentId#2',
-          'price': 100.0,
+          'price': 50.0,
           'position': 2,
           'name': {
             'hu': 'Rozsos buci',
@@ -176,66 +159,66 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
             'de': 'Rozsos buci',
           },
           'description': 'Rozsos buci egészséges lisztből',
+        },
+        {
+          'productComponentId': 'Modifier2#productComponentId#3',
+          'price': 0.0,
+          'position': 3,
+          'name': {
+            'hu': 'Gluténmentes buci',
+            'en': 'Gluténmentes buci',
+            'de': 'Gluténmentes buci',
+          },
         }
-     ]
+      ]
     },
     {
       'productSetId': 'modifier#3',
       'name': {
-        'hu': 'Extra húsos',
-        'en': 'Extra húsos',
-        'de': 'Extra húsos',
+        'hu': 'Saláta',
+        'en': 'Saláta',
+        'de': 'Saláta',
       },
-      'description': 'Extra húsos verzió',
       'position': 2,
       'type': 'product_modifier',
       'maxSelection': 2,
       'items': [
         {
           'productComponentId': 'Modifier3#productComponentId#1',
-          'price': 300.0,
+          'price': 0.0,
           'position': 1,
           'name': {
-            'hu': 'Dupla húspogácsa',
-            'en': 'Dupla húspogácsa',
-            'de': 'Dupla húspogácsa',
+            'hu': 'Vegyes zöldsaláta',
+            'en': 'Vegyes zöldsaláta',
+            'de': 'Vegyes zöldsaláta',
           },
-          'description': 'Dupla húspogácsa',
-          'allergens': ['egg'],
         },
-         
-     ]
-    },
-    {
-      'productSetId': 'modifier#4',
-      'name': {
-        'hu': 'Csirkemelles',
-        'en': 'Csirkemelles',
-        'de': 'Csirkemelles',
-      },
-      'description': 'Csirkemelles verzió',
-      'position': 3,
-      'type': 'product_modifier',
-      'maxSelection': 2,
-      'items': [
         {
-          'productComponentId': 'Modifier4#productComponentId#1',
-          'price': 300.0,
-          'position': 1,
+          'productComponentId': 'Modifier3#productComponentId#2',
+          'price': 75.0,
+          'position': 2,
           'name': {
-            'hu': 'Csirkemell húspogácsa',
-            'en': 'Csirkemell húspogácsa',
-            'de': 'Csirkemell húspogácsa',
+            'hu': 'Csalamádé',
+            'en': 'Csalamádé',
+            'de': 'Csalamádé',
           },
-          'description': 'Csirkemell húspogácsa',
-          'allergens': ['egg'],
         },
-         
-     ]
+        {
+          'productComponentId': 'Modifier3#productComponentId#3',
+          'price': 50.0,
+          'position': 3,
+          'name': {
+            'hu': 'Káposztasaláta',
+            'en': 'Káposztasaláta',
+            'de': 'Káposztasaláta',
+          },
+        },
+      ]
     },
-
+    
     // EXTRAS
     {
+      'productSetId': 'extra#1',
       'name': {
         'hu': 'Feltétek',
         'en': 'Feltétek',
@@ -248,7 +231,7 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
       'items': [
         {
           'productComponentId': 'Extra1#productComponentId#1',
-          'price': 85.0,
+          'price': 100.0,
           'position': 1,
           'name': {
             'hu': 'Extra sajt',
@@ -258,9 +241,9 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
           'description': 'Extra sajt',
           'allergens': ['milk'],
         },
-         {
+        {
           'productComponentId': 'Extra1#productComponentId#2',
-          'price': 50.0,
+          'price': 150.0,
           'position': 2,
           'name': {
             'hu': 'Extra vargányagomba',
@@ -271,7 +254,7 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
         },
         {
           'productComponentId': 'Extra1#productComponentId#3',
-          'price': 250.0,
+          'price': 50.0,
           'position': 3,
           'name': {
             'hu': 'Plusz ketchup',
@@ -281,10 +264,11 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
           'description': 'Plusz ketchup',
           'allergens': ['gluten'],
         },
-     ]
+      ]
     },
 
     {
+      'productSetId': 'extra#2',
       'name': {
         'hu': 'Kiegészítők',
         'en': 'Kiegészítők',
@@ -297,7 +281,7 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
       'items': [
         {
           'productComponentId': 'Extra2#productComponentId#1',
-          'price': 250.0,
+          'price': 350.0,
           'position': 1,
           'name': {
             'hu': 'Sültkrumpli',
@@ -307,9 +291,9 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
           'description': 'Sültkrumpli',
           'allergens': ['gluten'],
         },
-         {
+        {
           'productComponentId': 'Extra2#productComponentId#2',
-          'price': 150.0,
+          'price': 180.0,
           'position': 2,
           'name': {
             'hu': 'Rostos őszibarack 2dl',
@@ -318,7 +302,7 @@ List<Map<String, dynamic>> generateDummyConfigSets() {
           },
           'description': 'Rostos őszibarack 2dl',
         },
-     ]
+      ]
     },
   ];
 }

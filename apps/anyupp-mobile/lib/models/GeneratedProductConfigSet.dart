@@ -3,6 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Allergens.dart';
 
 class GeneratedProductConfigSet extends Model {
+  final String productSetId;
   final LocalizedItem name;
   final String description;
   final int position;
@@ -11,6 +12,7 @@ class GeneratedProductConfigSet extends Model {
   final List<GeneratedProductConfigComponent> items;
 
   GeneratedProductConfigSet({
+    @required this.productSetId,
     @required this.name,
     @required this.description,
     @required this.position,
@@ -20,6 +22,7 @@ class GeneratedProductConfigSet extends Model {
   });
 
   GeneratedProductConfigSet copyWith({
+    String productSetId,
     LocalizedItem name,
     String description,
     int position,
@@ -28,6 +31,7 @@ class GeneratedProductConfigSet extends Model {
     List<GeneratedProductConfigComponent> items,
   }) {
     return GeneratedProductConfigSet(
+      productSetId: productSetId ?? this.productSetId,
       name: name ?? this.name,
       description: description ?? this.description,
       position: position ?? this.position,
@@ -39,6 +43,7 @@ class GeneratedProductConfigSet extends Model {
 
   Map<String, dynamic> toJson() {
     return {
+      'productSetId': productSetId,
       'name': name.toJson(),
       'description': description,
       'position': position,
@@ -50,6 +55,7 @@ class GeneratedProductConfigSet extends Model {
 
   factory GeneratedProductConfigSet.fromJson(Map<String, dynamic> map) {
     return GeneratedProductConfigSet(
+      productSetId: map['productSetId'],
       name: LocalizedItem.fromJson(map['name']),
       description: map['description'],
       position: map['position'],
@@ -65,7 +71,7 @@ class GeneratedProductConfigSet extends Model {
 
   @override
   String toString() {
-    return 'GeneratedProductConfigSet(name: $name, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
+    return 'GeneratedProductConfigSet(productSetId: $productSetId, name: $name, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
   }
 
   @override
@@ -73,6 +79,7 @@ class GeneratedProductConfigSet extends Model {
     if (identical(this, other)) return true;
 
     return other is GeneratedProductConfigSet &&
+        other.productSetId == productSetId &&
         other.name == name &&
         other.description == description &&
         other.position == position &&
@@ -83,7 +90,8 @@ class GeneratedProductConfigSet extends Model {
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return productSetId.hashCode ^
+        name.hashCode ^
         description.hashCode ^
         position.hashCode ^
         type.hashCode ^

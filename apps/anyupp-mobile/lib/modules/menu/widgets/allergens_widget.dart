@@ -14,7 +14,8 @@ class AllergensWidget extends StatelessWidget {
   final double size;
   final double fontSize;
   final double iconBorderRadius;
-  AllergensWidget({this.allergens , this.size = 50, this.fontSize = 16.0, this.iconBorderRadius = 12.0});
+  final bool showHeader;
+  AllergensWidget({this.allergens , this.size = 50, this.fontSize = 16.0, this.iconBorderRadius = 12.0, this.showHeader = true});
 
   List<Widget> getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
@@ -47,6 +48,7 @@ class AllergensWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (showHeader)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
