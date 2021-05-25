@@ -1,5 +1,5 @@
 import { combineLatest, from } from 'rxjs';
-import { filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
+import { map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';

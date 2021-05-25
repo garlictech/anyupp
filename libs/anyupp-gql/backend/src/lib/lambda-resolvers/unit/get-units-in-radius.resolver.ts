@@ -71,7 +71,7 @@ const toGeoUnit = ({
   inputLocation: AnyuppApi.LocationInput;
   chainStyle: CrudApi.ChainStyle;
   //openingHours: IWeeklySchedule;
-  paymentModes: Maybe<CrudApi.PaymentMode>[] | undefined | null;
+  paymentModes?: Maybe<CrudApi.PaymentMode>[];
 }): AnyuppApi.GeoUnit => ({
   id: unit.id,
   groupId: unit.groupId,

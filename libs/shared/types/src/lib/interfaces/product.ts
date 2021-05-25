@@ -11,9 +11,9 @@ export interface IProductOrderChangeEvent {
   productId: string;
 }
 
-export type ProductVariantWithPrice = Omit<IProductVariant, 'price'> &
-  Required<Pick<IProductVariant, 'price'>>;
-export type ProductWithPrices = Omit<IProduct, 'variants'> & {
+export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
+  Required<Pick<CrudApi.ProductVariant, 'price'>>;
+export type ProductWithPrices = Omit<Product, 'variants'> & {
   variants: ProductVariantWithPrice[];
 };
 export interface ProductComponentSetMap {

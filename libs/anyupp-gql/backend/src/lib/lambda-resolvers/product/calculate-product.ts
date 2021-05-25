@@ -1,7 +1,16 @@
-import { Product, ProductWithPrices } from '@bgap/shared/types';
-import { calculatePriceFromAvailabilities } from './calculate-price';
 import { DateTime } from 'luxon';
+
 import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  Product,
+  ProductComponentMap,
+  ProductComponentSetMap,
+  ProductVariantWithPrice,
+  ProductWithPrices,
+} from '@bgap/shared/types';
+
+import { calculatePriceFromAvailabilities } from './calculate-price';
+import { Maybe } from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
@@ -90,6 +99,21 @@ const calculateActualPriceForEachVariant = ({
   }, <ProductVariantWithPrice[]>[]);
 };
 
+const toGeneratedProductVariantInputType = (
+  variant: ProductVariantWithPrice,
+): CrudApi.GeneratedProductVariantInput => {
+  if (!variant?.pack) {
+    throw new Error('HANDLE ME: variant.pack expected to be an object');
+  }
+  return {
+    id: variant.id,
+    variantName: variant.variantName,
+    position: variant.position,
+    pack: { size: variant.pack.size, unit: variant.pack.unit },
+    price: variant.price,
+  };
+};
+
 export const toCreateGeneratedProductInputType = ({
   product,
   unitId,
@@ -101,7 +125,7 @@ export const toCreateGeneratedProductInputType = ({
   unitId: string;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
-  productConfigSets?: IProductConfigSet[];
+  productConfigSets?: Maybe<Maybe<CrudApi.ProductConfigSet>[]>;
 }): CrudApi.CreateGeneratedProductInput => {
   if (
     !(
@@ -137,32 +161,21 @@ export const toCreateGeneratedProductInputType = ({
   };
 };
 
-const toGeneratedProductVariantInputType = (
-  variant: ProductVariantWithPrice,
-): CrudApi.GeneratedProductVariantInput => {
-  if (!variant?.pack) {
-    throw new Error('HANDLE ME: variant.pack expected to be an object');
-  }
-  return {
-    id: variant.id,
-    variantName: variant.variantName,
-    position: variant.position,
-    pack: { size: variant.pack.size, unit: variant.pack.unit },
-    price: variant.price,
-  };
-};
-
 const toGeneratedProductConfigSetInput = ({
   productConfigSet,
   productComponentSetMap,
   productComponentMap,
 }: {
-  productConfigSet: IProductConfigSet;
+  productConfigSet: Maybe<CrudApi.ProductConfigSet>;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
-}): CrudApi.GeneratedProductConfigSetInput => {
+}): CrudApi.GeneratedProductConfigSetInput | null => {
+  if (!productConfigSet) {
+    return null;
+  }
   const productComponentSet =
     productComponentSetMap[productConfigSet.productSetId];
+
   if (!productComponentSet) {
     throw `productComponentSet with id ${productConfigSet.productSetId} is missing from the componentSetMap`;
   }

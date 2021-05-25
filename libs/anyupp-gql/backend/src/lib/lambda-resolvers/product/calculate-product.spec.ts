@@ -3,9 +3,13 @@ import {
   EProductType,
   EVariantAvailabilityType,
   Product,
+  ProductComponentMap,
+  ProductComponentSetMap,
 } from '@bgap/shared/types';
-import { calculateActualPricesAndCheckActivity } from './calculate-product';
-import { productSeed } from '@bgap/shared/fixtures';
+import {
+  calculateActualPricesAndCheckActivity,
+  toCreateGeneratedProductInputType,
+} from './calculate-product';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
@@ -69,20 +73,18 @@ describe('calculatePricesAndCheckActivity method', () => {
   };
   const prodComponentMap: ProductComponentMap = {
     ['PRODUCT_COMPONENT_ID_01']: {
-      __typename: 'ProductComponent',
       id: 'PRODUCT_COMPONENT_ID_01',
       chainId: 'CHAIN_ID',
-      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_NAME' },
+      name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
       allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
     },
     ['PRODUCT_COMPONENT_ID_02']: {
-      __typename: 'ProductComponent',
       id: 'PRODUCT_COMPONENT_ID_02',
       chainId: 'CHAIN_ID',
-      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_NAME' },
+      name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
       allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
       createdAt: 'CREATED_AT',
@@ -91,10 +93,9 @@ describe('calculatePricesAndCheckActivity method', () => {
   };
   const prodComponentSetMap: ProductComponentSetMap = {
     ['PROUDCT_SET_01']: {
-      __typename: 'ProductComponentSet',
       id: 'PROUDCT_SET_01',
       chainId: 'CHAIN_ID',
-      name: { __typename: 'LocalizedItem', en: 'PRODUCT_COMP_SET_NAME' },
+      name: { en: 'PRODUCT_COMP_SET_NAME' },
       description: 'PRODUCT_COMP_SET_DESC',
       type: 'PRODUCT_COMP_SET_TYPE',
       maxSelection: 1,

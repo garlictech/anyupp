@@ -1,12 +1,12 @@
 import * as Joi from 'joi';
-import { CrudApi } from '@bgap/crud-gql/api';
 
-import { validateSchema } from '../validator/validate';
+import * as CrudApi from '@bgap/crud-gql/api';
+
+import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { allergenListSchema } from './product';
 
 export const productComponentSetSchema: Joi.SchemaMap<CrudApi.ProductComponentSet> = {
-  __typename: Joi.string().valid('ProductComponentSet').optional(),
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   type: Joi.string().required(),
@@ -26,8 +26,15 @@ export const {
   'ProductComponentSet',
 );
 
+export const {
+  validate: validateProductComponentSetList,
+  isType: isProductComponentSetList,
+} = validateGqlList<CrudApi.ProductComponentSet>(
+  productComponentSetSchema,
+  'ProductComponentSetList',
+);
+
 export const productComponentSchema: Joi.SchemaMap<CrudApi.ProductComponent> = {
-  __typename: Joi.string().valid('ProductComponent').optional(),
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   name: localizedItemSchema.required(),
@@ -43,4 +50,12 @@ export const {
 } = validateSchema<Required<CrudApi.ProductComponent>>(
   productComponentSchema,
   'ProductComponent',
+);
+
+export const {
+  validate: validateProductComponentList,
+  isType: isProductComponentList,
+} = validateGqlList<CrudApi.ProductComponent>(
+  productComponentSchema,
+  'ProductComponentList',
 );

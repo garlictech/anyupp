@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { validateSchema } from '../validator/validate';
+import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import * as CrudApi from '@bgap/crud-gql/api';
 
@@ -66,3 +66,8 @@ export const {
   validate: validateUnitProduct,
   isType: isUnitProduct,
 } = validateSchema<CrudApi.UnitProduct>(unitProductSchema, 'UnitProduct');
+
+export const {
+  validate: validateUnitProductList,
+  isType: isUnitProductList,
+} = validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');

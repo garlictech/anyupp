@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { AnyuppApi } from 'libs/anyupp-gql/api/src';
+import * as AnyuppApi from 'libs/anyupp-gql/api/src';
 import { from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
