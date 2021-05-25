@@ -7,11 +7,8 @@ import {
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
-import {
-  EProductLevel,
-  IAvailability,
-  IProductVariant,
-} from '@bgap/shared/types';
+import { EProductLevel } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,7 +48,7 @@ export class FormProductVariantsComponent {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((variant: IProductVariant, pos: number): void => {
+      arr.forEach((variant: CrudApi.ProductVariant, pos: number): void => {
         variant.position = pos + 1;
       });
 
@@ -63,7 +60,7 @@ export class FormProductVariantsComponent {
           (g.get('availabilities') as FormArray).clear();
 
           (arr[i]?.availabilities || []).forEach(
-            (availability: IAvailability): void => {
+            (availability: CrudApi.Availability): void => {
               const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);
 

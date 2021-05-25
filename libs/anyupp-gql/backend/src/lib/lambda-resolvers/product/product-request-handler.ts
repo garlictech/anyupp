@@ -1,31 +1,14 @@
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
-
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { createUnitProduct } from './create-unit-product.resolver';
+import { ProductResolverDeps } from './utils';
 
 // interface WithAuthenticatedUser {
 //   userId: string;
 // }
-export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AnyuppApi.MutationCreateUnitProductArgs;
+export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AnyuppApi.CreateUnitProductInput;
 
-export const productRequestHandler = {
-  createUnitProduct: (crudGraphqlClient: GraphqlApiClient) => (
-    requestPayload: CreateUnitProductRequest,
-  ) => {
-    // missingParametersCheck<CreateUnitProductRequest>(requestPayload, [
-    //   'userId',
-    //   'input',
-    // ]);
-    // missingParametersCheck<AnyuppApi.CreateUnitProductInput>(
-    //   requestPayload.input,
-    //   ['id'],
-    // );
-
-    return createUnitProduct({
-      // userId: requestPayload.userId,
-      // cartId: requestPayload.input.id,
-      input: requestPayload.input,
-      crudGraphqlClient,
-    }).toPromise();
+export const productRequestHandler = (deps: ProductResolverDeps) => ({
+  createUnitProduct: (requestPayload: CreateUnitProductRequest) => {
+    return createUnitProduct(requestPayload)(deps).toPromise();
   },
-};
+});

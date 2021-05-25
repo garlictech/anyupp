@@ -22,13 +22,12 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
-  IOrder,
   IStatusLog,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -38,17 +37,14 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
-  @Input() order!: IOrder;
+  @Input() order!: CrudApi.Order;
   public dashboardSettings!: IDashboardSettings;
-  public EDashboardListMode = EDashboardListMode;
-  public EOrderStatus = EOrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -71,12 +67,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getButtonStatus(status: IStatusLog[]): string { // TODO EZ TOMB, EDDIG Sima StatusLog volt, hogyan mukodott eddig?
+  public getButtonStatus(status: IStatusLog[]): string {
+    // TODO EZ TOMB, EDDIG Sima StatusLog volt, hogyan mukodott eddig?
     return getStatusColor(currentStatusFn(status));
   }
 
   public getPlacedButtonStatus(): string {
-    return getStatusColor(EOrderStatus.PLACED);
+    return getStatusColor(CrudApi.OrderStatus.placed);
   }
 
   ngOnDestroy(): void {
@@ -126,7 +123,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           callback: (): void => {
             this._orderService.updateOrderItemStatus(
               this.order.id,
-              EOrderStatus.PLACED,
+              CrudApi.OrderStatus.placed,
               idx,
             );
 
@@ -143,5 +140,18 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         },
       ],
     };
+  }
+
+  public isListMode(status: keyof typeof EDashboardListMode): boolean {
+    return this.dashboardSettings.listMode === EDashboardListMode[status];
+  }
+
+  public isStatusLog(
+    orderItem: CrudApi.OrderItem,
+    status: keyof typeof CrudApi.OrderStatus,
+  ): boolean {
+    return (
+      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+    );
   }
 }

@@ -1,10 +1,19 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
-import { IProductComponent, IProductComponentSet } from '@bgap/shared/types';
-import { NbDialogService, NbTabComponent, NbTabsetComponent } from '@nebular/theme';
+import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  NbDialogService,
+  NbTabComponent,
+  NbTabsetComponent,
+} from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -28,12 +37,12 @@ export class ModifiersAndExtrasListComponent implements OnDestroy {
 
   public eModExtTab = EModExtTab;
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
-  public productComponents$: Observable<IProductComponent[]>;
-  public productComponentSets$: Observable<IProductComponentSet[]>;
+  public productComponents$: Observable<CrudApi.ProductComponent[]>;
+  public productComponentSets$: Observable<CrudApi.ProductComponentSet[]>;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
     this.productComponents$ = this._store.pipe(

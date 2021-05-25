@@ -1,6 +1,5 @@
 mutation UpdateCartMutation($updateCartInput: UpdateCartInput!) {
-  updateCart(input: $updateCartInput)
-  {
+  updateCart(input: $updateCartInput) {
     id
   }
 }

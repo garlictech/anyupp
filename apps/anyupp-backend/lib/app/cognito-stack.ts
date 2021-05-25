@@ -14,6 +14,10 @@ export interface CognitoStackProps extends StackProps {
   googleClientSecret: string;
   facebookClientId: string;
   facebookClientSecret: string;
+  appleSigninKey: string;
+  appleTeamId: string;
+  appleKeyId: string;
+  appleServiceId: string;
 }
 
 type poolLabel = 'Admin' | 'Consumer';
@@ -21,10 +25,13 @@ type poolLabel = 'Admin' | 'Consumer';
 export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
+  public pretokenTriggerLambda: lambda.Function;
 
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
+
+    this.pretokenTriggerLambda = this.createPretokenTriggerLambda();
 
     // Consumer resources
     this.consumerUserPool = this.createConsumerUserPool(app);
@@ -69,6 +76,23 @@ export class CognitoStack extends Stack {
       },
     );
 
+    const appleIdProvider = new cognito.UserPoolIdentityProviderApple(
+      this,
+      'Apple',
+      {
+        userPool: this.consumerUserPool,
+        clientId: props.appleServiceId,
+        attributeMapping: {
+          email: cognito.ProviderAttribute.APPLE_EMAIL,
+          fullname: cognito.ProviderAttribute.APPLE_NAME,
+        },
+        teamId: props.appleTeamId,
+        keyId: props.appleKeyId,
+        privateKey: props.appleSigninKey,
+        scopes: ['name', 'email', 'openid'],
+      },
+    );
+
     const {
       consumerWebClient,
       consumerNativeClient,
@@ -76,8 +100,10 @@ export class CognitoStack extends Stack {
 
     consumerWebClient.node.addDependency(googleIdProvider);
     consumerWebClient.node.addDependency(facebookIdProvider);
+    consumerWebClient.node.addDependency(appleIdProvider);
     consumerNativeClient.node.addDependency(googleIdProvider);
     consumerNativeClient.node.addDependency(facebookIdProvider);
+    consumerNativeClient.node.addDependency(appleIdProvider);
 
     // Export values
     this.createUserPoolOutputs(
@@ -301,6 +327,7 @@ export class CognitoStack extends Stack {
         cognito.UserPoolClientIdentityProvider.GOOGLE,
         cognito.UserPoolClientIdentityProvider.FACEBOOK,
         cognito.UserPoolClientIdentityProvider.COGNITO,
+        cognito.UserPoolClientIdentityProvider.APPLE,
       ],
     };
 
@@ -395,19 +422,6 @@ export class CognitoStack extends Stack {
   }
 
   private createAdminUserPool(app: App) {
-    const preTokenGenerationLambda = new lambda.Function(
-      this,
-      'AdminPreTokenGenerationLambda',
-      {
-        ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
-        handler: 'lib/lambda/pre-token-generation/index.handler',
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
-        ),
-      },
-    );
-
     const userPool = new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
       ...this.getCommonUserPoolProperties(),
@@ -442,12 +456,12 @@ export class CognitoStack extends Stack {
         phone: true,
       },
       lambdaTriggers: {
-        preTokenGeneration: preTokenGenerationLambda,
+        preTokenGeneration: this.pretokenTriggerLambda,
       },
     });
 
-    preTokenGenerationLambda.role &&
-      preTokenGenerationLambda.role.addToPolicy(
+    this.pretokenTriggerLambda.role &&
+      this.pretokenTriggerLambda.role.addToPolicy(
         new iam.PolicyStatement({
           actions: ['cognito-idp:AdminUpdateUserAttributes'],
           resources: ['*'],
@@ -455,6 +469,17 @@ export class CognitoStack extends Stack {
       );
 
     return userPool;
+  }
+
+  private createPretokenTriggerLambda() {
+    return new lambda.Function(this, 'AdminPreTokenGenerationLambda', {
+      ...commonLambdaProps,
+      // It must be relative to the serverless.yml file
+      handler: 'lib/lambda/pre-token-generation/index.handler',
+      code: lambda.Code.fromAsset(
+        path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+      ),
+    });
   }
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {

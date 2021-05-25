@@ -6,7 +6,7 @@ xdescribe('Products Selectors', () => {
     ({
       id,
       name: name || `name-${id}`,
-    } as IProduct);
+    } as Product);
 
   let state;
 

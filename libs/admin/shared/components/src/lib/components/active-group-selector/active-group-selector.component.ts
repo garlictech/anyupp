@@ -11,9 +11,10 @@ import {
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { IAdminUser, IGroup } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
+import { filterNullish } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -24,12 +25,11 @@ import { select, Store } from '@ngrx/store';
 })
 export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
-  public groups$: Observable<IGroup[]>;
-  private _loggedUser!: IAdminUser;
+  public groups$: Observable<CrudApi.Group[]>;
+  private _loggedUser!: CrudApi.AdminUser;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -46,8 +46,12 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((loggedUser: IAdminUser): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        filterNullish(),
+        untilDestroyed(this),
+      )
+      .subscribe(loggedUser => {
         this._loggedUser = loggedUser;
 
         this._changeDetectorRef.detectChanges();

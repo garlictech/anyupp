@@ -1,0 +1,19 @@
+overwrite: true
+schema: libs/anyupp-gql/backend/src/graphql/schema/*.graphql
+documents: libs/anyupp-gql/backend/src/graphql/documents/*.graphql
+generates:
+  libs/anyupp-gql/api/src/lib/generated/anyupp-api.ts:
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-generic-sdk
+    config:
+      declarationKind: 'interface'
+      defaultScalarType: unknown
+      skipTypename: true
+      namingConvention:
+        enumValues: change-case#lowerCase
+      usingObservableFrom: "import { Observable } from 'rxjs';"

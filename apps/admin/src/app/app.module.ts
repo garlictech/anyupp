@@ -1,6 +1,4 @@
-import { AmplifyService } from 'aws-amplify-angular';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -27,7 +25,13 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
-  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbLayoutModule,
+  NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -72,7 +76,7 @@ export const FEATURE_STORES = [
   AdminSharedUsersModule,
   AdminSharedRoleContextsModule,
   AdminSharedProductComponentsModule,
-  AdminSharedProductComponentSetsModule
+  AdminSharedProductComponentSetsModule,
 ];
 
 registerLocaleData(localeDe);
@@ -122,7 +126,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       serverLogLevel: NgxLoggerLevel.ERROR,
     }),
   ],
-  providers: [AmplifyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

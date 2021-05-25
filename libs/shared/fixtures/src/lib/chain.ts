@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
 

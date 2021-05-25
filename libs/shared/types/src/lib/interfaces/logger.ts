@@ -1,5 +1,5 @@
 export interface ILogger {
-  warn: (arg0: string) => void;
-  error: (arg0: string) => void;
-  debug: (arg0: string) => void;
+  warn: (_arg0: string) => void;
+  error: (_arg0: string) => void;
+  debug: (_arg0: string) => void;
 }

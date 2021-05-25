@@ -6,7 +6,7 @@
     <div
       class="col-5 p-2 m-auto subtitle-2 font-larger"
       [ngClass]="{
-        rejected: currentStatus(orderItem.statusLog) === EOrderStatus.REJECTED
+        rejected: isCurrentStatus(orderItem, 'rejected')
       }"
     >
       {{ orderItem.productName | localize }} ({{
@@ -25,9 +25,7 @@
       }}
     </div>
     <div class="text-right p-2 col-3 m-auto">
-      <ng-container
-        *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.REJECTED"
-      >
+      <ng-container *ngIf="!isCurrentStatus(orderItem, 'rejected')">
         <button
           nbButton
           status="warning"

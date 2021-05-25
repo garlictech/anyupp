@@ -6,6 +6,7 @@ import { SlackNotificationsStack } from './build-pipeline/slack-notifications-st
 import { PipelineStackProps } from './build-pipeline/utils';
 import { CiStack } from './build-pipeline/ci-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
+import { AppcenterStack } from './build-pipeline/appcenter-stack';
 
 export default function main(app: App): void {
   const pipelineSecretsManagerArn =
@@ -33,10 +34,13 @@ export default function main(app: App): void {
 
   const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
 
+  const appcenterStack = new AppcenterStack(app, 'AppcenterStack');
+
   const commonConfig = {
     repoOwner: 'bgap',
     repoName: 'anyupp',
     chatbot: slackChannel.chatbot,
+    appcenterUser: appcenterStack.iamUser,
   };
 
   const devPullRequestConfig: PipelineStackProps = {

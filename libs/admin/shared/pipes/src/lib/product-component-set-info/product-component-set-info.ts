@@ -4,7 +4,7 @@ import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
-import { IProductComponentSet } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
 
 @Pipe({
@@ -12,9 +12,9 @@ import { Store } from '@ngrx/store';
 })
 export class ProductComponentSetInfoPipe implements PipeTransform {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store<any>) {}
+  constructor(private _store: Store) {}
 
-  transform(componentSetId: string): Observable<IProductComponentSet> {
+  transform(componentSetId: string): Observable<CrudApi.ProductComponentSet> {
     return of(componentSetId).pipe(
       filter(fp.negate(fp.isEmpty)),
       switchMap(id =>

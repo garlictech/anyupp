@@ -1,15 +1,15 @@
 <nb-user
   class="float-left"
-  [name]="product.name | localize"
-  [title]="product.description | localize"
-  [picture]="(product.image || '' | awsStoragePath) || ''"
+  [name]="product?.name | localize"
+  [title]="product?.description | localize"
+  [picture]="(product?.image || '' | awsStoragePath) || ''"
 ></nb-user>
 
-<bgap-status-led class="ml-1" [status]="product.isVisible"></bgap-status-led>
+<bgap-status-led class="ml-1" [status]="product?.isVisible"></bgap-status-led>
 
 <bgap-colorized-lane-icon
   *ngIf="productLevel === EProductLevel.UNIT"
-  [laneId]="product.laneId!"
+  [laneId]="product?.laneId"
 ></bgap-colorized-lane-icon>
 
 <ng-container *ngIf="hasRoleToEdit">
@@ -66,23 +66,26 @@
 
 <div class="clearfix"></div>
 
-<bgap-allergens class="ml-5 d-inline-block" [allergens]="product.allergens || []"></bgap-allergens>
+<bgap-allergens
+  class="ml-5 d-inline-block"
+  [allergens]="product?.allergens || []"
+></bgap-allergens>
 
 <div class="clearfix"></div>
 
 <div class="caption ml-5">
   <div
     class="caption d-inline-block availability-badge"
-    [ngStyle]="{ opacity: variant.isAvailable ? '' : '0.7' }"
+    [ngStyle]="{ opacity: variant?.isAvailable ? '' : '0.7' }"
     *ngFor="let variant of variantsArray"
   >
-    <strong>{{ variant.variantName | localize }}</strong> ({{
-      variant.pack.size
+    <strong>{{ variant?.variantName | localize }}</strong> ({{
+      variant?.pack?.size
     }}
-    {{ variant.pack.unit }}) -
+    {{ variant?.pack?.unit }}) -
 
     <ng-container
-      *ngFor="let availability of variant.availabilities; last as isLast"
+      *ngFor="let availability of variant?.availabilities; last as isLast"
     >
       <bgap-variant-availability-badge
         [availability]="availability"
@@ -94,7 +97,7 @@
 
     <bgap-status-led
       class="ml-1"
-      [status]="variant.isAvailable"
+      [status]="variant?.isAvailable"
     ></bgap-status-led>
   </div>
 

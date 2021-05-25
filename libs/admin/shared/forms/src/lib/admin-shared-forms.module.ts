@@ -1,5 +1,4 @@
 import { ColorPickerModule } from 'ngx-color-picker';
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -70,7 +69,7 @@ const COMPONENTS = [
   FormStaticTextComponent,
   FormAllergensComponent,
   FormProductComponentsComponent,
-  FormProductComponentItemComponent
+  FormProductComponentItemComponent,
 ];
 
 @NgModule({

@@ -1,20 +1,18 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { from, Observable, of } from 'rxjs';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { UserResolverDeps } from './utils';
 
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
+  apiVersion: '2016-04-18',
+  region: 'eu-west-1',
+});
 
-export const createAnonymUser = ({
-  crudGraphqlClient,
-  cognito,
-  consumerUserPoolId,
-}: {
-  crudGraphqlClient: GraphqlApiClient;
-  cognito: CognitoIdentityServiceProvider;
-  consumerUserPoolId: string;
-}): Observable<AnyuppApi.CreateAnonymUserOutput> => {
+export const createAnonymUser = (
+  deps: UserResolverDeps,
+): Observable<AnyuppApi.CreateAnonymUserOutput> => {
   const generatedId = uuidV1();
   const email = `${generatedId}@${generatedId}.hu`;
   const pwd = uuidV1() + 'UPPERCASE';
@@ -23,9 +21,9 @@ export const createAnonymUser = ({
     // CREATE USER
     switchMap(() =>
       from(
-        cognito
+        cognitoidentityserviceprovider
           .adminCreateUser({
-            UserPoolId: consumerUserPoolId,
+            UserPoolId: deps.consumerUserPoolId,
             Username: email,
             UserAttributes: [{ Name: 'name', Value: 'AnonymUser' }],
           })
@@ -35,10 +33,10 @@ export const createAnonymUser = ({
     // SET PASSWORD to PERMANENT and the ACCOUNT to CONFIRMED
     switchMap(() =>
       from(
-        cognito
+        cognitoidentityserviceprovider
           .adminSetUserPassword({
             Password: pwd,
-            UserPoolId: consumerUserPoolId,
+            UserPoolId: deps.consumerUserPoolId,
             Username: email,
             Permanent: true,
           })

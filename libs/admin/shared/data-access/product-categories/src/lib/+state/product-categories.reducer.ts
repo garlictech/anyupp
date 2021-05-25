@@ -1,4 +1,4 @@
-import { IProductCategory } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -6,21 +6,20 @@ import * as ProductCategoriesActions from './product-categories.actions';
 
 export const PRODUCT_CATEGORIES_FEATURE_KEY = 'productCategories';
 
-export interface IProductCategoriesState extends EntityState<IProductCategory> {
+export interface ProductCategoriesState
+  extends EntityState<CrudApi.ProductCategory> {
   error?: string | null; // last known error (if any)
 }
 
 export interface ProductCategoriesPartialState {
-  readonly [PRODUCT_CATEGORIES_FEATURE_KEY]: IProductCategoriesState;
+  readonly [PRODUCT_CATEGORIES_FEATURE_KEY]: ProductCategoriesState;
 }
 
-export const productCategoriesAdapter: EntityAdapter<IProductCategory> = createEntityAdapter<
-  IProductCategory
+export const productCategoriesAdapter: EntityAdapter<CrudApi.ProductCategory> = createEntityAdapter<
+  CrudApi.ProductCategory
 >();
 
-export const initialState: IProductCategoriesState = productCategoriesAdapter.getInitialState(
-  {},
-);
+export const initialState = productCategoriesAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialState,
@@ -29,9 +28,9 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductCategoriesActions.upsertProductCategory,
-    (state, { productCategory }) =>
-      productCategoriesAdapter.upsertOne(productCategory, state),
+    ProductCategoriesActions.upsertProductCategorys,
+    (state, { productCategorys }) =>
+      productCategoriesAdapter.upsertMany(productCategorys, state),
   ),
   on(ProductCategoriesActions.resetProductCategories, state =>
     productCategoriesAdapter.removeAll(state),
@@ -39,7 +38,7 @@ const reducer = createReducer(
 );
 
 export function productCategoriesReducer(
-  state: IProductCategoriesState | undefined,
+  state: ProductCategoriesState | undefined,
   action: Action,
 ) {
   return reducer(state, action);
