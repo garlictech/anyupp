@@ -6,6 +6,7 @@
   },
   "compilerOptions": {
     "rootDir": ".",
+    "outDir": "./dist/out",
     "strict": true,
     "sourceMap": true,
     "declaration": false,
@@ -15,6 +16,7 @@
     "noImplicitThis": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
+    "incremental": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,

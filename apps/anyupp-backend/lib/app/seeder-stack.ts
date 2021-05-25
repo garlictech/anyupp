@@ -6,7 +6,6 @@ import { commonLambdaProps } from './lambda-common';
 import { Duration, CustomResource } from '@aws-cdk/core';
 import { Provider } from '@aws-cdk/custom-resources';
 import * as cognito from '@aws-cdk/aws-cognito';
-import * as appsync from '@aws-cdk/aws-appsync';
 
 export interface SeederStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -17,10 +16,6 @@ export class SeederStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: SeederStackProps) {
     super(scope, id);
     const AdminUserPoolId = props.adminUserPool.userPoolId;
-
-    const x = appsync.GraphqlApi.fromGraphqlApiAttributes(this, 'XXXAPI', {
-      graphqlApiId: 'n3dgi47pqvfhxg6pm2xnqycbxa',
-    });
 
     const seederLambda = new lambda.Function(this, 'StackSeederLambda', {
       ...commonLambdaProps,
@@ -38,7 +33,7 @@ export class SeederStack extends sst.Stack {
         }),
         new iam.PolicyStatement({
           actions: ['appsync:GraphQL'],
-          resources: [x.arn],
+          resources: ['*'],
         }),
         new iam.PolicyStatement({
           actions: [
