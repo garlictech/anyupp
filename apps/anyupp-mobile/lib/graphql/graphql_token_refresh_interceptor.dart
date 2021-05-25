@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/http_utils.dart';
 
 class DioTokenInterceptor extends InterceptorsWrapper {
   final Dio _dio;
+  final IAuthProvider _provider;
   SharedPreferences _prefs;
-  // IAuthProvider _provider;
 
-  DioTokenInterceptor(this._dio) {
+  DioTokenInterceptor(this._dio, this._provider) {
     SharedPreferences.getInstance().then((preferences) => _prefs = preferences);
   }
 
@@ -17,8 +18,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
     debugRequest(options);
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
-      print('accessToken: ${_prefs.get('token')}');
-      String accessToken = _prefs.get('token');
+      String accessToken = _prefs.getString('cognito_accesstoken');
+      print('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
     return options;
@@ -42,18 +43,18 @@ class DioTokenInterceptor extends InterceptorsWrapper {
     // return super.onError(dioError);
 
     int responseCode = dioError.response.statusCode;
-    String oldAccessToken = _prefs.get('token');
+    String oldAccessToken = _prefs.getString('cognito_accesstoken');
     if (oldAccessToken != null && responseCode == 401) {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
 
-      String refreshToken = _prefs.get('refreshToken');
+      String refreshToken = _prefs.get('cognito_refreshtoken');
       if (refreshToken == null) {
          return super.onError(dioError);
       }
       print('==>Refresh token=' + refreshToken);
 
-      // await _provider.getAuthenticatedUserProfile();
+      await _provider.getAuthenticatedUserProfile();
 
       // Response response = await _dio.put(URL_ROOT + 'auth/refresh', data: {
       //   'refresh_token': refreshToken
