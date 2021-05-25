@@ -9,11 +9,11 @@
         badgePosition="bottom right"
         badgeStatus="warning"
         [ngClass]="
-          dashboardSettings?.ticketListType === EDashboardTicketListType.PLACED
+          dashboardSettings?.ticketListType === EDashboardTicketListType.placed
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.PLACED)"
+        (click)="selectListType(EDashboardTicketListType.placed)"
       ></nb-action>
       <nb-action
         icon="bell-outline"
@@ -25,11 +25,11 @@
         badgePosition="bottom right"
         badgeStatus="info"
         [ngClass]="
-          dashboardSettings?.ticketListType === EDashboardTicketListType.READY
+          dashboardSettings?.ticketListType === EDashboardTicketListType.ready
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.READY)"
+        (click)="selectListType(EDashboardTicketListType.ready)"
       ></nb-action>
       <nb-action
         icon="alert-circle-outline"

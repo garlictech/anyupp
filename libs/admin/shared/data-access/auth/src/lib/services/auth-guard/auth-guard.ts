@@ -8,7 +8,8 @@ import {
   Router,
 } from '@angular/router';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { EAdminRole, IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { CognitoService } from '../cognito/cognito.service';
 
@@ -34,7 +35,7 @@ export class AuthGuard implements CanActivateChild {
         } else if (cognitoUser?.user?.role) {
           this._dataService.initDataConnections(
             cognitoUser?.user?.id || '',
-            <EAdminRole>cognitoUser?.user?.role,
+            <CrudApi.Role>cognitoUser?.user?.role,
           );
         }
 
@@ -50,7 +51,7 @@ export class AuthGuard implements CanActivateChild {
       map((cognitoUser): boolean => {
         if (
           !cognitoUser?.user?.role ||
-          cognitoUser?.user?.role === EAdminRole.INACTIVE
+          cognitoUser?.user?.role === CrudApi.Role.inactive
         ) {
           this._cognitoService.signOut().subscribe(() => {
             this._ngZone.run(() => {
@@ -58,9 +59,9 @@ export class AuthGuard implements CanActivateChild {
             });
           });
         } else {
-          const adminRole: EAdminRole =
-            <EAdminRole>cognitoUser?.user?.role || EAdminRole.INACTIVE;
-          const routeRoles: EAdminRole[] = next?.data?.roles || [];
+          const adminRole: CrudApi.Role =
+            <CrudApi.Role>cognitoUser?.user?.role || CrudApi.Role.inactive;
+          const routeRoles: CrudApi.Role[] = next?.data?.roles || [];
 
           if (!routeRoles.includes(adminRole)) {
             this._ngZone.run(() => {

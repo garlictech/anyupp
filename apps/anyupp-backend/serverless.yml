@@ -17,7 +17,7 @@ custom:
   sstApp: ${self:custom.stage}-anyupp-backend
   bundle:
     packager: yarn
-    linting: true
+    linting: false
     sourcemaps: true
     caching: true
 
@@ -26,6 +26,8 @@ custom:
 
 provider:
   name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
 
 functions:
   auto-delete-bucket:
@@ -42,3 +44,6 @@ functions:
 
   pre-token-generation:
     handler: lib/lambda/pre-token-generation/index.handler
+
+  cognito-trigger-setup:
+    handler: lib/lambda/cognito-trigger-setup/index.handler

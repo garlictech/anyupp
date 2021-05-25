@@ -8,7 +8,9 @@
 
   <div class="float-left ml-4-5">
     <div>
-      <span class="subtitle-2 font-larger">{{ order.createdAt | localizedDate: 'HH:mm' }}</span>
+      <span class="subtitle-2 font-larger">{{
+        order.createdAt | localizedDate: 'HH:mm'
+      }}</span>
       <nb-badge
         class="items-count position-relative"
         status="basic"

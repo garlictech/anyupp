@@ -12,12 +12,6 @@ AWSCLOUDFORMATIONconfig="{\
 \"profileName\":\"${AWS_PROFILE}\"\
 }"
 
-AUTHconfig="{\
-\"userPoolId\":\"$USERPOOLID\",\
-\"webClientId\":\"$WEBCLIENTID\",\
-\"nativeClientId\":\"$NATIVECLIENTID\"\
-}"
-
 AMPLIFY="{\
 \"projectName\":\"$APPNAME\",\
 \"envName\":\"${STAGE}\",\

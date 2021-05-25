@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
-import { IAvailability } from '@bgap/shared/types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,7 +9,7 @@ import { IAvailability } from '@bgap/shared/types';
   styleUrls: ['./variant-availability-badge.component.scss'],
 })
 export class VariantAvailabilityBadgeComponent {
-  @Input() availability!: IAvailability;
+  @Input() availability?: CrudApi.Maybe<CrudApi.Availability>;
   @Input() currency = '';
 
   public EVariantAvailabilityType = EVariantAvailabilityType;

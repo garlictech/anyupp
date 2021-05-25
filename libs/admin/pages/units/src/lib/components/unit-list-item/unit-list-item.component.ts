@@ -1,10 +1,15 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
-import { IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
@@ -17,7 +22,7 @@ import { UnitFormComponent } from '../unit-form/unit-form.component';
   styleUrls: ['./unit-list-item.component.scss'],
 })
 export class UnitListItemComponent {
-  @Input() unit!: IUnit;
+  @Input() unit?: CrudApi.Unit;
   public workingGenerateStatus = false;
 
   constructor(
@@ -31,20 +36,26 @@ export class UnitListItemComponent {
   public editUnit(): void {
     const dialog = this._nbDialogService.open(UnitFormComponent);
 
-    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    if (this.unit) {
+      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    }
   }
 
   public editUnitFloorMap(): void {
     const dialog = this._nbDialogService.open(UnitFloorMapComponent);
 
-    dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    if (this.unit) {
+      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+    }
   }
 
   public async regenerateData(): Promise<void> {
     this.workingGenerateStatus = true;
 
     try {
-      await this._dataService.regenerateUnitData(this.unit.id);
+      if (this.unit) {
+        // TODO await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
+      }
 
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -54,9 +65,7 @@ export class UnitListItemComponent {
     } catch (err) {
       this._toasterService.show(EToasterType.DANGER, '', 'common.updateError');
 
-      this._logger.error(
-        `REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`,
-      );
+      this._logger.error(`REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`);
     }
 
     this.workingGenerateStatus = false;

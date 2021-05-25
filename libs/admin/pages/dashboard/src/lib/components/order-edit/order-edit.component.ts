@@ -14,16 +14,15 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
-import { CrudApi } from '@bgap/crud-gql/api';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  IOrder,
-  IPaymentMethodKV,
-  IPaymentMode,
-} from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+interface IPaymentMethodKV {
+  key: string;
+  value: CrudApi.PaymentMethod;
+}
 
 @UntilDestroy()
 @Component({
@@ -33,16 +32,15 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnInit, OnDestroy {
-  @Input() order!: IOrder;
+  @Input() order!: CrudApi.Order;
   public paymentMethods: IPaymentMethodKV[] = [];
-  public EOrderStatus = CrudApi.OrderStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public currentStatus = currentStatusFn;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _orderService: OrderService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -79,8 +77,9 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   public removeOrder(): void {
+    /*
     this._orderService
-      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.REJECTED)
+      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.rejected)
       .then(
         (): void => {
           this.workingOrderStatus = false;
@@ -96,17 +95,27 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         orderEditing: false,
       }),
     );
+    */
   }
 
   public removeOrderItem(idx: number): void {
     this._orderService.updateOrderItemStatus(
       this.order.id,
-      CrudApi.OrderStatus.REJECTED,
+      CrudApi.OrderStatus.rejected,
       idx,
     );
   }
 
-  public updateOrderPaymentMethod(paymentMode: IPaymentMode): void {
+  public updateOrderPaymentMethod(paymentMode: CrudApi.PaymentMode): void {
     this._orderService.updateOrderPaymentMode(this.order.id, paymentMode);
+  }
+
+  public isCurrentStatus(
+    orderItem: CrudApi.OrderItem,
+    status: keyof typeof CrudApi.OrderStatus,
+  ): boolean {
+    return (
+      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+    );
   }
 }

@@ -1,14 +1,9 @@
-import awsmobile from './lib/generated/aws-exports';
-import * as CrudApi from './lib/generated/api';
-import * as Mutations from './lib/generated/graphql/mutations';
-import * as Queries from './lib/generated/graphql/queries';
-import * as CustomQueries from './lib/custom-documents/queries';
-import * as Subscriptions from './lib/generated/graphql/subscriptions';
+export * from './lib/generated/graphql/mutations';
+export * from './lib/generated/graphql/queries';
+export * from './lib/generated/graphql/subscriptions';
+export * from './lib/generated/api';
+export { CrudSdk } from './lib/sdk';
+export * from './lib/clients';
 
-export const CrudApiQueryDocuments = { ...Queries, ...CustomQueries };
-export {
-  awsmobile as awsConfig,
-  CrudApi,
-  Mutations as CrudApiMutationDocuments,
-  Subscriptions as CrudApiSubscriptionDocuments,
-};
+import awsmobile from './lib/generated/aws-exports';
+export { awsmobile as awsConfig };

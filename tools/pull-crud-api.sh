@@ -81,6 +81,9 @@ CATEGORIES="{\
 \"auth\":$AUTHconfig\
 }"
 
+rm -rf amplify
+echo "Existing Amplify app deleted."
+
 amplify pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
@@ -88,15 +91,13 @@ amplify pull \
 --categories $CATEGORIES \
 --yes
 
-amplify codegen
-
 # ----------------------------------------------------------
 # Get the CRUD table config and write it to a generated file
 # ----------------------------------------------------------
 echo "Generating table config..."
-TABLE_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
-mkdir -p $TABLE_CONFIG_DIR
-TABLE_CONFIG_NAME="$TABLE_CONFIG_DIR/table-config.json"
+CRUD_CONFIG_DIR='../../libs/crud-gql/backend/src/generated'
+mkdir -p $CRUD_CONFIG_DIR
+TABLE_CONFIG_NAME="$CRUD_CONFIG_DIR/table-config.json"
 
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 echo "APINAME=$APINAME"
@@ -129,6 +130,3 @@ echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
-echo "Content:"
-cat $TABLE_CONFIG_NAME
-echo "Table config generation ENDED"

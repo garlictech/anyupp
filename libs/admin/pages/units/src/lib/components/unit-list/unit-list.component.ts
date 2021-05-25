@@ -1,6 +1,4 @@
-import * as fp from 'lodash/fp';
 import { combineLatest, Observable } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,13 +9,12 @@ import {
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { IGroup, IUnit } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 import { tap } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -26,13 +23,12 @@ import { tap } from 'rxjs/operators';
   templateUrl: './unit-list.component.html',
 })
 export class UnitListComponent implements OnInit, OnDestroy {
-  public units: IUnit[] = [];
+  public units: Array<CrudApi.Unit & { _group?: CrudApi.Group }> = [];
   public selectedChainId$: Observable<string | undefined | null>;
   public selectedGroupId$: Observable<string | undefined | null>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -59,12 +55,11 @@ export class UnitListComponent implements OnInit, OnDestroy {
       ),
     ])
       .pipe(tap(() => this._changeDetectorRef.detectChanges()))
-      .subscribe(([groups, units]: [IGroup[], IUnit[]]): void => {
-        this.units = fp.cloneDeep(units);
-
-        this.units.map((unit): void => {
-          unit._group = groups.find((g): boolean => g.id === unit.groupId);
-        });
+      .subscribe(([groups, units]: [CrudApi.Group[], CrudApi.Unit[]]): void => {
+        this.units = units.map(unit => ({
+          ...unit,
+          _group: groups.find((g): boolean => g.id === unit.groupId),
+        }));
 
         this._changeDetectorRef.detectChanges();
       });

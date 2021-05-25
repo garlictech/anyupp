@@ -1,7 +1,6 @@
 import * as fp from 'lodash/fp';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Component, Input } from '@angular/core';
-import { IRoleContext } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 
 import { RoleContextFormComponent } from '../role-context-form/role-context-form.component';
@@ -12,7 +11,7 @@ import { RoleContextFormComponent } from '../role-context-form/role-context-form
   styleUrls: ['./role-context-list-item.component.scss'],
 })
 export class RoleContextListItemComponent {
-  @Input() roleContext!: IRoleContext;
+  @Input() roleContext?: CrudApi.RoleContext;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

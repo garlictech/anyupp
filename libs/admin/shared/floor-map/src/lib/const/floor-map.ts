@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const FLOOR_MAP_config = {
   grid: 10,

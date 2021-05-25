@@ -1,17 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-
-import { ILocalizedItem } from './localized-item';
-import { IPaymentMode } from './payment';
-import { ITransaction } from './transaction';
-
-export interface IPriceShown {
-  __typename?: 'PriceShown';
-  currency: string;
-  pricePerUnit: number;
-  priceSum: number;
-  tax: number;
-  taxSum: number;
-}
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export interface IStatusLog {
   userId: string;
@@ -19,58 +6,18 @@ export interface IStatusLog {
   ts?: number; // after objectToArray(statusLog, 'ts')
 }
 
-export interface IOrderItem {
-  __typename?: 'OrderItem';
-  created: number;
-  productName: ILocalizedItem<string>;
-  priceShown: IPriceShown;
-  productId: string;
-  quantity: number;
-  statusLog: IStatusLog[];
-  variantId: string;
-  variantName: ILocalizedItem<string>;
-  image?: string;
-  laneId?: string;
-  allergens?: CrudApi.Allergen[];
-}
-
-export interface ILaneOrderItem extends IOrderItem {
+export interface ILaneOrderItem extends CrudApi.OrderItem {
   orderId?: string;
   userId?: string;
   idx?: number;
   laneColor?: string;
-  image?: string;
-  place?: IPlace;
+  image?: string | null;
+  place?: CrudApi.Place;
   currentStatus?: CrudApi.OrderStatus;
 }
 
-export interface IPlace {
-  __typename?: 'Place';
-  seat: string;
-  table: string;
-}
-
 export interface IOrders {
-  [key: string]: IOrder;
-}
-
-export interface IOrder {
-  __typename?: 'Order';
-  id: string;
-  userId: string;
-  unitId: string;
-  orderNum?: string;
-  items: IOrderItem[];
-  paymentMode: IPaymentMode;
-  statusLog: IStatusLog[];
-  sumPriceShown: IPriceShown;
-  takeAway: boolean;
-  place?: IPlace;
-  paymentIntention?: number;
-  createdAt: string;
-  updatedAt: string;
-  transaction?: ITransaction;
-  transactionId?: string;
+  [key: string]: CrudApi.Order;
 }
 
 export interface IDateIntervals {

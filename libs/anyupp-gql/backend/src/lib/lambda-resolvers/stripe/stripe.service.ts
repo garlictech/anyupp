@@ -1,34 +1,39 @@
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
-
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
-import { IOrder, IUnit, IUser } from '@bgap/shared/types';
-
 import { calculateOrderSumPrice } from '../order/order.utils';
 import {
-  createTransaction, createUser, loadOrder, loadUnit, loadUser, updateOrderState, updateUser
+  createTransaction,
+  createUser,
+  loadOrder,
+  loadUnit,
+  loadUser,
+  updateOrderState,
+  updateUser,
 } from './stripe-graphql-crud';
-import { mapPaymentMethodToCard } from './stripe.utils';
+import { mapPaymentMethodToCard, StripeResolverDeps } from './stripe.utils';
 
-export const listStripeCards = async (
-  crudGraphqlClient: GraphqlApiClient,
-  userId: string,
+export const listStripeCards = (userId: string) => async (
+  deps: StripeResolverDeps,
 ): Promise<AnyuppApi.StripeCard[]> => {
-
   // 1. get userId
   console.log('listStripeCards().start().userId=' + userId);
   const stripe = await initStripe();
 
   // 2. get User from DynamoDB
-  const user: IUser = await loadAndConnectUserForStripe(stripe, crudGraphqlClient, userId);
-  console.log('listStripeCards().user=' + user + ', customerId=' + user?.stripeCustomerId);
+  const user = await loadAndConnectUserForStripe(stripe, userId)(deps);
+
+  console.log(
+    'listStripeCards().user=' + user + ', customerId=' + user?.stripeCustomerId,
+  );
 
   if (!user || !user.stripeCustomerId) {
-    throw Error('User initialization failed. User must have a stripeCustomerId property!');
+    throw Error(
+      'User initialization failed. User must have a stripeCustomerId property!',
+    );
   }
 
-  console.log('listStripeCards.start listing payment methods from Stripe.')
+  console.log('listStripeCards.start listing payment methods from Stripe.');
   return stripe.paymentMethods
     .list({
       customer: user.stripeCustomerId,
@@ -40,30 +45,36 @@ export const listStripeCards = async (
       return cards;
     })
     .catch(handleStripeErrors);
-}
+};
 
-export const startStripePayment = async (
-  crudGraphqlClient: GraphqlApiClient,
+export const startStripePayment = (
   userId: string,
   input: AnyuppApi.StartStripePaymentInput,
+) => async (
+  deps: StripeResolverDeps,
 ): Promise<AnyuppApi.StartStripePaymentOutput> => {
-
   console.log('startStripePayment().start()');
   const stripe = await initStripe();
 
   // 1. Get parameters, orderId and payment method
   const { orderId, paymentMethod, paymentMethodId, savePaymentMethod } = input;
-  console.log('startStripePayment().orderId=' + orderId +
-    ', paymentMethod=' + paymentMethod +
-    ', paymentMethodId=' + paymentMethodId +
-    ', saveCard=' + savePaymentMethod);
+  console.log(
+    'startStripePayment().orderId=' +
+      orderId +
+      ', paymentMethod=' +
+      paymentMethod +
+      ', paymentMethodId=' +
+      paymentMethodId +
+      ', saveCard=' +
+      savePaymentMethod,
+  );
 
   if (!paymentMethodId) {
     throw Error('Payment method is missing from request!');
   }
 
   // 2. Load order
-  let order: IOrder = await loadOrder(crudGraphqlClient, orderId);
+  let order = await loadOrder(orderId)(deps);
   console.log('startStripePayment().order.loaded=' + order?.id);
 
   if (order == null) {
@@ -71,28 +82,45 @@ export const startStripePayment = async (
   }
 
   if (userId !== order.userId) {
-    throw Error('The Order must belongs to the user, the Order\'s userId field is not match with the logined User\'s id! Details: order.userId=' + order.userId + ' vs userId=' + userId);
+    throw Error(
+      "The Order must belongs to the user, the Order's userId field is not match with the logined User's id! Details: order.userId=" +
+        order.userId +
+        ' vs userId=' +
+        userId,
+    );
   }
 
   const status = order.statusLog[order.statusLog.length - 1];
 
-  if (status.status != CrudApi.OrderStatus.NONE) {
-    throw Error('Order status must be OrderStatus.NONE if you want to pay the order! Current status:' + status + ', id=' + order.id);
+  if (status.status != CrudApi.OrderStatus.none) {
+    throw Error(
+      'Order status must be OrderStatus.NONE if you want to pay the order! Current status:' +
+        status +
+        ', id=' +
+        order.id,
+    );
   }
 
   // 3. Load User
-  const user: IUser = await loadAndConnectUserForStripe(stripe, crudGraphqlClient, userId);
+  const user = await loadAndConnectUserForStripe(stripe, userId)(deps);
   console.log('startStripePayment().user.loaded=' + user?.id);
   if (!user || !user.stripeCustomerId) {
-    throw Error('User initialization failed. User must have a stripeCustomerId property!');
+    throw Error(
+      'User initialization failed. User must have a stripeCustomerId property!',
+    );
   }
 
   // 4. Load unit
-  const unit: IUnit = await loadUnit(crudGraphqlClient, order.unitId);
+  const unit = await loadUnit(order.unitId)(deps);
 
   // 5. Calculate summary
-  const price = calculateOrderSumPrice(order.items);
-  console.log('startStripePayment().calculate.price=' + price?.priceSum + ' ' + price?.currency);
+  const price = calculateOrderSumPrice(order.items || []);
+  console.log(
+    'startStripePayment().calculate.price=' +
+      price?.priceSum +
+      ' ' +
+      price?.currency,
+  );
 
   // 6a. Create payment intent data
   const paymentIntentData: Stripe.PaymentIntentCreateParams = {
@@ -100,31 +128,31 @@ export const startStripePayment = async (
     currency: price.currency,
     payment_method: paymentMethodId,
     payment_method_types: ['card'],
-    customer: user.stripeCustomerId
-  }
+    customer: user.stripeCustomerId,
+  };
 
   // 6b. Add optional merchantId to the payment
-  if (unit.merchantId) {
+  if (unit?.merchantId) {
     console.log('startStripePayment().set merchantId=' + unit.merchantId);
     paymentIntentData.application_fee_amount = 0;
     paymentIntentData.transfer_data = {
-      destination: unit.merchantId
+      destination: unit.merchantId,
     };
   }
 
   // 6c. Save card for later use
   if (savePaymentMethod === true) {
-    const paymentMethod = await stripe.paymentMethods.attach(
-      input.paymentMethodId as string,
-      { customer: user.stripeCustomerId }
-    );
-    console.log('***** startPayment().Payment method ' + paymentMethod.id + ' attached to customer: ' + user.stripeCustomerId);
+    await stripe.paymentMethods.attach(input.paymentMethodId as string, {
+      customer: user.stripeCustomerId,
+    });
   }
 
   // 7. Create payment intent
   // console.log('startStripePayment().creating payment intent.');
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
-  console.log('startStripePayment().payment intent created=' + paymentIntent.id);
+  console.log(
+    'startStripePayment().payment intent created=' + paymentIntent.id,
+  );
 
   // 8. Create Transaction
   const createTransactionVars: CrudApi.CreateTransactionMutationVariables = {
@@ -132,53 +160,71 @@ export const startStripePayment = async (
       userId: userId,
       orderId: orderId,
       currency: order.sumPriceShown.currency,
-      status: CrudApi.PaymentStatus.WAITING_FOR_PAYMENT,
+      status: CrudApi.PaymentStatus.waiting_for_payment,
       externalTransactionId: paymentIntent.id,
       total: order.sumPriceShown.priceSum,
       type: 'STRIPE',
-    }
+    },
   };
-  const transaction = await createTransaction(crudGraphqlClient, createTransactionVars);
-  console.log('startStripePayment().transaction.id=' + transaction.id);
+  const transaction = await createTransaction(createTransactionVars)(deps);
+  console.log('startStripePayment().transaction.id=' + transaction?.id);
+
+  if (!transaction) {
+    throw new Error('Transaction not created');
+  }
 
   // 9. Update ORDER STATUS
   // console.log('startStripePayment().updateOrderState.order=' + order.id);
-  order = await updateOrderState(crudGraphqlClient, order.id, userId, CrudApi.OrderStatus.NONE, transaction.id);
+  order = await updateOrderState(
+    order.id,
+    userId,
+    CrudApi.OrderStatus.none,
+    transaction.id,
+  )(deps);
   console.log('startStripePayment().updateOrderState.done()=' + order?.id);
 
+  console.log('startStripePayment().transaction=' + transaction?.id);
 
   // 6. Return with client secret
   return Promise.resolve({
     clientSecret: paymentIntent.client_secret as string,
-    status: paymentIntent.status
+    status: paymentIntent.status,
   });
 };
 
-const loadAndConnectUserForStripe = async (stripe: Stripe, crudGraphqlClient: GraphqlApiClient, userId: string): Promise<IUser> => {
+const loadAndConnectUserForStripe = (stripe: Stripe, userId: string) => async (
+  deps: StripeResolverDeps,
+) => {
   console.log('loadAndConnectUserForStripe().start()=' + userId);
-  let user: IUser = await loadUser(crudGraphqlClient, userId);
+  let user = await loadUser(userId)(deps);
   console.log('loadAndConnectUserForStripe().user=' + user);
 
   if (!user || !user.stripeCustomerId) {
-
     const stripeResponse: Stripe.Response<Stripe.Customer> = await stripe.customers.create();
-    console.log('loadAndConnectUserForStripe().stripe.statusCode=' + stripeResponse.lastResponse?.statusCode);
-    console.log('loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id);
+    console.log(
+      'loadAndConnectUserForStripe().stripe.statusCode=' +
+        stripeResponse.lastResponse?.statusCode,
+    );
+    console.log(
+      'loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id,
+    );
 
     if (!user) {
       // console.log('loadAndConnectUserForStripe().creating user.')
-      user = await createUser(crudGraphqlClient, userId, stripeResponse.id);
-      console.log('loadAndConnectUserForStripe().User created=' + user.id);
-    } else
-      if (!user.stripeCustomerId) {
-        // console.log('loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' + stripeResponse.id);
-        user = await updateUser(crudGraphqlClient, userId, stripeResponse.id);
-        console.log('loadAndConnectUserForStripe().User stripe customer id created=' + user.id);
-      }
+      user = await createUser(userId, stripeResponse.id)(deps);
+      console.log('loadAndConnectUserForStripe().User created=' + user?.id);
+    } else if (!user.stripeCustomerId) {
+      // console.log('loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' + stripeResponse.id);
+      user = await updateUser(userId, stripeResponse.id)(deps);
+      console.log(
+        'loadAndConnectUserForStripe().User stripe customer id created=' +
+          user?.id,
+      );
+    }
   }
 
   return user;
-}
+};
 
 // TODO
 const handleStripeErrors = (error: Stripe.StripeError) => {
@@ -217,7 +263,9 @@ export const initStripe = async () => {
   const secret = process.env.STRIPE_SECRET_KEY;
   // console.log('initStripe.secret()=' + secret);
   if (!secret) {
-    throw Error('Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY');
+    throw Error(
+      'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
+    );
   }
   return new Stripe(secret, {
     apiVersion: '2020-08-27',

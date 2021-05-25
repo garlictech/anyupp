@@ -7,23 +7,34 @@ import {
   FLOOR_MAP_ENABLED_GROUP_OPTIONS,
   FLOOR_MAP_TEXT_config,
 } from '../const';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { IFloorMapDataObject } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { fabricCanvas, fabricEditMode } from './floor-map-canvas';
 import { getObjectBg } from './floor-map-utils';
 
-const _wh = (rawObject: IFloorMapDataObject) => ({
-  width: rawObject.w,
-  height: rawObject.h,
-});
+const _wh = (rawObject: CrudApi.FloorMapDataObject) => {
+  if (rawObject.w === null || rawObject.h === null) {
+    throw new Error('HANDLE ME: rawObject.w cannot be null');
+  }
 
-const _ital = (rawObject: IFloorMapDataObject) => ({
-  id: rawObject.id,
-  top: rawObject.y,
-  angle: rawObject.a,
-  left: rawObject.x,
-});
+  return {
+    width: rawObject.w as number | undefined,
+    height: rawObject.h as number | undefined,
+  };
+};
+
+const _ital = (rawObject: CrudApi.FloorMapDataObject) => {
+  if (rawObject.a === null) {
+    throw new Error('HANDLE ME: rawObject.angle cannot be null');
+  }
+
+  return {
+    id: rawObject.id,
+    top: rawObject.y,
+    angle: rawObject.a as number | undefined,
+    left: rawObject.x,
+  };
+};
 
 const _commonGroupOptions = () =>
   fabricEditMode
@@ -31,7 +42,7 @@ const _commonGroupOptions = () =>
     : FLOOR_MAP_DISABLED_GROUP_OPTIONS;
 
 export const createTableRect = (
-  rawObject: IFloorMapDataObject,
+  rawObject: CrudApi.FloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Rect({
     fill: FLOOR_MAP_config.tableFill,
@@ -51,8 +62,12 @@ export const createTableRect = (
 };
 
 export const createTableCircle = (
-  rawObject: IFloorMapDataObject,
+  rawObject: CrudApi.FloorMapDataObject,
 ): fabric.Group => {
+  if (rawObject.r === null) {
+    throw new Error('HANDLE ME: rawObject.r cannot be null');
+  }
+
   const bg = new fabric.Circle({
     radius: rawObject.r,
     fill: FLOOR_MAP_config.tableFill,
@@ -74,7 +89,7 @@ export const createTableCircle = (
 };
 
 export const createSeatRect = (
-  rawObject: IFloorMapDataObject,
+  rawObject: CrudApi.FloorMapDataObject,
 ): fabric.Group => {
   const bg = new fabric.Rect({
     ..._wh(rawObject),
@@ -94,8 +109,12 @@ export const createSeatRect = (
 };
 
 export const createSeatCircle = (
-  rawObject: IFloorMapDataObject,
+  rawObject: CrudApi.FloorMapDataObject,
 ): fabric.Group => {
+  if (rawObject.r === null) {
+    throw new Error('HANDLE ME: rawObject.r cannot be null');
+  }
+
   const bg = new fabric.Circle({
     radius: rawObject.r,
     fill: FLOOR_MAP_config.seatFill,
@@ -116,7 +135,9 @@ export const createSeatCircle = (
   return group;
 };
 
-export const createBar = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createBar = (
+  rawObject: CrudApi.FloorMapDataObject,
+): fabric.Group => {
   const bg = new fabric.Rect({
     ..._wh(rawObject),
     fill: FLOOR_MAP_config.barFill,
@@ -132,7 +153,9 @@ export const createBar = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-export const createWall = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createWall = (
+  rawObject: CrudApi.FloorMapDataObject,
+): fabric.Group => {
   const bg = new fabric.Rect({
     ..._wh(rawObject),
     fill: FLOOR_MAP_config.wallFill,
@@ -146,7 +169,9 @@ export const createWall = (rawObject: IFloorMapDataObject): fabric.Group => {
   });
 };
 
-export const createLabel = (rawObject: IFloorMapDataObject): fabric.Group => {
+export const createLabel = (
+  rawObject: CrudApi.FloorMapDataObject,
+): fabric.Group => {
   const bg = new fabric.Rect({
     fill: FLOOR_MAP_config.tableFill,
     opacity: 0,

@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IGroup } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 
 import { GroupFormComponent } from '../group-form/group-form.component';
@@ -13,7 +13,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
   styleUrls: ['./group-list-item.component.scss'],
 })
 export class GroupListItemComponent {
-  @Input() group!: IGroup;
+  @Input() group!: CrudApi.Group;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

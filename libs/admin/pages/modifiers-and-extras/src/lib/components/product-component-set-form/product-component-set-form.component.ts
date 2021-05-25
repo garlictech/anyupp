@@ -2,22 +2,36 @@ import { NGXLogger } from 'ngx-logger';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  EToasterType, getProductComponentObject, getProductComponentOptions, maxSelectionValidator, multiLangValidator
+  EToasterType,
+  getProductComponentObject,
+  getProductComponentOptions,
+  maxSelectionValidator,
+  multiLangValidator,
 } from '@bgap/admin/shared/utils';
 import {
-  EProductComponentSetType, IChain, IGroup, IKeyValue, IKeyValueObject, IProductComponent, IProductComponentSet
+  EProductComponentSetType,
+  IKeyValue,
+  IKeyValueObject,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +43,7 @@ export class ProductComponentSetFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
   public componentForm!: FormGroup;
-  public productComponentSet!: IProductComponentSet;
+  public productComponentSet!: CrudApi.ProductComponentSet;
   public chainOptions: IKeyValue[] = [];
   public typeOptions: IKeyValue[] = [];
   public productComponentOptions: IKeyValue[] = [];
@@ -38,10 +52,9 @@ export class ProductComponentSetFormComponent
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private crudSdk: CrudSdkService,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _amplifyDataService: AmplifyDataService,
     private _logger: NGXLogger,
   ) {
     super(_injector);
@@ -83,9 +96,7 @@ export class ProductComponentSetFormComponent
 
   ngOnInit(): void {
     if (this.productComponentSet) {
-      this.dialogForm.patchValue(
-        cleanObject(this.productComponentSet),
-      );
+      this.dialogForm.patchValue(cleanObject(this.productComponentSet));
     } else {
       // Patch ChainId
       this._store
@@ -99,7 +110,7 @@ export class ProductComponentSetFormComponent
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
+      .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
@@ -120,7 +131,10 @@ export class ProductComponentSetFormComponent
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([productComponents, items]: [IProductComponent[], string[]]): void => {
+        ([productComponents, items]: [
+          CrudApi.ProductComponent[],
+          string[],
+        ]): void => {
           this.productComponentOptions = getProductComponentOptions(
             productComponents,
             items,
@@ -174,12 +188,14 @@ export class ProductComponentSetFormComponent
 
       if (this.productComponentSet?.id) {
         try {
-          await this._amplifyDataService.update<IGroup>(
-            'getProductComponentSet',
-            'updateProductComponentSet',
-            this.productComponentSet.id,
-            () => value,
-          );
+          await this.crudSdk.sdk
+            .UpdateProductComponentSet({
+              input: {
+                id: this.productComponentSet.id,
+                ...value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -195,10 +211,9 @@ export class ProductComponentSetFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create(
-            'createProductComponentSet',
-            value,
-          );
+          await this.crudSdk.sdk
+            .CreateProductComponentSet({ input: value })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,

@@ -46,13 +46,13 @@
       </form>
     </div>
 
-    <nb-list-item *ngFor="let item of adminUser.roleContexts?.items">
+    <nb-list-item *ngFor="let item of adminUser?.roleContexts?.items">
       <div class="w-100">
         <div class="float-left">
-          <div class="subtitle-2">{{ item.roleContext.name | localize }}</div>
+          <div class="subtitle-2">{{ item?.roleContext?.name | localize }}</div>
           <div class="label">
-            {{ 'roles.' + item.roleContext.role | translate }} @
-            {{ item.roleContext | roleEntityNames | async }}
+            {{ 'roles.' + item?.roleContext?.role | translate }} @
+            {{ item?.roleContext | roleEntityNames | async }}
           </div>
         </div>
 

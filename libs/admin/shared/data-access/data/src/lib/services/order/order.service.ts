@@ -4,27 +4,21 @@ import { take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { IAdminUser, IGeneratedProduct, IOrder, IPaymentMode } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
-
-import { AmplifyDataService } from '../amplify-data/amplify-data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private _adminUser?: IAdminUser;
-  // private _groupCurrency?: string;
+  private _adminUser?: CrudApi.AdminUser;
+  private _groupCurrency?: string;
 
-  constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private _store: Store) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
-      .subscribe((adminUser: IAdminUser): void => {
+      .subscribe(adminUser => {
         this._adminUser = adminUser;
       });
 
@@ -34,13 +28,17 @@ export class OrderService {
         select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
       )
-      .subscribe((group: IGroup | undefined): void => {
+      .subscribe((group: CrudApi.Group | undefined): void => {
         this._groupCurrency = group?.currency;
       });
     */
   }
 
-  public updateQuantity(/*order: IOrder, idx: number, value: number*/): void {
+  public updateQuantity(
+    order: CrudApi.Order,
+    idx: number,
+    value: number,
+  ): void {
     /*
     order.items[idx].quantity += value;
 
@@ -48,7 +46,7 @@ export class OrderService {
       order.items[idx].priceShown.priceSum =
         order.items[idx].quantity * order.items[idx].priceShown.pricePerUnit;
       order.sumPriceShown.priceSum = 0;
-      order.items.forEach((item: IOrderItem): void => {
+      order.items.forEach((item: CrudApi.OrderItem): void => {
         order.sumPriceShown.priceSum += item.priceShown.priceSum;
       });
       order.sumPriceShown.taxSum =
@@ -64,9 +62,14 @@ export class OrderService {
         )
         .then((): void => {
           if (
-            currentStatus(order.items[idx].statusLog) === CrudApi.OrderStatus.REJECTED
+            currentStatus(order.items[idx].statusLog) ===
+            CrudApi.OrderStatus.rejected
           ) {
-            this.updateOrderItemStatus(order.id, CrudApi.OrderStatus.PLACED, idx);
+            this.updateOrderItemStatus(
+              order.id,
+              CrudApi.OrderStatus.placed,
+              idx,
+            );
           }
         });
     }
@@ -74,8 +77,8 @@ export class OrderService {
   }
 
   public addProductVariant(
-    order: IOrder,
-    product: IGeneratedProduct,
+    order: CrudApi.Order,
+    product: CrudApi.GeneratedProduct,
     variantId: string,
   ): void {
     // const now = new Date().getTime();
@@ -103,7 +106,7 @@ export class OrderService {
         quantity: 1,
         statusLog: {
           [now]: {
-            status: EOrderStatus.PLACED,
+            status: CrudApi.OrderStatus.placed,
             userId: this._adminUser?.id || '',
           },
         },
@@ -115,24 +118,27 @@ export class OrderService {
 
   public updateOrderPaymentMode(
     orderId: string,
-    paymentMode: IPaymentMode,
-  ): Promise<unknown> {
+    paymentMode: CrudApi.PaymentMode,
+  ) {
+    console.error('TODO UPDATE');
+    /*
     return this._amplifyDataService.patch('updateOrder', {
       id: orderId,
       paymentMode,
     });
+    */
   }
 
-  public updateOrderStatus(
-    order: IOrder,
-    status: CrudApi.OrderStatus,
-  ): Promise<unknown> {
+  public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
+    console.error('TODO UPDATE');
+    /*
     return this._amplifyDataService.patch('updateOrder', {
       id: order.id,
       statusLog: [
         { status, ts: new Date().getTime(), userId: this._adminUser?.id || '' },
       ],
     });
+    */
   }
 
   public updateOrderItemStatus(
@@ -140,6 +146,8 @@ export class OrderService {
     status: CrudApi.OrderStatus,
     idx: number,
   ): void {
+    console.error('TODO UPDATE');
+    /*
     this._store
       .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
       .subscribe(
@@ -159,21 +167,29 @@ export class OrderService {
           }
         },
       );
+      */
   }
 
   public updateOrderTransactionStatus(
     transactionId: string,
     status: CrudApi.PaymentStatus,
-  ): Promise<unknown> {
+  ): void {
+    console.error('TODO UPDATE');
+    /*
     return this._amplifyDataService.patch('updateTransaction', {
       id: transactionId,
       status,
     });
+    */
   }
 
-  public async moveOrderToHistory(order: IOrder, status: CrudApi.OrderStatus) {
-    console.error('moveOrderToHistory order', order);
+  public async moveOrderToHistory(
+    order: CrudApi.Order,
+    status: CrudApi.OrderStatus,
+  ) {
+    console.error('TODO moveOrderToHistory order', order);
 
+    /*
     const historyOrder = fp.omit(['createdAt', 'updatedAt', 'orderNum'], fp.cloneDeep(order));
     const statusObject = {
       status,
@@ -195,5 +211,6 @@ export class OrderService {
     }
 
     console.error('READY');
+    */
   }
 }

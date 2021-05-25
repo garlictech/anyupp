@@ -1,11 +1,11 @@
-import { IAdminUser } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const init = createAction('[AdminUsers] Init');
 
-export const upsertAdminUser = createAction(
-  '[AdminUsers] Upsert admin user',
-  props<{ adminUser: IAdminUser }>(),
+export const upsertAdminUsers = createAction(
+  '[AdminUsers] Upsert admin users',
+  props<{ adminUsers: CrudApi.AdminUser[] }>(),
 );
 
 export const resetAdminUsers = createAction('[AdminUsers] Reset admin users');

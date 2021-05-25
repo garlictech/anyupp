@@ -1,10 +1,9 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { createAnonymUser } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
-import { anyuppGraphQLClient } from '@bgap/shared/graphql/api-client';
 
 const consumerUserPoolId = config.ConsumerUserPoolId;
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -13,17 +12,16 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 });
 
 describe('Anonym user creation', () => {
+  const deps = {
+    anyuppSdk: AnyuppApi.getAnyuppSdkPublic(),
+    consumerUserPoolId: config.ConsumerUserPoolId,
+  };
+
   test('Anonym user should be created/deleted', done => {
     of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
       .pipe(
         // CREATE USER
-        switchMap(() =>
-          createAnonymUser({
-            crudGraphqlClient: anyuppGraphQLClient,
-            cognito: cognitoidentityserviceprovider,
-            consumerUserPoolId,
-          }),
-        ),
+        switchMap(() => createAnonymUser(deps)),
         tap({
           next(result) {
             // SHOULD RETURN THE email and password

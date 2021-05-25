@@ -2,7 +2,11 @@ import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { multiLangValidator, productAvailabilityValidator, TIME_FORMAT_PATTERN } from '@bgap/admin/shared/utils';
+import {
+  multiLangValidator,
+  productAvailabilityValidator,
+  TIME_FORMAT_PATTERN,
+} from '@bgap/admin/shared/utils';
 import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
 
 @Injectable({
@@ -10,9 +14,7 @@ import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
 })
 export class FormsService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(
-    /*private _store: Store<any>,*/ private _formBuilder: FormBuilder,
-  ) {}
+  constructor(/*private _store: Store,*/ private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -82,18 +84,20 @@ export class FormsService {
     return this._formBuilder.group(groupConfig);
   };
 
-  public createProductConfigSetItemFormGroup = (productLevel: EProductLevel): FormGroup => {
+  public createProductConfigSetItemFormGroup = (
+    productLevel: EProductLevel,
+  ): FormGroup => {
     const groupConfig: Record<string, unknown> = {
       productComponentId: ['', Validators.required],
       position: [0, Validators.required],
     };
 
     if (productLevel !== EProductLevel.CHAIN) {
-      groupConfig.refGroupPrice = ['', Validators.required]
+      groupConfig.refGroupPrice = ['', Validators.required];
     }
 
     if (productLevel === EProductLevel.UNIT) {
-      groupConfig.price = ['', Validators.required]
+      groupConfig.price = ['', Validators.required];
     }
 
     return this._formBuilder.group(groupConfig);

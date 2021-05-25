@@ -1,5 +1,4 @@
 import path from 'path';
-
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
@@ -31,8 +30,9 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
+  public api: appsync.GraphqlApi;
+
   private lambdaDs!: appsync.LambdaDataSource;
-  private api: appsync.GraphqlApi;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
@@ -133,7 +133,7 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     if (apiLambda.role) {
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
@@ -148,7 +148,7 @@ export class AppsyncAppStack extends sst.Stack {
           ],
         }),
       );
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: [
             'dynamodb:BatchGetItem',

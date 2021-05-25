@@ -1,6 +1,5 @@
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,19 +8,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import {
-  EAdminRole,
-  EProductLevel,
-  IAdminUser,
-  IGroup,
-  IProduct,
-  IProductOrderChangeEvent,
-} from '@bgap/shared/types';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { EProductLevel } from '@bgap/shared/types';
+import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import {
   NbDialogService,
   NbTabComponent,
@@ -29,8 +20,10 @@ import {
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IProductOrderChangeEvent } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -42,23 +35,25 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts$: Observable<IProduct[]>;
-  public groupProducts$: Observable<IProduct[]>;
-  public pendingGroupProducts: IProduct[] = [];
-  public pendingUnitProducts: IProduct[] = [];
+  public chainProducts$: Observable<CrudApi.ChainProduct[]>;
+  public groupProducts$: Observable<CrudApi.GroupProduct[]>;
+  // TODO this is weird, check is pls. we call it groupProduct but use it as
+  // chainproduct
+  public pendingGroupProducts: CrudApi.ChainProduct[] = [];
+  //public pendingGroupProducts: CrudApi.GroupProduct[] = [];
+  public pendingUnitProducts: CrudApi.UnitProduct[] = [];
   public groupCurrency = '';
-  public unitProducts: IProduct[] = [];
+  public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
-  private _loggedUser?: IAdminUser;
+  private _loggedUser?: CrudApi.AdminUser | null;
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _amplifyDataService: AmplifyDataService,
+    private crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
@@ -70,9 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     this.chainProducts$ = this._store.pipe(
       select(productsSelectors.getChainProductsOfSelectedCategory()),
-      map((products): IProduct[] =>
-        products.sort(customNumberCompare('position')),
-      ),
+      map(products => products.sort(customNumberCompare('position'))),
       untilDestroyed(this),
     );
   }
@@ -97,12 +90,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
-        map((products): IProduct[] =>
-          products.sort(customNumberCompare('position')),
-        ),
+        map(products => products.sort(customNumberCompare('position'))),
         untilDestroyed(this),
       )
-      .subscribe((unitProducts: IProduct[]): void => {
+      .subscribe(unitProducts => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
 
@@ -112,31 +103,34 @@ export class ProductListComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(
         select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
-        untilDestroyed(this),
       ),
       this._store.pipe(
         select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
-        untilDestroyed(this),
       ),
       this._store.pipe(
         select(loggedUserSelectors.getLoggedUser),
-        skipWhile((_loggedUser): boolean => !_loggedUser),
+        filterNullish(),
+      ),
+      this._store.pipe(
+        select(loggedUserSelectors.getLoggedUserRole),
+        filterNullish(),
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([pendingGroupProducts, pendingUnitProducts, _loggedUser]: [
-          IProduct[],
-          IProduct[],
-          IAdminUser,
+        ([
+          pendingGroupProducts,
+          pendingUnitProducts,
+          _loggedUser,
+          role,
         ]): void => {
           this._loggedUser = _loggedUser;
 
           this.pendingGroupProducts = [
-            EAdminRole.SUPERUSER,
-            EAdminRole.CHAIN_ADMIN,
-            EAdminRole.GROUP_ADMIN,
-          ].includes(<EAdminRole>_loggedUser?.role)
+            CrudApi.Role.superuser,
+            CrudApi.Role.chainadmin,
+            CrudApi.Role.groupadmin,
+          ].includes(role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -147,7 +141,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
               skipWhile((group): boolean => !group),
               take(1),
             )
-            .subscribe((group: IGroup | undefined): void => {
+            .subscribe((group: CrudApi.Group | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
 
@@ -192,15 +186,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
           const productId = this._sortedUnitProductIds[i];
 
-          await this._amplifyDataService.update<IProduct>(
-            'getUnitProduct',
-            'updateUnitProduct',
-            productId,
-            (data: unknown) => ({
-              ...(<IProduct>data),
-              position: i + 1,
-            }),
-          );
+          await this.crudSdk.sdk
+            .UpdateUnitProduct({
+              input: {
+                id: productId,
+                position: i + 1,
+              },
+            })
+            .toPromise();
         }
       }
     }

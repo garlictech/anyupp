@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,12 +17,11 @@ import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
-import { CrudApi } from '@bgap/crud-gql/api';
+
 import {
   EDashboardSize,
   EDashboardTicketListType,
   ENebularButtonSize,
-  IOrder,
 } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -36,25 +35,25 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./order-ticket-list.component.scss'],
 })
 export class OrderTicketListComponent implements OnInit, OnDestroy {
-  public selectedOrder?: IOrder;
+  public selectedOrder?: CrudApi.Order;
   public dashboardSettings!: IDashboardSettings;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   public EDashboardTicketListType = EDashboardTicketListType;
 
-  public filteredOrders: IOrder[] = [];
-  public placedOrders: IOrder[] = [];
-  public manualPaymentOrders: IOrder[] = [];
-  public problematicOrders: IOrder[] = [];
+  public filteredOrders: CrudApi.Order[] = [];
+  public placedOrders: CrudApi.Order[] = [];
+  public manualPaymentOrders: CrudApi.Order[] = [];
+  public problematicOrders: CrudApi.Order[] = [];
 
   public uniquePaymentUsersCount = 0;
   public uniqueReadyOrdersCount = 0;
 
-  private _orders: IOrder[] = [];
+  private _orders: CrudApi.Order[] = [];
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -70,7 +69,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
       ),
     ]).subscribe(
       ([activeOrders, ticketListType]: [
-        IOrder[],
+        CrudApi.Order[],
         EDashboardTicketListType,
       ]): void => {
         this._orders = activeOrders;
@@ -89,7 +88,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         select(dashboardSelectors.getSelectedActiveOrder()),
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: IOrder | undefined): void => {
+      .subscribe((selectedOrder: CrudApi.Order | undefined): void => {
         this.selectedOrder = selectedOrder;
 
         this._changeDetectorRef.detectChanges();
@@ -116,14 +115,10 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   private _refreshPlacedOrders(): void {
     // 1. tab: minden ami processed és served között státuszban van
     this.placedOrders = [
-      ...this._orders.filter((o: IOrder): boolean => {
-        const currentStatus = currentStatusFn(o.statusLog);
-
-        return (
-          currentStatus !== CrudApi.OrderStatus.NONE &&
-          currentStatus !== CrudApi.OrderStatus.SERVED
-        );
-      }),
+      ...this._orders.filter(
+        (o: CrudApi.Order): boolean =>
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.ready,
+      ),
     ];
   }
 
@@ -133,11 +128,11 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     // és ezek között lehet olyan, ami már az első tabon is szerepel)
     this.manualPaymentOrders = [
       ...this._orders.filter(
-        (o: IOrder): boolean =>
-          (o.paymentMode.method === CrudApi.PaymentMethod.CARD ||
-            o.paymentMode.method === CrudApi.PaymentMethod.CASH) &&
-          o.transaction?.status !== CrudApi.PaymentStatus.SUCCESS &&
-          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.REJECTED,
+        (o: CrudApi.Order): boolean =>
+          (o.paymentMode.method === CrudApi.PaymentMethod.card ||
+            o.paymentMode.method === CrudApi.PaymentMethod.cash) &&
+          o.transaction?.status !== CrudApi.PaymentStatus.success &&
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.rejected,
       ),
     ];
   }
@@ -147,22 +142,23 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     // 3 tab gyakorlatilag a problémás vagy szemét orderek, amikben lehet így turkálni
     this.problematicOrders = [
       ...this._orders.filter(
-        (o: IOrder): boolean =>
-          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.NONE &&
-          o.transaction?.status !== CrudApi.PaymentStatus.SUCCESS,
+        (o: CrudApi.Order): boolean =>
+          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.none &&
+          o.transaction?.status !== CrudApi.PaymentStatus.success,
       ),
     ];
   }
 
   private _refreshFilteredOrders(listType: EDashboardTicketListType): void {
     switch (listType) {
-      case EDashboardTicketListType.PLACED:
+      case EDashboardTicketListType.placed:
         this.filteredOrders = this.placedOrders.sort(
           customNumberCompare('created'),
         );
         break;
-      case EDashboardTicketListType.READY:
+      case EDashboardTicketListType.ready:
         this.filteredOrders = this.manualPaymentOrders;
+
         break;
       case EDashboardTicketListType.PAYMENT_INTENTION:
         this.filteredOrders = this.problematicOrders.sort(
@@ -184,7 +180,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
       });
   }
 
-  public selectOrder(order: IOrder): void {
+  public selectOrder(order: CrudApi.Order): void {
     const selectedOrder = this._orders.find((o): boolean => o.id === order?.id);
 
     this._store.dispatch(
@@ -206,7 +202,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public trackByFn(index: number, item: IOrder): string {
+  public trackByFn(_index: number, item: CrudApi.Order): string {
     return item.id;
   }
 }

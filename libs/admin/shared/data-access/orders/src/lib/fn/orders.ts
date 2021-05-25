@@ -1,35 +1,48 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
   IFloorMapTableOrderObjects,
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
   ILaneOrderItem,
-  IOrder,
   IStatusLog,
-  IUnit,
 } from '@bgap/shared/types';
-import { CrudApi } from '@bgap/crud-gql/api';
 
-export const currentStatus = (status: IStatusLog[]): CrudApi.OrderStatus => {
+export const currentStatus = (
+  status: CrudApi.StatusLog[],
+): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
-    return CrudApi.OrderStatus.NONE;
+    return CrudApi.OrderStatus.none;
   }
   const lastElement = status[status.length - 1];
-  return lastElement?.status || CrudApi.OrderStatus.NONE;
+  return lastElement?.status || CrudApi.OrderStatus.none;
 };
 
 export const getNextOrderStatus = (
   currStatus: CrudApi.OrderStatus,
 ): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
-    case CrudApi.OrderStatus.NONE:
-      return CrudApi.OrderStatus.PLACED;
-    case CrudApi.OrderStatus.PLACED:
-      return CrudApi.OrderStatus.PROCESSING;
-    case CrudApi.OrderStatus.PROCESSING:
-      return CrudApi.OrderStatus.READY;
-    case CrudApi.OrderStatus.READY:
-      return CrudApi.OrderStatus.SERVED;
+    case CrudApi.OrderStatus.placed:
+      return CrudApi.OrderStatus.processing;
+    case CrudApi.OrderStatus.processing:
+      return CrudApi.OrderStatus.ready;
+    case CrudApi.OrderStatus.ready:
+      return CrudApi.OrderStatus.paid;
+    default:
+      return;
+  }
+};
+
+export const getNextOrderItemStatus = (
+  currStatus: CrudApi.OrderStatus,
+): CrudApi.OrderStatus | undefined => {
+  switch (currStatus) {
+    case CrudApi.OrderStatus.placed:
+      return CrudApi.OrderStatus.processing;
+    case CrudApi.OrderStatus.processing:
+      return CrudApi.OrderStatus.ready;
+    case CrudApi.OrderStatus.ready:
+      return CrudApi.OrderStatus.served;
     default:
       return;
   }
@@ -39,12 +52,12 @@ export const getPrevOrderItemStatus = (
   currStatus: CrudApi.OrderStatus,
 ): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
-    case CrudApi.OrderStatus.SERVED:
-      return CrudApi.OrderStatus.READY;
-    case CrudApi.OrderStatus.READY:
-      return CrudApi.OrderStatus.PROCESSING;
-    case CrudApi.OrderStatus.PROCESSING:
-      return CrudApi.OrderStatus.PLACED;
+    case CrudApi.OrderStatus.served:
+      return CrudApi.OrderStatus.ready;
+    case CrudApi.OrderStatus.ready:
+      return CrudApi.OrderStatus.processing;
+    case CrudApi.OrderStatus.processing:
+      return CrudApi.OrderStatus.placed;
     default:
       return;
   }
@@ -52,41 +65,43 @@ export const getPrevOrderItemStatus = (
 
 export const getOrderLaneColor = (
   orderItem: ILaneOrderItem,
-  unit: IUnit,
+  unit: CrudApi.Unit,
 ): string => {
   return unit?.lanes && orderItem.laneId
-    ? unit.lanes.find(l => l.id === orderItem.laneId)?.color ||
+    ? unit.lanes.find(l => l?.id === orderItem.laneId)?.color ||
         DEFAULT_LANE_COLOR
     : DEFAULT_LANE_COLOR;
 };
 
 export const getStatusColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
-    case CrudApi.OrderStatus.NONE:
-      return 'danger';
-    case CrudApi.OrderStatus.PLACED:
+    case CrudApi.OrderStatus.placed:
       return 'warning';
-    case CrudApi.OrderStatus.PROCESSING:
+    case CrudApi.OrderStatus.processing:
       return 'primary';
-    case CrudApi.OrderStatus.READY:
+    case CrudApi.OrderStatus.ready:
       return 'info';
-    case CrudApi.OrderStatus.SERVED:
+    case CrudApi.OrderStatus.paid:
       return 'success';
-    case CrudApi.OrderStatus.FAILED:
-      return 'danger';
-    case CrudApi.OrderStatus.REJECTED:
+    case CrudApi.OrderStatus.served:
+      return 'success';
+    case CrudApi.OrderStatus.rejected:
       return 'danger';
     default:
       return '';
   }
 };
 
-export const getLowestStatus = (statuses: CrudApi.OrderStatus[]): CrudApi.OrderStatus => {
+export const getLowestStatus = (
+  statuses: CrudApi.OrderStatus[],
+): CrudApi.OrderStatus => {
   const SORTED_ORDER_STATUSES = [
-    CrudApi.OrderStatus.PLACED,
-    CrudApi.OrderStatus.PROCESSING,
-    CrudApi.OrderStatus.READY,
-    CrudApi.OrderStatus.SERVED
+    CrudApi.OrderStatus.placed,
+    CrudApi.OrderStatus.processing,
+    CrudApi.OrderStatus.ready,
+    CrudApi.OrderStatus.served,
+    CrudApi.OrderStatus.waiting_for_payment,
+    CrudApi.OrderStatus.paid,
   ];
 
   const statusIndices: number[] = statuses
@@ -97,11 +112,11 @@ export const getLowestStatus = (statuses: CrudApi.OrderStatus[]): CrudApi.OrderS
 };
 
 export const getOrdersByUser = (
-  orders: IOrder[],
+  orders: CrudApi.Order[],
 ): IFloorMapUserOrderObjects => {
   const ordersByUser: IFloorMapUserOrderObjects = {};
 
-  orders.forEach((order: IOrder): void => {
+  orders.forEach((order: CrudApi.Order): void => {
     if (!ordersByUser[order.userId]) {
       ordersByUser[order.userId] = {
         userId: order.userId,

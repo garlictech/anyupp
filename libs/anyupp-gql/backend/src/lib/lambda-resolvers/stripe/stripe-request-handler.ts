@@ -1,7 +1,7 @@
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
 // import { missingParametersCheck } from '@bgap/shared/utils';
 import * as stripeService from './stripe.service';
-import { GraphqlApiClient } from '@bgap/shared/graphql/api-client';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { StripeResolverDeps } from './stripe.utils';
 
 // interface WithStripeCustomer {
 //   stripeCustomerId: string;
@@ -19,22 +19,15 @@ type StartStripePaymentRequest = WithCognitoUser &
 
 export type ListStripeCardsRequest = WithCognitoUser;
 
-export const stripeRequestHandler = {
+export const stripeRequestHandler = (deps: StripeResolverDeps) => ({
   // LIST STRIPE CARDS FOR THE LOGGED IN CUSTOMER
-  listStripeCards: (crudGraphqlClient: GraphqlApiClient) => (requestPayload: ListStripeCardsRequest,
-  ): Promise<AnyuppApi.StripeCard[]> => {
+  listStripeCards: (requestPayload: ListStripeCardsRequest) =>
+    stripeService.listStripeCards(requestPayload.userId)(deps),
 
-    return stripeService.listStripeCards(crudGraphqlClient, requestPayload.userId);
-  },
+  startStripePayment: (requestPayload: StartStripePaymentRequest) => {
+    const { userId, input } = requestPayload as StartStripePaymentRequest;
 
-  startStripePayment: (crudGraphqlClient: GraphqlApiClient) => (requestPayload: StartStripePaymentRequest,
-    ): Promise<AnyuppApi.StartStripePaymentOutput> => { // TODO
-    const {
-      userId,
-      input,
-    } = requestPayload as StartStripePaymentRequest;
-
-    return stripeService.startStripePayment(crudGraphqlClient, userId, input);
+    return stripeService.startStripePayment(userId, input)(deps);
   },
 
   // getStripeCardsForCustomer(
@@ -86,4 +79,4 @@ export const stripeRequestHandler = {
 
   //   return stripeService.startStripePayment(stripeCustomerId, input);
   // },
-};
+});

@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { config } from '@bgap/shared/config';
 import { ILocation } from '@bgap/shared/types';

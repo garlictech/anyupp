@@ -1,5 +1,7 @@
 query ListProductsQuery($unitId: ID!, $categoryId: ID!) {
-  listGeneratedProducts(filter: {unitId: {eq: $unitId}, productCategoryId: {eq: $categoryId}}) {
+  listGeneratedProducts(
+    filter: { unitId: { eq: $unitId }, productCategoryId: { eq: $categoryId } }
+  ) {
     items {
       id
       unitId

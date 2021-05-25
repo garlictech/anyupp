@@ -1,9 +1,7 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { ETransactionType } from '@bgap/shared/types';
-
-import { seededIdPrefix, testIdPrefix } from './common';
-import { productSeed } from './product';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { unitSeed } from './unit';
+import { productSeed } from './product';
+import { seededIdPrefix, testIdPrefix } from './common';
 
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
@@ -42,7 +40,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
   statusLog: [
     {
       userId: userId_01,
-      status: CrudApi.OrderStatus.PLACED,
+      status: CrudApi.OrderStatus.placed,
       ts: 1234,
     },
   ],
@@ -55,8 +53,8 @@ const cart_01 = {
   unitId: unitId_01,
   takeAway: false,
   paymentMode: {
-    name: ETransactionType.STRIPE,
-    method: CrudApi.PaymentMethod.INAPP,
+    name: 'IN_APP',
+    method: CrudApi.PaymentMethod.inapp,
   },
   place: {
     seat: 'SEAT',

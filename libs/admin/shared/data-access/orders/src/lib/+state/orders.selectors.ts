@@ -1,15 +1,14 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { ILaneOrderItem, IOrder, IOrderItem } from '@bgap/shared/types';
+import { currentStatus as currentStatusFn } from '../fn';
+import { ILaneOrderItem } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { currentStatus as currentStatusFn } from '../fn';
 import {
   activeOrdersAdapter,
   historyOrdersAdapter,
-  IOrderEntityState,
   IOrdersState,
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const getOrdersState = createFeatureSelector<IOrdersState>(
   ORDERS_FEATURE_KEY,
@@ -19,7 +18,7 @@ export const getOrdersState = createFeatureSelector<IOrdersState>(
 
 const activeOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.active,
+  state => state.active,
 );
 export const getAllActiveOrders = activeOrdersAdapter.getSelectors(
   activeOrderListSelector,
@@ -32,13 +31,13 @@ export const getAllActiveOrderCount = activeOrdersAdapter.getSelectors(
 ).selectTotal;
 
 export const getActiveOrderById = (id: string) => {
-  return createSelector(getAllActiveOrders, (orders: IOrder[]):
-    | IOrder
+  return createSelector(getAllActiveOrders, (orders: CrudApi.Order[]):
+    | CrudApi.Order
     | undefined => orders.find((order): boolean => order.id === id));
 };
 
 export const getActiveOrdersByUserId = (userId: string) => {
-  return createSelector(getAllActiveOrders, (orders: IOrder[]): IOrder[] =>
+  return createSelector(getAllActiveOrders, orders =>
     orders.filter((order): boolean => order.userId === userId),
   );
 };
@@ -46,53 +45,48 @@ export const getActiveOrdersByUserId = (userId: string) => {
 export const getActiveOrdersCountByUserId = (userId: string) => {
   return createSelector(
     getAllActiveOrders,
-    (orders: IOrder[]): number =>
+    orders =>
       (orders.filter((order): boolean => order.userId === userId) || []).length,
   );
 };
 
 export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
-  return createSelector(
-    getAllActiveOrders,
-    (orders: IOrder[]): ILaneOrderItem[] => {
-      const laneOrderItems: IOrderItem[] = [];
+  return createSelector(getAllActiveOrders, orders => {
+    const laneOrderItems: CrudApi.OrderItem[] = [];
 
-      orders.forEach((order: IOrder): void => {
-        laneOrderItems.push(
-          ...order.items
-            // use "map" first for the correct idx!!!
-            .map(
-              (orderItem: IOrderItem, idx: number): ILaneOrderItem => ({
-                ...orderItem,
-                idx,
-              }),
-            )
-            .filter(
-              (orderItem: IOrderItem): boolean =>
-                currentStatusFn(orderItem.statusLog) === status,
-            )
-            .map(
-              (orderItem: IOrderItem): ILaneOrderItem => ({
-                ...orderItem,
-                orderId: order.id,
-                userId: order.userId,
-                place: order.place,
-                currentStatus: status,
-              }),
-            ),
-        );
-      });
+    orders.forEach(order => {
+      laneOrderItems.push(
+        ...order.items
+          // use "map" first for the correct idx!!!
+          .map(
+            (orderItem: CrudApi.OrderItem, idx: number): ILaneOrderItem => ({
+              ...orderItem,
+              idx,
+            }),
+          )
+          .filter(
+            (orderItem: CrudApi.OrderItem): boolean =>
+              currentStatusFn(orderItem.statusLog) === status,
+          )
+          .map((orderItem: CrudApi.OrderItem) => ({
+            ...orderItem,
+            orderId: order.id,
+            userId: order.userId,
+            place: order.place,
+            currentStatus: status,
+          })),
+      );
+    });
 
-      return laneOrderItems;
-    },
-  );
+    return laneOrderItems;
+  });
 };
 
 // HISTORY
 
 const historyOrderListSelector = createSelector(
   getOrdersState,
-  (state: IOrdersState): IOrderEntityState => state.history,
+  state => state.history,
 );
 export const getAllHistoryOrders = historyOrdersAdapter.getSelectors(
   historyOrderListSelector,
@@ -105,7 +99,7 @@ export const getAllHistoryOrderCount = historyOrdersAdapter.getSelectors(
 ).selectTotal;
 
 export const getHistoryOrderById = (id: string) => {
-  return createSelector(getAllHistoryOrders, (orders: IOrder[]):
-    | IOrder
+  return createSelector(getAllHistoryOrders, (orders: CrudApi.Order[]):
+    | CrudApi.Order
     | undefined => orders.find((order): boolean => order.id === id));
 };

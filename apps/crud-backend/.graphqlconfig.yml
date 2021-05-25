@@ -1,5 +1,5 @@
 projects:
-  anyuppbackend:
+  main:
     schemaPath: amplify/backend/api/anyuppbackend/build/schema.graphql
     includes:
       - ../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts
@@ -12,7 +12,7 @@ projects:
         docsFilePath: ../../libs/crud-gql/api/src/lib/generated/graphql
         region: eu-west-1
         apiId: null
-        maxDepth: 10
+        maxDepth: 4
 extensions:
   amplify:
     version: 3

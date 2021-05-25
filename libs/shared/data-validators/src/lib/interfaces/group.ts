@@ -1,10 +1,9 @@
 import * as Joi from 'joi';
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
-import { IGroup } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
-export const groupSchema: Joi.SchemaMap<IGroup> = {
-  __typename: Joi.string().valid('Group').optional(),
+export const groupSchema: Joi.SchemaMap<CrudApi.Group> = {
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   name: Joi.string().required(),
@@ -14,5 +13,5 @@ export const groupSchema: Joi.SchemaMap<IGroup> = {
   updatedAt: Joi.string().required(),
 };
 export const { validate: validateGroup, isType: isGroup } = validateSchema<
-  IGroup
+  CrudApi.Group
 >(groupSchema, 'Group');

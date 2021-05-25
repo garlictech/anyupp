@@ -1,12 +1,11 @@
 import * as Joi from 'joi';
-import { ICart } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { paymentModeSchema } from './payment';
 import { validateSchema } from '../validator/validate';
 import { placeSchema, orderItemSchema } from './order';
 
-export const cartSchema: Joi.SchemaMap<ICart> = {
-  __typename: Joi.string().valid('Cart').optional(),
+export const cartSchema: Joi.SchemaMap<CrudApi.Cart> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
@@ -18,7 +17,6 @@ export const cartSchema: Joi.SchemaMap<ICart> = {
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateCart, isType: isCart } = validateSchema<ICart>(
-  cartSchema,
-  'Cart',
-);
+export const { validate: validateCart, isType: isCart } = validateSchema<
+  CrudApi.Cart
+>(cartSchema, 'Cart');
