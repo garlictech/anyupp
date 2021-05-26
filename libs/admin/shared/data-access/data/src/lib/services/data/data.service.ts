@@ -2,7 +2,6 @@ import { concat, EMPTY, Observable, of, Subject } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
-  filter,
   map,
   switchMap,
   takeUntil,
@@ -323,21 +322,28 @@ export class DataService {
   }
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
-    this._doSubscription<any>(
+    console.error('_subscribeToGeneratedUnitProducts', unitId);
+    /* TODO fix
+    this._doSubscription(
       productsActions.resetGeneratedProducts(),
+
 
       this.crudSdk.sdk.ListGeneratedProducts({
         filter: { unitId: { eq: unitId } },
       }),
+
+
       this.crudSdk.sdk.OnGeneratedProductChange(),
       (products: CrudApi.GeneratedProduct[]) =>
         productsActions.upsertGeneratedProducts({ products }),
     );
+    */
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
     console.error('_subscribeToSelectedUnitOrders', unitId);
-    this._doSubscription<any>(
+    /* TODO fix
+    this._doSubscription(
       ordersActions.resetActiveOrders(),
 
       this.crudSdk.sdk.ListOrders(),
@@ -347,6 +353,7 @@ export class DataService {
         return ordersActions.upsertActiveOrders({ orders });
       },
     );
+    */
 
     /*
     this._store
