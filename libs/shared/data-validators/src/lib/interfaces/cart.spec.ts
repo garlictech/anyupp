@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
