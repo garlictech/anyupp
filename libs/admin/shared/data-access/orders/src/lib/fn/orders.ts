@@ -5,7 +5,6 @@ import {
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
   ILaneOrderItem,
-  IStatusLog,
 } from '@bgap/shared/types';
 
 export const currentStatus = (

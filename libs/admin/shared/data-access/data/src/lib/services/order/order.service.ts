@@ -1,9 +1,5 @@
-import * as fp from 'lodash/fp';
-import { take } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
@@ -39,6 +35,7 @@ export class OrderService {
     idx: number,
     value: number,
   ): void {
+    console.error('updateQuantity', order, idx, value);
     /*
     order.items[idx].quantity += value;
 
@@ -120,6 +117,7 @@ export class OrderService {
     orderId: string,
     paymentMode: CrudApi.PaymentMode,
   ) {
+    console.error('updateOrderPaymentMode', orderId, paymentMode);
     console.error('TODO UPDATE');
     /*
     return this._amplifyDataService.patch('updateOrder', {
@@ -131,6 +129,7 @@ export class OrderService {
 
   public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
     console.error('TODO UPDATE');
+    console.error('updateOrderStatus', order, status);
     /*
     return this._amplifyDataService.patch('updateOrder', {
       id: order.id,
@@ -147,6 +146,7 @@ export class OrderService {
     idx: number,
   ): void {
     console.error('TODO UPDATE');
+    console.error('updateOrderItemStatus', orderId, status, idx);
     /*
     this._store
       .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
@@ -175,6 +175,7 @@ export class OrderService {
     status: CrudApi.PaymentStatus,
   ): void {
     console.error('TODO UPDATE');
+    console.error('updateOrderTransactionStatus', transactionId, status);
     /*
     return this._amplifyDataService.patch('updateTransaction', {
       id: transactionId,
@@ -187,7 +188,7 @@ export class OrderService {
     order: CrudApi.Order,
     status: CrudApi.OrderStatus,
   ) {
-    console.error('TODO moveOrderToHistory order', order);
+    console.error('TODO moveOrderToHistory order', order, status);
 
     /*
     const historyOrder = fp.omit(['createdAt', 'updatedAt', 'orderNum'], fp.cloneDeep(order));

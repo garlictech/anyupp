@@ -1,5 +1,3 @@
-import * as fp from 'lodash/fp';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,10 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/data';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
