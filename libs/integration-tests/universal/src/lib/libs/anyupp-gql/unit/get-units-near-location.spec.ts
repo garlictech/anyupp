@@ -71,7 +71,9 @@ describe('GetUnitsNearLocation tests', () => {
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
       testAdminUsername,
       testAdminUserPassword,
-    ).toPromise();
+    )
+      .toPromise()
+      .then(x => x.authAnyuppSdk);
     cleanup
       .pipe(
         switchMap(() =>
