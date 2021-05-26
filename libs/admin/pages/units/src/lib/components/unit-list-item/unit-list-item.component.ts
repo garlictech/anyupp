@@ -54,7 +54,7 @@ export class UnitListItemComponent {
 
     try {
       if (this.unit) {
-        // TODO await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
+        await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
       }
 
       this._toasterService.show(

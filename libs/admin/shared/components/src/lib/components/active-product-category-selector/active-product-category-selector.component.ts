@@ -69,10 +69,12 @@ export class ActiveProductCategorySelectorComponent
       productCategoryId !==
         this._loggedUser?.settings?.selectedProductCategoryId
     ) {
-      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
-        ...(this._loggedUser?.settings || {}),
-        selectedProductCategoryId: productCategoryId,
-      });
+      this._dataService
+        .updateAdminUserSettings(this._loggedUser.id || '', {
+          ...(this._loggedUser?.settings || {}),
+          selectedProductCategoryId: productCategoryId,
+        })
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();

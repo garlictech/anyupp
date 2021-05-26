@@ -39,7 +39,7 @@ interface IMenuItem {
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public groups$?: Observable<CrudApi.Group[]>;
-  public adminUser?: CrudApi.AdminUser;
+  public loggedUser?: CrudApi.AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
@@ -100,18 +100,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   get userName(): string | undefined {
-    return this.adminUser?.name;
+    return this.loggedUser?.name;
   }
 
   get userImage(): string | undefined | null {
-    return this.adminUser?.profileImage;
+    return this.loggedUser?.profileImage;
   }
 
   ngOnInit(): void {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe(adminUser => {
-        this.adminUser = adminUser;
+        this.loggedUser = adminUser;
 
         this._changeDetectorRef.detectChanges();
       });
@@ -199,13 +199,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private _onLanguageSelected(lang: string): void {
     if (
-      this.adminUser?.id &&
-      lang !== this.adminUser?.settings?.selectedLanguage
+      this.loggedUser?.id &&
+      lang !== this.loggedUser?.settings?.selectedLanguage
     ) {
-      this._dataService.updateAdminUserSeletedLanguage(
-        this.adminUser?.id || '',
-        lang,
-      );
+      this._dataService
+        .updateAdminUserSettings(this.loggedUser.id || '', {
+          ...(this.loggedUser?.settings || {}),
+          selectedLanguage: lang,
+        })
+        .subscribe();
     }
   }
 }

@@ -65,13 +65,15 @@ export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
       this._loggedUser?.id &&
       chainId !== this._loggedUser?.settings?.selectedChainId
     ) {
-      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
-        ...(this._loggedUser?.settings || {}),
-        selectedChainId: chainId,
-        selectedGroupId: null, // Reset group id!
-        selectedUnitId: null, // Reset unit id!
-        selectedProductCategoryId: null, // Reset category id!
-      });
+      this._dataService
+        .updateAdminUserSettings(this._loggedUser.id || '', {
+          ...(this._loggedUser?.settings || {}),
+          selectedChainId: chainId,
+          selectedGroupId: null, // Reset group id!
+          selectedUnitId: null, // Reset unit id!
+          selectedProductCategoryId: null, // Reset category id!
+        })
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();

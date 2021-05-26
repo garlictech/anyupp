@@ -131,7 +131,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
-          // TODO map changed to forEach, check this!
           this.userActiveOrders.forEach((o: CrudApi.Order): void => {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;

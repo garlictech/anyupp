@@ -11,9 +11,9 @@ export const setAllActiveOrders = createAction(
   '[OrderList] Set all active orders',
   props<{ orders: CrudApi.Order[] }>(),
 );
-export const upsertActiveOrder = createAction(
-  '[OrderList] Upsert active order',
-  props<{ order: CrudApi.Order }>(),
+export const upsertActiveOrders = createAction(
+  '[OrderList] Upsert active orders',
+  props<{ orders: CrudApi.Order[] }>(),
 );
 export const removeActiveOrder = createAction(
   '[OrderList] Remove active order',
@@ -23,9 +23,9 @@ export const setAllHistoryOrders = createAction(
   '[OrderList] Set all history orders',
   props<{ orders: CrudApi.Order[] }>(),
 );
-export const upsertHistoryOrder = createAction(
-  '[OrderList] Upsert history order',
-  props<{ order: CrudApi.Order }>(),
+export const upsertHistoryOrders = createAction(
+  '[OrderList] Upsert history orders',
+  props<{ orders: CrudApi.Order[] }>(),
 );
 export const removeHistoryOrder = createAction(
   '[OrderList] Remove history order',

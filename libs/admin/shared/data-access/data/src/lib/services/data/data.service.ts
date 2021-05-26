@@ -1,6 +1,8 @@
-import { concat, Observable, Subject } from 'rxjs';
+import { concat, EMPTY, Observable, of, Subject } from 'rxjs';
 import {
+  catchError,
   distinctUntilChanged,
+  filter,
   map,
   switchMap,
   takeUntil,
@@ -82,7 +84,7 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
-        filterNullish(),
+        //  filterNullish(),
         distinctUntilChanged(
           (prev, curr): boolean =>
             prev?.selectedChainId === curr?.selectedChainId &&
@@ -92,7 +94,10 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe(
-        (adminUserSettings: CrudApi.AdminUserSettings | undefined): void => {
+        (
+          adminUserSettings: CrudApi.AdminUserSettings | undefined | null,
+        ): void => {
+          console.error('adminUserSettings CHANGED', adminUserSettings);
           this._settingsChanged$.next(true);
 
           this._subscribeToChainProductCategories(
@@ -113,18 +118,12 @@ export class DataService {
           this._subscribeToSelectedUnitProducts(
             adminUserSettings?.selectedUnitId || '',
           );
-
-          /*
-        this
-          ._subscribeToGeneratedUnitProducts
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-        this
-          ._subscribeToSelectedUnitOrders
-          // adminUserSettings?.selectedChainId || '',
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-          */
+          this._subscribeToGeneratedUnitProducts(
+            adminUserSettings?.selectedUnitId || '',
+          );
+          this._subscribeToSelectedUnitOrders(
+            adminUserSettings?.selectedUnitId || '',
+          );
         },
       );
 
@@ -193,8 +192,9 @@ export class DataService {
     }
     concat(
       listOp.pipe(
+        tap(list => console.error('list?', list?.items)),
         filterNullish(),
-        map(chains => chains.items),
+        map(list => list.items),
       ),
       subscriptionOp.pipe(
         filterNullish(),
@@ -205,6 +205,10 @@ export class DataService {
         filterNullishElements(),
         tap(items => this._store.dispatch(upsertActionCreator(items))),
         takeUntil(this._destroyConnection$),
+        catchError(err => {
+          console.error('ERROR', err);
+          return of(EMPTY); /*TODO error actio > effect > toaster */
+        }),
       )
       .subscribe();
   }
@@ -318,6 +322,76 @@ export class DataService {
     );
   }
 
+  private _subscribeToGeneratedUnitProducts(unitId: string): void {
+    this._doSubscription<any>(
+      productsActions.resetGeneratedProducts(),
+
+      this.crudSdk.sdk.ListGeneratedProducts({
+        filter: { unitId: { eq: unitId } },
+      }),
+      this.crudSdk.sdk.OnGeneratedProductChange(),
+      (products: CrudApi.GeneratedProduct[]) =>
+        productsActions.upsertGeneratedProducts({ products }),
+    );
+  }
+
+  private _subscribeToSelectedUnitOrders(unitId: string): void {
+    console.error('_subscribeToSelectedUnitOrders', unitId);
+    this._doSubscription<any>(
+      ordersActions.resetActiveOrders(),
+
+      this.crudSdk.sdk.ListOrders(),
+      this.crudSdk.sdk.OnOrdersChange(),
+      (orders: CrudApi.Order[]) => {
+        console.error('unit orders', orders);
+        return ordersActions.upsertActiveOrders({ orders });
+      },
+    );
+
+    /*
+    this._store
+      .pipe(
+        select(dashboardSelectors.getSelectedHistoryDate),
+        tap(() => {
+          this._store.dispatch(
+            ordersActions.setAllHistoryOrders({
+              orders: [],
+            }),
+          );
+        }),
+        switchMap((historyDate: number) => {
+          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+          return this._angularFireDatabase
+            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
+              ref
+                .orderByChild('created')
+                .startAt(dayIntervals.from)
+                .endAt(dayIntervals.to),
+            )
+            .stateChanges();
+        }),
+        takeUntil(this._settingsChanged$),
+      )
+      .subscribe((data): void => {
+        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
+          this._store.dispatch(
+            ordersActions.removeHistoryOrder({
+              orderId: data.key || '',
+            }),
+          );
+        } else {
+          this._store.dispatch(
+            ordersActions.upsertHistoryOrder({
+              order: {
+                ...(<IOrder>data.payload.val()),
+                id: data.key || '',
+              },
+            }),
+          );
+        }
+      });*/
+  }
+
   private _subscribeToAdminUsers(): void {
     this._doSubscription(
       adminUsersActions.resetAdminUsers(),
@@ -386,42 +460,18 @@ export class DataService {
   }
 
   public regenerateUnitData(unitId: string) {
-    // TODO
-    // return this.anyuppSdk.sdk.regenerateUnitData({ input: { id: unitId } });
+    return this.anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
-  public async updateAdminUserSettings(
+  public updateAdminUserSettings(
     userId: string,
     settings: CrudApi.UpdateAdminUserInput['settings'],
   ) {
-    return this.crudSdk.sdk
-      .UpdateAdminUser({
-        input: {
-          id: userId,
-          settings,
-        },
-      })
-      .pipe(
-        map(adminUser => ({
-          id: adminUser?.id,
-          settings: adminUser?.settings,
-        })),
-      );
-  }
-
-  public async updateAdminUserSeletedLanguage(
-    userId: string,
-    language: string,
-  ): Promise<void> {
-    await this.crudSdk.sdk
-      .UpdateAdminUser({
-        input: {
-          id: userId,
-          settings: {
-            selectedLanguage: language,
-          },
-        },
-      })
-      .toPromise();
+    return this.crudSdk.sdk.UpdateAdminUser({
+      input: {
+        id: userId,
+        settings,
+      },
+    });
   }
 }
