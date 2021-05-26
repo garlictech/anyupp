@@ -27,7 +27,7 @@ Object {
       "productSetId": "PROUDCT_SET_01",
     },
   ],
-  "createdAt": "CREATED_AT",
+  "createdAt": "12",
   "description": Object {
     "en": "DESCRIPTION",
   },
@@ -43,7 +43,7 @@ Object {
   "productType": "drink",
   "tax": 11,
   "unitId": "UNIT_ID",
-  "updatedAt": "UPDATED_AT",
+  "updatedAt": "13",
   "variants": Array [
     Object {
       "availabilities": Array [
@@ -114,7 +114,6 @@ Object {
           ],
           "description": "PRODUCT_COMP_DESC",
           "name": Object {
-            "__typename": "LocalizedItem",
             "en": "PRODUCT_COMP_NAME",
           },
           "position": 1,
@@ -128,7 +127,6 @@ Object {
           ],
           "description": "PRODUCT_COMP_DESC",
           "name": Object {
-            "__typename": "LocalizedItem",
             "en": "PRODUCT_COMP_NAME",
           },
           "position": 2,
@@ -138,7 +136,6 @@ Object {
       ],
       "maxSelection": 1,
       "name": Object {
-        "__typename": "LocalizedItem",
         "en": "PRODUCT_COMP_SET_NAME",
       },
       "position": 1,

@@ -170,7 +170,8 @@ describe('calculatePricesAndCheckActivity method', () => {
       size: product?.variants?.[activeVariantIdx]?.pack?.size,
       unit: product?.variants?.[activeVariantIdx]?.pack?.unit,
     });
-    expect(result?.variants?.[activeVariantIdx]).not.toHaveProperty(
+    // It still has availabilities because only the toCreateGeneratedProductInputType will remove it
+    expect(result?.variants?.[activeVariantIdx]).toHaveProperty(
       'availabilities',
     );
     expect(result).toMatchSnapshot(
@@ -199,10 +200,10 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
 
     // TODO fix this test, fails on unhandled null
-    it.skip('should return undefined in case the product is NOT visible', () => {
+    it('should return undefined in case the product is NOT visible', () => {
       expect(
         calculateActualPricesAndCheckActivity({
-          product: { isVisible: false } as any,
+          product: { ...baseProduct, isVisible: false } as any,
           atTimeISO: new Date().toISOString(),
           inTimeZone: timezone01,
         }),

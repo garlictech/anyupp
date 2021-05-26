@@ -154,6 +154,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: 230.0, lat: -100 } },
       };
 
+      // from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)); // FOR DEBUG
       authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();

@@ -1,8 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
 import { resultTap } from './seed.util';
 
 export const createTestProductComponentSet = (
