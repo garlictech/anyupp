@@ -1,7 +1,6 @@
 import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
-import { CognitoTriggersStack } from './app/cognito-triggers-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
@@ -53,10 +52,10 @@ export class AnyUppStack extends Stack {
       anyuppApiArn: appsyncStack.api.arn,
     });
 
-    new CognitoTriggersStack(scope, 'cognitoTriggers', {
+    /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
       appsyncApi: appsyncStack.api,
       pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
-    });
+    });*/
   }
 }
 

@@ -12,9 +12,9 @@ yarn nx build-schema anyupp-gql-api
 yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 
 if [ $STAGE = 'dev' ]; then
-  yarn nx build admin
+  yarn nx build admin --skip-nx-cache
 else
-  yarn nx build admin --configuration=$STAGE
+  yarn nx build admin --configuration=$STAGE --skip-nx-cache
 fi
 
-yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE
+yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE --skip-nx-cache

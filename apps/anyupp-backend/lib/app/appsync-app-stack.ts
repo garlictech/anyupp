@@ -20,6 +20,7 @@ import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import { FieldLogLevel } from '@aws-cdk/aws-appsync';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -32,7 +33,7 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 export class AppsyncAppStack extends sst.Stack {
   public api: appsync.GraphqlApi;
 
-  private lambdaDs!: appsync.LambdaDataSource;
+  private lambdaDs?: appsync.LambdaDataSource;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
@@ -68,9 +69,18 @@ export class AppsyncAppStack extends sst.Stack {
         ],
       },
       xrayEnabled: true,
+      logConfig: {
+        fieldLogLevel: FieldLogLevel.ALL,
+      },
     });
 
     this.createDatasources(props);
+
+    if (!this.lambdaDs) {
+      throw new Error(
+        'MAke sure that teh lambda data source exists before using it!',
+      );
+    }
 
     const commonResolverInputs = { lambdaDs: this.lambdaDs };
     createOrderResolvers(commonResolverInputs);
