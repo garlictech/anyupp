@@ -1,4 +1,4 @@
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   crudBackendGraphQLClient,
   executeMutation,
@@ -7,32 +7,32 @@ import { resultTap } from './seed.util';
 
 export const createTestProductComponentSet = (
   input: CrudApi.CreateProductComponentSetInput,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.CreateProductComponentSetMutation
-  >(CrudApiMutationDocuments.createProductComponentSet, {
-    input,
-  }).pipe(resultTap('PRODUCT_COMPONENT_SET create', input.id!));
+  crudSdk
+    .CreateProductComponentSet({ input })
+    .pipe(resultTap('PRODUCT_COMPONENT_SET create', input.id!));
 
-export const deleteTestProductComponentSet = (id: string) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.DeleteProductComponentSetMutation
-  >(CrudApiMutationDocuments.deleteProductComponentSet, {
-    input: { id },
-  }).pipe(resultTap('PRODUCT_COMPONENT_SET delete', id));
+export const deleteTestProductComponentSet = (
+  id: string,
+  crudSdk: CrudApi.CrudSdk,
+) =>
+  crudSdk
+    .DeleteProductComponentSet({ input: { id } })
+    .pipe(resultTap('PRODUCT_COMPONENT_SET delete', id));
 
 export const createTestProductComponent = (
   input: CrudApi.CreateProductComponentInput,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.CreateProductComponentMutation
-  >(CrudApiMutationDocuments.createProductComponent, {
-    input,
-  }).pipe(resultTap('PRODUCT_COMPONENT create', input.id!));
+  crudSdk
+    .CreateProductComponent({ input })
+    .pipe(resultTap('PRODUCT_COMPONENT create', input.id!));
 
-export const deleteTestProductComponent = (id: string) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.DeleteProductComponentMutation
-  >(CrudApiMutationDocuments.deleteProductComponent, {
-    input: { id },
-  }).pipe(resultTap('PRODUCT_COMPONENT delete', id));
+export const deleteTestProductComponent = (
+  id: string,
+  crudSdk: CrudApi.CrudSdk,
+) =>
+  crudSdk
+    .DeleteProductComponent({ input: { id } })
+    .pipe(resultTap('PRODUCT_COMPONENT delete', id));

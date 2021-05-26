@@ -1,19 +1,22 @@
+import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 import { combineLatest, concat, Observable, of, throwError } from 'rxjs';
 import {
-  delay,
-  switchMap,
-  tap,
   catchError,
   defaultIfEmpty,
+  delay,
   map,
-  toArray,
+  switchMap,
   take,
+  tap,
+  toArray,
 } from 'rxjs/operators';
 
 import {
   listGeneratedProductsForUnits,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   generatedProductSeed,
   productComponentSetSeed,
@@ -21,6 +24,8 @@ import {
   testIdPrefix,
   unitSeed,
 } from '@bgap/shared/fixtures';
+import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+import { filterNullish, getSortedIds } from '@bgap/shared/utils';
 
 import {
   createTestChainProduct,
@@ -35,26 +40,15 @@ import {
   deleteTestGroupProduct,
 } from '../../../seeds/group-product';
 import {
-  createTestUnitProduct,
-  deleteTestUnitProduct,
-} from '../../../seeds/unit-product';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
-import {
-  EProductComponentSetType,
-  IUnitProduct,
-  RequiredId,
-} from '@bgap/shared/types';
-import * as fp from 'lodash/fp';
-import { getSortedIds } from '@bgap/shared/utils';
-import {
   createTestProductComponent,
   createTestProductComponentSet,
   deleteTestProductComponent,
   deleteTestProductComponentSet,
 } from '../../../seeds/product-component-set';
-import { filterNullish, getSortedIds } from '@bgap/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
+import {
+  createTestUnitProduct,
+  deleteTestUnitProduct,
+} from '../../../seeds/unit-product';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'REGEN_';
@@ -391,7 +385,11 @@ describe('RegenerateUnitData mutation tests', () => {
             );
             expect(aGeneratedProduct).toHaveProperty('allergens');
             expect(aGeneratedProduct?.configSets).not.toBeNull();
-            if (!aGeneratedProduct || !aGeneratedProduct.configSets) {
+            if (
+              !aGeneratedProduct ||
+              !aGeneratedProduct.configSets ||
+              !aGeneratedProduct.configSets[0]
+            ) {
               throw `configSets is missing from the ${productToCheck.id} product`;
             }
             expect(aGeneratedProduct.configSets).toHaveLength(2);

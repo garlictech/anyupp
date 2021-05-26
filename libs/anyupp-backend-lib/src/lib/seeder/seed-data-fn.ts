@@ -69,6 +69,9 @@ const deleteCreate = <T, K>(
 export const createTestChain = (chainIdx: number) => (
   deps: SeederDependencies,
 ) => {
+  console.debug('createTestChain', {
+    chainIdx,
+  });
   const input: CrudApi.CreateChainInput = {
     ...chainSeed.chainBase,
     id: generateChainId(chainIdx),
@@ -83,6 +86,10 @@ export const createTestChain = (chainIdx: number) => (
 export const createTestGroup = (chainIdx: number, groupIdx: number) => (
   deps: SeederDependencies,
 ) => {
+  console.debug('createTestGroup', {
+    chainIdx,
+    groupIdx,
+  });
   const input: CrudApi.CreateGroupInput = {
     ...groupSeed.groupBase,
     id: generateGroupId(chainIdx, groupIdx),
@@ -99,6 +106,10 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => (
 export const createAdminUser = (adminUserId: string, email: string) => (
   deps: SeederDependencies,
 ) => {
+  console.debug('createAdminUser', {
+    adminUserId,
+    email,
+  });
   const input: DeletableInput<CrudApi.CreateAdminUserInput> = {
     id: adminUserId,
     name: 'John Doe',
@@ -118,6 +129,11 @@ export const createTestUnit = (
   groupIdx: number,
   unitIdx: number,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestUnit', {
+    chainIdx,
+    groupIdx,
+    unitIdx,
+  });
   const input: CrudApi.CreateUnitInput = {
     ...unitSeed.unitBase,
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
@@ -147,6 +163,10 @@ export const createTestProductCategory = (
   chainIdx: number,
   productCategoryId: number,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestProductCategory', {
+    chainIdx,
+    productCategoryId,
+  });
   const input: DeletableInput<CrudApi.CreateProductCategoryInput> = {
     id: generateProductCategoryId(chainIdx, productCategoryId),
     chainId: generateChainId(chainIdx),
@@ -173,6 +193,11 @@ export const createTestChainProduct = (
   productCategoryIdx: number,
   productIdx: number,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestChainProduct', {
+    chainIdx,
+    productCategoryIdx,
+    productIdx,
+  });
   const input: DeletableInput<CrudApi.CreateChainProductInput> = {
     id: generateChainProductId(chainIdx, productIdx),
     chainId: generateChainId(chainIdx),
@@ -224,6 +249,12 @@ export const createTestGroupProduct = (
   chainProductIdx: number,
   productIdx: number,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestGroupProduct', {
+    chainIdx,
+    groupIdx,
+    chainProductIdx,
+    productIdx,
+  });
   const input: DeletableInput<CrudApi.CreateGroupProductInput> = {
     id: generateGroupProductId(chainIdx, groupIdx, productIdx),
     parentId: generateChainProductId(chainIdx, chainProductIdx),
@@ -266,6 +297,13 @@ export const createTestUnitProduct = (
   groupProductIdx: number,
   productIdx: number,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestUnitProduct', {
+    chainIdx,
+    groupIdx,
+    unitIdx,
+    groupProductIdx,
+    productIdx,
+  });
   const input: DeletableInput<CrudApi.CreateUnitProductInput> = {
     id: generateUnitProductId(chainIdx, groupIdx, productIdx),
     parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
@@ -345,6 +383,14 @@ export const createTestCart = ({
   userIdx: number;
   cartIdx: number;
 }) => (deps: SeederDependencies) => {
+  console.debug('createTestCart', {
+    chainIdx,
+    groupIdx,
+    unitIdx,
+    productIdx,
+    userIdx,
+    cartIdx,
+  });
   const input: DeletableInput<CrudApi.CreateCartInput> = {
     id: generateCartId(cartIdx),
     userId: generateUserId(userIdx),
@@ -481,6 +527,11 @@ export const createTestAdminRoleContext = (
   roleContextIdx: number,
   adminUserId: string,
 ) => (deps: SeederDependencies) => {
+  console.debug('createTestAdminRoleContext', {
+    adminRoleContextIdx,
+    roleContextIdx,
+    adminUserId,
+  });
   const superuserInput: CrudApi.CreateAdminRoleContextInput = {
     id: generateAdminRoleContextId(adminRoleContextIdx, CrudApi.Role.superuser),
     adminUserId,
@@ -516,6 +567,7 @@ export const createTestAdminRoleContext = (
 };
 
 export const createComponentSets = (deps: SeederDependencies) => {
+  console.debug('createComponentSets');
   return deleteCreate(
     () =>
       deps.crudSdk.DeleteProductComponent({
