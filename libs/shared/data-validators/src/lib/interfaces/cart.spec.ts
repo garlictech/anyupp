@@ -66,7 +66,7 @@ describe('Cart validaton test', () => {
             "quantity": 100,
             "statusLog": Array [
               Object {
-                "status": "NONE",
+                "status": "none",
                 "ts": 1.2,
                 "userId": "USERID",
               },
@@ -78,7 +78,7 @@ describe('Cart validaton test', () => {
           },
         ],
         "paymentMode": Object {
-          "method": "CARD",
+          "method": "card",
           "name": "CARD",
         },
         "place": Object {
