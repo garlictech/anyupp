@@ -118,10 +118,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
               _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
                   "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
-              if (unit.paymentModes != null && methods.contains('CASH'))
+              if (unit.paymentModes != null && methods.contains('cash'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
-              if (unit.paymentModes != null && methods.contains('CARD'))
+              if (unit.paymentModes != null && methods.contains('card'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
               Padding(

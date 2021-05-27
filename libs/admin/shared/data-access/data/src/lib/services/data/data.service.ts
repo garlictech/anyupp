@@ -1,12 +1,13 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import { concat, Observable, of, Subject } from 'rxjs';
+import { concat, EMPTY, Observable, of, Subject } from 'rxjs';
 import {
+  catchError,
   distinctUntilChanged,
   map,
   switchMap,
   takeUntil,
   tap,
 } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
@@ -25,14 +26,14 @@ import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { IKeyValueObject } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { CrudSdkService } from '../crud-sdk.service';
 import { TypedAction } from '@ngrx/store/src/models';
+import { TranslateService } from '@ngx-translate/core';
+
 import { AnyuppSdkService } from '../anyupp-sdk.service';
-import { UpdateAdminUserInput } from '@bgap/crud-gql/api';
+import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
   providedIn: 'root',
@@ -82,7 +83,7 @@ export class DataService {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
-        filterNullish(),
+        //  filterNullish(),
         distinctUntilChanged(
           (prev, curr): boolean =>
             prev?.selectedChainId === curr?.selectedChainId &&
@@ -92,39 +93,44 @@ export class DataService {
         takeUntil(this._destroyConnection$),
       )
       .subscribe(
-        (adminUserSettings: CrudApi.AdminUserSettings | undefined): void => {
+        (
+          adminUserSettings: CrudApi.AdminUserSettings | undefined | null,
+        ): void => {
+          console.error('adminUserSettings CHANGED', adminUserSettings);
           this._settingsChanged$.next(true);
 
-          this._subscribeToChainProductCategories(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToChainProductComponents(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToChainProductComponentSets(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToSelectedChainProducts(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToSelectedGroupProducts(
-            adminUserSettings?.selectedGroupId || '',
-          );
-          this._subscribeToSelectedUnitProducts(
-            adminUserSettings?.selectedUnitId || '',
-          );
+          if (adminUserSettings?.selectedChainId) {
+            this._subscribeToChainProductCategories(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToChainProductComponents(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToChainProductComponentSets(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToSelectedChainProducts(
+              adminUserSettings?.selectedChainId,
+            );
+          }
 
-          /*
-        this
-          ._subscribeToGeneratedUnitProducts
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-        this
-          ._subscribeToSelectedUnitOrders
-          // adminUserSettings?.selectedChainId || '',
-          // adminUserSettings?.selectedUnitId || '',
-          ();
-          */
+          if (adminUserSettings?.selectedGroupId) {
+            this._subscribeToSelectedGroupProducts(
+              adminUserSettings?.selectedGroupId,
+            );
+          }
+
+          if (adminUserSettings?.selectedUnitId) {
+            this._subscribeToSelectedUnitProducts(
+              adminUserSettings?.selectedUnitId,
+            );
+            this._subscribeToGeneratedUnitProducts(
+              adminUserSettings?.selectedUnitId,
+            );
+            this._subscribeToSelectedUnitOrders(
+              adminUserSettings?.selectedUnitId,
+            );
+          }
         },
       );
 
@@ -133,7 +139,6 @@ export class DataService {
     this._subscribeToChains();
     this._subscribeToGroups();
     this._subscribeToUnits();
-    // this._subscribeToUsers(); TODO not used?
     this._subscribeToAdminUsers();
     this._subscribeToAdminRoleContexts();
 
@@ -194,8 +199,9 @@ export class DataService {
     }
     concat(
       listOp.pipe(
+        tap(list => console.error('list?', list?.items)),
         filterNullish(),
-        map(chains => chains.items),
+        map(list => list.items),
       ),
       subscriptionOp.pipe(
         filterNullish(),
@@ -206,6 +212,10 @@ export class DataService {
         filterNullishElements(),
         tap(items => this._store.dispatch(upsertActionCreator(items))),
         takeUntil(this._destroyConnection$),
+        catchError(err => {
+          console.error('ERROR', err);
+          return of(EMPTY); /*TODO error actio > effect > toaster */
+        }),
       )
       .subscribe();
   }
@@ -319,26 +329,83 @@ export class DataService {
     );
   }
 
-  /*
-  private _subscribeToUsers(): void {
-    this._amplifyDataService
-      .snapshotChanges$({
-        queryName: 'listUsers',
-        subscriptionName: 'onUsersChange',
-        resetFn: () => {
-          this._store.dispatch(usersActions.resetUsers());
-        },
-        upsertFn: (user: unknown): void => {
+  private _subscribeToGeneratedUnitProducts(unitId: string): void {
+    console.error('_subscribeToGeneratedUnitProducts', unitId);
+    /* TODO fix
+    this._doSubscription(
+      productsActions.resetGeneratedProducts(),
+
+
+      this.crudSdk.sdk.ListGeneratedProducts({
+        filter: { unitId: { eq: unitId } },
+      }),
+
+
+      this.crudSdk.sdk.OnGeneratedProductChange(),
+      (products: CrudApi.GeneratedProduct[]) =>
+        productsActions.upsertGeneratedProducts({ products }),
+    );
+    */
+  }
+
+  private _subscribeToSelectedUnitOrders(unitId: string): void {
+    console.error('_subscribeToSelectedUnitOrders', unitId);
+    /* TODO fix
+    this._doSubscription(
+      ordersActions.resetActiveOrders(),
+
+      this.crudSdk.sdk.ListOrders(),
+      this.crudSdk.sdk.OnOrdersChange(),
+      (orders: CrudApi.Order[]) => {
+        console.error('unit orders', orders);
+        return ordersActions.upsertActiveOrders({ orders });
+      },
+    );
+    */
+
+    /*
+    this._store
+      .pipe(
+        select(dashboardSelectors.getSelectedHistoryDate),
+        tap(() => {
           this._store.dispatch(
-            usersActions.upsertUser({
-              user: <IUser>user,
+            ordersActions.setAllHistoryOrders({
+              orders: [],
             }),
           );
-        },
-      })
-      .subscribe();
+        }),
+        switchMap((historyDate: number) => {
+          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+          return this._angularFireDatabase
+            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
+              ref
+                .orderByChild('created')
+                .startAt(dayIntervals.from)
+                .endAt(dayIntervals.to),
+            )
+            .stateChanges();
+        }),
+        takeUntil(this._settingsChanged$),
+      )
+      .subscribe((data): void => {
+        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
+          this._store.dispatch(
+            ordersActions.removeHistoryOrder({
+              orderId: data.key || '',
+            }),
+          );
+        } else {
+          this._store.dispatch(
+            ordersActions.upsertHistoryOrder({
+              order: {
+                ...(<IOrder>data.payload.val()),
+                id: data.key || '',
+              },
+            }),
+          );
+        }
+      });*/
   }
-  */
 
   private _subscribeToAdminUsers(): void {
     this._doSubscription(
@@ -390,7 +457,7 @@ export class DataService {
     this._store.dispatch(productsActions.resetChainProducts());
     this._store.dispatch(productsActions.resetGroupProducts());
     this._store.dispatch(productsActions.resetUnitProducts());
-    this._store.dispatch(productsActions.resetGeneratedUnitProducts());
+    this._store.dispatch(productsActions.resetGeneratedProducts());
     this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
 
@@ -411,134 +478,15 @@ export class DataService {
     return this.anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
-  //
-  // Order
-  //
-
-  // TODO refactor
-  public getActiveOrder$(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-  ): Observable<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-    });
-  }
-
-  // TODO refactor
-  public insertOrderStatus(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    status: CrudApi.OrderStatus,
-  ): Promise<unknown> {
-    return of({ chainId, unitId, orderId, status }).toPromise();
-  }
-
-  // TODO refactor
-  public updateOrderPaymentMode(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    value: CrudApi.Order | IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      value,
-    }).toPromise();
-  }
-
-  // TODO refactor
-  public insertOrderItemStatus(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise();
-  }
-  // TODO refactor
-  public updateOrderItemQuantityAndPrice(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise();
-  }
-
-  // TODO refactor
-  public addOrderItem(
-    chainId: string,
-    unitId: string,
-    orderId: string,
-    idx: number,
-    value: IKeyValueObject,
-  ): Promise<unknown> {
-    return of({
-      chainId,
-      unitId,
-      orderId,
-      idx,
-      value,
-    }).toPromise();
-  }
-
-  //
-  // ADMIN User
-  //
-
-  public async updateAdminUserSettings(
+  public updateAdminUserSettings(
     userId: string,
-    settings: UpdateAdminUserInput['settings'],
+    settings: CrudApi.UpdateAdminUserInput['settings'],
   ) {
-    return this.crudSdk.sdk
-      .UpdateAdminUser({
-        input: {
-          id: userId,
-          settings,
-        },
-      })
-      .pipe(
-        map(adminUser => ({
-          id: adminUser?.id,
-          settings: adminUser?.settings,
-        })),
-      );
-  }
-
-  public async updateAdminUserSeletedLanguage(
-    userId: string,
-    language: string,
-  ): Promise<void> {
-    await this.crudSdk.sdk
-      .UpdateAdminUser({
-        input: {
-          id: userId,
-          settings: {
-            selectedLanguage: language,
-          },
-        },
-      })
-      .toPromise();
+    return this.crudSdk.sdk.UpdateAdminUser({
+      input: {
+        id: userId,
+        settings,
+      },
+    });
   }
 }

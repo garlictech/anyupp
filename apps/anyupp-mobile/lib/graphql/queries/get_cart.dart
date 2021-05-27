@@ -35,7 +35,7 @@ listCarts(filter: {unitId: {eq: \$unitId}, userId: {eq: \$userId}}) {
       paymentMode {
         caption
         method
-        name
+        type
       }
       place {
         seat

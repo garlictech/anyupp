@@ -18,7 +18,7 @@ export interface ProductsState {
   chainProducts: EntityState<CrudApi.ChainProduct>;
   groupProducts: EntityState<CrudApi.GroupProduct>;
   unitProducts: EntityState<CrudApi.UnitProduct>;
-  generatedUnitProducts: EntityState<CrudApi.GeneratedProduct>;
+  generatedProducts: EntityState<CrudApi.GeneratedProduct>;
 }
 
 export interface ProductsPartialState {
@@ -42,6 +42,9 @@ const chainProductsReducer = createReducer(
   on(ProductsActions.upsertChainsProducts, (state, { products }) =>
     chainProductsAdapter.upsertMany(products, state),
   ),
+  on(ProductsActions.resetChainProducts, state =>
+    chainProductsAdapter.removeAll(state),
+  ),
 );
 
 //
@@ -61,6 +64,9 @@ const groupProductsReducer = createReducer(
   on(ProductsActions.upsertGroupProducts, (state, { products }) =>
     groupProductsAdapter.upsertMany(products, state),
   ),
+  on(ProductsActions.resetGroupProducts, state =>
+    groupProductsAdapter.removeAll(state),
+  ),
 );
 
 //
@@ -78,24 +84,30 @@ const unitProductsReducer = createReducer(
   on(ProductsActions.upsertUnitProducts, (state, { products }) =>
     unitProductsAdapter.upsertMany(products, state),
   ),
+  on(ProductsActions.resetUnitProducts, state =>
+    unitProductsAdapter.removeAll(state),
+  ),
 );
 
 //
-// UNIT
+// GENERATED
 //
 
-export const generatedUnitProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> = createEntityAdapter<
+export const generatedProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> = createEntityAdapter<
   CrudApi.GeneratedProduct
 >();
 
-export const initialGeneratedUnitProductState = generatedUnitProductsAdapter.getInitialState(
+export const initialGeneratedUnitProductState = generatedProductsAdapter.getInitialState(
   {},
 );
 
-const generatedUnitProductsReducer = createReducer(
+const generatedProductsReducer = createReducer(
   initialGeneratedUnitProductState,
   on(ProductsActions.upsertGeneratedProducts, (state, { products }) =>
-    generatedUnitProductsAdapter.upsertMany(products, state),
+    generatedProductsAdapter.upsertMany(products, state),
+  ),
+  on(ProductsActions.resetGeneratedProducts, state =>
+    generatedProductsAdapter.removeAll(state),
   ),
 );
 
@@ -103,7 +115,7 @@ const reducerMap: ActionReducerMap<ProductsState> = {
   chainProducts: chainProductsReducer,
   groupProducts: groupProductsReducer,
   unitProducts: unitProductsReducer,
-  generatedUnitProducts: generatedUnitProductsReducer,
+  generatedProducts: generatedProductsReducer,
 };
 
 const combinedReducer: ActionReducer<ProductsState> = combineReducers(

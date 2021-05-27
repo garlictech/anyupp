@@ -21,8 +21,8 @@ class CartRepository {
         unitId: unit.id,
         takeAway: false,
         paymentMode: PaymentMode(
-          method: 'INAPP', // TODO
-          name: 'STRIPE', // TODO
+          method: 'inapp', // TODO
+          type: 'stripe', // TODO
         ),
         place: await getPlacePref() ?? Place(seat: '00', table: '00'), // TODO
         items: [

@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
 
-// import * as printJS from 'print-js';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -15,6 +15,7 @@ import {
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -24,7 +25,7 @@ import {
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
@@ -35,6 +36,7 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
+  @Input() unit?: CrudApi.Unit;
   public dashboardSettings!: IDashboardSettings;
   public selectedOrder?: CrudApi.Order;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
@@ -129,7 +131,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
-          // TODO map changed to forEach, check this!
           this.userActiveOrders.forEach((o: CrudApi.Order): void => {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;
