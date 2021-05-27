@@ -107,7 +107,6 @@ describe('CreatCartFromOrder mutation test', () => {
       .CreateOrderFromCart({ input })
       .pipe(
         // check order has been truly created
-        delay(2000),
         filterNullish<string>(),
         switchMap(newOrderId =>
           combineLatest([

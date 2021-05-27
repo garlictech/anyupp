@@ -14,7 +14,9 @@ import {
  * usually this in the Unit's timezone
  */
 export const calculatePriceFromAvailabilities = (
-  availabilities: CrudApi.Maybe<CrudApi.Availability>[] | null,
+  availabilities:
+    | CrudApi.Maybe<CrudApi.Maybe<CrudApi.Availability>[]>
+    | undefined,
   atTime: DateTime,
 ): number | undefined => {
   if (!availabilities) {

@@ -10,12 +10,12 @@ export const chainProductSchema: Joi.SchemaMap<CrudApi.ChainProduct> = {
   chainId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   name: localizedItemSchema.required(),
-  description: localizedItemSchema.required(),
+  description: localizedItemSchema.allow(null),
   productCategoryId: Joi.string().required(),
   productType: Joi.string().required(), // TODO: use enumschema
   image: Joi.string().allow(null, ''),
-  variants: Joi.array().required(), //TODO: use an exact schema
-  configSets: Joi.array().optional().allow(null),
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
   allergens: allergenListSchema.allow(null),
@@ -33,8 +33,8 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   groupId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   tax: Joi.number().required(),
-  variants: Joi.array().required(), //TODO: use an exact schema
-  configSets: Joi.array().optional().allow(null),
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   chainProduct: Joi.object(chainProductSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
@@ -53,8 +53,8 @@ export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   unitId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
-  variants: Joi.array().required(), //TODO: use an exact schema
-  configSets: Joi.array().optional().allow(null),
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   groupProduct: Joi.object(groupProductSchema).allow(null),

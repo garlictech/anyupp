@@ -81,12 +81,6 @@ const calculateActualPriceForEachVariant = ({
       return activeVariants;
     }
 
-    if (!variant.availabilities) {
-      throw new Error(
-        'HANDLE ME: variant.availabilities expected having value',
-      );
-    }
-
     const variantPrice: number | undefined = calculatePriceFromAvailabilities(
       variant.availabilities,
       DateTime.fromISO(atTimeISO).setZone(inTimeZone),

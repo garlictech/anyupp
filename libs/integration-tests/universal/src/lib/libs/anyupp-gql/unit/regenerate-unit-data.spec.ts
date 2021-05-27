@@ -26,6 +26,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, getSortedIds } from '@bgap/shared/utils';
+import { takeLast } from 'rxjs/operators';
 
 import {
   createTestChainProduct,
@@ -245,7 +246,7 @@ describe('RegenerateUnitData mutation tests', () => {
   beforeAll(async () => {
     await cleanup
       .pipe(
-        tap(x => console.warn('********1', x)),
+        takeLast(1),
         switchMap(() =>
           // Seeding
           concat(
@@ -278,7 +279,7 @@ describe('RegenerateUnitData mutation tests', () => {
             createTestGeneratedProduct(unit02_generatedProduct_01, iamCrudSdk),
           ),
         ),
-        tap(x => console.warn('********2', x)),
+        takeLast(1),
       )
       .toPromise();
   }, 25000);
@@ -287,7 +288,7 @@ describe('RegenerateUnitData mutation tests', () => {
     await cleanup.toPromise();
   });
 
-  it.skip('should regenerate all the generated products for the unit', done => {
+  it('should regenerate all the generated products for the unit', done => {
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
       listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
@@ -489,17 +490,12 @@ const listProductsForUnits = (
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
   };
   return sdk
-    .ListUnitProducts(input)
+    .ListUnitProducts(input, { fetchPolicy: 'no-cache' })
     .pipe(
       filterNullish(),
       map(x => x.items),
       filterNullish(),
       switchMap(items => combineLatest(items.map(x => validateUnitProduct(x)))),
-      catchError(err => {
-        console.warn('THIS MAY BE IMPORTANT, FROM WRONG PRODUCT HANDLING???');
-        console.warn(err);
-        return of([]);
-      }),
     )
     .pipe(defaultIfEmpty([] as CrudApi.UnitProduct[]));
 };
