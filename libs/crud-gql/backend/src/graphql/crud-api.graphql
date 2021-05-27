@@ -298,6 +298,15 @@ enum PaymentMethod {
   inapp
 }
 
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
+}
+
 type Place {
   seat: String!
   table: String!
@@ -551,7 +560,7 @@ type WeeklySchedule {
 }
 
 type PaymentMode {
-  name: String!
+  type: PaymentType!
   caption: String
   method: PaymentMethod!
 }
