@@ -82,7 +82,7 @@ CATEGORIES="{\
 }"
 
 rm -rf amplify
-echo "Existing Amplify app deleted."
+echo "Existing Amplify app folder deleted."
 
 amplify pull \
 --amplify $AMPLIFY \

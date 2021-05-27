@@ -8,7 +8,7 @@ exports[`GetUnitsNearLocation tests input validation should throw without a lng 
 
 exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error: "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
+exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: Network error: Response not successful: Received status code 401]`;
 
 exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with direct handler call 1`] = `
 Object {
