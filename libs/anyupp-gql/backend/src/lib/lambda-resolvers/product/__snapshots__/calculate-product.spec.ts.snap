@@ -105,14 +105,12 @@ Object {
   ],
   "configSets": Array [
     Object {
-      "description": "PRODUCT_COMP_SET_DESC",
       "items": Array [
         Object {
           "allergens": Array [
             "egg",
             "fish",
           ],
-          "description": "PRODUCT_COMP_DESC",
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },
@@ -125,7 +123,6 @@ Object {
             "egg",
             "fish",
           ],
-          "description": "PRODUCT_COMP_DESC",
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },
@@ -139,6 +136,7 @@ Object {
         "en": "PRODUCT_COMP_SET_NAME",
       },
       "position": 1,
+      "productSetId": "PROUDCT_SET_01",
       "type": "PRODUCT_COMP_SET_TYPE",
     },
   ],
