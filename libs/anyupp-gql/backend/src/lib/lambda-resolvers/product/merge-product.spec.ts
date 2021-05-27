@@ -1,6 +1,7 @@
-import { mergeAllProductLayers } from './merge-product';
-import { productSeed } from '../../../../../../shared/fixtures/src/lib/product';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { mergeAllProductLayers } from './merge-product';
+import { productSeed } from '@bgap/shared/fixtures';
 
 describe('Merge product layers', () => {
   const cpb = productSeed.chainProductBase;
