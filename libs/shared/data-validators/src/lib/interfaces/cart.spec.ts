@@ -9,7 +9,7 @@ const cart: CrudApi.Cart = {
   unitId: 'UNITID',
   paymentMode: {
     method: CrudApi.PaymentMethod.card,
-    name: 'CARD',
+    type: CrudApi.PaymentType.card,
   },
   takeAway: false,
   items: [
@@ -79,7 +79,7 @@ describe('Cart validaton test', () => {
         ],
         "paymentMode": Object {
           "method": "card",
-          "name": "CARD",
+          "type": "card",
         },
         "place": Object {
           "seat": "SEAT",
