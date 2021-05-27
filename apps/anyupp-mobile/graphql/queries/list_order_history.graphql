@@ -4,7 +4,7 @@ query ListOrderHistoryQuery($userId: ID!, $unitId: ID!) {
       id
       paymentMode {
         caption
-        name
+        type
         method
       }
       paymentIntention
