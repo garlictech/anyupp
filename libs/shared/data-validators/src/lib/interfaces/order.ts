@@ -26,7 +26,8 @@ export const orderItemSchema: Joi.SchemaMap<CrudApi.OrderItem> = {
   variantName: localizedItemSchema.required(),
   laneId: Joi.string().allow(null, ''),
   image: Joi.string().allow(null, ''),
-  allergens: Joi.array().items(Joi.string()).optional().allow(null),
+  allergens: Joi.array().items(Joi.string()).allow(null),
+  configSets: Joi.array().allow(null),
 };
 
 export const placeSchema: Joi.SchemaMap<CrudApi.Place> = {

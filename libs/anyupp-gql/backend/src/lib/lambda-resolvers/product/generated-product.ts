@@ -1,6 +1,7 @@
 import * as fp from 'lodash/fp';
 import { defer, iif, Observable, of } from 'rxjs';
 import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 
@@ -18,8 +19,9 @@ export const deleteGeneratedProductsForAUnit = (unitId: string) => (
     ),
   );
 };
-const deleteGeneratedProductsItems = (items: CrudApi.GeneratedProduct[]) =>
-  deleteItems(TABLE_NAME)(items);
+const deleteGeneratedProductsItems = (
+  items: Required<CrudApi.GeneratedProduct>[],
+) => deleteItems(TABLE_NAME)(items);
 
 export const createGeneratedProducts = (
   products: CrudApi.CreateGeneratedProductInput[],
@@ -29,9 +31,10 @@ export const createGeneratedProducts = (
 
 export const listGeneratedProductsForUnits = (unitIds: string[]) => (
   deps: UnitsResolverDeps,
-): Observable<CrudApi.GeneratedProduct[]> => {
+): Observable<Array<Required<CrudApi.GeneratedProduct>>> => {
   const input: CrudApi.ListGeneratedProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+    limit: 200, // TODO <==??????????
   };
 
   return defer(() =>

@@ -17,14 +17,22 @@ const getProductComponent = ({
 }): RequiredId<CrudApi.CreateProductComponentInput> => ({
   ...productComponentBase,
   id,
-  name: { en: `PRODUCT_COMPONENT_${id}`, hu: `TERMEK_KOMPONENS_${id}` },
+  name: {
+    en: `PRODUCT_COMPONENT_${id}`,
+    de: `PRODUCT_COMPONENT_${id}`,
+    hu: `TERMEK_KOMPONENS_${id}`,
+  },
   description: `PRODUCT_COMPONENT DESCRIPTION ${id}`,
 });
 
 const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
   id: `${testIdPrefix}product_component_id_`,
   chainId: 'chainId_',
-  name: { en: 'PRODUCT_COMPONENT', hu: 'TERMEK_KOMPONENS' },
+  name: {
+    en: 'PRODUCT_COMPONENT',
+    de: 'PRODUCT_COMPONENT',
+    hu: 'TERMEK_KOMPONENS',
+  },
   description: 'DESCRIPTION',
   allergens: [
     CrudApi.Allergen.egg,
@@ -37,23 +45,32 @@ const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
 
 const getComponentSet = ({
   id,
+  chainId,
   itemIds = [],
 }: {
   id: string;
+  chainId: string;
   itemIds: string[];
 }): RequiredId<CrudApi.CreateProductComponentSetInput> => ({
   ...productComponentSetBase,
   id,
   items: itemIds,
   maxSelection: itemIds.length,
-  name: { en: `PRODUCT_COMPONENT_SET_${id}`, hu: `KOMPONENS_SET_${id}` },
+  chainId,
+  name: {
+    en: `PRODUCT_COMPONENT_SET_${id}`,
+    de: `PRODUCT_COMPONENT_SET_${id}`,
+    hu: `KOMPONENS_SET_${id}`,
+  },
   description: `PRODUCT_COMPONENT DESCRIPTION ${id}`,
 });
 
-const productComponentSetBase: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+const productComponentSetBase: Omit<
+  RequiredId<CrudApi.CreateProductComponentSetInput>,
+  'chainId'
+> = {
   id: `${testIdPrefix}product_component_set_id_`,
-  chainId: 'chainId_',
-  name: { en: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
+  name: { en: 'COMPONENT_SET', de: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
   description: 'DESCRIPTION',
   type: EProductComponentSetType.EXTRAS,
   items: [],
@@ -84,19 +101,18 @@ const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
 const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_01,
+    chainId: chainSeed.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02],
   }),
-  chainId: chainSeed.chainId_seeded_01,
   type: EProductComponentSetType.EXTRAS,
 };
 
 const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_02,
+    chainId: chainSeed.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
   }),
-  items: [prodCompId_01, prodCompId_02, prodCompId_03],
-  chainId: chainSeed.chainId_seeded_01,
   type: EProductComponentSetType.MODIFIER,
 };
 
@@ -108,14 +124,14 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_01.items[0],
-        refGroupPrice: 1.2,
-        price: 2.3,
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_01.items[1],
-        refGroupPrice: 1.2,
-        price: 2.3,
+        refGroupPrice: 0,
+        price: 0,
       },
     ],
   },
@@ -126,20 +142,20 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_02.items[0],
-        refGroupPrice: 1.2,
-        price: 2.3,
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_02.items[1],
-        refGroupPrice: 1.2,
-        price: 2.3,
+        refGroupPrice: 0,
+        price: 0,
       },
       {
         position: 3,
         productComponentId: seededProdCompSet_02.items[2],
-        refGroupPrice: 1.2,
-        price: 2.3,
+        refGroupPrice: 0,
+        price: 0,
       },
     ],
   },
@@ -212,9 +228,9 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
 const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
   {
     // unitConfigSets[0] == seededProdComp_01
+    productSetId: seededProdCompSet_01.id,
     position: unitConfigSets[0].position,
     name: seededProdCompSet_01.name,
-    description: seededProdCompSet_01.description,
     type: seededProdCompSet_01.type,
     maxSelection: seededProdCompSet_01.maxSelection,
     items: [
@@ -224,7 +240,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[0].items[0].price,
         position: unitConfigSets[0].items[0].position,
         name: seededProdComp_01.name,
-        description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
@@ -233,16 +248,15 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[0].items[1].price,
         position: unitConfigSets[0].items[1].position,
         name: seededProdComp_02.name,
-        description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
       },
     ],
   },
   {
     // unitConfigSets[1] == seededProdComp_02
+    productSetId: seededProdCompSet_02.id,
     position: unitConfigSets[1].position,
     name: seededProdCompSet_02.name,
-    description: seededProdCompSet_02.description,
     type: seededProdCompSet_02.type,
     maxSelection: seededProdCompSet_02.maxSelection,
     items: [
@@ -252,7 +266,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[0].price,
         position: unitConfigSets[1].items[0].position,
         name: seededProdComp_01.name,
-        description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
@@ -261,7 +274,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[1].price,
         position: unitConfigSets[1].items[1].position,
         name: seededProdComp_02.name,
-        description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
       },
       {
@@ -270,7 +282,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[2].price,
         position: unitConfigSets[1].items[2].position,
         name: seededProdComp_03.name,
-        description: seededProdComp_03.description,
         allergens: seededProdComp_03.allergens,
       },
     ],
