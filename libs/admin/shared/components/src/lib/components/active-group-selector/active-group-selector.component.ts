@@ -68,7 +68,7 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
       groupId !== this._loggedUser?.settings?.selectedGroupId
     ) {
       this._dataService
-        .updateAdminUserSettings(this._loggedUser.id || '', {
+        .updateAdminUserSettings(this._loggedUser.id, {
           ...(this._loggedUser?.settings || {}),
           selectedGroupId: groupId,
           selectedUnitId: null, // Reset unit id!
