@@ -96,7 +96,6 @@ export class DataService {
         (
           adminUserSettings: CrudApi.AdminUserSettings | undefined | null,
         ): void => {
-          console.error('adminUserSettings CHANGED', adminUserSettings);
           this._settingsChanged$.next(true);
 
           if (adminUserSettings?.selectedChainId) {
@@ -199,7 +198,6 @@ export class DataService {
     }
     concat(
       listOp.pipe(
-        tap(list => console.error('list?', list?.items)),
         filterNullish(),
         map(list => list.items),
       ),

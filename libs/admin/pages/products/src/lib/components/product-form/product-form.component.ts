@@ -52,7 +52,7 @@ export class ProductFormComponent
     protected _injector: Injector,
     private _store: Store,
     private _productFormService: ProductFormService,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _logger: NGXLogger,
   ) {
@@ -103,7 +103,6 @@ export class ProductFormComponent
 
       this._productFormService.patchConfigSet(
         this.product,
-        this.productLevel,
         this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
@@ -126,7 +125,7 @@ export class ProductFormComponent
 
       if (this.product?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateChainProduct({
               input: {
                 id: this.product.id,
@@ -148,7 +147,7 @@ export class ProductFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateChainProduct({ input: value })
             .toPromise();
 
@@ -225,7 +224,7 @@ export class ProductFormComponent
   };
 
   private async updateImageStyles(image: string | null) {
-    await this.crudSdk.sdk
+    await this._crudSdk.sdk
       .GetChainProduct({
         id:
           this.product?.id ||
@@ -234,7 +233,7 @@ export class ProductFormComponent
       .pipe(
         filterNullish(),
         switchMap(data =>
-          this.crudSdk.sdk.UpdateChainProduct({
+          this._crudSdk.sdk.UpdateChainProduct({
             input: fp.set(`image`, image, data),
           }),
         ),

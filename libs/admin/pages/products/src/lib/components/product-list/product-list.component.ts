@@ -37,11 +37,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   public chainProducts$: Observable<CrudApi.ChainProduct[]>;
   public groupProducts$: Observable<CrudApi.GroupProduct[]>;
-  // TODO this is weird, check is pls. we call it groupProduct but use it as
-  // chainproduct
   public pendingGroupProducts: CrudApi.ChainProduct[] = [];
-  //public pendingGroupProducts: CrudApi.GroupProduct[] = [];
-  public pendingUnitProducts: CrudApi.UnitProduct[] = [];
+  public pendingUnitProducts: CrudApi.GroupProduct[] = [];
   public groupCurrency = '';
   public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
