@@ -47,20 +47,22 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._store
-      .pipe(
-        select(
-          productsSelectors.getGeneratedProductImageById(
-            this.orderItem.productId || '',
+    if (this.orderItem.productId) {
+      this._store
+        .pipe(
+          select(
+            productsSelectors.getGeneratedProductImageById(
+              this.orderItem.productId,
+            ),
           ),
-        ),
-        take(1),
-      )
-      .subscribe((image: string): void => {
-        this.orderItem.image = image;
+          take(1),
+        )
+        .subscribe((image: string): void => {
+          this.orderItem.image = image;
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
 
     if (!this.unit) {
       throw new Error('HANDLE ME: unexpected nullish');
