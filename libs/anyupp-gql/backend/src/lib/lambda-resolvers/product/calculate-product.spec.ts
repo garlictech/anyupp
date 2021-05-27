@@ -3,15 +3,21 @@ import {
   EProductType,
   EVariantAvailabilityType,
   Product,
+  ProductComponentMap,
+  ProductComponentSetMap,
 } from '@bgap/shared/types';
-import { calculateActualPricesAndCheckActivity } from './calculate-product';
-import { productSeed } from '@bgap/shared/fixtures';
+import {
+  calculateActualPricesAndCheckActivity,
+  toCreateGeneratedProductInputType,
+} from './calculate-product';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct = {
-    // const baseProduct: Product = {
-    ...productSeed.unitProductBase,
+  const baseProduct: Product = {
+    id: 'PRODUCT_ID',
+    chainId: 'CHAIN_ID',
+    groupId: 'GROUP_ID',
+    unitId: 'UNIT_ID',
     tax: 11,
     name: { en: 'NAME' },
     description: { en: 'DESCRIPTION' },
@@ -20,8 +26,83 @@ describe('calculatePricesAndCheckActivity method', () => {
     updatedAt: 'UPDATED_AT',
     productCategoryId: 'PROD_CAT_ID',
     productType: EProductType.DRINK,
-    //  chainId: 'CHAIN_ID',
+    position: 1,
+    isVisible: true,
     allergens: [CrudApi.Allergen.peanut, CrudApi.Allergen.egg],
+    variants: [
+      {
+        id: `VARIANT_ID_01`,
+        variantName: { en: `VARIANT_NAME_01` },
+        refGroupPrice: 1,
+        isAvailable: true,
+        pack: { size: 1, unit: 'UNIT' },
+        price: 1,
+        availabilities: [
+          {
+            dayFrom: '',
+            dayTo: '',
+            price: 1 * 1.5,
+            timeFrom: '',
+            timeTo: '',
+            type: EVariantAvailabilityType.ALWAYS,
+          },
+        ],
+        position: 1,
+      },
+    ],
+    configSets: [
+      {
+        productSetId: 'PROUDCT_SET_01',
+        items: [
+          {
+            productComponentId: 'PRODUCT_COMPONENT_ID_01',
+            refGroupPrice: 1,
+            price: 1,
+            position: 1,
+          },
+          {
+            productComponentId: 'PRODUCT_COMPONENT_ID_02',
+            refGroupPrice: 2,
+            price: 2,
+            position: 2,
+          },
+        ],
+        position: 1,
+      },
+    ],
+  };
+  const prodComponentMap: ProductComponentMap = {
+    ['PRODUCT_COMPONENT_ID_01']: {
+      id: 'PRODUCT_COMPONENT_ID_01',
+      chainId: 'CHAIN_ID',
+      name: { en: 'PRODUCT_COMP_NAME' },
+      description: 'PRODUCT_COMP_DESC',
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+    },
+    ['PRODUCT_COMPONENT_ID_02']: {
+      id: 'PRODUCT_COMPONENT_ID_02',
+      chainId: 'CHAIN_ID',
+      name: { en: 'PRODUCT_COMP_NAME' },
+      description: 'PRODUCT_COMP_DESC',
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+    },
+  };
+  const prodComponentSetMap: ProductComponentSetMap = {
+    ['PROUDCT_SET_01']: {
+      id: 'PROUDCT_SET_01',
+      chainId: 'CHAIN_ID',
+      name: { en: 'PRODUCT_COMP_SET_NAME' },
+      description: 'PRODUCT_COMP_SET_DESC',
+      type: 'PRODUCT_COMP_SET_TYPE',
+      maxSelection: 1,
+      createdAt: 'CREATED_AT',
+      updatedAt: 'UPDATED_AT',
+      items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
+    },
   };
   const timezone01 = 'Europe/London';
 
@@ -64,17 +145,24 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
     const activeVariantIdx = 0;
 
+    if (!result) {
+      throw 'CalculatedProduct is undefined';
+    }
+
     expect(result).not.toBeUndefined();
     expect(result).toHaveProperty('name');
     expect(result).toHaveProperty('description');
     expect(result).toHaveProperty('image');
     expect(result).toHaveProperty('position', baseProduct.position);
     expect(result).toHaveProperty('tax', baseProduct.tax);
+    expect(result).toHaveProperty('allergens');
+    expect(result).toHaveProperty('configSets');
+    // Variants
     expect(result).toHaveProperty('variants');
-    expect(result?.variants.length).toEqual(2);
-    expect(result?.variants[activeVariantIdx]).toHaveProperty('variantName');
-    expect(result?.variants[activeVariantIdx]).toHaveProperty('price');
-    expect(result?.variants[activeVariantIdx]).toHaveProperty(
+    expect(result.variants.length).toEqual(2);
+    expect(result.variants[activeVariantIdx]).toHaveProperty('variantName');
+    expect(result.variants[activeVariantIdx]).toHaveProperty('price');
+    expect(result.variants[activeVariantIdx]).toHaveProperty(
       'position',
       product?.variants?.[activeVariantIdx]?.position,
     );
@@ -82,56 +170,22 @@ describe('calculatePricesAndCheckActivity method', () => {
       size: product?.variants?.[activeVariantIdx]?.pack?.size,
       unit: product?.variants?.[activeVariantIdx]?.pack?.unit,
     });
-    expect(result?.variants?.[activeVariantIdx]).not.toHaveProperty(
+    // It still has availabilities because only the toCreateGeneratedProductInputType will remove it
+    expect(result?.variants?.[activeVariantIdx]).toHaveProperty(
       'availabilities',
     );
-    expect(result).toMatchInlineSnapshot(`
-      Object {
-        "allergens": Array [
-          "peanut",
-          "egg",
-        ],
-        "description": Object {
-          "en": "DESCRIPTION",
-        },
-        "id": "test_chainProduct_id_",
-        "image": "IMG",
-        "name": Object {
-          "en": "NAME",
-        },
-        "position": 1,
-        "productCategoryId": "PROD_CAT_ID",
-        "productType": "drink",
-        "tax": 11,
-        "unitId": "unitId_",
-        "variants": Array [
-          Object {
-            "id": "test_chainProductVariant_id_1",
-            "pack": Object {
-              "size": 1,
-              "unit": "UNIT",
-            },
-            "position": 1,
-            "price": 1.5,
-            "variantName": Object {
-              "en": "VARIANT_NAME_1",
-            },
-          },
-          Object {
-            "id": "test_chainProductVariant_id_1",
-            "pack": Object {
-              "size": 1,
-              "unit": "UNIT",
-            },
-            "position": 100,
-            "price": 1.5,
-            "variantName": Object {
-              "en": "VARIANT_NAME_1",
-            },
-          },
-        ],
-      }
-    `);
+    expect(result).toMatchSnapshot(
+      `Result of calculateActualPricesAndCheckActivity with ONLY the variants with ACTIVE prices`,
+    );
+    expect(
+      toCreateGeneratedProductInputType({
+        product: result,
+        unitId: baseProduct.unitId!,
+        productConfigSets: result.configSets,
+        productComponentSetMap: prodComponentSetMap,
+        productComponentMap: prodComponentMap,
+      }),
+    ).toMatchSnapshot(`Result of toCreateGeneratedProductInputType`);
   });
 
   describe('isVisible', () => {
@@ -146,10 +200,10 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
 
     // TODO fix this test, fails on unhandled null
-    it.skip('should return undefined in case the product is NOT visible', () => {
+    it('should return undefined in case the product is NOT visible', () => {
       expect(
         calculateActualPricesAndCheckActivity({
-          product: { isVisible: false } as any,
+          product: { ...baseProduct, isVisible: false } as any,
           atTimeISO: new Date().toISOString(),
           inTimeZone: timezone01,
         }),

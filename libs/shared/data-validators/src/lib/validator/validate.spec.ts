@@ -61,7 +61,7 @@ describe('JOI validaton test', () => {
       .toPromise()
       .catch(error => {
         expect(error).toMatchInlineSnapshot(
-          `"Image Object Validation Error: \\"url\\" is required"`,
+          `"Image Object Validation Error (JOI): \\"url\\" is required"`,
         );
       });
   });

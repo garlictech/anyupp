@@ -31,7 +31,9 @@ describe('CreateUnitProduct tests', () => {
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
       testAdminUsername,
       testAdminUserPassword,
-    ).toPromise();
+    )
+      .toPromise()
+      .then(x => x.authAnyuppSdk);
     publicCrudSdk = CrudApi.getCrudSdkPublic();
     iamCrudSdk = createIamCrudSdk();
   });

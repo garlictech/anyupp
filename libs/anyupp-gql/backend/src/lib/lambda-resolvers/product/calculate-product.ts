@@ -1,7 +1,16 @@
-import { Product } from '@bgap/shared/types';
-import { calculatePriceFromAvailabilities } from './calculate-price';
 import { DateTime } from 'luxon';
+
 import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  Product,
+  ProductComponentMap,
+  ProductComponentSetMap,
+  ProductVariantWithPrice,
+  ProductWithPrices,
+} from '@bgap/shared/types';
+
+import { calculatePriceFromAvailabilities } from './calculate-price';
+import { Maybe } from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
@@ -11,7 +20,7 @@ export const calculateActualPricesAndCheckActivity = ({
   product: Product;
   atTimeISO: string;
   inTimeZone: string;
-}): CrudApi.CreateGeneratedProductInput | undefined => {
+}): ProductWithPrices | undefined => {
   if (!isProductVisibleAndHasAnyAvailableVariant(product)) {
     return undefined;
   }
@@ -30,7 +39,10 @@ export const calculateActualPricesAndCheckActivity = ({
     return undefined;
   }
 
-  return toGeneratedProductType(product, variantsWithActualPrices);
+  return {
+    ...product,
+    variants: variantsWithActualPrices,
+  };
 };
 
 export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) => {
@@ -63,16 +75,10 @@ const calculateActualPriceForEachVariant = ({
   variants: CrudApi.Maybe<CrudApi.ProductVariant>[];
   atTimeISO: string;
   inTimeZone: string;
-}): CrudApi.GeneratedProductVariant[] => {
+}): ProductVariantWithPrice[] => {
   return variants.reduce((activeVariants, variant) => {
     if (!variant?.isAvailable) {
       return activeVariants;
-    }
-
-    if (!variant.availabilities) {
-      throw new Error(
-        'HANDLE ME: variant.availabilities expected having value',
-      );
     }
 
     const variantPrice: number | undefined = calculatePriceFromAvailabilities(
@@ -83,17 +89,38 @@ const calculateActualPriceForEachVariant = ({
       return activeVariants;
     }
 
-    return [
-      ...activeVariants,
-      toGeneratedProductVariantType(variant, variantPrice),
-    ];
-  }, <CrudApi.GeneratedProductVariant[]>[]);
+    return [...activeVariants, { ...variant, price: variantPrice }];
+  }, <ProductVariantWithPrice[]>[]);
 };
 
-const toGeneratedProductType = (
-  product: Product,
-  variants: CrudApi.GeneratedProductVariant[],
-): CrudApi.CreateGeneratedProductInput => {
+const toGeneratedProductVariantInputType = (
+  variant: ProductVariantWithPrice,
+): CrudApi.GeneratedProductVariantInput => {
+  if (!variant?.pack) {
+    throw new Error('HANDLE ME: variant.pack expected to be an object');
+  }
+  return {
+    id: variant.id,
+    variantName: variant.variantName,
+    position: variant.position,
+    pack: { size: variant.pack.size, unit: variant.pack.unit },
+    price: variant.price,
+  };
+};
+
+export const toCreateGeneratedProductInputType = ({
+  product,
+  unitId,
+  productComponentSetMap,
+  productComponentMap,
+  productConfigSets,
+}: {
+  product: ProductWithPrices;
+  unitId: string;
+  productComponentSetMap: ProductComponentSetMap;
+  productComponentMap: ProductComponentMap;
+  productConfigSets?: Maybe<Maybe<CrudApi.ProductConfigSet>[]>;
+}): CrudApi.CreateGeneratedProductInput => {
   if (
     !(
       product.unitId &&
@@ -106,10 +133,9 @@ const toGeneratedProductType = (
   ) {
     throw new Error("HANDLE ME: undefined's must be handled");
   }
-
   return {
     id: product.id,
-    unitId: product.unitId,
+    unitId,
     productCategoryId: product.productCategoryId,
     name: product.name,
     description: product.description,
@@ -118,23 +144,58 @@ const toGeneratedProductType = (
     tax: product.tax,
     position: product.position,
     allergens: product.allergens,
-    variants,
+    configSets: productConfigSets?.map(configSet =>
+      toGeneratedProductConfigSetInput({
+        productConfigSet: configSet,
+        productComponentSetMap,
+        productComponentMap,
+      }),
+    ),
+    variants: product.variants.map(toGeneratedProductVariantInputType),
   };
 };
 
-const toGeneratedProductVariantType = (
-  variant: CrudApi.ProductVariant,
-  price: number,
-): CrudApi.GeneratedProductVariant => {
-  if (!variant?.pack) {
-    throw new Error('HANDLE ME: variant.pack expected to be an object');
+const toGeneratedProductConfigSetInput = ({
+  productConfigSet,
+  productComponentSetMap,
+  productComponentMap,
+}: {
+  productConfigSet: Maybe<CrudApi.ProductConfigSet>;
+  productComponentSetMap: ProductComponentSetMap;
+  productComponentMap: ProductComponentMap;
+}): CrudApi.GeneratedProductConfigSetInput | null => {
+  if (!productConfigSet) {
+    return null;
+  }
+  const productComponentSet =
+    productComponentSetMap[productConfigSet.productSetId];
+
+  if (!productComponentSet) {
+    throw `productComponentSet with id ${productConfigSet.productSetId} is missing from the componentSetMap`;
   }
 
   return {
-    id: variant.id,
-    variantName: variant.variantName,
-    position: variant.position,
-    pack: { size: variant.pack.size, unit: variant.pack.unit },
-    price,
+    position: productConfigSet.position,
+    productSetId: productConfigSet.productSetId,
+    name: productComponentSet.name,
+    type: productComponentSet.type,
+    maxSelection: productComponentSet.maxSelection,
+    items: productConfigSet.items.map(confComponent => {
+      const productComponent =
+        productComponentMap[confComponent.productComponentId];
+      if (!productComponent) {
+        throw `productComponent with id ${confComponent.productComponentId} is missing from the componentMap`;
+      }
+
+      const configComponent: CrudApi.GeneratedProductConfigComponentInput = {
+        productComponentId: confComponent.productComponentId,
+        price: confComponent.price,
+        position: confComponent.position,
+        // comes from the productComponent itself (referenced by productComponentId)
+        name: productComponent.name,
+        allergens: productComponent.allergens,
+      };
+      return configComponent;
+    }),
   };
 };

@@ -1,5 +1,5 @@
 ---
-to: apps/crud-backend/.graphqlconfig.yml 
+to: apps/crud-backend/.graphqlconfig.yml
 ---
 projects:
   main:
@@ -15,7 +15,7 @@ projects:
         docsFilePath: ../../libs/crud-gql/api/src/lib/generated/graphql
         region: eu-west-1
         apiId: null
-        maxDepth: 4
+        maxDepth: 6
 extensions:
   amplify:
     version: 3
