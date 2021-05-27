@@ -47,10 +47,11 @@ export class AnyUppStack extends Stack {
       stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
     });
 
-    new SeederStack(scope, 'seeder', {
-      adminUserPool: cognitoStack.adminUserPool,
-      anyuppApiArn: appsyncStack.api.arn,
-    });
+    if (scope.stage === 'dev' || scope.stage === 'qa')
+      new SeederStack(scope, 'seeder', {
+        adminUserPool: cognitoStack.adminUserPool,
+        anyuppApiArn: appsyncStack.api.arn,
+      });
 
     /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
       appsyncApi: appsyncStack.api,

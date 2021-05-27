@@ -6,6 +6,7 @@ import { SlackNotificationsStack } from './build-pipeline/slack-notifications-st
 import { PipelineStackProps } from './build-pipeline/utils';
 import { CiStack } from './build-pipeline/ci-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
+import { StagingBuildPipelineStack } from './build-pipeline/staging-pipeline-stack';
 import { AppcenterStack } from './build-pipeline/appcenter-stack';
 
 export default function main(app: App): void {
@@ -71,6 +72,12 @@ export default function main(app: App): void {
 
   new QABuildPipelineStack(app, 'QABuildStack', {
     repoBranch: 'qa',
+    secretsManager: qaSecretsManagerStack,
+    ...commonConfig,
+  });
+
+  new StagingBuildPipelineStack(app, 'StagingBuildStack', {
+    repoBranch: 'staging',
     secretsManager: qaSecretsManagerStack,
     ...commonConfig,
   });
