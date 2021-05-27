@@ -1,43 +1,48 @@
-import { mergeAllProductLayers } from './merge-product';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { mergeAllProductLayers } from './merge-product';
+import { productSeed } from '@bgap/shared/fixtures';
+
 describe('Merge product layers', () => {
+  const cpb = productSeed.chainProductBase;
+  const gpb = productSeed.groupProductBase;
+  const upb = productSeed.unitProductBase;
   // it("should be successfull in case only unitProduct exists", () => {
   //     expect(() => mergeAllProductLayers({ unitProduct: {} as any })).not.toThrow();
   // });
 
   describe('isVisible', () => {
     // TODO fix this test
-    it.skip('should be true if every product is visible', () => {
-      const chainProduct: any = { isVisible: true };
-      const groupProduct: any = { isVisible: true };
-      const unitProduct: any = { isVisible: true };
+    it('should be true if every product is visible', () => {
+      const chainProduct: any = { ...cpb, isVisible: true };
+      const groupProduct: any = { ...gpb, isVisible: true };
+      const unitProduct: any = { ...upb, isVisible: true };
       expect(
         mergeAllProductLayers({ chainProduct, groupProduct, unitProduct }),
       ).toHaveProperty('isVisible', true);
     });
 
     // TODO fix this test
-    it.skip('should be FALSE if any product is NOT visible', () => {
+    it('should be FALSE if any product is NOT visible', () => {
       expect(
         mergeAllProductLayers({
-          chainProduct: { isVisible: true } as any,
-          groupProduct: { isVisible: true } as any,
-          unitProduct: { isVisible: false } as any,
+          chainProduct: { ...cpb, isVisible: true } as any,
+          groupProduct: { ...gpb, isVisible: true } as any,
+          unitProduct: { ...upb, isVisible: false } as any,
         }),
       ).toHaveProperty('isVisible', false);
       expect(
         mergeAllProductLayers({
-          chainProduct: { isVisible: true } as any,
-          groupProduct: { isVisible: false } as any,
-          unitProduct: { isVisible: true } as any,
+          chainProduct: { ...cpb, isVisible: true } as any,
+          groupProduct: { ...gpb, isVisible: false } as any,
+          unitProduct: { ...upb, isVisible: true } as any,
         }),
       ).toHaveProperty('isVisible', false);
       expect(
         mergeAllProductLayers({
-          chainProduct: { isVisible: false } as any,
-          groupProduct: { isVisible: true } as any,
-          unitProduct: { isVisible: true } as any,
+          chainProduct: { ...cpb, isVisible: false } as any,
+          groupProduct: { ...gpb, isVisible: true } as any,
+          unitProduct: { ...upb, isVisible: true } as any,
         }),
       ).toHaveProperty('isVisible', false);
     });

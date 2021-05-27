@@ -1,10 +1,12 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import * as AnyuppApi from 'libs/anyupp-gql/api/src';
 import { from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+
 import { createAnonymUser } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
 
+const TEST_NAME = 'CREATEANONYM_';
 const consumerUserPoolId = config.ConsumerUserPoolId;
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -21,6 +23,14 @@ describe('Anonym user creation', () => {
     of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
       .pipe(
         // CREATE USER
+        // TO debug or development use direct logic call switchMap(() =>
+        //   createAnonymUser({
+        //     crudGraphqlClient: anyuppGraphQLClient,
+        //     cognito: cognitoidentityserviceprovider,
+        //     consumerUserPoolId,
+        //   }),
+        // ),
+        // USE this to check the endpoint registration, permissions, etc, the whole endpoint
         switchMap(() => createAnonymUser(deps)),
         tap({
           next(result) {
@@ -103,6 +113,9 @@ describe('Anonym user creation', () => {
       .subscribe({
         next() {
           done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
         },
       });
   }, 40000);
