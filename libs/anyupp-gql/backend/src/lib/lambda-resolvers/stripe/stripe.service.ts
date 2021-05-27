@@ -131,16 +131,7 @@ export const startStripePayment = (
   // 4. Load unit
   const unit = await loadUnit(order.unitId)(deps);
 
-  // 5. Calculate summary
-  const price = calculateOrderSumPrice(order.items || []);
-  console.log(
-    'startStripePayment().calculate.price=' +
-      price?.priceSum +
-      ' ' +
-      price?.currency,
-  );
-
-  // 5a. Handle INAPP payment
+  // 5. Handle INAPP payment
   if (paymentMethod == AnyuppApi.PaymentMethod.inapp) {
     if (!paymentMethodId) {
       throw Error(
@@ -156,8 +147,8 @@ export const startStripePayment = (
 
     // 6a. Create payment intent data
     const paymentIntentData: Stripe.PaymentIntentCreateParams = {
-      amount: price.priceSum * 100,
-      currency: price.currency,
+      amount: order.sumPriceShown.priceSum * 100,
+      currency: order.sumPriceShown.currency,
       payment_method: paymentMethodId,
       payment_method_types: ['card'],
       customer: user.stripeCustomerId,
@@ -223,7 +214,7 @@ export const startStripePayment = (
   } else {
     // 5b. Handle CASH and CARD payment
 
-    // 8. Create Transaction
+    // 6. Create Transaction
     const createTransactionVars: CrudApi.CreateTransactionMutationVariables = {
       input: {
         userId: userId,
@@ -241,6 +232,7 @@ export const startStripePayment = (
       throw new Error('Transaction not created');
     }
 
+    // 7. Update order
     order = await updateOrderState(
       order.id,
       userId,
@@ -249,7 +241,7 @@ export const startStripePayment = (
     )(deps);
     console.log('startCashPayment().updateOrderState.done()=' + order?.id);
 
-    // 6. Return with client secret
+    // 8. Return with success
     return Promise.resolve({
       clientSecret: '',
       status: CrudApi.PaymentStatus.waiting_for_payment,
