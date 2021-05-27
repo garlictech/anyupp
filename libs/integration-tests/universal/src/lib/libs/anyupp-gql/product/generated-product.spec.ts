@@ -62,18 +62,22 @@ describe('GenerateProduct tests', () => {
   });
 
   describe('complex tests', () => {
-    beforeAll(async () => {
-      await of('START')
-        .pipe(
-          // CleanUP
-          switchMap(() =>
-            deleteTestGeneratedProduct(
-              unit02_generatedProduct_01.id,
-              deps.crudSdk,
-            ),
+    const cleanup = () =>
+      of('cleanup').pipe(
+        // CleanUP
+        switchMap(() =>
+          deleteTestGeneratedProduct(
+            unit02_generatedProduct_01.id,
+            deps.crudSdk,
           ),
-          switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
-          switchMap(() => deleteGeneratedProductsForAUnit(unitId_03)(deps)),
+        ),
+        switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
+        switchMap(() => deleteGeneratedProductsForAUnit(unitId_03)(deps)),
+      );
+
+    beforeAll(async () => {
+      await cleanup()
+        .pipe(
           delay(DYNAMODB_OPERATION_DELAY),
           // Seeding
           switchMap(() => {
@@ -88,6 +92,10 @@ describe('GenerateProduct tests', () => {
         )
         .toPromise();
     }, 25000);
+
+    afterAll(async () => {
+      await cleanup().toPromise();
+    });
 
     it('should be able to create and delete all the given products LESS then 25', done => {
       // using UNIT 03
