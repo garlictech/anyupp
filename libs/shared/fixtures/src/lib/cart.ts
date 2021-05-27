@@ -2,6 +2,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { unitSeed } from './unit';
 import { productSeed } from './product';
 import { seededIdPrefix, testIdPrefix } from './common';
+import { RequiredId } from '@bgap/shared/types';
 
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
@@ -47,7 +48,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
 });
 
 // const cart_01: Required<CrudApi.CreateCartInput> = {
-const cart_01: CrudApi.CreateCartInput = {
+const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   id: cartId_01,
   userId: userId_01,
   unitId: unitId_01,
