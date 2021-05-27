@@ -1,5 +1,4 @@
 import { App, Stack } from '@serverless-stack/resources';
-
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
 import { ParamsStack } from './app/params-stack';
@@ -15,10 +14,12 @@ export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
     const sites = new SiteStack(scope, 'sites', { certificateArn });
+
     const secretsManagerStack = new SecretsManagerStack(
       scope,
       'SecretsManagerStack',
     );
+
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
@@ -27,9 +28,13 @@ export class AnyUppStack extends Stack {
       googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,
       facebookClientSecret: secretsManagerStack.facebookAppSecret,
+      appleSigninKey: secretsManagerStack.appleSigninKey,
+      appleTeamId: paramsStack.appleTeamId,
+      appleKeyId: paramsStack.appleKeyId,
+      appleServiceId: paramsStack.appleServiceId,
     });
 
-    new AppsyncAppStack(scope, 'appsync', {
+    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
@@ -44,7 +49,13 @@ export class AnyUppStack extends Stack {
 
     new SeederStack(scope, 'seeder', {
       adminUserPool: cognitoStack.adminUserPool,
+      anyuppApiArn: appsyncStack.api.arn,
     });
+
+    /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
+      appsyncApi: appsyncStack.api,
+      pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
+    });*/
   }
 }
 

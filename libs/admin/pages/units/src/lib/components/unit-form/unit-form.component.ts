@@ -1,8 +1,6 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { delay, take } from 'rxjs/operators';
-
-/* eslint-disable @typescript-eslint/dot-notation */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,8 +9,9 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { FormArray, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
@@ -28,14 +27,7 @@ import {
   TIME_FORMAT_PATTERN,
   unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import {
-  ICustomDailySchedule,
-  IGroup,
-  IKeyValue,
-  ILane,
-  IPaymentMode,
-  IUnit,
-} from '@bgap/shared/types';
+import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -49,20 +41,19 @@ import { select, Store } from '@ngrx/store';
 export class UnitFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
-  public unit!: IUnit;
+  public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
 
-  private _groups: IGroup[] = [];
+  private _groups: CrudApi.Group[] = [];
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _formsService: FormsService,
-    private _amplifyDataService: AmplifyDataService,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
+    private crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -129,25 +120,28 @@ export class UnitFormComponent
       this.dialogForm.patchValue(cleanObject(fp.omit(['lanes'], this.unit)));
 
       // Parse openingHours object to temp array
-      const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
-        ?.custom;
+      const custom = this.unit?.openingHours?.custom;
 
       if (custom) {
-        custom.forEach((day: ICustomDailySchedule): void => {
-          const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
-          dayGroup.patchValue(day);
+        custom.forEach(day => {
+          if (day) {
+            const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
+            dayGroup.patchValue(day);
 
-          (<FormArray>this.dialogForm?.get('openingHours')?.get('custom')).push(
-            dayGroup,
-          );
+            (<FormArray>(
+              this.dialogForm?.get('openingHours')?.get('custom')
+            )).push(dayGroup);
+          }
         });
       }
 
       // Patch lanes array
-      (this.unit.lanes || []).forEach((lane: ILane): void => {
-        const laneGroup = this._formsService.createLaneFormGroup();
-        laneGroup.patchValue(lane);
-        (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+      (this.unit.lanes || []).forEach(lane => {
+        if (lane) {
+          const laneGroup = this._formsService.createLaneFormGroup();
+          laneGroup.patchValue(lane);
+          (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+        }
       });
     } else {
       // Patch ChainId
@@ -182,11 +176,11 @@ export class UnitFormComponent
         select(groupsSelectors.getSelectedChainGroups),
         untilDestroyed(this),
       )
-      .subscribe((groups: IGroup[]): void => {
+      .subscribe((groups: CrudApi.Group[]): void => {
         this._groups = groups;
 
         this.groupOptions = this._groups.map(
-          (group: IGroup): IKeyValue => ({
+          (group: CrudApi.Group): IKeyValue => ({
             key: group.id,
             value: group.name,
           }),
@@ -204,12 +198,14 @@ export class UnitFormComponent
     if (this.dialogForm?.valid) {
       if (this.unit?.id) {
         try {
-          await this._amplifyDataService.update<IUnit>(
-            'getUnit',
-            'updateUnit',
-            this.unit.id,
-            () => this.dialogForm?.value,
-          );
+          await this.crudSdk.sdk
+            .UpdateUnit({
+              input: {
+                id: this.unit.id,
+                ...this.dialogForm?.value,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -222,10 +218,14 @@ export class UnitFormComponent
         }
       } else {
         try {
-          await this._amplifyDataService.create('createUnit', {
-            ...this.dialogForm?.value,
-            isAcceptingOrders: false,
-          });
+          await this.crudSdk.sdk
+            .CreateUnit({
+              input: {
+                ...this.dialogForm?.value,
+                isAcceptingOrders: false,
+              },
+            })
+            .toPromise();
 
           this._toasterService.show(
             EToasterType.SUCCESS,
@@ -240,19 +240,19 @@ export class UnitFormComponent
     }
   }
 
-  public paymentModeIsChecked(paymentMode: IPaymentMode): boolean {
+  public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
     return (
       (this.dialogForm?.value.paymentModes || [])
-        .map((m: IPaymentMode): string => m.name)
-        .indexOf(paymentMode.name) >= 0
+        .map((m: { name: string }) => m.name)
+        .indexOf(paymentMode.type) >= 0
     );
   }
 
-  public togglePaymentMode(paymentMode: IPaymentMode): void {
-    const paymentModesArr: IPaymentMode[] = this.dialogForm?.value.paymentModes;
+  public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
+    const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
-      .map((m): string => m.name)
-      .indexOf(paymentMode.name);
+      .map((m: { name: string }) => m.name)
+      .indexOf(paymentMode.type);
 
     if (idx < 0) {
       paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));

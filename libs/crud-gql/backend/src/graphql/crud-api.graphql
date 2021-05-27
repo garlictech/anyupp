@@ -2,7 +2,7 @@ type Address {
   address: String!
   city: String!
   country: String!
-  title: String
+  title: String!
   postalCode: String!
   location: Location!
 }
@@ -59,12 +59,21 @@ type AdminRoleContext
 
 ### RoleContext
 
+enum Role {
+  superuser
+  chainadmin
+  groupadmin
+  unitadmin
+  staff
+  inactive
+}
+
 type RoleContext
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
-  role: String!
+  role: Role!
   name: LocalizedItem
   chainId: String
   groupId: String
@@ -204,7 +213,7 @@ type Group
 ### OrderItem
 type StatusLog {
   userId: ID!
-  status: String!
+  status: OrderStatus!
   ts: Float!
 }
 
@@ -224,7 +233,7 @@ type OrderItem {
   image: String
   priceShown: PriceShown!
   quantity: Int!
-  statusLog: [StatusLog]
+  statusLog: [StatusLog!]!
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
@@ -255,6 +264,7 @@ type OrderHistory
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -262,36 +272,39 @@ type OrderHistory
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
-  # EXTRA
-  status: OrderStatus
-  # paymentStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 enum PaymentStatus {
-  WAITING_FOR_PAYMENT
-  SUCCESS
-  FAILED
+  waiting_for_payment
+  success
+  failed
 }
 
 enum OrderStatus {
-  NONE
-  PLACED
-  PROCESSING
-  READY
-  SERVED
-  # WAITING_FOR_PAYMENT
-  # PAID
-  # RECEIVED,
-  FAILED
-  REJECTED
+  none
+  placed
+  processing
+  ready
+  served
+  failed
+  rejected
 }
 
 enum PaymentMethod {
-  CASH
-  CARD
-  INAPP
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
 }
 
 type Place {
@@ -338,8 +351,8 @@ type ProductComponentSet
 ### ProductConfigSet
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Float
-  price: Float
+  refGroupPrice: Float!
+  price: Float!
   position: Int!
 }
 
@@ -547,7 +560,7 @@ type WeeklySchedule {
 }
 
 type PaymentMode {
-  name: String!
+  type: PaymentType!
   caption: String
   method: PaymentMethod!
 }
@@ -682,6 +695,17 @@ type Subscription {
     @aws_cognito_user_pools
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange: GeneratedProduct
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrderHistorysChange: OrderHistory
+    @aws_subscribe(mutations: ["createOrderHistory", "updateOrderHistory"])
     @aws_cognito_user_pools
 
   # Added for the Mobile Application

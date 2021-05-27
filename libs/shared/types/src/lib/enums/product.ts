@@ -12,5 +12,5 @@ export enum EProductLevel {
 
 export enum EProductComponentSetType {
   MODIFIER = 'modifier',
-  EXTRAS = 'extras'
+  EXTRAS = 'extras',
 }

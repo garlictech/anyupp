@@ -20,7 +20,7 @@ export class UserListComponent implements OnDestroy {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
     this.users$ = this._store.pipe(

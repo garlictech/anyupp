@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs';
-
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { IAdminUser } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -17,11 +16,10 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
   styleUrls: ['./admin-user-list.component.scss'],
 })
 export class AdminUserListComponent implements OnDestroy {
-  public adminUsers$: Observable<IAdminUser[]>;
+  public adminUsers$: Observable<CrudApi.AdminUser[]>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
     this.adminUsers$ = this._store.pipe(

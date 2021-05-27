@@ -1,5 +1,7 @@
 query ListFavoriteProductsQuery($userId: ID!, $unitId: ID!) {
-  listFavoriteProducts(filter: {userId: {eq: $userId}, unitId: {eq: $unitId}}) {
+  listFavoriteProducts(
+    filter: { userId: { eq: $userId }, unitId: { eq: $unitId } }
+  ) {
     items {
       id
       unitId

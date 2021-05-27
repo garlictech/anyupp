@@ -34,7 +34,7 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
         }
       }
       paymentModes {
-        name
+        type
         caption
         method
       }

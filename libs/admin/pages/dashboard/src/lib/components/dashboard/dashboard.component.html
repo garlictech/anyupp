@@ -82,6 +82,7 @@
         dashboardSettings.listMode === EDashboardListMode.CURRENT ||
         dashboardSettings.listMode === EDashboardListMode.HISTORY
       "
+      [unit]="selectedUnit"
     ></bgap-order-ticket-body>
     <bgap-lanes-body
       *ngIf="dashboardSettings.listMode === EDashboardListMode.LANES"

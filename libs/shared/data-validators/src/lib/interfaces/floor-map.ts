@@ -1,8 +1,7 @@
 import * as Joi from 'joi';
-import { IFloorMapData } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
-export const floorMapSchema: Joi.SchemaMap<IFloorMapData> = {
-  __typename: Joi.string().valid('FloorMapData').optional(),
+export const floorMapSchema: Joi.SchemaMap<CrudApi.FloorMapData> = {
   w: Joi.number().required(),
   h: Joi.number().required(),
   objects: Joi.array().items(Joi.object()),

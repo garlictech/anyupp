@@ -4,6 +4,7 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -82,6 +83,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   }
 
   Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+    List<String> methods = [];
+    for (PaymentMode paymentMode in unit.paymentModes) {
+      methods.add(paymentMode.method);
+    }
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
@@ -113,10 +118,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
               _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
                   "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
+              if (unit.paymentModes != null && methods.contains('cash'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CARD'))
+              if (unit.paymentModes != null && methods.contains('card'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
               Padding(
@@ -205,7 +210,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                       Nav.pop();
                       Nav.to(StripePaymentScreen(cart: widget.cart));
                     } else {
-                      // TODO betenni a helyere!!! # atnezni
+                      getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+                        cart: widget.cart,
+                        paymentMethod: _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                      ));
                       String payMentMethod = _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod);
                       if (wantsInvoce) {
                         showInvoiceFormBottomSheet(context, payMentMethod);

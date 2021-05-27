@@ -13,4 +13,4 @@ export const PRODUCT_TYPES: IKeyValue[] = [
     key: EProductType.OTHER,
     value: 'products.productType.other',
   },
-]
+];

@@ -1,5 +1,4 @@
 import path from 'path';
-
 import * as appsync from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
@@ -13,6 +12,7 @@ import {
   createProductResolvers,
   createStripeResolvers,
   createUnitResolvers,
+  createUserResolvers,
 } from '@bgap/anyupp-gql/backend';
 import * as sst from '@serverless-stack/resources';
 
@@ -20,6 +20,7 @@ import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import { FieldLogLevel } from '@aws-cdk/aws-appsync';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -30,8 +31,9 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
-  private lambdaDs!: appsync.LambdaDataSource;
-  private api: appsync.GraphqlApi;
+  public api: appsync.GraphqlApi;
+
+  private lambdaDs?: appsync.LambdaDataSource;
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
@@ -67,9 +69,18 @@ export class AppsyncAppStack extends sst.Stack {
         ],
       },
       xrayEnabled: true,
+      logConfig: {
+        fieldLogLevel: FieldLogLevel.ALL,
+      },
     });
 
     this.createDatasources(props);
+
+    if (!this.lambdaDs) {
+      throw new Error(
+        'MAke sure that teh lambda data source exists before using it!',
+      );
+    }
 
     const commonResolverInputs = { lambdaDs: this.lambdaDs };
     createOrderResolvers(commonResolverInputs);
@@ -77,6 +88,7 @@ export class AppsyncAppStack extends sst.Stack {
     createUnitResolvers(commonResolverInputs);
     createProductResolvers(commonResolverInputs);
     createStripeResolvers(commonResolverInputs);
+    createUserResolvers(commonResolverInputs);
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
@@ -131,18 +143,22 @@ export class AppsyncAppStack extends sst.Stack {
     });
 
     if (apiLambda.role) {
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
             'cognito-idp:AdminCreateUser',
             'cognito-idp:AdminGetUser',
             'cognito-idp:AdminDeleteUser',
+            'cognito-idp:AdminSetUserPassword',
           ],
-          resources: [props.adminUserPool.userPoolArn],
+          resources: [
+            props.adminUserPool.userPoolArn,
+            props.consumerUserPool.userPoolArn,
+          ],
         }),
       );
-      apiLambda.role.addToPolicy(
+      apiLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: [
             'dynamodb:BatchGetItem',

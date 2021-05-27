@@ -15,10 +15,7 @@ export class FormAllergensComponent {
   public allergens = ALLERGENS;
 
   public allergenIsChecked(allergen: IAllergen): boolean {
-    return (
-      (this.control?.value || [])
-        .indexOf(allergen.id) >= 0
-    );
+    return (this.control?.value || []).indexOf(allergen.id) >= 0;
   }
 
   public toggleAllergen(allergen: IAllergen): void {

@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as floorMapLib from '@bgap/admin/shared/floor-map';
 import { EToasterType } from '@bgap/admin/shared/utils';
-import { IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -20,11 +20,11 @@ import { Store } from '@ngrx/store';
 export class UnitFloorMapComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public unit!: IUnit;
+  public unit!: CrudApi.Unit;
   public rawForm!: FormGroup;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store<any>;
+  private _store: Store;
 
   constructor(protected _injector: Injector) {
     super(_injector);
@@ -47,7 +47,8 @@ export class UnitFloorMapComponent
 
   public submit(): void {
     this._dataService
-      .updateUnit(this.unit.id, { floorMap: floorMapLib.mapRawData })
+      .updateUnit({ id: this.unit.id, floorMap: floorMapLib.mapRawData })
+      .toPromise()
       .then(
         (): void => {
           this._toasterService.show(

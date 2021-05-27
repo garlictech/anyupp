@@ -24,7 +24,7 @@ export class FormUnitLanesComponent implements OnInit {
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {

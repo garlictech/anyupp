@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
 import {
-  PRODUCT_COMPONENT_SETS_FEATURE_KEY, productComponentSetsReducer
+  PRODUCT_COMPONENT_SETS_FEATURE_KEY,
+  productComponentSetsReducer,
 } from './+state/product-component-sets.reducer';
 
 @NgModule({
@@ -11,8 +12,8 @@ import {
     CommonModule,
     StoreModule.forFeature(
       PRODUCT_COMPONENT_SETS_FEATURE_KEY,
-      productComponentSetsReducer
-    )
+      productComponentSetsReducer,
+    ),
   ],
 })
 export class AdminSharedProductComponentSetsModule {}

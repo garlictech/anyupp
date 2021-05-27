@@ -1,58 +1,32 @@
 import { DateTime } from 'luxon';
-import { combineLatest, iif, Observable, of, throwError } from 'rxjs';
-import { catchError, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
-
-import {
-  CrudApi,
-  CrudApiMutationDocuments,
-  CrudApiQueryDocuments,
-} from '@bgap/crud-gql/api';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
-  validateGetGroupCurrency,
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
 import {
-  executeMutation,
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
-import {
-  EOrderStatus,
-  ICart,
-  IOrder,
-  IOrderItem,
-  IPaymentMode,
-  IPlace,
-  IUnit,
-} from '@bgap/shared/types';
-import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
-  removeTypeNameField,
 } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { incrementOrderNum } from '../../database';
 import { toFixed2Number } from '../../utils';
 import { calculateOrderSumPrice } from './order.utils';
+import { OrderResolverDeps } from './utils';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
-export const createOrderFromCart = ({
-  userId,
-  cartId,
-  crudGraphqlClient,
-}: {
-  userId: string;
-  cartId: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<string> => {
+export const createOrderFromCart = (userId: string, cartId: string) => (
+  deps: OrderResolverDeps,
+) => {
   return of('START').pipe(
     switchMap(() =>
-      getCart(crudGraphqlClient, cartId).pipe(
+      getCart(cartId)(deps).pipe(
         // CART.USERID CHECK
         switchMap(cart =>
           cart.userId === userId
@@ -68,7 +42,7 @@ export const createOrderFromCart = ({
       ),
     ),
     switchMap(cart =>
-      getUnit(crudGraphqlClient, cart.unitId).pipe(
+      getUnit(cart.unitId)(deps).pipe(
         // TODO: ??? create catchError and custom error
         map(unit => ({ cart, unit })),
         // UNIT.IsAcceptingOrders CHECK
@@ -90,8 +64,7 @@ export const createOrderFromCart = ({
       ),
     ),
     switchMap(props =>
-      getGroupCurrency(crudGraphqlClient, props.unit?.groupId).pipe(
-        // TODO: ??? create catchError and custom error
+      getGroupCurrency(props.unit?.groupId)(deps).pipe(
         map(currency => ({ ...props, currency })),
       ),
     ),
@@ -103,11 +76,10 @@ export const createOrderFromCart = ({
     ),
     switchMap(props =>
       getOrderItems({
-        crudGraphqlClient: crudGraphqlClient,
         userId,
-        currency: props.currency,
+        currency: props?.currency?.currency ?? 'fabatka (handle this nullish)',
         cartItems: props.cart.items,
-      }).pipe(map(items => ({ ...props, items }))),
+      })(deps).pipe(map(items => ({ ...props, items }))),
     ),
     map(props => ({
       ...props,
@@ -122,14 +94,15 @@ export const createOrderFromCart = ({
       }),
     })),
     switchMap(props =>
-      createOrderInDb({
-        orderInput: props.orderInput,
-        crudGraphqlClient: crudGraphqlClient,
-      }).pipe(map(x => ({ ...props, orderId: x.id as string }))),
+      createOrderInDb(props.orderInput)(deps).pipe(
+        map(x => ({ ...props, orderId: x.id as string })),
+      ),
     ),
     // Remove the cart from the db after the order has been created successfully
     switchMap(props =>
-      deleteCart(crudGraphqlClient, props.cart.id).pipe(mapTo(props.orderId)),
+      deps.crudSdk
+        .DeleteCart({ input: { id: props.cart.id } })
+        .pipe(mapTo(props.orderId)),
     ),
   );
 };
@@ -145,23 +118,23 @@ const toOrderInputFormat = ({
   userId: string;
   unitId: string;
   orderNum: string;
-  paymentMode: IPaymentMode;
+  paymentMode: CrudApi.PaymentMode;
   items: CrudApi.OrderItemInput[];
-  place: IPlace | undefined;
+  place: CrudApi.Place | null | undefined;
 }): CrudApi.CreateOrderInput => {
   return {
     userId,
     takeAway: false,
     orderNum,
-    paymentMode: removeTypeNameField(paymentMode),
+    paymentMode,
     // created: DateTime.utc().toMillis(),
     items: items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
-    place: removeTypeNameField(place),
+    place: place,
     unitId,
-    // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to PLACED
+    // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };
 };
@@ -170,16 +143,14 @@ const getOrderItems = ({
   userId,
   cartItems,
   currency,
-  crudGraphqlClient,
 }: {
   userId: string;
-  cartItems: IOrderItem[];
+  cartItems: CrudApi.OrderItem[];
   currency: string;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<CrudApi.OrderItemInput[]> => {
+}) => (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
-      getLaneIdForCartItem(crudGraphqlClient, cartItem.productId).pipe(
+      getLaneIdForCartItem(cartItem.productId)(deps).pipe(
         map(laneId =>
           convertCartOrderToOrderItem({
             userId,
@@ -200,12 +171,12 @@ const convertCartOrderToOrderItem = ({
   laneId,
 }: {
   userId: string;
-  cartItem: IOrderItem;
+  cartItem: CrudApi.OrderItem;
   currency: string;
   laneId: string | null | undefined;
 }): CrudApi.OrderItemInput => {
   return {
-    productName: removeTypeNameField(cartItem.productName),
+    productName: cartItem.productName,
     priceShown: {
       currency,
       pricePerUnit: cartItem.priceShown.pricePerUnit,
@@ -222,140 +193,58 @@ const convertCartOrderToOrderItem = ({
     productId: cartItem.productId,
     quantity: cartItem.quantity,
     variantId: cartItem.variantId,
-    variantName: removeTypeNameField(cartItem.variantName),
+    variantName: cartItem.variantName,
     statusLog: createStatusLog(userId),
     laneId,
     allergens: cartItem.allergens,
   };
 };
 
-const getLaneIdForCartItem = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
-): Observable<string | undefined> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProductLaneId,
-    { id: productId },
-  ).pipe(
-    map(response => response.getUnitProduct),
+const getLaneIdForCartItem = (productId: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetUnitProduct({ id: productId })).pipe(
     map(product => product?.laneId || undefined),
   );
-};
 
 const createStatusLog = (
   userId: string,
-  status: EOrderStatus = EOrderStatus.NONE,
+  status: CrudApi.OrderStatus = CrudApi.OrderStatus.none,
 ): Array<CrudApi.StatusLogInput> => [
   { userId, status, ts: DateTime.utc().toMillis() },
 ];
 
 // TODO: get staff id from somewhere
 // const getStaffId = async (unitId: string): Promise<string> => {
-//   return Promise.resolve('STAFF_ID');
+//   return Promise.resolve('staff_ID');
 // };
+const createOrderInDb = (input: CrudApi.CreateOrderInput) => (
+  deps: OrderResolverDeps,
+) => from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
 
-const createOrderInDb = ({
-  orderInput,
-  crudGraphqlClient,
-}: {
-  orderInput: CrudApi.CreateOrderInput;
-  crudGraphqlClient: GraphqlApiClient;
-}): Observable<IOrder> => {
-  return executeMutation(crudGraphqlClient)<CrudApi.CreateOrderMutation>(
-    CrudApiMutationDocuments.createOrder,
-    {
-      input: orderInput,
-    },
-  ).pipe(
-    map(x => x.createOrder),
-    switchMap(validateOrder),
-  );
-};
+const getUnit = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetUnit({ id })).pipe(switchMap(validateUnit));
 
-const getUnit = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<IUnit> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitQuery>(
-    CrudApiQueryDocuments.getUnit,
-    { id },
-  ).pipe(
-    map(x => x.getUnit),
-    switchMap(validateUnit),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Unit query error');
-    }),
-  );
-};
+const getCart = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetCart({ id })).pipe(switchMap(validateCart));
 
-const getCart = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<ICart> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetCartQuery>(
-    CrudApiQueryDocuments.getCart,
-    { id },
-  ).pipe(
-    map(x => x.getCart),
-    switchMap(validateCart),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Cart query error');
-    }),
-  );
-};
-
-const deleteCart = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<boolean> => {
-  return executeMutation(crudGraphqlClient)<CrudApi.DeleteCartMutation>(
-    CrudApiMutationDocuments.deleteCart,
-    { input: { id } },
-  ).pipe(
-    mapTo(true),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal Cart Delete error');
-    }),
-  );
-};
-
-const getGroupCurrency = (
-  crudGraphqlClient: GraphqlApiClient,
-  id: string,
-): Observable<string> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetGroupQuery>(
-    CrudApiQueryDocuments.getGroupCurrency,
-    { id },
-  ).pipe(
-    map(x => x.getGroup),
-    switchMap(validateGetGroupCurrency),
-    map(x => x.currency),
-    catchError(err => {
-      console.error(err);
-      return throwError('Internal GroupCurrency query error');
-    }),
-  );
-};
+const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetGroupCurrency({ id }));
 
 const getNextOrderNum = (tableName: string) => ({
   unitId,
   place,
 }: {
   unitId: string;
-  place: IPlace | undefined;
+  place: CrudApi.Place | undefined | null;
 }): Observable<string> => {
   return incrementOrderNum(tableName)(unitId).pipe(
     mergeMap(lastOrderNum =>
       iif(
         () => !!lastOrderNum,
-        of(lastOrderNum!),
+        of(lastOrderNum),
         of(Math.floor(Math.random() * 10)), // In case of the lastOrderNum is missing get a random number between 0-99
       ),
     ),
-    map(x => x.toString().padStart(2, '0')),
+    map(x => (x || 1).toString().padStart(2, '0')),
     map(num => (place ? `${place.table}${place.seat}${num}` : num)),
   );
 };

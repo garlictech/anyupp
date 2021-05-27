@@ -1,4 +1,4 @@
-import { IProductComponentSet } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -6,19 +6,20 @@ import * as ProductComponentSetsActions from './product-component-sets.actions';
 
 export const PRODUCT_COMPONENT_SETS_FEATURE_KEY = 'productComponentSets';
 
-export interface IProductComponentSetsState extends EntityState<IProductComponentSet> {
+export interface ProductComponentSetsState
+  extends EntityState<CrudApi.ProductComponentSet> {
   error?: string | null; // last known error (if any)
 }
 
 export interface ProductComponentSetsPartialState {
-  readonly [PRODUCT_COMPONENT_SETS_FEATURE_KEY]: IProductComponentSetsState;
+  readonly [PRODUCT_COMPONENT_SETS_FEATURE_KEY]: ProductComponentSetsState;
 }
 
-export const productComponentSetsAdapter: EntityAdapter<IProductComponentSet> = createEntityAdapter<
-  IProductComponentSet
+export const productComponentSetsAdapter: EntityAdapter<CrudApi.ProductComponentSet> = createEntityAdapter<
+  CrudApi.ProductComponentSet
 >();
 
-export const initialState: IProductComponentSetsState = productComponentSetsAdapter.getInitialState(
+export const initialState: ProductComponentSetsState = productComponentSetsAdapter.getInitialState(
   {},
 );
 
@@ -29,9 +30,9 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductComponentSetsActions.upsertProductComponentSet,
-    (state, { productComponentSet }) =>
-      productComponentSetsAdapter.upsertOne(productComponentSet, state),
+    ProductComponentSetsActions.upsertProductComponentSets,
+    (state, { productComponentSets }) =>
+      productComponentSetsAdapter.upsertMany(productComponentSets, state),
   ),
   on(ProductComponentSetsActions.resetProductComponentSets, state =>
     productComponentSetsAdapter.removeAll(state),
@@ -39,7 +40,7 @@ const reducer = createReducer(
 );
 
 export function productComponentSetsReducer(
-  state: IProductComponentSetsState | undefined,
+  state: ProductComponentSetsState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

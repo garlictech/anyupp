@@ -1,15 +1,15 @@
+import * as CrudApi from '@bgap/crud-gql/api';
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EOrderStatus, ICart } from '@bgap/shared/types';
 
-const cart: ICart = {
+const cart: CrudApi.Cart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
   paymentMode: {
-    method: CrudApi.PaymentMethod.CARD,
-    name: 'CARD',
+    method: CrudApi.PaymentMethod.card,
+    type: CrudApi.PaymentType.card,
   },
   takeAway: false,
   items: [
@@ -27,8 +27,9 @@ const cart: ICart = {
       quantity: 100,
       statusLog: [
         {
-          status: EOrderStatus.NONE,
+          status: CrudApi.OrderStatus.none,
           userId: 'USERID',
+          ts: 1.2,
         },
       ],
       variantId: 'VARIANTID',
@@ -65,7 +66,8 @@ describe('Cart validaton test', () => {
             "quantity": 100,
             "statusLog": Array [
               Object {
-                "status": "NONE",
+                "status": "none",
+                "ts": 1.2,
                 "userId": "USERID",
               },
             ],
@@ -76,8 +78,8 @@ describe('Cart validaton test', () => {
           },
         ],
         "paymentMode": Object {
-          "method": "CARD",
-          "name": "CARD",
+          "method": "card",
+          "type": "card",
         },
         "place": Object {
           "seat": "SEAT",

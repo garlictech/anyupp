@@ -60,6 +60,7 @@ class AwsOrderProvider implements IOrdersProvider {
     _cartController.add(null);
   }
 
+
   @override
   Future<String> createAndSendOrderFromCart() async {
     print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
@@ -98,7 +99,7 @@ class AwsOrderProvider implements IOrdersProvider {
       rethrow;
     }
   }
-  
+
   @override
   Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     try {
@@ -332,7 +333,7 @@ class AwsOrderProvider implements IOrdersProvider {
   @override
   Stream<List<Order>> getOrderHistory(String chainId, String unitId) =>
       _subOrderHistoryList.stream;
-  
+
   @override
   Future<Order> getOrder(String orderId) async{
         try {
@@ -368,7 +369,7 @@ class AwsOrderProvider implements IOrdersProvider {
       print('AwsOrderProvider.getOrder.Exception: $e');
       rethrow;
     }
-    
+
   }
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(
@@ -412,7 +413,7 @@ class AwsOrderProvider implements IOrdersProvider {
         }).toList(),
         'paymentMode': cart.paymentMode != null
             ? {
-                'name': cart.paymentMode.name,
+                'type': cart.paymentMode.type,
                 'caption': cart.paymentMode.caption,
                 'method': cart.paymentMode.method,
               }

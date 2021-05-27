@@ -77,9 +77,18 @@
     "hmPlaceholder": "óó:pp",
     "paymentModes": {
       "title": "Fizetési módok",
-      "inapp": "Online",
-      "cash": "Készpénz",
-      "card": "Kártya"
+      "INAPP": "Online",
+      "CASH": "Készpénz",
+      "CARD": "Kártya",
+      "GOOGLE_PAY": "Google Pay",
+      "APPLE_PAY": "Apple Pay",
+      "STRIPE": "Stripe",
+      "SIMPLE": "Simple Pay"
+    },
+    "transactionStatus": {
+      "SUCCESS": "Sikeres",
+      "WAITING_FOR_PAYMENT": "Fizetésre vár",
+      "FAILED": "Sikertelen"
     },
     "sum": "Összesen",
     "width": "szélesség",
@@ -98,7 +107,7 @@
     "roleContexts": "Jogkörnyezetek"
   },
   "header": {
-    "profile": "Profile",
+    "profile": "Profil",
     "logout": "Kijelentkezés"
   },
   "dashboard": {
@@ -278,9 +287,9 @@
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
     "userOrdersCount": "{{ count }} rendelés",
     "status": {
-      "PLACED": "Placed",
-      "PROCESSING": "Processing",
-      "READY": "Ready",
+      "placed": "Placed",
+      "processing": "Processing",
+      "ready": "Ready",
       "SERVED": "Served",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "PAID": "Paid",
@@ -308,8 +317,8 @@
     "roles": "Jogok",
     "editRoles": "Jogok szerkesztése",
     "superuser": "Superuser",
-    "chainAdmin": "Chain adminisztrátor",
-    "groupAdmin": "Group adminisztrátor",
+    "chainadmin": "Chain adminisztrátor",
+    "groupadmin": "Group adminisztrátor",
     "unitAdmin": "Unit adminisztrátor",
     "staff": "Személyzet",
     "inactive": "Inaktív",

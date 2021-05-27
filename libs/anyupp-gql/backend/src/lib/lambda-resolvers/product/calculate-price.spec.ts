@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DateTime } from 'luxon';
-import { IAvailability, EVariantAvailabilityType } from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 import { calculatePriceFromAvailabilities } from './calculate-price';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePriceFromAvailabilities method', () => {
-  const availability_ALWAYS: IAvailability = {
+  const availability_ALWAYS: CrudApi.Availability = {
     dayFrom: '',
     dayTo: '',
     price: 2.2,
@@ -12,7 +12,7 @@ describe('calculatePriceFromAvailabilities method', () => {
     timeTo: '',
     type: EVariantAvailabilityType.ALWAYS,
   };
-  const availability_SEASONAL: IAvailability = {
+  const availability_SEASONAL: CrudApi.Availability = {
     dayFrom: '1970-01-01',
     dayTo: '1971-01-01',
     price: 999,
@@ -20,7 +20,7 @@ describe('calculatePriceFromAvailabilities method', () => {
     timeTo: '23:59',
     type: EVariantAvailabilityType.SEASONAL,
   };
-  const availability_WEEKLY: IAvailability = {
+  const availability_WEEKLY: CrudApi.Availability = {
     dayFrom: 'WEDNESDAY',
     dayTo: 'FRIDAY',
     price: 1.8,
@@ -38,7 +38,7 @@ describe('calculatePriceFromAvailabilities method', () => {
   );
 
   it('should use the ALWAYS availability if there is no other', () => {
-    const availabilities: IAvailability[] = [availability_ALWAYS];
+    const availabilities: CrudApi.Availability[] = [availability_ALWAYS];
     const atTime = DateTime.utc();
     expect(calculatePriceFromAvailabilities(availabilities, atTime)).toEqual(
       2.2,
@@ -46,7 +46,7 @@ describe('calculatePriceFromAvailabilities method', () => {
   });
 
   it('should return undefined in case the availibility is empty', () => {
-    const availabilities: IAvailability[] = [];
+    const availabilities: CrudApi.Availability[] = [];
     const atTime = DateTime.utc();
     expect(calculatePriceFromAvailabilities(availabilities, atTime)).toEqual(
       undefined,
@@ -55,15 +55,13 @@ describe('calculatePriceFromAvailabilities method', () => {
 
   it('should return undefined in case the availibility is missing', () => {
     const atTime = DateTime.utc();
-    expect(calculatePriceFromAvailabilities(null as any, atTime)).toEqual(
-      undefined,
-    );
+    expect(calculatePriceFromAvailabilities(null, atTime)).toEqual(undefined);
   });
 
   describe('SEASONAL availability', () => {
     it('should filter out the not active SEASONAL with timezones', () => {
-      // IAvailability in the defined timeZone
-      const av: IAvailability = {
+      // CrudApi.Availability in the defined timeZone
+      const av: CrudApi.Availability = {
         dayFrom: '1970-02-02',
         dayTo: '1970-03-03',
         price: 999,
@@ -120,7 +118,7 @@ describe('calculatePriceFromAvailabilities method', () => {
     });
 
     it('should return undefined in case the only availability is a NOT active SEASONAL', () => {
-      const availabilities: IAvailability[] = [availability_SEASONAL];
+      const availabilities: CrudApi.Availability[] = [availability_SEASONAL];
       const atTime = seasonalNotActiveTime;
       expect(
         calculatePriceFromAvailabilities(availabilities, atTime),
@@ -128,7 +126,7 @@ describe('calculatePriceFromAvailabilities method', () => {
     });
 
     it('should use the active SEASONAL availability if there is no other', () => {
-      const availabilities: IAvailability[] = [availability_SEASONAL];
+      const availabilities: CrudApi.Availability[] = [availability_SEASONAL];
       const atTime = seasonalActiveTime;
       expect(calculatePriceFromAvailabilities(availabilities, atTime)).toEqual(
         999,
@@ -137,7 +135,7 @@ describe('calculatePriceFromAvailabilities method', () => {
   });
   describe('WEEKLY availability', () => {
     it('should filter out not active WEEKLY availabilities', () => {
-      const av: IAvailability = {
+      const av: CrudApi.Availability = {
         dayFrom: 'WEDNESDAY',
         dayTo: 'FRIDAY',
         price: 1.8,
@@ -222,14 +220,14 @@ describe('calculatePriceFromAvailabilities method', () => {
     });
 
     it('should return undefined in case the only availability is a NOT active WEEKLY', () => {
-      const availabilities: IAvailability[] = [availability_WEEKLY];
+      const availabilities: CrudApi.Availability[] = [availability_WEEKLY];
       const atTime = weeklyNotActiveTime;
       expect(
         calculatePriceFromAvailabilities(availabilities, atTime),
       ).toBeUndefined();
     });
     it('should use the active WEEKLY availability if there is no other', () => {
-      const availabilities: IAvailability[] = [availability_WEEKLY];
+      const availabilities: CrudApi.Availability[] = [availability_WEEKLY];
       const atTime = weeklyActiveTime;
       expect(calculatePriceFromAvailabilities(availabilities, atTime)).toEqual(
         1.8,
