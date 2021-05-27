@@ -2,6 +2,8 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/menu/screens/product_configure_screen.dart';
+import 'package:fa_prev/modules/menu/widgets/add_variant_widget.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +26,17 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
 
   @override
   Widget build(BuildContext context) {
-    return _buildWithNormalPanel(context);
+    if (widget.product.configSets.isEmpty) {
+      return _buildWithNormalPanel(context);
+    } else {
+      return ProductConfiguratorWidget(
+        cart: widget.cart,
+        product: widget.product,
+        variants: widget.product.variants,
+        unit: widget.unit,
+      );
+    }
+
     //return _buildWithExpansionPanel(context);
   }
 
@@ -35,14 +47,23 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
     }
     List<Widget> items = [];
     variants.forEach((variant) {
-      items.add(ProductDetailVariantItemWidget(
-        unit: widget.unit,
-        cart: widget.cart,
-        product: widget.product,
-        variant: variant,
+      items.add(Container(
+        child: ProductDetailVariantItemWidget(
+          unit: widget.unit,
+          cart: widget.cart,
+          product: widget.product,
+          variant: variant,
+          child: AddVariantWidget(
+            unit: widget.unit,
+            cart: widget.cart,
+            product: widget.product,
+            variant: variant,
+          ),
+        ),
       ));
     });
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: items,
     );
   }

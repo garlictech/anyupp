@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,13 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
 
   Widget _buildModifierListItem(
       BuildContext context, GeneratedProductConfigComponent item, String productSetId, String value) {
+    Set<String> allergenNames = {};
+    if (item.allergens != null) {
+      for (Allergen allergen in item?.allergens) {
+        allergenNames.add(allergen.toString().split('.').last);
+      }
+    }
+
     return Container(
       padding: EdgeInsets.all(8.0),
       child: InkWell(
@@ -165,17 +173,12 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                         fontSize: 20.0,
                       ),
                     ),
-                    Text(
-                      //getDetailsTextFromModifierComponent(context, modifier),
-                      getLocalizedText(context, item.name),
-                      // '#' + getLocalizedText(context, sets[_selectedModifier].name),
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      style: GoogleFonts.poppins(
-                        color: theme.text,
-                        fontSize: 12.0,
-                      ),
+                    AllergensWidget(
+                      allergens: allergenNames.toList(),
+                      showHeader: false,
+                      size: 30.0,
+                      fontSize: 10.0,
+                      iconBorderRadius: 10.0,
                     ),
                     //buildAllergensListWidget(context, modifier),
                   ],

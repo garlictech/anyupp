@@ -9,118 +9,109 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:odometer/odometer.dart';
 
-class ProductConfiguratorScreen extends StatefulWidget {
+class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct product;
-  final ProductVariant variant;
+  final List<ProductVariant> variants;
   final Cart cart;
 
-  const ProductConfiguratorScreen({Key key, this.unit, this.product, this.variant, this.cart}) : super(key: key);
+  const ProductConfiguratorWidget({Key key, this.unit, this.product, this.variants, this.cart}) : super(key: key);
 
   @override
-  _ProductConfiguratorScreenState createState() => _ProductConfiguratorScreenState();
+  _ProductConfiguratorWidgetState createState() => _ProductConfiguratorWidgetState();
 }
 
-class _ProductConfiguratorScreenState extends State<ProductConfiguratorScreen> {
+class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Map<String, Map<String, bool>> _selectedExtras = {};
   // Map<String, int> _selectedExtraCount = {};
   Map<String, String> _selectedModifiers = {};
   double _modifierTotalPrice = 0.0;
   Set<String> _allergeens = {};
+  ProductVariant productVariant;
 
   @override
   Widget build(BuildContext context) {
     List<GeneratedProductConfigSet> sets = widget.product.configSets;
     sets.sort((a, b) => a.position - b.position);
+    List<ProductVariant> variants = widget.product.variants;
+    if (variants == null) {
+      return Container();
+    }
+    List<Widget> variantItems = [];
+    variants.forEach((variant) {
+      variantItems.add(Container(
+        child: ProductDetailVariantItemWidget(
+          unit: widget.unit,
+          cart: widget.cart,
+          product: widget.product,
+          variant: variant,
+          child: Radio<ProductVariant>(
+            value: variant,
+            activeColor: theme.indicator,
+            groupValue: productVariant,
+            onChanged: (ProductVariant selectedVariant) {
+              setState(() {
+                selectedVariant = productVariant;
+              });
+            },
+          ),
+        ),
+      ));
+    });
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: theme.background,
-        appBar: AppBar(
-          leading: Container(
-            padding: EdgeInsets.only(
-              left: 8.0,
-              top: 4.0,
-              bottom: 4.0,
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // _buildTotalSummary(context),
+        _buildAllergensListWidget(context),
+
+        Divider(
+          color: theme.background2,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  width: 1,
-                  color: theme.border2,
-                ),
-              ),
-              child: BackButton(
-                onPressed: () => Nav.pop(),
-                color: theme.text,
-              ),
-            ),
-          ),
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-            color: theme.text, //change your color here
-          ),
-          backgroundColor: theme.background,
-          title: Text(
-            getLocalizedText(context, widget.product.name),
-            style: GoogleFonts.poppins(color: theme.text, fontSize: 18.0),
-          ),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // _buildTotalSummary(context),
-            _buildAllergensListWidget(context),
-            Divider(
-              color: theme.background2,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // _buildAllergensListWidget(context),
-                      ProductConfigModifiersWidget(
-                        product: widget.product,
-                        unit: widget.unit,
-                        onModifiersSelected: (modifiers) {
-                          this._selectedModifiers = modifiers;
-                          _calculateTotalPrice();
-                        },
-                      ),
-                      SizedBox(
-                        height: 16.0,
-                      ),
-                      ProductConfigExtrasWidget(
-                        product: widget.product,
-                        unit: widget.unit,
-                        onExtraSelected: (setId, componentId, selected) {
-                          print('onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
-                          setState(() {
-                            if (_selectedExtras[setId] == null) {
-                              _selectedExtras[setId] = {};
-                            }
-                            _selectedExtras[setId][componentId] = selected;
-                            print('onExtraSelected._selectedExtras=$_selectedExtras');
-                          });
-                          _calculateTotalPrice();
-                        },
-                      )
-                      // _buildExtraSets(context, sets),
-                    ],
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // _buildAllergensListWidget(context),
+                  ProductConfigModifiersWidget(
+                    product: widget.product,
+                    unit: widget.unit,
+                    onModifiersSelected: (modifiers) {
+                      this._selectedModifiers = modifiers;
+                      _calculateTotalPrice();
+                    },
                   ),
-                ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  ProductConfigExtrasWidget(
+                    product: widget.product,
+                    unit: widget.unit,
+                    onExtraSelected: (setId, componentId, selected) {
+                      print('onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                      setState(() {
+                        if (_selectedExtras[setId] == null) {
+                          _selectedExtras[setId] = {};
+                        }
+                        _selectedExtras[setId][componentId] = selected;
+                        print('onExtraSelected._selectedExtras=$_selectedExtras');
+                      });
+                      _calculateTotalPrice();
+                    },
+                  )
+                  // _buildExtraSets(context, sets),
+                ],
               ),
             ),
-          ],
+          ),
         ),
-        bottomNavigationBar: _buildTotalButtonWidget(context),
-      ),
+        _buildTotalButtonWidget(context)
+      ],
     );
   }
 
@@ -175,12 +166,12 @@ class _ProductConfiguratorScreenState extends State<ProductConfiguratorScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-              'Allergens: ',
-              style: GoogleFonts.poppins(
-                fontSize: 22.0,
-                color: theme.text,
-              ),
+            'Allergens: ',
+            style: GoogleFonts.poppins(
+              fontSize: 22.0,
+              color: theme.text,
             ),
+          ),
           AllergensWidget(
             allergens: _allergeens.toList(),
             showHeader: false,
