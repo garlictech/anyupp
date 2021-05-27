@@ -9,7 +9,7 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
     takeAway
     paymentMode {
       caption
-      name
+      type
       method
     }
     place {

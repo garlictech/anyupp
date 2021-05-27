@@ -8,7 +8,7 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
     takeAway
     paymentMode {
       caption
-      name
+      type
       method
     }
     place {

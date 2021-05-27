@@ -3,12 +3,12 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
   listOrderHistorys(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId}
-  }) {      
+  }) {
     items {
       id
       paymentMode {
         caption
-        name
+        type
         method
       }
       paymentIntention

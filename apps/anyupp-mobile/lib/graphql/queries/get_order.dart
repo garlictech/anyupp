@@ -1,6 +1,6 @@
 const QUERY_GET_ORDER = '''
 query GetOrderQuery(\$orderId: ID!) {
-  getOrder(id: \$orderId) {      
+  getOrder(id: \$orderId) {
     transactionId
     createdAt
     id
@@ -9,7 +9,7 @@ query GetOrderQuery(\$orderId: ID!) {
     paymentMode {
       caption
       method
-      name
+      type
     }
     items {
       allergens
