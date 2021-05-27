@@ -114,6 +114,7 @@ export class AmplifyDataService {
     ).toPromise();
   }
 
+  // Update the whole record
   public async update<T>(
     queryName: keyof typeof CrudApi,
     mutationName: keyof typeof CrudApi,
@@ -139,19 +140,18 @@ export class AmplifyDataService {
     ).toPromise();
   }
 
-  public async delete(mutationName: keyof typeof CrudApi, value: unknown) {
-    return executeMutation(crudAuthenticatedGraphqlClient)(
-      CrudApi[mutationName],
-      { input: value },
-    ).toPromise();
-  }
-
+  // Update some fields
+  public async patch(
+    mutationName: keyof typeof CrudApiMutationDocuments,
+    input: Record<string, unknown>
+  ) {
+    return executeMutation(
+      crudAuthenticatedGraphqlClient,
   public query<T>(params: IQueryParams) {
     return executeQuery(crudAuthenticatedGraphqlClient)<T>(
       CrudApi[params.queryName],
       params.variables,
     ).toPromise();
-  }
 
   public subscribe$(params: ISubscriptionParams): Observable<unknown> {
     return of('subscription').pipe(

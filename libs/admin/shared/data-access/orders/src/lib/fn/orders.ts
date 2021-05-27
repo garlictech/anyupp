@@ -5,10 +5,11 @@ import {
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
   ILaneOrderItem,
-  IStatusLog,
 } from '@bgap/shared/types';
 
-export const currentStatus = (status: IStatusLog[]): CrudApi.OrderStatus => {
+export const currentStatus = (
+  status: CrudApi.StatusLog[],
+): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
     return CrudApi.OrderStatus.none;
   }
@@ -20,12 +21,14 @@ export const getNextOrderStatus = (
   currStatus: CrudApi.OrderStatus,
 ): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
+    case CrudApi.OrderStatus.none:
+      return CrudApi.OrderStatus.placed;
     case CrudApi.OrderStatus.placed:
       return CrudApi.OrderStatus.processing;
     case CrudApi.OrderStatus.processing:
       return CrudApi.OrderStatus.ready;
     case CrudApi.OrderStatus.ready:
-      return CrudApi.OrderStatus.paid;
+      return CrudApi.OrderStatus.served;
     default:
       return;
   }
@@ -73,16 +76,18 @@ export const getOrderLaneColor = (
 
 export const getStatusColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
+    case CrudApi.OrderStatus.none:
+      return 'danger';
     case CrudApi.OrderStatus.placed:
       return 'warning';
     case CrudApi.OrderStatus.processing:
       return 'primary';
     case CrudApi.OrderStatus.ready:
       return 'info';
-    case CrudApi.OrderStatus.paid:
-      return 'success';
     case CrudApi.OrderStatus.served:
       return 'success';
+    case CrudApi.OrderStatus.failed:
+      return 'danger';
     case CrudApi.OrderStatus.rejected:
       return 'danger';
     default:
@@ -94,12 +99,11 @@ export const getLowestStatus = (
   statuses: CrudApi.OrderStatus[],
 ): CrudApi.OrderStatus => {
   const SORTED_ORDER_STATUSES = [
+    CrudApi.OrderStatus.none,
     CrudApi.OrderStatus.placed,
     CrudApi.OrderStatus.processing,
     CrudApi.OrderStatus.ready,
     CrudApi.OrderStatus.served,
-    CrudApi.OrderStatus.waiting_for_payment,
-    CrudApi.OrderStatus.paid,
   ];
 
   const statusIndices: number[] = statuses
