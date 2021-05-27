@@ -7,7 +7,7 @@ import 'core/model_base.dart';
 @immutable
 class PaymentMode extends Model {
   final String id;
-  final String name;
+  final String type;
   final String caption;
   final String method;
   final String geoUnitPaymentModesId;
@@ -19,20 +19,20 @@ class PaymentMode extends Model {
 
   const PaymentMode._internal(
       {@required this.id,
-      @required this.name,
+      @required this.type,
       this.caption,
       @required this.method,
       this.geoUnitPaymentModesId});
 
   factory PaymentMode(
       {String id,
-      @required String name,
+      @required String type,
       String caption,
       @required String method,
       String geoUnitPaymentModesId}) {
     return PaymentMode._internal(
         id: id == null ? UUID.getUUID() : id,
-        name: name,
+        type: type,
         caption: caption,
         method: method,
         geoUnitPaymentModesId: geoUnitPaymentModesId);
@@ -47,7 +47,7 @@ class PaymentMode extends Model {
     if (identical(other, this)) return true;
     return other is PaymentMode &&
         id == other.id &&
-        name == other.name &&
+        type == other.type &&
         caption == other.caption &&
         method == other.method &&
         geoUnitPaymentModesId == other.geoUnitPaymentModesId;
@@ -62,7 +62,7 @@ class PaymentMode extends Model {
 
     buffer.write("PaymentMode {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
+    buffer.write("type=" + "$type" + ", ");
     buffer.write("caption=" + "$caption" + ", ");
     buffer.write("method=" + "$method" + ", ");
     buffer.write("geoUnitPaymentModesId=" + "$geoUnitPaymentModesId");
@@ -73,13 +73,13 @@ class PaymentMode extends Model {
 
   PaymentMode copyWith(
       {String id,
-      String name,
+      String type,
       String caption,
       String method,
       String geoUnitPaymentModesId}) {
     return PaymentMode(
         id: id ?? this.id,
-        name: name ?? this.name,
+        type: type ?? this.type,
         caption: caption ?? this.caption,
         method: method ?? this.method,
         geoUnitPaymentModesId:
@@ -88,14 +88,14 @@ class PaymentMode extends Model {
 
   PaymentMode.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
+        type = json['type'],
         caption = json['caption'],
         method = json['method'],
         geoUnitPaymentModesId = json['geoUnitPaymentModesId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
+        'type': type,
         'caption': caption,
         'method': method,
         'geoUnitPaymentModesId': geoUnitPaymentModesId

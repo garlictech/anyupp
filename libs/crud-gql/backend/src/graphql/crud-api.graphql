@@ -279,6 +279,7 @@ type OrderHistory
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -286,36 +287,39 @@ type OrderHistory
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
-  # EXTRA
-  status: OrderStatus
-  # paymentStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 enum PaymentStatus {
-  WAITING_FOR_PAYMENT
-  SUCCESS
-  FAILED
+  waiting_for_payment
+  success
+  failed
 }
 
 enum OrderStatus {
-  NONE
+  none
   placed
   processing
   ready
-  SERVED
-  WAITING_FOR_PAYMENT
-  PAID
-  RECEIVED
-  FAILED
-  REJECTED
+  served
+  failed
+  rejected
 }
 
 enum PaymentMethod {
-  CASH
-  CARD
-  INAPP
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
 }
 
 type Place {
@@ -569,7 +573,7 @@ type WeeklySchedule {
 }
 
 type PaymentMode {
-  name: String!
+  type: PaymentType!
   caption: String
   method: PaymentMethod!
 }

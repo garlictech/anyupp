@@ -63,9 +63,50 @@
 
 <div class="row p-0 m-0">
   <div class="col-1 text-right p-2 m-auto font-larger"><strong>Σ</strong></div>
-  <div class="col-6 text-right p-2 m-auto font-larger caption-2">
+  <div class="col-5 p-2 m-auto">
+    <ng-container
+      *ngIf="order.transaction?.status === EPaymentStatus.waiting_for_payment"
+    >
+      <button
+        nbButton
+        class="float-left mr-2"
+        status="danger"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateTransactionStatus(EPaymentStatus.failed)"
+      >
+        {{ 'common.transactionStatus.FAILED' | translate }}
+      </button>
+
+      <button
+        nbButton
+        class="float-right mr-1"
+        status="success"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateTransactionStatus(EPaymentStatus.success)"
+      >
+        {{ 'common.transactionStatus.SUCCESS' | translate }}
+      </button>
+    </ng-container>
+  </div>
+  <div class="col-1 text-right p-2 m-auto font-larger caption-2">
     {{ order.paymentMode.method }}
   </div>
+  <!--  *ngIf="currentOrderStatus === OrderStatus.NONE"-->
+  <!--div class="col-6 m-auto">
+    <button
+      *ngFor="let mode of unit?.paymentModes"
+      nbButton
+      class="float-right mr-1"
+      [status]="order.paymentMode.type === mode.name ? 'success' : 'basic'"
+      [size]="buttonSize"
+      shape="round"
+      (click)="updateOrderPaymentMethod(mode)"
+    >
+      {{ ('common.paymentModes.' + mode.name) | translate }}
+    </button>
+  </div-->
 
   <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
     {{
@@ -88,6 +129,7 @@
     >
       {{ currentStatus(order.statusLog) }}
     </button>
+
     <nb-badge
       class="font-larger p-2 position-static"
       *ngIf="isListMode('HISTORY')"

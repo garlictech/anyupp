@@ -69,7 +69,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         untilDestroyed(this),
       ),
       this._store.pipe(
-        select(productsSelectors.getAllGeneratedUnitProducts),
+        select(productsSelectors.getAllGeneratedProducts),
         untilDestroyed(this),
       ),
     ])

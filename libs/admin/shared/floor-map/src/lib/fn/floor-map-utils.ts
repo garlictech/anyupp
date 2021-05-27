@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 
 export const generateId = (): string => {

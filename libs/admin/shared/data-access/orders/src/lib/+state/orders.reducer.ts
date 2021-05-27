@@ -42,8 +42,8 @@ const activeOrdersReducer = createReducer(
   on(OrdersActions.setAllActiveOrders, (state, { orders }) =>
     activeOrdersAdapter.setAll(orders, state),
   ),
-  on(OrdersActions.upsertActiveOrder, (state, { order }) =>
-    activeOrdersAdapter.upsertOne(order, state),
+  on(OrdersActions.upsertActiveOrders, (state, { orders }) =>
+    activeOrdersAdapter.upsertMany(orders, state),
   ),
   on(OrdersActions.removeActiveOrder, (state, { orderId }) =>
     activeOrdersAdapter.removeOne(orderId, state),
@@ -68,8 +68,8 @@ const historyOrdersReducer = createReducer(
   on(OrdersActions.setAllHistoryOrders, (state, { orders }) =>
     historyOrdersAdapter.setAll(orders, state),
   ),
-  on(OrdersActions.upsertHistoryOrder, (state, { order }) =>
-    historyOrdersAdapter.upsertOne(order, state),
+  on(OrdersActions.upsertHistoryOrders, (state, { orders }) =>
+    historyOrdersAdapter.upsertMany(orders, state),
   ),
   on(OrdersActions.removeHistoryOrder, (state, { orderId }) =>
     historyOrdersAdapter.removeOne(orderId, state),

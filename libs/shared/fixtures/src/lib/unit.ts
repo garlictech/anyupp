@@ -1,8 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { groupSeed } from './group';
+import { RequiredId } from '@bgap/shared/types';
+
 import { chainSeed } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
-import { RequiredId } from '@bgap/shared/types';
+import { groupSeed } from './group';
 
 const unitId_01 = `${testIdPrefix}unit_1_id`;
 const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
@@ -32,15 +33,15 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   paymentModes: [
     {
       method: CrudApi.PaymentMethod.cash,
-      name: 'Cash',
+      type: CrudApi.PaymentType.cash,
     },
     {
       method: CrudApi.PaymentMethod.card,
-      name: 'Card',
+      type: CrudApi.PaymentType.card,
     },
     {
       method: CrudApi.PaymentMethod.inapp,
-      name: 'Stripe',
+      type: CrudApi.PaymentType.stripe,
     },
   ],
   lanes: [

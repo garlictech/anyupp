@@ -61,32 +61,32 @@ export const MENU_ROLES = {
 
 export const PAYMENT_MODES: PaymentMode[] = [
   {
-    name: 'Cash',
+    type: CrudApi.PaymentType.cash,
     caption: 'common.paymentModes.cash',
     method: CrudApi.PaymentMethod.cash,
   },
   {
-    name: 'Card',
+    type: CrudApi.PaymentType.card,
     caption: 'common.paymentModes.card',
     method: CrudApi.PaymentMethod.card,
   },
   {
-    name: 'Google Pay',
+    type: CrudApi.PaymentType.googlepay,
     caption: 'Google Pay',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Apple Pay',
+    type: CrudApi.PaymentType.applepay,
     caption: 'Apple Pay',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Stripe',
+    type: CrudApi.PaymentType.stripe,
     caption: 'Stripe',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Simple Pay',
+    type: CrudApi.PaymentType.simple,
     caption: 'Simple Pay',
     method: CrudApi.PaymentMethod.inapp,
   },

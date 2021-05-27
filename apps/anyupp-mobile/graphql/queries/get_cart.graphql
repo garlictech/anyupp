@@ -33,7 +33,7 @@ query GetCurrentCartQuery($userId: ID!, $unitId: ID!) {
       paymentMode {
         caption
         method
-        name
+        type
       }
       place {
         seat

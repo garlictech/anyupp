@@ -10,7 +10,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
       createdAt
       paymentMode {
         caption
-        name
+        type
         method
       }
       paymentIntention
