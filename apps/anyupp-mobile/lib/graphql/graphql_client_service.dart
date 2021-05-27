@@ -107,18 +107,6 @@ class GraphQLClientService {
     return _amplifyClient;
   }
 
-<<<<<<< HEAD
-  Future<ValueNotifier<GraphQLClient>> getGraphQLClient() async {
-    print('getAdminGraphQLClient().url=$graphqlApiUrl');
-    // if (_graphqlClient != null) {
-    //   return _graphqlClient;
-    // }
-
-    await _graphqlClient?.dispose();
-
-    String accessToken = await authProvider.getAccessToken();
-    print('getAdminGraphQLClient().accessToken=$accessToken');
-=======
   Future<ValueNotifier<GraphQLClient>> getGraphQLClient({bool useApi = false}) async {
     String accessToken;
     if (!useApi) {
@@ -128,11 +116,10 @@ class GraphQLClientService {
       }
       _graphqlClient?.dispose();
 
-      accessToken = await _authProvider.getAccessToken();
+      accessToken = await authProvider.getAccessToken();
       print('getAdminGraphQLClient().accessToken=$accessToken');
     }
 
->>>>>>> dev
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
 
