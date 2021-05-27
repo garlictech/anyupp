@@ -176,8 +176,8 @@ const toGeneratedProductConfigSetInput = ({
 
   return {
     position: productConfigSet.position,
+    productSetId: productConfigSet.productSetId,
     name: productComponentSet.name,
-    description: productComponentSet.description,
     type: productComponentSet.type,
     maxSelection: productComponentSet.maxSelection,
     items: productConfigSet.items.map(confComponent => {
@@ -186,15 +186,16 @@ const toGeneratedProductConfigSetInput = ({
       if (!productComponent) {
         throw `productComponent with id ${confComponent.productComponentId} is missing from the componentMap`;
       }
-      return {
+
+      const configComponent: CrudApi.GeneratedProductConfigComponentInput = {
         productComponentId: confComponent.productComponentId,
         price: confComponent.price,
         position: confComponent.position,
         // comes from the productComponent itself (referenced by productComponentId)
         name: productComponent.name,
-        description: productComponent.description,
         allergens: productComponent.allergens,
       };
+      return configComponent;
     }),
   };
 };

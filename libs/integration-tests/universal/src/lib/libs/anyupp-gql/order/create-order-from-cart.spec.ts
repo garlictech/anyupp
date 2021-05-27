@@ -216,8 +216,6 @@ describe('CreatCartFromOrder mutation test', () => {
   }, 15000);
 });
 
-// TODO: ?? relocate somewhere like a data-access lib
-// because this is a duplication of the one tha is in the order.service.ts
 const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
   return crudSdk.GetOrder({ id }, { fetchPolicy: 'no-cache' });
 };

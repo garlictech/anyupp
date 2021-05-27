@@ -394,8 +394,7 @@ describe('RegenerateUnitData mutation tests', () => {
               throw `configSets is missing from the ${productToCheck.id} product`;
             }
             expect(aGeneratedProduct.configSets).toHaveLength(2);
-            // The productSetId is not needed in the generated product
-            expect(aGeneratedProduct.configSets[0]).not.toHaveProperty(
+            expect(aGeneratedProduct.configSets[0]).toHaveProperty(
               'productSetId',
               prodConfigSet_01.productSetId,
             );
@@ -411,22 +410,18 @@ describe('RegenerateUnitData mutation tests', () => {
               prodComponentMap[
                 productToCheck.configSets[0].items[1].productComponentId
               ];
-            // TODO: use when the __typename fields have been removed from the query responses const expectedGeneratedProductConfigComponentSet_01: CrudApi.GeneratedProductConfigSetInput = {
             const expectedGeneratedProductConfigComponentSet_01 = {
-              __typename: 'GeneratedProductConfigSet', // TODO: REMOVE
               // comes from the ConfigSet that is stored in the product
               position: productToCheck.configSets[0].position,
               // comes from the productComponentSet itself (referenced by productSetId)
+              productSetId: expectedCompSet_01.id,
               name: {
                 ...expectedCompSet_01.name,
-                __typename: 'LocalizedItem', // TODO: REMOVE
               },
-              description: expectedCompSet_01.description,
               type: expectedCompSet_01.type,
               maxSelection: expectedCompSet_01.maxSelection,
               items: [
                 {
-                  __typename: 'GeneratedProductConfigComponent', // TODO: REMOVE
                   // comes from the ConfigComponent that is stored in the product's config set
                   productComponentId:
                     productToCheck.configSets[0].items[0].productComponentId,
@@ -435,13 +430,10 @@ describe('RegenerateUnitData mutation tests', () => {
                   // comes from the productComponent itself (referenced by productComponentId)
                   name: {
                     ...expectedComp_0_0.name,
-                    __typename: 'LocalizedItem', // TODO: REMOVE
                   },
-                  description: expectedComp_0_0.description,
                   allergens: expectedComp_0_0.allergens,
                 },
                 {
-                  __typename: 'GeneratedProductConfigComponent', // TODO: REMOVE
                   // comes from the ConfigComponent that is stored in the product's config set
                   productComponentId:
                     productToCheck.configSets[0].items[1].productComponentId,
@@ -450,9 +442,7 @@ describe('RegenerateUnitData mutation tests', () => {
                   // comes from the productComponent itself (referenced by productComponentId)
                   name: {
                     ...expectedComp_0_1.name,
-                    __typename: 'LocalizedItem', // TODO: REMOVE
                   },
-                  description: expectedComp_0_1.description,
                   allergens: expectedComp_0_1.allergens,
                 },
               ],

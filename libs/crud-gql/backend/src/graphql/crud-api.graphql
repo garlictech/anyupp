@@ -225,6 +225,20 @@ type PriceShown {
   taxSum: Float!
 }
 
+type OrderItemConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItem!
+  allergens: [Allergen]
+}
+
+type OrderItemConfigSet {
+  productSetId: ID!
+  name: LocalizedItem!
+  type: String!
+  items: [OrderItemConfigComponent!]!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -237,6 +251,7 @@ type OrderItem {
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
+  configSets: [OrderItemConfigSet]
 }
 
 ### Order
@@ -363,14 +378,12 @@ type GeneratedProductConfigComponent {
   price: Float!
   position: Int!
   name: LocalizedItem!
-  description: String
   allergens: [Allergen]
 }
 
 type GeneratedProductConfigSet {
-  # TODO: do we need setId too?
+  productSetId: ID!
   name: LocalizedItem!
-  description: String!
   position: Int!
   type: String!
   maxSelection: Int

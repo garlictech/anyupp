@@ -228,9 +228,9 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
 const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
   {
     // unitConfigSets[0] == seededProdComp_01
+    productSetId: seededProdCompSet_01.id,
     position: unitConfigSets[0].position,
     name: seededProdCompSet_01.name,
-    description: seededProdCompSet_01.description,
     type: seededProdCompSet_01.type,
     maxSelection: seededProdCompSet_01.maxSelection,
     items: [
@@ -240,7 +240,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[0].items[0].price,
         position: unitConfigSets[0].items[0].position,
         name: seededProdComp_01.name,
-        description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
@@ -249,16 +248,15 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[0].items[1].price,
         position: unitConfigSets[0].items[1].position,
         name: seededProdComp_02.name,
-        description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
       },
     ],
   },
   {
     // unitConfigSets[1] == seededProdComp_02
+    productSetId: seededProdCompSet_02.id,
     position: unitConfigSets[1].position,
     name: seededProdCompSet_02.name,
-    description: seededProdCompSet_02.description,
     type: seededProdCompSet_02.type,
     maxSelection: seededProdCompSet_02.maxSelection,
     items: [
@@ -268,7 +266,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[0].price,
         position: unitConfigSets[1].items[0].position,
         name: seededProdComp_01.name,
-        description: seededProdComp_01.description,
         allergens: seededProdComp_01.allergens,
       },
       {
@@ -277,7 +274,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[1].price,
         position: unitConfigSets[1].items[1].position,
         name: seededProdComp_02.name,
-        description: seededProdComp_02.description,
         allergens: seededProdComp_02.allergens,
       },
       {
@@ -286,7 +282,6 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
         price: unitConfigSets[1].items[2].price,
         position: unitConfigSets[1].items[2].position,
         name: seededProdComp_03.name,
-        description: seededProdComp_03.description,
         allergens: seededProdComp_03.allergens,
       },
     ],
