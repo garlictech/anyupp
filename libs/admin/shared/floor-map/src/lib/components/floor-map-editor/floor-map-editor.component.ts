@@ -14,8 +14,8 @@ import { Store } from '@ngrx/store';
 
 import * as floorMapActions from '../../+state/floor-map.actions';
 import {
-  FLOOR_MAP_OBJECT_DEFAULTS,
   FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
+  FLOOR_MAP_OBJECT_DEFAULTS,
 } from '../../const';
 import * as floorMapFuncs from '../../fn';
 

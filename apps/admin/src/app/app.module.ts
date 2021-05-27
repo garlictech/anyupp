@@ -1,4 +1,5 @@
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -15,6 +16,7 @@ import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
 import { AdminSharedOrdersModule } from '@bgap/admin/shared/data-access/orders';
 import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/data-access/product-categories';
+import { AdminSharedProductComponentSetsModule } from '@bgap/admin/shared/data-access/product-component-sets';
 import { AdminSharedProductComponentsModule } from '@bgap/admin/shared/data-access/product-components';
 import { AdminSharedProductsModule } from '@bgap/admin/shared/data-access/products';
 import { AdminSharedRoleContextsModule } from '@bgap/admin/shared/data-access/role-contexts';
@@ -41,7 +43,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
-import { AdminSharedProductComponentSetsModule } from '@bgap/admin/shared/data-access/product-component-sets';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),

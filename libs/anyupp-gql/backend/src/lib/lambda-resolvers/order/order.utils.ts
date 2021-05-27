@@ -1,6 +1,8 @@
 // import { PriceShown, Order, StatusLog, CrudApi.OrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
+
 import * as CrudApi from '@bgap/crud-gql/api';
+
 import { toFixed2Number } from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (

@@ -350,7 +350,7 @@ export const createTestCart = ({
     userId: generateUserId(userIdx),
     unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
     paymentMode: {
-      name: 'INAPP',
+      type: CrudApi.PaymentType.stripe,
       method: CrudApi.PaymentMethod.inapp,
     },
     takeAway: false,

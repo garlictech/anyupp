@@ -16,10 +16,10 @@
         (click)="selectListType(EDashboardTicketListType.placed)"
       ></nb-action>
       <nb-action
-        icon="checkmark-circle-2-outline"
+        icon="bell-outline"
         [badgeText]="
-          (uniqueReadyOrdersCount || 0) > 0
-            ? uniqueReadyOrdersCount.toString()
+          (manualPaymentOrders.length || 0) > 0
+            ? manualPaymentOrders.length.toString()
             : ''
         "
         badgePosition="bottom right"
@@ -34,8 +34,8 @@
       <nb-action
         icon="alert-circle-outline"
         [badgeText]="
-          (uniquePaymentUsersCount || 0) > 0
-            ? uniquePaymentUsersCount.toString()
+          (problematicOrders.length || 0) > 0
+            ? problematicOrders.length.toString()
             : ''
         "
         badgePosition="bottom right"

@@ -6,4 +6,5 @@ export { CrudSdk } from './lib/sdk';
 export * from './lib/clients';
 
 import awsmobile from './lib/generated/aws-exports';
+
 export { awsmobile as awsConfig };

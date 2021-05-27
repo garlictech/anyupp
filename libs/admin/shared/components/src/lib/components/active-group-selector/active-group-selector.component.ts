@@ -67,11 +67,13 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
       this._loggedUser?.id &&
       groupId !== this._loggedUser?.settings?.selectedGroupId
     ) {
-      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
-        ...(this._loggedUser?.settings || {}),
-        selectedGroupId: groupId,
-        selectedUnitId: null, // Reset unit id!
-      });
+      this._dataService
+        .updateAdminUserSettings(this._loggedUser.id, {
+          ...(this._loggedUser?.settings || {}),
+          selectedGroupId: groupId,
+          selectedUnitId: null, // Reset unit id!
+        })
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();
