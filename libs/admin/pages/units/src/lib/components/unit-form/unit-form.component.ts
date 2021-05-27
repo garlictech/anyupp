@@ -244,7 +244,7 @@ export class UnitFormComponent
     return (
       (this.dialogForm?.value.paymentModes || [])
         .map((m: { name: string }) => m.name)
-        .indexOf(paymentMode.name) >= 0
+        .indexOf(paymentMode.type) >= 0
     );
   }
 
@@ -252,7 +252,7 @@ export class UnitFormComponent
     const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
       .map((m: { name: string }) => m.name)
-      .indexOf(paymentMode.name);
+      .indexOf(paymentMode.type);
 
     if (idx < 0) {
       paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));

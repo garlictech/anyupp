@@ -67,7 +67,7 @@ export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
       unitId !== this._loggedUser?.settings?.selectedUnitId
     ) {
       this._dataService
-        .updateAdminUserSettings(this._loggedUser.id || '', {
+        .updateAdminUserSettings(this._loggedUser.id, {
           ...(this._loggedUser?.settings || {}),
           selectedUnitId: unitId,
         })

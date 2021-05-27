@@ -99,30 +99,38 @@ export class DataService {
           console.error('adminUserSettings CHANGED', adminUserSettings);
           this._settingsChanged$.next(true);
 
-          this._subscribeToChainProductCategories(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToChainProductComponents(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToChainProductComponentSets(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToSelectedChainProducts(
-            adminUserSettings?.selectedChainId || '',
-          );
-          this._subscribeToSelectedGroupProducts(
-            adminUserSettings?.selectedGroupId || '',
-          );
-          this._subscribeToSelectedUnitProducts(
-            adminUserSettings?.selectedUnitId || '',
-          );
-          this._subscribeToGeneratedUnitProducts(
-            adminUserSettings?.selectedUnitId || '',
-          );
-          this._subscribeToSelectedUnitOrders(
-            adminUserSettings?.selectedUnitId || '',
-          );
+          if (adminUserSettings?.selectedChainId) {
+            this._subscribeToChainProductCategories(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToChainProductComponents(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToChainProductComponentSets(
+              adminUserSettings?.selectedChainId,
+            );
+            this._subscribeToSelectedChainProducts(
+              adminUserSettings?.selectedChainId,
+            );
+          }
+
+          if (adminUserSettings?.selectedGroupId) {
+            this._subscribeToSelectedGroupProducts(
+              adminUserSettings?.selectedGroupId,
+            );
+          }
+
+          if (adminUserSettings?.selectedUnitId) {
+            this._subscribeToSelectedUnitProducts(
+              adminUserSettings?.selectedUnitId,
+            );
+            this._subscribeToGeneratedUnitProducts(
+              adminUserSettings?.selectedUnitId,
+            );
+            this._subscribeToSelectedUnitOrders(
+              adminUserSettings?.selectedUnitId,
+            );
+          }
         },
       );
 

@@ -99,7 +99,7 @@
       *ngFor="let mode of unit?.paymentModes"
       nbButton
       class="float-right mr-1"
-      [status]="order.paymentMode.name === mode.name ? 'success' : 'basic'"
+      [status]="order.paymentMode.type === mode.name ? 'success' : 'basic'"
       [size]="buttonSize"
       shape="round"
       (click)="updateOrderPaymentMethod(mode)"

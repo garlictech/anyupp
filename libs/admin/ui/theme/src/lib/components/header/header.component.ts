@@ -203,7 +203,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       lang !== this.loggedUser?.settings?.selectedLanguage
     ) {
       this._dataService
-        .updateAdminUserSettings(this.loggedUser.id || '', {
+        .updateAdminUserSettings(this.loggedUser.id, {
           ...(this.loggedUser?.settings || {}),
           selectedLanguage: lang,
         })

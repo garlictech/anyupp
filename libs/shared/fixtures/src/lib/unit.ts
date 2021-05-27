@@ -33,15 +33,15 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   paymentModes: [
     {
       method: CrudApi.PaymentMethod.cash,
-      name: 'Cash',
+      type: CrudApi.PaymentType.cash,
     },
     {
       method: CrudApi.PaymentMethod.card,
-      name: 'Card',
+      type: CrudApi.PaymentType.card,
     },
     {
       method: CrudApi.PaymentMethod.inapp,
-      name: 'Stripe',
+      type: CrudApi.PaymentType.stripe,
     },
   ],
   lanes: [

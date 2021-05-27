@@ -140,7 +140,6 @@ export class AmplifyDataService {
     ).toPromise();
   }
 
-<<<<<<< HEAD:libs/admin/shared/data-access/data/src/lib/services/amplify-data/amplify-data.service.ts
   // Update some fields
   public async patch(
     mutationName: keyof typeof CrudApiMutationDocuments,
