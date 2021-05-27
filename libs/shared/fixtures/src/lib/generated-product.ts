@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { testIdPrefix } from './common';
 
 const getGeneratedProductVariant = (

@@ -1,6 +1,6 @@
 <ng-container *ngFor="let allergen of allergens">
   <div class="allergen-container">
     <img src="assets/images/allergens/{{ allergen }}.svg" />
-    <small>{{ allergenMap.get(allergen) }}</small>
+    <small *ngIf="allergen">{{ allergenMap.get(allergen) }}</small>
   </div>
 </ng-container>

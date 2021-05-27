@@ -1,4 +1,4 @@
-import { IContact } from "./contact";
+import { IContact } from './contact';
 
 export interface IUser extends IContact {
   id: string;

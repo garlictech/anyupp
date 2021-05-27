@@ -1,28 +1,28 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
-  IProductCategoriesState,
+  ProductCategoriesState,
   PRODUCT_CATEGORIES_FEATURE_KEY,
   productCategoriesAdapter,
 } from './product-categories.reducer';
 
 export const getProductCategoriesState = createFeatureSelector<
-  IProductCategoriesState
+  ProductCategoriesState
 >(PRODUCT_CATEGORIES_FEATURE_KEY);
 
 const { selectAll, selectEntities } = productCategoriesAdapter.getSelectors();
 
 export const getProductCategoriesError = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => state.error,
+  (state: ProductCategoriesState) => state.error,
 );
 
 export const getAllProductCategories = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => selectAll(state),
+  (state: ProductCategoriesState) => selectAll(state),
 );
 
 export const getProductCategoriesEntities = createSelector(
   getProductCategoriesState,
-  (state: IProductCategoriesState) => selectEntities(state),
+  (state: ProductCategoriesState) => selectEntities(state),
 );

@@ -26,14 +26,24 @@ type LocalizedItem @aws_cognito_user_pools {
 }
 
 type PaymentMode @aws_cognito_user_pools {
-  name: String!
+  type: PaymentType!
   caption: String
   method: PaymentMethod!
 }
+
 enum PaymentMethod {
-  CASH
-  CARD
-  INAPP
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
 }
 
 type ChainStyle @aws_cognito_user_pools {
@@ -266,7 +276,7 @@ type GeoUnit @aws_cognito_user_pools {
   name: String!
   address: Address!
   style: ChainStyle!
-  paymentModes: [PaymentMode!]!
+  paymentModes: [PaymentMode]
   distance: Int!
   openingHours: String!
   currency: String!

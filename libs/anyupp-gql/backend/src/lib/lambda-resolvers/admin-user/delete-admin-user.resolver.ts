@@ -3,31 +3,24 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
 import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
-
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { AdminUserResolverDeps } from './utils';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
 });
 
-const UserPoolId = process.env.userPoolId || '';
-
 export const deleteAdminUser = (
   params: AnyuppApi.DeleteAdminUserMutationVariables,
-) => {
+) => (deps: AdminUserResolverDeps) => {
   console.debug('Resolver parameters: ', params);
   let userId: string;
 
   return from(
     cognitoidentityserviceprovider
       .adminGetUser({
-        UserPoolId,
+        UserPoolId: deps.userPoolId,
         Username: params.userName,
       })
       .promise(),
@@ -45,18 +38,12 @@ export const deleteAdminUser = (
       switchMap(() =>
         cognitoidentityserviceprovider
           .adminDeleteUser({
-            UserPoolId,
+            UserPoolId: deps.userPoolId,
             Username: params.userName,
           })
           .promise(),
       ),
-      switchMap(() =>
-        executeMutation(crudBackendGraphQLClient)<
-          CrudApi.DeleteAdminUserMutation
-        >(CrudApiMutationDocuments.deleteAdminUser, {
-          input: { id: userId },
-        }),
-      ),
+      switchMap(() => deps.crudSdk.DeleteAdminUser({ input: { id: userId } })),
       mapTo(true),
     )
     .toPromise();

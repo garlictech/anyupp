@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
 import { delay, switchMap, take } from 'rxjs/operators';
 
-// import * as printJS from 'print-js';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -15,11 +15,11 @@ import {
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  IOrder,
   IOrderSum,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -36,17 +36,18 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
+  @Input() unit?: CrudApi.Unit;
   public dashboardSettings!: IDashboardSettings;
-  public selectedOrder?: IOrder;
+  public selectedOrder?: CrudApi.Order;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public ordersSum: IOrderSum = {};
-  public userActiveOrders?: IOrder[];
+  public userActiveOrders?: CrudApi.Order[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount = 0;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -69,7 +70,9 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       .pipe(
         select(dashboardSelectors.getListMode),
         switchMap(
-          (listMode: EDashboardListMode): Observable<IOrder | undefined> => {
+          (
+            listMode: EDashboardListMode,
+          ): Observable<CrudApi.Order | undefined> => {
             return this._store.pipe(
               select(
                 listMode === EDashboardListMode.CURRENT
@@ -82,7 +85,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
         delay(0), // ExpressionChangedAfterItHasBeenCheckedError - trick
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: IOrder | undefined): void => {
+      .subscribe((selectedOrder: CrudApi.Order | undefined): void => {
         this.selectedOrder = selectedOrder;
 
         this._getOrdersInfo();
@@ -124,12 +127,11 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           ),
           take(1),
         )
-        .subscribe((userActiveOrders: IOrder[]): void => {
+        .subscribe((userActiveOrders: CrudApi.Order[]): void => {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
-          // TODO map changed to forEach, check this!
-          this.userActiveOrders.forEach((o: IOrder): void => {
+          this.userActiveOrders.forEach((o: CrudApi.Order): void => {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;
           });
@@ -174,6 +176,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.orders = (this.dashboardSettings
       .showAllUserOrders
       ? this.userActiveOrders
-      : [this.selectedOrder]) as IOrder[];
+      : [this.selectedOrder]) as CrudApi.Order[];
   }
 }

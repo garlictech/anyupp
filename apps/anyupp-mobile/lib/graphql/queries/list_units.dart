@@ -23,7 +23,7 @@ query GetUnitsNearLocationQuery(\$lat: Float!, \$lng: Float!) {
       paymentModes {
         caption
         method
-        name
+        type
       }
       style {
         colors {

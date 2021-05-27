@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,10 +9,11 @@ import {
 } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { DataService } from '@bgap/admin/shared/data-access/data';
-import { IAdminUser, IUnit } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { filterNullish } from '@bgap/shared/utils';
+import { DataService } from '@bgap/admin/shared/data-access/data';
 
 @UntilDestroy()
 @Component({
@@ -24,14 +24,13 @@ import { select, Store } from '@ngrx/store';
 })
 export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
   @Input() showIcon: boolean;
-  public units$: Observable<IUnit[]>;
-  private _loggedUser!: IAdminUser;
+  public units$: Observable<CrudApi.Unit[]>;
+  private _loggedUser!: CrudApi.AdminUser;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _dataService: DataService,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _dataService: DataService,
   ) {
     this.showIcon = false;
     this.units$ = this._store.pipe(
@@ -46,12 +45,16 @@ export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store
-    .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-    .subscribe((loggedUser: IAdminUser): void => {
-      this._loggedUser = loggedUser;
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        filterNullish(),
+        untilDestroyed(this),
+      )
+      .subscribe(loggedUser => {
+        this._loggedUser = loggedUser;
 
-      this._changeDetectorRef.detectChanges();
-    });
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
@@ -63,10 +66,12 @@ export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
       this._loggedUser?.id &&
       unitId !== this._loggedUser?.settings?.selectedUnitId
     ) {
-      this._dataService.updateAdminUserSettings(this._loggedUser.id || '', {
-        ...(this._loggedUser?.settings || {}),
-        selectedUnitId: unitId,
-      });
+      this._dataService
+        .updateAdminUserSettings(this._loggedUser.id, {
+          ...(this._loggedUser?.settings || {}),
+          selectedUnitId: unitId,
+        })
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();

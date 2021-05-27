@@ -11,9 +11,10 @@
 // See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/batchwriteitemcommand.html
 import AWS from 'aws-sdk';
 import { DocumentClient, WriteRequest } from 'aws-sdk/clients/dynamodb';
+import { awsConfig } from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';
 import { DateTime } from 'luxon';
-import { from, iif, Observable, of } from 'rxjs';
+import { EMPTY, from, Observable, of } from 'rxjs';
 import {
   bufferCount,
   delay,
@@ -23,8 +24,6 @@ import {
   toArray,
 } from 'rxjs/operators';
 
-import { AWS_CRUD_CONFIG } from '@bgap/shared/graphql/api-client';
-
 const DYNAMODB_BATCH_WRITE_ITEM_COUNT = 25;
 const DYNAMODB_CONCURRENT_OPERATION_COUNT = 1;
 const DYNAMODB_OPERATION_DELAY = 1000;
@@ -32,7 +31,7 @@ const DYNAMODB_OPERATION_DELAY = 1000;
 // TODO: relocate the dynamoDB initialization into the apps/anyupp-backend/lib/lambda/appsync-lambda/index.ts file
 const dbClient = new AWS.DynamoDB({
   apiVersion: '2012-08-10',
-  region: AWS_CRUD_CONFIG.aws_appsync_region,
+  region: awsConfig.aws_appsync_region,
 });
 
 const toBatchDeleteParam = (id: string): WriteRequest => ({
@@ -89,13 +88,12 @@ export const executeUpdateItem = <ResponseType>(
 ): Observable<ResponseType> =>
   from(dbClient.updateItem(input).promise()).pipe(
     switchMap(response =>
-      iif(
-        () => !!response.Attributes,
-        of(
-          AWS.DynamoDB.Converter.unmarshall(
-            response.Attributes!,
-          ) as ResponseType,
-        ),
-      ),
+      response?.Attributes
+        ? of(
+            AWS.DynamoDB.Converter.unmarshall(
+              response.Attributes,
+            ) as ResponseType,
+          )
+        : EMPTY,
     ),
   );

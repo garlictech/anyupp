@@ -1,12 +1,11 @@
 import * as Joi from 'joi';
-import { IOrder, IOrderItem, IPlace, IPriceShown } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
 
-export const priceShownSchema: Joi.SchemaMap<IPriceShown> = {
-  __typename: Joi.string().valid('PriceShown').optional(),
+export const priceShownSchema: Joi.SchemaMap<CrudApi.PriceShown> = {
   currency: Joi.string().required(),
   pricePerUnit: Joi.number().required(),
   priceSum: Joi.number().required().optional(),
@@ -16,8 +15,7 @@ export const priceShownSchema: Joi.SchemaMap<IPriceShown> = {
 
 export const statusLogSchema = Joi.array();
 
-export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
-  __typename: Joi.string().valid('OrderItem').optional(),
+export const orderItemSchema: Joi.SchemaMap<CrudApi.OrderItem> = {
   created: Joi.number().positive().allow(null),
   productName: localizedItemSchema.required(),
   priceShown: Joi.object(priceShownSchema).required(),
@@ -31,14 +29,12 @@ export const orderItemSchema: Joi.SchemaMap<IOrderItem> = {
   allergens: Joi.array().items(Joi.string()).optional().allow(null),
 };
 
-export const placeSchema: Joi.SchemaMap<IPlace> = {
-  __typename: Joi.string().valid('Place').optional(),
+export const placeSchema: Joi.SchemaMap<CrudApi.Place> = {
   seat: Joi.string().required(),
   table: Joi.string().required(),
 };
 
-export const orderSchema: Joi.SchemaMap<IOrder> = {
-  __typename: Joi.string().valid('Order').optional(),
+export const orderSchema: Joi.SchemaMap<CrudApi.Order> = {
   id: Joi.string().required(),
   userId: Joi.string().required(),
   unitId: Joi.string().required(),
@@ -57,5 +53,5 @@ export const orderSchema: Joi.SchemaMap<IOrder> = {
 };
 
 export const { validate: validateOrder, isType: isOrder } = validateSchema<
-  IOrder
+  CrudApi.Order
 >(orderSchema, 'Order');

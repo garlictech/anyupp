@@ -1,29 +1,23 @@
-import { AmplifyService } from 'aws-amplify-angular';
-
 import { Injectable } from '@angular/core';
-import { IStorageResponse } from '@bgap/shared/types';
 import { randomString } from '@bgap/shared/utils';
+import { Storage } from 'aws-amplify';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  constructor(private _amplifyService: AmplifyService) {}
-
-  public uploadFile(folderPath: string, file: File): Promise<string> {
+  public async uploadFile(folderPath: string, file: File): Promise<string> {
     const ext = file.name.split('.').pop();
     const key = `${folderPath}/${randomString(16)}.${ext}`;
 
-    return this._amplifyService
-      .storage()
-      .put(key, file, {
-        level: 'public',
-        contentType: file.type,
-      })
-      .then((success: IStorageResponse) => success.key);
+    await Storage.put(key, file, {
+      level: 'public',
+      contentType: file.type,
+    });
+    return key;
   }
 
   public removeFile(key: string): Promise<void> {
-    return this._amplifyService.storage().remove(key);
+    return Storage.remove(key);
   }
 }

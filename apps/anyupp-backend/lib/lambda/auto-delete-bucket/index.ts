@@ -1,6 +1,6 @@
 import { emptyBucket } from './empty-bucket';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import { sendResponse } from '../lambda.utils';
+import { sendResponse } from '../utils/send-response';
 
 export const handler = async (event: CloudFormationCustomResourceEvent) => {
   console.log(JSON.stringify(event, null, 2));

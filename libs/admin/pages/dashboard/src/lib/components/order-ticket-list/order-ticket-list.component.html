@@ -9,33 +9,33 @@
         badgePosition="bottom right"
         badgeStatus="warning"
         [ngClass]="
-          dashboardSettings?.ticketListType === EDashboardTicketListType.PLACED
+          dashboardSettings?.ticketListType === EDashboardTicketListType.placed
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.PLACED)"
+        (click)="selectListType(EDashboardTicketListType.placed)"
       ></nb-action>
       <nb-action
-        icon="checkmark-circle-2-outline"
+        icon="bell-outline"
         [badgeText]="
-          (uniqueReadyOrdersCount || 0) > 0
-            ? uniqueReadyOrdersCount.toString()
+          (manualPaymentOrders.length || 0) > 0
+            ? manualPaymentOrders.length.toString()
             : ''
         "
         badgePosition="bottom right"
         badgeStatus="info"
         [ngClass]="
-          dashboardSettings?.ticketListType === EDashboardTicketListType.READY
+          dashboardSettings?.ticketListType === EDashboardTicketListType.ready
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.READY)"
+        (click)="selectListType(EDashboardTicketListType.ready)"
       ></nb-action>
       <nb-action
         icon="alert-circle-outline"
         [badgeText]="
-          (uniquePaymentUsersCount || 0) > 0
-            ? uniquePaymentUsersCount.toString()
+          (problematicOrders.length || 0) > 0
+            ? problematicOrders.length.toString()
             : ''
         "
         badgePosition="bottom right"

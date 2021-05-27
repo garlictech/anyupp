@@ -1,27 +1,18 @@
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { resultTap } from './seed.util';
 
 export const createTestGeneratedProduct = (
   input: CrudApi.CreateGeneratedProductInput,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.CreateGeneratedProductMutation
-  >(CrudApiMutationDocuments.createGeneratedProduct, {
-    input,
-  }).pipe(resultTap('GENERATED_PRODUCT create', input.id!));
+  crudSdk
+    .CreateGeneratedProduct({ input })
+    .pipe(resultTap('GENERATED PRODUCT create', input.id!));
 
-export const deleteTestGeneratedProduct = (id: string) =>
-  executeMutation(crudBackendGraphQLClient)<
-    CrudApi.DeleteGeneratedProductMutation
-  >(CrudApiMutationDocuments.deleteGeneratedProduct, {
-    input: { id },
-  }).pipe(
-    resultTap('GENERATED_PRODUCT delete', id),
-    catchError(() => of('NO_PROBLEM')),
-  );
+export const deleteTestGeneratedProduct = (
+  id: string,
+  crudSdk: CrudApi.CrudSdk,
+) =>
+  crudSdk
+    .DeleteGeneratedProduct({ input: { id } })
+    .pipe(resultTap('GENERATED PRODUCT delete', id));

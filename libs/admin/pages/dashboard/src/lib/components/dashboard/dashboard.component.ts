@@ -21,12 +21,12 @@ import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  IUnit,
 } from '@bgap/shared/types';
 import { zeroFill } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -40,13 +40,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public dashboardSettings!: IDashboardSettings;
   public resized: boolean;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
-  public selectedUnit?: IUnit;
+  public selectedUnit?: CrudApi.Unit;
   public toggleFormControl: FormControl;
   public time?: string;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filter((unit): boolean => !!unit),
         untilDestroyed(this),
       )
-      .subscribe((unit: IUnit | undefined): void => {
+      .subscribe((unit: CrudApi.Unit | undefined): void => {
         this.selectedUnit = unit;
 
         this.toggleFormControl.setValue(this.selectedUnit?.isAcceptingOrders);
@@ -145,8 +145,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._dataService.updateUnit((<IUnit>this.selectedUnit).id, {
-              isAcceptingOrders: !(<IUnit>this.selectedUnit).isAcceptingOrders,
+            this._dataService.updateUnit({
+              id:
+                this.selectedUnit?.id ??
+                'FIXME THIS IS FROM UNHANDLED UNKNOWN IN toggleAcceptingOrders',
+              isAcceptingOrders: !this.selectedUnit?.isAcceptingOrders,
             });
           },
           status: 'success',

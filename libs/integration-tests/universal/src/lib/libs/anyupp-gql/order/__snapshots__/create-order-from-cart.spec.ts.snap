@@ -2,6 +2,6 @@
 
 exports[`CreatCartFromOrder mutation test should fail in case the cart is not the user's 1`] = `"Cart is missing"`;
 
-exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Internal Cart query error]`;
+exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Cart Object Validation Error: "value" must be of type object]`;
 
-exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `"Internal Unit query error"`;
+exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `"Unit Object Validation Error: \\"value\\" must be of type object"`;

@@ -1,21 +1,16 @@
-// import { PriceShown, Order, StatusLog, EOrderStatus, StatusLogItem } from "../interfaces";
+// import { PriceShown, Order, StatusLog, CrudApi.OrderStatus, StatusLogItem } from "../interfaces";
 // import { toFixed2Number } from "../utils";
-import { CrudApi } from '@bgap/crud-gql/api';
-import {
-  EOrderStatus,
-  IOrderItem,
-  IOrders,
-  IPriceShown,
-  IStatusLog,
-} from '@bgap/shared/types';
+
+import * as CrudApi from '@bgap/crud-gql/api';
+
 import { toFixed2Number } from '../../utils/number.utils';
 
 export const calculateOrderSumPrice = (
-  items: IOrderItem[] | CrudApi.OrderItemInput[],
-): IPriceShown => roundSums(sumItems(items as IOrderItem[]));
+  items: CrudApi.OrderItemInput[],
+): CrudApi.PriceShown => roundSums(sumItems(items));
 
-const sumItems = (items: IOrderItem[]): IPriceShown => {
-  const empty: IPriceShown = {
+const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
+  const empty: CrudApi.PriceShown = {
     currency: '',
     priceSum: 0,
     pricePerUnit: 0,
@@ -28,7 +23,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
   return items.reduce((sum, item) => {
     const lastStatus = currentStatus(item.statusLog);
 
-    if (lastStatus === EOrderStatus.REJECTED) {
+    if (lastStatus === CrudApi.OrderStatus.rejected) {
       return sum;
     }
     return {
@@ -41,7 +36,7 @@ const sumItems = (items: IOrderItem[]): IPriceShown => {
   }, empty);
 };
 
-const roundSums = (price: IPriceShown) => {
+const roundSums = (price: CrudApi.PriceShown) => {
   return {
     ...price,
     priceSum: toFixed2Number(price.priceSum),
@@ -49,16 +44,18 @@ const roundSums = (price: IPriceShown) => {
   };
 };
 
-export const sumOrders = (orders: IOrders): number => {
+export const sumOrders = (orders: CrudApi.Order[]): number => {
   return Object.values(orders).reduce((result, order) => {
     return result + order.sumPriceShown.priceSum;
   }, 0);
 };
 
-export const currentStatus = (status: IStatusLog[]): EOrderStatus => {
+export const currentStatus = (
+  status: CrudApi.Maybe<CrudApi.StatusLog>[],
+): CrudApi.OrderStatus => {
   if (!status || status.length === 0) {
-    return EOrderStatus.NONE;
+    return CrudApi.OrderStatus.none;
   }
   const lastElement = status[status.length - 1];
-  return lastElement?.status || EOrderStatus.NONE;
+  return lastElement?.status || CrudApi.OrderStatus.none;
 };
