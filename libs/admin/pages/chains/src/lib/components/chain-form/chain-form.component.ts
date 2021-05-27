@@ -36,7 +36,7 @@ export class ChainFormComponent
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _logger: NGXLogger,
   ) {
     super(_injector);
@@ -96,7 +96,7 @@ export class ChainFormComponent
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateChain({
               input: {
                 id: this.chain.id,
@@ -116,7 +116,7 @@ export class ChainFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateChain({ input: this.dialogForm?.value })
             .toPromise();
 
@@ -181,7 +181,7 @@ export class ChainFormComponent
   };
 
   private async updateImageStyles(param: string, image: string | null) {
-    await this.crudSdk.sdk
+    await this._crudSdk.sdk
       .GetChain({
         id:
           this.chain?.id ||
@@ -190,7 +190,7 @@ export class ChainFormComponent
       .pipe(
         filterNullish(),
         switchMap(data =>
-          this.crudSdk.sdk.UpdateChain({
+          this._crudSdk.sdk.UpdateChain({
             input: fp.set(`style.images.${param}`, image, data),
           }),
         ),

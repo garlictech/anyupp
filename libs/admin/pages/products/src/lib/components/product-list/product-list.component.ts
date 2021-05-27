@@ -53,7 +53,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
@@ -186,7 +186,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
           const productId = this._sortedUnitProductIds[i];
 
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateUnitProduct({
               input: {
                 id: productId,

@@ -33,8 +33,8 @@ export class AdminUserFormComponent
     protected _injector: Injector,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
-    private anyuppSdk: AnyuppSdkService,
+    private _crudSdk: CrudSdkService,
+    private _anyuppSdk: AnyuppSdkService,
   ) {
     super(_injector);
 
@@ -61,7 +61,7 @@ export class AdminUserFormComponent
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateAdminUser({
               input: {
                 id: this.adminUser.id,
@@ -88,7 +88,7 @@ export class AdminUserFormComponent
           const email = this.dialogForm.controls['email'].value;
           const phone = this.dialogForm.controls['phone'].value;
 
-          this.anyuppSdk.sdk
+          this._anyuppSdk.sdk
             .CreateAdminUser({
               input: { email, name, phone },
             })
@@ -115,7 +115,7 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this.crudSdk.sdk
+        await this._crudSdk.sdk
           .UpdateAdminUser({
             input: {
               id: this.adminUser.id,
@@ -152,7 +152,7 @@ export class AdminUserFormComponent
 
     if (this.adminUser?.id) {
       try {
-        await this.crudSdk.sdk
+        await this._crudSdk.sdk
           .UpdateAdminUser({
             input: {
               id: this.adminUser.id,
