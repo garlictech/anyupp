@@ -100,7 +100,7 @@ describe('Cart validaton test', () => {
       .toPromise()
       .catch(error => {
         expect(error).toMatchInlineSnapshot(
-          `"Cart Object Validation Error: \\"id\\" is required"`,
+          `"Cart Object Validation Error (JOI): \\"id\\" is required"`,
         );
       });
     expect(isCart(invalidCart)).toEqual(false);

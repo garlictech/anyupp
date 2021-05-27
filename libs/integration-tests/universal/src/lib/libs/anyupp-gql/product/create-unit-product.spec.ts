@@ -31,7 +31,9 @@ describe('CreateUnitProduct tests', () => {
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
       testAdminUsername,
       testAdminUserPassword,
-    ).toPromise();
+    )
+      .toPromise()
+      .then(x => x.authAnyuppSdk);
     publicCrudSdk = CrudApi.getCrudSdkPublic();
     iamCrudSdk = createIamCrudSdk();
   });
@@ -67,6 +69,7 @@ describe('CreateUnitProduct tests', () => {
         .toPromise();
     });
 
+    // PROBABLY THIS FEATURE WON'T BE USED !!!
     it.skip('should create unitProduct in the database', done => {
       return (
         authAnyuppSdk

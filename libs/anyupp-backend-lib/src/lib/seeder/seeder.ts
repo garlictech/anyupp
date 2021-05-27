@@ -117,6 +117,7 @@ export const seedBusinessData = (userId: string) => (
   )(deps)
     .pipe(
       ce('### RoleContext SEED 01'),
+      takeLast(1),
       delay(1000),
       switchMap(() =>
         concat(

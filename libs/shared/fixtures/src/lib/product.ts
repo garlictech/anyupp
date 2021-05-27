@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { EVariantAvailabilityType, RequiredId } from '@bgap/shared/types';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
@@ -8,7 +8,7 @@ const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 const getProductVariant = (
   idx: number,
   type: string,
-): CrudApi.ProductVariantInput & { id: string } => ({
+): RequiredId<CrudApi.ProductVariantInput> => ({
   id: `${testIdPrefix}${type}ProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx,
@@ -28,7 +28,7 @@ const getProductVariant = (
   position: idx,
 });
 
-const chainProductBase: CrudApi.CreateChainProductInput & { id: string } = {
+const chainProductBase: RequiredId<CrudApi.CreateChainProductInput> = {
   id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
@@ -41,7 +41,7 @@ const chainProductBase: CrudApi.CreateChainProductInput & { id: string } = {
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
-const groupProductBase: CrudApi.CreateGroupProductInput & { id: string } = {
+const groupProductBase: RequiredId<CrudApi.CreateGroupProductInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -51,7 +51,10 @@ const groupProductBase: CrudApi.CreateGroupProductInput & { id: string } = {
   variants: [getProductVariant(1, 'group'), getProductVariant(2, 'group')],
 };
 
-const unitProductBase: CrudApi.CreateUnitProductInput & { id: string } = {
+const unitProductBase: Omit<
+  RequiredId<CrudApi.CreateUnitProductInput>,
+  'variants'
+> & { variants: CrudApi.ProductVariantInput[] } = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',

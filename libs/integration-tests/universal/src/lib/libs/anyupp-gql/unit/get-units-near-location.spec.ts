@@ -1,5 +1,5 @@
 import { combineLatest, from } from 'rxjs';
-import { filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
+import { map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import * as fp from 'lodash/fp';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
@@ -20,6 +20,8 @@ import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+
+const TEST_NAME = 'GEOUNIT_';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -69,7 +71,9 @@ describe('GetUnitsNearLocation tests', () => {
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
       testAdminUsername,
       testAdminUserPassword,
-    ).toPromise();
+    )
+      .toPromise()
+      .then(x => x.authAnyuppSdk);
     cleanup
       .pipe(
         switchMap(() =>
@@ -152,6 +156,7 @@ describe('GetUnitsNearLocation tests', () => {
         input: { location: { lng: 230.0, lat: -100 } },
       };
 
+      // from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)); // FOR DEBUG
       authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
@@ -176,6 +181,9 @@ describe('GetUnitsNearLocation tests', () => {
           successfullExecutionChecks(foundItems);
           done();
         },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
       },
     );
   }, 15000);
@@ -197,6 +205,9 @@ describe('GetUnitsNearLocation tests', () => {
         next(result) {
           successfullExecutionChecks(result);
           done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
         },
       });
   }, 15000);

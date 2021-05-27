@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetUnitsNearLocation tests input validation should throw without a input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location.lng\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lng\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location.lat\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lat\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: Network error: Response not successful: Received status code 401]`;
+exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
 
 exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with direct handler call 1`] = `
 Object {
@@ -33,18 +33,18 @@ Object {
   "paymentModes": Array [
     Object {
       "caption": null,
-      "method": "CASH",
-      "name": "Cash",
+      "method": "cash",
+      "type": "cash",
     },
     Object {
       "caption": null,
-      "method": "CARD",
-      "name": "Card",
+      "method": "card",
+      "type": "card",
     },
     Object {
       "caption": null,
-      "method": "INAPP",
-      "name": "Stripe",
+      "method": "inapp",
+      "type": "stripe",
     },
   ],
   "style": Object {
@@ -87,18 +87,18 @@ Object {
   "paymentModes": Array [
     Object {
       "caption": null,
-      "method": "CASH",
-      "name": "Cash",
+      "method": "cash",
+      "type": "cash",
     },
     Object {
       "caption": null,
-      "method": "CARD",
-      "name": "Card",
+      "method": "card",
+      "type": "card",
     },
     Object {
       "caption": null,
-      "method": "INAPP",
-      "name": "Stripe",
+      "method": "inapp",
+      "type": "stripe",
     },
   ],
   "style": Object {
