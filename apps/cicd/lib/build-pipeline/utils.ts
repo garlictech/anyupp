@@ -76,6 +76,7 @@ export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
   buildProjectPhases: Record<string, unknown>,
+  reports?: Record<string, unknown>,
 ): codebuild.PipelineProject => {
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
@@ -84,16 +85,7 @@ export const createBuildProject = (
       artifacts: {
         files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
-      reports: {
-        cypressReports: {
-          files: ['cyreport/cucumber-json/**/*'],
-          'file-format': 'CUCUMBERJSON',
-        },
-        coverage: {
-          files: ['coverage/**/*'],
-          'file-format': 'CLOVERXML',
-        },
-      },
+      reports,
       env: {
         'secrets-manager': {
           AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
@@ -203,6 +195,7 @@ export const copyParameter = (
 export interface BuildPipelineProps extends utils.PipelineStackProps {
   finalizationStage?: codepipeline.StageProps;
   buildProjectPhases: Record<string, unknown>;
+  reports?: Record<string, unknown>;
 }
 
 export const createPipeline = (
@@ -217,6 +210,7 @@ export const createPipeline = (
     scope,
     cache,
     props.buildProjectPhases,
+    props.reports,
   );
   const prefix = utils.projectPrefix(stage);
 
@@ -336,6 +330,16 @@ export const createCommonDevPipeline = (
           'yarn cucumber:report',
           'yarn cypress:generate:html:report',
         ],
+      },
+    },
+    reports: {
+      cypressReports: {
+        files: ['cyreport/cucumber-json/**/*'],
+        'file-format': 'CUCUMBERJSON',
+      },
+      coverage: {
+        files: ['coverage/**/*'],
+        'file-format': 'CLOVERXML',
       },
     },
   });
