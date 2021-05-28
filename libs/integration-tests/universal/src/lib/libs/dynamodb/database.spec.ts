@@ -9,15 +9,22 @@ import { createTestUnit, deleteTestUnit } from '../../seeds/unit';
 import { createIamCrudSdk } from '../../../api-clients';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
+const TEST_NAME = 'DYNAMO_DB_TEST_';
 
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   ...unitSeed.unit_01,
-  id: `${testIdPrefix}unit_dbtest_id`,
+  id: `${testIdPrefix}unit_${TEST_NAME}_id`,
   lastOrderNum: undefined,
 };
 
 describe('Dynamo DB function tests', () => {
   const crudSdk = createIamCrudSdk();
+
+  const cleanup = () => deleteTestUnit(unit_01.id, crudSdk);
+
+  afterAll(async () => {
+    await cleanup().toPromise();
+  });
 
   describe('incrementOrderNum on Unit', () => {
     it('should increment without existing lastOrderNum field on the Unit', done => {
