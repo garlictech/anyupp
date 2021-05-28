@@ -26,41 +26,45 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   amazon_cognito_identity_dart_2: ^0.1.25+4
-  # amplify_auth_cognito: <1.0.0
-  # amplify_flutter: <1.0.0
-  # amplify_storage_s3: <1.0.0
   animated_background: ^1.0.5
   apple_sign_in: ^0.1.0
+  auto_size_text: ^2.1.0
   awesome_card: ^1.1.0
   badges: ^1.1.1
   barcode_scan: ^3.0.1
-  qr_code_scanner: ^0.4.0
   cached_network_image: ^2.2.0+1
   camera: ^0.5.8+7
   catcher: ^0.3.23
   connectivity: ^2.0.2
+  country_code_picker: ^2.0.1
   cupertino_icons: ^0.1.3
+  dio: ^3.0.10
   double_back_to_close_app: ^2.0.1
   equatable: ^2.0.0
-  # firebase_ml_vision: ^0.9.10
+  expandable: ^5.0.1
   flutter_bloc: ^7.0.0
   flutter_local_notifications: ^1.4.4+2
   flutter_login_facebook: ^1.0.1
   flutter_sequence_animation: ^3.0.1
   flutter_staggered_animations: ^0.1.2
   flutter_svg: ^0.19.3
+  flutter_user_agent: ^1.2.2
   form_field_validator: ^1.0.1
   geolocator: ^6.1.8
   get_it: ^4.0.2
   google_fonts: ^1.1.0
   google_maps_flutter: ^0.5.28+1
   graphql_flutter: ^4.0.1
+  gql_dio_link: ^0.0.4
   intl: ^0.17.0
   lottie: ^0.7.0+1
   mask_text_input_formatter: ^1.0.7
-  package_info: '>=0.4.3 <2.0.0'
+  odometer: ^2.0.0
+  package_info: ">=0.4.3 <2.0.0"
   path_provider: ^1.6.10
   permission_handler: ^5.0.1+1
+  pull_to_refresh: ^2.0.0
+  qr_code_scanner: ^0.4.0
   rxdart: ^0.24.0
   shared_preferences: ^0.5.8
   stripe_sdk: <=3.2.0
@@ -68,10 +72,6 @@ dependencies:
   url_launcher: ^5.7.4
   uuid: ^2.2.0
   webview_flutter: ^2.0.2
-  auto_size_text: ^2.1.0
-  flutter_user_agent: ^1.2.2
-  country_code_picker: ^2.0.1
-  pull_to_refresh: ^2.0.0
 
 dev_dependencies:
   flutter_test:
