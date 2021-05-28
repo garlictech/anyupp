@@ -1,6 +1,5 @@
-import { concat, EMPTY, Observable, of, Subject } from 'rxjs';
+import { concat, Observable, Subject } from 'rxjs';
 import {
-  catchError,
   distinctUntilChanged,
   map,
   switchMap,
@@ -29,7 +28,6 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
-import { TypedAction } from '@ngrx/store/src/models';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AnyuppSdkService } from '../anyupp-sdk.service';
@@ -183,70 +181,38 @@ export class DataService {
       .subscribe();
   }
 
-  private _doSubscription<T>(
-    resetAction: TypedAction<string> | undefined,
-    listOp: Observable<
-      | { items?: Array<T | undefined | null> | undefined | null }
-      | undefined
-      | null
-    >,
-    subscriptionOp: Observable<T | null | undefined>,
-    upsertActionCreator: (items: T[]) => TypedAction<string>,
-  ) {
-    if (resetAction) {
-      this._store.dispatch(resetAction);
-    }
-    concat(
-      listOp.pipe(
-        filterNullish(),
-        map(list => list.items),
-      ),
-      subscriptionOp.pipe(
-        filterNullish(),
-        map(item => [item]),
-      ),
-    )
-      .pipe(
-        filterNullishElements(),
-        tap(items => this._store.dispatch(upsertActionCreator(items))),
-        takeUntil(this._destroyConnection$),
-        catchError(err => {
-          console.error('ERROR', err);
-          return of(EMPTY); /*TODO error actio > effect > toaster */
-        }),
-      )
-      .subscribe();
-  }
-
   private _subscribeToChains(): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       chainsActions.resetChains(),
       this._crudSdk.sdk.ListChains(),
       this._crudSdk.sdk.OnChainsChange(),
       (chains: CrudApi.Chain[]) => chainsActions.upsertChains({ chains }),
+      this._destroyConnection$,
     );
   }
 
   private _subscribeToGroups(): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       groupsActions.resetGroups(),
       this._crudSdk.sdk.ListGroups(),
       this._crudSdk.sdk.OnGroupsChange(),
       (groups: CrudApi.Group[]) => groupsActions.upsertGroups({ groups }),
+      this._destroyConnection$,
     );
   }
 
   private _subscribeToUnits(): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       unitsActions.resetUnits(),
       this._crudSdk.sdk.ListUnits(),
       this._crudSdk.sdk.OnUnitsChange(),
       (units: CrudApi.Unit[]) => unitsActions.upsertUnits({ units }),
+      this._destroyConnection$,
     );
   }
 
   private _subscribeToChainProductCategories(chainId: string): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
       this._crudSdk.sdk.ListProductCategorys({
         filter: { chainId: { eq: chainId } },
@@ -254,11 +220,12 @@ export class DataService {
       this._crudSdk.sdk.OnProductCategoriesChange(),
       (productCategorys: CrudApi.ProductCategory[]) =>
         productCategoriesActions.upsertProductCategorys({ productCategorys }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToChainProductComponents(chainId: string): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productComponentsActions.resetProductComponents(),
 
       this._crudSdk.sdk.ListProductComponents({
@@ -267,11 +234,12 @@ export class DataService {
       this._crudSdk.sdk.OnProductComponentsChange(),
       (productComponents: CrudApi.ProductComponent[]) =>
         productComponentsActions.upsertProductComponents({ productComponents }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToChainProductComponentSets(chainId: string): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productComponentSetsActions.resetProductComponentSets(),
 
       this._crudSdk.sdk.ListProductComponentSets({
@@ -282,11 +250,12 @@ export class DataService {
         productComponentSetsActions.upsertProductComponentSets({
           productComponentSets,
         }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productsActions.resetChainProducts(),
 
       this._crudSdk.sdk.ListChainProducts({
@@ -295,14 +264,12 @@ export class DataService {
       this._crudSdk.sdk.OnChainProductChange(),
       (products: CrudApi.ChainProduct[]) =>
         productsActions.upsertChainsProducts({ products }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
-    // TODO: eliminate the any
-    // There must be a confusion in the schema, eliminate it pls
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this._doSubscription<any>(
+    this._crudSdk.doListSubscription(
       productsActions.resetGroupProducts(),
 
       this._crudSdk.sdk.ListGroupProducts({
@@ -311,11 +278,12 @@ export class DataService {
       this._crudSdk.sdk.OnGroupProductChange(),
       (products: CrudApi.GroupProduct[]) =>
         productsActions.upsertGroupProducts({ products }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productsActions.resetUnitProducts(),
 
       this._crudSdk.sdk.ListUnitProducts({
@@ -324,42 +292,37 @@ export class DataService {
       this._crudSdk.sdk.OnUnitProductChange(),
       (products: CrudApi.UnitProduct[]) =>
         productsActions.upsertUnitProducts({ products }),
+      this._settingsChanged$,
     );
   }
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
-    console.error('_subscribeToGeneratedUnitProducts', unitId);
-    /* TODO fix
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       productsActions.resetGeneratedProducts(),
-
 
       this._crudSdk.sdk.ListGeneratedProducts({
         filter: { unitId: { eq: unitId } },
       }),
-
-
       this._crudSdk.sdk.OnGeneratedProductChange(),
       (products: CrudApi.GeneratedProduct[]) =>
         productsActions.upsertGeneratedProducts({ products }),
+      this._settingsChanged$,
     );
-    */
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
-    console.error('_subscribeToSelectedUnitOrders', unitId);
-    /* TODO fix
-    this._doSubscription(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this._crudSdk.doListSubscription<any>(
       ordersActions.resetActiveOrders(),
-
-      this._crudSdk.sdk.ListOrders(),
+      this._crudSdk.sdk.ListOrders({
+        filter: { unitId: { eq: unitId } },
+      }),
       this._crudSdk.sdk.OnOrdersChange(),
       (orders: CrudApi.Order[]) => {
-        console.error('unit orders', orders);
         return ordersActions.upsertActiveOrders({ orders });
       },
+      this._settingsChanged$,
     );
-    */
 
     /*
     this._store
@@ -406,13 +369,14 @@ export class DataService {
   }
 
   private _subscribeToAdminUsers(): void {
-    this._doSubscription(
+    this._crudSdk.doListSubscription(
       adminUsersActions.resetAdminUsers(),
 
       this._crudSdk.sdk.ListAdminUsers(),
       this._crudSdk.sdk.OnAdminUsersChange(),
       (adminUsers: CrudApi.AdminUser[]) =>
         adminUsersActions.upsertAdminUsers({ adminUsers }),
+      this._destroyConnection$,
     );
   }
 

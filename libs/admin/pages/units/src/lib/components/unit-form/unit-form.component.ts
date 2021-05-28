@@ -251,14 +251,15 @@ export class UnitFormComponent
   public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
     const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
-      .map((m: { name: string }) => m.name)
+      .map((m: { type: string }) => m.type)
       .indexOf(paymentMode.type);
 
     if (idx < 0) {
-      paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));
+      paymentModesArr.push(fp.pick(['type', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }
+
     this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
   }
 }

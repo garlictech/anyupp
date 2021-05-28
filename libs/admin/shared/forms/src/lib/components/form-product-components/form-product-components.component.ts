@@ -105,8 +105,6 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         (componentSetGroup.controls.items as FormArray).push(itemGroup);
       });
 
-      console.error('componentSetGroup', componentSetGroup.value);
-
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
       this.componentSetForm.patchValue({ productComponentSetId: '' });
