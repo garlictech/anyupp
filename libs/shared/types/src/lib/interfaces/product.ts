@@ -11,6 +11,18 @@ export interface IProductOrderChangeEvent {
   productId: string;
 }
 
+export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
+  Required<Pick<CrudApi.ProductVariant, 'price'>>;
+export type ProductWithPrices = Omit<Product, 'variants'> & {
+  variants: ProductVariantWithPrice[];
+};
+export interface ProductComponentSetMap {
+  [key: string]: Required<CrudApi.ProductComponentSet>;
+}
+export interface ProductComponentMap {
+  [key: string]: Required<CrudApi.ProductComponent>;
+}
+
 // TODO this is a manual "merge" of Unit, Chain, Group procucts
 // we must reconsider tis part...
 export interface Product {

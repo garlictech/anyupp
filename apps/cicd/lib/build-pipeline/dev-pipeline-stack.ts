@@ -5,6 +5,6 @@ export class DevBuildPipelineStack extends sst.Stack {
   constructor(app: sst.App, id: string, props: utils.PipelineStackProps) {
     super(app, id, props);
 
-    utils.createCommonPipelineParts(this, 'dev', props);
+    utils.createCommonDevPipeline(this, 'dev', props);
   }
 }

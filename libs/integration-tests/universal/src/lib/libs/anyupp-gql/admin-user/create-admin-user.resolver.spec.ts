@@ -2,7 +2,7 @@ import {
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { from, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
@@ -17,7 +17,7 @@ describe('Admin user creation/deletion', () => {
 
     authAnyuppSdk
       .pipe(
-        switchMap(sdk =>
+        switchMap(({ authAnyuppSdk: sdk }) =>
           sdk.DeleteAdminUser({ userName }).pipe(
             catchError((err: Error) => {
               if (err.message.includes('User does not exist')) {

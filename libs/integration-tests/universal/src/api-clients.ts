@@ -4,12 +4,22 @@ import {
   getCrudSdkForUserPool,
 } from '@bgap/crud-gql/api';
 import {
+  AnyuppSdk,
   getAnyuppSdkForIAM,
   getAnyuppSdkForUserPool,
 } from '@bgap/anyupp-gql/api';
 import { Auth } from 'aws-amplify';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+interface AuthenticatdGraphQLClientWithUserId {
+  userAttributes: {
+    id: string;
+    email: string;
+    // ???
+  };
+  authAnyuppSdk: AnyuppSdk;
+}
 
 const authConfig = () =>
   Auth.configure({
@@ -30,10 +40,16 @@ export const createAuthenticatedCrudSdk = (
 export const createAuthenticatedAnyuppSdk = (
   userName: string,
   password: string,
-) => {
+): Observable<AuthenticatdGraphQLClientWithUserId> => {
   authConfig();
   return from(Auth.signIn(userName, password)).pipe(
-    map(getAnyuppSdkForUserPool),
+    map(user => ({
+      userAttributes: {
+        id: user.attributes.sub,
+        ...user.attributes,
+      },
+      authAnyuppSdk: getAnyuppSdkForUserPool(),
+    })),
   );
 };
 
