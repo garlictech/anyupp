@@ -1,12 +1,9 @@
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/screens/product_configure_screen.dart';
 import 'package:fa_prev/modules/menu/widgets/add_variant_widget.dart';
-import 'package:fa_prev/shared/auth.dart';
+import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/menu/widgets/product_configure_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'product_details_variant_item_widget.dart';
 
@@ -26,14 +23,16 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
 
   @override
   Widget build(BuildContext context) {
-    if (widget.product.configSets.isEmpty) {
+    if (widget.product.configSets == null || widget.product.configSets.isEmpty) {
       return _buildWithNormalPanel(context);
     } else {
-      return ProductConfiguratorWidget(
-        cart: widget.cart,
-        product: widget.product,
-        variants: widget.product.variants,
-        unit: widget.unit,
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: ProductConfiguratorWidget(
+          cart: widget.cart,
+          product: widget.product,
+          unit: widget.unit,
+        ),
       );
     }
 
@@ -45,9 +44,18 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
     if (variants == null) {
       return Container();
     }
-    List<Widget> items = [];
+
+    List<Widget> items = [
+      widget.product.allergens != null && widget.product.allergens.isNotEmpty
+          ? Padding(
+            padding: const EdgeInsets.all(16),
+            child: AllergensWidget(allergens: widget.product.allergens),
+          )
+          : Container()
+    ];
     variants.forEach((variant) {
-      items.add(Container(
+      items.add(Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: ProductDetailVariantItemWidget(
           unit: widget.unit,
           cart: widget.cart,
@@ -114,34 +122,34 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
     );
   }
 
-  Future<void> _addOrder(BuildContext context, ProductVariant variant) async {
-    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-      widget.unit,
-      OrderItem(
-        productId: widget.product.id,
-        variantId: variant.id,
-        image: widget.product.image,
-        priceShown: PriceShown(
-          currency: widget.unit.currency ?? 'huf', // TODO
-          pricePerUnit: variant.price,
-          priceSum: variant.price,
-          tax: 0,
-          taxSum: 0,
-        ),
-        allergens: widget.product.allergens,
-        productName: widget.product.name,
-        takeAway: false,
-        variantName: variant.variantName,
-        statusLog: [
-          StatusLog(
-            userId: user.id,
-            status: 'CART',
-            ts: 0,
-          ),
-        ],
-        quantity: 0,
-      ),
-    ));
-  }
+  // Future<void> _addOrder(BuildContext context, ProductVariant variant) async {
+  //   User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+  //   BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
+  //     widget.unit,
+  //     OrderItem(
+  //       productId: widget.product.id,
+  //       variantId: variant.id,
+  //       image: widget.product.image,
+  //       priceShown: PriceShown(
+  //         currency: widget.unit.currency ?? 'huf', // TODO
+  //         pricePerUnit: variant.price,
+  //         priceSum: variant.price,
+  //         tax: 0,
+  //         taxSum: 0,
+  //       ),
+  //       allergens: widget.product.allergens,
+  //       productName: widget.product.name,
+  //       takeAway: false,
+  //       variantName: variant.variantName,
+  //       statusLog: [
+  //         StatusLog(
+  //           userId: user.id,
+  //           status: 'CART',
+  //           ts: 0,
+  //         ),
+  //       ],
+  //       quantity: 0,
+  //     ),
+  //   ));
+  // }
 }

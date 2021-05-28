@@ -17,6 +17,9 @@ class AddVariantWidget extends StatefulWidget {
 }
 
 class _AddVariantWidgetState extends State<AddVariantWidget> {
+  void _addOrder() {
+    // BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit, widget.order));
+  }
   @override
   Widget build(BuildContext context) {
     final int variantCountInCart = widget.cart == null ? 0 : widget.cart.variantCount(widget.product, widget.variant);
@@ -53,7 +56,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                   primary: theme.text2,
                 ),
                 onPressed: () {
-                  // _addOrder(variant); // TODO
+                  _addOrder(); // TODO
                   // Nav.to(
                   //   ProductConfiguratorScreen(
                   //     cart: widget.cart,

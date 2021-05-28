@@ -4,7 +4,6 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -187,7 +186,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 30.0,
-                bottom: 25.0,
+                //bottom: 16.0,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,9 +200,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       color: theme.text,
                     ),
                   ),
-                  widget.item.allergens != null && widget.item.allergens.isNotEmpty
-                      ? AllergensWidget(allergens: widget.item.allergens)
-                      : Container(),
+      
                 ],
               ),
             ),
@@ -222,7 +219,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 30.0, top: 40.0),
+              padding: const EdgeInsets.only(left: 30.0, top: 16.0),
               child: Text(
                 getLocalizedText(context, widget.item.description),
                 textAlign: TextAlign.left,

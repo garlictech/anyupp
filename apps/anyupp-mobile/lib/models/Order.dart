@@ -164,9 +164,9 @@ class Order extends Model {
         items = json['items'] is List
             ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
             : null,
-        // paymentMethod = json['paymentMethod'] != null
-        //     ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMethod']))
-        //     : null,
+        paymentMode = json['paymentMethod'] != null
+            ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMethod']))
+            : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null
             ? PriceShown.fromJson(Map<String, dynamic>.from(json['sumPriceShown']))

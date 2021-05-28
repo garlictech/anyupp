@@ -147,49 +147,54 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
           //crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Radio<String>(
-              groupValue: _selectedModifier[productSetId],
-              value: value,
-              activeColor: theme.indicator,
-              // focusColor: theme.indicator,
-              onChanged: (String value) {
-                setState(() {
-                  _selectedModifier[productSetId] = value;
-                });
-                widget.onModifiersSelected(_selectedModifier);
-                _expandableModifierController[productSetId].toggle();
-              },
+            Expanded(
+              flex: 2,
+              child: Radio<String>(
+                groupValue: _selectedModifier[productSetId],
+                value: value,
+                activeColor: theme.indicator,
+                // focusColor: theme.indicator,
+                onChanged: (String value) {
+                  setState(() {
+                    _selectedModifier[productSetId] = value;
+                  });
+                  widget.onModifiersSelected(_selectedModifier);
+                  _expandableModifierController[productSetId].toggle();
+                },
+              ),
             ),
             Expanded(
-              child: Container(
-                child: Wrap(
-                  direction: Axis.vertical,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getLocalizedText(context, item.name),
-                      style: GoogleFonts.poppins(
-                        color: theme.text,
-                        fontSize: 20.0,
-                      ),
+              flex: 10,
+              child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    getLocalizedText(context, item.name),
+                    style: GoogleFonts.poppins(
+                      color: theme.text,
+                      //fontSize: 20.0,
                     ),
-                    AllergensWidget(
-                      allergens: allergenNames.toList(),
-                      showHeader: false,
-                      size: 30.0,
-                      fontSize: 10.0,
-                      iconBorderRadius: 10.0,
-                    ),
-                    //buildAllergensListWidget(context, modifier),
-                  ],
-                ),
+                  ),
+                  AllergensWidget(
+                    allergens: allergenNames.toList(),
+                    showHeader: false,
+                    size: 30.0,
+                    fontSize: 10.0,
+                    iconBorderRadius: 10.0,
+                  ),
+                  //buildAllergensListWidget(context, modifier),
+                ],
               ),
             ),
             // Spacer(),
-            Container(
-              child: Text(
-                formatCurrency(item.price, widget.unit.currency),
-                //getModifierItemsTotalPrice(modifier, widget.unit.currency),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Text(
+                  formatCurrency(item.price, widget.unit.currency),
+                  //getModifierItemsTotalPrice(modifier, widget.unit.currency),
+                ),
               ),
             ),
           ],

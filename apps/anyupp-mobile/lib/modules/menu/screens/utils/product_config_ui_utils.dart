@@ -1,12 +1,9 @@
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:flutter/material.dart';
 
 class ConfigType {
-  static const String MODIFIER = 'product_modifier';
-  static const String EXTRA = 'product_extras';
+  static const String MODIFIER = 'modifier';
+  static const String EXTRA = 'extras';
 }
 
 // String getDetailsTextFromModifierComponent(BuildContext context, GeneratedProductConfigComponent modifier) {

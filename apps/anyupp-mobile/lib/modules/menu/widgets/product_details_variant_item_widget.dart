@@ -22,7 +22,7 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
   Widget build(BuildContext context) {
     return Container(
       //height: 76,
-      margin: EdgeInsets.only(left: 14, top: 10, right: 14),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
         color: theme.background2,
         boxShadow: [
@@ -85,4 +85,3 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
     );
   }
 }
-

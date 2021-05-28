@@ -2,7 +2,7 @@ export 'bloc/product_categories_bloc.dart';
 export 'providers/aws_product_provider.dart';
 export 'providers/product_provider_interface.dart';
 export 'repository/product_repository.dart';
-export 'screens/product_configure_screen.dart';
+export 'widgets/product_configure_widget.dart';
 export 'screens/product_details_screen.dart';
 export 'screens/product_menu_screen.dart';
 export 'screens/product_menu_tab_screen.dart';

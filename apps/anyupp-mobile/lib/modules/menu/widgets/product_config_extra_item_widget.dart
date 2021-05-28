@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +7,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 
-
 class ProductConfigExtrasItemWidget extends StatefulWidget {
-
   final GeneratedProductConfigSet extraSet;
   final GeoUnit unit;
   final OnExtraSetItemSelected onExtraSelected;
@@ -20,11 +19,9 @@ class ProductConfigExtrasItemWidget extends StatefulWidget {
 }
 
 class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemWidget> {
-
   Map<String, bool> _selectedExtras = {};
   int _selectedExtraCount = 0;
   bool _canSelectExtra = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,13 +75,15 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
       bool isSelected = _selectedExtras['${extra.productComponentId}'] ?? false;
 
       widgets.add(InkWell(
-        onTap: !isSelected && !_canSelectExtra ? null : () {
-          setState(() {
-            _selectedExtras['${extra.productComponentId}'] = !isSelected;
-          });
-          _updateSelectedCount(productSet);
-          widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
-        },
+        onTap: !isSelected && !_canSelectExtra
+            ? null
+            : () {
+                setState(() {
+                  _selectedExtras['${extra.productComponentId}'] = !isSelected;
+                });
+                _updateSelectedCount(productSet);
+                widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
+              },
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -96,27 +95,37 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
 
                 // inactiveTrackColor: theme.highlight.withOpacity(0.76),
                 value: isSelected,
-                onChanged: !isSelected && !_canSelectExtra ? null : (value) {
-                  setState(() {
-                    _selectedExtras['${extra.productComponentId}'] = value;
-                  });
-                  _updateSelectedCount(productSet);
-                  widget.onExtraSelected(productSet.productSetId, extra.productComponentId, value);
-                },
+                onChanged: !isSelected && !_canSelectExtra
+                    ? null
+                    : (value) {
+                        setState(() {
+                          _selectedExtras['${extra.productComponentId}'] = value;
+                        });
+                        _updateSelectedCount(productSet);
+                        widget.onExtraSelected(productSet.productSetId, extra.productComponentId, value);
+                      },
               ),
-              AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 500),
-                style: _getExtrasFontStyleByIsSelected(isSelected),
-                child: Text(
-                  getLocalizedText(context, extra.name),
+              Expanded(
+                flex: 10,
+                child: AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 500),
+                  style: _getExtrasFontStyleByIsSelected(isSelected),
+                  child: AutoSizeText(
+                    getLocalizedText(context, extra.name),
+                    maxLines: 1,
+                  ),
                 ),
               ),
-              Spacer(),
-              AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 300),
-                style: _getExtrasFontStyleByIsSelected(isSelected),
-                child: Text(
-                  formatCurrencyWithSignal(extra.price, widget.unit.currency),
+              //Spacer(),
+              Expanded(
+                flex: 2,
+                child: AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 300),
+                  style: _getExtrasFontStyleByIsSelected(isSelected),
+                  child: AutoSizeText(
+                    formatCurrencyWithSignal(extra.price, widget.unit.currency),
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ],
@@ -165,6 +174,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
       _canSelectExtra = selectedCount < widget.extraSet.maxSelection;
       _selectedExtraCount = selectedCount;
     });
-    print('_updateSelectedCount()._canSelectExtra=$_canSelectExtra, count=$_selectedExtraCount, maxCount=${widget.extraSet.maxSelection}');
+    print(
+        '_updateSelectedCount()._canSelectExtra=$_canSelectExtra, count=$_selectedExtraCount, maxCount=${widget.extraSet.maxSelection}');
   }
 }
