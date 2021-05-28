@@ -92,20 +92,24 @@ class CognitoService {
         if (session.isValid()) {
           final user = CognitoUser(null, userPool, signInUserSession: session);
           _userSession = session;
+          await _saveSessionToCache();
           return user;
         } else {
           final user = CognitoUser(null, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
+          await _saveSessionToCache();
           return user;
         }
       }
     } on Exception {
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
+      await _saveSessionToCache();
       return user;
     }
 
     _userSession = null;
+    await _saveSessionToCache();
     return null;
   }
 
@@ -123,12 +127,16 @@ class CognitoService {
   }
 
   Future<bool> _saveSessionToCache() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
     if (_userSession != null) {
-      SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.setString('cognito_idtoken', _userSession.idToken.jwtToken);
       await sp.setString('cognito_accesstoken', _userSession.accessToken.jwtToken);
       await sp.setString('cognito_refreshtoken', _userSession.refreshToken.token);
       return true;
+    } else {
+      await sp.remove('cognito_idtoken');
+      await sp.remove('cognito_accesstoken');
+      await sp.remove('cognito_refreshtoken');
     }
     return false;
   }
