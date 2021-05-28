@@ -39,7 +39,7 @@ export class AdminUserRoleFormComponent
     protected _injector: Injector,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
   }
@@ -88,7 +88,7 @@ export class AdminUserRoleFormComponent
           label: 'common.ok',
           callback: async (): Promise<void> => {
             try {
-              await this.crudSdk.sdk
+              await this._crudSdk.sdk
                 .DeleteAdminRoleContext({
                   input: {
                     id:
@@ -125,7 +125,7 @@ export class AdminUserRoleFormComponent
   public async submit(): Promise<void> {
     if (this.dialogForm?.valid) {
       try {
-        await this.crudSdk.sdk
+        await this._crudSdk.sdk
           .CreateAdminRoleContext({
             input: {
               ...this.dialogForm?.value,

@@ -139,9 +139,8 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    // DANGER!!!
-    (_groupProducts, unitProducts, _productCategoryId) =>
-      /*groupProducts.filter(groupProduct => {
+    (groupProducts, unitProducts, productCategoryId) =>
+      groupProducts.filter(groupProduct => {
         const found = unitProducts.filter(
           unitProduct => unitProduct?.parentId === groupProduct.id,
         ).length;
@@ -151,8 +150,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
           !!productCategoryId &&
           groupProduct.chainProduct?.productCategoryId === productCategoryId
         );
-      }),*/
-      unitProducts,
+      }),
   );
 
 export const getExtendedUnitProductsOfSelectedCategory = () =>

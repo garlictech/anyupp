@@ -37,11 +37,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   public chainProducts$: Observable<CrudApi.ChainProduct[]>;
   public groupProducts$: Observable<CrudApi.GroupProduct[]>;
-  // TODO this is weird, check is pls. we call it groupProduct but use it as
-  // chainproduct
   public pendingGroupProducts: CrudApi.ChainProduct[] = [];
-  //public pendingGroupProducts: CrudApi.GroupProduct[] = [];
-  public pendingUnitProducts: CrudApi.UnitProduct[] = [];
+  public pendingUnitProducts: CrudApi.GroupProduct[] = [];
   public groupCurrency = '';
   public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
@@ -53,7 +50,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
@@ -186,7 +183,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
           const productId = this._sortedUnitProductIds[i];
 
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateUnitProduct({
               input: {
                 id: productId,

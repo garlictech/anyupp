@@ -7,7 +7,7 @@ import {
   productAvailabilityValidator,
   TIME_FORMAT_PATTERN,
 } from '@bgap/admin/shared/utils';
-import { EProductLevel, EVariantAvailabilityType } from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 
 @Injectable({
   providedIn: 'root',
@@ -41,8 +41,8 @@ export class FormsService {
     return this._formBuilder.group(groupConfig);
   };
 
-  public createProductAvailabilityFormGroup = (): FormGroup => {
-    return this._formBuilder.group(
+  public createProductAvailabilityFormGroup = (): FormGroup =>
+    this._formBuilder.group(
       {
         type: [EVariantAvailabilityType.ALWAYS, [Validators.required]],
         dayFrom: [''],
@@ -53,10 +53,9 @@ export class FormsService {
       },
       { validators: productAvailabilityValidator },
     );
-  };
 
-  public createCustomDailyScheduleFormGroup = (): FormGroup => {
-    return this._formBuilder.group({
+  public createCustomDailyScheduleFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       date: ['', [Validators.required]],
       from: [
         '',
@@ -64,42 +63,26 @@ export class FormsService {
       ],
       to: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
     });
-  };
 
-  public createLaneFormGroup = (): FormGroup => {
-    return this._formBuilder.group({
+  public createLaneFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#ffffff', [Validators.required]],
     });
-  };
 
-  public createProductConfigSetFormGroup = (): FormGroup => {
-    const groupConfig = {
+  public createProductConfigSetFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       productSetId: [''],
       items: this._formBuilder.array([]),
       position: [0],
-    };
+    });
 
-    return this._formBuilder.group(groupConfig);
-  };
-
-  public createProductConfigSetItemFormGroup = (
-    productLevel: EProductLevel,
-  ): FormGroup => {
-    const groupConfig: Record<string, unknown> = {
+  public createProductConfigSetItemFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       productComponentId: ['', Validators.required],
       position: [0, Validators.required],
-    };
-
-    if (productLevel !== EProductLevel.CHAIN) {
-      groupConfig.refGroupPrice = ['', Validators.required];
-    }
-
-    if (productLevel === EProductLevel.UNIT) {
-      groupConfig.price = ['', Validators.required];
-    }
-
-    return this._formBuilder.group(groupConfig);
-  };
+      refGroupPrice: [0, Validators.required],
+      price: [0, Validators.required],
+    });
 }
