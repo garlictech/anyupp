@@ -1,13 +1,13 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { unitSeed } from './unit';
-import { productSeed } from './product';
+import { unitFixture } from './unit';
+import { productFixture } from './product';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
 
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
-const unitId_01 = unitSeed.unitId_seeded_01;
-const unitProductId_01 = productSeed.unitProductId_seeded_id_01;
+const unitId_01 = unitFixture.unitId_seeded_01;
+const unitProductId_01 = productFixture.unitProductId_seeded_id_01;
 
 // fictional - not exsisting
 const cartId_NotExisting = `${testIdPrefix}NOT_EXSISTING_CART`;
@@ -37,7 +37,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     hu: 'pohár',
   },
   // laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
-  laneId: laneId_01,
+  laneId: laneId_01, // Optional, won't be in case the orderItem is an item of the cart.items
   statusLog: [
     {
       userId: userId_01,
@@ -64,8 +64,9 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   items: [getOrderItem()],
 };
 
-export const cartSeed = {
+export const cartFixture = {
   cart_seeded_01_id,
   cartId_NotExisting,
   cart_01,
+  getOrderItem,
 };
