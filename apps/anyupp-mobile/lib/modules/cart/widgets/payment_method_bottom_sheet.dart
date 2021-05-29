@@ -217,7 +217,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
                         if (_selectedPaymentMethod == PAYMENT_INAPP) {
                           Nav.pop();
-                          Nav.to(StripePaymentScreen());
+                          Nav.to(StripePaymentScreen(orderId: widget.orderId,));
                         } else {
                           getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                             // cart: widget.cart,

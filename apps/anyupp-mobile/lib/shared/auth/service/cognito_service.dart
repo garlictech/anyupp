@@ -86,22 +86,31 @@ class CognitoService {
   }
 
   Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
+    print('refreshUserTokenFromStorageIsExists()');
     try {
       CognitoUserSession session = await _loadSessionFromCache();
+      print('refreshUserTokenFromStorageIsExists().session=$session');
+      // session.invalidateToken()
       if (session != null) {
+        print('refreshUserTokenFromStorageIsExists().session.isValid=${session.isValid()}');
         if (session.isValid()) {
           final user = CognitoUser(null, userPool, signInUserSession: session);
-          _userSession = session;
+          _userSession = await user.getSession();
+          print('refreshUserTokenFromStorageIsExists().validSession=$_userSession');
           return user;
         } else {
+          print('refreshUserTokenFromStorageIsExists().refreshing token');
           final user = CognitoUser(null, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
+          print('refreshUserTokenFromStorageIsExists().refreshedSession=$_userSession');
           return user;
         }
       }
     } on Exception {
+      print('refreshUserTokenFromStorageIsExists().exception. refreshing');
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
+      print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
       return user;
     }
 
