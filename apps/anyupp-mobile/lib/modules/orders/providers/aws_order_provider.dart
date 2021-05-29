@@ -51,6 +51,8 @@ class AwsOrderProvider implements IOrdersProvider {
     );
   }
 
+  Cart get cart => _cart; 
+
   @override
   Future<void> clearCart(String chainId, String unitId) async {
     if (_cart != null && _cart.id != null) {

@@ -31,9 +31,9 @@ class OrderNotificationService {
         }
 
         if (currentStatus == 'ready' && previousStatus == 'processing') {
-          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMethod}');
+          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
 
-          if (order.paymentMethod.method == 'inapp') {
+          if (order.paymentMode.method == 'inapp') {
             showNotification(
               context,
               'Message from AnyUpp!',

@@ -15,9 +15,8 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 
 class StripePaymentScreen extends StatefulWidget {
-  final Cart cart;
 
-  const StripePaymentScreen({Key key, this.cart}) : super(key: key);
+  const StripePaymentScreen({Key key}) : super(key: key);
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();
@@ -286,14 +285,12 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
     print('_startStripePayment().cart=${_form.card}');
     if (_paymentMethod != null) {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
-        cart: widget.cart,
         paymentMethodId: _paymentMethod.id,
       ));
     } else {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
-          cart: widget.cart,
           stripeCard: _form.card,
           saveCard: this._saveCard,
         ));

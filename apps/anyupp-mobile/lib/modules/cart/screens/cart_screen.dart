@@ -223,7 +223,7 @@ class CartScreen extends StatelessWidget {
                   ),
                   onPressed: () => cart.place == null
                       ? null
-                      : showSelectPaymentMethodBottomSheet(context, cart),
+                      : showSelectPaymentMethodBottomSheet(context),
                   child: cart.place == null
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',

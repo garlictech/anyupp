@@ -1,4 +1,5 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -51,34 +52,36 @@ class CurrentOrderCardWidget extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildPayButtonIfNeeded(BuildContext context, Order order) {
     StatusLog status = order.statusLog[order.statusLog.length - 1];
-    if (status.status != 'none') {
+    // print('_buildPayButtonIfNeeded().status=$status, payment=${order.paymentMode}');
+    bool needButton = (status.status == 'none' && order.paymentMode?.method == 'inapp');
+
+    if (!needButton) {
       return Container();
     }
 
     return Container(
-        height: 70.0,
-        padding: EdgeInsets.only(
-          // top: 21.0,
-          left: 14.0,
-          right: 14.0,
-          bottom: 14.0,
-        ),
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: theme.indicator,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+      height: 70.0,
+      padding: EdgeInsets.only(
+        // top: 21.0,
+        left: 14.0,
+        right: 14.0,
+        bottom: 14.0,
+      ),
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: theme.indicator,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: Text(trans(context, 'payment.title')),
-          onPressed: () {
-            // TODO ide kell meg backend, ami OrderId szerint fizet!!!!
-
-          }),);
+        ),
+        child: Text(trans(context, 'payment.title')),
+        onPressed: () => showSelectPaymentMethodBottomSheet(context, order.id),
+      ),
+    );
   }
 
   Widget _buildOrderHeader(BuildContext context, Order order) {

@@ -21,28 +21,25 @@ class StartStripePaymentWithExistingCardEvent extends StripePaymentEvent {
 }
 
 class StartExternalPaymentEvent extends StripePaymentEvent {
-  final Cart cart;
   final String paymentMethod;
 
-  const StartExternalPaymentEvent({this.cart, this.paymentMethod});
+  const StartExternalPaymentEvent({this.paymentMethod});
 
   @override
-  List<Object> get props => [cart, paymentMethod];
+  List<Object> get props => [paymentMethod];
 }
 
 class StartStripePaymentWithNewCardEvent extends StripePaymentEvent {
-  final Cart cart;
   final StripeCard stripeCard;
   final bool saveCard;
 
   const StartStripePaymentWithNewCardEvent({
-    this.cart,
     this.stripeCard,
     this.saveCard,
   });
 
   @override
-  List<Object> get props => [cart, stripeCard, saveCard];
+  List<Object> get props => [stripeCard, saveCard];
 }
 
 class ResetStripePaymentState extends StripePaymentEvent {
