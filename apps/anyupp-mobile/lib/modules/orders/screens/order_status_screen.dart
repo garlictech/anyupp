@@ -99,8 +99,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     List<Order> onlineOrders = [];
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
-      if (status == 'READY') {
-        if (order.paymentMethod.method == 'CARD' || order.paymentMethod.method == 'CASH') {
+      if (status == 'ready') {
+        if (order.paymentMethod.method == 'card' || order.paymentMethod.method == 'cash') {
           // --- Payable
           if (order.paymentIntention == null) {
             cashOrderCount++;
@@ -112,7 +112,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
             waitingForCashPaymentSum += order.sumPriceShown.priceSum;
             // orders.add(order);
           }
-        } else if (order.paymentMethod.method == 'INAPP') {
+        } else if (order.paymentMethod.method == 'inapp') {
           if (order.paymentIntention == null) {
             onlineOrderCount++;
             onlineOrderSum += order.sumPriceShown.priceSum;

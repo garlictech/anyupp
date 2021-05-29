@@ -115,7 +115,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
+              // if (unit.paymentModes != null && unit.paymentModes.contains('inapp'))
               _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
                   "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
               if (unit.paymentModes != null && methods.contains('cash'))
@@ -205,6 +205,9 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
               ? () async {
                   if (!loading) {
+                    PaymentMode mode = _getPaymentModeFromSelection();
+
+                    getIt<CartBloc>().add(SetPaymentMode(unit, mode));
                     print('_selectedPaymentMethod=$_selectedPaymentMethod');
                     if (_selectedPaymentMethod == PAYMENT_INAPP) {
                       Nav.pop();
@@ -227,16 +230,29 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     });
   }
 
+  PaymentMode _getPaymentModeFromSelection() {
+    switch (_selectedPaymentMethod) {
+      case PAYMENT_CASH:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+      case PAYMENT_CARD:
+        return PaymentMode(method: 'card', type: 'card', caption: 'card');
+      case PAYMENT_INAPP:
+        return PaymentMode(method: 'inapp', type: 'stripe', caption: 'stripe');
+      default:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+    }
+  }
+
   String _getPaymentMethodNameFromNumberValue(int value) {
     switch (value) {
       case PAYMENT_INAPP:
-        return 'INAPP';
+        return 'inapp';
       case PAYMENT_CASH:
-        return 'CASH';
+        return 'cash';
       case PAYMENT_CARD:
-        return 'CARD';
+        return 'card';
       default:
-        return 'UNKNOWN';
+        return 'unknown';
     }
   }
 

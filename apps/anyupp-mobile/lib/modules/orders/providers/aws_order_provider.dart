@@ -34,9 +34,9 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       // filterModel: (model) =>
-      //     model.status == OrderStatus.PLACED ||
-      //     model.status == OrderStatus.PROCESSING ||
-      //     model.status == OrderStatus.READY,
+      //     model.status == OrderStatus.placed ||
+      //     model.status == OrderStatus.processing ||
+      //     model.status == OrderStatus.ready,
     );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -217,15 +217,16 @@ class AwsOrderProvider implements IOrdersProvider {
         ),
       );
       print('AwsOrderProvider._saveCartToBackend().result.data=${result.data}');
+      if (result.hasException) {
+        print('AwsOrderProvider._saveCartToBackend().exception=${result.exception}');
+        print('AwsOrderProvider._saveCartToBackend().source=${result.source}');
+        throw result.exception;
+      }
+
       String id = result.data['createCart']['id'];
       print('AwsOrderProvider._saveCartToBackend().id=$id');
 
       _cart = _cart.copyWith(id: id);
-      if (result.hasException) {
-        print(
-            'AwsOrderProvider._saveCartToBackend().exception=${result.exception}');
-        print('AwsOrderProvider._saveCartToBackend().source=${result.source}');
-      }
 
       return result?.exception == null ? true : false;
     } on Exception catch (e) {
@@ -399,7 +400,7 @@ class AwsOrderProvider implements IOrdersProvider {
             },
             'statusLog': {
               'userId': cart.userId,
-              'status': 'PLACED',
+              'status': 'placed',
               'ts': 1.0,
             },
             "allergens" : item.allergens,

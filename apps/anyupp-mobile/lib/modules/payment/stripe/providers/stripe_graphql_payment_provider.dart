@@ -66,7 +66,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       document: gql(MUTATION_START_PAYMENT),
       variables: {
         'orderId': orderId,
-        'paymentMethod': 'INAPP',
+        'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': false,
       },
@@ -109,7 +109,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       document: gql(MUTATION_START_PAYMENT),
       variables: {
         'orderId': orderId,
-        'paymentMethod': 'INAPP',
+        'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
       },

@@ -152,12 +152,12 @@
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {
-      "NONE": "VÁR",
-      "PLACED": "BEADVA",
-      "PROCESSING": "FOLYAMATBAN",
-      "READY": "KÉSZ",
-      "PAID": "FIZETVE",
-      "REJECTED": "TÖRÖLVE"
+      "none": "VÁR",
+      "placed": "BEADVA",
+      "processing": "FOLYAMATBAN",
+      "ready": "KÉSZ",
+      "paid": "FIZETVE",
+      "rejected": "TÖRÖLVE"
     },
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",

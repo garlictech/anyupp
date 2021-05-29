@@ -222,7 +222,7 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => cart.place == null
-                      ? null // TODO visszatenni majd Firebase nelkul  Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
+                      ? null
                       : showSelectPaymentMethodBottomSheet(context, cart),
                   child: cart.place == null
                       ? SvgPicture.asset(

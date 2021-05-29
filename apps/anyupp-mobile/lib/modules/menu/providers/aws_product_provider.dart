@@ -30,7 +30,8 @@ class AwsProductProvider implements IProductProvider {
       if (result.hasException) {
         print('getProductCategoryList().error=${result.exception}'); // TODO
         // yield null;
-        throw result.exception;
+        // throw result.exception;
+        yield null;
       }
 
       List<dynamic> items = result.data['listProductCategorys']['items'];

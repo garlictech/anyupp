@@ -42,13 +42,43 @@ class CurrentOrderCardWidget extends StatelessWidget {
             _buildOrderHeader(context, order),
             _buildDivider(context),
             OrderStatusFooter(order: order),
-            // status == OrderStatus.READY ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
+            // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
+            _buildPayButtonIfNeeded(context, order),
           ],
         ),
       ),
     );
+  }
+  
+  Widget _buildPayButtonIfNeeded(BuildContext context, Order order) {
+    StatusLog status = order.statusLog[order.statusLog.length - 1];
+    if (status.status != 'none') {
+      return Container();
+    }
+
+    return Container(
+        height: 70.0,
+        padding: EdgeInsets.only(
+          // top: 21.0,
+          left: 14.0,
+          right: 14.0,
+          bottom: 14.0,
+        ),
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: theme.indicator,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Text(trans(context, 'payment.title')),
+          onPressed: () {
+            // TODO ide kell meg backend, ami OrderId szerint fizet!!!!
+
+          }),);
   }
 
   Widget _buildOrderHeader(BuildContext context, Order order) {
