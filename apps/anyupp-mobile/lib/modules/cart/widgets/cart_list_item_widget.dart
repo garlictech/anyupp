@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -73,6 +74,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         ),
                       ),
                       ...getExtraNames(context),
+                      getOrderItemAllergenWidget(),
                       SizedBox(
                         height: 16,
                       ),
@@ -180,6 +182,21 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     }
 
     return children;
+  }
+
+  Widget getOrderItemAllergenWidget() {
+    List<String> allergens = widget.order.allergens;
+    widget.order.selectedConfigMap.forEach((key, value) {
+      for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+        for (Allergen allergen in generatedProductConfigComponent.allergens) {
+          String temp = allergen.toString().split(".").last;
+          if (!allergens.contains(temp)) {
+            allergens.add(temp);
+          }
+        }
+      }
+    });
+    return AllergensWidget(allergens: allergens,);
   }
 
   void _addOrder() {
