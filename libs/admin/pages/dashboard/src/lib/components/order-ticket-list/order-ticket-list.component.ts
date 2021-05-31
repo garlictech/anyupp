@@ -117,7 +117,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     this.placedOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.ready,
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.served,
       ),
     ];
   }

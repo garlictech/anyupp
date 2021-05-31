@@ -1,5 +1,5 @@
 import { ordersSelectors } from 'libs/admin/shared/data-access/orders/src';
-import { cloneDeep as _cloneDeep } from 'lodash/fp';
+import { cloneDeep, omit } from 'lodash/fp';
 import { take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -133,6 +133,7 @@ export class OrderService {
   }
 
   public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
+    console.error('updateOrderStatus', status, order);
     this._crudSdk.doMutation(
       this._crudSdk.sdk.UpdateOrder({
         input: {
@@ -159,7 +160,7 @@ export class OrderService {
       .subscribe(
         async (order: CrudApi.Order | undefined): Promise<void> => {
           if (order) {
-            const _order = _cloneDeep(order);
+            const _order = cloneDeep(order);
             _order.items[idx].statusLog.push({
               status,
               ts: new Date().getTime(),
@@ -183,9 +184,6 @@ export class OrderService {
     transactionId: string,
     status: CrudApi.PaymentStatus,
   ): void {
-    console.error('TODO UPDATE');
-    console.error('updateOrderTransactionStatus', transactionId, status);
-
     this._crudSdk.doMutation(
       this._crudSdk.sdk.UpdateTransaction({
         input: {
@@ -200,10 +198,10 @@ export class OrderService {
     order: CrudApi.Order,
     status: CrudApi.OrderStatus,
   ) {
-    console.error('TODO moveOrderToHistory order', order, status);
-
-    /*
-    const historyOrder = fp.omit(['createdAt', 'updatedAt', 'orderNum'], fp.cloneDeep(order));
+    const historyOrder = omit(
+      ['createdAt', 'updatedAt', 'transaction'],
+      cloneDeep(order),
+    );
     const statusObject = {
       status,
       ts: new Date().getTime(),
@@ -215,15 +213,22 @@ export class OrderService {
     });
     historyOrder.statusLog = [statusObject];
 
-    console.error('moveOrderToHistory historyOrder', historyOrder);
-
     try {
-      await this._amplifyDataService.create('createOrderHistory', historyOrder);
+      await this._crudSdk.sdk
+        .CreateOrderHistory({
+          input: historyOrder,
+        })
+        .toPromise();
+
+      await this._crudSdk.sdk
+        .DeleteOrder({
+          input: {
+            id: order.id,
+          },
+        })
+        .toPromise();
     } catch (err) {
       console.error('errr', err);
     }
-
-    console.error('READY');
-    */
   }
 }
