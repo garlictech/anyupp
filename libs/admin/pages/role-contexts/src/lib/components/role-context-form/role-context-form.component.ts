@@ -47,7 +47,7 @@ export class RoleContextFormComponent
     private _logger: NGXLogger,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -203,7 +203,7 @@ export class RoleContextFormComponent
     if (this.dialogForm?.valid) {
       if (this.roleContext?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateRoleContext({
               input: {
                 id: this.roleContext.id,
@@ -226,7 +226,7 @@ export class RoleContextFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateRoleContext({
               input: {
                 ...this.dialogForm?.value,

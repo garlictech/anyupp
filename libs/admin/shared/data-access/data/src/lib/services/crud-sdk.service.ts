@@ -52,7 +52,7 @@ export class AmplifyDataService {
   private crudSdk: CrudApi.CrudSdk;
 
   constructor(private _ngZone: NgZone, private sdk: AngularApi.OnAdminUserChangeGQL ) {
-    this.crudSdk = getCrudSdkForUserPool();
+    this._crudSdk = getCrudSdkForUserPool();
 
     this.sdk.subscribe({id: 'lofasz'})
   }

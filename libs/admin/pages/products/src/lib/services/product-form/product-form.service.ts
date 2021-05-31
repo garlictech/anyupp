@@ -109,20 +109,14 @@ export class ProductFormService {
     );
   }
 
-  public patchConfigSet(
-    product: Product,
-    productLevel: EProductLevel,
-    configSets: FormArray,
-  ): void {
+  public patchConfigSet(product: Product, configSets: FormArray): void {
     (product.configSets || []).forEach(configSet => {
       const configSetGroup = this._formsService.createProductConfigSetFormGroup();
       configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
 
       (configSet?.items || []).forEach(item => {
         if (item) {
-          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
-            productLevel,
-          );
+          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup();
           configSetItemGroup.patchValue(cleanObject(item));
 
           (configSetGroup.controls.items as FormArray).push(configSetItemGroup);

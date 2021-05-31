@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget allergenGridWidget(
-    {String allergen, int index, String assetPath, bool showName = false}) {
+    {String allergen, int index, String assetPath, bool showName = false, double fontSize = 16.0, double borderRadius = 12.0}) {
   return LayoutBuilder(
     builder: (context, constrains) {
       double padding = constrains.maxHeight/4;
@@ -21,7 +21,7 @@ Widget allergenGridWidget(
               right: padding,
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(borderRadius),
               border: Border.all(
                 width: 1.5,
                 color: Color(0xFFE7E5D0),
@@ -59,6 +59,7 @@ Widget allergenGridWidget(
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               //fontSize: 16.0,
+              fontSize: fontSize,
               fontWeight: FontWeight.w600,
               color: Color(0xFF3C2F2F),
             ),
