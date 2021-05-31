@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:flutter/foundation.dart';
-import 'package:collection/collection.dart';
 
 class CartRepository {
   final IAuthProvider _authProvider;
