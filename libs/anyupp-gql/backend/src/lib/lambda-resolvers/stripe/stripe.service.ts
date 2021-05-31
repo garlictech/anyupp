@@ -11,6 +11,7 @@ import {
   updateUser,
 } from './stripe-graphql-crud';
 import { mapPaymentMethodToCard, StripeResolverDeps } from './stripe.utils';
+import { calculateOrderSumPrice } from '@bgap/shared/utils';
 
 export const listStripeCards = (userId: string) => async (
   deps: StripeResolverDeps,
