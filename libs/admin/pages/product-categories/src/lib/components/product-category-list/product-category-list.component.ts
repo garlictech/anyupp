@@ -31,7 +31,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -80,7 +80,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
 
       this._sortedProductCategoryIds.forEach(
         async (productCategoryId: string, pos: number): Promise<void> => {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateProductCategory({
               input: {
                 id: productCategoryId,

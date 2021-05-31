@@ -104,18 +104,22 @@ class CognitoService {
           final user = CognitoUser(null, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
           print('refreshUserTokenFromStorageIsExists().refreshedSession=$_userSession');
+          await _saveSessionToCache();
           return user;
         }
       }
     } on Exception catch (e, trace) {
-      print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
+      // print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
+      print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e');
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
       print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
+      await _saveSessionToCache();
       return user;
     }
 
     _userSession = null;
+    await _saveSessionToCache();
     return null;
   }
 
@@ -138,9 +142,16 @@ class CognitoService {
       await sp.setString('cognito_idtoken', _userSession.idToken.jwtToken);
       await sp.setString('cognito_accesstoken', _userSession.accessToken.jwtToken);
       await sp.setString('cognito_refreshtoken', _userSession.refreshToken.token);
+      return true;
+    } else {
+      await sp.remove('cognito_idtoken');
+      await sp.remove('cognito_accesstoken');
+      await sp.remove('cognito_refreshtoken');
     }
     if (_cognitoUser != null) {
       await sp.setString('cognito_username', _cognitoUser.username);
+    } else {
+      await sp.remove('cognito_username');
     }
     return true;
   }

@@ -36,7 +36,7 @@ export class ProductCategoryFormComponent
     private _store: Store,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -89,7 +89,7 @@ export class ProductCategoryFormComponent
 
       if (this.productCategory?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateProductCategory({
               input: {
                 id: this.productCategory.id,
@@ -109,7 +109,7 @@ export class ProductCategoryFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateProductCategory({ input: value })
             .toPromise();
 
@@ -179,7 +179,7 @@ export class ProductCategoryFormComponent
   };
 
   private async updateImageStyles(image: string | null) {
-    await this.crudSdk.sdk
+    await this._crudSdk.sdk
       .GetProductCategory({
         id:
           this.productCategory?.id ||
@@ -188,7 +188,7 @@ export class ProductCategoryFormComponent
       .pipe(
         filterNullish(),
         switchMap(data =>
-          this.crudSdk.sdk.UpdateProductCategory({
+          this._crudSdk.sdk.UpdateProductCategory({
             input: fp.set(`images`, image, data),
           }),
         ),

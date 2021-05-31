@@ -97,15 +97,15 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
       });
 
       componentSet.items.forEach((componentId, i) => {
-        const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
-          this.productLevel,
-        );
+        const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
         itemGroup.patchValue({
           productComponentId: componentId,
           position: i + 1,
         });
         (componentSetGroup.controls.items as FormArray).push(itemGroup);
       });
+
+      console.error('componentSetGroup', componentSetGroup.value);
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
@@ -152,9 +152,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
           (arr[i]?.items || []).forEach(
             (item: CrudApi.ProductConfigComponent): void => {
-              const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
-                this.productLevel,
-              );
+              const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
               itemGroup.patchValue(item);
 
               (g.get('items') as FormArray).push(itemGroup);

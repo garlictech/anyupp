@@ -47,7 +47,7 @@ export class ProductExtendFormComponent
 
   constructor(
     protected _injector: Injector,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _store: Store,
     private _productFormService: ProductFormService,
     private _logger: NGXLogger,
@@ -101,7 +101,6 @@ export class ProductExtendFormComponent
 
       this._productFormService.patchConfigSet(
         this.product,
-        this.productLevel,
         this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
@@ -123,7 +122,7 @@ export class ProductExtendFormComponent
 
       if (this.editing) {
         try {
-          const input = !{
+          const input = {
             input: {
               id: this.product.id,
               ...value,
@@ -135,9 +134,9 @@ export class ProductExtendFormComponent
           }
 
           if (this.productLevel === EProductLevel.GROUP) {
-            await this.crudSdk.sdk.UpdateGroupProduct(input).toPromise();
+            await this._crudSdk.sdk.UpdateGroupProduct(input).toPromise();
           } else {
-            await this.crudSdk.sdk.UpdateUnitProduct(input).toPromise();
+            await this._crudSdk.sdk.UpdateUnitProduct(input).toPromise();
           }
 
           this._toasterService.show(
@@ -167,9 +166,9 @@ export class ProductExtendFormComponent
           };
 
           if (this.productLevel === EProductLevel.GROUP) {
-            await this.crudSdk.sdk.CreateGroupProduct(input).toPromise();
+            await this._crudSdk.sdk.CreateGroupProduct(input).toPromise();
           } else {
-            await this.crudSdk.sdk.CreateUnitProduct(input).toPromise();
+            await this._crudSdk.sdk.CreateUnitProduct(input).toPromise();
           }
 
           this._toasterService.show(

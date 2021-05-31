@@ -52,7 +52,7 @@ export class ProductComponentSetFormComponent
 
   constructor(
     protected _injector: Injector,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _logger: NGXLogger,
@@ -188,7 +188,7 @@ export class ProductComponentSetFormComponent
 
       if (this.productComponentSet?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateProductComponentSet({
               input: {
                 id: this.productComponentSet.id,
@@ -211,7 +211,7 @@ export class ProductComponentSetFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateProductComponentSet({ input: value })
             .toPromise();
 
