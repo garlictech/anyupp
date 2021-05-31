@@ -58,7 +58,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           return StreamBuilder<List<Order>>(
             stream: _orderRepository.getCurrentOrders(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
-              print('Screen.startListSubscription().state=$orderState');
+              // print('Screen.startListSubscription().state=$orderState');
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
                 if (orderState.data == null || orderState.data.isEmpty) {
                   return _noOrder();
@@ -67,7 +67,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                 // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
                 _orderNotificationService.checkIfShowOrderStatusNotification(context, orderState.data);
 
-                return _buildList(unit, orderState.data);
+                //return _buildList(unit, orderState.data);
+                return _buildOrderList(orderState.data);
               } else if (orderState.hasError) {
                 return CommonErrorWidget(
                   error: '',
@@ -85,7 +86,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildList(GeoUnit unit, List<Order> list) {
+  Widget buildListOld(GeoUnit unit, List<Order> list) {
     int cashOrderCount = 0;
     double cashOrderSum = 0.0;
 
@@ -99,8 +100,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     List<Order> onlineOrders = [];
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
-      if (status == 'READY') {
-        if (order.paymentMode.method == 'CARD' || order.paymentMode.method == 'CASH') {
+      if (status == 'ready') {
+        if (order.paymentMode.method == 'card' || order.paymentMode.method == 'cash') {
           // --- Payable
           if (order.paymentIntention == null) {
             cashOrderCount++;
@@ -112,7 +113,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
             waitingForCashPaymentSum += order.sumPriceShown.priceSum;
             // orders.add(order);
           }
-        } else if (order.paymentMode.method == 'INAPP') {
+        } else if (order.paymentMode.method == 'inapp') {
           if (order.paymentIntention == null) {
             onlineOrderCount++;
             onlineOrderSum += order.sumPriceShown.priceSum;

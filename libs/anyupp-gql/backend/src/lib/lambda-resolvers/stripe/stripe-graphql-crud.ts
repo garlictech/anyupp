@@ -6,12 +6,13 @@ import { StripeResolverDeps } from './stripe.utils';
  * Create an User with the cognito user id and the Stripe customer id
  * @param crudGraphqlClient CRUD GraphQL client
  * @param userId the ID of the user (in the cognito user pool)
- * @param stripeCustomerId the ID of the same user in the Stripe backend
+ * @param stripeCustomerId (optional) the ID of the same user in the Stripe backend
  * @returns an instance of IUser interface, filled with the created user's data
  */
-export const createUser = (userId: string, stripeCustomerId: string) => (
-  deps: StripeResolverDeps,
-) => {
+export const createUser = (
+  userId: string,
+  stripeCustomerId: string | undefined,
+) => (deps: StripeResolverDeps) => {
   const createUserVars: CrudApi.CreateUserMutationVariables = {
     input: {
       stripeCustomerId: stripeCustomerId,
@@ -26,12 +27,13 @@ export const createUser = (userId: string, stripeCustomerId: string) => (
  * Update an existing User with the Stripe customer id
  * @param crudGraphqlClient CRUD GraphQL client
  * @param userId the ID of the user (in the cognito user pool)
- * @param stripeCustomerId the ID of the same user in the Stripe backend
+ * @param stripeCustomerId (optional) the ID of the same user in the Stripe backend
  * @returns an instance of IUser interface, filled with the updated user's data
  */
-export const updateUser = (userId: string, stripeCustomerId: string) => (
-  deps: StripeResolverDeps,
-) => {
+export const updateUser = (
+  userId: string,
+  stripeCustomerId: string | undefined,
+) => (deps: StripeResolverDeps) => {
   const updateUserVars: CrudApi.UpdateUserMutationVariables = {
     input: {
       stripeCustomerId: stripeCustomerId,

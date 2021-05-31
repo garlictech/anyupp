@@ -27,9 +27,6 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        // top: 8.0,
-        // left: 8.0,
-        // right: 8.0,
         bottom: 16,
       ),
       child: ExpandablePanel(

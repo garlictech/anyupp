@@ -111,7 +111,7 @@ class Order extends Model {
     buffer.write("orderNum=" + "$orderNum" + ", ");
     buffer.write("userId=" + "$userId" + ", ");
     buffer.write("unitId=" + "$unitId" + ", ");
-    // buffer.write("paymentMethod=" + (paymentMethod != null ? paymentMethod.toString() : "null") + ", ");
+    buffer.write("paymentMode=" + (paymentMode != null ? paymentMode.toString() : "null") + ", ");
     buffer.write("staffId=" + "$staffId" + ", ");
     buffer.write("sumPriceShown=" + (sumPriceShown != null ? sumPriceShown.toString() : "null") + ", ");
     buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
@@ -164,8 +164,8 @@ class Order extends Model {
         items = json['items'] is List
             ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
             : null,
-        paymentMode = json['paymentMethod'] != null
-            ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMethod']))
+        paymentMode = json['paymentMode'] != null
+            ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode']))
             : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null

@@ -33,7 +33,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       variables: {
         'orderId': orderId,
         'paymentMethod': orderMethod,
-        'paymentMethodId': null,
+        'paymentMethodId': 'cash',
         'savePaymentMethod': false,
       },
     ));

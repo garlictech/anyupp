@@ -29,4 +29,6 @@ abstract class IOrdersProvider {
   Future<bool> addInvoiceInfo(InvoiceInfo invioceInfo);
 
   Future<Order> getOrder(String orderId);
+
+  Cart get cart;
 }

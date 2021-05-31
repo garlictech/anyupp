@@ -122,7 +122,8 @@
   "cart": {
     "totalCost": "Total cost",
     "emptyCartLine1": "Your cart is empty",
-    "emptyCartLine2": "Add some products to your cart."
+    "emptyCartLine2": "Add some products to your cart.",
+    "addToCart": "Add To Cart"
   },
   "allergens": {
     "title": "Allergens",
@@ -152,12 +153,12 @@
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "status": {
-      "NONE": "WAITING",
-      "PLACED": "PLACED",
-      "PROCESSING": "PROCESSING",
-      "READY": "READY",
-      "PAID": "PAID",
-      "REJECTED": "REJECTED"
+      "none": "WAITING",
+      "placed": "PLACED",
+      "processing": "PROCESSING",
+      "ready": "READY",
+      "paid": "PAID",
+      "rejected": "REJECTED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
