@@ -1,45 +1,111 @@
-import { combineLatest, defer, from } from 'rxjs';
-import { switchMap, tap, throwIfEmpty, delay } from 'rxjs/operators';
+import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
+import { combineLatest } from 'rxjs';
+import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
+
 import * as CrudApi from '@bgap/crud-gql/api';
-import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
+import { validateOrder } from '@bgap/shared/data-validators';
 import {
-  cartSeed,
+  cartFixture,
   testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
-  unitSeed,
+  unitFixture,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
+import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
 
-import { createTestCart, deleteTestCart } from '../../../seeds/cart';
-import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import { groupFixture } from '../../../../../../../shared/fixtures/src/lib/group';
 import {
   createAuthenticatedAnyuppSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
-import { filterNullish } from '@bgap/shared/utils';
-import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
+import { createTestCart, deleteTestCart } from '../../../seeds/cart';
+import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+
+const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
+  productSetId: 'PRODUCTSET_ID_01',
+  name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+  type: 'TYPE',
+  items: [
+    {
+      productComponentId: 'PRODUCT_COMPONENT_ID_0101',
+      name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+      price: -1.5,
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+    },
+    {
+      productComponentId: 'PRODUCT_COMPONENT_ID_0102',
+      name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+      price: 2.3,
+      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+    },
+  ],
+};
+
+const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
+  productSetId: 'PRODUCTSET_ID_02',
+  name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+  type: 'TYPE',
+  items: [
+    {
+      productComponentId: 'PRODUCT_COMPONENT_ID_0201',
+      name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+      price: 5,
+    },
+    {
+      productComponentId: 'PRODUCT_COMPONENT_ID_0202',
+      name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+      price: -1,
+      allergens: [CrudApi.Allergen.peanut],
+    },
+  ],
+};
 
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {
-  ...cartSeed.cart_01,
+  ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_1_id`,
-  unitId: unitSeed.unit_01.id,
+  unitId: unitFixture.unit_01.id,
   userId: 'WILL BE THE AUTHENTICATED USERID',
+  items: [
+    cartFixture.getOrderItem(), // Price 2.02
+    {
+      ...cartFixture.getOrderItem(),
+      configSets: [orderItemConfigSet_01], // Price (1 -1.5 + 2.3) * 2 + VAT =  3.636 (3.6+0.036)
+    },
+    {
+      ...cartFixture.getOrderItem(),
+      configSets: [orderItemConfigSet_01, orderItemConfigSet_02], // Price (1 + (-1.5 + 2.3) + (5 + -1)) * 2 + VAT = 11.716 (11.6 + 0.116)
+    },
+  ],
 };
+
+const orderItemPrice_01 = 2;
+const orderItemPrice_02 = 3.6;
+const orderItemPrice_03 = 11.6;
+
+const orderItemTax_01 = 0.02;
+const orderItemTax_02 = 0.036;
+const orderItemTax_03 = 0.116;
+
 const cart_02: RequiredId<CrudApi.CreateCartInput> = {
-  ...cartSeed.cart_01,
+  ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_2_id`,
-  unitId: unitSeed.unit_01.id,
+  unitId: unitFixture.unit_01.id,
   userId: 'WILL BE THE AUTHENTICATED USERID',
+  place: {
+    seat: 'SEAT_02',
+    table: 'TABLE_02',
+  },
 };
 const cart_03_different_user: RequiredId<CrudApi.CreateCartInput> = {
-  ...cartSeed.cart_01,
+  ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_3_id`,
-  unitId: unitSeed.unit_01.id,
+  unitId: unitFixture.unit_01.id,
   userId: 'NOT_the_authenticated_USERID',
 };
 const cart_04_different_unit: RequiredId<CrudApi.CreateCartInput> = {
-  ...cartSeed.cart_01,
+  ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_4_id`,
   unitId: 'DIFFERENT_UNITID',
   userId: 'WILL BE THE AUTHENTICATED USERID',
@@ -53,14 +119,16 @@ describe('CreatCartFromOrder mutation test', () => {
     crudSdk: createIamCrudSdk(),
   };
 
-  const cleanup = combineLatest([
-    // CleanUP
-    deleteTestCart(cart_01.id, orderDeps.crudSdk),
-    deleteTestCart(cart_02.id, orderDeps.crudSdk),
-    deleteTestCart(cart_03_different_user.id, orderDeps.crudSdk),
-    deleteTestCart(cart_04_different_unit.id, orderDeps.crudSdk),
-    deleteTestUnit(unitSeed.unit_01.id, orderDeps.crudSdk),
-  ]);
+  const cleanup = () =>
+    combineLatest([
+      // CleanUP
+      deleteTestCart(cart_01.id, orderDeps.crudSdk),
+      deleteTestCart(cart_02.id, orderDeps.crudSdk),
+      deleteTestCart(cart_03_different_user.id, orderDeps.crudSdk),
+      deleteTestCart(cart_04_different_unit.id, orderDeps.crudSdk),
+      deleteTestUnit(unitFixture.unit_01.id, orderDeps.crudSdk),
+      deleteTestGroup(groupFixture.group_01.id, orderDeps.crudSdk),
+    ]);
 
   beforeAll(async done => {
     await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
@@ -74,24 +142,26 @@ describe('CreatCartFromOrder mutation test', () => {
     cart_02.userId = authenticatedUserId;
     cart_04_different_unit.userId = authenticatedUserId;
 
-    cleanup
+    cleanup()
       .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestUnit(unitSeed.unit_01, orderDeps.crudSdk),
+            createTestGroup(groupFixture.group_01, orderDeps.crudSdk),
+            createTestUnit(unitFixture.unit_01, orderDeps.crudSdk),
             createTestCart(cart_01, orderDeps.crudSdk),
             createTestCart(cart_02, orderDeps.crudSdk),
             createTestCart(cart_03_different_user, orderDeps.crudSdk),
             createTestCart(cart_04_different_unit, orderDeps.crudSdk),
           ]),
         ),
+        delay(3000),
       )
       .subscribe(() => done());
-  });
+  }, 25000);
 
   afterAll(async () => {
-    await cleanup.toPromise();
+    await cleanup().toPromise();
   });
 
   it('should create an order from a valid cart', done => {
@@ -108,6 +178,7 @@ describe('CreatCartFromOrder mutation test', () => {
       .pipe(
         // check order has been truly created
         filterNullish<string>(),
+        delay(1000),
         switchMap(newOrderId =>
           combineLatest([
             getOrder(orderDeps.crudSdk, newOrderId),
@@ -117,35 +188,74 @@ describe('CreatCartFromOrder mutation test', () => {
         tap({
           next([order, cart]) {
             expect(order).not.toBeNull();
-            expect(order?.userId).toEqual(userId);
-            expect(order?.unitId).toEqual(unitId);
-            expect(order?.orderNum).toEqual(
+            expect(order.userId).toEqual(userId);
+            expect(order.unitId).toEqual(unitId);
+            expect(order.orderNum).toEqual(
               `${cart_01.place?.table}${cart_01.place?.seat}01`,
             );
+            expect(order.items[0]).not.toBeNull();
+            expect(order.items[0].allergens).not.toBeNull();
+            expect(order.items[0].allergens).toEqual(
+              cart_01.items[0].allergens,
+            );
+            // expect(
+            //   order.items[0].allergens?.sort(
+            //     (a, b) => (a && b && a > b ? 1 : -1), // using sort it will be in the same order all the time
+            //   ),
+            // ).toMatchSnapshot(
+            //   'Should contain all the allergens without duplication',
+            // );
+
+            // The 2nd item has a configSet
+            expect(order.items[1].configSets).not.toBeNull();
+            // That is the same as it was in the CART
+            expect(order.items[1].configSets).toEqual(
+              cart_01.items[1].configSets,
+            );
+            expect(order.sumPriceShown).toEqual({
+              currency: 'EUR',
+              pricePerUnit: 0,
+              priceSum: toFixed2Number(
+                orderItemPrice_01 + orderItemPrice_02 + orderItemPrice_03,
+              ),
+              tax: 0,
+              taxSum: toFixed2Number(
+                orderItemTax_01 + orderItemTax_02 + orderItemTax_03,
+              ),
+            });
+
+            // Cart should be deleted
             expect(cart).toBeNull();
           },
         }),
+        // *********************************
         // Secound ORDER with 02 as orderNum
-        switchMap(() =>
-          from(
-            orderRequestHandler(orderDeps).createOrderFromCart({
-              userId,
-              input: { id: cart_02.id },
-            }),
-          ),
-        ),
+        switchMap(() => {
+          const input = { id: cart_02.id };
+          return authAnyuppSdk.CreateOrderFromCart({ input });
+          // return defer(() =>
+          //   // TO DEBUG
+          //   orderRequestHandler(orderDeps).createOrderFromCart({
+          //     userId,
+          //     input,
+          //   }),
+          // );
+        }),
+        delay(1000),
         switchMap(newOrderId =>
           combineLatest([
             getOrder(orderDeps.crudSdk, newOrderId),
-            getCart(orderDeps.crudSdk, cart_01.id),
+            getCart(orderDeps.crudSdk, cart_02.id),
           ]),
         ),
         tap({
           next([order, cart]) {
             expect(order).not.toBeNull();
             expect(order?.orderNum).toEqual(
-              `${cart_01.place?.table}${cart_01.place?.seat}02`,
+              `${cart_02.place?.table}${cart_02.place?.seat}02`,
             );
+
+            // Cart should be deleted
             expect(cart).toBeNull();
             done();
           },
@@ -205,7 +315,7 @@ describe('CreatCartFromOrder mutation test', () => {
   it('should fail without a cart', done => {
     authAnyuppSdk
       .CreateOrderFromCart({
-        input: { id: cartSeed.cartId_NotExisting },
+        input: { id: cartFixture.cartId_NotExisting },
       })
       .subscribe({
         error(e) {
@@ -217,7 +327,9 @@ describe('CreatCartFromOrder mutation test', () => {
 });
 
 const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
-  return crudSdk.GetOrder({ id }, { fetchPolicy: 'no-cache' });
+  return crudSdk
+    .GetOrder({ id }, { fetchPolicy: 'no-cache' })
+    .pipe(switchMap(validateOrder));
 };
 
 const getCart = (crudSdk: CrudApi.CrudSdk, id: string) => {

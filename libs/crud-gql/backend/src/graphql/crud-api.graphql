@@ -251,7 +251,7 @@ type OrderItem {
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
-  configSets: [OrderItemConfigSet]
+  configSets: [OrderItemConfigSet!]
 }
 
 ### Order

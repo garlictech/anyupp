@@ -67,7 +67,7 @@ const unitProductBase: Omit<
   variants: [getProductVariant(1, 'chain'), getProductVariant(2, 'chain')],
 };
 
-export const productSeed = {
+export const productFixture = {
   chainProductBase,
   groupProductBase,
   unitProductBase,

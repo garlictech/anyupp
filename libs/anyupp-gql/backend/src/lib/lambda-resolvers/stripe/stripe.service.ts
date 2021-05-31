@@ -1,7 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
-import { calculateOrderSumPrice } from '../order/order.utils';
 import {
   createTransaction,
   createUser,
@@ -12,6 +11,7 @@ import {
   updateUser,
 } from './stripe-graphql-crud';
 import { mapPaymentMethodToCard, StripeResolverDeps } from './stripe.utils';
+import { calculateOrderSumPrice } from '@bgap/shared/utils';
 
 export const listStripeCards = (userId: string) => async (
   deps: StripeResolverDeps,
