@@ -12,8 +12,11 @@ describe('Testing cognito service', () => {
   const router = {
     navigate: jest.fn(),
   };
+  const zone = {
+    run: jest.fn(),
+  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const service = new CognitoService(<any>router);
+  const service = new CognitoService(<any>router, <any>zone);
 
   const goodContext = 'SU_CTX_ID';
   const badContext = 'BAD_CONTEXT';
