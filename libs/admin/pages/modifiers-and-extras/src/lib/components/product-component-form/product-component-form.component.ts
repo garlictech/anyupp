@@ -46,7 +46,7 @@ export class ProductComponentFormComponent
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _logger: NGXLogger,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -127,7 +127,7 @@ export class ProductComponentFormComponent
     if (this.dialogForm?.valid) {
       if (this.productComponent?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateProductComponent({
               input: {
                 id: this.productComponent.id,
@@ -150,7 +150,7 @@ export class ProductComponentFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateProductComponent({ input: this.dialogForm?.value })
             .toPromise();
 

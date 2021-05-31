@@ -11,9 +11,9 @@ import {
   testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
-  unitSeed,
-  groupSeed,
-  chainSeed,
+  unitFixture,
+  groupFixture,
+  chainFixture,
 } from '@bgap/shared/fixtures';
 
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
@@ -32,25 +32,25 @@ const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // dist
 // const distanceLoc_06 = { location: { lat: 47.493168, lng: 19.055454 } }; // distance from userLoc: 0.787.. km
 
 const unitNotActive = {
-  ...unitSeed.unit_01,
+  ...unitFixture.unit_01,
   isActive: false,
   id: `${testIdPrefix}NOT_ACTIVE_UNIT`,
 };
 
 const unit_01 = {
-  ...unitSeed.unit_01,
+  ...unitFixture.unit_01,
   id: `${testIdPrefix}unit_01`,
-  address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_01]),
+  address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_01]),
 };
 const unit_02 = {
-  ...unitSeed.unit_01,
+  ...unitFixture.unit_01,
   id: `${testIdPrefix}unit_02`,
-  address: fp.mergeAll([unitSeed.unit_01.address, distanceLoc_02]),
+  address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_02]),
 };
 const unit_03 = {
-  ...unitSeed.unit_01,
+  ...unitFixture.unit_01,
   id: `${testIdPrefix}unit_03`,
-  address: fp.mergeAll([unitSeed.unit_01.address, userLoc]),
+  address: fp.mergeAll([unitFixture.unit_01.address, userLoc]),
 };
 
 describe('GetUnitsNearLocation tests', () => {
@@ -61,8 +61,8 @@ describe('GetUnitsNearLocation tests', () => {
     deleteTestUnit(unit_01.id, crudSdk),
     deleteTestUnit(unit_02.id, crudSdk),
     deleteTestUnit(unit_03.id, crudSdk),
-    deleteTestGroup(groupSeed.group_01.id, crudSdk),
-    deleteTestChain(chainSeed.chain_01.id, crudSdk),
+    deleteTestGroup(groupFixture.group_01.id, crudSdk),
+    deleteTestChain(chainFixture.chain_01.id, crudSdk),
   ]);
 
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
@@ -79,8 +79,8 @@ describe('GetUnitsNearLocation tests', () => {
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestGroup(groupSeed.group_01, crudSdk),
-            createTestChain(chainSeed.chain_01, crudSdk),
+            createTestGroup(groupFixture.group_01, crudSdk),
+            createTestChain(chainFixture.chain_01, crudSdk),
             createTestUnit(unitNotActive, crudSdk),
             createTestUnit(unit_01, crudSdk),
             createTestUnit(unit_02, crudSdk),

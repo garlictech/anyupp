@@ -15,4 +15,4 @@
 
 // ignore_for_file: public_member_api_docs
 
-enum OrderStatus { PLACED, PROCESSING, READY, PAID, REJECTED }
+enum OrderStatus { placed, processing, ready, paid, rejected }

@@ -1,9 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { RequiredId } from '@bgap/shared/types';
 
-import { chainSeed } from './chain';
+import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
-import { groupSeed } from './group';
+import { groupFixture } from './group';
 
 const unitId_01 = `${testIdPrefix}unit_1_id`;
 const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
@@ -65,11 +65,11 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   ...unitBase,
   id: unitId_01,
-  groupId: groupSeed.group_01.id,
-  chainId: chainSeed.chain_01.id,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
 };
 
-export const unitSeed = {
+export const unitFixture = {
   unitBase,
   unit_01,
   unitId_NotExisting,

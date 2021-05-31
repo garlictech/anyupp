@@ -59,4 +59,6 @@ class OrderRepository {
   Future<Order> getOrder(String orderId) async {
     return _provider.getOrder(orderId);
   }
+
+  Cart get cart => _provider.cart;
 }

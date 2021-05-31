@@ -2,17 +2,13 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,12 +18,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
   final GeneratedProduct item;
-  ProductDetailsScreen(
-      {Key key,
-      @required this.item,
-      @required this.heroId,
-      @required this.unit})
-      : super(key: key);
+  ProductDetailsScreen({Key key, @required this.item, @required this.heroId, @required this.unit}) : super(key: key);
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -49,8 +40,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ));
 
     return NetworkConnectionWrapperWidget(
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, state) {
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
         if (state is UnitSelected) {
           return _buildMain(context, state.unit);
         }
@@ -196,7 +186,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 30.0,
-                bottom: 25.0,
+                //bottom: 16.0,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,20 +200,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       color: theme.text,
                     ),
                   ),
-                  widget.item.allergens != null && widget.item.allergens.isNotEmpty
-                      ? AllergensWidget(widget.item.allergens)
-                      : Container(),
+      
                 ],
               ),
             ),
           ),
           StreamBuilder<Cart>(
-            stream: getIt<CartRepository>()
-                .getCurrentCartStream(unit.chainId, unit.id),
+            stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<Cart> snapshot) {
-              if (snapshot.connectionState != ConnectionState.waiting ||
-                  snapshot.hasData) {
-                return _buildVariantsList(snapshot.data, widget.item.variants);
+              if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                //return _buildVariantsList(snapshot.data, widget.item.variants);
+                return ProductDetailVariantListWidget(cart: snapshot.data, product: widget.item, unit: unit,);
               }
 
               return CenterLoadingWidget();
@@ -232,7 +219,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 30.0, top: 40.0),
+              padding: const EdgeInsets.only(left: 30.0, top: 16.0),
               child: Text(
                 getLocalizedText(context, widget.item.description),
                 textAlign: TextAlign.left,
@@ -247,177 +234,5 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ],
       ),
     );
-  }
-
-  Widget _buildVariantsList(Cart cart, List<ProductVariant> list) {
-    // print('***** _buildVariantsList.cart=$cart, variants=$list');
-    if (list == null) {
-      return Container();
-    }
-    List<Widget> items = [];
-    list.forEach((variant) {
-      items.add(_buildVariantItem(context, cart, variant, widget.unit));
-    });
-    return Column(
-      children: items,
-    );
-  }
-
-  Widget _buildVariantItem(
-      BuildContext context, Cart cart, ProductVariant variant, GeoUnit unit) {
-    final int variantCountInCart =
-        cart == null ? 0 : cart.variantCount(widget.item, variant);
-
-    return Container(
-      height: 76,
-      margin: EdgeInsets.only(left: 14, top: 10, right: 14),
-      decoration: BoxDecoration(
-        color: theme.background2,
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(5, 0, 0, 0),
-            offset: Offset(0, 0),
-            blurRadius: 20,
-          ),
-        ],
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-//            flex: 65,
-            child: Container(
-              margin: EdgeInsets.only(left: 22, top: 5, bottom: 5, right: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    getLocalizedText(context, variant.variantName),
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: GoogleFonts.poppins(
-                      color: theme.text,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  if (variant.pack.size > 0.0)
-                    Container(
-                      margin: EdgeInsets.only(top: 4),
-                      child: Text(
-                        '${variant.pack.size} ${variant.pack.unit}',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
-                          color: theme.highlight,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            // flex: 35,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 8.0),
-                  child: Text(
-                    formatCurrency(variant.price,
-                        unit.currency ?? 'huf'), // TODO geounit!!
-                    textAlign: TextAlign.right,
-                    style: GoogleFonts.poppins(
-                      color: theme.highlight,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 46,
-                  height: 46,
-                  margin: EdgeInsets.only(right: 15),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      backgroundColor: theme.indicator,
-                      primary: theme.text2,
-                    ),
-                    onPressed: () {
-                      _addOrder(variant);
-                    },
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return ScaleTransition(
-                          child: child,
-                          scale: animation,
-                        );
-                      },
-                      child: Text(
-                        variantCountInCart == 0 ? '+' : 'x$variantCountInCart',
-                        key: ValueKey<String>(
-                            '${variant.id}-$variantCountInCart'),
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          color: theme.text2,
-                          fontSize: variantCountInCart == 0 ? 32.0 : 24.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _addOrder(ProductVariant variant) async {
-    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-      widget.unit,
-      OrderItem(
-        productId: widget.item.id,
-        variantId: variant.id,
-        image: widget.item.image,
-        priceShown: PriceShown(
-          currency: widget.unit.currency ?? 'huf', // TODO
-          pricePerUnit: variant.price,
-          priceSum: variant.price,
-          tax: 0,
-          taxSum: 0,
-        ),
-        allergens: widget.item.allergens,
-        productName: widget.item.name,
-        takeAway: false,
-        variantName: variant.variantName,
-        statusLog: [
-          StatusLog(
-            userId: user.id,
-            status: 'CART',
-            ts: 0,
-          ),
-        ],
-        quantity: 0,
-      ),
-    ));
   }
 }

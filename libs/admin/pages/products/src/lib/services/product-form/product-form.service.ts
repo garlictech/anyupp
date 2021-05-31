@@ -1,5 +1,6 @@
+import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { Injectable } from '@angular/core';
 import {
   FormArray,
@@ -9,9 +10,9 @@ import {
 } from '@angular/forms';
 import { FormsService } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, Product } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
-import { pipe } from 'fp-ts/lib/function';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
@@ -109,20 +110,14 @@ export class ProductFormService {
     );
   }
 
-  public patchConfigSet(
-    product: Product,
-    productLevel: EProductLevel,
-    configSets: FormArray,
-  ): void {
+  public patchConfigSet(product: Product, configSets: FormArray): void {
     (product.configSets || []).forEach(configSet => {
       const configSetGroup = this._formsService.createProductConfigSetFormGroup();
       configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
 
       (configSet?.items || []).forEach(item => {
         if (item) {
-          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup(
-            productLevel,
-          );
+          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup();
           configSetItemGroup.patchValue(cleanObject(item));
 
           (configSetGroup.controls.items as FormArray).push(configSetItemGroup);

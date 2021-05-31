@@ -4,6 +4,7 @@ import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
+  validateGetGroupCurrency,
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
@@ -15,9 +16,8 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 
 import { incrementOrderNum } from '../../database';
-import { toFixed2Number } from '../../utils';
-import { calculateOrderSumPrice } from './order.utils';
 import { OrderResolverDeps } from './utils';
+import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -28,6 +28,7 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
     switchMap(() =>
       getCart(cartId)(deps).pipe(
         // CART.USERID CHECK
+        // pipeDebug('### CART'),
         switchMap(cart =>
           cart.userId === userId
             ? of(cart)
@@ -64,7 +65,7 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
       ),
     ),
     switchMap(props =>
-      getGroupCurrency(props.unit?.groupId)(deps).pipe(
+      getGroupCurrency(props.unit.groupId)(deps).pipe(
         map(currency => ({ ...props, currency })),
       ),
     ),
@@ -77,7 +78,7 @@ export const createOrderFromCart = (userId: string, cartId: string) => (
     switchMap(props =>
       getOrderItems({
         userId,
-        currency: props?.currency?.currency ?? 'fabatka (handle this nullish)',
+        currency: props.currency,
         cartItems: props.cart.items,
       })(deps).pipe(map(items => ({ ...props, items }))),
     ),
@@ -152,7 +153,7 @@ const getOrderItems = ({
     cartItems.map(cartItem =>
       getLaneIdForCartItem(cartItem.productId)(deps).pipe(
         map(laneId =>
-          convertCartOrderToOrderItem({
+          convertCartOrderItemToOrderItem({
             userId,
             cartItem,
             currency,
@@ -164,7 +165,7 @@ const getOrderItems = ({
   );
 };
 
-const convertCartOrderToOrderItem = ({
+const convertCartOrderItemToOrderItem = ({
   userId,
   cartItem,
   currency,
@@ -197,6 +198,7 @@ const convertCartOrderToOrderItem = ({
     statusLog: createStatusLog(userId),
     laneId,
     allergens: cartItem.allergens,
+    configSets: cartItem.configSets,
   };
 };
 
@@ -221,13 +223,20 @@ const createOrderInDb = (input: CrudApi.CreateOrderInput) => (
 ) => from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
 
 const getUnit = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetUnit({ id })).pipe(switchMap(validateUnit));
+  from(deps.crudSdk.GetUnit({ id }, { fetchPolicy: 'no-cache' })).pipe(
+    switchMap(validateUnit),
+  );
 
 const getCart = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetCart({ id })).pipe(switchMap(validateCart));
+  from(deps.crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' })).pipe(
+    switchMap(validateCart),
+  );
 
 const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetGroupCurrency({ id }));
+  from(deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' })).pipe(
+    switchMap(validateGetGroupCurrency),
+    map(x => x.currency),
+  );
 
 const getNextOrderNum = (tableName: string) => ({
   unitId,

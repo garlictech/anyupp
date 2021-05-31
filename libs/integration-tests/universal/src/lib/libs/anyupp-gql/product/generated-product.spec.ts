@@ -6,7 +6,7 @@ import {
 import { getSortedIds } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
 import { scan, switchMap, tap, delay } from 'rxjs/operators';
-import { generatedProductSeed, testIdPrefix } from '@bgap/shared/fixtures';
+import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import {
   createTestGeneratedProduct,
   deleteTestGeneratedProduct,
@@ -19,22 +19,22 @@ const unitId_01 = `${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${TEST_NAME}UNIT_ID_02`;
 const unitId_03 = `${TEST_NAME}UNIT_ID_03`;
 const unit01_generatedProduct_01 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}${TEST_NAME}generatedProduct_u${unitId_01}_01`,
   unitId: unitId_01,
 };
 const unit02_generatedProduct_01 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_02}_01`,
   unitId: unitId_02,
 };
 const unit03_generatedProduct_01 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_03}_01`,
   unitId: unitId_03,
 };
 const unit03_generatedProduct_02 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_03}_02`,
   unitId: unitId_03,
 };

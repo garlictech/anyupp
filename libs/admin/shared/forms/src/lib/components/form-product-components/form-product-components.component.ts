@@ -1,3 +1,6 @@
+import { combineLatest } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,8 +23,7 @@ import { EProductLevel, IKeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+
 import { FormsService } from '../../services/forms/forms.service';
 
 @UntilDestroy()
@@ -97,9 +99,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
       });
 
       componentSet.items.forEach((componentId, i) => {
-        const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
-          this.productLevel,
-        );
+        const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
         itemGroup.patchValue({
           productComponentId: componentId,
           position: i + 1,
@@ -152,9 +152,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
           (arr[i]?.items || []).forEach(
             (item: CrudApi.ProductConfigComponent): void => {
-              const itemGroup = this._formsService.createProductConfigSetItemFormGroup(
-                this.productLevel,
-              );
+              const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
               itemGroup.patchValue(item);
 
               (g.get('items') as FormArray).push(itemGroup);

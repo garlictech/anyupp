@@ -18,7 +18,7 @@ class OrderNotificationService {
       }
 
       if (previousStatus != null) {
-        if (currentStatus == 'PROCESSING' && previousStatus == 'PLACED') {
+        if (currentStatus == 'processing' && previousStatus == 'placed') {
           print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
           showNotification(
             context,
@@ -30,10 +30,10 @@ class OrderNotificationService {
           );
         }
 
-        if (currentStatus == 'READY' && previousStatus == 'PROCESSING') {
-          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMethod}');
+        if (currentStatus == 'ready' && previousStatus == 'processing') {
+          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
 
-          if (order.paymentMethod.method == 'INAPP') {
+          if (order.paymentMode.method == 'inapp') {
             showNotification(
               context,
               'Message from AnyUpp!',

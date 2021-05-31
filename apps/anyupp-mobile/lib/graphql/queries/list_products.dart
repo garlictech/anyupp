@@ -39,6 +39,28 @@ query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
           hu
         }
       }
+      configSets {
+        type
+        productSetId
+        position
+        name {
+          de
+          en
+          hu
+        }
+        maxSelection
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          position
+          price
+          productComponentId
+        }
+      }
     }
   }
 }
