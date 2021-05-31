@@ -1,3 +1,4 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,8 +24,11 @@ export class FormClickableImageInputComponent {
   @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
-  @Input() uploadCallbackFn!: (resp: string, param: string) => void;
-  @Input() removeCallbackFn!: (param: string) => void;
+  @Input() uploadCallbackFn!: (
+    resp: keyof CrudApi.ChainStyleImages,
+    param: string,
+  ) => void;
+  @Input() removeCallbackFn!: (param: keyof CrudApi.ChainStyleImages) => void;
   @Input() callbackParam = '';
 
   @Input() width = '';
