@@ -198,9 +198,11 @@ class OrderItem extends Model {
 
   Map<String, List<String>> getConfigIdMap() {
     Map<String, List<String>> idMap = {};
-    selectedConfigMap.forEach((key, value) {
-      idMap[key.productSetId] = value.map((e) => e.productComponentId).toList();
-    });
+    if (selectedConfigMap != null) {
+      selectedConfigMap.forEach((key, value) {
+        idMap[key.productSetId] = value.map((e) => e.productComponentId).toList();
+      });
+    }
     return idMap;
   }
 
