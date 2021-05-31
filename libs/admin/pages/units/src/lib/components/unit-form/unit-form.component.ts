@@ -1,6 +1,7 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { delay, take } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,9 +10,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { FormArray, Validators } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
@@ -27,6 +27,7 @@ import {
   TIME_FORMAT_PATTERN,
   unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -243,7 +244,7 @@ export class UnitFormComponent
   public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
     return (
       (this.dialogForm?.value.paymentModes || [])
-        .map((m: { name: string }) => m.name)
+        .map((m: { type: string }) => m.type)
         .indexOf(paymentMode.type) >= 0
     );
   }
@@ -251,14 +252,15 @@ export class UnitFormComponent
   public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
     const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
-      .map((m: { name: string }) => m.name)
+      .map((m: { type: string }) => m.type)
       .indexOf(paymentMode.type);
 
     if (idx < 0) {
-      paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));
+      paymentModesArr.push(fp.pick(['type', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }
+
     this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
   }
 }

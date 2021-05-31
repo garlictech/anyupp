@@ -1,3 +1,6 @@
+import { combineLatest } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,8 +23,7 @@ import { EProductLevel, IKeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+
 import { FormsService } from '../../services/forms/forms.service';
 
 @UntilDestroy()
@@ -104,8 +106,6 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         });
         (componentSetGroup.controls.items as FormArray).push(itemGroup);
       });
-
-      console.error('componentSetGroup', componentSetGroup.value);
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
