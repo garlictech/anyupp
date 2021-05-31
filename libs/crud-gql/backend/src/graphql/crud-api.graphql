@@ -718,7 +718,13 @@ type Subscription {
     @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
     @aws_cognito_user_pools
   onOrderHistorysChange: OrderHistory
-    @aws_subscribe(mutations: ["createOrderHistory", "updateOrderHistory"])
+    @aws_subscribe(
+      mutations: [
+        "createOrderHistory"
+        "updateOrderHistory"
+        "deleteOrderHistory"
+      ]
+    )
     @aws_cognito_user_pools
 
   # Added for the Mobile Application

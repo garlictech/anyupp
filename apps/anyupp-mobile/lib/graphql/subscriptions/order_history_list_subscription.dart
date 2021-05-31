@@ -53,6 +53,25 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         en
         hu
       }
+      configSets {
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          price
+          productComponentId
+        }
+        name {
+          de
+          en
+          hu
+        }
+        productSetId
+        type
+      }
     }
   }
 }

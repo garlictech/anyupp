@@ -2,7 +2,6 @@ import 'package:fa_prev/models.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 abstract class IStripePaymentProvider {
-
   Future<List<StripePaymentMethod>> getPaymentMethods();
 
   Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId);
@@ -11,6 +10,7 @@ abstract class IStripePaymentProvider {
 
   Future<bool> createPaymentMethodFromCard(String secret, StripeCard card);
 
-  // TODO majd megcsinalni ezt is
-  // Stream<List<StripePayment>> getPaymentHistory();
+  Future<String> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId);
+
+  Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard);
 }

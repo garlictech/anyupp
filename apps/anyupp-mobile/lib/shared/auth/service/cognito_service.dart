@@ -86,24 +86,34 @@ class CognitoService {
   }
 
   Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
+    print('refreshUserTokenFromStorageIsExists()');
     try {
       CognitoUserSession session = await _loadSessionFromCache();
+      print('refreshUserTokenFromStorageIsExists().session=$session');
+      // session.invalidateToken()
       if (session != null) {
+        print('refreshUserTokenFromStorageIsExists().session.isValid=${session.isValid()}');
         if (session.isValid()) {
           final user = CognitoUser(null, userPool, signInUserSession: session);
-          _userSession = session;
-          await _saveSessionToCache();
+          print('refreshUserTokenFromStorageIsExists().session.user=$user');
+          _userSession = await user.getSession();
+          print('refreshUserTokenFromStorageIsExists().validSession=$_userSession');
           return user;
         } else {
+          print('refreshUserTokenFromStorageIsExists().refreshing token');
           final user = CognitoUser(null, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
+          print('refreshUserTokenFromStorageIsExists().refreshedSession=$_userSession');
           await _saveSessionToCache();
           return user;
         }
       }
-    } on Exception {
+    } on Exception catch (e) {
+      // print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
+      print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e');
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
+      print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
       await _saveSessionToCache();
       return user;
     }
@@ -138,7 +148,12 @@ class CognitoService {
       await sp.remove('cognito_accesstoken');
       await sp.remove('cognito_refreshtoken');
     }
-    return false;
+    if (_cognitoUser != null) {
+      await sp.setString('cognito_username', _cognitoUser.username);
+    } else {
+      await sp.remove('cognito_username');
+    }
+    return true;
   }
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {

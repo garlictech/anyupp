@@ -34,9 +34,9 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       // filterModel: (model) =>
-      //     model.status == OrderStatus.PLACED ||
-      //     model.status == OrderStatus.PROCESSING ||
-      //     model.status == OrderStatus.READY,
+      //     model.status == OrderStatus.placed ||
+      //     model.status == OrderStatus.processing ||
+      //     model.status == OrderStatus.ready,
     );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -44,12 +44,13 @@ class AwsOrderProvider implements IOrdersProvider {
       listQuery: QUERY_LIST_ORDER_HISTORY,
       listNodeName: 'listOrderHistorys',
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
-      subscriptionNodeName:
-          'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
+      subscriptionNodeName: 'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
       modelFromJson: (json) => Order.fromJson(json),
       // filterModel: (model) => model.status == OrderStatus.PAID || model.status == OrderStatus.REJECTED,
     );
   }
+
+  Cart get cart => _cart; 
 
   @override
   Future<void> clearCart(String chainId, String unitId) async {
@@ -60,23 +61,18 @@ class AwsOrderProvider implements IOrdersProvider {
     _cartController.add(null);
   }
 
-
   @override
   Future<String> createAndSendOrderFromCart() async {
     print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
       QueryResult result = await _client.value.mutate(
-        MutationOptions(
-            document: gql(MUTATION_CREATE_ORDER_FROM_CART),
-            variables: {
-              'cartId': _cart.id,
-            }),
+        MutationOptions(document: gql(MUTATION_CREATE_ORDER_FROM_CART), variables: {
+          'cartId': _cart.id,
+        }),
       );
       if (result.hasException) {
-        print(
-            'AwsOrderProvider.createAndSendOrderFromCart().exception=${result.exception}');
+        print('AwsOrderProvider.createAndSendOrderFromCart().exception=${result.exception}');
         // TODO AWS!!!!
         // throw Exception(result.exception);
         _cart = null;
@@ -93,7 +89,6 @@ class AwsOrderProvider implements IOrdersProvider {
       _cart = null;
       _cartController.add(null);
       return id;
-
     } on Exception catch (e) {
       print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
       rethrow;
@@ -103,15 +98,12 @@ class AwsOrderProvider implements IOrdersProvider {
   @override
   Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getGraphQLClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
       QueryResult result = await _client.value.mutate(
-        MutationOptions(
-            document: gql(MUTATION_ADD_INVOICE_INFO), variables: {}),
+        MutationOptions(document: gql(MUTATION_ADD_INVOICE_INFO), variables: {}),
       );
       if (result.hasException) {
-        print(
-            'AwsOrderProvider.addInvoiceInfo().exception=${result.exception}');
+        print('AwsOrderProvider.addInvoiceInfo().exception=${result.exception}');
         return Future.value(false);
       }
       return Future.value(true);
@@ -163,11 +155,9 @@ class AwsOrderProvider implements IOrdersProvider {
 
   Future<Cart> _getCartFromBackEnd(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
-    print(
-        'AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
+    print('AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getAmplifyClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_GET_CART),
         variables: {
@@ -188,8 +178,7 @@ class AwsOrderProvider implements IOrdersProvider {
       }
 
       List<dynamic> items = result.data['listCarts']['items'];
-      print(
-          'AwsOrderProvider._getCartFromBackEnd().items.length=${items?.length}');
+      print('AwsOrderProvider._getCartFromBackEnd().items.length=${items?.length}');
       if (items != null && items.isNotEmpty) {
         print('json[items] is List=${items[0]['items'] is List}');
         Cart cart = Cart.fromJson(Map<String, dynamic>.from(items[0]));
@@ -208,8 +197,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _saveCartToBackend(Cart cart) async {
     print('******** CREATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getAmplifyClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_SAVE_CART),
@@ -217,15 +205,16 @@ class AwsOrderProvider implements IOrdersProvider {
         ),
       );
       print('AwsOrderProvider._saveCartToBackend().result.data=${result.data}');
+      if (result.hasException) {
+        print('AwsOrderProvider._saveCartToBackend().exception=${result.exception}');
+        print('AwsOrderProvider._saveCartToBackend().source=${result.source}');
+        throw result.exception;
+      }
+
       String id = result.data['createCart']['id'];
       print('AwsOrderProvider._saveCartToBackend().id=$id');
 
       _cart = _cart.copyWith(id: id);
-      if (result.hasException) {
-        print(
-            'AwsOrderProvider._saveCartToBackend().exception=${result.exception}');
-        print('AwsOrderProvider._saveCartToBackend().source=${result.source}');
-      }
 
       return result?.exception == null ? true : false;
     } on Exception catch (e) {
@@ -237,21 +226,17 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<bool> _updateCartOnBackend(Cart cart) async {
     print('******** UPDATING CART IN BACKEND');
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getAmplifyClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_UPDATE_CART),
           variables: _getCartMutationVariablesFromCart(cart, 'updateCartInput'),
         ),
       );
-      print(
-          'AwsOrderProvider._updateCartOnBackend().result.data=${result.data}');
+      print('AwsOrderProvider._updateCartOnBackend().result.data=${result.data}');
       if (result.hasException) {
-        print(
-            'AwsOrderProvider._updateCartOnBackend().exception=${result.exception}');
-        print(
-            'AwsOrderProvider._updateCartOnBackend().source=${result.source}');
+        print('AwsOrderProvider._updateCartOnBackend().exception=${result.exception}');
+        print('AwsOrderProvider._updateCartOnBackend().source=${result.source}');
       }
 
       return result?.exception == null ? true : false;
@@ -267,8 +252,7 @@ class AwsOrderProvider implements IOrdersProvider {
       return false;
     }
     try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getAmplifyClient();
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.mutate(
         MutationOptions(
           document: gql(MUTATION_DELETE_CART),
@@ -286,8 +270,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) =>
-      _subOrderList?.stream;
+  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) => _subOrderList?.stream;
 
   @override
   Future<void> userPaymentIntentionSignal(String chainId, String unitId) {
@@ -313,8 +296,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Future<void> startOrderHistoryListSubscription(
-      String chainId, String unitId) async {
+  Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderHistoryList.startListSubscription(
       variables: {
@@ -331,14 +313,12 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<List<Order>> getOrderHistory(String chainId, String unitId) =>
-      _subOrderHistoryList.stream;
+  Stream<List<Order>> getOrderHistory(String chainId, String unitId) => _subOrderHistoryList.stream;
 
   @override
-  Future<Order> getOrder(String orderId) async{
-        try {
-      ValueNotifier<GraphQLClient> _client =
-          await getIt<GraphQLClientService>().getAmplifyClient();
+  Future<Order> getOrder(String orderId) async {
+    try {
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
       QueryResult result = await _client.value.query(QueryOptions(
         document: gql(QUERY_GET_ORDER),
         variables: {
@@ -369,11 +349,9 @@ class AwsOrderProvider implements IOrdersProvider {
       print('AwsOrderProvider.getOrder.Exception: $e');
       rethrow;
     }
-
   }
 
-  Map<String, dynamic> _getCartMutationVariablesFromCart(
-      Cart cart, String name) {
+  Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
     return {
       '$name': {
         if (cart.id != null) 'id': cart.id,
@@ -399,16 +377,46 @@ class AwsOrderProvider implements IOrdersProvider {
             },
             'statusLog': {
               'userId': cart.userId,
-              'status': 'PLACED',
+              'status': 'none',
               'ts': 1.0,
             },
-            "allergens" : item.allergens,
+            "allergens": item.allergens,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,
               'de': item.variantName.de,
               'hu': item.variantName.hu,
             },
+            'configSets': item.selectedConfigMap != null
+                ? item.selectedConfigMap.keys.toList().map((GeneratedProductConfigSet generatedProductConfigSet) {
+                    return {
+                      "name": {
+                        'en': generatedProductConfigSet.name.en,
+                        'de': generatedProductConfigSet.name.de,
+                        'hu': generatedProductConfigSet.name.hu,
+                      },
+                      "productSetId": generatedProductConfigSet.productSetId,
+                      "type": generatedProductConfigSet.type,
+                      "items": item.selectedConfigMap != null
+                          ? item.selectedConfigMap[generatedProductConfigSet]
+                              .map((GeneratedProductConfigComponent generatedProductConfigComponent) {
+                              return {
+                                "allergens": generatedProductConfigComponent.allergens
+                                    .map((e) => e.toString().split(".").last)
+                                    .toList(),
+                                "price": generatedProductConfigComponent.price,
+                                "productComponentId": generatedProductConfigComponent.productComponentId,
+                                "name": {
+                                  'en': generatedProductConfigComponent.name.en,
+                                  'de': generatedProductConfigComponent.name.de,
+                                  'hu': generatedProductConfigComponent.name.hu,
+                                },
+                              };
+                            }).toList()
+                          : null
+                    };
+                  }).toList()
+                : null,
           };
         }).toList(),
         'paymentMode': cart.paymentMode != null

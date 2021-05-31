@@ -1,11 +1,17 @@
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/bloc/cart_bloc.dart';
+import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:odometer/odometer.dart';
+import 'package:fa_prev/shared/locale.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -31,6 +37,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     _productVariant = widget.product.variants.first;
     _allergeens.addAll(widget.product.allergens);
     _calculateTotalPrice();
+    widget.product.configSets.forEach((element) {
+      _selectedModifiers[element.productSetId] = element.items.first.productComponentId;
+    });
     super.initState();
   }
 
@@ -55,7 +64,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           groupValue: _productVariant,
           onChanged: (ProductVariant selectedVariant) {
             setState(() {
-              selectedVariant = _productVariant;
+               _productVariant = selectedVariant;
+              _calculateTotalPrice();
             });
           },
         ),
@@ -129,7 +139,14 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Total: ', // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              trans("cart.addToCart"), // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              style: GoogleFonts.poppins(
+                fontSize: 24.0,
+                color: theme.text2,
+              ),
+            ),
+            Text(
+              " (", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
               style: GoogleFonts.poppins(
                 fontSize: 24.0,
                 color: theme.text2,
@@ -144,9 +161,46 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               odometerNumber: OdometerNumber(_modifierTotalPrice.toInt()),
               duration: Duration(milliseconds: 300),
             ),
+            Text(
+              ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              style: GoogleFonts.poppins(
+                fontSize: 24.0,
+                color: theme.text2,
+              ),
+            ),
           ],
         ),
-        onPressed: () => {},
+        onPressed: () async {
+          User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+          BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
+              widget.unit,
+              OrderItem(
+                productId: widget.product.id,
+                variantId: _productVariant.id,
+                image: widget.product.image,
+                priceShown: PriceShown(
+                  currency: widget.unit.currency ?? 'huf', // TODO
+                  pricePerUnit: _productVariant.price,
+                  priceSum: _productVariant.price,
+                  tax: 0,
+                  taxSum: 0,
+                ),
+                allergens: widget.product.allergens,
+                productName: widget.product.name,
+                takeAway: false,
+                variantName: _productVariant.variantName,
+                // generatedProductConfigSet: widget.product.,
+                statusLog: [
+                  StatusLog(
+                    userId: user.id,
+                    status: 'CART',
+                    ts: 0,
+                  ),
+                ],
+                quantity: 0,
+                selectedConfigMap: getSelectedComponentMap(),
+              )));
+        },
       ),
     );
   }
@@ -185,6 +239,33 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   //     ),
   //   );
   // }
+
+  Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectedComponentMap() {
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
+    _selectedModifiers.forEach((key, value) {
+      GeneratedProductConfigSet modifier = getModifierConfigSetById(key, widget.product.configSets);
+      if (modifier != null) {
+        GeneratedProductConfigComponent component = getComponentByIdFromSet(value, modifier);
+        selectedConfigMap[modifier] = [component];
+      }
+    });
+    _selectedExtras.forEach((key, value) {
+      GeneratedProductConfigSet modifier = getExtraConfigSetById(key, widget.product.configSets);
+      if (modifier != null) {
+        value.forEach((extra, isAdded) {
+          if (isAdded) {
+            GeneratedProductConfigComponent component = getComponentByIdFromSet(extra, modifier);
+            if (selectedConfigMap[modifier] == null) {
+              selectedConfigMap[modifier] = [component];
+            } else {
+              selectedConfigMap[modifier].add(component);
+            }
+          }
+        });
+      }
+    });
+    return selectedConfigMap;
+  }
 
   Future<void> _calculateTotalPrice() async {
     // print('_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
