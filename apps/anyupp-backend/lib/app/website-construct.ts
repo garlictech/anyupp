@@ -21,10 +21,12 @@ export class WebsiteConstruct extends Construct {
     super(scope, id);
     const app = this.node.root as sst.App;
 
+    /*
     const certificateArn =
       app.stage === 'prod'
         ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
         : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
+    */
 
     const zone = route53.HostedZone.fromLookup(this, 'Zone', {
       domainName: props.domainName,

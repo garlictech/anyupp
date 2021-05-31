@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
