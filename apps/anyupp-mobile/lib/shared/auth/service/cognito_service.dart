@@ -87,6 +87,9 @@ class CognitoService {
 
   Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
     print('refreshUserTokenFromStorageIsExists()');
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String username = sp.getString('cognito_username');
+    print('refreshUserTokenFromStorageIsExists().username=$username');
     try {
       CognitoUserSession session = await _loadSessionFromCache();
       print('refreshUserTokenFromStorageIsExists().session=$session');
@@ -94,14 +97,14 @@ class CognitoService {
       if (session != null) {
         print('refreshUserTokenFromStorageIsExists().session.isValid=${session.isValid()}');
         if (session.isValid()) {
-          final user = CognitoUser(null, userPool, signInUserSession: session);
+          final user = CognitoUser(username, userPool, signInUserSession: session);
           print('refreshUserTokenFromStorageIsExists().session.user=$user');
           _userSession = await user.getSession();
           print('refreshUserTokenFromStorageIsExists().validSession=$_userSession');
           return user;
         } else {
           print('refreshUserTokenFromStorageIsExists().refreshing token');
-          final user = CognitoUser(null, userPool, signInUserSession: session);
+          final user = CognitoUser(username, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
           print('refreshUserTokenFromStorageIsExists().refreshedSession=$_userSession');
           await _saveSessionToCache();
@@ -111,7 +114,7 @@ class CognitoService {
     } on Exception catch (e) {
       // print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
       print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e');
-      final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
+      final user = CognitoUser(username, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
       print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
       await _saveSessionToCache();
