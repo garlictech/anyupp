@@ -6,6 +6,7 @@ import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,11 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   void initState() {
     _productVariant = widget.product.variants.first;
     _allergeens.addAll(widget.product.allergens);
-    _calculateTotalPrice();
+
     widget.product.configSets.forEach((element) {
       _selectedModifiers[element.productSetId] = element.items.first.productComponentId;
     });
+    _calculateTotalPrice();
     super.initState();
   }
 
@@ -58,16 +60,32 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         cart: widget.cart,
         product: widget.product,
         variant: variant,
-        child: Radio<ProductVariant>(
-          value: variant,
-          activeColor: theme.indicator,
-          groupValue: _productVariant,
-          onChanged: (ProductVariant selectedVariant) {
-            setState(() {
-               _productVariant = selectedVariant;
-              _calculateTotalPrice();
-            });
-          },
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 8.0),
+              child: Text(
+                formatCurrency(variant.price, widget.unit.currency ?? 'huf'), // TODO geounit!!
+                textAlign: TextAlign.right,
+                style: GoogleFonts.poppins(
+                  color: theme.highlight,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Radio<ProductVariant>(
+              value: variant,
+              activeColor: theme.indicator,
+              groupValue: _productVariant,
+              onChanged: (ProductVariant selectedVariant) {
+                setState(() {
+                  _productVariant = selectedVariant;
+                  _calculateTotalPrice();
+                });
+              },
+            ),
+          ],
         ),
       ));
     });
@@ -162,7 +180,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               duration: Duration(milliseconds: 300),
             ),
             Text(
-              ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              widget.unit.currency + ")" ??
+                  'huf' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
               style: GoogleFonts.poppins(
                 fontSize: 24.0,
                 color: theme.text2,
