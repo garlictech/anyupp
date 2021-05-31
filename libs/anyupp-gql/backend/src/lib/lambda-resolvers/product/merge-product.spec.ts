@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { mergeAllProductLayers } from './merge-product';
-import { productSeed } from '@bgap/shared/fixtures';
+import { productFixture } from '@bgap/shared/fixtures';
 
 describe('Merge product layers', () => {
-  const cpb = productSeed.chainProductBase;
-  const gpb = productSeed.groupProductBase;
-  const upb = productSeed.unitProductBase;
+  const cpb = productFixture.chainProductBase;
+  const gpb = productFixture.groupProductBase;
+  const upb = productFixture.unitProductBase;
   // it("should be successfull in case only unitProduct exists", () => {
   //     expect(() => mergeAllProductLayers({ unitProduct: {} as any })).not.toThrow();
   // });

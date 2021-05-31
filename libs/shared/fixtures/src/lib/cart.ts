@@ -25,7 +25,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     pricePerUnit: 1,
     priceSum: 2,
     tax: 1,
-    taxSum: 2,
+    taxSum: 0,
   },
   // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
   productId: unitProductId_01,
@@ -45,6 +45,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
       ts: 1234,
     },
   ],
+  allergens: [CrudApi.Allergen.treenuts],
 });
 
 // const cart_01: Required<CrudApi.CreateCartInput> = {

@@ -1,6 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { Stripe } from 'stripe';
-import { toFixed0Number, toFixed2Number } from '../../utils/number.utils';
+import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 
