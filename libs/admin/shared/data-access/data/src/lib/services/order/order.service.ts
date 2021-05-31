@@ -1,9 +1,9 @@
-import { ordersSelectors } from 'libs/admin/shared/data-access/orders/src';
 import { cloneDeep, omit } from 'lodash/fp';
 import { take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
@@ -133,21 +133,22 @@ export class OrderService {
   }
 
   public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
-    console.error('updateOrderStatus', status, order);
-    this._crudSdk.doMutation(
-      this._crudSdk.sdk.UpdateOrder({
-        input: {
-          id: order.id,
-          statusLog: [
-            {
-              status,
-              ts: new Date().getTime(),
-              userId: this._adminUser?.id || '',
-            },
-          ],
-        },
-      }),
-    );
+    if (this._adminUser?.id) {
+      this._crudSdk.doMutation(
+        this._crudSdk.sdk.UpdateOrder({
+          input: {
+            id: order.id,
+            statusLog: [
+              {
+                status,
+                ts: new Date().getTime(),
+                userId: this._adminUser.id,
+              },
+            ],
+          },
+        }),
+      );
+    }
   }
 
   public updateOrderItemStatus(
@@ -159,12 +160,12 @@ export class OrderService {
       .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
       .subscribe(
         async (order: CrudApi.Order | undefined): Promise<void> => {
-          if (order) {
+          if (order && this._adminUser?.id) {
             const _order = cloneDeep(order);
             _order.items[idx].statusLog.push({
               status,
               ts: new Date().getTime(),
-              userId: this._adminUser?.id || '',
+              userId: this._adminUser.id,
             });
 
             this._crudSdk.doMutation(
@@ -198,37 +199,39 @@ export class OrderService {
     order: CrudApi.Order,
     status: CrudApi.OrderStatus,
   ) {
-    const historyOrder = omit(
-      ['createdAt', 'updatedAt', 'transaction'],
-      cloneDeep(order),
-    );
-    const statusObject = {
-      status,
-      ts: new Date().getTime(),
-      userId: this._adminUser?.id || '',
-    };
+    if (this._adminUser?.id) {
+      const historyOrder = omit(
+        ['createdAt', 'updatedAt', 'transaction'],
+        cloneDeep(order),
+      );
+      const statusObject = {
+        status,
+        ts: new Date().getTime(),
+        userId: this._adminUser.id,
+      };
 
-    historyOrder.items.forEach(item => {
-      item.statusLog.push(statusObject);
-    });
-    historyOrder.statusLog = [statusObject];
+      historyOrder.items.forEach(item => {
+        item.statusLog.push(statusObject);
+      });
+      historyOrder.statusLog = [statusObject];
 
-    try {
-      await this._crudSdk.sdk
-        .CreateOrderHistory({
-          input: historyOrder,
-        })
-        .toPromise();
+      try {
+        await this._crudSdk.sdk
+          .CreateOrderHistory({
+            input: historyOrder,
+          })
+          .toPromise();
 
-      await this._crudSdk.sdk
-        .DeleteOrder({
-          input: {
-            id: order.id,
-          },
-        })
-        .toPromise();
-    } catch (err) {
-      console.error('errr', err);
+        await this._crudSdk.sdk
+          .DeleteOrder({
+            input: {
+              id: order.id,
+            },
+          })
+          .toPromise();
+      } catch (err) {
+        console.error('errr', err);
+      }
     }
   }
 }
