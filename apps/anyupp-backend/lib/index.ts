@@ -7,13 +7,10 @@ import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 
-const certificateArn =
-  'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
-
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
-    const sites = new SiteStack(scope, 'sites', { certificateArn });
+    const sites = new SiteStack(scope, 'sites', {});
 
     const secretsManagerStack = new SecretsManagerStack(
       scope,

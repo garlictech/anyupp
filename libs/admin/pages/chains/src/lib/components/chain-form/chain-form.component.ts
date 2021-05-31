@@ -136,7 +136,7 @@ export class ChainFormComponent
 
   public logoUploadCallback = async (
     image: string,
-    param: string,
+    param: keyof CrudApi.ChainStyleImages,
   ): Promise<void> => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
@@ -165,7 +165,9 @@ export class ChainFormComponent
     }
   };
 
-  public logoRemoveCallback = async (param: string): Promise<void> => {
+  public logoRemoveCallback = async (
+    param: keyof CrudApi.ChainStyleImages,
+  ): Promise<void> => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue('');
@@ -181,7 +183,10 @@ export class ChainFormComponent
     }
   };
 
-  private async updateImageStyles(param: string, image: string | null) {
+  private async updateImageStyles(
+    param: keyof CrudApi.ChainStyleImages,
+    image: string | null,
+  ) {
     await this._crudSdk.sdk
       .GetChain({
         id:
@@ -196,7 +201,7 @@ export class ChainFormComponent
           if (!_data.style.images) {
             _data.style.images = {};
           }
-          _data.style.images[<keyof CrudApi.ChainStyleImages>param] = image;
+          _data.style.images[param] = image;
 
           return this._crudSdk.sdk.UpdateChain({
             input: {
