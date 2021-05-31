@@ -17,5 +17,9 @@
     "html": false,
     "json": true,
     "reportDir": "../../cyreport/mochawesome"
+  },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
   }
 }

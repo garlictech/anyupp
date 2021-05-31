@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
+  dashboardActions,
   dashboardSelectors,
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
@@ -98,6 +99,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       try {
         if (status === CrudApi.OrderStatus.served) {
           await this._orderService.moveOrderToHistory(this.order, status);
+          this._store.dispatch(dashboardActions.resetSelectedOrderId());
         } else {
           await this._orderService.updateOrderStatus(this.order, status);
         }

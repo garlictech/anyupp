@@ -17,12 +17,20 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
   Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
     try {
       if (action is GetCurrentCartAction) {
+        yield CartLoadingState();
         Cart cart =
             await _cartRepository.getCurrentCart(action.chainId, action.unitId);
         yield CurrentCartState(cart);
       }
 
+      if (action is SetPaymentMode) {
+        yield CartLoadingState();
+        Cart cart = await _cartRepository.setPaymentMode(action.unit, action.paymentMode);
+        yield CurrentCartState(cart);
+      }
+
       if (action is AddProductToCartAction) {
+        yield CartLoadingState();
         // _currentCart.addProductToCart(action.product, action.variant);
         Cart cart =
             await _cartRepository.addProductToCart(action.unit, action.order);
@@ -30,18 +38,21 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is RemoveProductFromCartAction) {
+        yield CartLoadingState();
         Cart cart = await _cartRepository.removeProductFromCart(
             action.chainId, action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is ClearPlaceInCart) {
+        yield CartLoadingState();
         Cart cart = await _cartRepository.clearPlaceInCart(action.unit);
         await clearPlacePref();
         yield CurrentCartState(cart);
       }
 
       if (action is RemoveOrderFromCartAction) {
+        yield CartLoadingState();
         Cart cart = await _cartRepository.removeOrderFromCart(
             action.chainId, action.unitId, action.order);
         yield CurrentCartState(cart);
@@ -55,11 +66,13 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is UpdatePlaceInCartAction) {
+        yield CartLoadingState();
         Cart cart = await _cartRepository.updatePlaceInCart(action.unit);
         yield CurrentCartState(cart);
       }
 
       if (action is ClearCartAction) {
+        yield CartLoadingState();
         await _cartRepository.clearCart(action.user, action.unit);
         yield EmptyCartState();
       }

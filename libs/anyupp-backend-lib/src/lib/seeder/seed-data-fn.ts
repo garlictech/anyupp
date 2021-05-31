@@ -2,12 +2,12 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
 import {
-  chainSeed,
-  generatedProductSeed,
-  groupSeed,
-  productComponentSetSeed,
+  chainFixture,
+  generatedProductFixture,
+  groupFixture,
+  productComponentSetFixture,
   seededIdPrefix,
-  unitSeed,
+  unitFixture,
 } from '@bgap/shared/fixtures';
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
@@ -73,7 +73,7 @@ export const createTestChain = (chainIdx: number) => (
     chainIdx,
   });
   const input: CrudApi.CreateChainInput = {
-    ...chainSeed.chainBase,
+    ...chainFixture.chainBase,
     id: generateChainId(chainIdx),
     name: `Seeded chain #${chainIdx}`,
   };
@@ -91,7 +91,7 @@ export const createTestGroup = (chainIdx: number, groupIdx: number) => (
     groupIdx,
   });
   const input: CrudApi.CreateGroupInput = {
-    ...groupSeed.groupBase,
+    ...groupFixture.groupBase,
     id: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
     name: `Seeded group #${groupIdx}`,
@@ -135,7 +135,7 @@ export const createTestUnit = (
     unitIdx,
   });
   const input: CrudApi.CreateUnitInput = {
-    ...unitSeed.unitBase,
+    ...unitFixture.unitBase,
     id: generateUnitId(chainIdx, groupIdx, unitIdx),
     groupId: generateGroupId(chainIdx, groupIdx),
     chainId: generateChainId(chainIdx),
@@ -235,7 +235,7 @@ export const createTestChainProduct = (
       CrudApi.Allergen.peanut,
     ],
     // Use existing ProductComponentSet
-    configSets: productComponentSetSeed.seededChainProductConfigSets,
+    configSets: productComponentSetFixture.seededChainProductConfigSets,
   };
   return deleteCreate(
     () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
@@ -279,7 +279,7 @@ export const createTestGroupProduct = (
         refGroupPrice: productIdx * 50,
       },
     ],
-    configSets: productComponentSetSeed.seededGroupProductConfigSets,
+    configSets: productComponentSetFixture.seededGroupProductConfigSets,
   };
   return deleteCreate(
     () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
@@ -340,7 +340,7 @@ export const createTestUnitProduct = (
         ],
       },
     ],
-    configSets: productComponentSetSeed.seededUnitProductConfigSets,
+    configSets: productComponentSetFixture.seededUnitProductConfigSets,
   };
   return deleteCreate(
     () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
@@ -349,13 +349,13 @@ export const createTestUnitProduct = (
     filterNullish(),
     switchMap(unitProduct => {
       const input: CrudApi.CreateGeneratedProductInput = {
-        ...generatedProductSeed.getGeneratedProduct({
+        ...generatedProductFixture.getGeneratedProduct({
           id: unitProduct.id,
           unitId: unitProduct.unitId,
           productCategoryId: generateProductCategoryId(1, 1),
         }),
         position: unitProduct.position,
-        configSets: productComponentSetSeed.generatedProductConfigSets,
+        configSets: productComponentSetFixture.generatedProductConfigSets,
       };
       return deleteCreate(
         () =>
@@ -571,22 +571,24 @@ export const createComponentSets = (deps: SeederDependencies) => {
   return deleteCreate(
     () =>
       deps.crudSdk.DeleteProductComponent({
-        input: { id: productComponentSetSeed.seededProdComp_01.id ?? '' },
+        input: { id: productComponentSetFixture.seededProdComp_01.id ?? '' },
       }),
     () =>
       deps.crudSdk.CreateProductComponent({
-        input: productComponentSetSeed.seededProdComp_01,
+        input: productComponentSetFixture.seededProdComp_01,
       }),
   ).pipe(
     switchMap(() =>
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetSeed.seededProdComp_02.id ?? '' },
+            input: {
+              id: productComponentSetFixture.seededProdComp_02.id ?? '',
+            },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
-            input: productComponentSetSeed.seededProdComp_02,
+            input: productComponentSetFixture.seededProdComp_02,
           }),
       ),
     ),
@@ -594,11 +596,13 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetSeed.seededProdComp_03.id ?? '' },
+            input: {
+              id: productComponentSetFixture.seededProdComp_03.id ?? '',
+            },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
-            input: productComponentSetSeed.seededProdComp_03,
+            input: productComponentSetFixture.seededProdComp_03,
           }),
       ),
     ),
@@ -607,12 +611,12 @@ export const createComponentSets = (deps: SeederDependencies) => {
         () =>
           deps.crudSdk.DeleteProductComponentSet({
             input: {
-              id: productComponentSetSeed.seededProdCompSet_01.id ?? '',
+              id: productComponentSetFixture.seededProdCompSet_01.id ?? '',
             },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
-            input: productComponentSetSeed.seededProdCompSet_01,
+            input: productComponentSetFixture.seededProdCompSet_01,
           }),
       ),
     ),
@@ -621,12 +625,12 @@ export const createComponentSets = (deps: SeederDependencies) => {
         () =>
           deps.crudSdk.DeleteProductComponentSet({
             input: {
-              id: productComponentSetSeed.seededProdCompSet_02.id ?? '',
+              id: productComponentSetFixture.seededProdCompSet_02.id ?? '',
             },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
-            input: productComponentSetSeed.seededProdCompSet_02,
+            input: productComponentSetFixture.seededProdCompSet_02,
           }),
       ),
     ),

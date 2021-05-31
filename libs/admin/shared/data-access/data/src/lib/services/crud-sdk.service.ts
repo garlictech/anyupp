@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
+import { Store } from '@ngrx/store';
+import { TypedAction } from '@ngrx/store/src/models';
+import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+import { concat, EMPTY, Observable, of } from 'rxjs';
+import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +13,55 @@ import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
 export class CrudSdkService {
   public sdk: CrudApi.CrudSdk;
 
-  constructor() {
+  constructor(private _store: Store) {
     this.sdk = getCrudSdkForUserPool();
+  }
+
+  public doListSubscription<T>(
+    resetAction: TypedAction<string> | undefined,
+    listOp: Observable<
+      | { items?: Array<T | undefined | null> | undefined | null }
+      | undefined
+      | null
+    >,
+    subscriptionOp: Observable<T | null | undefined>,
+    upsertActionCreator: (items: T[]) => TypedAction<string>,
+    destroyConnection$: Observable<unknown>,
+  ) {
+    if (resetAction) {
+      this._store.dispatch(resetAction);
+    }
+    concat(
+      listOp.pipe(
+        filterNullish(),
+        map(list => list.items),
+      ),
+      subscriptionOp.pipe(
+        filterNullish(),
+        map(item => [item]),
+      ),
+    )
+      .pipe(
+        filterNullishElements(),
+        tap(items => this._store.dispatch(upsertActionCreator(items))),
+        takeUntil(destroyConnection$),
+        catchError(err => {
+          console.error('ERROR', err);
+          return of(EMPTY); /*TODO error actio > effect > toaster */
+        }),
+      )
+      .subscribe();
+  }
+
+  public doMutation<T>(mutationOp: Observable<T | null | undefined>) {
+    mutationOp
+      .pipe(
+        catchError(err => {
+          console.error('ERROR', err);
+          return of(EMPTY); /*TODO error actio > effect > toaster */
+        }),
+      )
+      .subscribe();
   }
 }
 
@@ -52,7 +104,7 @@ export class AmplifyDataService {
   private crudSdk: CrudApi.CrudSdk;
 
   constructor(private _ngZone: NgZone, private sdk: AngularApi.OnAdminUserChangeGQL ) {
-    this.crudSdk = getCrudSdkForUserPool();
+    this._crudSdk = getCrudSdkForUserPool();
 
     this.sdk.subscribe({id: 'lofasz'})
   }

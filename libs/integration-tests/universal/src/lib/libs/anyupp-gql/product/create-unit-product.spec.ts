@@ -5,7 +5,7 @@ import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 
 import {
-  productSeed,
+  productFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -17,7 +17,7 @@ import {
 } from '../../../../api-clients';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
-  input: productSeed.unitProductBase,
+  input: productFixture.unitProductBase,
 } as any;
 
 describe('CreateUnitProduct tests', () => {

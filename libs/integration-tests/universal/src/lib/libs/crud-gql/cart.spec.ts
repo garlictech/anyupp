@@ -1,5 +1,5 @@
 import {
-  cartSeed,
+  cartFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -17,26 +17,26 @@ describe('getCart test', () => {
       testAdminUserPassword,
     ).toPromise();
 
-    await deleteTestCart(cartSeed.cart_01.id, authSdk)
-      .pipe(switchMap(() => createTestCart(cartSeed.cart_01, authSdk)))
+    await deleteTestCart(cartFixture.cart_01.id, authSdk)
+      .pipe(switchMap(() => createTestCart(cartFixture.cart_01, authSdk)))
       .toPromise();
   }, 15000);
 
   afterAll(async () => {
-    await deleteTestCart(cartSeed.cart_01.id, authSdk).toPromise();
+    await deleteTestCart(cartFixture.cart_01.id, authSdk).toPromise();
   });
 
   it('successful query execution', done => {
-    authSdk.GetCart({ id: cartSeed.cart_01.id }).subscribe({
+    authSdk.GetCart({ id: cartFixture.cart_01.id }).subscribe({
       next(x) {
-        expect(x?.id).toEqual(cartSeed.cart_01.id);
+        expect(x?.id).toEqual(cartFixture.cart_01.id);
         done();
       },
     });
   }, 15000);
 
   it('should return null for a not existing item', done => {
-    authSdk.GetCart({ id: cartSeed.cartId_NotExisting }).subscribe({
+    authSdk.GetCart({ id: cartFixture.cartId_NotExisting }).subscribe({
       next(x) {
         expect(x).toBeNull();
         done();

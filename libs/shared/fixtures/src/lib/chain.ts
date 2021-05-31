@@ -46,7 +46,7 @@ const chain_01: RequiredId<CrudApi.CreateChainInput> = {
   id: chainId_01,
 };
 
-export const chainSeed = {
+export const chainFixture = {
   chainBase,
   chain_01,
   chainId_seeded_01,

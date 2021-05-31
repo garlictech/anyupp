@@ -44,7 +44,7 @@ export class GroupFormComponent
     private _store: Store,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
-    private crudSdk: CrudSdkService,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -110,7 +110,7 @@ export class GroupFormComponent
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .UpdateGroup({
               input: {
                 id: this.group.id,
@@ -131,7 +131,7 @@ export class GroupFormComponent
         }
       } else {
         try {
-          await this.crudSdk.sdk
+          await this._crudSdk.sdk
             .CreateGroup({ input: this.dialogForm.value })
             .toPromise();
 

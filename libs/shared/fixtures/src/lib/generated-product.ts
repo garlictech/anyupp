@@ -60,7 +60,7 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
   ],
 };
 
-export const generatedProductSeed = {
+export const generatedProductFixture = {
   base: generatedProductBase,
   getGeneratedProduct,
 };
