@@ -1,6 +1,5 @@
-import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
-import { switchMap, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,14 +8,13 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import { filterNullish } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -131,7 +129,7 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       try {
-        await this.updateImageStyles(image);
+        await this.updateImageStyles(this.productCategory.id, image);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -157,7 +155,7 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       try {
-        await this.updateImageStyles(null);
+        await this.updateImageStyles(this.productCategory.id, null);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -178,21 +176,14 @@ export class ProductCategoryFormComponent
     }
   };
 
-  private async updateImageStyles(image: string | null) {
+  private async updateImageStyles(id: string, image: string | null) {
     await this._crudSdk.sdk
-      .GetProductCategory({
-        id:
-          this.productCategory?.id ||
-          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
+      .UpdateProductCategory({
+        input: {
+          id,
+          image,
+        },
       })
-      .pipe(
-        filterNullish(),
-        switchMap(data =>
-          this._crudSdk.sdk.UpdateProductCategory({
-            input: fp.set(`images`, image, data),
-          }),
-        ),
-      )
       .toPromise();
   }
 }

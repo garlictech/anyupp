@@ -1,6 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-
 import { chainSeed } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 

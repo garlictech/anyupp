@@ -1,5 +1,7 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
+import { switchMap } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
@@ -15,11 +18,9 @@ import {
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -189,11 +190,16 @@ export class ChainFormComponent
       })
       .pipe(
         filterNullish(),
-        switchMap(data =>
-          this._crudSdk.sdk.UpdateChain({
-            input: fp.set(`style.images.${param}`, image, data),
-          }),
-        ),
+        switchMap(data => {
+          const _data = fp.set(`style.images.${param}`, image, data);
+
+          return this._crudSdk.sdk.UpdateChain({
+            input: {
+              id: _data.id,
+              style: _data.style,
+            },
+          });
+        }),
       )
       .toPromise();
   }
