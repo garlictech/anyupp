@@ -186,17 +186,22 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   Widget getOrderItemAllergenWidget() {
     List<String> allergens = widget.order.allergens;
-    widget.order.selectedConfigMap.forEach((key, value) {
-      for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-        for (Allergen allergen in generatedProductConfigComponent.allergens) {
-          String temp = allergen.toString().split(".").last;
-          if (!allergens.contains(temp)) {
-            allergens.add(temp);
+    if (widget.order.selectedConfigMap != null) {
+      widget.order.selectedConfigMap.forEach((key, value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+          for (Allergen allergen in generatedProductConfigComponent.allergens) {
+            String temp = allergen.toString().split(".").last;
+            if (!allergens.contains(temp)) {
+              allergens.add(temp);
+            }
           }
         }
-      }
-    });
-    return AllergensWidget(allergens: allergens,);
+      });
+    }
+
+    return AllergensWidget(
+      allergens: allergens,
+    );
   }
 
   void _addOrder() {
