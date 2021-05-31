@@ -1,8 +1,11 @@
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddVariantWidget extends StatefulWidget {
@@ -17,9 +20,38 @@ class AddVariantWidget extends StatefulWidget {
 }
 
 class _AddVariantWidgetState extends State<AddVariantWidget> {
-  void _addOrder() {
-    // BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit, widget.order));
+  
+  Future<void> _addOrder() async {
+    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
+      widget.unit,
+      OrderItem(
+        productId: widget.product.id,
+        variantId: widget.variant.id,
+        image: widget.product.image,
+        priceShown: PriceShown(
+          currency: widget.unit.currency ?? 'huf', // TODO
+          pricePerUnit: widget.variant.price,
+          priceSum: widget.variant.price,
+          tax: 0,
+          taxSum: 0,
+        ),
+        allergens: widget.product.allergens,
+        productName: widget.product.name,
+        takeAway: false,
+        variantName: widget.variant.variantName,
+        statusLog: [
+          StatusLog(
+            userId: user.id,
+            status: 'CART',
+            ts: 0,
+          ),
+        ],
+        quantity: 0,
+      ),
+    ));
   }
+
   @override
   Widget build(BuildContext context) {
     final int variantCountInCart = widget.cart == null ? 0 : widget.cart.variantCount(widget.product, widget.variant);

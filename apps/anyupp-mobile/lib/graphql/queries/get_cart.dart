@@ -11,6 +11,25 @@ listCarts(filter: {unitId: {eq: \$unitId}, userId: {eq: \$userId}}) {
           tax
           taxSum
         }
+        configSets {
+          items {
+            allergens
+            name {
+              de
+              en
+              hu
+            }
+            price
+            productComponentId
+          }
+          name {
+            de
+            en
+            hu
+          }
+          productSetId
+          type
+        }
         productId
         productName {
           de

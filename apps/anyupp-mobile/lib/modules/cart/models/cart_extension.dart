@@ -11,14 +11,22 @@ extension CartExtension on Cart {
 
   double get totalPrice {
     double value = 0;
-    items.forEach((order) => value += (order.priceShown.pricePerUnit * order.quantity));
+    items.forEach((order) {
+      value += (order.priceShown.pricePerUnit * order.quantity);
+      if (order.selectedConfigMap != null) {
+        order.selectedConfigMap.forEach((key, comps) {
+          for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
+            value += generatedProductConfigComponent.price;
+          }
+        });
+      }
+    });
     return value;
   }
 
   int variantCount(GeneratedProduct item, ProductVariant variant) {
-    int index = items == null
-        ? -1
-        : items.indexWhere((order) => order.productId == item.id && order.variantId == variant.id);
+    int index =
+        items == null ? -1 : items.indexWhere((order) => order.productId == item.id && order.variantId == variant.id);
     return index != -1 ? items[index].quantity : 0;
   }
 }

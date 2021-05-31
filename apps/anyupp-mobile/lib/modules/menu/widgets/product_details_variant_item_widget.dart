@@ -4,7 +4,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProductDetailVariantItemWidget extends StatefulWidget {
+class ProductDetailVariantItemWidget extends StatelessWidget {
   final GeoUnit unit;
   final Cart cart;
   final GeneratedProduct product;
@@ -14,11 +14,7 @@ class ProductDetailVariantItemWidget extends StatefulWidget {
   const ProductDetailVariantItemWidget({Key key, this.unit, this.cart, this.product, this.variant, this.child})
       : super(key: key);
   @override
-  _ProductDetailVariantItemWidgetState createState() => _ProductDetailVariantItemWidgetState();
-}
 
-class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantItemWidget> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       //height: 76,
@@ -50,7 +46,7 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        getLocalizedText(context, widget.variant.variantName),
+                        getLocalizedText(context, variant.variantName),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -60,11 +56,11 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
                           fontSize: 16,
                         ),
                       ),
-                      if (widget.variant.pack.size > 0.0)
+                      if (variant.pack.size > 0.0)
                         Container(
                           margin: EdgeInsets.only(top: 4),
                           child: Text(
-                            '${widget.variant.pack.size} ${widget.variant.pack.unit}',
+                            '${variant.pack.size} ${variant.pack.unit}',
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -77,7 +73,7 @@ class _ProductDetailVariantItemWidgetState extends State<ProductDetailVariantIte
                   ),
                 ),
               ),
-              widget.child
+              child
             ],
           ),
         ],

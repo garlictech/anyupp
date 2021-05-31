@@ -112,3 +112,13 @@ class AddInvoiceInfo extends BaseCartAction {
   @override
   List<Object> get props => [invoiceInfo];
 }
+
+class SetPaymentMode extends BaseCartAction {
+  final GeoUnit unit;
+  final PaymentMode paymentMode;
+
+  const SetPaymentMode(this.unit, this.paymentMode);
+
+  @override
+  List<Object> get props => [unit, paymentMode];
+}

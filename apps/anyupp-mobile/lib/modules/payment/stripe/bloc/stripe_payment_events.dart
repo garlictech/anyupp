@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models.dart';
 import 'package:stripe_sdk/src/models/card.dart';
 
 abstract class StripePaymentEvent extends Equatable {
@@ -11,38 +10,37 @@ abstract class StripePaymentEvent extends Equatable {
 class PaymentMethodListEvent extends StripePaymentEvent {}
 
 class StartStripePaymentWithExistingCardEvent extends StripePaymentEvent {
-  final Cart cart;
+  final String orderId;
   final String paymentMethodId;
 
-  const StartStripePaymentWithExistingCardEvent({this.cart, this.paymentMethodId});
+  const StartStripePaymentWithExistingCardEvent({this.orderId, this.paymentMethodId});
 
   @override
-  List<Object> get props => [cart, paymentMethodId];
+  List<Object> get props => [orderId, paymentMethodId];
 }
 
 class StartExternalPaymentEvent extends StripePaymentEvent {
-  final Cart cart;
   final String paymentMethod;
 
-  const StartExternalPaymentEvent({this.cart, this.paymentMethod});
+  const StartExternalPaymentEvent({this.paymentMethod});
 
   @override
-  List<Object> get props => [cart, paymentMethod];
+  List<Object> get props => [paymentMethod];
 }
 
 class StartStripePaymentWithNewCardEvent extends StripePaymentEvent {
-  final Cart cart;
+  final String orderId;
   final StripeCard stripeCard;
   final bool saveCard;
 
   const StartStripePaymentWithNewCardEvent({
-    this.cart,
     this.stripeCard,
     this.saveCard,
+    this.orderId
   });
 
   @override
-  List<Object> get props => [cart, stripeCard, saveCard];
+  List<Object> get props => [stripeCard, saveCard, orderId];
 }
 
 class ResetStripePaymentState extends StripePaymentEvent {
