@@ -95,6 +95,7 @@ class CognitoService {
         print('refreshUserTokenFromStorageIsExists().session.isValid=${session.isValid()}');
         if (session.isValid()) {
           final user = CognitoUser(null, userPool, signInUserSession: session);
+          print('refreshUserTokenFromStorageIsExists().session.user=$user');
           _userSession = await user.getSession();
           print('refreshUserTokenFromStorageIsExists().validSession=$_userSession');
           return user;
@@ -106,8 +107,8 @@ class CognitoService {
           return user;
         }
       }
-    } on Exception {
-      print('refreshUserTokenFromStorageIsExists().exception. refreshing');
+    } on Exception catch (e, trace) {
+      print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
       print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
@@ -132,14 +133,16 @@ class CognitoService {
   }
 
   Future<bool> _saveSessionToCache() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
     if (_userSession != null) {
-      SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.setString('cognito_idtoken', _userSession.idToken.jwtToken);
       await sp.setString('cognito_accesstoken', _userSession.accessToken.jwtToken);
       await sp.setString('cognito_refreshtoken', _userSession.refreshToken.token);
-      return true;
     }
-    return false;
+    if (_cognitoUser != null) {
+      await sp.setString('cognito_username', _cognitoUser.username);
+    }
+    return true;
   }
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {

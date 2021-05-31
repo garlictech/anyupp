@@ -86,7 +86,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildListOld(GeoUnit unit, List<Order> list) {
+  Widget buildListOld(GeoUnit unit, List<Order> list) {
     int cashOrderCount = 0;
     double cashOrderSum = 0.0;
 

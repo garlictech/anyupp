@@ -145,9 +145,14 @@ export const startStripePayment = (
       );
     }
 
+    const stripeAmount: number =
+      order.sumPriceShown.currency === 'huf'
+        ? order.sumPriceShown.priceSum * 100
+        : order.sumPriceShown.priceSum;
+
     // 6a. Create payment intent data
     const paymentIntentData: Stripe.PaymentIntentCreateParams = {
-      amount: order.sumPriceShown.priceSum * 100,
+      amount: stripeAmount,
       currency: order.sumPriceShown.currency,
       payment_method: paymentMethodId,
       payment_method_types: ['card'],
