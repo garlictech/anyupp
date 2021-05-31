@@ -136,7 +136,7 @@ export class ChainFormComponent
 
   public logoUploadCallback = async (
     image: string,
-    param: keyof CrudApi.ChainStyleImages,
+    param: string,
   ): Promise<void> => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
@@ -144,7 +144,7 @@ export class ChainFormComponent
 
     if (this.chain?.id) {
       try {
-        await this.updateImageStyles(param, image);
+        await this.updateImageStyles(image, param);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -165,15 +165,13 @@ export class ChainFormComponent
     }
   };
 
-  public logoRemoveCallback = async (
-    param: keyof CrudApi.ChainStyleImages,
-  ): Promise<void> => {
+  public logoRemoveCallback = async (param: string): Promise<void> => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue('');
 
     if (this.chain?.id) {
-      await this.updateImageStyles(param, null);
+      await this.updateImageStyles(null, param);
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -183,10 +181,7 @@ export class ChainFormComponent
     }
   };
 
-  private async updateImageStyles(
-    param: keyof CrudApi.ChainStyleImages,
-    image: string | null,
-  ) {
+  private async updateImageStyles(image: string | null, param: string) {
     await this._crudSdk.sdk
       .GetChain({
         id:
@@ -197,11 +192,21 @@ export class ChainFormComponent
         filterNullish(),
         switchMap(data => {
           const _data: CrudApi.Chain = cloneDeep(data);
+          const chainStyleImagesRecord: Record<
+            string,
+            keyof CrudApi.ChainStyleImages
+          > = {
+            header: 'header',
+            logo: 'logo',
+          };
 
           if (!_data.style.images) {
             _data.style.images = {};
           }
-          _data.style.images[param] = image;
+
+          if (chainStyleImagesRecord[param]) {
+            _data.style.images[chainStyleImagesRecord[param]] = image;
+          }
 
           return this._crudSdk.sdk.UpdateChain({
             input: {
