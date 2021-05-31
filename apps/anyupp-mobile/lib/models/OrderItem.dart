@@ -67,8 +67,7 @@ class OrderItem extends Model {
         orderItemsId: orderItemsId,
         image: image,
         allergens: allergens,
-        selectedConfigMap: selectedConfigMap
-       );
+        selectedConfigMap: selectedConfigMap);
   }
 
   bool equals(Object other) {
@@ -91,7 +90,7 @@ class OrderItem extends Model {
         orderItemsId == other.orderItemsId &&
         image == image &&
         ListEquality().equals(allergens, other.allergens) &&
-        mapEquals(selectedConfigMap, other.selectedConfigMap);
+        DeepCollectionEquality().equals(selectedConfigMap, other.selectedConfigMap);
   }
 
   @override
@@ -167,8 +166,7 @@ class OrderItem extends Model {
         image = json['image'],
         //TODO replace with real item
         allergens = json['allergens'] is List ? (json['allergens'] as List).map((e) => e as String).toList() : null,
-        selectedConfigMap = null;
-        
+        selectedConfigMap = json['configSets'] != null ? getSelectdConfigMap(json['configSets']) : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -184,4 +182,35 @@ class OrderItem extends Model {
         'image': image,
         'allergens': allergens
       };
+
+  double getPrice() {
+    double sum = priceShown.pricePerUnit;
+    if (selectedConfigMap != null) {
+      selectedConfigMap.forEach((key, value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+          sum += generatedProductConfigComponent.price;
+        }
+      });
+    }
+
+    return sum;
+  }
+
+  Map<String, List<String>> getConfigIdMap() {
+    Map<String, List<String>> idMap = {};
+    selectedConfigMap.forEach((key, value) {
+      idMap[key.productSetId] = value.map((e) => e.productComponentId).toList();
+    });
+    return idMap;
+  }
+
+  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectdConfigMap(
+      List<dynamic> mapList) {
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
+    for (Map<String, dynamic> configJson in mapList) {
+      GeneratedProductConfigSet temp = GeneratedProductConfigSet.fromJson(configJson);
+      selectedConfigMap[temp] = temp.items;
+    }
+    return selectedConfigMap;
+  }
 }

@@ -122,7 +122,8 @@
   "cart": {
     "totalCost": "Fizetendő:",
     "emptyCartLine1": "A kosarad még üres.",
-    "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!"
+    "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!",
+    "addToCart": "Kosárhoz Adás"
   },
   "allergens": {
     "title": "Allergének",

@@ -23,19 +23,19 @@ class CartListItemWidget extends StatefulWidget {
 class _CartListItemWidgetState extends State<CartListItemWidget> {
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
+      //  height: 110,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            alignment: Alignment.topLeft,
+          Expanded(
+            flex: 2,
             child: Container(
               padding: EdgeInsets.only(
                 top: 8,
                 left: 0,
                 right: 12,
               ),
-              width: 100,
+              //width: 100,
               child: ImageWidget(
                 url: this.widget.order.image,
                 placeholder: CircularProgressIndicator(),
@@ -45,119 +45,110 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
             ),
           ),
           Expanded(
-            flex: 1,
-            child: Stack(
+            flex: 3,
+            child: Column(
               // fit: StackFit.passthrough,
               children: <Widget>[
-                Positioned(
-                  top: 16,
-                  left: 0,
-                  child: Container(
-                    margin: EdgeInsets.all(0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getLocalizedText(context, widget.order.productName).toUpperCase(),
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.poppins(
-                            color: theme.text,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
+                Container(
+                  margin: EdgeInsets.all(0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getLocalizedText(context, widget.order.productName).toUpperCase(),
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.poppins(
+                          color: theme.text,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
-                        Text(
-                          "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variantName)}",
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.poppins(
-                            color: theme.text,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                          ),
+                      ),
+                      Text(
+                        "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variantName)}",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.poppins(
+                          color: theme.text,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
                         ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 2),
-                          child: Text(
-                            formatCurrency(getTotalPriceOfOrederItem(widget.order),
-                                widget.unit.currency ?? 'huf'), // TODO geounit!!
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              color: theme.highlight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                      ),
+                      ...getExtraNames(context),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 2),
+                            child: Text(
+                              formatCurrency(getTotalPriceOfOrederItem(widget.order),
+                                  widget.unit.currency ?? 'huf'), // TODO geounit!!
+                              textAlign: TextAlign.left,
+                              style: GoogleFonts.poppins(
+                                color: theme.highlight,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 8,
-                  bottom: 8,
-                  child: Container(
-                    height: 42,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(0),
-                              shape: CircleBorder(
-                                side: BorderSide(
-                                  color: theme.border2.withOpacity(0.4),
+                          Spacer(),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                shape: CircleBorder(
+                                  side: BorderSide(
+                                    color: theme.border2.withOpacity(0.4),
+                                  ),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                primary: theme.text,
+                              ),
+                              onPressed: () => _removeOrder(),
+                              child: Text(
+                                '-',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  color: theme.text,
+                                  fontSize: 26,
                                 ),
                               ),
-                              backgroundColor: Colors.transparent,
-                              primary: theme.text,
-                            ),
-                            onPressed: () => _removeOrder(),
-                            child: Text(
-                              '-',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                color: theme.text,
-                                fontSize: 26,
-                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(0),
-                              shape: CircleBorder(
-                                side: BorderSide(
-                                  color: theme.border2.withOpacity(0.4),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                shape: CircleBorder(
+                                  side: BorderSide(
+                                    color: theme.border2.withOpacity(0.4),
+                                  ),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                primary: theme.text,
+                              ),
+                              onPressed: () => _addOrder(),
+                              child: Text(
+                                '+',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  color: theme.text,
+                                  fontSize: 26,
                                 ),
                               ),
-                              backgroundColor: Colors.transparent,
-                              primary: theme.text,
                             ),
-                            onPressed: () => _addOrder(),
-                            child: Text(
-                              '+',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                color: theme.text,
-                                fontSize: 26,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -166,6 +157,29 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
         ],
       ),
     );
+  }
+
+  List<Widget> getExtraNames(BuildContext context) {
+    List<Widget> children = [];
+    if (widget.order.selectedConfigMap != null) {
+      widget.order.selectedConfigMap.forEach((key, value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+          children.add(Text(
+            getLocalizedText(context, generatedProductConfigComponent.name), // TODO geounit!!
+            textAlign: TextAlign.left,
+            style: GoogleFonts.poppins(
+              color: theme.text,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+          ));
+        }
+      });
+    } else {
+      children.add(Container());
+    }
+
+    return children;
   }
 
   void _addOrder() {
@@ -178,7 +192,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   double getTotalPriceOfOrederItem(OrderItem item) {
-    return item.quantity * item.priceShown.pricePerUnit;
+    return item.quantity * item.getPrice();
     //return item.quantity * item...price;
   }
 }

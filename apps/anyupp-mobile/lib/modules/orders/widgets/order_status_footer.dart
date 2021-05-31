@@ -52,7 +52,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
   @override
   Widget build(BuildContext context) {
     String status = widget.order.statusLog[widget.order.statusLog.length - 1].status;
-    int progressPosition = statusList.indexOf(statusList.firstWhere((element) => element.toUpperCase() == status));
+    int progressPosition = statusList.indexOf(statusList.firstWhere((element) => element.toUpperCase() == status.toUpperCase()));
     // print('***** status=$status, progressPosition=$progressPosition');
 
     return _buildStepper(context, progressPosition);

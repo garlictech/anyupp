@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:odometer/odometer.dart';
+import 'package:fa_prev/shared/locale.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -137,7 +138,14 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Total: ', // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              trans("cart.addToCart"), // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              style: GoogleFonts.poppins(
+                fontSize: 24.0,
+                color: theme.text2,
+              ),
+            ),
+            Text(
+              " (", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
               style: GoogleFonts.poppins(
                 fontSize: 24.0,
                 color: theme.text2,
@@ -151,6 +159,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               ),
               odometerNumber: OdometerNumber(_modifierTotalPrice.toInt()),
               duration: Duration(milliseconds: 300),
+            ),
+            Text(
+              ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+              style: GoogleFonts.poppins(
+                fontSize: 24.0,
+                color: theme.text2,
+              ),
             ),
           ],
         ),
@@ -234,7 +249,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       }
     });
     _selectedExtras.forEach((key, value) {
-      GeneratedProductConfigSet modifier = getModifierConfigSetById(key, widget.product.configSets);
+      GeneratedProductConfigSet modifier = getExtraConfigSetById(key, widget.product.configSets);
       if (modifier != null) {
         value.forEach((extra, isAdded) {
           if (isAdded) {

@@ -122,7 +122,8 @@
   "cart": {
     "totalCost": "Total cost",
     "emptyCartLine1": "Your cart is empty",
-    "emptyCartLine2": "Add some products to your cart."
+    "emptyCartLine2": "Add some products to your cart.",
+    "addToCart": "Add To Cart"
   },
   "allergens": {
     "title": "Allergens",
