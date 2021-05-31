@@ -13,11 +13,13 @@ extension CartExtension on Cart {
     double value = 0;
     items.forEach((order) {
       value += (order.priceShown.pricePerUnit * order.quantity);
-      order.selectedConfigMap.forEach((key, comps) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
-          value += generatedProductConfigComponent.price;
-        }
-      });
+      if (order.selectedConfigMap != null) {
+        order.selectedConfigMap.forEach((key, comps) {
+          for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
+            value += generatedProductConfigComponent.price;
+          }
+        });
+      }
     });
     return value;
   }

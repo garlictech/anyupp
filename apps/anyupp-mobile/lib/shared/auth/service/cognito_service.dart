@@ -108,7 +108,7 @@ class CognitoService {
           return user;
         }
       }
-    } on Exception catch (e, trace) {
+    } on Exception catch (e) {
       // print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
       print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e');
       final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
