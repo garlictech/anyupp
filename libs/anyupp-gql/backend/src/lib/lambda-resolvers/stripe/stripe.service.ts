@@ -145,7 +145,7 @@ export const startStripePayment = (
     }
 
     const stripeAmount: number =
-      order.sumPriceShown.currency === 'huf'
+      order.sumPriceShown.currency === 'HUF'
         ? order.sumPriceShown.priceSum * 100
         : order.sumPriceShown.priceSum;
 
