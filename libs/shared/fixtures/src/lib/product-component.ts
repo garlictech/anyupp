@@ -1,6 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-import { chainSeed } from './chain';
+
+import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const prodCompId_01 = `${seededIdPrefix}product_component_01_id`;
@@ -80,27 +81,27 @@ const seededProdComp_01: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_01,
   }),
-  chainId: chainSeed.chainId_seeded_01,
+  chainId: chainFixture.chainId_seeded_01,
 };
 const seededProdComp_02: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_02,
   }),
-  chainId: chainSeed.chainId_seeded_01,
+  chainId: chainFixture.chainId_seeded_01,
   allergens: [CrudApi.Allergen.sesame, CrudApi.Allergen.treenuts],
 };
 const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_03,
   }),
-  chainId: chainSeed.chainId_seeded_01,
+  chainId: chainFixture.chainId_seeded_01,
   allergens: [CrudApi.Allergen.mustard],
 };
 
 const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_01,
-    chainId: chainSeed.chainId_seeded_01,
+    chainId: chainFixture.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02],
   }),
   type: EProductComponentSetType.EXTRAS,
@@ -109,7 +110,7 @@ const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
 const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...getComponentSet({
     id: prodCompSetId_02,
-    chainId: chainSeed.chainId_seeded_01,
+    chainId: chainFixture.chainId_seeded_01,
     itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
   }),
   type: EProductComponentSetType.MODIFIER,
@@ -287,7 +288,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
   },
 ];
 
-export const productComponentSetSeed = {
+export const productComponentSetFixture = {
   base: productComponentSetBase,
   getProductComponent,
   getComponentSet,

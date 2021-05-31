@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { chainSeed } from './chain';
+import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
 
@@ -33,10 +33,10 @@ const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
 const group_01: RequiredId<CrudApi.CreateGroupInput> = {
   ...groupBase,
   id: groupId_01,
-  chainId: chainSeed.chainId_seeded_01,
+  chainId: chainFixture.chainId_seeded_01,
 };
 
-export const groupSeed = {
+export const groupFixture = {
   groupBase,
   group_01,
   groupId_seeded_01,
