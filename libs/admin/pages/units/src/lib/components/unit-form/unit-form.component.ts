@@ -243,7 +243,7 @@ export class UnitFormComponent
   public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
     return (
       (this.dialogForm?.value.paymentModes || [])
-        .map((m: { name: string }) => m.name)
+        .map((m: { type: string }) => m.type)
         .indexOf(paymentMode.type) >= 0
     );
   }
