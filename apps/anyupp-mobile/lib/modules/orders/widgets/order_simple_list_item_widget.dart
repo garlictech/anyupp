@@ -45,6 +45,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
                     color: theme.text,
                   ),
                 ),
+                ...getExtraNames(context)
               ],
             ),
           ),
@@ -58,5 +59,27 @@ class OrderSimpleListItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+  List<Widget> getExtraNames(BuildContext context) {
+    List<Widget> children = [];
+    if (orderItem.selectedConfigMap != null) {
+      orderItem.selectedConfigMap.forEach((key, value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+          children.add(Text(
+            getLocalizedText(context, generatedProductConfigComponent.name), // TODO geounit!!
+            textAlign: TextAlign.left,
+            style: GoogleFonts.poppins(
+              color: theme.text,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+          ));
+        }
+      });
+    } else {
+      children.add(Container());
+    }
+
+    return children;
   }
 }
