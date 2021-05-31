@@ -1,4 +1,4 @@
-import * as fp from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { switchMap } from 'rxjs/operators';
 
@@ -191,7 +191,12 @@ export class ChainFormComponent
       .pipe(
         filterNullish(),
         switchMap(data => {
-          const _data = fp.set(`style.images.${param}`, image, data);
+          const _data: CrudApi.Chain = cloneDeep(data);
+
+          if (!_data.style.images) {
+            _data.style.images = {};
+          }
+          _data.style.images[<keyof CrudApi.ChainStyleImages>param] = image;
 
           return this._crudSdk.sdk.UpdateChain({
             input: {
