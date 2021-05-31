@@ -153,12 +153,12 @@
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "status": {
-      "NONE": "WAITING",
-      "PLACED": "PLACED",
-      "PROCESSING": "PROCESSING",
-      "READY": "READY",
-      "PAID": "PAID",
-      "REJECTED": "REJECTED"
+      "none": "WAITING",
+      "placed": "PLACED",
+      "processing": "PROCESSING",
+      "ready": "READY",
+      "paid": "PAID",
+      "rejected": "REJECTED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",

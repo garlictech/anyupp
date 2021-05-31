@@ -64,7 +64,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           groupValue: _productVariant,
           onChanged: (ProductVariant selectedVariant) {
             setState(() {
-              selectedVariant = _productVariant;
+               _productVariant = selectedVariant;
+              _calculateTotalPrice();
             });
           },
         ),

@@ -134,4 +134,13 @@ class CartRepository {
   Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     return _ordersProvider.addInvoiceInfo(invoiceInfo);
   }
+
+  Future<Cart> setPaymentMode(GeoUnit unit, PaymentMode mode) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
+    if (_cart != null) {
+      _cart = _cart.copyWith(paymentMode: mode);
+      await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
+    }
+    return _cart;
+  }
 }

@@ -55,6 +55,11 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithExistingCard().orderId=$orderId');
+    return startOrderStripePaymentWithExistingCard(orderId, paymentMethodId);
+  }
+
+  @override
+  Future<String> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
@@ -66,7 +71,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       document: gql(MUTATION_START_PAYMENT),
       variables: {
         'orderId': orderId,
-        'paymentMethod': 'INAPP',
+        'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': false,
       },
@@ -93,23 +98,28 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
 
-    Map<String, dynamic> paymentMethod = await _stripe.api.createPaymentMethodFromCard(stripeCard);
-    String paymentMethodId = paymentMethod['id'];
-    print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
-
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithNewCard().orderId=$orderId');
+    return startOrderStripePaymentWithNewCard(orderId, stripeCard, saveCard);
+  }
+
+  @override
+  Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
     }
+
+    Map<String, dynamic> paymentMethod = await _stripe.api.createPaymentMethodFromCard(stripeCard);
+    String paymentMethodId = paymentMethod['id'];
+    print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
     ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
     QueryResult result = await _client.value.mutate(MutationOptions(
       document: gql(MUTATION_START_PAYMENT),
       variables: {
         'orderId': orderId,
-        'paymentMethod': 'INAPP',
+        'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
       },

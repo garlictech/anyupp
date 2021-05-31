@@ -20,13 +20,17 @@ class AwsUnitProvider implements IUnitProvider {
         }
       ));
 
-      // print('***** searchUnitsNearLocation().result()=$result');
+      print('***** searchUnitsNearLocation().result()=$result');
       if (result.hasException) {
         print('searchUnitsNearLocation.exception=${result.exception}');
         // TODO ?!
       }
 
       if (result.data == null) {
+        return [];
+      }
+
+      if (result.data['getUnitsNearLocation'] == null) {
         return [];
       }
 
