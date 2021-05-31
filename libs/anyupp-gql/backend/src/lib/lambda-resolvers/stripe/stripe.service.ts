@@ -1,7 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
-import { calculateOrderSumPrice } from '../order/order.utils';
 import {
   createTransaction,
   createUser,
@@ -257,7 +256,7 @@ export const startStripePayment = (
 const loadAndConnectUserForStripe = (
   stripe: Stripe,
   userId: string,
-  createStripeUser: boolean = true,
+  createStripeUser = true,
 ) => async (deps: StripeResolverDeps) => {
   console.log('loadAndConnectUserForStripe().start()=' + userId);
   let user = await loadUser(userId)(deps);
