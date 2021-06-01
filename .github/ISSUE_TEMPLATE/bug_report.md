@@ -42,6 +42,10 @@ If applicable, add screenshots to help explain your problem.
 
 Where is this occurring and more details about the environment (computer setup) of the customer.
 
+**Stage**
+
+QA / Staging / Prod
+
 **Desktop (please complete the following information):**
 
 - OS: [e.g. iOS]

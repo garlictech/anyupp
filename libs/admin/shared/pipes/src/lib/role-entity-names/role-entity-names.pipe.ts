@@ -16,6 +16,8 @@ export class RoleEntityNamesPipe implements PipeTransform {
   constructor(private _store: Store) {}
 
   transform(roleContext?: CrudApi.RoleContext | null): Observable<string> {
+    let entitiesPath$;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const selectorFv = (id: string, selector: any) =>
       of(id).pipe(
@@ -28,18 +30,22 @@ export class RoleEntityNamesPipe implements PipeTransform {
         startWith(''),
       );
 
-    if (!roleContext || !roleContext.chainId) {
-      throw new Error('HANDLE ME: handle undefined data');
-    }
+    if (roleContext?.role === 'superuser') {
+      entitiesPath$ = of('');
+    } else {
+      if (!roleContext || !roleContext.chainId) {
+        throw new Error('HANDLE ME: handle undefined data');
+      }
 
-    const entitiesPath$ = combineLatest([
-      selectorFv(roleContext.chainId, chainsSelectors.getChainById),
-      selectorFv(roleContext.groupId || '', groupsSelectors.getGroupById),
-      selectorFv(roleContext.unitId || '', unitsSelectors.getUnitById),
-    ]).pipe(
-      map(([c, g, u]) => [c, g, u].filter(e => e !== '').join(' / ')),
-      shareReplay(),
-    );
+      entitiesPath$ = combineLatest([
+        selectorFv(roleContext.chainId, chainsSelectors.getChainById),
+        selectorFv(roleContext.groupId || '', groupsSelectors.getGroupById),
+        selectorFv(roleContext.unitId || '', unitsSelectors.getUnitById),
+      ]).pipe(
+        map(([c, g, u]) => [c, g, u].filter(e => e !== '').join(' / ')),
+        shareReplay(),
+      );
+    }
 
     return entitiesPath$;
   }

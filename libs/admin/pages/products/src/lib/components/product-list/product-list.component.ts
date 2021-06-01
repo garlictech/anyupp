@@ -1,5 +1,6 @@
 import { combineLatest, Observable } from 'rxjs';
 import { map, skipWhile, take } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,10 +9,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { EProductLevel } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import {
   NbDialogService,
@@ -20,10 +23,8 @@ import {
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { IProductOrderChangeEvent } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({

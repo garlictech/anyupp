@@ -1,7 +1,13 @@
+import { cloneDeep, omit } from 'lodash/fp';
+import { take } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
+
+import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +16,7 @@ export class OrderService {
   private _adminUser?: CrudApi.AdminUser;
   private _groupCurrency?: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private _store: Store) {
+  constructor(private _store: Store, private _crudSdk: CrudSdkService) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe(adminUser => {
@@ -117,27 +122,33 @@ export class OrderService {
     orderId: string,
     paymentMode: CrudApi.PaymentMode,
   ) {
-    console.error('updateOrderPaymentMode', orderId, paymentMode);
-    console.error('TODO UPDATE');
-    /*
-    return this._amplifyDataService.patch('updateOrder', {
-      id: orderId,
-      paymentMode,
-    });
-    */
+    this._crudSdk.doMutation(
+      this._crudSdk.sdk.UpdateOrder({
+        input: {
+          id: orderId,
+          paymentMode,
+        },
+      }),
+    );
   }
 
   public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
-    console.error('TODO UPDATE');
-    console.error('updateOrderStatus', order, status);
-    /*
-    return this._amplifyDataService.patch('updateOrder', {
-      id: order.id,
-      statusLog: [
-        { status, ts: new Date().getTime(), userId: this._adminUser?.id || '' },
-      ],
-    });
-    */
+    if (this._adminUser?.id) {
+      this._crudSdk.doMutation(
+        this._crudSdk.sdk.UpdateOrder({
+          input: {
+            id: order.id,
+            statusLog: [
+              {
+                status,
+                ts: new Date().getTime(),
+                userId: this._adminUser.id,
+              },
+            ],
+          },
+        }),
+      );
+    }
   }
 
   public updateOrderItemStatus(
@@ -145,73 +156,82 @@ export class OrderService {
     status: CrudApi.OrderStatus,
     idx: number,
   ): void {
-    console.error('TODO UPDATE');
-    console.error('updateOrderItemStatus', orderId, status, idx);
-    /*
     this._store
       .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
       .subscribe(
-        async (order: IOrder | undefined): Promise<void> => {
-          if (order) {
-            const _order = fp.cloneDeep(order);
+        async (order: CrudApi.Order | undefined): Promise<void> => {
+          if (order && this._adminUser?.id) {
+            const _order = cloneDeep(order);
             _order.items[idx].statusLog.push({
               status,
               ts: new Date().getTime(),
-              userId: this._adminUser?.id || '',
+              userId: this._adminUser.id,
             });
 
-            await this._amplifyDataService.patch('updateOrder', {
-              id: orderId,
-              items: _order.items,
-            });
+            this._crudSdk.doMutation(
+              this._crudSdk.sdk.UpdateOrder({
+                input: {
+                  id: order.id,
+                  items: _order.items,
+                },
+              }),
+            );
           }
         },
       );
-      */
   }
 
   public updateOrderTransactionStatus(
     transactionId: string,
     status: CrudApi.PaymentStatus,
   ): void {
-    console.error('TODO UPDATE');
-    console.error('updateOrderTransactionStatus', transactionId, status);
-    /*
-    return this._amplifyDataService.patch('updateTransaction', {
-      id: transactionId,
-      status,
-    });
-    */
+    this._crudSdk.doMutation(
+      this._crudSdk.sdk.UpdateTransaction({
+        input: {
+          id: transactionId,
+          status,
+        },
+      }),
+    );
   }
 
   public async moveOrderToHistory(
     order: CrudApi.Order,
     status: CrudApi.OrderStatus,
   ) {
-    console.error('TODO moveOrderToHistory order', order, status);
+    if (this._adminUser?.id) {
+      const historyOrder = omit(
+        ['createdAt', 'updatedAt', 'transaction'],
+        cloneDeep(order),
+      );
+      const statusObject = {
+        status,
+        ts: new Date().getTime(),
+        userId: this._adminUser.id,
+      };
 
-    /*
-    const historyOrder = fp.omit(['createdAt', 'updatedAt', 'orderNum'], fp.cloneDeep(order));
-    const statusObject = {
-      status,
-      ts: new Date().getTime(),
-      userId: this._adminUser?.id || '',
-    };
+      historyOrder.items.forEach(item => {
+        item.statusLog.push(statusObject);
+      });
+      historyOrder.statusLog = [statusObject];
 
-    historyOrder.items.forEach(item => {
-      item.statusLog.push(statusObject);
-    });
-    historyOrder.statusLog = [statusObject];
+      try {
+        await this._crudSdk.sdk
+          .CreateOrderHistory({
+            input: historyOrder,
+          })
+          .toPromise();
 
-    console.error('moveOrderToHistory historyOrder', historyOrder);
-
-    try {
-      await this._amplifyDataService.create('createOrderHistory', historyOrder);
-    } catch (err) {
-      console.error('errr', err);
+        await this._crudSdk.sdk
+          .DeleteOrder({
+            input: {
+              id: order.id,
+            },
+          })
+          .toPromise();
+      } catch (err) {
+        console.error('errr', err);
+      }
     }
-
-    console.error('READY');
-    */
   }
 }
