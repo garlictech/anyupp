@@ -88,32 +88,32 @@ class CognitoService {
   }
 
   Future<bool> refreshUserToken() async {
-    print('CognitoService.refreshUserToken().start()');
+    // print('CognitoService.refreshUserToken().start()');
     try {
       if (_cognitoUser == null) {
         _cognitoUser = await _userPool.getCurrentUser();
-        print('CognitoService.refreshUserToken().user=$_cognitoUser');
+        // print('CognitoService.refreshUserToken().user=$_cognitoUser');
         if (_cognitoUser == null) {
           // No token, need login!
           return false;
         }
 
         _userSession = await _cognitoUser.getSession();
-        print('CognitoService.refreshUserToken().session=$_userSession');
+        // print('CognitoService.refreshUserToken().session=$_userSession');
         if (!session.isValid()) {
-          print('CognitoService.refreshUserToken().start refresh session()');
+          // print('CognitoService.refreshUserToken().start refresh session()');
           _userSession = await _cognitoUser.refreshSession(session.refreshToken);
-          print('CognitoService.refreshUserToken().newsession()=$_userSession');
+          // print('CognitoService.refreshUserToken().newsession()=$_userSession');
         }
         return true;
       }
 
       _userSession = await _cognitoUser.getSession();
-      print('CognitoService.refreshUserToken().session2=$_userSession');
+      // print('CognitoService.refreshUserToken().session2=$_userSession');
       if (!session.isValid()) {
-          print('CognitoService.refreshUserToken().start refresh session2()');
+          // print('CognitoService.refreshUserToken().start refresh session2()');
           _userSession = await _cognitoUser.refreshSession(session.refreshToken);
-          print('CognitoService.refreshUserToken().newsession2()=$_userSession');
+          // print('CognitoService.refreshUserToken().newsession2()=$_userSession');
       }
     } on Exception catch (e) {
       print('CognitoService.refreshUserToken().error=$e');

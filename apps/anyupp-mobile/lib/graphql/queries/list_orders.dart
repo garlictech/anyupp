@@ -30,25 +30,6 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         tax
         taxSum
       }
-      configSets {
-        items {
-          allergens
-          name {
-            de
-            en
-            hu
-          }
-          price
-          productComponentId
-        }
-        name {
-          de
-          en
-          hu
-        }
-        productSetId
-        type
-      }
       unitId
       userId
       items {

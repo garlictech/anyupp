@@ -1,11 +1,8 @@
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
@@ -21,17 +18,10 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<List<StripePaymentMethod>> getPaymentMethods() async {
     print('getPaymentMethods().start()');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_LIST_PAYMENT_METHODS),
+      QueryResult result = await GQL.backend.executeQuery(
+        query: QUERY_LIST_PAYMENT_METHODS,
         variables: {},
-      ));
-
-      print('getPaymentMethods.response.data=$result');
-      if (result.hasException) {
-        print('getPaymentMethods.error=${result.exception}');
-        throw result.exception;
-      }
+      );
 
       List<dynamic> items = result.data['listStripeCards'];
       List<StripePaymentMethod> results = [];
@@ -66,21 +56,18 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
 
-    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-    QueryResult result = await _client.value.mutate(MutationOptions(
-      document: gql(MUTATION_START_PAYMENT),
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
       variables: {
         'orderId': orderId,
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': false,
       },
-    ));
+    );
 
-    print('startStripePaymentWithExistingCard.response.data=$result');
-    if (result.hasException) {
-      print('startStripePaymentWithExistingCard.error=${result.exception}');
-      throw result.exception;
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return null;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -90,7 +77,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
     print('startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
 
-    return null;
+    return clientSecret;
   }
 
   @override
@@ -114,21 +101,18 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     String paymentMethodId = paymentMethod['id'];
     print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
-    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-    QueryResult result = await _client.value.mutate(MutationOptions(
-      document: gql(MUTATION_START_PAYMENT),
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
       variables: {
         'orderId': orderId,
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
       },
-    ));
+    );
 
-    print('startStripePaymentWithNewCard.response.data=$result');
-    if (result.hasException) {
-      print('startStripePaymentWithNewCard.error=${result.exception}');
-      throw result.exception;
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return null;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -138,7 +122,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret);
     print('startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
 
-    return null;
+    return clientSecret;
   }
 
   @override

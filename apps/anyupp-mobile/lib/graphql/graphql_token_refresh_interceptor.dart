@@ -15,7 +15,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
   @override
   Future onRequest(RequestOptions options) async {
-    debugRequest(options);
+    // debugRequest(options);
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
       String accessToken = _prefs.getString('cognito_accesstoken');
@@ -27,11 +27,11 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
   @override
   Future onResponse(Response response) async {
-    debugResponse(response);
+    // debugResponse(response);
     if (response.data['token'] != null) {
-      print('SAVING TOKENS!');
+      // print('SAVING TOKENS!');
       await setTokenPreferences(response, _prefs);
-      print('TOKENS SAVED!');
+      // print('TOKENS SAVED!');
     }
     return super.onResponse(response);
   }

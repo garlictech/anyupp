@@ -43,4 +43,9 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
     Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) {
      return _stripePaymentProvider.startOrderStripePaymentWithNewCard(orderId, stripeCard, saveCard);
   }
+
+  @override
+  Future<void> startOrderExternalPayment(String orderId, String orderMethod) {
+     return _externalPaymentProvider.startOrderExternalPayment(orderId, orderMethod);
+  }
 }
