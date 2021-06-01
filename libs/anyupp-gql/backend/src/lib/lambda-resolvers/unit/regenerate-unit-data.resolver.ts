@@ -1,11 +1,10 @@
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   validateProductComponentList,
   validateProductComponentSetList,
-  validateUnitProduct,
   validateUnitProductList,
 } from '@bgap/shared/data-validators';
 import {
@@ -16,6 +15,7 @@ import {
 import {
   filterNullish,
   filterNullishGraphqlListWithDefault,
+  getNoProductInUnitgError,
 } from '@bgap/shared/utils';
 
 import { getTimezoneFromLocation } from '../../utils';
@@ -42,13 +42,6 @@ export const regenerateUnitData = (unitId: string) => (
       combineLatest([
         of(
           unitProducts.map(unitProduct => {
-            if (
-              !unitProduct.groupProduct?.chainProduct ||
-              !unitProduct.groupProduct
-            ) {
-              throw new Error('HANDLE ME: objects expected, got nullish');
-            }
-
             return mergeAllProductLayers({
               chainProduct: unitProduct.groupProduct.chainProduct,
               groupProduct: unitProduct.groupProduct,
@@ -119,7 +112,13 @@ const listProductsWith3LayerForAUnit = (unitId: string) => (
   ).pipe(
     switchMap(validateUnitProductList),
     filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-    switchMap(items => combineLatest(items.map(validateUnitProduct))),
+    switchMap(items =>
+      iif(
+        () => items.length > 0,
+        of(items),
+        throwError(getNoProductInUnitgError()),
+      ),
+    ),
   );
 };
 
