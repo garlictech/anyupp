@@ -368,15 +368,14 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                             color: const Color(0xFF30BF60),
                           ),
                           child: Center(
-                            child: Text(
-                              (units[index].distance ?? 0 / 1000).toStringAsFixed(3) + ' km',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: const Color(0xffffffff),
-                                fontWeight: FontWeight.w500,
-                              ),
+                              child: Text(
+                            ((units[index].distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
+                          )),
                         ),
                       ],
                     ),
