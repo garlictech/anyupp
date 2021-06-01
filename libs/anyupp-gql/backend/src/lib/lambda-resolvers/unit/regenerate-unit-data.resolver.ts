@@ -42,13 +42,6 @@ export const regenerateUnitData = (unitId: string) => (
       combineLatest([
         of(
           unitProducts.map(unitProduct => {
-            if (
-              !unitProduct.groupProduct?.chainProduct ||
-              !unitProduct.groupProduct
-            ) {
-              throw new Error('HANDLE ME: objects expected, got nullish');
-            }
-
             return mergeAllProductLayers({
               chainProduct: unitProduct.groupProduct.chainProduct,
               groupProduct: unitProduct.groupProduct,
@@ -119,7 +112,6 @@ const listProductsWith3LayerForAUnit = (unitId: string) => (
   ).pipe(
     switchMap(validateUnitProductList),
     filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-    switchMap(items => combineLatest(items.map(validateUnitProduct))),
   );
 };
 
