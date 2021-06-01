@@ -12,6 +12,10 @@ query GetUnitsNearLocationQuery(\$lat: Float!, \$lng: Float!) {
         country
         postalCode
         title
+        location {
+          lat
+          lng
+        }
       }
       id
       distance
