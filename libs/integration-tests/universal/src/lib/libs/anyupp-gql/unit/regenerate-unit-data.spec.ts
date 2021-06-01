@@ -1,5 +1,5 @@
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
-import { combineLatest, concat, Observable, of, throwError } from 'rxjs';
+import { combineLatest, concat, Observable, of, throwError, defer } from 'rxjs';
 import {
   catchError,
   defaultIfEmpty,
@@ -21,12 +21,16 @@ import {
   generatedProductFixture,
   productComponentSetFixture,
   productFixture,
+  testAdminUsername,
+  testAdminUserPassword,
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, getSortedIds } from '@bgap/shared/utils';
 import { takeLast } from 'rxjs/operators';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
 import {
   createTestChainProduct,
@@ -212,6 +216,7 @@ const unit02_generatedProduct_01 = {
 
 describe('RegenerateUnitData mutation tests', () => {
   const iamCrudSdk = createIamCrudSdk();
+  let authAnyuppSdk: AnyuppSdk;
 
   const cleanup = concat(
     // CleanUP
@@ -244,6 +249,12 @@ describe('RegenerateUnitData mutation tests', () => {
   ).pipe(toArray());
 
   beforeAll(async () => {
+    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+      .toPromise()
+      .then(x => {
+        authAnyuppSdk = x.authAnyuppSdk;
+      });
+
     await cleanup
       .pipe(
         takeLast(1),
@@ -288,7 +299,24 @@ describe('RegenerateUnitData mutation tests', () => {
     await cleanup.toPromise();
   });
 
+  it('should return helpful error message in case the unit has no items', done => {
+    const input = { id: unitFixture.unitId_seeded_02 };
+
+    // TO DEBUG
+    // defer(() =>
+    //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
+    // )
+    authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
+      error(err) {
+        expect(err).toMatchSnapshot();
+        done();
+      },
+    });
+  });
+
   it('should regenerate all the generated products for the unit', done => {
+    const input = { id: unitId_01_seeded };
+
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
       listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
@@ -337,9 +365,11 @@ describe('RegenerateUnitData mutation tests', () => {
 
         // EXECUTE THE LOGIC
         switchMap(() =>
-          unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
-            input: { id: unitId_01_seeded },
-          }),
+          // TO DEBUG
+          // defer(() =>
+          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
+          // )
+          authAnyuppSdk.RegenerateUnitData({ input }),
         ),
 
         // ASSERTIONS

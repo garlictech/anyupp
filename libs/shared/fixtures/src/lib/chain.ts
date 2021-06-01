@@ -28,15 +28,15 @@ const chainBase: CrudApi.CreateChainInput = {
   phone: '1234567890',
   style: {
     colors: {
-      backgroundLight: '#FFFFFF',
-      backgroundDark: '#D6DDE0',
-      textDark: '#303030',
-      textLight: '#FFFFFF',
-      indicator: '#30BF60',
-      highlight: '#A8692A',
+      backgroundDark: '#d6dde0',
+      backgroundLight: '#ffffff',
+      borderDark: '#c3cacd',
+      borderLight: '#e7e5d0',
       disabled: '#303030',
-      borderDark: '#E7E5D0',
-      borderLight: '#C3CACD',
+      highlight: '#a8692a',
+      indicator: '#30bf60',
+      textDark: '#303030',
+      textLight: '#ffffff',
     },
   },
 };
