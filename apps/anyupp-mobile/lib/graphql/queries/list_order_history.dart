@@ -6,6 +6,8 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
   }) {
     items {
       id
+      orderNum
+      createdAt
       paymentMode {
         caption
         type
@@ -56,7 +58,29 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
           en
           hu
         }
+        allergens
+        configSets {
+          productSetId
+          type
+          name {
+            de
+            en
+            hu
+          }
+          items {
+            allergens
+            name {
+              de
+              en
+              hu
+            }
+            price
+            productComponentId
+          }
+        }
+        image
       }
+      transactionId
     }
   }
 }

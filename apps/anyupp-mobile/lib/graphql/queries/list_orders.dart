@@ -59,7 +59,28 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
           hu
         }
         allergens
+        configSets {
+          productSetId
+          type
+          name {
+            de
+            en
+            hu
+          }
+          items {
+            allergens
+            name {
+              de
+              en
+              hu
+            }
+            price
+            productComponentId
+          }
+        }
+        image
       }
+      transactionId
     }
   }
 }
