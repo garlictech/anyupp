@@ -12,7 +12,7 @@ extension CartExtension on Cart {
   double get totalPrice {
     double value = 0;
     items.forEach((order) {
-      value += (order.priceShown.pricePerUnit * order.quantity);
+      value += (order.priceShown.pricePerUnit);
       if (order.selectedConfigMap != null) {
         order.selectedConfigMap.forEach((key, comps) {
           for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
@@ -20,6 +20,7 @@ extension CartExtension on Cart {
           }
         });
       }
+      value *= order.quantity;
     });
     return value;
   }
