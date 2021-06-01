@@ -567,11 +567,11 @@ export const createTestAdminRoleContext = (
 };
 
 export const createComponentSets = (deps: SeederDependencies) => {
-  console.debug('createComponentSets');
+  console.debug('createComponentSets - 3 components and 2 component sets');
   return deleteCreate(
     () =>
       deps.crudSdk.DeleteProductComponent({
-        input: { id: productComponentSetFixture.seededProdComp_01.id ?? '' },
+        input: { id: productComponentSetFixture.seededProdComp_01.id },
       }),
     () =>
       deps.crudSdk.CreateProductComponent({
@@ -582,9 +582,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: {
-              id: productComponentSetFixture.seededProdComp_02.id ?? '',
-            },
+            input: { id: productComponentSetFixture.seededProdComp_02.id },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
@@ -596,9 +594,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponent({
-            input: {
-              id: productComponentSetFixture.seededProdComp_03.id ?? '',
-            },
+            input: { id: productComponentSetFixture.seededProdComp_03.id },
           }),
         () =>
           deps.crudSdk.CreateProductComponent({
@@ -610,12 +606,10 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponentSet({
-            input: {
-              id: productComponentSetFixture.seededProdCompSet_01.id ?? '',
-            },
+            input: { id: productComponentSetFixture.seededProdCompSet_01.id },
           }),
         () =>
-          deps.crudSdk.CreateProductComponent({
+          deps.crudSdk.CreateProductComponentSet({
             input: productComponentSetFixture.seededProdCompSet_01,
           }),
       ),
@@ -624,12 +618,10 @@ export const createComponentSets = (deps: SeederDependencies) => {
       deleteCreate(
         () =>
           deps.crudSdk.DeleteProductComponentSet({
-            input: {
-              id: productComponentSetFixture.seededProdCompSet_02.id ?? '',
-            },
+            input: { id: productComponentSetFixture.seededProdCompSet_02.id },
           }),
         () =>
-          deps.crudSdk.CreateProductComponent({
+          deps.crudSdk.CreateProductComponentSet({
             input: productComponentSetFixture.seededProdCompSet_02,
           }),
       ),
