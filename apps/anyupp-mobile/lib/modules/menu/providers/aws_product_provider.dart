@@ -47,6 +47,12 @@ class AwsProductProvider implements IProductProvider {
   @override
   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) async* {
     // print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
+
+    // QueryResult result = await executeQuery(query: QUERY_LIST_PRODUCTS, variables: {
+    //     'unitId': unitId,
+    //     'categoryId': categoryId,
+    //   });
+
     ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
     QueryResult result = await _client.value.query(QueryOptions(
       document: gql(QUERY_LIST_PRODUCTS),

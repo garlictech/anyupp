@@ -47,7 +47,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     super.initState();
 
     // Start advertisement
-    getIt<AffiliateBloc>().add(StartAdvertisement());
+    // getIt<AffiliateBloc>().add(StartAdvertisement());
 
     _animationController = AnimationController(
       duration: Duration(seconds: 1),
@@ -90,7 +90,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void dispose() {
     // Stop advertisement
-    getIt<AffiliateBloc>().add(StopAdvertisement());
+    // getIt<AffiliateBloc>().add(StopAdvertisement());
     super.dispose();
   }
 

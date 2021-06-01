@@ -29,7 +29,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       CognitoUser user = _service.createCognitoUser(email);
       CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
       if (session.isValid()) {
-        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : null);
+        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : email);
         await _service;
         return ProviderLoginResponse(
           credential: null,

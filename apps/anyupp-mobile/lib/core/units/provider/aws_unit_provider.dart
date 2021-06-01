@@ -6,25 +6,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
-
   @override
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_SEARCH_UNITS),
-        variables: {
-          'lat': location.latitude,
-          'lng': location.longitude,
-        }
-      ));
+      // QueryResult result = await executeQuery(query: QUERY_SEARCH_UNITS, variables: {
+      //   'lat': location.latitude,
+      //   'lng': location.longitude,
+      // });
 
-      print('***** searchUnitsNearLocation().result()=$result');
-      if (result.hasException) {
-        print('searchUnitsNearLocation.exception=${result.exception}');
-        // TODO ?!
-      }
+      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
+      QueryResult result = await _client.value.query(QueryOptions(document: gql(QUERY_SEARCH_UNITS), variables: {
+        'lat': location.latitude,
+        'lng': location.longitude,
+      }));
+
+      // print('***** searchUnitsNearLocation().result()=$result');
+      // if (result.hasException) {
+      //   print('searchUnitsNearLocation.exception=${result.exception}');
+      //   // TODO ?!
+      // }
 
       if (result.data == null) {
         return [];
