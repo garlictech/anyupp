@@ -1,11 +1,10 @@
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   validateProductComponentList,
   validateProductComponentSetList,
-  validateUnitProduct,
   validateUnitProductList,
 } from '@bgap/shared/data-validators';
 import {
@@ -16,6 +15,7 @@ import {
 import {
   filterNullish,
   filterNullishGraphqlListWithDefault,
+  getNoProductInUnitgError,
 } from '@bgap/shared/utils';
 
 import { getTimezoneFromLocation } from '../../utils';
@@ -112,6 +112,13 @@ const listProductsWith3LayerForAUnit = (unitId: string) => (
   ).pipe(
     switchMap(validateUnitProductList),
     filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
+    switchMap(items =>
+      iif(
+        () => items.length > 0,
+        of(items),
+        throwError(getNoProductInUnitgError()),
+      ),
+    ),
   );
 };
 
