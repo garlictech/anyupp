@@ -279,7 +279,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                     child: Center(
                       child: Text(
-                        (unit.distance ?? 0 / 1000).toStringAsFixed(3) + ' km',
+                        ((unit.distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2, //const Color(0xffffffff),
