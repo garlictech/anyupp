@@ -101,11 +101,15 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ? getNextOrderStatus(this.orderItem?.currentStatus)
       : undefined;
 
-    if (nextStatus && this.orderItem.idx && this.orderItem.orderId) {
+    if (
+      nextStatus &&
+      !isNaN(Number(this.orderItem.idx)) &&
+      this.orderItem.orderId
+    ) {
       this._orderService.updateOrderItemStatus(
         this.orderItem.orderId,
         nextStatus,
-        this.orderItem.idx,
+        Number(this.orderItem.idx),
       );
     }
 
@@ -117,11 +121,15 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ? getPrevOrderItemStatus(this.orderItem?.currentStatus)
       : undefined;
 
-    if (prevStatus && this.orderItem.idx && this.orderItem.orderId) {
+    if (
+      prevStatus &&
+      !isNaN(Number(this.orderItem.idx)) &&
+      this.orderItem.orderId
+    ) {
       this._orderService.updateOrderItemStatus(
         this.orderItem.orderId,
         prevStatus,
-        this.orderItem.idx,
+        Number(this.orderItem.idx),
       );
     }
 
