@@ -39,7 +39,7 @@ Thumbs.db
 # libs
 
 cyreport
-.setup.sh
+.setup*.sh
 .build
 .serverless
 /apps/anyupp-backend/build

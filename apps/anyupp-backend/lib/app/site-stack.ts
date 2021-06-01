@@ -18,7 +18,7 @@ export class SiteStack extends sst.Stack {
 
     const adminSite = new WebsiteConstruct(this, 'Admin', {
       domainName: 'anyupp.com',
-      siteSubDomain: 'admin-' + app.name, // TODO: exception in prod stage, use external config or ???
+      siteSubDomain: app.stage === 'prod' ? 'admin' : 'admin-' + app.name,
       distDir: path.join(PROJECT_ROOT, '/dist/apps/admin'),
       certificateArn: props.certificateArn,
     });

@@ -21,10 +21,15 @@ export class WebsiteConstruct extends Construct {
     super(scope, id);
     const app = this.node.root as sst.App;
 
-    const zone = route53.HostedZone.fromLookup(this, 'Zone', {
+    /*const zone = route53.HostedZone.fromLookup(this, 'Zone', {
       domainName: props.domainName,
-    });
+    });*/
 
+    const zone = route53.HostedZone.fromHostedZoneId(
+      this,
+      'Zone',
+      'Z07724744XHDX57X0R8H',
+    );
     const siteDomain =
       app.stage + '-' + props.siteSubDomain + '.' + props.domainName;
 
