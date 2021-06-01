@@ -77,13 +77,13 @@
     "hmPlaceholder": "óó:pp",
     "paymentModes": {
       "title": "Fizetési módok",
-      "INAPP": "Online",
-      "CASH": "Készpénz",
-      "CARD": "Kártya",
-      "GOOGLE_PAY": "Google Pay",
-      "APPLE_PAY": "Apple Pay",
-      "STRIPE": "Stripe",
-      "SIMPLE": "Simple Pay"
+      "inapp": "Online",
+      "cash": "Készpénz",
+      "card": "Kártya",
+      "googlepay": "Google Pay",
+      "applepay": "Apple Pay",
+      "stripe": "Stripe",
+      "simple": "Simple"
     },
     "transactionStatus": {
       "SUCCESS": "Sikeres",

@@ -1,5 +1,6 @@
+import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { Injectable } from '@angular/core';
 import {
   FormArray,
@@ -9,9 +10,9 @@ import {
 } from '@angular/forms';
 import { FormsService } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, Product } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
-import { pipe } from 'fp-ts/lib/function';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {

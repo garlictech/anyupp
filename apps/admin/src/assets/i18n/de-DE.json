@@ -77,13 +77,13 @@
     "hmPlaceholder": "hh:mm",
     "paymentModes": {
       "title": "Payment modes",
-      "INAPP": "Online",
-      "CASH": "Cash",
-      "CARD": "Card",
-      "GOOGLE_PAY": "Google Pay",
-      "APPLE_PAY": "Apple Pay",
-      "STRIPE": "Stripe",
-      "SIMPLE": "Simple Pay"
+      "inapp": "Online",
+      "cash": "Cash",
+      "card": "Card",
+      "googlepay": "Google Pay",
+      "applepay": "Apple Pay",
+      "stripe": "Stripe",
+      "simple": "Simple"
     },
     "transactionStatus": {
       "SUCCESS": "Success",

@@ -45,11 +45,12 @@ class OrderSimpleListItemWidget extends StatelessWidget {
                     color: theme.text,
                   ),
                 ),
+                ...getExtraNames(context)
               ],
             ),
           ),
           Text(
-            formatCurrency(orderItem.priceShown.priceSum, orderItem.priceShown.currency ?? 'huf'), // TODO geounit!!
+            formatCurrency(orderItem.getPrice(), orderItem.priceShown.currency ?? 'huf'), // TODO geounit!!
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,
@@ -58,5 +59,27 @@ class OrderSimpleListItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+  List<Widget> getExtraNames(BuildContext context) {
+    List<Widget> children = [];
+    if (orderItem.selectedConfigMap != null) {
+      orderItem.selectedConfigMap.forEach((key, value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+          children.add(Text(
+            getLocalizedText(context, generatedProductConfigComponent.name), // TODO geounit!!
+            textAlign: TextAlign.left,
+            style: GoogleFonts.poppins(
+              color: theme.text,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+          ));
+        }
+      });
+    } else {
+      children.add(Container());
+    }
+
+    return children;
   }
 }

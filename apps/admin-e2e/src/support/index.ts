@@ -30,9 +30,9 @@ Cypress.on('test:after:run', (test, runnable) => {
   }
 });
 
-// Cypress.on('uncaught:exception', (err, runnable) => {
 // returning false here prevents Cypress from
 // failing the test
+// Cypress.on('uncaught:exception', (err, runnable) => {
 //   console.log('Error from the app', JSON.stringify(err, undefined, 2));
 //   return false;
 // });
