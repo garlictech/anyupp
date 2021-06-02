@@ -1,4 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { String } from 'aws-sdk/clients/acm';
 import { map } from 'rxjs/operators';
 import { StripeResolverDeps } from './stripe.utils';
 
@@ -117,7 +118,9 @@ export const loadTransactionByExternalTransactionId = (
     .ListTransactions(listTransactionListVars)
     .pipe(
       map(data => data?.items),
-      map(data => (data && data?.length > 0 ? data[0] : null)),
+      map(data =>
+        data && data?.length > 0 ? (data[0] as CrudApi.Transaction) : null,
+      ),
     )
     .toPromise();
 };
@@ -148,6 +151,26 @@ export const updateTransactionState = (
     input: {
       id,
       status,
+    },
+  };
+
+  return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
+};
+
+/**
+ * Update Transaction invoiceId in the database with the GraphQL CRUD endpoint
+ * @param crudGraphqlClient CRUD GraphQL client
+ * @param id the ID of the Transaction to be updated
+ * @param invoiceId the new invoiceId of the Transaction
+ * @returns an instance of Transaction interface, filled with the updated transaction's data
+ */
+export const updateTransactionInvoiceId = (id: string, invoiceId: string) => (
+  deps: StripeResolverDeps,
+) => {
+  const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+    input: {
+      id,
+      invoiceId,
     },
   };
 
@@ -192,4 +215,59 @@ export const updateOrderState = (
     },
   };
   return deps.crudSdk.UpdateOrder(updateOrderVars).toPromise();
+};
+
+/**
+ * Create Invoice record in the database with the GraphQL CRUD endpoint
+ * @param crudGraphqlClient CRUD GraphQL client
+ * @param invoice the Invoice object to be created
+ * @returns an instance of Invoice to be created
+ */
+export const createInvoice = (
+  invoice: CrudApi.CreateInvoiceMutationVariables,
+) => (deps: StripeResolverDeps) =>
+  deps.crudSdk.CreateInvoice(invoice).toPromise();
+
+/**
+ * Update Invoice data in the database with the GraphQL CRUD endpoint
+ * @param crudGraphqlClient CRUD GraphQL client
+ * @param id the ID of the Invoice to be updated
+ * @param status the new status of the Invoice
+ * @param externalInvoiceId the ID of the invoice in the szamlazz.hu
+ * @returns an instance of Invoice, filled with the updated invoice's data
+ */
+export const updateInvoice = (
+  id: string,
+  status: CrudApi.InvoiceStatus,
+  externalInvoiceId: String,
+) => (deps: StripeResolverDeps) => {
+  const updateInvoiceVars: CrudApi.UpdateInvoiceMutationVariables = {
+    input: {
+      id,
+      status,
+      externalInvoiceId,
+    },
+  };
+
+  return deps.crudSdk.UpdateInvoice(updateInvoiceVars).toPromise();
+};
+
+/**
+ * Load a signle Invoice from CRUD GraphQL endpoint by it's ID
+ * @param crudGraphqlClient CRUD GraphQL client
+ * @param invoiceId the ID of the Invoice to be loaded
+ * @returns an instance of CrudApi.Invoice interface, filled with the loaded Invoice's data
+ */
+export const loadInvoice = (invoiceId: string) => async (
+  deps: StripeResolverDeps,
+) => {
+  const getInvoiceVars: CrudApi.GetInvoiceQueryVariables = {
+    id: invoiceId,
+  };
+
+  return deps.crudSdk
+    .GetInvoice(getInvoiceVars, {
+      fetchPolicy: 'network-only',
+    })
+    .toPromise();
 };

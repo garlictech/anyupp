@@ -4,7 +4,11 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
 import {
+  loadInvoice,
+  loadOrder,
   loadTransactionByExternalTransactionId,
+  loadUnit,
+  loadUser,
   updateOrderState,
   updateTransactionState,
 } from './stripe-graphql-crud';
@@ -96,6 +100,36 @@ export const createStripeWebhookExpressApp = () => {
   return app;
 };
 
+const handleInvoice = (orderId: string) => async (deps: StripeResolverDeps) => {
+  const order = await loadOrder(orderId)(deps);
+  if (!order) {
+    throw Error('Order not found with id=' + orderId);
+  }
+
+  if (!order.transaction) {
+    throw Error(
+      'The order with id=' + orderId + " doesn't have a transaction!",
+    );
+  }
+
+  if (!order.transaction.invoice) {
+    throw Error('The order with id=' + orderId + " doesn't have an invoice!");
+  }
+
+  const unit = await loadUnit(order.unitId)(deps);
+  const user = await loadUser(order.userId)(deps);
+
+  console.log('handleInvoice().invoiceId=' + order.transaction.invoice.id);
+
+  // TODO IDE KELL A SZAMLAZZ.HU HIVAS
+  // TODO osszes szamla info benne van az Order-ben?
+  // 1. Transaction
+  // 2. Invoice
+  // 3. OrderItems
+  // 4. Unit? - nincs, be kell tolteni
+  // 5. User? - nincs, be kell tolteni
+};
+
 const handleSuccessTransaction = (externalTransactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
@@ -116,6 +150,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
       transaction.id,
     )(deps);
     // console.log('***** handleSuccessTransaction().success()');
+    await handleInvoice(transaction.orderId)(deps);
   } else {
     console.log(
       '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +

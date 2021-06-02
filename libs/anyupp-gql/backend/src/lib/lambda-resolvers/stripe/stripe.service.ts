@@ -2,12 +2,14 @@ import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
 import {
+  createInvoice,
   createTransaction,
   createUser,
   loadOrder,
   loadUnit,
   loadUser,
   updateOrderState,
+  updateTransactionInvoiceId,
   updateUser,
 } from './stripe-graphql-crud';
 import { mapPaymentMethodToCard, StripeResolverDeps } from './stripe.utils';
@@ -200,7 +202,26 @@ export const startStripePayment = (
       throw new Error('Transaction not created');
     }
 
-    // 9. Update ORDER STATUS
+    // 9. Create invoice if requested
+    if (input.invoiceAddress) {
+      // Create Invoice
+      const createInvoiceVars = createInvoiceMutationVariables(
+        userId,
+        orderId,
+        transaction.id,
+        input.invoiceAddress,
+        CrudApi.InvoiceStatus.waiting,
+      );
+      const invoice = await createInvoice(createInvoiceVars)(deps);
+      console.log('startCashPayment().invoice.id=' + invoice?.id);
+      if (!invoice) {
+        throw Error('Invoice not created. Created invoice instane is null');
+      }
+      // Connect invoice with the transaction
+      await updateTransactionInvoiceId(transaction.id, invoice.id)(deps);
+    }
+
+    // 10. Update ORDER STATUS
     // console.log('startStripePayment().updateOrderState.order=' + order.id);
     order = await updateOrderState(
       order.id,
@@ -210,7 +231,7 @@ export const startStripePayment = (
     )(deps);
     console.log('startStripePayment().updateOrderState.done()=' + order?.id);
 
-    // 6. Return with client secret
+    // 11. Return with client secret
     return Promise.resolve({
       clientSecret: paymentIntent.client_secret as string,
       status: paymentIntent.status,
@@ -236,7 +257,15 @@ export const startStripePayment = (
       throw new Error('Transaction not created');
     }
 
-    // 7. Update order
+    // 7. Create invoice if requested
+    // if (input.invoiceAddress) {
+    //   // Create Invoice
+    //   const createInvoiceVars = createInvoiceMutationVariables(userId, orderId, transaction.id, input.invoiceAddress, CrudApi.InvoiceStatus.waiting);
+    //   const invoice = await createInvoice(createInvoiceVars)(deps);
+    //   console.log('startCashPayment().invoice.id=' + invoice?.id);
+    // }
+
+    // 8. Update order
     order = await updateOrderState(
       order.id,
       userId,
@@ -245,12 +274,36 @@ export const startStripePayment = (
     )(deps);
     console.log('startCashPayment().updateOrderState.done()=' + order?.id);
 
-    // 8. Return with success
+    // 9. Return with success
     return Promise.resolve({
       clientSecret: '',
       status: CrudApi.PaymentStatus.waiting_for_payment,
     });
   }
+};
+
+const createInvoiceMutationVariables = (
+  userId: string,
+  orderId: string,
+  transactionId: string,
+  invoiceAddress: AnyuppApi.UserInvoiceAddress,
+  status: CrudApi.InvoiceStatus,
+): CrudApi.CreateInvoiceMutationVariables => {
+  return {
+    input: {
+      userId: userId,
+      orderId: orderId,
+      transactionId: transactionId,
+      city: invoiceAddress.city,
+      country: invoiceAddress.country,
+      customerName: invoiceAddress.customerName,
+      postalCode: invoiceAddress.postalCode,
+      streetAddress: invoiceAddress.streetAddress,
+      taxNumber: invoiceAddress.taxNumber,
+      email: invoiceAddress.email,
+      status: status,
+    },
+  };
 };
 
 const loadAndConnectUserForStripe = (
