@@ -6,6 +6,10 @@ class GraphQLException extends AppException {
 
   static const CODE = 'GRAPHQL_EXCEPTION';
 
+  static const CODE_MUTATION_EXCEPTION = 'GRAPHQL_MUTATION_EXCEPTION';
+
+  static const CODE_QUERY_EXCEPTION = 'GRAPHQL_QUERY_EXCEPTION';
+
   GraphQLException({
     code,
     subCode,

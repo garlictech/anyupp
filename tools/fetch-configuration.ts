@@ -35,7 +35,7 @@ const generatedParams = [
   'ConsumerUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
-const fixParams = ['StripePublishableKey', 'Region', 'GoogleApiKey'].map(
+const fixParams = ['StripePublishableKey', 'GoogleApiKey'].map(
   paramName => `/${prefix}/${paramName}`,
 );
 
@@ -67,6 +67,7 @@ pipe(
       fp.fromPairs,
       fp.tap(config => {
         console.log(config);
+        config['Region'] = region;
         fs.writeFileSync(targetFile, JSON.stringify(config, null, 2));
         console.log(`Config written to ${targetFile}`);
       }),
@@ -78,6 +79,7 @@ pipe(
           );
         }
         const bucketKeyName = Object.keys(amplifyConfig['storage'])[0];
+        config['Region'] = region;
         config['Stage'] = stage;
         config['CrudGraphqlApiUrl'] =
           amplifyConfig['api'][apiKeyName]['output'][
