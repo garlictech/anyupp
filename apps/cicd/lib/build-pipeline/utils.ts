@@ -327,6 +327,7 @@ export const createCommonDevPipeline = (
           `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
           `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
           `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+          'yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts',
           'yarn cucumber:report',
           'yarn cypress:generate:html:report',
         ],
