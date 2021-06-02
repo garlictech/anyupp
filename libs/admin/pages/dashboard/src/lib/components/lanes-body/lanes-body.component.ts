@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash/fp';
 import { combineLatest } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
@@ -16,7 +15,6 @@ import {
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
   ENebularButtonSize,
@@ -26,6 +24,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem,
@@ -105,7 +104,7 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
           this.unit = unit;
-          this.unitLanes = unit?.lanes ? cloneDeep(unit.lanes) : [];
+          this.unitLanes = unit?.lanes ? [...unit.lanes] : [];
 
           // Unit lanes
           this.unitLanes.forEach((lane: CrudApi.Maybe<IDetailedLane>): void => {
