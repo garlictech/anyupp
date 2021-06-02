@@ -171,7 +171,9 @@ const toGeneratedProductConfigSetInput = ({
     productComponentSetMap[productConfigSet.productSetId];
 
   if (!productComponentSet) {
-    throw `productComponentSet with id ${productConfigSet.productSetId} is missing from the componentSetMap`;
+    throw new Error(
+      `productComponentSet with id ${productConfigSet.productSetId} is missing from the componentSetMap`,
+    );
   }
 
   return {
@@ -184,7 +186,9 @@ const toGeneratedProductConfigSetInput = ({
       const productComponent =
         productComponentMap[confComponent.productComponentId];
       if (!productComponent) {
-        throw `productComponent with id ${confComponent.productComponentId} is missing from the componentMap`;
+        throw new Error(
+          `productComponent with id ${confComponent.productComponentId} is missing from the componentMap`,
+        );
       }
 
       const configComponent: CrudApi.GeneratedProductConfigComponentInput = {

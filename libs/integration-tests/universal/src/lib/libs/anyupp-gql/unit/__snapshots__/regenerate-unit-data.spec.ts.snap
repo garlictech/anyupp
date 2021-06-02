@@ -409,3 +409,5 @@ Array [
   },
 ]
 `;
+
+exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `[Error: GraphQL error: {"message":"There is no product in this unit","code":"ERROR_NO_PRODUCT_IN_UNIT"}]`;
