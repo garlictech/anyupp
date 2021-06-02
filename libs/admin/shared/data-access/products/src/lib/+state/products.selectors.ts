@@ -5,8 +5,8 @@ import {
   chainProductsAdapter,
   generatedProductsAdapter,
   groupProductsAdapter,
-  ProductsState,
   PRODUCTS_FEATURE_KEY,
+  ProductsState,
   unitProductsAdapter,
 } from './products.reducer';
 

@@ -1,7 +1,7 @@
 import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
@@ -21,7 +21,7 @@ export class CognitoService {
     this._currentContext = context;
   }
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router, private _ngZone: NgZone) {
     Hub.listen('auth', data => {
       const { payload } = data;
 
@@ -122,7 +122,9 @@ export class CognitoService {
             map(() => {
               // Finally redirect to dashboard.
               // The routeGuard will handle the data subscription
-              this._router.navigate(['admin/dashboard']);
+              this._ngZone.run(() => {
+                this._router.navigate(['admin/dashboard']);
+              });
             }),
           ),
         ),

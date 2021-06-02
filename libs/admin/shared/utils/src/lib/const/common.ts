@@ -72,22 +72,22 @@ export const PAYMENT_MODES: PaymentMode[] = [
   },
   {
     type: CrudApi.PaymentType.googlepay,
-    caption: 'Google Pay',
+    caption: 'common.paymentModes.googlepay',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
     type: CrudApi.PaymentType.applepay,
-    caption: 'Apple Pay',
+    caption: 'common.paymentModes.applepay',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
     type: CrudApi.PaymentType.stripe,
-    caption: 'Stripe',
+    caption: 'common.paymentModes.stripe',
     method: CrudApi.PaymentMethod.inapp,
   },
   {
     type: CrudApi.PaymentType.simple,
-    caption: 'Simple Pay',
+    caption: 'common.paymentModes.simple',
     method: CrudApi.PaymentMethod.inapp,
   },
 ];

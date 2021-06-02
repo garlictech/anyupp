@@ -1,5 +1,7 @@
-import * as fp from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
+import { switchMap } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
@@ -15,11 +18,9 @@ import {
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -143,7 +144,7 @@ export class ChainFormComponent
 
     if (this.chain?.id) {
       try {
-        await this.updateImageStyles(param, image);
+        await this.updateImageStyles(image, param);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -170,7 +171,7 @@ export class ChainFormComponent
     )).setValue('');
 
     if (this.chain?.id) {
-      await this.updateImageStyles(param, null);
+      await this.updateImageStyles(null, param);
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -180,7 +181,7 @@ export class ChainFormComponent
     }
   };
 
-  private async updateImageStyles(param: string, image: string | null) {
+  private async updateImageStyles(image: string | null, param: string) {
     await this._crudSdk.sdk
       .GetChain({
         id:
@@ -189,11 +190,31 @@ export class ChainFormComponent
       })
       .pipe(
         filterNullish(),
-        switchMap(data =>
-          this._crudSdk.sdk.UpdateChain({
-            input: fp.set(`style.images.${param}`, image, data),
-          }),
-        ),
+        switchMap(data => {
+          const _data: CrudApi.Chain = cloneDeep(data);
+          const chainStyleImagesRecord: Record<
+            string,
+            keyof CrudApi.ChainStyleImages
+          > = {
+            header: 'header',
+            logo: 'logo',
+          };
+
+          if (!_data.style.images) {
+            _data.style.images = {};
+          }
+
+          if (chainStyleImagesRecord[param]) {
+            _data.style.images[chainStyleImagesRecord[param]] = image;
+          }
+
+          return this._crudSdk.sdk.UpdateChain({
+            input: {
+              id: _data.id,
+              style: _data.style,
+            },
+          });
+        }),
       )
       .toPromise();
   }

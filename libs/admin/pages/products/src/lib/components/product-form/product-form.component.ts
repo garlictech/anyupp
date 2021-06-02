@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -11,12 +11,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { EToasterType } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EImageType,
   EProductLevel,
@@ -172,7 +172,7 @@ export class ProductFormComponent
     // Update existing user's image
     if (this.product?.id) {
       try {
-        await this.updateImageStyles(image);
+        await this.updateImageStyles(this.product?.id, image);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -200,7 +200,7 @@ export class ProductFormComponent
 
     if (this.product?.id) {
       try {
-        await this.updateImageStyles(null);
+        await this.updateImageStyles(this.product?.id, null);
 
         this._toasterService.show(
           EToasterType.SUCCESS,
@@ -223,21 +223,14 @@ export class ProductFormComponent
     this._changeDetectorRef.detectChanges();
   };
 
-  private async updateImageStyles(image: string | null) {
+  private async updateImageStyles(id: string, image: string | null) {
     await this._crudSdk.sdk
-      .GetChainProduct({
-        id:
-          this.product?.id ||
-          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
+      .UpdateChainProduct({
+        input: {
+          id,
+          image,
+        },
       })
-      .pipe(
-        filterNullish(),
-        switchMap(data =>
-          this._crudSdk.sdk.UpdateChainProduct({
-            input: fp.set(`image`, image, data),
-          }),
-        ),
-      )
       .toPromise();
   }
 }

@@ -3,8 +3,8 @@
 exports[`CRUD sdk test An arbitrary CRUD: CREATE 1`] = `
 Object {
   "createdAt": Any<String>,
-  "id": "CRUD_SDK_ID",
-  "product": null,
+  "id": "seeded_unit_product_c1_g1_1_id",
+  "product": Any<Object>,
   "unitId": "UNIT_BAR",
   "updatedAt": Any<String>,
   "userId": "USER_FOO",
@@ -14,8 +14,8 @@ Object {
 exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `
 Object {
   "createdAt": Any<String>,
-  "id": "CRUD_SDK_ID",
-  "product": null,
+  "id": "seeded_unit_product_c1_g1_1_id",
+  "product": Any<Object>,
   "unitId": "UNIT_BAR",
   "updatedAt": Any<String>,
   "userId": "UPDATED_USER",
@@ -25,8 +25,8 @@ Object {
 exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
 Object {
   "createdAt": Any<String>,
-  "id": "CRUD_SDK_ID",
-  "product": null,
+  "id": "seeded_unit_product_c1_g1_1_id",
+  "product": Any<Object>,
   "unitId": "UNIT_BAR",
   "updatedAt": Any<String>,
   "userId": "USER_FOO",
@@ -40,8 +40,8 @@ exports[`CRUD sdk test An arbitrary CRUD: SHOULD BE NULL 1`] = `null`;
 exports[`CRUD sdk test An arbitrary CRUD: UPDATE 1`] = `
 Object {
   "createdAt": Any<String>,
-  "id": "CRUD_SDK_ID",
-  "product": null,
+  "id": "seeded_unit_product_c1_g1_1_id",
+  "product": Any<Object>,
   "unitId": "UNIT_BAR",
   "updatedAt": Any<String>,
   "userId": "UPDATED_USER",

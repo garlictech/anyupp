@@ -23,8 +23,8 @@ export class FormClickableImageInputComponent {
   @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
-  @Input() uploadCallbackFn!: (resp: string, param: string) => void;
-  @Input() removeCallbackFn!: (param: string) => void;
+  @Input() uploadCallbackFn?: (imageKey: string, param: string) => void;
+  @Input() removeCallbackFn?: (param: string) => void;
   @Input() callbackParam = '';
 
   @Input() width = '';
@@ -75,7 +75,9 @@ export class FormClickableImageInputComponent {
       .then((imageKey: string) => {
         this.image = imageKey;
 
-        this.uploadCallbackFn(imageKey, this.callbackParam);
+        if (this.uploadCallbackFn) {
+          this.uploadCallbackFn(imageKey, this.callbackParam);
+        }
 
         this._changeDetectorRef.detectChanges();
       });
@@ -88,10 +90,15 @@ export class FormClickableImageInputComponent {
           this.image = undefined;
 
           this._changeDetectorRef.detectChanges();
-          this.removeCallbackFn(this.callbackParam);
+
+          if (this.removeCallbackFn) {
+            this.removeCallbackFn(this.callbackParam);
+          }
         },
         (): void => {
-          this.removeCallbackFn(this.callbackParam);
+          if (this.removeCallbackFn) {
+            this.removeCallbackFn(this.callbackParam);
+          }
         },
       );
     }

@@ -99,7 +99,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     ),
                     child: Center(
                       child: Text(
-                        '${(unit.distance ?? 0 / 1000).toStringAsFixed(2)} km',
+                        '${ ((unit.distance ?? 0) / 1000).toStringAsFixed(3)} km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2,

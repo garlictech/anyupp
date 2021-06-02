@@ -53,6 +53,14 @@ cdk.out
 /libs/anyupp-gql/api/src/lib/generated
 /libs/crud-gql/api/src/lib/generated/
 
+
+
+# The generated files with hygen
+apps/anyupp-backend/sst.json
+apps/anyupp-backend/serverless.yml
+apps/crud-backend/.graphqlconfig.yml
+tools/graphql-codegen-crud.yml
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -67,16 +75,8 @@ node_modules/
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
-amplifyconfiguration.dartlne
+amplifyconfiguration.dart
 amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
-
-
-
-# The generated files with hygen
-apps/anyupp-backend/sst.json
-apps/anyupp-backend/serverless.yml
-apps/crud-backend/.graphqlconfig.yml
-tools/graphql-codegen-crud.yml

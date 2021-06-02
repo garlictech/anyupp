@@ -113,13 +113,11 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   }
 
   private _refreshPlacedOrders(): void {
-    console.error('TODO remove toLowerCase');
     // 1. tab: minden ami processed és served között státuszban van
     this.placedOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          currentStatusFn(o.statusLog).toLowerCase() !==
-          CrudApi.OrderStatus.ready,
+          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.served,
       ),
     ];
   }
