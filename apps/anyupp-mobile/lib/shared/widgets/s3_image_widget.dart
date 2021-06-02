@@ -82,7 +82,7 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
   void _getBucketUrlWithKey() async {
     print('_getBucketUrlWithKey.key=${widget.bucketImageKey}');
     String url =
-        'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/${widget.bucketImageKey}';
+        'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/${widget.bucketImageKey}';
     print('_getBucketUrlWithKey.url=$url');
     setState(() {
       _imageUrl = url; //.split('?')[0];

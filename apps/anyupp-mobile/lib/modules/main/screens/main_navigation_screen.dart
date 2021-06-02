@@ -1,5 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -8,8 +9,6 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/affiliate.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +46,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     super.initState();
 
     // Start advertisement
-    getIt<AffiliateBloc>().add(StartAdvertisement());
+    // getIt<AffiliateBloc>().add(StartAdvertisement());
 
     _animationController = AnimationController(
       duration: Duration(seconds: 1),
@@ -90,7 +89,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void dispose() {
     // Stop advertisement
-    getIt<AffiliateBloc>().add(StopAdvertisement());
+    // getIt<AffiliateBloc>().add(StopAdvertisement());
     super.dispose();
   }
 

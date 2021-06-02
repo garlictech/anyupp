@@ -6,14 +6,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Extend CognitoStorage with Shared Preferences to persist account
 /// login sessions
 class CognitoLocalStorage extends CognitoStorage {
-  final SharedPreferences _prefs;
-  CognitoLocalStorage(this._prefs);
+  SharedPreferences _prefs;
+  CognitoLocalStorage();
+
+  Future<SharedPreferences> get pref async {
+    if (_prefs == null) {
+      _prefs = await SharedPreferences.getInstance();
+    }
+    return _prefs;
+  }
 
   @override
   Future getItem(String key) async {
     String item;
     try {
-      item = json.decode(_prefs.getString(key));
+      item = json.decode((await pref).getString(key));
     } catch (e) {
       return null;
     }
@@ -22,7 +29,7 @@ class CognitoLocalStorage extends CognitoStorage {
 
   @override
   Future setItem(String key, value) async {
-    await _prefs.setString(key, json.encode(value));
+    await (await pref).setString(key, json.encode(value));
     return getItem(key);
   }
 
@@ -30,7 +37,7 @@ class CognitoLocalStorage extends CognitoStorage {
   Future removeItem(String key) async {
     final item = getItem(key);
     if (item != null) {
-      await _prefs.remove(key);
+      await (await pref).remove(key);
       return item;
     }
     return null;
@@ -38,6 +45,6 @@ class CognitoLocalStorage extends CognitoStorage {
 
   @override
   Future<void> clear() async {
-    await _prefs.clear();
+    await (await pref).clear();
   }
 }

@@ -23,6 +23,8 @@ class AwsSubscription<T extends Model> {
   final CreateModelFromJson<T> modelFromJson;
   final FilterModelFromJson<T> filterModel;
 
+  ValueNotifier<GraphQLClient> _client;
+
   AwsSubscription({
     authProvider,
     this.listQuery,
@@ -36,7 +38,7 @@ class AwsSubscription<T extends Model> {
   Stream<List<T>> get stream => _listController?.stream;
 
   Future<void> startListSubscription({Map<String, dynamic> variables}) async {
-    print('**** startListSubscription[$listNodeName].variables=$variables');
+    // print('**** startListSubscription[$listNodeName].variables=$variables');
     try {
       // if (_listController == null) {
       //   _listController = BehaviorSubject<List<T>>();
@@ -44,24 +46,24 @@ class AwsSubscription<T extends Model> {
       // await _listSubscription?.cancel();
 
       _items = await _getList(variables);
-      print('**** startListSubscription[$listNodeName].items=${_items?.length}');
+      // print('**** startListSubscription[$listNodeName].items=${_items?.length}');
       _listController.add(_items);
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription[$listNodeName].userId=${user.id}');
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
+      _client = await getIt<GraphQLClientService>().getAmplifyClient();
       _listSubscription = _client.value
           .subscribe(
         SubscriptionOptions(
           document: gql(subscriptionQuery),
           variables: variables,
-          fetchPolicy: FetchPolicy.networkOnly, // TODO AWS atnezni
+          fetchPolicy: FetchPolicy.networkOnly,
         ),
       )
           .listen((QueryResult result) async {
-        print('**** startListSubscription[$listNodeName].onData=$result');
+        // print('**** startListSubscription[$listNodeName].onData=$result');
         // print('**** startListSubscription().onData.context=${result.context}');
-        print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
+        // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
         if (!result.hasException) {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
           print('**** startListSubscription[$listNodeName].item=$item');
@@ -101,12 +103,12 @@ class AwsSubscription<T extends Model> {
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
     // print('_getList[$listNodeName]');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(listQuery),
-        variables: variables,
+      QueryResult result = await GQL.amplify.executeQuery(
+        query: listQuery,
+         variables: variables,
         fetchPolicy: FetchPolicy.networkOnly,
-      ));
+      );
+
       // print('_getList[$listNodeName].result.data=${result.data}');
       // print('_getList[$listNodeName].result.exception=${result.exception}');
       if (result == null || result.data == null) {
@@ -136,6 +138,7 @@ class AwsSubscription<T extends Model> {
     print('**** stopListSubscription()');
     await _listSubscription?.cancel();
     // await _listController?.close();
+    _client.dispose();
     _listSubscription = null;
     // _listController = null;
   }

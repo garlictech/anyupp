@@ -1,0 +1,4 @@
+branch: 'dev'
+schema:
+  - 'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql'
+  - 'libs/crud-gql/backend/src/graphql/crud-api.graphql'

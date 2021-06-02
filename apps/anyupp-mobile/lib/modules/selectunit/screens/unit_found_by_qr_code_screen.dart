@@ -60,18 +60,18 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                   pageIndex: widget.navigateToCart ? 4 : 0,
                 )));
               } else {
-                showErrorDialog(context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'), () => 
+                showErrorDialog(context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'), onClose: () => 
                 Nav.reset(SelectUnitChooseMethodScreen()));
               }
             }
             if (state is UnitsNotLoaded) {
                 //showErrorDialog(context, trans('selectUnit.qrUnitsError.title'), trans('selectUnit.qrUnitsError.description'), () => 
-                showErrorDialog(context, state.reasonCode, state.reasonMessage, () => 
+                showErrorDialog(context, state.reasonCode, state.reasonMessage, onClose: () => 
                 Nav.reset(SelectUnitChooseMethodScreen()));
 
             }
             if (state is UnitsNoNearUnit) {
-                showErrorDialog(context, trans('selectUnit.qrGeneralError.title'), trans('selectUnit.qrGeneralError.description'), () => 
+                showErrorDialog(context, trans('selectUnit.qrGeneralError.title'), trans('selectUnit.qrGeneralError.description'), onClose: () => 
                 Nav.reset(SelectUnitChooseMethodScreen()));
 
             }
