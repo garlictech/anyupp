@@ -25,6 +25,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { catchGqlError } from 'libs/admin/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -162,9 +163,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public async unitProductPositionChange(
-    $event: IProductOrderChangeEvent,
-  ): Promise<void> {
+  public unitProductPositionChange($event: IProductOrderChangeEvent) {
     if (this._loggedUser?.settings?.selectedUnitId) {
       const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
@@ -184,14 +183,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
           const productId = this._sortedUnitProductIds[i];
 
-          await this._crudSdk.sdk
+          this._crudSdk.sdk
             .UpdateUnitProduct({
               input: {
                 id: productId,
                 position: i + 1,
               },
             })
-            .toPromise();
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {});
         }
       }
     }

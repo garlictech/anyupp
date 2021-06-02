@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import {
@@ -11,7 +10,11 @@ import {
 import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  EToasterType,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
@@ -32,7 +35,6 @@ export class ProductCategoryFormComponent
   constructor(
     protected _injector: Injector,
     private _store: Store,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -77,7 +79,7 @@ export class ProductCategoryFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
@@ -86,61 +88,50 @@ export class ProductCategoryFormComponent
       };
 
       if (this.productCategory?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateProductCategory({
-              input: {
-                id: this.productCategory.id,
-                ...value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateProductCategory({
+            input: {
+              id: this.productCategory.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateProductCategory({ input: value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateProductCategory({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public imageUploadCallback = async (image: string): Promise<void> => {
+  public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.image.setValue(image);
 
     if (this.productCategory?.id) {
-      try {
-        await this.updateImageStyles(this.productCategory.id, image);
-
+      this.updateImageStyles(this.productCategory.id, image).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -150,23 +141,17 @@ export class ProductCategoryFormComponent
     }
   };
 
-  public imageRemoveCallback = async (): Promise<void> => {
+  public imageRemoveCallback = () => {
     this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory?.id) {
-      try {
-        await this.updateImageStyles(this.productCategory.id, null);
-
+      this.updateImageStyles(this.productCategory.id, null).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -176,14 +161,14 @@ export class ProductCategoryFormComponent
     }
   };
 
-  private async updateImageStyles(id: string, image: string | null) {
-    await this._crudSdk.sdk
+  private updateImageStyles(id: string, image: string | null) {
+    return this._crudSdk.sdk
       .UpdateProductCategory({
         input: {
           id,
           image,
         },
       })
-      .toPromise();
+      .pipe(catchGqlError(this._store));
   }
 }

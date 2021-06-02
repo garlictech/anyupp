@@ -17,6 +17,7 @@ import { select, Store } from '@ngrx/store';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
+import { catchGqlError } from 'libs/admin/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -79,15 +80,16 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       );
 
       this._sortedProductCategoryIds.forEach(
-        async (productCategoryId: string, pos: number): Promise<void> => {
-          await this._crudSdk.sdk
+        (productCategoryId: string, pos: number) => {
+          this._crudSdk.sdk
             .UpdateProductCategory({
               input: {
                 id: productCategoryId,
                 position: pos + 1,
               },
             })
-            .toPromise();
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {});
         },
       );
     }

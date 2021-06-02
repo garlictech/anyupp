@@ -8,6 +8,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
 import { CrudSdkService } from '../crud-sdk.service';
+import { catchGqlError } from 'libs/admin/shared/utils/src';
 
 @Injectable({
   providedIn: 'root',
@@ -220,6 +221,7 @@ export class OrderService {
           .CreateOrderHistory({
             input: historyOrder,
           })
+          .pipe(catchGqlError(this._store))
           .toPromise();
 
         await this._crudSdk.sdk
@@ -228,6 +230,7 @@ export class OrderService {
               id: order.id,
             },
           })
+          .pipe(catchGqlError(this._store))
           .toPromise();
       } catch (err) {
         console.error('errr', err);

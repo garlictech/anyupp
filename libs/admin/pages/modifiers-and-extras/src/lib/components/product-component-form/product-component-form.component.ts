@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import {
@@ -19,7 +18,11 @@ import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  EToasterType,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
 import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -45,7 +48,6 @@ export class ProductComponentFormComponent
     protected _injector: Injector,
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _logger: NGXLogger,
     private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
@@ -123,48 +125,38 @@ export class ProductComponentFormComponent
     };
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.productComponent?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateProductComponent({
-              input: {
-                id: this.productComponent.id,
-                ...this.dialogForm.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateProductComponent({
+            input: {
+              id: this.productComponent.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateProductComponent({ input: this.dialogForm?.value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateProductComponent({ input: this.dialogForm?.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

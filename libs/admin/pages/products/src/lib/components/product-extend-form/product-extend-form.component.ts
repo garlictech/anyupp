@@ -1,5 +1,4 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -15,7 +14,7 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType } from '@bgap/admin/shared/utils';
+import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
@@ -50,7 +49,6 @@ export class ProductExtendFormComponent
     private _crudSdk: CrudSdkService,
     private _store: Store,
     private _productFormService: ProductFormService,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
@@ -112,7 +110,7 @@ export class ProductExtendFormComponent
     }
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = { ...this.dialogForm?.value };
 
@@ -121,34 +119,31 @@ export class ProductExtendFormComponent
       }
 
       if (this.editing) {
-        try {
-          const input = {
-            input: {
-              id: this.product.id,
-              ...value,
-            },
-          };
+        const input = {
+          input: {
+            id: this.product.id,
+            ...value,
+          },
+        };
 
-          if (!input) {
-            throw new Error('HANDLE ME: input cannot be undefined');
-          }
+        if (!input) {
+          throw new Error('HANDLE ME: input cannot be undefined');
+        }
 
-          if (this.productLevel === EProductLevel.GROUP) {
-            await this._crudSdk.sdk.UpdateGroupProduct(input).toPromise();
-          } else {
-            await this._crudSdk.sdk.UpdateUnitProduct(input).toPromise();
-          }
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `EXTENDED PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
+        if (this.productLevel === EProductLevel.GROUP) {
+          this._crudSdk.sdk
+            .UpdateGroupProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('update ');
+            });
+        } else {
+          this._crudSdk.sdk
+            .UpdateUnitProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('update');
+            });
         }
       } else {
         // Save the extended product id
@@ -160,29 +155,35 @@ export class ProductExtendFormComponent
           value.position = 0;
         }
 
-        try {
-          const input = {
-            input: value,
-          };
+        const input = {
+          input: value,
+        };
 
-          if (this.productLevel === EProductLevel.GROUP) {
-            await this._crudSdk.sdk.CreateGroupProduct(input).toPromise();
-          } else {
-            await this._crudSdk.sdk.CreateUnitProduct(input).toPromise();
-          }
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `EXTENDED PRODUCT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
+        if (this.productLevel === EProductLevel.GROUP) {
+          this._crudSdk.sdk
+            .CreateGroupProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('insert');
+            });
+        } else {
+          this._crudSdk.sdk
+            .CreateUnitProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('insert');
+            });
         }
       }
     }
+  }
+
+  private _successAndClose(key: string) {
+    this._toasterService.show(
+      EToasterType.SUCCESS,
+      '',
+      `common.${key}Successful`,
+    );
+    this.close();
   }
 }

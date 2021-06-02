@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
 import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
+import { AdminSharedAppCoreModule } from '@bgap/admin/shared/data-access/app-core';
 import { AdminSharedDashboardModule } from '@bgap/admin/shared/data-access/dashboard';
 import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
@@ -43,6 +44,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
+import { EffectsModule } from '@ngrx/effects';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -65,6 +67,7 @@ const NB_MODULES = [
 
 export const FEATURE_STORES = [
   AdminSharedAdminUsersModule,
+  AdminSharedAppCoreModule,
   AdminSharedChainsModule,
   AdminSharedDashboardModule,
   AdminSharedFloorMapModule,
@@ -114,6 +117,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         },
       },
     ),
+    EffectsModule.forRoot([]),
     ...NB_MODULES,
     ...FEATURE_STORES,
     !environment.production

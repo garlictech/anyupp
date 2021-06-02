@@ -141,6 +141,9 @@
       "@bgap/shared/fixtures": ["libs/shared/fixtures/src/index.ts"],
       "@bgap/admin/shared/data-access/product-component-sets": [
         "libs/admin/shared/data-access/product-component-sets/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/app-core": [
+        "libs/admin/shared/data-access/app-core/src/index.ts"
       ]
     }
   },
