@@ -40,7 +40,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
+  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
     print('startStripePaymentWithExistingCard().start()=$cart');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
@@ -49,7 +49,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
+  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
@@ -67,7 +67,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     );
 
     if (result.data == null || result.data['startStripePayment'] == null) {
-      return null;
+      return;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -76,12 +76,10 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithExistingCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
     print('startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
-
-    return clientSecret;
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
 
@@ -91,7 +89,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
@@ -112,7 +110,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     );
 
     if (result.data == null || result.data['startStripePayment'] == null) {
-      return null;
+      return;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -121,8 +119,6 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithNewCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret);
     print('startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
-
-    return clientSecret;
   }
 
   @override

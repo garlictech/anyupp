@@ -196,11 +196,14 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
+    if (cart == null) {
+      return false;
+    }
     print('******** UPDATING CART IN BACKEND');
     try {
       QueryResult result = await GQL.amplify.executeMutation(
         mutation: MUTATION_UPDATE_CART,
-        variables: _getCartMutationVariablesFromCart(cart, 'createCartInput'),
+        variables: _getCartMutationVariablesFromCart(cart, 'updateCartInput'),
       );
 
       return result?.exception == null ? true : false;
