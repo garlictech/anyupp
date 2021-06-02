@@ -53,6 +53,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
                 `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
                 `yarn nx affected:lint --base=${stage} ${generatedLibExcludes}`,
                 `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
+                `yarn nx test anyupp-mobile`,
                 `yarn nx buildApk anyupp-mobile`,
                 'npx cowsay "YOUR PR IS SUPERCOOL!!!"',
               ],

@@ -4,13 +4,24 @@
       {{ i + 1 }}.
     </div>
     <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
-      {{ orderItem.productName | localize }} ({{
-        orderItem.variantName | localize
-      }})
+      <div>
+        {{ orderItem.productName | localize }} ({{
+          orderItem.variantName | localize
+        }})
 
-      <bgap-colorized-lane-icon
-        [laneId]="orderItem.laneId!"
-      ></bgap-colorized-lane-icon>
+        <bgap-colorized-lane-icon
+          [laneId]="orderItem.laneId!"
+        ></bgap-colorized-lane-icon>
+      </div>
+      <div class="font-weight-normal" *ngIf="orderItem.configSets">
+        <div *ngFor="let set of orderItem.configSets">
+          {{ set.name | localize }}:
+          <span *ngFor="let setItem of set.items; let last = last">
+            {{ setItem.name | localize }}
+            <ng-container *ngIf="!last">,</ng-container>
+          </span>
+        </div>
+      </div>
     </div>
     <div
       class="col-1 col-md-1 p-2 m-auto caption text-right font-weight-bold font-larger"
@@ -138,5 +149,4 @@
     ></nb-badge>
   </div>
 </div>
-
 <hr />

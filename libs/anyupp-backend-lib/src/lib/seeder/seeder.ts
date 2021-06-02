@@ -27,6 +27,7 @@ import {
   createTestUnitProduct,
   createAdminUser,
   SeederDependencies,
+  createComponentSets,
 } from './seed-data-fn';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 
@@ -130,6 +131,9 @@ export const seedBusinessData = (userId: string) => (
           createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
           createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
           createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
+
+          createComponentSets(deps).pipe(ce('### ComponentSets')),
+
           createTestChainProduct(
             1,
             1,
@@ -179,7 +183,6 @@ export const seedBusinessData = (userId: string) => (
             userIdx: 1,
             cartIdx: 1,
           })(deps),
-          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
         ),
       ),
       takeLast(1),
