@@ -3,6 +3,8 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
+import 'package:fa_prev/modules/menu/bloc/configset_state.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:odometer/odometer.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -162,77 +165,149 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     //     ));
     //   }
     // }
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        children: <Widget>[
-          Hero(
-            tag: widget.heroId,
-            child: ImageWidget(
-              url: widget.item.image,
-              placeholder: CircularProgressIndicator(
-                backgroundColor: Colors.black,
-              ),
-              errorWidget: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
-              fit: BoxFit.contain,
-              width: 200.0,
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 30.0,
-                //bottom: 16.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    getLocalizedText(context, widget.item.name).toUpperCase(),
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.poppins(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                      color: theme.text,
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Hero(
+                  tag: widget.heroId,
+                  child: ImageWidget(
+                    url: widget.item.image,
+                    placeholder: CircularProgressIndicator(
+                      backgroundColor: Colors.black,
+                    ),
+                    errorWidget: Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                    fit: BoxFit.contain,
+                    width: 200.0,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 30.0,
+                      //bottom: 16.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getLocalizedText(context, widget.item.name).toUpperCase(),
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.poppins(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                            color: theme.text,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-      
-                ],
-              ),
-            ),
-          ),
-          StreamBuilder<Cart>(
-            stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
-            builder: (context, AsyncSnapshot<Cart> snapshot) {
-              if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                //return _buildVariantsList(snapshot.data, widget.item.variants);
-                return ProductDetailVariantListWidget(cart: snapshot.data, product: widget.item, unit: unit,);
-              }
-
-              return CenterLoadingWidget();
-            },
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30.0, top: 16.0),
-              child: Text(
-                getLocalizedText(context, widget.item.description),
-                textAlign: TextAlign.left,
-                style: GoogleFonts.poppins(
-                  color: theme.text,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 13,
                 ),
-              ),
+                StreamBuilder<Cart>(
+                  stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
+                  builder: (context, AsyncSnapshot<Cart> snapshot) {
+                    if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                      //return _buildVariantsList(snapshot.data, widget.item.variants);
+                      return ProductDetailVariantListWidget(
+                        cart: snapshot.data,
+                        product: widget.item,
+                        unit: unit,
+                      );
+                    }
+
+                    return CenterLoadingWidget();
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30.0, top: 16.0),
+                    child: Text(
+                      getLocalizedText(context, widget.item.description),
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.poppins(
+                        color: theme.text,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        (widget.item.configSets == null || widget.item.configSets.isEmpty)
+            ? Container()
+            : _buildTotalButtonWidget(context)
+      ],
+    );
+  }
+
+  Widget _buildTotalButtonWidget(BuildContext context) {
+    return BlocBuilder<ConfigsetBloc, ConfigsetState>(
+      builder: (context, state) {
+        if (state is ConfigsetUpdated) {
+          return Container(
+              padding: EdgeInsets.all(8.0),
+              height: 76.0,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: theme.indicator,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      trans("cart.addToCart"), // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+                      style: GoogleFonts.poppins(
+                        fontSize: 24.0,
+                        color: theme.text2,
+                      ),
+                    ),
+                    Text(
+                      " (", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+                      style: GoogleFonts.poppins(
+                        fontSize: 24.0,
+                        color: theme.text2,
+                      ),
+                    ),
+                    AnimatedSlideOdometerNumber(
+                      letterWidth: 14.0,
+                      numberTextStyle: GoogleFonts.poppins(
+                        fontSize: 24.0,
+                        color: theme.text2,
+                      ),
+                      odometerNumber: OdometerNumber(state.totalPrice.toInt()),
+                      duration: Duration(milliseconds: 300),
+                    ),
+                    Text(
+                      widget.unit.currency + ")" ??
+                          'huf' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+                      style: GoogleFonts.poppins(
+                        fontSize: 24.0,
+                        color: theme.text2,
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () async {
+                  BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit, state.orderItem));
+                },
+              ));
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

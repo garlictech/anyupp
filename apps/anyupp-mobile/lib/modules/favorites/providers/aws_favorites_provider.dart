@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'package:fa_prev/core/core.dart';
+
 import 'package:fa_prev/graphql/graphql-queries.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -75,23 +74,19 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     print('_getFavorites().unitId=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_LIST_FAVORITES),
+      QueryResult result = await GQL.amplify.executeQuery(
+        query: QUERY_LIST_FAVORITES,
         variables: {
           'userId': user.id,
           'unitId': unitId,
         },
         fetchPolicy: FetchPolicy.networkOnly,
-      ));
-      // print('_getFavorites().result.data=${result.data}');
-      
-      if (result.hasException) {
-        print('_getFavorites().result.exception=${result.exception}');
-        // throw result.exception;
+      );
+
+      if (result.data == null || result.data['listFavoriteProducts'] == null) {
+        _favoritesController.add([]);
         return [];
       }
-
 
       List<dynamic> items = result.data['listFavoriteProducts']['items'];
       if (items == null || items.isEmpty) {
@@ -116,14 +111,11 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   Future<bool> _deleteFavoriteProduct(String favoriteProductId) async {
     print('_deleteFavoriteProduct().id=$favoriteProductId');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.mutate(
-        MutationOptions(
-          document: gql(MUTATION_DELETE_FAVORITE_PRODUCT),
-          variables: {
-            'favoriteProductId': favoriteProductId,
-          },
-        ),
+      QueryResult result = await GQL.amplify.executeMutation(
+        mutation: MUTATION_DELETE_FAVORITE_PRODUCT,
+        variables: {
+          'favoriteProductId': favoriteProductId,
+        },
       );
 
       return result?.exception == null ? true : false;
@@ -137,23 +129,15 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     print('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.mutate(
-        MutationOptions(
-          document: gql(MUTATION_ADD_FAVORITE_PRODUCT),
-          variables: {
+      QueryResult result = await GQL.amplify.executeMutation(
+        mutation: MUTATION_ADD_FAVORITE_PRODUCT,
+        variables: {
             'userId': user.id,
             'unitId': unitId,
             'productId': productId,
           },
-        ),
       );
-      print('AwsFavoritesProvider._addFavoriteProduct().result.data=${result.data}');
-      if (result.hasException) {
-        print('AwsFavoritesProvider._addFavoriteProduct().exception=${result.exception}');
-        print('AwsFavoritesProvider._addFavoriteProduct().source=${result.source}');
-      }
-
+      
       return result?.exception == null ? true : false;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');

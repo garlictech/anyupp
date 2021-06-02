@@ -221,6 +221,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                         } else {
                           getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                             // cart: widget.cart,
+                            orderId: widget.orderId,
                             paymentMethod: _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
                           ));
                           String payMentMethod = _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod);

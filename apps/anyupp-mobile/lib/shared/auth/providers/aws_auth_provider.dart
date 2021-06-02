@@ -13,7 +13,6 @@ import 'auth_provider_interface.dart';
 class AwsAuthProvider implements IAuthProvider {
   StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
-  CognitoUser _cognitoUser;
   final CognitoService _service;
 
   AwsAuthProvider(this._service) {
@@ -24,55 +23,83 @@ class AwsAuthProvider implements IAuthProvider {
   @override
   Future<User> getAuthenticatedUserProfile() async {
     try {
-      _cognitoUser = await _service.refreshUserTokenFromStorageIsExists();
-      if (_cognitoUser != null) {
-        _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
-        _userController.add(_user);
-        return _user;
-      }
-      print('getAuthenticatedUserProfile().user=$_user');
-      if (_user != null) {
-        return _user;
-      }
-      if (_user == null) {
-        _cognitoUser = await _service.currentUser;
-        if (_cognitoUser == null) {
-          _user = null;
-        } else {
-          _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+      bool isLooggedIn = await _service.refreshUserToken();
+      // print('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
+      if (isLooggedIn) {
+        if (_user == null) {
+          CognitoUser user = await _service.currentUser;
+          _user = _userFromAttributes(await user.getUserAttributes());
         }
-        _userController.add(_user);
-        return _user;
+      } else {
+        if (_user != null) {
+          _user = null;
+        }
       }
+      _userController.add(_user);
       return _user;
     } on Exception catch (e) {
       print('getAuthenticatedUserProfile().exception=$e');
       _user = null;
-      _cognitoUser = null;
       _userController.add(null);
       return null;
     } on Error catch (e) {
       print('getAuthenticatedUserProfile().error=$e');
       _user = null;
-      _cognitoUser = null;
       _userController.add(null);
       return null;
     }
   }
 
+  // @override
+  // Future<User> getAuthenticatedUserProfile() async {
+  //   try {
+  //     _cognitoUser = await _service.refreshUserTokenFromStorageIsExists();
+  //     if (_cognitoUser != null) {
+  //       _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+  //       _userController.add(_user);
+  //       return _user;
+  //     }
+  //     print('getAuthenticatedUserProfile().user=$_user');
+  //     if (_user != null) {
+  //       return _user;
+  //     }
+  //     if (_user == null) {
+  //       _cognitoUser = await _service.currentUser;
+  //       if (_cognitoUser == null) {
+  //         _user = null;
+  //       } else {
+  //         _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+  //       }
+  //       _userController.add(_user);
+  //       return _user;
+  //     }
+  //     return _user;
+  //   } on Exception catch (e) {
+  //     print('getAuthenticatedUserProfile().exception=$e');
+  //     _user = null;
+  //     _cognitoUser = null;
+  //     _userController.add(null);
+  //     return null;
+  //   } on Error catch (e) {
+  //     print('getAuthenticatedUserProfile().error=$e');
+  //     _user = null;
+  //     _cognitoUser = null;
+  //     _userController.add(null);
+  //     return null;
+  //   }
+  // }
+
   @override
   Future<User> loginWithCognitoSession(CognitoUserSession session, {String username}) async {
     print('loginWithCognitoSession().session=$session');
     try {
-      _cognitoUser = await _service.createCognitoUserFromSession(session, username);
-      await _cognitoUser.cacheTokens();
-      print('loginWithCognitoSession().cognitoUser=$_cognitoUser');
-      _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
+      CognitoUser user = await _service.createCognitoUserFromSession(session, username);
+      print('loginWithCognitoSession().cognitoUser=$user');
+      _user = _userFromAttributes(await user.getUserAttributes());
       print('loginWithCognitoSession().user=$_user');
       _userController.add(_user);
     } on Exception catch (e) {
       print('loginWithCognitoSession().error=$e');
-      _cognitoUser = null;
       _user = null;
       _userController.add(_user);
     }
@@ -162,7 +189,6 @@ class AwsAuthProvider implements IAuthProvider {
   @override
   Future<void> clearUserSession() async {
     _user = null;
-    _cognitoUser = null;
     _userController.add(_user);
     SharedPreferences sp = await SharedPreferences.getInstance();
     await sp.clear();

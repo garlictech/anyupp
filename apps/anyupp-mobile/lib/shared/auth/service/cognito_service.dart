@@ -12,7 +12,6 @@ class CognitoService {
   final String userPoolId;
   final String clientId;
   final String identityPoolId;
-  CognitoLocalStorage storage;
 
   CognitoUserPool _userPool;
 
@@ -21,7 +20,7 @@ class CognitoService {
     _userPool = CognitoUserPool(
       userPoolId,
       clientId,
-      storage: storage,
+      storage: CognitoLocalStorage()
     );
     init();
   }
@@ -48,8 +47,8 @@ class CognitoService {
   Future<bool> get isSessionValid async => (await session)?.isValid() ?? false;
 
   Future<void> init() async {
-    await this.currentUser;
-    _cognitoUser = await _userPool.getCurrentUser();
+    _cognitoUser = await this.currentUser;
+    print('CognitoService.init().cognitoUser=$_cognitoUser');
   }
 
   CognitoUser createCognitoUser(String username) {
@@ -64,13 +63,14 @@ class CognitoService {
   }
 
   Future<bool> signOut() async {
+    print('CognitoService.signOut()');
     try {
       CognitoUser user = await this.currentUser;
       if (user != null) {
         await user.globalSignOut();
         await user.signOut();
       }
-
+      _cognitoUser = null;
       return true;
     } on Exception catch (e) {
       print('signOut().error=$e');
@@ -79,14 +79,55 @@ class CognitoService {
   }
 
   Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
-    final user = CognitoUser(userName, userPool, signInUserSession: session);
+    print('CognitoService.createCognitoUserFromSession().session=$session, userName=$userName');
+    _cognitoUser = CognitoUser(userName, userPool, signInUserSession: session);
     _userSession = session;
+    await _cognitoUser.cacheTokens();
     await _saveSessionToCache();
-    return user;
+    return _cognitoUser;
   }
 
-  Future<CognitoUser> refreshUserTokenFromStorageIsExists() async {
+  Future<bool> refreshUserToken() async {
+    // print('CognitoService.refreshUserToken().start()');
+    try {
+      if (_cognitoUser == null) {
+        _cognitoUser = await _userPool.getCurrentUser();
+        // print('CognitoService.refreshUserToken().user=$_cognitoUser');
+        if (_cognitoUser == null) {
+          // No token, need login!
+          return false;
+        }
+
+        _userSession = await _cognitoUser.getSession();
+        // print('CognitoService.refreshUserToken().session=$_userSession');
+        if (!session.isValid()) {
+          // print('CognitoService.refreshUserToken().start refresh session()');
+          _userSession = await _cognitoUser.refreshSession(session.refreshToken);
+          // print('CognitoService.refreshUserToken().newsession()=$_userSession');
+        }
+        return true;
+      }
+
+      _userSession = await _cognitoUser.getSession();
+      // print('CognitoService.refreshUserToken().session2=$_userSession');
+      if (!session.isValid()) {
+          // print('CognitoService.refreshUserToken().start refresh session2()');
+          _userSession = await _cognitoUser.refreshSession(session.refreshToken);
+          // print('CognitoService.refreshUserToken().newsession2()=$_userSession');
+      }
+    } on Exception catch (e) {
+      print('CognitoService.refreshUserToken().error=$e');
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<CognitoUser> refreshUserTokenFromStorageIsExists2() async {
     print('refreshUserTokenFromStorageIsExists()');
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String username = sp.getString('cognito_username');
+    print('refreshUserTokenFromStorageIsExists().username=$username');
     try {
       CognitoUserSession session = await _loadSessionFromCache();
       print('refreshUserTokenFromStorageIsExists().session=$session');
@@ -94,14 +135,14 @@ class CognitoService {
       if (session != null) {
         print('refreshUserTokenFromStorageIsExists().session.isValid=${session.isValid()}');
         if (session.isValid()) {
-          final user = CognitoUser(null, userPool, signInUserSession: session);
+          final user = CognitoUser(username, userPool, signInUserSession: session);
           print('refreshUserTokenFromStorageIsExists().session.user=$user');
           _userSession = await user.getSession();
           print('refreshUserTokenFromStorageIsExists().validSession=$_userSession');
           return user;
         } else {
           print('refreshUserTokenFromStorageIsExists().refreshing token');
-          final user = CognitoUser(null, userPool, signInUserSession: session);
+          final user = CognitoUser(username, userPool, signInUserSession: session);
           _userSession = await user.refreshSession(session.refreshToken);
           print('refreshUserTokenFromStorageIsExists().refreshedSession=$_userSession');
           await _saveSessionToCache();
@@ -111,7 +152,7 @@ class CognitoService {
     } on Exception catch (e) {
       // print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e, $trace');
       print('refreshUserTokenFromStorageIsExists().exception. refreshing=$e');
-      final user = CognitoUser(null, userPool, signInUserSession: await _loadSessionFromCache());
+      final user = CognitoUser(username, userPool, signInUserSession: await _loadSessionFromCache());
       _userSession = await user.refreshSession(session.refreshToken);
       print('refreshUserTokenFromStorageIsExists().exception.refreshedSession=$_userSession');
       await _saveSessionToCache();
