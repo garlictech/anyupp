@@ -4,6 +4,8 @@ export 'bloc/stripe_payment_state.dart';
 export 'models/stripe_exception.dart';
 export 'providers/stripe_graphql_payment_provider.dart';
 export 'providers/stripe_payment_provider_interface.dart';
+export 'providers/external_payment_provider.dart';
+export 'providers/external_payment_provider_interface.dart';
 export 'repository/payment_repository.dart';
 export 'widgets/select_payment_method_dialog.dart';
 export 'widgets/select_payment_method_widget.dart';

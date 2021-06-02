@@ -27,7 +27,7 @@ class ImageWidget extends StatelessWidget {
       return Container();
     }
 
-    final bool isS3Image = url.startsWith('public');
+    final bool isS3Image = !url.startsWith('http');
     // print('ImageWidget.isS3=$isS3Image, image=$url');
 
     final bool isSvg = url.toLowerCase().endsWith('.svg');

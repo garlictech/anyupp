@@ -1,11 +1,11 @@
 ---
 name: Bug report
-about: Use this template to capture relevant information to track bug reports consistently
+about:
+  Use this template to capture relevant information to track bug reports consistently
   and add priority and business value to better organize Sprints and work.
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 ## Priority + Rationale
