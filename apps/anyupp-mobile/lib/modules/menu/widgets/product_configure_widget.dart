@@ -1,8 +1,8 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/bloc/cart_bloc.dart';
-import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
+import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
+import 'package:fa_prev/modules/menu/bloc/configset_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
@@ -11,8 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:odometer/odometer.dart';
-import 'package:fa_prev/shared/locale.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -43,6 +41,42 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     });
     _calculateTotalPrice();
     super.initState();
+  }
+
+  Future<void> setButton() async {
+    OrderItem orderItem = await getOrderItem();
+    BlocProvider.of<ConfigsetBloc>(context)
+        .add(ConfigsetUpdatedEvent(orderItem: orderItem, unit: widget.unit, totalPrice: _modifierTotalPrice));
+  }
+
+  Future<OrderItem> getOrderItem() async {
+    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+    return OrderItem(
+      productId: widget.product.id,
+      variantId: _productVariant.id,
+      image: widget.product.image,
+      priceShown: PriceShown(
+        currency: widget.unit.currency ?? 'huf', // TODO
+        pricePerUnit: _productVariant.price,
+        priceSum: _productVariant.price,
+        tax: 0,
+        taxSum: 0,
+      ),
+      allergens: widget.product.allergens,
+      productName: widget.product.name,
+      takeAway: false,
+      variantName: _productVariant.variantName,
+      // generatedProductConfigSet: widget.product.,
+      statusLog: [
+        StatusLog(
+          userId: user.id,
+          status: 'CART',
+          ts: 0,
+        ),
+      ],
+      quantity: 0,
+      selectedConfigMap: getSelectedComponentMap(),
+    );
   }
 
   @override
@@ -90,136 +124,58 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       ));
     });
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // _buildTotalSummary(context),
-        _buildAllergensListWidget(context),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // _buildTotalSummary(context),
+          _buildAllergensListWidget(context),
 
-        Divider(
-          color: theme.background2,
-        ),
-        ...variantItems,
-        Container(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // _buildAllergensListWidget(context),
-              ProductConfigModifiersWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onModifiersSelected: (modifiers) {
-                  this._selectedModifiers = modifiers;
-                  _calculateTotalPrice();
-                },
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              ProductConfigExtrasWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onExtraSelected: (setId, componentId, selected) {
-                  print('onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
-                  setState(() {
-                    if (_selectedExtras[setId] == null) {
-                      _selectedExtras[setId] = {};
-                    }
-                    _selectedExtras[setId][componentId] = selected;
-                    print('onExtraSelected._selectedExtras=$_selectedExtras');
-                  });
-                  _calculateTotalPrice();
-                },
-              )
-              // _buildExtraSets(context, sets),
-            ],
+          Divider(
+            color: theme.background2,
           ),
-        ),
-        _buildTotalButtonWidget(context)
-      ],
-    );
-  }
-
-  Widget _buildTotalButtonWidget(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      height: 76.0,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: theme.indicator,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              trans("cart.addToCart"), // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
-              style: GoogleFonts.poppins(
-                fontSize: 24.0,
-                color: theme.text2,
-              ),
-            ),
-            Text(
-              " (", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
-              style: GoogleFonts.poppins(
-                fontSize: 24.0,
-                color: theme.text2,
-              ),
-            ),
-            AnimatedSlideOdometerNumber(
-              letterWidth: 14.0,
-              numberTextStyle: GoogleFonts.poppins(
-                fontSize: 24.0,
-                color: theme.text2,
-              ),
-              odometerNumber: OdometerNumber(_modifierTotalPrice.toInt()),
-              duration: Duration(milliseconds: 300),
-            ),
-            Text(
-              widget.unit.currency + ")" ??
-                  'huf' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
-              style: GoogleFonts.poppins(
-                fontSize: 24.0,
-                color: theme.text2,
-              ),
-            ),
-          ],
-        ),
-        onPressed: () async {
-          User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-          BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-              widget.unit,
-              OrderItem(
-                productId: widget.product.id,
-                variantId: _productVariant.id,
-                image: widget.product.image,
-                priceShown: PriceShown(
-                  currency: widget.unit.currency ?? 'huf', // TODO
-                  pricePerUnit: _productVariant.price,
-                  priceSum: _productVariant.price,
-                  tax: 0,
-                  taxSum: 0,
+          ...variantItems,
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // _buildAllergensListWidget(context),
+                ProductConfigModifiersWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  onModifiersSelected: (modifiers) async {
+                    this._selectedModifiers = modifiers;
+                    await setButton();
+                    _calculateTotalPrice();
+                    setState(() {});
+                  },
                 ),
-                allergens: widget.product.allergens,
-                productName: widget.product.name,
-                takeAway: false,
-                variantName: _productVariant.variantName,
-                // generatedProductConfigSet: widget.product.,
-                statusLog: [
-                  StatusLog(
-                    userId: user.id,
-                    status: 'CART',
-                    ts: 0,
-                  ),
-                ],
-                quantity: 0,
-                selectedConfigMap: getSelectedComponentMap(),
-              )));
-        },
+                SizedBox(
+                  height: 16.0,
+                ),
+                ProductConfigExtrasWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  onExtraSelected: (setId, componentId, selected) {
+                    print('onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                    setState(() {
+                      if (_selectedExtras[setId] == null) {
+                        _selectedExtras[setId] = {};
+                      }
+                      _selectedExtras[setId][componentId] = selected;
+                      print('onExtraSelected._selectedExtras=$_selectedExtras');
+                      _calculateTotalPrice();
+                    });
+                  },
+                )
+                // _buildExtraSets(context, sets),
+              ],
+            ),
+          ),
+          // _buildTotalButtonWidget(context)
+        ],
       ),
     );
   }
@@ -227,37 +183,6 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Widget _buildAllergensListWidget(BuildContext context) {
     return AllergensWidget(allergens: _allergeens.toList());
   }
-
-  // Widget _buildTotalSummary(BuildContext context) {
-  //   return Container(
-  //     child: Column(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               'Total',
-  //               style: GoogleFonts.poppins(
-  //                 fontSize: 30.0,
-  //                 color: theme.text,
-  //               ),
-  //             ),
-  //             Text(
-  //               formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
-  //               style: GoogleFonts.poppins(
-  //                 fontSize: 30.0,
-  //                 color: theme.text,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         Divider(
-  //           color: theme.border2,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectedComponentMap() {
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
@@ -286,7 +211,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     return selectedConfigMap;
   }
 
-  Future<void> _calculateTotalPrice() async {
+  void _calculateTotalPrice() {
     // print('_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
     double price = _productVariant.price;
 
@@ -325,9 +250,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       });
     });
     print('_calculateTotalPrice.allergeens=$allergeens');
-    setState(() {
-      _allergeens = allergeens;
-      _modifierTotalPrice = price;
-    });
+
+    _allergeens = allergeens;
+    _modifierTotalPrice = price;
+    setButton();
   }
 }

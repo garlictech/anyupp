@@ -1,4 +1,5 @@
 export 'bloc/product_categories_bloc.dart';
+export 'bloc/configset_bloc.dart';
 export 'providers/aws_product_provider.dart';
 export 'providers/product_provider_interface.dart';
 export 'repository/product_repository.dart';
