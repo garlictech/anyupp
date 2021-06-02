@@ -10,10 +10,7 @@ import {
 } from '@bgap/shared/data-validators';
 import { UnitsResolverDeps } from './utils';
 import { Maybe } from '@bgap/crud-gql/api';
-import {
-  filterNullishGraphqlListWithDefault,
-  pipeDebug,
-} from '@bgap/shared/utils';
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 
 type ListResponse<T> = {
   items: Array<T>;
@@ -102,13 +99,13 @@ const listActiveUnits = () => (deps: UnitsResolverDeps) =>
       { filter: { isActive: { eq: true } } },
       { fetchPolicy: 'no-cache' },
     )
-    .pipe(pipeDebug(`### listActiveUnits`), switchMap(validateUnitList));
+    .pipe(/* pipeDebug(`### listActiveUnits`),  */ switchMap(validateUnitList));
 
 const getGroupCurrency = (id: string) => (
   deps: UnitsResolverDeps,
 ): Observable<string> =>
   deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' }).pipe(
-    pipeDebug(`### getGroupCurrency by groupId: ${id}`),
+    // pipeDebug(`### getGroupCurrency by groupId: ${id}`),
     switchMap(validateGetGroupCurrency),
     map(currency => currency.currency),
   );
@@ -118,4 +115,6 @@ const getChain = (id: string) => (
 ): Observable<CrudApi.Chain> =>
   deps.crudSdk
     .GetChain({ id }, { fetchPolicy: 'no-cache' })
-    .pipe(pipeDebug(`### getChain by id: ${id}`), switchMap(validateChain));
+    .pipe(
+      /* pipeDebug(`### getChain by id: ${id}`), */ switchMap(validateChain),
+    );

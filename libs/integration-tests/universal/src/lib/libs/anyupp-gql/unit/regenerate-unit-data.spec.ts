@@ -186,6 +186,7 @@ const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
 const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
+  parentId: groupProduct_01.id, // it is from a different unit, but it is not
   chainId: chainId_01_seeded,
   unitId: unitId_02,
 };
@@ -225,12 +226,12 @@ describe('RegenerateUnitData mutation tests', () => {
     deleteTestProductComponent(prodComponent_03.id, iamCrudSdk),
     deleteTestProductComponentSet(prodCompSet_01.id, iamCrudSdk),
     deleteTestProductComponentSet(prodCompSet_02.id, iamCrudSdk),
-    deleteTestChainProduct(chainProduct_01.id, iamCrudSdk).pipe(take(1)),
-    deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0101.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0104_NEW.id, iamCrudSdk),
+    deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
+    deleteTestChainProduct(chainProduct_01.id, iamCrudSdk).pipe(take(1)),
     // // generated
     deleteTestGeneratedProduct(
       generatedProduct_fromUnitProduct_0101.id,
@@ -300,7 +301,7 @@ describe('RegenerateUnitData mutation tests', () => {
   });
 
   it('should return helpful error message in case the unit has no items', done => {
-    const input = { id: unitFixture.unitId_seeded_02 };
+    const input = { id: 'EMPTY UNIT' };
 
     // TO DEBUG
     // defer(() =>
