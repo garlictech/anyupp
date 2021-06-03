@@ -5,9 +5,7 @@ import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
 import { WebsiteConstruct } from './website-construct';
 
-export interface SiteStackProps extends sst.StackProps {
-  certificateArn: string;
-}
+export interface SiteStackProps extends sst.StackProps {}
 
 export class SiteStack extends sst.Stack {
   public adminSiteUrl: string;
@@ -18,9 +16,9 @@ export class SiteStack extends sst.Stack {
 
     const adminSite = new WebsiteConstruct(this, 'Admin', {
       domainName: 'anyupp.com',
-      siteSubDomain: app.stage === 'prod' ? 'admin' : 'admin-' + app.name,
+      siteSubDomain:
+        app.stage === 'prod' ? 'admin2' : `${app.stage}-admin-${app.name}`,
       distDir: path.join(PROJECT_ROOT, '/dist/apps/admin'),
-      certificateArn: props.certificateArn,
     });
 
     this.adminSiteUrl = adminSite.websiteUrl;
