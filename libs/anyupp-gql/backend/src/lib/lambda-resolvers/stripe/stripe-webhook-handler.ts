@@ -18,7 +18,7 @@ import { StripeResolverDeps } from './stripe.utils';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 
-export const createStripeWebhookExpressApp = () => {
+export const createStripeWebhookExpressApp = (szamlazzhuClient: any) => {
   // declare a new express app
   // const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
   // const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
