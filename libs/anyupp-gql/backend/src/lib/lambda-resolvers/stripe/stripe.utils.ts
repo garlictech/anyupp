@@ -7,6 +7,7 @@ import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 export interface StripeResolverDeps {
   crudSdk: CrudSdk;
   anyuppSdk: AnyuppSdk;
+  szamlazzClient: any;
 }
 
 export const mapPaymentMethodToCard = (
