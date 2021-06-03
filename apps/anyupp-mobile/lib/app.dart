@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,6 +110,8 @@ class _MyAppState extends State<MyApp> {
             create: (BuildContext context) => getIt<AffiliateBloc>()),
         BlocProvider<MainNavigationBloc>(
             create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(
+            create: (BuildContext context) => getIt<ConfigsetBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {

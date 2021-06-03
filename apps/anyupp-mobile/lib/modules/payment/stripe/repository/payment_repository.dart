@@ -20,12 +20,12 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) {
+  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) {
     return _stripePaymentProvider.startStripePaymentWithExistingCard(cart, paymentMethodId);
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) {
+  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) {
     return _stripePaymentProvider.startStripePaymentWithNewCard(cart, stripeCard, saveCard);
   }
 
@@ -35,12 +35,12 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<String> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) {
+  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) {
        return _stripePaymentProvider.startOrderStripePaymentWithExistingCard(orderId, paymentMethodId);
     }
   
     @override
-    Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) {
+    Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) {
      return _stripePaymentProvider.startOrderStripePaymentWithNewCard(orderId, stripeCard, saveCard);
   }
 

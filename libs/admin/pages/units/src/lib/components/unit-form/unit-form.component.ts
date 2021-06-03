@@ -1,5 +1,4 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { delay, take } from 'rxjs/operators';
 
 import {
@@ -20,6 +19,7 @@ import {
 } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
+  catchGqlError,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
@@ -52,7 +52,6 @@ export class UnitFormComponent
     protected _injector: Injector,
     private _store: Store,
     private _formsService: FormsService,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -195,48 +194,43 @@ export class UnitFormComponent
     // untilDestroyed uses it.
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.unit?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateUnit({
-              input: {
-                id: this.unit.id,
-                ...this.dialogForm?.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateUnit({
+            input: {
+              id: this.unit.id,
+              ...this.dialogForm?.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateUnit({
-              input: {
-                ...this.dialogForm?.value,
-                isAcceptingOrders: false,
-              },
-            })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`UNIT INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateUnit({
+            input: {
+              ...this.dialogForm?.value,
+              isAcceptingOrders: false,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

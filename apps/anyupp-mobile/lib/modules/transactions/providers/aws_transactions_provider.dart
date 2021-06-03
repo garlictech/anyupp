@@ -36,7 +36,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
       return transactions;
     } on Exception catch (e) {
       print('AwsTransactionsProvider.listTransactions.Exception: $e');
-      return [];
+      rethrow;
     }
   }
 }

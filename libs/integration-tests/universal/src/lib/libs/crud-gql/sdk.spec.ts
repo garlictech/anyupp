@@ -6,19 +6,11 @@ import {
 import { interval, of } from 'rxjs';
 import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
+import { productFixture } from '@bgap/shared/fixtures';
 
 describe('CRUD sdk test', () => {
   let sdk: CrudSdk;
   let authSdk: CrudSdk;
-
-  const toMatchSnapshot = (x: any, name?: string) =>
-    expect(x).toMatchSnapshot(
-      {
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-      },
-      name,
-    );
 
   beforeAll(async () => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
@@ -31,7 +23,16 @@ describe('CRUD sdk test', () => {
   });
 
   test('An arbitrary CRUD', done => {
-    const id = 'CRUD_SDK_ID';
+    const id = productFixture.unitProductId_seeded_id_01;
+    const toMatchSnapshot = (x: any, name?: string) =>
+      expect(x).toMatchSnapshot(
+        {
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          product: expect.any(Object),
+        },
+        name,
+      );
 
     of(1)
       .pipe(
@@ -42,7 +43,12 @@ describe('CRUD sdk test', () => {
         tap(x => expect(x).toMatchSnapshot('SHOULD BE NULL')),
         switchMap(() =>
           sdk.CreateFavoriteProduct({
-            input: { id, userId: 'USER_FOO', unitId: 'UNIT_BAR' },
+            input: {
+              id,
+              userId: 'USER_FOO',
+              unitId: 'UNIT_BAR',
+              favoriteProductProductId: id,
+            },
           }),
         ),
         tap(x => toMatchSnapshot(x, 'CREATE')),
@@ -73,7 +79,12 @@ describe('CRUD sdk test', () => {
     const dataSource$ = authSdk.OnAdminUserChange({ id });
 
     const subs$ = dataSource$.pipe(
-      tap(x => toMatchSnapshot(x)),
+      tap(x =>
+        expect(x).toMatchSnapshot({
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        }),
+      ),
       take(1),
     );
 

@@ -23,6 +23,7 @@
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
+    "error": "Error",
     "email": "Email",
     "phone": "Phone",
     "chain": "Chain",
@@ -334,6 +335,7 @@
   },
   "errors": {
     "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",
-    "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!"
+    "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!",
+    "commonGqlError": "Database operation failed! Please contact the administrator!"
   }
 }

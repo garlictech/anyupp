@@ -1,5 +1,4 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -15,7 +14,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType } from '@bgap/admin/shared/utils';
+import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EImageType,
@@ -54,7 +53,6 @@ export class ProductFormComponent
     private _productFormService: ProductFormService,
     private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
@@ -116,7 +114,7 @@ export class ProductFormComponent
     }
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
@@ -124,66 +122,51 @@ export class ProductFormComponent
       };
 
       if (this.product?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateChainProduct({
-              input: {
-                id: this.product.id,
-                ...value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateChainProduct({
+            input: {
+              id: this.product.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `CHAIN PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateChainProduct({ input: value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `CHAIN PRODUCT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateChainProduct({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public imageUploadCallback = async (image: string): Promise<void> => {
+  public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.image.setValue(image);
 
     // Update existing user's image
     if (this.product?.id) {
-      try {
-        await this.updateImageStyles(this.product?.id, image);
-
+      this.updateImageStyles(this.product?.id, image).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -195,23 +178,17 @@ export class ProductFormComponent
     this._changeDetectorRef.detectChanges();
   };
 
-  public imageRemoveCallback = async (): Promise<void> => {
+  public imageRemoveCallback = () => {
     this.dialogForm?.controls.image.setValue('');
 
     if (this.product?.id) {
-      try {
-        await this.updateImageStyles(this.product?.id, null);
-
+      this.updateImageStyles(this.product?.id, null).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageRemoveSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -223,14 +200,14 @@ export class ProductFormComponent
     this._changeDetectorRef.detectChanges();
   };
 
-  private async updateImageStyles(id: string, image: string | null) {
-    await this._crudSdk.sdk
+  private updateImageStyles(id: string, image: string | null) {
+    return this._crudSdk.sdk
       .UpdateChainProduct({
         input: {
           id,
           image,
         },
       })
-      .toPromise();
+      .pipe(catchGqlError(this._store));
   }
 }
