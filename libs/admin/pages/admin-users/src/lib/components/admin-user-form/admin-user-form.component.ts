@@ -1,5 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,10 +11,15 @@ import {
   CrudSdkService,
 } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { contactFormGroup, EToasterType } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  contactFormGroup,
+  EToasterType,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +35,7 @@ export class AdminUserFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _logger: NGXLogger,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
     private _anyuppSdk: AnyuppSdkService,
@@ -58,83 +61,68 @@ export class AdminUserFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.adminUser?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateAdminUser({
-              input: {
-                id: this.adminUser.id,
-                ...this.dialogForm.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateAdminUser({
+            input: {
+              id: this.adminUser.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `ADMIN USER UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          const name = this.dialogForm.controls['name'].value;
-          const email = this.dialogForm.controls['email'].value;
-          const phone = this.dialogForm.controls['phone'].value;
+        const name = this.dialogForm.controls['name'].value;
+        const email = this.dialogForm.controls['email'].value;
+        const phone = this.dialogForm.controls['phone'].value;
 
-          this._anyuppSdk.sdk
-            .CreateAdminUser({
-              input: { email, name, phone },
-            })
-            .subscribe(() => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful',
-              );
+        this._anyuppSdk.sdk
+          .CreateAdminUser({
+            input: { email, name, phone },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
 
-              this.close();
-            });
-        } catch (error) {
-          this._logger.error(
-            `ADMIN USER INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       }
     }
   }
 
-  public imageUploadCallback = async (image: string): Promise<void> => {
+  public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.profileImage.setValue(image);
 
     if (this.adminUser?.id) {
-      try {
-        await this._crudSdk.sdk
-          .UpdateAdminUser({
-            input: {
-              id: this.adminUser.id,
-              profileImage: image,
-            },
-          })
-          .toPromise();
-
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageUploadSuccess',
-        );
-      } catch (error) {
-        this._logger.error(
-          `ADMIN USER IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      this._crudSdk.sdk
+        .UpdateAdminUser({
+          input: {
+            id: this.adminUser.id,
+            profileImage: image,
+          },
+        })
+        .pipe(catchGqlError(this._store))
+        .subscribe(() => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageUploadSuccess',
+          );
+        });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -144,7 +132,7 @@ export class AdminUserFormComponent
     }
   };
 
-  public imageRemoveCallback = async (): Promise<void> => {
+  public imageRemoveCallback = () => {
     this.dialogForm?.controls.profileImage.setValue('');
 
     if (this.adminUser) {
@@ -152,26 +140,21 @@ export class AdminUserFormComponent
     }
 
     if (this.adminUser?.id) {
-      try {
-        await this._crudSdk.sdk
-          .UpdateAdminUser({
-            input: {
-              id: this.adminUser.id,
-              profileImage: null,
-            },
-          })
-          .toPromise();
-
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageRemoveSuccess',
-        );
-      } catch (error) {
-        this._logger.error(
-          `ADMIN USER IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      this._crudSdk.sdk
+        .UpdateAdminUser({
+          input: {
+            id: this.adminUser.id,
+            profileImage: null,
+          },
+        })
+        .pipe(catchGqlError(this._store))
+        .subscribe(() => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.imageRemoveSuccess',
+          );
+        });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,

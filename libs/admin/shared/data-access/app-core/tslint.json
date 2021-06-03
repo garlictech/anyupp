@@ -1,0 +1,10 @@
+{
+  "extends": "../../../../../tslint.json",
+  "rules": {
+    "directive-selector": [true, "attribute", "bgap", "camelCase"],
+    "component-selector": [true, "element", "bgap", "kebab-case"]
+  },
+  "linterOptions": {
+    "exclude": ["!**/*"]
+  }
+}

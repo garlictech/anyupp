@@ -1,12 +1,11 @@
-import { cloneDeep, omit } from 'lodash/fp';
-import { take } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
-
+import { cloneDeep, omit } from 'lodash/fp';
+import { take } from 'rxjs/operators';
 import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
@@ -220,6 +219,7 @@ export class OrderService {
           .CreateOrderHistory({
             input: historyOrder,
           })
+          .pipe(catchGqlError(this._store))
           .toPromise();
 
         await this._crudSdk.sdk
@@ -228,6 +228,7 @@ export class OrderService {
               id: order.id,
             },
           })
+          .pipe(catchGqlError(this._store))
           .toPromise();
       } catch (err) {
         console.error('errr', err);
