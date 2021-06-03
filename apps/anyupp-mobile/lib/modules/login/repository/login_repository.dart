@@ -27,26 +27,6 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   }
 
   @override
-  Future<ProviderLoginResponse> signInWithApple() {
-    return _socialLoginProvider.signInWithApple();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithFacebook() {
-    return _socialLoginProvider.signInWithFacebook();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithGoogle() {
-    return _socialLoginProvider.signInWithGoogle();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithProvider(LoginMethod method) {
-    return _socialLoginProvider.signInWithProvider(method);
-  }
-
-  @override
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) {
     return _socialLoginProvider.fetchSignInMethodsForEmail(email);
   }
