@@ -14,5 +14,5 @@ Then('I should see {string} text', (text: string) => {
 });
 
 When('I click the {string} text', (value: string) => {
-  cy.contains(value, { matchCase: false }).click({ timeout: 40000, force: true,});
+  cy.contains(value, { matchCase: false }).click({ timeout: 60000, force: true,});
 });
