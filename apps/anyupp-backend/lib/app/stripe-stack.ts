@@ -10,6 +10,7 @@ import { getFQParamName } from './utils';
 export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
   stripeSigningSecret: string;
+  szamlazzhuAgentKey: string;
 }
 
 export class StripeStack extends sst.Stack {

@@ -1472,18 +1472,17 @@
       "architect": {
         "build": {
           "builder": "@nrwl/workspace:run-commands",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "apps/cicd/cdk.out",
+            "apps/cicd/.build",
+            "apps/cicd/.serverless"
+          ],
           "options": {
             "outputPath": "dist/apps/cicd",
             "main": "apps/cicd/src/main.ts",
             "tsConfig": "apps/cicd/tsconfig.app.json",
             "assets": ["apps/cicd/src/assets"]
-          },
-          "outputs": [
-            "apps/cicd/cdk.out",
-            "apps/cicd/.build",
-            "apps/cicd/.serverless"
-          ]
+          }
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1657,6 +1656,30 @@
           "outputs": ["coverage/libs/gql-sdk"],
           "options": {
             "jestConfig": "libs/gql-sdk/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data-access-app-core": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/app-core",
+      "sourceRoot": "libs/admin/shared/data-access/app-core/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/app-core/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/app-core"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/app-core/jest.config.js",
             "passWithNoTests": true
           }
         }

@@ -77,6 +77,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         filter((unit: CrudApi.Unit | undefined): boolean => !!unit),
         tap((unit: CrudApi.Unit | undefined): void => {
           this.unit = fp.cloneDeep(unit);
+
+          // Update html - show floor-map component
+          this._changeDetectorRef.detectChanges();
         }),
         switchMap(
           (): Observable<boolean> =>
@@ -163,8 +166,6 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           );
 
           fabricCanvas.renderAll();
-
-          this._changeDetectorRef.detectChanges();
         }
       });
   }

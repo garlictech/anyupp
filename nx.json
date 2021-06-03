@@ -195,6 +195,9 @@
     },
     "gql-sdk": {
       "tags": ["type:utils", "platform:universal"]
+    },
+    "admin-shared-data-access-app-core": {
+      "tags": ["type:utils", "platform:angular"]
     }
   }
 }

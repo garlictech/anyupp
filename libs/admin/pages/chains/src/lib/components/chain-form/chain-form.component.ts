@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { switchMap } from 'rxjs/operators';
 
 import {
@@ -14,6 +13,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
+  catchGqlError,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
@@ -21,6 +21,8 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+import { EMPTY } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,9 +38,9 @@ export class ChainFormComponent
 
   constructor(
     protected _injector: Injector,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
@@ -93,69 +95,55 @@ export class ChainFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateChain({
-              input: {
-                id: this.chain.id,
-                ...this.dialogForm.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateChain({
+            input: {
+              id: this.chain.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateChain({ input: this.dialogForm?.value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateChain({ input: this.dialogForm?.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public logoUploadCallback = async (
-    image: string,
-    param: string,
-  ): Promise<void> => {
+  public logoUploadCallback = (image: string, param: string) => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue(image);
 
     if (this.chain?.id) {
-      try {
-        await this.updateImageStyles(image, param);
-
+      this.updateImageStyles(image, param).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `ADMIN USER IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -165,13 +153,13 @@ export class ChainFormComponent
     }
   };
 
-  public logoRemoveCallback = async (param: string): Promise<void> => {
+  public logoRemoveCallback = (param: string) => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue('');
 
     if (this.chain?.id) {
-      await this.updateImageStyles(null, param);
+      this.updateImageStyles(null, param).subscribe();
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -181,41 +169,43 @@ export class ChainFormComponent
     }
   };
 
-  private async updateImageStyles(image: string | null, param: string) {
-    await this._crudSdk.sdk
-      .GetChain({
-        id:
-          this.chain?.id ||
-          'FIXME THIS IS FROM UNHANDLED UNKNOWN VALUE IN updateImageStyles',
-      })
-      .pipe(
-        filterNullish(),
-        switchMap(data => {
-          const _data: CrudApi.Chain = cloneDeep(data);
-          const chainStyleImagesRecord: Record<
-            string,
-            keyof CrudApi.ChainStyleImages
-          > = {
-            header: 'header',
-            logo: 'logo',
-          };
+  private updateImageStyles(image: string | null, param: string) {
+    if (this.chain?.id) {
+      return this._crudSdk.sdk
+        .GetChain({
+          id: this.chain?.id,
+        })
+        .pipe(
+          filterNullish(),
+          switchMap(data => {
+            const _data: CrudApi.Chain = cloneDeep(data);
+            const chainStyleImagesRecord: Record<
+              string,
+              keyof CrudApi.ChainStyleImages
+            > = {
+              header: 'header',
+              logo: 'logo',
+            };
 
-          if (!_data.style.images) {
-            _data.style.images = {};
-          }
+            if (!_data.style.images) {
+              _data.style.images = {};
+            }
 
-          if (chainStyleImagesRecord[param]) {
-            _data.style.images[chainStyleImagesRecord[param]] = image;
-          }
+            if (chainStyleImagesRecord[param]) {
+              _data.style.images[chainStyleImagesRecord[param]] = image;
+            }
 
-          return this._crudSdk.sdk.UpdateChain({
-            input: {
-              id: _data.id,
-              style: _data.style,
-            },
-          });
-        }),
-      )
-      .toPromise();
+            return this._crudSdk.sdk.UpdateChain({
+              input: {
+                id: _data.id,
+                style: _data.style,
+              },
+            });
+          }),
+          catchGqlError(this._store),
+        );
+    } else {
+      return EMPTY;
+    }
   }
 }

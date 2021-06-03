@@ -24,7 +24,7 @@ class AwsAuthProvider implements IAuthProvider {
   Future<User> getAuthenticatedUserProfile() async {
     try {
       bool isLooggedIn = await _service.refreshUserToken();
-      print('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
+      // print('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
       if (isLooggedIn) {
         if (_user == null) {
           CognitoUser user = await _service.currentUser;

@@ -22,6 +22,7 @@ export 'models/ProductVariant.dart';
 export 'models/ProductVariantPack.dart';
 export 'models/StatusLog.dart';
 export 'models/StripePaymentMethod.dart';
+export 'models/TransactionItem.dart';
 export 'models/User.dart';
 export 'models/core/model_base.dart';
 export 'models/core/parsers.dart';

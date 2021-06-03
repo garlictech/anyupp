@@ -10,6 +10,7 @@ export * from './lib/lambda-resolvers/product';
 export * from './lib/lambda-resolvers/user';
 export * from './lib/lambda-resolvers/unit';
 export * from './lib/database';
+export * from './lib/szamlazzhu';
 
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };

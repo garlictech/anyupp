@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { pairwise, startWith, take } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
@@ -14,7 +13,11 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  EToasterType,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
 import { IKeyValue, IRoleContext } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -44,7 +47,6 @@ export class RoleContextFormComponent
   constructor(
     protected _injector: Injector,
     private _store: Store,
-    private _logger: NGXLogger,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
@@ -199,54 +201,43 @@ export class RoleContextFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.roleContext?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateRoleContext({
-              input: {
-                id: this.roleContext.id,
-                ...this.dialogForm.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateRoleContext({
+            input: {
+              id: this.roleContext.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `ROLE CONTEXT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateRoleContext({
-              input: {
-                ...this.dialogForm?.value,
-                contextId: Math.random().toString(36).substring(2, 8),
-              },
-            })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `ROLE CONTEXT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateRoleContext({
+            input: {
+              ...this.dialogForm?.value,
+              contextId: Math.random().toString(36).substring(2, 8),
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
