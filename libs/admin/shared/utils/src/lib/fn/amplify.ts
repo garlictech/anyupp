@@ -1,5 +1,5 @@
 import * as fp from 'lodash/fp';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';

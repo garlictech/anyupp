@@ -13,6 +13,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
@@ -25,7 +26,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { catchGqlError } from 'libs/admin/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -191,7 +191,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
               },
             })
             .pipe(catchGqlError(this._store))
-            .subscribe(() => {});
+            .subscribe();
         }
       }
     }

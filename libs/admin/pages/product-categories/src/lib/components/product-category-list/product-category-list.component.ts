@@ -1,6 +1,4 @@
 import { map } from 'rxjs/operators';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 import {
   ChangeDetectionStrategy,
@@ -9,15 +7,17 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { catchGqlError } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
-import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
-import { catchGqlError } from 'libs/admin/shared/utils/src';
 
 @UntilDestroy()
 @Component({
@@ -89,7 +89,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
               },
             })
             .pipe(catchGqlError(this._store))
-            .subscribe(() => {});
+            .subscribe();
         },
       );
     }
