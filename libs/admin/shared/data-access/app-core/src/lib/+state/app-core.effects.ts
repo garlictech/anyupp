@@ -33,7 +33,7 @@ export class AppCoreEffects {
           // Your custom service 'load' logic goes here. For now just return a success action...
           // return AppCoreActions.loadAppCoreSuccess({ appCore: [] });
         },
-        onError: (action, error) => {
+        onError: (/*action, error*/) => {
           // return AppCoreActions.loadAppCoreFailure({ error });
         },
       }),

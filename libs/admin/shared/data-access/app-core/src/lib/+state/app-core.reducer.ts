@@ -3,7 +3,9 @@ import { Action, createReducer } from '@ngrx/store';
 
 export const APP_CORE_FEATURE_KEY = 'appCore';
 
-export interface IAppCoreState {}
+export interface IAppCoreState {
+  error?: string | null; // last known error (if any)
+}
 
 export interface LoggedUserPartialState {
   readonly [APP_CORE_FEATURE_KEY]: IAppCoreState;
