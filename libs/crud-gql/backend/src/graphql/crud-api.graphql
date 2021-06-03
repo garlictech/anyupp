@@ -656,10 +656,11 @@ type Transaction
   externalTransactionId: String
   invoiceId: ID
   invoice: Invoice @connection(fields: ["invoiceId"])
+  receiptId: ID
+  receipt: Receipt @connection(fields: ["receiptId"])
 }
 
 type UserInvoiceAddress {
-  id: ID!
   customerName: String!
   taxNumber: String!
   country: String!

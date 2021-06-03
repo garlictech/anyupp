@@ -16,6 +16,7 @@ import { initStripe } from './stripe.service';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { StripeResolverDeps } from './stripe.utils';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
+import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 
 export const createStripeWebhookExpressApp = () => {
   // declare a new express app
@@ -101,7 +102,10 @@ export const createStripeWebhookExpressApp = () => {
 };
 
 const handleInvoice = (orderId: string) => async (deps: StripeResolverDeps) => {
+  console.log('***** handleInvoice().orderId=' + orderId);
+
   const order = await loadOrder(orderId)(deps);
+  console.log('***** handleInvoice().order.loaded()');
   if (!order) {
     throw Error('Order not found with id=' + orderId);
   }
@@ -117,9 +121,13 @@ const handleInvoice = (orderId: string) => async (deps: StripeResolverDeps) => {
   }
 
   const unit = await loadUnit(order.unitId)(deps);
+  console.log('***** handleInvoice().unit.loaded()');
   const user = await loadUser(order.userId)(deps);
+  console.log('***** handleInvoice().user.loaded()');
 
-  console.log('handleInvoice().invoiceId=' + order.transaction.invoice.id);
+  console.log(
+    '***** handleInvoice().invoiceId=' + order.transaction.invoice.id,
+  );
 
   // TODO IDE KELL A SZAMLAZZ.HU HIVAS
   // TODO osszes szamla info benne van az Order-ben?
@@ -128,6 +136,31 @@ const handleInvoice = (orderId: string) => async (deps: StripeResolverDeps) => {
   // 3. OrderItems
   // 4. Unit? - nincs, be kell tolteni
   // 5. User? - nincs, be kell tolteni
+};
+
+const handleReceipt = (orderId: string) => async (deps: StripeResolverDeps) => {
+  const order = await loadOrder(orderId)(deps);
+
+  if (!order) {
+    throw Error('Order not found with id=' + orderId);
+  }
+
+  if (!order.transaction) {
+    throw Error(
+      'The order with id=' + orderId + " doesn't have a transaction!",
+    );
+  }
+
+  const user = await loadUser(order.userId)(deps);
+  const email = user?.email ? user.email : '';
+
+  await createReceiptAndConnectTransaction(
+    order.id,
+    order.userId,
+    order.transaction.id,
+    email,
+    CrudApi.ReceiptStatus.success,
+  );
 };
 
 const handleSuccessTransaction = (externalTransactionId: string) => async (
@@ -150,7 +183,12 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
       transaction.id,
     )(deps);
     // console.log('***** handleSuccessTransaction().success()');
-    await handleInvoice(transaction.orderId)(deps);
+    if (transaction.invoiceId) {
+      await handleInvoice(transaction.orderId)(deps);
+    }
+    if (transaction.receiptId) {
+      await handleReceipt(transaction.orderId)(deps);
+    }
   } else {
     console.log(
       '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +

@@ -158,26 +158,6 @@ export const updateTransactionState = (
 };
 
 /**
- * Update Transaction invoiceId in the database with the GraphQL CRUD endpoint
- * @param crudGraphqlClient CRUD GraphQL client
- * @param id the ID of the Transaction to be updated
- * @param invoiceId the new invoiceId of the Transaction
- * @returns an instance of Transaction interface, filled with the updated transaction's data
- */
-export const updateTransactionInvoiceId = (id: string, invoiceId: string) => (
-  deps: StripeResolverDeps,
-) => {
-  const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
-    input: {
-      id,
-      invoiceId,
-    },
-  };
-
-  return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
-};
-
-/**
  * Update Order status in the database with the GraphQL CRUD endpoint
  * @param crudGraphqlClient CRUD GraphQL client
  * @param id the ID of the Order to be updated

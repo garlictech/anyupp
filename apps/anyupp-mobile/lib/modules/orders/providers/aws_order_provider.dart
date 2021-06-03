@@ -200,7 +200,7 @@ class AwsOrderProvider implements IOrdersProvider {
     try {
       QueryResult result = await GQL.amplify.executeMutation(
         mutation: MUTATION_UPDATE_CART,
-        variables: _getCartMutationVariablesFromCart(cart, 'createCartInput'),
+        variables: _getCartMutationVariablesFromCart(cart, 'updateCartInput'),
       );
 
       return result?.exception == null ? true : false;
