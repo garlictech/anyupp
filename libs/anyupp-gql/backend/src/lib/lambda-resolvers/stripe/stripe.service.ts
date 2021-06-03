@@ -261,13 +261,13 @@ export const startStripePayment = (
         CrudApi.InvoiceStatus.success,
       );
     } else {
-      await createReceiptAndConnectTransaction(
-        order.id,
-        order.userId,
-        transaction.id,
-        user.email,
-        CrudApi.ReceiptStatus.success,
-      );
+      // await createReceiptAndConnectTransaction(
+      //   order.id,
+      //   order.userId,
+      //   transaction.id,
+      //   user.email,
+      //   CrudApi.ReceiptStatus.success,
+      // );
     }
 
     // 8. Update order
