@@ -1,5 +1,7 @@
 import { Context, Handler } from 'aws-lambda';
 import * as fp from 'lodash/fp';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 
 import {
   adminRequestHandler,
@@ -7,47 +9,64 @@ import {
   productRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
+  userRequestHandler,
 } from '@bgap/anyupp-gql/backend';
-import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
+import { config } from '@bgap/shared/config';
 
 export interface AnyuppRequest {
   handler: string;
   payload: unknown;
 }
 
-const resolverMap = {
-  getStripeCardsForCustomer: stripeRequestHandler.getStripeCardsForCustomer,
-  updateStripeCard: stripeRequestHandler.updateStripeCard,
-  deleteStripeCard: stripeRequestHandler.deleteStripeCard,
-  createAdminUser: adminRequestHandler.createAdminUser,
-  deleteAdminUser: adminRequestHandler.deleteAdminUser,
-  createOrderFromCart: orderRequestHandler.createOrderFromCart(
-    crudBackendGraphQLClient,
-  ),
-  getUnitsNearLocation: unitRequestHandler.getUnitsNearLocation(
-    crudBackendGraphQLClient,
-  ),
-  regenerateUnitData: unitRequestHandler.regenerateUnitData(
-    crudBackendGraphQLClient,
-  ),
-  createUnitProduct: productRequestHandler.createUnitProduct(
-    crudBackendGraphQLClient,
-  ),
-};
+const consumerUserPoolId = config.ConsumerUserPoolId;
+const userPoolId = process.env.userPoolId || '';
+const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
+const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
+const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  context: Context,
+  _context: Context,
 ): Promise<unknown> => {
-  // console.debug(
-  //   '**** Executing lambda with event',
-  //   JSON.stringify(event, null, 2),
-  // );
-  // console.debug(
-  //   '**** Executing lambda with context',
-  //   JSON.stringify(context, null, 2),
-  // );
+  const adminUserRequestHandlers = adminRequestHandler({
+    userPoolId,
+    crudSdk,
+  });
+
+  const orderRequestHandlers = orderRequestHandler({
+    crudSdk,
+  });
+
+  const unitRequestHandlers = unitRequestHandler({
+    crudSdk,
+  });
+
+  const productRequestHandlers = productRequestHandler({
+    crudSdk,
+  });
+
+  const stripeRequestHandlers = stripeRequestHandler({
+    crudSdk,
+    anyuppSdk,
+  });
+
+  const userRequestHandlers = userRequestHandler({
+    anyuppSdk,
+    consumerUserPoolId,
+  });
+
+  const resolverMap = {
+    listStripeCards: stripeRequestHandlers.listStripeCards,
+    startStripePayment: stripeRequestHandlers.startStripePayment,
+    createAdminUser: adminUserRequestHandlers.createAdminUser,
+    deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
+    createOrderFromCart: orderRequestHandlers.createOrderFromCart,
+    getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
+    regenerateUnitData: unitRequestHandlers.regenerateUnitData,
+    createUnitProduct: productRequestHandlers.createUnitProduct,
+    createAnonymUser: userRequestHandlers.createAnonymUser,
+  };
 
   const resolver = fp.get(event.handler, resolverMap);
 

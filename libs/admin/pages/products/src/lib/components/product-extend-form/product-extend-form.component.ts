@@ -1,7 +1,6 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { skipWhile, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,33 +8,20 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormControl, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { FormArray } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import {
-  AbstractFormDialogComponent,
-  FormsService,
-} from '@bgap/admin/shared/forms';
-import { EToasterType } from '@bgap/admin/shared/utils';
-import {
-  EProductLevel,
-  IAdminUserSettings,
-  IKeyValue,
-  ILane,
-  IProduct,
-  IProductCategory,
-  IProductVariant,
-  IUnit,
-} from '@bgap/shared/types';
-import {
-  cleanObject,
-  customNumberCompare,
-  objectToArray,
-} from '@bgap/shared/utils';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { ProductFormService } from '../../services/product-form/product-form.service';
 
 @UntilDestroy()
 @Component({
@@ -46,12 +32,12 @@ import { select, Store } from '@ngrx/store';
 export class ProductExtendFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public product!: IProduct;
+  public product?: Product;
   public productLevel!: EProductLevel;
   public eProductLevel = EProductLevel;
   public editing = false;
   public currency!: string;
-  public productCategories$: Observable<IProductCategory[]>;
+  public productCategories$: Observable<CrudApi.ProductCategory[]>;
   public unitLanes: IKeyValue[] = [];
 
   private _selectedChainId?: string;
@@ -60,17 +46,19 @@ export class ProductExtendFormComponent
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _formsService: FormsService,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
+    private _crudSdk: CrudSdkService,
+    private _store: Store,
+    private _productFormService: ProductFormService,
   ) {
     super(_injector);
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUserSettings),
+        take(1),
+        filterNullish(),
+      )
+      .subscribe((userSettings: CrudApi.AdminUserSettings): void => {
         this._selectedChainId = userSettings?.selectedChainId || '';
         this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedUnitId = userSettings?.selectedUnitId || '';
@@ -82,62 +70,37 @@ export class ProductExtendFormComponent
     );
 
     this._store
-      .pipe(
-        select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: IUnit | undefined): boolean => !unit),
-        take(1),
-      )
-      .subscribe((unit: IUnit | undefined): void => {
-        this.unitLanes = (<ILane[]>objectToArray(unit?.lanes || {})).map(
-          (lane): IKeyValue => ({
-            key: lane.id || '',
-            value: lane.name,
-          }),
-        );
-      });
+      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
+      .subscribe(
+        unit =>
+          (this.unitLanes = unit.lanes
+            ? unit.lanes.map(lane => ({
+                key: lane?.id || '',
+                value: lane?.name,
+              }))
+            : []),
+      );
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      isVisible: [''],
-      variants: this._formBuilder.array([]),
-    });
-
-    if (this.productLevel === EProductLevel.GROUP) {
-      this.dialogForm.addControl(
-        'tax',
-        new FormControl('', Validators.required),
-      );
-    }
-    if (this.productLevel === EProductLevel.UNIT) {
-      this.dialogForm.addControl('laneId', new FormControl(''));
-      this.dialogForm.addControl(
-        'takeaway',
-        new FormControl(false, Validators.required),
-      );
-    }
+    this.dialogForm = this._productFormService.createProductExtendFormGroup(
+      this.productLevel,
+    );
 
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit('variants', cleanObject(this.product)),
+        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
-      [...this.product.variants]
-        .sort(customNumberCompare('position'))
-        .forEach((variant: IProductVariant): void => {
-          const variantGroup = this._formsService.createProductVariantFormGroup();
-          variantGroup.patchValue(cleanObject(variant));
+      this._productFormService.patchExtendedProductVariants(
+        this.product,
+        this.dialogForm?.controls.variants as FormArray,
+      );
 
-          (variant?.availabilities || []).forEach((availability): void => {
-            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
-            availabilityGroup.patchValue(cleanObject(availability));
-            (variantGroup.controls.availabilities as FormArray).push(
-              availabilityGroup,
-            );
-          });
-
-          (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
-        });
+      this._productFormService.patchConfigSet(
+        this.product,
+        this.dialogForm?.controls.configSets as FormArray,
+      );
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
 
@@ -147,33 +110,40 @@ export class ProductExtendFormComponent
     }
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = { ...this.dialogForm?.value };
 
-      if (this.editing) {
-        try {
-          await this._amplifyDataService.update<IProduct>(
-            this.productLevel === EProductLevel.GROUP
-              ? 'getGroupProduct'
-              : 'getUnitProduct',
-            this.productLevel === EProductLevel.GROUP
-              ? 'updateGroupProduct'
-              : 'updateUnitProduct',
-            this.product.id,
-            () => value,
-          );
+      if (!this.product) {
+        throw new Error('HANDLE ME: product cannot be undefined');
+      }
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `EXTENDED PRODUCT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
+      if (this.editing) {
+        const input = {
+          input: {
+            id: this.product.id,
+            ...value,
+          },
+        };
+
+        if (!input) {
+          throw new Error('HANDLE ME: input cannot be undefined');
+        }
+
+        if (this.productLevel === EProductLevel.GROUP) {
+          this._crudSdk.sdk
+            .UpdateGroupProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('update ');
+            });
+        } else {
+          this._crudSdk.sdk
+            .UpdateUnitProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('update');
+            });
         }
       } else {
         // Save the extended product id
@@ -185,26 +155,35 @@ export class ProductExtendFormComponent
           value.position = 0;
         }
 
-        try {
-          await this._amplifyDataService.create(
-            this.productLevel === EProductLevel.GROUP
-              ? 'createGroupProduct'
-              : 'createUnitProduct',
-            value,
-          );
+        const input = {
+          input: value,
+        };
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `EXTENDED PRODUCT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
+        if (this.productLevel === EProductLevel.GROUP) {
+          this._crudSdk.sdk
+            .CreateGroupProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('insert');
+            });
+        } else {
+          this._crudSdk.sdk
+            .CreateUnitProduct(input)
+            .pipe(catchGqlError(this._store))
+            .subscribe(() => {
+              this._successAndClose('insert');
+            });
         }
       }
     }
+  }
+
+  private _successAndClose(key: string) {
+    this._toasterService.show(
+      EToasterType.SUCCESS,
+      '',
+      `common.${key}Successful`,
+    );
+    this.close();
   }
 }

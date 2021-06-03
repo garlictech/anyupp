@@ -1,5 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -8,8 +9,6 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/affiliate.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +46,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     super.initState();
 
     // Start advertisement
-    getIt<AffiliateBloc>().add(StartAdvertisement());
+    // getIt<AffiliateBloc>().add(StartAdvertisement());
 
     _animationController = AnimationController(
       duration: Duration(seconds: 1),
@@ -90,12 +89,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void dispose() {
     // Stop advertisement
-    getIt<AffiliateBloc>().add(StopAdvertisement());
+    // getIt<AffiliateBloc>().add(StopAdvertisement());
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
+    // print('***** MainNaevigationScreen.didChangeDependencies()');
     super.didChangeDependencies();
     if (_pageOptions == null) {
       _pageOptions = [
@@ -107,11 +107,18 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         MainPageOptions(showAppBar: false, appBarText: trans('main.menu.cart'), systemBarColor: theme.background),
       ];
       _navigateToPage(widget.pageIndex);
+    } else {
+      MainNavigationState navState = getIt<MainNavigationBloc>().state;
+      if (navState is MainNavaigationNeed) {
+        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
+        _navigateToPage(navState.pageIndex);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     // --- This build method called again AFTER the product screen build run. So it set the statusbar color back.
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     if (ModalRoute.of(context).isCurrent) {
@@ -139,24 +146,32 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
             // Opening the selected page
             // body: pages[_selectedIndex],
-            body: DoubleBackToCloseApp(
-              snackBar: SnackBar(
-                elevation: 8,
-                duration: Duration(seconds: 1),
-                content: Text(
-                  'Tap back again to exit app.',
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor,
+            body: BlocListener<MainNavigationBloc, MainNavigationState>(
+                listener: (BuildContext context, MainNavigationState state) {
+                  if (state is MainNavaigationNeed) {
+                    print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                    _navigateToPage(state.pageIndex);
+                  }
+                },
+                child: DoubleBackToCloseApp(
+                snackBar: SnackBar(
+                  elevation: 8,
+                  duration: Duration(seconds: 1),
+                  content: Text(
+                    trans('common.exit'),
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Color(0xAA880000),
                 ),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Color(0xAA880000),
-              ),
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: _pages,
-              ),
+                child: IndexedStack(
+                  index: _selectedIndex,
+                  children: _pages,
+                ),
 //        child: _pages[_selectedIndex],
+              ),
             ),
             floatingActionButton: ScaleTransition(
               scale: animation,

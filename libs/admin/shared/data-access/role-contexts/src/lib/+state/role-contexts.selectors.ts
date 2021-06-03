@@ -2,14 +2,12 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   ROLE_CONTEXTS_FEATURE_KEY,
   IRoleContextsState,
-  RoleContextsPartialState,
   roleContextsAdapter,
 } from './role-contexts.reducer';
 
-export const getRoleContextsState = createFeatureSelector<
-  RoleContextsPartialState,
-  IRoleContextsState
->(ROLE_CONTEXTS_FEATURE_KEY);
+export const getRoleContextsState = createFeatureSelector<IRoleContextsState>(
+  ROLE_CONTEXTS_FEATURE_KEY,
+);
 
 const { selectAll, selectEntities } = roleContextsAdapter.getSelectors();
 

@@ -1,27 +1,15 @@
-import { CrudApi, CrudApiMutationDocuments } from '@bgap/crud-gql/api';
-import {
-  crudBackendGraphQLClient,
-  executeMutation,
-} from '@bgap/shared/graphql/api-client';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { resultTap } from './seed.util';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 export const createTestChainProduct = (
   input: CrudApi.CreateChainProductInput,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.CreateChainProductMutation>(
-    CrudApiMutationDocuments.createChainProduct,
-    {
-      input,
-    },
-  ).pipe(resultTap('CHAIN_PRODUCT create', input.id!));
+  crudSdk
+    .CreateChainProduct({ input })
+    .pipe(resultTap('CHAIN PRODUCT create', input.id!));
 
-export const deleteTestChainProduct = (id: string) =>
-  executeMutation(crudBackendGraphQLClient)<CrudApi.DeleteChainProductMutation>(
-    CrudApiMutationDocuments.deleteChainProduct,
-    { input: { id } },
-  ).pipe(
-    resultTap('CHAIN_PRODUCT delete', id),
-    catchError(() => of('NO_PROBLEM')),
-  );
+export const deleteTestChainProduct = (id: string, crudSdk: CrudApi.CrudSdk) =>
+  crudSdk
+    .DeleteChainProduct({ input: { id } })
+    .pipe(resultTap('CHAIN PRODUCT delete', id));

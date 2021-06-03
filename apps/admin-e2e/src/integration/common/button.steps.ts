@@ -18,7 +18,7 @@ When('I click on the {string} text', (text: string) => {
 
 
 When('I click on the plus button', () => {
-    cy.get('nb-icon[icon="plus-outline"]').click();
+  cy.get('nb-icon[icon="plus-outline"]').click();
 });
 
 When('I click on the first Edit button', () => {
@@ -42,12 +42,12 @@ When('I click on the {string} button', (value: string) => {
 });
 
 When('I click on the {string} selector', (value: string) => {
-    cy.contains('button', value).click({force: true});
-    // cy.findByRole('button').contains(value).click({force: true});
+  cy.contains('button', value).click({ force: true });
+  // cy.findByRole('button').contains(value).click({force: true});
 });
 
 When('I select {string}', (value: string) => {
-    cy.contains('nb-option', value).click();
+  cy.contains('nb-option', value).click();
 });
 
 When('I click the selector to set {string}', (value: string) =>{

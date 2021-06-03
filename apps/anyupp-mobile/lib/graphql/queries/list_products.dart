@@ -1,6 +1,11 @@
 const QUERY_LIST_PRODUCTS = '''
 query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
-  listGeneratedProducts(filter: {unitId: {eq: \$unitId}, productCategoryId: {eq: \$categoryId}}) {
+  listGeneratedProducts(filter: {
+      unitId: {eq: \$unitId}, 
+      and: { 
+        productCategoryId: {eq: \$categoryId}
+      }
+  }) {
     items {
       id
       unitId
@@ -19,6 +24,7 @@ query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
       productCategoryId
       productType
       tax
+      allergens
       variants {
         id
         position
@@ -31,6 +37,28 @@ query ListProductsQuery(\$unitId: ID!, \$categoryId: ID!) {
           de
           en
           hu
+        }
+      }
+      configSets {
+        type
+        productSetId
+        position
+        name {
+          de
+          en
+          hu
+        }
+        maxSelection
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          position
+          price
+          productComponentId
         }
       }
     }

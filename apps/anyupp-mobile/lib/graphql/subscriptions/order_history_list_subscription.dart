@@ -8,7 +8,7 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
     takeAway
     paymentMode {
       caption
-      name
+      type
       method
     }
     place {
@@ -52,6 +52,25 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         de
         en
         hu
+      }
+      configSets {
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          price
+          productComponentId
+        }
+        name {
+          de
+          en
+          hu
+        }
+        productSetId
+        type
       }
     }
   }

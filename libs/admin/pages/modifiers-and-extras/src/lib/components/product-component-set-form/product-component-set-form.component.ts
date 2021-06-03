@@ -1,8 +1,7 @@
-import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
-import { NGXLogger } from 'ngx-logger';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,40 +10,28 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
+  catchGqlError,
   EToasterType,
+  getProductComponentObject,
+  getProductComponentOptions,
+  maxSelectionValidator,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
 import {
   EProductComponentSetType,
-  IChain,
-  IGroup,
   IKeyValue,
   IKeyValueObject,
-  IProductComponent,
-  IProductComponentSet,
 } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
-import {
-  getProductComponentObject,
-  getProductComponentOptions,
-  maxSelectionValidator,
-} from '../../fn';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -56,22 +43,18 @@ export class ProductComponentSetFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
   public componentForm!: FormGroup;
-  public productComponentSet!: IProductComponentSet;
+  public productComponentSet!: CrudApi.ProductComponentSet;
   public chainOptions: IKeyValue[] = [];
   public typeOptions: IKeyValue[] = [];
   public productComponentOptions: IKeyValue[] = [];
   public productComponentObject: IKeyValueObject = {};
   public eProductComponentSetType = EProductComponentSetType;
 
-  private _productComponentSets: IProductComponentSet[] = [];
-
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _crudSdk: CrudSdkService,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
@@ -82,13 +65,13 @@ export class ProductComponentSetFormComponent
         maxSelection: [''],
         name: this._formBuilder.group(
           {
-            hu: ['', [this._uniqueNameValidator('hu')]],
-            en: ['', [this._uniqueNameValidator('en')]],
-            de: ['', [this._uniqueNameValidator('de')]],
+            hu: ['', [Validators.maxLength(40)]],
+            en: ['', [Validators.maxLength(40)]],
+            de: ['', [Validators.maxLength(40)]],
           },
           { validators: multiLangValidator },
         ),
-        description: [''],
+        description: ['', [Validators.required]],
         items: [[]],
       },
       { validators: maxSelectionValidator },
@@ -108,23 +91,11 @@ export class ProductComponentSetFormComponent
         value: 'productComponentSets.type.modifier',
       },
     ];
-
-    // Used for the validator
-    this._store
-      .pipe(
-        select(productComponentSetsSelectors.getAllProductComponentSets),
-        untilDestroyed(this),
-      )
-      .subscribe((productComponentSets: IProductComponentSet[]): void => {
-        this._productComponentSets = productComponentSets;
-      });
   }
 
   ngOnInit(): void {
     if (this.productComponentSet) {
-      this.dialogForm.patchValue(
-        clearDbProperties<IProductComponentSet>(this.productComponentSet),
-      );
+      this.dialogForm.patchValue(cleanObject(this.productComponentSet));
     } else {
       // Patch ChainId
       this._store
@@ -138,7 +109,7 @@ export class ProductComponentSetFormComponent
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
+      .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
@@ -159,7 +130,10 @@ export class ProductComponentSetFormComponent
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([productComponents, items]: [IProductComponent[], string[]]): void => {
+        ([productComponents, items]: [
+          CrudApi.ProductComponent[],
+          string[],
+        ]): void => {
           this.productComponentOptions = getProductComponentOptions(
             productComponents,
             items,
@@ -178,16 +152,6 @@ export class ProductComponentSetFormComponent
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
-
-  private _uniqueNameValidator = (lang: string): ValidatorFn => (
-    control: AbstractControl,
-  ): ValidationErrors | null => {
-    const names = this._productComponentSets
-      .filter(c => c.id !== this.productComponentSet?.id)
-      .map(c => c.name[lang]);
-
-    return names.includes(control.value) ? { existing: true } : null;
-  };
 
   public addComponentToList(): void {
     const componentIdsArr: string[] = this.dialogForm.controls['items'].value;
@@ -213,7 +177,7 @@ export class ProductComponentSetFormComponent
     componentIdsArr.splice(idx + change, 0, itemId);
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = this.dialogForm.value;
 
@@ -222,45 +186,35 @@ export class ProductComponentSetFormComponent
       }
 
       if (this.productComponentSet?.id) {
-        try {
-          await this._amplifyDataService.update<IGroup>(
-            'getProductComponentSet',
-            'updateProductComponentSet',
-            this.productComponentSet.id,
-            () => value,
-          );
+        this._crudSdk.sdk
+          .UpdateProductComponentSet({
+            input: {
+              id: this.productComponentSet.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT SET UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create(
-            'createProductComponentSet',
-            value,
-          );
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT SET INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateProductComponentSet({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

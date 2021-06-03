@@ -1,13 +1,7 @@
 <div class="float-left">
   <div class="subtitle-2">{{ productComponent.name | localize }}</div>
-  <div class="caption">{{ productComponent.description  }}</div>
-  <div class="caption mt-1">
-    <img
-      class="allergen"
-      src="assets/images/allergens/{{ allergen }}.svg"
-      *ngFor="let allergen of productComponent.allergens"
-    />
-  </div>
+  <div class="caption">{{ productComponent.description }}</div>
+  <bgap-allergens [allergens]="productComponent.allergens"></bgap-allergens>
 </div>
 
 <button

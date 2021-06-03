@@ -1,33 +1,39 @@
-import { Context, Handler } from 'aws-lambda';
+import { Handler } from 'aws-lambda';
 
 console.log('Starting Stripe API lambda');
 
-export interface StripeWebhookRequest {
-  param: string;
-}
+import awsServerlessExpress from 'aws-serverless-express';
+// import app from '@bgap/stripe'
+// import app from './app';
+import { createStripeWebhookExpressApp } from '@bgap/anyupp-gql/backend';
+const app = createStripeWebhookExpressApp();
 
-export interface StripeWebhookResponse {
-  status: string;
-}
+const server = awsServerlessExpress.createServer(app);
 
-// Get the proper type from aws lambda lib
-interface HttpLambdaEvent {
-  queryStringParameters: StripeWebhookRequest;
-}
+// export interface StripeWebhookRequest {
+//   param: string;
+// }
 
-export const handler: Handler = async (
-  event: HttpLambdaEvent,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  context: Context,
-) => {
+// export interface StripeWebhookResponse {
+//   status: string;
+// }
+
+// // Get the proper type from aws lambda lib
+// interface HttpLambdaEvent {
+//   queryStringParameters: StripeWebhookRequest;
+// }
+
+export const handler: Handler = async (event, context) => {
   console.log('Stripe webhook called with ', event);
-  // Validate the request, then...
-  const param =
-    event?.queryStringParameters?.param ||
-    'https://media.giphy.com/media/20k1punZ5bpmM/giphy-downsized.gif';
+  return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
 
-  return {
-    body: JSON.stringify({ status: `All good for ${param}` }),
-    statusCode: 200,
-  };
+  // Validate the request, then...
+  // const param =
+  //   event?.queryStringParameters?.param ||
+  //   'https://media.giphy.com/media/20k1punZ5bpmM/giphy-downsized.gif';
+  //
+  // return {
+  //   body: JSON.stringify({ status: `All good for ${param}` }),
+  //   statusCode: 200,
+  // };
 };

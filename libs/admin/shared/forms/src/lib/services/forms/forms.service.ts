@@ -14,9 +14,7 @@ import { EVariantAvailabilityType } from '@bgap/shared/types';
 })
 export class FormsService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(
-    /*private _store: Store<any>,*/ private _formBuilder: FormBuilder,
-  ) {}
+  constructor(/*private _store: Store,*/ private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -43,8 +41,8 @@ export class FormsService {
     return this._formBuilder.group(groupConfig);
   };
 
-  public createProductAvailabilityFormGroup = (): FormGroup => {
-    return this._formBuilder.group(
+  public createProductAvailabilityFormGroup = (): FormGroup =>
+    this._formBuilder.group(
       {
         type: [EVariantAvailabilityType.ALWAYS, [Validators.required]],
         dayFrom: [''],
@@ -55,10 +53,9 @@ export class FormsService {
       },
       { validators: productAvailabilityValidator },
     );
-  };
 
-  public createCustomDailyScheduleFormGroup = (): FormGroup => {
-    return this._formBuilder.group({
+  public createCustomDailyScheduleFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       date: ['', [Validators.required]],
       from: [
         '',
@@ -66,13 +63,26 @@ export class FormsService {
       ],
       to: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
     });
-  };
 
-  public createLaneFormGroup = (): FormGroup => {
-    return this._formBuilder.group({
+  public createLaneFormGroup = (): FormGroup =>
+    this._formBuilder.group({
       id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#ffffff', [Validators.required]],
     });
-  };
+
+  public createProductConfigSetFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      productSetId: [''],
+      items: this._formBuilder.array([]),
+      position: [0],
+    });
+
+  public createProductConfigSetItemFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      productComponentId: ['', Validators.required],
+      position: [0, Validators.required],
+      refGroupPrice: [0, Validators.required],
+      price: [0, Validators.required],
+    });
 }

@@ -1,117 +1,124 @@
+import 'package:fa_prev/graphql/graphql.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 import 'stripe_payment_provider_interface.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
-  // ignore: unused_field
-  final ValueNotifier<GraphQLClient> _client;
   final Stripe _stripe;
+  final IOrdersProvider _ordersProvider;
 
-  GraphQLStripePaymentProvider(this._client, this._stripe);
+  GraphQLStripePaymentProvider(this._stripe, this._ordersProvider);
 
   @override
-  Future<List<StripeCard>> getPaymentMethods() async {
-    return null;
-    // print('getPaymentMethods().start().doc=${GetCustomerStripeCardsQuery().document.definitions}');
-    // final results = await _client.query(
-    //   QueryOptions(
-    //     document: GetCustomerStripeCardsQuery().document,
-    //     variables: GetCustomerStripeCardsArguments(
-    //       customerId: 'cus_HqrrboxTxefVa3',
-    //     ).toJson(),
-    //   ),
-    // );
-    // print(results);
-    // if (results.hasException) {
-    //   throw results.exception;
-    // } else {
-    //   return GetCustomerStripeCards$Query.fromJson(results.data).getCustomerStripeCards;
-    // }
+  Future<List<StripePaymentMethod>> getPaymentMethods() async {
+    print('getPaymentMethods().start()');
+    try {
+      QueryResult result = await GQL.backend.executeQuery(
+        query: QUERY_LIST_PAYMENT_METHODS,
+        variables: {},
+      );
+
+      List<dynamic> items = result.data['listStripeCards'];
+      List<StripePaymentMethod> results = [];
+      if (items != null) {
+        for (int i = 0; i < items.length; i++) {
+          results.add(StripePaymentMethod.fromMap(Map<String, dynamic>.from(items[i])));
+        }
+      }
+      // results.add(createPaymentMethod(Map<String,dynamic>.from(card)));
+      print('getPaymentMethods.results=${results.length}');
+      return results;
+    } catch (err) {
+      print('err charging user: ${err.toString()}');
+      rethrow;
+    }
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(
-      String chainId, String unitId, String userId, String paymentMethodId) async {
-    print('startStripePayment().start()=$chainId, $unitId, $userId');
-    // final result = await client.mutate(MutationOptions(
-    //   documentNode: StartStripePaymentMutation(
-    //     variables: StartStripePaymentArguments(chainId: chainId, unitId: unitId, userId: userId),
-    //   ).document,
-    // ));
-    // final result = await _client.mutate(MutationOptions(
-    //   document: StartStripePaymentMutation().document,
-    //   variables: StartStripePaymentArguments(
-    //     chainId: chainId,
-    //     unitId: unitId,
-    //     userId: userId,
-    //   ).toJson(),
-    // ));
-    // if (result.hasException) {
-    //   print('startStripePayment().error=${result.exception}');
-    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    // } else {
-    //   print('startStripePayment().result=${result.data}');
-    //   return '${result.data["startStripePayment"]}';
-    // }
-    return null;
+  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
+    print('startStripePaymentWithExistingCard().start()=$cart');
+
+    String orderId = await _ordersProvider.createAndSendOrderFromCart();
+    print('startStripePaymentWithExistingCard().orderId=$orderId');
+    return startOrderStripePaymentWithExistingCard(orderId, paymentMethodId);
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(
-      String chainId, String unitId, String userId, StripeCard stripeCard, bool saveCard) async {
-    print('startStripePaymentWithNewCard().start()=$chainId, $unitId, $userId, $stripeCard');
+  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
+    if (orderId == null) {
+      throw StripeException(
+          code: StripeException.UNKNOWN_ERROR,
+          message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
+    }
+
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
+      variables: {
+        'orderId': orderId,
+        'paymentMethod': 'inapp',
+        'paymentMethodId': paymentMethodId,
+        'savePaymentMethod': false,
+      },
+    );
+
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return;
+    }
+
+    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    print('startStripePaymentWithExistingCard.clientSecret=$clientSecret');
+
+    print('startStripePaymentWithExistingCard.confirmPayment().start()');
+    Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
+    print('startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
+  }
+
+  @override
+  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
+    print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
-    return null;
-    // final result = await _client.mutate(MutationOptions(
-    //   document: StartStripePaymentMutation().document,
-    //   variables: StartStripePaymentArguments(
-    //     chainId: chainId,
-    //     unitId: unitId,
-    //     userId: userId,
-    //   ).toJson(),
-    // ));
 
-    // if (result.hasException) {
-    //   print('startStripePaymentWithNewCard().error=${result.exception}');
-    //   throw StripeException.fromException(StripeException.UNKNOWN_ERROR, result.exception);
-    // }
+    String orderId = await _ordersProvider.createAndSendOrderFromCart();
+    print('startStripePaymentWithNewCard().orderId=$orderId');
+    return startOrderStripePaymentWithNewCard(orderId, stripeCard, saveCard);
+  }
 
-    // print('startStripePaymentWithNewCard().result=${result.data}');
-    // final String clientSecret = result.data['startStripePayment'];
-    // print('startStripePaymentWithNewCard().client_secret=$clientSecret');
+  @override
+  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
+    if (orderId == null) {
+      throw StripeException(
+          code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
+    }
 
-    // // TODO 3D ellenorzes!!!
-    // // if (result['status'] == 'requires_action') { 
-    // //   paymentIntentRes = await confirmPayment3DSecure(clientSecret, paymentMethodId);
-    // // } 
-    // Map<String, dynamic> params = {
-    //   'payment_method_data': stripeCard.toPaymentMethod()
-    // };
+    Map<String, dynamic> paymentMethod = await _stripe.api.createPaymentMethodFromCard(stripeCard);
+    String paymentMethodId = paymentMethod['id'];
+    print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
-    // if (saveCard) {
-    //   params['setup_future_usage'] = 'off_session';
-    // }
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
+      variables: {
+        'orderId': orderId,
+        'paymentMethod': 'inapp',
+        'paymentMethodId': paymentMethodId,
+        'savePaymentMethod': saveCard,
+      },
+    );
 
-    //  //Map<String, dynamic> params = stripeCard.toPaymentMethod();
-    //  print('startStripePaymentWithNewCard().params=$params');
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return;
+    }
 
-    //  Map<String, dynamic> paymentResponse = await _stripe.api.confirmPaymentIntent(clientSecret, data: params);
-    //  print('startStripePaymentWithNewCard().paymentResponse=$paymentResponse');
-    //  if (paymentResponse['status'] == 'succeeded') {
-    //    return paymentResponse['status'];
-    //  }
+    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    print('startStripePaymentWithNewCard.clientSecret=$clientSecret');
 
-    // // await _stripe.api.
-
-    // // return '$clientSecret';
-
-    // // TODO nem string lesz a response!!!
-    // return paymentResponse['status'];
+    print('startStripePaymentWithNewCard.confirmPayment().start()');
+    Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret);
+    print('startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
   }
 
   @override
@@ -121,33 +128,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       // _stripe.api.createPaymentMethodFromCard();
       final paymentMethod = await _stripe.api.createPaymentMethodFromCard(card);
       print('createPaymentMethodFromCard().paymentMethod=$paymentMethod');
-    return false;
-
-      // final result = await http.post(
-      //   "URL/payment-intent",
-      //   body: jsonEncode(
-      //     {
-      //       'payment_method_id': paymentMethod['id'],
-      //       'email': emailAddress,
-      //       'amount': totalPrice,
-      //       'currencyCode': currencyCode,
-      //     },
-      //   ),
-      //   headers: {
-      //     HttpHeaders.contentTypeHeader: ContentType.json.value,
-      //   },
-      // );
-
-      // if (result.statusCode == HttpStatus.ok) {
-      //   final body = json.decode(result.body) ?? {};
-      //   final success = body['success'];
-
-      //   if (success) {
-      //     Map<String, dynamic> result = await _stripe.api.retrievePaymentIntent(
-      //       body['client_secret'],
-      //     );
-      //   }
-      // }
+      return false;
     } on Exception catch (e) {
       throw StripeException.fromException(StripeException.UNKNOWN_ERROR, e);
     }

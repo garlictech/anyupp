@@ -1,0 +1,16 @@
+enum Allergen {
+  celery,
+  crustaceans,
+  egg,
+  fish,
+  gluten,
+  lupin,
+  milk,
+  molluscs,
+  mustard,
+  peanut,
+  sesame,
+  soya,
+  sulphites,
+  treenuts,
+}

@@ -9,7 +9,7 @@ export const buildRetryLogic = <T>({
   retryScalingDurationInMillisec = 1000,
 }: {
   // logger?: { warn: (arg0: string) => void };
-  retryable?: (error: unknown) => boolean;
+  retryable?: (_error: unknown) => boolean;
   maxRetryAttempts?: number;
   retryScalingDurationInMillisec?: number;
 }) => (source: Observable<T>): Observable<T> =>

@@ -1,104 +1,78 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
-import { FormArray, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
+import { FormArray } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
+import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  EImageType, EProductLevel, EProductType, IAdminUserSettings, IKeyValue, IProduct, IProductCategory, IProductVariant
+  EImageType,
+  EProductLevel,
+  IKeyValue,
+  Product,
 } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { PRODUCT_TYPES } from '../../const';
+import { ProductFormService } from '../../services/product-form/product-form.service';
 
 @UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-product-form',
-  templateUrl: './product-form.component.html'
+  templateUrl: './product-form.component.html',
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
   public eImageType = EImageType;
-  public product!: IProduct;
+  public product?: Product;
   public productLevel!: EProductLevel;
   public productCategories$: Observable<IKeyValue[]>;
-  public productTypes: IKeyValue[];
+  public productTypes: IKeyValue[] = PRODUCT_TYPES;
 
   private _selectedChainId = '';
-  private _selectedGroupId = '';
   private _selectedProductCategoryId = '';
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _formsService: FormsService,
-    private _amplifyDataService: AmplifyDataService,
+    private _store: Store,
+    private _productFormService: ProductFormService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      name: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      productCategoryId: ['', [Validators.required]],
-      productType: ['', [Validators.required]],
-      isVisible: ['', [Validators.required]],
-      image: [''],
-      variants: this._formBuilder.array([]),
-      allergens: [[]],
-    });
-
-    this.productTypes = [
-      {
-        key: EProductType.DRINK,
-        value: 'products.productType.drink',
-      },
-      {
-        key: EProductType.FOOD,
-        value: 'products.productType.food',
-      },
-      {
-        key: EProductType.OTHER,
-        value: 'products.productType.other',
-      },
-    ];
+    this.dialogForm = this._productFormService.createProductFormGroup();
 
     this._store
-      .pipe(select(loggedUserSelectors.getLoggedUserSettings), take(1))
-      .subscribe((userSettings: IAdminUserSettings | undefined): void => {
+      .pipe(
+        select(loggedUserSelectors.getLoggedUserSettings),
+        take(1),
+        filterNullish(),
+      )
+      .subscribe((userSettings: CrudApi.AdminUserSettings): void => {
         this._selectedChainId = userSettings?.selectedChainId || '';
-        this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedProductCategoryId =
           userSettings?.selectedProductCategoryId || '';
       });
 
     this.productCategories$ = this._store.pipe(
       select(productCategoriesSelectors.getAllProductCategories),
-      map((productCategories: IProductCategory[]) =>
+      map((productCategories: CrudApi.ProductCategory[]) =>
         productCategories.map(
           (productCategory): IKeyValue => ({
             key: productCategory.id,
@@ -111,22 +85,23 @@ export class ProductFormComponent
   }
 
   get productImage(): string {
-    return this.product?.image || '';
+    return fp.get('image', this.product) ?? '';
   }
 
   ngOnInit(): void {
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit('variants', cleanObject(this.product)),
+        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
-      (this.product.variants || []).forEach(
-        (variant: IProductVariant): void => {
-          const variantGroup = this._formsService.createProductVariantFormGroup();
-          variantGroup.patchValue(cleanObject(variant));
+      this._productFormService.patchProductVariants(
+        this.product,
+        this.dialogForm?.controls.variants as FormArray,
+      );
 
-          (this.dialogForm?.controls.variants as FormArray).push(variantGroup);
-        },
+      this._productFormService.patchConfigSet(
+        this.product,
+        this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
       // Patch ProductCategoryID
@@ -139,7 +114,7 @@ export class ProductFormComponent
     }
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
@@ -147,65 +122,51 @@ export class ProductFormComponent
       };
 
       if (this.product?.id) {
-        try {
-          await this._amplifyDataService.update<IProduct>(
-            'getChainProduct',
-            'updateChainProduct',
-            this.product.id,
-            () => value,
-          );
+        this._crudSdk.sdk
+          .UpdateChainProduct({
+            input: {
+              id: this.product.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create('createChainProduct', value);
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `CHAIN PRODUCT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateChainProduct({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public imageUploadCallback = async (image: string): Promise<void> => {
+  public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.image.setValue(image);
 
     // Update existing user's image
     if (this.product?.id) {
-      try {
-        await this._amplifyDataService.update<IProduct>(
-          'getChainProduct',
-          'updateChainProduct',
-          this.product.id,
-          (data: unknown) => fp.set(`image`, image, <IProduct>data),
-        );
-
+      this.updateImageStyles(this.product?.id, image).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -217,28 +178,17 @@ export class ProductFormComponent
     this._changeDetectorRef.detectChanges();
   };
 
-  public imageRemoveCallback = async (): Promise<void> => {
+  public imageRemoveCallback = () => {
     this.dialogForm?.controls.image.setValue('');
 
     if (this.product?.id) {
-      try {
-        await this._amplifyDataService.update<IProduct>(
-          'getChainProduct',
-          'updateChainProduct',
-          this.product.id,
-          (data: unknown) => fp.set(`image`, null, <IProduct>data),
-        );
-
+      this.updateImageStyles(this.product?.id, null).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageRemoveSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE REMOVE ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -249,4 +199,15 @@ export class ProductFormComponent
 
     this._changeDetectorRef.detectChanges();
   };
+
+  private updateImageStyles(id: string, image: string | null) {
+    return this._crudSdk.sdk
+      .UpdateChainProduct({
+        input: {
+          id,
+          image,
+        },
+      })
+      .pipe(catchGqlError(this._store));
+  }
 }

@@ -1,4 +1,3 @@
-import { AmplifyService } from 'aws-amplify-angular';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { CommonModule, registerLocaleData } from '@angular/common';
@@ -12,11 +11,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/shared/data-access/admin-users';
 import { AdminSharedChainsModule } from '@bgap/admin/shared/data-access/chains';
+import { AdminSharedAppCoreModule } from '@bgap/admin/shared/data-access/app-core';
 import { AdminSharedDashboardModule } from '@bgap/admin/shared/data-access/dashboard';
 import { AdminSharedGroupsModule } from '@bgap/admin/shared/data-access/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/shared/data-access/logged-user';
 import { AdminSharedOrdersModule } from '@bgap/admin/shared/data-access/orders';
 import { AdminSharedProductCategoriesModule } from '@bgap/admin/shared/data-access/product-categories';
+import { AdminSharedProductComponentSetsModule } from '@bgap/admin/shared/data-access/product-component-sets';
 import { AdminSharedProductComponentsModule } from '@bgap/admin/shared/data-access/product-components';
 import { AdminSharedProductsModule } from '@bgap/admin/shared/data-access/products';
 import { AdminSharedRoleContextsModule } from '@bgap/admin/shared/data-access/role-contexts';
@@ -27,7 +28,13 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
-  NbDialogModule, NbGlobalPhysicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule, NbThemeModule, NbToastrModule
+  NbDialogModule,
+  NbGlobalPhysicalPosition,
+  NbLayoutModule,
+  NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule,
+  NbToastrModule,
 } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -37,7 +44,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
-import { AdminSharedProductComponentSetsModule } from '@bgap/admin/shared/data-access/product-component-sets';
+import { EffectsModule } from '@ngrx/effects';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -60,6 +67,7 @@ const NB_MODULES = [
 
 export const FEATURE_STORES = [
   AdminSharedAdminUsersModule,
+  AdminSharedAppCoreModule,
   AdminSharedChainsModule,
   AdminSharedDashboardModule,
   AdminSharedFloorMapModule,
@@ -72,7 +80,7 @@ export const FEATURE_STORES = [
   AdminSharedUsersModule,
   AdminSharedRoleContextsModule,
   AdminSharedProductComponentsModule,
-  AdminSharedProductComponentSetsModule
+  AdminSharedProductComponentSetsModule,
 ];
 
 registerLocaleData(localeDe);
@@ -109,6 +117,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         },
       },
     ),
+    EffectsModule.forRoot([]),
     ...NB_MODULES,
     ...FEATURE_STORES,
     !environment.production
@@ -122,7 +131,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       serverLogLevel: NgxLoggerLevel.ERROR,
     }),
   ],
-  providers: [AmplifyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

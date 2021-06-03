@@ -6,7 +6,7 @@
     <div
       class="col-5 p-2 m-auto subtitle-2 font-larger"
       [ngClass]="{
-        rejected: currentStatus(orderItem.statusLog) === EOrderStatus.REJECTED
+        rejected: isCurrentStatus(orderItem, 'rejected')
       }"
     >
       {{ orderItem.productName | localize }} ({{
@@ -25,9 +25,7 @@
       }}
     </div>
     <div class="text-right p-2 col-3 m-auto">
-      <ng-container
-        *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.REJECTED"
-      >
+      <ng-container *ngIf="!isCurrentStatus(orderItem, 'rejected')">
         <button
           nbButton
           status="warning"
@@ -70,7 +68,7 @@
 <div class="row p-0 m-0">
   <div class="col-1 p-2 text-right m-auto font-larger"><strong>Σ</strong></div>
   <div class="col-6 m-auto">
-    <button
+    <!--button
       *ngFor="let method of paymentMethods"
       nbButton
       class="float-right mr-1"
@@ -80,7 +78,7 @@
       (click)="updateOrderPaymentMethod(method.key)"
     >
       {{ method.value | translate }}
-    </button>
+    </button-->
   </div>
 
   <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">

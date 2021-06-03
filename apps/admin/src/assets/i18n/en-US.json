@@ -23,6 +23,7 @@
     "ok": "OK",
     "yes": "Yes",
     "no": "No",
+    "error": "Error",
     "email": "Email",
     "phone": "Phone",
     "chain": "Chain",
@@ -35,6 +36,7 @@
     "from": "From",
     "to": "To",
     "language": "Language",
+    "languageSelector": "Language selector",
     "type": "Type",
     "lang": {
       "english": "English",
@@ -58,6 +60,11 @@
     "insertSuccessful": "Insert successful",
     "updateSuccessful": "Update successful",
     "removeSuccessful": "Remove successful",
+    "imageUploadError": "Image uploaded error",
+    "imageRemoveError": "Image remove error",
+    "insertError": "Insert error",
+    "updateError": "Update error",
+    "removeError": "Remove error",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",
@@ -73,7 +80,16 @@
       "title": "Payment modes",
       "inapp": "Online",
       "cash": "Cash",
-      "card": "Card"
+      "card": "Card",
+      "googlepay": "Google Pay",
+      "applepay": "Apple Pay",
+      "stripe": "Stripe",
+      "simple": "Simple"
+    },
+    "transactionStatus": {
+      "SUCCESS": "Success",
+      "WAITING_FOR_PAYMENT": "Waiting for payment",
+      "FAILED": "Failed"
     },
     "sum": "Sum",
     "width": "width",
@@ -165,9 +181,8 @@
       "sulphites": "Sulphites",
       "treenuts": "Treenuts"
     },
-    "ingredients": {
-      "title": "Ingredients"
-    },
+    "productConfigurations": "Product configurations",
+    "productModifierSet": "Product modifier set",
     "variants": "Variants",
     "packSize": "Pack size",
     "packUnit": "Pack unit",
@@ -208,11 +223,12 @@
     "editProductComponentSet": "Edit product component set",
     "newProductComponentSet": "New product component set",
     "productComponent": "Product component",
+    "productComponents": "Product components",
     "type": {
       "extras": "Extras",
       "modifier": "Modifier"
     },
-     "maxSelection": "Max selection"
+    "maxSelection": "Max selection"
   },
   "modifiersAndExtras": {
     "listTitle": "Modifiers and Extras",
@@ -272,9 +288,9 @@
     "confirmResetOrderItemStatus": "Are you sure you reset the status?",
     "userOrdersCount": "{{ count }} order(s)",
     "status": {
-      "PLACED": "Placed",
-      "PROCESSING": "Processing",
-      "READY": "Ready",
+      "placed": "Placed",
+      "processing": "Processing",
+      "ready": "Ready",
       "SERVED": "Served",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "PAID": "Paid",
@@ -302,8 +318,8 @@
     "roles": "Roles",
     "editRoles": "Edit roles",
     "superuser": "Superuser",
-    "chainAdmin": "Chain admin",
-    "groupAdmin": "Group admin",
+    "chainadmin": "Chain admin",
+    "groupadmin": "Group admin",
     "unitAdmin": "Unit admin",
     "staff": "Staff",
     "inactive": "Inactive",
@@ -319,6 +335,7 @@
   },
   "errors": {
     "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",
-    "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!"
+    "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!",
+    "commonGqlError": "Database operation failed! Please contact the administrator!"
   }
 }

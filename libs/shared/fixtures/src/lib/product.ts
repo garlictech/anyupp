@@ -1,5 +1,5 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EVariantAvailabilityType } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EVariantAvailabilityType, RequiredId } from '@bgap/shared/types';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
@@ -8,7 +8,7 @@ const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 const getProductVariant = (
   idx: number,
   type: string,
-): CrudApi.ProductVariantInput => ({
+): RequiredId<CrudApi.ProductVariantInput> => ({
   id: `${testIdPrefix}${type}ProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx,
@@ -28,7 +28,7 @@ const getProductVariant = (
   position: idx,
 });
 
-export const chainProductBase: CrudApi.CreateChainProductInput = {
+const chainProductBase: RequiredId<CrudApi.CreateChainProductInput> = {
   id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
@@ -41,7 +41,7 @@ export const chainProductBase: CrudApi.CreateChainProductInput = {
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
-export const groupProductBase: CrudApi.CreateGroupProductInput = {
+const groupProductBase: RequiredId<CrudApi.CreateGroupProductInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -51,7 +51,10 @@ export const groupProductBase: CrudApi.CreateGroupProductInput = {
   variants: [getProductVariant(1, 'group'), getProductVariant(2, 'group')],
 };
 
-export const unitProductBase: CrudApi.CreateUnitProductInput = {
+const unitProductBase: Omit<
+  RequiredId<CrudApi.CreateUnitProductInput>,
+  'variants'
+> & { variants: CrudApi.ProductVariantInput[] } = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -64,7 +67,7 @@ export const unitProductBase: CrudApi.CreateUnitProductInput = {
   variants: [getProductVariant(1, 'chain'), getProductVariant(2, 'chain')],
 };
 
-export const productSeed = {
+export const productFixture = {
   chainProductBase,
   groupProductBase,
   unitProductBase,

@@ -9,7 +9,10 @@
         class="float-right"
       ></bgap-active-product-category-selector>
       <button
-        [disabled]="selectedProductLevel !== eProductLevel.CHAIN"
+        [disabled]="
+          selectedProductLevel !== eProductLevel.CHAIN ||
+          !selectedProductCategoryId
+        "
         nbButton
         class="float-right mr-2"
         type="button"

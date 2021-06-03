@@ -1,15 +1,10 @@
 <div class="float-left">
   <div class="subtitle-2">
     {{ unit!.name }}
-    <bgap-status-led class="ml-1" [status]="unit.isActive"></bgap-status-led>
+    <bgap-status-led class="ml-1" [status]="unit?.isActive"></bgap-status-led>
   </div>
   <div class="caption">{{ unit!.description! | localize }}</div>
   <bgap-contact [contact]="unit"></bgap-contact>
-
-  <div class="caption">
-    <nb-icon icon="globe-outline"></nb-icon
-    ><strong>{{ unit!._group?.name }}</strong>
-  </div>
 </div>
 
 <button

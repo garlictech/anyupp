@@ -23,10 +23,10 @@
         <legend class="label">{{ 'products.basicInfo' | translate }}</legend>
 
         <div class="subtitle-2 mb-2">
-          <span>{{ product.name | localize }}</span>
+          <span>{{ product?.name | localize }}</span>
         </div>
         <div class="caption mb-2">
-          <span>{{ product.description | localize }}</span>
+          <span>{{ product?.description | localize }}</span>
         </div>
 
         <div class="row">
@@ -68,6 +68,12 @@
         [allowAddVariant]="false"
         [currency]="currency"
       ></bgap-form-product-variants>
+
+      <bgap-form-product-components
+        [productLevel]="productLevel"
+        [componentFormArray]="dialogForm.get('configSets')! | asFormArray"
+        [currency]="currency"
+      ></bgap-form-product-components>
 
       <div class="mt-20">
         <button

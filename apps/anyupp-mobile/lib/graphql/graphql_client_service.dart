@@ -1,48 +1,47 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gql_dio_link/gql_dio_link.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'graphql_request_serializer.dart';
+import 'graphql_token_refresh_interceptor.dart';
+// import 'graphql_token_refresh_interceptor.dart';
 
 class GraphQLClientService {
   final String amplifyApiUrl;
   final String amplifyApiKey;
   final String graphqlApiUrl;
   final String graphqlApiKey;
-  final IAuthProvider _authProvider;
+  final IAuthProvider authProvider;
 
-  ValueNotifier<GraphQLClient> _amplifyClient;
-  ValueNotifier<GraphQLClient> _graphqlClient;
+  final _dio = Dio();
 
   GraphQLClientService({
-    @required IAuthProvider authProvider,
+    @required this.authProvider,
     @required this.amplifyApiUrl,
     @required this.amplifyApiKey,
     @required this.graphqlApiUrl,
     @required this.graphqlApiKey,
-  }) : _authProvider = authProvider;
+  }) {
+    _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
+  }
 
   Future<ValueNotifier<GraphQLClient>> getAmplifyClient({bool force = false}) async {
-    if (force == true) {
-      await _amplifyClient?.dispose();
-      _amplifyClient = null;
-    }
 
-    if (_amplifyClient != null) {
-      return _amplifyClient;
-    }
 
-    String accessToken = await _authProvider.getAccessToken();
+    String accessToken = await authProvider.getAccessToken();
+    // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
+
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
-    // print('GraphQLClientService.Creating client. AccessToken=$accessToken');
 
     Map<String, String> headers;
     if (accessToken != null) {
       headers = {
-        'Authorization': accessToken, // 'Bearer $accessToken',
+        'Authorization': accessToken,
         'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {
@@ -51,25 +50,33 @@ class GraphQLClientService {
         'host': Uri.parse(amplifyApiUrl).host,
       };
     }
-    print('GraphQLClientService.headers=$headers');
+    // print('GraphQLClientService.headers=$headers');
     final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
-    final HttpLink _httpLink = HttpLink(
-      amplifyApiUrl,
-      defaultHeaders: headers,
-    );
+    final httpLink = Link.from([
+      DioLink(
+        amplifyApiUrl,
+        client: _dio,
+        defaultHeaders: headers,
+      ),
+    ]);
 
-    final AuthLink _authLink = AuthLink(
+    // final HttpLink _httpLink = HttpLink(
+    //   amplifyApiUrl,
+    //   defaultHeaders: headers,
+    // );
+
+    final AuthLink authLink = AuthLink(
       getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
     );
 
     // final Link _link = _httpLink;
-    Link _link = _authLink.concat(_httpLink);
+    Link link = authLink.concat(httpLink);
     String graphqlWsApiUrl =
         amplifyApiUrl.replaceFirst('https:', 'wss:').replaceFirst('appsync-api', 'appsync-realtime-api');
-    print('GraphQLClientService.websocket=$graphqlWsApiUrl');
+    // print('GraphQLClientService.websocket=$graphqlWsApiUrl');
 
-    final _wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
+    final wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
         config: SocketClientConfig(
           initialPayload: headers,
           serializer: AppSyncRequest(authHeader: headers),
@@ -79,33 +86,27 @@ class GraphQLClientService {
           queryAndMutationTimeout: Duration(seconds: 30), // Default 10
         ));
 
-    _link = Link.split((request) => request.isSubscription, _wsLink, _link);
+    link = Link.split((request) => request.isSubscription, wsLink, link);
 
-    _amplifyClient = ValueNotifier(GraphQLClient(
+    ValueNotifier<GraphQLClient> amplifyClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
-      link: _link,
+      link: link,
     ));
 
-    return _amplifyClient;
+    return amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getGraphQLClient() async {
-    print('getAdminGraphQLClient().url=$graphqlApiUrl');
-    if (_graphqlClient != null) {
-      return _graphqlClient;
-    }
+  Future<ValueNotifier<GraphQLClient>> getGraphQLClient({bool useApi = false}) async {
+    String accessToken = await authProvider.getAccessToken();
+    // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
-    _graphqlClient?.dispose();
-
-    String accessToken = await _authProvider.getAccessToken();
-    print('getAdminGraphQLClient().accessToken=$accessToken');
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
 
     Map<String, String> headers;
     if (accessToken != null) {
       headers = {
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': accessToken,
         'host': Uri.parse(graphqlApiUrl).host,
       };
     } else {
@@ -115,23 +116,25 @@ class GraphQLClientService {
       };
     }
 
-    final HttpLink _httpLink = HttpLink(
-      amplifyApiUrl,
-      defaultHeaders: headers,
-    );
+    final httpLink = Link.from([
+      DioLink(
+        amplifyApiUrl,
+        client: _dio,
+        defaultHeaders: headers,
+      ),
+    ]);
 
-    final AuthLink _authLink = AuthLink(
+    final AuthLink authLink = AuthLink(
       getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
     );
 
     // final Link _link = _httpLink;
-    Link _link = _authLink.concat(_httpLink);
-
-    _graphqlClient = ValueNotifier(GraphQLClient(
+    Link link = authLink.concat(httpLink);
+    ValueNotifier<GraphQLClient> graphqlClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
-      link: _link,
+      link: link,
     ));
 
-    return _graphqlClient;
+    return graphqlClient;
   }
 }

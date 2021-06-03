@@ -2,13 +2,14 @@ const SUBSCRIPTION_ORDER_LIST = '''
 subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
   onOrderChanged(unitId: \$unitId, userId: \$userId) {
    	id
+    orderNum
     unitId
     userId
     paymentIntention
     takeAway
     paymentMode {
       caption
-      name
+      type
       method
     }
     place {
@@ -40,6 +41,25 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
         priceSum
         tax
         taxSum
+      }
+      configSets {
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          price
+          productComponentId
+        }
+        name {
+          de
+          en
+          hu
+        }
+        productSetId
+        type
       }
       quantity
       statusLog {

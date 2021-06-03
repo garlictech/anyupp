@@ -2,7 +2,7 @@ type Address {
   address: String!
   city: String!
   country: String!
-  title: String
+  title: String!
   postalCode: String!
   location: Location!
 }
@@ -59,12 +59,21 @@ type AdminRoleContext
 
 ### RoleContext
 
+enum Role {
+  superuser
+  chainadmin
+  groupadmin
+  unitadmin
+  staff
+  inactive
+}
+
 type RoleContext
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id
-  role: String!
+  role: Role!
   name: LocalizedItem
   chainId: String
   groupId: String
@@ -204,7 +213,7 @@ type Group
 ### OrderItem
 type StatusLog {
   userId: ID!
-  status: String!
+  status: OrderStatus!
   ts: Float!
 }
 
@@ -216,6 +225,20 @@ type PriceShown {
   taxSum: Float!
 }
 
+type OrderItemConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItem!
+  allergens: [Allergen]
+}
+
+type OrderItemConfigSet {
+  productSetId: ID!
+  name: LocalizedItem!
+  type: String!
+  items: [OrderItemConfigComponent!]!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -224,10 +247,11 @@ type OrderItem {
   image: String
   priceShown: PriceShown!
   quantity: Int!
-  statusLog: [StatusLog]
+  statusLog: [StatusLog!]!
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
+  configSets: [OrderItemConfigSet!]
 }
 
 ### Order
@@ -237,6 +261,7 @@ type Order
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -244,6 +269,8 @@ type Order
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 type OrderHistory
@@ -252,6 +279,7 @@ type OrderHistory
   id: ID!
   userId: ID!
   unitId: ID!
+  orderNum: String!
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
@@ -259,26 +287,39 @@ type OrderHistory
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
-  # EXTRA
-  status: OrderStatus
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
 }
+
+enum PaymentStatus {
+  waiting_for_payment
+  success
+  failed
+}
+
 enum OrderStatus {
-  NONE
-  PLACED
-  PROCESSING
-  READY
-  SERVED
-  WAITING_FOR_PAYMENT
-  PAID
-  # RECEIVED,
-  FAILED
-  REJECTED
+  none
+  placed
+  processing
+  ready
+  served
+  failed
+  rejected
 }
 
 enum PaymentMethod {
-  CASH
-  CARD
-  INAPP
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
 }
 
 type Place {
@@ -317,9 +358,40 @@ type ProductComponentSet
   chainId: ID!
   type: String!
   name: LocalizedItem!
-  description: String
-  items: [ID]! # ProductComponent ID
+  description: String!
+  items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
+}
+
+### ProductConfigSet
+type ProductConfigComponent {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+
+type ProductConfigSet {
+  productSetId: ID!
+  items: [ProductConfigComponent!]!
+  position: Int!
+}
+
+type GeneratedProductConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  position: Int!
+  name: LocalizedItem!
+  allergens: [Allergen]
+}
+
+type GeneratedProductConfigSet {
+  productSetId: ID!
+  name: LocalizedItem!
+  position: Int!
+  type: String!
+  maxSelection: Int
+  items: [GeneratedProductConfigComponent!]!
 }
 
 ### Product
@@ -336,6 +408,7 @@ type ChainProduct
   image: String
   variants: [ProductVariant]
   allergens: [Allergen]
+  configSets: [ProductConfigSet]
 }
 
 enum Allergen {
@@ -366,7 +439,8 @@ type GroupProduct
   tax: Int!
   # takeawayTax: Int
   variants: [ProductVariant]
-  chainProduct: ChainProduct @connection(fields: ["parentId"])
+  configSets: [ProductConfigSet]
+  chainProduct: ChainProduct! @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -382,7 +456,8 @@ type UnitProduct
   laneId: ID
   position: Int!
   variants: [ProductVariant]
-  groupProduct: GroupProduct @connection(fields: ["parentId"])
+  configSets: [ProductConfigSet]
+  groupProduct: GroupProduct! @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
@@ -431,6 +506,7 @@ type GeneratedProduct
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
 }
 
 type GeneratedProductVariant {
@@ -448,7 +524,7 @@ type FavoriteProduct
   id: ID!
   userId: ID!
   unitId: ID!
-  product: GeneratedProduct @connection
+  product: GeneratedProduct! @connection
 }
 
 ### Unit
@@ -458,6 +534,7 @@ type Unit
   id: ID!
   groupId: ID!
   chainId: ID!
+  lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
   name: String!
@@ -470,6 +547,7 @@ type Unit
   lanes: [Lane]
   open: DateInterval
   openingHours: WeeklySchedule
+  merchantId: String
 }
 
 type DateInterval {
@@ -495,7 +573,7 @@ type WeeklySchedule {
 }
 
 type PaymentMode {
-  name: String!
+  type: PaymentType!
   caption: String
   method: PaymentMethod!
 }
@@ -538,15 +616,16 @@ type Lane {
 
 # TODO: use to store User META in the near future
 ### User
-# type User @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   id: ID!
-#   # name: String
-#   # email: String
-#   # phone: String
-#   # profileImage: String
-#   # login: String
-#   # stripeCustomerId: String
-# }
+type User
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+}
 
 ### Cart
 
@@ -560,6 +639,21 @@ type Cart
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
+}
+
+type Transaction
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  order: Order! @connection(fields: ["orderId"])
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
 }
 
 type Subscription {
@@ -614,6 +708,23 @@ type Subscription {
     @aws_cognito_user_pools
   onUnitProductChange: UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange: GeneratedProduct
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+    @aws_cognito_user_pools
+  onOrderHistorysChange: OrderHistory
+    @aws_subscribe(
+      mutations: [
+        "createOrderHistory"
+        "updateOrderHistory"
+        "deleteOrderHistory"
+      ]
+    )
     @aws_cognito_user_pools
 
   # Added for the Mobile Application

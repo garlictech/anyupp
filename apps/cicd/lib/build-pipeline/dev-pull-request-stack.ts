@@ -37,20 +37,25 @@ export class DevPullRequestBuildStack extends sst.Stack {
           phases: {
             install: {
               commands: [
-                `sh ./tools/setup-aws-environment.sh`,
+                'chmod +x ./tools/*.sh',
+                `./tools/setup-aws-environment.sh`,
+                './tools/install-nodejs-14.sh',
                 'yarn --frozen-lockfile',
-                'npm install -g @aws-amplify/cli',
+                'npm install -g @aws-amplify/cli cowsay',
                 'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
                 'export PATH=$PATH:/tmp/flutter/bin',
                 'flutter doctor',
+                'npx cowsay "STARTING PR CHECK"',
               ],
             },
             build: {
               commands: [
-                `sh ./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
-                `yarn nx buildApk anyupp-mobile`,
+                `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
                 `yarn nx affected:lint --base=${stage} ${generatedLibExcludes}`,
                 `yarn nx affected:test --base=${stage} --exclude="anyupp-mobile" --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover`,
+                `yarn nx test anyupp-mobile`,
+                `yarn nx buildApk anyupp-mobile`,
+                'npx cowsay "YOUR PR IS SUPERCOOL!!!"',
               ],
             },
           },

@@ -21,6 +21,13 @@ export class WebsiteConstruct extends Construct {
     super(scope, id);
     const app = this.node.root as sst.App;
 
+    /*
+    const certificateArn =
+      app.stage === 'prod'
+        ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
+        : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
+    */
+
     const zone = route53.HostedZone.fromLookup(this, 'Zone', {
       domainName: props.domainName,
     });
@@ -37,11 +44,6 @@ export class WebsiteConstruct extends Construct {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
       publicReadAccess: true,
-
-      // The default removal policy is RETAIN, which means that cdk destroy will not attempt to delete
-      // the new bucket, and it will remain in your account until manually deleted. By setting the policy to
-      // DESTROY, cdk destroy will attempt to delete the bucket, but will error if the bucket is not empty.
-      removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
     });
 
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });

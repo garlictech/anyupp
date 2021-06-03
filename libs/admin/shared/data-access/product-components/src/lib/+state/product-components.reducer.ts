@@ -1,4 +1,4 @@
-import { IProductComponent } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -6,19 +6,20 @@ import * as ProductComponentsActions from './product-components.actions';
 
 export const PRODUCT_COMPONENTS_FEATURE_KEY = 'productComponents';
 
-export interface IProductComponentsState extends EntityState<IProductComponent> {
+export interface ProductComponentsState
+  extends EntityState<CrudApi.ProductComponent> {
   error?: string | null; // last known error (if any)
 }
 
 export interface ProductComponentsPartialState {
-  readonly [PRODUCT_COMPONENTS_FEATURE_KEY]: IProductComponentsState;
+  readonly [PRODUCT_COMPONENTS_FEATURE_KEY]: ProductComponentsState;
 }
 
-export const productComponentsAdapter: EntityAdapter<IProductComponent> = createEntityAdapter<
-  IProductComponent
+export const productComponentsAdapter: EntityAdapter<CrudApi.ProductComponent> = createEntityAdapter<
+  CrudApi.ProductComponent
 >();
 
-export const initialState: IProductComponentsState = productComponentsAdapter.getInitialState(
+export const initialState: ProductComponentsState = productComponentsAdapter.getInitialState(
   {},
 );
 
@@ -29,9 +30,9 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductComponentsActions.upsertProductComponent,
-    (state, { productComponent }) =>
-      productComponentsAdapter.upsertOne(productComponent, state),
+    ProductComponentsActions.upsertProductComponents,
+    (state, { productComponents }) =>
+      productComponentsAdapter.upsertMany(productComponents, state),
   ),
   on(ProductComponentsActions.resetProductComponents, state =>
     productComponentsAdapter.removeAll(state),
@@ -39,7 +40,7 @@ const reducer = createReducer(
 );
 
 export function productComponentsReducer(
-  state: IProductComponentsState | undefined,
+  state: ProductComponentsState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

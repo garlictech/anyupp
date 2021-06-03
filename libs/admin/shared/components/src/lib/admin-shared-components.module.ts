@@ -31,6 +31,7 @@ import { ContactComponent } from './components/contact';
 import { GoogleMapComponent } from './components/google-map';
 import { StatusLedComponent } from './components/status-led';
 import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
+import { AllergensComponent } from './components/allergens/allergens.component';
 
 const NB_MODULES = [
   NbIconModule,
@@ -62,6 +63,7 @@ const COMPONENTS = [
   StatusLedComponent,
   ColorizedLaneIconComponent,
   ContactComponent,
+  AllergensComponent,
 ];
 
 @NgModule({

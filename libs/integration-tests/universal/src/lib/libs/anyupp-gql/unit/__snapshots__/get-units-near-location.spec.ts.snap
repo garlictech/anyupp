@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetUnitsNearLocation tests input validation should throw without a input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location.lng\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lng\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location.lat\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lat\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error: \\"input.location\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error: "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
+exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
 
 exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with direct handler call 1`] = `
 Object {
@@ -17,52 +17,47 @@ Object {
     "city": "Budapest",
     "country": "Magyarország",
     "location": Object {
-      "__typename": "Location",
       "lat": 47.48992,
       "lng": 19.046135,
     },
     "postalCode": "1021",
     "title": "HQ",
   },
-  "chainId": "seeded_chain_1_id",
+  "chainId": "test_chain_1_id",
   "currency": "EUR",
   "distance": 0,
-  "groupId": "seeded_group_c1_1_id",
+  "groupId": "test_group_1_id",
   "id": "test_unit_03",
   "name": "Test unit #test_unit_1_id",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "CASH",
-      "name": "Cash",
+      "method": "cash",
+      "type": "cash",
     },
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "CARD",
-      "name": "Card",
+      "method": "card",
+      "type": "card",
     },
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "INAPP",
-      "name": "Stripe",
+      "method": "inapp",
+      "type": "stripe",
     },
   ],
   "style": Object {
     "colors": Object {
-      "__typename": "ChainStyleColors",
-      "backgroundDark": "#D6DDE0",
-      "backgroundLight": "#FFFFFF",
-      "borderDark": "#E7E5D0",
-      "borderLight": "#C3CACD",
+      "backgroundDark": "#d6dde0",
+      "backgroundLight": "#ffffff",
+      "borderDark": "#c3cacd",
+      "borderLight": "#e7e5d0",
       "disabled": "#303030",
-      "highlight": "#A8692A",
-      "indicator": "#30BF60",
+      "highlight": "#a8692a",
+      "indicator": "#30bf60",
       "textDark": "#303030",
-      "textLight": "#FFFFFF",
+      "textLight": "#ffffff",
     },
     "images": null,
   },
@@ -71,60 +66,52 @@ Object {
 
 exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call 1`] = `
 Object {
-  "__typename": "GeoUnit",
   "address": Object {
-    "__typename": "Address",
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
     "location": Object {
-      "__typename": "Location",
       "lat": 47.48992,
       "lng": 19.046135,
     },
     "postalCode": "1021",
     "title": "HQ",
   },
-  "chainId": "seeded_chain_1_id",
+  "chainId": "test_chain_1_id",
   "currency": "EUR",
   "distance": 0,
-  "groupId": "seeded_group_c1_1_id",
+  "groupId": "test_group_1_id",
   "id": "test_unit_03",
   "name": "Test unit #test_unit_1_id",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "CASH",
-      "name": "Cash",
+      "method": "cash",
+      "type": "cash",
     },
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "CARD",
-      "name": "Card",
+      "method": "card",
+      "type": "card",
     },
     Object {
-      "__typename": "PaymentMode",
       "caption": null,
-      "method": "INAPP",
-      "name": "Stripe",
+      "method": "inapp",
+      "type": "stripe",
     },
   ],
   "style": Object {
-    "__typename": "ChainStyle",
     "colors": Object {
-      "__typename": "ChainStyleColors",
-      "backgroundDark": "#D6DDE0",
-      "backgroundLight": "#FFFFFF",
-      "borderDark": "#E7E5D0",
-      "borderLight": "#C3CACD",
+      "backgroundDark": "#d6dde0",
+      "backgroundLight": "#ffffff",
+      "borderDark": "#c3cacd",
+      "borderLight": "#e7e5d0",
       "disabled": "#303030",
-      "highlight": "#A8692A",
-      "indicator": "#30BF60",
+      "highlight": "#a8692a",
+      "indicator": "#30bf60",
       "textDark": "#303030",
-      "textLight": "#FFFFFF",
+      "textLight": "#ffffff",
     },
     "images": null,
   },

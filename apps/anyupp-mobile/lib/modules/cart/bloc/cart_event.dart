@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:flutter/foundation.dart';
-
 
 @immutable
 abstract class BaseCartAction extends Equatable {
@@ -48,7 +48,8 @@ class UpdateProductInCartAction extends BaseCartAction {
   final ProductVariant variant;
   final int quantity;
 
-  const UpdateProductInCartAction(this.chainId, this.unitId, this.product, this.variant, this.quantity);
+  const UpdateProductInCartAction(
+      this.chainId, this.unitId, this.product, this.variant, this.quantity);
 
   @override
   List<Object> get props => [chainId, unitId, product, variant, quantity];
@@ -68,7 +69,7 @@ class RemoveOrderFromCartAction extends BaseCartAction {
 class ClearCartAction extends BaseCartAction {
   final User user;
   final GeoUnit unit;
-  
+
   const ClearCartAction(this.user, this.unit);
 
   @override
@@ -101,4 +102,23 @@ class CreateAndSendOrder extends BaseCartAction {
 
   @override
   List<Object> get props => [unit, paymentMethod];
+}
+
+class AddInvoiceInfo extends BaseCartAction {
+  final InvoiceInfo invoiceInfo;
+
+  const AddInvoiceInfo(this.invoiceInfo);
+
+  @override
+  List<Object> get props => [invoiceInfo];
+}
+
+class SetPaymentMode extends BaseCartAction {
+  final GeoUnit unit;
+  final PaymentMode paymentMode;
+
+  const SetPaymentMode(this.unit, this.paymentMode);
+
+  @override
+  List<Object> get props => [unit, paymentMode];
 }

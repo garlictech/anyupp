@@ -1,6 +1,5 @@
 mutation CreateCartMutation($createCartInput: CreateCartInput!) {
-  createCart(input: $createCartInput)
-  {
+  createCart(input: $createCartInput) {
     id
   }
 }

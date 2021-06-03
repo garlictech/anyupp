@@ -1,6 +1,6 @@
 <fieldset class="form">
   <legend class="label">{{ 'products.variants' | translate }}</legend>
-  <div class="container">
+  <div>
     <div
       *ngFor="
         let variant of variantFormArray | iterableAbstractControls;
@@ -10,7 +10,7 @@
       "
     >
       <!-- ORDER EDIT -->
-      <div class="mb-2" *ngIf="productLevel !== EProductLevel.CHAIN">
+      <div class="mb-2" *ngIf="productLevel !== eProductLevel.CHAIN">
         <!--
         <span *ngIf="variant.value.variantName">{{ variant.value.variantName | localize }}</span>
         {{ variant.value.pack.size }}
@@ -96,17 +96,17 @@
       </div>
 
       <!-- GROUP & UNIT -->
-      <ng-container *ngIf="productLevel !== EProductLevel.CHAIN">
+      <ng-container *ngIf="productLevel !== eProductLevel.CHAIN">
         <div class="row">
           <div class="col-sm-3">
             <bgap-form-text-input
-              *ngIf="productLevel === EProductLevel.GROUP"
+              *ngIf="productLevel === eProductLevel.GROUP"
               caption="products.refPrice"
               type="number"
               [control]="variant.get('refGroupPrice')! | asFormControl"
             ></bgap-form-text-input>
             <bgap-form-static-text
-              *ngIf="productLevel === EProductLevel.UNIT"
+              *ngIf="productLevel === eProductLevel.UNIT"
               caption="products.refPrice"
               [value]="
                 variant.value.refGroupPrice | currencyFormatter: currency!
@@ -117,6 +117,7 @@
         </div>
 
         <bgap-form-product-availabilities
+          *ngIf="productLevel === eProductLevel.UNIT"
           [availabilityFormArray]="variant.get('availabilities')! | asFormArray"
           [currency]="currency"
         ></bgap-form-product-availabilities>

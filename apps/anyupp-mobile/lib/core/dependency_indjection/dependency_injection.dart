@@ -4,10 +4,17 @@ import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/main/main.dart';
+import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
+import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider.dart';
+import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/modules/transactions/bloc/transactions_bloc.dart';
+import 'package:fa_prev/modules/transactions/providers/aws_transactions_provider.dart';
+import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
 import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -15,9 +22,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 // This is our global ServiceLocator
@@ -31,7 +36,7 @@ Future<void> initDependencyInjection() async {
   _initBlocs();
 }
 
-void _initCommon() {
+void _initCommon() async {
   print('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(
@@ -59,7 +64,8 @@ void _initProviders() {
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<ValueNotifier<GraphQLClient>>(), getIt<Stripe>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
+  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
@@ -71,6 +77,7 @@ void _initProviders() {
         getIt<IAuthProvider>(),
         getIt<CognitoService>(),
       ));
+  getIt.registerLazySingleton<AwsTransactionsProvider>(() => AwsTransactionsProvider(getIt<IAuthProvider>()));
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
@@ -89,6 +96,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
+  getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));
 
   // Repostories
   getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<IAffiliateProvider>()));
@@ -96,7 +104,8 @@ void _initRepositories() {
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<StripePaymentRepository>(() => StripePaymentRepository(getIt<IStripePaymentProvider>()));
+  getIt.registerLazySingleton<StripePaymentRepository>(
+      () => StripePaymentRepository(getIt<IStripePaymentProvider>(), getIt<IExternalPaymentProvider>()));
 }
 
 void _initServices() {
@@ -114,6 +123,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => AuthBloc(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ExceptionBloc());
   getIt.registerLazySingleton(() => UnitSelectBloc());
+  getIt.registerLazySingleton(() => TransactionsBloc(getIt<TransactionsRepository>()));
   getIt.registerLazySingleton(() => UnitsBloc(getIt<UnitRepository>(), getIt<LocationRepository>()));
   getIt.registerLazySingleton(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));
@@ -125,6 +135,8 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => NetworkStatusBloc());
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
-  getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>()));
+  getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>(), getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => MainNavigationBloc());
+  getIt.registerLazySingleton(() => ConfigsetBloc());
 }

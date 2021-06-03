@@ -1,7 +1,5 @@
-import { ConfirmDialogComponent } from 'libs/admin/shared/components/src';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,18 +9,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
-import { IAdminUser, IGroup } from '@bgap/shared/types';
 import {
   NbDialogService,
-  NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
-  NbThemeService,
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -42,21 +38,18 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public groups$?: Observable<IGroup[]>;
-  public adminUser?: IAdminUser;
+  public groups$?: Observable<CrudApi.Group[]>;
+  public loggedUser?: CrudApi.AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
   public selectedLang: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _sidebarService: NbSidebarService,
     private _menuService: NbMenuService,
-    private _themeService: NbThemeService,
     private _layoutService: LayoutService,
-    private _breakpointService: NbMediaBreakpointsService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
     private _cognitoService: CognitoService,
@@ -107,18 +100,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   get userName(): string | undefined {
-    return this.adminUser?.name;
+    return this.loggedUser?.name;
   }
 
   get userImage(): string | undefined | null {
-    return this.adminUser?.profileImage;
+    return this.loggedUser?.profileImage;
   }
 
   ngOnInit(): void {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
-      .subscribe((adminUser: IAdminUser): void => {
-        this.adminUser = adminUser;
+      .subscribe(adminUser => {
+        this.loggedUser = adminUser;
 
         this._changeDetectorRef.detectChanges();
       });
@@ -127,22 +120,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (event: LangChangeEvent): void => {
         this.selectedLang = (event.lang || '').split('-')[0];
         this._translateMenuItems();
+
+        this._changeDetectorRef.detectChanges();
       },
     );
     this._translateMenuItems();
-
-    const { xl } = this._breakpointService.getBreakpointsMap();
-    this._themeService
-      .onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]): boolean => currentBreakpoint.width < xl),
-        untilDestroyed(this),
-      )
-      .subscribe((isLessThanXl: boolean): boolean => {
-        this._changeDetectorRef.detectChanges();
-
-        return (this.userPictureOnly = isLessThanXl);
-      });
 
     this._menuService
       .onItemClick()
@@ -156,7 +138,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
@@ -218,13 +199,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private _onLanguageSelected(lang: string): void {
     if (
-      this.adminUser?.id &&
-      lang !== this.adminUser?.settings?.selectedLanguage
+      this.loggedUser?.id &&
+      lang !== this.loggedUser?.settings?.selectedLanguage
     ) {
-      this._dataService.updateAdminUserSeletedLanguage(
-        this.adminUser?.id || '',
-        lang,
-      );
+      this._dataService
+        .updateAdminUserSettings(this.loggedUser.id, {
+          ...(this.loggedUser?.settings || {}),
+          selectedLanguage: lang,
+        })
+        .subscribe();
     }
   }
 }

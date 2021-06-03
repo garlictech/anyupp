@@ -1,11 +1,11 @@
-import { IProductCategory } from '@bgap/shared/types';
 import { createAction, props } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 export const init = createAction('[ProductCategories] Init');
 
-export const upsertProductCategory = createAction(
-  '[ProductCategories] Upsert product category',
-  props<{ productCategory: IProductCategory }>(),
+export const upsertProductCategorys = createAction(
+  '[ProductCategories] Upsert product categorys',
+  props<{ productCategorys: CrudApi.ProductCategory[] }>(),
 );
 
 export const resetProductCategories = createAction(

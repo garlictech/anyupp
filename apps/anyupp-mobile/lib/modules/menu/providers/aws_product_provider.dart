@@ -1,4 +1,3 @@
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 
@@ -11,25 +10,20 @@ import 'package:fa_prev/graphql/graphql.dart';
 
 class AwsProductProvider implements IProductProvider {
   @override
-  Stream<List<ProductCategory>> getProductCategoryList(String chainId, String unitId) {
+  Stream<List<ProductCategory>> getProductCategoryList(String chainId, String unitId) async* {
     print('***** getProductCategoryList().start().chainId=$chainId, unitId=$unitId');
-    return _getWithGraphQL(chainId, unitId);
-  }
 
-  Stream<List<ProductCategory>> _getWithGraphQL(String chainId, String unitId) async* {
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_LIST_PRODUCT_CATEGORIES),
+      QueryResult result = await GQL.amplify.executeQuery(
+        query: QUERY_LIST_PRODUCT_CATEGORIES,
         variables: {
           'chainId': chainId,
         },
-      ));
+      );
 
-      print('getProductCategoryList.result=$result');
-      if (result.hasException) {
-        print('getProductCategoryList().error=${result.exception}'); // TODO
+      if (result.data == null || result.data['listProductCategorys'] == null) {
         yield null;
+        return;
       }
 
       List<dynamic> items = result.data['listProductCategorys']['items'];
@@ -42,36 +36,45 @@ class AwsProductProvider implements IProductProvider {
 
       yield results;
     } on Exception catch (e) {
-      print('AwsUnitProvider.getProductCategoryList.Exception: $e');
-      rethrow;
+      print('***** getProductCategoryList().error=$e');
+      yield null;
     }
   }
 
   @override
   Stream<List<GeneratedProduct>> getProductList(String unitId, String categoryId) async* {
     // print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
+
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getAmplifyClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_LIST_PRODUCTS),
-        variables: {
-          'unitId': unitId,
-          'categoryId': categoryId,
-        },
-      ));
+      QueryResult result = await GQL.amplify.executeQuery(query: QUERY_LIST_PRODUCTS, variables: {
+        'unitId': unitId,
+        'categoryId': categoryId,
+      });
+
+      if (result.data == null || result.data['listGeneratedProducts'] == null) {
+        yield null;
+        return;
+      }
 
       List<dynamic> items = result.data['listGeneratedProducts']['items'];
       List<GeneratedProduct> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          results.add(GeneratedProduct.fromJson(Map<String, dynamic>.from(items[i])));
+          Map<String, dynamic> json = Map<String, dynamic>.from(items[i]);
+          // TODO ADD HACKED CONFIGURATIONS SETS!!!!
+          try {
+            results.add(GeneratedProduct.fromJson(json));
+          } on Error catch (e) {
+            print('listGeneratedProducts.error()');
+            FlutterError.dumpErrorToConsole(FlutterErrorDetails(exception: e));
+          }
         }
       }
 
       yield results;
     } on Exception catch (e) {
-      print('AwsUnitProvider.getProductList.Exception: $e');
-      rethrow;
+      print('***** getProductList().error=$e');
+      yield null;
     }
   }
 }

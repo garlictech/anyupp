@@ -3,7 +3,7 @@
     class="float-left d-block"
     [name]="chain.name"
     [title]="chain.description | localize"
-    [picture]="(chainLogo || '' | awsStoragePath | async) || ''"
+    [picture]="(chainLogo || '' | awsStoragePath) || ''"
   ></nb-user>
   <bgap-status-led
     class="float-left ml-2"

@@ -1,8 +1,7 @@
-import { IOrder } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {
   Action,
-  ActionReducer,
   ActionReducerMap,
   combineReducers,
   createReducer,
@@ -13,7 +12,7 @@ import * as OrdersActions from './orders.actions';
 
 export const ORDERS_FEATURE_KEY = 'orders';
 
-export interface IOrderEntityState extends EntityState<IOrder> {
+export interface IOrderEntityState extends EntityState<CrudApi.Order> {
   error?: string | null; // last known error (if any)
 }
 
@@ -30,8 +29,8 @@ export interface OrdersPartialState {
 // ACTIVE
 //
 
-export const activeOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
-  IOrder
+export const activeOrdersAdapter: EntityAdapter<CrudApi.Order> = createEntityAdapter<
+  CrudApi.Order
 >();
 
 export const initialActiveOrdersState: IOrderEntityState = activeOrdersAdapter.getInitialState(
@@ -43,8 +42,8 @@ const activeOrdersReducer = createReducer(
   on(OrdersActions.setAllActiveOrders, (state, { orders }) =>
     activeOrdersAdapter.setAll(orders, state),
   ),
-  on(OrdersActions.upsertActiveOrder, (state, { order }) =>
-    activeOrdersAdapter.upsertOne(order, state),
+  on(OrdersActions.upsertActiveOrders, (state, { orders }) =>
+    activeOrdersAdapter.upsertMany(orders, state),
   ),
   on(OrdersActions.removeActiveOrder, (state, { orderId }) =>
     activeOrdersAdapter.removeOne(orderId, state),
@@ -56,8 +55,8 @@ const activeOrdersReducer = createReducer(
 
 // HISTORY
 
-export const historyOrdersAdapter: EntityAdapter<IOrder> = createEntityAdapter<
-  IOrder
+export const historyOrdersAdapter: EntityAdapter<CrudApi.Order> = createEntityAdapter<
+  CrudApi.Order
 >();
 
 export const initialHistoryOrdersState: IOrderEntityState = historyOrdersAdapter.getInitialState(
@@ -69,8 +68,8 @@ const historyOrdersReducer = createReducer(
   on(OrdersActions.setAllHistoryOrders, (state, { orders }) =>
     historyOrdersAdapter.setAll(orders, state),
   ),
-  on(OrdersActions.upsertHistoryOrder, (state, { order }) =>
-    historyOrdersAdapter.upsertOne(order, state),
+  on(OrdersActions.upsertHistoryOrders, (state, { orders }) =>
+    historyOrdersAdapter.upsertMany(orders, state),
   ),
   on(OrdersActions.removeHistoryOrder, (state, { orderId }) =>
     historyOrdersAdapter.removeOne(orderId, state),
@@ -85,9 +84,7 @@ const reducerMap: ActionReducerMap<IOrdersState> = {
   history: historyOrdersReducer,
 };
 
-const combinedReducer: ActionReducer<IOrdersState> = combineReducers(
-  reducerMap,
-);
+const combinedReducer = combineReducers(reducerMap);
 
 export function ordersReducer(state: IOrdersState | undefined, action: Action) {
   return combinedReducer(state, action);

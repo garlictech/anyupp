@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
-import 'package:fa_prev/modules/payment/stripe/screens/stripe_payment_screen.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/enum.dart';
@@ -33,12 +32,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
 
   @override
   void initState() {
+    print('initState.StartGetOrderListSubscription()');
+    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
-    Future.delayed(Duration(seconds: 1)).then(
-      (value) => getIt<OrderBloc>().add(
-        StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
-      ),
-    );
+    // Future.delayed(Duration(seconds: 1)).then(
+    //   (value) => getIt<OrderBloc>().add(
+    //     StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
+    //   ),
+    // );
   }
 
   @override
@@ -57,6 +58,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           return StreamBuilder<List<Order>>(
             stream: _orderRepository.getCurrentOrders(unit.chainId, unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
+              // print('Screen.startListSubscription().state=$orderState');
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
                 if (orderState.data == null || orderState.data.isEmpty) {
                   return _noOrder();
@@ -65,7 +67,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                 // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
                 _orderNotificationService.checkIfShowOrderStatusNotification(context, orderState.data);
 
-                return _buildList(unit, orderState.data);
+                //return _buildList(unit, orderState.data);
+                return _buildOrderList(orderState.data);
               } else if (orderState.hasError) {
                 return CommonErrorWidget(
                   error: '',
@@ -83,7 +86,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildList(GeoUnit unit, List<Order> list) {
+  Widget buildListOld(GeoUnit unit, List<Order> list) {
     int cashOrderCount = 0;
     double cashOrderSum = 0.0;
 
@@ -97,8 +100,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     List<Order> onlineOrders = [];
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
-      if (status == 'READY') {
-        if (order.paymentMethod.method == 'CARD' || order.paymentMethod.method == 'CASH') {
+      if (status == 'ready') {
+        if (order.paymentMode.method == 'card' || order.paymentMode.method == 'cash') {
           // --- Payable
           if (order.paymentIntention == null) {
             cashOrderCount++;
@@ -110,7 +113,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
             waitingForCashPaymentSum += order.sumPriceShown.priceSum;
             // orders.add(order);
           }
-        } else if (order.paymentMethod.method == 'INAPP') {
+        } else if (order.paymentMode.method == 'inapp') {
           if (order.paymentIntention == null) {
             onlineOrderCount++;
             onlineOrderSum += order.sumPriceShown.priceSum;
@@ -189,7 +192,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           }
 
           return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, UnitSelectState unitState) {
-            final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
+            // final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
 
             return Column(
               children: [
@@ -206,13 +209,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                         ),
                       ),
                     ),
-                    onPressed: () => Nav.to(StripePaymentScreen(
-                      chainId: unit.chainId,
-                      unitId: unit.id,
-                      userId: userSnapshot.data.id,
-                      order: order,
-                      sum: sum,
-                    )),
+                    onPressed: null,
+                    // onPressed: () => Nav.to(StripePaymentScreen(
+                    //   chainId: unit.chainId,
+                    //   unitId: unit.id,
+                    //   userId: userSnapshot.data.id,
+                    //   order: order,
+                    //   sum: sum,
+                    // )),
                     // onPressed: () => !(state is StripePaymentLoading)
                     //     ? getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(unit.chainId, unit.id, userSnapshot.data.id))
                     //     : null,

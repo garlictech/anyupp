@@ -32,9 +32,8 @@ class OrderRepository {
     return _provider.getOrderHistory(chainId, unitId);
   }
 
-  Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    await _provider.createAndSendOrderFromCart(unit, paymentMethod);
-    // await _provider.getCurrentCart(unit.chainId, unit.id);
+  Future<void> createAndSendOrderFromCart() async {
+    await _provider.createAndSendOrderFromCart();
   }
 
   Future<void> userPaymentIntentionSignal(String chainId, String unitId) async {
@@ -49,11 +48,17 @@ class OrderRepository {
     await _provider.stopOrderListSubscription();
   }
 
-    Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
+  Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
     await _provider.startOrderHistoryListSubscription(chainId, unitId);
   }
 
   Future<void> stopOrderHistoryListSubscription() async {
     await _provider.stopOrderHistoryListSubscription();
   }
+
+  Future<Order> getOrder(String orderId) async {
+    return _provider.getOrder(orderId);
+  }
+
+  Cart get cart => _provider.cart;
 }

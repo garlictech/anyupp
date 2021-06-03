@@ -7,12 +7,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import {
-  IProductCategory,
-  IProductCategoryOrderChangeEvent,
-} from '@bgap/shared/types';
+import { catchGqlError } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -27,14 +26,13 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   templateUrl: './product-category-list.component.html',
 })
 export class ProductCategoryListComponent implements OnInit, OnDestroy {
-  public productCategories: IProductCategory[] = [];
+  public productCategories: CrudApi.ProductCategory[] = [];
   private _sortedProductCategoryIds: string[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _amplifyDataService: AmplifyDataService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -42,12 +40,12 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productCategoriesSelectors.getAllProductCategories),
-        map((products): IProductCategory[] =>
+        map((products): CrudApi.ProductCategory[] =>
           products.sort(customNumberCompare('position')),
         ),
         untilDestroyed(this),
       )
-      .subscribe((productCategories: IProductCategory[]): void => {
+      .subscribe((productCategories: CrudApi.ProductCategory[]): void => {
         this.productCategories = productCategories;
         this._sortedProductCategoryIds = this.productCategories.map(p => p.id);
 
@@ -82,16 +80,16 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       );
 
       this._sortedProductCategoryIds.forEach(
-        async (productCategoryId: string, pos: number): Promise<void> => {
-          await this._amplifyDataService.update<IProductCategory>(
-            'getProductCategory',
-            'updateProductCategory',
-            productCategoryId,
-            (data: unknown) => ({
-              ...(<IProductCategory>data),
-              position: pos + 1,
-            }),
-          );
+        (productCategoryId: string, pos: number) => {
+          this._crudSdk.sdk
+            .UpdateProductCategory({
+              input: {
+                id: productCategoryId,
+                position: pos + 1,
+              },
+            })
+            .pipe(catchGqlError(this._store))
+            .subscribe();
         },
       );
     }

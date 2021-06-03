@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import {
@@ -11,17 +10,19 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
-  clearDbProperties,
+  catchGqlError,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
-import { IChain, IGroup, IKeyValue } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IKeyValue } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -34,19 +35,15 @@ import { select, Store } from '@ngrx/store';
 export class GroupFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
-  public group!: IGroup;
+  public group!: CrudApi.Group;
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
 
-  private chains: IChain[] = [];
-
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -69,24 +66,22 @@ export class GroupFormComponent
 
   ngOnInit(): void {
     if (this.group) {
-      this.dialogForm.patchValue(clearDbProperties<IGroup>(this.group));
+      this.dialogForm.patchValue(cleanObject(this.group));
     } else {
       // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.patchValue({ chainId: selectedChainId });
           }
         });
     }
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
-        this.chains = chains;
-
-        this.chainOptions = this.chains.map(
+      .subscribe((chains: CrudApi.Chain[]): void => {
+        this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
             value: chain.name,
@@ -110,43 +105,38 @@ export class GroupFormComponent
     // untilDestroyed uses it.
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
-        try {
-          await this._amplifyDataService.update<IGroup>(
-            'getGroup',
-            'updateGroup',
-            this.group.id,
-            () => this.dialogForm.value,
-          );
+        this._crudSdk.sdk
+          .UpdateGroup({
+            input: {
+              id: this.group.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(`GROUP UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create(
-            'createGroup',
-            this.dialogForm?.value,
-          );
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`GROUP INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateGroup({ input: this.dialogForm.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

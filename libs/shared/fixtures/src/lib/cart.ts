@@ -1,13 +1,13 @@
-import { EOrderStatus } from '@bgap/shared/types';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { unitSeed } from './unit';
-import { productSeed } from './product';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { unitFixture } from './unit';
+import { productFixture } from './product';
 import { seededIdPrefix, testIdPrefix } from './common';
+import { RequiredId } from '@bgap/shared/types';
 
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
-const unitId_01 = unitSeed.unitId_seeded_01;
-const unitProductId_01 = productSeed.unitProductId_seeded_id_01;
+const unitId_01 = unitFixture.unitId_seeded_01;
+const unitProductId_01 = productFixture.unitProductId_seeded_id_01;
 
 // fictional - not exsisting
 const cartId_NotExisting = `${testIdPrefix}NOT_EXSISTING_CART`;
@@ -25,7 +25,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     pricePerUnit: 1,
     priceSum: 2,
     tax: 1,
-    taxSum: 2,
+    taxSum: 0,
   },
   // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
   productId: unitProductId_01,
@@ -37,25 +37,26 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     hu: 'pohár',
   },
   // laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
-  laneId: laneId_01,
+  laneId: laneId_01, // Optional, won't be in case the orderItem is an item of the cart.items
   statusLog: [
     {
       userId: userId_01,
-      status: EOrderStatus.PLACED,
+      status: CrudApi.OrderStatus.placed,
       ts: 1234,
     },
   ],
+  allergens: [CrudApi.Allergen.treenuts],
 });
 
 // const cart_01: Required<CrudApi.CreateCartInput> = {
-const cart_01 = {
+const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   id: cartId_01,
   userId: userId_01,
   unitId: unitId_01,
   takeAway: false,
   paymentMode: {
-    name: 'IN_APP',
-    method: CrudApi.PaymentMethod.INAPP,
+    type: CrudApi.PaymentType.stripe,
+    method: CrudApi.PaymentMethod.inapp,
   },
   place: {
     seat: 'SEAT',
@@ -64,8 +65,9 @@ const cart_01 = {
   items: [getOrderItem()],
 };
 
-export const cartSeed = {
+export const cartFixture = {
   cart_seeded_01_id,
   cartId_NotExisting,
   cart_01,
+  getOrderItem,
 };

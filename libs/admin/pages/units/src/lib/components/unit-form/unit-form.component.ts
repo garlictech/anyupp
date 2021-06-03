@@ -1,19 +1,34 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 
-/* eslint-disable @typescript-eslint/dot-notation */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { AbstractFormDialogComponent, FormsService } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup, contactFormGroup, EToasterType, multiLangValidator, PAYMENT_MODES, TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator
+  AbstractFormDialogComponent,
+  FormsService,
+} from '@bgap/admin/shared/forms';
+import {
+  addressFormGroup,
+  catchGqlError,
+  contactFormGroup,
+  EToasterType,
+  multiLangValidator,
+  PAYMENT_MODES,
+  TIME_FORMAT_PATTERN,
+  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
-import { ICustomDailySchedule, IGroup, IKeyValue, ILane, IPaymentMode, IUnit } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -26,39 +41,21 @@ import { select, Store } from '@ngrx/store';
 })
 export class UnitFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
-  public unit!: IUnit;
+  implements OnInit, OnDestroy {
+  public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
 
-  private _groups: IGroup[] = [];
+  private _groups: CrudApi.Group[] = [];
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _formsService: FormsService,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
-      )
-      .subscribe((groups: IGroup[]): void => {
-        this._groups = groups;
-
-        this.groupOptions = this._groups.map(
-          (group: IGroup): IKeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        );
-      });
 
     this.dialogForm = this._formBuilder.group({
       groupId: ['', [Validators.required]],
@@ -120,38 +117,43 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(
-        cleanObject(fp.omit(['lanes'], this.unit)),
-      );
+      this.dialogForm.patchValue(cleanObject(fp.omit(['lanes'], this.unit)));
 
       // Parse openingHours object to temp array
-      const custom: ICustomDailySchedule[] | undefined = this.unit?.openingHours
-        ?.custom;
+      const custom = this.unit?.openingHours?.custom;
 
       if (custom) {
-        custom.forEach((day: ICustomDailySchedule): void => {
-          const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
-          dayGroup.patchValue(day);
+        custom.forEach(day => {
+          if (day) {
+            const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
+            dayGroup.patchValue(day);
 
-          (<FormArray>this.dialogForm?.get('openingHours')?.get('custom')).push(
-            dayGroup,
-          );
+            (<FormArray>(
+              this.dialogForm?.get('openingHours')?.get('custom')
+            )).push(dayGroup);
+          }
         });
       }
 
       // Patch lanes array
-      (this.unit.lanes || []).forEach((lane: ILane): void => {
-        const laneGroup = this._formsService.createLaneFormGroup();
-        laneGroup.patchValue(lane);
-        (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+      (this.unit.lanes || []).forEach(lane => {
+        if (lane) {
+          const laneGroup = this._formsService.createLaneFormGroup();
+          laneGroup.patchValue(lane);
+          (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+        }
       });
     } else {
       // Patch ChainId
       this._store
-        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
+        .pipe(
+          select(loggedUserSelectors.getSelectedChainId),
+          take(1),
+          delay(200),
+        )
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm.patchValue({ chainId: selectedChainId });
 
             this._changeDetectorRef.detectChanges();
           }
@@ -162,77 +164,97 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
-            this.dialogForm?.controls.groupId.patchValue(selectedGroupId);
-
-            this._changeDetectorRef.detectChanges();
+            this.dialogForm.patchValue({ groupId: selectedGroupId });
           }
         });
 
-      this.dialogForm.controls.isActive.patchValue(false);
+      this.dialogForm.patchValue({ isActive: false });
     }
 
-    this._changeDetectorRef.detectChanges();
+    this._store
+      .pipe(
+        select(groupsSelectors.getSelectedChainGroups),
+        untilDestroyed(this),
+      )
+      .subscribe((groups: CrudApi.Group[]): void => {
+        this._groups = groups;
+
+        this.groupOptions = this._groups.map(
+          (group: CrudApi.Group): IKeyValue => ({
+            key: group.id,
+            value: group.name,
+          }),
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
-  public async submit(): Promise<void> {
+  ngOnDestroy(): void {
+    // untilDestroyed uses it.
+  }
+
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.unit?.id) {
-        try {
-          await this._amplifyDataService.update<IUnit>(
-            'getUnit',
-            'updateUnit',
-            this.unit.id,
-            () => this.dialogForm?.value,
-          );
+        this._crudSdk.sdk
+          .UpdateUnit({
+            input: {
+              id: this.unit.id,
+              ...this.dialogForm?.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`UNIT UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
-      } else {
-        try {
-          await this._amplifyDataService.create('createUnit', {
-            ...this.dialogForm?.value,
-            isAcceptingOrders: false,
+            this.close();
           });
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`UNIT INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+      } else {
+        this._crudSdk.sdk
+          .CreateUnit({
+            input: {
+              ...this.dialogForm?.value,
+              isAcceptingOrders: false,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public paymentModeIsChecked(paymentMode: IPaymentMode): boolean {
+  public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
     return (
       (this.dialogForm?.value.paymentModes || [])
-        .map((m: IPaymentMode): string => m.name)
-        .indexOf(paymentMode.name) >= 0
+        .map((m: { type: string }) => m.type)
+        .indexOf(paymentMode.type) >= 0
     );
   }
 
-  public togglePaymentMode(paymentMode: IPaymentMode): void {
-    const paymentModesArr: IPaymentMode[] = this.dialogForm?.value.paymentModes;
+  public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
+    const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
-      .map((m): string => m.name)
-      .indexOf(paymentMode.name);
+      .map((m: { type: string }) => m.type)
+      .indexOf(paymentMode.type);
 
     if (idx < 0) {
-      paymentModesArr.push(fp.pick(['name', 'method'], paymentMode));
+      paymentModesArr.push(fp.pick(['type', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }
+
     this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
   }
 }

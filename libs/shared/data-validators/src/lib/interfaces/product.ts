@@ -1,38 +1,40 @@
 import * as Joi from 'joi';
-import { validateSchema } from '../validator/validate';
-import { IUnitProduct, IGroupProduct, IChainProduct } from '@bgap/shared/types';
+import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
+import * as CrudApi from '@bgap/crud-gql/api';
 
-export const chainProductSchema: Joi.SchemaMap<IChainProduct> = {
-  __typename: Joi.string().valid('ChainProduct').optional(),
+export const allergenListSchema = Joi.array().items(Joi.string());
+
+export const chainProductSchema: Joi.SchemaMap<CrudApi.ChainProduct> = {
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   name: localizedItemSchema.required(),
-  description: localizedItemSchema.required(),
+  description: localizedItemSchema.allow(null),
   productCategoryId: Joi.string().required(),
   productType: Joi.string().required(), // TODO: use enumschema
-  image: Joi.string().allow(null),
-  variants: Joi.array().required(), //TODO: use an exact schema
+  image: Joi.string().allow(null, ''),
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
-  allergens: Joi.array().items(Joi.string()).optional().allow(null),
+  allergens: allergenListSchema.allow(null),
 };
 
 export const {
   validate: validateChainProduct,
   isType: isChainProduct,
-} = validateSchema<IChainProduct>(chainProductSchema, 'ChainProduct');
+} = validateSchema<CrudApi.ChainProduct>(chainProductSchema, 'ChainProduct');
 
-export const groupProductSchema: Joi.SchemaMap<IGroupProduct> = {
-  __typename: Joi.string().valid('GroupProduct').optional(),
+export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   id: Joi.string().required(),
   parentId: Joi.string().required(),
   chainId: Joi.string().required(),
   groupId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   tax: Joi.number().required(),
-  variants: Joi.array().required(), //TODO: use an exact schema
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   chainProduct: Joi.object(chainProductSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
@@ -41,10 +43,9 @@ export const groupProductSchema: Joi.SchemaMap<IGroupProduct> = {
 export const {
   validate: validateGroupProduct,
   isType: isGroupProduct,
-} = validateSchema<IGroupProduct>(groupProductSchema, 'GroupProduct');
+} = validateSchema<CrudApi.GroupProduct>(groupProductSchema, 'GroupProduct');
 
-export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
-  __typename: Joi.string().valid('UnitProduct').optional(),
+export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   id: Joi.string().required(),
   parentId: Joi.string().required(),
   chainId: Joi.string().required(),
@@ -52,7 +53,8 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
   unitId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
-  variants: Joi.array().required(), //TODO: use an exact schema
+  variants: Joi.array().allow(null), //TODO: use an exact schema
+  configSets: Joi.array().allow(null),
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   groupProduct: Joi.object(groupProductSchema).allow(null),
@@ -63,4 +65,9 @@ export const unitProductSchema: Joi.SchemaMap<IUnitProduct> = {
 export const {
   validate: validateUnitProduct,
   isType: isUnitProduct,
-} = validateSchema<IUnitProduct>(unitProductSchema, 'UnitProduct');
+} = validateSchema<CrudApi.UnitProduct>(unitProductSchema, 'UnitProduct');
+
+export const {
+  validate: validateUnitProductList,
+  isType: isUnitProductList,
+} = validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');

@@ -1,5 +1,4 @@
-import { DataService } from './lib/services/data/data.service';
-import { OrderService } from './lib/services/order/order.service';
-import { AmplifyDataService } from './lib/services/amplify-data/amplify-data.service';
-
-export { DataService, OrderService, AmplifyDataService };
+export { DataService } from './lib/services/data/data.service';
+export { OrderService } from './lib/services/order/order.service';
+export { CrudSdkService } from './lib/services/crud-sdk.service';
+export { AnyuppSdkService } from './lib/services/anyupp-sdk.service';

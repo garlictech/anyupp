@@ -3,36 +3,38 @@ import {
   deleteGeneratedProductsForAUnit,
   listGeneratedProductsForUnits,
 } from '@bgap/anyupp-gql/backend';
-import { crudBackendGraphQLClient } from '@bgap/shared/graphql/api-client';
 import { getSortedIds } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
 import { scan, switchMap, tap, delay } from 'rxjs/operators';
-import { generatedProductSeed, testIdPrefix } from '@bgap/shared/fixtures';
+import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import {
   createTestGeneratedProduct,
   deleteTestGeneratedProduct,
 } from '../../../seeds/generated-product';
+import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 
-const unitId_01 = 'UNIT_ID_01_BATCH';
-const unitId_02 = 'UNIT_ID_02_BATCH';
-const unitId_03 = 'UNIT_ID_03_BATCH';
+const TEST_NAME = 'BATCH_';
+
+const unitId_01 = `${TEST_NAME}UNIT_ID_01`;
+const unitId_02 = `${TEST_NAME}UNIT_ID_02`;
+const unitId_03 = `${TEST_NAME}UNIT_ID_03`;
 const unit01_generatedProduct_01 = {
-  ...generatedProductSeed.base,
-  id: `${testIdPrefix}generatedProduct_u${unitId_01}_01`,
+  ...generatedProductFixture.base,
+  id: `${testIdPrefix}${TEST_NAME}generatedProduct_u${unitId_01}_01`,
   unitId: unitId_01,
 };
 const unit02_generatedProduct_01 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_02}_01`,
   unitId: unitId_02,
 };
 const unit03_generatedProduct_01 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_03}_01`,
   unitId: unitId_03,
 };
 const unit03_generatedProduct_02 = {
-  ...generatedProductSeed.base,
+  ...generatedProductFixture.base,
   id: `${testIdPrefix}generatedProduct_u${unitId_03}_02`,
   unitId: unitId_03,
 };
@@ -41,14 +43,17 @@ const DYNAMODB_OPERATION_DELAY = 3000;
 const PRODUCT_NUM_FOR_BATCH_CRUD = 26; // should be > 25 because the batchSize is 25
 const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
   .map(id => id.toString().padStart(2, '0'))
-  .map(id => `${testIdPrefix}ID_${id}`);
+  .map(id => `${testIdPrefix}${TEST_NAME}ID_${id}`);
 
 describe('GenerateProduct tests', () => {
+  const deps = {
+    crudSdk: createIamCrudSdk(),
+  };
+
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
-    deleteGeneratedProductsForAUnit({
-      unitId: unitId_01,
-      crudGraphqlClient: crudBackendGraphQLClient,
-    }).subscribe({
+    deleteGeneratedProductsForAUnit(
+      'WONT_BE_THERE_ANY_GENERATED_PROD_WITH_THIS_UNITID_FOR_SURE',
+    )(deps).subscribe({
       next() {
         // SHOULD NOT TIMEOUT so this next callback should be triggered
         done();
@@ -57,36 +62,40 @@ describe('GenerateProduct tests', () => {
   });
 
   describe('complex tests', () => {
+    const cleanup = () =>
+      of('cleanup').pipe(
+        // CleanUP
+        switchMap(() =>
+          deleteTestGeneratedProduct(
+            unit02_generatedProduct_01.id,
+            deps.crudSdk,
+          ),
+        ),
+        switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
+        switchMap(() => deleteGeneratedProductsForAUnit(unitId_03)(deps)),
+      );
+
     beforeAll(async () => {
-      await of('START')
+      await cleanup()
         .pipe(
-          // CleanUP
-          switchMap(() =>
-            deleteTestGeneratedProduct(unit02_generatedProduct_01.id),
-          ),
-          switchMap(() =>
-            deleteGeneratedProductsForAUnit({
-              unitId: unitId_01,
-              crudGraphqlClient: crudBackendGraphQLClient,
-            }),
-          ),
-          switchMap(() =>
-            deleteGeneratedProductsForAUnit({
-              unitId: unitId_03,
-              crudGraphqlClient: crudBackendGraphQLClient,
-            }),
-          ),
           delay(DYNAMODB_OPERATION_DELAY),
           // Seeding
-          switchMap(r => {
+          switchMap(() => {
             return combineLatest([
-              createTestGeneratedProduct(unit02_generatedProduct_01),
+              createTestGeneratedProduct(
+                unit02_generatedProduct_01,
+                deps.crudSdk,
+              ),
             ]);
           }),
           delay(DYNAMODB_OPERATION_DELAY),
         )
         .toPromise();
     }, 25000);
+
+    afterAll(async () => {
+      await cleanup().toPromise();
+    });
 
     it('should be able to create and delete all the given products LESS then 25', done => {
       // using UNIT 03
@@ -100,13 +109,7 @@ describe('GenerateProduct tests', () => {
             ]),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
-          switchMap(() =>
-            listGeneratedProductsForUnits({
-              crudGraphqlClient: crudBackendGraphQLClient,
-              unitIds: [unitId_03],
-              noCache: true,
-            }),
-          ),
+          switchMap(() => listGeneratedProductsForUnits([unitId_03])(deps)),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual([
@@ -118,18 +121,13 @@ describe('GenerateProduct tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
-            deleteGeneratedProductsForAUnit({
-              unitId: unitId_03,
-              crudGraphqlClient: crudBackendGraphQLClient,
-            }),
+            deleteGeneratedProductsForAUnit(unit03_generatedProduct_01.unitId)(
+              deps,
+            ),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits({
-              crudGraphqlClient: crudBackendGraphQLClient,
-              unitIds: [unitId_02, unitId_03],
-              noCache: true,
-            }),
+            listGeneratedProductsForUnits([unitId_02, unitId_03])(deps),
           ),
           tap({
             next(result) {
@@ -143,6 +141,9 @@ describe('GenerateProduct tests', () => {
         .subscribe({
           next() {
             done();
+          },
+          error(err) {
+            console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
     }, 25000);
@@ -172,38 +173,19 @@ describe('GenerateProduct tests', () => {
             },
           }),
           delay(DYNAMODB_OPERATION_DELAY),
-          switchMap(() =>
-            listGeneratedProductsForUnits({
-              crudGraphqlClient: crudBackendGraphQLClient,
-              unitIds: [unitId_01],
-              noCache: true,
-            }),
-          ),
+          switchMap(() => listGeneratedProductsForUnits([unitId_01])(deps)),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual(productIds);
               expect(result).toHaveLength(fullProducts.length);
-              expect(result[0]).toHaveProperty(
-                '__typename',
-                'GeneratedProduct',
-              );
             },
           }),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
-          switchMap(() =>
-            deleteGeneratedProductsForAUnit({
-              unitId: unitId_01,
-              crudGraphqlClient: crudBackendGraphQLClient,
-            }),
-          ),
+          switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits({
-              crudGraphqlClient: crudBackendGraphQLClient,
-              unitIds: [unitId_01, unitId_02],
-              noCache: true,
-            }),
+            listGeneratedProductsForUnits([unitId_01, unitId_02])(deps),
           ),
           tap({
             // should delete all the generatedProducts for the unit01
@@ -218,6 +200,9 @@ describe('GenerateProduct tests', () => {
         .subscribe({
           next() {
             done();
+          },
+          error(err) {
+            console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
     }, 25000);

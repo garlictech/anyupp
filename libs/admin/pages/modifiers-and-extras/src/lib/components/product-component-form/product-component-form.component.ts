@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import {
@@ -16,23 +15,20 @@ import {
   Validators,
 } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  clearDbProperties,
+  catchGqlError,
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
-import {
-  IChain,
-  IGroup,
-  IKeyValue,
-  IProductComponent,
-} from '@bgap/shared/types';
+import { IKeyValue } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 
 @UntilDestroy()
 @Component({
@@ -43,18 +39,16 @@ import { select, Store } from '@ngrx/store';
 export class ProductComponentFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy {
-  public productComponent!: IProductComponent;
+  public productComponent!: CrudApi.ProductComponent;
   public chainOptions: IKeyValue[] = [];
 
-  private _productComponents: IProductComponent[] = [];
+  private _productComponents: CrudApi.ProductComponent[] = [];
 
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -62,9 +56,9 @@ export class ProductComponentFormComponent
       chainId: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
-          hu: ['', [this._uniqueNameValidator('hu')]],
-          en: ['', [this._uniqueNameValidator('en')]],
-          de: ['', [this._uniqueNameValidator('de')]],
+          hu: ['', [Validators.maxLength(40), this._uniqueNameValidator('hu')]],
+          en: ['', [Validators.maxLength(40), this._uniqueNameValidator('en')]],
+          de: ['', [Validators.maxLength(40), this._uniqueNameValidator('de')]],
         },
         { validators: multiLangValidator },
       ),
@@ -78,16 +72,14 @@ export class ProductComponentFormComponent
         select(productComponentsSelectors.getAllProductComponents),
         untilDestroyed(this),
       )
-      .subscribe((productComponents: IProductComponent[]): void => {
+      .subscribe((productComponents: CrudApi.ProductComponent[]): void => {
         this._productComponents = productComponents;
       });
   }
 
   ngOnInit(): void {
     if (this.productComponent) {
-      this.dialogForm.patchValue(
-        clearDbProperties<IProductComponent>(this.productComponent),
-      );
+      this.dialogForm.patchValue(cleanObject(this.productComponent));
     } else {
       // Patch ChainId
       this._store
@@ -101,7 +93,7 @@ export class ProductComponentFormComponent
 
     this._store
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: IChain[]): void => {
+      .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
           (chain): IKeyValue => ({
             key: chain.id,
@@ -119,57 +111,52 @@ export class ProductComponentFormComponent
     // untilDestroyed uses it.
   }
 
-  private _uniqueNameValidator(lang: string): ValidatorFn {
+  private _uniqueNameValidator(lang: keyof CrudApi.LocalizedItem): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const names = this._productComponents
-        .filter(c => c.id !== this.productComponent?.id)
+        .filter(
+          c =>
+            c.id !== this.productComponent?.id &&
+            (c.name[lang] || '').trim() !== '',
+        )
         .map(c => c.name[lang]);
 
       return names.includes(control.value) ? { existing: true } : null;
     };
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.productComponent?.id) {
-        try {
-          await this._amplifyDataService.update<IGroup>(
-            'getProductComponent',
-            'updateProductComponent',
-            this.productComponent.id,
-            () => this.dialogForm.value,
-          );
+        this._crudSdk.sdk
+          .UpdateProductComponent({
+            input: {
+              id: this.productComponent.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create(
-            'createProductComponent',
-            this.dialogForm?.value,
-          );
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateProductComponent({ input: this.dialogForm?.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

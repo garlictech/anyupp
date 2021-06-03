@@ -74,34 +74,34 @@ class LoginFormUtils {
 
   static FieldValidator emailOrPhoneValidator(BuildContext context) =>
       MultiValidator([
-        RequiredValidator(
-            errorText: transEx(context, 'this field is required')),
+        RequiredValidator(errorText: transEx(context, 'validators.required')),
       ]);
 
   static FieldValidator confirmCodeValidator(BuildContext context) =>
       MultiValidator([
-        RequiredValidator(
-            errorText: transEx(context, 'this field is required')),
+        RequiredValidator(errorText: transEx(context, 'validators.required')),
       ]);
 
   static FieldValidator emailValidator(BuildContext context) => MultiValidator([
         EmailValidator(
-            errorText: transEx(context, 'enter a valid email address')),
+            errorText: transEx(context, 'validators.enterValidEmail')),
         RequiredValidator(
-            errorText: transEx(context, 'this field is required')),
+            errorText:
+                transEx(context, transEx(context, 'validators.required'))),
       ]);
 
   static FieldValidator passwordValidator(BuildContext context) =>
       MultiValidator([
-        RequiredValidator(errorText: 'password is required'),
+        RequiredValidator(
+            errorText: transEx(context, 'validators.passwordIsRequired')),
         MinLengthValidator(8,
-            errorText: 'password must be at least 8 digits long'),
-        PatternValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$',
-            errorText: 'must have a number, an upper, a lower case letter'),
+            errorText: transEx(context, 'validators.passwordLengthError')),
+        PatternValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$',
+            errorText: transEx(context, 'validators.passwordValidatorText')),
       ]);
 
   static FieldValidator phoneValidator(BuildContext context) => MultiValidator([
         PatternValidator(r'^\+(?:[0-9]●?){6,14}[0-9]$',
-            errorText: "enter a valid phone number")
+            errorText: transEx(context, 'validators.eneterValidPhone'))
       ]);
 }

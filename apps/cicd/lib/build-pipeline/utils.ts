@@ -17,6 +17,7 @@ export interface PipelineStackProps extends sst.StackProps {
   readonly repoOwner: string;
   readonly repoBranch: string;
   readonly secretsManager: SecretsManagerStack;
+  readonly appcenterUser: iam.User;
 }
 
 export const appConfig = {
@@ -52,6 +53,7 @@ export const configurePermissions = (
     'GoogleClientId',
     'StripePublishableKey',
     'FacebookAppId',
+    'GoogleApiKey',
   ].map(paramName => `/${prefix}/${paramName}`);
 
   resources.forEach((resource, index) => {
@@ -67,69 +69,23 @@ export const configurePermissions = (
   });
 };
 
-const getAppcenterArtifactBucketName = (stage: string) =>
+export const getAppcenterArtifactBucketName = (stage: string) =>
   `${appConfig.appcenterArtifactBucketNamePrefix}-${stage}`;
 
 export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
-  stage: string,
+  buildProjectPhases: Record<string, unknown>,
+  reports?: Record<string, unknown>,
 ): codebuild.PipelineProject => {
-  const { adminSiteUrl } = utils.configurePipeline(stack, stage);
-
   return new codebuild.PipelineProject(stack, 'Build', {
     buildSpec: codebuild.BuildSpec.fromObject({
       version: '0.2',
-      phases: {
-        install: {
-          commands: [
-            `sh ./tools/setup-aws-environment.sh`,
-            'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli appcenter-cli',
-            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            'export PATH=$PATH:/tmp/flutter/bin',
-            'flutter doctor',
-          ],
-        },
-        build: {
-          commands: [
-            `sh ./tools/build-workspace.sh ${appConfig.name} ${stage}`,
-            `yarn nx buildApk anyupp-mobile`,
-          ],
-        },
-        post_build: {
-          commands: [
-            `yarn nx deploy crud-backend`,
-            'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
-            `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
-              stage,
-            )}/`,
-            `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
-            `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
-            `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
-            `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-            'yarn cucumber:report',
-            'yarn cypress:generate:html:report',
-            `echo 'Triggering ios app build in appcenter...'`,
-            `sh ./tools/trigger-appcenter-builds.sh ${stage} ios`,
-            `echo 'Pushing APK to appcenter'`,
-            `sh ./tools/publish-to-appcenter.sh ${stage} android`,
-          ],
-        },
-      },
+      phases: buildProjectPhases,
       artifacts: {
         files: ['apps/anyupp-backend/cdk.out/**/*'],
       },
-      reports: {
-        cypressReports: {
-          files: ['cyreport/cucumber-json/**/*'],
-          'file-format': 'CUCUMBERJSON',
-        },
-        coverage: {
-          files: ['coverage/**/*'],
-          'file-format': 'CLOVERXML',
-        },
-      },
+      reports,
       env: {
         'secrets-manager': {
           AWS_ACCESS_KEY_ID: 'codebuild:codebuild-aws_access_key_id',
@@ -236,15 +192,26 @@ export const copyParameter = (
   });
 };
 
-export const createCommonPipelineParts = (
+export interface BuildPipelineProps extends utils.PipelineStackProps {
+  finalizationStage?: codepipeline.StageProps;
+  buildProjectPhases: Record<string, unknown>;
+  reports?: Record<string, unknown>;
+}
+
+export const createPipeline = (
   scope: sst.Stack,
   stage: string,
-  props: utils.PipelineStackProps,
+  props: BuildPipelineProps,
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
-  const build = utils.createBuildProject(scope, cache, stage);
+  const build = utils.createBuildProject(
+    scope,
+    cache,
+    props.buildProjectPhases,
+    props.reports,
+  );
   const prefix = utils.projectPrefix(stage);
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
@@ -257,57 +224,42 @@ export const createCommonPipelineParts = (
     ],
   });
 
-  /* const serviceRole = new iam.Role(scope, 'CodePipelineServiceRole', {
-    assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
-  });
-
-  serviceRole.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ['*'],
-      resources: ['*'],
-    }),
-  );
-*/
+  buildArtifactBucket.grantRead(props.appcenterUser);
   utils.configurePermissions(scope, props.secretsManager, [build], prefix);
 
+  const stages: codepipeline.StageProps[] = [
+    {
+      stageName: 'CloneSource',
+      actions: [
+        new codepipeline_actions.GitHubSourceAction({
+          actionName: 'CodeCommit_CloneSource',
+          oauthToken: props.secretsManager.githubOauthToken.secretValue,
+          output: sourceOutput,
+          owner: props.repoOwner,
+          repo: props.repoName,
+          branch: props.repoBranch,
+        }),
+      ],
+    },
+    {
+      stageName: 'BuildAndDeploy',
+      actions: [
+        new codepipeline_actions.CodeBuildAction({
+          actionName: 'BuildAndDeploy',
+          project: build,
+          input: sourceOutput,
+          outputs: [buildOutput],
+        }),
+      ],
+    },
+  ];
+
+  if (props.finalizationStage) {
+    stages.push(props.finalizationStage);
+  }
+
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
-    stages: [
-      {
-        stageName: 'CloneSource',
-        actions: [
-          new codepipeline_actions.GitHubSourceAction({
-            actionName: 'CodeCommit_CloneSource',
-            oauthToken: props.secretsManager.githubOauthToken.secretValue,
-            output: sourceOutput,
-            owner: props.repoOwner,
-            repo: props.repoName,
-            branch: props.repoBranch,
-          }),
-        ],
-      },
-      {
-        stageName: 'BuildAndDeploy',
-        actions: [
-          new codepipeline_actions.CodeBuildAction({
-            actionName: 'BuildAndDeploy',
-            project: build,
-            input: sourceOutput,
-            outputs: [buildOutput],
-          }),
-        ],
-      },
-      {
-        stageName: 'SeederRemoval',
-        actions: [
-          new codepipeline_actions.CloudFormationDeleteStackAction({
-            actionName: `DeleteSeederStack`,
-            stackName: `${utils.projectPrefix(stage)}-seeder`,
-            adminPermissions: true,
-          }),
-        ],
-      },
-    ],
+    stages,
   });
 
   utils.configurePipelineNotifications(
@@ -318,4 +270,78 @@ export const createCommonPipelineParts = (
   );
 
   buildArtifactBucket.grantWrite(pipeline.role);
+
+  return pipeline;
+};
+
+export const createCommonDevPipeline = (
+  scope: sst.Stack,
+  stage: string,
+  props: utils.PipelineStackProps,
+) => {
+  const { adminSiteUrl } = utils.configurePipeline(scope, stage);
+
+  return createPipeline(scope, stage, {
+    ...props,
+    finalizationStage: {
+      stageName: 'Finalization',
+      actions: [
+        new codepipeline_actions.CloudFormationDeleteStackAction({
+          actionName: `DeleteSeeder`,
+          stackName: `${utils.projectPrefix(stage)}-seeder`,
+          adminPermissions: true,
+        }),
+      ],
+    },
+    buildProjectPhases: {
+      install: {
+        commands: [
+          'chmod +x ./tools/*.sh',
+          `./tools/setup-aws-environment.sh`,
+          './tools/install-nodejs-14.sh',
+          'yarn --frozen-lockfile',
+          'npm install -g @aws-amplify/cli appcenter-cli',
+        ],
+      },
+      build: {
+        commands: [
+          `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
+          'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+          `yarn nx deploy crud-backend`,
+          `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
+          'export PATH=$PATH:/tmp/flutter/bin',
+          'flutter doctor',
+          `yarn nx buildApk anyupp-mobile`,
+        ],
+      },
+      post_build: {
+        commands: [
+          'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
+          `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
+            stage,
+          )}/`,
+          `echo 'Pushing Android APK to appcenter'`,
+          `./tools/publish-to-appcenter.sh ${stage} android`,
+          `echo 'Triggering ios app build in appcenter...'`,
+          `./tools/trigger-appcenter-builds.sh ${stage} ios`,
+          `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
+          `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
+          `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
+          'yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts',
+          'yarn cucumber:report',
+          'yarn cypress:generate:html:report',
+        ],
+      },
+    },
+    reports: {
+      cypressReports: {
+        files: ['cyreport/cucumber-json/**/*'],
+        'file-format': 'CUCUMBERJSON',
+      },
+      coverage: {
+        files: ['coverage/**/*'],
+        'file-format': 'CLOVERXML',
+      },
+    },
+  });
 };

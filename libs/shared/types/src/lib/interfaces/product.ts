@@ -1,135 +1,9 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EProductType, EVariantAvailabilityType } from '../enums';
-import { ILocalizedItem } from './localized-item';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { Maybe, Scalars } from '@bgap/crud-gql/api';
 
 export interface IAllergen {
   id: string;
   idx: number;
-}
-
-export interface IAvailability {
-  type: EVariantAvailabilityType;
-  dayFrom: string;
-  dayTo?: string;
-  timeFrom?: string;
-  timeTo?: string;
-  price: number;
-}
-
-export interface IProductIngredients {
-  alcohol: number;
-  allergens: IAllergen;
-  caffeine: number;
-}
-
-export interface IProductVariantPack {
-  size: number;
-  unit: string;
-}
-
-export interface IProductVariant {
-  id: string;
-  variantName: ILocalizedItem<string>;
-  pack: IProductVariantPack;
-  refGroupPrice: number;
-  isAvailable: boolean;
-  price?: number; // generated
-  availabilities: IAvailability[]; // unit edit
-  // availableFrom: Date;
-  position: number;
-}
-export interface IGeneratedProductVariant {
-  id: string;
-  variantName: ILocalizedItem<string>;
-  price: number;
-  position: number;
-  pack: IProductVariantPack;
-}
-
-export interface IGeneratedProduct {
-  id: string; // UnitProductId
-  unitId: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image: string;
-  position: number;
-  productType: EProductType;
-  tax: number;
-  variants: IGeneratedProductVariant[];
-  productCategoryId: string;
-  allergens?: CrudApi.Allergen[];
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface IProduct {
-  id: string;
-  parentId?: string; // parent chainProduct/groupProduct ID
-  chainId: string;
-  groupId?: string;
-  unitId?: string;
-  extends?: string;
-  name: ILocalizedItem<string>; // chain edit, group readonly
-  description: ILocalizedItem<string>;
-  image?: string;
-  productCategoryId: string;
-  isVisible: boolean; // temp
-  position: number;
-  variants: IProductVariant[];
-  allergens?: CrudApi.Allergen[];
-  tax: number; // %
-  laneId?: string;
-  productType: EProductType;
-  takeaway?: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IUnitProduct {
-  __typename?: 'UnitProduct';
-  id: string;
-  parentId: string; // parent chainProduct/groupProduct ID
-  chainId: string;
-  groupId: string;
-  unitId: string;
-  isVisible: boolean; // temp
-  position: number;
-  variants: IProductVariant[];
-  laneId?: string;
-  takeaway?: boolean;
-  groupProduct: IGroupProduct;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IChainProduct {
-  __typename?: 'ChainProduct';
-  id: string;
-  chainId: string;
-  name: ILocalizedItem<string>;
-  description: ILocalizedItem<string>;
-  productCategoryId: string;
-  productType: EProductType;
-  isVisible: boolean;
-  image?: string;
-  variants: [IProductVariant];
-  createdAt: string;
-  updatedAt: string;
-  allergens?: CrudApi.Allergen[];
-}
-
-export interface IGroupProduct {
-  __typename?: 'GroupProduct';
-  id: string;
-  parentId: string;
-  chainId: string;
-  groupId: string;
-  isVisible: boolean;
-  tax: number;
-  variants: [IProductVariant];
-  chainProduct: IChainProduct;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IProductOrderChangeEvent {
@@ -137,18 +11,41 @@ export interface IProductOrderChangeEvent {
   productId: string;
 }
 
-// export interface IGeneratedProductVariantsMap {
-//   [key: string]: IGeneratedProductVariant;
-// }
+export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
+  Required<Pick<CrudApi.ProductVariant, 'price'>>;
+export type ProductWithPrices = Omit<Product, 'variants'> & {
+  variants: ProductVariantWithPrice[];
+};
+export interface ProductComponentSetMap {
+  [key: string]: Required<CrudApi.ProductComponentSet>;
+}
+export interface ProductComponentMap {
+  [key: string]: Required<CrudApi.ProductComponent>;
+}
 
-// export interface IMergedProduct {
-//   productCategoryId: string;
-//   isVisible: boolean;
-//   variants: IProductVariant[];
-//   name: ILocalizedItem<string>;
-//   description: ILocalizedItem<string>;
-//   image: string;
-//   tax: number;
-//   position: number;
-//   productType: string;
-// }
+// TODO this is a manual "merge" of Unit, Chain, Group procucts
+// we must reconsider tis part...
+export interface Product {
+  id: Scalars['ID'];
+  parentId?: Scalars['ID'];
+  chainId: Scalars['ID'];
+  groupId?: Scalars['ID'];
+  unitId?: Scalars['ID'];
+  isVisible: Scalars['Boolean'];
+  takeaway?: Scalars['Boolean'];
+  laneId?: Maybe<Scalars['ID']>;
+  position?: Scalars['Int'];
+  variants?: Maybe<Array<Maybe<CrudApi.ProductVariant>>>;
+  configSets?: Maybe<Array<Maybe<CrudApi.ProductConfigSet>>>;
+  createdAt: Scalars['AWSDateTime'];
+  updatedAt: Scalars['AWSDateTime'];
+  groupProduct?: Maybe<CrudApi.GroupProduct>;
+  name?: CrudApi.LocalizedItem;
+  description?: Maybe<CrudApi.LocalizedItem>;
+  productCategoryId?: Scalars['ID'];
+  productType?: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  allergens?: Maybe<Array<Maybe<CrudApi.Allergen>>>;
+  tax?: Scalars['Int'];
+  chainProduct?: Maybe<CrudApi.ChainProduct>;
+}

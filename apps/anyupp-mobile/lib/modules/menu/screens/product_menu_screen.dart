@@ -1,8 +1,11 @@
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +68,7 @@ class Menu extends StatelessWidget {
             'assets/icons/qr_code_scanner.svg',
             color: theme.indicator,
           ),
-          onPressed: null, // TODO visszatenni majd Firebase nelkul () => Nav.to(SelectUnitQRCodeScannerScreen()),
+          onPressed: () => Nav.to(QRCodeScannerScreen()),
         ),
         IconButton(
           icon: Icon(
@@ -87,14 +90,15 @@ class Menu extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (theme?.images?.header != null)
-                  ImageWidget(
-                    //width: 200,
-                    height: 40,
-                    url: theme?.images?.header,
-                    errorWidget: Icon(Icons.error),
-                    fit: BoxFit.fitHeight,
-                  ),
+                ImageWidget(
+                  //width: 200,
+                  height: 40,
+                  url: theme?.images?.header != null
+                      ? theme?.images?.header
+                      : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
+                  errorWidget: Icon(Icons.error),
+                  fit: BoxFit.fitHeight,
+                ),
               ],
             ),
           ),

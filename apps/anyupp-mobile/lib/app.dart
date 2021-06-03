@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,10 +21,12 @@ import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
+import 'modules/main/main.dart';
 import 'modules/orders/orders.dart';
 import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
+import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
 
 class MyApp extends StatefulWidget {
@@ -37,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _init();
+    _initDeepLinks();
   }
 
   @override
@@ -48,78 +51,14 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  Future<void> _init() async {
-    print('_init().start()');
-    // await _initAmplify();
-    // await _initAmplifyDataStore();
-    // await initDependencyInjection();
-    await _initDeepLinks();
-    print('_init().end()');
-  }
-
-  // void _initAmplify() async {
-  //   print('_initAmplify().start()');
-  //   if (_amplifyInitialized == true) {
-  //     print('_initAmplify(): Amplify already initialized, skipping...');
-  //     return;
-  //   }
-  //   try {
-  //     await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
-  //     // print('_initAmplify.config=${getAmplifyConfig(awsConfig)}');
-  //     await Amplify.configure(getAmplifyConfig());
-  //     print('_initAmplify().Amplify initialized successfully...');
-  //     setState(() {
-  //       _amplifyInitialized = true;
-  //     });
-  //   } on AmplifyAlreadyConfiguredException {
-  //     print("_initAmplify().Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-  //     setState(() {
-  //       _amplifyInitialized = true;
-  //     });
-  //   } on Exception catch (e) {
-  //     print('_initAmplify().Error initializing Amplify: $e');
-  //     setState(() {
-  //       _amplifyInitialized = true;
-  //     });
-  //   }
-  // }
-
-  // void _initAmplifyDataStore() async {
-  //   print('_initAmplifyDataStore().start()');
-  //   try {
-  //     _amplifySubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
-  //       final dsEvent = event as DataStoreHubEvent;
-  //       print('_initAmplifyDataStore().event=${dsEvent?.eventName}');
-  //       print('_initAmplifyDataStore().event.payload=${dsEvent?.payload}');
-  //       if (dsEvent.eventName == 'networkStatus') {
-  //         // TODO AWS!!!!
-  //       }
-  //     });
-  //     print('_initAmplifyDataStore().initialized()');
-  //     setState(() {
-  //       _amplifyInitialized = true;
-  //       _amplifyError = null;
-  //     });
-  //   } on Exception catch (e) {
-  //     print('_initAmplify().Error initializing Amplify: $e');
-  //     setState(() {
-  //       _amplifyInitialized = false;
-  //       _amplifyError = e.toString();
-  //     });
-  //   }
-  // }
-
   void handleLink(Uri link) async {
     print('handleLink()=$link');
-    await _handleEmailLoginLink(link);
   }
 
   Future<void> _initDeepLinks() async {
     try {
       Uri uri = await getInitialUri();
       print('_initDeepLinks().uri=$uri');
-
-      await _handleEmailLoginLink(uri);
 
       if (isValidUrl(uri)) {
         await handleUrl(uri);
@@ -129,10 +68,8 @@ class _MyAppState extends State<MyApp> {
     }
 
     // try to listen
-    _deeplinkSubscription =
-        getUriLinksStream().asBroadcastStream().listen((Uri uri) {
+    _deeplinkSubscription = getUriLinksStream().asBroadcastStream().listen((Uri uri) {
       print('_initDeepLinks().stream().uri=$uri');
-      _handleEmailLoginLink(uri);
 
       if (isValidUrl(uri)) {
         handleUrl(uri);
@@ -144,16 +81,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> _handleEmailLoginLink(Uri uri) async {
-    // String emailLink = uri.toString();
-    // print('_initDeepLinks().emailLink=$emailLink');
-    // bool isSignInWithEmailLink = await getIt<LoginRepository>().isSignInWithEmailLink(emailLink);
-    // print('_initDeepLinks().isSignInWithEmailLink=$isSignInWithEmailLink');
-    // if (isSignInWithEmailLink) {
-    //   getIt<LoginBloc>().add(FinishLoginWithEmailLink(emailLink));
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -163,16 +90,16 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<StripePaymentBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
         BlocProvider<UnitSelectBloc>(
             create: (context) => getIt<UnitSelectBloc>()),
         BlocProvider<FavoritesBloc>(
             create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(
+            create: (context) => getIt<TransactionsBloc>()),
         BlocProvider<LoginBloc>(
             create: (BuildContext context) => getIt<LoginBloc>()),
         BlocProvider<SimplePayBloc>(
@@ -181,11 +108,14 @@ class _MyAppState extends State<MyApp> {
             create: (BuildContext context) => getIt<ThemeBloc>()),
         BlocProvider<AffiliateBloc>(
             create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<MainNavigationBloc>(
+            create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(
+            create: (BuildContext context) => getIt<ConfigsetBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
-          var locale =
-              (localeState is LocaleSelected) ? localeState.locale : null;
+          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
           return MaterialApp(
             title: 'AnyUpp',
 
@@ -230,8 +160,7 @@ class _MyAppState extends State<MyApp> {
               //const FallbackCupertinoLocalisationsDelegate(),
             ],
             supportedLocales: SupportedLocales.locales,
-            localeListResolutionCallback: (List<Locale> userPreferredlocales,
-                Iterable<Locale> appSupportedLocales) {
+            localeListResolutionCallback: (List<Locale> userPreferredlocales, Iterable<Locale> appSupportedLocales) {
               // userPreferredlocales: comes from the phone settings in the same order
               // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 
@@ -254,49 +183,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
-  // Widget _buildAmplifyLoadingScreen() {
-  //   return MaterialApp(
-  //     title: 'AnyUpp',
-
-  //     debugShowCheckedModeBanner: false,
-  //     theme: ThemeData(
-  //         visualDensity: VisualDensity.adaptivePlatformDensity,
-  //         indicatorColor: Colors.black,
-  //         primarySwatch: Colors.red,
-  //         primaryColor: Colors.black,
-  //         accentColor: Colors.white,
-  //         buttonColor: Colors.black,
-  //         hoverColor: Color(0xFFFFDB87),
-  //         highlightColor: Colors.white,
-  //         primaryColorLight: Color(0xFFFFDB87),
-  //         backgroundColor: Color(0xFFFFDB87),
-  //         bottomAppBarColor: Color(0xFF176E49)),
-
-  //     builder: (context, child) {
-  //       return MediaQuery(
-  //         child: child,
-  //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-  //       );
-  //     },
-
-  //     // The first app page
-  //     home: Stack(
-  //       children: [
-  //         SplashScreen(),
-  //         Align(
-  //           alignment: Alignment.bottomCenter,
-  //           child: Text(
-  //             _amplifyError ?? '',
-  //             style: GoogleFonts.poppins(
-  //               fontSize: 16.0,
-  //               color: Colors.white,
-  //               fontWeight: FontWeight.normal,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

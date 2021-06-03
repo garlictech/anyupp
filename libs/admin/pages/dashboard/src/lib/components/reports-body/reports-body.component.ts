@@ -12,9 +12,10 @@ import { FormControl } from '@angular/forms';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { dayInterval } from '@bgap/shared/utils';
-import { IGroup, IKeyValueObject, IOrder } from '@bgap/shared/types';
+import { IKeyValueObject } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -25,15 +26,15 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnInit, OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<IOrder[]> = new BehaviorSubject<
-    IOrder[]
-  >([]);
+  public dailyHistoryOrders$: BehaviorSubject<
+    CrudApi.Order[]
+  > = new BehaviorSubject<CrudApi.Order[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
@@ -46,7 +47,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe((group: IGroup | undefined): void => {
+      .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
@@ -57,20 +58,22 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
       this.dateFormControl.valueChanges.pipe(filter((v): boolean => !!v)),
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([historyOrders, dateFormValue]: [IOrder[], string]): void => {
-        // TODO Use history with daily query from FB
-        // TODO test it: new Date(o.createdAt).getTime()
-        const selectedDayInterval = dayInterval(dateFormValue);
-        const dailyHistoryOrders: IOrder[] = historyOrders.filter(
-          (o: IOrder): boolean =>
-            new Date(o.createdAt).getTime() >= selectedDayInterval.start &&
-            new Date(o.createdAt).getTime() <= selectedDayInterval.end,
-        );
+      .subscribe(
+        ([historyOrders, dateFormValue]: [CrudApi.Order[], string]): void => {
+          // TODO Use history with daily query from FB
+          // TODO test it: new Date(o.createdAt).getTime()
+          const selectedDayInterval = dayInterval(dateFormValue);
+          const dailyHistoryOrders: CrudApi.Order[] = historyOrders.filter(
+            (o: CrudApi.Order): boolean =>
+              new Date(o.createdAt).getTime() >= selectedDayInterval.start &&
+              new Date(o.createdAt).getTime() <= selectedDayInterval.end,
+          );
 
-        this.dailyHistoryOrders$.next(dailyHistoryOrders);
+          this.dailyHistoryOrders$.next(dailyHistoryOrders);
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        },
+      );
 
     this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
   }

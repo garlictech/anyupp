@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -36,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen>
   final double _backgroundAnimationSize = 50.0;
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
-  String _userAgent = '<unknown>';
+  // String _userAgent = '<unknown>';
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
@@ -71,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen>
         .then((value) => _switchAnimation());
   }
 
-  Future<void> setUserAgent() async {
-    _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
-  }
+  // Future<void> setUserAgent() async {
+  //   _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+  // }
 
   @override
   void dispose() {
@@ -459,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 //: Colors.blueAccent,
                                 onPressed:
-                                    null, //() => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                    () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -575,10 +573,9 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  final Completer<WebViewController> _webViewController =
-      Completer<WebViewController>();
-
   Widget _buildSocialLoginWebView(LoginMethod method) {
+    Completer<WebViewController> _webViewController =
+        Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -596,27 +593,69 @@ class _LoginScreenState extends State<LoginScreen>
     var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
         "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
         "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
+
     print('loginScreen.url=$url');
-    return WebView(
-      userAgent: _userAgent,
-      initialUrl: url,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (WebViewController webViewController) {
-        _webViewController.complete(webViewController);
-      },
-      navigationDelegate: (NavigationRequest request) {
-        print('SocialLoginScreen.navigationDelegate().request=$request');
-        if (request.url
-            .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-          var code = request.url
-              .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
-          // This is the authorization code!!!
-          signUserInWithAuthCode(code);
-          return NavigationDecision.prevent;
-        }
-        return NavigationDecision.navigate;
-      },
-      gestureNavigationEnabled: true,
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.only(
+            left: 8.0,
+            top: 4.0,
+            bottom: 4.0,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 1,
+                color: theme.border2,
+              ),
+            ),
+            child: BackButton(
+              onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
+              color: theme.text,
+            ),
+          ),
+        ),
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: theme.text, //change your color here
+        ),
+        backgroundColor: theme.background,
+        title: Text(
+          trans("login.email.signIn"),
+          style: GoogleFonts.poppins(
+            color: Colors.black,
+          ),
+          //getLocalizedText(context, widget.item.name),
+        ),
+      ),
+      body: WebView(
+        key: UniqueKey(),
+        userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
+            'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
+        initialUrl: url,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) async{
+          _webViewController.complete(webViewController);
+        },
+        navigationDelegate: (NavigationRequest request) {
+          print('SocialLoginScreen.navigationDelegate().request=$request');
+          if (request.url
+              .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+            var code = request.url
+                .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+            //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
+            //Remove it so it will be a valid url
+            code = code.split("#").first;
+            // This is the authorization code!!!
+            signUserInWithAuthCode(code);
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
+        },
+        gestureNavigationEnabled: true,
+      ),
     );
   }
 

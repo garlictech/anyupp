@@ -1,9 +1,13 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
+import 'package:fa_prev/modules/main/main.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -11,13 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void showSelectPaymentMethodBottomSheet(BuildContext context) {
+Future<T> showSelectPaymentMethodBottomSheet<T>(BuildContext context, [String orderId]) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
-  showModalBottomSheet(
+  return showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -30,12 +33,18 @@ void showSelectPaymentMethodBottomSheet(BuildContext context) {
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return PaymentMethodSelectionBottomSheetWidget();
+      return PaymentMethodSelectionBottomSheetWidget(
+        orderId: orderId,
+      );
     },
   );
 }
 
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
+  final String orderId;
+
+  const PaymentMethodSelectionBottomSheetWidget({Key key, this.orderId}) : super(key: key);
+
   @override
   _PaymentMethodSelectionBottomSheetWidgetState createState() => _PaymentMethodSelectionBottomSheetWidgetState();
 }
@@ -45,6 +54,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   static const int PAYMENT_INAPP = 0;
   static const int PAYMENT_CASH = 1;
   static const int PAYMENT_CARD = 2;
+  bool wantsInvoce = false;
 
   int _selectedPaymentMethod = PAYMENT_UNKNOWN;
 
@@ -55,8 +65,9 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
         if (state is EmptyCartState) {
           // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
           Nav.pop();
-          Nav.replace(MainNavigation(pageIndex: 2));
-          _showDialog(context);
+          // Nav.replace(MainNavigation(pageIndex: 2));
+          // getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+          // _showDialog(context);
         } else if (state is CartErrorState) {
           Nav.pop();
         }
@@ -75,6 +86,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   }
 
   Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+    List<String> methods = [];
+    for (PaymentMode paymentMode in unit.paymentModes) {
+      methods.add(paymentMode.method);
+    }
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
@@ -103,15 +118,40 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // if (unit.paymentModes != null && unit.paymentModes.contains('INAPP'))
+              // if (unit.paymentModes != null && unit.paymentModes.contains('inapp'))
               _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
-                  "assets/icons/simplepay-logo.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CASH'))
+                  "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
+              if (unit.paymentModes != null && methods.contains('cash'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
-              if (unit.paymentModes != null && unit.paymentModes.contains('CARD'))
+              if (unit.paymentModes != null && methods.contains('card'))
                 _buildSelectPaymentMethodBottomSheetRadioItem(
                     context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
+              Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      trans('payment.paymentInfo.invoicing.want_invoice'),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: theme.text,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Switch(
+                        activeColor: theme.highlight,
+                        value: wantsInvoce,
+                        onChanged: (value) {
+                          setState(() {
+                            this.wantsInvoce = value;
+                          });
+                        })
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -121,66 +161,107 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   }
 
   Widget _buildSendCartButton(BuildContext context, GeoUnit unit) {
-    return BlocBuilder<CartBloc, BaseCartState>(builder: (context, state) {
-      bool loading = state is CartLoadingState;
-
-      return Container(
-        height: 90.0,
-        padding: EdgeInsets.only(
-          top: 21.0,
-          left: 14.0,
-          right: 14.0,
-          bottom: 14.0,
-        ),
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: theme.indicator,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-
-            ),
-
-          ),
-          child: loading
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (BuildContext context, StripePaymentState state) {
+        if (state is StripeOperationSuccess) {
+          // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
+          Nav.pop();
+          // Nav.replace(MainNavigation(pageIndex: 2));
+          getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+          // _showDialog(context);
+        } else if (state is StripeError) {
+          Nav.pop();
+        }
+      },
+      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+        builder: (context, state) {
+          bool loading = state is StripePaymentLoading;
+          Widget buttonChild = loading
               ? CenterLoadingWidget(
                   color: theme.highlight,
                   size: 20.0,
                   strokeWidth: 2.0,
                 )
               : Text(
-                  trans('payment.sendOrder'),
+                  trans('payment.paymentInfo.invoicing.invoice_info'),
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: theme.text2,
                     fontWeight: FontWeight.w700,
                   ),
+                );
+
+          return Container(
+            height: 90.0,
+            padding: EdgeInsets.only(
+              top: 21.0,
+              left: 14.0,
+              right: 14.0,
+              bottom: 14.0,
+            ),
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: theme.indicator,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-          onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
-              ? () {
-                  if (!loading) {
-                    BlocProvider.of<CartBloc>(context).add(CreateAndSendOrder(
-                      unit,
-                      _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
-                    ));
-                  }
-                }
-              : null,
-        ),
-      );
-    });
+              ),
+              child: buttonChild,
+              onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
+                  ? () async {
+                      if (!loading) {
+                        PaymentMode mode = _getPaymentModeFromSelection();
+
+                        getIt<CartBloc>().add(SetPaymentMode(unit, mode));
+                        print('_selectedPaymentMethod=$_selectedPaymentMethod');
+                        if (_selectedPaymentMethod == PAYMENT_INAPP) {
+                          Nav.pop();
+                          Nav.to(StripePaymentScreen(orderId: widget.orderId,));
+                        } else {
+                          getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+                            // cart: widget.cart,
+                            orderId: widget.orderId,
+                            paymentMethod: _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                          ));
+                          String payMentMethod = _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod);
+                          if (wantsInvoce) {
+                            showInvoiceFormBottomSheet(context, payMentMethod);
+                          }
+                        }
+                      }
+                    }
+                  : null,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  PaymentMode _getPaymentModeFromSelection() {
+    switch (_selectedPaymentMethod) {
+      case PAYMENT_CASH:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+      case PAYMENT_CARD:
+        return PaymentMode(method: 'card', type: 'card', caption: 'card');
+      case PAYMENT_INAPP:
+        return PaymentMode(method: 'inapp', type: 'stripe', caption: 'stripe');
+      default:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+    }
   }
 
   String _getPaymentMethodNameFromNumberValue(int value) {
     switch (value) {
       case PAYMENT_INAPP:
-        return 'INAPP';
+        return 'inapp';
       case PAYMENT_CASH:
-        return 'CASH';
+        return 'cash';
       case PAYMENT_CARD:
-        return 'CARD';
+        return 'card';
       default:
-        return 'UNKNOWN';
+        return 'unknown';
     }
   }
 
@@ -259,53 +340,53 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                 ),
               ],
             ),
-            if (isSelected && info != null) ...[info, SizedBox(height: 14.0)]
+            // if (isSelected && info != null) ...[info, SizedBox(height: 14.0)]
           ],
         ),
       ),
     );
   }
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return SimpleDialog(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    width: 64.0,
-                    height: 64.0,
+  // void _showDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (context) {
+  //       return SimpleDialog(
+  //         children: <Widget>[
+  //           Padding(
+  //             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: <Widget>[
+  //                 SizedBox(
+  //                   width: 64.0,
+  //                   height: 64.0,
 
-                    // Check mark animation
-                    child: SuccessAnimationWidget(),
-                  ),
+  //                   // Check mark animation
+  //                   child: SuccessAnimationWidget(),
+  //                 ),
 
-                  // Display message to the user
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Text(
-                      trans('payment.orderPlaced'),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
+  //                 // Display message to the user
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(top: 30.0),
+  //                   child: Text(
+  //                     trans('payment.orderPlaced'),
+  //                     style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontSize: 15.0,
+  //                       fontWeight: FontWeight.w500,
+  //                     ),
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget createSimplePaymentInfo() {
     return RichText(

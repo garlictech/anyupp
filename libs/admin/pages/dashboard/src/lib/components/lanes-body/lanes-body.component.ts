@@ -15,18 +15,16 @@ import {
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
-import { objectToArray } from '@bgap/shared/utils';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  EOrderStatus,
   IDetailedLane,
   ILaneOrderItem,
-  IUnit,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 const laneFilter = (selectedLanes: string[]) => (
   orderItem: ILaneOrderItem,
@@ -45,13 +43,13 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
   public readyItems: ILaneOrderItem[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedLanes: string[] = [];
-  public unit!: IUnit;
-  public unitLanes: IDetailedLane[] = [];
+  public unit?: CrudApi.Unit;
+  public unitLanes: CrudApi.Maybe<IDetailedLane>[] = [];
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -59,15 +57,21 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PLACED)),
-      ),
-      this._store.pipe(
         select(
-          ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.PROCESSING),
+          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.placed),
         ),
       ),
       this._store.pipe(
-        select(ordersSelectors.getLaneOrderItemsByStatus(EOrderStatus.READY)),
+        select(
+          ordersSelectors.getLaneOrderItemsByStatus(
+            CrudApi.OrderStatus.processing,
+          ),
+        ),
+      ),
+      this._store.pipe(
+        select(
+          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.ready),
+        ),
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),
@@ -75,7 +79,7 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
-        filter((unit: IUnit | undefined): boolean => !!unit),
+        filter((unit: CrudApi.Unit | undefined): boolean => !!unit),
       ),
     ])
       .pipe(debounceTime(100), untilDestroyed(this))
@@ -91,7 +95,7 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
           ILaneOrderItem[],
           ILaneOrderItem[],
           string[],
-          IUnit | undefined,
+          CrudApi.Unit | undefined,
         ]): void => {
           this.selectedLanes = selectedLanes;
           this.placedItems = rawPlacedItems.filter(laneFilter(selectedLanes));
@@ -99,20 +103,22 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
             laneFilter(selectedLanes),
           );
           this.readyItems = rawReadyItems.filter(laneFilter(selectedLanes));
-          this.unit = <IUnit>unit;
-          this.unitLanes = <IDetailedLane[]>objectToArray(unit?.lanes || {});
+          this.unit = unit;
+          this.unitLanes = unit?.lanes ? [...unit.lanes] : [];
 
           // Unit lanes
-          this.unitLanes.forEach((lane: IDetailedLane): void => {
-            lane.placedCount = rawPlacedItems.filter(
-              (i): boolean => i.laneId === lane.id,
-            ).length;
-            lane.processingCount = rawProcessingItems.filter(
-              (i): boolean => i.laneId === lane.id,
-            ).length;
-            lane.readyCount = rawReadyItems.filter(
-              (i): boolean => i.laneId === lane.id,
-            ).length;
+          this.unitLanes.forEach((lane: CrudApi.Maybe<IDetailedLane>): void => {
+            if (lane) {
+              lane.placedCount = rawPlacedItems.filter(
+                (i): boolean => i.laneId === lane.id,
+              ).length;
+              lane.processingCount = rawProcessingItems.filter(
+                (i): boolean => i.laneId === lane.id,
+              ).length;
+              lane.readyCount = rawReadyItems.filter(
+                (i): boolean => i.laneId === lane.id,
+              ).length;
+            }
           });
 
           // Default lane first

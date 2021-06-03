@@ -1,8 +1,6 @@
-import { CrudApi } from '@bgap/crud-gql/api';
-import { EAdminRole, IAllergen, IPaymentMode } from '@bgap/shared/types';
-
-// TODO env enként külön
-export const GOOGLE_API_KEY = 'AIzaSyCgCNK6CoqyGsud_6J0GCqzJ3K6RCh3WuI';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentMode } from '@bgap/crud-gql/api';
+import { IAllergen } from '@bgap/shared/types';
 
 export const DEFAULT_LANG = 'en-US';
 
@@ -20,77 +18,77 @@ export const TIME_FORMAT_PATTERN = '^([0-1][0-9]|2[0-3]):[0-5][0-9]$';
 
 export const MENU_ROLES = {
   DASHBOARD: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
-    EAdminRole.STAFF,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
+    CrudApi.Role.staff,
   ],
   PRODUCTS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
-  PRODUCT_CATEGORIES: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
-  MODIFIERS_AND_EXTRAS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
+  PRODUCT_CATEGORIES: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
+  MODIFIERS_AND_EXTRAS: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
   UNITS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
   GROUPS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
   ],
-  CHAINS: [EAdminRole.SUPERUSER, EAdminRole.CHAIN_ADMIN],
-  USERS: [EAdminRole.SUPERUSER],
+  CHAINS: [CrudApi.Role.superuser, CrudApi.Role.chainadmin],
+  USERS: [CrudApi.Role.superuser],
   ADMINS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
   ROLE_CONTEXTS: [
-    EAdminRole.SUPERUSER,
-    EAdminRole.CHAIN_ADMIN,
-    EAdminRole.GROUP_ADMIN,
-    EAdminRole.UNIT_ADMIN,
+    CrudApi.Role.superuser,
+    CrudApi.Role.chainadmin,
+    CrudApi.Role.groupadmin,
+    CrudApi.Role.unitadmin,
   ],
 };
 
-export const PAYMENT_MODES: IPaymentMode[] = [
+export const PAYMENT_MODES: PaymentMode[] = [
   {
-    name: 'Cash',
+    type: CrudApi.PaymentType.cash,
     caption: 'common.paymentModes.cash',
-    method: CrudApi.PaymentMethod.CASH,
+    method: CrudApi.PaymentMethod.cash,
   },
   {
-    name: 'Card',
+    type: CrudApi.PaymentType.card,
     caption: 'common.paymentModes.card',
-    method: CrudApi.PaymentMethod.CARD,
+    method: CrudApi.PaymentMethod.card,
   },
   {
-    name: 'Google Pay',
-    caption: 'Google Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    type: CrudApi.PaymentType.googlepay,
+    caption: 'common.paymentModes.googlepay',
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Apple Pay',
-    caption: 'Apple Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    type: CrudApi.PaymentType.applepay,
+    caption: 'common.paymentModes.applepay',
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Stripe',
-    caption: 'Stripe',
-    method: CrudApi.PaymentMethod.INAPP,
+    type: CrudApi.PaymentType.stripe,
+    caption: 'common.paymentModes.stripe',
+    method: CrudApi.PaymentMethod.inapp,
   },
   {
-    name: 'Simple Pay',
-    caption: 'Simple Pay',
-    method: CrudApi.PaymentMethod.INAPP,
+    type: CrudApi.PaymentType.simple,
+    caption: 'common.paymentModes.simple',
+    method: CrudApi.PaymentMethod.inapp,
   },
 ];
 

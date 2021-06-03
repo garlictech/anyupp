@@ -19,6 +19,7 @@
       "options": {
         "accessToken": "ZmQxOTFkZTQtODBhYi00MmVlLTgxZmMtYTkwYmUwZDBjNTIwfHJlYWQtd3JpdGU=",
         "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "runtimeCacheInputs": ["node -v"],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }
@@ -40,16 +41,16 @@
       "tags": ["type:utils", "platform:universal"]
     },
     "admin-pages-admin-users": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-forms": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-components": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-pipes": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-utils": {
       "tags": ["type:utils", "platform:angular"]
@@ -190,6 +191,12 @@
       "tags": ["type:utils", "platform:universal"]
     },
     "admin-shared-data-access-product-component-sets": {
+      "tags": ["type:utils", "platform:angular"]
+    },
+    "gql-sdk": {
+      "tags": ["type:utils", "platform:universal"]
+    },
+    "admin-shared-data-access-app-core": {
       "tags": ["type:utils", "platform:angular"]
     }
   }

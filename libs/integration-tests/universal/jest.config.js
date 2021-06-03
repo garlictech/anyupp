@@ -1,5 +1,6 @@
 module.exports = {
   displayName: 'integration-tests-universal',
+  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {

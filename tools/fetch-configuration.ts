@@ -35,7 +35,7 @@ const generatedParams = [
   'ConsumerUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
-const fixParams = ['StripePublishableKey', 'Region'].map(
+const fixParams = ['StripePublishableKey', 'GoogleApiKey'].map(
   paramName => `/${prefix}/${paramName}`,
 );
 
@@ -67,12 +67,20 @@ pipe(
       fp.fromPairs,
       fp.tap(config => {
         console.log(config);
+        config['Region'] = region;
         fs.writeFileSync(targetFile, JSON.stringify(config, null, 2));
         console.log(`Config written to ${targetFile}`);
       }),
       fp.tap(config => {
         const apiKeyName = Object.keys(amplifyConfig['api'])[0];
+        if (!amplifyConfig['storage']) {
+          throw Error(
+            'No bucket configured for this Amplify project! amplify-meta.json must have a "bucket": section.',
+          );
+        }
         const bucketKeyName = Object.keys(amplifyConfig['storage'])[0];
+        config['Region'] = region;
+        config['Stage'] = stage;
         config['CrudGraphqlApiUrl'] =
           amplifyConfig['api'][apiKeyName]['output'][
             'GraphQLAPIEndpointOutput'

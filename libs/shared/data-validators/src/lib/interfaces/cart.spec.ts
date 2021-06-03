@@ -1,15 +1,15 @@
+import * as CrudApi from '@bgap/crud-gql/api';
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
-import { CrudApi } from '@bgap/crud-gql/api';
-import { ICart } from '@bgap/shared/types';
 
-const cart: ICart = {
+const cart: CrudApi.Cart = {
   id: 'ID',
   userId: 'USERID',
   unitId: 'UNITID',
   paymentMode: {
-    method: CrudApi.PaymentMethod.CARD,
-    name: 'CARD',
+    method: CrudApi.PaymentMethod.card,
+    type: CrudApi.PaymentType.card,
   },
   takeAway: false,
   items: [
@@ -25,7 +25,13 @@ const cart: ICart = {
       },
       productId: 'PRODUCTID',
       quantity: 100,
-      statusLog: [],
+      statusLog: [
+        {
+          status: CrudApi.OrderStatus.none,
+          userId: 'USERID',
+          ts: 1.2,
+        },
+      ],
       variantId: 'VARIANTID',
       variantName: { en: 'EN' },
       laneId: 'LANEID',
@@ -58,7 +64,13 @@ describe('Cart validaton test', () => {
               "en": "EN",
             },
             "quantity": 100,
-            "statusLog": Array [],
+            "statusLog": Array [
+              Object {
+                "status": "none",
+                "ts": 1.2,
+                "userId": "USERID",
+              },
+            ],
             "variantId": "VARIANTID",
             "variantName": Object {
               "en": "EN",
@@ -66,8 +78,8 @@ describe('Cart validaton test', () => {
           },
         ],
         "paymentMode": Object {
-          "method": "CARD",
-          "name": "CARD",
+          "method": "card",
+          "type": "card",
         },
         "place": Object {
           "seat": "SEAT",
@@ -88,7 +100,7 @@ describe('Cart validaton test', () => {
       .toPromise()
       .catch(error => {
         expect(error).toMatchInlineSnapshot(
-          `"Cart Object Validation Error: \\"id\\" is required"`,
+          `"Cart Object Validation Error (JOI): \\"id\\" is required"`,
         );
       });
     expect(isCart(invalidCart)).toEqual(false);

@@ -1,18 +1,16 @@
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { IProduct } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
   chainProductsAdapter,
-  generatedUnitProductsAdapter,
+  generatedProductsAdapter,
   groupProductsAdapter,
-  IProductEntityState,
-  IProductsState,
   PRODUCTS_FEATURE_KEY,
+  ProductsState,
   unitProductsAdapter,
 } from './products.reducer';
 
-export const getProductsState = createFeatureSelector<IProductsState>(
+export const getProductsState = createFeatureSelector<ProductsState>(
   PRODUCTS_FEATURE_KEY,
 );
 
@@ -20,7 +18,7 @@ export const getProductsState = createFeatureSelector<IProductsState>(
 
 const chainProductListSelector = createSelector(
   getProductsState,
-  (state: IProductsState): IProductEntityState => state.chainProducts,
+  (state: ProductsState) => state.chainProducts,
 );
 export const getAllChainProducts = chainProductsAdapter.getSelectors(
   chainProductListSelector,
@@ -33,19 +31,16 @@ export const getAllChainProductCount = chainProductsAdapter.getSelectors(
 ).selectTotal;
 
 export const getChainProductById = (id: string) => {
-  return createSelector(getAllChainProducts, (products: IProduct[]):
-    | IProduct
-    | undefined => products.find(product => product.id === id));
+  return createSelector(getAllChainProducts, products =>
+    products.find(product => product.id === id),
+  );
 };
 
 export const getChainProductsOfSelectedCategory = () => {
   return createSelector(
     getAllChainProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (
-      products: IProduct[],
-      productCategoryId: string | null | undefined,
-    ): IProduct[] =>
+    (products, productCategoryId) =>
       products.filter(
         (product): boolean =>
           !!productCategoryId &&
@@ -58,7 +53,7 @@ export const getChainProductsOfSelectedCategory = () => {
 
 const groupProductListSelector = createSelector(
   getProductsState,
-  (state: IProductsState): IProductEntityState => state.groupProducts,
+  (state: ProductsState) => state.groupProducts,
 );
 export const getAllGroupProducts = groupProductsAdapter.getSelectors(
   groupProductListSelector,
@@ -71,9 +66,9 @@ export const getAllGroupProductCount = groupProductsAdapter.getSelectors(
 ).selectTotal;
 
 export const getGroupProductById = (id: string) => {
-  return createSelector(getAllGroupProducts, (products: IProduct[]):
-    | IProduct
-    | undefined => products.find(product => product.id === id));
+  return createSelector(getAllGroupProducts, products =>
+    products.find(product => product.id === id),
+  );
 };
 
 export const getPendingGroupProductsOfSelectedCategory = () =>
@@ -81,12 +76,8 @@ export const getPendingGroupProductsOfSelectedCategory = () =>
     getAllChainProducts,
     getAllGroupProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (
-      chainProducts: IProduct[],
-      groupProducts: IProduct[],
-      productCategoryId: string | null | undefined,
-    ): IProduct[] =>
-      chainProducts.filter((chainProduct: IProduct): boolean => {
+    (chainProducts, groupProducts, productCategoryId) =>
+      chainProducts.filter(chainProduct => {
         const found = groupProducts.filter(
           groupProduct => groupProduct?.parentId === chainProduct.id,
         ).length;
@@ -104,11 +95,7 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
     getAllChainProducts,
     getAllGroupProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (
-      chainProducts: IProduct[],
-      groupProducts: IProduct[],
-      productCategoryId: string | null | undefined,
-    ): IProduct[] =>
+    (chainProducts, groupProducts, productCategoryId) =>
       groupProducts
         .map(groupProduct => {
           const chainProduct = chainProducts.find(
@@ -120,7 +107,8 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
         .filter(
           extendedGroupProduct =>
             !!productCategoryId &&
-            extendedGroupProduct.productCategoryId === productCategoryId,
+            extendedGroupProduct.chainProduct?.productCategoryId ===
+              productCategoryId,
         ),
   );
 
@@ -128,7 +116,7 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
 
 const unitProductListSelector = createSelector(
   getProductsState,
-  (state: IProductsState): IProductEntityState => state.unitProducts,
+  state => state.unitProducts,
 );
 export const getAllUnitProducts = unitProductsAdapter.getSelectors(
   unitProductListSelector,
@@ -141,9 +129,9 @@ export const getAllUnitProductCount = unitProductsAdapter.getSelectors(
 ).selectTotal;
 
 export const getUnitProductById = (id: string) => {
-  return createSelector(getAllUnitProducts, (products: IProduct[]):
-    | IProduct
-    | undefined => products.find(product => product.id === id));
+  return createSelector(getAllUnitProducts, products =>
+    products.find(product => product.id === id),
+  );
 };
 
 export const getPendingUnitProductsOfSelectedCategory = () =>
@@ -151,12 +139,8 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (
-      groupProducts: IProduct[],
-      unitProducts: IProduct[],
-      productCategoryId: string | null | undefined,
-    ): IProduct[] =>
-      groupProducts.filter((groupProduct: IProduct): boolean => {
+    (groupProducts, unitProducts, productCategoryId) =>
+      groupProducts.filter(groupProduct => {
         const found = unitProducts.filter(
           unitProduct => unitProduct?.parentId === groupProduct.id,
         ).length;
@@ -164,7 +148,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
         return (
           !found &&
           !!productCategoryId &&
-          groupProduct.productCategoryId === productCategoryId
+          groupProduct.chainProduct?.productCategoryId === productCategoryId
         );
       }),
   );
@@ -174,11 +158,7 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (
-      groupProducts: IProduct[],
-      unitProducts: IProduct[],
-      productCategoryId: string | null | undefined,
-    ): IProduct[] =>
+    (groupProducts, unitProducts, productCategoryId) =>
       unitProducts
         .map(unitProduct => {
           const groupProduct = groupProducts.find(
@@ -190,12 +170,13 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
         .filter(
           extendedGroupProduct =>
             !!productCategoryId &&
-            extendedGroupProduct.productCategoryId === productCategoryId,
+            extendedGroupProduct.groupProduct?.chainProduct
+              ?.productCategoryId === productCategoryId,
         ),
   );
 
 export const getUnitProductLaneIds = () => {
-  return createSelector(getAllUnitProducts, (products: IProduct[]): string[] =>
+  return createSelector(getAllUnitProducts, products =>
     [...new Set(products.map(product => product.laneId || ''))].filter(
       id => !!id,
     ),
@@ -204,24 +185,23 @@ export const getUnitProductLaneIds = () => {
 
 // GENERATED UNIT PRODUCTS
 
-const generatedUnitProductListSelector = createSelector(
+const generatedProductListSelector = createSelector(
   getProductsState,
-  (state: IProductsState): IProductEntityState => state.generatedUnitProducts,
+  state => state.generatedProducts,
 );
-export const getAllGeneratedUnitProducts = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProducts = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectAll;
-export const getAllGeneratedUnitProductIds = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProductIds = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectIds;
-export const getAllGeneratedUnitProductCount = generatedUnitProductsAdapter.getSelectors(
-  generatedUnitProductListSelector,
+export const getAllGeneratedProductCount = generatedProductsAdapter.getSelectors(
+  generatedProductListSelector,
 ).selectTotal;
 
 export const getGeneratedProductImageById = (id: string) => {
   return createSelector(
-    getAllGeneratedUnitProducts,
-    (products: IProduct[]): string =>
-      products.find(product => product.id === id)?.image || '',
+    getAllGeneratedProducts,
+    products => products.find(product => product.id === id)?.image || '',
   );
 };

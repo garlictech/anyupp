@@ -74,5 +74,8 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/product-components',
     '<rootDir>/libs/shared/fixtures',
     '<rootDir>/libs/admin/shared/data-access/product-component-sets',
+    '<rootDir>/libs/gql-sdk',
+    '<rootDir>/libs/admin/shared/data-access/core',
+    '<rootDir>/libs/admin/shared/data-access/app-core',
   ],
 };

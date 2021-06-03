@@ -15,12 +15,13 @@
 #     }
 #   }
 # }
-# mutation StartStripePayment($input: StartStripePaymentInput!) {
-#   startStripePayment(input: $input) {
-#     clientSecret
-#     status
-#   }
-# }
+
+mutation StartStripePayment($input: StartStripePaymentInput!) {
+  startStripePayment(input: $input) {
+    clientSecret
+    status
+  }
+}
 
 mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input)
@@ -68,5 +69,16 @@ mutation CreateUnitProduct($input: CreateUnitProductInput!) {
         unit
       }
     }
+  }
+}
+
+mutation RegenerateUnitData($input: RegenerateUnitDataInput!) {
+  regenerateUnitData(input: $input)
+}
+
+mutation CreateAnonymUser {
+  createAnonymUser {
+    email
+    pwd
   }
 }

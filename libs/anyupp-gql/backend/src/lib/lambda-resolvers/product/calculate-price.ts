@@ -1,5 +1,6 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import { DateTime } from 'luxon';
-import { EVariantAvailabilityType, IAvailability } from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 import {
   getSeasonalAvailabilityFromTime,
   getSeasonalAvailabilityToTime,
@@ -13,7 +14,9 @@ import {
  * usually this in the Unit's timezone
  */
 export const calculatePriceFromAvailabilities = (
-  availabilities: IAvailability[],
+  availabilities:
+    | CrudApi.Maybe<CrudApi.Maybe<CrudApi.Availability>[]>
+    | undefined,
   atTime: DateTime,
 ): number | undefined => {
   if (!availabilities) {
@@ -22,7 +25,13 @@ export const calculatePriceFromAvailabilities = (
 
   const price: number | undefined = availabilities
     .filter(isAvailabilityActiveAtTime(atTime))
-    .map(a => Number(a.price))
+    .map(a => {
+      if (a?.price === null || a?.price === undefined) {
+        throw new Error('HANDLE ME: price is null');
+      }
+
+      return Number(a.price);
+    })
     .sort((a, b) => (a < b ? 1 : -1)) // Order by price, the cheapest is the preferred
     .pop();
 
@@ -34,14 +43,15 @@ export const calculatePriceFromAvailabilities = (
 };
 
 const isAvailabilityActiveAtTime = (atTime: DateTime) => (
-  availability: IAvailability,
+  availability: CrudApi.Maybe<CrudApi.Availability>,
 ) => {
   return (
-    availability.type === EVariantAvailabilityType.ALWAYS ||
-    (availability.type === EVariantAvailabilityType.SEASONAL &&
-      isSeasonalActive(availability, atTime)) ||
-    (availability.type === EVariantAvailabilityType.WEEKLY &&
-      isWeeklyActive(availability, atTime))
+    availability &&
+    (availability.type === EVariantAvailabilityType.ALWAYS ||
+      (availability.type === EVariantAvailabilityType.SEASONAL &&
+        isSeasonalActive(availability, atTime)) ||
+      (availability.type === EVariantAvailabilityType.WEEKLY &&
+        isWeeklyActive(availability, atTime)))
   );
 };
 
@@ -49,7 +59,7 @@ const isAvailabilityActiveAtTime = (atTime: DateTime) => (
 // => the calculation should use the timezone information because the atTime comes from the server
 // and the server is NOT in the Unit's timezone
 const isSeasonalActive = (
-  availability: IAvailability,
+  availability: CrudApi.Availability,
   atTime: DateTime,
 ): boolean => {
   if (
@@ -73,7 +83,7 @@ const isSeasonalActive = (
 // it is in the Unit's timezone and the atTime's weekday and hour values are in the same timezone as the Unit
 // => the calculation don't need the timezone information
 export const isWeeklyActive = (
-  availability: IAvailability,
+  availability: CrudApi.Availability,
   atTime: DateTime,
 ): boolean => {
   return (
@@ -82,13 +92,15 @@ export const isWeeklyActive = (
 };
 
 export const inDayWindow = (
-  availability: IAvailability,
+  availability: CrudApi.Availability,
   atTime: DateTime,
 ): boolean => {
   if (
     availability.type !== EVariantAvailabilityType.WEEKLY ||
     availability.dayFrom === undefined ||
-    availability.dayTo === undefined
+    availability.dayFrom == null ||
+    availability.dayTo === undefined ||
+    availability.dayTo === null
   ) {
     return false;
   }
@@ -103,13 +115,15 @@ export const inDayWindow = (
 };
 
 export const inTimeWindow = (
-  availability: IAvailability,
+  availability: CrudApi.Availability,
   atTime: DateTime,
 ): boolean => {
   if (
     availability.type !== EVariantAvailabilityType.WEEKLY ||
     availability.timeFrom === undefined ||
-    availability.timeTo === undefined
+    availability.timeTo === undefined ||
+    availability.timeFrom === null ||
+    availability.timeTo === null
   ) {
     return false;
   }

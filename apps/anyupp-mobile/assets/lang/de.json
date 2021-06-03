@@ -5,7 +5,8 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok"
+    "ok": "Ok",
+    "exit": "Tap back again to exit app."
   },
   "locale": {
     "EN": "English",
@@ -88,11 +89,12 @@
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "status": {
-      "PLACED": "PLACED",
-      "PROCESSING": "PROCESSING",
-      "READY": "READY",
-      "PAID": "PAID",
-      "REJECTED": "REJECTED"
+      "none": "WAITING",
+      "placed": "PLACED",
+      "processing": "PROCESSING",
+      "ready": "READY",
+      "paid": "PAID",
+      "rejected": "REJECTED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
@@ -104,7 +106,7 @@
     "method": {
       "cash": "Cash at register",
       "creditCard": "Credit card at register",
-      "inAppPayment": "Pay by Card via SimplePay (preferred)"
+      "inAppPayment": "Pay by Card via Stripe (preferred)"
     },
     "sendOrder": "PLACE ORDER",
     "orderPlaced": "Order successfully received.",

@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div class="header-right-container" *ngIf="adminUser">
+<div class="header-right-container" *ngIf="loggedUser">
   <!-- USER MENU -->
   <nb-actions size="small">
     <nb-action class="user-action">
@@ -27,16 +27,19 @@
         shape="round"
         class="mr-2"
         status="control"
+        [title]="'common.languageSelector' | translate"
         [nbContextMenu]="languageMenu"
+        data-testid="languageMenu"
       >
         {{ selectedLang }}
       </button>
 
       <nb-user
         [nbContextMenu]="userMenu"
-        [onlyPicture]="userPictureOnly"
+        data-testid="userMenu"
+        [onlyPicture]="false"
         [name]="userName || ''"
-        [picture]="(userImage || '' | awsStoragePath | async) || ''"
+        [picture]="(userImage || '' | awsStoragePath) || ''"
       ></nb-user>
     </nb-action>
   </nb-actions>

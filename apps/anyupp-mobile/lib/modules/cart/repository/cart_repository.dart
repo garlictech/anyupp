@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
@@ -20,8 +22,8 @@ class CartRepository {
         unitId: unit.id,
         takeAway: false,
         paymentMode: PaymentMode(
-          method: 'INAPP', // TODO
-          name: 'STRIPE', // TODO
+          method: 'inapp', // TODO
+          type: 'stripe', // TODO
         ),
         place: await getPlacePref() ?? Place(seat: '00', table: '00'), // TODO
         items: [
@@ -30,7 +32,10 @@ class CartRepository {
       );
     }
 
-    int index = _cart.items.indexWhere((order) => order.productId == item.productId && order.variantId == item.variantId);
+    int index = _cart.items.indexWhere((order) =>
+        order.productId == item.productId &&
+        order.variantId == item.variantId &&
+        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
       OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity + 1);
       List<OrderItem> items = List<OrderItem>.from(_cart.items);
@@ -46,20 +51,25 @@ class CartRepository {
     return _cart;
   }
 
-  Future<Cart> removeProductFromCart(
-      String chainId, String unitId, OrderItem item) async {
+  Future<Cart> removeProductFromCart(String chainId, String unitId, OrderItem item) async {
     Cart _cart = await _ordersProvider.getCurrentCart(chainId, unitId);
     if (_cart == null) {
       await _ordersProvider.updateCart(chainId, unitId, _cart);
       return null;
     }
 
-    int index = _cart.items.indexWhere((order) => order.productId == item.productId && order.variantId == item.variantId);
+    int index = _cart.items.indexWhere((order) =>
+        order.productId == item.productId &&
+        order.variantId == item.variantId &&
+        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
       OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity - 1);
       if (existingOrder.quantity <= 0) {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);
-        items.removeWhere((order) => order.productId == item.productId && order.variantId == item.variantId);
+        items.removeWhere((order) =>
+            order.productId == item.productId &&
+            order.variantId == item.variantId &&
+            DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
         _cart = _cart.copyWith(items: items);
       } else {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);
@@ -104,7 +114,7 @@ class CartRepository {
   }
 
   Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    await _ordersProvider.createAndSendOrderFromCart(unit, paymentMethod);
+    await _ordersProvider.createAndSendOrderFromCart();
   }
 
   Future<Cart> clearCart(User user, GeoUnit unit) async {
@@ -119,5 +129,18 @@ class CartRepository {
       await _ordersProvider.updateCart(unit.chainId, unit.id, cart);
     }
     return cart;
+  }
+
+  Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
+    return _ordersProvider.addInvoiceInfo(invoiceInfo);
+  }
+
+  Future<Cart> setPaymentMode(GeoUnit unit, PaymentMode mode) async {
+    Cart _cart = await _ordersProvider.getCurrentCart(unit.chainId, unit.id);
+    if (_cart != null) {
+      _cart = _cart.copyWith(paymentMode: mode);
+      await _ordersProvider.updateCart(unit.chainId, unit.id, _cart);
+    }
+    return _cart;
   }
 }

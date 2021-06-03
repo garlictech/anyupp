@@ -10,16 +10,12 @@ import { IAllergen } from '@bgap/shared/types';
   styleUrls: ['./form-allergens.component.scss'],
 })
 export class FormAllergensComponent {
-  @Input() caption = ''; // Language key!!!
   @Input() control!: FormControl;
 
   public allergens = ALLERGENS;
 
   public allergenIsChecked(allergen: IAllergen): boolean {
-    return (
-      (this.control?.value || [])
-        .indexOf(allergen.id) >= 0
-    );
+    return (this.control?.value || []).indexOf(allergen.id) >= 0;
   }
 
   public toggleAllergen(allergen: IAllergen): void {

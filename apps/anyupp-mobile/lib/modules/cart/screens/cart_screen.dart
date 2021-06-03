@@ -28,8 +28,7 @@ class CartScreen extends StatelessWidget {
         title: (true)
             ? FutureBuilder<Place>(
                 future: getPlacePref(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
+                builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
                   // print('placeSnapshot=$placeSnapshot');
 
                   if (placeSnapshot.hasData) {
@@ -104,15 +103,12 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>()
-                  .getCurrentCartStream(state.unit.chainId, state.unit.id),
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
                 // print('CartScreen.snapshot=$snapshot');
-                if (snapshot.connectionState != ConnectionState.waiting ||
-                    snapshot.hasData) {
+                if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                   if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
-                    return _buildCartListAndTotal(
-                        context, state.unit, snapshot.data);
+                    return _buildCartListAndTotal(context, state.unit, snapshot.data);
                   }
                   return _emptyCart(context);
                 }
@@ -135,6 +131,17 @@ class CartScreen extends StatelessWidget {
           cartAllergens[GeneratedProduct.allergenMap[allergen]] = allergen;
         }
       }
+      if (item.selectedConfigMap != null) {
+        item.selectedConfigMap.forEach((key, value) {
+          for (GeneratedProductConfigComponent component in value) {
+            for (Allergen allergen in component.allergens) {
+              String temp = allergen.toString().split(".").last;
+              cartAllergens[GeneratedProduct.allergenMap[temp]] = temp;
+            }
+            ;
+          }
+        });
+      }
     }
     return Column(
       children: <Widget>[
@@ -147,6 +154,7 @@ class CartScreen extends StatelessWidget {
                 separatorBuilder: (context, index) => Divider(
                   color: theme.disabled.withOpacity(0.3),
                 ),
+                shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 itemCount: cart.items?.length ?? 0,
                 itemBuilder: (context, position) {
@@ -163,7 +171,9 @@ class CartScreen extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
-          child: AllergensWidget(cartAllergens.values.toList()),
+          child: cartAllergens.keys.toList().isNotEmpty
+              ? AllergensWidget(allergens: cartAllergens.values.toList())
+              : Container(),
         ),
 
         // TOTAL
@@ -192,8 +202,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice,
-                              unit.currency ?? 'huf'), // TODO GeoUnit currency!
+                          formatCurrency(cart.totalPrice, unit.currency ?? 'huf'), // TODO GeoUnit currency!
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,
@@ -220,7 +229,7 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => cart.place == null
-                      ? null // TODO visszatenni majd Firebase nelkul  Nav.to(SelectUnitQRCodeScannerScreen(navigateToCart: true))
+                      ? null
                       : showSelectPaymentMethodBottomSheet(context),
                   child: cart.place == null
                       ? SvgPicture.asset(
@@ -242,7 +251,7 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
-    print('_buildCartItem()=$order');
+    // print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

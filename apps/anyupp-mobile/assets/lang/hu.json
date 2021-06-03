@@ -5,7 +5,8 @@
     "piece": "db",
     "close": "Bezár",
     "select": "Kiválaszt",
-    "ok": "Rendben"
+    "ok": "Rendben",
+    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez..."
   },
   "locale": {
     "EN": "English",
@@ -58,7 +59,7 @@
       "confirmAccount": "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
       "dialogConfirmedMessage": "A fiókodod aktiválva.",
-      "enterCode" : "Enter Code"
+      "enterCode": "Enter Code"
     },
     "accountUnlink": {
       "title": "Account lekapcsolása",
@@ -121,7 +122,8 @@
   "cart": {
     "totalCost": "Fizetendő:",
     "emptyCartLine1": "A kosarad még üres.",
-    "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!"
+    "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!",
+    "addToCart": "Kosárhoz Adás"
   },
   "allergens": {
     "title": "Allergének",
@@ -139,7 +141,7 @@
     "soya": "Szója",
     "sulphites": "Szulfitok",
     "treenuts": "Diófélék",
-    "disclaimer" : "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
+    "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
   },
   "favorites": {
     "noFavorites": "Még nincsenek kedvenceid"
@@ -151,16 +153,17 @@
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {
-      "PLACED": "BEADVA",
-      "PROCESSING": "FOLYAMATBAN",
-      "READY": "KÉSZ",
-      "PAID": "FIZETVE",
-      "REJECTED": "TÖRÖLVE"
+      "none": "VÁR",
+      "placed": "BEADVA",
+      "processing": "FOLYAMATBAN",
+      "ready": "KÉSZ",
+      "paid": "FIZETVE",
+      "rejected": "TÖRÖLVE"
     },
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
-    "stripepay": "Pay with Stripe"
+    "stripepay": "Fizetés Stripe-al"
   },
   "payment": {
     "title": "FIZETÉS",
@@ -168,7 +171,7 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával",
-      "inAppPayment": "Kártyás fizetés SimplePay-jel (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-al (ajánlott)"
     },
     "sendOrder": "RENDELÉS",
     "orderPlaced": "Köszönjük, átvettük a rendelésed!",
@@ -176,6 +179,17 @@
       "simplePay": {
         "prefix": "Ezt a fizetési módot választva tudomásul veszem az alábbi dokumentumokban leírtakat",
         "paymentInfo": "SimplePay vásárlói tájékoztató"
+      },
+      "invoicing": {
+        "want_invoice": "Áfás számlát kérek",
+        "invoice_info": "Számla Információ",
+        "name_or_company": "Név/Cég név",
+        "tax_id": "Adószám",
+        "country": "Ország",
+        "zip": "Irányítószám",
+        "city": "Város",
+        "street_address": "Utca cím",
+        "invoice_email": "Számla email"
       }
     },
     "simplePayStatus": {
@@ -195,6 +209,28 @@
         "title": "Sikeres tranzakció.",
         "description": "SimplePay tranzakció azonosító: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Kártyaszám",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Hibás kártyaszám!"
+      },
+      "expiry": {
+        "label": "Lejárati dátum",
+        "hint": "MM/YY",
+        "validationError": "Hibás lejárati dátum!"
+      },
+      "cvc": {
+        "label": "CVC kód",
+        "hint": "XXX",
+        "validationError": "Hibás CVC kód"
+      }
+    },
+    "stripe": {
+      "title": "Fizetés online",
+      "add_card_tooltip": "Új kártya",
+      "save_card": "Kártya elmentése"
     }
   },
   "selectUnit": {
@@ -268,16 +304,32 @@
   "profile": {
     "menu": {
       "contact": "Kapcsolat",
+      "transactions": "Tranzakciók",
       "about": "Rólunk",
       "cards": "Mentett kártyák",
       "logout": "Kijelentkezés",
       "settings": "Beállítások",
       "regulations": "Szabályzatok",
-      "language": "Nyelv"
+      "language": "Nyelv",
+      "payment": "Fizetés és számla adatok"
+    },
+    "transactions": {
+      "status": "Státusz",
+      "paymentMethod": "Vásárlás módja",
+      "noTransactions": "Nincsenek tranzakciók",
+      "details": "Részletek"
     }
   },
   "affiliate": {
     "advertisement": "Hirdetés"
+  },
+  "validators": {
+    "required": "Ez a mező szükséges",
+    "enterValidEmail": "érvényes email címet adj meg",
+    "eneterValidPhone": "érvényes telefonszmot adj meg",
+    "passwordIsRequired": "jelszó megadása szükséges",
+    "passwordValidatorText": "Tartalmaznia kell számot, nagy és kis betűt",
+    "passwordLengthError": "a jelszónak legalább 8 karakter hosszúnak kell lennie"
   },
   "error": {
     "title": "Hiba",

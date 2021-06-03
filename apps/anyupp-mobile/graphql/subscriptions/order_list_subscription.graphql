@@ -1,13 +1,13 @@
 subscription OnOrderChangedSubscription($userId: String, $unitId: String) {
   onOrderChanged(unitId: $unitId, userId: $userId) {
-   	id
+    id
     unitId
     userId
     paymentIntention
     takeAway
     paymentMode {
       caption
-      name
+      type
       method
     }
     place {

@@ -1,7 +1,6 @@
-import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
+import { cloneDeep } from 'lodash/fp';
+import { switchMap } from 'rxjs/operators';
 
-/* eslint-disable @typescript-eslint/dot-notation */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,16 +9,20 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
-  clearDbProperties,
+  catchGqlError,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
-import { EImageType, IChain } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EImageType } from '@bgap/shared/types';
+import { cleanObject, filterNullish } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+import { EMPTY } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,14 +33,14 @@ import { EImageType, IChain } from '@bgap/shared/types';
 export class ChainFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public chain!: IChain;
+  public chain?: CrudApi.Chain;
   public eImageType = EImageType;
 
   constructor(
     protected _injector: Injector,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -74,17 +77,17 @@ export class ChainFormComponent
     });
   }
 
-  get logoImage(): string | undefined {
+  get logoImage() {
     return this.chain?.style?.images?.logo;
   }
 
-  get headerImage(): string | undefined {
+  get headerImage() {
     return this.chain?.style?.images?.header;
   }
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(clearDbProperties<IChain>(this.chain));
+      this.dialogForm.patchValue(cleanObject(this.chain));
     } else {
       this.dialogForm.controls.isActive.patchValue(false);
     }
@@ -92,74 +95,55 @@ export class ChainFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.chain?.id) {
-        try {
-          await this._amplifyDataService.update<IChain>(
-            'getChain',
-            'updateChain',
-            this.chain.id,
-            () => this.dialogForm.value,
-          );
+        this._crudSdk.sdk
+          .UpdateChain({
+            input: {
+              id: this.chain.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create(
-            'createChain',
-            this.dialogForm?.value,
-          );
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateChain({ input: this.dialogForm?.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public logoUploadCallback = async (
-    image: string,
-    param: string,
-  ): Promise<void> => {
+  public logoUploadCallback = (image: string, param: string) => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue(image);
 
     if (this.chain?.id) {
-      try {
-        await this._amplifyDataService.update<IChain>(
-          'getChain',
-          'updateChain',
-          this.chain.id,
-          (data: unknown) =>
-            fp.set(`style.images.${param}`, image, <IChain>data),
-        );
-
+      this.updateImageStyles(image, param).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `ADMIN USER IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -169,18 +153,13 @@ export class ChainFormComponent
     }
   };
 
-  public logoRemoveCallback = async (param: string): Promise<void> => {
+  public logoRemoveCallback = (param: string) => {
     (<FormControl>(
       this.dialogForm.get('style')?.get('images')?.get(param)
     )).setValue('');
 
     if (this.chain?.id) {
-      await this._amplifyDataService.update<IChain>(
-        'getChain',
-        'updateChain',
-        this.chain.id,
-        (data: unknown) => fp.set(`style.images.${param}`, null, <IChain>data),
-      );
+      this.updateImageStyles(null, param).subscribe();
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -189,4 +168,44 @@ export class ChainFormComponent
       );
     }
   };
+
+  private updateImageStyles(image: string | null, param: string) {
+    if (this.chain?.id) {
+      return this._crudSdk.sdk
+        .GetChain({
+          id: this.chain?.id,
+        })
+        .pipe(
+          filterNullish(),
+          switchMap(data => {
+            const _data: CrudApi.Chain = cloneDeep(data);
+            const chainStyleImagesRecord: Record<
+              string,
+              keyof CrudApi.ChainStyleImages
+            > = {
+              header: 'header',
+              logo: 'logo',
+            };
+
+            if (!_data.style.images) {
+              _data.style.images = {};
+            }
+
+            if (chainStyleImagesRecord[param]) {
+              _data.style.images[chainStyleImagesRecord[param]] = image;
+            }
+
+            return this._crudSdk.sdk.UpdateChain({
+              input: {
+                id: _data.id,
+                style: _data.style,
+              },
+            });
+          }),
+          catchGqlError(this._store),
+        );
+    } else {
+      return EMPTY;
+    }
+  }
 }

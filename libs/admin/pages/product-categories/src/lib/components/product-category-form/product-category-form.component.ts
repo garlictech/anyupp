@@ -1,5 +1,3 @@
-import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
 
 import {
@@ -9,11 +7,16 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, multiLangValidator } from '@bgap/admin/shared/utils';
-import { EImageType, IProductCategory } from '@bgap/shared/types';
+import {
+  catchGqlError,
+  EToasterType,
+  multiLangValidator,
+} from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EImageType } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -24,20 +27,16 @@ import { select, Store } from '@ngrx/store';
 export class ProductCategoryFormComponent
   extends AbstractFormDialogComponent
   implements OnInit {
-  public productCategory!: IProductCategory;
+  public productCategory?: CrudApi.ProductCategory;
   public eImageType = EImageType;
-
 
   private _selectedChainId?: string | undefined | null;
 
-
   constructor(
     protected _injector: Injector,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
-    private _amplifyDataService: AmplifyDataService,
-    private _logger: NGXLogger,
+    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _crudSdk: CrudSdkService,
   ) {
     super(_injector);
 
@@ -80,7 +79,7 @@ export class ProductCategoryFormComponent
     this._changeDetectorRef.detectChanges();
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = {
         ...this.dialogForm?.value,
@@ -89,62 +88,50 @@ export class ProductCategoryFormComponent
       };
 
       if (this.productCategory?.id) {
-        try {
-          await this._amplifyDataService.update<IProductCategory>(
-            'getProductCategory',
-            'updateProductCategory',
-            this.productCategory.id,
-            () => value,
-          );
+        this._crudSdk.sdk
+          .UpdateProductCategory({
+            input: {
+              id: this.productCategory.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._amplifyDataService.create('createProductCategory', value);
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`CHAIN INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateProductCategory({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }
 
-  public imageUploadCallback = async (image: string): Promise<void> => {
+  public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.image.setValue(image);
 
     if (this.productCategory?.id) {
-      try {
-        await this._amplifyDataService.update<IProductCategory>(
-          'getProductCategory',
-          'updateProductCategory',
-          this.productCategory.id,
-          (data: unknown) => fp.set(`image`, image, <IProductCategory>data),
-        );
-
+      this.updateImageStyles(this.productCategory.id, image).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -154,28 +141,17 @@ export class ProductCategoryFormComponent
     }
   };
 
-  public imageRemoveCallback = async (): Promise<void> => {
+  public imageRemoveCallback = () => {
     this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory?.id) {
-      try {
-        await this._amplifyDataService.update<IProductCategory>(
-          'getProductCategory',
-          'updateProductCategory',
-          this.productCategory.id,
-          (data: unknown) => fp.set(`image`, null, <IProductCategory>data),
-        );
-
+      this.updateImageStyles(this.productCategory.id, null).subscribe(() => {
         this._toasterService.show(
           EToasterType.SUCCESS,
           '',
           'common.imageUploadSuccess',
         );
-      } catch (error) {
-        this._logger.error(
-          `PRODUCT IMAGE UPLOAD ERROR: ${JSON.stringify(error)}`,
-        );
-      }
+      });
     } else {
       this._toasterService.show(
         EToasterType.SUCCESS,
@@ -184,4 +160,15 @@ export class ProductCategoryFormComponent
       );
     }
   };
+
+  private updateImageStyles(id: string, image: string | null) {
+    return this._crudSdk.sdk
+      .UpdateProductCategory({
+        input: {
+          id,
+          image,
+        },
+      })
+      .pipe(catchGqlError(this._store));
+  }
 }

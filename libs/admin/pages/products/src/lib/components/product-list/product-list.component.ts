@@ -9,19 +9,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AmplifyDataService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import {
-  EAdminRole,
-  EProductLevel,
-  IAdminUser,
-  IGroup,
-  IProduct,
-  IProductOrderChangeEvent,
-} from '@bgap/shared/types';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
+import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import {
   NbDialogService,
   NbTabComponent,
@@ -42,26 +37,25 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts$: Observable<IProduct[]>;
-  public groupProducts$: Observable<IProduct[]>;
-  public pendingGroupProducts: IProduct[] = [];
-  public pendingUnitProducts: IProduct[] = [];
+  public chainProducts$: Observable<CrudApi.ChainProduct[]>;
+  public groupProducts$: Observable<CrudApi.GroupProduct[]>;
+  public pendingGroupProducts: CrudApi.ChainProduct[] = [];
+  public pendingUnitProducts: CrudApi.GroupProduct[] = [];
   public groupCurrency = '';
-  public unitProducts: IProduct[] = [];
+  public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
 
-  private _loggedUser?: IAdminUser;
+  private _loggedUser?: CrudApi.AdminUser | null;
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store<any>,
+    private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _amplifyDataService: AmplifyDataService,
+    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.selectedProductLevel = EProductLevel.UNIT;
+    this.selectedProductLevel = EProductLevel.CHAIN;
 
     this.groupProducts$ = this._store.pipe(
       select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
@@ -70,9 +64,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     this.chainProducts$ = this._store.pipe(
       select(productsSelectors.getChainProductsOfSelectedCategory()),
-      map((products): IProduct[] =>
-        products.sort(customNumberCompare('position')),
-      ),
+      map(products => products.sort(customNumberCompare('position'))),
       untilDestroyed(this),
     );
   }
@@ -97,12 +89,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
-        map((products): IProduct[] =>
-          products.sort(customNumberCompare('position')),
-        ),
+        map(products => products.sort(customNumberCompare('position'))),
         untilDestroyed(this),
       )
-      .subscribe((unitProducts: IProduct[]): void => {
+      .subscribe(unitProducts => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
 
@@ -112,31 +102,34 @@ export class ProductListComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(
         select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
-        untilDestroyed(this),
       ),
       this._store.pipe(
         select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
-        untilDestroyed(this),
       ),
       this._store.pipe(
         select(loggedUserSelectors.getLoggedUser),
-        skipWhile((_loggedUser): boolean => !_loggedUser),
+        filterNullish(),
+      ),
+      this._store.pipe(
+        select(loggedUserSelectors.getLoggedUserRole),
+        filterNullish(),
       ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(
-        ([pendingGroupProducts, pendingUnitProducts, _loggedUser]: [
-          IProduct[],
-          IProduct[],
-          IAdminUser,
+        ([
+          pendingGroupProducts,
+          pendingUnitProducts,
+          _loggedUser,
+          role,
         ]): void => {
           this._loggedUser = _loggedUser;
 
           this.pendingGroupProducts = [
-            EAdminRole.SUPERUSER,
-            EAdminRole.CHAIN_ADMIN,
-            EAdminRole.GROUP_ADMIN,
-          ].includes(<EAdminRole>_loggedUser?.role)
+            CrudApi.Role.superuser,
+            CrudApi.Role.chainadmin,
+            CrudApi.Role.groupadmin,
+          ].includes(role)
             ? pendingGroupProducts
             : [];
           this.pendingUnitProducts = pendingUnitProducts;
@@ -147,7 +140,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
               skipWhile((group): boolean => !group),
               take(1),
             )
-            .subscribe((group: IGroup | undefined): void => {
+            .subscribe((group: CrudApi.Group | undefined): void => {
               this.groupCurrency = group?.currency || '';
             });
 
@@ -170,9 +163,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public async unitProductPositionChange(
-    $event: IProductOrderChangeEvent,
-  ): Promise<void> {
+  public unitProductPositionChange($event: IProductOrderChangeEvent) {
     if (this._loggedUser?.settings?.selectedUnitId) {
       const idx = this._sortedUnitProductIds.indexOf($event.productId);
 
@@ -192,15 +183,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
           const productId = this._sortedUnitProductIds[i];
 
-          await this._amplifyDataService.update<IProduct>(
-            'getUnitProduct',
-            'updateUnitProduct',
-            productId,
-            (data: unknown) => ({
-              ...(<IProduct>data),
-              position: i + 1,
-            }),
-          );
+          this._crudSdk.sdk
+            .UpdateUnitProduct({
+              input: {
+                id: productId,
+                position: i + 1,
+              },
+            })
+            .pipe(catchGqlError(this._store))
+            .subscribe();
         }
       }
     }

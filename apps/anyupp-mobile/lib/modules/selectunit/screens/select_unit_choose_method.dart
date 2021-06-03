@@ -80,20 +80,20 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
             ),
           if (user.profileImage == null)
             Container(
-                width: 46.0,
-                height: 46.0,
-                decoration: BoxDecoration(
-                  color: Color(0xFF857C18),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                ),
-                child: Icon(
-                  Icons.perm_identity,
-                  size: 24.0,
-                  color: Colors.white.withOpacity(0.7),
+              width: 46.0,
+              height: 46.0,
+              decoration: BoxDecoration(
+                color: Color(0xFF857C18),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
               ),
+              child: Icon(
+                Icons.perm_identity,
+                size: 24.0,
+                color: Colors.white.withOpacity(0.7),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.only(
               left: 12.0,
@@ -109,27 +109,27 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
           Expanded(
             child: Container(),
           ),
-          Container(
-            width: 46.0,
-            height: 46.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1.5,
-                color: Color(0x33857C18),
-              ),
-            ),
-            child: IconButton(
-              icon: Icon(
-                Icons.refresh,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                // Nav.to(DataStoreDemoScreen());
-                getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
-              },
-            ),
-          ),
+          // Container(
+          //   width: 46.0,
+          //   height: 46.0,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(10),
+          //     border: Border.all(
+          //       width: 1.5,
+          //       color: Color(0x33857C18),
+          //     ),
+          //   ),
+          //   child: IconButton(
+          //     icon: Icon(
+          //       Icons.refresh,
+          //       color: Colors.black,
+          //     ),
+          //     onPressed: () {
+          //       // Nav.to(DataStoreDemoScreen());
+          //       getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+          //     },
+          //   ),
+          // ),
           Container(
             width: 46.0,
             height: 46.0,
@@ -368,15 +368,14 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                             color: const Color(0xFF30BF60),
                           ),
                           child: Center(
-                            child: Text(
-                              (units[index].distance ?? 0 / 1000).toStringAsFixed(3) + ' km',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: const Color(0xffffffff),
-                                fontWeight: FontWeight.w500,
-                              ),
+                              child: Text(
+                            ((units[index].distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
+                          )),
                         ),
                       ],
                     ),

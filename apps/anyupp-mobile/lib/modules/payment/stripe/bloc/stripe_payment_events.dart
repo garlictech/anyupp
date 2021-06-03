@@ -10,34 +10,38 @@ abstract class StripePaymentEvent extends Equatable {
 class PaymentMethodListEvent extends StripePaymentEvent {}
 
 class StartStripePaymentWithExistingCardEvent extends StripePaymentEvent {
-  final String chainId;
-  final String unitId;
-  final String userId;
+  final String orderId;
   final String paymentMethodId;
 
-  const StartStripePaymentWithExistingCardEvent(this.chainId, this.unitId, this.userId, this.paymentMethodId);
+  const StartStripePaymentWithExistingCardEvent({this.orderId, this.paymentMethodId});
 
   @override
-  List<Object> get props => [chainId, unitId, userId, paymentMethodId];
+  List<Object> get props => [orderId, paymentMethodId];
+}
+
+class StartExternalPaymentEvent extends StripePaymentEvent {
+  final String paymentMethod;
+  final String orderId;
+
+  const StartExternalPaymentEvent({this.paymentMethod, this.orderId});
+
+  @override
+  List<Object> get props => [paymentMethod, orderId];
 }
 
 class StartStripePaymentWithNewCardEvent extends StripePaymentEvent {
-  final String chainId;
-  final String unitId;
-  final String userId;
+  final String orderId;
   final StripeCard stripeCard;
   final bool saveCard;
 
   const StartStripePaymentWithNewCardEvent({
-    this.chainId,
-    this.unitId,
-    this.userId,
     this.stripeCard,
     this.saveCard,
+    this.orderId
   });
 
   @override
-  List<Object> get props => [chainId, unitId, userId, stripeCard, saveCard];
+  List<Object> get props => [stripeCard, saveCard, orderId];
 }
 
 class ResetStripePaymentState extends StripePaymentEvent {

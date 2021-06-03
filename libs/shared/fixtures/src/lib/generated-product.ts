@@ -1,11 +1,11 @@
-import { CrudApi } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { testIdPrefix } from './common';
 
 const getGeneratedProductVariant = (
   idx: number,
   productId?: string,
 ): CrudApi.GeneratedProductVariantInput => ({
-  id: `${testIdPrefix}generatedProductVariant_id_${productId}`,
+  id: `${testIdPrefix}generatedProductVariant_id_p${productId}_${idx}`,
   variantName: {
     en: `VARIANT_NAME_${productId || idx}`,
     hu: `VARIANT_NAME_${productId || idx}`,
@@ -60,7 +60,7 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
   ],
 };
 
-export const generatedProductSeed = {
+export const generatedProductFixture = {
   base: generatedProductBase,
   getGeneratedProduct,
 };

@@ -1,36 +1,45 @@
-import { combineLatest, Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
-
-import { AnyuppApi } from '@bgap/anyupp-gql/api';
-import { CrudApi, CrudApiQueryDocuments } from '@bgap/crud-gql/api';
+import { combineLatest, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
-import {
-  crudGraphqlClient,
-  anyuppGraphQLClient,
-  AuthenticatdGraphQLClientWithUserId,
-  createAuthenticatedAnyuppGraphQLClient,
-  executeMutation,
-  executeQuery,
-  GraphqlApiClient,
-} from '@bgap/shared/graphql/api-client';
-import { IUnitProduct } from '@bgap/shared/types';
 
 import {
-  productSeed,
+  productFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
+import { AnyuppSdk, getAnyuppSdkPublic } from '@bgap/anyupp-gql/api';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
-  input: productSeed.unitProductBase,
+  input: productFixture.unitProductBase,
 } as any;
 
 describe('CreateUnitProduct tests', () => {
+  let publicAnyuppSdk: AnyuppSdk;
+  let authAnyuppSdk: AnyuppSdk;
+  let publicCrudSdk: CrudApi.CrudSdk;
+  let iamCrudSdk: CrudApi.CrudSdk;
+
+  beforeAll(async () => {
+    publicAnyuppSdk = getAnyuppSdkPublic();
+    authAnyuppSdk = await createAuthenticatedAnyuppSdk(
+      testAdminUsername,
+      testAdminUserPassword,
+    )
+      .toPromise()
+      .then(x => x.authAnyuppSdk);
+    publicCrudSdk = CrudApi.getCrudSdkPublic();
+    iamCrudSdk = createIamCrudSdk();
+  });
+
   it('should require authentication to access', done => {
-    return executeMutation(anyuppGraphQLClient)<
-      AnyuppApi.CreateUnitProductMutation
-    >(AnyuppApi.CreateUnitProduct, input).subscribe({
+    return publicAnyuppSdk.CreateUnitProduct(input).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -39,20 +48,11 @@ describe('CreateUnitProduct tests', () => {
   }, 25000);
 
   describe('with authenticated user', () => {
-    let authHelper: AuthenticatdGraphQLClientWithUserId;
-
-    beforeAll(async () => {
-      authHelper = await createAuthenticatedAnyuppGraphQLClient(
-        testAdminUsername,
-        testAdminUserPassword,
-      ).toPromise();
-      console.warn(authHelper.userAttributes);
-    });
     // let authenticatedApsyncGraphQLClient;
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
-        deleteTestUnitProduct(input.input.id),
+        deleteTestUnitProduct(input.input.id, iamCrudSdk),
       ])
         // .pipe(
         //   switchMap(() =>
@@ -69,16 +69,15 @@ describe('CreateUnitProduct tests', () => {
         .toPromise();
     });
 
+    // PROBABLY THIS FEATURE WON'T BE USED !!!
     it.skip('should create unitProduct in the database', done => {
       return (
-        executeMutation(authHelper.graphQlClient)<
-          AnyuppApi.CreateUnitProductMutation
-        >(AnyuppApi.CreateUnitProduct, input)
+        authAnyuppSdk
+          .CreateUnitProduct(input)
           // from(productRequestHandler.createUnitProduct(crudGraphqlClient)(input))
           .pipe(
             // pipeDebug('### UNITPRODUCT CREATE RESULT'),
-            map(result => result.createUnitProduct),
-            switchMap(product => getUnitProduct(crudGraphqlClient, product.id)),
+            switchMap(product => getUnitProduct(publicCrudSdk, product.id)),
           )
           .subscribe({
             next(result) {
@@ -99,15 +98,8 @@ describe('CreateUnitProduct tests', () => {
   });
 });
 
-const getUnitProduct = (
-  crudGraphqlClient: GraphqlApiClient,
-  productId: string,
-): Observable<IUnitProduct> => {
-  return executeQuery(crudGraphqlClient)<CrudApi.GetUnitProductQuery>(
-    CrudApiQueryDocuments.getUnitProduct,
-    { id: productId },
-  ).pipe(
-    map(product => product.getUnitProduct),
+const getUnitProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
+  return sdk.GetUnitProduct({ id: productId }).pipe(
     switchMap(validateUnitProduct),
     catchError(err => {
       console.error(err);
