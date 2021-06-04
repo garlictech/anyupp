@@ -1,5 +1,5 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
 
-When('I click the selector to set {string}', (value: string) => {
-  cy.findByRole('.select-button').click().select(value);
-});
+When('I click the {string} selector to set {string}', (name: string, value: string) =>{
+    cy.findByRole('button').contains(name).click().select(value);
+}); 
