@@ -12,6 +12,7 @@ import {
   userRequestHandler,
 } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
+import { createSzamlazzClient } from '@bgap/anyupp-gql/backend';
 
 export interface AnyuppRequest {
   handler: string;
@@ -46,9 +47,19 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     crudSdk,
   });
 
+  if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
+    throw Error(
+      'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
+    );
+  }
+
+  const szamlazzClient = createSzamlazzClient(
+    process.env.SZAMLAZZ_HU_AGENT_KEY,
+  );
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
     anyuppSdk,
+    szamlazzClient,
   });
 
   const userRequestHandlers = userRequestHandler({

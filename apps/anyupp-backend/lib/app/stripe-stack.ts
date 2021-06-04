@@ -32,6 +32,7 @@ export class StripeStack extends sst.Stack {
         environment: {
           STRIPE_SECRET_KEY: props.stripeSecretKey,
           STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+          SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
         },
       },
     );
