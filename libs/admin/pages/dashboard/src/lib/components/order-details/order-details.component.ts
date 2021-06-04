@@ -1,4 +1,5 @@
-import { NGXLogger } from 'ngx-logger';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -20,7 +21,7 @@ import {
   getNextOrderStatus,
   getStatusColor,
 } from '@bgap/admin/shared/data-access/orders';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -29,9 +30,6 @@ import {
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { EMPTY, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -55,7 +53,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     private _store: Store,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.workingOrderStatus = false;
