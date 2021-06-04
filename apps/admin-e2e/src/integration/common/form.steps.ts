@@ -13,12 +13,17 @@ When(
     cy.findAllByPlaceholderText(context).type(id);
   },
 );
-// these two login steps belong here, because we need this in every feature's background
 
 When(
   'I fill out the {string} input with {string}',
   (inputLabel: string, value: string) => {
-    cy.findByLabelText(inputLabel).clear().type(value);
+    cy.findAllByLabelText(inputLabel).first().clear().type(value);
   },
 );
-// form step (chain, group, unit, etc.)
+
+When(
+  'I fill out the last {string} input with {string}',
+  (inputLabel: string, value: string) => {
+    cy.findAllByLabelText(inputLabel).last().clear().type(value);
+  },
+);
