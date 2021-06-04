@@ -283,9 +283,13 @@
     "ordersAccepted": "Rendelések fogadva",
     "ordersBlocked": "Rendelések tiltva",
     "orderDetails": "Rendelés részletei",
+    "deleteOrder": "Rendelés törlése",
     "confirmIsAcceptOrder": "Biztosan engedélyezed a rendelések fogadását?",
     "confirmNotAcceptOrder": "Biztosan letiltod a rendelések fogadását?",
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
+    "confirmFailedTransaction": "Biztosan sikertelenre állítod a tranzakciót?",
+    "confirmSuccessTransaction": "Biztosan sikeresre állítod a tranzakciót?",
+    "confirmDeleteOrder": "Biztosan törlöd a rendelést?",
     "userOrdersCount": "{{ count }} rendelés",
     "status": {
       "placed": "Placed",
