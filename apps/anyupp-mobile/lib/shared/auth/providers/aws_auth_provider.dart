@@ -91,12 +91,13 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> loginWithCognitoSession(CognitoUserSession session, {String username}) async {
-    print('loginWithCognitoSession().session=$session');
+    print('loginWithCognitoSession().session=$session, username=$username');
     try {
       CognitoUser user = await _service.createCognitoUserFromSession(session, username);
-      print('loginWithCognitoSession().cognitoUser=$user');
+      print('loginWithCognitoSession().cognitoUser=${user.username}');
       _user = _userFromAttributes(await user.getUserAttributes());
       print('loginWithCognitoSession().user=$_user');
+      await _service.createCognitoUserFromSession(session, _user.id);
       _userController.add(_user);
     } on Exception catch (e) {
       print('loginWithCognitoSession().error=$e');
@@ -160,7 +161,7 @@ class AwsAuthProvider implements IAuthProvider {
   Future<String> getAccessToken() async {
     try {
       CognitoUserSession session = await _service.session;
-      if (!session.isValid()) {
+      if (session == null || !session.isValid()) {
         session = await (await _service.currentUser).getSession();
       }
 
