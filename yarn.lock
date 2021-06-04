@@ -22316,9 +22316,9 @@ syntax-error@^1.1.1:
   dependencies:
     acorn-node "^1.2.0"
 
-"szamlazz.js@https://github.com/bgap/szamlazz.js.git":
-  version "4.1.0"
-  resolved "https://github.com/bgap/szamlazz.js.git#778abe69492ced6511c4c2f6c97bf00cf989ca68"
+"szamlazz.js@git+https://github.com/bgap/szamlazz.js.git#5.0.2":
+  version "5.0.2"
+  resolved "git+https://github.com/bgap/szamlazz.js.git#87f9fd1dabfb0565782b9265df640cb58c940c5f"
   dependencies:
     "@types/node" "^14.14.10"
     axios "^0.21.0"

@@ -3,8 +3,8 @@ import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
-import { SeederStack } from './app/seeder-stack';
-import { SiteStack } from './app/site-stack';
+// import { SeederStack } from './app/seeder-stack';
+// import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 
 const certificateArn =
@@ -13,7 +13,7 @@ const certificateArn =
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
-    const sites = new SiteStack(scope, 'sites', { certificateArn });
+    // const sites = new SiteStack(scope, 'sites', { certificateArn });
 
     const secretsManagerStack = new SecretsManagerStack(
       scope,
@@ -23,7 +23,8 @@ export class AnyUppStack extends Stack {
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
-      adminSiteUrl: sites.adminSiteUrl,
+      adminSiteUrl: 'http://localhost:4200', // TODO: re enable admin site
+      // adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
       googleClientSecret: secretsManagerStack.googleClientSecret,
       facebookClientId: paramsStack.facebookAppId,
@@ -49,16 +50,16 @@ export class AnyUppStack extends Stack {
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
     });
 
-    if (scope.stage === 'dev' || scope.stage === 'qa')
-      new SeederStack(scope, 'seeder', {
-        adminUserPool: cognitoStack.adminUserPool,
-        anyuppApiArn: appsyncStack.api.arn,
-      });
+    // if (scope.stage === 'dev' || scope.stage === 'qa')
+    //   new SeederStack(scope, 'seeder', {
+    //     adminUserPool: cognitoStack.adminUserPool,
+    //     anyuppApiArn: appsyncStack.api.arn,
+    //   });
 
-    /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
-      appsyncApi: appsyncStack.api,
-      pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
-    });*/
+    // new CognitoTriggersStack(scope, 'cognitoTriggers', {
+    //   appsyncApi: appsyncStack.api,
+    //   pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
+    // });
   }
 }
 
