@@ -71,10 +71,6 @@ android {
            signingConfig signingConfigs.release
        }
     }
-
-    dependencies {
-      api 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
-    }
 }
 
 

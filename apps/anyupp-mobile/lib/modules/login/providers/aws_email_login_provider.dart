@@ -58,7 +58,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     try {
       QueryResult result = await GQL.backend.executeMutation(
         mutation: MUTATION_CREATE_ANONYM_USER,
-        variables: {}
+        variables: {},
+        useApi: true,
       );
       
       String email = result.data['createAnonymUser']['email'];

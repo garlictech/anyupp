@@ -11,7 +11,6 @@ When(
       .type(color, { force: true });
   },
 );
-// color picker step
 
 Then(
   'I should see {int} color picker with {string}',
