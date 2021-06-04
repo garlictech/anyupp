@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
@@ -17,6 +16,7 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
+  catchGqlError,
   EToasterType,
   getProductComponentObject,
   getProductComponentOptions,
@@ -55,7 +55,6 @@ export class ProductComponentSetFormComponent
     private _crudSdk: CrudSdkService,
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _logger: NGXLogger,
   ) {
     super(_injector);
 
@@ -178,7 +177,7 @@ export class ProductComponentSetFormComponent
     componentIdsArr.splice(idx + change, 0, itemId);
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       const value = this.dialogForm.value;
 
@@ -187,46 +186,35 @@ export class ProductComponentSetFormComponent
       }
 
       if (this.productComponentSet?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateProductComponentSet({
-              input: {
-                id: this.productComponentSet.id,
-                ...value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateProductComponentSet({
+            input: {
+              id: this.productComponentSet.id,
+              ...value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT SET UPDATE ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateProductComponentSet({ input: value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(
-            `PRODUCT COMPONENT SET INSERT ERROR: ${JSON.stringify(error)}`,
-          );
-        }
+        this._crudSdk.sdk
+          .CreateProductComponentSet({ input: value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

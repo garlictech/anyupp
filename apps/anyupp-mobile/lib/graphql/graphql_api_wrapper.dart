@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 abstract class _BaseGraphQLWrapper {
-  Future<ValueNotifier<GraphQLClient>> get _client;
+  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false});
 
   Future<QueryResult> executeQuery({String query, Map<String, dynamic> variables, FetchPolicy fetchPolicy}) async {
-    ValueNotifier<GraphQLClient> client = await _client;
+    ValueNotifier<GraphQLClient> client = await _getClient();
     try {
       QueryResult result = await client.value.query(
         QueryOptions(
@@ -25,8 +25,8 @@ abstract class _BaseGraphQLWrapper {
     }
   }
 
-  Future<QueryResult> executeMutation({String mutation, Map<String, dynamic> variables, FetchPolicy fetchPolicy}) async {
-    ValueNotifier<GraphQLClient> client = await _client;
+  Future<QueryResult> executeMutation({String mutation, Map<String, dynamic> variables, FetchPolicy fetchPolicy, bool useApi = false}) async {
+    ValueNotifier<GraphQLClient> client = await _getClient(useApi: useApi);
     try {
       QueryResult result = await client.value.mutate(
         MutationOptions(
@@ -52,10 +52,10 @@ class GQL {
 
 class AmplifyApi extends _BaseGraphQLWrapper {
   @override
-  Future<ValueNotifier<GraphQLClient>> get _client async => getIt<GraphQLClientService>().getAmplifyClient();
+  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async => getIt<GraphQLClientService>().getAmplifyClient();
 }
 
 class BackendApi extends _BaseGraphQLWrapper {
   @override
-  Future<ValueNotifier<GraphQLClient>> get _client async => getIt<GraphQLClientService>().getGraphQLClient();
+  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async => getIt<GraphQLClientService>().getGraphQLClient(useApi: useApi);
 }

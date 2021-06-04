@@ -24,7 +24,7 @@ import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
@@ -75,6 +75,7 @@ export class DataService {
             }),
           );
         }),
+        catchGqlError(this._store),
       )
       .subscribe();
 
@@ -176,6 +177,7 @@ export class DataService {
             }),
           ),
         ),
+        catchGqlError(this._store),
         takeUntil(this._destroyConnection$),
       )
       .subscribe();
@@ -397,6 +399,7 @@ export class DataService {
             }),
           ),
         ),
+        catchGqlError(this._store),
       )
       .subscribe();
   }
@@ -432,8 +435,10 @@ export class DataService {
 
   public updateUnit(
     unit: CrudApi.UpdateUnitInput,
-  ): Observable<CrudApi.Unit | undefined | null> {
-    return this._crudSdk.sdk.UpdateUnit({ input: unit });
+  ): Observable<CrudApi.Unit | undefined | null | unknown> {
+    return this._crudSdk.sdk
+      .UpdateUnit({ input: unit })
+      .pipe(catchGqlError(this._store));
   }
 
   public regenerateUnitData(unitId: string) {
@@ -444,11 +449,13 @@ export class DataService {
     userId: string,
     settings: CrudApi.UpdateAdminUserInput['settings'],
   ) {
-    return this._crudSdk.sdk.UpdateAdminUser({
-      input: {
-        id: userId,
-        settings,
-      },
-    });
+    return this._crudSdk.sdk
+      .UpdateAdminUser({
+        input: {
+          id: userId,
+          settings,
+        },
+      })
+      .pipe(catchGqlError(this._store));
   }
 }

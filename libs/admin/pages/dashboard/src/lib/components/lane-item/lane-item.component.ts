@@ -101,7 +101,11 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ? getNextOrderStatus(this.orderItem?.currentStatus)
       : undefined;
 
-    if (nextStatus && this.orderItem.idx && this.orderItem.orderId) {
+    if (
+      nextStatus &&
+      this.orderItem.idx !== undefined &&
+      this.orderItem.orderId
+    ) {
       this._orderService.updateOrderItemStatus(
         this.orderItem.orderId,
         nextStatus,
@@ -117,7 +121,11 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       ? getPrevOrderItemStatus(this.orderItem?.currentStatus)
       : undefined;
 
-    if (prevStatus && this.orderItem.idx && this.orderItem.orderId) {
+    if (
+      prevStatus &&
+      this.orderItem.idx !== undefined &&
+      this.orderItem.orderId
+    ) {
       this._orderService.updateOrderItemStatus(
         this.orderItem.orderId,
         prevStatus,

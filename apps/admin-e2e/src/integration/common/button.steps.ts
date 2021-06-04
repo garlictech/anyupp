@@ -9,55 +9,80 @@ When('I click on the {string} icon', (icon: string) => {
 });
 
 When('I click on the menu icon', () => {
-  cy.get('.sidebar-toggle').click();
-});
-// menu button
+    cy.get('.sidebar-toggle').click();
+  });
 
 When('I click on the {string} text', (text: string) => {
-  cy.contains('a', text).click({ force: true });
+    cy.findAllByText(text).click({force: true});
 });
 
-// TODO: I need title
+
 When('I click on the plus button', () => {
   cy.get('nb-icon[icon="plus-outline"]').click();
 });
 
 When('I click on the first Edit button', () => {
-  cy.findAllByTitle('Edit').first().click();
+    cy.findAllByTitle('Edit').first().click({force: true});
+});
+
+When('I click on the last Edit button', () => {
+    cy.findAllByTitle('Edit').last().click({force: true});
 });
 
 When('I click on the close button', () => {
-  cy.get('nb-icon[icon="close-outline"]').click();
-});
-
-When('I click on the submit button', () => {
-  cy.get('.mt-20').contains('Submit', { matchCase: false }).click();
-  // cy.findAllByLabelText('Submit').click();
+    cy.get('nb-icon[icon="close-outline"]').click();
 });
 
 When('I click on the {string} checkbox', (checkboxName: string) => {
-  cy.findAllByLabelText(checkboxName).check({ force: true });
+    cy.findAllByLabelText(checkboxName).click({force: true});
 });
-// checkbox step
 
-When('I click on the {string} button', (map: string) => {
-  cy.findAllByText(map).click({ force: true });
+When('I click on the {string} button', (value: string) => {
+    cy.findAllByText(value).click({force: true});
 });
-// locate on map button
 
 When('I click on the {string} selector', (value: string) => {
   cy.contains('button', value).click({ force: true });
   // cy.findByRole('button').contains(value).click({force: true});
 });
-// selector step
 
 When('I select {string}', (value: string) => {
   cy.contains('nb-option', value).click();
 });
-// selector step
 
-When('I click the selector to set {string}', (value: string) => {
-  cy.get('.select-button').last().click();
-  cy.findAllByText(value).last().click();
+When('I click the selector to set {string}', (value: string) =>{
+    cy.get('[caption="common.productType"]').click();
+    cy.findAllByText(value).click();
 });
-// for parent chain/group, and currency selectors
+
+When('I set the currency to {string}', (value: string) =>{
+    cy.get('[caption="common.currency"]').click();
+    cy.findAllByText(value).click();
+});
+
+When('I click on the {string} link', (value: string) =>{
+    cy.get('.tab-link').contains(value).click();
+});
+
+When('I click the type selector to set {string}', (value: string) =>{
+    cy.get('[caption="common.type"]', {timeout: 30000}).click({force: true});
+    cy.findAllByText(value).last().click({force: true});
+});
+
+When('I click the component selector to set {string}', (value: string) =>{
+    cy.get('[caption="productComponentSets.productComponent"]').click();
+    cy.findAllByText(value).last().click();
+});
+
+When('I click on the modifier selector to add {string}', (value: string) =>{
+    cy.get('[caption="products.productModifierSet"]').click();
+    cy.findAllByText(value).first().click();
+});
+
+When('I click on the first {string} button', (value: string) => {
+    cy.findAllByTitle(value).first().click({force: true});
+});
+
+When('I click on the download button', () =>{
+    cy.get('[icon="download-outline"]').first().click();
+});
