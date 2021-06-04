@@ -40,6 +40,39 @@ Future<T> showSelectPaymentMethodBottomSheet<T>(BuildContext context, [String or
   );
 }
 
+class BottomSheetPaymentMethods {
+  static const int PAYMENT_UNKNOWN = -1;
+  static const int PAYMENT_INAPP = 0;
+  static const int PAYMENT_CASH = 1;
+  static const int PAYMENT_CARD = 2;
+
+  static PaymentMode getPaymentModeFromSelection(int selectedMethod) {
+    switch (selectedMethod) {
+      case BottomSheetPaymentMethods.PAYMENT_CASH:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+      case BottomSheetPaymentMethods.PAYMENT_CARD:
+        return PaymentMode(method: 'card', type: 'card', caption: 'card');
+      case BottomSheetPaymentMethods.PAYMENT_INAPP:
+        return PaymentMode(method: 'inapp', type: 'stripe', caption: 'stripe');
+      default:
+        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
+    }
+  }
+
+  static String getPaymentMethodNameFromNumberValue(int selectedMethod) {
+    switch (selectedMethod) {
+      case PAYMENT_INAPP:
+        return 'inapp';
+      case PAYMENT_CASH:
+        return 'cash';
+      case PAYMENT_CARD:
+        return 'card';
+      default:
+        return 'unknown';
+    }
+  }
+}
+
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
   final String orderId;
 
@@ -50,13 +83,9 @@ class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
 }
 
 class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodSelectionBottomSheetWidget> {
-  static const int PAYMENT_UNKNOWN = -1;
-  static const int PAYMENT_INAPP = 0;
-  static const int PAYMENT_CASH = 1;
-  static const int PAYMENT_CARD = 2;
-  bool wantsInvoce = false;
+  bool _wantsInvoce = false;
 
-  int _selectedPaymentMethod = PAYMENT_UNKNOWN;
+  int _selectedPaymentMethod = BottomSheetPaymentMethods.PAYMENT_UNKNOWN;
 
   @override
   Widget build(BuildContext context) {
@@ -119,14 +148,18 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if (unit.paymentModes != null && unit.paymentModes.contains('inapp'))
-              _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.inAppPayment'),
-                  "assets/icons/stripe_logo_icon.svg", PAYMENT_INAPP, createSimplePaymentInfo()),
+              _buildSelectPaymentMethodBottomSheetRadioItem(
+                  context,
+                  trans('payment.method.inAppPayment'),
+                  "assets/icons/stripe_logo_icon.svg",
+                  BottomSheetPaymentMethods.PAYMENT_INAPP,
+                  createSimplePaymentInfo()),
               if (unit.paymentModes != null && methods.contains('cash'))
-                _buildSelectPaymentMethodBottomSheetRadioItem(
-                    context, trans('payment.method.cash'), "assets/icons/cash_on_delivery_icon.svg", PAYMENT_CASH),
+                _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.cash'),
+                    "assets/icons/cash_on_delivery_icon.svg", BottomSheetPaymentMethods.PAYMENT_CASH),
               if (unit.paymentModes != null && methods.contains('card'))
-                _buildSelectPaymentMethodBottomSheetRadioItem(
-                    context, trans('payment.method.creditCard'), "assets/icons/credit_card_icon.svg", PAYMENT_CARD),
+                _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.creditCard'),
+                    "assets/icons/credit_card_icon.svg", BottomSheetPaymentMethods.PAYMENT_CARD),
               Padding(
                 padding: const EdgeInsets.all(14),
                 child: Row(
@@ -143,10 +176,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                     ),
                     Switch(
                         activeColor: theme.highlight,
-                        value: wantsInvoce,
+                        value: _wantsInvoce,
                         onChanged: (value) {
                           setState(() {
-                            this.wantsInvoce = value;
+                            this._wantsInvoce = value;
                           });
                         })
                   ],
@@ -208,25 +241,28 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                 ),
               ),
               child: buttonChild,
-              onPressed: (_selectedPaymentMethod != PAYMENT_UNKNOWN)
+              onPressed: (_selectedPaymentMethod != BottomSheetPaymentMethods.PAYMENT_UNKNOWN)
                   ? () async {
                       if (!loading) {
-                        PaymentMode mode = _getPaymentModeFromSelection();
+                        PaymentMode mode =
+                            BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod);
 
                         getIt<CartBloc>().add(SetPaymentMode(unit, mode));
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
-                        if (_selectedPaymentMethod == PAYMENT_INAPP) {
+                        if (_selectedPaymentMethod == BottomSheetPaymentMethods.PAYMENT_INAPP) {
                           Nav.pop();
-                          Nav.to(StripePaymentScreen(orderId: widget.orderId,));
-                        } else {
-                          getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
-                            // cart: widget.cart,
+                          Nav.to(StripePaymentScreen(
                             orderId: widget.orderId,
-                            paymentMethod: _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
                           ));
-                          String payMentMethod = _getPaymentMethodNameFromNumberValue(_selectedPaymentMethod);
-                          if (wantsInvoce) {
-                            showInvoiceFormBottomSheet(context, payMentMethod);
+                        } else {
+                          if (_wantsInvoce) {
+                            showInvoiceFormBottomSheet(context, widget.orderId, BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
+                          } else {
+                            getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+                              // cart: widget.cart,
+                              orderId: widget.orderId,
+                              paymentMethod: BottomSheetPaymentMethods.getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                            ));
                           }
                         }
                       }
@@ -237,32 +273,6 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
         },
       ),
     );
-  }
-
-  PaymentMode _getPaymentModeFromSelection() {
-    switch (_selectedPaymentMethod) {
-      case PAYMENT_CASH:
-        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
-      case PAYMENT_CARD:
-        return PaymentMode(method: 'card', type: 'card', caption: 'card');
-      case PAYMENT_INAPP:
-        return PaymentMode(method: 'inapp', type: 'stripe', caption: 'stripe');
-      default:
-        return PaymentMode(method: 'cash', type: 'cash', caption: 'cash');
-    }
-  }
-
-  String _getPaymentMethodNameFromNumberValue(int value) {
-    switch (value) {
-      case PAYMENT_INAPP:
-        return 'inapp';
-      case PAYMENT_CASH:
-        return 'cash';
-      case PAYMENT_CARD:
-        return 'card';
-      default:
-        return 'unknown';
-    }
   }
 
   Widget _buildSelectPaymentMethodBottomSheetRadioItem(BuildContext context, String title, String icon, int value,

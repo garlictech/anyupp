@@ -40,16 +40,16 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
+  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress) async {
     print('startStripePaymentWithExistingCard().start()=$cart');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithExistingCard().orderId=$orderId');
-    return startOrderStripePaymentWithExistingCard(orderId, paymentMethodId);
+    return startOrderStripePaymentWithExistingCard(orderId, paymentMethodId, invoiceAddress);
   }
 
   @override
-  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
+  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId, UserInvoiceAddress invoiceAddress) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
@@ -63,6 +63,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': false,
+        'invoiceAddress': invoiceAddress,
       },
     );
 
@@ -79,17 +80,17 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithNewCard().orderId=$orderId');
-    return startOrderStripePaymentWithNewCard(orderId, stripeCard, saveCard);
+    return startOrderStripePaymentWithNewCard(orderId, stripeCard, invoiceAddress, saveCard);
   }
 
   @override
-  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
@@ -106,6 +107,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
+        'invoiceAddress': invoiceAddress,
       },
     );
 

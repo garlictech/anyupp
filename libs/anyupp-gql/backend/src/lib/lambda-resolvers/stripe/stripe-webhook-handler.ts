@@ -16,6 +16,7 @@ import { StripeResolverDeps } from './stripe.utils';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import { createInvoice } from '../../szamlazzhu';
+import * as Szamlazz from 'szamlazz.js';
 
 export const createStripeWebhookExpressApp = (szamlazzClient: any) => {
   // declare a new express app
@@ -140,6 +141,7 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
   const invoice = await createInvoice(deps.szamlazzClient)({
     user,
     transaction,
+    language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
   });
 
   // TODO: update invoice.externalInvoiceId = invoice.invoiceId

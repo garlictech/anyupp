@@ -2,9 +2,9 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/utils/invoice_form_utils.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void showInvoiceFormBottomSheet(BuildContext context, String paymentMethod) {
+void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -32,21 +32,20 @@ void showInvoiceFormBottomSheet(BuildContext context, String paymentMethod) {
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return InvoiceFormBottomSheetWidget(paymentMethod);
+      return InvoiceFormBottomSheetWidget(orderId, paymentMode);
     },
   );
 }
 
 class InvoiceFormBottomSheetWidget extends StatefulWidget {
-  final String paymentMethod;
-  InvoiceFormBottomSheetWidget(this.paymentMethod);
+  final String orderId;
+  final PaymentMode paymentMode;
+  InvoiceFormBottomSheetWidget(this.orderId, this.paymentMode);
   @override
-  _InvoiceFormBottomSheetWidgetState createState() =>
-      _InvoiceFormBottomSheetWidgetState();
+  _InvoiceFormBottomSheetWidgetState createState() => _InvoiceFormBottomSheetWidgetState();
 }
 
-class _InvoiceFormBottomSheetWidgetState
-    extends State<InvoiceFormBottomSheetWidget> {
+class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWidget> {
   final profileFormKey = GlobalKey<FormState>();
   final _nameOrCompanyController = TextEditingController();
   final _emailController = TextEditingController();
@@ -181,12 +180,8 @@ class _InvoiceFormBottomSheetWidgetState
                     false,
                     taxFieldValidator,
                   ),
-                  customCountryPickerWidget(
-                      theme,
-                      context,
-                      trans('payment.paymentInfo.invoicing.country'),
-                      _countryController,
-                      _countryCodeController),
+                  customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
+                      _countryController, _countryCodeController),
                   customTextFormWidget(
                     context,
                     trans('payment.paymentInfo.invoicing.zip'),
@@ -270,15 +265,40 @@ class _InvoiceFormBottomSheetWidgetState
               final formValid = profileFormKey.currentState.validate();
 
               if (formValid) {
-                BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
-                    InvoiceInfo(
-                        name: _nameOrCompanyController.text,
-                        invoiceMail: _emailController.text,
-                        taxNumber: _taxNumberController.text,
-                        country: _countryController.text,
-                        postalCode: _zipController.text,
-                        city: _cityController.text,
-                        streetAddress: _streetController.text)));
+                // BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
+                //     InvoiceInfo(
+                //         name: _nameOrCompanyController.text,
+                //         invoiceMail: _emailController.text,
+                //         taxNumber: _taxNumberController.text,
+                //         country: _countryController.text,
+                //         postalCode: _zipController.text,
+                //         city: _cityController.text,
+                //         streetAddress: _streetController.text)));
+
+                UserInvoiceAddress invoiceAddress = UserInvoiceAddress(
+                  customerName: _nameOrCompanyController.text,
+                  email: _emailController.text,
+                  taxNumber: _taxNumberController.text,
+                  country: _countryController.text,
+                  postalCode: _zipController.text,
+                  city: _cityController.text,
+                  streetAddress: _streetController.text,
+                );
+
+                if (widget.paymentMode.method == 'inapp') {
+                  Nav.pop();
+                  Nav.to(StripePaymentScreen(
+                    orderId: widget.orderId,
+                    invoiceAddress: invoiceAddress,
+                  ));
+                } else {
+                  getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+                    // cart: widget.cart,
+                    orderId: widget.orderId,
+                    paymentMethod: widget.paymentMode.method,
+                    invoiceAddress: invoiceAddress,
+                  ));
+                }
               }
             }
             //: null,
