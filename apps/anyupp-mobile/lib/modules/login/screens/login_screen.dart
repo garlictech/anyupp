@@ -521,8 +521,8 @@ class _LoginScreenState extends State<LoginScreen>
                 children: [
                   _createSocialButtonWidget('google', LoginMethod.GOOGLE),
                   _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
-                  if (snapshot.data == true) // has Apple Login
-                    _createSocialButtonWidget('apple', LoginMethod.APPLE),
+                 // if (snapshot.data == true) // has Apple Login
+                  _createSocialButtonWidget('apple', LoginMethod.APPLE),
                   _createSocialButtonWidget(
                       'email', LoginMethod.EMAIL, theme.indicator),
                   // _createSocialButtonWidget('phone', LoginMethod.PHONE),
