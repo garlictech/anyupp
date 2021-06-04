@@ -30,6 +30,8 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { EMPTY, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -96,19 +98,20 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     if (status) {
       this.workingOrderStatus = true;
 
-      try {
-        if (status === CrudApi.OrderStatus.served) {
-          await this._orderService.moveOrderToHistory(this.order, status);
-          this._store.dispatch(dashboardActions.resetSelectedOrderId());
-        } else {
-          await this._orderService.updateOrderStatus(this.order, status);
-        }
-      } catch (err) {
-        // log error
+      if (status === CrudApi.OrderStatus.served) {
+        this._orderService
+          .moveOrderToHistory(this.order, status)
+          .subscribe(() => {
+            this._store.dispatch(dashboardActions.resetSelectedOrderId());
+          });
+      } else {
+        this._orderService
+          .updateOrderStatus(this.order, status)
+          .subscribe(() => {
+            this.workingOrderStatus = false;
+            this._changeDetectorRef.detectChanges();
+          });
       }
-
-      this.workingOrderStatus = false;
-      this._changeDetectorRef.detectChanges();
     }
   }
 
@@ -118,41 +121,68 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     );
 
     if (status) {
-      this._orderService.updateOrderItemStatus(this.order.id, status, idx);
-
-      this._changeDetectorRef.detectChanges();
+      this._orderService
+        .updateOrderItemStatus(this.order.id, status, idx)
+        .subscribe();
     }
   }
 
   public updateOrderPaymentMethod(paymentMode: CrudApi.PaymentMode): void {
-    this._orderService.updateOrderPaymentMode(this.order.id, paymentMode);
+    this._orderService
+      .updateOrderPaymentMode(this.order.id, paymentMode)
+      .subscribe();
   }
 
   public async updateTransactionStatus(
     status: CrudApi.PaymentStatus,
   ): Promise<void> {
-    if (this.order.transactionId) {
-      try {
-        await this._orderService.updateOrderTransactionStatus(
-          this.order.transactionId,
-          status,
-        );
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
-        if (
-          status === CrudApi.PaymentStatus.success &&
-          currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
-        ) {
-          this._orderService.updateOrderStatus(
-            this.order,
-            CrudApi.OrderStatus.placed,
-          );
-        }
-      } catch (err) {
-        this._logger.error(
-          `UPDATE ORDER TRANSACTION ERROR: ${JSON.stringify(err)}`,
-        );
-      }
-    }
+    dialog.componentRef.instance.options = {
+      message:
+        status === CrudApi.PaymentStatus.success
+          ? 'orders.confirmSuccessTransaction'
+          : 'orders.confirmFailedTransaction',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: async () => {
+            if (this.order.transactionId) {
+              of('update')
+                .pipe(
+                  switchMap(() =>
+                    this.order.transactionId
+                      ? this._orderService.updateOrderTransactionStatus(
+                          this.order.transactionId,
+                          status,
+                        )
+                      : of(true),
+                  ),
+                  switchMap(() =>
+                    status === CrudApi.PaymentStatus.success &&
+                    currentStatusFn(this.order.statusLog) ===
+                      CrudApi.OrderStatus.none
+                      ? this._orderService.updateOrderStatus(
+                          this.order,
+                          CrudApi.OrderStatus.placed,
+                        )
+                      : of(true),
+                  ),
+                )
+                .subscribe();
+            }
+          },
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
   }
 
   public resetOrderItemStatus(idx: number): void {
@@ -164,15 +194,43 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
         {
           label: 'common.ok',
           callback: (): void => {
-            this._orderService.updateOrderItemStatus(
-              this.order.id,
+            this._orderService
+              .updateOrderItemStatus(
+                this.order.id,
 
-              CrudApi.OrderStatus.placed,
+                CrudApi.OrderStatus.placed,
 
-              idx,
-            );
+                idx,
+              )
+              .subscribe();
+          },
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
+  }
 
-            this._changeDetectorRef.detectChanges();
+  public deleteOrder(): void {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+    dialog.componentRef.instance.options = {
+      message: 'orders.confirmDeleteOrder',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: async () => {
+            if (this.order.id) {
+              this._orderService
+                .updateOrderStatus(this.order, CrudApi.OrderStatus.rejected)
+                .subscribe();
+            }
           },
           status: 'success',
         },
