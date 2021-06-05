@@ -320,8 +320,7 @@ class AwsOrderProvider implements IOrdersProvider {
           return {
             'productId': item.productId,
             'variantId': item.variantId,
-            'created':
-                1, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
+            'created': DateTime.now().millisecondsSinceEpoch.toInt(),
             'productName': {
               'en': item.productName.en,
               'de': item.productName.de,
@@ -331,8 +330,8 @@ class AwsOrderProvider implements IOrdersProvider {
               'currency': item.priceShown.currency,
               'pricePerUnit': item.priceShown.pricePerUnit,
               'priceSum': item.priceShown.priceSum,
-              'tax': item.priceShown.tax, // TODO
-              'taxSum': item.priceShown.taxSum, // TODO
+              'tax': item.priceShown.tax,
+              'taxSum': item.priceShown.taxSum,
             },
             'statusLog': {
               'userId': cart.userId,
