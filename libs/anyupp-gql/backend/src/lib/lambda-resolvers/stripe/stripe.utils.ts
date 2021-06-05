@@ -8,6 +8,7 @@ export interface StripeResolverDeps {
   crudSdk: CrudSdk;
   anyuppSdk: AnyuppSdk;
   szamlazzClient: any;
+  stripeClient: Stripe;
 }
 
 export const mapPaymentMethodToCard = (

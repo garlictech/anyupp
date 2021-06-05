@@ -19,10 +19,9 @@ export const listStripeCards = (userId: string) => async (
 ): Promise<AnyuppApi.StripeCard[]> => {
   // 1. get userId
   console.log('listStripeCards().start().userId=' + userId);
-  const stripe = await initStripe();
 
   // 2. get User from DynamoDB
-  const user = await loadAndConnectUserForStripe(stripe, userId)(deps);
+  const user = await loadAndConnectUserForStripe(userId)(deps);
 
   console.log(
     'listStripeCards().user=' + user + ', customerId=' + user?.stripeCustomerId,
@@ -35,7 +34,7 @@ export const listStripeCards = (userId: string) => async (
   }
 
   console.log('listStripeCards.start listing payment methods from Stripe.');
-  return stripe.paymentMethods
+  return deps.stripeClient.paymentMethods
     .list({
       customer: user.stripeCustomerId,
       type: 'card',
@@ -48,6 +47,7 @@ export const listStripeCards = (userId: string) => async (
     .catch(handleStripeErrors);
 };
 
+// TODO: START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
 export const startStripePayment = (
   userId: string,
   input: AnyuppApi.StartStripePaymentInput,
@@ -55,7 +55,6 @@ export const startStripePayment = (
   deps: StripeResolverDeps,
 ): Promise<AnyuppApi.StartStripePaymentOutput> => {
   console.log('startStripePayment().start()');
-  const stripe = await initStripe();
 
   // 1. Get parameters, orderId and payment method
   const { orderId, paymentMethod, paymentMethodId, savePaymentMethod } = input;
@@ -107,7 +106,6 @@ export const startStripePayment = (
   // 3. Load User
   const createStripeCustomer = paymentMethod == AnyuppApi.PaymentMethod.inapp;
   const user = await loadAndConnectUserForStripe(
-    stripe,
     userId,
     createStripeCustomer,
     input.invoiceAddress,
@@ -171,14 +169,19 @@ export const startStripePayment = (
 
     // 6c. Save card for later use
     if (savePaymentMethod === true) {
-      await stripe.paymentMethods.attach(input.paymentMethodId as string, {
-        customer: user.stripeCustomerId,
-      });
+      await deps.stripeClient.paymentMethods.attach(
+        input.paymentMethodId as string,
+        {
+          customer: user.stripeCustomerId,
+        },
+      );
     }
 
     // 7. Create payment intent
     // console.log('startStripePayment().creating payment intent.');
-    const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
+    const paymentIntent = await deps.stripeClient.paymentIntents.create(
+      paymentIntentData,
+    );
     console.log(
       'startStripePayment().payment intent created=' + paymentIntent.id,
     );
@@ -288,7 +291,6 @@ export const startStripePayment = (
 };
 
 const loadAndConnectUserForStripe = (
-  stripe: Stripe,
   userId: string,
   createStripeUser = true,
   invoiceAddress: AnyuppApi.UserInvoiceAddress | undefined | null = undefined,
@@ -301,7 +303,7 @@ const loadAndConnectUserForStripe = (
     let customerId: string | undefined;
 
     if (createStripeUser === true) {
-      const stripeResponse: Stripe.Response<Stripe.Customer> = await stripe.customers.create();
+      const stripeResponse: Stripe.Response<Stripe.Customer> = await deps.stripeClient.customers.create();
       console.log(
         'loadAndConnectUserForStripe().stripe.statusCode=' +
           stripeResponse.lastResponse?.statusCode,
@@ -405,18 +407,4 @@ const handleStripeErrors = (error: Stripe.StripeError) => {
   }
   console.error(error.message, error);
   throw error;
-};
-
-// START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
-export const initStripe = async () => {
-  const secret = process.env.STRIPE_SECRET_KEY;
-  // console.log('initStripe.secret()=' + secret);
-  if (!secret) {
-    throw Error(
-      'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
-    );
-  }
-  return new Stripe(secret, {
-    apiVersion: '2020-08-27',
-  });
 };

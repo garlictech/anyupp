@@ -5,6 +5,7 @@ import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 
 import {
   adminRequestHandler,
+  createStripeClient,
   orderRequestHandler,
   productRequestHandler,
   stripeRequestHandler,
@@ -19,12 +20,26 @@ export interface AnyuppRequest {
   payload: unknown;
 }
 
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw Error(
+    'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
+  );
+}
+
+if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
+  throw Error(
+    'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
+  );
+}
+
 const consumerUserPoolId = config.ConsumerUserPoolId;
 const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
+const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -47,19 +62,11 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     crudSdk,
   });
 
-  if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
-    throw Error(
-      'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
-    );
-  }
-
-  const szamlazzClient = createSzamlazzClient(
-    process.env.SZAMLAZZ_HU_AGENT_KEY,
-  );
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
     anyuppSdk,
     szamlazzClient,
+    stripeClient,
   });
 
   const userRequestHandlers = userRequestHandler({

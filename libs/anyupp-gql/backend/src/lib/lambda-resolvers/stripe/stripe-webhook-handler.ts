@@ -10,7 +10,6 @@ import {
   updateOrderState,
   updateTransactionState,
 } from './stripe-graphql-crud';
-import { initStripe } from './stripe.service';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { StripeResolverDeps } from './stripe.utils';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
@@ -18,7 +17,10 @@ import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import { createInvoice } from '../../szamlazzhu';
 import * as Szamlazz from 'szamlazz.js';
 
-export const createStripeWebhookExpressApp = (szamlazzClient: any) => {
+export const createStripeWebhookExpressApp = (
+  szamlazzClient: Szamlazz.Client,
+  stripeClient: Stripe,
+) => {
   // declare a new express app
   // const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
   // const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
@@ -29,6 +31,7 @@ export const createStripeWebhookExpressApp = (szamlazzClient: any) => {
     crudSdk: getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
     anyuppSdk: getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
     szamlazzClient,
+    stripeClient,
   };
   const app = express();
 
@@ -46,8 +49,6 @@ export const createStripeWebhookExpressApp = (szamlazzClient: any) => {
   app.post('/webhook', async function (request, response) {
     console.log('***** Stripe webhook.start()');
     // console.log('***** Stripe webhook.request=' + request);
-    const stripe = await initStripe();
-    // console.log('***** Stripe webhook. Stripe initialized()');
 
     const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
     // console.log('***** Stripe webhook.stripeSigningSecret=' + endpointSecret);
@@ -64,7 +65,11 @@ export const createStripeWebhookExpressApp = (szamlazzClient: any) => {
     let event: Stripe.Event;
     try {
       // console.log('***** Stripe webhook.creating stripe event with ' + sig);
-      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+      event = stripeClient.webhooks.constructEvent(
+        request.body,
+        sig,
+        endpointSecret,
+      );
       console.log('***** Stripe webhook.event.created=' + event['type']);
     } catch (err) {
       console.log('***** Stripe webhook.error=' + err);
