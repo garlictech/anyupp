@@ -214,7 +214,7 @@ export const startStripePayment = (
         transaction.id,
         input.invoiceAddress,
         CrudApi.InvoiceStatus.waiting,
-      );
+      )(deps);
     }
 
     // 10. Update ORDER STATUS
@@ -256,13 +256,14 @@ export const startStripePayment = (
 
     // 7. Create invoice or receipt
     if (input.invoiceAddress) {
+      console.log('startCashPayment().invoiceAddress=' + input.invoiceAddress);
       await createInvoiceAndConnectTransaction(
         order.id,
         order.userId,
         transaction.id,
         input.invoiceAddress,
         CrudApi.InvoiceStatus.success,
-      );
+      )(deps);
     } else {
       // await createReceiptAndConnectTransaction(
       //   order.id,
@@ -295,83 +296,93 @@ const loadAndConnectUserForStripe = (
   createStripeUser = true,
   invoiceAddress: AnyuppApi.UserInvoiceAddress | undefined | null = undefined,
 ) => async (deps: StripeResolverDeps) => {
-  console.log('loadAndConnectUserForStripe().start()=' + userId);
+  console.log(
+    'loadAndConnectUserForStripe().start()=' +
+      userId +
+      ', createStripeUser=' +
+      createStripeUser +
+      ', invoiceAddress=' +
+      invoiceAddress,
+  );
   let user = await loadUser(userId)(deps);
-  console.log('loadAndConnectUserForStripe().user=' + user);
+  console.log('loadAndConnectUserForStripe().user.id=' + user?.id);
+  console.log(
+    'loadAndConnectUserForStripe().user.stripeCustomerId=' +
+      user?.stripeCustomerId,
+  );
 
-  if (!user || !user.stripeCustomerId) {
+  if (!user) {
     let customerId: string | undefined;
 
     if (createStripeUser === true) {
+      console.log('loadAndConnectUserForStripe().Creating stripe customer');
       const stripeResponse: Stripe.Response<Stripe.Customer> = await deps.stripeClient.customers.create();
-      console.log(
-        'loadAndConnectUserForStripe().stripe.statusCode=' +
-          stripeResponse.lastResponse?.statusCode,
-      );
       console.log(
         'loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id,
       );
       customerId = stripeResponse.id;
     }
 
-    if (!user) {
-      console.log('loadAndConnectUserForStripe().creating user.');
+    const createUserVars: CrudApi.CreateUserMutationVariables = {
+      input: {
+        id: userId,
+        stripeCustomerId: customerId,
+        invoiceAddress: invoiceAddress
+          ? {
+              city: invoiceAddress.city,
+              country: invoiceAddress.country,
+              postalCode: invoiceAddress.customerName,
+              email: invoiceAddress.email,
+              streetAddress: invoiceAddress.streetAddress,
+              taxNumber: invoiceAddress.taxNumber,
+              customerName: invoiceAddress.customerName,
+            }
+          : undefined,
+      },
+    };
+    console.log(
+      'loadAndConnectUserForStripe().create.user.data=' +
+        JSON.stringify(createUserVars, undefined, 2),
+    );
+    user = await deps.crudSdk.CreateUser(createUserVars).toPromise(); //createUser(userId, customerId)(deps);
+    console.log('loadAndConnectUserForStripe().User created=' + user?.id);
+  } else {
+    // USER ALREADY EXISTS...
+    let customerId = user.stripeCustomerId;
+    if (!user.stripeCustomerId && createStripeUser === true) {
+      console.log('loadAndConnectUserForStripe().Creating stripe customer');
+      const stripeResponse: Stripe.Response<Stripe.Customer> = await deps.stripeClient.customers.create();
       console.log(
-        'loadAndConnectUserForStripe().Invoice Address=' + invoiceAddress,
+        'loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id,
       );
-      const createUserVars: CrudApi.CreateUserMutationVariables = {
-        input: {
-          id: userId,
-          stripeCustomerId: customerId,
-          invoiceAddress: invoiceAddress
-            ? {
-                city: invoiceAddress.city,
-                country: invoiceAddress.country,
-                postalCode: invoiceAddress.customerName,
-                email: invoiceAddress.email,
-                streetAddress: invoiceAddress.streetAddress,
-                taxNumber: invoiceAddress.taxNumber,
-                customerName: invoiceAddress.customerName,
-              }
-            : undefined,
-        },
-      };
-      user = await deps.crudSdk.CreateUser(createUserVars).toPromise(); //createUser(userId, customerId)(deps);
-      console.log('loadAndConnectUserForStripe().User created=' + user?.id);
-    } else if (!user.stripeCustomerId || invoiceAddress) {
-      console.log(
-        'loadAndConnectUserForStripe().Connecting stripe Customer to User. customer=' +
-          customerId,
-      );
-      console.log(
-        'loadAndConnectUserForStripe().Invoice Address=' + invoiceAddress,
-      );
-      const updateUserVars: CrudApi.UpdateUserMutationVariables = {
-        input: {
-          id: userId,
-          stripeCustomerId: user.stripeCustomerId
-            ? user.stripeCustomerId
-            : customerId,
-          invoiceAddress: invoiceAddress
-            ? {
-                city: invoiceAddress.city,
-                country: invoiceAddress.country,
-                postalCode: invoiceAddress.customerName,
-                email: invoiceAddress.email,
-                streetAddress: invoiceAddress.streetAddress,
-                taxNumber: invoiceAddress.taxNumber,
-                customerName: invoiceAddress.customerName,
-              }
-            : undefined,
-        },
-      };
-
-      user = await deps.crudSdk.UpdateUser(updateUserVars).toPromise(); //await updateUser(userId, customerId)(deps);
-      console.log(
-        'loadAndConnectUserForStripe().User stripe customer id created=' +
-          user?.id,
-      );
+      customerId = stripeResponse.id;
     }
+    const updateUserVars: CrudApi.UpdateUserMutationVariables = {
+      input: {
+        id: userId,
+        stripeCustomerId: customerId,
+        invoiceAddress: invoiceAddress
+          ? {
+              city: invoiceAddress.city,
+              country: invoiceAddress.country,
+              postalCode: invoiceAddress.customerName,
+              email: invoiceAddress.email,
+              streetAddress: invoiceAddress.streetAddress,
+              taxNumber: invoiceAddress.taxNumber,
+              customerName: invoiceAddress.customerName,
+            }
+          : undefined,
+      },
+    };
+    console.log(
+      'loadAndConnectUserForStripe().update.user.data=' +
+        JSON.stringify(updateUserVars, undefined, 2),
+    );
+    user = await deps.crudSdk.UpdateUser(updateUserVars).toPromise(); //await updateUser(userId, customerId)(deps);
+    console.log(
+      'loadAndConnectUserForStripe().User stripe customer id created=' +
+        user?.id,
+    );
   }
 
   return user;

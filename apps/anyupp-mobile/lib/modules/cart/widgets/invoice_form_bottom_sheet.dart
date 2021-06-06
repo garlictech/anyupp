@@ -8,6 +8,7 @@ import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/country_picker_widget.dart';
 import 'package:fa_prev/shared/widgets/custom_text_form_widget.dart';
@@ -59,12 +60,14 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
 
   @override
   void initState() {
+
+    getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
+
     _countryCodeController.addListener(() {
       setState(() {
         profileFormKey.currentState.reset();
       });
     });
-    // TODO: implement initState
     super.initState();
   }
 
@@ -154,72 +157,92 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
               },
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 14.0,
-            ),
-            child: Form(
-              key: profileFormKey,
-              // autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.name_or_company'),
-                    _nameOrCompanyController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.tax_id'),
-                    _taxNumberController,
-                    TextInputType.number,
-                    false,
-                    taxFieldValidator,
-                  ),
-                  customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
-                      _countryController, _countryCodeController),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.zip'),
-                    _zipController,
-                    TextInputType.number,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.city'),
-                    _cityController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.street_address'),
-                    _streetController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.invoice_email'),
-                    _emailController,
-                    TextInputType.emailAddress,
-                    false,
-                    emailValidator(context),
-                  ),
-                ],
-              ),
-            ),
+          BlocBuilder<UserDetailsBloc, UserDetailsState>(
+            builder: (BuildContext context, UserDetailsState state) {
+              print('*** Invoice sheet.UserDetailsBloc=$state');
+              if (state is UserDetailsLoaded) {
+                return _buildInvoiceForm(context, state.userDetails);
+              }
+              return _buildInvoiceForm(context);
+            },
           ),
           _buildSendCartButton(context, unit),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInvoiceForm(BuildContext context, [User user]) {
+    if (user?.invoiceAddress != null) {
+        _nameOrCompanyController.text = user.invoiceAddress.customerName;
+        _cityController.text = user.invoiceAddress.city;
+        _emailController.text = user.invoiceAddress.email ?? user.email;
+        _zipController.text = user.invoiceAddress.postalCode;
+        _streetController.text = user.invoiceAddress.streetAddress;
+        _taxNumberController.text = user.invoiceAddress.taxNumber;
+    }
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 14.0,
+      ),
+      child: Form(
+        key: profileFormKey,
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.name_or_company'),
+              _nameOrCompanyController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.tax_id'),
+              _taxNumberController,
+              TextInputType.number,
+              false,
+              taxFieldValidator,
+            ),
+            customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
+                _countryController, _countryCodeController),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.zip'),
+              _zipController,
+              TextInputType.number,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.city'),
+              _cityController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.street_address'),
+              _streetController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.invoice_email'),
+              _emailController,
+              TextInputType.emailAddress,
+              false,
+              emailValidator(context),
+            ),
+          ],
+        ),
       ),
     );
   }

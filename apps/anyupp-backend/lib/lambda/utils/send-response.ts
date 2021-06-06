@@ -22,6 +22,8 @@ export const sendResponse = async (props: any) => {
 
   await axios.put(props.responseUrl, responseBody, {
     data: responseBody,
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
     headers: { 'content-type': '', 'content-length': responseBody.length },
   });
 };

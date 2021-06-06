@@ -188,7 +188,7 @@ const handleReceipt = (orderId: string) => async (deps: StripeResolverDeps) => {
     order.transaction.id,
     email,
     CrudApi.ReceiptStatus.success,
-  );
+  )(deps);
 };
 
 const handleSuccessTransaction = (externalTransactionId: string) => async (

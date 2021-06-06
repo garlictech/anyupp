@@ -10,7 +10,6 @@ class User extends Model {
   final String email;
   final String phone;
   final String profileImage;
-  final String loginMethod;
   final UserInvoiceAddress invoiceAddress;
 
   @override
@@ -19,7 +18,7 @@ class User extends Model {
   }
 
   const User._internal(
-      {@required this.id, this.name, this.email, this.phone, this.profileImage, this.loginMethod, this.invoiceAddress});
+      {@required this.id, this.name, this.email, this.phone, this.profileImage, this.invoiceAddress});
 
   factory User(
       {String id,
@@ -27,7 +26,6 @@ class User extends Model {
       String email,
       String phone,
       String profileImage,
-      String loginMethod,
       UserInvoiceAddress invoiceAddress}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
@@ -35,7 +33,6 @@ class User extends Model {
         email: email,
         phone: phone,
         profileImage: profileImage,
-        loginMethod: loginMethod,
         invoiceAddress: invoiceAddress);
   }
 
@@ -52,7 +49,6 @@ class User extends Model {
         email == other.email &&
         phone == other.phone &&
         profileImage == other.profileImage &&
-        loginMethod == other.loginMethod &&
         invoiceAddress == other.invoiceAddress;
   }
 
@@ -69,21 +65,19 @@ class User extends Model {
     buffer.write("email=" + "$email" + ", ");
     buffer.write("phone=" + "$phone" + ", ");
     buffer.write("profileImage=" + "$profileImage" + ", ");
-    buffer.write("loginMethod=" + "$loginMethod" + ", ");
     buffer.write("invoiceAddress=" + "$invoiceAddress");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  User copyWith({String id, String name, String email, String phone, String profileImage, String loginMethod, UserInvoiceAddress invoiceAddress}) {
+  User copyWith({String id, String name, String email, String phone, String profileImage, UserInvoiceAddress invoiceAddress}) {
     return User(
         id: id ?? this.id,
         name: name ?? this.name,
         email: email ?? this.email,
         phone: phone ?? this.phone,
         profileImage: profileImage ?? this.profileImage,
-        loginMethod: loginMethod ?? this.loginMethod,
         invoiceAddress: invoiceAddress ?? this.invoiceAddress);
   }
 
@@ -93,8 +87,7 @@ class User extends Model {
         email = json['email'],
         phone = json['phone'],
         profileImage = json['profileImage'],
-        loginMethod = json['loginMethod'],
-        invoiceAddress = UserInvoiceAddress.fromMap(json['invoiceAddress']);
+        invoiceAddress = json['invoiceAddress'] != null ? UserInvoiceAddress.fromMap(json['invoiceAddress']) : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -102,7 +95,6 @@ class User extends Model {
         'email': email,
         'phone': phone,
         'profileImage': profileImage,
-        'loginMethod': loginMethod,
         'invoiceAddress': invoiceAddress != null ? invoiceAddress.toJson() : null,
       };
 }

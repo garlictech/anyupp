@@ -120,7 +120,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> updateCart(String chainId, String unitId, Cart cart) async {
-    print('updateCart=$cart');
+    // print('updateCart=$cart');
     bool delete = cart != null && cart.items.isEmpty;
     if (delete) {
       await _deleteCartFromBackend(cart.id);
@@ -310,7 +310,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
-    print('_getCartMutationVariablesFromCart().cart=$cart');
+    // print('_getCartMutationVariablesFromCart().cart=$cart');
     return {
       '$name': {
         if (cart.id != null) 'id': cart.id,

@@ -18,10 +18,11 @@ class AwsUserDetailsProvider implements IUserDetailsProvider {
       variables: {'userId': user.id},
     );
 
+
     if (result.data == null || result.data['getUser'] == null) {
       return null;
     }
-
-    return User.fromJson(result.data);
+    print('getUserDetails().data=${result.data}');
+    return User.fromJson(result.data['getUser']);
   }
 }
