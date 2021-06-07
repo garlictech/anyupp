@@ -20,6 +20,7 @@ import {
   currentStatus as currentStatusFn,
   getNextOrderStatus,
   getStatusColor,
+  ordersActions,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -96,11 +97,12 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this.workingOrderStatus = true;
 
       if (status === CrudApi.OrderStatus.served) {
-        this._orderService
-          .moveOrderToHistory(this.order, status)
-          .subscribe(() => {
-            this._store.dispatch(dashboardActions.resetSelectedOrderId());
-          });
+        this._orderService.archiveOrder(this.order, status).subscribe(() => {
+          this._store.dispatch(
+            ordersActions.removeActiveOrder({ orderId: this.order.id }),
+          );
+          this._store.dispatch(dashboardActions.resetSelectedOrderId());
+        });
       } else {
         this._orderService
           .updateOrderStatus(this.order, status)
@@ -219,7 +221,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           callback: async () => {
             if (this.order.id) {
               this._orderService
-                .updateOrderStatus(this.order, CrudApi.OrderStatus.rejected)
+                .archiveOrder(this.order, CrudApi.OrderStatus.rejected)
                 .subscribe();
             }
           },
