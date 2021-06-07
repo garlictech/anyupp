@@ -35,6 +35,7 @@ class Menu extends StatelessWidget {
   }
 
   Widget _buildTabBar(BuildContext context, List<ProductCategory> productCategories) {
+    productCategories.sort((a,b)=> a.position.compareTo(b.position));
     return DefaultTabController(
       length: productCategories.length,
       child: SafeArea(
