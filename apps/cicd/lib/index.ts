@@ -33,6 +33,26 @@ export default function main(app: App): void {
     },
   );
 
+  const stagingSecretsManagerStack = new SecretsManagerStack(
+    app,
+    'stagingsecretsmanager',
+    {
+      projectSecretsManagerArn:
+        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-staging-secrets-4rGQUb',
+      pipelineSecretsManagerArn,
+    },
+  );
+
+  const prodSecretsManagerStack = new SecretsManagerStack(
+    app,
+    'prodsecretsmanager',
+    {
+      projectSecretsManagerArn:
+        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
+      pipelineSecretsManagerArn,
+    },
+  );
+
   const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
 
   const appcenterStack = new AppcenterStack(app, 'AppcenterStack');
@@ -78,7 +98,7 @@ export default function main(app: App): void {
 
   new StagingBuildPipelineStack(app, 'StagingBuildStack', {
     repoBranch: 'staging',
-    secretsManager: qaSecretsManagerStack,
+    secretsManager: stagingSecretsManagerStack,
     ...commonConfig,
   });
 }
