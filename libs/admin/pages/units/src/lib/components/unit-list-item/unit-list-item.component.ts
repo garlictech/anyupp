@@ -1,4 +1,3 @@
-import { appCoreActions } from 'libs/admin/shared/data-access/app-core/src';
 import * as fp from 'lodash/fp';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
+import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
