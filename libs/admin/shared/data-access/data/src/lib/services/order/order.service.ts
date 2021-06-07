@@ -5,7 +5,8 @@ import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 import { cloneDeep, omit } from 'lodash/fp';
-import { take } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
@@ -121,7 +122,7 @@ export class OrderService {
     orderId: string,
     paymentMode: CrudApi.PaymentMode,
   ) {
-    this._crudSdk.doMutation(
+    return this._crudSdk.doMutation(
       this._crudSdk.sdk.UpdateOrder({
         input: {
           id: orderId,
@@ -133,7 +134,7 @@ export class OrderService {
 
   public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
     if (this._adminUser?.id) {
-      this._crudSdk.doMutation(
+      return this._crudSdk.doMutation(
         this._crudSdk.sdk.UpdateOrder({
           input: {
             id: order.id,
@@ -147,6 +148,8 @@ export class OrderService {
           },
         }),
       );
+    } else {
+      return EMPTY;
     }
   }
 
@@ -154,37 +157,39 @@ export class OrderService {
     orderId: string,
     status: CrudApi.OrderStatus,
     idx: number,
-  ): void {
-    this._store
-      .pipe(select(ordersSelectors.getActiveOrderById(orderId)), take(1))
-      .subscribe(
-        async (order: CrudApi.Order | undefined): Promise<void> => {
-          if (order && this._adminUser?.id) {
-            const _order = cloneDeep(order);
-            _order.items[idx].statusLog.push({
-              status,
-              ts: new Date().getTime(),
-              userId: this._adminUser.id,
-            });
+  ) {
+    return this._store.pipe(
+      select(ordersSelectors.getActiveOrderById(orderId)),
+      take(1),
+      switchMap((order: CrudApi.Order | undefined) => {
+        if (order && this._adminUser?.id) {
+          const _order = cloneDeep(order);
+          _order.items[idx].statusLog.push({
+            status,
+            ts: new Date().getTime(),
+            userId: this._adminUser.id,
+          });
 
-            this._crudSdk.doMutation(
-              this._crudSdk.sdk.UpdateOrder({
-                input: {
-                  id: order.id,
-                  items: _order.items,
-                },
-              }),
-            );
-          }
-        },
-      );
+          return this._crudSdk.doMutation(
+            this._crudSdk.sdk.UpdateOrder({
+              input: {
+                id: order.id,
+                items: _order.items,
+              },
+            }),
+          );
+        } else {
+          return EMPTY;
+        }
+      }),
+    );
   }
 
   public updateOrderTransactionStatus(
     transactionId: string,
     status: CrudApi.PaymentStatus,
-  ): void {
-    this._crudSdk.doMutation(
+  ) {
+    return this._crudSdk.doMutation(
       this._crudSdk.sdk.UpdateTransaction({
         input: {
           id: transactionId,
@@ -194,10 +199,7 @@ export class OrderService {
     );
   }
 
-  public async moveOrderToHistory(
-    order: CrudApi.Order,
-    status: CrudApi.OrderStatus,
-  ) {
+  public moveOrderToHistory(order: CrudApi.Order, status: CrudApi.OrderStatus) {
     if (this._adminUser?.id) {
       const historyOrder = omit(
         ['createdAt', 'updatedAt', 'transaction'],
@@ -214,25 +216,26 @@ export class OrderService {
       });
       historyOrder.statusLog = [statusObject];
 
-      try {
-        await this._crudSdk.sdk
-          .CreateOrderHistory({
-            input: historyOrder,
-          })
-          .pipe(catchGqlError(this._store))
-          .toPromise();
-
-        await this._crudSdk.sdk
-          .DeleteOrder({
-            input: {
-              id: order.id,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .toPromise();
-      } catch (err) {
-        console.error('errr', err);
-      }
+      return of('update').pipe(
+        switchMap(() =>
+          this._crudSdk.sdk
+            .CreateOrderHistory({
+              input: historyOrder,
+            })
+            .pipe(catchGqlError(this._store)),
+        ),
+        switchMap(() =>
+          this._crudSdk.sdk
+            .DeleteOrder({
+              input: {
+                id: order.id,
+              },
+            })
+            .pipe(catchGqlError(this._store)),
+        ),
+      );
+    } else {
+      return EMPTY;
     }
   }
 }

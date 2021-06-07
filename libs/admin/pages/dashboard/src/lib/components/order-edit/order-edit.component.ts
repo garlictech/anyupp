@@ -94,15 +94,15 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   public removeOrderItem(idx: number): void {
-    this._orderService.updateOrderItemStatus(
-      this.order.id,
-      CrudApi.OrderStatus.rejected,
-      idx,
-    );
+    this._orderService
+      .updateOrderItemStatus(this.order.id, CrudApi.OrderStatus.rejected, idx)
+      .subscribe();
   }
 
   public updateOrderPaymentMethod(paymentMode: CrudApi.PaymentMode): void {
-    this._orderService.updateOrderPaymentMode(this.order.id, paymentMode);
+    this._orderService
+      .updateOrderPaymentMode(this.order.id, paymentMode)
+      .subscribe();
   }
 
   public isCurrentStatus(
