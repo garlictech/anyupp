@@ -1,14 +1,12 @@
 import 'package:badges/badges.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/widgets.dart';
 
 import 'link_account_dialog.dart';
 import 'social_login_button_widget.dart';
-
-import 'package:fa_prev/modules/login/login.dart';
 
 class UnlinkAccountsWidget extends StatelessWidget {
   final User user;
