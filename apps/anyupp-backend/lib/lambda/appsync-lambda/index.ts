@@ -12,6 +12,7 @@ import {
   userRequestHandler,
 } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
+import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
 export interface AnyuppRequest {
   handler: string;
@@ -24,6 +25,11 @@ const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID 
 const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+
+const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
+  apiVersion: '2016-04-18',
+  region: process.env.AWS_REGION || '',
+});
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -54,6 +60,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const userRequestHandlers = userRequestHandler({
     anyuppSdk,
     consumerUserPoolId,
+    cognitoidentityserviceprovider,
   });
 
   const resolverMap = {
