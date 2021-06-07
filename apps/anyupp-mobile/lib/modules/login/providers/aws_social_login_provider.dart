@@ -13,9 +13,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   AwsSocialLoginProvider(this._authProvider);
 
   @override
-  Future<bool> get appleSignInAvailable async => false;
-
-  @override
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email) async {
     print('***** AwsSocialLoginProvider.fetchSignInMethodsForEmail()=$email');
     return [];
