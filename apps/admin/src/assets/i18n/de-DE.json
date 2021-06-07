@@ -340,6 +340,7 @@
   "errors": {
     "availabilityWeeklyDateInterval": "'From' day must be smaller than 'To' day!",
     "availabilityWeeklyTimeInterval": "'From' time must be smaller than 'To' time!",
-    "commonGqlError": "Database operation failed! Please contact the administrator!"
+    "commonGqlError": "Database operation failed! Please contact the administrator!",
+    "ERROR_NO_PRODUCT_IN_UNIT": "No product in unit!"
   }
 }

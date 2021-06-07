@@ -340,6 +340,7 @@
   "errors": {
     "availabilityWeeklyDateInterval": "A nyitó nap kisebb kell legyen, mint a záró!",
     "availabilityWeeklyTimeInterval": "A nyitó óra kisebb kell legyen, mint a záró!",
-    "commonGqlError": "Sikertelen adatbázis művelet! Kérjük vegye fel a kapcsolatot az adminisztrátorral!"
+    "commonGqlError": "Sikertelen adatbázis művelet! Kérjük vegye fel a kapcsolatot az adminisztrátorral!",
+    "ERROR_NO_PRODUCT_IN_UNIT": "Nincsenek termékek a unitban!"
   }
 }

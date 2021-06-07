@@ -143,32 +143,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       buttons: [
         {
           label: 'common.ok',
-          callback: async () => {
-            if (this.order.transactionId) {
-              of('update')
-                .pipe(
-                  switchMap(() =>
-                    this.order.transactionId
-                      ? this._orderService.updateOrderTransactionStatus(
-                          this.order.transactionId,
-                          status,
-                        )
-                      : of(true),
-                  ),
-                  switchMap(() =>
-                    status === CrudApi.PaymentStatus.success &&
-                    currentStatusFn(this.order.statusLog) ===
-                      CrudApi.OrderStatus.none
-                      ? this._orderService.updateOrderStatus(
-                          this.order,
-                          CrudApi.OrderStatus.placed,
-                        )
-                      : of(true),
-                  ),
-                )
-                .subscribe();
-            }
-          },
+          callback: this._updateTransactionStatusCallback(status),
           status: 'success',
         },
         {
@@ -182,6 +157,27 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
+  private _updateTransactionStatusCallback = (
+    status: CrudApi.PaymentStatus,
+  ) => () => {
+    if (this.order.transactionId) {
+      this._orderService
+        .updateOrderTransactionStatus(this.order.transactionId, status)
+        .pipe(
+          switchMap(() =>
+            status === CrudApi.PaymentStatus.success &&
+            currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
+              ? this._orderService.updateOrderStatus(
+                  this.order,
+                  CrudApi.OrderStatus.placed,
+                )
+              : of(true),
+          ),
+        )
+        .subscribe();
+    }
+  };
+
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
@@ -194,9 +190,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             this._orderService
               .updateOrderItemStatus(
                 this.order.id,
-
                 CrudApi.OrderStatus.placed,
-
                 idx,
               )
               .subscribe();

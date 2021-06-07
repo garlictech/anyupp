@@ -1,5 +1,7 @@
 import * as fp from 'lodash/fp';
 import { NGXLogger } from 'ngx-logger';
+import { EMPTY } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -52,23 +54,42 @@ export class UnitListItemComponent {
   public async regenerateData(): Promise<void> {
     this.workingGenerateStatus = true;
 
-    try {
-      if (this.unit) {
-        await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
-      }
+    if (this.unit) {
+      this._dataService
+        .regenerateUnitData(this.unit?.id)
+        .pipe(
+          catchError(err => {
+            // if (err.code === )
+            this._toasterService.show(
+              EToasterType.DANGER,
+              '',
+              'common.updateError',
+            );
 
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.updateSuccessful',
-      );
-    } catch (err) {
-      this._toasterService.show(EToasterType.DANGER, '', 'common.updateError');
+            console.error('err', err);
 
-      this._logger.error(`REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`);
+            this._logger.error(
+              `REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`,
+            );
+
+            this.workingGenerateStatus = false;
+            this._changeDetectorRef.detectChanges();
+
+            return EMPTY;
+          }),
+        )
+        .subscribe(() => {
+          console.error('success');
+
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+
+          this.workingGenerateStatus = false;
+          this._changeDetectorRef.detectChanges();
+        });
     }
-
-    this.workingGenerateStatus = false;
-    this._changeDetectorRef.detectChanges();
   }
 }
