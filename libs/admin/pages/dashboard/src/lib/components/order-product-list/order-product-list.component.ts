@@ -132,7 +132,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
           (<CrudApi.Order>this.selectedOrder).id,
           CrudApi.OrderStatus.placed,
           <number>existingVariantOrderIdx,
-        );
+        ).subscribe();
       }
     } else {
       this._orderService.addProductVariant(

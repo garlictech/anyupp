@@ -283,9 +283,13 @@
     "ordersAccepted": "Rendelések fogadva",
     "ordersBlocked": "Rendelések tiltva",
     "orderDetails": "Rendelés részletei",
+    "deleteOrder": "Rendelés törlése",
     "confirmIsAcceptOrder": "Biztosan engedélyezed a rendelések fogadását?",
     "confirmNotAcceptOrder": "Biztosan letiltod a rendelések fogadását?",
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
+    "confirmFailedTransaction": "Biztosan sikertelenre állítod a tranzakciót?",
+    "confirmSuccessTransaction": "Biztosan sikeresre állítod a tranzakciót?",
+    "confirmDeleteOrder": "Biztosan törlöd a rendelést?",
     "userOrdersCount": "{{ count }} rendelés",
     "status": {
       "placed": "Placed",
@@ -336,6 +340,7 @@
   "errors": {
     "availabilityWeeklyDateInterval": "A nyitó nap kisebb kell legyen, mint a záró!",
     "availabilityWeeklyTimeInterval": "A nyitó óra kisebb kell legyen, mint a záró!",
-    "commonGqlError": "Sikertelen adatbázis művelet! Kérjük vegye fel a kapcsolatot az adminisztrátorral!"
+    "commonGqlError": "Sikertelen adatbázis művelet! Kérjük vegye fel a kapcsolatot az adminisztrátorral!",
+    "ERROR_NO_PRODUCT_IN_UNIT": "Nincsenek termékek a unitban!"
   }
 }

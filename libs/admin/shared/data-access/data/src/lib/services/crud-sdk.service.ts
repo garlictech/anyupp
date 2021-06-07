@@ -52,7 +52,7 @@ export class CrudSdkService {
   }
 
   public doMutation<T>(mutationOp: Observable<T | null | undefined>) {
-    mutationOp.pipe(catchGqlError(this._store)).subscribe();
+    return mutationOp.pipe(catchGqlError(this._store));
   }
 }
 

@@ -5,8 +5,12 @@ When(
   'I click on the {string} picker fill out with {string}',
   (title: string, color: string) => {
     cy.get('.form-control-group').contains(title).click();
-    cy.get('.hex-text input').last().clear({force: true}).type(color, {force: true});
-});
+    cy.get('.hex-text input')
+      .last()
+      .clear({ force: true })
+      .type(color, { force: true });
+  },
+);
 
 Then(
   'I should see {int} color picker with {string}',

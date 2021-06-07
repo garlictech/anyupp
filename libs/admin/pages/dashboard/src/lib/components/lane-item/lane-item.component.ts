@@ -106,14 +106,14 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       this.orderItem.idx !== undefined &&
       this.orderItem.orderId
     ) {
-      this._orderService.updateOrderItemStatus(
-        this.orderItem.orderId,
-        nextStatus,
-        this.orderItem.idx,
-      );
+      this._orderService
+        .updateOrderItemStatus(
+          this.orderItem.orderId,
+          nextStatus,
+          this.orderItem.idx,
+        )
+        .subscribe();
     }
-
-    this._changeDetectorRef.detectChanges();
   }
 
   public moveBack(): void {
@@ -126,13 +126,13 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       this.orderItem.idx !== undefined &&
       this.orderItem.orderId
     ) {
-      this._orderService.updateOrderItemStatus(
-        this.orderItem.orderId,
-        prevStatus,
-        this.orderItem.idx,
-      );
+      this._orderService
+        .updateOrderItemStatus(
+          this.orderItem.orderId,
+          prevStatus,
+          this.orderItem.idx,
+        )
+        .subscribe();
     }
-
-    this._changeDetectorRef.detectChanges();
   }
 }
