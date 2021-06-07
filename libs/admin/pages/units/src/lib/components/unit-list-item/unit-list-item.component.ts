@@ -1,5 +1,5 @@
+import { appCoreActions } from 'libs/admin/shared/data-access/app-core/src';
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -13,6 +13,7 @@ import { DataService } from '@bgap/admin/shared/data-access/data';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
+import { Store } from '@ngrx/store';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
@@ -28,10 +29,10 @@ export class UnitListItemComponent {
   public workingGenerateStatus = false;
 
   constructor(
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _dataService: DataService,
     private _toasterService: ToasterService,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -59,18 +60,16 @@ export class UnitListItemComponent {
         .regenerateUnitData(this.unit?.id)
         .pipe(
           catchError(err => {
-            // if (err.code === )
-            this._toasterService.show(
-              EToasterType.DANGER,
-              '',
-              'common.updateError',
-            );
-
-            console.error('err', err);
-
-            this._logger.error(
-              `REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`,
-            );
+            const _err = JSON.parse(err.graphQLErrors?.[0]?.message || {});
+            if (_err.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
+              this._toasterService.show(
+                EToasterType.DANGER,
+                '',
+                'errors.ERROR_NO_PRODUCT_IN_UNIT',
+              );
+            } else {
+              this._store.dispatch(appCoreActions.gqlFailure({ error: err }));
+            }
 
             this.workingGenerateStatus = false;
             this._changeDetectorRef.detectChanges();
@@ -79,8 +78,6 @@ export class UnitListItemComponent {
           }),
         )
         .subscribe(() => {
-          console.error('success');
-
           this._toasterService.show(
             EToasterType.SUCCESS,
             '',
