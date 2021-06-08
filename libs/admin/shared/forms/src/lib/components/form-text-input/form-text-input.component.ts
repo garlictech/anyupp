@@ -13,6 +13,7 @@ export class FormTextInputComponent {
   @Input() control!: FormControl;
   @Input() type!: string;
   @Input() fieldSize: NbComponentSize = 'small';
+  @Input() inputId = '';
 
   constructor() {
     this.fieldSize = 'small';

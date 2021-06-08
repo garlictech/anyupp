@@ -26,6 +26,7 @@
             caption="common.name"
             type="text"
             [control]="dialogForm.get('name')! | asFormControl"
+            inputId="name"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-6">
@@ -34,6 +35,7 @@
             [options]="groupOptions"
             [control]="dialogForm.get('groupId')! | asFormControl"
             [localize]="false"
+            inputId="groupId"
           ></bgap-form-select>
         </div>
       </div>
@@ -45,6 +47,7 @@
             [control]="
               dialogForm.get('description')!.get('hu')! | asFormControl
             "
+            inputId="descriptionHu"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -56,6 +59,7 @@
             [control]="
               dialogForm.get('description')!.get('en')! | asFormControl
             "
+            inputId="descriptionEn"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -67,6 +71,7 @@
             [control]="
               dialogForm.get('description')!.get('de')! | asFormControl
             "
+            inputId="descriptionDe"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -77,6 +82,7 @@
             caption="units.openFrom"
             type="date"
             [control]="dialogForm.get('open')!.get('from')! | asFormControl"
+            inputId="openFrom"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -84,6 +90,7 @@
             caption="units.openTo"
             type="date"
             [control]="dialogForm.get('open')!.get('to')! | asFormControl"
+            inputId="openTo"
           ></bgap-form-text-input>
         </div>
 
@@ -91,6 +98,7 @@
           <bgap-form-checkbox
             caption="common.isActive"
             [control]="dialogForm.get('isActive')! | asFormControl"
+            inputId="isActive"
           ></bgap-form-checkbox>
         </div>
       </div>
