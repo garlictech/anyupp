@@ -22,6 +22,7 @@ export class FormSelectComponent {
   @Input() forceShowEmptyOption?: boolean;
   @Input() localize?: boolean;
   @Input() size: NbComponentSize = 'small';
+  @Input() inputId = '';
   @Output() selectionChange = new EventEmitter();
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {
