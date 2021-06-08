@@ -265,6 +265,7 @@ type Order
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
+  archived: Boolean
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
@@ -773,16 +774,10 @@ type Subscription {
     )
     @aws_cognito_user_pools
   onOrdersChange: Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
-  onOrderHistorysChange: OrderHistory
-    @aws_subscribe(
-      mutations: [
-        "createOrderHistory"
-        "updateOrderHistory"
-        "deleteOrderHistory"
-      ]
-    )
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
     @aws_cognito_user_pools
 
   # Added for the Mobile Application
@@ -796,15 +791,6 @@ type Subscription {
     )
     @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
-    @aws_cognito_user_pools
-  onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
-    @aws_subscribe(
-      mutations: [
-        "createOrderHistory"
-        "updateOrderHistory"
-        "deleteOrderHistory"
-      ]
-    )
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }
