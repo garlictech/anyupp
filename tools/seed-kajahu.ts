@@ -18,6 +18,7 @@ import {
 
 const EMAIL = process.argv[2];
 const PASSWORD = process.argv[3];
+const CONTEXT = 'SU_CTX_ID';
 const NAME = 'KAJAHU_ADMIN_USER';
 const PHONE = '123123213';
 
@@ -186,6 +187,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 console.log('INPUT PARAMS EMAIL', chalk.yellowBright.bold(EMAIL));
 console.log('INPUT PARAMS PASSWORD', chalk.yellowBright.bold(PASSWORD));
+console.log('CONTEXT', chalk.yellowBright.bold(CONTEXT));
 if (!EMAIL) {
   throw new Error('email param is missing');
 }
@@ -425,7 +427,7 @@ const createRoleContext = (adminUserId: string) => {
       en: `Superuser role context - KajahuCorvin`,
     },
     role: CrudApi.Role.superuser,
-    contextId: 'SU_CTX_ID',
+    contextId: CONTEXT,
   };
   return crudSdk.CreateRoleContext({ input: superuserInput }).pipe(
     map(x => x as CrudApi.RoleContext),
@@ -438,7 +440,7 @@ const createRoleContext = (adminUserId: string) => {
           'Role from db is not the requested',
         );
         assert(
-          newDbRecord['contextId'] === 'SU_CTX_ID',
+          newDbRecord['contextId'] === CONTEXT,
           'ContextId from db is not the requested',
         );
         console.log(chalk.greenBright.bold('ROLE_CONTEXT IN DB check is OK'));
