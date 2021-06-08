@@ -1,10 +1,7 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
-import {
-  createInvoiceAndConnectTransaction,
-  createReceiptAndConnectTransaction,
-} from './invoice-receipt.utils';
+import { createInvoiceAndConnectTransaction } from './invoice-receipt.utils';
 import {
   createTransaction,
   loadOrder,
@@ -18,12 +15,12 @@ export const listStripeCards = (userId: string) => async (
   deps: StripeResolverDeps,
 ): Promise<AnyuppApi.StripeCard[]> => {
   // 1. get userId
-  console.log('listStripeCards().start().userId=' + userId);
+  console.debug('listStripeCards().start().userId=' + userId);
 
   // 2. get User from DynamoDB
   const user = await loadAndConnectUserForStripe(userId)(deps);
 
-  console.log(
+  console.debug(
     'listStripeCards().user=' + user + ', customerId=' + user?.stripeCustomerId,
   );
 
@@ -33,7 +30,7 @@ export const listStripeCards = (userId: string) => async (
     );
   }
 
-  console.log('listStripeCards.start listing payment methods from Stripe.');
+  console.debug('listStripeCards.start listing payment methods from Stripe.');
   return deps.stripeClient.paymentMethods
     .list({
       customer: user.stripeCustomerId,
@@ -41,7 +38,7 @@ export const listStripeCards = (userId: string) => async (
     })
     .then(paymentMethods => {
       const cards = paymentMethods.data.map(mapPaymentMethodToCard);
-      console.log('listStripeCards.cards=' + JSON.stringify(cards, null, 2));
+      console.debug('listStripeCards.cards=' + JSON.stringify(cards, null, 2));
       return cards;
     })
     .catch(handleStripeErrors);
@@ -54,7 +51,7 @@ export const startStripePayment = (
 ) => async (
   deps: StripeResolverDeps,
 ): Promise<AnyuppApi.StartStripePaymentOutput> => {
-  console.log('startStripePayment().start()');
+  console.debug('startStripePayment().start()');
 
   // 1. Get parameters, orderId and payment method
   const {
@@ -64,7 +61,7 @@ export const startStripePayment = (
     savePaymentMethod,
     invoiceAddress,
   } = input;
-  console.log(
+  console.debug(
     'startStripePayment().orderId=' +
       orderId +
       ', paymentMethod=' +
@@ -80,11 +77,11 @@ export const startStripePayment = (
       'Payment method is missing from request when payment mode is INAPP!',
     );
   }
-  console.log('startStripePayment().invoiceAddress=' + invoiceAddress);
+  console.debug('startStripePayment().invoiceAddress=' + invoiceAddress);
 
   // 2. Load order
   let order = await loadOrder(orderId)(deps);
-  console.log('startStripePayment().order.loaded=' + order?.id);
+  console.debug('startStripePayment().order.loaded=' + order?.id);
 
   if (order == null) {
     throw Error('Order not found with id=' + orderId);
@@ -117,7 +114,7 @@ export const startStripePayment = (
     createStripeCustomer,
     input.invoiceAddress,
   )(deps);
-  console.log('startStripePayment().user.loaded=' + user?.id);
+  console.debug('startStripePayment().user.loaded=' + user?.id);
 
   if (!user) {
     throw Error(
@@ -167,7 +164,7 @@ export const startStripePayment = (
 
     // 6b. Add optional merchantId to the payment
     if (unit?.merchantId) {
-      console.log('startStripePayment().set merchantId=' + unit.merchantId);
+      console.debug('startStripePayment().set merchantId=' + unit.merchantId);
       paymentIntentData.application_fee_amount = 0;
       paymentIntentData.transfer_data = {
         destination: unit.merchantId,
@@ -185,11 +182,11 @@ export const startStripePayment = (
     }
 
     // 7. Create payment intent
-    // console.log('startStripePayment().creating payment intent.');
+    // console.debug('startStripePayment().creating payment intent.');
     const paymentIntent = await deps.stripeClient.paymentIntents.create(
       paymentIntentData,
     );
-    console.log(
+    console.debug(
       'startStripePayment().payment intent created=' + paymentIntent.id,
     );
 
@@ -206,7 +203,7 @@ export const startStripePayment = (
       },
     };
     const transaction = await createTransaction(createTransactionVars)(deps);
-    console.log('startStripePayment().transaction.id=' + transaction?.id);
+    console.debug('startStripePayment().transaction.id=' + transaction?.id);
 
     if (!transaction) {
       throw new Error('Transaction not created');
@@ -214,7 +211,7 @@ export const startStripePayment = (
 
     // 9. Create invoice if requested
     if (invoiceAddress) {
-      console.log(
+      console.debug(
         'startStripePayment().createInvoiceAndConnectTransaction()=' +
           invoiceAddress,
       );
@@ -229,14 +226,14 @@ export const startStripePayment = (
     }
 
     // 10. Update ORDER STATUS
-    // console.log('startStripePayment().updateOrderState.order=' + order.id);
+    // console.debug('startStripePayment().updateOrderState.order=' + order.id);
     order = await updateOrderState(
       order.id,
       userId,
       CrudApi.OrderStatus.none,
       transaction.id,
     )(deps);
-    console.log('startStripePayment().updateOrderState.done()=' + order?.id);
+    console.debug('startStripePayment().updateOrderState.done()=' + order?.id);
 
     // 11. Return with client secret
     return Promise.resolve({
@@ -259,7 +256,7 @@ export const startStripePayment = (
       },
     };
     const transaction = await createTransaction(createTransactionVars)(deps);
-    console.log('startCashPayment().transaction.id=' + transaction?.id);
+    console.debug('startCashPayment().transaction.id=' + transaction?.id);
 
     if (!transaction) {
       throw new Error('Transaction not created');
@@ -267,7 +264,9 @@ export const startStripePayment = (
 
     // 7. Create invoice or receipt
     if (invoiceAddress) {
-      console.log('startCashPayment().invoiceAddress=' + input.invoiceAddress);
+      console.debug(
+        'startCashPayment().invoiceAddress=' + input.invoiceAddress,
+      );
       await createInvoiceAndConnectTransaction(
         order.id,
         order.userId,
@@ -292,7 +291,7 @@ export const startStripePayment = (
       CrudApi.OrderStatus.none,
       transaction.id,
     )(deps);
-    console.log('startCashPayment().updateOrderState.done()=' + order?.id);
+    console.debug('startCashPayment().updateOrderState.done()=' + order?.id);
 
     // 9. Return with success
     return Promise.resolve({
@@ -307,28 +306,15 @@ const loadAndConnectUserForStripe = (
   createStripeUser = true,
   invoiceAddress: AnyuppApi.UserInvoiceAddress | undefined | null = undefined,
 ) => async (deps: StripeResolverDeps) => {
-  console.log(
-    'loadAndConnectUserForStripe().start()=' +
-      userId +
-      ', createStripeUser=' +
-      createStripeUser +
-      ', invoiceAddress=' +
-      invoiceAddress,
-  );
   let user = await loadUser(userId)(deps);
-  console.log('loadAndConnectUserForStripe().user.id=' + user?.id);
-  console.log(
-    'loadAndConnectUserForStripe().user.stripeCustomerId=' +
-      user?.stripeCustomerId,
-  );
+  console.debug('loadAndConnectUserForStripe().user.id=' + user?.id);
 
   if (!user) {
     let customerId: string | undefined;
 
     if (createStripeUser === true) {
-      console.log('loadAndConnectUserForStripe().Creating stripe customer');
       const stripeResponse: Stripe.Response<Stripe.Customer> = await deps.stripeClient.customers.create();
-      console.log(
+      console.debug(
         'loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id,
       );
       customerId = stripeResponse.id;
@@ -351,21 +337,14 @@ const loadAndConnectUserForStripe = (
           : undefined,
       },
     };
-    console.log(
-      'loadAndConnectUserForStripe().create.user.data=' +
-        JSON.stringify(createUserVars, undefined, 2),
-    );
     user = await deps.crudSdk.CreateUser(createUserVars).toPromise(); //createUser(userId, customerId)(deps);
-    console.log('loadAndConnectUserForStripe().User created=' + user?.id);
+    // console.debug('loadAndConnectUserForStripe().User created=' + user?.id);
   } else {
     // USER ALREADY EXISTS...
     let customerId = user.stripeCustomerId;
     if (!user.stripeCustomerId && createStripeUser === true) {
-      console.log('loadAndConnectUserForStripe().Creating stripe customer');
+      // console.debug('loadAndConnectUserForStripe().Creating stripe customer');
       const stripeResponse: Stripe.Response<Stripe.Customer> = await deps.stripeClient.customers.create();
-      console.log(
-        'loadAndConnectUserForStripe().stripe.customerId=' + stripeResponse.id,
-      );
       customerId = stripeResponse.id;
     }
     const updateUserVars: CrudApi.UpdateUserMutationVariables = {
@@ -385,12 +364,8 @@ const loadAndConnectUserForStripe = (
           : undefined,
       },
     };
-    console.log(
-      'loadAndConnectUserForStripe().update.user.data=' +
-        JSON.stringify(updateUserVars, undefined, 2),
-    );
     user = await deps.crudSdk.UpdateUser(updateUserVars).toPromise(); //await updateUser(userId, customerId)(deps);
-    console.log(
+    console.debug(
       'loadAndConnectUserForStripe().User stripe customer id created=' +
         user?.id,
     );

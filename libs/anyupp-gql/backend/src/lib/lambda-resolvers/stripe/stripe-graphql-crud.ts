@@ -108,7 +108,7 @@ export const loadUnit = (unitId: string) => (deps: StripeResolverDeps) => {
 export const loadTransactionByExternalTransactionId = (
   externalTransactionId: string,
 ) => (deps: StripeResolverDeps) => {
-  // console.log('loadTransactionByExternalTransactionId.external_id=' + externalTransactionId)
+  // console.debug('loadTransactionByExternalTransactionId.external_id=' + externalTransactionId)
   const listTransactionListVars: CrudApi.ListTransactionsQueryVariables = {
     filter: {
       externalTransactionId: { eq: externalTransactionId },
@@ -171,7 +171,7 @@ export const updateOrderState = (
   status: CrudApi.OrderStatus,
   transactionId: string,
 ) => (deps: StripeResolverDeps) => {
-  console.log(
+  console.debug(
     '***** updateOrderState().id=' +
       id +
       ', state=' +
@@ -258,7 +258,7 @@ export const updateInvoiceState = (
   externalInvoiceId: string | undefined,
   pdfData: String | undefined,
 ) => (deps: StripeResolverDeps) => {
-  console.log(
+  console.debug(
     '***** updateInvoiceState().id=' +
       id +
       ', state=' +

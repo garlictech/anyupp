@@ -47,32 +47,32 @@ export const createStripeWebhookExpressApp = (
 
   app.use('/webhook', bodyParser.raw({ type: '*/*' }));
   app.post('/webhook', async function (request, response) {
-    console.log('***** Stripe webhook.start()');
-    // console.log('***** Stripe webhook.request=' + request);
+    // console.debug('***** Stripe webhook.start()');
+    // console.debug('***** Stripe webhook.request=' + request);
 
     const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
-    // console.log('***** Stripe webhook.stripeSigningSecret=' + endpointSecret);
+    // console.debug('***** Stripe webhook.stripeSigningSecret=' + endpointSecret);
     if (!endpointSecret) {
       throw Error('Stripe endpoint secret not found in lambda environment.');
     }
 
     const sig = request.headers['stripe-signature'];
-    // console.log('***** Stripe webhook.stripe.sig=' + sig);
+    // console.debug('***** Stripe webhook.stripe.sig=' + sig);
     if (!sig) {
       throw Error('Stripe signature header not found in the request!');
     }
 
     let event: Stripe.Event;
     try {
-      // console.log('***** Stripe webhook.creating stripe event with ' + sig);
+      // console.debug('***** Stripe webhook.creating stripe event with ' + sig);
       event = stripeClient.webhooks.constructEvent(
         request.body,
         sig,
         endpointSecret,
       );
-      console.log('***** Stripe webhook.event.created=' + event['type']);
+      console.debug('***** Stripe webhook.event.created=' + event['type']);
     } catch (err) {
-      console.log('***** Stripe webhook.error=' + err);
+      console.debug('***** Stripe webhook.error=' + err);
       // invalid signature
       response.status(400).end();
       return;
@@ -83,13 +83,13 @@ export const createStripeWebhookExpressApp = (
       case 'payment_intent.succeeded':
         intent = event.data.object as Stripe.PaymentIntent;
         await handleSuccessTransaction(intent.id)(deps);
-        console.log('***** Stripe webhook.Succeeded:', intent.id);
+        console.debug('***** Stripe webhook.Succeeded:', intent.id);
         break;
       case 'payment_intent.payment_failed':
         intent = event.data.object as Stripe.PaymentIntent;
         // let message = intent.last_payment_error || intent.last_payment_error.message;
         await handleFailedTransaction(intent.id)(deps);
-        console.log(
+        console.debug(
           '***** Stripe webhook.Failed:',
           intent.id,
           intent.last_payment_error?.message,
@@ -101,7 +101,7 @@ export const createStripeWebhookExpressApp = (
   });
 
   app.listen(3000, function () {
-    console.log('App started on port 3000');
+    console.debug('App started on port 3000');
   });
 
   return app;
@@ -117,15 +117,11 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
   }
 
   const user = await loadUser(transaction.userId)(deps);
-  console.log(
-    '***** handleInvoice().user.loaded()',
-    JSON.stringify(user, undefined, 2),
-  );
   if (!user) {
     throw Error('The user with id=' + transaction.userId + ' is missing!');
   }
 
-  console.log('***** handleInvoice().invoiceId=' + transaction.invoice.id);
+  console.debug('***** handleInvoice().invoiceId=' + transaction.invoice.id);
 
   try {
     const invoice = await createInvoice(deps.szamlazzClient)({
@@ -133,10 +129,6 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
       transaction,
       language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
     });
-    console.log(
-      '### ~ file: stripe-webhook-handler.ts ~ line 136 ~ handleInvoice ~ invoice',
-      JSON.stringify(invoice, undefined, 2),
-    );
 
     const invoiceData: Szamlazz.SendRequestResponse = await deps.szamlazzClient.getInvoiceData(
       {
@@ -144,9 +136,6 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
         pdf: false,
       },
     );
-    console.log('InvoiceData.headers=' + invoiceData?.headers);
-    console.log('InvoiceData.pdf=' + invoiceData?.data);
-    // console.log('InvoiceData.pdf=' + invoiceData?.pdf);
 
     let pdfUrl: string | undefined = undefined;
     if (invoiceData?.headers) {
@@ -164,9 +153,11 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
       invoice.invoiceId,
       pdfUrl,
     )(deps);
+
+    console.debug('***** handleInvoice().success()');
   } catch (err) {
-    console.log(
-      '***** handleInvoice().user.error=' + JSON.stringify(err, undefined, 2),
+    console.debug(
+      '***** handleInvoice().error=' + JSON.stringify(err, undefined, 2),
     );
     await updateInvoiceState(
       transaction.invoice.id,
@@ -181,13 +172,16 @@ const handleReceipt = (transaction: CrudApi.Transaction) => async (
   deps: StripeResolverDeps,
 ) => {
   const user = await loadUser(transaction.userId)(deps);
-  const email = user?.email ? user.email : '';
+  if (!user?.email) {
+    console.warn("Can't create Receipt without valid email address");
+    return;
+  }
 
   await createReceiptAndConnectTransaction(
     transaction.order.id,
     transaction.userId,
     transaction.id,
-    email,
+    user.email,
     CrudApi.ReceiptStatus.success,
   )(deps);
 };
@@ -195,11 +189,11 @@ const handleReceipt = (transaction: CrudApi.Transaction) => async (
 const handleSuccessTransaction = (externalTransactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
-  console.log('***** handleSuccessTransaction().id=' + externalTransactionId);
+  console.debug('***** handleSuccessTransaction().id=' + externalTransactionId);
   const transaction = await loadTransactionByExternalTransactionId(
     externalTransactionId,
   )(deps);
-  // console.log('***** handleSuccessTransaction().loaded.transaction=' + transaction);
+  // console.debug('***** handleSuccessTransaction().loaded.transaction=' + transaction);
   if (transaction) {
     await updateTransactionState(
       transaction.id,
@@ -211,7 +205,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
       CrudApi.OrderStatus.placed,
       transaction.id,
     )(deps);
-    // console.log('***** handleSuccessTransaction().success()');
+    // console.debug('***** handleSuccessTransaction().success()');
     if (transaction.invoiceId) {
       await handleInvoice(transaction)(deps);
     }
@@ -219,7 +213,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
       await handleReceipt(transaction)(deps);
     }
   } else {
-    console.log(
+    console.debug(
       '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +
         externalTransactionId,
     );
@@ -229,7 +223,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
 const handleFailedTransaction = (externalTransactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
-  console.log('***** handleFailedTransaction().id=' + externalTransactionId);
+  console.debug('***** handleFailedTransaction().id=' + externalTransactionId);
   const transaction = await loadTransactionByExternalTransactionId(
     externalTransactionId,
   )(deps);
@@ -238,6 +232,6 @@ const handleFailedTransaction = (externalTransactionId: string) => async (
       transaction.id,
       CrudApi.PaymentStatus.failed,
     )(deps);
-    console.log('***** handleFailedTransaction().success()');
+    console.debug('***** handleFailedTransaction().success()');
   }
 };

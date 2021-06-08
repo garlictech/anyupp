@@ -10,7 +10,7 @@ export const createInvoiceAndConnectTransaction = (
   invoiceAddress: AnyuppApi.UserInvoiceAddress,
   status: CrudApi.InvoiceStatus,
 ) => async (deps: StripeResolverDeps) => {
-  console.log('createInvoiceAndConnectTransaction().orderId=' + orderId);
+  console.debug('createInvoiceAndConnectTransaction().orderId=' + orderId);
 
   const createInvoiceVars = createInvoiceMutationVariables(
     orderId,
@@ -23,7 +23,7 @@ export const createInvoiceAndConnectTransaction = (
   if (!invoice) {
     throw Error('Invoice not created. Created invoice instane is null');
   }
-  console.log('createInvoiceAndConnectTransaction().invoiceId=' + invoice.id);
+  console.debug('createInvoiceAndConnectTransaction().invoiceId=' + invoice.id);
   await updateTransactionInvoiceId(transactionId, invoice.id)(deps);
 };
 
@@ -34,7 +34,7 @@ export const createReceiptAndConnectTransaction = (
   email: string | undefined | null,
   status: CrudApi.ReceiptStatus,
 ) => async (deps: StripeResolverDeps) => {
-  console.log('createReceiptAndConnectTransaction().orderId=' + orderId);
+  console.debug('createReceiptAndConnectTransaction().orderId=' + orderId);
 
   const receiptId = 'SZAMLAZZHU_RECEIPT_ID'; // TODO GET FROM SZAMLAZZ.HU!!!!
   const receiptUrl = 'SZAMLAZZHU_RECEIPT_PDF_URL'; // TODO GET FROM SZAMLAZZ.HU!!!!
@@ -54,7 +54,7 @@ export const createReceiptAndConnectTransaction = (
   if (!receipt) {
     throw Error('Receipt not created. Created receipt instane is null');
   }
-  console.log('createReceiptAndConnectTransaction().receiptId=' + receipt.id);
+  console.debug('createReceiptAndConnectTransaction().receiptId=' + receipt.id);
   await updateTransactionReceiptId(transactionId, receipt.id)(deps);
 };
 

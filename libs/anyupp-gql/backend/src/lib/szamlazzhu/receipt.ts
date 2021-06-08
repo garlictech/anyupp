@@ -98,7 +98,7 @@ Promise<ReceiptResponse> => {
     currency,
     comment: transaction.externalTransactionId,
   });
-  console.log(
+  console.debug(
     '### ~ file: receipt.ts ~ line 102 ~ receipt',
     JSON.stringify(receipt, undefined, 2),
   );

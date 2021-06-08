@@ -92,10 +92,10 @@ Promise<InvoiceResponse> => {
     paid: true,
     comment: transaction.externalTransactionId,
   });
-  console.log(
-    '### ~ file: invoice.ts ~ line 72 ~ invoice',
-    JSON.stringify(invoice, undefined, 2),
-  );
+  // console.debug(
+  //   '### ~ file: invoice.ts ~ line 72 ~ invoice',
+  //   JSON.stringify(invoice, undefined, 2),
+  // );
 
   try {
     return await szamlazzClient.issueInvoice(invoice);
