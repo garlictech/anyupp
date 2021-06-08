@@ -1490,7 +1490,7 @@
             "cwd": "apps/cicd",
             "commands": [
               {
-                "command": "yarn sst deploy"
+                "command": "yarn sst deploy --stage='{args.stage}'"
               }
             ]
           }
@@ -1501,7 +1501,7 @@
             "cwd": "apps/cicd",
             "commands": [
               {
-                "command": "yarn sst remove"
+                "command": "yarn sst remove --stage='{args.stage}'"
               }
             ]
           }
