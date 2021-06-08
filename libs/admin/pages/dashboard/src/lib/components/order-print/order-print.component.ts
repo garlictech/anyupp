@@ -70,6 +70,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     );
 
     this._groupOrders();
+
+    this._changeDetectorRef.detectChanges();
   }
 
   ngOnChanges(): void {
