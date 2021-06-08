@@ -1,6 +1,4 @@
 import { map } from 'rxjs/operators';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 import {
   ChangeDetectionStrategy,
@@ -9,14 +7,17 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { catchGqlError } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
-import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -79,15 +80,16 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       );
 
       this._sortedProductCategoryIds.forEach(
-        async (productCategoryId: string, pos: number): Promise<void> => {
-          await this._crudSdk.sdk
+        (productCategoryId: string, pos: number) => {
+          this._crudSdk.sdk
             .UpdateProductCategory({
               input: {
                 id: productCategoryId,
                 position: pos + 1,
               },
             })
-            .toPromise();
+            .pipe(catchGqlError(this._store))
+            .subscribe();
         },
       );
     }

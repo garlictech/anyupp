@@ -506,11 +506,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildSocialLoginButtons(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: getIt<LoginRepository>().appleSignInAvailable,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData) {
-          return Container(
+       return Container(
             margin: EdgeInsets.only(
               top: 6.0,
               bottom: 6.0,
@@ -521,8 +517,8 @@ class _LoginScreenState extends State<LoginScreen>
                 children: [
                   _createSocialButtonWidget('google', LoginMethod.GOOGLE),
                   _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
-                  if (snapshot.data == true) // has Apple Login
-                    _createSocialButtonWidget('apple', LoginMethod.APPLE),
+                 // if (snapshot.data == true) // has Apple Login
+                  _createSocialButtonWidget('apple', LoginMethod.APPLE),
                   _createSocialButtonWidget(
                       'email', LoginMethod.EMAIL, theme.indicator),
                   // _createSocialButtonWidget('phone', LoginMethod.PHONE),
@@ -530,10 +526,6 @@ class _LoginScreenState extends State<LoginScreen>
               ),
             ),
           );
-        }
-        return CenterLoadingWidget();
-      },
-    );
   }
 
   Widget _buildEmailLoginForms(BuildContext context) {

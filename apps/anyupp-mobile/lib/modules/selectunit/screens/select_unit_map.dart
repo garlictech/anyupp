@@ -279,7 +279,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                     child: Center(
                       child: Text(
-                        (unit.distance ??  0 / 1000).toStringAsFixed(3) + ' km',
+                        ((unit.distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2, //const Color(0xffffffff),
@@ -365,20 +365,20 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
 
   void _createUnitsMarker(List<GeoUnit> units) {
     Map<MarkerId, Marker> unitMarkers = <MarkerId, Marker>{};
-
-    units.forEach((unit) {
+    for (GeoUnit unit in units) {
       final MarkerId markerId = MarkerId(unit.id);
 
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         position: LatLng(unit.address.location.lat, unit.address.location.lng),
-        infoWindow: InfoWindow(title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
+        infoWindow: InfoWindow(
+            title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);
         },
       );
-    });
+    }
 
     setState(() {
       // adding a new marker to map

@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'common_error_widget.dart';
 
-showErrorDialog(BuildContext context, String error, String description, [VoidCallback onClose]) {
+showErrorDialog(BuildContext context, String error, String description, { String exceptionDetails, VoidCallback onClose}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   SchedulerBinding.instance.addPostFrameCallback((_) {

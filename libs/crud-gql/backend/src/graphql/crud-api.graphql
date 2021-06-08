@@ -265,6 +265,7 @@ type Order
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
+  archived: Boolean
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
@@ -440,7 +441,7 @@ type GroupProduct
   # takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  chainProduct: ChainProduct @connection(fields: ["parentId"])
+  chainProduct: ChainProduct! @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -457,7 +458,7 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  groupProduct: GroupProduct @connection(fields: ["parentId"])
+  groupProduct: GroupProduct! @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
@@ -524,7 +525,7 @@ type FavoriteProduct
   id: ID!
   userId: ID!
   unitId: ID!
-  product: GeneratedProduct @connection
+  product: GeneratedProduct! @connection
 }
 
 ### Unit
@@ -715,16 +716,10 @@ type Subscription {
     )
     @aws_cognito_user_pools
   onOrdersChange: Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
-  onOrderHistorysChange: OrderHistory
-    @aws_subscribe(
-      mutations: [
-        "createOrderHistory"
-        "updateOrderHistory"
-        "deleteOrderHistory"
-      ]
-    )
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
     @aws_cognito_user_pools
 
   # Added for the Mobile Application
@@ -738,15 +733,6 @@ type Subscription {
     )
     @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder", "deleteOrder"])
-    @aws_cognito_user_pools
-  onOrderHistoryChanged(userId: String, unitId: String): OrderHistory
-    @aws_subscribe(
-      mutations: [
-        "createOrderHistory"
-        "updateOrderHistory"
-        "deleteOrderHistory"
-      ]
-    )
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }

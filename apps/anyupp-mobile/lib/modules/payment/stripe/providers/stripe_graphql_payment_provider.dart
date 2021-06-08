@@ -1,11 +1,8 @@
-import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
@@ -21,17 +18,10 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<List<StripePaymentMethod>> getPaymentMethods() async {
     print('getPaymentMethods().start()');
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-      QueryResult result = await _client.value.query(QueryOptions(
-        document: gql(QUERY_LIST_PAYMENT_METHODS),
+      QueryResult result = await GQL.backend.executeQuery(
+        query: QUERY_LIST_PAYMENT_METHODS,
         variables: {},
-      ));
-
-      print('getPaymentMethods.response.data=$result');
-      if (result.hasException) {
-        print('getPaymentMethods.error=${result.exception}');
-        throw result.exception;
-      }
+      );
 
       List<dynamic> items = result.data['listStripeCards'];
       List<StripePaymentMethod> results = [];
@@ -50,7 +40,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
+  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId) async {
     print('startStripePaymentWithExistingCard().start()=$cart');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
@@ -59,28 +49,25 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
+  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
 
-    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-    QueryResult result = await _client.value.mutate(MutationOptions(
-      document: gql(MUTATION_START_PAYMENT),
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
       variables: {
         'orderId': orderId,
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': false,
       },
-    ));
+    );
 
-    print('startStripePaymentWithExistingCard.response.data=$result');
-    if (result.hasException) {
-      print('startStripePaymentWithExistingCard.error=${result.exception}');
-      throw result.exception;
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -89,12 +76,10 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithExistingCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
     print('startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
-
-    return null;
   }
 
   @override
-  Future<String> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
 
@@ -104,7 +89,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   }
 
   @override
-  Future<String> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
+  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, bool saveCard) async {
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR, message: 'createAndSendOrderFromCart() error. OrderId null!');
@@ -114,21 +99,18 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     String paymentMethodId = paymentMethod['id'];
     print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
-    ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient();
-    QueryResult result = await _client.value.mutate(MutationOptions(
-      document: gql(MUTATION_START_PAYMENT),
+    QueryResult result = await GQL.backend.executeMutation(
+      mutation: MUTATION_START_PAYMENT,
       variables: {
         'orderId': orderId,
         'paymentMethod': 'inapp',
         'paymentMethodId': paymentMethodId,
         'savePaymentMethod': saveCard,
       },
-    ));
+    );
 
-    print('startStripePaymentWithNewCard.response.data=$result');
-    if (result.hasException) {
-      print('startStripePaymentWithNewCard.error=${result.exception}');
-      throw result.exception;
+    if (result.data == null || result.data['startStripePayment'] == null) {
+      return;
     }
 
     String clientSecret = result.data['startStripePayment']['clientSecret'];
@@ -137,8 +119,6 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithNewCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse = await _stripe.confirmPayment(clientSecret);
     print('startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
-
-    return null;
   }
 
   @override

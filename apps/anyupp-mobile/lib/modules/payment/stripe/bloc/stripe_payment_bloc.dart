@@ -29,10 +29,18 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Handle start payment with external method
       if (event is StartExternalPaymentEvent) {
         yield StripePaymentLoading();
-        await _paymentRepository.startExternalPayment(
-          _orderRepository.cart,
-          event.paymentMethod,
-        );
+        if (event.orderId != null) {
+           await _paymentRepository.startOrderExternalPayment(
+            event.orderId,
+            event.paymentMethod,
+          );
+        } else {
+          await _paymentRepository.startExternalPayment(
+            _orderRepository.cart,
+            event.paymentMethod,
+          );
+        }
+
         yield StripeOperationSuccess();
       }
 
@@ -77,15 +85,15 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentInitialState();
       }
     } on PlatformException catch (pe) {
-      print('********* StripePaymentBloc.PlatformException()=$pe');
+      print('********* StripePaymentBloc.ExceptionBloc.PlatformException=$pe');
       getIt<ExceptionBloc>().add(ShowException(StripeException.fromPlatformException(pe)));
       yield StripeError(pe.code, pe.message);
     } on StripeException catch (le) {
-      print('********* StripePaymentBloc.LoginException()=$le');
+      print('********* StripePaymentBloc.ExceptionBloc.StripeException=$le');
       getIt<ExceptionBloc>().add(ShowException(le));
       yield StripeError(le.code, le.message);
     } on Exception catch (e) {
-      print('********* StripePaymentBloc.Exception()=$e');
+      print('********* StripePaymentBloc.ExceptionBloc.Exception=$e');
       getIt<ExceptionBloc>().add(ShowException(StripeException.fromException(StripeException.UNKNOWN_ERROR, e)));
       yield StripeError(StripeException.UNKNOWN_ERROR, e.toString());
     }

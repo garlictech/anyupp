@@ -1,8 +1,5 @@
-import { NGXLogger } from 'ngx-logger';
 import { take } from 'rxjs/operators';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,14 +10,17 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
+  catchGqlError,
   contactFormGroup,
   EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -42,7 +42,6 @@ export class GroupFormComponent
   constructor(
     protected _injector: Injector,
     private _store: Store,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -106,44 +105,38 @@ export class GroupFormComponent
     // untilDestroyed uses it.
   }
 
-  public async submit(): Promise<void> {
+  public submit() {
     if (this.dialogForm?.valid) {
       if (this.group?.id) {
-        try {
-          await this._crudSdk.sdk
-            .UpdateGroup({
-              input: {
-                id: this.group.id,
-                ...this.dialogForm.value,
-              },
-            })
-            .toPromise();
+        this._crudSdk.sdk
+          .UpdateGroup({
+            input: {
+              id: this.group.id,
+              ...this.dialogForm.value,
+            },
+          })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.updateSuccessful',
+            );
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
-
-          this.close();
-        } catch (error) {
-          this._logger.error(`GROUP UPDATE ERROR: ${JSON.stringify(error)}`);
-        }
+            this.close();
+          });
       } else {
-        try {
-          await this._crudSdk.sdk
-            .CreateGroup({ input: this.dialogForm.value })
-            .toPromise();
-
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
-          this.close();
-        } catch (error) {
-          this._logger.error(`GROUP INSERT ERROR: ${JSON.stringify(error)}`);
-        }
+        this._crudSdk.sdk
+          .CreateGroup({ input: this.dialogForm.value })
+          .pipe(catchGqlError(this._store))
+          .subscribe(() => {
+            this._toasterService.show(
+              EToasterType.SUCCESS,
+              '',
+              'common.insertSuccessful',
+            );
+            this.close();
+          });
       }
     }
   }

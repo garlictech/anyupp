@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
+import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { Store } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
-import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
-import { concat, EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, takeUntil, tap } from 'rxjs/operators';
+import { concat, Observable } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -45,23 +46,13 @@ export class CrudSdkService {
         filterNullishElements(),
         tap(items => this._store.dispatch(upsertActionCreator(items))),
         takeUntil(destroyConnection$),
-        catchError(err => {
-          console.error('ERROR', err);
-          return of(EMPTY); /*TODO error actio > effect > toaster */
-        }),
+        catchGqlError(this._store),
       )
       .subscribe();
   }
 
   public doMutation<T>(mutationOp: Observable<T | null | undefined>) {
-    mutationOp
-      .pipe(
-        catchError(err => {
-          console.error('ERROR', err);
-          return of(EMPTY); /*TODO error actio > effect > toaster */
-        }),
-      )
-      .subscribe();
+    return mutationOp.pipe(catchGqlError(this._store));
   }
 }
 

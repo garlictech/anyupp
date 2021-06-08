@@ -1,13 +1,11 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/graphql/graphql_client_service.dart';
+import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/graphql/mutations/create_anonym_user.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
 import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +27,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       CognitoUser user = _service.createCognitoUser(email);
       CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
       if (session.isValid()) {
-        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : null);
+        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : email);
         await _service;
         return ProviderLoginResponse(
           credential: null,
@@ -58,19 +56,12 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     try {
-      ValueNotifier<GraphQLClient> _client = await getIt<GraphQLClientService>().getGraphQLClient(useApi: true);
-
-      QueryResult result = await _client.value.mutate(
-        MutationOptions(document: gql(MUTATION_CREATE_ANONYM_USER), variables: {}),
+      QueryResult result = await GQL.backend.executeMutation(
+        mutation: MUTATION_CREATE_ANONYM_USER,
+        variables: {},
+        useApi: true,
       );
-      if (result.hasException) {
-        print('AwsOrderProvider.addInvoiceInfo().exception=${result.exception}');
-        throw LoginException(
-            code: LoginException.CODE,
-            message: "Failed to Create Anonymus user",
-            subCode: LoginException.INVALID_ANONYMUS_USER,
-            details: "Couldn't create anonymus user.");
-      }
+      
       String email = result.data['createAnonymUser']['email'];
       String pwd = result.data['createAnonymUser']['pwd'];
       if (email != null && pwd != null) {
@@ -79,7 +70,11 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       return null;
     } on Exception catch (e) {
       print('AwsOrderProvider.addInvoiceInfo().exception=$e');
-      rethrow;
+      throw LoginException(
+            code: LoginException.CODE,
+            message: "Failed to Create Anonymus user",
+            subCode: LoginException.INVALID_ANONYMUS_USER,
+            details: "Couldn't create anonymus user.");
     }
   }
 

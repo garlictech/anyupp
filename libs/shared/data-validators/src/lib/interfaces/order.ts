@@ -43,6 +43,7 @@ export const orderSchema: Joi.SchemaMap<CrudApi.Order> = {
   items: Joi.array().items(orderItemSchema),
   paymentMode: Joi.object(paymentModeSchema).required(),
   statusLog: statusLogSchema.required(),
+  archived: Joi.boolean().allow(null),
   sumPriceShown: Joi.object(priceShownSchema).required(),
   takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema).required(),
