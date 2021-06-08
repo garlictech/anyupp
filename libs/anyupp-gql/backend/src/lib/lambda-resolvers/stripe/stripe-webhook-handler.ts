@@ -138,10 +138,31 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
       JSON.stringify(invoice, undefined, 2),
     );
 
+    const invoiceData: Szamlazz.SendRequestResponse = await deps.szamlazzClient.getInvoiceData(
+      {
+        invoiceId: invoice.invoiceId,
+        pdf: false,
+      },
+    );
+    console.log('InvoiceData.headers=' + invoiceData?.headers);
+    console.log('InvoiceData.pdf=' + invoiceData?.data);
+    // console.log('InvoiceData.pdf=' + invoiceData?.pdf);
+
+    let pdfUrl: string | undefined = undefined;
+    if (invoiceData?.headers) {
+      const url = (invoiceData.headers as Record<string, string | undefined>)[
+        'szlahu_vevoifiokurl'
+      ];
+      if (url !== undefined) {
+        pdfUrl = decodeURIComponent(url);
+      }
+    }
+
     await updateInvoiceState(
       transaction.invoice.id,
       CrudApi.InvoiceStatus.success,
       invoice.invoiceId,
+      pdfUrl,
     )(deps);
   } catch (err) {
     console.log(
@@ -150,6 +171,7 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
     await updateInvoiceState(
       transaction.invoice.id,
       CrudApi.InvoiceStatus.failed,
+      undefined,
       undefined,
     )(deps);
   }

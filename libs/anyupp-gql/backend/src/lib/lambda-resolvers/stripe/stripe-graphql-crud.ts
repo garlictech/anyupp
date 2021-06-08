@@ -256,6 +256,7 @@ export const updateInvoiceState = (
   id: string,
   status: CrudApi.InvoiceStatus,
   externalInvoiceId: string | undefined,
+  pdfData: String | undefined,
 ) => (deps: StripeResolverDeps) => {
   console.log(
     '***** updateInvoiceState().id=' +
@@ -269,6 +270,7 @@ export const updateInvoiceState = (
     input: {
       id: id,
       externalInvoiceId: externalInvoiceId,
+      pdfUrl: pdfData,
       status: status,
     },
   };
