@@ -18,8 +18,6 @@ abstract class ISocialLoginProvider {
 
   bool isFederated(LoginMethod method);
 
-  Future<bool> get appleSignInAvailable;
-
   Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode);
 
 }

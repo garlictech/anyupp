@@ -1,14 +1,12 @@
 import 'package:badges/badges.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/widgets.dart';
 
 import 'link_account_dialog.dart';
 import 'social_login_button_widget.dart';
-
-import 'package:fa_prev/modules/login/login.dart';
 
 class UnlinkAccountsWidget extends StatelessWidget {
   final User user;
@@ -20,53 +18,43 @@ class UnlinkAccountsWidget extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (BuildContext context, LoginState state) {
         return FutureBuilder<List<LoginMethod>>(
-          future:
-              getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
+          future: getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email),
+          builder: (BuildContext context, AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
             if (methodSnapshot.hasData) {
               print('**** User Login methods=${methodSnapshot.data}');
 
-              return FutureBuilder<bool>(
-                future: getIt<LoginRepository>().appleSignInAvailable,
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.hasData) {
-                    return Center(
-                      child: Wrap(
-                        direction: Axis.horizontal,
-                        children: [
-                          _createLinkedSocialButtonWidget(
-                            context,
-                            'google',
-                            LoginMethod.GOOGLE,
-                            methodSnapshot.data.contains(LoginMethod.GOOGLE),
-                          ),
-                          _createLinkedSocialButtonWidget(
-                            context,
-                            'facebook',
-                            LoginMethod.FACEBOOK,
-                            methodSnapshot.data.contains(LoginMethod.FACEBOOK),
-                          ),
-                          // TODO PHONE
-                          // _createLinkedSocialButtonWidget(
-                          //   context,
-                          //   'phone',
-                          //   LoginMethod.PHONE,
-                          //   methodSnapshot.data.contains(LoginMethod.PHONE),
-                          // ),
-                          if (snapshot.data)
-                            _createLinkedSocialButtonWidget(
-                              context,
-                              'apple',
-                              LoginMethod.APPLE,
-                              methodSnapshot.data.contains(LoginMethod.APPLE),
-                            ),
-                        ],
-                      ),
-                    );
-                  }
-                  return CenterLoadingWidget();
-                },
+              return Center(
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  children: [
+                    _createLinkedSocialButtonWidget(
+                      context,
+                      'google',
+                      LoginMethod.GOOGLE,
+                      methodSnapshot.data.contains(LoginMethod.GOOGLE),
+                    ),
+                    _createLinkedSocialButtonWidget(
+                      context,
+                      'facebook',
+                      LoginMethod.FACEBOOK,
+                      methodSnapshot.data.contains(LoginMethod.FACEBOOK),
+                    ),
+                    // TODO PHONE
+                    // _createLinkedSocialButtonWidget(
+                    //   context,
+                    //   'phone',
+                    //   LoginMethod.PHONE,
+                    //   methodSnapshot.data.contains(LoginMethod.PHONE),
+                    // ),
+
+                    _createLinkedSocialButtonWidget(
+                      context,
+                      'apple',
+                      LoginMethod.APPLE,
+                      methodSnapshot.data.contains(LoginMethod.APPLE),
+                    ),
+                  ],
+                ),
               );
             }
 
@@ -77,8 +65,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLinkedSocialButtonWidget(
-      BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createLinkedSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Badge(
@@ -96,8 +83,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  Widget _createSocialButtonWidget(
-      BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
       method: method,

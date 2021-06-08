@@ -17,7 +17,7 @@ export class AppCoreEffects {
     private _translateService: TranslateService,
   ) {}
 
-  init$ = createEffect(() =>
+  gqlFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppCoreActions.gqlFailure),
       fetch({

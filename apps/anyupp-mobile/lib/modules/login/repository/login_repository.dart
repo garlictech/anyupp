@@ -13,10 +13,6 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   );
 
   @override
-  Future<bool> get appleSignInAvailable =>
-      _socialLoginProvider.appleSignInAvailable;
-
-  @override
   bool isFederated(LoginMethod method) {
     return _socialLoginProvider.isFederated(method);
   }
