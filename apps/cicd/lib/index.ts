@@ -7,98 +7,124 @@ import { PipelineStackProps } from './build-pipeline/utils';
 import { CiStack } from './build-pipeline/ci-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
 import { StagingBuildPipelineStack } from './build-pipeline/staging-pipeline-stack';
-import { AppcenterStack } from './build-pipeline/appcenter-stack';
+import { ProdBuildPipelineStack } from './build-pipeline/prod-pipeline-stack';
 
 export default function main(app: App): void {
-  const pipelineSecretsManagerArn =
-    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:codebuild-Z12nwS';
-
-  const devSecretsManagerStack = new SecretsManagerStack(
-    app,
-    'devsecretsmanager',
-    {
-      projectSecretsManagerArn:
-        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
-      pipelineSecretsManagerArn,
-    },
-  );
-
-  const qaSecretsManagerStack = new SecretsManagerStack(
-    app,
-    'qasecretsmanager',
-    {
-      projectSecretsManagerArn:
-        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
-      pipelineSecretsManagerArn,
-    },
-  );
-
-  const stagingSecretsManagerStack = new SecretsManagerStack(
-    app,
-    'stagingsecretsmanager',
-    {
-      projectSecretsManagerArn:
-        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-staging-secrets-4rGQUb',
-      pipelineSecretsManagerArn,
-    },
-  );
-
-  const prodSecretsManagerStack = new SecretsManagerStack(
-    app,
-    'prodsecretsmanager',
-    {
-      projectSecretsManagerArn:
-        'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
-      pipelineSecretsManagerArn,
-    },
-  );
-
   const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
 
-  const appcenterStack = new AppcenterStack(app, 'AppcenterStack');
-
-  const commonConfig = {
+  const globalConfig = {
     repoOwner: 'bgap',
     repoName: 'anyupp',
     chatbot: slackChannel.chatbot,
-    appcenterUser: appcenterStack.iamUser,
   };
 
-  const devPullRequestConfig: PipelineStackProps = {
-    repoBranch: 'dev',
-    secretsManager: devSecretsManagerStack,
-    ...commonConfig,
-  };
+  if (app.stage !== 'prod') {
+    const pipelineSecretsManagerArn =
+      'arn:aws:secretsmanager:eu-west-1:568276182587:secret:codebuild-Z12nwS';
+    const githubSecretsManagerArn =
+      'arn:aws:secretsmanager:eu-west-1:568276182587:secret:GithubAccessToken-2xxxSw';
 
-  const devBuildPipelineConfig: PipelineStackProps = {
-    repoBranch: 'dev',
-    secretsManager: devSecretsManagerStack,
-    ...commonConfig,
-  };
+    const devSecretsManagerStack = new SecretsManagerStack(
+      app,
+      'devsecretsmanager',
+      {
+        projectSecretsManagerArn:
+          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
+        pipelineSecretsManagerArn,
+        githubSecretsManagerArn,
+      },
+    );
 
-  new CiStack(app, 'CiStack', { secretsManager: devSecretsManagerStack });
+    const ciStack = new CiStack(app, 'CiStack', {
+      secretsManager: devSecretsManagerStack,
+    });
 
-  new DevBuildPipelineStack(
-    app,
-    'DevBuildPipelineStack',
-    devBuildPipelineConfig,
-  );
+    const commonConfig = {
+      ...globalConfig,
+      appcenterUser: ciStack.appcenterIamUser,
+    };
 
-  new DevPullRequestBuildStack(
-    app,
-    'DevPullRequestBuildStack',
-    devPullRequestConfig,
-  );
+    const qaSecretsManagerStack = new SecretsManagerStack(
+      app,
+      'qasecretsmanager',
+      {
+        projectSecretsManagerArn:
+          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
+        pipelineSecretsManagerArn,
+        githubSecretsManagerArn,
+      },
+    );
 
-  new QABuildPipelineStack(app, 'QABuildStack', {
-    repoBranch: 'qa',
-    secretsManager: qaSecretsManagerStack,
-    ...commonConfig,
-  });
+    const stagingSecretsManagerStack = new SecretsManagerStack(
+      app,
+      'stagingsecretsmanager',
+      {
+        projectSecretsManagerArn:
+          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-staging-secrets-4rGQUb',
+        pipelineSecretsManagerArn,
+        githubSecretsManagerArn,
+      },
+    );
+    const devPullRequestConfig: PipelineStackProps = {
+      repoBranch: 'dev',
+      secretsManager: devSecretsManagerStack,
+      ...commonConfig,
+    };
 
-  new StagingBuildPipelineStack(app, 'StagingBuildStack', {
-    repoBranch: 'staging',
-    secretsManager: stagingSecretsManagerStack,
-    ...commonConfig,
-  });
+    const devBuildPipelineConfig: PipelineStackProps = {
+      repoBranch: 'dev',
+      secretsManager: devSecretsManagerStack,
+      ...commonConfig,
+    };
+
+    new DevBuildPipelineStack(
+      app,
+      'DevBuildPipelineStack',
+      devBuildPipelineConfig,
+    );
+
+    const prStack = new DevPullRequestBuildStack(
+      app,
+      'DevPullRequestBuildStack',
+      devPullRequestConfig,
+    );
+
+    prStack.addDependency(ciStack);
+
+    new QABuildPipelineStack(app, 'QABuildStack', {
+      repoBranch: 'qa',
+      secretsManager: qaSecretsManagerStack,
+      ...commonConfig,
+    });
+
+    new StagingBuildPipelineStack(app, 'StagingBuildStack', {
+      repoBranch: 'staging',
+      secretsManager: stagingSecretsManagerStack,
+      ...commonConfig,
+    });
+  } else {
+    const secretsManager = new SecretsManagerStack(app, 'prodsecretsmanager', {
+      projectSecretsManagerArn:
+        'arn:aws:secretsmanager:eu-west-1:486782650003:secret:anyupp-prod-secrets-OQjuwn',
+      pipelineSecretsManagerArn:
+        'arn:aws:secretsmanager:eu-west-1:486782650003:secret:codebuild-w9fEax',
+      githubSecretsManagerArn:
+        'arn:aws:secretsmanager:eu-west-1:486782650003:secret:GithubAccessToken-47Zff7',
+    });
+
+    const ciStack = new CiStack(app, 'CiStack', {
+      secretsManager,
+    });
+
+    const commonConfig = {
+      ...globalConfig,
+      appcenterUser: ciStack.appcenterIamUser,
+    };
+
+    new ProdBuildPipelineStack(app, 'ProdBuildStack', {
+      repoBranch: 'master',
+      secretsManager,
+      ...commonConfig,
+    });
+  }
 }

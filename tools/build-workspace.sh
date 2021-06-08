@@ -13,6 +13,8 @@ yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 
 if [ $STAGE = 'dev' ]; then
   yarn nx build admin --skip-nx-cache
+elif [ $STAGE = 'prod' ]; then
+  yarn nx build admin --configuration=production --skip-nx-cache
 else
   yarn nx build admin --configuration=$STAGE --skip-nx-cache
 fi

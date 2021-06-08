@@ -71,6 +71,10 @@ export class WebsiteConstruct extends Construct {
       value: distribution.distributionDomainName,
     });
 
+    new cdk.CfnOutput(this, 'SiteDomain', {
+      value: siteDomain,
+    });
+    //
     // Route53 alias record for the CloudFront distribution
     if (app.stage !== 'prod') {
       const zone = route53.HostedZone.fromLookup(this, 'Zone', {
