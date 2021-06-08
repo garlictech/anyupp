@@ -1,7 +1,8 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { from, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, Observable, of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { pipeDebug } from '../../../../../../shared/utils/src/lib/fn/rxjs.utils';
 
 export interface UserResolverDeps {
   anyuppSdk: AnyuppSdk;
@@ -9,39 +10,57 @@ export interface UserResolverDeps {
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
 
-export const createConfirmedUserInCognito = (deps: UserResolverDeps) => ({
-  email,
-  password,
-  name,
-}: {
+export interface CreateConfirmedUserInput {
   email: string;
   password: string;
   name: string;
-}): Observable<CognitoIdentityServiceProvider.AdminSetUserPasswordResponse> =>
+}
+export interface CreateConfirmedUserOutput extends CreateConfirmedUserInput {
+  userId: string;
+}
+
+export const createConfirmedUserInCognito = (deps: {
+  userPoolId: string;
+  cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
+}) => (
+  input: CreateConfirmedUserInput,
+): Observable<CreateConfirmedUserOutput> =>
   of('LETS CREATE AN CONFIRMED USER').pipe(
     // CREATE USER
     switchMap(() =>
       from(
         deps.cognitoidentityserviceprovider
           .adminCreateUser({
-            UserPoolId: deps.consumerUserPoolId,
-            Username: email,
-            UserAttributes: [{ Name: 'name', Value: name }],
+            UserPoolId: deps.userPoolId,
+            Username: input.email,
+            UserAttributes: [{ Name: 'name', Value: input.name }],
           })
           .promise(),
       ),
     ),
     // SET PASSWORD to PERMANENT and the ACCOUNT to CONFIRMED
-    switchMap(() =>
+    switchMap(newUser =>
       from(
         deps.cognitoidentityserviceprovider
           .adminSetUserPassword({
-            Password: password,
-            UserPoolId: deps.consumerUserPoolId,
-            Username: email,
+            Password: input.password,
+            UserPoolId: deps.userPoolId,
+            Username: input.email,
             Permanent: true,
           })
           .promise(),
+      ).pipe(
+        map(() => {
+          const userId = newUser.User?.Attributes?.find(x => x.Name === 'sub')
+            ?.Value;
+          if (!userId) {
+            throw new Error('The Just created UserId is missing');
+          }
+          return {
+            ...input,
+            userId: userId,
+          };
+        }),
       ),
     ),
   );

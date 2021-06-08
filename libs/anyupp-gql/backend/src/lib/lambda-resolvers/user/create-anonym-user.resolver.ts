@@ -13,7 +13,10 @@ export const createAnonymUser = (
   const email = `${generatedId}@${generatedId}.hu`;
   const password = uuidV1() + 'UPPERCASE';
 
-  return createConfirmedUserInCognito(deps)({
+  return createConfirmedUserInCognito({
+    cognitoidentityserviceprovider: deps.cognitoidentityserviceprovider,
+    userPoolId: deps.consumerUserPoolId,
+  })({
     email,
     password,
     name: 'AnonymUser',
