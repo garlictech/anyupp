@@ -20,6 +20,16 @@
         [title]="orderItem.variantName | localize"
         [picture]="orderItem.image || ''"
       ></nb-user>
+
+      <div class="config-sets" *ngIf="orderItem.configSets">
+        <div *ngFor="let set of orderItem.configSets">
+          {{ set.name | localize }}:
+          <span *ngFor="let setItem of set.items; let last = last">
+            {{ setItem.name | localize }}
+            <ng-container *ngIf="!last">,</ng-container>
+          </span>
+        </div>
+      </div>
     </div>
     <div
       class="col-2 col-xl-1 p-0 m-auto subtitle-2 font-weight-bold text-right font-larger"
