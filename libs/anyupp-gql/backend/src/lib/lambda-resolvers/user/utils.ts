@@ -1,8 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { from, Observable, of, throwError } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
-import { pipeDebug } from '../../../../../../shared/utils/src/lib/fn/rxjs.utils';
 
 export interface UserResolverDeps {
   anyuppSdk: AnyuppSdk;
