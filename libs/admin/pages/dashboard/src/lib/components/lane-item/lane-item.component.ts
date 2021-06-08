@@ -80,8 +80,10 @@ export class LaneItemComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe((): void => {
           this.processingTimer = Math.floor(
-            new Date().getTime() - (lastProcessing?.ts || 0) * 0.001,
+            (new Date().getTime() - (lastProcessing?.ts || 0)) * 0.001,
           );
+
+          this._changeDetectorRef.detectChanges();
         });
     }
 
