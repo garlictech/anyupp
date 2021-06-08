@@ -65,7 +65,6 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   }
 
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
-    list.sort((a, b) => a.position.compareTo(b.position));
     return AnimationLimiter(
       child: ListView.builder(
         // itemCount: list.length + 1, // TODO remove affiliate
