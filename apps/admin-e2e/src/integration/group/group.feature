@@ -6,8 +6,11 @@ Feature: Create or update Group
     And I fill out the input with id "password" with the "Testtesttest12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
-    When I click the "skip" text
+    When I click the "skip" text with timeout 15000
     Then I should be on the dashboard page
+    # Set the desired lang
+    Then I set the language to EN
+    And I select the "test chain 1" chain in the header menu
     When I click on the menu icon
     And I click on the "Groups" text
     Then the "Groups" title is displayed

@@ -24,6 +24,13 @@ When('I click on the first Edit button', () => {
   cy.findAllByTitle('Edit').first().click({ force: true });
 });
 
+When(
+  'I click the edit button in the listitem with {string} content',
+  (name: string) => {
+    cy.findAllByRole('listitem').contains(name).findByTitle('Edit').click();
+  },
+);
+
 When('I click on the last Edit button', () => {
   cy.findAllByTitle('Edit').last().click({ force: true });
 });
