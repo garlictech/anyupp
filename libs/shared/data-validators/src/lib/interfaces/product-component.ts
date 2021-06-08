@@ -38,7 +38,7 @@ export const productComponentSchema: Joi.SchemaMap<CrudApi.ProductComponent> = {
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   name: localizedItemSchema.required(),
-  description: Joi.string().required(),
+  description: Joi.string().allow(null),
   allergens: allergenListSchema.allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),

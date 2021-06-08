@@ -125,7 +125,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => UnitSelectBloc());
   getIt.registerLazySingleton(() => TransactionsBloc(getIt<TransactionsRepository>()));
   getIt.registerLazySingleton(() => UnitsBloc(getIt<UnitRepository>(), getIt<LocationRepository>()));
-  getIt.registerLazySingleton(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
+  getIt.registerFactory(() => ProductCategoriesBloc(getIt<UnitSelectBloc>(), getIt<ProductRepository>()));
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));
   getIt.registerLazySingleton(() => LocaleBloc());
   getIt.registerLazySingleton(() => LoginBloc(getIt<LoginRepository>()));

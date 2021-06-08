@@ -33,7 +33,7 @@ class AwsProductProvider implements IProductProvider {
           results.add(ProductCategory.fromJson(Map<String, dynamic>.from(items[i])));
         }
       }
-
+      results.sort((a, b) => a.position.compareTo(b.position));
       yield results;
     } on Exception catch (e) {
       print('***** getProductCategoryList().error=$e');
@@ -70,7 +70,7 @@ class AwsProductProvider implements IProductProvider {
           }
         }
       }
-
+      results.sort((a, b) => a.position.compareTo(b.position));
       yield results;
     } on Exception catch (e) {
       print('***** getProductList().error=$e');
