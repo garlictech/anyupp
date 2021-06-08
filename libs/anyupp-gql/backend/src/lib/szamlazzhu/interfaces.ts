@@ -3,3 +3,10 @@ export interface InvoiceResponse {
   netTotal: number;
   grossTotal: number;
 }
+
+export interface ReceiptResponse {
+  invoiceId: string;
+  netTotal: number;
+  grossTotal: number;
+  pdf: string;
+}

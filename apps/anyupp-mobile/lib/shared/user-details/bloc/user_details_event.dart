@@ -12,3 +12,7 @@ abstract class UserDetailsEvent extends Equatable {
 class GetUserDetailsEvent extends UserDetailsEvent {
 
 }
+
+class ResetUserDetailsEvent extends UserDetailsEvent {
+  
+}

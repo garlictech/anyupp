@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
 import {
-  loadOrder,
   loadTransactionByExternalTransactionId,
   loadUser,
+  updateInvoiceState,
   updateOrderState,
   updateTransactionState,
 } from './stripe-graphql-crud';
@@ -110,28 +110,12 @@ export const createStripeWebhookExpressApp = (
 const handleInvoice = (transaction: CrudApi.Transaction) => async (
   deps: StripeResolverDeps,
 ) => {
-  // console.log('***** handleInvoice().orderId=' + orderId);
-
-  // const order = await loadOrder(orderId)(deps);
-  // console.log('***** handleInvoice().order.loaded()');
-  // if (!order) {
-  //   throw Error('Order not found with id=' + orderId);
-  // }
-
-  // if (!order.transaction) {
-  //   throw Error(
-  //     'The order with id=' + orderId + " doesn't have a transaction!",
-  //   );
-  // }
-
   if (!transaction.invoice) {
     throw Error(
       'The transaction with id=' + transaction.id + " doesn't have an invoice!",
     );
   }
 
-  // const unit = await loadUnit(order.unitId)(deps);
-  // console.log('***** handleInvoice().unit.loaded()');
   const user = await loadUser(transaction.userId)(deps);
   console.log(
     '***** handleInvoice().user.loaded()',
@@ -143,49 +127,44 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
 
   console.log('***** handleInvoice().invoiceId=' + transaction.invoice.id);
 
-  const invoice = await createInvoice(deps.szamlazzClient)({
-    user,
-    transaction,
-    language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
-  });
+  try {
+    const invoice = await createInvoice(deps.szamlazzClient)({
+      user,
+      transaction,
+      language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
+    });
+    console.log(
+      '### ~ file: stripe-webhook-handler.ts ~ line 136 ~ handleInvoice ~ invoice',
+      JSON.stringify(invoice, undefined, 2),
+    );
 
-  // TODO: update invoice.externalInvoiceId = invoice.invoiceId
-  // TODO: call GetInvoice to get the pdfUrl
-  // TODO: store the pdfUrl into the invoice
-
-  console.log(
-    '### ~ file: stripe-webhook-handler.ts ~ line 136 ~ handleInvoice ~ invoice',
-    JSON.stringify(invoice, undefined, 2),
-  );
-  // TODO IDE KELL A SZAMLAZZ.HU HIVAS
-  // TODO osszes szamla info benne van az Order-ben?
-  // 1. Transaction
-  // 2. Invoice
-  // 3. OrderItems
-  // 4. Unit? - nincs, be kell tolteni
-  // 5. User? - nincs, be kell tolteni
+    await updateInvoiceState(
+      transaction.invoice.id,
+      CrudApi.InvoiceStatus.success,
+      invoice.invoiceId,
+    )(deps);
+  } catch (err) {
+    console.log(
+      '***** handleInvoice().user.error=' + JSON.stringify(err, undefined, 2),
+    );
+    await updateInvoiceState(
+      transaction.invoice.id,
+      CrudApi.InvoiceStatus.failed,
+      undefined,
+    )(deps);
+  }
 };
 
-const handleReceipt = (orderId: string) => async (deps: StripeResolverDeps) => {
-  const order = await loadOrder(orderId)(deps);
-
-  if (!order) {
-    throw Error('Order not found with id=' + orderId);
-  }
-
-  if (!order.transaction) {
-    throw Error(
-      'The order with id=' + orderId + " doesn't have a transaction!",
-    );
-  }
-
-  const user = await loadUser(order.userId)(deps);
+const handleReceipt = (transaction: CrudApi.Transaction) => async (
+  deps: StripeResolverDeps,
+) => {
+  const user = await loadUser(transaction.userId)(deps);
   const email = user?.email ? user.email : '';
 
   await createReceiptAndConnectTransaction(
-    order.id,
-    order.userId,
-    order.transaction.id,
+    transaction.order.id,
+    transaction.userId,
+    transaction.id,
     email,
     CrudApi.ReceiptStatus.success,
   )(deps);
@@ -214,10 +193,9 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
     if (transaction.invoiceId) {
       await handleInvoice(transaction)(deps);
     }
-    // TODO:
-    // if (transaction.receiptId) {
-    //   await handleReceipt(transaction)(deps);
-    // }
+    if (transaction.receiptId) {
+      await handleReceipt(transaction)(deps);
+    }
   } else {
     console.log(
       '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +

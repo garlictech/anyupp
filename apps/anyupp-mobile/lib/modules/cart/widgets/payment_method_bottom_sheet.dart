@@ -250,18 +250,25 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                         getIt<CartBloc>().add(SetPaymentMode(unit, mode));
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
                         if (_selectedPaymentMethod == BottomSheetPaymentMethods.PAYMENT_INAPP) {
-                          Nav.pop();
-                          Nav.to(StripePaymentScreen(
-                            orderId: widget.orderId,
-                          ));
+                          if (_wantsInvoce) {
+                            showInvoiceFormBottomSheet(context, widget.orderId,
+                                BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
+                          } else {
+                            Nav.pop();
+                            Nav.to(StripePaymentScreen(
+                              orderId: widget.orderId,
+                            ));
+                          }
                         } else {
                           if (_wantsInvoce) {
-                            showInvoiceFormBottomSheet(context, widget.orderId, BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
+                            showInvoiceFormBottomSheet(context, widget.orderId,
+                                BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
                           } else {
                             getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                               // cart: widget.cart,
                               orderId: widget.orderId,
-                              paymentMethod: BottomSheetPaymentMethods.getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                              paymentMethod:
+                                  BottomSheetPaymentMethods.getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
                             ));
                           }
                         }

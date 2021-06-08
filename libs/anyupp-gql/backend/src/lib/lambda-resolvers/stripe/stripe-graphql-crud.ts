@@ -251,3 +251,26 @@ export const loadInvoice = (invoiceId: string) => async (
     })
     .toPromise();
 };
+
+export const updateInvoiceState = (
+  id: string,
+  status: CrudApi.InvoiceStatus,
+  externalInvoiceId: string | undefined,
+) => (deps: StripeResolverDeps) => {
+  console.log(
+    '***** updateInvoiceState().id=' +
+      id +
+      ', state=' +
+      status +
+      ', externalInvoiceId=' +
+      externalInvoiceId,
+  );
+  const updateInvoiceVars: CrudApi.UpdateInvoiceMutationVariables = {
+    input: {
+      id: id,
+      externalInvoiceId: externalInvoiceId,
+      status: status,
+    },
+  };
+  return deps.crudSdk.UpdateInvoice(updateInvoiceVars).toPromise();
+};

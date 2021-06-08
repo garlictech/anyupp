@@ -1,11 +1,11 @@
 String MUTATION_START_PAYMENT = '''
-mutation StartPaymentMutation(\$orderId: ID!, \$paymentMethod: PaymentMethod!, \$paymentMethodId: String!, \$savePaymentMethod: Boolean!, \$address: UserInvoiceAddress) {
+mutation StartPaymentMutation(\$orderId: ID!, \$paymentMethod: PaymentMethod!, \$paymentMethodId: String!, \$savePaymentMethod: Boolean!, \$invoiceAddress: UserInvoiceAddress) {
   startStripePayment(input: {
     orderId: \$orderId, 
-    paymentMethod: \$paymentMethod, 
-    paymentMethodId: \$paymentMethodId, 
+    paymentMethod: \$paymentMethod,
+    paymentMethodId: \$paymentMethodId,
     savePaymentMethod: \$savePaymentMethod,
-    invoiceAddress: \$address
+    invoiceAddress: \$invoiceAddress
   }) {
     clientSecret
     status

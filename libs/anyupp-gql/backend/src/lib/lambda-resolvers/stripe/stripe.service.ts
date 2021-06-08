@@ -57,7 +57,13 @@ export const startStripePayment = (
   console.log('startStripePayment().start()');
 
   // 1. Get parameters, orderId and payment method
-  const { orderId, paymentMethod, paymentMethodId, savePaymentMethod } = input;
+  const {
+    orderId,
+    paymentMethod,
+    paymentMethodId,
+    savePaymentMethod,
+    invoiceAddress,
+  } = input;
   console.log(
     'startStripePayment().orderId=' +
       orderId +
@@ -74,6 +80,7 @@ export const startStripePayment = (
       'Payment method is missing from request when payment mode is INAPP!',
     );
   }
+  console.log('startStripePayment().invoiceAddress=' + invoiceAddress);
 
   // 2. Load order
   let order = await loadOrder(orderId)(deps);
@@ -206,13 +213,17 @@ export const startStripePayment = (
     }
 
     // 9. Create invoice if requested
-    if (input.invoiceAddress) {
+    if (invoiceAddress) {
+      console.log(
+        'startStripePayment().createInvoiceAndConnectTransaction()=' +
+          invoiceAddress,
+      );
       // Create Invoice
       await createInvoiceAndConnectTransaction(
         order.id,
         order.userId,
         transaction.id,
-        input.invoiceAddress,
+        invoiceAddress,
         CrudApi.InvoiceStatus.waiting,
       )(deps);
     }
@@ -255,13 +266,13 @@ export const startStripePayment = (
     }
 
     // 7. Create invoice or receipt
-    if (input.invoiceAddress) {
+    if (invoiceAddress) {
       console.log('startCashPayment().invoiceAddress=' + input.invoiceAddress);
       await createInvoiceAndConnectTransaction(
         order.id,
         order.userId,
         transaction.id,
-        input.invoiceAddress,
+        invoiceAddress,
         CrudApi.InvoiceStatus.success,
       )(deps);
     } else {

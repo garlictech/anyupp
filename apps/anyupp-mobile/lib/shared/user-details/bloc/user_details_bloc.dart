@@ -23,6 +23,10 @@ class UserDetailsBloc extends Bloc<UserDetailsEvent, UserDetailsState> {
       yield UserDetailsLoaded(user);
     }
 
+    if (event is ResetUserDetailsEvent) {
+      yield NoUserDetailsState();
+    }
+
     } on Exception catch(e) {
       print('UserDetailsBloc.error=$e');
       yield UserDetailsLoadingErrorState();

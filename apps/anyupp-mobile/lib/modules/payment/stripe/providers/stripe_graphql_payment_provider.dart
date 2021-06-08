@@ -35,13 +35,14 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       return results;
     } catch (err) {
       print('err charging user: ${err.toString()}');
-      rethrow;
+      return [];
     }
   }
 
   @override
   Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress) async {
     print('startStripePaymentWithExistingCard().start()=$cart');
+    print('startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithExistingCard().orderId=$orderId');
@@ -58,13 +59,13 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
     QueryResult result = await GQL.backend.executeMutation(
       mutation: MUTATION_START_PAYMENT,
-      variables: {
-        'orderId': orderId,
-        'paymentMethod': 'inapp',
-        'paymentMethodId': paymentMethodId,
-        'savePaymentMethod': false,
-        'invoiceAddress': invoiceAddress,
-      },
+      variables: createStartPaymentRequestVariables(
+        orderId: orderId,
+        paymentMethod: 'inapp',
+        paymentMethodId: paymentMethodId,
+        saveCard: false,
+        invoiceAddress: invoiceAddress,
+      ),
     );
 
     if (result.data == null || result.data['startStripePayment'] == null) {
@@ -83,6 +84,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) async {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
+    print('startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithNewCard().orderId=$orderId');
@@ -102,13 +104,13 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
     QueryResult result = await GQL.backend.executeMutation(
       mutation: MUTATION_START_PAYMENT,
-      variables: {
-        'orderId': orderId,
-        'paymentMethod': 'inapp',
-        'paymentMethodId': paymentMethodId,
-        'savePaymentMethod': saveCard,
-        'invoiceAddress': invoiceAddress,
-      },
+      variables: createStartPaymentRequestVariables(
+        orderId: orderId,
+        paymentMethod: 'inapp',
+        paymentMethodId: paymentMethodId,
+        saveCard: saveCard,
+        invoiceAddress: invoiceAddress,
+      ),
     );
 
     if (result.data == null || result.data['startStripePayment'] == null) {

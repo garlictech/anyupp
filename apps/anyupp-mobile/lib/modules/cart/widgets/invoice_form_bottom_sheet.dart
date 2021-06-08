@@ -57,11 +57,11 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   final _cityController = TextEditingController();
   final _streetController = TextEditingController();
   FieldValidator taxFieldValidator;
+  bool _useSavedAddress = false;
 
   @override
   void initState() {
-
-    getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
+    // getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
 
     _countryCodeController.addListener(() {
       setState(() {
@@ -69,6 +69,12 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    getIt<UserDetailsBloc>().add(ResetUserDetailsEvent());
+    super.dispose();
   }
 
   @override
@@ -123,35 +129,70 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             },
             child: LayoutBuilder(
               builder: (context, constrains) {
-                return Stack(
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      color: theme.background,
-                      width: constrains.maxWidth - 32,
-                      height: 60,
+                    Stack(
+                      children: [
+                        Container(
+                          color: theme.background,
+                          width: constrains.maxWidth - 32,
+                          height: 60,
 
-                      // padding: const EdgeInsets.symmetric(
-                      //   vertical: 19.0,
-                      // ),
-                      child: Center(
-                        child: Text(
-                          trans('payment.paymentInfo.invoicing.invoice_info'),
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: theme.text,
-                            fontWeight: FontWeight.w500,
+                          // padding: const EdgeInsets.symmetric(
+                          //   vertical: 19.0,
+                          // ),
+                          child: Center(
+                            child: Text(
+                              trans('payment.paymentInfo.invoicing.invoice_info'),
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: theme.text,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
+                        Positioned(
+                            right: -5,
+                            top: 10,
+                            child: GestureDetector(
+                              onTap: () => Nav.pop(),
+                              child: Icon(Icons.close),
+                            ))
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            trans('payment.paymentInfo.invoicing.invoiceAddress'),
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: theme.text,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Switch(
+                              activeColor: theme.highlight,
+                              value: _useSavedAddress,
+                              onChanged: (value) {
+                                if (value == true) {
+                                  getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
+                                } else {
+                                  getIt<UserDetailsBloc>().add(ResetUserDetailsEvent());
+                                }
+                                setState(() {
+                                  this._useSavedAddress = value;
+                                });
+                              })
+                        ],
                       ),
                     ),
-                    Positioned(
-                        right: -5,
-                        top: 10,
-                        child: GestureDetector(
-                          onTap: () => Nav.pop(),
-                          child: Icon(Icons.close),
-                        ))
                   ],
                 );
               },
@@ -159,7 +200,6 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
           ),
           BlocBuilder<UserDetailsBloc, UserDetailsState>(
             builder: (BuildContext context, UserDetailsState state) {
-              print('*** Invoice sheet.UserDetailsBloc=$state');
               if (state is UserDetailsLoaded) {
                 return _buildInvoiceForm(context, state.userDetails);
               }
@@ -174,12 +214,19 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
 
   Widget _buildInvoiceForm(BuildContext context, [User user]) {
     if (user?.invoiceAddress != null) {
-        _nameOrCompanyController.text = user.invoiceAddress.customerName;
-        _cityController.text = user.invoiceAddress.city;
-        _emailController.text = user.invoiceAddress.email ?? user.email;
-        _zipController.text = user.invoiceAddress.postalCode;
-        _streetController.text = user.invoiceAddress.streetAddress;
-        _taxNumberController.text = user.invoiceAddress.taxNumber;
+      _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
+      _setTextFieldValue(_cityController, user.invoiceAddress.city);
+      _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+      _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+      _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+      _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+    } else {
+      _setTextFieldValue(_nameOrCompanyController, '');
+      _setTextFieldValue(_cityController, '');
+      _setTextFieldValue(_emailController, '');
+      _setTextFieldValue(_zipController, '');
+      _setTextFieldValue(_streetController, '');
+      _setTextFieldValue(_taxNumberController, '');
     }
     return Container(
       padding: EdgeInsets.symmetric(
@@ -328,5 +375,12 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             ),
       );
     });
+  }
+
+  void _setTextFieldValue(TextEditingController textController, String value) {
+    textController.value = textController.value.copyWith(
+      text: value,
+      selection: TextSelection.collapsed(offset: value?.length ?? 0),
+    );
   }
 }
