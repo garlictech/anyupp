@@ -69,24 +69,23 @@
     >
       <button
         nbButton
-        class="float-left mr-2"
-        status="danger"
-        [size]="buttonSize"
-        shape="round"
-        (click)="updateTransactionStatus(EPaymentStatus.failed)"
-      >
-        {{ 'common.transactionStatus.FAILED' | translate }}
-      </button>
-
-      <button
-        nbButton
-        class="float-right mr-1"
+        class="float-right mr-2"
         status="success"
         [size]="buttonSize"
         shape="round"
         (click)="updateTransactionStatus(EPaymentStatus.success)"
       >
         {{ 'common.transactionStatus.SUCCESS' | translate }}
+      </button>
+      <button
+        nbButton
+        class="float-right mr-2"
+        status="danger"
+        [size]="buttonSize"
+        shape="round"
+        (click)="updateTransactionStatus(EPaymentStatus.failed)"
+      >
+        {{ 'common.transactionStatus.FAILED' | translate }}
       </button>
     </ng-container>
   </div>
@@ -136,6 +135,20 @@
       [text]="currentStatus(order.statusLog)"
       [status]="getButtonStatus(order.statusLog)"
     ></nb-badge>
+  </div>
+
+  <div class="col-12 p-2 pl-4">
+    <button
+      nbButton
+      status="danger"
+      [size]="buttonSize"
+      shape="round"
+      (click)="deleteOrder()"
+      *ngIf="currentStatus(order.statusLog) === EOrderStatus.none"
+    >
+      <nb-icon icon="trash-2-outline"></nb-icon>
+      {{ 'orders.deleteOrder' | translate }}
+    </button>
   </div>
 </div>
 

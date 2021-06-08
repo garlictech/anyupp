@@ -63,5 +63,5 @@ describe('Testing cognito service', () => {
         }),
       )
       .subscribe(() => done());
-  });
+  }, 25000);
 });

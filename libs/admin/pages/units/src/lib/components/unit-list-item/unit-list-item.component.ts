@@ -1,5 +1,6 @@
 import * as fp from 'lodash/fp';
-import { NGXLogger } from 'ngx-logger';
+import { EMPTY } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -7,10 +8,12 @@ import {
   Component,
   Input,
 } from '@angular/core';
+import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
+import { Store } from '@ngrx/store';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
@@ -26,10 +29,10 @@ export class UnitListItemComponent {
   public workingGenerateStatus = false;
 
   constructor(
+    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _dataService: DataService,
     private _toasterService: ToasterService,
-    private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -52,23 +55,38 @@ export class UnitListItemComponent {
   public async regenerateData(): Promise<void> {
     this.workingGenerateStatus = true;
 
-    try {
-      if (this.unit) {
-        await this._dataService.regenerateUnitData(this.unit?.id).toPromise();
-      }
+    if (this.unit) {
+      this._dataService
+        .regenerateUnitData(this.unit?.id)
+        .pipe(
+          catchError(err => {
+            const _err = JSON.parse(err.graphQLErrors?.[0]?.message || {});
+            if (_err.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
+              this._toasterService.show(
+                EToasterType.DANGER,
+                '',
+                'errors.ERROR_NO_PRODUCT_IN_UNIT',
+              );
+            } else {
+              this._store.dispatch(appCoreActions.gqlFailure({ error: err }));
+            }
 
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.updateSuccessful',
-      );
-    } catch (err) {
-      this._toasterService.show(EToasterType.DANGER, '', 'common.updateError');
+            this.workingGenerateStatus = false;
+            this._changeDetectorRef.detectChanges();
 
-      this._logger.error(`REGENERATE UNIT DATA ERROR: ${JSON.stringify(err)}`);
+            return EMPTY;
+          }),
+        )
+        .subscribe(() => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+
+          this.workingGenerateStatus = false;
+          this._changeDetectorRef.detectChanges();
+        });
     }
-
-    this.workingGenerateStatus = false;
-    this._changeDetectorRef.detectChanges();
   }
 }
