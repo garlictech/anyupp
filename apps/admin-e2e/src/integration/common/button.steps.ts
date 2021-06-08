@@ -61,11 +61,6 @@ When('I select {string}', (value: string) => {
 //   cy.findAllByText(value).click();
 // });
 
-When('I set the currency to {string}', (value: string) => {
-  cy.get('[caption="common.currency"]').click();
-  cy.findAllByText(value).last().click();
-});
-
 When('I click on the {string} link', (value: string) => {
   cy.get('.tab-link').contains(value).click();
 });
@@ -75,11 +70,13 @@ When('I click on the {string} link', (value: string) => {
 //   cy.findAllByText(value).last().click({ force: true });
 // });
 
+// TODO: replace the caption match with something less brittle selection mode
 When('I click the component selector to set {string}', (value: string) => {
   cy.get('[caption="productComponentSets.productComponent"]').click();
   cy.findAllByText(value).last().click();
 });
 
+// TODO: replace the caption match with something less brittle selection mode
 When('I click on the modifier selector to add {string}', (value: string) => {
   cy.get('[caption="products.productModifierSet"]').click();
   cy.findAllByText(value).first().click();
@@ -89,6 +86,8 @@ When('I click on the first {string} button', (value: string) => {
   cy.findAllByTitle(value).first().click({ force: true });
 });
 
+// TODO: find it by title, if the button has no title we should request it from the ADMIN developers
+// TODO: a button without a title is not user friendly either
 When('I click on the download button', () => {
   cy.get('[icon="download-outline"]').first().click();
 });
