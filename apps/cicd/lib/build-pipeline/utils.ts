@@ -243,27 +243,27 @@ export const createPipeline = (
     },
   ];
 
-  const buildActions: codepipeline_actions.Action[] =
-    stage === 'prod'
-      ? [
-          new codepipeline_actions.ManualApprovalAction({
-            actionName: 'Approve_Prod',
-          }),
-        ]
-      : [];
-
-  buildActions.push(
-    new codepipeline_actions.CodeBuildAction({
-      actionName: 'BuildAndDeploy',
-      project: build,
-      input: sourceOutput,
-      outputs: [buildOutput],
-    }),
-  );
+  if (stage === 'prod') {
+    stages.push({
+      stageName: 'ApproveProdDeploy',
+      actions: [
+        new codepipeline_actions.ManualApprovalAction({
+          actionName: 'Approve_Prod',
+        }),
+      ],
+    });
+  }
 
   stages.push({
     stageName: 'BuildAndDeploy',
-    actions: buildActions,
+    actions: [
+      new codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildAndDeploy',
+        project: build,
+        input: sourceOutput,
+        outputs: [buildOutput],
+      }),
+    ],
   });
 
   if (props.finalizationStage) {
