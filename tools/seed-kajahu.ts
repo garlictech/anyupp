@@ -10,11 +10,169 @@ import { map, tap, switchMap } from 'rxjs/operators';
 import assert from 'assert';
 import { defer } from 'rxjs';
 import * as CrudApi from '../libs/crud-gql/api/src';
+import {
+  validateChain,
+  validateGroup,
+  validateUnit,
+} from '../libs/shared/data-validators/src';
 
 const EMAIL = process.argv[2];
 const PASSWORD = process.argv[3];
 const NAME = 'KAJAHU_ADMIN_USER';
 const PHONE = '123123213';
+
+const UNIT_ID = '-MGMw7p0gQsX31ZLZOkK';
+
+const chainInput: CrudApi.CreateChainInput = {
+  address: {
+    country: 'Hungary',
+    location: {
+      lng: 19.0503706,
+      lat: 47.4974623,
+    },
+    address: 'József nádor tér 5-6 fszt 1',
+    title: 'CyBERG HQ',
+    city: 'Budapest',
+    postalCode: '1051',
+  },
+  description: {
+    de: 'CYBERG Anyupp HQ',
+    en: 'CYBERG Anyupp HQ',
+    hu: 'Welcome to AnyUpp HQ',
+  },
+  isActive: true,
+  email: 'anyupp@cyberg.net',
+  name: 'Cyberg Corp Nyrt',
+  phone: '+36203324200',
+  style: {
+    images: {
+      header: 'chains/yplep0rnve2kmosc.png',
+      logo: 'chains/066fhc84fbfi1126.png',
+    },
+    colors: {
+      indicator: '#30bf60',
+      highlight: '#a8692a',
+      textDark: '#303030',
+      backgroundDark: '#d6dde0',
+      disabled: '#303030',
+      backgroundLight: '#ffffff',
+      borderLight: '#e7e5d0',
+      borderDark: '#c3cacd',
+      textLight: '#ffffff',
+    },
+  },
+};
+const groupInput: CrudApi.CreateGroupInput = {
+  chainId: 'SHOULD_BE_UPDATED_DURING_CREATION',
+  currency: 'HUF',
+  address: {
+    country: 'Hungary',
+    location: {
+      lng: 19.0503706,
+      lat: 47.4974623,
+    },
+    address: 'József nádor tér 5-6',
+    title: 'ANYUPP RDC',
+    city: 'Budapest',
+    postalCode: '1051',
+  },
+  description: {
+    de: 'AnyuUpp R&D Centre',
+    en: 'AnyuUpp R&D Centre',
+    hu: 'AnyuUpp R&D Centre',
+  },
+  email: 'admin@anyupp.net',
+  phone: '+36203324200',
+  name: 'ANYUPP R&D Centre',
+};
+const unitInput: CrudApi.CreateUnitInput = {
+  id: UNIT_ID,
+  chainId: 'SHOULD_BE_UPDATED_DURING_CREATION',
+  groupId: 'SHOULD_BE_UPDATED_DURING_CREATION',
+  openingHours: {
+    thu: {
+      from: '09:00',
+      to: '18:00',
+    },
+    tue: {
+      from: '09:00',
+      to: '18:00',
+    },
+    wed: {
+      from: '09:00',
+      to: '18:00',
+    },
+    sat: {
+      from: '',
+      to: '',
+    },
+    custom: [],
+    fri: {
+      from: '09:00',
+      to: '18:00',
+    },
+    mon: {
+      from: '09:00',
+      to: '18:00',
+    },
+    sun: {
+      from: '',
+      to: '',
+    },
+  },
+  open: {
+    from: '2021-06-02',
+    to: '2021-12-31',
+  },
+  address: {
+    country: 'Hungary',
+    location: {
+      lng: 19.0763101,
+      lat: 47.485722,
+    },
+    address: 'Corvin sétány 3',
+    title: 'KAJAHU Corvin',
+    city: 'Budapest',
+    postalCode: '1081',
+  },
+  email: 'admin@anyupp.net',
+  name: 'KAJAHU CORVIN',
+  paymentModes: [
+    {
+      method: CrudApi.PaymentMethod.cash,
+      type: CrudApi.PaymentType.cash,
+    },
+    {
+      method: CrudApi.PaymentMethod.card,
+      type: CrudApi.PaymentType.card,
+    },
+    {
+      method: CrudApi.PaymentMethod.inapp,
+      type: CrudApi.PaymentType.stripe,
+    },
+  ],
+  isActive: true,
+  lanes: [
+    {
+      color: '#1043f1',
+      name: 'pult',
+      id: 'a493ed70-c39a-11eb-ae19-293a0a09bb23',
+    },
+    {
+      color: '#f30b29',
+      name: 'konyha',
+      id: '013272d0-c39c-11eb-ae19-293a0a09bb23',
+    },
+  ],
+  isAcceptingOrders: true,
+  description: {
+    de: 'KAJAHU CORVIN 3',
+    en: 'KAJAHU CORVIN 3',
+    hu: 'KAJAHU CORVIN 3',
+  },
+  phone: '+36203324200',
+};
+
 const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
 // const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
@@ -126,13 +284,125 @@ const createAndCheckAdminUser = () =>
     ),
   );
 
+const createAndCheckChainGroupUnit = () =>
+  // Create CHAIN
+  crudSdk
+    .CreateChain({
+      input: chainInput,
+    })
+    .pipe(
+      switchMap(validateChain),
+      tap({
+        next(newDbRecord: CrudApi.Chain) {
+          assert(!!newDbRecord, 'Chain from db is missing');
+          assert(!!newDbRecord['id'], 'Id is missing');
+          assert(
+            newDbRecord['email'] === chainInput.email,
+            'Email from db is not the requested',
+          );
+          assert(
+            newDbRecord['name'] === chainInput.name,
+            'Name from db is not the requested',
+          );
+          console.log(chalk.greenBright.bold('CHAIN IN DB check is OK'));
+        },
+      }),
+      map((newDbRecord: CrudApi.Chain) => newDbRecord.id),
+      // Create GROUP
+      switchMap(chainId =>
+        crudSdk
+          .CreateGroup({
+            input: {
+              ...groupInput,
+              chainId,
+            },
+          })
+          .pipe(
+            switchMap(validateGroup),
+            tap({
+              next(newDbRecord) {
+                assert(!!newDbRecord, 'Group from db is missing');
+                assert(!!newDbRecord['id'], 'Id is missing');
+                assert(
+                  newDbRecord['email'] === groupInput.email,
+                  'Email from db is not the requested',
+                );
+                assert(
+                  newDbRecord['phone'] === groupInput.phone,
+                  'Phone from db is not the requested',
+                );
+                assert(
+                  newDbRecord['currency'] === groupInput.currency,
+                  'Currency from db is not the requested',
+                );
+                assert(
+                  newDbRecord['chainId'] === chainId,
+                  'ChainId from db is not the requested',
+                );
+                console.log(chalk.greenBright.bold('GROUP IN DB check is OK'));
+              },
+            }),
+            map((newDbRecord: CrudApi.Group) => ({
+              chainId,
+              groupId: newDbRecord.id,
+            })),
+          ),
+      ),
+      // Create UNIT
+      switchMap((props: { chainId: string; groupId: string }) =>
+        crudSdk
+          .CreateUnit({
+            input: {
+              ...unitInput,
+              chainId: props.chainId,
+              groupId: props.groupId,
+            },
+          })
+          .pipe(
+            switchMap(validateUnit),
+            tap({
+              next(newDbRecord) {
+                assert(!!newDbRecord, 'Unit from db is missing');
+                assert(!!newDbRecord['id'], 'Id is missing');
+                assert(
+                  newDbRecord['email'] === unitInput.email,
+                  'Email from db is not the requested',
+                );
+                assert(
+                  newDbRecord['phone'] === unitInput.phone,
+                  'Phone from db is not the requested',
+                );
+                assert(
+                  newDbRecord['chainId'] === props.chainId,
+                  'ChainId from db is not the requested',
+                );
+                assert(
+                  newDbRecord['groupId'] === props.groupId,
+                  'GroupId from db is not the requested',
+                );
+                assert(
+                  newDbRecord['id'] === UNIT_ID,
+                  'UnitId from db is not the requested',
+                );
+                console.log(chalk.greenBright.bold('UNIT IN DB check is OK'));
+                console.log(
+                  chalk.greenBright.bold(`UNIT created with id ${UNIT_ID}`),
+                );
+              },
+            }),
+          ),
+      ),
+    );
+
 // *** EXECUTE ***
-createAndCheckAdminUser().subscribe({
-  next() {
-    assert(true, 'SHOULD BE SUCCESSFULL');
-  },
-  error(err) {
-    console.error(err);
-    assert(false, 'THE USER LOGIN SHOULD NOT FAIL');
-  },
-});
+createAndCheckAdminUser()
+  .pipe(switchMap(createAndCheckChainGroupUnit))
+  .subscribe({
+    next() {
+      assert(true, 'SHOULD BE SUCCESSFULL');
+    },
+    error(err) {
+      console.error(err);
+      assert(false, 'THE USER LOGIN SHOULD NOT FAIL');
+    },
+  });

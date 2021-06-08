@@ -1,5 +1,7 @@
 import * as Joi from 'joi';
+
 import * as CrudApi from '@bgap/crud-gql/api';
+
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
