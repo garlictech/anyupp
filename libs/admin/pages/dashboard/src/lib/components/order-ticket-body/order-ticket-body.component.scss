@@ -1,6 +1,6 @@
 @import '../../../../../../ui/theme/src/lib/styles/themes';
 
-.accepting-orders  {
+.accepting-orders {
   position: relative;
   top: -4px;
 }
@@ -10,5 +10,5 @@ bgap-order-print {
 }
 
 ::ng-deep .selectedOrder {
-  background-color: nb-theme(color-basic-200) !important;
+  background-color: nb-theme(color-basic-active) !important;
 }

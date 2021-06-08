@@ -25,6 +25,7 @@
             caption="common.nameHU"
             type="text"
             [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+            inputId="nameHu"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -32,6 +33,7 @@
             caption="common.nameEN"
             type="text"
             [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+            inputId="nameEn"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -39,6 +41,7 @@
             caption="common.nameDE"
             type="text"
             [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+            inputId="nameDe"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -51,6 +54,7 @@
             [control]="
               dialogForm.get('description')!.get('hu')! | asFormControl
             "
+            inputId="descriptionHu"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -60,6 +64,7 @@
             [control]="
               dialogForm.get('description')!.get('en')! | asFormControl
             "
+            inputId="descriptionEn"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -69,6 +74,7 @@
             [control]="
               dialogForm.get('description')!.get('de')! | asFormControl
             "
+            inputId="descriptionDe"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -80,6 +86,7 @@
             caption="common.productCategory"
             [options]="(productCategories$ | async) || []"
             [localize]="true"
+            inputId="productCategoryId"
           >
           </bgap-form-select>
         </div>
@@ -90,6 +97,7 @@
             caption="common.productType"
             [options]="productTypes"
             [localize]="false"
+            inputId="productType"
           >
           </bgap-form-select>
         </div>
@@ -98,6 +106,7 @@
           <bgap-form-checkbox
             caption="products.isVisible"
             [control]="dialogForm.get('isVisible')! | asFormControl"
+            inputId="isVisible"
           ></bgap-form-checkbox>
         </div>
       </div>
