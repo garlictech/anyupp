@@ -80,8 +80,10 @@ export class LaneItemComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe((): void => {
           this.processingTimer = Math.floor(
-            new Date().getTime() - (lastProcessing?.ts || 0) * 0.001,
+            (new Date().getTime() - (lastProcessing?.ts || 0)) * 0.001,
           );
+
+          this._changeDetectorRef.detectChanges();
         });
     }
 
@@ -106,11 +108,13 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService.updateOrderItemStatus(
-        this.orderItem.orderId,
-        nextStatus,
-        Number(this.orderItem.idx),
-      );
+      this._orderService
+        .updateOrderItemStatus(
+          this.orderItem.orderId,
+          nextStatus,
+          Number(this.orderItem.idx),
+        )
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();
@@ -126,11 +130,13 @@ export class LaneItemComponent implements OnInit, OnDestroy {
       !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService.updateOrderItemStatus(
-        this.orderItem.orderId,
-        prevStatus,
-        Number(this.orderItem.idx),
-      );
+      this._orderService
+        .updateOrderItemStatus(
+          this.orderItem.orderId,
+          prevStatus,
+          Number(this.orderItem.idx),
+        )
+        .subscribe();
     }
 
     this._changeDetectorRef.detectChanges();

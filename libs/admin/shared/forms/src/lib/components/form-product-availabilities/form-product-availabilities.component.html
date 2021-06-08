@@ -16,6 +16,7 @@
           [options]="availabilityTypes"
           (selectionChange)="onTypeChange($event, i)"
           [localize]="false"
+          inputId="type"
         >
         </bgap-form-select>
       </div>
@@ -27,6 +28,7 @@
           "
           type="number"
           [control]="availability.get('price')! | asFormControl"
+          inputId="price"
         ></bgap-form-text-input>
       </div>
 
@@ -55,6 +57,7 @@
             caption="products.dayFrom"
             [options]="iterativeAvailabilities"
             [localize]="false"
+            inputId="dayFrom"
           >
           </bgap-form-select>
         </div>
@@ -64,6 +67,7 @@
             caption="products.dayTo"
             [options]="iterativeAvailabilities"
             [localize]="false"
+            inputId="dayTo"
           >
           </bgap-form-select>
         </div>
@@ -77,6 +81,7 @@
             caption="products.dayFrom"
             type="date"
             [control]="availability.get('dayFrom')! | asFormControl"
+            inputId="dayFrom"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -84,6 +89,7 @@
             caption="products.dayTo"
             type="date"
             [control]="availability.get('dayTo')! | asFormControl"
+            inputId="dayTo"
           ></bgap-form-text-input>
         </div>
       </ng-container>
@@ -93,6 +99,7 @@
           caption="products.timeFrom"
           type="text"
           [control]="availability.get('timeFrom')! | asFormControl"
+          inputId="timeFrom"
         ></bgap-form-text-input>
       </div>
       <div class="col-md-2">
@@ -100,6 +107,7 @@
           caption="products.timeTo"
           type="text"
           [control]="availability.get('timeTo')! | asFormControl"
+          inputId="timeTo"
         ></bgap-form-text-input>
       </div>
     </div>
