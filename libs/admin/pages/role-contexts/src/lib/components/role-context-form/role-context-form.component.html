@@ -31,6 +31,7 @@
             caption="common.nameHU"
             type="text"
             [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+            inputId="nameHu"
           ></bgap-form-text-input>
         </div>
 
@@ -39,6 +40,7 @@
             caption="common.nameEN"
             type="text"
             [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+            inputId="nameEn"
           ></bgap-form-text-input>
         </div>
 
@@ -47,6 +49,7 @@
             caption="common.nameDE"
             type="text"
             [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+            inputId="nameDe"
           ></bgap-form-text-input>
         </div>
 
@@ -56,6 +59,7 @@
             caption="roles.role"
             [options]="roleOptions"
             [localize]="false"
+            inputId="role"
           >
           </bgap-form-select>
         </div>

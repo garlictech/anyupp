@@ -35,6 +35,7 @@
               caption="common.taxPercent"
               type="number"
               [control]="dialogForm.get('tax')! | asFormControl"
+              inputId="tax"
             ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
@@ -44,6 +45,7 @@
               [options]="unitLanes"
               [localize]="false"
               [forceShowEmptyOption]="true"
+              inputId="laneId"
             >
             </bgap-form-select>
           </div>
@@ -51,12 +53,14 @@
             <bgap-form-checkbox
               caption="products.takeaway"
               [control]="dialogForm.get('takeaway')! | asFormControl"
+              inputId="takeaway"
             ></bgap-form-checkbox>
           </div>
           <div class="col-3 pt-4">
             <bgap-form-checkbox
               caption="products.isVisible"
               [control]="dialogForm.get('isVisible')! | asFormControl"
+              inputId="isVisible"
             ></bgap-form-checkbox>
           </div>
         </div>
