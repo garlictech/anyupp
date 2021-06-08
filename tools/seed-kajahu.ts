@@ -6,9 +6,9 @@ import chalk from 'chalk';
 import { createConfirmedUserInCognito } from '../libs/anyupp-gql/backend/src/lib/lambda-resolvers/user/utils';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { awsConfig } from '../libs/crud-gql/api/src';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, mapTo } from 'rxjs/operators';
 import assert from 'assert';
-import { defer } from 'rxjs';
+import { defer, Observable } from 'rxjs';
 import * as CrudApi from '../libs/crud-gql/api/src';
 import {
   validateChain,
@@ -279,12 +279,20 @@ const createAndCheckAdminUser = () =>
                 chalk.greenBright.bold('ADMIN USER IN DB check is OK'),
               );
             },
+            error() {
+              console.log(chalk.redBright.bold('ADMIN USER create ERROR'));
+            },
           }),
+          mapTo(props.userId),
         ),
     ),
   );
 
-const createAndCheckChainGroupUnit = () =>
+const createAndCheckChainGroupUnit = (): Observable<{
+  chainId: string;
+  groupId: string;
+  unitId: string;
+}> =>
   // Create CHAIN
   crudSdk
     .CreateChain({
@@ -306,8 +314,12 @@ const createAndCheckChainGroupUnit = () =>
           );
           console.log(chalk.greenBright.bold('CHAIN IN DB check is OK'));
         },
+        error() {
+          console.log(chalk.redBright.bold('CHAIN create ERROR'));
+        },
       }),
       map((newDbRecord: CrudApi.Chain) => newDbRecord.id),
+
       // Create GROUP
       switchMap(chainId =>
         crudSdk
@@ -341,13 +353,18 @@ const createAndCheckChainGroupUnit = () =>
                 );
                 console.log(chalk.greenBright.bold('GROUP IN DB check is OK'));
               },
+              error() {
+                console.log(chalk.redBright.bold('GROUP create ERROR'));
+              },
             }),
+
             map((newDbRecord: CrudApi.Group) => ({
               chainId,
               groupId: newDbRecord.id,
             })),
           ),
       ),
+
       // Create UNIT
       switchMap((props: { chainId: string; groupId: string }) =>
         crudSdk
@@ -389,20 +406,99 @@ const createAndCheckChainGroupUnit = () =>
                   chalk.greenBright.bold(`UNIT created with id ${UNIT_ID}`),
                 );
               },
+              error() {
+                console.log(chalk.redBright.bold('UNIT create ERROR'));
+              },
             }),
+            map((newDbRecord: CrudApi.Unit) => ({
+              ...props,
+              unitId: newDbRecord.id,
+            })),
           ),
       ),
     );
 
+const createRoleContext = (adminUserId: string) => {
+  const superuserInput: CrudApi.CreateRoleContextInput = {
+    name: {
+      hu: `Superuser role context - KajahuCorvin`,
+      en: `Superuser role context - KajahuCorvin`,
+    },
+    role: CrudApi.Role.superuser,
+    contextId: 'SU_CTX_ID',
+  };
+  return crudSdk.CreateRoleContext({ input: superuserInput }).pipe(
+    map(x => x as CrudApi.RoleContext),
+    tap({
+      next(newDbRecord: CrudApi.RoleContext) {
+        assert(!!newDbRecord, 'RoleContext from db is missing');
+        assert(!!newDbRecord['id'], 'Id is missing');
+        assert(
+          newDbRecord['role'] === CrudApi.Role.superuser,
+          'Role from db is not the requested',
+        );
+        assert(
+          newDbRecord['contextId'] === 'SU_CTX_ID',
+          'ContextId from db is not the requested',
+        );
+        console.log(chalk.greenBright.bold('ROLE_CONTEXT IN DB check is OK'));
+      },
+      error() {
+        console.log(chalk.redBright.bold('ROLE CONTEXT create ERROR'));
+      },
+    }),
+    map(newDbRecord => (newDbRecord as CrudApi.RoleContext).id),
+    switchMap((roleContextId: string) =>
+      crudSdk
+        .CreateAdminRoleContext({
+          input: {
+            adminUserId,
+            roleContextId,
+          },
+        })
+        .pipe(
+          map(x => x as CrudApi.AdminRoleContext),
+          tap({
+            next(newDbRecord: CrudApi.AdminRoleContext) {
+              assert(!!newDbRecord, 'AdminRoleContext from db is missing');
+              assert(!!newDbRecord['id'], 'Id is missing');
+              assert(
+                newDbRecord['adminUserId'] === adminUserId,
+                'AdminUserId from db is not the requested',
+              );
+              assert(
+                newDbRecord['roleContextId'] === roleContextId,
+                'RoleContextId from db is not the requested',
+              );
+              console.log(
+                chalk.greenBright.bold('ADMIN_ROLE_CONTEXT IN DB check is OK'),
+              );
+            },
+            error() {
+              console.log(
+                chalk.redBright.bold('ADMIN ROLE CONTEXT create ERROR'),
+              );
+            },
+          }),
+        ),
+    ),
+  );
+};
+
 // *** EXECUTE ***
 createAndCheckAdminUser()
-  .pipe(switchMap(createAndCheckChainGroupUnit))
+  .pipe(
+    switchMap(adminUserId => createRoleContext(adminUserId as string)),
+    switchMap(() => crudSdk.DeleteUnit({ input: { id: UNIT_ID } })),
+    switchMap(() => createAndCheckChainGroupUnit()),
+  )
   .subscribe({
     next() {
       assert(true, 'SHOULD BE SUCCESSFULL');
     },
     error(err) {
-      console.error(err);
-      assert(false, 'THE USER LOGIN SHOULD NOT FAIL');
+      console.error(JSON.stringify(err, undefined, 2));
+      console.log(chalk.redBright.bold('ERROR'));
+      assert(false, 'THE WHOLE SCRIPT SHOULD NOT FAIL');
     },
   });
