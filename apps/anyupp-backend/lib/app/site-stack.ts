@@ -5,7 +5,7 @@ import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
 import { WebsiteConstruct } from './website-construct';
 
-export interface SiteStackProps extends sst.StackProps {}
+export type SiteStackProps = sst.StackProps;
 
 export class SiteStack extends sst.Stack {
   public adminSiteUrl: string;

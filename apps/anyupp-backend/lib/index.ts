@@ -51,9 +51,6 @@ export class AnyUppStack extends Stack {
       });
     }
 
-    /*if (scope.stage === 'dev') {
-	new CustomResourcesStack(scope, 'customResources', {})
-}*/
     /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
       appsyncApi: appsyncStack.api,
       pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
