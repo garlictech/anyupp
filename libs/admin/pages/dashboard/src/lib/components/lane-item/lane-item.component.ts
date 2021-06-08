@@ -1,4 +1,4 @@
-import * as fp from 'lodash/fp';
+import { findLast } from 'lodash/fp';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -71,7 +71,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
     if (this.orderItem.currentStatus === CrudApi.OrderStatus.processing) {
-      const lastProcessing = fp.findLast(
+      const lastProcessing = findLast(
         logItem => logItem?.status === CrudApi.OrderStatus.processing,
         this.orderItem.statusLog,
       );
@@ -103,17 +103,17 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
     if (
       nextStatus &&
-      this.orderItem.idx !== undefined &&
+      !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService
-        .updateOrderItemStatus(
-          this.orderItem.orderId,
-          nextStatus,
-          this.orderItem.idx,
-        )
-        .subscribe();
+      this._orderService.updateOrderItemStatus(
+        this.orderItem.orderId,
+        nextStatus,
+        Number(this.orderItem.idx),
+      );
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 
   public moveBack(): void {
@@ -123,16 +123,16 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
     if (
       prevStatus &&
-      this.orderItem.idx !== undefined &&
+      !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService
-        .updateOrderItemStatus(
-          this.orderItem.orderId,
-          prevStatus,
-          this.orderItem.idx,
-        )
-        .subscribe();
+      this._orderService.updateOrderItemStatus(
+        this.orderItem.orderId,
+        prevStatus,
+        Number(this.orderItem.idx),
+      );
     }
+
+    this._changeDetectorRef.detectChanges();
   }
 }
