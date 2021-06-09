@@ -118,9 +118,7 @@ export const loadTransactionByExternalTransactionId = (
     .ListTransactions(listTransactionListVars)
     .pipe(
       map(data => data?.items),
-      map(data =>
-        data && data?.length > 0 ? (data[0] as CrudApi.Transaction) : null,
-      ),
+      map(data => (data && data?.length > 0 ? data[0] : null)),
     )
     .toPromise();
 };

@@ -649,7 +649,7 @@ type Transaction
   userId: ID!
   user: User! @connection(fields: ["userId"])
   orderId: ID!
-  order: Order! @connection(fields: ["orderId"])
+  # order: Order! @connection(fields: ["orderId"])
   type: String
   total: Float
   currency: String

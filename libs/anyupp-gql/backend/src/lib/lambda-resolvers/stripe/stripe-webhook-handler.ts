@@ -178,7 +178,7 @@ const handleReceipt = (transaction: CrudApi.Transaction) => async (
   }
 
   await createReceiptAndConnectTransaction(
-    transaction.order.id,
+    transaction.orderId,
     transaction.userId,
     transaction.id,
     user.email,
@@ -190,7 +190,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
   deps: StripeResolverDeps,
 ) => {
   console.debug('***** handleSuccessTransaction().id=' + externalTransactionId);
-  const transaction = await loadTransactionByExternalTransactionId(
+  const transaction: CrudApi.Transaction | null = await loadTransactionByExternalTransactionId(
     externalTransactionId,
   )(deps);
   // console.debug('***** handleSuccessTransaction().loaded.transaction=' + transaction);
