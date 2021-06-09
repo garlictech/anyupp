@@ -3,6 +3,7 @@
 [![iOS STAGING app](https://build.appcenter.ms/v0.1/apps/a370b1c5-81c7-44c1-8d84-3e931c3abd46/branches/staging/badge)](https://appcenter.ms)
 [![iOS PROD app](https://build.appcenter.ms/v0.1/apps/f8c856fd-c72e-46b2-831f-393354e16a3f/branches/master/badge)](https://appcenter.ms)
 [![CodeFactor](https://www.codefactor.io/repository/github/bgap/anyupp/badge/dev?s=e93c51ecee20883666aec3eb28394da7650bd544)](https://www.codefactor.io/repository/github/bgap/anyupp/overview/dev)
+[![DeepSource](https://deepsource.io/gh/bgap/anyupp.svg/?label=active+issues&show_trend=true&token=rpFqahUIHd2R6-9vKBMMupbE)](https://deepsource.io/gh/bgap/anyupp/?ref=repository-badge)
 
 # Anyupp
 
