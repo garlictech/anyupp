@@ -14,7 +14,7 @@ Map<String, dynamic> createStartPaymentRequestVariables({
     'paymentMethod': 'inapp',
     'paymentMethodId': paymentMethodId,
     'savePaymentMethod': saveCard,
-    'invoiceAddress': invoiceAddress.toMap(),
+    'invoiceAddress': invoiceAddress?.toMap(),
   };
   print('createStartPaymentRequestVariables().map=${jsonEncode(map)}');
   return map;

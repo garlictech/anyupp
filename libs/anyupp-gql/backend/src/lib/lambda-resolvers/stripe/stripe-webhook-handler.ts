@@ -255,8 +255,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
     // console.debug('***** handleSuccessTransaction().success()');
     if (transaction.invoiceId) {
       await handleInvoice(transaction)(deps);
-    }
-    if (transaction.receiptId) {
+    } else {
       await handleReceipt(transaction)(deps);
     }
   } else {

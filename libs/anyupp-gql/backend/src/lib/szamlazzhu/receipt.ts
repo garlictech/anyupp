@@ -3,14 +3,18 @@ import { ReceiptResponse } from './interfaces';
 
 import * as Szamlazz from 'szamlazz.js';
 
-export const createReceipt = (szamlazzClient: Szamlazz.Client) => async ({
+export const createReceiptSzamlazzHu = (
+  szamlazzClient: Szamlazz.Client,
+) => async ({
   user,
   transaction,
+  order,
   language = Szamlazz.Language.Hungarian,
   paymentMethod = Szamlazz.PaymentMethod.Stripe,
 }: {
   user: CrudApi.User;
   transaction: CrudApi.Transaction;
+  order: CrudApi.Order;
   language: Szamlazz.Interface.Language;
   paymentMethod?: Szamlazz.Interface.PaymentMethod;
 }): // unit?: CrudApi.Unit,
@@ -60,7 +64,7 @@ Promise<ReceiptResponse> => {
   });
 
   // OrderItems
-  const items = transaction.order.items.map(orderItem => {
+  const items = order.items.map(orderItem => {
     // TODO: use the language input param
     let label = orderItem.productName.hu;
     if (!label) {
