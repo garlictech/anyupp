@@ -12,7 +12,7 @@ Feature: Authentication
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     Then I should see "Account recovery requires verified contact information" sub-header
-    When I click the "skip" text
+    When I click the "skip" text with timeout 15000
     Then I should be on the dashboard page
     # Set the desired lang
     Then I set the language to EN

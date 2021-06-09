@@ -1,12 +1,10 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
 
 When('I fill all the hour inputs', () => {
-  cy.findAllByPlaceholderText('hh:mm')
-    .clear()
-    .each(($hourInput, index) => {
-      const hour = index.toString().padStart(2, '0'); // 3 => 03
-      cy.wrap($hourInput).type(`${hour}:00`);
-    });
+  cy.findAllByPlaceholderText('hh:mm').each(($hourInput, index) => {
+    const hour = index.toString().padStart(2, '0'); // 3 => 03
+    cy.wrap($hourInput).clear().type(`${hour}:00`);
+  });
 });
 
 When('I click on the Color picker fill out with {string}', (color: string) => {
