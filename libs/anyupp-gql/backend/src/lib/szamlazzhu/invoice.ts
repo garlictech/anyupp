@@ -2,15 +2,18 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { InvoiceResponse } from './interfaces';
 
 import * as Szamlazz from 'szamlazz.js';
+import { loadOrder } from '../lambda-resolvers/stripe/stripe-graphql-crud';
 
 export const createInvoice = (szamlazzClient: Szamlazz.Client) => async ({
   user,
   transaction,
+  order,
   language = Szamlazz.Language.Hungarian,
   paymentMethod = Szamlazz.PaymentMethod.Stripe,
 }: {
   user: CrudApi.User;
   transaction: CrudApi.Transaction;
+  order: CrudApi.Order;
   language: Szamlazz.Interface.Language;
   paymentMethod?: Szamlazz.Interface.PaymentMethod;
 }): // unit?: CrudApi.Unit,
@@ -42,7 +45,6 @@ Promise<InvoiceResponse> => {
       'The externalTransactionId is missing from the transaction.',
     );
   }
-
   // TODO: user from transaction.currency
   const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF;
 
@@ -60,7 +62,7 @@ Promise<InvoiceResponse> => {
   });
 
   // OrderItems
-  const items = transaction.order.items.map(orderItem => {
+  const items = order.items.map(orderItem => {
     // TODO: use the language input param
     let label = orderItem.productName.hu;
     if (!label) {

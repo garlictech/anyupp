@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
 import {
+  loadOrder,
   loadTransactionByExternalTransactionId,
   loadUser,
   updateInvoiceState,
@@ -16,6 +17,7 @@ import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import { createInvoice } from '../../szamlazzhu';
 import * as Szamlazz from 'szamlazz.js';
+import { orderByDistance } from 'geolib';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,
@@ -121,12 +123,18 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
     throw Error('The user with id=' + transaction.userId + ' is missing!');
   }
 
+  const order = await loadOrder(transaction.orderId)(deps);
+  if (!order) {
+    throw Error('Order not found with id:' + transaction.orderId);
+  }
+
   console.debug('***** handleInvoice().invoiceId=' + transaction.invoice.id);
 
   try {
     const invoice = await createInvoice(deps.szamlazzClient)({
       user,
       transaction,
+      order,
       language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
     });
 
@@ -171,19 +179,58 @@ const handleInvoice = (transaction: CrudApi.Transaction) => async (
 const handleReceipt = (transaction: CrudApi.Transaction) => async (
   deps: StripeResolverDeps,
 ) => {
+  console.debug('***** handleReceipt().transaction=' + transaction?.id);
   const user = await loadUser(transaction.userId)(deps);
+  console.debug('***** handleReceipt().user loaded=' + user?.id);
   if (!user?.email) {
     console.warn("Can't create Receipt without valid email address");
     return;
   }
 
-  await createReceiptAndConnectTransaction(
-    transaction.orderId,
-    transaction.userId,
-    transaction.id,
-    user.email,
-    CrudApi.ReceiptStatus.success,
-  )(deps);
+  const receiptData = new Szamlazz.Receipt({
+    currency:
+      transaction.currency === 'huf'
+        ? Szamlazz.Currency.HUF
+        : Szamlazz.Currency.EUR,
+    paymentMethod: Szamlazz.PaymentMethod.Stripe,
+    receiptNumberPrefix: 'ANYUPP',
+    comment: transaction.id,
+    exchangeBank: 'MKB',
+    exchangeRate: 0.0,
+    // callId: transaction.userId,
+  });
+  console.debug(
+    '***** handleReceipt().receipt data created=' +
+      JSON.stringify(receiptData, undefined, 2),
+  );
+
+  try {
+    const receipt = await deps.szamlazzClient.issueReceipt(receiptData);
+    console.debug(
+      '***** handleReceipt().receipt=' + JSON.stringify(receipt, undefined, 2),
+    );
+
+    await createReceiptAndConnectTransaction(
+      transaction.orderId,
+      transaction.userId,
+      transaction.id,
+      user.email,
+      CrudApi.ReceiptStatus.success,
+      receipt.invoiceId,
+      receipt.pdf,
+    )(deps);
+  } catch (e) {
+    console.debug('***** handleReceipt().error=' + e);
+    await createReceiptAndConnectTransaction(
+      transaction.orderId,
+      transaction.userId,
+      transaction.id,
+      user.email,
+      CrudApi.ReceiptStatus.failed,
+      undefined,
+      undefined,
+    )(deps);
+  }
 };
 
 const handleSuccessTransaction = (externalTransactionId: string) => async (

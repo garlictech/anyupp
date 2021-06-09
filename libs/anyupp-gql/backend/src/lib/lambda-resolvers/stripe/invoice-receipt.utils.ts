@@ -33,11 +33,10 @@ export const createReceiptAndConnectTransaction = (
   transactionId: string,
   email: string | undefined | null,
   status: CrudApi.ReceiptStatus,
+  receiptId: string | undefined,
+  recepitPdf: string | undefined,
 ) => async (deps: StripeResolverDeps) => {
   console.debug('createReceiptAndConnectTransaction().orderId=' + orderId);
-
-  const receiptId = 'SZAMLAZZHU_RECEIPT_ID'; // TODO GET FROM SZAMLAZZ.HU!!!!
-  const receiptUrl = 'SZAMLAZZHU_RECEIPT_PDF_URL'; // TODO GET FROM SZAMLAZZ.HU!!!!
 
   const createReceiptVars = createReceiptMutationVariables(
     orderId,
@@ -46,7 +45,7 @@ export const createReceiptAndConnectTransaction = (
     email,
     status,
     receiptId,
-    receiptUrl,
+    recepitPdf,
   );
   const receipt = await deps.crudSdk
     .CreateReceipt(createReceiptVars)
@@ -88,8 +87,8 @@ const createReceiptMutationVariables = (
   transactionId: string,
   email: string | undefined | null,
   status: CrudApi.ReceiptStatus,
-  receiptId: string,
-  pdfUrl: string,
+  receiptId: string | undefined,
+  pdfUrl: string | undefined,
 ): CrudApi.CreateReceiptMutationVariables => {
   return {
     input: {
