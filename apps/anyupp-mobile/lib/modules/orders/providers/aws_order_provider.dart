@@ -340,6 +340,7 @@ class AwsOrderProvider implements IOrdersProvider {
               'ts': 1.0,
             },
             "allergens": item.allergens,
+            "image" : item.image,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,
