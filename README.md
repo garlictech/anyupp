@@ -1,4 +1,8 @@
-[![Appcenter Build status - IOS](https://build.appcenter.ms/v0.1/apps/b0bf2ec0-0acc-4871-a0e9-dcd93586fa05/branches/dev/badge)](https://appcenter.ms)
+[![iOS DEV app](https://build.appcenter.ms/v0.1/apps/b0bf2ec0-0acc-4871-a0e9-dcd93586fa05/branches/dev/badge)](https://appcenter.ms)
+[![iOS QA app](https://build.appcenter.ms/v0.1/apps/308fdf1a-bd46-40f9-b3a5-6ccfb7b0edd2/branches/qa/badge)](https://appcenter.ms)
+[![iOS STAGING app](https://build.appcenter.ms/v0.1/apps/a370b1c5-81c7-44c1-8d84-3e931c3abd46/branches/staging/badge)](https://appcenter.ms)
+[![iOS PROD app](https://build.appcenter.ms/v0.1/apps/f8c856fd-c72e-46b2-831f-393354e16a3f/branches/master/badge)](https://appcenter.ms)
+[![CodeFactor](https://www.codefactor.io/repository/github/bgap/anyupp/badge/dev?s=e93c51ecee20883666aec3eb28394da7650bd544)](https://www.codefactor.io/repository/github/bgap/anyupp/overview/dev)
 
 # Anyupp
 
