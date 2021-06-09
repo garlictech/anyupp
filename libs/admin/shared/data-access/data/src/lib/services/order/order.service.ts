@@ -1,12 +1,13 @@
+import { cloneDeep } from 'lodash/fp';
+import { EMPTY } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
-import { cloneDeep, omit } from 'lodash/fp';
-import { EMPTY, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+
 import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
@@ -199,40 +200,22 @@ export class OrderService {
     );
   }
 
-  public moveOrderToHistory(order: CrudApi.Order, status: CrudApi.OrderStatus) {
+  public archiveOrder(order: CrudApi.Order, status: CrudApi.OrderStatus) {
     if (this._adminUser?.id) {
-      const historyOrder = omit(
-        ['createdAt', 'updatedAt', 'transaction'],
-        cloneDeep(order),
-      );
-      const statusObject = {
-        status,
-        ts: new Date().getTime(),
-        userId: this._adminUser.id,
-      };
-
-      historyOrder.items.forEach(item => {
-        item.statusLog.push(statusObject);
-      });
-      historyOrder.statusLog = [statusObject];
-
-      return of('update').pipe(
-        switchMap(() =>
-          this._crudSdk.sdk
-            .CreateOrderHistory({
-              input: historyOrder,
-            })
-            .pipe(catchGqlError(this._store)),
-        ),
-        switchMap(() =>
-          this._crudSdk.sdk
-            .DeleteOrder({
-              input: {
-                id: order.id,
+      return this._crudSdk.doMutation(
+        this._crudSdk.sdk.UpdateOrder({
+          input: {
+            id: order.id,
+            archived: true,
+            statusLog: [
+              {
+                status,
+                ts: new Date().getTime(),
+                userId: this._adminUser.id,
               },
-            })
-            .pipe(catchGqlError(this._store)),
-        ),
+            ],
+          },
+        }),
       );
     } else {
       return EMPTY;

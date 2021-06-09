@@ -28,12 +28,14 @@
             caption="common.name"
             type="text"
             [control]="dialogForm.controls.name! | asFormControl"
+            inputId="name"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-3 pt-4">
           <bgap-form-checkbox
             caption="common.isActive"
             [control]="dialogForm.controls.isActive! | asFormControl"
+            inputId="isActive"
           ></bgap-form-checkbox>
         </div>
       </div>
@@ -42,16 +44,19 @@
         caption="common.descriptionHU"
         type="text"
         [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
+        inputId="descriptionHu"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
         [control]="dialogForm.get('description')!.get('en')! | asFormControl"
+        inputId="descriptionEn"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
         [control]="dialogForm.get('description')!.get('de')! | asFormControl"
+        inputId="descriptionDe"
       ></bgap-form-text-input>
 
       <bgap-form-contact-group
