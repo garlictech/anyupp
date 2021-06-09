@@ -25,17 +25,14 @@ class AwsOrderProvider implements IOrdersProvider {
 
   AwsOrderProvider(this._authProvider) {
     _subOrderList = AwsSubscription<Order>(
-      authProvider: _authProvider,
-      listQuery: QUERY_LIST_ACTIVE_ORDERS,
-      listNodeName: 'listOrders',
-      subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
-      subscriptionNodeName: 'onOrderChanged',
-      modelFromJson: (json) => Order.fromJson(json),
-      // filterModel: (model) =>
-      //     model.status == OrderStatus.placed ||
-      //     model.status == OrderStatus.processing ||
-      //     model.status == OrderStatus.ready,
-    );
+        authProvider: _authProvider,
+        listQuery: QUERY_LIST_ACTIVE_ORDERS,
+        listNodeName: 'listOrders',
+        subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
+        subscriptionNodeName: 'onOrderChanged',
+        modelFromJson: (json) => Order.fromJson(json),
+        filterModel: (model) => model.archived,
+        );
 
     _subOrderHistoryList = AwsSubscription<Order>(
       authProvider: _authProvider,
@@ -44,7 +41,7 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
       subscriptionNodeName: 'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
       modelFromJson: (json) => Order.fromJson(json),
-      // filterModel: (model) => model.status == OrderStatus.PAID || model.status == OrderStatus.REJECTED,
+      filterModel: (model) => !model.archived,
     );
   }
 
@@ -249,6 +246,7 @@ class AwsOrderProvider implements IOrdersProvider {
       variables: {
         'userId': user.id,
         'unitId': unitId,
+        'archived' : false
       },
     );
   }
@@ -266,6 +264,7 @@ class AwsOrderProvider implements IOrdersProvider {
       variables: {
         'userId': user.id,
         'unitId': unitId,
+        'archived' : true
       },
     );
   }
@@ -284,7 +283,7 @@ class AwsOrderProvider implements IOrdersProvider {
     try {
       QueryResult result = await GQL.amplify.executeQuery(
         query: QUERY_GET_ORDER,
-         variables: {
+        variables: {
           'orderId': orderId,
         },
         fetchPolicy: FetchPolicy.networkOnly,
@@ -339,6 +338,7 @@ class AwsOrderProvider implements IOrdersProvider {
               'ts': 1.0,
             },
             "allergens": item.allergens,
+            "image": item.image,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,

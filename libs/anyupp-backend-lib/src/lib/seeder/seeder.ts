@@ -34,11 +34,6 @@ import { throwIfEmptyValue } from '@bgap/shared/utils';
 const username = testAdminUsername;
 const password = testAdminUserPassword;
 
-const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
-  apiVersion: '2016-04-18',
-  region: process.env.AWS_REGION || '',
-});
-
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
     {
@@ -58,11 +53,11 @@ export const seedAdminUser = (deps: SeederDependencies) =>
     // CREATE user in Cognito
     params =>
       defer(() =>
-        cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+        deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
       ).pipe(
         switchMap(() =>
           from(
-            cognitoidentityserviceprovider
+            deps.cognitoidentityserviceprovider
               .adminSetUserPassword({
                 UserPoolId: deps.userPoolId,
                 Username: username,
@@ -85,7 +80,7 @@ export const seedAdminUser = (deps: SeederDependencies) =>
     // GET user from Cognito
     switchMap(() =>
       from(
-        cognitoidentityserviceprovider
+        deps.cognitoidentityserviceprovider
           .adminGetUser({
             UserPoolId: deps.userPoolId,
             Username: username,

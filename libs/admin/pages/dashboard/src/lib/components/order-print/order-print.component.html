@@ -42,7 +42,9 @@
         </div-->
 
         <div>Dátum: {{ now | localizedDate: 'short' }}</div>
-        <div>Asztalszám: {{ place!.seat! }}/{{ place!.table! }}</div>
+        <div>
+          Asztalszám: {{ place?.seat || '?' }}/{{ place?.table || '?' }}
+        </div>
         <div class="mb-5">Felszolgáló:</div>
 
         <div>{{ 'print.items' | translate }}:</div>

@@ -21,9 +21,33 @@ query ListFavoriteProductsQuery(\$userId: ID!, \$unitId: ID!) {
         position
         productType
         tax
+        allergens
         unitId
         productCategoryId
+        configSets {
+          type
+          productSetId
+          position
+          name {
+            de
+            en
+            hu
+          }
+          maxSelection
+          items {
+            allergens
+            name {
+              de
+              en
+              hu
+            }
+            position
+            price
+            productComponentId
+          }
+        }
         variants {
+          id
           pack {
             size
             unit

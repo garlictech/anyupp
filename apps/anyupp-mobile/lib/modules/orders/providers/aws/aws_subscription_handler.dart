@@ -73,7 +73,7 @@ class AwsSubscription<T extends Model> {
           int index = _items.indexWhere((o) => o.id == item.id);
           // print('**** startListSubscription[$listNodeName].index=$index');
           if (index != -1) {
-            bool isFiltered = true; // TODO filterModel(item) ?? true;
+            bool isFiltered = filterModel(item) ?? true;
             if (isFiltered) {
               _items[index] = item;
               _listController.add(_items);

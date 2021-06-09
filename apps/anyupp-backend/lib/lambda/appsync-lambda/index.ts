@@ -14,6 +14,7 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
 import { createSzamlazzClient } from '@bgap/anyupp-gql/backend';
+import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
 export interface AnyuppRequest {
   handler: string;
@@ -40,6 +41,11 @@ const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
 const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
+
+const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
+  apiVersion: '2016-04-18',
+  region: process.env.AWS_REGION || '',
+});
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -72,6 +78,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const userRequestHandlers = userRequestHandler({
     anyuppSdk,
     consumerUserPoolId,
+    cognitoidentityserviceprovider,
   });
 
   const resolverMap = {

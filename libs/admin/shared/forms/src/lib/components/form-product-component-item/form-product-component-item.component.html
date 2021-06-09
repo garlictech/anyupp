@@ -22,6 +22,7 @@
       caption="products.refPrice"
       type="number"
       [control]="item.get('refGroupPrice')! | asFormControl"
+      inputId="refGroupPrice"
     ></bgap-form-text-input>
   </div>
   <div class="col-md-3">
@@ -30,6 +31,7 @@
       [staticCaption]="('products.price' | translate) + ' (' + currency! + ')'"
       type="number"
       [control]="item.get('price')! | asFormControl"
+      inputId="price"
     ></bgap-form-text-input>
   </div>
 </div>

@@ -53,6 +53,7 @@
             caption="products.variantNameHU"
             type="text"
             [control]="variant.get('variantName')!.get('hu')! | asFormControl"
+            inputId="variantNameHu"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -60,6 +61,7 @@
             caption="products.variantNameEN"
             type="text"
             [control]="variant.get('variantName')!.get('en')! | asFormControl"
+            inputId="variantNameEn"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -67,6 +69,7 @@
             caption="products.variantNameDE"
             type="text"
             [control]="variant.get('variantName')!.get('de')! | asFormControl"
+            inputId="variantNameDe"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -77,6 +80,7 @@
             caption="products.packSize"
             type="number"
             [control]="variant.get('pack')!.get('size')! | asFormControl"
+            inputId="packSize"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
@@ -84,6 +88,7 @@
             caption="products.packUnit"
             type="text"
             [control]="variant.get('pack')!.get('unit')! | asFormControl"
+            inputId="packUnit"
           ></bgap-form-text-input>
         </div>
 
@@ -91,6 +96,7 @@
           <bgap-form-checkbox
             caption="products.isAvailable"
             [control]="variant.get('isAvailable')! | asFormControl"
+            inputId="isAvailable"
           ></bgap-form-checkbox>
         </div>
       </div>
@@ -104,6 +110,7 @@
               caption="products.refPrice"
               type="number"
               [control]="variant.get('refGroupPrice')! | asFormControl"
+              inputId="refGroupPrice"
             ></bgap-form-text-input>
             <bgap-form-static-text
               *ngIf="productLevel === eProductLevel.UNIT"

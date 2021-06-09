@@ -21,6 +21,7 @@ class Order extends Model {
   final List<StatusLog> statusLog;
   final String created;
   final OrderStatus status;
+  final bool archived;
 
   @override
   String getId() {
@@ -41,7 +42,8 @@ class Order extends Model {
       this.paymentIntention,
       this.statusLog,
       this.created,
-      this.status});
+      this.status,
+      this.archived});
 
   factory Order(
       {String id,
@@ -57,7 +59,8 @@ class Order extends Model {
       int paymentIntention,
       List<StatusLog> statusLog,
       String created,
-      OrderStatus status}) {
+      OrderStatus status,
+      bool archived}) {
     return Order._internal(
         id: id == null ? UUID.getUUID() : id,
         orderNum: orderNum,
@@ -72,7 +75,8 @@ class Order extends Model {
         paymentIntention: paymentIntention,
         statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
         created: created,
-        status: status);
+        status: status,
+        archived: archived);
   }
 
   bool equals(Object other) {
@@ -96,7 +100,8 @@ class Order extends Model {
         paymentIntention == other.paymentIntention &&
         DeepCollectionEquality().equals(statusLog, other.statusLog) &&
         created == other.created &&
-        status == other.status;
+        status == other.status &&
+        archived ==other.archived;
   }
 
   @override
@@ -119,6 +124,7 @@ class Order extends Model {
     buffer.write("paymentIntention=" + (paymentIntention != null ? paymentIntention.toString() : "null") + ", ");
     buffer.write("created=" + (created != null ? created.toString() : "null") + ", ");
     buffer.write("status=" + (status != null ? enumToString(status) : "null"));
+        buffer.write("archived=" + (archived != null ? archived : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -138,7 +144,8 @@ class Order extends Model {
       int paymentIntention,
       List<StatusLog> statusLog,
       String created,
-      OrderStatus status}) {
+      OrderStatus status,
+      bool archived}) {
     return Order(
         id: id ?? this.id,
         orderNum: orderNum ?? this.orderNum,
@@ -153,7 +160,8 @@ class Order extends Model {
         paymentIntention: paymentIntention ?? this.paymentIntention,
         statusLog: statusLog ?? this.statusLog,
         created: created ?? this.created,
-        status: status ?? this.status);
+        status: status ?? this.status,
+        archived: archived ?? this.archived);
   }
 
   Order.fromJson(Map<String, dynamic> json)
@@ -164,9 +172,8 @@ class Order extends Model {
         items = json['items'] is List
             ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
             : null,
-        paymentMode = json['paymentMode'] != null
-            ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode']))
-            : null,
+        paymentMode =
+            json['paymentMode'] != null ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode'])) : null,
         staffId = json['staffId'],
         sumPriceShown = json['sumPriceShown'] != null
             ? PriceShown.fromJson(Map<String, dynamic>.from(json['sumPriceShown']))
@@ -178,7 +185,8 @@ class Order extends Model {
             ? (json['statusLog'] as List).map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e))).toList()
             : null,
         created = json['createdAt'],
-        status = enumFromString<OrderStatus>(json['status'], OrderStatus.values);
+        status = enumFromString<OrderStatus>(json['status'], OrderStatus.values),
+        archived = json['archived'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -194,7 +202,8 @@ class Order extends Model {
         'paymentIntention': paymentIntention,
         'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
         'createdAt': created,
-        'status': enumToString(status)
+        'status': enumToString(status),
+        'archived' : archived
       };
 
   String getFormattedDate() {
