@@ -98,7 +98,7 @@ export const inDayWindow = (
   if (
     availability.type !== EVariantAvailabilityType.WEEKLY ||
     availability.dayFrom === undefined ||
-    availability.dayFrom == null ||
+    availability.dayFrom === null ||
     availability.dayTo === undefined ||
     availability.dayTo === null
   ) {

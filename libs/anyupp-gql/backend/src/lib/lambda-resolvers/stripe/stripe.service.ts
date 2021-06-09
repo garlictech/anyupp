@@ -83,7 +83,7 @@ export const startStripePayment = (
   let order = await loadOrder(orderId)(deps);
   console.debug('startStripePayment().order.loaded=' + order?.id);
 
-  if (order == null) {
+  if (order === null) {
     throw Error('Order not found with id=' + orderId);
   }
 
