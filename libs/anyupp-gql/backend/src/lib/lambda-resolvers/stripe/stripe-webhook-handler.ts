@@ -108,175 +108,176 @@ export const createStripeWebhookExpressApp = (
   return app;
 };
 
-const handleInvoice = (transaction: CrudApi.Transaction) => async (
-  deps: StripeResolverDeps,
-) => {
-  if (!transaction.invoice) {
-    throw Error(
-      'The transaction with id=' + transaction.id + " doesn't have an invoice!",
-    );
-  }
+const handleInvoice =
+  (transaction: CrudApi.Transaction) => async (deps: StripeResolverDeps) => {
+    if (!transaction.invoice) {
+      throw Error(
+        'The transaction with id=' +
+          transaction.id +
+          " doesn't have an invoice!",
+      );
+    }
 
-  const user = await loadUser(transaction.userId)(deps);
-  if (!user) {
-    throw Error('The user with id=' + transaction.userId + ' is missing!');
-  }
+    const user = await loadUser(transaction.userId)(deps);
+    if (!user) {
+      throw Error('The user with id=' + transaction.userId + ' is missing!');
+    }
 
-  const order = await loadOrder(transaction.orderId)(deps);
-  if (!order) {
-    throw Error('Order not found with id:' + transaction.orderId);
-  }
+    const order = await loadOrder(transaction.orderId)(deps);
+    if (!order) {
+      throw Error('Order not found with id:' + transaction.orderId);
+    }
 
-  console.debug('***** handleInvoice().invoiceId=' + transaction.invoice.id);
+    console.debug('***** handleInvoice().invoiceId=' + transaction.invoice.id);
 
-  try {
-    const invoice = await createInvoice(deps.szamlazzClient)({
-      user,
-      transaction,
-      order,
-      language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
-    });
+    try {
+      const invoice = await createInvoice(deps.szamlazzClient)({
+        user,
+        transaction,
+        order,
+        language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
+      });
 
-    const invoiceData: Szamlazz.SendRequestResponse = await deps.szamlazzClient.getInvoiceData(
-      {
-        invoiceId: invoice.invoiceId,
-        pdf: false,
-      },
-    );
+      const invoiceData: Szamlazz.SendRequestResponse =
+        await deps.szamlazzClient.getInvoiceData({
+          invoiceId: invoice.invoiceId,
+          pdf: false,
+        });
 
-    let pdfUrl: string | undefined = undefined;
-    if (invoiceData?.headers) {
-      const url = (invoiceData.headers as Record<string, string | undefined>)[
-        'szlahu_vevoifiokurl'
-      ];
-      if (url !== undefined) {
-        pdfUrl = decodeURIComponent(url);
+      let pdfUrl: string | undefined = undefined;
+      if (invoiceData?.headers) {
+        const url = (invoiceData.headers as Record<string, string | undefined>)[
+          'szlahu_vevoifiokurl'
+        ];
+        if (url !== undefined) {
+          pdfUrl = decodeURIComponent(url);
+        }
       }
+
+      await updateInvoiceState(
+        transaction.invoice.id,
+        CrudApi.InvoiceStatus.success,
+        invoice.invoiceId,
+        pdfUrl,
+      )(deps);
+
+      console.debug('***** handleInvoice().success()');
+    } catch (err) {
+      console.debug(
+        '***** handleInvoice().error=' + JSON.stringify(err, undefined, 2),
+      );
+      await updateInvoiceState(
+        transaction.invoice.id,
+        CrudApi.InvoiceStatus.failed,
+        undefined,
+        undefined,
+      )(deps);
+    }
+  };
+
+const handleReceipt =
+  (transaction: CrudApi.Transaction) => async (deps: StripeResolverDeps) => {
+    console.debug('***** handleReceipt().transaction=' + transaction?.id);
+    const user = await loadUser(transaction.userId)(deps);
+    console.debug('***** handleReceipt().user loaded=' + user?.id);
+    if (!user?.email) {
+      console.warn("Can't create Receipt without valid email address");
+      return;
     }
 
-    await updateInvoiceState(
-      transaction.invoice.id,
-      CrudApi.InvoiceStatus.success,
-      invoice.invoiceId,
-      pdfUrl,
-    )(deps);
-
-    console.debug('***** handleInvoice().success()');
-  } catch (err) {
+    const receiptData = new Szamlazz.Receipt({
+      currency:
+        transaction.currency === 'huf'
+          ? Szamlazz.Currency.HUF
+          : Szamlazz.Currency.EUR,
+      paymentMethod: Szamlazz.PaymentMethod.Stripe,
+      receiptNumberPrefix: 'ANYUPP',
+      comment: transaction.id,
+      exchangeBank: 'MKB',
+      exchangeRate: 0.0,
+      // callId: transaction.userId,
+    });
     console.debug(
-      '***** handleInvoice().error=' + JSON.stringify(err, undefined, 2),
-    );
-    await updateInvoiceState(
-      transaction.invoice.id,
-      CrudApi.InvoiceStatus.failed,
-      undefined,
-      undefined,
-    )(deps);
-  }
-};
-
-const handleReceipt = (transaction: CrudApi.Transaction) => async (
-  deps: StripeResolverDeps,
-) => {
-  console.debug('***** handleReceipt().transaction=' + transaction?.id);
-  const user = await loadUser(transaction.userId)(deps);
-  console.debug('***** handleReceipt().user loaded=' + user?.id);
-  if (!user?.email) {
-    console.warn("Can't create Receipt without valid email address");
-    return;
-  }
-
-  const receiptData = new Szamlazz.Receipt({
-    currency:
-      transaction.currency === 'huf'
-        ? Szamlazz.Currency.HUF
-        : Szamlazz.Currency.EUR,
-    paymentMethod: Szamlazz.PaymentMethod.Stripe,
-    receiptNumberPrefix: 'ANYUPP',
-    comment: transaction.id,
-    exchangeBank: 'MKB',
-    exchangeRate: 0.0,
-    // callId: transaction.userId,
-  });
-  console.debug(
-    '***** handleReceipt().receipt data created=' +
-      JSON.stringify(receiptData, undefined, 2),
-  );
-
-  try {
-    const receipt = await deps.szamlazzClient.issueReceipt(receiptData);
-    console.debug(
-      '***** handleReceipt().receipt=' + JSON.stringify(receipt, undefined, 2),
+      '***** handleReceipt().receipt data created=' +
+        JSON.stringify(receiptData, undefined, 2),
     );
 
-    await createReceiptAndConnectTransaction(
-      transaction.orderId,
-      transaction.userId,
-      transaction.id,
-      user.email,
-      CrudApi.ReceiptStatus.success,
-      receipt.invoiceId,
-      receipt.pdf,
-    )(deps);
-  } catch (e) {
-    console.debug('***** handleReceipt().error=' + e);
-    await createReceiptAndConnectTransaction(
-      transaction.orderId,
-      transaction.userId,
-      transaction.id,
-      user.email,
-      CrudApi.ReceiptStatus.failed,
-      undefined,
-      undefined,
-    )(deps);
-  }
-};
+    try {
+      const receipt = await deps.szamlazzClient.issueReceipt(receiptData);
+      console.debug(
+        '***** handleReceipt().receipt=' +
+          JSON.stringify(receipt, undefined, 2),
+      );
 
-const handleSuccessTransaction = (externalTransactionId: string) => async (
-  deps: StripeResolverDeps,
-) => {
-  console.debug('***** handleSuccessTransaction().id=' + externalTransactionId);
-  const transaction: CrudApi.Transaction | null = await loadTransactionByExternalTransactionId(
-    externalTransactionId,
-  )(deps);
-  // console.debug('***** handleSuccessTransaction().loaded.transaction=' + transaction);
-  if (transaction) {
-    await updateTransactionState(
-      transaction.id,
-      CrudApi.PaymentStatus.success,
-    )(deps);
-    await updateOrderState(
-      transaction.orderId,
-      transaction.userId,
-      CrudApi.OrderStatus.placed,
-      transaction.id,
-    )(deps);
-    // console.debug('***** handleSuccessTransaction().success()');
-    if (transaction.invoiceId) {
-      await handleInvoice(transaction)(deps);
+      await createReceiptAndConnectTransaction(
+        transaction.orderId,
+        transaction.userId,
+        transaction.id,
+        user.email,
+        CrudApi.ReceiptStatus.success,
+        receipt.invoiceId,
+        receipt.pdf,
+      )(deps);
+    } catch (e) {
+      console.debug('***** handleReceipt().error=' + e);
+      await createReceiptAndConnectTransaction(
+        transaction.orderId,
+        transaction.userId,
+        transaction.id,
+        user.email,
+        CrudApi.ReceiptStatus.failed,
+        undefined,
+        undefined,
+      )(deps);
+    }
+  };
+
+const handleSuccessTransaction =
+  (externalTransactionId: string) => async (deps: StripeResolverDeps) => {
+    console.debug(
+      '***** handleSuccessTransaction().id=' + externalTransactionId,
+    );
+    const transaction: CrudApi.Transaction | null =
+      await loadTransactionByExternalTransactionId(externalTransactionId)(deps);
+    // console.debug('***** handleSuccessTransaction().loaded.transaction=' + transaction);
+    if (transaction) {
+      await updateTransactionState(
+        transaction.id,
+        CrudApi.PaymentStatus.success,
+      )(deps);
+      await updateOrderState(
+        transaction.orderId,
+        transaction.userId,
+        CrudApi.OrderStatus.placed,
+        transaction.id,
+      )(deps);
+      // console.debug('***** handleSuccessTransaction().success()');
+      if (transaction.invoiceId) {
+        await handleInvoice(transaction)(deps);
+      } else {
+        await handleReceipt(transaction)(deps);
+      }
     } else {
-      await handleReceipt(transaction)(deps);
+      console.debug(
+        '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +
+          externalTransactionId,
+      );
     }
-  } else {
-    console.debug(
-      '***** handleSuccessTransaction().Warning!!!! No transaction found with external id=' +
-        externalTransactionId,
-    );
-  }
-};
+  };
 
-const handleFailedTransaction = (externalTransactionId: string) => async (
-  deps: StripeResolverDeps,
-) => {
-  console.debug('***** handleFailedTransaction().id=' + externalTransactionId);
-  const transaction = await loadTransactionByExternalTransactionId(
-    externalTransactionId,
-  )(deps);
-  if (transaction) {
-    await updateTransactionState(
-      transaction.id,
-      CrudApi.PaymentStatus.failed,
+const handleFailedTransaction =
+  (externalTransactionId: string) => async (deps: StripeResolverDeps) => {
+    console.debug(
+      '***** handleFailedTransaction().id=' + externalTransactionId,
+    );
+    const transaction = await loadTransactionByExternalTransactionId(
+      externalTransactionId,
     )(deps);
-    console.debug('***** handleFailedTransaction().success()');
-  }
-};
+    if (transaction) {
+      await updateTransactionState(
+        transaction.id,
+        CrudApi.PaymentStatus.failed,
+      )(deps);
+      console.debug('***** handleFailedTransaction().success()');
+    }
+  };

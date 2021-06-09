@@ -23,7 +23,8 @@ import { filterNullish } from '@bgap/shared/utils';
   styleUrls: ['./active-product-category-selector.component.scss'],
 })
 export class ActiveProductCategorySelectorComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   @Input() showIcon: boolean;
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
   private _loggedUser!: CrudApi.AdminUser;

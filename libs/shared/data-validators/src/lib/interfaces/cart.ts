@@ -17,6 +17,5 @@ export const cartSchema: Joi.SchemaMap<CrudApi.Cart> = {
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateCart, isType: isCart } = validateSchema<
-  CrudApi.Cart
->(cartSchema, 'Cart');
+export const { validate: validateCart, isType: isCart } =
+  validateSchema<CrudApi.Cart>(cartSchema, 'Cart');

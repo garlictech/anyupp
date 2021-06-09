@@ -5,9 +5,9 @@ import { validateUnitProduct } from '@bgap/shared/data-validators';
 import { ProductResolverDeps } from './utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 
-export const createUnitProduct = (input: AnyuppApi.CreateUnitProductInput) => (
-  deps: ProductResolverDeps,
-): Observable<CrudApi.UnitProduct> =>
-  defer(() => deps.crudSdk.CreateUnitProduct({ input })).pipe(
-    switchMap(validateUnitProduct),
-  );
+export const createUnitProduct =
+  (input: AnyuppApi.CreateUnitProductInput) =>
+  (deps: ProductResolverDeps): Observable<CrudApi.UnitProduct> =>
+    defer(() => deps.crudSdk.CreateUnitProduct({ input })).pipe(
+      switchMap(validateUnitProduct),
+    );

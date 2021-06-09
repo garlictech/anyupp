@@ -10,15 +10,18 @@ import { UnitsResolverDeps } from '../unit/utils';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
-export const deleteGeneratedProductsForAUnit = (unitId: string) => (
-  deps: UnitsResolverDeps,
-) => {
-  return listGeneratedProductsForUnits([unitId])(deps).pipe(
-    switchMap(items =>
-      iif(() => items.length > 0, deleteGeneratedProductsItems(items), of([])),
-    ),
-  );
-};
+export const deleteGeneratedProductsForAUnit =
+  (unitId: string) => (deps: UnitsResolverDeps) => {
+    return listGeneratedProductsForUnits([unitId])(deps).pipe(
+      switchMap(items =>
+        iif(
+          () => items.length > 0,
+          deleteGeneratedProductsItems(items),
+          of([]),
+        ),
+      ),
+    );
+  };
 const deleteGeneratedProductsItems = (
   items: Required<CrudApi.GeneratedProduct>[],
 ) => deleteItems(TABLE_NAME)(items);
@@ -29,20 +32,22 @@ export const createGeneratedProducts = (
   return createItems(TABLE_NAME)(products);
 };
 
-export const listGeneratedProductsForUnits = (unitIds: string[]) => (
-  deps: UnitsResolverDeps,
-): Observable<Array<Required<CrudApi.GeneratedProduct>>> => {
-  const input: CrudApi.ListGeneratedProductsQueryVariables = {
-    filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-    limit: 200, // TODO <==??????????
-  };
+export const listGeneratedProductsForUnits =
+  (unitIds: string[]) =>
+  (
+    deps: UnitsResolverDeps,
+  ): Observable<Array<Required<CrudApi.GeneratedProduct>>> => {
+    const input: CrudApi.ListGeneratedProductsQueryVariables = {
+      filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+      limit: 200, // TODO <==??????????
+    };
 
-  return defer(() =>
-    deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
-  ).pipe(
-    map(x => x?.items),
-    filter(fp.negate(fp.isEmpty)),
-    defaultIfEmpty([]),
-    // TODO: switchMap((items: []) => combineLatest(items.map(validateUnit))),
-  );
-};
+    return defer(() =>
+      deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
+    ).pipe(
+      map(x => x?.items),
+      filter(fp.negate(fp.isEmpty)),
+      defaultIfEmpty([]),
+      // TODO: switchMap((items: []) => combineLatest(items.map(validateUnit))),
+    );
+  };

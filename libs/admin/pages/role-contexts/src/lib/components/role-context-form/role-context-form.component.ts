@@ -33,7 +33,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class RoleContextFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public roleContext?: CrudApi.RoleContext;
   public roleOptions: IKeyValue[];
   public chainOptions: IKeyValue[] = [];
