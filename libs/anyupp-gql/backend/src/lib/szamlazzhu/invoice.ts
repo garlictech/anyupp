@@ -2,7 +2,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { InvoiceResponse } from './interfaces';
 
 import * as Szamlazz from 'szamlazz.js';
-import { loadOrder } from '../lambda-resolvers/stripe/stripe-graphql-crud';
 
 export const createInvoice = (szamlazzClient: Szamlazz.Client) => async ({
   user,
@@ -19,7 +18,7 @@ export const createInvoice = (szamlazzClient: Szamlazz.Client) => async ({
 }): // unit?: CrudApi.Unit,
 Promise<InvoiceResponse> => {
   // Unit
-  let seller = new Szamlazz.Seller({
+  const seller = new Szamlazz.Seller({
     // everyting is optional
     // bank: {
     //   name: "Test Bank <name>",
@@ -49,7 +48,7 @@ Promise<InvoiceResponse> => {
   const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF;
 
   // User
-  let buyer = new Szamlazz.Buyer({
+  const buyer = new Szamlazz.Buyer({
     name: user.invoiceAddress.customerName,
     country: user.invoiceAddress.country,
     zip: user.invoiceAddress.postalCode,
@@ -83,7 +82,7 @@ Promise<InvoiceResponse> => {
   });
 
   // Transaction
-  let invoice = new Szamlazz.Invoice({
+  const invoice = new Szamlazz.Invoice({
     paymentMethod, // optional, default: BankTransfer
     currency,
     language, // optional, default: Hungarian

@@ -17,7 +17,6 @@ import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import { createInvoice } from '../../szamlazzhu';
 import * as Szamlazz from 'szamlazz.js';
-import { orderByDistance } from 'geolib';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,

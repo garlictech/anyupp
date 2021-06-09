@@ -217,7 +217,7 @@ export const createInvoice = (
 export const updateInvoice = (
   id: string,
   status: CrudApi.InvoiceStatus,
-  externalInvoiceId: String,
+  externalInvoiceId: string,
 ) => (deps: StripeResolverDeps) => {
   const updateInvoiceVars: CrudApi.UpdateInvoiceMutationVariables = {
     input: {
@@ -254,7 +254,7 @@ export const updateInvoiceState = (
   id: string,
   status: CrudApi.InvoiceStatus,
   externalInvoiceId: string | undefined,
-  pdfData: String | undefined,
+  pdfData: string | undefined,
 ) => (deps: StripeResolverDeps) => {
   console.debug(
     '***** updateInvoiceState().id=' +
