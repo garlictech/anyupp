@@ -6,10 +6,12 @@
 <nb-select
   [status]="selectedGroupId ? 'basic' : 'danger'"
   placeholder="{{ 'common.group' | translate }}"
+  title="{{ 'common.group' | translate }}"
   shape="round"
   size="small"
   (selectedChange)="onGroupSelected($event)"
   [selected]="selectedGroupId"
+  data-testid="activeGroupSelector"
 >
   <nb-option *ngFor="let option of groups$ | async" [value]="option.id">{{
     option.name
