@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { String } from 'aws-sdk/clients/acm';
 import { map } from 'rxjs/operators';
 import { StripeResolverDeps } from './stripe.utils';
 
