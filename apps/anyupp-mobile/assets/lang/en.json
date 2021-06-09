@@ -189,7 +189,8 @@
         "zip": "Zip Code",
         "city": "City",
         "street address": "Street address",
-        "invoice_email": "Invoice Email"
+        "invoice_email": "Invoice Email",
+        "invoiceAddress": "Use previous address"
       }
     },
     "simplePayStatus": {

@@ -127,10 +127,10 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if( cart.place == null || (cart.place.seat == "00" && cart.place.table == "00")){
+    if (cart.place == null || (cart.place.seat == "00" && cart.place.table == "00")) {
       showQrCodeScan = true;
     }
-    
+
     Map<int, String> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
@@ -236,7 +236,9 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => showQrCodeScan
-                      ? Nav.to(QRCodeScannerScreen(navigateToCart: true,))
+                      ? Nav.to(QRCodeScannerScreen(
+                          navigateToCart: true,
+                        ))
                       : showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(
