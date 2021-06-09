@@ -28,6 +28,7 @@ export interface AppsyncAppStackProps extends sst.StackProps {
   stripeSecretKey: string;
   stripeSigningSecret: string;
   secretsManager: sm.ISecret;
+  szamlazzhuAgentKey: string;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -139,6 +140,7 @@ export class AppsyncAppStack extends sst.Stack {
         secretName: props.secretsManager.secretName,
         STRIPE_SECRET_KEY: props.stripeSecretKey,
         STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+        SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
       },
     });
 

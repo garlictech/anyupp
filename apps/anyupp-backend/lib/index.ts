@@ -37,11 +37,13 @@ export class AnyUppStack extends Stack {
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
       stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
       secretsManager: secretsManagerStack.secretsManager,
+      szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
     });
 
     new StripeStack(scope, 'stripe', {
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
       stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
+      szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
     });
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {

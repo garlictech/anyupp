@@ -33,11 +33,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
            await _paymentRepository.startOrderExternalPayment(
             event.orderId,
             event.paymentMethod,
+            event.invoiceAddress,
           );
         } else {
           await _paymentRepository.startExternalPayment(
             _orderRepository.cart,
             event.paymentMethod,
+            event.invoiceAddress,
           );
         }
 
@@ -51,11 +53,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
           await _paymentRepository.startOrderStripePaymentWithExistingCard(
             event.orderId,
             event.paymentMethodId,
+            event.invoiceAddress,
           );
         } else {
           await _paymentRepository.startStripePaymentWithExistingCard(
             _orderRepository.cart,
             event.paymentMethodId,
+            event.invoiceAddress,
           );
         }
         yield StripeOperationSuccess();
@@ -68,12 +72,14 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
           await _paymentRepository.startOrderStripePaymentWithNewCard(
             event.orderId,
             event.stripeCard,
+            event.invoiceAddress,
             event.saveCard,
           );
         } else {
           await _paymentRepository.startStripePaymentWithNewCard(
             _orderRepository.cart,
             event.stripeCard,
+            event.invoiceAddress,
             event.saveCard,
           );
         }

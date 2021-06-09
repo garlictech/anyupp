@@ -240,11 +240,22 @@ type StripeCard @aws_cognito_user_pools {
   billing_details: BillingDetails
 }
 
+input UserInvoiceAddress {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
 input StartStripePaymentInput {
   orderId: ID!
   paymentMethod: PaymentMethod!
   savePaymentMethod: Boolean!
   paymentMethodId: String
+  invoiceAddress: UserInvoiceAddress
 }
 
 type StartStripePaymentOutput @aws_cognito_user_pools {

@@ -117,7 +117,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> updateCart(String chainId, String unitId, Cart cart) async {
-    print('updateCart=$cart');
+    // print('updateCart=$cart');
     bool delete = cart != null && cart.items.isEmpty;
     if (delete) {
       await _deleteCartFromBackend(cart.id);
@@ -309,7 +309,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
-    print('_getCartMutationVariablesFromCart().cart=$cart');
+    // print('_getCartMutationVariablesFromCart().cart=$cart');
     return {
       '$name': {
         if (cart.id != null) 'id': cart.id,
@@ -319,8 +319,7 @@ class AwsOrderProvider implements IOrdersProvider {
           return {
             'productId': item.productId,
             'variantId': item.variantId,
-            'created':
-                1, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
+            'created': DateTime.now().millisecondsSinceEpoch.toInt(),
             'productName': {
               'en': item.productName.en,
               'de': item.productName.de,
@@ -330,8 +329,8 @@ class AwsOrderProvider implements IOrdersProvider {
               'currency': item.priceShown.currency,
               'pricePerUnit': item.priceShown.pricePerUnit,
               'priceSum': item.priceShown.priceSum,
-              'tax': item.priceShown.tax, // TODO
-              'taxSum': item.priceShown.taxSum, // TODO
+              'tax': item.priceShown.tax,
+              'taxSum': item.priceShown.taxSum,
             },
             'statusLog': {
               'userId': cart.userId,
