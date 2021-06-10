@@ -1,16 +1,20 @@
-<amplify-authenticator federated="">
-  <amplify-sign-in #title header-text="AnyUPP Admin" slot="sign-in">
-    <div slot="secondary-footer-content">
-      <input
-        type="text"
-        required
-        [ngModel]="context"
-        label="Context"
-        placeholder="Context"
-        (ngModelChange)="contextChanged($event)"
-      />
-    </div>
-    <img width="20px" slot="header-subtitle" src="assets/images/logo.png" />
-    <div slot="federated-buttons"></div>
-  </amplify-sign-in>
-</amplify-authenticator>
+<nb-layout>
+  <nb-layout-column>
+    <amplify-authenticator federated="">
+      <amplify-sign-in #title header-text="AnyUPP Admin" slot="sign-in">
+        <div slot="secondary-footer-content">
+          <input
+            type="text"
+            required
+            [ngModel]="context"
+            label="Context"
+            placeholder="Context"
+            (ngModelChange)="contextChanged($event)"
+          />
+        </div>
+        <img width="20px" slot="header-subtitle" src="assets/images/logo.png" />
+        <div slot="federated-buttons"></div>
+      </amplify-sign-in>
+    </amplify-authenticator>
+  </nb-layout-column>
+</nb-layout>
