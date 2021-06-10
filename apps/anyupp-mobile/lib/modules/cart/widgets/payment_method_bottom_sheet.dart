@@ -104,7 +104,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
-            print('Unit selected=${state.unit}');
+            print('Unit selected=${state.unit?.name}');
             return _buildPaymentMethodList(context, state.unit);
           }
 
@@ -216,7 +216,9 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                   strokeWidth: 2.0,
                 )
               : Text(
-                  trans('payment.paymentInfo.invoicing.invoice_info'),
+                  _wantsInvoce
+                      ? trans('payment.fillInvoice')
+                      : trans('payment.sendOrder'),
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: theme.text2,
