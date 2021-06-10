@@ -85,6 +85,6 @@ Feature: Create or update Unit
     # And I click on the Color picker fill out with "#c17d5d"
     And I click on the "Submit" button
     Then I should see "test unit e2eUpdated" text
-    And I should see "test description updated" text
+    And I should see "test description e2eUpdated" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text
