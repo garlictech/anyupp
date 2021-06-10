@@ -8,19 +8,14 @@ Feature: Create a new Chain
         And I click the "sign in" text
         When I click the "skip" text
         Then I should be on the dashboard page
-        # Set the desired lang
         Then I set the language to EN
         And I click on the menu icon
         And I click on the "Chains" text
         Then the "Chains" title is displayed
 
-    Scenario: Check form page
-        When I click on the plus button
-        Then the "New chain" title is displayed
-        When I click on the close button
-
     Scenario: Create new chain
         When I click on the plus button
+        Then the "New chain" title is displayed
         And I click on the "Active" checkbox
         And I fill out the "Name" input with "test chain 1"
         And I fill out the "Description (HU)" input with "test description"

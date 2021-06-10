@@ -14,7 +14,6 @@ Feature: Authentication
     Then I should see "Account recovery requires verified contact information" sub-header
     When I click the "skip" text
     Then I should be on the dashboard page
-    # Set the desired lang
     Then I set the language to EN
     Then I should see "John Doe" text
     And the "Dashboard" title is displayed

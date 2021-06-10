@@ -8,17 +8,14 @@ Feature: Create or update Unit
     And I click the "sign in" text
     When I click the "skip" text
     Then I should be on the dashboard page
+    Then I set the language to EN
     When I click on the menu icon
     And I click on the "Units" text
     Then the "Units" title is displayed
 
-  Scenario: Check form page
-    When I click on the plus button
-    Then the "New unit" title is displayed
-    When I click on the close button
-
   Scenario: Create new unit
     When I click on the plus button
+    Then the "New unit" title is displayed
     And I fill out the "Name" input with "test unit 1"
     And I fill out the "Description (HU)" input with "test description"
     And I fill out the "Description (EN)" input with "test description"

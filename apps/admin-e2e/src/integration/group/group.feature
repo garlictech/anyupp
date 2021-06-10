@@ -8,17 +8,14 @@ Feature: Create or update Group
     And I click the "sign in" text
     When I click the "skip" text
     Then I should be on the dashboard page
+    Then I set the language to EN
     When I click on the menu icon
     And I click on the "Groups" text
     Then the "Groups" title is displayed
 
-  Scenario: Check form page
-    And I click on the plus button
-    Then the "New group" title is displayed
-    When I click on the close button
-
   Scenario: Create new group
     When I click on the plus button
+    Then the "New group" title is displayed
     And I set the currency to "HUF"
     And I fill out the "Name" input with "test group 1"
     And I fill out the "Description (HU)" input with "test descripton 1"
