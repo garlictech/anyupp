@@ -4,6 +4,7 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 export interface SecretsManagerStackProps extends sst.StackProps {
   projectSecretsManagerArn: string;
   pipelineSecretsManagerArn: string;
+  githubSecretsManagerArn: string;
 }
 
 export class SecretsManagerStack extends sst.Stack {
@@ -18,8 +19,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'GithubOauthTokenSecret',
       {
-        secretArn:
-          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:GithubAccessToken-2xxxSw',
+        secretArn: props.githubSecretsManagerArn,
       },
     );
 

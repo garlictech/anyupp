@@ -97,7 +97,8 @@ class GraphQLClientService {
   }
 
   Future<ValueNotifier<GraphQLClient>> getGraphQLClient({bool useApi = false}) async {
-    String accessToken = await authProvider.getAccessToken();
+
+    String accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
     // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:

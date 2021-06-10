@@ -23,7 +23,7 @@ import {
   EDashboardTicketListType,
   ENebularButtonSize,
 } from '@bgap/shared/types';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { customDateCompare, customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -117,7 +117,11 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     this.placedOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.served,
+          ![
+            CrudApi.OrderStatus.served,
+            CrudApi.OrderStatus.none,
+            CrudApi.OrderStatus.rejected,
+          ].includes(currentStatusFn(o.statusLog)),
       ),
     ];
   }
@@ -153,7 +157,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     switch (listType) {
       case EDashboardTicketListType.placed:
         this.filteredOrders = this.placedOrders.sort(
-          customNumberCompare('created'),
+          customDateCompare('createdAt'),
         );
         break;
       case EDashboardTicketListType.ready:

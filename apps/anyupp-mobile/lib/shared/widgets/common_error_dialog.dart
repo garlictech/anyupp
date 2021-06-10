@@ -31,6 +31,7 @@ showErrorDialog(BuildContext context, String error, String description, { String
                 child: CommonErrorWidget(
                   error: error,
                   description: description,
+                  errorDetails: exceptionDetails,
                 ),
               ),
               Container(

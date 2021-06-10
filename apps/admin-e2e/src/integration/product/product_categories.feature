@@ -6,7 +6,7 @@ Feature: Product categories
     And I fill out the input with id "password" with the "Testtesttest12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
-    When I click the "skip" text
+    When I click the "skip" text with timeout 15000
     Then I should be on the dashboard page
     Then I set the language to EN
     When I click on the menu icon

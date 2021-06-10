@@ -15,6 +15,20 @@ export const customNumberCompare = (field: string, desc = false) => (
   return 0;
 };
 
+export const customDateCompare = (field: string, desc = false) => (
+  a: IKeyValueObject,
+  b: IKeyValueObject,
+): number => {
+  if (new Date(a[field]).getTime() < new Date(b[field]).getTime()) {
+    return desc ? 1 : -1;
+  }
+  if (new Date(a[field]).getTime() > new Date(b[field]).getTime()) {
+    return desc ? -1 : 1;
+  }
+
+  return 0;
+};
+
 export const customStringCompare = (field: string, desc = false) => (
   a: IKeyValueObject,
   b: IKeyValueObject,

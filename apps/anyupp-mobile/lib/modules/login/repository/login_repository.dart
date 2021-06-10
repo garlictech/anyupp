@@ -13,10 +13,6 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   );
 
   @override
-  Future<bool> get appleSignInAvailable =>
-      _socialLoginProvider.appleSignInAvailable;
-
-  @override
   bool isFederated(LoginMethod method) {
     return _socialLoginProvider.isFederated(method);
   }
@@ -24,26 +20,6 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() {
     return _emailLoginProvider.signInAnonymously();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithApple() {
-    return _socialLoginProvider.signInWithApple();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithFacebook() {
-    return _socialLoginProvider.signInWithFacebook();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithGoogle() {
-    return _socialLoginProvider.signInWithGoogle();
-  }
-
-  @override
-  Future<ProviderLoginResponse> signInWithProvider(LoginMethod method) {
-    return _socialLoginProvider.signInWithProvider(method);
   }
 
   @override

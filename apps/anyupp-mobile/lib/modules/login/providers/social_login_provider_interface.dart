@@ -2,13 +2,13 @@ import 'package:fa_prev/modules/login/login.dart';
 
 abstract class ISocialLoginProvider {
 
-  Future<ProviderLoginResponse> signInWithProvider(LoginMethod method);
+  // Future<ProviderLoginResponse> signInWithProvider(LoginMethod method);
 
-  Future<ProviderLoginResponse> signInWithGoogle();
+  // Future<ProviderLoginResponse> signInWithGoogle();
 
-  Future<ProviderLoginResponse> signInWithApple();
+  // Future<ProviderLoginResponse> signInWithApple();
 
-  Future<ProviderLoginResponse> signInWithFacebook();
+  // Future<ProviderLoginResponse> signInWithFacebook();
 
   // Future<ProviderLoginResponse> signInAnonymously();
 
@@ -17,8 +17,6 @@ abstract class ISocialLoginProvider {
   Future<List<LoginMethod>> fetchSignInMethodsForEmail(String email);
 
   bool isFederated(LoginMethod method);
-
-  Future<bool> get appleSignInAvailable;
 
   Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode);
 

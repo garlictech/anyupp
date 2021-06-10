@@ -28,7 +28,7 @@ export function filterNullish<T>(): UnaryFunction<
   Observable<T>
 > {
   return pipe(
-    filter(x => x != null && x !== undefined) as OperatorFunction<
+    filter(x => x !== null && x !== undefined) as OperatorFunction<
       T | null | undefined,
       T
     >,
@@ -39,7 +39,7 @@ export function filterNullishWithDefault<T>(
   defaultValue: T,
 ): UnaryFunction<Observable<T | null | undefined>, Observable<T>> {
   return pipe(
-    filter(x => x != null && x !== undefined) as OperatorFunction<
+    filter(x => x !== null && x !== undefined) as OperatorFunction<
       T | null | undefined,
       T
     >,

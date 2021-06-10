@@ -61,19 +61,19 @@ class AwsSubscription<T extends Model> {
         ),
       )
           .listen((QueryResult result) async {
-        // print('**** startListSubscription[$listNodeName].onData=$result');
+        print('**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
         // print('**** startListSubscription().onData.context=${result.context}');
         // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
         if (!result.hasException) {
           T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          print('**** startListSubscription[$listNodeName].item=$item');
+          print('**** startListSubscription[$listNodeName].onData.item=$item');
           if (_items == null) {
             _items = [];
           }
           int index = _items.indexWhere((o) => o.id == item.id);
           // print('**** startListSubscription[$listNodeName].index=$index');
           if (index != -1) {
-            bool isFiltered = true; // TODO filterModel(item) ?? true;
+            bool isFiltered = filterModel(item) ?? true;
             if (isFiltered) {
               _items[index] = item;
               _listController.add(_items);

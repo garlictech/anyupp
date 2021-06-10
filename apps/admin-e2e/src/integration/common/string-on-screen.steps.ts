@@ -14,7 +14,15 @@ Then('I should see {string} text', (text: string) => {
 
 When('I click the {string} text', (value: string) => {
   cy.contains(value, { matchCase: false }).click({
-    timeout: 15000,
     force: true,
   });
 });
+
+When(
+  'I click the {string} text with timeout {int}',
+  (value: string, timeout: number) => {
+    cy.contains(value, { matchCase: false, timeout }).click({
+      force: true,
+    });
+  },
+);

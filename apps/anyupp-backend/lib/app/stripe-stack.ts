@@ -10,6 +10,7 @@ import { getFQParamName } from './utils';
 export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
   stripeSigningSecret: string;
+  szamlazzhuAgentKey: string;
 }
 
 export class StripeStack extends sst.Stack {
@@ -31,6 +32,7 @@ export class StripeStack extends sst.Stack {
         environment: {
           STRIPE_SECRET_KEY: props.stripeSecretKey,
           STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+          SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
         },
       },
     );
