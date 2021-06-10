@@ -8,9 +8,8 @@ import {
   GroupsState,
 } from './groups.reducer';
 
-export const getGroupsState = createFeatureSelector<GroupsState>(
-  GROUPS_FEATURE_KEY,
-);
+export const getGroupsState =
+  createFeatureSelector<GroupsState>(GROUPS_FEATURE_KEY);
 
 const { selectAll, selectEntities } = groupsAdapter.getSelectors();
 

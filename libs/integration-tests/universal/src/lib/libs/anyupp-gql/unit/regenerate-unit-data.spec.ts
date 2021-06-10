@@ -183,13 +183,14 @@ const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
   chainId: chainId_01_seeded,
   unitId: unitId_01_seeded,
 };
-const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> = {
-  ...productFixture.unitProductBase,
-  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
-  parentId: groupProduct_01.id, // it is from a different unit, but it is not
-  chainId: chainId_01_seeded,
-  unitId: unitId_02,
-};
+const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> =
+  {
+    ...productFixture.unitProductBase,
+    id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
+    parentId: groupProduct_01.id, // it is from a different unit, but it is not
+    chainId: chainId_01_seeded,
+    unitId: unitId_02,
+  };
 
 // GENERATED PRODUCTS to create
 const generatedProduct_fromUnitProduct_0101 = {

@@ -33,9 +33,8 @@ describe('calculatePriceFromAvailabilities method', () => {
   const seasonalNotActiveTime: DateTime = DateTime.fromISO('2000');
   const seasonalActiveTime: DateTime = DateTime.fromISO('1970-02-01');
 
-  const allAvailabilityActiveTime: DateTime = DateTime.fromISO(
-    '1970-02-05T12:00',
-  );
+  const allAvailabilityActiveTime: DateTime =
+    DateTime.fromISO('1970-02-05T12:00');
 
   it('should use the ALWAYS availability if there is no other', () => {
     const availabilities: CrudApi.Availability[] = [availability_ALWAYS];
