@@ -170,26 +170,26 @@
     ora "5.1.0"
     rxjs "6.6.3"
 
-"@angular-eslint/eslint-plugin-template@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-1.0.0.tgz#a969070b4df0628aed8e30164fb86a8002c0385c"
-  integrity sha512-+LrAypsGUaW98aoDb/ITWWDKYHYp6UcJraJU7/bih7AQOJyDs6AnpbMPLscTcxkcCP2ylmJ31pEzYz4ItNKRTQ==
+"@angular-eslint/eslint-plugin-template@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-1.2.0.tgz#4de08fe4457edfd1e999b507b52f9a0c27b3b924"
+  integrity sha512-Oi/y+N/FETuyhbVuFxbkCqSfLo61CAvIPwnQQCfDku/IsCSTI1SjW+B2xO9thDI5po7t5V+3n26uMLQsWNZmlw==
   dependencies:
     "@typescript-eslint/experimental-utils" "4.3.0"
     aria-query "^4.2.2"
     axobject-query "^2.2.0"
 
-"@angular-eslint/eslint-plugin@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-1.0.0.tgz#741a98c351ee02edb7d7f70473da699ee2eafa09"
-  integrity sha512-oar+5WhqFMVrK8ywTAJAnnisIQyG6I2STHHwVURx4rPyzjk3pZN10c3KgJuOF5FExfO2bewwr8FBy1CEZsh90w==
+"@angular-eslint/eslint-plugin@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-1.2.0.tgz#940f659fbbff5da2b69614e839e4dd82a9107839"
+  integrity sha512-HxSDdAS2/lbwYBJmRVRKlx5wjiKdeBPl7JJlciwhrP7QR01a66AWun+fW1ZpMnnqivkF+D5sISsoedRLthRcwA==
   dependencies:
     "@typescript-eslint/experimental-utils" "4.3.0"
 
-"@angular-eslint/template-parser@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/template-parser/-/template-parser-1.0.0.tgz#e4d431db36e64bf14cca90e19f40eb48c3c20402"
-  integrity sha512-M7rj907yOoEzq10FO5BDX7Ylw24V+YfdsYfyEi/TzzQtNGxCwQhbEwXc1PAZgsQ+P1wbGFbg9mb3yFkps7/LEA==
+"@angular-eslint/template-parser@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/template-parser/-/template-parser-1.2.0.tgz#aa0eeaf9b770c65f0a1766a868a077fc2ff8eeaf"
+  integrity sha512-EfNJh0nFGJInHa2ccVw8Eb9ujWoUAwaQMCi9GppzYrqhSPc0YZqdQg4eIW2AlZs1giHD2Ko/V1rphzw+9gisCw==
   dependencies:
     eslint-scope "^5.1.0"
 
@@ -762,6 +762,18 @@
     "@aws-cdk/cx-api" "1.105.0"
     constructs "^3.3.69"
 
+"@aws-cdk/aws-cloudfront-origins@1.105.0":
+  version "1.105.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront-origins/-/aws-cloudfront-origins-1.105.0.tgz#c81d574b4fac65d2cba43ed3814ee12fadd14dfa"
+  integrity sha512-c1GTTjCjGt5RMZqwuh3Dxy6xHie9pITttyU54VrKGIhMihy0RREQobKjQbPLyMzxA4WxzHqpbzkyY0TETRd1tg==
+  dependencies:
+    "@aws-cdk/aws-cloudfront" "1.105.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.105.0"
+    "@aws-cdk/aws-iam" "1.105.0"
+    "@aws-cdk/aws-s3" "1.105.0"
+    "@aws-cdk/core" "1.105.0"
+    constructs "^3.3.69"
+
 "@aws-cdk/aws-cloudfront@1.105.0":
   version "1.105.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-1.105.0.tgz#10ba94161dc96b89fcbfa5142f02002f0c4b82d3"
@@ -1211,6 +1223,21 @@
     "@aws-cdk/aws-secretsmanager" "1.105.0"
     "@aws-cdk/core" "1.105.0"
     "@aws-cdk/cx-api" "1.105.0"
+    constructs "^3.3.69"
+
+"@aws-cdk/aws-route53-patterns@1.105.0":
+  version "1.105.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-route53-patterns/-/aws-route53-patterns-1.105.0.tgz#cf80a81b62af3f9e815a0b6877217b5ec41c4046"
+  integrity sha512-IhcPC2CQ4188MR+ulkkTn1ybcSoIOnciBVqPgl2kNeuqJz7SGaDpJlsrENTmRKXRM0ZbO6guweFINgLWqiqaew==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.105.0"
+    "@aws-cdk/aws-cloudfront" "1.105.0"
+    "@aws-cdk/aws-iam" "1.105.0"
+    "@aws-cdk/aws-route53" "1.105.0"
+    "@aws-cdk/aws-route53-targets" "1.105.0"
+    "@aws-cdk/aws-s3" "1.105.0"
+    "@aws-cdk/core" "1.105.0"
+    "@aws-cdk/region-info" "1.105.0"
     constructs "^3.3.69"
 
 "@aws-cdk/aws-route53-targets@1.105.0":
@@ -5791,7 +5818,66 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.20.0", "@serverless-stack/resources@^0.20.0":
+"@serverless-stack/core@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.25.1.tgz#c1b863e1e8cc7bfb15a8969e1738faa9879597f5"
+  integrity sha512-lUtjaPU+Yi223ZFK0Iz/JZYvxvPGndQFP3MMCC5Olmv6Y/RvSxhCxcssH4y2K1ISS7LSM89y1SuPOWOtQ0Uc1w==
+  dependencies:
+    aws-cdk "1.105.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+
+"@serverless-stack/resources@0.25.1":
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.25.1.tgz#01dda9b9bacdac61be43fa6f0eb7d41d2d040764"
+  integrity sha512-hi7lx0RgUhnfthJACFtcWrjLUnI4B9IetDE2/a86fx8WTAF+QHMB3fUwtDcylxZ3l4fhvfaMWag3Rf771eT77w==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.105.0"
+    "@aws-cdk/aws-apigatewayv2" "1.105.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.105.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.105.0"
+    "@aws-cdk/aws-appsync" "1.105.0"
+    "@aws-cdk/aws-certificatemanager" "1.105.0"
+    "@aws-cdk/aws-cloudfront" "1.105.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.105.0"
+    "@aws-cdk/aws-cognito" "1.105.0"
+    "@aws-cdk/aws-dynamodb" "1.105.0"
+    "@aws-cdk/aws-events" "1.105.0"
+    "@aws-cdk/aws-events-targets" "1.105.0"
+    "@aws-cdk/aws-iam" "1.105.0"
+    "@aws-cdk/aws-kinesis" "1.105.0"
+    "@aws-cdk/aws-lambda" "1.105.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.105.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.105.0"
+    "@aws-cdk/aws-logs" "1.105.0"
+    "@aws-cdk/aws-rds" "1.105.0"
+    "@aws-cdk/aws-route53" "1.105.0"
+    "@aws-cdk/aws-route53-patterns" "1.105.0"
+    "@aws-cdk/aws-route53-targets" "1.105.0"
+    "@aws-cdk/aws-s3" "1.105.0"
+    "@aws-cdk/aws-s3-deployment" "1.105.0"
+    "@aws-cdk/aws-secretsmanager" "1.105.0"
+    "@aws-cdk/aws-sns" "1.105.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.105.0"
+    "@aws-cdk/aws-sqs" "1.105.0"
+    "@aws-cdk/core" "1.105.0"
+    "@aws-cdk/cx-api" "1.105.0"
+    "@serverless-stack/core" "^0.25.1"
+    "@types/jest" "^26.0.7"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    esbuild "^0.8.31"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.2.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.20.0":
   version "0.20.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.20.0.tgz#206dabb996eede173ad80bac1d0d24c94adabf88"
   integrity sha512-+fRc/rVT+0s4wS3+ITWjcJtftXFKAKEOEiwfAABLNAIJ1+z6kltfnwqVXsJZ/R4ILOBbfVQ5hUlU6GQgnffLfQ==
@@ -6500,10 +6586,10 @@
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.7.4.tgz#99a49aa9a5f8dc86fc249ed13ed59552c6ce862d"
   integrity sha512-L3FKeEwMm8e8hqGvt7cSesVmGtavpRyHV1FNDq+Pm5pS4x5eFmE70ZERXCSBWAiLQqXBcZRUrwV59FZLQl/GxQ==
 
-"@types/jasmine@3.6.2":
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.2.tgz#02f64450016f7de70f145d698be311136d7c6374"
-  integrity sha512-AzfesNFLvOs6Q1mHzIsVJXSeUnqVh4ZHG8ngygKJfbkcSLwzrBVm/LKa+mR8KrOfnWtUL47112gde1MC0IXqpQ==
+"@types/jasmine@3.7.7":
+  version "3.7.7"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.7.7.tgz#56718af036be3c9f86eca560a22e39440b2b0784"
+  integrity sha512-yZzGe1d1T0y+imXDZ79F030nn8qbmiwpWKCZKvKN0KbTzwXAVYShUxkIxu1ba+vhIdabTGVGCfbtZC0oOam8TQ==
 
 "@types/jasminewd2@~2.0.3":
   version "2.0.9"
