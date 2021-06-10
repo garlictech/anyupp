@@ -14,7 +14,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
 
 
   @override
-  Future<void> startExternalPayment(Cart cart, String orderMethod) async {
+  Future<void> startExternalPayment(Cart cart, String orderMethod, UserInvoiceAddress invoiceAddress) async {
     print('startExternalPayment().start()=$cart');
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
@@ -27,19 +27,20 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
 
     QueryResult result = await GQL.backend.executeMutation(
       mutation: MUTATION_START_PAYMENT,
-      variables: {
-        'orderId': orderId,
-        'paymentMethod': orderMethod,
-        'paymentMethodId': 'cash',
-        'savePaymentMethod': false,
-      },
+      variables: createStartPaymentRequestVariables(
+        orderId: orderId,
+        paymentMethod: orderMethod,
+        paymentMethodId: 'cash',
+        saveCard: false,
+        invoiceAddress: invoiceAddress,
+      ),
     );
     print('startExternalPayment().result=$result}');
     return;
   }
 
    @override
-  Future<void> startOrderExternalPayment(String orderId, String orderMethod) async {
+  Future<void> startOrderExternalPayment(String orderId, String orderMethod, UserInvoiceAddress invoiceAddress) async {
     print('startOrderExternalPayment().orderId=$orderId');
     if (orderId == null) {
       throw StripeException(
@@ -49,12 +50,13 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
 
     QueryResult result = await GQL.backend.executeMutation(
       mutation: MUTATION_START_PAYMENT,
-      variables: {
-        'orderId': orderId,
-        'paymentMethod': orderMethod,
-        'paymentMethodId': 'cash',
-        'savePaymentMethod': false,
-      },
+      variables: createStartPaymentRequestVariables(
+        orderId: orderId,
+        paymentMethod: orderMethod,
+        paymentMethodId: 'cash',
+        saveCard: false,
+        invoiceAddress: invoiceAddress,
+      ),
     );
     print('startOrderExternalPayment().result=$result}');
     await Future.delayed(Duration(seconds: 2));

@@ -626,10 +626,10 @@ type User
   phone: String
   profileImage: String
   stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddress
 }
 
 ### Cart
-
 type Cart
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
@@ -649,12 +649,70 @@ type Transaction
   userId: ID!
   user: User! @connection(fields: ["userId"])
   orderId: ID!
-  order: Order! @connection(fields: ["orderId"])
+  # order: Order! @connection(fields: ["orderId"])
   type: String
   total: Float
   currency: String
   status: PaymentStatus
   externalTransactionId: String
+  invoiceId: ID
+  invoice: Invoice @connection(fields: ["invoiceId"])
+  receiptId: ID
+  receipt: Receipt @connection(fields: ["receiptId"])
+}
+
+type UserInvoiceAddress {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+enum InvoiceStatus {
+  waiting
+  success
+  failed
+}
+
+enum ReceiptStatus {
+  waiting
+  success
+  failed
+}
+
+type Invoice
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalInvoiceId: String
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus!
+}
+
+type Receipt
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalReceiptId: String
+  email: String
+  pdfUrl: String
+  status: ReceiptStatus!
 }
 
 type Subscription {
@@ -732,7 +790,7 @@ type Subscription {
       ]
     )
     @aws_cognito_user_pools
-  onOrderChanged(userId: String, unitId: String): Order
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }

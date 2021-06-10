@@ -22,6 +22,7 @@ import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
+import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
@@ -82,6 +83,9 @@ void _initProviders() {
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
+
+  // User details
+  getIt.registerLazySingleton<IUserDetailsProvider>(() => AwsUserDetailsProvider(getIt<IAuthProvider>()));
 }
 
 void _initRepositories() {
@@ -106,6 +110,8 @@ void _initRepositories() {
   getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(
       () => StripePaymentRepository(getIt<IStripePaymentProvider>(), getIt<IExternalPaymentProvider>()));
+
+  getIt.registerLazySingleton<UserDetailsRepository>(() => UserDetailsRepository(getIt<IUserDetailsProvider>()));
 }
 
 void _initServices() {
@@ -139,4 +145,5 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => MainNavigationBloc());
   getIt.registerLazySingleton(() => ConfigsetBloc());
+  getIt.registerLazySingleton(() => UserDetailsBloc(getIt<UserDetailsRepository>())); 
 }

@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
-
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +14,7 @@ class AwsAuthProvider implements IAuthProvider {
   final CognitoService _service;
 
   AwsAuthProvider(this._service) {
-    print('AwsAuthProvider().constructor()');
+    // print('AwsAuthProvider().constructor()');
     getAuthenticatedUserProfile();
   }
 
@@ -124,7 +122,6 @@ class AwsAuthProvider implements IAuthProvider {
     String email;
     String name;
     String subId;
-    String loginMethod;
     for (int i = 0; i < attributes.length; i++) {
       CognitoUserAttribute a = attributes[i];
       if (a.name == 'name') {
@@ -145,15 +142,8 @@ class AwsAuthProvider implements IAuthProvider {
         subId = a.value;
         continue;
       }
-      if (a.name == 'identities') {
-        List<dynamic> json = jsonDecode(a.value);
-        loginMethod = json.isNotEmpty
-            ? json[0]['providerType']
-            : 'UNKNOWN'; //LoginMethodUtils.stringToMethod(json[0]['providerType']);
-        continue;
-      }
     }
-    User user = User(email: email, loginMethod: loginMethod, name: name, id: subId);
+    User user = User(email: email, name: name, id: subId);
     return user;
   }
 

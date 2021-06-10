@@ -241,18 +241,30 @@ export const createPipeline = (
         }),
       ],
     },
-    {
-      stageName: 'BuildAndDeploy',
+  ];
+
+  if (stage === 'prod') {
+    stages.push({
+      stageName: 'ApproveProdDeploy',
       actions: [
-        new codepipeline_actions.CodeBuildAction({
-          actionName: 'BuildAndDeploy',
-          project: build,
-          input: sourceOutput,
-          outputs: [buildOutput],
+        new codepipeline_actions.ManualApprovalAction({
+          actionName: 'Approve_Prod',
         }),
       ],
-    },
-  ];
+    });
+  }
+
+  stages.push({
+    stageName: 'BuildAndDeploy',
+    actions: [
+      new codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildAndDeploy',
+        project: build,
+        input: sourceOutput,
+        outputs: [buildOutput],
+      }),
+    ],
+  });
 
   if (props.finalizationStage) {
     stages.push(props.finalizationStage);

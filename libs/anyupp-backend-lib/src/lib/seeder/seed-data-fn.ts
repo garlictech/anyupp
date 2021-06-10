@@ -12,10 +12,12 @@ import {
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
 import { filterNullish } from '@bgap/shared/utils';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
   userPoolId: string;
+  cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
 
 export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
@@ -628,12 +630,3 @@ export const createComponentSets = (deps: SeederDependencies) => {
     ),
   );
 };
-
-export const createSeederDeps = (
-  awsAccesssKeyId: string,
-  awsSecretAccessKey: string,
-  userPoolId: string,
-): SeederDependencies => ({
-  userPoolId,
-  crudSdk: CrudApi.getCrudSdkForIAM(awsAccesssKeyId, awsSecretAccessKey),
-});

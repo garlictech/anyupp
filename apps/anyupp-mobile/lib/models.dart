@@ -24,6 +24,7 @@ export 'models/StatusLog.dart';
 export 'models/StripePaymentMethod.dart';
 export 'models/TransactionItem.dart';
 export 'models/User.dart';
+export 'models/UserInvoiceAddress.dart';
 export 'models/core/model_base.dart';
 export 'models/core/parsers.dart';
 export 'models/core/uuid.dart';

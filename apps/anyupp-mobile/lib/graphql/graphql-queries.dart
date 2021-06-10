@@ -5,6 +5,7 @@ export 'mutations/delete_favorite_product.dart';
 export 'mutations/save_cart.dart';
 export 'mutations/start_payment.dart';
 export 'mutations/update_cart.dart';
+export 'queries/get_user.dart';
 export 'queries/list_favorites.dart';
 export 'queries/list_order_history.dart';
 export 'queries/list_orders.dart';

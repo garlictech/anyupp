@@ -1,8 +1,9 @@
 const QUERY_LIST_ACTIVE_ORDERS = '''
-query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
+query ListOrdersQuery(\$userId: ID!, \$unitId: ID!, \$archived: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId}
+    unitId: {eq: \$unitId},
+    archived: {eq: \$archived}
   }) {
     items {
       id
@@ -81,6 +82,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         image
       }
       transactionId
+      archived
     }
   }
 }
