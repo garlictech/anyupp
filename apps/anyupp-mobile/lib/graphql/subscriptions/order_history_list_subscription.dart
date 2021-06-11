@@ -1,6 +1,6 @@
 const SUBSCRIPTION_ORDER_HISTORY_LIST = '''
 subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: String) {
-  onOrderChanged(unitId: \$unitId, userId: \$userId) {
+  onOrderChanged(unitId: \$unitId, userId: \$userId, archived: true) {
    	id
     unitId
     userId

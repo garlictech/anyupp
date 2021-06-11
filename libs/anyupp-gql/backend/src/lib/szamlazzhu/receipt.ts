@@ -34,12 +34,12 @@ Promise<Szamlazz.ReceiptResponse> => {
   //   });
   console.debug('receipt.language=' + language);
 
-  if (!user.invoiceAddress) {
-    throw new Error("The user's invoiceAddress information is missing.");
-  }
+  // if (!user.invoiceAddress) {
+  //   throw new Error("The user's invoiceAddress information is missing.");
+  // }
 
   if (!transaction.currency) {
-    throw new Error("The user's invoiceAddress information is missing.");
+    throw new Error("The transaction's currency information is missing.");
   }
   if (!transaction.externalTransactionId) {
     throw new Error(

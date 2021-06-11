@@ -3,7 +3,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId},
-    archived: {eq: false}
+    archived: { ne: false }
   }) {
     items {
       id
