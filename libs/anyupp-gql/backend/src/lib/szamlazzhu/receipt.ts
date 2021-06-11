@@ -32,6 +32,7 @@ Promise<Szamlazz.ReceiptResponse> => {
   //     // },
   //     // issuerName: "",
   //   });
+  console.debug('receipt.language=' + language);
 
   if (!user.invoiceAddress) {
     throw new Error("The user's invoiceAddress information is missing.");
@@ -50,17 +51,17 @@ Promise<Szamlazz.ReceiptResponse> => {
   const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF;
 
   // User
-  let buyer = new Szamlazz.Buyer({
-    name: user.invoiceAddress.customerName,
-    country: user.invoiceAddress.country,
-    zip: user.invoiceAddress.postalCode,
-    city: user.invoiceAddress.city,
-    address: user.invoiceAddress.streetAddress,
-    taxNumber: user.invoiceAddress.taxNumber,
-    phone: user.phone || '',
-    email: user.invoiceAddress.email || '',
-    sendEmail: !!user.invoiceAddress.email,
-  });
+  // let buyer = new Szamlazz.Buyer({
+  //   name: user.invoiceAddress.customerName,
+  //   country: user.invoiceAddress.country,
+  //   zip: user.invoiceAddress.postalCode,
+  //   city: user.invoiceAddress.city,
+  //   address: user.invoiceAddress.streetAddress,
+  //   taxNumber: user.invoiceAddress.taxNumber,
+  //   phone: user.phone || '',
+  //   email: user.invoiceAddress.email || '',
+  //   sendEmail: !!user.invoiceAddress.email,
+  // });
 
   // OrderItems
   const items = order.items.map(orderItem => {
@@ -84,7 +85,7 @@ Promise<Szamlazz.ReceiptResponse> => {
     });
   });
 
-  let receipt = new Szamlazz.Receipt({
+  const receipt = new Szamlazz.Receipt({
     paymentMethod, // optional, default: BankTransfer
     receiptNumberPrefix: 'KHU',
     currency,
