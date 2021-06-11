@@ -94,7 +94,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.5",
     "stripe": "8.149.0",
-    "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.0.3",
+    "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.1.0",
     "tslib": "2.2.0",
     "uuid": "8.3.2",
     "ws": "7.4.6",

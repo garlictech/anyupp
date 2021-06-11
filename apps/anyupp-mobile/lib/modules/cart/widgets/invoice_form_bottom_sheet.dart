@@ -58,10 +58,11 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   final _streetController = TextEditingController();
   FieldValidator taxFieldValidator;
   bool _useSavedAddress = false;
+  User _userProfile;
 
   @override
   void initState() {
-    // getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
+    getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
 
     _countryCodeController.addListener(() {
       setState(() {
@@ -92,7 +93,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
-            print('Unit selected=${state.unit}');
+            // print('Unit selected=${state.unit}');
             return _buildInvoiceFormScreen(
               context,
               state.unit,
@@ -163,71 +164,83 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                             ))
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            trans('payment.paymentInfo.invoicing.invoiceAddress'),
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: theme.text,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Switch(
-                              activeColor: theme.highlight,
-                              value: _useSavedAddress,
-                              onChanged: (value) {
-                                if (value == true) {
-                                  getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
-                                } else {
-                                  getIt<UserDetailsBloc>().add(ResetUserDetailsEvent());
-                                }
-                                setState(() {
-                                  this._useSavedAddress = value;
-                                });
-                              })
-                        ],
-                      ),
+                    // BlocBuilder<UserDetailsBloc, UserDetailsState>(
+                    //   builder: (BuildContext context, UserDetailsState state) {
+                    //     if (state is UserDetailsLoaded) {
+                    //       return _buildInvoiceForm(context, state.userDetails);
+                    //     }
+                    //     return _buildInvoiceForm(context);
+                    //   },
+                    // ),
+                    BlocListener<UserDetailsBloc, UserDetailsState>(
+                      listener: (BuildContext context, UserDetailsState state) {
+                        if (state is UserDetailsLoaded) {
+                          setState(() {
+                            _userProfile = state.userDetails;
+                          });
+                        }
+                      },
+                      child: _userProfile != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    trans('payment.paymentInfo.invoicing.invoiceAddress'),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      color: theme.text,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Switch(
+                                      activeColor: theme.highlight,
+                                      value: _useSavedAddress,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          this._useSavedAddress = value;
+                                        });
+                                        User user = _useSavedAddress ? _userProfile : null;
+                                        if (user?.invoiceAddress != null) {
+                                          _setTextFieldValue(
+                                              _nameOrCompanyController, user.invoiceAddress.customerName);
+                                          _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                                          _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                                          _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                                          _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                                          _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                                        } else {
+                                          _setTextFieldValue(_nameOrCompanyController, '');
+                                          _setTextFieldValue(_cityController, '');
+                                          _setTextFieldValue(_emailController, '');
+                                          _setTextFieldValue(_zipController, '');
+                                          _setTextFieldValue(_streetController, '');
+                                          _setTextFieldValue(_taxNumberController, '');
+                                        }
+                                      })
+                                ],
+                              ),
+                            )
+                          : Container(),
                     ),
                   ],
                 );
               },
             ),
           ),
-          BlocBuilder<UserDetailsBloc, UserDetailsState>(
-            builder: (BuildContext context, UserDetailsState state) {
-              if (state is UserDetailsLoaded) {
-                return _buildInvoiceForm(context, state.userDetails);
-              }
-              return _buildInvoiceForm(context);
-            },
-          ),
+          _buildInvoiceForm(context),
           _buildSendCartButton(context, unit),
         ],
       ),
     );
   }
 
-  Widget _buildInvoiceForm(BuildContext context, [User user]) {
-    if (user?.invoiceAddress != null) {
-      _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
-      _setTextFieldValue(_cityController, user.invoiceAddress.city);
-      _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
-      _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
-      _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
-      _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
-    } else {
-      _setTextFieldValue(_nameOrCompanyController, '');
-      _setTextFieldValue(_cityController, '');
-      _setTextFieldValue(_emailController, '');
-      _setTextFieldValue(_zipController, '');
-      _setTextFieldValue(_streetController, '');
-      _setTextFieldValue(_taxNumberController, '');
-    }
+  Widget _buildInvoiceForm(BuildContext context) {
+    print('_buildInvoiceForm()=${_userProfile?.email}, $_useSavedAddress');
+    
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 14.0,
