@@ -159,7 +159,7 @@
     "husky": "6.0.0",
     "hygen": "6.1.0",
     "jest": "26.6.3",
-    "jest-preset-angular": "8.3.1",
+    "jest-preset-angular": "8.4.0",
     "joi": "17.4.0",
     "mocha": "8.4.0",
     "mochawesome": "6.2.2",
