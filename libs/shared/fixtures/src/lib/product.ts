@@ -5,16 +5,57 @@ import { seededIdPrefix, testIdPrefix } from './common';
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
 const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 
-const getProductVariant = (
+const getChainProductVariant = (
   idx: number,
-  type: string,
 ): RequiredId<CrudApi.ProductVariantInput> => ({
-  id: `${testIdPrefix}${type}ProductVariant_id_${idx}`,
+  id: `${testIdPrefix}ChainProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
-  refGroupPrice: idx,
+  refGroupPrice: idx * 10,
   isAvailable: true,
-  pack: { size: idx, unit: 'UNIT' },
-  price: idx,
+  pack: { size: idx, unit: `CHAIN_UNIT` },
+  price: idx * 10,
+  availabilities: [
+    {
+      dayFrom: '',
+      dayTo: '',
+      price: idx * 0.5,
+      timeFrom: '',
+      timeTo: '',
+      type: EVariantAvailabilityType.ALWAYS,
+    },
+  ],
+  position: idx,
+});
+const getGroupProductVariant = (
+  idx: number,
+): RequiredId<CrudApi.ProductVariantInput> => ({
+  id: `${testIdPrefix}GroupProductVariant_id_${idx}`,
+  variantName: { en: `VARIANT_NAME_${idx}` },
+  refGroupPrice: idx * 20,
+  isAvailable: true,
+  pack: { size: idx, unit: `GROUP_UNIT` },
+  price: idx * 20,
+  availabilities: [
+    {
+      dayFrom: '',
+      dayTo: '',
+      price: idx * 1,
+      timeFrom: '',
+      timeTo: '',
+      type: EVariantAvailabilityType.ALWAYS,
+    },
+  ],
+  position: idx,
+});
+const getUnitProductVariant = (
+  idx: number,
+): RequiredId<CrudApi.ProductVariantInput> => ({
+  id: `${testIdPrefix}UnitProductVariant_id_${idx}`,
+  variantName: { en: `VARIANT_NAME_${idx}` },
+  refGroupPrice: idx * 30,
+  isAvailable: true,
+  pack: { size: idx, unit: `UNIT_UNIT` },
+  price: idx * 30,
   availabilities: [
     {
       dayFrom: '',
@@ -37,7 +78,7 @@ const chainProductBase: RequiredId<CrudApi.CreateChainProductInput> = {
   productType: 'PRODUCT_TYPE',
   isVisible: true,
   image: 'IMAGE',
-  variants: [getProductVariant(1, 'chain'), getProductVariant(2, 'chain')],
+  variants: [getChainProductVariant(1), getChainProductVariant(2)],
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
@@ -48,7 +89,7 @@ const groupProductBase: RequiredId<CrudApi.CreateGroupProductInput> = {
   groupId: 'groupId_',
   isVisible: true,
   tax: 1,
-  variants: [getProductVariant(1, 'group'), getProductVariant(2, 'group')],
+  variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
 };
 
 const unitProductBase: Omit<
@@ -64,7 +105,7 @@ const unitProductBase: Omit<
   takeaway: true,
   laneId: 'laneId_',
   position: 1,
-  variants: [getProductVariant(1, 'chain'), getProductVariant(2, 'chain')],
+  variants: [getUnitProductVariant(1), getUnitProductVariant(2)],
 };
 
 export const productFixture = {

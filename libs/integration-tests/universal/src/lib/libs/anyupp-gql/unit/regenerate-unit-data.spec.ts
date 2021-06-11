@@ -183,14 +183,13 @@ const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
   chainId: chainId_01_seeded,
   unitId: unitId_01_seeded,
 };
-const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> =
-  {
-    ...productFixture.unitProductBase,
-    id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
-    parentId: groupProduct_01.id, // it is from a different unit, but it is not
-    chainId: chainId_01_seeded,
-    unitId: unitId_02,
-  };
+const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> = {
+  ...productFixture.unitProductBase,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
+  parentId: groupProduct_01.id, // it is from a different unit, but it is not
+  chainId: chainId_01_seeded,
+  unitId: unitId_02,
+};
 
 // GENERATED PRODUCTS to create
 const generatedProduct_fromUnitProduct_0101 = {
@@ -305,10 +304,10 @@ describe('RegenerateUnitData mutation tests', () => {
     const input = { id: 'EMPTY UNIT' };
 
     // TO DEBUG
-    // defer(() =>
-    //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-    // )
-    authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
+    defer(() =>
+      unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
+    ).subscribe({
+      // authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
       error(err) {
         expect(err).toMatchSnapshot();
         done();
@@ -321,9 +320,9 @@ describe('RegenerateUnitData mutation tests', () => {
 
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
-      listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
+      listGeneratedProductsForUnits({
         crudSdk: iamCrudSdk,
-      }),
+      })([unitId_01_seeded, unitId_02]),
       listProductsForUnits(iamCrudSdk, [unitId_01_seeded, unitId_02]),
     ])
       .pipe(
@@ -366,23 +365,30 @@ describe('RegenerateUnitData mutation tests', () => {
         }),
 
         // EXECUTE THE LOGIC
-        switchMap(() =>
-          // TO DEBUG
-          // defer(() =>
-          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-          // )
-          authAnyuppSdk.RegenerateUnitData({ input }),
+        switchMap(
+          () =>
+            // TO DEBUG
+            defer(() =>
+              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+                input,
+              }),
+            ),
+          // authAnyuppSdk.RegenerateUnitData({ input }),
         ),
 
         // ASSERTIONS
         delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
-          listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
+          listGeneratedProductsForUnits({
             crudSdk: iamCrudSdk,
-          }),
+          })([unitId_01_seeded, unitId_02]),
         ),
         tap({
           next(result) {
+            console.log(
+              '### ~ file: regenerate-unit-data.spec.ts ~ line 388 ~ next ~ result',
+              result,
+            );
             const expectedGeneratedIds = [
               unitProduct_0201_DIFFERENTUNIT.id,
               unitProduct_0104_NEW.id,

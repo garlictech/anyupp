@@ -27,13 +27,13 @@ Array [
     "unitId": "seeded_unit_c1_g1_1_id",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -41,13 +41,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -55,10 +55,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -69,10 +69,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -211,13 +211,13 @@ Array [
     "unitId": "seeded_unit_c1_g1_1_id",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -225,13 +225,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -239,10 +239,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -253,10 +253,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -293,13 +293,13 @@ Array [
     "unitId": "seeded_unit_c1_g1_1_id",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -307,13 +307,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -321,10 +321,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -335,10 +335,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -410,4 +410,4 @@ Array [
 ]
 `;
 
-exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `[Error: GraphQL error: {"message":"There is no product in this unit","code":"ERROR_NO_PRODUCT_IN_UNIT"}]`;
+exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;

@@ -7,47 +7,46 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 
 import { createItems, deleteItems } from '../../database';
 import { UnitsResolverDeps } from '../unit/utils';
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
+import { validateGeneratedProductList } from '@bgap/shared/data-validators';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
-export const deleteGeneratedProductsForAUnit =
-  (unitId: string) => (deps: UnitsResolverDeps) => {
-    return listGeneratedProductsForUnits([unitId])(deps).pipe(
-      switchMap(items =>
-        iif(
-          () => items.length > 0,
-          deleteGeneratedProductsItems(items),
-          of([]),
-        ),
+export const deleteGeneratedProductsForAUnitFromDb = (
+  deps: UnitsResolverDeps,
+) => (unitId: string) => {
+  return listGeneratedProductsForUnits(deps)([unitId]).pipe(
+    switchMap(items =>
+      iif(
+        () => items.length > 0,
+        deleteGeneratedProductsItemsFromDb(items),
+        of([]),
       ),
-    );
-  };
-const deleteGeneratedProductsItems = (
-  items: Required<CrudApi.GeneratedProduct>[],
+    ),
+  );
+};
+const deleteGeneratedProductsItemsFromDb = (
+  items: CrudApi.GeneratedProduct[],
 ) => deleteItems(TABLE_NAME)(items);
 
-export const createGeneratedProducts = (
+export const createGeneratedProductsInDb = (
   products: CrudApi.CreateGeneratedProductInput[],
 ) => {
   return createItems(TABLE_NAME)(products);
 };
 
-export const listGeneratedProductsForUnits =
-  (unitIds: string[]) =>
-  (
-    deps: UnitsResolverDeps,
-  ): Observable<Array<Required<CrudApi.GeneratedProduct>>> => {
-    const input: CrudApi.ListGeneratedProductsQueryVariables = {
-      filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-      limit: 200, // TODO <==??????????
-    };
-
-    return defer(() =>
-      deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
-    ).pipe(
-      map(x => x?.items),
-      filter(fp.negate(fp.isEmpty)),
-      defaultIfEmpty([]),
-      // TODO: switchMap((items: []) => combineLatest(items.map(validateUnit))),
-    );
+export const listGeneratedProductsForUnits = (deps: UnitsResolverDeps) => (
+  unitIds: string[],
+): Observable<Array<CrudApi.GeneratedProduct>> => {
+  const input: CrudApi.ListGeneratedProductsQueryVariables = {
+    filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+    limit: 200, // TODO <==??????????
   };
+
+  return defer(() =>
+    deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
+  ).pipe(
+    switchMap(validateGeneratedProductList),
+    filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
+  );
+};

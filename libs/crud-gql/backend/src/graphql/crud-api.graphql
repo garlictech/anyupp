@@ -441,7 +441,6 @@ type GroupProduct
   # takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  chainProduct: ChainProduct! @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -458,7 +457,6 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  groupProduct: GroupProduct! @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
