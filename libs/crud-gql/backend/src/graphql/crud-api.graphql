@@ -265,7 +265,7 @@ type Order
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
-  archived: Boolean
+  archived: Boolean!
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
@@ -441,7 +441,6 @@ type GroupProduct
   # takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  chainProduct: ChainProduct! @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -458,7 +457,6 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  groupProduct: GroupProduct! @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
@@ -791,6 +789,9 @@ type Subscription {
     )
     @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }
