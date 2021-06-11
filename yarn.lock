@@ -15515,10 +15515,10 @@ jest-pnp-resolver@^1.2.2:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.2.tgz#b704ac0ae028a89108a4d040b3f919dfddc8e33c"
   integrity sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==
 
-jest-preset-angular@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-8.3.1.tgz#b8e4867639982a0989f4ef5ef0bad1c084070ef4"
-  integrity sha512-WhQm+0tXzikkvIF35XErV87DqYbieZI0R0MIGgn7VE/DDhdbXFDmYQxFZ7w4qcA0cGLLvSMTBbIsUtHeE/rFxQ==
+jest-preset-angular@8.4.0:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-8.4.0.tgz#476b8a29a4e3a28145b3a53bbe318252da8644f0"
+  integrity sha512-lngQRVVMy2qdzhSzUVTkKFsWC+Z2uMFlJf8J5ZeapNZFsRYW2tjlVqdm+sJOTnVmMVnN7CtDqvRDwlyFTIYD+A==
   dependencies:
     pretty-format "26.x"
     ts-jest "26.x"
@@ -19558,10 +19558,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
-  integrity sha512-16c7K+x4qVlJg9rEbXl7HEGmQyZlG4R9AgP+oHKRMsMsuk8s+ATStlf1NpDqyBI1HpVyfjLOeMhH2LvuNvV5Vg==
+prettier@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
+  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
 
 pretty-bytes@^5.4.1:
   version "5.6.0"
