@@ -24,6 +24,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   @override
   void initState() {
     super.initState();
+    print('SelectStripePaymentMethodWidget.initState()');
     getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
   }
 

@@ -1,47 +1,44 @@
 import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
 import { missingParametersError } from './errors';
 
-export const customNumberCompare = (field: string, desc = false) => (
-  a: IKeyValueObject,
-  b: IKeyValueObject,
-): number => {
-  if (+a[field] < +b[field]) {
-    return desc ? 1 : -1;
-  }
-  if (+a[field] > +b[field]) {
-    return desc ? -1 : 1;
-  }
+export const customNumberCompare =
+  (field: string, desc = false) =>
+  (a: IKeyValueObject, b: IKeyValueObject): number => {
+    if (+a[field] < +b[field]) {
+      return desc ? 1 : -1;
+    }
+    if (+a[field] > +b[field]) {
+      return desc ? -1 : 1;
+    }
 
-  return 0;
-};
+    return 0;
+  };
 
-export const customDateCompare = (field: string, desc = false) => (
-  a: IKeyValueObject,
-  b: IKeyValueObject,
-): number => {
-  if (new Date(a[field]).getTime() < new Date(b[field]).getTime()) {
-    return desc ? 1 : -1;
-  }
-  if (new Date(a[field]).getTime() > new Date(b[field]).getTime()) {
-    return desc ? -1 : 1;
-  }
+export const customDateCompare =
+  (field: string, desc = false) =>
+  (a: IKeyValueObject, b: IKeyValueObject): number => {
+    if (new Date(a[field]).getTime() < new Date(b[field]).getTime()) {
+      return desc ? 1 : -1;
+    }
+    if (new Date(a[field]).getTime() > new Date(b[field]).getTime()) {
+      return desc ? -1 : 1;
+    }
 
-  return 0;
-};
+    return 0;
+  };
 
-export const customStringCompare = (field: string, desc = false) => (
-  a: IKeyValueObject,
-  b: IKeyValueObject,
-): number => {
-  if (a[field] < b[field]) {
-    return desc ? 1 : -1;
-  }
-  if (a[field] > b[field]) {
-    return desc ? -1 : 1;
-  }
+export const customStringCompare =
+  (field: string, desc = false) =>
+  (a: IKeyValueObject, b: IKeyValueObject): number => {
+    if (a[field] < b[field]) {
+      return desc ? 1 : -1;
+    }
+    if (a[field] > b[field]) {
+      return desc ? -1 : 1;
+    }
 
-  return 0;
-};
+    return 0;
+  };
 
 export const objectToArray = (
   obj: IKeyValueObject | unknown,

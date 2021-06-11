@@ -38,7 +38,8 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 })
 export class ProductComponentFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   public productComponent!: CrudApi.ProductComponent;
   public chainOptions: IKeyValue[] = [];
 

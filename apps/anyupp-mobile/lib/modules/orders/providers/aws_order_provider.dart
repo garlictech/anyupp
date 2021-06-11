@@ -25,26 +25,23 @@ class AwsOrderProvider implements IOrdersProvider {
 
   AwsOrderProvider(this._authProvider) {
     _subOrderList = AwsSubscription<Order>(
-      authProvider: _authProvider,
-      listQuery: QUERY_LIST_ACTIVE_ORDERS,
-      listNodeName: 'listOrders',
-      subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
-      subscriptionNodeName: 'onOrderChanged',
-      modelFromJson: (json) => Order.fromJson(json),
-      // filterModel: (model) =>
-      //     model.status == OrderStatus.placed ||
-      //     model.status == OrderStatus.processing ||
-      //     model.status == OrderStatus.ready,
-    );
+        authProvider: _authProvider,
+        listQuery: QUERY_LIST_ACTIVE_ORDERS,
+        listNodeName: 'listOrders',
+        subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
+        subscriptionNodeName: 'onOrderChanged',
+        modelFromJson: (json) => Order.fromJson(json),
+        filterModel: (model) => model.archived,
+        );
 
     _subOrderHistoryList = AwsSubscription<Order>(
       authProvider: _authProvider,
       listQuery: QUERY_LIST_ORDER_HISTORY,
-      listNodeName: 'listOrderHistorys',
+      listNodeName: 'listOrders',
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
       subscriptionNodeName: 'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
       modelFromJson: (json) => Order.fromJson(json),
-      // filterModel: (model) => model.status == OrderStatus.PAID || model.status == OrderStatus.REJECTED,
+      filterModel: (model) => !model.archived,
     );
   }
 
@@ -120,7 +117,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> updateCart(String chainId, String unitId, Cart cart) async {
-    print('updateCart=$cart');
+    // print('updateCart=$cart');
     bool delete = cart != null && cart.items.isEmpty;
     if (delete) {
       await _deleteCartFromBackend(cart.id);
@@ -249,6 +246,7 @@ class AwsOrderProvider implements IOrdersProvider {
       variables: {
         'userId': user.id,
         'unitId': unitId,
+        'archived' : false
       },
     );
   }
@@ -266,6 +264,7 @@ class AwsOrderProvider implements IOrdersProvider {
       variables: {
         'userId': user.id,
         'unitId': unitId,
+        'archived' : true
       },
     );
   }
@@ -284,7 +283,7 @@ class AwsOrderProvider implements IOrdersProvider {
     try {
       QueryResult result = await GQL.amplify.executeQuery(
         query: QUERY_GET_ORDER,
-         variables: {
+        variables: {
           'orderId': orderId,
         },
         fetchPolicy: FetchPolicy.networkOnly,
@@ -310,7 +309,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
-    print('_getCartMutationVariablesFromCart().cart=$cart');
+    // print('_getCartMutationVariablesFromCart().cart=$cart');
     return {
       '$name': {
         if (cart.id != null) 'id': cart.id,
@@ -320,8 +319,7 @@ class AwsOrderProvider implements IOrdersProvider {
           return {
             'productId': item.productId,
             'variantId': item.variantId,
-            'created':
-                1, // TODO: DateTime.now().millisecondsSinceEpoch,  Variable 'created' has an invalid value. Expected type 'Int' but was 'Long'.
+            'created': DateTime.now().millisecondsSinceEpoch.toInt(),
             'productName': {
               'en': item.productName.en,
               'de': item.productName.de,
@@ -331,8 +329,8 @@ class AwsOrderProvider implements IOrdersProvider {
               'currency': item.priceShown.currency,
               'pricePerUnit': item.priceShown.pricePerUnit,
               'priceSum': item.priceShown.priceSum,
-              'tax': item.priceShown.tax, // TODO
-              'taxSum': item.priceShown.taxSum, // TODO
+              'tax': item.priceShown.tax,
+              'taxSum': item.priceShown.taxSum,
             },
             'statusLog': {
               'userId': cart.userId,
@@ -340,6 +338,7 @@ class AwsOrderProvider implements IOrdersProvider {
               'ts': 1.0,
             },
             "allergens": item.allergens,
+            "image": item.image,
             'quantity': item.quantity,
             'variantName': {
               'en': item.variantName.en,

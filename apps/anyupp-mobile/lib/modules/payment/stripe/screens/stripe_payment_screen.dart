@@ -1,6 +1,10 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/main/main.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,16 +13,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-
 class StripePaymentScreen extends StatefulWidget {
 
   final String orderId;
+  final UserInvoiceAddress invoiceAddress;
 
-  const StripePaymentScreen({Key key, this.orderId}) : super(key: key);
+  const StripePaymentScreen({Key key, this.orderId, this.invoiceAddress}) : super(key: key);
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();
@@ -289,6 +289,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         orderId: widget.orderId,
         paymentMethodId: _paymentMethod.id,
+        invoiceAddress: widget.invoiceAddress,
       ));
     } else {
       if (_formKey.currentState.validate()) {
@@ -297,6 +298,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
           orderId: widget.orderId,
           stripeCard: _form.card,
           saveCard: this._saveCard,
+          invoiceAddress: widget.invoiceAddress,
         ));
       }
     }

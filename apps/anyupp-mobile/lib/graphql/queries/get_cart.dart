@@ -50,6 +50,7 @@ listCarts(filter: {unitId: {eq: \$unitId}, userId: {eq: \$userId}}) {
         }
         created
         allergens
+        image
       }
       paymentMode {
         caption

@@ -2,12 +2,14 @@ const QUERY_LIST_ACTIVE_ORDERS = '''
 query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId}
+    unitId: {eq: \$unitId},
+    archived: { ne: false }
   }) {
     items {
       id
       orderNum
       createdAt
+      archived
       paymentMode {
         caption
         type
@@ -81,6 +83,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         image
       }
       transactionId
+      archived
     }
   }
 }

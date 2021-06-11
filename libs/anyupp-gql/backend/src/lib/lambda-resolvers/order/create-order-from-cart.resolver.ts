@@ -135,6 +135,7 @@ const toOrderInputFormat = ({
     sumPriceShown: calculateOrderSumPrice(items),
     place: place,
     unitId,
+    archived: false,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };

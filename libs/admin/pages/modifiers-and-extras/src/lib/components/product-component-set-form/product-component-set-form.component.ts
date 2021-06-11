@@ -41,7 +41,8 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class ProductComponentSetFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   public componentForm!: FormGroup;
   public productComponentSet!: CrudApi.ProductComponentSet;
   public chainOptions: IKeyValue[] = [];
@@ -138,9 +139,8 @@ export class ProductComponentSetFormComponent
             productComponents,
             items,
           );
-          this.productComponentObject = getProductComponentObject(
-            productComponents,
-          );
+          this.productComponentObject =
+            getProductComponentObject(productComponents);
 
           this._changeDetectorRef.markForCheck();
         },
