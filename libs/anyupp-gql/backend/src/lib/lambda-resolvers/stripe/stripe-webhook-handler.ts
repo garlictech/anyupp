@@ -183,8 +183,7 @@ const handleReceipt = (transaction: CrudApi.Transaction) => async (
   const user = await loadUser(transaction.userId)(deps);
   console.debug('***** handleReceipt().user loaded=' + user?.id);
   if (!user?.email) {
-    console.warn("Can't create Receipt without valid email address");
-    return;
+    console.warn('We will create a Receipt without valid email address!');
   }
 
   const order = await loadOrder(transaction.orderId)(deps);
@@ -195,7 +194,6 @@ const handleReceipt = (transaction: CrudApi.Transaction) => async (
   try {
     console.debug('***** handleReceipt().creating receipt()');
     const receipt = await createReceiptSzamlazzHu(deps.szamlazzClient)({
-      user,
       transaction,
       order,
       language: Szamlazz.Language.Hungarian,

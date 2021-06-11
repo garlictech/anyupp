@@ -5,13 +5,11 @@ import * as Szamlazz from 'szamlazz.js';
 export const createReceiptSzamlazzHu = (
   szamlazzClient: Szamlazz.Client,
 ) => async ({
-  user,
   transaction,
   order,
   language = Szamlazz.Language.Hungarian,
   paymentMethod = Szamlazz.PaymentMethod.Stripe,
 }: {
-  user: CrudApi.User;
   transaction: CrudApi.Transaction;
   order: CrudApi.Order;
   language: Szamlazz.Interface.Language;
