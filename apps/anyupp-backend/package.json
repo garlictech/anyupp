@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.105.0",
-    "@types/aws-serverless-express": "^3.3.3"
+    "@types/aws-serverless-express": "3.3.3"
   },
   "dependencies": {
     "@aws-cdk/aws-amplify": "1.105.0",
