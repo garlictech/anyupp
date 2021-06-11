@@ -1,13 +1,15 @@
 const QUERY_LIST_ORDER_HISTORY = '''
 query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
-  listOrderHistorys(filter: {
+  listOrders(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId}
+    unitId: {eq: \$unitId},
+    archived: {eq: true}
   }) {
     items {
       id
       orderNum
       createdAt
+      archived
       paymentMode {
         caption
         type

@@ -91,15 +91,19 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     height: 19.0,
                   ),
                   Container(
-                    width: 70.0,
+                    width: 92.0,
                     height: 28.0,
+                    padding: EdgeInsets.only(
+                      left: 4.0,
+                      right: 4.0,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),
                       color: theme.highlight,
                     ),
                     child: Center(
                       child: Text(
-                        '${ ((unit.distance ?? 0) / 1000).toStringAsFixed(3)} km',
+                        '${((unit.distance ?? 0) / 1000).toStringAsFixed(3)} km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2,
