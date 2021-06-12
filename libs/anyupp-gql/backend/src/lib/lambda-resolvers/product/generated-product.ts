@@ -1,14 +1,13 @@
-import * as fp from 'lodash/fp';
 import { defer, iif, Observable, of } from 'rxjs';
-import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import { validateGeneratedProductList } from '@bgap/shared/data-validators';
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 
 import { createItems, deleteItems } from '../../database';
 import { UnitsResolverDeps } from '../unit/utils';
-import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
-import { validateGeneratedProductList } from '@bgap/shared/data-validators';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 

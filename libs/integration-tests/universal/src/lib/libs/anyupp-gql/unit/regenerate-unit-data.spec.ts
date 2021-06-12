@@ -1,5 +1,5 @@
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
-import { combineLatest, concat, Observable, of, throwError, defer } from 'rxjs';
+import { combineLatest, concat, Observable, throwError } from 'rxjs';
 import {
   catchError,
   defaultIfEmpty,
@@ -7,14 +7,13 @@ import {
   map,
   switchMap,
   take,
+  takeLast,
   tap,
   toArray,
 } from 'rxjs/operators';
 
-import {
-  listGeneratedProductsForUnits,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { listGeneratedProductsForUnits } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
@@ -28,10 +27,8 @@ import {
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, getSortedIds } from '@bgap/shared/utils';
-import { takeLast } from 'rxjs/operators';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
-import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
+import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 import {
   createTestChainProduct,
   deleteTestChainProduct,
@@ -304,10 +301,10 @@ describe('RegenerateUnitData mutation tests', () => {
     const input = { id: 'EMPTY UNIT' };
 
     // TO DEBUG
-    defer(() =>
-      unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-    ).subscribe({
-      // authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
+    // defer(() =>
+    //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
+    // ).subscribe({
+    authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
       error(err) {
         expect(err).toMatchSnapshot();
         done();
@@ -365,15 +362,14 @@ describe('RegenerateUnitData mutation tests', () => {
         }),
 
         // EXECUTE THE LOGIC
-        switchMap(
-          () =>
-            // TO DEBUG
-            defer(() =>
-              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
-                input,
-              }),
-            ),
-          // authAnyuppSdk.RegenerateUnitData({ input }),
+        switchMap(() =>
+          // TO DEBUG
+          // defer(() =>
+          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+          //     input,
+          //   }),
+          // ),
+          authAnyuppSdk.RegenerateUnitData({ input }),
         ),
 
         // ASSERTIONS

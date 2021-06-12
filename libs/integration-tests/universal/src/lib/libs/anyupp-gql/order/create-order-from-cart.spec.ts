@@ -1,8 +1,3 @@
-import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
-import { combineLatest, defer } from 'rxjs';
-import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
-
-import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateOrder } from '@bgap/shared/data-validators';
 import {
@@ -15,7 +10,9 @@ import {
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
-
+import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
+import { combineLatest } from 'rxjs';
+import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
   createIamCrudSdk,
@@ -171,11 +168,11 @@ describe('CreatCartFromOrder mutation test', () => {
     const input = { id: cart_01.id };
 
     // To Debug use direct handler call
-    defer(() =>
-      orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
-    )
-      // authAnyuppSdk
-      //   .CreateOrderFromCart({ input })
+    // defer(() =>
+    //   orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
+    // )
+    authAnyuppSdk
+      .CreateOrderFromCart({ input })
       .pipe(
         // check order has been truly created
         filterNullish<string>(),
@@ -236,14 +233,14 @@ describe('CreatCartFromOrder mutation test', () => {
         // Secound ORDER with 02 as orderNum
         switchMap(() => {
           const input = { id: cart_02.id };
-          // return authAnyuppSdk.CreateOrderFromCart({ input });
-          return defer(() =>
-            // TO DEBUG
-            orderRequestHandler(orderDeps).createOrderFromCart({
-              userId,
-              input,
-            }),
-          );
+          return authAnyuppSdk.CreateOrderFromCart({ input });
+          //   // TO DEBUG
+          // return defer(() =>
+          //   orderRequestHandler(orderDeps).createOrderFromCart({
+          //     userId,
+          //     input,
+          //   }),
+          // );
         }),
         delay(1000),
         switchMap(newOrderId =>
@@ -271,7 +268,7 @@ describe('CreatCartFromOrder mutation test', () => {
 
   it("should fail in case the cart is not the user's", done => {
     const cartId = cart_03_different_user.id;
-    const userId = 'DIFFERENT_USER';
+    // const userId = 'DIFFERENT_USER';
     const input = { id: cartId };
 
     // To Debug use direct handler call
