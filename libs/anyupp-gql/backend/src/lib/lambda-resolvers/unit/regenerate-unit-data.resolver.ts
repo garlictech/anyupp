@@ -1,22 +1,5 @@
-import {
-  combineLatest,
-  forkJoin,
-  from,
-  iif,
-  Observable,
-  of,
-  throwError,
-} from 'rxjs';
-import {
-  flatMap,
-  map,
-  mapTo,
-  mergeMap,
-  switchMap,
-  switchMapTo,
-  toArray,
-  zipAll,
-} from 'rxjs/operators';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -46,12 +29,10 @@ import {
 import { createGeneratedProductsInDb } from '../product/generated-product';
 import { mergeAllProductLayers, MergedProduct } from '../product/merge-product';
 import { UnitsResolverDeps } from './utils';
-import { pipeDebug } from '../../../../../../shared/utils/src/lib/fn/rxjs.utils';
 
 export const regenerateUnitData = (unitId: string) => (
   deps: UnitsResolverDeps,
 ): Observable<boolean> => {
-  // TODO: refactor: use mergeMap or something to flatten the pipe
   // Clear previously generated products for the given UNIT
   return of(unitId).pipe(
     switchMap(deleteGeneratedProductsForAUnitFromDb(deps)),
