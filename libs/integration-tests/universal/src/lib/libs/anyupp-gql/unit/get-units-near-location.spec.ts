@@ -8,7 +8,7 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 import {
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -69,7 +69,7 @@ describe('GetUnitsNearLocation tests', () => {
 
   beforeAll(async done => {
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     )
       .toPromise()

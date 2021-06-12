@@ -1,18 +1,21 @@
 import {
-  testAdminUsername,
+  otherAdminEmails,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { concat, defer, from, of, throwError } from 'rxjs';
+import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
   delay,
   map,
   mapTo,
+  mergeMap,
   switchMap,
   takeLast,
+  tap,
 } from 'rxjs/operators';
 import {
   createTestAdminRoleContext,
@@ -30,171 +33,168 @@ import {
   createComponentSets,
 } from './seed-data-fn';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
+import { v1 as uuidV1 } from 'uuid';
 
-const username = testAdminUsername;
+const userData = pipe(
+  [testAdminEmail, ...otherAdminEmails],
+  fp.map(email => ({ email, username: uuidV1() })),
+);
+
 const password = testAdminUserPassword;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    {
+    userData.map(({ email }) => ({
       UserPoolId: deps.userPoolId,
-      Username: username,
+      Username: uuidV1(),
       UserAttributes: [
         {
           Name: 'email',
-          Value: username,
-        },
-        {
-          Name: 'phone_number',
-          Value: '+123456789013',
+          Value: email,
         },
       ],
-    },
-    // CREATE user in Cognito
-    params =>
+    })),
+    fp.map(params =>
       defer(() =>
         deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
       ).pipe(
-        switchMap(() =>
-          from(
-            deps.cognitoidentityserviceprovider
-              .adminSetUserPassword({
-                UserPoolId: deps.userPoolId,
-                Username: username,
-                Password: password,
-                Permanent: true,
-              })
-              .promise(),
-          ),
-        ),
+        tap(() => console.log('USER CREATED', params)),
         catchError(err => {
           if (err?.code === 'UsernameExistsException') {
-            console.warn('Admin user in Cognito already exists, no problem');
+            console.warn(
+              `Admin user ${params.UserAttributes[0].Value} in Cognito already exists, no problem`,
+            );
             return of({});
           } else {
             return throwError(err);
           }
         }),
       ),
-    // pipeDebug('### Cognito user CREATED'),
-    // GET user from Cognito
+    ),
+    combineLatest,
+    tap(x => console.log(x)),
     switchMap(() =>
-      from(
-        deps.cognitoidentityserviceprovider
-          .adminGetUser({
-            UserPoolId: deps.userPoolId,
-            Username: username,
-          })
-          .promise(),
-      ),
-    ),
-    // pipeDebug('### Cognito user GET'),
-    map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
       pipe(
-        user.UserAttributes,
-        fp.find(attr => attr.Name === 'sub'),
-        attr => attr?.Value,
+        userData.map(({ username }) => ({
+          UserPoolId: deps.userPoolId,
+          Username: username,
+          Password: password,
+          Permanent: true,
+        })),
+
+        fp.map(params =>
+          defer(() =>
+            deps.cognitoidentityserviceprovider
+              .adminSetUserPassword(params)
+              .promise(),
+          ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
+        ),
+        combineLatest,
       ),
     ),
-    throwIfEmptyValue(),
-    switchMap(adminUserId =>
-      createAdminUser(adminUserId, username)(deps).pipe(mapTo(adminUserId)),
+    switchMap(() =>
+      pipe(
+        userData.map(({ username, email }) =>
+          createAdminUser(
+            username,
+            email,
+          )(deps).pipe(
+            tap(() => console.log('USER CREATED in DB', username, email)),
+          ),
+        ),
+        combineLatest,
+      ),
     ),
   );
 
-export const seedBusinessData =
-  (userId: string) => (deps: SeederDependencies) =>
-    createTestRoleContext(
-      1,
-      1,
-      1,
-      1,
-    )(deps)
-      .pipe(
-        ce('### RoleContext SEED 01'),
-        takeLast(1),
-        delay(1000),
-        switchMap(() =>
-          concat(
-            createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
-            createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
-            createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
-            createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
-            createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
-            createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
-            createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-            createTestProductCategory(
-              1,
-              1,
-            )(deps).pipe(ce('### ProdCat SEED 01')),
-            createTestProductCategory(
-              1,
-              2,
-            )(deps).pipe(ce('### ProdCat SEED 02')),
+export const seedBusinessData = (userId: string) => (
+  deps: SeederDependencies,
+) =>
+  createTestRoleContext(
+    1,
+    1,
+    1,
+    1,
+  )(deps)
+    .pipe(
+      ce('### RoleContext SEED 01'),
+      takeLast(1),
+      delay(1000),
+      switchMap(() =>
+        concat(
+          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
+          createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
+          createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
+          createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
+          createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
+          createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
+          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
+          createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
+          createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
 
-            createComponentSets(deps).pipe(ce('### ComponentSets')),
+          createComponentSets(deps).pipe(ce('### ComponentSets')),
 
-            createTestChainProduct(
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### ChainProduct SEED 01')),
-            createTestChainProduct(
-              1,
-              1,
-              2,
-            )(deps).pipe(ce('### ChainProduct SEED 02')),
-            createTestChainProduct(
-              1,
-              2,
-              3,
-            )(deps).pipe(ce('### ChainProduct SEED 03')),
-            createTestGroupProduct(
-              1,
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### GroupProd SEED 01')),
-            createTestGroupProduct(
-              1,
-              1,
-              2,
-              2,
-            )(deps).pipe(ce('### GroupProd SEED 02')),
-            createTestUnitProduct(
-              1,
-              1,
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### UnitProd SEED 01')),
-            createTestUnitProduct(
-              1,
-              1,
-              1,
-              2,
-              2,
-            )(deps).pipe(ce('### UnitProd SEED 02')),
-            createTestCart({
-              chainIdx: 1,
-              groupIdx: 1,
-              unitIdx: 1,
-              productIdx: 1,
-              userIdx: 1,
-              cartIdx: 1,
-            })(deps),
-          ),
-        ),
-        takeLast(1),
-        switchMap(() =>
-          createTestAdminRoleContext(
+          createTestChainProduct(
             1,
             1,
-            userId,
-          )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+            1,
+          )(deps).pipe(ce('### ChainProduct SEED 01')),
+          createTestChainProduct(
+            1,
+            1,
+            2,
+          )(deps).pipe(ce('### ChainProduct SEED 02')),
+          createTestChainProduct(
+            1,
+            2,
+            3,
+          )(deps).pipe(ce('### ChainProduct SEED 03')),
+          createTestGroupProduct(
+            1,
+            1,
+            1,
+            1,
+          )(deps).pipe(ce('### GroupProd SEED 01')),
+          createTestGroupProduct(
+            1,
+            1,
+            2,
+            2,
+          )(deps).pipe(ce('### GroupProd SEED 02')),
+          createTestUnitProduct(
+            1,
+            1,
+            1,
+            1,
+            1,
+          )(deps).pipe(ce('### UnitProd SEED 01')),
+          createTestUnitProduct(
+            1,
+            1,
+            1,
+            2,
+            2,
+          )(deps).pipe(ce('### UnitProd SEED 02')),
+          createTestCart({
+            chainIdx: 1,
+            groupIdx: 1,
+            unitIdx: 1,
+            productIdx: 1,
+            userIdx: 1,
+            cartIdx: 1,
+          })(deps),
         ),
-      )
-      .pipe(ce('### seedBusinessData'));
+      ),
+      takeLast(1),
+      switchMap(() =>
+        createTestAdminRoleContext(
+          1,
+          1,
+          userId,
+        )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+      ),
+    )
+    .pipe(ce('### seedBusinessData'));
 
 const ce = (tag: string) =>
   catchError(err => {

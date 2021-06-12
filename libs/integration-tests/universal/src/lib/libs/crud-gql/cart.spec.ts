@@ -1,6 +1,6 @@
 import {
   cartFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { switchMap, tap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ describe('getCart test', () => {
 
   beforeAll(async () => {
     authSdk = await createAuthenticatedCrudSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     ).toPromise();
 

@@ -1,14 +1,11 @@
-import {
-  testAdminUsername,
-  testAdminUserPassword,
-} from '@bgap/shared/fixtures';
+import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
 import { of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
 describe('Admin user creation/deletion', () => {
   const authAnyuppSdk = createAuthenticatedAnyuppSdk(
-    testAdminUsername,
+    testAdminEmail,
     testAdminUserPassword,
   );
 

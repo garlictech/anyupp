@@ -6,7 +6,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { validateOrder } from '@bgap/shared/data-validators';
 import {
   cartFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -131,7 +131,7 @@ describe('CreatCartFromOrder mutation test', () => {
     ]);
 
   beforeAll(async done => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    await createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .toPromise()
       .then(x => {
         authAnyuppSdk = x.authAnyuppSdk;

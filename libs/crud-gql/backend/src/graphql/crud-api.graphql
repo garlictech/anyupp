@@ -22,7 +22,12 @@ type LocalizedItem {
 
 type AdminUser
   @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [update, read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   name: String!
   email: String!

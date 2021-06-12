@@ -2,7 +2,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput, Duration } from '@aws-cdk/core';
+import { CfnOutput, Duration, RemovalPolicy } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
@@ -26,12 +26,14 @@ export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
   public pretokenTriggerLambda: lambda.Function;
+  public preSignupTriggerLambda: lambda.Function;
 
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
 
     this.pretokenTriggerLambda = this.createPretokenTriggerLambda();
+    this.preSignupTriggerLambda = this.createPreSignupTriggerLambda();
 
     // Consumer resources
     this.consumerUserPool = this.createConsumerUserPool(app);
@@ -93,8 +95,10 @@ export class CognitoStack extends Stack {
       },
     );
 
-    const { consumerWebClient, consumerNativeClient } =
-      this.createConsumerUserPoolClient(app, this.consumerUserPool);
+    const {
+      consumerWebClient,
+      consumerNativeClient,
+    } = this.createConsumerUserPoolClient(app, this.consumerUserPool);
 
     consumerWebClient.node.addDependency(googleIdProvider);
     consumerWebClient.node.addDependency(facebookIdProvider);
@@ -114,12 +118,14 @@ export class CognitoStack extends Stack {
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
     const adminDomain = this.createDomain(app, 'Admin', this.adminUserPool);
-    const { adminNativeClient, adminWebClient } =
-      this.createAdminUserPoolClients(
-        app,
-        this.adminUserPool,
-        props.adminSiteUrl,
-      );
+    const {
+      adminNativeClient,
+      adminWebClient,
+    } = this.createAdminUserPoolClients(
+      app,
+      this.adminUserPool,
+      props.adminSiteUrl,
+    );
 
     this.createUserPoolOutputs(app, this.adminUserPool, adminDomain, 'Admin');
 
@@ -447,35 +453,60 @@ export class CognitoStack extends Stack {
           mutable: true,
         }),
       },
-      signInAliases: {
-        email: true,
-        phone: true,
-      },
       lambdaTriggers: {
         preTokenGeneration: this.pretokenTriggerLambda,
       },
     });
 
-    this.pretokenTriggerLambda.role &&
-      this.pretokenTriggerLambda.role.addToPolicy(
+    return userPool;
+  }
+
+  private createPretokenTriggerLambda() {
+    const lambdaFn = new lambda.Function(
+      this,
+      'AdminPreTokenGenerationLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        handler: 'lib/lambda/pre-token-generation/index.handler',
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+        ),
+      },
+    );
+
+    if (lambdaFn.role) {
+      lambdaFn.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: ['cognito-idp:AdminUpdateUserAttributes'],
           resources: ['*'],
         }),
       );
+    }
 
-    return userPool;
+    return lambda;
   }
 
-  private createPretokenTriggerLambda() {
-    return new lambda.Function(this, 'AdminPreTokenGenerationLambda', {
+  private createPreSignupTriggerLambda() {
+    const lambdaFn = new lambda.Function(this, 'AdminPreSignupTriggerLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
-      handler: 'lib/lambda/pre-token-generation/index.handler',
+      handler: 'lib/lambda/pre-signup/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+        path.join(__dirname, '../../.serverless/pre-signup.zip'),
       ),
     });
+
+    if (lambdaFn.role) {
+      lambdaFn.role.addToPrincipalPolicy(
+        new iam.PolicyStatement({
+          actions: ['cognito-idp:ListUsers'],
+          resources: ['*'],
+        }),
+      );
+    }
+
+    return lambdaFn;
   }
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {
@@ -552,6 +583,7 @@ export class CognitoStack extends Stack {
   private getCommonUserPoolProperties() {
     return {
       signInAliases: {
+        username: true,
         phone: true,
         email: true,
       },
@@ -565,6 +597,8 @@ export class CognitoStack extends Stack {
       },
       accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
       signInCaseSensitive: false,
+      removalPolicy:
+        this.stage === 'prod' ? RemovalPolicy.SNAPSHOT : RemovalPolicy.DESTROY,
     };
   }
 }

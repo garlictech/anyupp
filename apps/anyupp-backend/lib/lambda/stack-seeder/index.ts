@@ -41,7 +41,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
     await seedAdminUser(seederDeps)
       .pipe(
         delay(2000),
-        switchMap(userId => seedBusinessData(userId)(seederDeps)),
+        //switchMap(userId => seedBusinessData(userId)(seederDeps)),
         takeLast(1),
         switchMap(() =>
           from(

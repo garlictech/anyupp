@@ -6,7 +6,7 @@ import { validateUnitProduct } from '@bgap/shared/data-validators';
 
 import {
   productFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
@@ -29,7 +29,7 @@ describe('CreateUnitProduct tests', () => {
   beforeAll(async () => {
     publicAnyuppSdk = getAnyuppSdkPublic();
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     )
       .toPromise()
