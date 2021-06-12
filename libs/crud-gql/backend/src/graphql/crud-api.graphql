@@ -424,7 +424,7 @@ enum Allergen {
   mustard
   peanut
   sesame
-  u
+  soya
   sulphites
   treenuts
 }
