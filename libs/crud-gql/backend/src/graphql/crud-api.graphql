@@ -265,7 +265,7 @@ type Order
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
-  archived: Boolean
+  archived: Boolean!
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
@@ -424,7 +424,7 @@ enum Allergen {
   mustard
   peanut
   sesame
-  soya
+  u
   sulphites
   treenuts
 }

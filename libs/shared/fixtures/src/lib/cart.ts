@@ -24,8 +24,8 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     currency: 'EUR',
     pricePerUnit: 1,
     priceSum: 2,
-    tax: 1,
-    taxSum: 0,
+    tax: 0, // this value wont be used, the tax will be collected from the product
+    taxSum: 0, // not used
   },
   // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
   productId: unitProductId_01,

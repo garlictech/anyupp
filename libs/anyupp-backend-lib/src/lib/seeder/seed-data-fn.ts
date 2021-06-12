@@ -417,8 +417,8 @@ export const createTestCart = ({
           currency: 'EUR',
           pricePerUnit: 1,
           priceSum: 2,
-          tax: 1,
-          taxSum: 2,
+          tax: 0, // empty
+          taxSum: 0, // empty
         },
         productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
         quantity: 2,

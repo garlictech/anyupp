@@ -385,10 +385,6 @@ describe('RegenerateUnitData mutation tests', () => {
         ),
         tap({
           next(result) {
-            console.log(
-              '### ~ file: regenerate-unit-data.spec.ts ~ line 388 ~ next ~ result',
-              result,
-            );
             const expectedGeneratedIds = [
               unitProduct_0201_DIFFERENTUNIT.id,
               unitProduct_0104_NEW.id,
