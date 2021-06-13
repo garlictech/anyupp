@@ -1,6 +1,12 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Product } from '@bgap/shared/types';
 
+export type MergedProduct = Product & {
+  unitId: string;
+  groupId: string;
+  chainId: string;
+};
+
 export const mergeAllProductLayers = ({
   chainProduct,
   groupProduct,
@@ -9,7 +15,7 @@ export const mergeAllProductLayers = ({
   chainProduct: CrudApi.ChainProduct;
   groupProduct: CrudApi.GroupProduct;
   unitProduct: CrudApi.UnitProduct;
-}): Product => {
+}): MergedProduct => {
   return {
     ...chainProduct,
     ...groupProduct,
