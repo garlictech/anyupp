@@ -67,18 +67,3 @@ export const handler: PreSignUpTriggerHandler = async (
     })),
   ).toPromise();
 };
-
-from(
-  handler(
-    {
-      userPoolId: 'eu-west-1_0Lg0Ug1Lt',
-      request: {
-        userAttributes: {
-          email: 'test@anyupp.com',
-        },
-      },
-    } as any,
-    null as any,
-    null as any,
-  ) as any,
-).subscribe(console.log, console.log);
