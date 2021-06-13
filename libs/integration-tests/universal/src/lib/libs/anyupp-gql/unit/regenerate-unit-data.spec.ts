@@ -1,5 +1,5 @@
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
-import { combineLatest, concat, Observable, of, throwError, defer } from 'rxjs';
+import { combineLatest, concat, Observable, throwError } from 'rxjs';
 import {
   catchError,
   defaultIfEmpty,
@@ -7,14 +7,13 @@ import {
   map,
   switchMap,
   take,
+  takeLast,
   tap,
   toArray,
 } from 'rxjs/operators';
 
-import {
-  listGeneratedProductsForUnits,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { listGeneratedProductsForUnits } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
@@ -28,10 +27,8 @@ import {
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, getSortedIds } from '@bgap/shared/utils';
-import { takeLast } from 'rxjs/operators';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
-import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
+import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 import {
   createTestChainProduct,
   deleteTestChainProduct,
@@ -183,14 +180,13 @@ const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
   chainId: chainId_01_seeded,
   unitId: unitId_01_seeded,
 };
-const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> =
-  {
-    ...productFixture.unitProductBase,
-    id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
-    parentId: groupProduct_01.id, // it is from a different unit, but it is not
-    chainId: chainId_01_seeded,
-    unitId: unitId_02,
-  };
+const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> = {
+  ...productFixture.unitProductBase,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
+  parentId: groupProduct_01.id, // it is from a different unit, but it is not
+  chainId: chainId_01_seeded,
+  unitId: unitId_02,
+};
 
 // GENERATED PRODUCTS to create
 const generatedProduct_fromUnitProduct_0101 = {
@@ -307,7 +303,7 @@ describe('RegenerateUnitData mutation tests', () => {
     // TO DEBUG
     // defer(() =>
     //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-    // )
+    // ).subscribe({
     authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
       error(err) {
         expect(err).toMatchSnapshot();
@@ -321,9 +317,9 @@ describe('RegenerateUnitData mutation tests', () => {
 
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
-      listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
+      listGeneratedProductsForUnits({
         crudSdk: iamCrudSdk,
-      }),
+      })([unitId_01_seeded, unitId_02]),
       listProductsForUnits(iamCrudSdk, [unitId_01_seeded, unitId_02]),
     ])
       .pipe(
@@ -369,17 +365,19 @@ describe('RegenerateUnitData mutation tests', () => {
         switchMap(() =>
           // TO DEBUG
           // defer(() =>
-          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-          // )
+          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+          //     input,
+          //   }),
+          // ),
           authAnyuppSdk.RegenerateUnitData({ input }),
         ),
 
         // ASSERTIONS
         delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
-          listGeneratedProductsForUnits([unitId_01_seeded, unitId_02])({
+          listGeneratedProductsForUnits({
             crudSdk: iamCrudSdk,
-          }),
+          })([unitId_01_seeded, unitId_02]),
         ),
         tap({
           next(result) {
