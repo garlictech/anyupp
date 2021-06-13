@@ -88,7 +88,7 @@ const createReceiptMutationVariables = (
   email: string | undefined | null,
   status: CrudApi.ReceiptStatus,
   receiptId: string | undefined,
-  pdfUrl: string | undefined,
+  pdfData: string | undefined,
 ): CrudApi.CreateReceiptMutationVariables => {
   return {
     input: {
@@ -97,7 +97,7 @@ const createReceiptMutationVariables = (
       transactionId: transactionId,
       email: email,
       status: status,
-      pdfUrl: pdfUrl,
+      pdfData: pdfData,
       externalReceiptId: receiptId,
     },
   };

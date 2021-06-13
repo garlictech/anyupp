@@ -1,6 +1,6 @@
 const SUBSCRIPTION_ORDER_LIST = '''
 subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
-  onOrderChanged(unitId: \$unitId, userId: \$userId) {
+  onOrderChanged(unitId: \$unitId, userId: \$userId, archived: false) {
    	id
     orderNum
     unitId

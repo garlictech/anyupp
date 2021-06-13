@@ -709,7 +709,7 @@ type Receipt
   transactionId: ID!
   externalReceiptId: String
   email: String
-  pdfUrl: String
+  pdfData: String
   status: ReceiptStatus!
 }
 
