@@ -1,7 +1,3 @@
-import {
-  appCoreActions,
-  appCoreSelectors,
-} from 'libs/admin/shared/data-access/app-core/src';
 import { take } from 'rxjs/operators';
 
 import {
@@ -9,6 +5,10 @@ import {
   ChangeDetectionStrategy,
   Component,
 } from '@angular/core';
+import {
+  appCoreActions,
+  appCoreSelectors,
+} from '@bgap/admin/shared/data-access/app-core';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { NbToastrService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
