@@ -1,21 +1,23 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
+@immutable
 class Invoice {
-  String updatedAt;
-  String userId;
-  String transactionId;
-  String taxNumber;
-  String streetAddress;
-  String status;
-  String postalCode;
-  String pdfUrl;
-  String orderId;
-  String externalInvoiceId;
-  String email;
-  String customerName;
-  String createdAt;
-  String country;
-  String city;
+  final String updatedAt;
+  final String userId;
+  final String transactionId;
+  final String taxNumber;
+  final String streetAddress;
+  final String status;
+  final String postalCode;
+  final String pdfUrl;
+  final String orderId;
+  final String externalInvoiceId;
+  final String email;
+  final String customerName;
+  final String createdAt;
+  final String country;
+  final String city;
   Invoice({
      this.updatedAt,
      this.userId,

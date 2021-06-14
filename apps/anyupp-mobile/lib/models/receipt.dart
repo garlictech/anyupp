@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
+@immutable
 class Receipt {
   final String createdAt;
   final String email;

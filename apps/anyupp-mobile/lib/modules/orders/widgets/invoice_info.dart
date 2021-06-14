@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fa_prev/models/Order.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
@@ -9,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
   final Order order;
@@ -59,7 +62,8 @@ class TransactionInfoWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => isInvoice
-                ? launch(order.transactionItem?.invoice?.pdfUrl)
+                ? Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PdfWebView(order.transactionItem?.invoice?.pdfUrl)))
                 : createAndOpenPdf(order.transactionItem?.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
@@ -99,6 +103,28 @@ class TransactionInfoWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PdfWebView extends StatefulWidget {
+  final String url;
+  PdfWebView(this.url, {Key key}) : super(key: key);
+
+  @override
+  _PdfWebViewState createState() => _PdfWebViewState();
+}
+
+class _PdfWebViewState extends State<PdfWebView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(theme,
+          onBackButtonPressed: () => Nav.pop()),
+      body: WebView(
+        initialUrl: widget.url,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
     );
   }
