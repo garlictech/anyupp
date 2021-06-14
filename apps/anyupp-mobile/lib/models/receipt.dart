@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
 
 @immutable
 class Receipt {
@@ -99,18 +100,5 @@ class Receipt {
       other.transactionId == transactionId &&
       other.updatedAt == updatedAt &&
       other.userId == userId;
-  }
-
-  @override
-  int get hashCode {
-    return createdAt.hashCode ^
-      email.hashCode ^
-      id.hashCode ^
-      orderId.hashCode ^
-      pdfData.hashCode ^
-      status.hashCode ^
-      transactionId.hashCode ^
-      updatedAt.hashCode ^
-      userId.hashCode;
   }
 }

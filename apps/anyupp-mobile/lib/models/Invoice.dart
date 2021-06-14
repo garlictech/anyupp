@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
 
 @immutable
 class Invoice {
@@ -141,24 +142,5 @@ class Invoice {
       other.createdAt == createdAt &&
       other.country == country &&
       other.city == city;
-  }
-
-  @override
-  int get hashCode {
-    return updatedAt.hashCode ^
-      userId.hashCode ^
-      transactionId.hashCode ^
-      taxNumber.hashCode ^
-      streetAddress.hashCode ^
-      status.hashCode ^
-      postalCode.hashCode ^
-      pdfUrl.hashCode ^
-      orderId.hashCode ^
-      externalInvoiceId.hashCode ^
-      email.hashCode ^
-      customerName.hashCode ^
-      createdAt.hashCode ^
-      country.hashCode ^
-      city.hashCode;
   }
 }

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -65,35 +64,6 @@ class TransactionInfoWidget extends StatelessWidget {
                 ? Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PdfWebView(order.transactionItem?.invoice?.pdfUrl)))
                 : createAndOpenPdf(order.transactionItem?.receipt?.pdfData),
-            child: Text(
-              trans(context, 'payment.paymentInfo.invoicing.show'),
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: theme.highlight,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildReceiptInfo(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            trans(context, 'payment.paymentInfo.invoicing.receipt_info'),
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: theme.text,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          GestureDetector(
-            onTap: () => launch(order.transactionItem?.invoice?.pdfUrl),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
               style: GoogleFonts.poppins(
