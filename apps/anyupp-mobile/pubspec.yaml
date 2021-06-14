@@ -43,7 +43,7 @@ dependencies:
   flutter_bloc: ^7.0.0
   flutter_local_notifications: ^1.4.4+2
   flutter_sequence_animation: ^3.0.1
-  flutter_staggered_animations: ^0.1.2
+  flutter_staggered_animations: ^1.0.0
   flutter_svg: ^0.19.3
   flutter_user_agent: ^1.2.2
   form_field_validator: ^1.0.1
