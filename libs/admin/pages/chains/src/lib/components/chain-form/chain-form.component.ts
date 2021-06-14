@@ -105,9 +105,6 @@ export class ChainFormComponent
         value.address = null;
       }
 
-      console.error(value);
-
-      /*
       if (this.chain?.id) {
         this._crudSdk.sdk
           .UpdateChain({
@@ -138,7 +135,7 @@ export class ChainFormComponent
             );
             this.close();
           });
-      }*/
+      }
     }
   }
 
