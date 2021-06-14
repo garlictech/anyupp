@@ -5662,10 +5662,10 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.25.1":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.25.1.tgz#c1b863e1e8cc7bfb15a8969e1738faa9879597f5"
-  integrity sha512-lUtjaPU+Yi223ZFK0Iz/JZYvxvPGndQFP3MMCC5Olmv6Y/RvSxhCxcssH4y2K1ISS7LSM89y1SuPOWOtQ0Uc1w==
+"@serverless-stack/core@^0.26.0":
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.26.0.tgz#c130a2b7960d9db3600188fd2033a7bfba1062fd"
+  integrity sha512-Gu1loGn4CgkTzcSfX1298nOxxW/1yFbyVDDQbbhkPoMCUFTdzhuznolbhzKhX1X3xT1zd4LlkP76DVocvdSbLA==
   dependencies:
     aws-cdk "1.105.0"
     aws-sdk "^2.761.0"
@@ -5686,10 +5686,10 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.25.1":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.25.1.tgz#01dda9b9bacdac61be43fa6f0eb7d41d2d040764"
-  integrity sha512-hi7lx0RgUhnfthJACFtcWrjLUnI4B9IetDE2/a86fx8WTAF+QHMB3fUwtDcylxZ3l4fhvfaMWag3Rf771eT77w==
+"@serverless-stack/resources@0.26.1":
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.26.1.tgz#3a833c682ac8afca8603cff4f0f71788da461abb"
+  integrity sha512-EPTOrvLmvk7IJE61tHfVtnHrlfnmiz3Kso7Yc3am+IboZp4Q31ct3Dgf2ytSc8Tqn86UPGuMcjwHh0hjaeZGFQ==
   dependencies:
     "@aws-cdk/aws-apigateway" "1.105.0"
     "@aws-cdk/aws-apigatewayv2" "1.105.0"
@@ -5721,7 +5721,7 @@
     "@aws-cdk/aws-sqs" "1.105.0"
     "@aws-cdk/core" "1.105.0"
     "@aws-cdk/cx-api" "1.105.0"
-    "@serverless-stack/core" "^0.25.1"
+    "@serverless-stack/core" "^0.26.1"
     "@types/jest" "^26.0.7"
     chalk "^4.1.0"
     cross-spawn "^7.0.3"
