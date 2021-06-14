@@ -29,9 +29,11 @@ export const getGroupsEntities = createSelector(
 );
 
 export const getGroupById = (id: string) => {
-  return createSelector(getAllGroups, (groups: CrudApi.Group[]):
-    | CrudApi.Group
-    | undefined => groups.find((group): boolean => group.id === id));
+  return createSelector(
+    getAllGroups,
+    (groups: CrudApi.Group[]): CrudApi.Group | undefined =>
+      groups.find((group): boolean => group.id === id),
+  );
 };
 
 export const getSelectedChainGroups = createSelector(

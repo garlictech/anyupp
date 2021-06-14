@@ -38,6 +38,16 @@ export const deleteAdminUser =
             })
             .promise(),
         ),
+        filter(fp.negate(fp.isEmpty)),
+        tap((sub: string) => (userId = sub)),
+        switchMap(() =>
+          deps.cognitoidentityserviceprovider
+            .adminDeleteUser({
+              UserPoolId: deps.userPoolId,
+              Username: params.userName,
+            })
+            .promise(),
+        ),
         switchMap(() =>
           deps.crudSdk.DeleteAdminUser({ input: { id: userId } }),
         ),

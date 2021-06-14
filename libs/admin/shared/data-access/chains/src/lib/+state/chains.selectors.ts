@@ -29,9 +29,11 @@ export const getChainsEntities = createSelector(
 );
 
 export const getChainById = (id: string) => {
-  return createSelector(getAllChains, (chains: CrudApi.Chain[]):
-    | CrudApi.Chain
-    | undefined => chains.find((chain): boolean => chain.id === id));
+  return createSelector(
+    getAllChains,
+    (chains: CrudApi.Chain[]): CrudApi.Chain | undefined =>
+      chains.find((chain): boolean => chain.id === id),
+  );
 };
 
 export const getSeletedChain = createSelector(

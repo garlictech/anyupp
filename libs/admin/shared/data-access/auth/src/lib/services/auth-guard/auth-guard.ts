@@ -7,9 +7,11 @@ import {
   CanActivateChild,
   Router,
 } from '@angular/router';
+import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { Store } from '@ngrx/store';
 
 import { CognitoService } from '../cognito/cognito.service';
 
@@ -18,6 +20,7 @@ import { CognitoService } from '../cognito/cognito.service';
 })
 export class AuthGuard implements CanActivateChild {
   constructor(
+    private _store: Store,
     private _router: Router,
     private _ngZone: NgZone,
     private _cognitoService: CognitoService,
@@ -56,6 +59,12 @@ export class AuthGuard implements CanActivateChild {
           this._cognitoService.signOut().subscribe(() => {
             this._ngZone.run(() => {
               this._router.navigate(['auth/login']);
+
+              this._store.dispatch(
+                appCoreActions.setLoginContextFailure({
+                  loginContextFailure: true,
+                }),
+              );
             });
           });
         } else {

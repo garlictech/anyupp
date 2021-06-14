@@ -8,6 +8,8 @@ import {
   PRODUCTS_FEATURE_KEY,
   ProductsState,
   unitProductsAdapter,
+  ExtendedGroupProduct,
+  ExtendedUnitProduct,
 } from './products.reducer';
 
 export const getProductsState =
@@ -94,22 +96,27 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
     getAllChainProducts,
     getAllGroupProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (chainProducts, groupProducts, productCategoryId) =>
-      groupProducts
-        .map(groupProduct => {
-          const chainProduct = chainProducts.find(
-            p => p.id === groupProduct.parentId,
-          );
+    (chainProducts, groupProducts, productCategoryId) => {
+      const extendedGroupProducts: ExtendedGroupProduct[] = [];
 
-          return Object.assign({}, chainProduct || {}, groupProduct);
-        })
-        .filter(
-          extendedGroupProduct =>
-            !!productCategoryId &&
-            // TODO REMOVE WHEN DEV FIXED
-            (extendedGroupProduct as any).chainProduct?.productCategoryId ===
-              productCategoryId,
-        ),
+      groupProducts.forEach(groupProduct => {
+        const chainProduct = chainProducts.find(
+          p => p.id === groupProduct.parentId,
+        );
+
+        if (chainProduct) {
+          extendedGroupProducts.push(
+            Object.assign({}, chainProduct, groupProduct),
+          );
+        }
+      });
+
+      return extendedGroupProducts.filter(
+        (extendedGroupProduct: ExtendedGroupProduct) =>
+          !!productCategoryId &&
+          extendedGroupProduct.productCategoryId === productCategoryId,
+      );
+    },
   );
 
 // UNIT PRODUCTS
@@ -148,9 +155,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
         return (
           !found &&
           !!productCategoryId &&
-          // TODO REMOVE WHEN DEV FIXED
-          (groupProduct as any).chainProduct?.productCategoryId ===
-            productCategoryId
+          groupProduct.productCategoryId === productCategoryId
         );
       }),
   );
@@ -160,22 +165,26 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
     getExtendedGroupProductsOfSelectedCategory(),
     getAllUnitProducts,
     loggedUserSelectors.getSelectedProductCategoryId,
-    (groupProducts, unitProducts, productCategoryId) =>
-      unitProducts
-        .map(unitProduct => {
-          const groupProduct = groupProducts.find(
-            p => p.id === unitProduct.parentId,
-          );
+    (extendedGroupProducts, unitProducts, productCategoryId) => {
+      const extendedUnitProducts: ExtendedUnitProduct[] = [];
 
-          return Object.assign({}, groupProduct || {}, unitProduct);
-        })
-        .filter(
-          extendedGroupProduct =>
-            !!productCategoryId &&
-            // TODO REMOVE WHEN DEV FIXED
-            (extendedGroupProduct as any).groupProduct?.chainProduct
-              ?.productCategoryId === productCategoryId,
-        ),
+      unitProducts.forEach(unitProduct => {
+        const extendedGroupProduct = extendedGroupProducts.find(
+          p => p.id === unitProduct.parentId,
+        );
+
+        if (extendedGroupProduct) {
+          extendedUnitProducts.push(
+            Object.assign({}, extendedGroupProduct, unitProduct),
+          );
+        }
+      });
+      return extendedUnitProducts.filter(
+        extendedGroupProduct =>
+          !!productCategoryId &&
+          extendedGroupProduct.productCategoryId === productCategoryId,
+      );
+    },
   );
 
 export const getUnitProductLaneIds = () => {

@@ -25,6 +25,13 @@ export interface ProductsPartialState {
   readonly [PRODUCTS_FEATURE_KEY]: ProductsState;
 }
 
+export interface ExtendedGroupProduct
+  extends CrudApi.ChainProduct,
+    CrudApi.GroupProduct {}
+export interface ExtendedUnitProduct
+  extends ExtendedGroupProduct,
+    CrudApi.UnitProduct {}
+
 //
 // CHAIN
 //

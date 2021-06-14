@@ -24,9 +24,11 @@ export const getUnitsEntities = createSelector(
 );
 
 export const getUnitById = (id: string) => {
-  return createSelector(getAllUnits, (units: CrudApi.Unit[]):
-    | CrudApi.Unit
-    | undefined => units.find((unit): boolean => unit.id === id));
+  return createSelector(
+    getAllUnits,
+    (units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
+      units.find((unit): boolean => unit.id === id),
+  );
 };
 
 export const getUnitsByGroupId = (groupId: string) => {
