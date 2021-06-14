@@ -270,13 +270,13 @@
   dependencies:
     tslib "^2.0.0"
 
-"@angular/google-maps@10.2.7":
-  version "10.2.7"
-  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-10.2.7.tgz#1fffdfd379b68d6b221016ff6043596b33a36abc"
-  integrity sha512-3ONJVvuymuecGZKjp7sXS7y6uivKVC0FMX8ZgclLxMY7xQUhOLQc1BTt1C9OxDSULWrMWPn1jDocd7CWEBjgVQ==
+"@angular/google-maps@12.0.4":
+  version "12.0.4"
+  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-12.0.4.tgz#336563cebc0e29953bebb8dd2c967669c5639d1a"
+  integrity sha512-Afkjd6t+X4OVTEZ2kEmK++iLmIr5DdKJ0aovcKR2wLWXZseTJrIq0YjvK/86RGi1Z9m7odVwJxpGD13Ugk263A==
   dependencies:
-    "@types/googlemaps" "^3.39.3"
-    tslib "^2.0.0"
+    "@types/googlemaps" "^3.43.1"
+    tslib "^2.1.0"
 
 "@angular/language-service@11.2.14":
   version "11.2.14"
@@ -6413,7 +6413,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/googlemaps@3.43.3", "@types/googlemaps@^3.39.3":
+"@types/googlemaps@3.43.3", "@types/googlemaps@^3.43.1":
   version "3.43.3"
   resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.43.3.tgz#70cf962154a160fe78bcd69d6ccc296dd9175b1f"
   integrity sha512-ZWNoz/O8MPEpiajvj7QiqCY8tTLFNqNZ/a+s+zTV58wFVNAvvqV4bdGfnsjTb5Cs4V6wEsLrX8XRhmnyYJ2Tdg==
