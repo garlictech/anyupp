@@ -1,4 +1,4 @@
-import * as fp from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
+import { jsonParsedOrNull } from '@bgap/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,7 +41,7 @@ export class UnitListItemComponent {
     const dialog = this._nbDialogService.open(UnitFormComponent);
 
     if (this.unit) {
-      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+      dialog.componentRef.instance.unit = cloneDeep(this.unit);
     }
   }
 
@@ -48,7 +49,7 @@ export class UnitListItemComponent {
     const dialog = this._nbDialogService.open(UnitFloorMapComponent);
 
     if (this.unit) {
-      dialog.componentRef.instance.unit = fp.cloneDeep(this.unit);
+      dialog.componentRef.instance.unit = cloneDeep(this.unit);
     }
   }
 
@@ -60,8 +61,9 @@ export class UnitListItemComponent {
         .regenerateUnitData(this.unit?.id)
         .pipe(
           catchError(err => {
-            const _err = JSON.parse(err.graphQLErrors?.[0]?.message || {});
-            if (_err.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
+            const _err = jsonParsedOrNull(err.graphQLErrors?.[0]?.message);
+
+            if (_err?.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
               this._toasterService.show(
                 EToasterType.DANGER,
                 '',
