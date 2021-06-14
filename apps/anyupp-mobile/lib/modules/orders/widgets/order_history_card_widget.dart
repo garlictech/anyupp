@@ -41,7 +41,7 @@ class OrderHistoryCard extends StatelessWidget {
             _buildOrderHeader(context),
             _buildDivider(context),
             ..._buildOrderItemList(context),
-            InvoiceInfoWidget(order),
+            TransactionInfoWidget(order),
             _buildFooter(context),
           ],
         ),

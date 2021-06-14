@@ -27,7 +27,7 @@ class Receipt {
     String email,
     String id,
     String orderId,
-    String pdfUrl,
+    String pdfData,
     String status,
     String transactionId,
     String updatedAt,
@@ -38,7 +38,7 @@ class Receipt {
       email: email ?? this.email,
       id: id ?? this.id,
       orderId: orderId ?? this.orderId,
-      pdfData: pdfUrl ?? this.pdfData,
+      pdfData: pdfData ?? this.pdfData,
       status: status ?? this.status,
       transactionId: transactionId ?? this.transactionId,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -52,7 +52,7 @@ class Receipt {
       'email': email,
       'id': id,
       'orderId': orderId,
-      'pdfUrl': pdfData,
+      'pdfData': pdfData,
       'status': status,
       'transactionId': transactionId,
       'updatedAt': updatedAt,
@@ -63,10 +63,10 @@ class Receipt {
   factory Receipt.fromMap(Map<String, dynamic> map) {
     return Receipt(
       createdAt: map['createdAt'],
-      email: map['email'],
+      email: map['email'] != null ? map['email'] : null,
       id: map['id'],
       orderId: map['orderId'],
-      pdfData: map['pdfUrl'],
+      pdfData: map['pdfData'],
       status: map['status'],
       transactionId: map['transactionId'],
       updatedAt: map['updatedAt'],
@@ -80,7 +80,7 @@ class Receipt {
 
   @override
   String toString() {
-    return 'Receipt(createdAt: $createdAt, email: $email, id: $id, orderId: $orderId, pdfUrl: $pdfData, status: $status, transactionId: $transactionId, updatedAt: $updatedAt, userId: $userId)';
+    return 'Receipt(createdAt: $createdAt, email: $email, id: $id, orderId: $orderId, pdfData: $pdfData, status: $status, transactionId: $transactionId, updatedAt: $updatedAt, userId: $userId)';
   }
 
   @override

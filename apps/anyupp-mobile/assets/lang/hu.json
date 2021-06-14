@@ -184,6 +184,7 @@
       "invoicing": {
         "want_invoice": "Áfás számlát kérek",
         "invoice_info": "Számla Információ",
+        "receipt_info" : "Nyugta Információ",
         "name_or_company": "Név/Cég név",
         "tax_id": "Adószám",
         "country": "Ország",

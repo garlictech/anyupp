@@ -47,7 +47,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
-            InvoiceInfoWidget(order),
+            TransactionInfoWidget(order),
             _buildPayButtonIfNeeded(context, order),
           ],
         ),
