@@ -3,7 +3,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId},
-    archived: { ne: false }
+    archived: { ne: true }
   }) {
     items {
       id
@@ -63,7 +63,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
           externalReceiptId
           id
           orderId
-          pdfUrl
+          pdfData
           status
           transactionId
           updatedAt

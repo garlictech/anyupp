@@ -191,7 +191,8 @@
         "city": "City",
         "street address": "Street address",
         "invoice_email": "Invoice Email",
-        "invoiceAddress": "Use previous address"
+        "invoiceAddress": "Use previous address",
+        "show" : "Show"
       }
     },
     "simplePayStatus": {

@@ -1,5 +1,6 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/orders/widgets/invoice_info.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -46,6 +47,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
+            InvoiceInfoWidget(order),
             _buildPayButtonIfNeeded(context, order),
           ],
         ),

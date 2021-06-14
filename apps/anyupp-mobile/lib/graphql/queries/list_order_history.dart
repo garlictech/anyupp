@@ -63,7 +63,7 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
           externalReceiptId
           id
           orderId
-          pdfUrl
+          pdfData
           status
           transactionId
           updatedAt

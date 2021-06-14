@@ -191,7 +191,8 @@
         "city": "Város",
         "street_address": "Utca cím",
         "invoice_email": "Számla email",
-        "invoiceAddress": "Előző számlázási cím használata"
+        "invoiceAddress": "Előző számlázási cím használata",
+        "show" : "Megtekintés"
       }
     },
     "simplePayStatus": {

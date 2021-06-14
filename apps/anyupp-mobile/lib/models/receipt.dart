@@ -5,7 +5,7 @@ class Receipt {
   final String email;
   final String id;
   final String orderId;
-  final String pdfUrl;
+  final String pdfData;
   final String status;
   final String transactionId;
   final String updatedAt;
@@ -15,7 +15,7 @@ class Receipt {
      this.email,
      this.id,
      this.orderId,
-     this.pdfUrl,
+     this.pdfData,
      this.status,
      this.transactionId,
      this.updatedAt,
@@ -38,7 +38,7 @@ class Receipt {
       email: email ?? this.email,
       id: id ?? this.id,
       orderId: orderId ?? this.orderId,
-      pdfUrl: pdfUrl ?? this.pdfUrl,
+      pdfData: pdfUrl ?? this.pdfData,
       status: status ?? this.status,
       transactionId: transactionId ?? this.transactionId,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -52,7 +52,7 @@ class Receipt {
       'email': email,
       'id': id,
       'orderId': orderId,
-      'pdfUrl': pdfUrl,
+      'pdfUrl': pdfData,
       'status': status,
       'transactionId': transactionId,
       'updatedAt': updatedAt,
@@ -66,7 +66,7 @@ class Receipt {
       email: map['email'],
       id: map['id'],
       orderId: map['orderId'],
-      pdfUrl: map['pdfUrl'],
+      pdfData: map['pdfUrl'],
       status: map['status'],
       transactionId: map['transactionId'],
       updatedAt: map['updatedAt'],
@@ -80,7 +80,7 @@ class Receipt {
 
   @override
   String toString() {
-    return 'Receipt(createdAt: $createdAt, email: $email, id: $id, orderId: $orderId, pdfUrl: $pdfUrl, status: $status, transactionId: $transactionId, updatedAt: $updatedAt, userId: $userId)';
+    return 'Receipt(createdAt: $createdAt, email: $email, id: $id, orderId: $orderId, pdfUrl: $pdfData, status: $status, transactionId: $transactionId, updatedAt: $updatedAt, userId: $userId)';
   }
 
   @override
@@ -92,7 +92,7 @@ class Receipt {
       other.email == email &&
       other.id == id &&
       other.orderId == orderId &&
-      other.pdfUrl == pdfUrl &&
+      other.pdfData == pdfData &&
       other.status == status &&
       other.transactionId == transactionId &&
       other.updatedAt == updatedAt &&
@@ -105,7 +105,7 @@ class Receipt {
       email.hashCode ^
       id.hashCode ^
       orderId.hashCode ^
-      pdfUrl.hashCode ^
+      pdfData.hashCode ^
       status.hashCode ^
       transactionId.hashCode ^
       updatedAt.hashCode ^
