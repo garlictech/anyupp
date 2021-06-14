@@ -123,8 +123,8 @@ class Order extends Model {
     buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
     buffer.write("paymentIntention=" + (paymentIntention != null ? paymentIntention.toString() : "null") + ", ");
     buffer.write("created=" + (created != null ? created.toString() : "null") + ", ");
-    buffer.write("status=" + (status != null ? enumToString(status) : "null"));
-        buffer.write("archived=" + (archived != null ? archived : "null"));
+    buffer.write("status=" + (status != null ? enumToString(status) : "null") + ", ");
+    buffer.write("archived=$archived");
     buffer.write("}");
 
     return buffer.toString();
