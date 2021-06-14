@@ -7,18 +7,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild,
 } from '@angular/core';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
-
-interface IMarkerData {
-  options?: google.maps.MarkerOptions;
-  position?: google.maps.LatLngLiteral | google.maps.LatLng;
-  location?: {
-    lat: number;
-    lng: number;
-  };
-}
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,20 +18,12 @@ interface IMarkerData {
 export class GoogleMapComponent implements OnChanges {
   @Input() markerLocation = {};
   @Output() positionChange = new EventEmitter();
-  @ViewChild(GoogleMap, { static: false }) map?: GoogleMap;
-  @ViewChild(MapInfoWindow, { static: false }) info?: MapInfoWindow;
-  @ViewChild(MapMarker, { static: false }) markerElem?: MapMarker;
   public zoom = 15;
   public center: google.maps.LatLngLiteral;
-  public markerData: IMarkerData;
+  public markerPosition?: google.maps.LatLngLiteral;
+  public markerOptions: google.maps.MarkerOptions = { draggable: true };
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {
-    this.markerData = {
-      options: {
-        draggable: true,
-      },
-    };
-
     this.center = {
       lat: 0,
       lng: 0,
@@ -50,18 +31,15 @@ export class GoogleMapComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.markerData.location = {
+    console.error('changes', changes);
+
+    const location = {
       lat: parseFloat(changes.markerLocation.currentValue.lat || 0),
       lng: parseFloat(changes.markerLocation.currentValue.lng || 0),
     };
 
-    if (this.markerElem) {
-      this.markerElem.position = this.markerData.location;
-    }
-
-    if (this.map) {
-      this.map.center = this.markerData.location;
-    }
+    this.markerPosition = location;
+    this.center = location;
 
     this._changeDetectorRef.detectChanges();
   }
