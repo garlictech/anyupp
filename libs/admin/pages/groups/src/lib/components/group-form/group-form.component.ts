@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash/fp';
 import { take } from 'rxjs/operators';
 
 import {
@@ -15,6 +16,7 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
+  addressIsEmpty,
   catchGqlError,
   contactFormGroup,
   EToasterType,
@@ -34,7 +36,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class GroupFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   public group!: CrudApi.Group;
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];
@@ -107,12 +110,18 @@ export class GroupFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
+      const value = cloneDeep(this.dialogForm.value);
+
+      if (addressIsEmpty(value.address)) {
+        value.address = null;
+      }
+
       if (this.group?.id) {
         this._crudSdk.sdk
           .UpdateGroup({
             input: {
               id: this.group.id,
-              ...this.dialogForm.value,
+              ...value,
             },
           })
           .pipe(catchGqlError(this._store))
@@ -127,7 +136,7 @@ export class GroupFormComponent
           });
       } else {
         this._crudSdk.sdk
-          .CreateGroup({ input: this.dialogForm.value })
+          .CreateGroup({ input: value })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
             this._toasterService.show(

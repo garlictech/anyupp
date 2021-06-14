@@ -1,9 +1,12 @@
+import { isNumber, omit } from 'lodash/fp';
+
 import {
   AbstractControl,
   FormBuilder,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EVariantAvailabilityType,
   ICustomDailySchedule,
@@ -18,22 +21,24 @@ export const contactFormGroup = (requiredEmail = false) => ({
     : ['', [Validators.email]],
   phone: [''],
 });
-
 export const addressFormGroup = (
   formBuilder: FormBuilder,
   required = false,
 ) => ({
-  address: formBuilder.group({
-    address: ['', required ? [Validators.required] : []],
-    city: ['', required ? [Validators.required] : []],
-    country: ['', required ? [Validators.required] : []],
-    title: [''],
-    postalCode: ['', required ? [Validators.required] : []],
-    location: formBuilder.group({
-      lat: [0],
-      lng: [0],
-    }),
-  }),
+  address: formBuilder.group(
+    {
+      address: ['', required ? [Validators.required] : []],
+      city: ['', required ? [Validators.required] : []],
+      country: ['', required ? [Validators.required] : []],
+      title: [''],
+      postalCode: ['', required ? [Validators.required] : []],
+      location: formBuilder.group({
+        lat: [0],
+        lng: [0],
+      }),
+    },
+    required ? {} : { validators: emptyAddressValidator },
+  ),
 });
 
 export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
@@ -42,6 +47,39 @@ export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
   const de = control.get('de')?.value;
 
   return hu || en || de ? null : { empty: true };
+};
+
+export const addressIsEmpty = (address: CrudApi.Address) => {
+  const stringFields = omit(['location'], address);
+  const allStringsAreEmpty = Object.values(stringFields).every(v => !v);
+
+  // 0 or empty string
+  const locationIsEmpty = !address.location?.lat && !address.location?.lng;
+
+  return allStringsAreEmpty && locationIsEmpty;
+};
+
+export const addressIsFilled = (address: CrudApi.Address) => {
+  const stringFields = omit(['location'], address);
+  const allStringsAreFilled = Object.values(stringFields).every(v => v);
+
+  // not 0 numeric
+  const locationIsFilled =
+    isNumber(address.location?.lat) &&
+    isNumber(address.location?.lng) &&
+    (address.location?.lat !== 0 || address.location?.lng !== 0);
+
+  return allStringsAreFilled && locationIsFilled;
+};
+
+// Address: all fields are empty, or all fields are required.
+export const emptyAddressValidator: ValidatorFn = (
+  control: AbstractControl,
+) => {
+  const isEmpty = addressIsEmpty(control.value);
+  const isFilled = addressIsFilled(control.value);
+
+  return isEmpty || isFilled ? null : { err: true };
 };
 
 export const productAvailabilityValidator: ValidatorFn = (
