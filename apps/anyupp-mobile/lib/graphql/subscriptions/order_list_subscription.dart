@@ -5,6 +5,7 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
     orderNum
     unitId
     userId
+    archived
     paymentIntention
     takeAway
     archived

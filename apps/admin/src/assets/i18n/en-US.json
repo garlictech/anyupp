@@ -35,6 +35,7 @@
     "taxPercent": "Tax (%)",
     "from": "From",
     "to": "To",
+    "date": "Date",
     "language": "Language",
     "languageSelector": "Language selector",
     "type": "Type",
@@ -93,7 +94,9 @@
     },
     "sum": "Sum",
     "width": "width",
-    "height": "height"
+    "height": "height",
+    "receipt": "receipt",
+    "invoice": "invoice"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -291,6 +294,8 @@
     "confirmSuccessTransaction": "Are you sure you set the transaction status to 'success'?",
     "confirmDeleteOrder": "Are you sure you delete the order?",
     "userOrdersCount": "{{ count }} order(s)",
+    "tableNum": "Table num",
+    "receiptType": "Receipt type",
     "status": {
       "placed": "Placed",
       "processing": "Processing",

@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash/fp';
+import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import {
@@ -13,6 +14,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
+  addressIsEmpty,
   catchGqlError,
   contactFormGroup,
   EToasterType,
@@ -22,7 +24,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { Store } from '@ngrx/store';
-import { EMPTY } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +33,8 @@ import { EMPTY } from 'rxjs';
 })
 export class ChainFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public chain?: CrudApi.Chain;
   public eImageType = EImageType;
 
@@ -97,12 +99,18 @@ export class ChainFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
+      const value = cloneDeep(this.dialogForm.value);
+
+      if (addressIsEmpty(value.address)) {
+        value.address = null;
+      }
+
       if (this.chain?.id) {
         this._crudSdk.sdk
           .UpdateChain({
             input: {
               id: this.chain.id,
-              ...this.dialogForm.value,
+              ...value,
             },
           })
           .pipe(catchGqlError(this._store))
@@ -117,7 +125,7 @@ export class ChainFormComponent
           });
       } else {
         this._crudSdk.sdk
-          .CreateChain({ input: this.dialogForm?.value })
+          .CreateChain({ input: value })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
             this._toasterService.show(
