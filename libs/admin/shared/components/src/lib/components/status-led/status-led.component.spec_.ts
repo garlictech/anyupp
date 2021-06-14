@@ -6,11 +6,13 @@ xdescribe('StatusLedComponent', (): void => {
   let component: StatusLedComponent;
   let fixture: ComponentFixture<StatusLedComponent>;
 
-  beforeEach(async (): Promise<void> => {
-    await TestBed.configureTestingModule({
-      declarations: [StatusLedComponent],
-    }).compileComponents();
-  });
+  beforeEach(
+    async (): Promise<void> => {
+      await TestBed.configureTestingModule({
+        declarations: [StatusLedComponent],
+      }).compileComponents();
+    },
+  );
 
   beforeEach((): void => {
     fixture = TestBed.createComponent(StatusLedComponent);

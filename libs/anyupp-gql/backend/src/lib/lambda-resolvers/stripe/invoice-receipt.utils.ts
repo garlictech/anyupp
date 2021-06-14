@@ -3,59 +3,67 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { createInvoice } from './stripe-graphql-crud';
 import { StripeResolverDeps } from './stripe.utils';
 
-export const createInvoiceAndConnectTransaction = (
-  orderId: string,
-  userId: string,
-  transactionId: string,
-  invoiceAddress: AnyuppApi.UserInvoiceAddress,
-  status: CrudApi.InvoiceStatus,
-) => async (deps: StripeResolverDeps) => {
-  console.debug('createInvoiceAndConnectTransaction().orderId=' + orderId);
+export const createInvoiceAndConnectTransaction =
+  (
+    orderId: string,
+    userId: string,
+    transactionId: string,
+    invoiceAddress: AnyuppApi.UserInvoiceAddress,
+    status: CrudApi.InvoiceStatus,
+  ) =>
+  async (deps: StripeResolverDeps) => {
+    console.debug('createInvoiceAndConnectTransaction().orderId=' + orderId);
 
-  const createInvoiceVars = createInvoiceMutationVariables(
-    orderId,
-    userId,
-    transactionId,
-    invoiceAddress,
-    status,
-  );
-  const invoice = await createInvoice(createInvoiceVars)(deps);
-  if (!invoice) {
-    throw Error('Invoice not created. Created invoice instane is null');
-  }
-  console.debug('createInvoiceAndConnectTransaction().invoiceId=' + invoice.id);
-  await updateTransactionInvoiceId(transactionId, invoice.id)(deps);
-};
+    const createInvoiceVars = createInvoiceMutationVariables(
+      orderId,
+      userId,
+      transactionId,
+      invoiceAddress,
+      status,
+    );
+    const invoice = await createInvoice(createInvoiceVars)(deps);
+    if (!invoice) {
+      throw Error('Invoice not created. Created invoice instane is null');
+    }
+    console.debug(
+      'createInvoiceAndConnectTransaction().invoiceId=' + invoice.id,
+    );
+    await updateTransactionInvoiceId(transactionId, invoice.id)(deps);
+  };
 
-export const createReceiptAndConnectTransaction = (
-  orderId: string,
-  userId: string,
-  transactionId: string,
-  email: string | undefined | null,
-  status: CrudApi.ReceiptStatus,
-  receiptId: string | undefined,
-  recepitPdf: string | undefined,
-) => async (deps: StripeResolverDeps) => {
-  console.debug('createReceiptAndConnectTransaction().orderId=' + orderId);
+export const createReceiptAndConnectTransaction =
+  (
+    orderId: string,
+    userId: string,
+    transactionId: string,
+    email: string | undefined | null,
+    status: CrudApi.ReceiptStatus,
+    receiptId: string | undefined,
+    recepitPdf: string | undefined,
+  ) =>
+  async (deps: StripeResolverDeps) => {
+    console.debug('createReceiptAndConnectTransaction().orderId=' + orderId);
 
-  const createReceiptVars = createReceiptMutationVariables(
-    orderId,
-    userId,
-    transactionId,
-    email,
-    status,
-    receiptId,
-    recepitPdf,
-  );
-  const receipt = await deps.crudSdk
-    .CreateReceipt(createReceiptVars)
-    .toPromise();
-  if (!receipt) {
-    throw Error('Receipt not created. Created receipt instane is null');
-  }
-  console.debug('createReceiptAndConnectTransaction().receiptId=' + receipt.id);
-  await updateTransactionReceiptId(transactionId, receipt.id)(deps);
-};
+    const createReceiptVars = createReceiptMutationVariables(
+      orderId,
+      userId,
+      transactionId,
+      email,
+      status,
+      receiptId,
+      recepitPdf,
+    );
+    const receipt = await deps.crudSdk
+      .CreateReceipt(createReceiptVars)
+      .toPromise();
+    if (!receipt) {
+      throw Error('Receipt not created. Created receipt instane is null');
+    }
+    console.debug(
+      'createReceiptAndConnectTransaction().receiptId=' + receipt.id,
+    );
+    await updateTransactionReceiptId(transactionId, receipt.id)(deps);
+  };
 
 const createInvoiceMutationVariables = (
   orderId: string,
@@ -66,9 +74,9 @@ const createInvoiceMutationVariables = (
 ): CrudApi.CreateInvoiceMutationVariables => {
   return {
     input: {
-      userId: userId,
-      orderId: orderId,
-      transactionId: transactionId,
+      userId,
+      orderId,
+      transactionId,
       city: invoiceAddress.city,
       country: invoiceAddress.country,
       customerName: invoiceAddress.customerName,
@@ -76,7 +84,7 @@ const createInvoiceMutationVariables = (
       streetAddress: invoiceAddress.streetAddress,
       taxNumber: invoiceAddress.taxNumber,
       email: invoiceAddress.email,
-      status: status,
+      status,
     },
   };
 };
@@ -92,39 +100,37 @@ const createReceiptMutationVariables = (
 ): CrudApi.CreateReceiptMutationVariables => {
   return {
     input: {
-      orderId: orderId,
-      userId: userId,
-      transactionId: transactionId,
-      email: email,
-      status: status,
-      pdfData: pdfData,
+      orderId,
+      userId,
+      transactionId,
+      email,
+      status,
+      pdfData,
       externalReceiptId: receiptId,
     },
   };
 };
 
-const updateTransactionInvoiceId = (id: string, invoiceId: string) => (
-  deps: StripeResolverDeps,
-) => {
-  const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
-    input: {
-      id,
-      invoiceId,
-    },
+const updateTransactionInvoiceId =
+  (id: string, invoiceId: string) => (deps: StripeResolverDeps) => {
+    const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+      input: {
+        id,
+        invoiceId,
+      },
+    };
+
+    return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
   };
 
-  return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
-};
+const updateTransactionReceiptId =
+  (id: string, receiptId: string) => (deps: StripeResolverDeps) => {
+    const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+      input: {
+        id,
+        receiptId,
+      },
+    };
 
-const updateTransactionReceiptId = (id: string, receiptId: string) => (
-  deps: StripeResolverDeps,
-) => {
-  const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
-    input: {
-      id,
-      receiptId,
-    },
+    return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
   };
-
-  return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
-};

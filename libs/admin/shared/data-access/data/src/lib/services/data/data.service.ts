@@ -319,7 +319,10 @@ export class DataService {
       this._crudSdk.sdk.ListOrders({
         filter: { unitId: { eq: unitId }, archived: { ne: true } },
       }),
-      this._crudSdk.sdk.OnOrdersChange(),
+      this._crudSdk.sdk.OnUnitOrdersChange({
+        unitId,
+        archived: false,
+      }),
       (orders: CrudApi.Order[]) => {
         // TODO Hack... Later we should use pubsub for subscription filtering
         return ordersActions.upsertActiveOrders({

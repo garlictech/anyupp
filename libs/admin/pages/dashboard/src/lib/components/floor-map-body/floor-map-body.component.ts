@@ -54,8 +54,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
   public unit?: CrudApi.Unit;
 
   private _allTableOrders: IFloorMapTableOrderObjects = {};
-  private _allTableOrders$: BehaviorSubject<IFloorMapTableOrderObjects> =
-    new BehaviorSubject({});
+  private _allTableOrders$: BehaviorSubject<
+    IFloorMapTableOrderObjects
+  > = new BehaviorSubject({});
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -127,8 +128,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
             CrudApi.FloorMapDataObject[]
           >objectToArray(this.unit.floorMap.objects, 'id');
           const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
-          const ordersByUser: IFloorMapUserOrderObjects =
-            getOrdersByUser(orders);
+          const ordersByUser: IFloorMapUserOrderObjects = getOrdersByUser(
+            orders,
+          );
           this._allTableOrders = getTableOrders(tableSeatIds, ordersByUser);
 
           // For the modal

@@ -6,11 +6,13 @@ xdescribe('FloorMapOrdersComponent', (): void => {
   let component: FloorMapOrdersComponent;
   let fixture: ComponentFixture<FloorMapOrdersComponent>;
 
-  beforeEach(async (): Promise<void> => {
-    await TestBed.configureTestingModule({
-      declarations: [FloorMapOrdersComponent],
-    }).compileComponents();
-  });
+  beforeEach(
+    async (): Promise<void> => {
+      await TestBed.configureTestingModule({
+        declarations: [FloorMapOrdersComponent],
+      }).compileComponents();
+    },
+  );
 
   beforeEach((): void => {
     fixture = TestBed.createComponent(FloorMapOrdersComponent);

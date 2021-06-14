@@ -33,6 +33,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public parsedVats: CrudApi.PriceShown[] = [];
   public sum: ICurrencyValue;
   public place?: CrudApi.Place | null;
+  public invoiceData?: CrudApi.Invoice;
+  public receiptType?: string;
 
   constructor(
     private _store: Store,
@@ -129,6 +131,23 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         this.sum.currency = item.priceShown.currency;
       });
     });
+
+    // Find the first invoice/receipt data (cash/card only)
+    const customerInfoOrder = this.orders.find(
+      o =>
+        (o.transaction?.invoiceId || o.transaction?.receiptId) &&
+        (o.paymentMode.type === CrudApi.PaymentType.card ||
+          o.paymentMode.type === CrudApi.PaymentType.cash),
+    );
+    if (customerInfoOrder) {
+      this.receiptType = customerInfoOrder.transaction?.invoiceId
+        ? 'invoice'
+        : customerInfoOrder.transaction?.receiptId
+        ? 'receipt'
+        : '';
+
+      this.invoiceData = customerInfoOrder.transaction?.invoice || undefined;
+    }
 
     this.parsedOrders = Object.values(variants);
     this.parsedVats = Object.values(vats);

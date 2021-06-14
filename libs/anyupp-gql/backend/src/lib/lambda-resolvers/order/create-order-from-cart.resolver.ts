@@ -5,6 +5,7 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
   validateGetGroupCurrency,
+  validateGroupProduct,
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
@@ -18,95 +19,95 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
-export const createOrderFromCart = (userId: string, cartId: string) => (
-  deps: OrderResolverDeps,
-) => {
-  return of('START').pipe(
-    switchMap(() =>
-      getCart(cartId)(deps).pipe(
-        // CART.USERID CHECK
-        // pipeDebug('### CART'),
-        switchMap(cart =>
-          cart.userId === userId
-            ? of(cart)
-            : throwError(getCartIsMissingError()),
+export const createOrderFromCart =
+  (userId: string, cartId: string) => (deps: OrderResolverDeps) => {
+    return of('START').pipe(
+      switchMap(() =>
+        getCart(cartId)(deps).pipe(
+          // CART.USERID CHECK
+          // pipeDebug('### CART'),
+          switchMap(cart =>
+            cart.userId === userId
+              ? of(cart)
+              : throwError(getCartIsMissingError()),
+          ),
+          // CART.PaymentMode CHECK
+          switchMap(cart =>
+            cart.paymentMode !== undefined
+              ? of(cart)
+              : throwError(missingParametersError('cart.paymentMode')),
+          ),
         ),
-        // CART.PaymentMode CHECK
-        switchMap(cart =>
-          cart.paymentMode !== undefined
-            ? of(cart)
-            : throwError(missingParametersError('cart.paymentMode')),
+      ),
+      switchMap(cart =>
+        getUnit(cart.unitId)(deps).pipe(
+          // TODO: ??? create catchError and custom error
+          map(unit => ({ cart, unit })),
+          // UNIT.IsAcceptingOrders CHECK
+          switchMap(props =>
+            props.unit.isAcceptingOrders
+              ? of(props)
+              : throwError(getUnitIsNotAcceptingOrdersError()),
+          ),
+          // INSPECTIONS
+          // TODO: distance check
+          //     // if (
+          //     //   !userLocation ||
+          //     //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
+          //     //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
+          //     // ) {
+          //     //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
+          //     //   console.log('###: User is too far from the UNIT error should be thrown');
+          //     // }
         ),
       ),
-    ),
-    switchMap(cart =>
-      getUnit(cart.unitId)(deps).pipe(
-        // TODO: ??? create catchError and custom error
-        map(unit => ({ cart, unit })),
-        // UNIT.IsAcceptingOrders CHECK
-        switchMap(props =>
-          props.unit.isAcceptingOrders
-            ? of(props)
-            : throwError(getUnitIsNotAcceptingOrdersError()),
+      switchMap(props =>
+        getGroupCurrency(props.unit.groupId)(deps).pipe(
+          map(currency => ({ ...props, currency })),
         ),
-        // INSPECTIONS
-        // TODO: distance check
-        //     // if (
-        //     //   !userLocation ||
-        //     //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-        //     //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-        //     // ) {
-        //     //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
-        //     //   console.log('###: User is too far from the UNIT error should be thrown');
-        //     // }
       ),
-    ),
-    switchMap(props =>
-      getGroupCurrency(props.unit.groupId)(deps).pipe(
-        map(currency => ({ ...props, currency })),
+      switchMap(props =>
+        getNextOrderNum(UNIT_TABLE_NAME)({
+          unitId: props.unit.id,
+          place: props.cart.place,
+        }).pipe(map(orderNum => ({ ...props, orderNum }))),
       ),
-    ),
-    switchMap(props =>
-      getNextOrderNum(UNIT_TABLE_NAME)({
-        unitId: props.unit.id,
-        place: props.cart.place,
-      }).pipe(map(orderNum => ({ ...props, orderNum }))),
-    ),
-    switchMap(props =>
-      getOrderItems({
-        userId,
-        currency: props.currency,
-        cartItems: props.cart.items,
-      })(deps).pipe(map(items => ({ ...props, items }))),
-    ),
-    map(props => ({
-      ...props,
-      orderInput: toOrderInputFormat({
-        userId,
-        unitId: props.cart.unitId,
-        orderNum: props.orderNum,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
-        items: props.items,
-        place: props.cart.place,
-      }),
-    })),
-    switchMap(props =>
-      createOrderInDb(props.orderInput)(deps).pipe(
-        map(x => ({ ...props, orderId: x.id as string })),
+      switchMap(props =>
+        getOrderItems({
+          userId,
+          currency: props.currency,
+          cartItems: props.cart.items,
+        })(deps).pipe(map(items => ({ ...props, items }))),
       ),
-    ),
-    // Remove the cart from the db after the order has been created successfully
-    switchMap(props =>
-      deps.crudSdk
-        .DeleteCart({ input: { id: props.cart.id } })
-        .pipe(mapTo(props.orderId)),
-    ),
-  );
-};
+      map(props => ({
+        ...props,
+        orderInput: toOrderInputFormat({
+          userId,
+          unitId: props.cart.unitId,
+          orderNum: props.orderNum,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
+          items: props.items,
+          place: props.cart.place,
+        }),
+      })),
+      switchMap(props =>
+        createOrderInDb(props.orderInput)(deps).pipe(
+          map(x => ({ ...props, orderId: x.id as string })),
+        ),
+      ),
+      // Remove the cart from the db after the order has been created successfully
+      switchMap(props =>
+        deps.crudSdk
+          .DeleteCart({ input: { id: props.cart.id } })
+          .pipe(mapTo(props.orderId)),
+      ),
+    );
+  };
 
 const toOrderInputFormat = ({
   userId,
@@ -126,56 +127,65 @@ const toOrderInputFormat = ({
   return {
     userId,
     takeAway: false,
+    archived: false,
     orderNum,
     paymentMode,
     // created: DateTime.utc().toMillis(),
-    items: items,
+    items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
-    place: place,
+    place,
     unitId,
-    archived: false,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };
 };
 
-const getOrderItems = ({
-  userId,
-  cartItems,
-  currency,
-}: {
-  userId: string;
-  cartItems: CrudApi.OrderItem[];
-  currency: string;
-}) => (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
-  return combineLatest(
-    cartItems.map(cartItem =>
-      getLaneIdForCartItem(cartItem.productId)(deps).pipe(
-        map(laneId =>
-          convertCartOrderItemToOrderItem({
-            userId,
-            cartItem,
-            currency,
-            laneId,
-          }),
+const getOrderItems =
+  ({
+    userId,
+    cartItems,
+    currency,
+  }: {
+    userId: string;
+    cartItems: CrudApi.OrderItem[];
+    currency: string;
+  }) =>
+  (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
+    return combineLatest(
+      cartItems.map(cartItem =>
+        getUnitProduct(cartItem.productId)(deps).pipe(
+          switchMap(unitProduct =>
+            getGroupProduct(unitProduct.parentId)(deps).pipe(
+              map(groupProduct =>
+                convertCartOrderItemToOrderItem({
+                  userId,
+                  cartItem,
+                  currency,
+                  laneId: unitProduct.laneId,
+                  tax: groupProduct.tax,
+                }),
+              ),
+            ),
+          ),
         ),
       ),
-    ),
-  );
-};
+    );
+  };
 
 const convertCartOrderItemToOrderItem = ({
   userId,
   cartItem,
   currency,
   laneId,
+  tax,
 }: {
   userId: string;
   cartItem: CrudApi.OrderItem;
   currency: string;
   laneId: string | null | undefined;
+  tax: number;
 }): CrudApi.OrderItemInput => {
   return {
     productName: cartItem.productName,
@@ -185,11 +195,9 @@ const convertCartOrderItemToOrderItem = ({
       priceSum: toFixed2Number(
         cartItem.priceShown.pricePerUnit * cartItem.quantity,
       ),
-      tax: cartItem.priceShown.tax,
+      tax,
       taxSum: toFixed2Number(
-        cartItem.priceShown.pricePerUnit *
-          cartItem.quantity *
-          (cartItem.priceShown.tax / 100),
+        cartItem.priceShown.pricePerUnit * cartItem.quantity * (tax / 100),
       ),
     },
     productId: cartItem.productId,
@@ -203,9 +211,13 @@ const convertCartOrderItemToOrderItem = ({
   };
 };
 
-const getLaneIdForCartItem = (productId: string) => (deps: OrderResolverDeps) =>
+const getUnitProduct = (productId: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetUnitProduct({ id: productId })).pipe(
-    map(product => product?.laneId || undefined),
+    switchMap(validateUnitProduct),
+  );
+const getGroupProduct = (productId: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetGroupProduct({ id: productId })).pipe(
+    switchMap(validateGroupProduct),
   );
 
 const createStatusLog = (
@@ -219,9 +231,9 @@ const createStatusLog = (
 // const getStaffId = async (unitId: string): Promise<string> => {
 //   return Promise.resolve('staff_ID');
 // };
-const createOrderInDb = (input: CrudApi.CreateOrderInput) => (
-  deps: OrderResolverDeps,
-) => from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
+const createOrderInDb =
+  (input: CrudApi.CreateOrderInput) => (deps: OrderResolverDeps) =>
+    from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
 
 const getUnit = (id: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetUnit({ id }, { fetchPolicy: 'no-cache' })).pipe(
@@ -239,22 +251,24 @@ const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
     map(x => x.currency),
   );
 
-const getNextOrderNum = (tableName: string) => ({
-  unitId,
-  place,
-}: {
-  unitId: string;
-  place: CrudApi.Place | undefined | null;
-}): Observable<string> => {
-  return incrementOrderNum(tableName)(unitId).pipe(
-    mergeMap(lastOrderNum =>
-      iif(
-        () => !!lastOrderNum,
-        of(lastOrderNum),
-        of(Math.floor(Math.random() * 10)), // In case of the lastOrderNum is missing get a random number between 0-99
+const getNextOrderNum =
+  (tableName: string) =>
+  ({
+    unitId,
+    place,
+  }: {
+    unitId: string;
+    place: CrudApi.Place | undefined | null;
+  }): Observable<string> => {
+    return incrementOrderNum(tableName)(unitId).pipe(
+      mergeMap(lastOrderNum =>
+        iif(
+          () => !!lastOrderNum,
+          of(lastOrderNum),
+          of(Math.floor(Math.random() * 10)), // In case of the lastOrderNum is missing get a random number between 0-99
+        ),
       ),
-    ),
-    map(x => (x || 1).toString().padStart(2, '0')),
-    map(num => (place ? `${place.table}${place.seat}${num}` : num)),
-  );
-};
+      map(x => (x || 1).toString().padStart(2, '0')),
+      map(num => (place ? `${place.table}${place.seat}${num}` : num)),
+    );
+  };

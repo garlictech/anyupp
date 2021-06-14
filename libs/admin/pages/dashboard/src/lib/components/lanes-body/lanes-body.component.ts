@@ -27,10 +27,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-const laneFilter =
-  (selectedLanes: string[]) =>
-  (orderItem: ILaneOrderItem): boolean =>
-    selectedLanes.includes(orderItem.laneId || 'default');
+const laneFilter = (selectedLanes: string[]) => (
+  orderItem: ILaneOrderItem,
+): boolean => selectedLanes.includes(orderItem.laneId || 'default');
 
 @UntilDestroy()
 @Component({
