@@ -162,7 +162,7 @@ class OrderHistoryCard extends StatelessWidget {
           ),
           Text(
             formatCurrency(
-                order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'huf'), // TODO geounit!!
+                order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'huf'), 
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,
