@@ -31,7 +31,7 @@ class AwsOrderProvider implements IOrdersProvider {
         subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
         subscriptionNodeName: 'onOrderChanged',
         modelFromJson: (json) => Order.fromJson(json),
-        filterModel: (model) => model.archived,
+        filterModel: (model) => !model.archived,
         );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -41,7 +41,7 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
       subscriptionNodeName: 'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
       modelFromJson: (json) => Order.fromJson(json),
-      filterModel: (model) => !model.archived,
+      filterModel: (model) => model.archived,
     );
   }
 
