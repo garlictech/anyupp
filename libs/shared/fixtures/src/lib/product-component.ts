@@ -98,25 +98,23 @@ const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
   allergens: [CrudApi.Allergen.mustard],
 };
 
-const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
-  {
-    ...getComponentSet({
-      id: prodCompSetId_01,
-      chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_01, prodCompId_02],
-    }),
-    type: EProductComponentSetType.EXTRAS,
-  };
+const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+  ...getComponentSet({
+    id: prodCompSetId_01,
+    chainId: chainFixture.chainId_seeded_01,
+    itemIds: [prodCompId_01, prodCompId_02],
+  }),
+  type: EProductComponentSetType.EXTRAS,
+};
 
-const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
-  {
-    ...getComponentSet({
-      id: prodCompSetId_02,
-      chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
-    }),
-    type: EProductComponentSetType.MODIFIER,
-  };
+const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+  ...getComponentSet({
+    id: prodCompSetId_02,
+    chainId: chainFixture.chainId_seeded_01,
+    itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
+  }),
+  type: EProductComponentSetType.MODIFIER,
+};
 
 const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
   {

@@ -11,45 +11,44 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: 'eu-west-1',
 });
 
-export const createAdminUser =
-  (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
-  (deps: AdminUserResolverDeps) => {
-    console.debug('Resolver parameters: ', vars);
-    const Username = vars.input.email || vars.input.phone || '';
+export const createAdminUser = (
+  vars: AnyuppApi.CreateAdminUserMutationVariables,
+) => (deps: AdminUserResolverDeps) => {
+  console.debug('Resolver parameters: ', vars);
+  const Username = vars.input.email || vars.input.phone || '';
 
-    return pipe(
-      {
-        UserPoolId: deps.userPoolId,
-        Username,
-      },
-      params =>
-        cognitoidentityserviceprovider.adminCreateUser(params).promise(),
-      from,
-      switchMap(() =>
-        from(
-          cognitoidentityserviceprovider
-            .adminGetUser({
-              UserPoolId: deps.userPoolId,
-              Username,
-            })
-            .promise(),
-        ),
+  return pipe(
+    {
+      UserPoolId: deps.userPoolId,
+      Username,
+    },
+    params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+    from,
+    switchMap(() =>
+      from(
+        cognitoidentityserviceprovider
+          .adminGetUser({
+            UserPoolId: deps.userPoolId,
+            Username,
+          })
+          .promise(),
       ),
-      map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
-        pipe(
-          user.UserAttributes,
-          fp.find(attr => attr.Name === 'sub'),
-          attr => attr?.Value,
-        ),
+    ),
+    map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
+      pipe(
+        user.UserAttributes,
+        fp.find(attr => attr.Name === 'sub'),
+        attr => attr?.Value,
       ),
-      filter(fp.negate(fp.isEmpty)),
-      map((adminUserId: string) => ({
-        id: adminUserId,
-        name: vars.input.name,
-        email: vars.input.email,
-        phone: vars.input.phone,
-      })),
-      switchMap(input => deps.crudSdk.CreateAdminUser({ input })),
-      map(data => data?.id),
-    ).toPromise();
-  };
+    ),
+    filter(fp.negate(fp.isEmpty)),
+    map((adminUserId: string) => ({
+      id: adminUserId,
+      name: vars.input.name,
+      email: vars.input.email,
+      phone: vars.input.phone,
+    })),
+    switchMap(input => deps.crudSdk.CreateAdminUser({ input })),
+    map(data => data?.id),
+  ).toPromise();
+};

@@ -5,22 +5,12 @@ import { RouterModule } from '@angular/router';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
-import {
-  NbButtonModule,
-  NbCardModule,
-  NbInputModule,
-  NbLayoutModule,
-} from '@nebular/theme';
+import { NbLayoutModule } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { LoginComponent } from './components/login/login.component';
 
-const NEBULAR_MODULES = [
-  NbLayoutModule,
-  NbCardModule,
-  NbInputModule,
-  NbButtonModule,
-];
+const NEBULAR_MODULES = [NbLayoutModule];
 
 @NgModule({
   imports: [

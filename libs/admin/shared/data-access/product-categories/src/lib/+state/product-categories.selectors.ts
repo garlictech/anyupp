@@ -6,8 +6,9 @@ import {
   productCategoriesAdapter,
 } from './product-categories.reducer';
 
-export const getProductCategoriesState =
-  createFeatureSelector<ProductCategoriesState>(PRODUCT_CATEGORIES_FEATURE_KEY);
+export const getProductCategoriesState = createFeatureSelector<
+  ProductCategoriesState
+>(PRODUCT_CATEGORIES_FEATURE_KEY);
 
 const { selectAll, selectEntities } = productCategoriesAdapter.getSelectors();
 

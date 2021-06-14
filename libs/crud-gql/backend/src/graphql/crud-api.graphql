@@ -791,4 +791,7 @@ type Subscription {
   onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
 }

@@ -13,8 +13,9 @@ export interface ChainsPartialState {
   readonly [CHAINS_FEATURE_KEY]: ChainsState;
 }
 
-export const chainsAdapter: EntityAdapter<CrudApi.Chain> =
-  createEntityAdapter<CrudApi.Chain>();
+export const chainsAdapter: EntityAdapter<CrudApi.Chain> = createEntityAdapter<
+  CrudApi.Chain
+>();
 
 export const initialState: ChainsState = chainsAdapter.getInitialState({});
 

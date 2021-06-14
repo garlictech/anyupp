@@ -5,8 +5,7 @@ import { ProductResolverDeps } from './utils';
 // interface WithAuthenticatedUser {
 //   userId: string;
 // }
-export type CreateUnitProductRequest /* WithAuthenticatedUser & */ =
-  AnyuppApi.CreateUnitProductInput;
+export type CreateUnitProductRequest /* WithAuthenticatedUser & */ = AnyuppApi.CreateUnitProductInput;
 
 export const productRequestHandler = (deps: ProductResolverDeps) => ({
   createUnitProduct: (requestPayload: CreateUnitProductRequest) => {

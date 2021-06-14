@@ -97,8 +97,7 @@ export class ProductFormService {
 
         (variant?.availabilities || []).forEach(availability => {
           if (availability) {
-            const availabilityGroup =
-              this._formsService.createProductAvailabilityFormGroup();
+            const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
             availabilityGroup.patchValue(cleanObject(availability));
             (variantGroup.controls.availabilities as FormArray).push(
               availabilityGroup,
@@ -113,14 +112,12 @@ export class ProductFormService {
 
   public patchConfigSet(product: Product, configSets: FormArray): void {
     (product.configSets || []).forEach(configSet => {
-      const configSetGroup =
-        this._formsService.createProductConfigSetFormGroup();
+      const configSetGroup = this._formsService.createProductConfigSetFormGroup();
       configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
 
       (configSet?.items || []).forEach(item => {
         if (item) {
-          const configSetItemGroup =
-            this._formsService.createProductConfigSetItemFormGroup();
+          const configSetItemGroup = this._formsService.createProductConfigSetItemFormGroup();
           configSetItemGroup.patchValue(cleanObject(item));
 
           (configSetGroup.controls.items as FormArray).push(configSetItemGroup);

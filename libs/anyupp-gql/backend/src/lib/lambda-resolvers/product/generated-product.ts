@@ -11,19 +11,18 @@ import { UnitsResolverDeps } from '../unit/utils';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
-export const deleteGeneratedProductsForAUnitFromDb = (
-  deps: UnitsResolverDeps,
-) => (unitId: string) => {
-  return listGeneratedProductsForUnits(deps)([unitId]).pipe(
-    switchMap(items =>
-      iif(
-        () => items.length > 0,
-        deleteGeneratedProductsItemsFromDb(items),
-        of([]),
+export const deleteGeneratedProductsForAUnitFromDb =
+  (deps: UnitsResolverDeps) => (unitId: string) => {
+    return listGeneratedProductsForUnits(deps)([unitId]).pipe(
+      switchMap(items =>
+        iif(
+          () => items.length > 0,
+          deleteGeneratedProductsItemsFromDb(items),
+          of([]),
+        ),
       ),
-    ),
-  );
-};
+    );
+  };
 const deleteGeneratedProductsItemsFromDb = (
   items: CrudApi.GeneratedProduct[],
 ) => deleteItems(TABLE_NAME)(items);
@@ -34,18 +33,18 @@ export const createGeneratedProductsInDb = (
   return createItems(TABLE_NAME)(products);
 };
 
-export const listGeneratedProductsForUnits = (deps: UnitsResolverDeps) => (
-  unitIds: string[],
-): Observable<Array<CrudApi.GeneratedProduct>> => {
-  const input: CrudApi.ListGeneratedProductsQueryVariables = {
-    filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-    limit: 200, // TODO <==??????????
-  };
+export const listGeneratedProductsForUnits =
+  (deps: UnitsResolverDeps) =>
+  (unitIds: string[]): Observable<Array<CrudApi.GeneratedProduct>> => {
+    const input: CrudApi.ListGeneratedProductsQueryVariables = {
+      filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+      limit: 200, // TODO <==??????????
+    };
 
-  return defer(() =>
-    deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
-  ).pipe(
-    switchMap(validateGeneratedProductList),
-    filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
-  );
-};
+    return defer(() =>
+      deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
+    ).pipe(
+      switchMap(validateGeneratedProductList),
+      filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
+    );
+  };

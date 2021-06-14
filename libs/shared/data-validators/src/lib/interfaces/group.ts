@@ -18,5 +18,6 @@ export const groupSchema: Joi.SchemaMap<CrudApi.Group> = {
   address: Joi.object(addressSchema).allow(null),
   ...contactSchema,
 };
-export const { validate: validateGroup, isType: isGroup } =
-  validateSchema<CrudApi.Group>(groupSchema, 'Group');
+export const { validate: validateGroup, isType: isGroup } = validateSchema<
+  CrudApi.Group
+>(groupSchema, 'Group');

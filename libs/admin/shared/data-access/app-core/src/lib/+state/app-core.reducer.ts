@@ -1,10 +1,12 @@
 import {} from '@bgap/shared/types';
-import { Action, createReducer } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
+
+import * as appCoreActions from './app-core.actions';
 
 export const APP_CORE_FEATURE_KEY = 'appCore';
 
 export interface IAppCoreState {
-  error?: string | null; // last known error (if any)
+  loginContextFailure?: boolean;
 }
 
 export interface LoggedUserPartialState {
@@ -13,7 +15,13 @@ export interface LoggedUserPartialState {
 
 export const initialState: IAppCoreState = {};
 
-const reducer = createReducer(initialState);
+const reducer = createReducer(
+  initialState,
+  on(
+    appCoreActions.setLoginContextFailure,
+    (state, { loginContextFailure }) => ({ ...state, loginContextFailure }),
+  ),
+);
 
 export function appCoreReducer(
   state: IAppCoreState | undefined,

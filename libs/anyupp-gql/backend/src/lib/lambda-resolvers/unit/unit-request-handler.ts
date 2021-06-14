@@ -27,18 +27,14 @@ export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
     regenerateUnitData(requestPayload.input.id)(deps).toPromise(),
 });
 
-const getUnitsInRadiusInputSchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationInput> =
-  {
-    location: Joi.object(locationSchema).required(),
-  };
+const getUnitsInRadiusInputSchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationInput> = {
+  location: Joi.object(locationSchema).required(),
+};
 
-const getUnitsInRadiusQuerySchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationQueryVariables> =
-  {
-    input: Joi.object(getUnitsInRadiusInputSchema).required(),
-  };
+const getUnitsInRadiusQuerySchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationQueryVariables> = {
+  input: Joi.object(getUnitsInRadiusInputSchema).required(),
+};
 
-const { validate: validatGetUnitsNearLocationInput } =
-  validateSchema<AnyuppApi.GetUnitsNearLocationQueryVariables>(
-    getUnitsInRadiusQuerySchema,
-    'GetUnitsNearLocationQueryVariables',
-  );
+const { validate: validatGetUnitsNearLocationInput } = validateSchema<
+  AnyuppApi.GetUnitsNearLocationQueryVariables
+>(getUnitsInRadiusQuerySchema, 'GetUnitsNearLocationQueryVariables');
