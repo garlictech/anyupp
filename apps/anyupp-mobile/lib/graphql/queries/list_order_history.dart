@@ -9,6 +9,7 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
       id
       orderNum
       createdAt
+      archived
       paymentMode {
         caption
         type

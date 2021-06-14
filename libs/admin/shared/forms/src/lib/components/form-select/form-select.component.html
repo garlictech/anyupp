@@ -8,7 +8,7 @@
       [size]="size!"
       [formControl]="control"
       (selectedChange)="onChange($event)"
-      [id]="inputId"
+      [attr.data-testid]="inputId"
     >
       <nb-option value="" *ngIf="!control.value || forceShowEmptyOption"
         >-</nb-option

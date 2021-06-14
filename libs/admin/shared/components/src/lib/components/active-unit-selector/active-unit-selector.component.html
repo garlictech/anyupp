@@ -6,10 +6,12 @@
 <nb-select
   [status]="selectedUnitId ? 'basic' : 'danger'"
   placeholder="{{ 'common.unit' | translate }}"
+  title="{{ 'common.unit' | translate }}"
   shape="round"
   size="small"
   (selectedChange)="onUnitSelected($event)"
   [selected]="selectedUnitId"
+  data-testid="activeUnitSelector"
 >
   <nb-option *ngFor="let option of units$ | async" [value]="option.id">{{
     option.name

@@ -17,6 +17,10 @@ elif [ $STAGE = 'staging'  ] && [ $PLATFORM = 'ios' ]; then
   appId="AnyUpp-iOS-Staging"
 elif [ $STAGE = 'staging'  ] && [ $PLATFORM = 'android' ]; then
   appId="AnyUpp-Android-Staging"
+elif [ $STAGE = 'prod'  ] && [ $PLATFORM = 'ios' ]; then
+  appId="AnyUpp-iOS-PROD"
+elif [ $STAGE = 'prod'  ] && [ $PLATFORM = 'android' ]; then
+  appId="AnyUpp-Android-PROD"
 else
   echo "Unsupported app: ${STAGE}/${PLATFORM}"
   exit 1

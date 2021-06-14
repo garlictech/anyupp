@@ -3,12 +3,13 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId},
-    archived: {ne: true}
+    archived: { ne: false }
   }) {
     items {
       id
       orderNum
       createdAt
+      archived
       paymentMode {
         caption
         type

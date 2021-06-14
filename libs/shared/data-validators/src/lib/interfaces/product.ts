@@ -35,7 +35,6 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   tax: Joi.number().required(),
   variants: Joi.array().allow(null), //TODO: use an exact schema
   configSets: Joi.array().allow(null),
-  chainProduct: Joi.object(chainProductSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
@@ -57,7 +56,6 @@ export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   configSets: Joi.array().allow(null),
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
-  groupProduct: Joi.object(groupProductSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
@@ -71,3 +69,36 @@ export const {
   validate: validateUnitProductList,
   isType: isUnitProductList,
 } = validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');
+
+export const generatedProductSchema: Joi.SchemaMap<CrudApi.GeneratedProduct> = {
+  id: Joi.string().required(),
+  unitId: unitProductSchema.unitId,
+  productCategoryId: chainProductSchema.productCategoryId,
+  name: chainProductSchema.name,
+  description: chainProductSchema.description,
+  productType: chainProductSchema.productType,
+  image: chainProductSchema.image,
+  allergens: chainProductSchema.allergens,
+  tax: groupProductSchema.tax,
+  position: unitProductSchema.position,
+  variants: Joi.array().required(), //TODO: use an exact schema GeneratedProductVariant
+  configSets: Joi.array().allow(null), //TODO: use an exact schema GeneratedProductVariant
+  createdAt: Joi.string().required(),
+  updatedAt: Joi.string().required(),
+};
+
+export const {
+  validate: validateGeneratedProduct,
+  isType: isGeneratedProduct,
+} = validateSchema<CrudApi.GeneratedProduct>(
+  generatedProductSchema,
+  'GeneratedProduct',
+);
+
+export const {
+  validate: validateGeneratedProductList,
+  isType: isGeneratedProductList,
+} = validateGqlList<CrudApi.GeneratedProduct>(
+  generatedProductSchema,
+  'GeneratedProductList',
+);

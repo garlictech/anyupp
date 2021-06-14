@@ -10,9 +10,8 @@ import {
 } from './orders.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
 
-export const getOrdersState = createFeatureSelector<IOrdersState>(
-  ORDERS_FEATURE_KEY,
-);
+export const getOrdersState =
+  createFeatureSelector<IOrdersState>(ORDERS_FEATURE_KEY);
 
 // ACTIVE
 

@@ -5,6 +5,7 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
   validateGetGroupCurrency,
+  validateGroupProduct,
   validateOrder,
   validateUnit,
 } from '@bgap/shared/data-validators';
@@ -18,6 +19,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -126,14 +128,15 @@ const toOrderInputFormat = ({
   return {
     userId,
     takeAway: false,
+    archived: false,
     orderNum,
     paymentMode,
     // created: DateTime.utc().toMillis(),
-    items: items,
+    items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPrice(items),
-    place: place,
+    place,
     unitId,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
@@ -151,14 +154,19 @@ const getOrderItems = ({
 }) => (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
   return combineLatest(
     cartItems.map(cartItem =>
-      getLaneIdForCartItem(cartItem.productId)(deps).pipe(
-        map(laneId =>
-          convertCartOrderItemToOrderItem({
-            userId,
-            cartItem,
-            currency,
-            laneId,
-          }),
+      getUnitProduct(cartItem.productId)(deps).pipe(
+        switchMap(unitProduct =>
+          getGroupProduct(unitProduct.parentId)(deps).pipe(
+            map(groupProduct =>
+              convertCartOrderItemToOrderItem({
+                userId,
+                cartItem,
+                currency,
+                laneId: unitProduct.laneId,
+                tax: groupProduct.tax,
+              }),
+            ),
+          ),
         ),
       ),
     ),
@@ -170,11 +178,13 @@ const convertCartOrderItemToOrderItem = ({
   cartItem,
   currency,
   laneId,
+  tax,
 }: {
   userId: string;
   cartItem: CrudApi.OrderItem;
   currency: string;
   laneId: string | null | undefined;
+  tax: number;
 }): CrudApi.OrderItemInput => {
   return {
     productName: cartItem.productName,
@@ -184,11 +194,9 @@ const convertCartOrderItemToOrderItem = ({
       priceSum: toFixed2Number(
         cartItem.priceShown.pricePerUnit * cartItem.quantity,
       ),
-      tax: cartItem.priceShown.tax,
+      tax,
       taxSum: toFixed2Number(
-        cartItem.priceShown.pricePerUnit *
-          cartItem.quantity *
-          (cartItem.priceShown.tax / 100),
+        cartItem.priceShown.pricePerUnit * cartItem.quantity * (tax / 100),
       ),
     },
     productId: cartItem.productId,
@@ -202,9 +210,13 @@ const convertCartOrderItemToOrderItem = ({
   };
 };
 
-const getLaneIdForCartItem = (productId: string) => (deps: OrderResolverDeps) =>
+const getUnitProduct = (productId: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetUnitProduct({ id: productId })).pipe(
-    map(product => product?.laneId || undefined),
+    switchMap(validateUnitProduct),
+  );
+const getGroupProduct = (productId: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetGroupProduct({ id: productId })).pipe(
+    switchMap(validateGroupProduct),
   );
 
 const createStatusLog = (

@@ -27,22 +27,29 @@ export const adminRequestHandler = (deps: AdminUserResolverDeps) => ({
 
 // INPUT VALIDATORS
 // CREATE
-const createAdminUserInputSchema: Joi.SchemaMap<AnyuppApi.CreateAdminUserInput> = {
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-  name: Joi.string().required(),
-};
-const createMutationSchema: Joi.SchemaMap<AnyuppApi.CreateAdminUserMutationVariables> = {
-  input: Joi.object(createAdminUserInputSchema).required(),
-};
-const { validate: validatCreateAdminUserInput } = validateSchema<
-  AnyuppApi.CreateAdminUserMutationVariables
->(createMutationSchema, 'CreateAdminUserMutationVariables');
+const createAdminUserInputSchema: Joi.SchemaMap<AnyuppApi.CreateAdminUserInput> =
+  {
+    email: Joi.string().required(),
+    phone: Joi.string().required(),
+    name: Joi.string().required(),
+  };
+const createMutationSchema: Joi.SchemaMap<AnyuppApi.CreateAdminUserMutationVariables> =
+  {
+    input: Joi.object(createAdminUserInputSchema).required(),
+  };
+const { validate: validatCreateAdminUserInput } =
+  validateSchema<AnyuppApi.CreateAdminUserMutationVariables>(
+    createMutationSchema,
+    'CreateAdminUserMutationVariables',
+  );
 
 // DELETE
-const deleteInputSchema: Joi.SchemaMap<AnyuppApi.DeleteAdminUserMutationVariables> = {
-  userName: Joi.string().required(),
-};
-const { validate: validatDeleteAdminuserInput } = validateSchema<
-  AnyuppApi.DeleteAdminUserMutationVariables
->(deleteInputSchema, 'DeleteAdminUserMutationVariables');
+const deleteInputSchema: Joi.SchemaMap<AnyuppApi.DeleteAdminUserMutationVariables> =
+  {
+    userName: Joi.string().required(),
+  };
+const { validate: validatDeleteAdminuserInput } =
+  validateSchema<AnyuppApi.DeleteAdminUserMutationVariables>(
+    deleteInputSchema,
+    'DeleteAdminUserMutationVariables',
+  );

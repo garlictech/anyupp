@@ -72,7 +72,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     ],
   };
   const prodComponentMap: ProductComponentMap = {
-    ['PRODUCT_COMPONENT_ID_01']: {
+    PRODUCT_COMPONENT_ID_01: {
       id: 'PRODUCT_COMPONENT_ID_01',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
@@ -81,7 +81,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
     },
-    ['PRODUCT_COMPONENT_ID_02']: {
+    PRODUCT_COMPONENT_ID_02: {
       id: 'PRODUCT_COMPONENT_ID_02',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
@@ -92,7 +92,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
-    ['PROUDCT_SET_01']: {
+    PROUDCT_SET_01: {
       id: 'PROUDCT_SET_01',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },

@@ -69,19 +69,17 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     this._store
       .pipe(
         select(dashboardSelectors.getListMode),
-        switchMap(
-          (
-            listMode: EDashboardListMode,
-          ): Observable<CrudApi.Order | undefined> => {
-            return this._store.pipe(
-              select(
-                listMode === EDashboardListMode.CURRENT
-                  ? dashboardSelectors.getSelectedActiveOrder()
-                  : dashboardSelectors.getSelectedHistoryOrder(),
-              ),
-            );
-          },
-        ),
+        switchMap((listMode: EDashboardListMode): Observable<
+          CrudApi.Order | undefined
+        > => {
+          return this._store.pipe(
+            select(
+              listMode === EDashboardListMode.CURRENT
+                ? dashboardSelectors.getSelectedActiveOrder()
+                : dashboardSelectors.getSelectedHistoryOrder(),
+            ),
+          );
+        }),
         delay(0), // ExpressionChangedAfterItHasBeenCheckedError - trick
         untilDestroyed(this),
       )
@@ -173,9 +171,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = (this.dashboardSettings
-      .showAllUserOrders
-      ? this.userActiveOrders
-      : [this.selectedOrder]) as CrudApi.Order[];
+    dialog.componentRef.instance.orders = (
+      this.dashboardSettings.showAllUserOrders
+        ? this.userActiveOrders
+        : [this.selectedOrder]
+    ) as CrudApi.Order[];
   }
 }

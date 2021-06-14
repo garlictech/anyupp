@@ -5,6 +5,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { createAnonymUser } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
+import { UserResolverDeps } from '@bgap/anyupp-gql/backend';
 
 const TEST_NAME = 'CREATEANONYM_';
 const consumerUserPoolId = config.ConsumerUserPoolId;
@@ -14,9 +15,10 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 });
 
 describe('Anonym user creation', () => {
-  const deps = {
+  const deps: UserResolverDeps = {
     anyuppSdk: AnyuppApi.getAnyuppSdkPublic(),
     consumerUserPoolId: config.ConsumerUserPoolId,
+    cognitoidentityserviceprovider,
   };
 
   test('Anonym user should be created/deleted', done => {
@@ -89,9 +91,10 @@ describe('Anonym user creation', () => {
             expect(
               props.adminGetUserResponse.UserAttributes,
             ).not.toBeUndefined();
-            const typeAttribute = props.adminGetUserResponse.UserAttributes?.find(
-              x => x.Name === 'name',
-            );
+            const typeAttribute =
+              props.adminGetUserResponse.UserAttributes?.find(
+                x => x.Name === 'name',
+              );
             expect(typeAttribute).not.toBeUndefined();
             expect(typeAttribute).toHaveProperty('Name', 'name');
             expect(typeAttribute).toHaveProperty('Value', 'AnonymUser');

@@ -1,6 +1,6 @@
 {
   "name": "anyupp-cicd",
   "type": "@serverless-stack/resources",
-  "stage": "prod",
+  "stage": "dev",
   "region": "eu-west-1"
 }

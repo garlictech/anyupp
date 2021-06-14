@@ -11,7 +11,6 @@ export interface WebsiteProps extends sst.StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
-  certificateArn: string;
 }
 
 export class WebsiteConstruct extends Construct {
@@ -21,19 +20,12 @@ export class WebsiteConstruct extends Construct {
     super(scope, id);
     const app = this.node.root as sst.App;
 
-    /*
     const certificateArn =
       app.stage === 'prod'
         ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
         : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
-    */
 
-    const zone = route53.HostedZone.fromLookup(this, 'Zone', {
-      domainName: props.domainName,
-    });
-
-    const siteDomain =
-      app.stage + '-' + props.siteSubDomain + '.' + props.domainName;
+    const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
     this.websiteUrl = 'https://' + siteDomain;
     new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
@@ -54,7 +46,7 @@ export class WebsiteConstruct extends Construct {
       'SiteDistribution',
       {
         aliasConfiguration: {
-          acmCertRef: props.certificateArn,
+          acmCertRef: certificateArn,
           names: [siteDomain],
           sslMethod: cloudfront.SSLMethod.SNI,
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
@@ -75,14 +67,28 @@ export class WebsiteConstruct extends Construct {
       value: distribution.distributionId,
     });
 
-    // Route53 alias record for the CloudFront distribution
-    new route53.ARecord(this, 'SiteAliasRecord', {
-      recordName: siteDomain,
-      target: route53.RecordTarget.fromAlias(
-        new targets.CloudFrontTarget(distribution),
-      ),
-      zone,
+    new cdk.CfnOutput(this, 'DistributionDomainName', {
+      value: distribution.distributionDomainName,
     });
+
+    new cdk.CfnOutput(this, 'SiteDomain', {
+      value: siteDomain,
+    });
+    //
+    // Route53 alias record for the CloudFront distribution
+    if (app.stage !== 'prod') {
+      const zone = route53.HostedZone.fromLookup(this, 'Zone', {
+        domainName: props.domainName,
+      });
+
+      new route53.ARecord(this, 'SiteAliasRecord', {
+        recordName: siteDomain,
+        target: route53.RecordTarget.fromAlias(
+          new targets.CloudFrontTarget(distribution),
+        ),
+        zone,
+      });
+    }
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {

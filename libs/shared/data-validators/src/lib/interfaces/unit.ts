@@ -1,5 +1,7 @@
 import * as Joi from 'joi';
+
 import * as CrudApi from '@bgap/crud-gql/api';
+
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
@@ -34,11 +36,8 @@ export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   ...addressInfoSchema,
 };
 
-export const { validate: validateUnit, isType: isUnit } = validateSchema<
-  CrudApi.Unit
->(unitSchema, 'Unit');
+export const { validate: validateUnit, isType: isUnit } =
+  validateSchema<CrudApi.Unit>(unitSchema, 'Unit');
 
-export const {
-  validate: validateUnitList,
-  isType: isUnitList,
-} = validateGqlList<CrudApi.Unit>(unitSchema, 'UnitList');
+export const { validate: validateUnitList, isType: isUnitList } =
+  validateGqlList<CrudApi.Unit>(unitSchema, 'UnitList');

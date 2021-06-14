@@ -12,10 +12,12 @@ import {
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { pipe } from 'fp-ts/lib/function';
 import { filterNullish } from '@bgap/shared/utils';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
   userPoolId: string;
+  cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
 
 export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
@@ -45,8 +47,13 @@ const generateUnitProductId = (
   groupIdx: number,
   idx: number,
 ) => `${seededIdPrefix}unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateVariantId = (chainIdx: number, productId: number, idx: number) =>
-  `${seededIdPrefix}chain_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
+const generateVariantId = (
+  chainIdx: number,
+  productId: number,
+  idx: number,
+  type: string,
+) =>
+  `${seededIdPrefix}${type}_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
 const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
@@ -214,7 +221,7 @@ export const createTestChainProduct = (
     isVisible: true,
     variants: [
       {
-        id: generateVariantId(chainIdx, productIdx, 1),
+        id: generateVariantId(chainIdx, productIdx, 1, 'chain'),
         isAvailable: true,
         position: 10,
         price: 11,
@@ -264,7 +271,7 @@ export const createTestGroupProduct = (
     tax: 27,
     variants: [
       {
-        id: generateVariantId(chainIdx, productIdx, 1),
+        id: generateVariantId(chainIdx, productIdx, 1, 'group'),
         isAvailable: true,
         price: 11,
         position: 10,
@@ -316,7 +323,7 @@ export const createTestUnitProduct = (
     position: productIdx,
     variants: [
       {
-        id: generateVariantId(chainIdx, productIdx, 1),
+        id: generateVariantId(chainIdx, productIdx, 1, 'unit'),
         isAvailable: true,
         price: 11,
         position: 1,
@@ -410,12 +417,12 @@ export const createTestCart = ({
           currency: 'EUR',
           pricePerUnit: 1,
           priceSum: 2,
-          tax: 1,
-          taxSum: 2,
+          tax: 0, // empty
+          taxSum: 0, // empty
         },
         productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
         quantity: 2,
-        variantId: generateVariantId(chainIdx, productIdx, 1),
+        variantId: generateVariantId(chainIdx, productIdx, 1, 'unit'),
         variantName: {
           en: 'glass',
           hu: 'pohár',
@@ -628,12 +635,3 @@ export const createComponentSets = (deps: SeederDependencies) => {
     ),
   );
 };
-
-export const createSeederDeps = (
-  awsAccesssKeyId: string,
-  awsSecretAccessKey: string,
-  userPoolId: string,
-): SeederDependencies => ({
-  userPoolId,
-  crudSdk: CrudApi.getCrudSdkForIAM(awsAccesssKeyId, awsSecretAccessKey),
-});
