@@ -7,8 +7,9 @@ import {
   productComponentsAdapter,
 } from './product-components.reducer';
 
-export const getProductComponentsState =
-  createFeatureSelector<ProductComponentsState>(PRODUCT_COMPONENTS_FEATURE_KEY);
+export const getProductComponentsState = createFeatureSelector<
+  ProductComponentsState
+>(PRODUCT_COMPONENTS_FEATURE_KEY);
 
 const { selectAll, selectEntities } = productComponentsAdapter.getSelectors();
 

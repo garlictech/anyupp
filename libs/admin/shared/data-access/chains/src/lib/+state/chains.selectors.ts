@@ -8,8 +8,9 @@ import {
   ChainsState,
 } from './chains.reducer';
 
-export const getChainsState =
-  createFeatureSelector<ChainsState>(CHAINS_FEATURE_KEY);
+export const getChainsState = createFeatureSelector<ChainsState>(
+  CHAINS_FEATURE_KEY,
+);
 
 const { selectAll, selectEntities } = chainsAdapter.getSelectors();
 

@@ -6,11 +6,13 @@ xdescribe('ColorizedLaneIconComponent', (): void => {
   let component: ColorizedLaneIconComponent;
   let fixture: ComponentFixture<ColorizedLaneIconComponent>;
 
-  beforeEach(async (): Promise<void> => {
-    await TestBed.configureTestingModule({
-      declarations: [ColorizedLaneIconComponent],
-    }).compileComponents();
-  });
+  beforeEach(
+    async (): Promise<void> => {
+      await TestBed.configureTestingModule({
+        declarations: [ColorizedLaneIconComponent],
+      }).compileComponents();
+    },
+  );
 
   beforeEach((): void => {
     fixture = TestBed.createComponent(ColorizedLaneIconComponent);

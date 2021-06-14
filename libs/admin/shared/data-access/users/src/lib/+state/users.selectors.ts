@@ -3,8 +3,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { IUsersState, USERS_FEATURE_KEY, usersAdapter } from './users.reducer';
 
-export const getUsersState =
-  createFeatureSelector<IUsersState>(USERS_FEATURE_KEY);
+export const getUsersState = createFeatureSelector<IUsersState>(
+  USERS_FEATURE_KEY,
+);
 
 const { selectAll, selectEntities } = usersAdapter.getSelectors();
 

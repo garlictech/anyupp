@@ -19,8 +19,7 @@ import { Store } from '@ngrx/store';
 })
 export class UnitFloorMapComponent
   extends AbstractFormDialogComponent
-  implements OnInit
-{
+  implements OnInit {
   public unit!: CrudApi.Unit;
   public rawForm!: FormGroup;
 

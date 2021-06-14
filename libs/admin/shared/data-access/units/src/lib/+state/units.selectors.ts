@@ -4,8 +4,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
 
-export const getUnitsState =
-  createFeatureSelector<UnitsState>(UNITS_FEATURE_KEY);
+export const getUnitsState = createFeatureSelector<UnitsState>(
+  UNITS_FEATURE_KEY,
+);
 
 const { selectAll, selectEntities } = unitsAdapter.getSelectors();
 

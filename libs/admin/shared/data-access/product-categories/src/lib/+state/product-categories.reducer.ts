@@ -15,8 +15,9 @@ export interface ProductCategoriesPartialState {
   readonly [PRODUCT_CATEGORIES_FEATURE_KEY]: ProductCategoriesState;
 }
 
-export const productCategoriesAdapter: EntityAdapter<CrudApi.ProductCategory> =
-  createEntityAdapter<CrudApi.ProductCategory>();
+export const productCategoriesAdapter: EntityAdapter<CrudApi.ProductCategory> = createEntityAdapter<
+  CrudApi.ProductCategory
+>();
 
 export const initialState = productCategoriesAdapter.getInitialState({});
 
