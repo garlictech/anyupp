@@ -255,6 +255,7 @@ const handleSuccessTransaction = (externalTransactionId: string) => async (
       transaction.userId,
       CrudApi.OrderStatus.placed,
       transaction.id,
+      CrudApi.PaymentStatus.success,
     )(deps);
     // console.debug('***** handleSuccessTransaction().success()');
     if (transaction.invoiceId) {
@@ -283,5 +284,12 @@ const handleFailedTransaction = (externalTransactionId: string) => async (
       CrudApi.PaymentStatus.failed,
     )(deps);
     console.debug('***** handleFailedTransaction().success()');
+    await updateOrderState(
+      transaction.orderId,
+      transaction.userId,
+      undefined, // Do nothing with order state if transaction failed
+      transaction.id,
+      CrudApi.PaymentStatus.failed,
+    )(deps);
   }
 };

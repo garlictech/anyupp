@@ -232,6 +232,7 @@ export const startStripePayment = (
       userId,
       CrudApi.OrderStatus.none,
       transaction.id,
+      transaction.status,
     )(deps);
     console.debug('startStripePayment().updateOrderState.done()=' + order?.id);
 
@@ -252,7 +253,7 @@ export const startStripePayment = (
         currency: order.sumPriceShown.currency,
         status: CrudApi.PaymentStatus.waiting_for_payment,
         total: order.sumPriceShown.priceSum,
-        type: paymentMethod,
+        type: paymentMethod.toString(),
       },
     };
     const transaction = await createTransaction(createTransactionVars)(deps);
@@ -290,6 +291,7 @@ export const startStripePayment = (
       userId,
       CrudApi.OrderStatus.none,
       transaction.id,
+      transaction.status,
     )(deps);
     console.debug('startCashPayment().updateOrderState.done()=' + order?.id);
 
