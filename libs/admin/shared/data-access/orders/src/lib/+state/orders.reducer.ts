@@ -29,11 +29,13 @@ export interface OrdersPartialState {
 // ACTIVE
 //
 
-export const activeOrdersAdapter: EntityAdapter<CrudApi.Order> =
-  createEntityAdapter<CrudApi.Order>();
+export const activeOrdersAdapter: EntityAdapter<CrudApi.Order> = createEntityAdapter<
+  CrudApi.Order
+>();
 
-export const initialActiveOrdersState: IOrderEntityState =
-  activeOrdersAdapter.getInitialState({});
+export const initialActiveOrdersState: IOrderEntityState = activeOrdersAdapter.getInitialState(
+  {},
+);
 
 const activeOrdersReducer = createReducer(
   initialActiveOrdersState,
@@ -53,11 +55,13 @@ const activeOrdersReducer = createReducer(
 
 // HISTORY
 
-export const historyOrdersAdapter: EntityAdapter<CrudApi.Order> =
-  createEntityAdapter<CrudApi.Order>();
+export const historyOrdersAdapter: EntityAdapter<CrudApi.Order> = createEntityAdapter<
+  CrudApi.Order
+>();
 
-export const initialHistoryOrdersState: IOrderEntityState =
-  historyOrdersAdapter.getInitialState({});
+export const initialHistoryOrdersState: IOrderEntityState = historyOrdersAdapter.getInitialState(
+  {},
+);
 
 const historyOrdersReducer = createReducer(
   initialHistoryOrdersState,

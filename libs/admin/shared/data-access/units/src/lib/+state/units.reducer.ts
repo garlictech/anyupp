@@ -14,8 +14,9 @@ export interface UnitsPartialState {
   readonly [UNITS_FEATURE_KEY]: UnitsState;
 }
 
-export const unitsAdapter: EntityAdapter<CrudApi.Unit> =
-  createEntityAdapter<CrudApi.Unit>();
+export const unitsAdapter: EntityAdapter<CrudApi.Unit> = createEntityAdapter<
+  CrudApi.Unit
+>();
 
 export const initialState: UnitsState = unitsAdapter.getInitialState({});
 

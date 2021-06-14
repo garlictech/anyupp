@@ -15,11 +15,13 @@ export interface ProductComponentsPartialState {
   readonly [PRODUCT_COMPONENTS_FEATURE_KEY]: ProductComponentsState;
 }
 
-export const productComponentsAdapter: EntityAdapter<CrudApi.ProductComponent> =
-  createEntityAdapter<CrudApi.ProductComponent>();
+export const productComponentsAdapter: EntityAdapter<CrudApi.ProductComponent> = createEntityAdapter<
+  CrudApi.ProductComponent
+>();
 
-export const initialState: ProductComponentsState =
-  productComponentsAdapter.getInitialState({});
+export const initialState: ProductComponentsState = productComponentsAdapter.getInitialState(
+  {},
+);
 
 const reducer = createReducer(
   initialState,

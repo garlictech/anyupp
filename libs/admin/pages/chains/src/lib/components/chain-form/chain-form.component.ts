@@ -32,8 +32,7 @@ import { EMPTY } from 'rxjs';
 })
 export class ChainFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit
-{
+  implements OnInit {
   public chain?: CrudApi.Chain;
   public eImageType = EImageType;
 

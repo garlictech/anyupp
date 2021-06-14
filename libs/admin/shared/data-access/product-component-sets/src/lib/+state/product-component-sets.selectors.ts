@@ -7,13 +7,14 @@ import {
   productComponentSetsAdapter,
 } from './product-component-sets.reducer';
 
-export const getProductComponentSetsState =
-  createFeatureSelector<ProductComponentSetsState>(
-    PRODUCT_COMPONENT_SETS_FEATURE_KEY,
-  );
+export const getProductComponentSetsState = createFeatureSelector<
+  ProductComponentSetsState
+>(PRODUCT_COMPONENT_SETS_FEATURE_KEY);
 
-const { selectAll, selectEntities } =
-  productComponentSetsAdapter.getSelectors();
+const {
+  selectAll,
+  selectEntities,
+} = productComponentSetsAdapter.getSelectors();
 
 export const getProductComponentSetsError = createSelector(
   getProductComponentSetsState,

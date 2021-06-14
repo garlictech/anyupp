@@ -3,19 +3,22 @@ import { unitFixture } from './unit';
 import { productFixture } from './product';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
-
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
 const unitId_01 = unitFixture.unitId_seeded_01;
 const unitProductId_01 = productFixture.unitProductId_seeded_id_01;
-
 // fictional - not exsisting
 const cartId_NotExisting = `${testIdPrefix}NOT_EXSISTING_CART`;
 const variantId_01 = `${testIdPrefix}variant_1_id`;
 const laneId_01 = `${testIdPrefix}lane_1_id`;
 const userId_01 = `${testIdPrefix}user_1_id`;
-
-const getOrderItem = (): CrudApi.OrderItemInput => ({
+const getOrderItem = (
+  {
+    tax,
+  }: {
+    tax: number;
+  } = { tax: 0 },
+): CrudApi.OrderItemInput => ({
   productName: {
     en: 'Water',
     hu: 'Viz',
@@ -24,7 +27,7 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
     currency: 'EUR',
     pricePerUnit: 1,
     priceSum: 2,
-    tax: 0, // this value wont be used, the tax will be collected from the product
+    tax, // this value wont be used, the tax will be collected from the product
     taxSum: 0, // not used
   },
   // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
@@ -47,7 +50,6 @@ const getOrderItem = (): CrudApi.OrderItemInput => ({
   ],
   allergens: [CrudApi.Allergen.treenuts],
 });
-
 // const cart_01: Required<CrudApi.CreateCartInput> = {
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   id: cartId_01,
@@ -64,7 +66,6 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   },
   items: [getOrderItem()],
 };
-
 export const cartFixture = {
   cart_seeded_01_id,
   cartId_NotExisting,

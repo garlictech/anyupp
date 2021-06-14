@@ -24,5 +24,6 @@ export const chainSchema: Joi.SchemaMap<CrudApi.Chain> = {
   ...contactSchema,
 };
 
-export const { validate: validateChain, isType: isChain } =
-  validateSchema<CrudApi.Chain>(chainSchema, 'Chain');
+export const { validate: validateChain, isType: isChain } = validateSchema<
+  CrudApi.Chain
+>(chainSchema, 'Chain');

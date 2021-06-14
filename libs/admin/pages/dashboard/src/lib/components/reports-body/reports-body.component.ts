@@ -26,8 +26,9 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class ReportsBodyComponent implements OnInit, OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<CrudApi.Order[]> =
-    new BehaviorSubject<CrudApi.Order[]>([]);
+  public dailyHistoryOrders$: BehaviorSubject<
+    CrudApi.Order[]
+  > = new BehaviorSubject<CrudApi.Order[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
