@@ -89,6 +89,8 @@ export const getTableSeatIds = (data: CrudApi.FloorMapData): string[] =>
 
 export const getStatusBgColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
+    case CrudApi.OrderStatus.none:
+      return '#ff3d71'; // === color-danger-500
     case CrudApi.OrderStatus.placed:
       return '#ffaa00'; // === color-warning-500
     case CrudApi.OrderStatus.processing:
