@@ -1,8 +1,9 @@
 const QUERY_LIST_ORDER_HISTORY = '''
 query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
-  listOrderHistorys(filter: {
+  listOrders(filter: {
     userId: {eq: \$userId},
-    unitId: {eq: \$unitId}
+    unitId: {eq: \$unitId},
+    archived: {eq: true}
   }) {
     items {
       id
@@ -29,6 +30,69 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
         priceSum
         tax
         taxSum
+      }
+      transaction {
+        createdAt
+        currency
+        externalTransactionId
+        id
+        invoice {
+          city
+          country
+          createdAt
+          customerName
+          email
+          externalInvoiceId
+          id
+          orderId
+          pdfUrl
+          postalCode
+          status
+          streetAddress
+          taxNumber
+          transactionId
+          userId
+          updatedAt
+        }
+        invoiceId
+        orderId
+        receipt {
+          createdAt
+          email
+          externalReceiptId
+          id
+          orderId
+          pdfUrl
+          status
+          transactionId
+          updatedAt
+          userId
+        }
+        receiptId
+        status
+        total
+        type
+        updatedAt
+        user {
+          createdAt
+          email
+          id
+          invoiceAddress {
+            city
+            country
+            customerName
+            email
+            postalCode
+            streetAddress
+            taxNumber
+          }
+          name
+          phone
+          profileImage
+          stripeCustomerId
+          updatedAt
+        }
+        userId
       }
       unitId
       userId

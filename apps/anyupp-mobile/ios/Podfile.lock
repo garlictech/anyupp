@@ -1,10 +1,4 @@
 PODS:
-  - apple_sign_in (0.0.1):
-    - Flutter
-  - barcode_scan (0.0.1):
-    - Flutter
-    - MTBBarcodeScanner
-    - SwiftProtobuf
   - camera (0.0.1):
     - Flutter
   - catcher (0.0.1):
@@ -14,21 +8,8 @@ PODS:
     - Reachability
   - device_info (0.0.1):
     - Flutter
-  - FBSDKCoreKit (9.1.0):
-    - FBSDKCoreKit/Basics (= 9.1.0)
-    - FBSDKCoreKit/Core (= 9.1.0)
-  - FBSDKCoreKit/Basics (9.1.0)
-  - FBSDKCoreKit/Core (9.1.0):
-    - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (9.1.0):
-    - FBSDKLoginKit/Login (= 9.1.0)
-  - FBSDKLoginKit/Login (9.1.0):
-    - FBSDKCoreKit (~> 9.1.0)
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
-    - Flutter
-  - flutter_login_facebook (0.5.0):
-    - FBSDKLoginKit (~> 9.1)
     - Flutter
   - flutter_mailer (0.0.1):
     - Flutter
@@ -66,7 +47,6 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - SwiftProtobuf (1.15.0)
   - Toast (4.0.0)
   - uni_links (0.0.1):
     - Flutter
@@ -76,15 +56,12 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - apple_sign_in (from `.symlinks/plugins/apple_sign_in/ios`)
-  - barcode_scan (from `.symlinks/plugins/barcode_scan/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - catcher (from `.symlinks/plugins/catcher/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_login_facebook (from `.symlinks/plugins/flutter_login_facebook/ios`)
   - flutter_mailer (from `.symlinks/plugins/flutter_mailer/ios`)
   - flutter_user_agent (from `.symlinks/plugins/flutter_user_agent/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -102,20 +79,13 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - FBSDKCoreKit
-    - FBSDKLoginKit
     - FMDB
     - GoogleMaps
     - MTBBarcodeScanner
     - Reachability
-    - SwiftProtobuf
     - Toast
 
 EXTERNAL SOURCES:
-  apple_sign_in:
-    :path: ".symlinks/plugins/apple_sign_in/ios"
-  barcode_scan:
-    :path: ".symlinks/plugins/barcode_scan/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   catcher:
@@ -128,8 +98,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_login_facebook:
-    :path: ".symlinks/plugins/flutter_login_facebook/ios"
   flutter_mailer:
     :path: ".symlinks/plugins/flutter_mailer/ios"
   flutter_user_agent:
@@ -160,17 +128,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  apple_sign_in: 7716c7ddfa195aeab7dec0dc374ef4ff45d1adb4
-  barcode_scan: a5c27959edfafaa0c771905bad0b29d6d39e4479
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   catcher: e5585ed31458c849f4fd9c3719b2fcb0188b8918
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  FBSDKCoreKit: a00fe2efd780c195a5e09201bf51c56106245b40
-  FBSDKLoginKit: d98498c598ec09de657385a9349a1f21119b7f86
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_local_notifications: 9e4738ce2471c5af910d961a6b7eadcf57c50186
-  flutter_login_facebook: 41fcf15687d2ce7a75bb89aa3476df54a00845a3
   flutter_mailer: 2ef5a67087bc8c6c4cefd04a178bf1ae2c94cd83
   flutter_user_agent: 27c45d034dc31b80948d29998cea52cd3a7bf936
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
@@ -186,12 +149,11 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  SwiftProtobuf: 3320217e9d8fb75f36b40282e78c482640fd75dd
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
 
-PODFILE CHECKSUM: 4301b7c7a4ac9d2e8293fd762a8e6846c53ff98e
+PODFILE CHECKSUM: b687204a3c2a0e8c571991ad8c783ef174f1dc33
 
 COCOAPODS: 1.10.1

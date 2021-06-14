@@ -235,11 +235,13 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: theme.indicator,
                     primary: theme.text2,
                   ),
-                  onPressed: () => showQrCodeScan
-                      ? Nav.to(QRCodeScannerScreen(
-                          navigateToCart: true,
-                        ))
-                      : showSelectPaymentMethodBottomSheet(context),
+                  onPressed: () => 
+                  // showQrCodeScan
+                      // ? Nav.to(QRCodeScannerScreen(
+                      //     navigateToCart: true,
+                      //   ))
+                      // : 
+                      showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',

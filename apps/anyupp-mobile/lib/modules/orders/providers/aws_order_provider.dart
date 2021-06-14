@@ -37,11 +37,11 @@ class AwsOrderProvider implements IOrdersProvider {
     _subOrderHistoryList = AwsSubscription<Order>(
       authProvider: _authProvider,
       listQuery: QUERY_LIST_ORDER_HISTORY,
-      listNodeName: 'listOrderHistorys',
+      listNodeName: 'listOrders',
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
       subscriptionNodeName: 'onOrderChanged', // TODO EZ MAS LESZ, CSAK NINCS KÉSZ!!!!
       modelFromJson: (json) => Order.fromJson(json),
-      filterModel: (model) => !model.archived,
+      filterModel: (model) => model.archived == null || !model.archived,
     );
   }
 
@@ -245,8 +245,7 @@ class AwsOrderProvider implements IOrdersProvider {
     return _subOrderList.startListSubscription(
       variables: {
         'userId': user.id,
-        'unitId': unitId,
-        'archived' : false
+        'unitId': unitId
       },
     );
   }
