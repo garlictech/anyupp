@@ -74,9 +74,9 @@ const createInvoiceMutationVariables = (
 ): CrudApi.CreateInvoiceMutationVariables => {
   return {
     input: {
-      userId: userId,
-      orderId: orderId,
-      transactionId: transactionId,
+      userId,
+      orderId,
+      transactionId,
       city: invoiceAddress.city,
       country: invoiceAddress.country,
       customerName: invoiceAddress.customerName,
@@ -84,7 +84,7 @@ const createInvoiceMutationVariables = (
       streetAddress: invoiceAddress.streetAddress,
       taxNumber: invoiceAddress.taxNumber,
       email: invoiceAddress.email,
-      status: status,
+      status,
     },
   };
 };
@@ -96,16 +96,16 @@ const createReceiptMutationVariables = (
   email: string | undefined | null,
   status: CrudApi.ReceiptStatus,
   receiptId: string | undefined,
-  pdfUrl: string | undefined,
+  pdfData: string | undefined,
 ): CrudApi.CreateReceiptMutationVariables => {
   return {
     input: {
-      orderId: orderId,
-      userId: userId,
-      transactionId: transactionId,
-      email: email,
-      status: status,
-      pdfUrl: pdfUrl,
+      orderId,
+      userId,
+      transactionId,
+      email,
+      status,
+      pdfData,
       externalReceiptId: receiptId,
     },
   };

@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { InvoiceResponse } from './interfaces';
 
 import * as Szamlazz from 'szamlazz.js';
 
@@ -18,7 +17,7 @@ export const createInvoice =
     language: Szamlazz.Interface.Language;
     paymentMethod?: Szamlazz.Interface.PaymentMethod;
   }): // unit?: CrudApi.Unit,
-  Promise<InvoiceResponse> => {
+  Promise<Szamlazz.InvoiceResponse> => {
     // Unit
     const seller = new Szamlazz.Seller({
       // everyting is optional

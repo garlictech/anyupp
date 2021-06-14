@@ -15,6 +15,7 @@ import {
 import { config } from '@bgap/shared/config';
 import { createSzamlazzClient } from '@bgap/anyupp-gql/backend';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { v1 as uuidV1 } from 'uuid';
 
 export interface AnyuppRequest {
   handler: string;
@@ -54,6 +55,8 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
     crudSdk,
+    cognitoidentityserviceprovider,
+    userNameGenerator: uuidV1,
   });
 
   const orderRequestHandlers = orderRequestHandler({

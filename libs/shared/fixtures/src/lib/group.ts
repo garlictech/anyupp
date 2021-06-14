@@ -9,7 +9,7 @@ const groupId_seeded_02 = `${seededIdPrefix}group_c1_2_id`;
 const groupId_seeded_03 = `${seededIdPrefix}group_c2_1_id`;
 
 const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
-  name: `Test group #${groupId_01}`,
+  name: `Monád csoport S`,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',

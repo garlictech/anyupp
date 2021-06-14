@@ -6,11 +6,6 @@ import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { AdminUserResolverDeps } from './utils';
 
-const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
-  apiVersion: '2016-04-18',
-  region: 'eu-west-1',
-});
-
 export const deleteAdminUser =
   (params: AnyuppApi.DeleteAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
@@ -18,7 +13,7 @@ export const deleteAdminUser =
     let userId: string;
 
     return from(
-      cognitoidentityserviceprovider
+      deps.cognitoidentityserviceprovider
         .adminGetUser({
           UserPoolId: deps.userPoolId,
           Username: params.userName,
@@ -36,7 +31,7 @@ export const deleteAdminUser =
         filter(fp.negate(fp.isEmpty)),
         tap((sub: string) => (userId = sub)),
         switchMap(() =>
-          cognitoidentityserviceprovider
+          deps.cognitoidentityserviceprovider
             .adminDeleteUser({
               UserPoolId: deps.userPoolId,
               Username: params.userName,

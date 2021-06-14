@@ -270,7 +270,7 @@ type Order
   items: [OrderItem!]!
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
-  archived: Boolean
+  archived: Boolean!
   sumPriceShown: PriceShown!
   takeAway: Boolean!
   place: Place
@@ -446,7 +446,6 @@ type GroupProduct
   # takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  chainProduct: ChainProduct! @connection(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -463,7 +462,6 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  groupProduct: GroupProduct! @connection(fields: ["parentId"])
 }
 
 type ProductVariant {
@@ -716,7 +714,7 @@ type Receipt
   transactionId: ID!
   externalReceiptId: String
   email: String
-  pdfUrl: String
+  pdfData: String
   status: ReceiptStatus!
 }
 

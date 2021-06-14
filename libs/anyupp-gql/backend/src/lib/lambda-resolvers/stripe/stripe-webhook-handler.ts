@@ -17,6 +17,7 @@ import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import { createInvoice } from '../../szamlazzhu';
 import * as Szamlazz from 'szamlazz.js';
+import { createReceiptSzamlazzHu } from '../../szamlazzhu/receipt';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,
@@ -144,7 +145,7 @@ const handleInvoice =
           pdf: false,
         });
 
-      let pdfUrl: string | undefined = undefined;
+      let pdfUrl: string | undefined;
       if (invoiceData?.headers) {
         const url = (invoiceData.headers as Record<string, string | undefined>)[
           'szlahu_vevoifiokurl'
@@ -181,42 +182,45 @@ const handleReceipt =
     const user = await loadUser(transaction.userId)(deps);
     console.debug('***** handleReceipt().user loaded=' + user?.id);
     if (!user?.email) {
-      console.warn("Can't create Receipt without valid email address");
-      return;
+      console.warn('We will create a Receipt without valid email address!');
     }
 
-    const receiptData = new Szamlazz.Receipt({
-      currency:
-        transaction.currency === 'huf'
-          ? Szamlazz.Currency.HUF
-          : Szamlazz.Currency.EUR,
-      paymentMethod: Szamlazz.PaymentMethod.Stripe,
-      receiptNumberPrefix: 'ANYUPP',
-      comment: transaction.id,
-      exchangeBank: 'MKB',
-      exchangeRate: 0.0,
-      // callId: transaction.userId,
-    });
-    console.debug(
-      '***** handleReceipt().receipt data created=' +
-        JSON.stringify(receiptData, undefined, 2),
-    );
+    const order = await loadOrder(transaction.orderId)(deps);
+    if (!order) {
+      throw Error('Order not found with id:' + transaction.orderId);
+    }
 
     try {
-      const receipt = await deps.szamlazzClient.issueReceipt(receiptData);
+      console.debug('***** handleReceipt().creating receipt()');
+      const receipt = await createReceiptSzamlazzHu(deps.szamlazzClient)({
+        transaction,
+        order,
+        language: Szamlazz.Language.Hungarian,
+        paymentMethod: Szamlazz.PaymentMethod.Stripe,
+      });
       console.debug(
         '***** handleReceipt().receipt=' +
           JSON.stringify(receipt, undefined, 2),
+      );
+
+      const receiptData: Szamlazz.SendRequestResponse =
+        await deps.szamlazzClient.getReceiptData({
+          receiptId: receipt.receiptId,
+          pdf: true,
+        });
+      console.debug(
+        '***** handleReceipt().receipt.data=' +
+          JSON.stringify(receiptData, undefined, 2),
       );
 
       await createReceiptAndConnectTransaction(
         transaction.orderId,
         transaction.userId,
         transaction.id,
-        user.email,
+        user?.email,
         CrudApi.ReceiptStatus.success,
-        receipt.invoiceId,
-        receipt.pdf,
+        receipt.receiptId,
+        receiptData.pdfBase64,
       )(deps);
     } catch (e) {
       console.debug('***** handleReceipt().error=' + e);
@@ -224,7 +228,7 @@ const handleReceipt =
         transaction.orderId,
         transaction.userId,
         transaction.id,
-        user.email,
+        user?.email,
         CrudApi.ReceiptStatus.failed,
         undefined,
         undefined,

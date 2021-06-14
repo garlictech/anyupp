@@ -179,7 +179,7 @@
       "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-backend-lib": {
-      "tags": ["type:backend", "platform:universal"]
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "admin-pages-modifiers-and-extras": {
       "tags": ["type:website", "platform:angular"]

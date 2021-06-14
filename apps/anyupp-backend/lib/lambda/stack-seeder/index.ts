@@ -1,13 +1,10 @@
-import {
-  seedAdminUser,
-  seedBusinessData,
-  SeederDependencies,
-} from '@bgap/anyupp-backend-lib';
+import { seedAll, SeederDependencies } from '@bgap/anyupp-backend-lib';
 import * as CrudApi from '@bgap/crud-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { from } from 'rxjs';
-import { delay, switchMap, takeLast } from 'rxjs/operators';
+import { switchMap, takeLast } from 'rxjs/operators';
 import { sendResponse } from '../utils/send-response';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -33,15 +30,17 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
       'AKIAYIT7GMY5WQZFXOOX',
       'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
     ),
+    anyuppSdk: AnyuppApi.getAnyuppSdkForIAM(
+      'AKIAYIT7GMY5WQZFXOOX',
+      'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
+    ),
     userPoolId: AdminUserPoolId,
     cognitoidentityserviceprovider,
   };
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    await seedAdminUser(seederDeps)
+    await seedAll(seederDeps)
       .pipe(
-        delay(2000),
-        //switchMap(userId => seedBusinessData(userId)(seederDeps)),
         takeLast(1),
         switchMap(() =>
           from(

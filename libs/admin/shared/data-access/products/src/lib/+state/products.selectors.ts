@@ -106,7 +106,8 @@ export const getExtendedGroupProductsOfSelectedCategory = () =>
         .filter(
           extendedGroupProduct =>
             !!productCategoryId &&
-            extendedGroupProduct.chainProduct?.productCategoryId ===
+            // TODO REMOVE WHEN DEV FIXED
+            (extendedGroupProduct as any).chainProduct?.productCategoryId ===
               productCategoryId,
         ),
   );
@@ -147,7 +148,9 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
         return (
           !found &&
           !!productCategoryId &&
-          groupProduct.chainProduct?.productCategoryId === productCategoryId
+          // TODO REMOVE WHEN DEV FIXED
+          (groupProduct as any).chainProduct?.productCategoryId ===
+            productCategoryId
         );
       }),
   );
@@ -169,7 +172,8 @@ export const getExtendedUnitProductsOfSelectedCategory = () =>
         .filter(
           extendedGroupProduct =>
             !!productCategoryId &&
-            extendedGroupProduct.groupProduct?.chainProduct
+            // TODO REMOVE WHEN DEV FIXED
+            (extendedGroupProduct as any).groupProduct?.chainProduct
               ?.productCategoryId === productCategoryId,
         ),
   );
