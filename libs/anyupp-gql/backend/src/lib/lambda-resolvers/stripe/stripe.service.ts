@@ -136,7 +136,12 @@ export const startStripePayment =
     }
 
     // 4. Load unit
+    console.debug('startStripePayment().loading unit()=' + order.unitId);
     const unit = await loadUnit(order.unitId)(deps);
+    console.debug('startStripePayment().unit().loaded=' + unit?.id);
+    if (!unit) {
+      throw Error('Unit not found with id=' + order.unitId);
+    }
 
     // 5. Handle INAPP payment
     if (paymentMethod == AnyuppApi.PaymentMethod.inapp) {
@@ -250,6 +255,7 @@ export const startStripePayment =
     } else {
       //
       // Handle CASH and CARD payment
+      console.debug('***** startCashPayment()');
 
       // 6. Create Transaction
       const createTransactionVars: CrudApi.CreateTransactionMutationVariables =
@@ -260,9 +266,11 @@ export const startStripePayment =
             currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment,
             total: order.sumPriceShown.priceSum,
-            type: paymentMethod,
+            type: paymentMethod.toString(),
           },
         };
+
+      console.debug('startCashPayment().creating.transaction');
       const transaction = await createTransaction(createTransactionVars)(deps);
       console.debug('startCashPayment().transaction.id=' + transaction?.id);
 
