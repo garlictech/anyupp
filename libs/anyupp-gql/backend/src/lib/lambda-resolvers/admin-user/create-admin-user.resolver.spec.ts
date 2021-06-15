@@ -15,12 +15,11 @@ const goodDeps: AdminUserResolverDeps = {
   cognitoidentityserviceprovider: {
     listUsers: jest
       .fn()
-      .mockReturnValue({ promise: () => Promise.resolve(undefined) }),
+      .mockReturnValue({ promise: () => Promise.resolve({ Users: [] }) }),
 
     adminCreateUser: jest
       .fn()
       .mockReturnValue({ promise: () => Promise.resolve(true) }),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
     adminDeleteUser: jest
       .fn()
@@ -86,7 +85,7 @@ test('Handle listUser returns bad data', done => {
   const deps = listUserCaseDeps(Promise.resolve(undefined));
 
   createGoodResolverCall(deps).subscribe({
-    next: res => {
+    error: res => {
       expect(res).toMatchSnapshot();
       done();
     },
@@ -145,7 +144,7 @@ test('Handle adminCreateUser bad data', done => {
   const deps = adminCreateUserCaseDeps(Promise.resolve(undefined));
 
   createGoodResolverCall(deps).subscribe({
-    next: res => {
+    error: res => {
       expect(res).toMatchSnapshot();
       done();
     },

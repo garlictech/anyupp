@@ -2,8 +2,16 @@ import { flow, pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { AdminUserResolverDeps } from './utils';
-import { from, of, throwError } from 'rxjs';
-import { catchError, map, mapTo, switchMap, switchMapTo } from 'rxjs/operators';
+import { defer, from, of, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  mapTo,
+  switchMap,
+  switchMapTo,
+  throwIfEmpty,
+} from 'rxjs/operators';
+import { filterNullish } from '@bgap/shared/utils';
 import { ResolverErrorCode } from '../../utils/errors';
 
 export const createAdminUser =
@@ -20,7 +28,10 @@ export const createAdminUser =
         UserPoolId: deps.userPoolId,
       },
       params =>
-        from(deps.cognitoidentityserviceprovider.listUsers(params).promise()),
+        defer(() =>
+          from(deps.cognitoidentityserviceprovider.listUsers(params).promise()),
+        ),
+      filterNullish(),
       map(
         flow(
           result => result?.Users,
@@ -59,10 +70,15 @@ export const createAdminUser =
       ),
       switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
       switchMap(params =>
-        from(
-          deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+        defer(() =>
+          from(
+            deps.cognitoidentityserviceprovider
+              .adminCreateUser(params)
+              .promise(),
+          ),
         ),
       ),
+      filterNullish(),
       switchMap(() =>
         deps.crudSdk
           .CreateAdminUser({
@@ -75,13 +91,15 @@ export const createAdminUser =
           })
           .pipe(
             catchError(err =>
-              from(
-                deps.cognitoidentityserviceprovider
-                  .adminDeleteUser({
-                    UserPoolId: deps.userPoolId,
-                    Username: newUsername,
-                  })
-                  .promise(),
+              defer(() =>
+                from(
+                  deps.cognitoidentityserviceprovider
+                    .adminDeleteUser({
+                      UserPoolId: deps.userPoolId,
+                      Username: newUsername,
+                    })
+                    .promise(),
+                ),
               ).pipe(
                 switchMapTo(
                   throwError({
@@ -94,5 +112,10 @@ export const createAdminUser =
           ),
       ),
       mapTo(newUsername),
+      throwIfEmpty(() => 'UnkownCognitoError'),
+      catchError(err => {
+        console.error('ERROR:', JSON.stringify(err, null, 2));
+        return throwError(err);
+      }),
     ).toPromise();
   };

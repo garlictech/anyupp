@@ -25,15 +25,10 @@ type poolLabel = 'Admin' | 'Consumer';
 export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
-  public pretokenTriggerLambda: lambda.Function;
-  public preSignupTriggerLambda: lambda.Function;
 
   constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
-
-    this.pretokenTriggerLambda = this.createPretokenTriggerLambda();
-    this.preSignupTriggerLambda = this.createPreSignupTriggerLambda();
 
     // Consumer resources
     this.consumerUserPool = this.createConsumerUserPool(app);
@@ -368,6 +363,8 @@ export class CognitoStack extends Stack {
   }
 
   private createConsumerUserPool(app: App) {
+    const preSignUp = this.createConsumerPreSignupTriggerLambda();
+
     return new cognito.UserPool(this, 'ConsumerUserPool', {
       userPoolName: app.logicalPrefixedName('consumer-user-pool'),
       ...this.getCommonUserPoolProperties(),
@@ -416,10 +413,15 @@ export class CognitoStack extends Stack {
           required: false,
         },
       },
+      lambdaTriggers: {
+        preSignUp,
+      },
     });
   }
 
   private createAdminUserPool(app: App) {
+    const pretokenTriggerLambda = this.createPretokenTriggerLambda();
+
     const userPool = new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
       ...this.getCommonUserPoolProperties(),
@@ -450,7 +452,7 @@ export class CognitoStack extends Stack {
         }),
       },
       lambdaTriggers: {
-        preTokenGeneration: this.pretokenTriggerLambda,
+        preTokenGeneration: pretokenTriggerLambda,
       },
     });
 
@@ -483,7 +485,7 @@ export class CognitoStack extends Stack {
     return lambdaFn;
   }
 
-  private createPreSignupTriggerLambda() {
+  private createConsumerPreSignupTriggerLambda() {
     const lambdaFn = new lambda.Function(this, 'AdminPreSignupTriggerLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file

@@ -102,106 +102,98 @@ export const seedAdminUser = (deps: SeederDependencies) =>
     ),
   );
 
-export const seedBusinessData =
-  (userId: string) => (deps: SeederDependencies) =>
-    createTestRoleContext(
-      1,
-      1,
-      1,
-      1,
-    )(deps)
-      .pipe(
-        ce('### RoleContext SEED 01'),
-        takeLast(1),
-        delay(1000),
-        switchMap(() =>
-          concat(
-            createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
-            createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
-            createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
-            createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
-            createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
-            createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
-            createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-            createTestProductCategory(
-              1,
-              1,
-            )(deps).pipe(ce('### ProdCat SEED 01')),
-            createTestProductCategory(
-              1,
-              2,
-            )(deps).pipe(ce('### ProdCat SEED 02')),
+export const seedBusinessData = (deps: SeederDependencies) =>
+  createTestRoleContext(
+    1,
+    1,
+    1,
+    1,
+  )(deps)
+    .pipe(
+      ce('### RoleContext SEED 01'),
+      delay(1000),
+      switchMap(() =>
+        concat(
+          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
+          createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
+          createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
+          createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
+          createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
+          createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
+          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
+          createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
+          createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
 
-            createComponentSets(deps).pipe(ce('### ComponentSets')),
+          createComponentSets(deps).pipe(ce('### ComponentSets')),
 
-            createTestChainProduct(
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### ChainProduct SEED 01')),
-            createTestChainProduct(
-              1,
-              1,
-              2,
-            )(deps).pipe(ce('### ChainProduct SEED 02')),
-            createTestChainProduct(
-              1,
-              2,
-              3,
-            )(deps).pipe(ce('### ChainProduct SEED 03')),
-            createTestGroupProduct(
-              1,
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### GroupProd SEED 01')),
-            createTestGroupProduct(
-              1,
-              1,
-              2,
-              2,
-            )(deps).pipe(ce('### GroupProd SEED 02')),
-            createTestUnitProduct(
-              1,
-              1,
-              1,
-              1,
-              1,
-            )(deps).pipe(ce('### UnitProd SEED 01')),
-            createTestUnitProduct(
-              1,
-              1,
-              1,
-              2,
-              2,
-            )(deps).pipe(ce('### UnitProd SEED 02')),
-            createTestCart({
-              chainIdx: 1,
-              groupIdx: 1,
-              unitIdx: 1,
-              productIdx: 1,
-              userIdx: 1,
-              cartIdx: 1,
-            })(deps),
-          ),
-        ),
-        takeLast(1),
-        switchMap(() =>
-          createTestAdminRoleContext(
+          createTestChainProduct(
             1,
             1,
-            userId,
-          )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+            1,
+          )(deps).pipe(ce('### ChainProduct SEED 01')),
+          createTestChainProduct(
+            1,
+            1,
+            2,
+          )(deps).pipe(ce('### ChainProduct SEED 02')),
+          createTestChainProduct(
+            1,
+            2,
+            3,
+          )(deps).pipe(ce('### ChainProduct SEED 03')),
+          createTestGroupProduct(
+            1,
+            1,
+            1,
+            1,
+          )(deps).pipe(ce('### GroupProd SEED 01')),
+          createTestGroupProduct(
+            1,
+            1,
+            2,
+            2,
+          )(deps).pipe(ce('### GroupProd SEED 02')),
+          createTestUnitProduct(
+            1,
+            1,
+            1,
+            1,
+            1,
+          )(deps).pipe(ce('### UnitProd SEED 01')),
+          createTestUnitProduct(
+            1,
+            1,
+            1,
+            2,
+            2,
+          )(deps).pipe(ce('### UnitProd SEED 02')),
+          createTestCart({
+            chainIdx: 1,
+            groupIdx: 1,
+            unitIdx: 1,
+            productIdx: 1,
+            userIdx: 1,
+            cartIdx: 1,
+          })(deps),
         ),
-      )
-      .pipe(ce('### seedBusinessData'));
+      ),
+      takeLast(1),
+    )
+    .pipe(ce('### seedBusinessData'));
 
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(
     delay(2000),
+    switchMap(() => seedBusinessData(deps)),
     switchMap(() =>
-      combineLatest(
-        userData.map(({ username }) => seedBusinessData(username)(deps)),
+      concat(
+        userData.map(({ username }) =>
+          createTestAdminRoleContext(
+            1,
+            1,
+            username.split('@')[0],
+          )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+        ),
       ),
     ),
   );

@@ -3,8 +3,8 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { switchMap } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { switchMap, takeLast } from 'rxjs/operators';
 import { sendResponse } from '../utils/send-response';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -41,7 +41,6 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     await seedAll(seederDeps)
       .pipe(
-        takeLast(1),
         switchMap(() =>
           from(
             sendResponse({

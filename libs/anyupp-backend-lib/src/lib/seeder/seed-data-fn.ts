@@ -60,8 +60,11 @@ const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (idx: number, role: CrudApi.Role) =>
-  `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
+const generateAdminRoleContextId = (
+  idx: number,
+  role: CrudApi.Role,
+  username: string,
+) => `${seededIdPrefix}admin_role_context_${idx}_${role}_${username}_id`;
 
 const deleteCreate = <T, K>(
   deleteOperation: () => Observable<T>,
@@ -548,6 +551,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.superuser,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(
@@ -559,6 +563,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.chainadmin,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(

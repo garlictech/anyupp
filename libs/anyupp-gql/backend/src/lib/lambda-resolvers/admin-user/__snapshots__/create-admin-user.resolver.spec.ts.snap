@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Handle adminCreateUser bad data 1`] = `"GENERATED_USERNAME"`;
+exports[`Handle adminCreateUser bad data 1`] = `"UnkownCognitoError"`;
 
 exports[`Handle adminCreateUser unknown error 1`] = `"UNKNOWN ADMINCREATEUSER ERROR"`;
 
@@ -20,7 +20,7 @@ Object {
 }
 `;
 
-exports[`Handle listUser returns bad data 1`] = `"GENERATED_USERNAME"`;
+exports[`Handle listUser returns bad data 1`] = `"UnkownCognitoError"`;
 
 exports[`Handle listUser unknown error 1`] = `"UNKNOWN LISTUSERS ERROR"`;
 
