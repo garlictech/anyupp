@@ -31,8 +31,6 @@ export class GoogleMapComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.error('changes', changes);
-
     const location = {
       lat: parseFloat(changes.markerLocation.currentValue.lat || 0),
       lng: parseFloat(changes.markerLocation.currentValue.lng || 0),
