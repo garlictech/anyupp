@@ -209,7 +209,7 @@ export const startStripePayment =
             status: CrudApi.PaymentStatus.waiting_for_payment,
             externalTransactionId: paymentIntent.id,
             total: order.sumPriceShown.priceSum,
-            type: 'STRIPE',
+            type: 'stripe',
           },
         };
       const transaction = await createTransaction(createTransactionVars)(deps);
@@ -236,12 +236,13 @@ export const startStripePayment =
       }
 
       // 10. Update ORDER STATUS
-      // console.debug('startStripePayment().updateOrderState.order=' + order.id);
       order = await updateOrderState(
         order.id,
         userId,
         CrudApi.OrderStatus.none,
         transaction.id,
+        // it should be undefined because we don't want to overwrite the field with GraphQL API.
+        transaction.status ? transaction.status : undefined,
       )(deps);
       console.debug(
         'startStripePayment().updateOrderState.done()=' + order?.id,
@@ -306,6 +307,8 @@ export const startStripePayment =
         userId,
         CrudApi.OrderStatus.none,
         transaction.id,
+        // it should be undefined because we don't want to overwrite the field with GraphQL API.
+        transaction.status ? transaction.status : undefined,
       )(deps);
       console.debug('startCashPayment().updateOrderState.done()=' + order?.id);
 

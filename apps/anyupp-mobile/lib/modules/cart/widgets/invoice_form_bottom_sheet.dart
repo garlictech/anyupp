@@ -33,7 +33,10 @@ void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMod
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return InvoiceFormBottomSheetWidget(orderId, paymentMode);
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: InvoiceFormBottomSheetWidget(orderId, paymentMode),
+      );
     },
   );
 }
@@ -57,7 +60,6 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   final _cityController = TextEditingController();
   final _streetController = TextEditingController();
   FieldValidator taxFieldValidator;
-  bool _useSavedAddress = false;
   User _userProfile;
 
   @override
@@ -164,66 +166,24 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                             ))
                       ],
                     ),
-                    // BlocBuilder<UserDetailsBloc, UserDetailsState>(
-                    //   builder: (BuildContext context, UserDetailsState state) {
-                    //     if (state is UserDetailsLoaded) {
-                    //       return _buildInvoiceForm(context, state.userDetails);
-                    //     }
-                    //     return _buildInvoiceForm(context);
-                    //   },
-                    // ),
                     BlocListener<UserDetailsBloc, UserDetailsState>(
                       listener: (BuildContext context, UserDetailsState state) {
                         if (state is UserDetailsLoaded) {
+                          User user = state.userDetails;
+                          if (user?.invoiceAddress != null) {
+                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
+                            _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                            _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                            _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                            _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                            _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                          }
                           setState(() {
                             _userProfile = state.userDetails;
                           });
                         }
                       },
-                      child: _userProfile != null
-                          ? Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    trans('payment.paymentInfo.invoicing.invoiceAddress'),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: theme.text,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Switch(
-                                      activeColor: theme.highlight,
-                                      value: _useSavedAddress,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          this._useSavedAddress = value;
-                                        });
-                                        User user = _useSavedAddress ? _userProfile : null;
-                                        if (user?.invoiceAddress != null) {
-                                          _setTextFieldValue(
-                                              _nameOrCompanyController, user.invoiceAddress.customerName);
-                                          _setTextFieldValue(_cityController, user.invoiceAddress.city);
-                                          _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
-                                          _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
-                                          _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
-                                          _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
-                                        } else {
-                                          _setTextFieldValue(_nameOrCompanyController, '');
-                                          _setTextFieldValue(_cityController, '');
-                                          _setTextFieldValue(_emailController, '');
-                                          _setTextFieldValue(_zipController, '');
-                                          _setTextFieldValue(_streetController, '');
-                                          _setTextFieldValue(_taxNumberController, '');
-                                        }
-                                      })
-                                ],
-                              ),
-                            )
-                          : Container(),
+                      child: Container(),
                     ),
                   ],
                 );
@@ -238,8 +198,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   }
 
   Widget _buildInvoiceForm(BuildContext context) {
-    print('_buildInvoiceForm()=${_userProfile?.email}, $_useSavedAddress');
-    
+    print('_buildInvoiceForm()=${_userProfile?.email}');
 
     return Container(
       padding: EdgeInsets.symmetric(

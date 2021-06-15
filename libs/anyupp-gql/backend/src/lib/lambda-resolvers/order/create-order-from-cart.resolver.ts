@@ -20,6 +20,7 @@ import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
+import { PaymentStatus } from '@bgap/crud-gql/api';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -137,6 +138,7 @@ const toOrderInputFormat = ({
     sumPriceShown: calculateOrderSumPrice(items),
     place,
     unitId,
+    transactionStatus: PaymentStatus.waiting_for_payment,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };

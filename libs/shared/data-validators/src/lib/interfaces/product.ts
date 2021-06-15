@@ -21,8 +21,10 @@ export const chainProductSchema: Joi.SchemaMap<CrudApi.ChainProduct> = {
   allergens: allergenListSchema.allow(null),
 };
 
-export const { validate: validateChainProduct, isType: isChainProduct } =
-  validateSchema<CrudApi.ChainProduct>(chainProductSchema, 'ChainProduct');
+export const {
+  validate: validateChainProduct,
+  isType: isChainProduct,
+} = validateSchema<CrudApi.ChainProduct>(chainProductSchema, 'ChainProduct');
 
 export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   id: Joi.string().required(),
@@ -37,8 +39,10 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateGroupProduct, isType: isGroupProduct } =
-  validateSchema<CrudApi.GroupProduct>(groupProductSchema, 'GroupProduct');
+export const {
+  validate: validateGroupProduct,
+  isType: isGroupProduct,
+} = validateSchema<CrudApi.GroupProduct>(groupProductSchema, 'GroupProduct');
 
 export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   id: Joi.string().required(),
@@ -56,11 +60,15 @@ export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateUnitProduct, isType: isUnitProduct } =
-  validateSchema<CrudApi.UnitProduct>(unitProductSchema, 'UnitProduct');
+export const {
+  validate: validateUnitProduct,
+  isType: isUnitProduct,
+} = validateSchema<CrudApi.UnitProduct>(unitProductSchema, 'UnitProduct');
 
-export const { validate: validateUnitProductList, isType: isUnitProductList } =
-  validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');
+export const {
+  validate: validateUnitProductList,
+  isType: isUnitProductList,
+} = validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');
 
 export const generatedProductSchema: Joi.SchemaMap<CrudApi.GeneratedProduct> = {
   id: Joi.string().required(),
