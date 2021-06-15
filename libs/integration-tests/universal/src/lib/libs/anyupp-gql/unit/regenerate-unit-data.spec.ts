@@ -1,5 +1,35 @@
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import {
+  deleteGeneratedProductCategoriesForAUnit,
+  listGeneratedProductsForUnits,
+  unitRequestHandler,
+} from '@bgap/anyupp-gql/backend';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { validateUnitProduct } from '@bgap/shared/data-validators';
+import {
+  chainFixture,
+  generatedProductFixture,
+  groupFixture,
+  productCategoryFixture,
+  productComponentSetFixture,
+  productFixture,
+  testAdminUsername,
+  testAdminUserPassword,
+  testIdPrefix,
+  unitFixture,
+} from '@bgap/shared/fixtures';
+import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+import { filterNullish, getSortedIds } from '@bgap/shared/utils';
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
-import { combineLatest, concat, Observable, throwError } from 'rxjs';
+import {
+  combineLatest,
+  concat,
+  defer,
+  iif,
+  Observable,
+  of,
+  throwError,
+} from 'rxjs';
 import {
   catchError,
   defaultIfEmpty,
@@ -11,23 +41,6 @@ import {
   tap,
   toArray,
 } from 'rxjs/operators';
-
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
-import { listGeneratedProductsForUnits } from '@bgap/anyupp-gql/backend';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
-import {
-  generatedProductFixture,
-  productComponentSetFixture,
-  productFixture,
-  testAdminUsername,
-  testAdminUserPassword,
-  testIdPrefix,
-  unitFixture,
-} from '@bgap/shared/fixtures';
-import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-import { filterNullish, getSortedIds } from '@bgap/shared/utils';
-
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 import {
   createTestChainProduct,
@@ -47,6 +60,7 @@ import {
   deleteTestProductComponent,
   deleteTestProductComponentSet,
 } from '../../../seeds/product-component-set';
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import {
   createTestUnitProduct,
   deleteTestUnitProduct,
@@ -55,9 +69,19 @@ import {
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'REGEN_';
 
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+
 const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
-const unitId_01_seeded = unitFixture.unitId_seeded_01;
+const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${testIdPrefix}${TEST_NAME}UNIT_ID_02`;
+
+// UNIT
+const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unitFixture.unitBase,
+  id: unitId_01_to_regen,
+  groupId: groupFixture.groupId_seeded_01,
+  chainId: chainFixture.chainId_seeded_01,
+};
 
 // CONFIG SETS/COMPONENTS to create
 const prodComponent_01: RequiredId<CrudApi.CreateProductComponentInput> = {
@@ -147,11 +171,18 @@ const prodConfigSet_02: CrudApi.ProductConfigSetInput = {
 const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
   ...productFixture.chainProductBase,
   id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
+  productCategoryId: `${testIdPrefix}${TEST_NAME}ProductCategoryId`,
 };
 const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
   ...productFixture.groupProductBase,
   id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
   parentId: chainProduct_01.id,
+};
+// PRODUCT CATEGORY to create
+const productCategory_01: RequiredId<CrudApi.CreateProductCategoryInput> = {
+  ...productCategoryFixture.productCategoryBase,
+  id: `${testIdPrefix}${TEST_NAME}_01`,
+  chainId: unit_01.chainId,
 };
 // THE IMPORTANT UNIT
 const unitProduct_0101: Omit<
@@ -160,25 +191,25 @@ const unitProduct_0101: Omit<
 > & { id: string; configSets: CrudApi.ProductConfigSetInput[] } = {
   ...productFixture.unitProductBase,
   // id = test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_01
-  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_seeded}_01`,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_to_regen}_01`,
   parentId: groupProduct_01.id,
-  unitId: unitId_01_seeded,
+  unitId: unitId_01_to_regen,
   chainId: chainId_01_seeded,
   configSets: [prodConfigSet_01, prodConfigSet_02],
 };
 const unitProduct_0102: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductBase,
-  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_seeded}_02`,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_to_regen}_02`,
   parentId: groupProduct_01.id,
   chainId: chainId_01_seeded,
-  unitId: unitId_01_seeded,
+  unitId: unitId_01_to_regen,
 };
 const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductBase,
   id: `${testIdPrefix}${TEST_NAME}unit01_have_not_been_here_before`,
   parentId: groupProduct_01.id,
   chainId: chainId_01_seeded,
-  unitId: unitId_01_seeded,
+  unitId: unitId_01_to_regen,
 };
 const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> =
   {
@@ -193,19 +224,19 @@ const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput>
 const generatedProduct_fromUnitProduct_0101 = {
   ...generatedProductFixture.base,
   id: unitProduct_0101.id,
-  unitId: unitId_01_seeded,
+  unitId: unitId_01_to_regen,
 };
 const generatedProduct_fromUnitProduct_0102 = {
   ...generatedProductFixture.base,
   id: unitProduct_0102.id,
-  unitId: unitId_01_seeded,
+  unitId: unitId_01_to_regen,
 };
 // This generated prouduct won't have unit product with the same ID
 // so the updated/regnerated ProductList shouldn't contain it.
 const unit01_generatedProduct_03_WONTBEREGENERATED = {
   ...generatedProductFixture.base,
-  id: `${testIdPrefix}${TEST_NAME}generatedProduct_u${unitId_01_seeded}_03_WONTBEREGENERATED`,
-  unitId: unitId_01_seeded,
+  id: `${testIdPrefix}${TEST_NAME}generatedProduct_u${unitId_01_to_regen}_03_WONTBEREGENERATED`,
+  unitId: unitId_01_to_regen,
 };
 const unit02_generatedProduct_01 = {
   ...generatedProductFixture.base,
@@ -219,6 +250,9 @@ describe('RegenerateUnitData mutation tests', () => {
 
   const cleanup = concat(
     // CleanUP
+    deleteGeneratedProductCategoriesForAUnit({ crudSdk: iamCrudSdk })(
+      unitId_01_to_regen,
+    ),
     deleteTestProductComponent(prodComponent_01.id, iamCrudSdk),
     deleteTestProductComponent(prodComponent_02.id, iamCrudSdk),
     deleteTestProductComponent(prodComponent_03.id, iamCrudSdk),
@@ -245,6 +279,7 @@ describe('RegenerateUnitData mutation tests', () => {
     ),
     deleteTestGeneratedProduct(unit02_generatedProduct_01.id, iamCrudSdk),
     deleteTestGeneratedProduct(unitProduct_0104_NEW.id, iamCrudSdk),
+    deleteTestUnit(unitId_01_to_regen, iamCrudSdk),
   ).pipe(toArray());
 
   beforeAll(async () => {
@@ -260,6 +295,7 @@ describe('RegenerateUnitData mutation tests', () => {
         switchMap(() =>
           // Seeding
           concat(
+            createTestUnit(unit_01, iamCrudSdk),
             createTestProductComponent(prodComponent_01, iamCrudSdk),
             createTestProductComponent(prodComponent_02, iamCrudSdk),
             createTestProductComponent(prodComponent_03, iamCrudSdk),
@@ -301,27 +337,37 @@ describe('RegenerateUnitData mutation tests', () => {
   it('should return helpful error message in case the unit has no items', done => {
     const input = { id: 'EMPTY UNIT' };
 
-    // TO DEBUG
-    // defer(() =>
-    //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({ input }),
-    // ).subscribe({
-    authAnyuppSdk.RegenerateUnitData({ input }).subscribe({
-      error(err) {
-        expect(err).toMatchSnapshot();
-        done();
-      },
-    });
+    of('start')
+      .pipe(
+        switchMap(() =>
+          iif(
+            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+            defer(() =>
+              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+                input,
+              }),
+            ),
+            authAnyuppSdk.RegenerateUnitData({ input }),
+          ),
+        ),
+      )
+      .subscribe({
+        error(err) {
+          expect(err).toMatchSnapshot();
+          done();
+        },
+      });
   });
 
   it('should regenerate all the generated products for the unit', done => {
-    const input = { id: unitId_01_seeded };
+    const input = { id: unitId_01_to_regen };
 
     // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
       listGeneratedProductsForUnits({
         crudSdk: iamCrudSdk,
-      })([unitId_01_seeded, unitId_02]),
-      listProductsForUnits(iamCrudSdk, [unitId_01_seeded, unitId_02]),
+      })([unitId_01_to_regen, unitId_02]),
+      listProductsForUnits(iamCrudSdk, [unitId_01_to_regen, unitId_02]),
     ])
       .pipe(
         // PREPARE - start state check
@@ -365,12 +411,15 @@ describe('RegenerateUnitData mutation tests', () => {
         // EXECUTE THE LOGIC
         switchMap(() =>
           // TO DEBUG
-          // defer(() =>
-          //   unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
-          //     input,
-          //   }),
-          // ),
-          authAnyuppSdk.RegenerateUnitData({ input }),
+          iif(
+            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+            defer(() =>
+              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+                input,
+              }),
+            ),
+            authAnyuppSdk.RegenerateUnitData({ input }),
+          ),
         ),
 
         // ASSERTIONS
@@ -378,7 +427,7 @@ describe('RegenerateUnitData mutation tests', () => {
         switchMap(() =>
           listGeneratedProductsForUnits({
             crudSdk: iamCrudSdk,
-          })([unitId_01_seeded, unitId_02]),
+          })([unitId_01_to_regen, unitId_02]),
         ),
         tap({
           next(result) {

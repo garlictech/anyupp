@@ -1,4 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit 1`] = `
 Array [
   Object {
@@ -20,10 +21,10 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN_ProductCategoryId",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
@@ -196,7 +197,7 @@ Array [
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_01",
+    "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_01",
     "image": "IMAGE",
     "name": Object {
       "de": null,
@@ -204,10 +205,10 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN_ProductCategoryId",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
@@ -278,7 +279,7 @@ Array [
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_02",
+    "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_02",
     "image": "IMAGE",
     "name": Object {
       "de": null,
@@ -286,10 +287,10 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN_ProductCategoryId",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
@@ -408,4 +409,5 @@ Array [
   },
 ]
 `;
-exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `[Error: GraphQL error: {"message":"There is no product in this unit","code":"ERROR_NO_PRODUCT_IN_UNIT"}]`;
+
+exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;
