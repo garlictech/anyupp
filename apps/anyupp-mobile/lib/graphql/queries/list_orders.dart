@@ -3,19 +3,20 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
   listOrders(filter: {
     userId: {eq: \$userId},
     unitId: {eq: \$unitId},
-    archived: { ne: false }
+    archived: { eq: false }
   }) {
     items {
       id
-      orderNum
-      createdAt
+      unitId
+      userId
       archived
+      paymentIntention
+      takeAway
       paymentMode {
         caption
         type
         method
       }
-      paymentIntention
       place {
         seat
         table
@@ -32,8 +33,6 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
         tax
         taxSum
       }
-      unitId
-      userId
       items {
         productId
         productName {
@@ -60,15 +59,7 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
           en
           hu
         }
-        allergens
         configSets {
-          productSetId
-          type
-          name {
-            de
-            en
-            hu
-          }
           items {
             allergens
             name {
@@ -79,11 +70,24 @@ query ListOrdersQuery(\$userId: ID!, \$unitId: ID!) {
             price
             productComponentId
           }
+          name {
+            de
+            en
+            hu
+          }
+          productSetId
+          type
         }
+        allergens
         image
+        laneId
+        created
       }
+      createdAt
+      orderNum
       transactionId
-      archived
+      transactionStatus
+      updatedAt
     }
   }
 }
