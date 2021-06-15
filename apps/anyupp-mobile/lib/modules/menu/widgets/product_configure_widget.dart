@@ -97,7 +97,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(variant.price, widget.unit.currency ?? 'ft'), 
+                formatCurrency(variant.price, widget.unit.currency ?? 'ft'),
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,
@@ -213,7 +213,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     double price = _productVariant.price;
 
     Set<String> allergeens = {};
-    allergeens.addAll(widget.product.allergens);
+    if (widget.product.allergens != null && widget.product.allergens.isNotEmpty) {
+      allergeens.addAll(widget.product.allergens);
+    }
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
       GeneratedProductConfigSet modifier = getModifierConfigSetById(key, widget.product.configSets);
