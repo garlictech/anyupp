@@ -1,7 +1,7 @@
 const SUBSCRIPTION_ORDER_LIST = '''
 subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
-  onOrderChanged(unitId: \$unitId, userId: \$userId, archived: false) {
-   	id
+  onOrderChanged(unitId: \$unitId, userId: \$userId) {
+    id
     orderNum
     unitId
     userId
@@ -138,7 +138,15 @@ subscription OnOrderChangedSubscription(\$userId: String, \$unitId: String) {
         en
         hu
       }
+      allergens
+      image
+      laneId
+      created
     }
+    transactionId
+    transactionStatus
+    updatedAt
+    createdAt
   }
 }
 ''';

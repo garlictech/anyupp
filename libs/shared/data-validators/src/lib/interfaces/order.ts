@@ -4,6 +4,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
+import { paymentStatusSchema } from '../enums/enums';
 
 export const priceShownSchema: Joi.SchemaMap<CrudApi.PriceShown> = {
   currency: Joi.string().required(),
@@ -48,12 +49,12 @@ export const orderSchema: Joi.SchemaMap<CrudApi.Order> = {
   takeAway: Joi.boolean().required(),
   place: Joi.object(placeSchema).required(),
   paymentIntention: Joi.number().allow(null),
+  transactionStatus: paymentStatusSchema.allow(null),
   transactionId: Joi.string().allow(null, ''),
   transaction: Joi.object().allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateOrder, isType: isOrder } = validateSchema<
-  CrudApi.Order
->(orderSchema, 'Order');
+export const { validate: validateOrder, isType: isOrder } =
+  validateSchema<CrudApi.Order>(orderSchema, 'Order');

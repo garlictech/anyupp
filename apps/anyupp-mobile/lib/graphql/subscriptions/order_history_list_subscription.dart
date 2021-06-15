@@ -1,7 +1,8 @@
 const SUBSCRIPTION_ORDER_HISTORY_LIST = '''
 subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: String) {
-  onOrderChanged(unitId: \$unitId, userId: \$userId, archived: true) {
-   	id
+  onOrderChanged(unitId: \$unitId, userId: \$userId) {
+    id
+    orderNum
     unitId
     userId
     archived
@@ -106,18 +107,6 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         tax
         taxSum
       }
-      quantity
-      statusLog {
-        status
-        ts
-        userId
-      }
-      variantId
-      variantName {
-        de
-        en
-        hu
-      }
       configSets {
         items {
           allergens
@@ -137,7 +126,27 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         productSetId
         type
       }
+      quantity
+      statusLog {
+        status
+        ts
+        userId
+      }
+      variantId
+      variantName {
+        de
+        en
+        hu
+      }
+      allergens
+      image
+      laneId
+      created
     }
+    transactionId
+    transactionStatus
+    updatedAt
+    createdAt
   }
 }
 ''';
