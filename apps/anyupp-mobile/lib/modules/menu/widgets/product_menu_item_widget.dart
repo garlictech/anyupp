@@ -127,7 +127,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct ite
                         ],
                       ),
                     ),
-                    _buildVariantsInfo(context, theme, item.variants, unit.currency ?? 'huf'),
+                    _buildVariantsInfo(context, theme, item.variants, unit.currency ?? 'ft'),
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 12.0,
