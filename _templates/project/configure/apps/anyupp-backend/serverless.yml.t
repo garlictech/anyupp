@@ -51,5 +51,5 @@ functions:
   cognito-trigger-setup:
     handler: lib/lambda/cognito-trigger-setup/index.handler
 
-  pre-signup:
-    handler: lib/lambda/pre-signup/index.handler
+  consumer-pre-signup:
+    handler: lib/lambda/consumer-pre-signup/index.handler
