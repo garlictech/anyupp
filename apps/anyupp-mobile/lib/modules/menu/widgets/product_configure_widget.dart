@@ -34,8 +34,6 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   @override
   void initState() {
     _productVariant = widget.product.variants.first;
-    _allergeens.addAll(widget.product.allergens);
-
     widget.product.configSets.forEach((element) {
       _selectedModifiers[element.productSetId] = element.items.first.productComponentId;
     });
@@ -56,7 +54,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       variantId: _productVariant.id,
       image: widget.product.image,
       priceShown: PriceShown(
-        currency: widget.unit.currency ?? 'huf', // TODO
+        currency: widget.unit.currency ?? 'ft', // TODO
         pricePerUnit: _productVariant.price,
         priceSum: _productVariant.price,
         tax: 0,
@@ -99,7 +97,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(variant.price, widget.unit.currency ?? 'huf'), // TODO geounit!!
+                formatCurrency(variant.price, widget.unit.currency ?? 'ft'), // TODO geounit!!
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,
@@ -130,8 +128,6 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // _buildTotalSummary(context),
-          _buildAllergensListWidget(context),
-
           Divider(
             color: theme.background2,
           ),
@@ -174,6 +170,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               ],
             ),
           ),
+          _buildAllergensListWidget(context),
           // _buildTotalButtonWidget(context)
         ],
       ),
@@ -216,7 +213,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     double price = _productVariant.price;
 
     Set<String> allergeens = {};
-
+    allergeens.addAll(widget.product.allergens);
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
       GeneratedProductConfigSet modifier = getModifierConfigSetById(key, widget.product.configSets);

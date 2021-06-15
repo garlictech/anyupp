@@ -15,7 +15,8 @@ class AllergensWidget extends StatelessWidget {
   final double fontSize;
   final double iconBorderRadius;
   final bool showHeader;
-  AllergensWidget({this.allergens , this.size = 50, this.fontSize = 16.0, this.iconBorderRadius = 12.0, this.showHeader = true});
+  AllergensWidget(
+      {this.allergens, this.size = 50, this.fontSize = 16.0, this.iconBorderRadius = 12.0, this.showHeader = true});
 
   List<Widget> getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
@@ -42,33 +43,35 @@ class AllergensWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    if (allergens.isEmpty) {
+      return Container();
+    }
     return GestureDetector(
       onTap: () => Nav.to(AllergenDetailsScreen()),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (showHeader)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: [
-                Text(trans(context, "allergens.title"),
-                    style: GoogleFonts.poppins(
-                      color: theme.highlight,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 13,
-                    )),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.info,
-                  color: theme.highlight,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: [
+                  Text(trans(context, "allergens.title"),
+                      style: GoogleFonts.poppins(
+                        color: theme.highlight,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 13,
+                      )),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.info,
+                    color: theme.highlight,
+                  )
+                ],
+              ),
             ),
-          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(

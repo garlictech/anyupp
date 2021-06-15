@@ -85,7 +85,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                             margin: EdgeInsets.only(bottom: 2),
                             child: Text(
                               formatCurrency(getTotalPriceOfOrederItem(widget.order),
-                                  widget.unit.currency ?? 'huf'), // TODO geounit!!
+                                  widget.unit.currency ?? 'ft'), // TODO geounit!!
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
                                 color: theme.highlight,
