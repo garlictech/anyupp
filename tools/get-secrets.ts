@@ -25,7 +25,12 @@ client.getSecretValue({ SecretId: secretName }, function (err, data) {
     console.error('Secret error', err);
   } else {
     pipe(
-      data.SecretString,
+      data.SecretString as string,
+      fp.tap(secret => {
+        if (fp.isEmpty(secret)) {
+          throw new Error('Invalid secred');
+        }
+      }),
       JSON.parse,
       fp.tap(secret => {
         // Android keystore binary
