@@ -42,6 +42,7 @@ Feature: Create a new Chain
     And I fill out the "Address" input with "Kis u. 45."
     And I click on the "Indicator" picker fill out with "#3097bf"
     And I click on the "Disabled" picker fill out with "#303030"
+    And I click on the "Locate on map" button
     And I click on the "Submit" button
     Then I should see "test chain 1" text
     And I should see "test description" text
