@@ -1,11 +1,9 @@
-import { defer, iif, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { validateGeneratedProductList } from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
-
+import { defer, iif, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';
 import { ProductResolverDeps } from './utils';
 
@@ -38,7 +36,7 @@ export const listGeneratedProductsForUnits =
   (unitIds: string[]): Observable<Array<CrudApi.GeneratedProduct>> => {
     const input: CrudApi.ListGeneratedProductsQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-      limit: 200,
+      limit: 200, // DO NOT USE FIX limit (Covered by #472)
     };
 
     return defer(() =>

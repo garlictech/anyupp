@@ -100,7 +100,7 @@ export const listGeneratedProductCategoriesForUnits =
   (unitIds: string[]): Observable<Array<CrudApi.GeneratedProductCategory>> => {
     const input: CrudApi.ListGeneratedProductCategorysQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-      limit: 200, // TODO <==??????????
+      limit: 200, // DO NOT USE FIX limit (Covered by #472)
     };
 
     return defer(() =>
