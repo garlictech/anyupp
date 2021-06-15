@@ -20,7 +20,7 @@ const client = new AWS.SecretsManager({
 
 fs.mkdirSync(targetDir, { recursive: true });
 
-client.getSecretValue({ SecretId: secretName }, function (err, data) {
+client.getSecretValue({ SecretId: secretName }, (err, data) => {
   if (err) {
     console.error('Secret error', err);
   } else {
