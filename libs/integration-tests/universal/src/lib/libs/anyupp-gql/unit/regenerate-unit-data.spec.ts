@@ -70,8 +70,7 @@ import { getSortedProductCatIds } from '../test-utils/test-utils';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'REGEN_';
-
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
 const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
 const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;

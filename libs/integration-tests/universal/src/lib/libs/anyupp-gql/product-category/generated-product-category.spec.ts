@@ -17,6 +17,7 @@ import { of } from 'rxjs';
 import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
 
+const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'GEN_PRODUCT_CAT';
 
 const unitId = `${testIdPrefix}${TEST_NAME}_UNIT_ID`;
@@ -48,7 +49,6 @@ const generatedProductCategory_03_wont_be_regenerated =
     },
   );
 
-const DYNAMODB_OPERATION_DELAY = 3000;
 // const PRODUCT_NUM_FOR_BATCH_CRUD = 26; // should be > 25 because the batchSize is 25
 // const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
 //   .map(id => id.toString().padStart(2, '0'))
