@@ -204,7 +204,7 @@ class TransactionCard extends StatelessWidget {
           ),
           Text(
             formatCurrency(transactionItem.total,
-                transactionItem.currency ?? 'ft'), // TODO geounit!!
+                transactionItem.currency ?? 'ft'), 
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

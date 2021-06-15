@@ -208,7 +208,7 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'ft'), // TODO geounit!!
+            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'ft'),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

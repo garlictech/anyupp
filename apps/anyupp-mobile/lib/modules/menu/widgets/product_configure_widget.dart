@@ -97,7 +97,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(variant.price, widget.unit.currency ?? 'ft'), // TODO geounit!!
+                formatCurrency(variant.price, widget.unit.currency ?? 'ft'), 
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,

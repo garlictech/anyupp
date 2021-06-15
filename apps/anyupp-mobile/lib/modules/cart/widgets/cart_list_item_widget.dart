@@ -85,7 +85,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                             margin: EdgeInsets.only(bottom: 2),
                             child: Text(
                               formatCurrency(getTotalPriceOfOrederItem(widget.order),
-                                  widget.unit.currency ?? 'ft'), // TODO geounit!!
+                                  widget.unit.currency ?? 'ft'), 
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
                                 color: theme.highlight,
@@ -167,7 +167,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
       widget.order.selectedConfigMap.forEach((key, value) {
         for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name), // TODO geounit!!
+            getLocalizedText(context, generatedProductConfigComponent.name), 
             textAlign: TextAlign.left,
             style: GoogleFonts.poppins(
               color: theme.text,

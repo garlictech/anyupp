@@ -65,7 +65,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(widget.variant.price, widget.unit.currency ?? 'ft'), // TODO geounit!!
+                formatCurrency(widget.variant.price, widget.unit.currency ?? 'ft'), 
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,
