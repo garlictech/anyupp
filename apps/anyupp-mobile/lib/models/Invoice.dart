@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-
 @immutable
 class Invoice {
   final String updatedAt;
@@ -20,21 +19,21 @@ class Invoice {
   final String country;
   final String city;
   Invoice({
-     this.updatedAt,
-     this.userId,
-     this.transactionId,
-     this.taxNumber,
-     this.streetAddress,
-     this.status,
-     this.postalCode,
-     this.pdfUrl,
-     this.orderId,
-     this.externalInvoiceId,
-     this.email,
-     this.customerName,
-     this.createdAt,
-     this.country,
-     this.city,
+    this.updatedAt,
+    this.userId,
+    this.transactionId,
+    this.taxNumber,
+    this.streetAddress,
+    this.status,
+    this.postalCode,
+    this.pdfUrl,
+    this.orderId,
+    this.externalInvoiceId,
+    this.email,
+    this.customerName,
+    this.createdAt,
+    this.country,
+    this.city,
   });
 
   Invoice copyWith({
@@ -125,22 +124,41 @@ class Invoice {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Invoice &&
-      other.updatedAt == updatedAt &&
-      other.userId == userId &&
-      other.transactionId == transactionId &&
-      other.taxNumber == taxNumber &&
-      other.streetAddress == streetAddress &&
-      other.status == status &&
-      other.postalCode == postalCode &&
-      other.pdfUrl == pdfUrl &&
-      other.orderId == orderId &&
-      other.externalInvoiceId == externalInvoiceId &&
-      other.email == email &&
-      other.customerName == customerName &&
-      other.createdAt == createdAt &&
-      other.country == country &&
-      other.city == city;
+        other.updatedAt == updatedAt &&
+        other.userId == userId &&
+        other.transactionId == transactionId &&
+        other.taxNumber == taxNumber &&
+        other.streetAddress == streetAddress &&
+        other.status == status &&
+        other.postalCode == postalCode &&
+        other.pdfUrl == pdfUrl &&
+        other.orderId == orderId &&
+        other.externalInvoiceId == externalInvoiceId &&
+        other.email == email &&
+        other.customerName == customerName &&
+        other.createdAt == createdAt &&
+        other.country == country &&
+        other.city == city;
+  }
+
+  @override
+  int get hashCode {
+    return updatedAt.hashCode ^
+        userId.hashCode ^
+        transactionId.hashCode ^
+        taxNumber.hashCode ^
+        streetAddress.hashCode ^
+        status.hashCode ^
+        postalCode.hashCode ^
+        pdfUrl.hashCode ^
+        orderId.hashCode ^
+        externalInvoiceId.hashCode ^
+        email.hashCode ^
+        customerName.hashCode ^
+        createdAt.hashCode ^
+        country.hashCode ^
+        city.hashCode;
   }
 }
