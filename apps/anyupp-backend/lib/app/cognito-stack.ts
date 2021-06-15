@@ -489,9 +489,9 @@ export class CognitoStack extends Stack {
     const lambdaFn = new lambda.Function(this, 'AdminPreSignupTriggerLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
-      handler: 'lib/lambda/pre-signup/index.handler',
+      handler: 'lib/lambda/consumer-pre-signup/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/pre-signup.zip'),
+        path.join(__dirname, '../../.serverless/consumer-pre-signup.zip'),
       ),
     });
 
