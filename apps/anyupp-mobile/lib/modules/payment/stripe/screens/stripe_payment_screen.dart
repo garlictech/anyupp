@@ -76,7 +76,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
               if (state is StripeOperationSuccess) {
                 final scaffold = ScaffoldMessenger.of(context);
                 scaffold.showSnackBar(SnackBar(
-                  content: const Text('Payment Success!'),
+                  content: Text(trans('payment.stripe.payment_success')),
                   // action: SnackBarAction(
                   //     label: 'Close',
                   //     onPressed: () {
@@ -252,7 +252,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
               tooltip: trans('payment.stripe.add_card_tooltip'),
               // onPressed: () => Nav.to(StripeAddPaymentMethodScreen()),
               onPressed: () => showSelectStripePaymentDialog(context, onItemSelected: (StripePaymentMethod method) {
-                print('Selected payment method=$method');
+                // print('Selected payment method=$method');
                 setState(() {
                   _paymentMethod = method;
                 });

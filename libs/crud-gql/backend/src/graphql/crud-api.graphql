@@ -272,6 +272,7 @@ type Order
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
+  transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }
