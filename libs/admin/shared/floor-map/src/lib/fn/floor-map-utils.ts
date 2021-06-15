@@ -2,6 +2,8 @@ import { fabric } from 'fabric';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 
+import { FLOOR_MAP_STATUS_COLORS } from '../const';
+
 export const generateId = (): string => {
   return Math.random().toString(36).substr(2, 16);
 };
@@ -90,13 +92,13 @@ export const getTableSeatIds = (data: CrudApi.FloorMapData): string[] =>
 export const getStatusBgColor = (status: CrudApi.OrderStatus): string => {
   switch (status) {
     case CrudApi.OrderStatus.none:
-      return '#ff3d71'; // === color-danger-500
+      return FLOOR_MAP_STATUS_COLORS.NONE;
     case CrudApi.OrderStatus.placed:
-      return '#ffaa00'; // === color-warning-500
+      return FLOOR_MAP_STATUS_COLORS.PLACED;
     case CrudApi.OrderStatus.processing:
-      return '#3366ff'; // === color-primary-500
+      return FLOOR_MAP_STATUS_COLORS.PROCESSING;
     case CrudApi.OrderStatus.ready:
-      return '#ea3bf0'; // === color-info-500
+      return FLOOR_MAP_STATUS_COLORS.READY;
     default:
       return '';
   }
