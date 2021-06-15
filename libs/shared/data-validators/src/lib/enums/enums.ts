@@ -16,3 +16,9 @@ export const paymentTypeSchema = Joi.string().valid(
   CrudApi.PaymentType.stripe,
   CrudApi.PaymentType.simple,
 );
+
+export const paymentStatusSchema = Joi.string().valid(
+  CrudApi.PaymentStatus.waiting_for_payment,
+  CrudApi.PaymentStatus.success,
+  CrudApi.PaymentStatus.failed,
+);
