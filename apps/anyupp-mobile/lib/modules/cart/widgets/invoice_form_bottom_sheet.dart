@@ -33,7 +33,10 @@ void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMod
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return InvoiceFormBottomSheetWidget(orderId, paymentMode);
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: InvoiceFormBottomSheetWidget(orderId, paymentMode),
+      );
     },
   );
 }
