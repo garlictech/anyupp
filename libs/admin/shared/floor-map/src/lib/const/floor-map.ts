@@ -100,3 +100,10 @@ export const FLOOR_MAP_OBJECT_DEFAULTS = {
     c: '..........',
   },
 };
+
+export const FLOOR_MAP_STATUS_COLORS = {
+  NONE: '#ff3d71', // === color-danger-500
+  PLACED: '#ffaa00', // === color-warning-500
+  PROCESSING: '#3366ff', // === color-primary-500
+  READY: '#ea3bf0', // === color-info-500
+};
