@@ -118,6 +118,14 @@
     "listTitle": "Dashboard",
     "isAcceptingOrders": "Is accepting orders",
     "defaultLane": "Default",
+    "actions": {
+      "fontSize": "Font size",
+      "floorMap": "Floor map",
+      "lanes": "Lanes",
+      "current": "Active orders",
+      "history": "Orders history",
+      "reports": "Reports"
+    },
     "reports": {
       "salesPerType": "Product types",
       "salesPerPaymentMethod": "Payment methods",
@@ -135,6 +143,7 @@
     "listTitle": "Chains",
     "editChain": "Edit chain",
     "newChain": "New chain",
+    "addChain": "Add chain",
     "style": {
       "style": "Style",
       "colors": {
@@ -161,6 +170,7 @@
     "unitProducts": "Unit products",
     "editProduct": "Edit product",
     "extendProduct": "Extend product",
+    "addProduct": "Add product",
     "newProduct": "New product",
     "availability": "Availability (mask)",
     "isAvailable": "Is available",
@@ -214,6 +224,7 @@
     "takeaway": "Takeaway"
   },
   "productCategories": {
+    "addProductCategory": "Add product category",
     "listTitle": "Product categories (EN)",
     "editProductCategory": "Edit product category",
     "newProductCategory": "New product category"
@@ -223,6 +234,8 @@
     "newProductComponent": "New product component"
   },
   "productComponentSets": {
+    "addProductComponent": "Add product component",
+    "addProductComponentSet": "Add modifier or extra",
     "editProductComponentSet": "Edit product component set",
     "newProductComponentSet": "New product component set",
     "productComponent": "Product component",
@@ -240,6 +253,7 @@
   },
   "groups": {
     "listTitle": "Groups",
+    "addGroup": "Add group",
     "editGroup": "Edit group",
     "newGroup": "New group"
   },
@@ -247,6 +261,7 @@
     "listTitle": "Units",
     "editUnit": "Edit unit",
     "newUnit": "New unit",
+    "addUnit": "Add unit",
     "open": "Open",
     "openFrom": "Open from",
     "openTo": "Open to",
@@ -271,12 +286,14 @@
   },
   "adminUsers": {
     "listTitle": "Admin users",
+    "addAdminUser": "Add admin user",
     "editAdminUser": "Edit admin user",
     "newAdminUser": "New admin user",
     "editAdminUserRole": "Edit admin user role"
   },
   "roleContexts": {
     "listTitle": "Role contexts",
+    "addRoleContext": "Add role context",
     "editRoleContext": "Edit role context",
     "newRoleContext": "New role context",
     "contextId": "Context ID"

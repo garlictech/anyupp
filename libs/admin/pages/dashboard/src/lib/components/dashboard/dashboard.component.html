@@ -28,6 +28,7 @@
       <nb-action
         [icon]="resized ? 'minimize-outline' : 'maximize-outline'"
         (click)="toggleResize()"
+        [title]="'dashboard.actions.fontSize' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
@@ -37,6 +38,7 @@
         "
         icon="map-outline"
         (click)="selectListMode(EDashboardListMode.FLOOR_MAP)"
+        [title]="'dashboard.actions.floorMap' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
@@ -46,6 +48,7 @@
         "
         icon="swap-outline"
         (click)="selectListMode(EDashboardListMode.LANES)"
+        [title]="'dashboard.actions.lanes' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
@@ -55,6 +58,7 @@
         "
         icon="clock-outline"
         (click)="selectListMode(EDashboardListMode.CURRENT)"
+        [title]="'dashboard.actions.current' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
@@ -64,6 +68,7 @@
         "
         icon="archive-outline"
         (click)="selectListMode(EDashboardListMode.HISTORY)"
+        [title]="'dashboard.actions.history' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
@@ -73,6 +78,7 @@
         "
         icon="pie-chart-outline"
         (click)="selectListMode(EDashboardListMode.REPORTS)"
+        [title]="'dashboard.actions.reports' | translate"
       ></nb-action>
     </nb-actions>
   </nb-card-header>
