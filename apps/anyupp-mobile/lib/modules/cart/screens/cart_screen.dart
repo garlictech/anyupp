@@ -207,7 +207,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency ?? 'huf'), // TODO GeoUnit currency!
+                          formatCurrency(cart.totalPrice, unit.currency ?? 'ft'),
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,

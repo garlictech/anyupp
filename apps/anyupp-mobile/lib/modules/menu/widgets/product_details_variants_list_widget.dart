@@ -45,14 +45,7 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
       return Container();
     }
 
-    List<Widget> items = [
-      widget.product.allergens != null && widget.product.allergens.isNotEmpty
-          ? Padding(
-            padding: const EdgeInsets.all(16),
-            child: AllergensWidget(allergens: widget.product.allergens),
-          )
-          : Container()
-    ];
+    List<Widget> items = [];
     variants.forEach((variant) {
       items.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
@@ -70,6 +63,12 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
         ),
       ));
     });
+    if (widget.product.allergens != null && widget.product.allergens.isNotEmpty) {
+      items.add(Padding(
+        padding: const EdgeInsets.all(16),
+        child: AllergensWidget(allergens: widget.product.allergens),
+      ));
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: items,

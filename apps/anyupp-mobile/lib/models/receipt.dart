@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-
 @immutable
 class Receipt {
   final String createdAt;
@@ -14,15 +13,15 @@ class Receipt {
   final String updatedAt;
   final String userId;
   Receipt({
-     this.createdAt,
-     this.email,
-     this.id,
-     this.orderId,
-     this.pdfData,
-     this.status,
-     this.transactionId,
-     this.updatedAt,
-     this.userId,
+    this.createdAt,
+    this.email,
+    this.id,
+    this.orderId,
+    this.pdfData,
+    this.status,
+    this.transactionId,
+    this.updatedAt,
+    this.userId,
   });
 
   Receipt copyWith({
@@ -89,16 +88,29 @@ class Receipt {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Receipt &&
-      other.createdAt == createdAt &&
-      other.email == email &&
-      other.id == id &&
-      other.orderId == orderId &&
-      other.pdfData == pdfData &&
-      other.status == status &&
-      other.transactionId == transactionId &&
-      other.updatedAt == updatedAt &&
-      other.userId == userId;
+        other.createdAt == createdAt &&
+        other.email == email &&
+        other.id == id &&
+        other.orderId == orderId &&
+        other.pdfData == pdfData &&
+        other.status == status &&
+        other.transactionId == transactionId &&
+        other.updatedAt == updatedAt &&
+        other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    return createdAt.hashCode ^
+        email.hashCode ^
+        id.hashCode ^
+        orderId.hashCode ^
+        pdfData.hashCode ^
+        status.hashCode ^
+        transactionId.hashCode ^
+        updatedAt.hashCode ^
+        userId.hashCode;
   }
 }
