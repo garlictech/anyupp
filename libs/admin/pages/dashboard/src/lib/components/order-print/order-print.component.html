@@ -41,11 +41,31 @@
           -------------------- RENDELÉS ÖSSZESÍTŐ --------------------
         </div-->
 
-        <div>Dátum: {{ now | localizedDate: 'short' }}</div>
         <div>
-          Asztalszám: {{ place?.seat || '?' }}/{{ place?.table || '?' }}
+          {{ 'common.date' | translate }}: {{ now | localizedDate: 'short' }}
         </div>
-        <div class="mb-5">Felszolgáló:</div>
+        <div class="mb-4">
+          {{ 'orders.tableNum' | translate }}: {{ place?.seat || '?' }}/{{
+            place?.table || '?'
+          }}
+        </div>
+
+        <div class="mb-4" *ngIf="receiptType">
+          <div>
+            {{ 'orders.receiptType' | translate }}:
+            {{ 'common.' + receiptType | translate }}
+          </div>
+          <div *ngIf="invoiceData">
+            <div>{{ invoiceData.customerName || '' }}</div>
+            <div>{{ invoiceData.taxNumber || '' }}</div>
+            <div>
+              {{ invoiceData.postalCode || '' }} {{ invoiceData.city || '' }},
+              {{ invoiceData.streetAddress || '' }}
+            </div>
+            <div>{{ invoiceData.country || '' }}</div>
+            <div>{{ invoiceData.email || '' }}</div>
+          </div>
+        </div>
 
         <div>{{ 'print.items' | translate }}:</div>
 
@@ -96,7 +116,9 @@
         </div>
 
         <div class="mt-4">Rendelés azonosítók:</div>
-        <div *ngFor="let order of orders">{{ order.id }}</div>
+        <div *ngFor="let order of orders">
+          #{{ order.orderNum }} ({{ order.id }})
+        </div>
 
         <div class="pt-5 text-center">Köszönjük a vásárlást!</div>
         <div class="pt-1 pb-3 text-center bottom-border">Viszontlátásra</div>
