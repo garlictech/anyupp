@@ -2657,17 +2657,17 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@7.14.5", "@babel/core@^7.0.0", "@babel/core@^7.0.1", "@babel/core@^7.1.0", "@babel/core@^7.10.5", "@babel/core@^7.5.4", "@babel/core@^7.7.5", "@babel/core@^7.8.6":
-  version "7.14.5"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.5.tgz#d281f46a9905f07d1b3bf71ead54d9c7d89cb1e3"
-  integrity sha512-RN/AwP2DJmQTZSfiDaD+JQQ/J99KsIpOCfBE5pL+5jJSt7nI3nYGoAXZu+ffYSQ029NLs2DstZb+eR81uuARgg==
+"@babel/core@7.14.6":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.6.tgz#e0814ec1a950032ff16c13a2721de39a8416fcab"
+  integrity sha512-gJnOEWSqTk96qG5BoIrl5bVtc23DCycmIePPYnamY9RboYdI4nFy5vAQMSl81O5K/W0sLDWfGysnOECC+KUUCA==
   dependencies:
     "@babel/code-frame" "^7.14.5"
     "@babel/generator" "^7.14.5"
     "@babel/helper-compilation-targets" "^7.14.5"
     "@babel/helper-module-transforms" "^7.14.5"
-    "@babel/helpers" "^7.14.5"
-    "@babel/parser" "^7.14.5"
+    "@babel/helpers" "^7.14.6"
+    "@babel/parser" "^7.14.6"
     "@babel/template" "^7.14.5"
     "@babel/traverse" "^7.14.5"
     "@babel/types" "^7.14.5"
@@ -2696,6 +2696,27 @@
     lodash "^4.17.11"
     resolve "^1.3.2"
     semver "^5.4.1"
+    source-map "^0.5.0"
+
+"@babel/core@^7.0.0", "@babel/core@^7.0.1", "@babel/core@^7.1.0", "@babel/core@^7.10.5", "@babel/core@^7.5.4", "@babel/core@^7.7.5", "@babel/core@^7.8.6":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.5.tgz#d281f46a9905f07d1b3bf71ead54d9c7d89cb1e3"
+  integrity sha512-RN/AwP2DJmQTZSfiDaD+JQQ/J99KsIpOCfBE5pL+5jJSt7nI3nYGoAXZu+ffYSQ029NLs2DstZb+eR81uuARgg==
+  dependencies:
+    "@babel/code-frame" "^7.14.5"
+    "@babel/generator" "^7.14.5"
+    "@babel/helper-compilation-targets" "^7.14.5"
+    "@babel/helper-module-transforms" "^7.14.5"
+    "@babel/helpers" "^7.14.5"
+    "@babel/parser" "^7.14.5"
+    "@babel/template" "^7.14.5"
+    "@babel/traverse" "^7.14.5"
+    "@babel/types" "^7.14.5"
+    convert-source-map "^1.7.0"
+    debug "^4.1.0"
+    gensync "^1.0.0-beta.2"
+    json5 "^2.1.2"
+    semver "^6.3.0"
     source-map "^0.5.0"
 
 "@babel/eslint-parser@^7.11.3":
@@ -2930,6 +2951,15 @@
     "@babel/traverse" "^7.14.5"
     "@babel/types" "^7.14.5"
 
+"@babel/helpers@^7.14.6":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.14.6.tgz#5b58306b95f1b47e2a0199434fa8658fa6c21635"
+  integrity sha512-yesp1ENQBiLI+iYHSJdoZKUtRpfTlL1grDIX9NRlAVppljLw/4tTyYupIB7uIYmC3stW/imAv8EqaKaS/ibmeA==
+  dependencies:
+    "@babel/template" "^7.14.5"
+    "@babel/traverse" "^7.14.5"
+    "@babel/types" "^7.14.5"
+
 "@babel/highlight@^7.10.4", "@babel/highlight@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.14.5.tgz#6861a52f03966405001f6aa534a01a24d99e8cd9"
@@ -2948,6 +2978,11 @@
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.14.5.tgz#4cd2f346261061b2518873ffecdf1612cb032829"
   integrity sha512-TM8C+xtH/9n1qzX+JNHi7AN2zHMTiPUtspO0ZdHflW8KaskkALhMmuMHb4bCmNdv9VAPzJX3/bXqkVLnAvsPfg==
+
+"@babel/parser@^7.14.6":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.14.6.tgz#d85cc68ca3cac84eae384c06f032921f5227f4b2"
+  integrity sha512-oG0ej7efjEXxb4UgE+klVx+3j4MVo+A2vCzm7OUN4CLo6WhQ+vSOD2yJ8m7B+DghObxtLxt3EfgMWpq+AsWehQ==
 
 "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining@^7.14.5":
   version "7.14.5"
@@ -5662,18 +5697,6 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.26.0":
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.26.0.tgz#c130a2b7960d9db3600188fd2033a7bfba1062fd"
-  integrity sha512-Gu1loGn4CgkTzcSfX1298nOxxW/1yFbyVDDQbbhkPoMCUFTdzhuznolbhzKhX1X3xT1zd4LlkP76DVocvdSbLA==
-  dependencies:
-    aws-cdk "1.105.0"
-    aws-sdk "^2.761.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    fs-extra "^9.0.1"
-    log4js "^6.3.0"
-
 "@serverless-stack/core@^0.26.1":
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.26.1.tgz#5138360d7190309fd8d5c676a20e7b385b1348ea"
@@ -5686,54 +5709,7 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.26.1":
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.26.1.tgz#3a833c682ac8afca8603cff4f0f71788da461abb"
-  integrity sha512-EPTOrvLmvk7IJE61tHfVtnHrlfnmiz3Kso7Yc3am+IboZp4Q31ct3Dgf2ytSc8Tqn86UPGuMcjwHh0hjaeZGFQ==
-  dependencies:
-    "@aws-cdk/aws-apigateway" "1.105.0"
-    "@aws-cdk/aws-apigatewayv2" "1.105.0"
-    "@aws-cdk/aws-apigatewayv2-authorizers" "1.105.0"
-    "@aws-cdk/aws-apigatewayv2-integrations" "1.105.0"
-    "@aws-cdk/aws-appsync" "1.105.0"
-    "@aws-cdk/aws-certificatemanager" "1.105.0"
-    "@aws-cdk/aws-cloudfront" "1.105.0"
-    "@aws-cdk/aws-cloudfront-origins" "1.105.0"
-    "@aws-cdk/aws-cognito" "1.105.0"
-    "@aws-cdk/aws-dynamodb" "1.105.0"
-    "@aws-cdk/aws-events" "1.105.0"
-    "@aws-cdk/aws-events-targets" "1.105.0"
-    "@aws-cdk/aws-iam" "1.105.0"
-    "@aws-cdk/aws-kinesis" "1.105.0"
-    "@aws-cdk/aws-lambda" "1.105.0"
-    "@aws-cdk/aws-lambda-event-sources" "1.105.0"
-    "@aws-cdk/aws-lambda-nodejs" "1.105.0"
-    "@aws-cdk/aws-logs" "1.105.0"
-    "@aws-cdk/aws-rds" "1.105.0"
-    "@aws-cdk/aws-route53" "1.105.0"
-    "@aws-cdk/aws-route53-patterns" "1.105.0"
-    "@aws-cdk/aws-route53-targets" "1.105.0"
-    "@aws-cdk/aws-s3" "1.105.0"
-    "@aws-cdk/aws-s3-deployment" "1.105.0"
-    "@aws-cdk/aws-secretsmanager" "1.105.0"
-    "@aws-cdk/aws-sns" "1.105.0"
-    "@aws-cdk/aws-sns-subscriptions" "1.105.0"
-    "@aws-cdk/aws-sqs" "1.105.0"
-    "@aws-cdk/core" "1.105.0"
-    "@aws-cdk/cx-api" "1.105.0"
-    "@serverless-stack/core" "^0.26.1"
-    "@types/jest" "^26.0.7"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    esbuild "^0.8.31"
-    eslint "^7.16.0"
-    fs-extra "^9.0.1"
-    jest "^26.1.0"
-    ts-jest "^26.1.4"
-    typescript "^4.2.3"
-    zip-local "^0.3.4"
-
-"@serverless-stack/resources@^0.26.1":
+"@serverless-stack/resources@0.26.1", "@serverless-stack/resources@^0.26.1":
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.26.1.tgz#3a833c682ac8afca8603cff4f0f71788da461abb"
   integrity sha512-EPTOrvLmvk7IJE61tHfVtnHrlfnmiz3Kso7Yc3am+IboZp4Q31ct3Dgf2ytSc8Tqn86UPGuMcjwHh0hjaeZGFQ==
