@@ -7,12 +7,12 @@ import { validateGeneratedProductList } from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 
 import { createItems, deleteItems } from '../../database';
-import { UnitsResolverDeps } from '../unit/utils';
+import { ProductResolverDeps } from './utils';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
 export const deleteGeneratedProductsForAUnitFromDb =
-  (deps: UnitsResolverDeps) => (unitId: string) => {
+  (deps: ProductResolverDeps) => (unitId: string) => {
     return listGeneratedProductsForUnits(deps)([unitId]).pipe(
       switchMap(items =>
         iif(
@@ -34,7 +34,7 @@ export const createGeneratedProductsInDb = (
 };
 
 export const listGeneratedProductsForUnits =
-  (deps: UnitsResolverDeps) =>
+  (deps: ProductResolverDeps) =>
   (unitIds: string[]): Observable<Array<CrudApi.GeneratedProduct>> => {
     const input: CrudApi.ListGeneratedProductsQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },

@@ -485,6 +485,17 @@ type Availability {
   price: Float!
 }
 
+type GeneratedProductCategory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  id: ID!
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
+}
+
 type GeneratedProduct
   @model
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
