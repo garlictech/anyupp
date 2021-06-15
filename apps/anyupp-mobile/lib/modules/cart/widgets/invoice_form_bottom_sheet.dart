@@ -239,7 +239,6 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
 
   Widget _buildInvoiceForm(BuildContext context) {
     print('_buildInvoiceForm()=${_userProfile?.email}, $_useSavedAddress');
-    
 
     return Container(
       padding: EdgeInsets.symmetric(

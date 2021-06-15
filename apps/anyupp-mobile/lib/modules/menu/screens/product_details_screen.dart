@@ -10,6 +10,7 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -291,8 +292,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       duration: Duration(milliseconds: 300),
                     ),
                     Text(
-                      widget.unit.currency + ")" ??
-                          'huf' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+                      getNumberFormatter(widget.unit.currency).currencySymbol + ")" ??
+                          'ft' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
                       style: GoogleFonts.poppins(
                         fontSize: 24.0,
                         color: theme.text2,
