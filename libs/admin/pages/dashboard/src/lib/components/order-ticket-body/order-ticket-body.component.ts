@@ -75,7 +75,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           ): Observable<CrudApi.Order | undefined> => {
             return this._store.pipe(
               select(
-                listMode === EDashboardListMode.CURRENT
+                listMode === EDashboardListMode.current
                   ? dashboardSelectors.getSelectedActiveOrder()
                   : dashboardSelectors.getSelectedHistoryOrder(),
               ),
@@ -173,9 +173,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = (this.dashboardSettings
-      .showAllUserOrders
-      ? this.userActiveOrders
-      : [this.selectedOrder]) as CrudApi.Order[];
+    dialog.componentRef.instance.orders = (
+      this.dashboardSettings.showAllUserOrders
+        ? this.userActiveOrders
+        : [this.selectedOrder]
+    ) as CrudApi.Order[];
   }
 }

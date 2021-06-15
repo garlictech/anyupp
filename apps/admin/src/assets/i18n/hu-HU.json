@@ -124,7 +124,10 @@
       "lanes": "Pályák",
       "current": "Aktív rendelések",
       "history": "Rendelés történet",
-      "reports": "Statisztikák"
+      "reports": "Statisztikák",
+      "placedOrders": "Beküldött rendelések",
+      "manualOrders": "KP/Kártyás fizetések",
+      "problematicOrders": "Problémás rendelések"
     },
     "reports": {
       "salesPerType": "Termék típusok",

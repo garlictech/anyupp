@@ -124,7 +124,10 @@
       "lanes": "Lanes",
       "current": "Active orders",
       "history": "Orders history",
-      "reports": "Reports"
+      "reports": "Reports",
+      "placedOrders": "Placed orders",
+      "manualOrders": "Manual payments",
+      "problematicOrders": "Problematic orders"
     },
     "reports": {
       "salesPerType": "Product types",

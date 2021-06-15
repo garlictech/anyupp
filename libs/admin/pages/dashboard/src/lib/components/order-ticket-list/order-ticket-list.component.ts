@@ -160,11 +160,11 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
           customDateCompare('createdAt'),
         );
         break;
-      case EDashboardTicketListType.ready:
+      case EDashboardTicketListType.manual:
         this.filteredOrders = this.manualPaymentOrders;
 
         break;
-      case EDashboardTicketListType.PAYMENT_INTENTION:
+      case EDashboardTicketListType.problematic:
         this.filteredOrders = this.problematicOrders.sort(
           customNumberCompare('paymentIntention'),
         );
