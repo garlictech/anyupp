@@ -15,6 +15,7 @@ import { sortById } from '@bgap/shared/utils';
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 import { of } from 'rxjs';
 import { delay, map, switchMap, tap } from 'rxjs/operators';
+import { getSortedProductCatIds } from '../test-utils/test-utils';
 
 const TEST_NAME = 'GEN_PRODUCT_CAT';
 
@@ -265,7 +266,3 @@ describe('GenerateProductCategory tests', () => {
     }, 15000);
   });
 });
-
-export const getSortedProductCatIds = (
-  input: Array<{ productCategoryId: string }>,
-) => input.map(x => x.productCategoryId).sort((a, b) => (a > b ? 1 : -1));

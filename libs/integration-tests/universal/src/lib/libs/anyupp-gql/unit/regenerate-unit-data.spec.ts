@@ -1,6 +1,7 @@
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import {
   deleteGeneratedProductCategoriesForAUnit,
+  listGeneratedProductCategoriesForUnits,
   listGeneratedProductsForUnits,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
@@ -19,7 +20,7 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-import { filterNullish, getSortedIds } from '@bgap/shared/utils';
+import { filterNullish, getSortedIds, sortById } from '@bgap/shared/utils';
 import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 import {
   combineLatest,
@@ -65,6 +66,7 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
+import { getSortedProductCatIds } from '../test-utils/test-utils';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'REGEN_';
@@ -167,22 +169,22 @@ const prodConfigSet_02: CrudApi.ProductConfigSetInput = {
     },
   ],
 };
+// PRODUCT CATEGORY to create
+const productCategory_01: RequiredId<CrudApi.CreateProductCategoryInput> = {
+  ...productCategoryFixture.productCategoryBase,
+  id: `${testIdPrefix}${TEST_NAME}_ProductCategoryId_01`,
+  chainId: unit_01.chainId,
+};
 // PRODUCTS to create
 const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
   ...productFixture.chainProductBase,
   id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
-  productCategoryId: `${testIdPrefix}${TEST_NAME}ProductCategoryId`,
+  productCategoryId: productCategory_01.id,
 };
 const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
   ...productFixture.groupProductBase,
   id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
   parentId: chainProduct_01.id,
-};
-// PRODUCT CATEGORY to create
-const productCategory_01: RequiredId<CrudApi.CreateProductCategoryInput> = {
-  ...productCategoryFixture.productCategoryBase,
-  id: `${testIdPrefix}${TEST_NAME}_01`,
-  chainId: unit_01.chainId,
 };
 // THE IMPORTANT UNIT
 const unitProduct_0101: Omit<
@@ -253,6 +255,7 @@ describe('RegenerateUnitData mutation tests', () => {
     deleteGeneratedProductCategoriesForAUnit({ crudSdk: iamCrudSdk })(
       unitId_01_to_regen,
     ),
+    iamCrudSdk.DeleteProductCategory({ input: { id: productCategory_01.id } }),
     deleteTestProductComponent(prodComponent_01.id, iamCrudSdk),
     deleteTestProductComponent(prodComponent_02.id, iamCrudSdk),
     deleteTestProductComponent(prodComponent_03.id, iamCrudSdk),
@@ -323,9 +326,14 @@ describe('RegenerateUnitData mutation tests', () => {
               iamCrudSdk,
             ),
             createTestGeneratedProduct(unit02_generatedProduct_01, iamCrudSdk),
+            iamCrudSdk.CreateProductCategory({ input: productCategory_01 }),
           ),
         ),
         takeLast(1),
+        catchError(err => {
+          console.error('BEFORE HOOK ERROR');
+          return throwError(err);
+        }),
       )
       .toPromise();
   }, 25000);
@@ -362,7 +370,6 @@ describe('RegenerateUnitData mutation tests', () => {
   it('should regenerate all the generated products for the unit', done => {
     const input = { id: unitId_01_to_regen };
 
-    // const listGeneratedProductsForGivenUnits = () =>
     combineLatest([
       listGeneratedProductsForUnits({
         crudSdk: iamCrudSdk,
@@ -370,7 +377,7 @@ describe('RegenerateUnitData mutation tests', () => {
       listProductsForUnits(iamCrudSdk, [unitId_01_to_regen, unitId_02]),
     ])
       .pipe(
-        // PREPARE - start state check
+        // PHASE 0: PREPARE - start state check
         tap({
           next(result) {
             const [generatedProducts, unitProducts] = result;
@@ -408,7 +415,7 @@ describe('RegenerateUnitData mutation tests', () => {
           return throwError(err);
         }),
 
-        // EXECUTE THE LOGIC
+        // PHASE 1: EXECUTE THE LOGIC - check generated products
         switchMap(() =>
           // TO DEBUG
           iif(
@@ -454,7 +461,8 @@ describe('RegenerateUnitData mutation tests', () => {
             ).toMatchSnapshot();
           },
         }),
-        // Check a single generated Item with the config sets
+
+        // PHASE 2: Check a single generated Item with the config sets
         tap({
           next(result) {
             // Generated CONFIG SET check
@@ -529,6 +537,35 @@ describe('RegenerateUnitData mutation tests', () => {
             };
             expect(aGeneratedProduct.configSets[0]).toEqual(
               expectedGeneratedProductConfigComponentSet_01,
+            );
+          },
+        }),
+
+        // PHASE 3: Check the generated PRODUCT CATEGORIES
+        switchMap(() =>
+          listGeneratedProductCategoriesForUnits({ crudSdk: iamCrudSdk })([
+            unitId_01_to_regen,
+          ]),
+        ),
+        map(sortById),
+        tap({
+          next(result) {
+            // ONLY THE PRECREATED GENCATEGORY SHOULD EXIST
+            expect(getSortedProductCatIds(result)).toEqual([
+              productCategory_01.id,
+            ]);
+            expect(result[0].productCategoryId).toEqual(productCategory_01.id);
+            expect(result[0].productNum).toEqual(3);
+            expect(result[0]).toMatchSnapshot(
+              {
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
+                productCategory: {
+                  createdAt: expect.any(String),
+                  updatedAt: expect.any(String),
+                },
+              },
+              'A Generated ProductCategory',
             );
           },
         }),

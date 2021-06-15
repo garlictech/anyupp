@@ -21,7 +21,7 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "test_REGEN_ProductCategoryId",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
@@ -205,7 +205,7 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "test_REGEN_ProductCategoryId",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
@@ -287,7 +287,7 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "test_REGEN_ProductCategoryId",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
@@ -408,6 +408,35 @@ Array [
     ],
   },
 ]
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit: A Generated ProductCategory 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "id": "test_REGEN_UNIT_ID_01__test_REGEN__ProductCategoryId_01",
+  "productCategory": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_REGEN__ProductCategoryId_01",
+    "image": "IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 0,
+    "updatedAt": Any<String>,
+  },
+  "productCategoryId": "test_REGEN__ProductCategoryId_01",
+  "productNum": 3,
+  "unitId": "test_REGEN_UNIT_ID_01",
+  "updatedAt": Any<String>,
+}
 `;
 
 exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;
