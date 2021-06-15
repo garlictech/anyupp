@@ -234,7 +234,8 @@
     "stripe": {
       "title": "Pay with Stripe",
       "add_card_tooltip": "Add new card",
-      "save_card": "Save card for later use"
+      "save_card": "Save card for later use",
+      "payment_success": "Payment success!"
     }
   },
   "selectUnit": {

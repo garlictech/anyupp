@@ -31,6 +31,51 @@
       "description": "With this feature you can unlink from your main user with this social provider. Are you sure want to unlink?",
       "unlink": "Unlink",
       "cancel": "Cancel"
+    },
+    "email": {
+      "loginProgress": "Login in progress...",
+      "forgotPassword": "Forgot password. . .",
+      "emailFieldLabel": "Email",
+      "emailOrPhoneFieldLabel": "Email or Phone number",
+      "passwordFieldLabel": "Password",
+      "password2FieldLabel": "Password again",
+      "linkLoginWithLink": "Login with email link. . .",
+      "linkLoginWithPassword": "Login with password. . .",
+      "signIn": "Sign in",
+      "linkSignIn": "Sign in. . .",
+      "linkRegister": "Sign up. . .",
+      "buttonLogin": "Login",
+      "buttonLoginLink": "Send login link",
+      "buttonRegister": "Sign up",
+      "buttonPasswordReset": "Reset my password",
+      "sendPasswordResetMessage": "Reset password in progress...",
+      "dialogEmailSentTitle": "Email sent",
+      "dialogEmailSentMessage": "Check your email and click on the link to login to AnyUpp!",
+      "dialogResetSentTitle": "Code sent",
+      "dialogResetSentMessage": "Password reset confirmation code sent to ",
+      "dialogPasswordRefreshedTitle": "Password updated'",
+      "dialogPasswordRefreshedMessage": "Your password has been updated, you can sign in now.",
+      "closeButton": "Close",
+      "setMailTo": "We have sent a code by email",
+      "checkInbox": "Check your inbox!",
+      "enterToConfirm": "Enter it below to confirm your account.",
+      "codeNotReceived": "Didn't receive a code?",
+      "resendCode": "Resend it",
+      "verificationCode": "Verification Code",
+      "confirmAccount": "Confirm Account",
+      "dialogConfirmedTitle": "Account Verified!",
+      "dialogConfirmedMessage": "Your account has been verified.",
+      "enterCode": "Enter Code"
+    },
+    "phone": {
+      "loginProgress": "Login in progress...",
+      "title": "Login with Phone",
+      "phoneNumLabel": "Phone Number",
+      "phoneNumDesc": "You will receive a code via SMS...",
+      "smsCodeLabel": "SMS Code",
+      "buttonRequireSMS": "Require SMS",
+      "buttonSendSMSCode": "Log in",
+      "searchByCountry": "Search by country name"
     }
   },
   "logout": {
@@ -77,7 +122,26 @@
   "cart": {
     "totalCost": "Total cost",
     "emptyCartLine1": "Your cart is empty",
-    "emptyCartLine2": "Add some products to your cart."
+    "emptyCartLine2": "Add some products to your cart.",
+    "addToCart": "Add To Cart"
+  },
+  "allergens": {
+    "title": "Allergens",
+    "celery": "Celery",
+    "crustaceans": "Crustaceans",
+    "egg": "Egg",
+    "fish": "Fish",
+    "gluten": "Gluten",
+    "lupin": "Lupin",
+    "milk": "Milk",
+    "molluscs": "Molluscs",
+    "mustard": "Mustard",
+    "peanut": "Peanut",
+    "sesame": "Sesame",
+    "soya": "Soya",
+    "sulphites": "Sulphites",
+    "treenuts": "Treenuts",
+    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
     "noFavorites": "No favorites added yet"
@@ -98,7 +162,8 @@
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
-    "simplepay": "Pay with SimplePay"
+    "simplepay": "Pay with SimplePay",
+    "stripepay": "Pay with Stripe"
   },
   "payment": {
     "title": "PAY",
@@ -109,11 +174,26 @@
       "inAppPayment": "Pay by Card via Stripe (preferred)"
     },
     "sendOrder": "PLACE ORDER",
+    "fillInvoice": "FILL INVOICE FORM",
     "orderPlaced": "Order successfully received.",
     "paymentInfo": {
       "simplePay": {
         "prefix": "By selecting this payment method I indicate that I agree to the contents of the following documents.",
         "paymentInfo": "Payment information"
+      },
+      "invoicing": {
+        "want_invoice": "I want a VAT invoice",
+        "invoice_info": "Invoice Info",
+        "receipt_info": "Receipt Info",
+        "name_or_company": "Name/Company name",
+        "tax_id": "Tax ID Number",
+        "country": "Country",
+        "zip": "Zip Code",
+        "city": "City",
+        "street address": "Street address",
+        "invoice_email": "Invoice Email",
+        "invoiceAddress": "Use previous address",
+        "show": "Show"
       }
     },
     "simplePayStatus": {
@@ -133,6 +213,29 @@
         "title": "Transaction successfully completed",
         "description": "SimplePay transaction ID: {{0}}"
       }
+    },
+    "cardFields": {
+      "card_number": {
+        "label": "Card number",
+        "hint": "xxxx xxxx xxxx xxxx",
+        "validationError": "Card number is invalid"
+      },
+      "expiry": {
+        "label": "Expiration Date",
+        "hint": "MM/YY",
+        "validationError": "Card expirity date invalid"
+      },
+      "cvc": {
+        "label": "CVC",
+        "hint": "XXX",
+        "validationError": "Card CVC is invalid"
+      }
+    },
+    "stripe": {
+      "title": "Pay with Stripe",
+      "add_card_tooltip": "Add new card",
+      "save_card": "Save card for later use",
+      "payment_success": "Payment success!"
     }
   },
   "selectUnit": {
@@ -206,16 +309,32 @@
   "profile": {
     "menu": {
       "contact": "Contact Us",
+      "transactions": "Transactions",
       "about": "About",
       "cards": "Saved cards",
       "logout": "Logout",
       "settings": "Settings",
       "regulations": "Regulations",
-      "language": "Language"
+      "language": "Language",
+      "payment": "Payment and invoicing"
+    },
+    "transactions": {
+      "status": "Status",
+      "paymentMethod": "Payment Method",
+      "noTransactions": "No Transactions",
+      "details": "Details"
     }
   },
   "affiliate": {
     "advertisement": "Advertisement"
+  },
+  "validators": {
+    "required": "this field is required",
+    "enterValidEmail": "enter a valid email address",
+    "eneterValidPhone": "enter a valid phone number",
+    "passwordIsRequired": "password is required",
+    "passwordValidatorText": "must have a number, an upper, a lower case letter",
+    "passwordLengthError": "password must be at least 8 digits long"
   },
   "error": {
     "title": "Error",
@@ -233,8 +352,8 @@
       "description": "If you are still at the selected location during opening hours, please report this problem to the local staff."
     },
     "LOGIN_EXCEPTION": {
-      "title": "Bejelentkezési hiba",
-      "description": "Hiba történt a bejelentkezés során! Próbáld meg újra!"
+      "title": "Login Error",
+      "description": "Error occured during login to AnyUpp! Try it again please!"
     },
     "ERROR_INVALID_CUSTOM_TOKEN": {
       "title": "Login error",
@@ -255,6 +374,10 @@
     "ERROR_WRONG_PASSWORD": {
       "title": "Login error",
       "description": "The password is invalid or the user does not have a password."
+    },
+    "ERROR_PASSWORD_MISSMATCH": {
+      "title": "Signup error",
+      "description": "The passwordS are not matching."
     },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",
@@ -298,11 +421,39 @@
     },
     "ERROR_WEAK_PASSWORD": {
       "title": "Login error",
-      "description": "The given password is invalid."
+      "description": "The given password is invalid. [ Password should be at least 6 characters ]"
+    },
+    "INVALID_CREDENTIALS": {
+      "title": "Sign up error",
+      "description": "Invalid user or password. Try again."
     },
     "ERROR_MISSING_EMAIL": {
       "title": "Login error",
       "description": "An email address must be provided."
+    },
+    "INVALID_PASSWORD": {
+      "title": "Sign up error",
+      "description": "Password did not conform with policy"
+    },
+    "INVALID_CONFIRMATION_CODE": {
+      "title": "Sign up error",
+      "description": "The given confirmation code is invalid, try to resend it"
+    },
+    "EXPIRED_CONFIRMATION_CODE": {
+      "title": "Invalid code",
+      "description": "Invalid code provided, please request a code again."
+    },
+    "NOT_EMAIL_OR_PHONE": {
+      "title": "Sign up error",
+      "description": "Username should be either an email or a phone number."
+    },
+    "USER_EMAIL_NOT_SAME": {
+      "title": "Sign up error",
+      "description": "User email should be empty or same as username, since username attribute is email."
+    },
+    "LIMIT_EXCEEDED": {
+      "title": "Sign up error",
+      "description": "Resed limit exceeded."
     }
   }
 }

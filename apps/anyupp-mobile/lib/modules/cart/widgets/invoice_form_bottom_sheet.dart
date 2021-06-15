@@ -57,7 +57,6 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   final _cityController = TextEditingController();
   final _streetController = TextEditingController();
   FieldValidator taxFieldValidator;
-  bool _useSavedAddress = false;
   User _userProfile;
 
   @override
@@ -164,17 +163,18 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                             ))
                       ],
                     ),
-                    // BlocBuilder<UserDetailsBloc, UserDetailsState>(
-                    //   builder: (BuildContext context, UserDetailsState state) {
-                    //     if (state is UserDetailsLoaded) {
-                    //       return _buildInvoiceForm(context, state.userDetails);
-                    //     }
-                    //     return _buildInvoiceForm(context);
-                    //   },
-                    // ),
                     BlocListener<UserDetailsBloc, UserDetailsState>(
                       listener: (BuildContext context, UserDetailsState state) {
                         if (state is UserDetailsLoaded) {
+                          User user = state.userDetails;
+                          if (user?.invoiceAddress != null) {
+                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
+                            _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                            _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                            _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                            _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                            _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                          }
                           setState(() {
                             _userProfile = state.userDetails;
                           });
@@ -195,31 +195,31 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  Switch(
-                                      activeColor: theme.highlight,
-                                      value: _useSavedAddress,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          this._useSavedAddress = value;
-                                        });
-                                        User user = _useSavedAddress ? _userProfile : null;
-                                        if (user?.invoiceAddress != null) {
-                                          _setTextFieldValue(
-                                              _nameOrCompanyController, user.invoiceAddress.customerName);
-                                          _setTextFieldValue(_cityController, user.invoiceAddress.city);
-                                          _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
-                                          _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
-                                          _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
-                                          _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
-                                        } else {
-                                          _setTextFieldValue(_nameOrCompanyController, '');
-                                          _setTextFieldValue(_cityController, '');
-                                          _setTextFieldValue(_emailController, '');
-                                          _setTextFieldValue(_zipController, '');
-                                          _setTextFieldValue(_streetController, '');
-                                          _setTextFieldValue(_taxNumberController, '');
-                                        }
-                                      })
+                                  // Switch(
+                                  //     activeColor: theme.highlight,
+                                  //     value: _useSavedAddress,
+                                  //     onChanged: (value) {
+                                  //       setState(() {
+                                  //         this._useSavedAddress = value;
+                                  //       });
+                                  //       User user = _useSavedAddress ? _userProfile : null;
+                                  //       if (user?.invoiceAddress != null) {
+                                  //         _setTextFieldValue(
+                                  //             _nameOrCompanyController, user.invoiceAddress.customerName);
+                                  //         _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                                  //         _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                                  //         _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                                  //         _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                                  //         _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                                  //       } else {
+                                  //         _setTextFieldValue(_nameOrCompanyController, '');
+                                  //         _setTextFieldValue(_cityController, '');
+                                  //         _setTextFieldValue(_emailController, '');
+                                  //         _setTextFieldValue(_zipController, '');
+                                  //         _setTextFieldValue(_streetController, '');
+                                  //         _setTextFieldValue(_taxNumberController, '');
+                                  //       }
+                                  //     })
                                 ],
                               ),
                             )
@@ -238,7 +238,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   }
 
   Widget _buildInvoiceForm(BuildContext context) {
-    print('_buildInvoiceForm()=${_userProfile?.email}, $_useSavedAddress');
+    print('_buildInvoiceForm()=${_userProfile?.email}');
 
     return Container(
       padding: EdgeInsets.symmetric(
