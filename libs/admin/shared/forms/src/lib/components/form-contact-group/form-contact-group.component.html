@@ -55,26 +55,18 @@
 
     <div class="row">
       <div class="col-md-6">
-        <bgap-form-text-input
+        <bgap-form-static-text
           caption="common.contact.locationLat"
-          type="number"
-          [control]="
-            contactFormGroup.get('address')!.get('location')!.get('lat')!
-              | asFormControl
-          "
+          [value]="contactFormGroup.value?.address?.location?.lat"
           inputId="addressLocationLat"
-        ></bgap-form-text-input>
+        ></bgap-form-static-text>
       </div>
       <div class="col-md-6">
-        <bgap-form-text-input
+        <bgap-form-static-text
           caption="common.contact.locationLng"
-          type="number"
-          [control]="
-            contactFormGroup.get('address')!.get('location')!.get('lng')!
-              | asFormControl
-          "
+          [value]="contactFormGroup.value?.address?.location?.lng"
           inputId="addressLocationLng"
-        ></bgap-form-text-input>
+        ></bgap-form-static-text>
       </div>
     </div>
 

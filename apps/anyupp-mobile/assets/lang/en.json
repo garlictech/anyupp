@@ -184,7 +184,7 @@
       "invoicing": {
         "want_invoice": "I want a VAT invoice",
         "invoice_info": "Invoice Info",
-        "receipt_info" : "Receipt Info",
+        "receipt_info": "Receipt Info",
         "name_or_company": "Name/Company name",
         "tax_id": "Tax ID Number",
         "country": "Country",
@@ -193,7 +193,7 @@
         "street address": "Street address",
         "invoice_email": "Invoice Email",
         "invoiceAddress": "Use previous address",
-        "show" : "Show"
+        "show": "Show"
       }
     },
     "simplePayStatus": {
