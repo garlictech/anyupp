@@ -1,14 +1,9 @@
-import {
-  otherAdminEmails,
-  testAdminEmail,
-  testAdminUserPassword,
-} from '@bgap/shared/fixtures';
+import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
 import { catchError, delay, switchMap, takeLast, tap } from 'rxjs/operators';
 import {
-  createTestAdminRoleContext,
   createTestCart,
   createTestChain,
   createTestChainProduct,
@@ -21,6 +16,7 @@ import {
   createAdminUser,
   SeederDependencies,
   createComponentSets,
+  createTestAdminRoleContext,
 } from './seed-data-fn';
 import {
   createAdminUser as resolverCreateAdminUser,
@@ -34,7 +30,10 @@ const ce = (tag: string) =>
   });
 
 const userData = pipe(
-  [testAdminEmail, ...otherAdminEmails],
+  [
+    testAdminEmail,
+    // ...otherAdminEmails
+  ],
   fp.map(email => ({ email, username: email.split('@')[0] })),
 );
 
@@ -42,21 +41,24 @@ const password = testAdminUserPassword;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    userData.map(({ email }) =>
-      defer(() =>
-        from(
-          resolverCreateAdminUser({
-            input: {
-              name: email.split('@')[0],
-              phone: '+123456789',
-              email,
-            },
-          })({
-            ...deps,
-            userNameGenerator: () => email.split('@')[0],
-          }),
+    userData.map(({ email, username }) =>
+      deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
+        switchMap(() =>
+          defer(() =>
+            from(
+              resolverCreateAdminUser({
+                input: {
+                  name: email.split('@')[0],
+                  phone: '+123456789',
+                  email,
+                },
+              })({
+                ...deps,
+                userNameGenerator: () => email.split('@')[0],
+              }),
+            ),
+          ),
         ),
-      ).pipe(
         catchError(err => {
           if (err.code === ResolverErrorCode.UserAlreadyExists) {
             console.warn(`${email} user already exists, no problem...`);
@@ -77,13 +79,35 @@ export const seedAdminUser = (deps: SeederDependencies) =>
           Permanent: true,
         })),
 
-        fp.map(params =>
+        fp.map(params => [
           defer(() =>
             deps.cognitoidentityserviceprovider
               .adminSetUserPassword(params)
               .promise(),
           ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
-        ),
+
+          defer(() =>
+            deps.cognitoidentityserviceprovider
+              .adminUpdateUserAttributes({
+                UserPoolId: deps.userPoolId,
+                Username: params.Username,
+                UserAttributes: [
+                  {
+                    Name: 'email_verified',
+                    Value: 'true',
+                  },
+                  {
+                    Name: 'phone_number_verified',
+                    Value: 'true',
+                  },
+                ],
+              })
+              .promise(),
+          ).pipe(
+            tap(() => console.log('USER EMAIL AND PHONE VERIFIED', params)),
+          ),
+        ]),
+        fp.flatten,
         combineLatest,
       ),
     ),

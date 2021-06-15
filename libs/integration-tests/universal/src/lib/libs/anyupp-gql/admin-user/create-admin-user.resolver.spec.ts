@@ -17,12 +17,14 @@ describe('Admin user creation/deletion', () => {
         switchMap(({ authAnyuppSdk: sdk }) =>
           sdk.DeleteAdminUser({ userName }).pipe(
             catchError((err: Error) => {
+              console.log('***', err);
               if (err.message.includes('User does not exist')) {
                 return of({});
               }
               return throwError(err);
             }),
-            switchMap(() =>
+            tap(x => console.log('***', x)),
+            /*switchMap(() =>
               sdk
                 .CreateAdminUser({
                   input: {
@@ -38,7 +40,7 @@ describe('Admin user creation/deletion', () => {
                   }),
                 ),
             ),
-            switchMap(() =>
+                        switchMap(() =>
               sdk.CreateAdminUser({
                 input: {
                   email: userName,
@@ -68,6 +70,7 @@ describe('Admin user creation/deletion', () => {
             // Cleanup
             switchMap(() => sdk.DeleteAdminUser({ userName })),
             tap(result => expect(result).toMatchSnapshot('Cleanup')),
+        */
           ),
         ),
       )

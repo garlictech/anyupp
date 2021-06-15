@@ -1,5 +1,5 @@
 export const testAdminEmail = 'test@anyupp.com';
-export const testAdminUserPassword = 'Testtesttest12_';
+export const testAdminUserPassword = 'Hideghegy12_';
 
 export const otherAdminEmails = [
   'test-bob@anyupp.com',
