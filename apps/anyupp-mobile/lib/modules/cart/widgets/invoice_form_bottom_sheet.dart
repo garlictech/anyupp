@@ -180,50 +180,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                           });
                         }
                       },
-                      child: _userProfile != null
-                          ? Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    trans('payment.paymentInfo.invoicing.invoiceAddress'),
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: theme.text,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  // Switch(
-                                  //     activeColor: theme.highlight,
-                                  //     value: _useSavedAddress,
-                                  //     onChanged: (value) {
-                                  //       setState(() {
-                                  //         this._useSavedAddress = value;
-                                  //       });
-                                  //       User user = _useSavedAddress ? _userProfile : null;
-                                  //       if (user?.invoiceAddress != null) {
-                                  //         _setTextFieldValue(
-                                  //             _nameOrCompanyController, user.invoiceAddress.customerName);
-                                  //         _setTextFieldValue(_cityController, user.invoiceAddress.city);
-                                  //         _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
-                                  //         _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
-                                  //         _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
-                                  //         _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
-                                  //       } else {
-                                  //         _setTextFieldValue(_nameOrCompanyController, '');
-                                  //         _setTextFieldValue(_cityController, '');
-                                  //         _setTextFieldValue(_emailController, '');
-                                  //         _setTextFieldValue(_zipController, '');
-                                  //         _setTextFieldValue(_streetController, '');
-                                  //         _setTextFieldValue(_taxNumberController, '');
-                                  //       }
-                                  //     })
-                                ],
-                              ),
-                            )
-                          : Container(),
+                      child: Container(),
                     ),
                   ],
                 );

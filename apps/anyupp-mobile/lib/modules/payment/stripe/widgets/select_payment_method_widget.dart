@@ -32,41 +32,70 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(0.0),
-      //height: 480.0,
+      height: MediaQuery.of(context).size.height * 0.76, // 76 percent of the screen height
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: EdgeInsets.only(top: 12.0),
-            child: _buildPaymentMethodList(context),
-          ),
-          Container(
-            //height: 57.0,
-            padding: EdgeInsets.all(8.0),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.zero),
-              border: Border.all(
-                width: 1.5,
-                color: theme.border,
-              ),
-            ),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                padding: EdgeInsets.all(8.0),
-              ),
-              onPressed: () => Nav.pop(),
-              child: Text(
-                trans('common.close'),
-                style: GoogleFonts.poppins(
-                  fontSize: 14.0,
-                  color: theme.text,
-                ),
+          Flexible(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.only(top: 12.0),
+                child: _buildPaymentMethodList(context),
               ),
             ),
           ),
+          _buildSelectPaymentMethodButton(),
         ],
+      ),
+      // child: Stack(
+      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     SingleChildScrollView(
+      //       physics: BouncingScrollPhysics(),
+      //       child: Container(
+      //         padding: EdgeInsets.only(top: 12.0),
+      //         child: _buildPaymentMethodList(context),
+      //       ),
+      //     ),
+      //     Positioned(
+      //       bottom: 8.0,
+      //       left: 8.0,
+      //       right: 8.0,
+      //       child: _buildSelectPaymentMethodButton(),
+      //     ),
+      //   ],
+      // ),
+    );
+  }
+
+  Widget _buildSelectPaymentMethodButton() {
+    return Container(
+      //height: 57.0,
+      padding: EdgeInsets.all(8.0),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.zero),
+        border: Border.all(
+          width: 1.5,
+          color: theme.border,
+        ),
+      ),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          padding: EdgeInsets.all(8.0),
+        ),
+        onPressed: () => Nav.pop(),
+        child: Text(
+          trans('common.close'),
+          style: GoogleFonts.poppins(
+            fontSize: 14.0,
+            color: theme.text,
+          ),
+        ),
       ),
     );
   }
@@ -79,19 +108,21 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
           if (state.data == null) {
             return NoPaymentMethodsWidget();
           }
-          return StripePaymentMethodListWidget(
-            methods: state.data ?? [],
-            onItemSelected: (StripePaymentMethod method) {
-              print('SelectStripePaymentMethodWidget.Card selected=$method');
-              widget.onItemSelected(method);
-            },
+          return SingleChildScrollView(
+            child: StripePaymentMethodListWidget(
+              methods: state.data ?? [],
+              onItemSelected: (StripePaymentMethod method) {
+                print('SelectStripePaymentMethodWidget.Card selected=$method');
+                widget.onItemSelected(method);
+              },
+            ),
           );
         }
         if (state is StripeError) {
           return CommonErrorWidget(error: state.code, description: state.message);
         }
         if (state is StripePaymentLoading) {
-          return CenterLoadingWidget();
+          return Flexible(child: CenterLoadingWidget());
         }
         return NoPaymentMethodsWidget();
       },
