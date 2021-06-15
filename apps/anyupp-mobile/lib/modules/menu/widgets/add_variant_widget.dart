@@ -30,7 +30,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
         variantId: widget.variant.id,
         image: widget.product.image,
         priceShown: PriceShown(
-          currency: widget.unit.currency ?? 'huf', // TODO
+          currency: widget.unit.currency ?? 'ft', // TODO
           pricePerUnit: widget.variant.price,
           priceSum: widget.variant.price,
           tax: 0,
@@ -65,7 +65,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(widget.variant.price, widget.unit.currency ?? 'huf'), // TODO geounit!!
+                formatCurrency(widget.variant.price, widget.unit.currency ?? 'ft'), 
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,
