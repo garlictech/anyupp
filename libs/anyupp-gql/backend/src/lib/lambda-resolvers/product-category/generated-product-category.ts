@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { validateGeneratedProductCategoryList } from '@bgap/shared/data-validators';
-import { filterNullishGraphqlListWithDefault } from 'libs/shared/utils/src';
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { defer, iif, Observable, of } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';

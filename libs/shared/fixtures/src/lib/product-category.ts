@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { RequiredId } from 'libs/shared/types/src';
+import { RequiredId } from '@bgap/shared/types';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 

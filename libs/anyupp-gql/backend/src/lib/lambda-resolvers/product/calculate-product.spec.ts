@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
   EVariantAvailabilityType,
@@ -10,7 +11,6 @@ import {
   calculateActualPricesAndCheckActivity,
   toCreateGeneratedProductInputType,
 } from './calculate-product';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: Product = {
@@ -180,7 +180,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     expect(
       toCreateGeneratedProductInputType({
         product: result,
-        unitId: baseProduct.unitId!,
+        unitId: baseProduct.unitId,
         productConfigSets: result.configSets,
         productComponentSetMap: prodComponentSetMap,
         productComponentMap: prodComponentMap,
