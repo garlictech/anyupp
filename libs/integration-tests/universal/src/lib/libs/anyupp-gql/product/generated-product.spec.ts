@@ -3,15 +3,15 @@ import {
   deleteGeneratedProductsForAUnitFromDb,
   listGeneratedProductsForUnits,
 } from '@bgap/anyupp-gql/backend';
+import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { getSortedIds } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
-import { scan, switchMap, tap, delay } from 'rxjs/operators';
-import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
+import { delay, scan, switchMap, tap } from 'rxjs/operators';
+import { createIamCrudSdk } from '../../../../api-clients';
 import {
   createTestGeneratedProduct,
   deleteTestGeneratedProduct,
 } from '../../../seeds/generated-product';
-import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 
 const TEST_NAME = 'BATCH_';
 

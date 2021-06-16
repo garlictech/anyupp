@@ -1,7 +1,25 @@
-import { calculatePriceShown, calculateOrderSumPrice } from './order.utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { cartFixture } from '@bgap/shared/fixtures';
 import { toFixed2Number } from '../number.utils';
+import {
+  calculateOrderSumPrice,
+  calculatePriceShown,
+  calculateTaxSumFromBrutto,
+} from './order.utils';
+
+describe('calculateTaxSumFromBrutto method', () => {
+  it('should calculate the correct taxSum from tax and brutto inputs', () => {
+    expect(calculateTaxSumFromBrutto({ tax: 0, brutto: 10 })).toEqual(0);
+    expect(calculateTaxSumFromBrutto({ tax: 10, brutto: 11 })).toEqual(1);
+    expect(calculateTaxSumFromBrutto({ tax: 5, brutto: 10 })).toEqual(
+      0.47619047619047616,
+    );
+    expect(calculateTaxSumFromBrutto({ tax: 27, brutto: 10 })).toEqual(
+      2.125984251968504,
+    );
+  });
+});
+
 describe('calculatePriceShown method', () => {
   it('should return all the given fields without changing the currency, pricePerUnit and tax fields', () => {
     const priceShown: CrudApi.PriceShown = {

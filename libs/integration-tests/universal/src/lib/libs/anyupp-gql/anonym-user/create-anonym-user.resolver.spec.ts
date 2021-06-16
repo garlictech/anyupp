@@ -1,11 +1,9 @@
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { createAnonymUser, UserResolverDeps } from '@bgap/anyupp-gql/backend';
+import { config } from '@bgap/shared/config';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import * as AnyuppApi from 'libs/anyupp-gql/api/src';
 import { from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-
-import { createAnonymUser } from '@bgap/anyupp-gql/backend';
-import { config } from '@bgap/shared/config';
-import { UserResolverDeps } from '@bgap/anyupp-gql/backend';
 
 const TEST_NAME = 'CREATEANONYM_';
 const consumerUserPoolId = config.ConsumerUserPoolId;
@@ -91,9 +89,10 @@ describe('Anonym user creation', () => {
             expect(
               props.adminGetUserResponse.UserAttributes,
             ).not.toBeUndefined();
-            const typeAttribute = props.adminGetUserResponse.UserAttributes?.find(
-              x => x.Name === 'name',
-            );
+            const typeAttribute =
+              props.adminGetUserResponse.UserAttributes?.find(
+                x => x.Name === 'name',
+              );
             expect(typeAttribute).not.toBeUndefined();
             expect(typeAttribute).toHaveProperty('Name', 'name');
             expect(typeAttribute).toHaveProperty('Value', 'AnonymUser');

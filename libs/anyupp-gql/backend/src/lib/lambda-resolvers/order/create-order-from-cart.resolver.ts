@@ -1,6 +1,5 @@
-import { DateTime } from 'luxon';
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentStatus } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
@@ -8,19 +7,21 @@ import {
   validateGroupProduct,
   validateOrder,
   validateUnit,
+  validateUnitProduct,
 } from '@bgap/shared/data-validators';
 import {
+  calculateOrderSumPrice,
+  calculateTaxSumFromBrutto,
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
+  toFixed2Number,
 } from '@bgap/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
-
+import { DateTime } from 'luxon';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
-import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
-import { PaymentStatus } from '@bgap/crud-gql/api';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -198,7 +199,10 @@ const convertCartOrderItemToOrderItem = ({
       ),
       tax,
       taxSum: toFixed2Number(
-        cartItem.priceShown.pricePerUnit * cartItem.quantity * (tax / 100),
+        calculateTaxSumFromBrutto({
+          tax,
+          brutto: cartItem.priceShown.pricePerUnit * cartItem.quantity,
+        }),
       ),
     },
     productId: cartItem.productId,

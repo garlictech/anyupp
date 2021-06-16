@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { toFixed2Number } from '../number.utils';
 import { pipe } from 'fp-ts/function';
+import { toFixed2Number } from '../number.utils';
 
 /**
  * RE-calculate all the item prices without rounding on any of them.
@@ -39,7 +39,7 @@ const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
     });
     const itemPriceWithConfigSetPrices =
       itemPrice.priceSum + sumItemConfigSetPrices(item) * item.quantity;
-    const itemTaxSum = calculateTaxSum({
+    const itemTaxSum = calculateTaxSumFromBrutto({
       tax: item.priceShown.tax,
       brutto: itemPriceWithConfigSetPrices,
     });
@@ -102,9 +102,14 @@ export const calculatePriceShown = ({
     currency,
     pricePerUnit,
     priceSum: pricePerUnit * quantity,
-    taxSum: calculateTaxSum({ tax, brutto: pricePerUnit * quantity }),
+    taxSum: calculateTaxSumFromBrutto({ tax, brutto: pricePerUnit * quantity }),
   };
 };
 
-const calculateTaxSum = ({ tax, brutto }: { tax: number; brutto: number }) =>
-  (tax / 100 / (1 + tax / 100)) * brutto;
+export const calculateTaxSumFromBrutto = ({
+  tax,
+  brutto,
+}: {
+  tax: number;
+  brutto: number;
+}) => (tax / 100 / (1 + tax / 100)) * brutto;
