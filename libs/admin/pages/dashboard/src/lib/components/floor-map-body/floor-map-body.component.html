@@ -6,4 +6,7 @@
     [editMode]="false"
     [floorMap]="unit?.floorMap"
   ></bgap-floor-map-editor>
+  <div class="p-3" *ngIf="!unit?.floorMap">
+    {{ 'units.missingFloorMap' | translate }}
+  </div>
 </div>

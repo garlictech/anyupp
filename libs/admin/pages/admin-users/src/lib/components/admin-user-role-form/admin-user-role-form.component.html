@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>
-    <div class="float-left">
+    <div class="float-start">
       {{ 'adminUsers.editAdminUserRole' | translate }}
     </div>
     <button
@@ -49,7 +49,7 @@
 
     <nb-list-item *ngFor="let item of adminUser?.roleContexts?.items">
       <div class="w-100">
-        <div class="float-left">
+        <div class="float-start">
           <div class="subtitle-2">{{ item?.roleContext?.name | localize }}</div>
           <div class="label">
             {{ 'roles.' + item?.roleContext?.role | translate }} @
@@ -62,7 +62,7 @@
           shape="round"
           status="danger"
           size="tiny"
-          class="float-right mr-2"
+          class="float-right me-2"
           [title]="'common.delete' | translate"
           (click)="removeRole(item)"
         >
