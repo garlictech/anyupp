@@ -33,13 +33,13 @@ import {
   getDayIntervals,
 } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { IDateIntervals } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AnyuppSdkService } from '../anyupp-sdk.service';
 import { CrudSdkService } from '../crud-sdk.service';
-import { IDateIntervals } from 'libs/shared/types/src';
 
 @Injectable({
   providedIn: 'root',
