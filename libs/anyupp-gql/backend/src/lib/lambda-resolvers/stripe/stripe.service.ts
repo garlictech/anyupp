@@ -49,7 +49,7 @@ export const listStripeCards =
       .catch(handleStripeErrors);
   };
 
-// TODO: START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node
+// START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node (Covered by #804)
 export const startStripePayment =
   (userId: string, input: AnyuppApi.StartStripePaymentInput) =>
   async (
