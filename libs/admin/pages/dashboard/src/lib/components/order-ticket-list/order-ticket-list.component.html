@@ -14,6 +14,7 @@
             : 'inactive'
         "
         (click)="selectListType(EDashboardTicketListType.placed)"
+        [title]="'dashboard.actions.placedOrders' | translate"
       ></nb-action>
       <nb-action
         icon="bell-outline"
@@ -25,11 +26,12 @@
         badgePosition="bottom right"
         badgeStatus="info"
         [ngClass]="
-          dashboardSettings?.ticketListType === EDashboardTicketListType.ready
+          dashboardSettings?.ticketListType === EDashboardTicketListType.manual
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.ready)"
+        (click)="selectListType(EDashboardTicketListType.manual)"
+        [title]="'dashboard.actions.manualOrders' | translate"
       ></nb-action>
       <nb-action
         icon="alert-circle-outline"
@@ -42,11 +44,12 @@
         badgeStatus="danger"
         [ngClass]="
           dashboardSettings?.ticketListType ===
-          EDashboardTicketListType.PAYMENT_INTENTION
+          EDashboardTicketListType.problematic
             ? 'active'
             : 'inactive'
         "
-        (click)="selectListType(EDashboardTicketListType.PAYMENT_INTENTION)"
+        (click)="selectListType(EDashboardTicketListType.problematic)"
+        [title]="'dashboard.actions.problematicOrders' | translate"
       ></nb-action>
     </nb-actions>
   </nb-card-header>

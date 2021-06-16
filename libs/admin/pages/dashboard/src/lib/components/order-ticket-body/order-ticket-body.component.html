@@ -3,11 +3,11 @@
   <div class="col-12 col-md-4 p-1 md-h-100">
     <ng-container *ngIf="!dashboardSettings.orderEditing">
       <bgap-order-ticket-list
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.current"
       ></bgap-order-ticket-list>
 
       <bgap-order-ticket-history-list
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.history"
       ></bgap-order-ticket-history-list>
     </ng-container>
 
@@ -41,7 +41,7 @@
 
           <button
             *ngIf="
-              dashboardSettings.listMode === EDashboardListMode.CURRENT &&
+              dashboardSettings.listMode === EDashboardListMode.current &&
               activeOrdersCount > 1 &&
               !dashboardSettings.orderEditing
             "
@@ -57,7 +57,7 @@
         </div>
 
         <!--button
-          *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+          *ngIf="dashboardSettings.listMode === EDashboardListMode.current"
           nbButton
           class="float-right mt-1"
           [size]="buttonSize"
@@ -86,7 +86,7 @@
             *ngIf="
               !dashboardSettings.showAllUserOrders ||
               (dashboardSettings.showAllUserOrders &&
-                dashboardSettings.listMode === EDashboardListMode.HISTORY)
+                dashboardSettings.listMode === EDashboardListMode.history)
             "
             [order]="selectedOrder"
             [unit]="unit"
@@ -95,7 +95,7 @@
           <ng-container
             *ngIf="
               dashboardSettings.showAllUserOrders &&
-              dashboardSettings.listMode === EDashboardListMode.CURRENT
+              dashboardSettings.listMode === EDashboardListMode.current
             "
           >
             <ng-container *ngFor="let order of userActiveOrders">
@@ -105,7 +105,7 @@
           </ng-container>
 
           <!--bgap-order-print
-            [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.CURRENT) ? userActiveOrders : [selectedOrder]"
+            [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.current) ? userActiveOrders : [selectedOrder]"
           ></bgap-order-print-->
         </ng-container>
 
