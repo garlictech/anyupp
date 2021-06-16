@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fa_prev/models/Order.dart';
+import 'package:fa_prev/models/TransactionItem.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +14,15 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
-  final Order order;
-  const TransactionInfoWidget(this.order);
+  final TransactionItem transactionItem;
+  const TransactionInfoWidget(this.transactionItem);
 
   @override
   Widget build(BuildContext context) {
     bool showInvoice;
-    if (order.transactionItem?.invoice?.pdfUrl != null) {
+    if (transactionItem?.invoice?.pdfUrl != null) {
       showInvoice = true;
-    } else if (order.transactionItem?.receipt?.pdfData != null) {
+    } else if (transactionItem?.receipt?.pdfData != null) {
       showInvoice = false;
     }
     if (showInvoice == null) {
@@ -62,8 +63,8 @@ class TransactionInfoWidget extends StatelessWidget {
           GestureDetector(
             onTap: () => isInvoice
                 ? Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PdfWebView(order.transactionItem?.invoice?.pdfUrl)))
-                : createAndOpenPdf(order.transactionItem?.receipt?.pdfData),
+                    MaterialPageRoute(builder: (context) => PdfWebView(transactionItem?.invoice?.pdfUrl)))
+                : createAndOpenPdf(transactionItem?.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
               style: GoogleFonts.poppins(
