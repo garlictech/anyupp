@@ -72,6 +72,9 @@ dependencies:
   open_file: ^3.2.1
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
+  test: any
   flutter_test:
     sdk: flutter
   # artemis: ^6.18.4 # to generate dart classes from graphql queries
