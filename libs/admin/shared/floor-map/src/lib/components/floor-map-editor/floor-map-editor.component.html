@@ -48,14 +48,14 @@
           class="form-control p-1"
         />
       </div>
-      <div class="col-7 form-group p-1 text-left">
+      <div class="col-7 form-group p-1 text-start">
         <div class="btn-group">
           <button
             type="button"
             nbButton
             shape="round"
             size="small"
-            class="btn p-1 pl-2"
+            class="btn p-1 ps-2"
             (click)="addObject('table_r')"
           >
             ▢ {{ 'units.table' | translate }}
@@ -116,7 +116,7 @@
             nbButton
             shape="round"
             size="small"
-            class="btn p-1 pr-2"
+            class="btn p-1 pe-2"
             (click)="addObject('label')"
           >
             {{ 'units.label' | translate }}
@@ -128,7 +128,7 @@
           status="warning"
           shape="round"
           size="small"
-          class="ml-2"
+          class="ms-2"
           (click)="copyObject()"
         >
           <nb-icon icon="copy-outline"></nb-icon>
@@ -139,7 +139,7 @@
           status="danger"
           shape="round"
           size="small"
-          class="ml-2"
+          class="ms-2"
           (click)="removeObject()"
         >
           <nb-icon icon="trash-2-outline"></nb-icon>

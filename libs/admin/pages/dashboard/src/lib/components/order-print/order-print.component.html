@@ -76,7 +76,7 @@
               {{ order.variantName | localize }}
             </div>
             <div class="col-1 p-0">{{ order.quantity }}x</div>
-            <div class="col-3 p-0 text-right">
+            <div class="col-3 p-0 text-end">
               {{
                 order.priceShown.priceSum
                   | currencyFormatter: order.priceShown.currency
@@ -91,14 +91,14 @@
 
         <div *ngFor="let vat of parsedVats">
           <div class="row p-0 m-0">
-            <div class="col-1 p-0 text-right">{{ vat.tax }}%</div>
-            <div class="col-4 p-0 text-right">
+            <div class="col-1 p-0 text-end">{{ vat.tax }}%</div>
+            <div class="col-4 p-0 text-end">
               {{ vat.priceSum - vat.taxSum | currencyFormatter: vat.currency }}
             </div>
-            <div class="col-3 p-0 text-right">
+            <div class="col-3 p-0 text-end">
               {{ vat.taxSum | currencyFormatter: vat.currency }}
             </div>
-            <div class="col-4 p-0 text-right">
+            <div class="col-4 p-0 text-end">
               {{ vat.priceSum | currencyFormatter: vat.currency }}
             </div>
           </div>
@@ -110,7 +110,7 @@
           <div class="col-6 p-0 font-weight-bold">
             {{ 'common.sum' | translate }}:
           </div>
-          <div class="col-6 p-0 font-weight-bold text-right">
+          <div class="col-6 p-0 font-weight-bold text-end">
             {{ sum.value! | currencyFormatter: sum.currency! }}
           </div>
         </div>

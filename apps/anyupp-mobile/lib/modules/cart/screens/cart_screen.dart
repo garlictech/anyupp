@@ -4,8 +4,10 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -234,11 +236,11 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => 
-                  // showQrCodeScan
-                      // ? Nav.to(QRCodeScannerScreen(
-                      //     navigateToCart: true,
-                      //   ))
-                      // : 
+                  showQrCodeScan
+                      ? Nav.to(QRCodeScannerScreen(
+                          navigateToCart: true,
+                        ))
+                      : 
                       showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(
