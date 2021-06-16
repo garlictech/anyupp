@@ -2,7 +2,7 @@ import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
-import { catchError, delay, switchMap, takeLast, tap } from 'rxjs/operators';
+import { catchError, delay, switchMap, tap, toArray } from 'rxjs/operators';
 import {
   createTestCart,
   createTestChain,
@@ -201,7 +201,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           })(deps),
         ),
       ),
-      takeLast(1),
+      toArray(),
     )
     .pipe(ce('### seedBusinessData'));
 

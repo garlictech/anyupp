@@ -21,7 +21,7 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 
   const adminUser = await sdk
     .GetAdminUser({
-      id: event.request.userAttributes.sub,
+      id: event.request.userAttributes.username,
     })
     .toPromise();
 

@@ -32,7 +32,9 @@
     "workspace-generator": "nx workspace-generator",
     "postinstall": "patch-package && ngcc --properties es2015 browser module main",
     "codegen:models": "if [ -d libs/api/graphql/schema/src/lib/models ]; then rm -r libs/api/graphql/schema/src/lib/models; fi; amplify codegen models; if [ -d apps/admin/src/models ]; then mv apps/admin/src/models libs/api/graphql/schema/src/lib/models; fi",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts",
+    "deleteAllTableData": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts"
   },
   "private": true,
   "dependencies": {

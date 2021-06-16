@@ -20,3 +20,8 @@ X=$(aws ssm put-parameter \
 
 rm -f libs/crud-gql/api/src/lib/generated/api.ts
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
+
+# ----------------------------------------------------------
+# Post-processing the result
+# ----------------------------------------------------------
+mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts

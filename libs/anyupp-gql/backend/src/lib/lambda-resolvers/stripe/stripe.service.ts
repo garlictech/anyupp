@@ -99,15 +99,6 @@ export const startStripePayment =
           userId,
       );
     }
-    console.debug('startStripePayment().invoiceAddress=' + invoiceAddress);
-
-    // 2. Load order
-    let order = await loadOrder(orderId)(deps);
-    console.debug('startStripePayment().order.loaded=' + order?.id);
-
-    if (!order) {
-      throw Error('Order not found with id=' + orderId);
-    }
 
     const status = order.statusLog[order.statusLog.length - 1];
 

@@ -125,8 +125,13 @@ done
 # echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 
 # On the CI the SED is not working so this CLOSING TAG is a workaround
-RESULT+="\"  _closing_tag\": \"dont use me\"}"
+RESULT+="\"_closing_tag\": \"dont use me\"}"
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
+
+# ----------------------------------------------------------
+# Post-processing the result
+# ----------------------------------------------------------
+mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts
