@@ -252,10 +252,10 @@
   dependencies:
     tslib "^2.1.0"
 
-"@angular/google-maps@12.0.4":
-  version "12.0.4"
-  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-12.0.4.tgz#336563cebc0e29953bebb8dd2c967669c5639d1a"
-  integrity sha512-Afkjd6t+X4OVTEZ2kEmK++iLmIr5DdKJ0aovcKR2wLWXZseTJrIq0YjvK/86RGi1Z9m7odVwJxpGD13Ugk263A==
+"@angular/google-maps@12.0.5":
+  version "12.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-12.0.5.tgz#49bd93fd78694b11f21f72a9994a08d267783c6d"
+  integrity sha512-YznSOBoK73O0EBxE8ICmLw7iVZ6LEugqjwJmg0kxYLuHQ3u+LXevZAZoxAVD9/Vppm1p9hMRYHcfJZlH3AMB5A==
   dependencies:
     "@types/googlemaps" "^3.43.1"
     tslib "^2.1.0"
@@ -8681,10 +8681,10 @@ aws-sdk@*, aws-sdk@^2.518.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@2.929.0:
-  version "2.929.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.929.0.tgz#fa0bfc0e97f0b38b2086f83eb1546d946b6215c9"
-  integrity sha512-rJ36UbkGhB8qhR4eH0D+TgNPA6wwwKh4885fN/v9uToNd8/Fz8HdgNLw9uy0QYOFOgqK99eWfpMGQyOR6DL+Bg==
+aws-sdk@2.930.0:
+  version "2.930.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.930.0.tgz#f98871a790ffdbfae5439e50db99f6d4635afe19"
+  integrity sha512-g8fPOy7Skh2Pqpz2SaDI+M9re2rjTWBQUirAMgtUD/6I/Lf6CR1Q0amsjtQU8WqRQH06kNGwuLtc8Tt6wAux3Q==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
