@@ -174,6 +174,7 @@ export class AppsyncAppStack extends sst.Stack {
           ],
           resources: [
             tableConfig.GeneratedProduct.TableArn,
+            tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
           ],
         }),

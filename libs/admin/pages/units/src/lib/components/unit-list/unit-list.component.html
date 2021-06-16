@@ -11,6 +11,7 @@
       class="float-right"
       [disabled]="!(selectedGroupId$ | async)"
       (click)="addUnit()"
+      [title]="'units.addUnit' | translate"
     >
       <nb-icon icon="plus-outline"></nb-icon>
     </button>
