@@ -2,7 +2,7 @@ interface ObjectWithId {
   id: string;
 }
 
-export const getSortedIds = (input: Array<ObjectWithId>) =>
+export const getSortedIds = (input: Array<ObjectWithId>): Array<string> =>
   input.map(x => x.id).sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
 
 export const sortById = <T extends ObjectWithId>(input: Array<T>): Array<T> =>
