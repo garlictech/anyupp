@@ -82,7 +82,7 @@ class TransactionCard extends StatelessWidget {
                 right: 20.0,
               ),
               child: Text(
-                formatter.format(dateTime),
+                formatter.format(dateTime.toLocal()),
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,

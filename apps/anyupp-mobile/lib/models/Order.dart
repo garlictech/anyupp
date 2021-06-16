@@ -195,7 +195,9 @@ class Order extends Model {
         created = json['createdAt'],
         status = enumFromString<OrderStatus>(json['status'], OrderStatus.values),
         archived = json['archived'],
-        transactionItem = json['transaction'] != null ? TransactionItem.fromMap(Map<String, dynamic>.from(json['transaction'])) : null;
+        transactionItem = json['transaction'] != null
+            ? TransactionItem.fromMap(Map<String, dynamic>.from(json['transaction']))
+            : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -213,7 +215,7 @@ class Order extends Model {
         'createdAt': created,
         'status': enumToString(status),
         'archived': archived,
-        'transaction' : transactionItem.toMap()
+        'transaction': transactionItem.toMap()
       };
 
   String getFormattedDate() {
@@ -221,7 +223,7 @@ class Order extends Model {
     final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     if (this.created != null) {
       try {
-        DateTime dateTime = parser.parseUTC(created);
+        DateTime dateTime = parser.parseUTC(created).toLocal();
         return formatter.format(dateTime);
       } on Exception {
         return "";

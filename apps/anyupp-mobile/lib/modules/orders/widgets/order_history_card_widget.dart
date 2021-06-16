@@ -84,13 +84,13 @@ class OrderHistoryCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+             order.orderNum != null ? Text(
                 '${order.orderNum}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
                 ),
-              ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.only(
                   right: 20.0,
