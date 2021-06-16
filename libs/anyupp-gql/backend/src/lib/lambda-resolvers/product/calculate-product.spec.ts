@@ -13,7 +13,7 @@ import {
 } from './calculate-product';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct: Product = {
+  const baseProduct: Product & { unitId: string } = {
     id: 'PRODUCT_ID',
     chainId: 'CHAIN_ID',
     groupId: 'GROUP_ID',
