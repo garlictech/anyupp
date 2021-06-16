@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       this._store.dispatch(dashboardActions.resetSelectedOrderId());
 
-      if (listMode !== EDashboardListMode.CURRENT) {
+      if (listMode !== EDashboardListMode.current) {
         this._store.dispatch(
           dashboardActions.setOrderEditing({
             orderEditing: false,

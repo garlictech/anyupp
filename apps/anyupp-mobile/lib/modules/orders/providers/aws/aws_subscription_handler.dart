@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 
 typedef CreateModelFromJson<T extends Model> = T Function(Map<String, dynamic> json);
 typedef FilterModelFromJson<T extends Model> = bool Function(T model);
+typedef SortItems<T extends Model> = void Function(List<T> items);
 
 class AwsSubscription<T extends Model> {
   StreamSubscription<QueryResult> _listSubscription;
@@ -22,6 +23,7 @@ class AwsSubscription<T extends Model> {
   final String subscriptionNodeName;
   final CreateModelFromJson<T> modelFromJson;
   final FilterModelFromJson<T> filterModel;
+  final SortItems<T> sortItems;
 
   ValueNotifier<GraphQLClient> _client;
 
@@ -33,6 +35,7 @@ class AwsSubscription<T extends Model> {
     this.subscriptionNodeName,
     this.modelFromJson,
     this.filterModel,
+    this.sortItems,
   }) : _authProvider = authProvider;
 
   Stream<List<T>> get stream => _listController?.stream;
@@ -59,32 +62,34 @@ class AwsSubscription<T extends Model> {
           variables: variables,
           fetchPolicy: FetchPolicy.networkOnly,
         ),
-      )
-          .listen((QueryResult result) async {
+      ).listen((QueryResult result) async {
         print('**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
         // print('**** startListSubscription().onData.context=${result.context}');
         // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
         if (!result.hasException) {
-          T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          print('**** startListSubscription[$listNodeName].onData.item=$item');
-          if (_items == null) {
-            _items = [];
-          }
-          int index = _items.indexWhere((o) => o.id == item.id);
-          // print('**** startListSubscription[$listNodeName].index=$index');
-          if (index != -1) {
-            bool isFiltered = filterModel(item) ?? true;
-            if (isFiltered) {
-              _items[index] = item;
-              _listController.add(_items);
-            } else {
-              _items.removeAt(index);
-              _listController.add(_items);
-            }
-          } else {
-            _items.add(item);
-            _listController.add(_items);
-          }
+          _items = await _getList(variables);
+          print('**** startListSubscription[$listNodeName].items=${_items?.length}');
+          _listController.add(_items);
+          // T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
+          // print('**** startListSubscription[$listNodeName].onData.item=$item');
+          // if (_items == null) {
+          //   _items = [];
+          // }
+          // int index = _items.indexWhere((o) => o.id == item.id);
+          // // print('**** startListSubscription[$listNodeName].index=$index');
+          // if (index != -1) {
+          //   bool isFiltered = filterModel(item) ?? true;
+          //   if (isFiltered) {
+          //     _items[index] = item;
+          //     _listController.add(_items);
+          //   } else {
+          //     _items.removeAt(index);
+          //     _listController.add(_items);
+          //   }
+          // } else {
+          //   _items.add(item);
+          //   _listController.add(_items);
+          // }
         } else {
           print('**** startListSubscription[$listNodeName].exception=${result.exception}');
           _listController.add(_items);
@@ -105,7 +110,7 @@ class AwsSubscription<T extends Model> {
     try {
       QueryResult result = await GQL.amplify.executeQuery(
         query: listQuery,
-         variables: variables,
+        variables: variables,
         fetchPolicy: FetchPolicy.networkOnly,
       );
 
@@ -123,10 +128,22 @@ class AwsSubscription<T extends Model> {
 
       List<T> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(modelFromJson(Map<String, dynamic>.from(items[i])));
+        T item = modelFromJson(Map<String, dynamic>.from(items[i]));
+        // results.add(item);
+        if (filterModel != null) {
+          if (filterModel(item)) {
+            results.add(item);
+          }
+        } else {
+          results.add(item);
+        }
       }
 
-      // print('***** _getList().results=$results');
+      if (sortItems != null) {
+        sortItems(results);
+      }
+
+      print('***** _getList().results.length=${results.length}');
       return results;
     } on Exception catch (e) {
       print('_getList.Exception: $e');

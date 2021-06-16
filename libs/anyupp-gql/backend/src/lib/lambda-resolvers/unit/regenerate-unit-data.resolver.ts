@@ -1,6 +1,3 @@
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   validateChainProduct,
@@ -19,9 +16,11 @@ import {
   filterNullishGraphqlListWithDefault,
   getNoProductInUnitgError,
 } from '@bgap/shared/utils';
-
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { deleteGeneratedProductsForAUnitFromDb } from '../product';
+import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
 import {
   calculateActualPricesAndCheckActivity,
   toCreateGeneratedProductInputType,
@@ -63,20 +62,27 @@ export const regenerateUnitData =
           props.mergedProducts,
         ),
       })),
-      map(props =>
-        props.products.map(product =>
+      map(props => ({
+        ...props,
+        generatedProducts: props.products.map(product =>
           toCreateGeneratedProductInputType({
             product,
-            unitId: props.mergedProducts[0].unitId,
+            unitId,
             productComponentSetMap: props.productComponentSetMap,
             productComponentMap: props.productComponentMap,
             productConfigSets: product.configSets,
           }),
         ),
+      })),
+      switchMap(props =>
+        createGeneratedProductsInDb(props.generatedProducts).pipe(mapTo(props)),
       ),
-      // store generatedProducts in the db
-      switchMap(createGeneratedProductsInDb),
-      mapTo(true),
+      switchMap(props =>
+        reGenerateActiveProductCategoriesForAUnit(deps)({
+          unitId,
+          generatedProducts: props.generatedProducts,
+        }),
+      ),
     );
   };
 

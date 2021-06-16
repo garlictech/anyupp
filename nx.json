@@ -27,8 +27,8 @@
   },
   "projects": {
     "admin": {
-      "implicitDependencies": ["anyupp-backend"],
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:website", "platform:angular"],
+      "implicitDependencies": ["anyupp-backend"]
     },
     "admin-e2e": {
       "tags": [],

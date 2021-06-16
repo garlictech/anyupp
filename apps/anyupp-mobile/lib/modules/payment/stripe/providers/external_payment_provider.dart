@@ -41,8 +41,8 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
 
    @override
   Future<void> startOrderExternalPayment(String orderId, String orderMethod, UserInvoiceAddress invoiceAddress) async {
-    print('startOrderExternalPayment().orderId=$orderId');
-    if (orderId == null) {
+    print('startOrderExternalPayment().orderId=$orderId, orderMethod=$orderMethod, invoice=$invoiceAddress');
+  if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
@@ -53,7 +53,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       variables: createStartPaymentRequestVariables(
         orderId: orderId,
         paymentMethod: orderMethod,
-        paymentMethodId: 'cash',
+        paymentMethodId: orderMethod,
         saveCard: false,
         invoiceAddress: invoiceAddress,
       ),

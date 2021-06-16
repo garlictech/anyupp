@@ -5,6 +5,7 @@ export { createOrderResolvers } from './lib/lambda-resolvers/order/order-resolve
 export { orderRequestHandler } from './lib/lambda-resolvers/order/order-request-handler';
 
 export * from './lib/lambda-resolvers/product';
+export * from './lib/lambda-resolvers/product-category';
 export * from './lib/lambda-resolvers/user';
 export * from './lib/lambda-resolvers/unit';
 export * from './lib/lambda-resolvers/stripe';

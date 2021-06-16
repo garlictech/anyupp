@@ -1,8 +1,14 @@
+import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
+import * as Szamlazz from 'szamlazz.js';
+import { createInvoice } from '../../szamlazzhu';
+import { createReceiptSzamlazzHu } from '../../szamlazzhu/receipt';
+import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
 import {
   loadOrder,
   loadTransactionByExternalTransactionId,
@@ -11,13 +17,7 @@ import {
   updateOrderState,
   updateTransactionState,
 } from './stripe-graphql-crud';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { StripeResolverDeps } from './stripe.utils';
-import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
-import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
-import { createInvoice } from '../../szamlazzhu';
-import * as Szamlazz from 'szamlazz.js';
-import { createReceiptSzamlazzHu } from '../../szamlazzhu/receipt';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,
@@ -136,7 +136,7 @@ const handleInvoice =
         user,
         transaction,
         order,
-        language: Szamlazz.Language.Hungarian, // TODO: get the user's preferred language
+        language: Szamlazz.Language.Hungarian, // get the user's preferred language (Covered by #747)
       });
 
       const invoiceData: Szamlazz.SendRequestResponse =
@@ -254,6 +254,7 @@ const handleSuccessTransaction =
         transaction.userId,
         CrudApi.OrderStatus.placed,
         transaction.id,
+        CrudApi.PaymentStatus.success,
       )(deps);
       // console.debug('***** handleSuccessTransaction().success()');
       if (transaction.invoiceId) {
@@ -283,5 +284,12 @@ const handleFailedTransaction =
         CrudApi.PaymentStatus.failed,
       )(deps);
       console.debug('***** handleFailedTransaction().success()');
+      await updateOrderState(
+        transaction.orderId,
+        transaction.userId,
+        undefined, // Do nothing with order state if transaction failed
+        transaction.id,
+        CrudApi.PaymentStatus.failed,
+      )(deps);
     }
   };

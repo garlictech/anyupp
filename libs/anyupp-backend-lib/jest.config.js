@@ -2,9 +2,7 @@ module.exports = {
   displayName: 'anyupp-backend-lib',
   preset: '../../jest.preset.js',
   globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
+    'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
   },
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',

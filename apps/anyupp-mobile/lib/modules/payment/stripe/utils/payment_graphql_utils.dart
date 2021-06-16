@@ -11,7 +11,7 @@ Map<String, dynamic> createStartPaymentRequestVariables({
 }) {
   Map<String, dynamic>  map = {
     'orderId': orderId,
-    'paymentMethod': 'inapp',
+    'paymentMethod': paymentMethod,
     'paymentMethodId': paymentMethodId,
     'savePaymentMethod': saveCard,
     'invoiceAddress': invoiceAddress?.toMap(),

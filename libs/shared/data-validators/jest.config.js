@@ -2,9 +2,7 @@ module.exports = {
   displayName: 'shared-data-validators',
   preset: '../../../jest.preset.js',
   globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
+    'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
   },
   testEnvironment: 'node',
   transform: {

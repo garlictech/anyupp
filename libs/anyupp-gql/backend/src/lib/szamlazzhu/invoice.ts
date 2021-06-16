@@ -45,8 +45,7 @@ export const createInvoice =
         'The externalTransactionId is missing from the transaction.',
       );
     }
-    // TODO: user from transaction.currency
-    const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF;
+    const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF; // should use currency from transaction.currency (Covered by #750)
 
     // User
     const buyer = new Szamlazz.Buyer({
@@ -63,8 +62,7 @@ export const createInvoice =
 
     // OrderItems
     const items = order.items.map(orderItem => {
-      // TODO: use the language input param
-      let label = orderItem.productName.hu;
+      let label = orderItem.productName.hu; // Should use the language input param (Covered by #750)
       if (!label) {
         label = orderItem.productName.en;
         if (!label) {
@@ -76,7 +74,7 @@ export const createInvoice =
       return new Szamlazz.Item({
         label,
         quantity: orderItem.quantity,
-        unit: 'db', // TODO: translate it in the future
+        unit: 'db', // Should be translated it in the future (Covered by #751)
         vat: orderItem.priceShown.tax, // can be a number or a special string
         grossUnitPrice: orderItem.priceShown.pricePerUnit, // calculates gross and net values from per item net
       });

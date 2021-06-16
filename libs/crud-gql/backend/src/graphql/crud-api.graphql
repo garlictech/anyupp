@@ -262,8 +262,10 @@ type OrderItem {
 ### Order
 type Order
   @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "byDate", fields: ["id", "createdAt"]) {
   id: ID!
+  createdAt: String!
   userId: ID!
   unitId: ID!
   orderNum: String!
@@ -275,14 +277,17 @@ type Order
   takeAway: Boolean!
   place: Place
   paymentIntention: Float
+  transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }
 
 type OrderHistory
   @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "byDate", fields: ["id", "createdAt"]) {
   id: ID!
+  createdAt: String!
   userId: ID!
   unitId: ID!
   orderNum: String!
@@ -488,6 +493,17 @@ type Availability {
   timeFrom: String
   timeTo: String
   price: Float!
+}
+
+type GeneratedProductCategory
+  @model
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  id: ID!
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
 }
 
 type GeneratedProduct

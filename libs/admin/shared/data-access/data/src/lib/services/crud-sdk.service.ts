@@ -51,6 +51,28 @@ export class CrudSdkService {
       .subscribe();
   }
 
+  public doListQuery<T>(
+    resetAction: TypedAction<string> | undefined,
+    listOp: Observable<
+      | { items?: Array<T | undefined | null> | undefined | null }
+      | undefined
+      | null
+    >,
+    upsertActionCreator: (items: T[]) => TypedAction<string>,
+  ) {
+    if (resetAction) {
+      this._store.dispatch(resetAction);
+    }
+
+    return listOp.pipe(
+      filterNullish(),
+      map(list => list.items),
+      filterNullishElements(),
+      tap(items => this._store.dispatch(upsertActionCreator(items))),
+      catchGqlError(this._store),
+    );
+  }
+
   public doMutation<T>(mutationOp: Observable<T | null | undefined>) {
     return mutationOp.pipe(catchGqlError(this._store));
   }

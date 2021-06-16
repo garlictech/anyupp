@@ -10,7 +10,10 @@ import {
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
 import {
   loggedUserActions,
@@ -313,8 +316,7 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this._crudSdk.doListSubscription<any>(
+    this._crudSdk.doListSubscription(
       ordersActions.resetActiveOrders(),
       this._crudSdk.sdk.ListOrders({
         filter: { unitId: { eq: unitId }, archived: { ne: true } },
@@ -323,57 +325,40 @@ export class DataService {
         unitId,
         archived: false,
       }),
-      (orders: CrudApi.Order[]) => {
-        // TODO Hack... Later we should use pubsub for subscription filtering
-        return ordersActions.upsertActiveOrders({
-          orders: orders.filter(o => o.unitId === unitId && !o.archived),
-        });
-      },
+      (orders: CrudApi.Order[]) =>
+        ordersActions.upsertActiveOrders({
+          orders,
+        }),
       this._settingsChanged$,
     );
 
-    /*
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryDate),
-        tap(() => {
-          this._store.dispatch(
-            ordersActions.setAllHistoryOrders({
-              orders: [],
-            }),
-          );
-        }),
-        switchMap((historyDate: number) => {
-          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-          return this._angularFireDatabase
-            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
-              ref
-                .orderByChild('created')
-                .startAt(dayIntervals.from)
-                .endAt(dayIntervals.to),
-            )
-            .stateChanges();
-        }),
-        takeUntil(this._settingsChanged$),
-      )
-      .subscribe((data): void => {
-        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
-          this._store.dispatch(
-            ordersActions.removeHistoryOrder({
-              orderId: data.key || '',
-            }),
-          );
-        } else {
-          this._store.dispatch(
-            ordersActions.upsertHistoryOrder({
-              order: {
-                ...(<IOrder>data.payload.val()),
-                id: data.key || '',
+        switchMap((/*historyDate: number*/) => {
+          // const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+
+          return this._crudSdk.doListQuery(
+            ordersActions.resetHistoryOrders(),
+            this._crudSdk.sdk.ListOrders({
+              filter: {
+                unitId: { eq: unitId },
+                archived: { eq: true },
+                /* will be activated after green PR
+                createdAt: {
+                  ge: new Date(dayIntervals.from).toISOString(),
+                  le: new Date(dayIntervals.to).toISOString(),
+                },*/
               },
             }),
+            (orders: CrudApi.Order[]) =>
+              ordersActions.upsertHistoryOrders({
+                orders,
+              }),
           );
-        }
-      });*/
+        }),
+      )
+      .subscribe();
   }
 
   private _subscribeToAdminUsers(): void {

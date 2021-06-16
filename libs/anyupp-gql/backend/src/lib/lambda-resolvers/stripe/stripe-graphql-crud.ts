@@ -161,8 +161,9 @@ export const updateOrderState =
   (
     id: string,
     userId: string,
-    status: CrudApi.OrderStatus,
-    transactionId: string,
+    status?: CrudApi.OrderStatus | undefined,
+    transactionId?: string | undefined,
+    transactionStatus?: CrudApi.PaymentStatus | undefined,
   ) =>
   (deps: StripeResolverDeps) => {
     console.debug(
@@ -179,13 +180,16 @@ export const updateOrderState =
       input: {
         id: id,
         transactionId: transactionId,
-        statusLog: [
-          {
-            status,
-            ts: Date.now(),
-            userId: userId,
-          },
-        ],
+        transactionStatus: transactionStatus,
+        statusLog: status
+          ? [
+              {
+                status,
+                ts: Date.now(),
+                userId: userId,
+              },
+            ]
+          : undefined,
       },
     };
     return deps.crudSdk.UpdateOrder(updateOrderVars).toPromise();

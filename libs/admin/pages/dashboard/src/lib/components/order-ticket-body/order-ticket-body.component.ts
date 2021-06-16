@@ -75,7 +75,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           ): Observable<CrudApi.Order | undefined> => {
             return this._store.pipe(
               select(
-                listMode === EDashboardListMode.CURRENT
+                listMode === EDashboardListMode.current
                   ? dashboardSelectors.getSelectedActiveOrder()
                   : dashboardSelectors.getSelectedHistoryOrder(),
               ),

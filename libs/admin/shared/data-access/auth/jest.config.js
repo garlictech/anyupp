@@ -3,9 +3,7 @@ module.exports = {
   displayName: 'admin-shared-data-access-auth',
   preset: '../../../../../jest.preset.js',
   globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
+    'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
   },
   testEnvironment: 'node',
   transform: {

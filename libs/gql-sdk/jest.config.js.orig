@@ -1,0 +1,22 @@
+module.exports = {
+  displayName: 'gql-sdk',
+  preset: '../../jest.preset.js',
+  globals: {
+<<<<<<< HEAD
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+    },
+||||||| dbeda1c5
+    'ts-jest': {
+      tsConfig: '<rootDir>/tsconfig.spec.json',
+    },
+=======
+    'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
+>>>>>>> dev
+  },
+  transform: {
+    '^.+\\.[tj]sx?$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  coverageDirectory: '../../coverage/libs/gql-sdk',
+};
