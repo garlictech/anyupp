@@ -1,4 +1,8 @@
-import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
+import {
+  otherAdminEmails,
+  testAdminEmail,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
@@ -30,10 +34,7 @@ const ce = (tag: string) =>
   });
 
 const userData = pipe(
-  [
-    testAdminEmail,
-    // ...otherAdminEmails
-  ],
+  [testAdminEmail, ...otherAdminEmails],
   fp.map(email => ({ email, username: email.split('@')[0] })),
 );
 
@@ -210,7 +211,7 @@ export const seedAll = (deps: SeederDependencies) =>
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
     switchMap(() =>
-      concat(
+      combineLatest(
         userData.map(({ username }) =>
           createTestAdminRoleContext(
             1,

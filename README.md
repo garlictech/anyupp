@@ -318,6 +318,15 @@ To execute the seeder locally run the following command:
 ### Test user
 
 - A test user: username: `test@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
+- Additional test users (same password, context):
+
+```
+  test-bob@anyupp.com,
+  test-alice@anyupp.com,
+  test-monad@anyupp.com,
+  test-kati@anyupp.com,
+  test-emen@anyupp.com,
+```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
 https://temp-mail.org/hu/

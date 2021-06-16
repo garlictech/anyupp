@@ -12,6 +12,8 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   Amplify.configure(awsConfig);
   const desiredContext = event.request.userAttributes['custom:context'];
 
+  console.debug('EVENT:', event);
+
   const sdk = getCrudSdkForIAM(
     'AKIAYIT7GMY5WQZFXOOX',
     'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
@@ -21,10 +23,12 @@ export const handler: PreTokenGenerationTriggerHandler = async (
 
   const adminUser = await sdk
     .GetAdminUser({
-      id: event.request.userAttributes.username,
+      id: event.userName,
     })
     .toPromise();
 
+  console.debug(':USER', adminUser);
+  //
   // Find the role
   const role = (adminUser?.roleContexts?.items || []).find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
