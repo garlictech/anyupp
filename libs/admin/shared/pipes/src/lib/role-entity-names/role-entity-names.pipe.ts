@@ -30,7 +30,7 @@ export class RoleEntityNamesPipe implements PipeTransform {
         startWith(''),
       );
 
-    if (roleContext?.role === 'superuser') {
+    if (roleContext?.role === 'superuser' || roleContext?.role === 'inactive') {
       entitiesPath$ = of('');
     } else {
       if (!roleContext || !roleContext.chainId) {
