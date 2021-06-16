@@ -215,7 +215,7 @@ class Order extends Model {
         'createdAt': created,
         'status': enumToString(status),
         'archived': archived,
-        'transaction': transactionItem.toMap()
+        'transaction': transactionItem?.toMap()
       };
 
   String getFormattedDate() {
