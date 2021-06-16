@@ -1,6 +1,12 @@
 <nb-card>
   <nb-card-header>
-    <div class="float-start">{{ tableId }}/{{ seatId }}</div>
+    <div class="float-start" *ngIf="mode === 'table'">
+      {{ 'units.table' }} #{{ tableId }}
+    </div>
+    <div class="float-start" *ngIf="mode === 'seat'">
+      {{ 'units.seat' }} #{{ tableId }}/{{ seatId }}
+    </div>
+
     <button
       nbButton
       ghost
@@ -13,7 +19,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <ng-container *ngFor="let userOrder of tableOrders!.userOrders">
+    <ng-container *ngFor="let userOrder of tableOrders?.userOrders">
       <div class="mb-2 font-weight-bold">
         <nb-icon class="user-icon" icon="person-outline"></nb-icon>
         {{ userOrder.userId }}

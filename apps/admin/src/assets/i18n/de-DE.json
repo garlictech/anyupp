@@ -275,6 +275,7 @@
     "addLane": "Add lane",
     "regenerateMenu": "Regenerate menu",
     "editFloorMap": "Edit floor map",
+    "missingFloorMap": "Missing floor map data.",
     "table": "Table",
     "seat": "Seat",
     "counter": "Counter",

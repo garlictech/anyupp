@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  IFloorMapTableOrderObjects,
+  IFloorMapOrderObjects,
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
   ILaneOrderItem,
@@ -151,10 +151,31 @@ export const getOrdersByUser = (
 };
 
 export const getTableOrders = (
+  tableIds: string[],
+  ordersByUser: IFloorMapUserOrderObjects,
+): IFloorMapOrderObjects => {
+  const tableOrders: IFloorMapOrderObjects = {};
+
+  tableIds.forEach((tsID: string): void => {
+    const userOrders = Object.values(ordersByUser).filter(
+      (userOrder: IFloorMapUserOrders): boolean =>
+        userOrder.lastOrder.place?.table === tsID,
+    );
+
+    tableOrders[tsID] = {
+      tsID,
+      userOrders,
+    };
+  });
+
+  return tableOrders;
+};
+
+export const getTableSeatOrders = (
   tableSeatIds: string[],
   ordersByUser: IFloorMapUserOrderObjects,
-): IFloorMapTableOrderObjects => {
-  const tableOrders: IFloorMapTableOrderObjects = {};
+): IFloorMapOrderObjects => {
+  const tableSeatOrders: IFloorMapOrderObjects = {};
 
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
@@ -164,7 +185,7 @@ export const getTableOrders = (
         }` === tsID,
     );
 
-    tableOrders[tsID] = {
+    tableSeatOrders[tsID] = {
       tsID,
       userOrders,
       hasPaymentIntention: userOrders
@@ -176,5 +197,5 @@ export const getTableOrders = (
     };
   });
 
-  return tableOrders;
+  return tableSeatOrders;
 };

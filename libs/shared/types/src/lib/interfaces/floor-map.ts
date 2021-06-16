@@ -14,15 +14,15 @@ export interface IFloorMapUserOrderObjects {
   [userId: string]: IFloorMapUserOrders;
 }
 
-export interface IFloorMapTableOrders {
+export interface IFloorMapOrders {
   tsID: string;
   userOrders: IFloorMapUserOrders[];
-  hasPaymentIntention: boolean;
-  lowestStatus: CrudApi.OrderStatus;
+  hasPaymentIntention?: boolean;
+  lowestStatus?: CrudApi.OrderStatus;
 }
 
-export interface IFloorMapTableOrderObjects {
-  [tableSeatId: string]: IFloorMapTableOrders;
+export interface IFloorMapOrderObjects {
+  [tableSeatId: string]: IFloorMapOrders;
 }
 
 export interface IFabricObject extends fabric.Object {
