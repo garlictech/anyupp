@@ -1,5 +1,5 @@
 diff --git a/node_modules/@serverless-stack/cli/bin/scripts.js b/node_modules/@serverless-stack/cli/bin/scripts.js
-index 065e687..f1799d9 100755
+index c376d22..7b03987 100755
 --- a/node_modules/@serverless-stack/cli/bin/scripts.js
 +++ b/node_modules/@serverless-stack/cli/bin/scripts.js
 @@ -18,6 +18,7 @@ const fs = require("fs-extra");
@@ -10,7 +10,7 @@ index 065e687..f1799d9 100755
  const { logger, initializeLogger } = require("@serverless-stack/core");
  
  const packageJson = require("../package.json");
-@@ -353,7 +354,17 @@ switch (script) {
+@@ -358,7 +359,17 @@ switch (script) {
  
      // Prepare app
      prepareCdk(argv, cliInfo, config)
