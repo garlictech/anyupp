@@ -25,7 +25,8 @@
 .bg-ready {
   background-color: nb-theme(color-info-500) !important;
 }
-.bg-paid {
+.bg-paid,
+.bg-served {
   background-color: nb-theme(color-success-500) !important;
 }
 .bg-rejected,

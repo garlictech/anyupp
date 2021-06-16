@@ -20,6 +20,7 @@ import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { toFixed2Number, calculateOrderSumPrice } from '@bgap/shared/utils';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
+import { PaymentStatus } from '@bgap/crud-gql/api';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -44,8 +45,8 @@ export const createOrderFromCart =
         ),
       ),
       switchMap(cart =>
+        // create catchError and custom error (Covered by #744)
         getUnit(cart.unitId)(deps).pipe(
-          // TODO: ??? create catchError and custom error
           map(unit => ({ cart, unit })),
           // UNIT.IsAcceptingOrders CHECK
           switchMap(props =>
@@ -53,14 +54,13 @@ export const createOrderFromCart =
               ? of(props)
               : throwError(getUnitIsNotAcceptingOrdersError()),
           ),
+          // Re enable this (Covered by #746)
           // INSPECTIONS
-          // TODO: distance check
           //     // if (
           //     //   !userLocation ||
           //     //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
           //     //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
           //     // ) {
-          //     //   // TODO: re enable this when the FE is ready throw getUserIsTooFarFromUnitError();
           //     //   console.log('###: User is too far from the UNIT error should be thrown');
           //     // }
         ),
@@ -137,6 +137,7 @@ const toOrderInputFormat = ({
     sumPriceShown: calculateOrderSumPrice(items),
     place,
     unitId,
+    transactionStatus: PaymentStatus.waiting_for_payment,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
   };

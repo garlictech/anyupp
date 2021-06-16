@@ -27,7 +27,8 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
           transEx(
               Catcher.navigatorKey.currentContext, 'error.$subCode.title', details, 'error.$code.title', 'error.title'),
           transEx(Catcher.navigatorKey.currentContext, 'error.$subCode.description', details, 'error.$code.description',
-              'error.description'));
+              'error.description'),
+          exceptionDetails: event.exception.toString());
     }
   }
 }

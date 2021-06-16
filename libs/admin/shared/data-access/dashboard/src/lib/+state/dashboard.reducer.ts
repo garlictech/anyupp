@@ -30,7 +30,7 @@ export interface DashboardPartialState {
 
 export const initialState: DashboardState = {
   settings: {
-    listMode: EDashboardListMode.CURRENT,
+    listMode: EDashboardListMode.current,
     size: EDashboardSize.NORMAL,
     orderEditing: false,
     showAllUserOrders: false,

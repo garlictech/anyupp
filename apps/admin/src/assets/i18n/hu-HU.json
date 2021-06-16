@@ -118,6 +118,17 @@
     "listTitle": "Vezérlőpult",
     "isAcceptingOrders": "Rendeléseket fogad",
     "defaultLane": "Default",
+    "actions": {
+      "fontSize": "Betűméret",
+      "floorMap": "Asztal térkép",
+      "lanes": "Pályák",
+      "current": "Aktív rendelések",
+      "history": "Rendelés történet",
+      "reports": "Statisztikák",
+      "placedOrders": "Beküldött rendelések",
+      "manualOrders": "KP/Kártyás fizetések",
+      "problematicOrders": "Problémás rendelések"
+    },
     "reports": {
       "salesPerType": "Termék típusok",
       "salesPerPaymentMethod": "Fizetési típusok",
@@ -135,6 +146,7 @@
     "listTitle": "Chainek",
     "editChain": "Chain szerkesztése",
     "newChain": "Új chain",
+    "addChain": "Chain hozzáadása",
     "style": {
       "style": "Stílus",
       "colors": {
@@ -161,6 +173,7 @@
     "unitProducts": "Unit termékek",
     "editProduct": "Termék szerkesztése",
     "extendProduct": "Termék származtatása",
+    "addProduct": "Termék hozzáadása",
     "newProduct": "Új termék",
     "availability": "Elérhetőség",
     "isAvailable": "Elérhető",
@@ -214,6 +227,7 @@
     "takeaway": "Elvitelre"
   },
   "productCategories": {
+    "addProductCategory": "Termék kategória hozzáadása",
     "listTitle": "Termék kategóriák",
     "editProductCategory": "Kategória szerkesztése",
     "newProductCategory": "Új kategória"
@@ -223,6 +237,8 @@
     "newProductComponent": "Új termék komponens"
   },
   "productComponentSets": {
+    "addProductComponent": "Termék komponens hozzáadása",
+    "addProductComponentSet": "Módosító vagy extra hozzáadása",
     "editProductComponentSet": "Termék komponens készlet szerkesztése",
     "newProductComponentSet": "Új termék komponens készlet",
     "productComponent": "Termék komponens",
@@ -240,6 +256,7 @@
   },
   "groups": {
     "listTitle": "Groupok",
+    "addGroup": "Group hozzáadása",
     "editGroup": "Group szerkesztése",
     "newGroup": "Új group"
   },
@@ -247,6 +264,7 @@
     "listTitle": "Unitok",
     "editUnit": "Unit szerkesztése",
     "newUnit": "Új unit",
+    "addUnit": "Unit hozzáadása",
     "open": "Nyitva",
     "openFrom": "Nyitva -tól",
     "openTo": "Nyitva -ig",
@@ -271,12 +289,14 @@
   },
   "adminUsers": {
     "listTitle": "Adminisztrátorok",
+    "addAdminUser": "Adminisztrátor hozzáadása",
     "editAdminUser": "Adminisztrátor szerkesztése",
     "newAdminUser": "Új adminisztrátor",
     "editAdminUserRole": "Adminisztrátori jogok szerkesztése"
   },
   "roleContexts": {
     "listTitle": "Jogkörnyezetek",
+    "addRoleContext": "Jogkörnyezet hozzáadása",
     "editAdminUser": "Jogkörnyezet szerkesztése",
     "newAdminUser": "Új jogkörnyezet",
     "contextId": "Jogkörnyezet azonosító"

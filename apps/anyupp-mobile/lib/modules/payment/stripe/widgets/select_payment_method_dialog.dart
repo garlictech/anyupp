@@ -21,6 +21,7 @@ showSelectStripePaymentDialog(BuildContext context, {OnPaymentMethodSelected onI
         ),
         elevation: 0.0,
         backgroundColor: theme.background,
+        insetPadding: EdgeInsets.only(left: 8.0, right: 8.0),
         child: SelectStripePaymentMethodWidget(
           onItemSelected: (StripePaymentMethod method)  {
             print('showSelectStripePaymentDialog().method=$method');

@@ -14,6 +14,7 @@ export class FormTextInputComponent {
   @Input() type!: string;
   @Input() fieldSize: NbComponentSize = 'small';
   @Input() inputId = '';
+  @Input() readonly = false;
 
   constructor() {
     this.fieldSize = 'small';

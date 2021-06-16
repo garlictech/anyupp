@@ -12,6 +12,12 @@
         shape="round"
         size="small"
         (click)="addItem()"
+        [title]="
+          (selectedTab === eModExtTab.PRODUCT_COMPONENTS
+            ? 'productComponentSets.addProductComponent'
+            : 'productComponentSets.addProductComponentSet'
+          ) | translate
+        "
       >
         <nb-icon icon="plus-outline"></nb-icon>
       </button>
