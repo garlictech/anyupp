@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>
-    <div class="float-left">
+    <div class="float-start">
       {{
         (productComponentSet?.id
           ? 'productComponentSets.editProductComponentSet'
@@ -125,7 +125,7 @@
             "
           >
             <div class="w-100">
-              <div class="float-left">
+              <div class="float-start">
                 <div class="subtitle-2">
                   {{ productComponentObject[componentId] | localize }}
                 </div>
@@ -136,7 +136,7 @@
                 shape="round"
                 status="danger"
                 size="tiny"
-                class="float-right mr-2"
+                class="float-right me-2"
                 type="button"
                 [title]="'common.delete' | translate"
                 (click)="removeComponentFromList(componentId)"
@@ -150,7 +150,7 @@
                 shape="round"
                 size="tiny"
                 type="button"
-                class="float-right mr-2"
+                class="float-right me-2"
                 [title]="'common.moveDown' | translate"
                 (click)="move(i, 1)"
               >
@@ -162,7 +162,7 @@
                 shape="round"
                 size="tiny"
                 type="button"
-                class="float-right mr-2"
+                class="float-right me-2"
                 [title]="'common.moveUp' | translate"
                 (click)="move(i, -1)"
               >

@@ -6,18 +6,17 @@
     {{ order.place?.table }} <br />{{ order.place?.seat }}
   </div>
 
-  <div class="float-left ml-4-5">
+  <div class="float-start ms-4">
     <div>
-      <span class="subtitle-2 font-larger">{{
+      <span class="subtitle-2 font-larger ms-1">{{
         order.createdAt | localizedDate: 'HH:mm'
       }}</span>
       <nb-badge
         class="items-count position-relative"
         status="basic"
         [text]="order.items.length.toString()"
-        [title]="'dashboard.orderItemsCount' | translate"
       ></nb-badge>
-      <span class="caption ml-4 font-larger font-weight-bold">{{
+      <span class="caption ms-4 font-larger font-weight-bold">{{
         order.sumPriceShown.priceSum
           | currencyFormatter: order.sumPriceShown.currency
       }}</span>

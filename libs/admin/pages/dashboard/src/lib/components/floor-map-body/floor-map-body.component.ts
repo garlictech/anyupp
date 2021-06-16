@@ -129,6 +129,8 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
           this._allTableOrders = getTableOrders(tableSeatIds, ordersByUser);
 
+          console.error('this._allTableOrders', this._allTableOrders);
+
           // For the modal
           this._allTableOrders$.next(this._allTableOrders);
 
