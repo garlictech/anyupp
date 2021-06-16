@@ -15,6 +15,7 @@
         class="items-count position-relative"
         status="basic"
         [text]="order.items.length.toString()"
+        [title]="'dashboard.orderItemsCount' | translate"
       ></nb-badge>
       <span class="caption ml-4 font-larger font-weight-bold">{{
         order.sumPriceShown.priceSum
