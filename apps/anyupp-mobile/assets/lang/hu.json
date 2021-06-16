@@ -184,7 +184,7 @@
       "invoicing": {
         "want_invoice": "Áfás számlát kérek",
         "invoice_info": "Számla Információ",
-        "receipt_info" : "Nyugta Információ",
+        "receipt_info": "Nyugta Információ",
         "name_or_company": "Név/Cég név",
         "tax_id": "Adószám",
         "country": "Ország",
@@ -193,7 +193,7 @@
         "street_address": "Utca cím",
         "invoice_email": "Számla email",
         "invoiceAddress": "Előző számlázási cím használata",
-        "show" : "Megtekintés"
+        "show": "Megtekintés"
       }
     },
     "simplePayStatus": {
@@ -234,7 +234,8 @@
     "stripe": {
       "title": "Fizetés online",
       "add_card_tooltip": "Új kártya",
-      "save_card": "Kártya elmentése"
+      "save_card": "Kártya elmentése",
+      "payment_success": "Sikeres fizetés!"
     }
   },
   "selectUnit": {

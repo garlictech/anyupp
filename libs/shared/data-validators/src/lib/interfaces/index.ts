@@ -8,5 +8,6 @@ export * from './localized-item';
 export * from './order';
 export * from './payment';
 export * from './product';
+export * from './product-category';
 export * from './product-component';
 export * from './unit';

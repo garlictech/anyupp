@@ -24,7 +24,14 @@
       </div>
     </div>
     <div
-      class="col-1 col-md-1 p-2 m-auto caption text-right font-weight-bold font-larger"
+      class="
+        col-1 col-md-1
+        p-2
+        m-auto
+        caption
+        text-right
+        font-weight-bold font-larger
+      "
     >
       {{ orderItem.quantity }}x
     </div>
@@ -35,7 +42,7 @@
       }}
     </div>
     <div class="text-right p-2 col-8 col-md-3 m-auto">
-      <ng-container *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')">
+      <ng-container *ngIf="isListMode('current') || isListMode('floormap')">
         <button
           *ngIf="isStatusLog(orderItem, 'served')"
           nbButton
@@ -63,7 +70,7 @@
       <nb-badge
         class="font-larger p-2 position-static"
         [status]="getButtonStatus(orderItem.statusLog)"
-        *ngIf="isListMode('HISTORY')"
+        *ngIf="isListMode('history')"
         [text]="currentStatus(orderItem.statusLog)"
       ></nb-badge>
     </div>
@@ -129,7 +136,7 @@
       [nbSpinner]="workingOrderStatus"
       nbSpinnerStatus="control"
       [disabled]="workingOrderStatus"
-      *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')"
+      *ngIf="isListMode('current') || isListMode('floormap')"
       nbButton
       [status]="getButtonStatus(order.statusLog)"
       [size]="buttonSize"
@@ -142,7 +149,7 @@
 
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="isListMode('HISTORY')"
+      *ngIf="isListMode('history')"
       [text]="currentStatus(order.statusLog)"
       [status]="getButtonStatus(order.statusLog)"
     ></nb-badge>

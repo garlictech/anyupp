@@ -12,10 +12,10 @@ export const chainProductSchema: Joi.SchemaMap<CrudApi.ChainProduct> = {
   name: localizedItemSchema.required(),
   description: localizedItemSchema.allow(null),
   productCategoryId: Joi.string().required(),
-  productType: Joi.string().required(), // TODO: use enumschema
+  productType: Joi.string().required(), // use enumschema (Covered by #784)
   image: Joi.string().allow(null, ''),
-  variants: Joi.array().allow(null), //TODO: use an exact schema
-  configSets: Joi.array().allow(null),
+  variants: Joi.array().allow(null), // use an exact schema ProductVariant (Covered by #784)
+  configSets: Joi.array().allow(null), // use an exact schema ProductConfigSet (Covered by #784)
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
   allergens: allergenListSchema.allow(null),
@@ -31,8 +31,8 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   groupId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   tax: Joi.number().required(),
-  variants: Joi.array().allow(null), //TODO: use an exact schema
-  configSets: Joi.array().allow(null),
+  variants: Joi.array().allow(null), // use an exact schema ProductVariant (Covered by #784)
+  configSets: Joi.array().allow(null), // use an exact schema ProductConfigSet (Covered by #784)
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
@@ -48,8 +48,8 @@ export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   unitId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   position: Joi.number().required(),
-  variants: Joi.array().allow(null), //TODO: use an exact schema
-  configSets: Joi.array().allow(null),
+  variants: Joi.array().allow(null), // use an exact schema ProductVariant (Covered by #784)
+  configSets: Joi.array().allow(null), // use an exact schema ProductConfigSet (Covered by #784)
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
   createdAt: Joi.string().required(),
@@ -73,8 +73,8 @@ export const generatedProductSchema: Joi.SchemaMap<CrudApi.GeneratedProduct> = {
   allergens: chainProductSchema.allergens,
   tax: groupProductSchema.tax,
   position: unitProductSchema.position,
-  variants: Joi.array().required(), //TODO: use an exact schema GeneratedProductVariant
-  configSets: Joi.array().allow(null), //TODO: use an exact schema GeneratedProductVariant
+  variants: Joi.array().required(), // use an exact schema GeneratedProductVariant (Covered by #784)
+  configSets: Joi.array().allow(null), // use an exact schema GeneratedProductConfigSet (Covered by #784)
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
