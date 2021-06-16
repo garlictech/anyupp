@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fa_prev/models/Order.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
