@@ -6,6 +6,7 @@ import 'package:fa_prev/modules/transactions/screens/order_details_screen.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/widgets/transaction_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +44,7 @@ class TransactionCard extends StatelessWidget {
             _buildTransactionHeader(context),
             _buildDivider(context),
             _buildTransactionDeatails(context),
+             TransactionInfoWidget(transactionItem),
             _buildFooter(context),
           ],
         ),
@@ -82,7 +84,7 @@ class TransactionCard extends StatelessWidget {
                 right: 20.0,
               ),
               child: Text(
-                formatter.format(dateTime),
+                formatter.format(dateTime.toLocal()),
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
