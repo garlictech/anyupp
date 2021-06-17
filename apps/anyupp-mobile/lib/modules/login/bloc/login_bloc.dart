@@ -70,11 +70,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle registration with email and password
       if (event is RegisterWithEmailAndPassword) {
         yield EmailLoginInProgress();
-        bool res = await _repository.registerUserWithEmailAndPassword(
+        String username = await _repository.registerUserWithEmailAndPassword(
             event.userEmail, event.userPhone, event.email, event.password);
-        if (res) {
+        if (username != null) {
           getIt<LoginBloc>().add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_CONFIRM_SIGNUP, animationCurve: Curves.easeIn));
-          getIt<LoginBloc>().add(SignUpConfirm(event.email));
+          getIt<LoginBloc>().add(SignUpConfirm(username));
         }
       }
       if (event is ConfirmRegistration) {
