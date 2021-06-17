@@ -2,7 +2,7 @@
 
 exports[`Handle listUser returns bad data 1`] = `[Error: BadDataFromCognito]`;
 
-exports[`Handle listUser unknown error 1`] = `"UNKNOWN LISTUSERS ERROR"`;
+exports[`Handle listUser unknown error 1`] = `[Error: UNKNOWN LISTUSERS ERROR]`;
 
 exports[`Handle multiple users found error 1`] = `"UserAlreadyExists"`;
 
