@@ -2,7 +2,7 @@
 
 exports[`Handle adminCreateUser bad data 1`] = `"UnkownCognitoError"`;
 
-exports[`Handle adminCreateUser unknown error 1`] = `"UNKNOWN ADMINCREATEUSER ERROR"`;
+exports[`Handle adminCreateUser unknown error 1`] = `[Error: UNKNOWN ADMINCREATEUSER ERROR]`;
 
 exports[`Handle crudSdk.CreateAdminUser error: adminDeleteUser parameters 1`] = `
 Array [
@@ -22,7 +22,7 @@ Object {
 
 exports[`Handle listUser returns bad data 1`] = `"UnkownCognitoError"`;
 
-exports[`Handle listUser unknown error 1`] = `"UNKNOWN LISTUSERS ERROR"`;
+exports[`Handle listUser unknown error 1`] = `[Error: UNKNOWN LISTUSERS ERROR]`;
 
 exports[`Handle multiple users found error 1`] = `
 Object {
@@ -57,6 +57,10 @@ Array [
       Object {
         "Name": "phone_number",
         "Value": "+123456789",
+      },
+      Object {
+        "Name": "name",
+        "Value": "Test Elek",
       },
     ],
     "UserPoolId": "USER_POOL_ID",

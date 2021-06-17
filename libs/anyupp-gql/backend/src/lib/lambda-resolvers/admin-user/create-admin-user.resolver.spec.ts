@@ -41,7 +41,8 @@ const createGoodResolverCall = (deps: AdminUserResolverDeps) =>
 test('Handle the good case', done => {
   createGoodResolverCall(goodDeps).subscribe(res => {
     expect(
-      goodDeps.cognitoidentityserviceprovider.adminCreateUser.mock.calls[0],
+      (goodDeps.cognitoidentityserviceprovider.adminCreateUser as jest.Mock)
+        .mock.calls[0],
     ).toMatchSnapshot('adminCreateUser parameters');
 
     expect(
