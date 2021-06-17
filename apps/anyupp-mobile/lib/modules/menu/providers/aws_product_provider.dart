@@ -1,4 +1,6 @@
+import 'package:fa_prev/graphql/queries/list_generated_product_categories.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/GeneratedProductCategory.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
@@ -15,22 +17,22 @@ class AwsProductProvider implements IProductProvider {
 
     try {
       QueryResult result = await GQL.amplify.executeQuery(
-        query: QUERY_LIST_PRODUCT_CATEGORIES,
+        query: QUERY_LIST_GENERATED_PRODUCT_CATEGORIES,
         variables: {
-          'chainId': chainId,
+          'unitId': unitId,
         },
       );
 
-      if (result.data == null || result.data['listProductCategorys'] == null) {
+      if (result.data == null || result.data['listGeneratedProductCategorys'] == null) {
         yield null;
         return;
       }
 
-      List<dynamic> items = result.data['listProductCategorys']['items'];
+      List<dynamic> items = result.data['listGeneratedProductCategorys']['items'];
       List<ProductCategory> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          results.add(ProductCategory.fromJson(Map<String, dynamic>.from(items[i])));
+          results.add(GeneratedProductCategory.fromMap(Map<String, dynamic>.from(items[i])).productCategory);
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));
