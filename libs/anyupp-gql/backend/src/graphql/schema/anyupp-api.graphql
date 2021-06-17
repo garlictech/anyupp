@@ -174,7 +174,7 @@ input AvailabilityInput {
 }
 
 type CreateAnonymUserOutput {
-  email: String!
+  username: String!
   pwd: String!
 }
 

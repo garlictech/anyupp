@@ -78,7 +78,7 @@ mutation RegenerateUnitData($input: RegenerateUnitDataInput!) {
 
 mutation CreateAnonymUser {
   createAnonymUser {
-    email
+    username
     pwd
   }
 }

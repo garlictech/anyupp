@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { defer, from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { AnyuppSdk, CreateAnonymUserOutput } from '@bgap/anyupp-gql/api';
 import { v1 as uuidV1 } from 'uuid';
 
 export interface UserResolverDeps {
@@ -15,16 +15,13 @@ export interface CreateConfirmedUserInput {
   password: string;
   name: string;
 }
-export interface CreateConfirmedUserOutput extends CreateConfirmedUserInput {
-  userId: string;
-}
 
 export const createConfirmedUserInCognito =
   (deps: {
     userPoolId: string;
     cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
   }) =>
-  (input: CreateConfirmedUserInput): Observable<CreateConfirmedUserOutput> => {
+  (input: CreateConfirmedUserInput): Observable<CreateAnonymUserOutput> => {
     const userName = uuidV1();
 
     return defer(() =>
@@ -68,8 +65,8 @@ export const createConfirmedUserInCognito =
               throw new Error('The Just created UserId is missing');
             }
             return {
-              ...input,
-              userId: userId,
+              pwd: input.password,
+              username: userName,
             };
           }),
         ),

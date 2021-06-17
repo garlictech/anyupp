@@ -37,7 +37,7 @@ describe('Anonym user creation', () => {
         tap({
           next(result) {
             // SHOULD RETURN THE email and password
-            expect(result).toHaveProperty('email');
+            expect(result).toHaveProperty('username');
             expect(result).toHaveProperty('pwd');
           },
         }),
@@ -50,7 +50,7 @@ describe('Anonym user creation', () => {
                 ClientId: config.ConsumerWebUserPoolClientId,
                 AuthFlow: 'USER_PASSWORD_AUTH',
                 AuthParameters: {
-                  USERNAME: props.email,
+                  USERNAME: props.username,
                   PASSWORD: props.pwd,
                 },
               })
@@ -79,7 +79,7 @@ describe('Anonym user creation', () => {
             cognitoidentityserviceprovider
               .adminGetUser({
                 UserPoolId: consumerUserPoolId,
-                Username: props.email,
+                Username: props.username,
               })
               .promise(),
           ).pipe(
@@ -107,7 +107,7 @@ describe('Anonym user creation', () => {
             cognitoidentityserviceprovider
               .adminDeleteUser({
                 UserPoolId: consumerUserPoolId,
-                Username: props.email,
+                Username: props.username,
               })
               .promise(),
           ),
