@@ -81,7 +81,7 @@
     "express": "4.17.1",
     "fabric": "4.5.0",
     "fp-ts": "2.10.5",
-    "fp-ts-rxjs": "^0.6.15",
+    "fp-ts-rxjs": "0.6.15",
     "geo-tz": "6.0.1",
     "geolib": "3.3.1",
     "graphql": "15.5.0",
