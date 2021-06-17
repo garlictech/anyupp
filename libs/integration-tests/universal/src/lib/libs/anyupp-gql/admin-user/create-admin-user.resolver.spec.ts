@@ -14,7 +14,7 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
