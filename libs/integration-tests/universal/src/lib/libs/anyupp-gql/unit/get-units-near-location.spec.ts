@@ -1,25 +1,24 @@
-import { combineLatest, from } from 'rxjs';
-import { map, switchMap, throwIfEmpty } from 'rxjs/operators';
-import * as fp from 'lodash/fp';
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
-  createAuthenticatedAnyuppSdk,
-  createIamCrudSdk,
-} from '../../../../api-clients';
-import {
+  chainFixture,
+  groupFixture,
   testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
-  groupFixture,
-  chainFixture,
 } from '@bgap/shared/fixtures';
-
-import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+import * as fp from 'lodash/fp';
+import { combineLatest, from } from 'rxjs';
+import { map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
-import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const TEST_NAME = 'GEOUNIT_';
 
@@ -56,26 +55,25 @@ const unit_03 = {
 describe('GetUnitsNearLocation tests', () => {
   const crudSdk = createIamCrudSdk();
 
-  const cleanup = combineLatest([
-    deleteTestUnit(unitNotActive.id, crudSdk),
-    deleteTestUnit(unit_01.id, crudSdk),
-    deleteTestUnit(unit_02.id, crudSdk),
-    deleteTestUnit(unit_03.id, crudSdk),
-    deleteTestGroup(groupFixture.group_01.id, crudSdk),
-    deleteTestChain(chainFixture.chain_01.id, crudSdk),
-  ]);
+  const cleanup = () =>
+    combineLatest([
+      deleteTestUnit(unitNotActive.id, crudSdk),
+      deleteTestUnit(unit_01.id, crudSdk),
+      deleteTestUnit(unit_02.id, crudSdk),
+      deleteTestUnit(unit_03.id, crudSdk),
+      deleteTestGroup(groupFixture.group_01.id, crudSdk),
+      deleteTestChain(chainFixture.chain_01.id, crudSdk),
+    ]);
 
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
-  beforeAll(async done => {
-    authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
-      testAdminUserPassword,
-    )
-      .toPromise()
-      .then(x => x.authAnyuppSdk);
-    cleanup
+  beforeAll(done => {
+    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
+        tap(x => {
+          authAnyuppSdk = x.authAnyuppSdk;
+        }),
+        switchMap(cleanup),
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -92,7 +90,7 @@ describe('GetUnitsNearLocation tests', () => {
   }, 10000);
 
   afterAll(async () => {
-    await cleanup.toPromise();
+    await cleanup().toPromise();
   });
 
   describe('input validation', () => {
