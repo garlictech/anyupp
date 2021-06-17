@@ -1,10 +1,10 @@
+import { Auth } from '@aws-amplify/auth';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   otherAdminEmails,
   testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { Auth } from '@aws-amplify/auth';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../api-clients';

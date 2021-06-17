@@ -1,11 +1,9 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
-  createAuthenticatedAnyuppSdk,
-  createIamCrudSdk,
-} from '../../../../api-clients';
-import {
-  testAdminUsername,
+  chainFixture,
+  groupFixture,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -69,14 +67,8 @@ describe('GetUnitsNearLocation tests', () => {
 
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
-  beforeAll(async done => {
-    authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
-      testAdminUserPassword,
-    )
-      .toPromise()
-      .then(x => x.authAnyuppSdk);
-    cleanup
+  beforeAll(done => {
+    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .pipe(
         tap(x => {
           authAnyuppSdk = x.authAnyuppSdk;

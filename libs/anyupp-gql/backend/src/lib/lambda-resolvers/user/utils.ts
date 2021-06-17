@@ -1,7 +1,7 @@
+import { AnyuppSdk, CreateAnonymUserOutput } from '@bgap/anyupp-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { defer, from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AnyuppSdk, CreateAnonymUserOutput } from '@bgap/anyupp-gql/api';
 import { v1 as uuidV1 } from 'uuid';
 
 export interface UserResolverDeps {
@@ -22,13 +22,13 @@ export const createConfirmedUserInCognito =
     cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
   }) =>
   (input: CreateConfirmedUserInput): Observable<CreateAnonymUserOutput> => {
-    const userName = uuidV1();
+    const username = uuidV1();
 
     return defer(() =>
       deps.cognitoidentityserviceprovider
         .adminCreateUser({
           UserPoolId: deps.userPoolId,
-          Username: userName,
+          Username: username,
           UserAttributes: [
             {
               Name: 'email',
@@ -52,21 +52,18 @@ export const createConfirmedUserInCognito =
             .adminSetUserPassword({
               Password: input.password,
               UserPoolId: deps.userPoolId,
-              Username: userName,
+              Username: username,
               Permanent: true,
             })
             .promise(),
         ).pipe(
           map(() => {
-            const userId = newUser.User?.Attributes?.find(
-              x => x.Name === 'sub',
-            )?.Value;
-            if (!userId) {
+            if (newUser.User?.Username !== username) {
               throw new Error('The Just created UserId is missing');
             }
             return {
               pwd: input.password,
-              username: userName,
+              username,
             };
           }),
         ),
