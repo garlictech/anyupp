@@ -35,48 +35,39 @@
     "baseUrl": ".",
     "paths": {
       "*": ["*", "types/*"],
-      "crypto": ["node_modules/crypto-js"],
-      "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
-      "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
-      "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
       "@bgap/admin/pages/admin-users": [
         "libs/admin/pages/admin-users/src/index.ts"
       ],
-      "@bgap/admin/shared/forms": ["libs/admin/shared/forms/src/index.ts"],
-      "@bgap/admin/shared/components": [
-        "libs/admin/shared/components/src/index.ts"
-      ],
-      "@bgap/admin/shared/pipes": ["libs/admin/shared/pipes/src/index.ts"],
-      "@bgap/admin/shared/utils": ["libs/admin/shared/utils/src/index.ts"],
-      "@bgap/admin/shared/data-access/data": [
-        "libs/admin/shared/data-access/data/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/auth": [
-        "libs/admin/shared/data-access/auth/src/index.ts"
-      ],
-      "@bgap/admin/ui/core": ["libs/admin/ui/core/src/index.ts"],
-      "@bgap/admin/ui/theme": ["libs/admin/ui/theme/src/index.ts"],
+      "@bgap/admin/pages/auth": ["libs/admin/pages/auth/src/index.ts"],
       "@bgap/admin/pages/chains": ["libs/admin/pages/chains/src/index.ts"],
-      "@bgap/admin/pages/groups": ["libs/admin/pages/groups/src/index.ts"],
-      "@bgap/admin/pages/units": ["libs/admin/pages/units/src/index.ts"],
-      "@bgap/admin/pages/users": ["libs/admin/pages/users/src/index.ts"],
-      "@bgap/admin/pages/products": ["libs/admin/pages/products/src/index.ts"],
-      "@bgap/admin/pages/product-categories": [
-        "libs/admin/pages/product-categories/src/index.ts"
-      ],
       "@bgap/admin/pages/dashboard": [
         "libs/admin/pages/dashboard/src/index.ts"
       ],
-      "@bgap/admin/pages/auth": ["libs/admin/pages/auth/src/index.ts"],
+      "@bgap/admin/pages/groups": ["libs/admin/pages/groups/src/index.ts"],
+      "@bgap/admin/pages/modifiers-and-extras": [
+        "libs/admin/pages/modifiers-and-extras/src/index.ts"
+      ],
+      "@bgap/admin/pages/product-categories": [
+        "libs/admin/pages/product-categories/src/index.ts"
+      ],
+      "@bgap/admin/pages/products": ["libs/admin/pages/products/src/index.ts"],
+      "@bgap/admin/pages/role-contexts": [
+        "libs/admin/pages/role-contexts/src/index.ts"
+      ],
+      "@bgap/admin/pages/units": ["libs/admin/pages/units/src/index.ts"],
+      "@bgap/admin/pages/users": ["libs/admin/pages/users/src/index.ts"],
+      "@bgap/admin/shared/components": [
+        "libs/admin/shared/components/src/index.ts"
+      ],
       "@bgap/admin/shared/config": ["libs/admin/shared/config/src/index.ts"],
-      "@bgap/admin/shared/floor-map": [
-        "libs/admin/shared/floor-map/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/orders": [
-        "libs/admin/shared/data-access/orders/src/index.ts"
-      ],
       "@bgap/admin/shared/data-access/admin-users": [
         "libs/admin/shared/data-access/admin-users/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/app-core": [
+        "libs/admin/shared/data-access/app-core/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/auth": [
+        "libs/admin/shared/data-access/auth/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/chains": [
         "libs/admin/shared/data-access/chains/src/index.ts"
@@ -84,14 +75,35 @@
       "@bgap/admin/shared/data-access/dashboard": [
         "libs/admin/shared/data-access/dashboard/src/index.ts"
       ],
+      "@bgap/admin/shared/data-access/data": [
+        "libs/admin/shared/data-access/data/src/index.ts"
+      ],
       "@bgap/admin/shared/data-access/groups": [
         "libs/admin/shared/data-access/groups/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/logged-user": [
+        "libs/admin/shared/data-access/logged-user/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/orders": [
+        "libs/admin/shared/data-access/orders/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/product-categories": [
         "libs/admin/shared/data-access/product-categories/src/index.ts"
       ],
+      "@bgap/admin/shared/data-access/product-component-sets": [
+        "libs/admin/shared/data-access/product-component-sets/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/product-components": [
+        "libs/admin/shared/data-access/product-components/src/index.ts"
+      ],
       "@bgap/admin/shared/data-access/products": [
         "libs/admin/shared/data-access/products/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/role-contexts": [
+        "libs/admin/shared/data-access/role-contexts/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/storage": [
+        "libs/admin/shared/data-access/storage/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/units": [
         "libs/admin/shared/data-access/units/src/index.ts"
@@ -99,52 +111,40 @@
       "@bgap/admin/shared/data-access/users": [
         "libs/admin/shared/data-access/users/src/index.ts"
       ],
-      "@bgap/admin/shared/data-access/logged-user": [
-        "libs/admin/shared/data-access/logged-user/src/index.ts"
+      "@bgap/admin/shared/floor-map": [
+        "libs/admin/shared/floor-map/src/index.ts"
       ],
-      "@bgap/admin/shared/data-access/storage": [
-        "libs/admin/shared/data-access/storage/src/index.ts"
-      ],
-      "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
-      "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
-      "@bgap/stripe": ["libs/stripe/src/index.ts"],
-      "@bgap/admin/shared/data-access/role-contexts": [
-        "libs/admin/shared/data-access/role-contexts/src/index.ts"
-      ],
-      "@bgap/admin/pages/role-contexts": [
-        "libs/admin/pages/role-contexts/src/index.ts"
-      ],
-      "@bgap/shared/graphql/api-client": [
-        "libs/shared/graphql/api-client/src/index.ts"
-      ],
+      "@bgap/admin/shared/forms": ["libs/admin/shared/forms/src/index.ts"],
+      "@bgap/admin/shared/pipes": ["libs/admin/shared/pipes/src/index.ts"],
+      "@bgap/admin/shared/utils": ["libs/admin/shared/utils/src/index.ts"],
+      "@bgap/admin/ui/core": ["libs/admin/ui/core/src/index.ts"],
+      "@bgap/admin/ui/theme": ["libs/admin/ui/theme/src/index.ts"],
+      "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
+      "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
+      "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
+      "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
+      "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],
+      "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
+      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
       "@bgap/integration-tests/angular": [
         "libs/integration-tests/angular/src/index.ts"
-      ],
-      "@bgap/shared/data-validators": [
-        "libs/shared/data-validators/src/index.ts"
       ],
       "@bgap/integration-tests/universal": [
         "libs/integration-tests/universal/src/index.ts"
       ],
-      "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
-      "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],
-      "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
-      "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
-      "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
-      "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
-      "@bgap/admin/pages/modifiers-and-extras": [
-        "libs/admin/pages/modifiers-and-extras/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/product-components": [
-        "libs/admin/shared/data-access/product-components/src/index.ts"
+      "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
+      "@bgap/shared/data-validators": [
+        "libs/shared/data-validators/src/index.ts"
       ],
       "@bgap/shared/fixtures": ["libs/shared/fixtures/src/index.ts"],
-      "@bgap/admin/shared/data-access/product-component-sets": [
-        "libs/admin/shared/data-access/product-component-sets/src/index.ts"
+      "@bgap/shared/graphql/api-client": [
+        "libs/shared/graphql/api-client/src/index.ts"
       ],
-      "@bgap/admin/shared/data-access/app-core": [
-        "libs/admin/shared/data-access/app-core/src/index.ts"
-      ]
+      "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
+      "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
+      "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@bgap/stripe": ["libs/stripe/src/index.ts"],
+      "crypto": ["node_modules/crypto-js"]
     }
   },
   "exclude": [
