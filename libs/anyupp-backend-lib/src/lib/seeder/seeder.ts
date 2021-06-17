@@ -33,16 +33,19 @@ const ce = (tag: string) =>
     throw err;
   });
 
-const userData = pipe(
-  [testAdminEmail, ...otherAdminEmails],
-  fp.map(email => ({ email, username: email.split('@')[0] })),
+const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
+  emails.map((email, index) => ({
+    email,
+    username: email.split('@')[0],
+    phone: `+123456789${index}`,
+  })),
 );
 
 const password = testAdminUserPassword;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    userData.map(({ email, username }) =>
+    userData.map(({ email, username, phone }) =>
       deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
         switchMap(() =>
           defer(() =>
@@ -50,7 +53,7 @@ export const seedAdminUser = (deps: SeederDependencies) =>
               resolverCreateAdminUser({
                 input: {
                   name: email.split('@')[0],
-                  phone: '+123456789',
+                  phone,
                   email,
                 },
               })({

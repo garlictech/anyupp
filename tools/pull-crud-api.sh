@@ -134,4 +134,5 @@ echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 # ----------------------------------------------------------
 # Post-processing the result
 # ----------------------------------------------------------
+rm -f  ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts
 mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts

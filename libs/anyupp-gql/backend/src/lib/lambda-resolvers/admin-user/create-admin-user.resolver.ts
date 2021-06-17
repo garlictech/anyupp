@@ -63,6 +63,10 @@ export const createAdminUser =
                 Name: 'phone_number',
                 Value: vars.input.phone,
               },
+              {
+                Name: 'name',
+                Value: vars.input.name,
+              },
             ],
             UserPoolId: deps.userPoolId,
           })),

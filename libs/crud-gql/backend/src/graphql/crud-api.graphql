@@ -24,7 +24,8 @@ type AdminUser
   @model
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [update, read] }
+      { allow: private }
+      #{ allow: owner, ownerField: "id", operations: [update, read, delete] }
       { allow: private, provider: iam }
     ]
   ) {
