@@ -1,5 +1,219 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CRUD ownership tests It should not access own data of AdminUser with signin 1`] = `[NoUserPoolError: Authentication Error]`;
+exports[`CRUD ownership tests It should access own data of AdminUser with signin 1`] = `
+Object {
+  "createdAt": "2021-06-17T15:46:36.922Z",
+  "email": "test@anyupp.com",
+  "id": "test",
+  "name": "John Doe",
+  "phone": "123123213",
+  "profileImage": "https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD",
+  "roleContexts": Object {
+    "items": Array [
+      Object {
+        "adminUser": Object {
+          "createdAt": "2021-06-17T15:46:36.922Z",
+          "email": "test@anyupp.com",
+          "id": "test",
+          "name": "John Doe",
+          "phone": "123123213",
+          "profileImage": "https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD",
+          "roleContexts": Object {
+            "items": Array [
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.598Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.598Z",
+              },
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.395Z",
+                "id": "seeded_admin_role_context_1_superuser_test_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.395Z",
+              },
+            ],
+            "nextToken": null,
+          },
+          "settings": null,
+          "updatedAt": "2021-06-17T15:46:36.922Z",
+        },
+        "adminUserId": "test",
+        "createdAt": "2021-06-17T15:46:51.598Z",
+        "id": "seeded_admin_role_context_1_chainadmin_test_id",
+        "roleContext": Object {
+          "adminUsers": Object {
+            "items": Array [
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.598Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.598Z",
+              },
+              Object {
+                "adminUserId": "test-alice",
+                "createdAt": "2021-06-17T15:46:51.397Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test-alice_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.397Z",
+              },
+              Object {
+                "adminUserId": "test-bob",
+                "createdAt": "2021-06-17T15:46:51.250Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test-bob_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.250Z",
+              },
+              Object {
+                "adminUserId": "test-emen",
+                "createdAt": "2021-06-17T15:46:51.371Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test-emen_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.371Z",
+              },
+              Object {
+                "adminUserId": "test-kati",
+                "createdAt": "2021-06-17T15:46:51.444Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test-kati_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.444Z",
+              },
+              Object {
+                "adminUserId": "test-monad",
+                "createdAt": "2021-06-17T15:46:51.370Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test-monad_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.370Z",
+              },
+            ],
+            "nextToken": null,
+          },
+          "chainId": "seeded_chain_1_id",
+          "contextId": "CA_CTX_ID",
+          "createdAt": "2021-06-17T15:46:40.020Z",
+          "groupId": null,
+          "id": "seeded_role_context_1_chainadmin_id",
+          "name": Object {
+            "de": null,
+            "en": "Test chainadmin role context #1",
+            "hu": "Test chainadmin role context #1",
+          },
+          "role": "chainadmin",
+          "unitId": null,
+          "updatedAt": "2021-06-17T15:46:40.020Z",
+        },
+        "roleContextId": "seeded_role_context_1_chainadmin_id",
+        "updatedAt": "2021-06-17T15:46:51.598Z",
+      },
+      Object {
+        "adminUser": Object {
+          "createdAt": "2021-06-17T15:46:36.922Z",
+          "email": "test@anyupp.com",
+          "id": "test",
+          "name": "John Doe",
+          "phone": "123123213",
+          "profileImage": "https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD",
+          "roleContexts": Object {
+            "items": Array [
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.598Z",
+                "id": "seeded_admin_role_context_1_chainadmin_test_id",
+                "roleContextId": "seeded_role_context_1_chainadmin_id",
+                "updatedAt": "2021-06-17T15:46:51.598Z",
+              },
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.395Z",
+                "id": "seeded_admin_role_context_1_superuser_test_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.395Z",
+              },
+            ],
+            "nextToken": null,
+          },
+          "settings": null,
+          "updatedAt": "2021-06-17T15:46:36.922Z",
+        },
+        "adminUserId": "test",
+        "createdAt": "2021-06-17T15:46:51.395Z",
+        "id": "seeded_admin_role_context_1_superuser_test_id",
+        "roleContext": Object {
+          "adminUsers": Object {
+            "items": Array [
+              Object {
+                "adminUserId": "test",
+                "createdAt": "2021-06-17T15:46:51.395Z",
+                "id": "seeded_admin_role_context_1_superuser_test_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.395Z",
+              },
+              Object {
+                "adminUserId": "test-alice",
+                "createdAt": "2021-06-17T15:46:51.229Z",
+                "id": "seeded_admin_role_context_1_superuser_test-alice_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.229Z",
+              },
+              Object {
+                "adminUserId": "test-bob",
+                "createdAt": "2021-06-17T15:46:51.467Z",
+                "id": "seeded_admin_role_context_1_superuser_test-bob_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.467Z",
+              },
+              Object {
+                "adminUserId": "test-emen",
+                "createdAt": "2021-06-17T15:46:51.323Z",
+                "id": "seeded_admin_role_context_1_superuser_test-emen_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.323Z",
+              },
+              Object {
+                "adminUserId": "test-kati",
+                "createdAt": "2021-06-17T15:46:51.262Z",
+                "id": "seeded_admin_role_context_1_superuser_test-kati_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.262Z",
+              },
+              Object {
+                "adminUserId": "test-monad",
+                "createdAt": "2021-06-17T15:46:51.266Z",
+                "id": "seeded_admin_role_context_1_superuser_test-monad_id",
+                "roleContextId": "seeded_role_context_1_superuser_id",
+                "updatedAt": "2021-06-17T15:46:51.266Z",
+              },
+            ],
+            "nextToken": null,
+          },
+          "chainId": null,
+          "contextId": "SU_CTX_ID",
+          "createdAt": "2021-06-17T15:46:39.423Z",
+          "groupId": null,
+          "id": "seeded_role_context_1_superuser_id",
+          "name": Object {
+            "de": null,
+            "en": "Test superuser role context #1",
+            "hu": "Test superuser role context #1",
+          },
+          "role": "superuser",
+          "unitId": null,
+          "updatedAt": "2021-06-17T15:46:39.423Z",
+        },
+        "roleContextId": "seeded_role_context_1_superuser_id",
+        "updatedAt": "2021-06-17T15:46:51.395Z",
+      },
+    ],
+    "nextToken": null,
+  },
+  "settings": null,
+  "updatedAt": "2021-06-17T15:46:36.922Z",
+}
+`;
+
+exports[`CRUD ownership tests It should not access own data of AdminUser with signin 1`] = `[Error: GraphQL error: Not Authorized to access getAdminUser on type Query]`;
 
 exports[`CRUD ownership tests It should not access own data of AdminUser without signin 1`] = `[Error: GraphQL error: Not Authorized to access getAdminUser on type Query]`;
