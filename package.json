@@ -171,7 +171,7 @@
     "patch-package": "6.4.7",
     "postinstall-postinstall": "2.1.0",
     "prettier": "2.3.1",
-    "pretty-quick": "3.1.0",
+    "pretty-quick": "3.1.1",
     "semantic-release": "17.4.4",
     "serverless": "2.46.0",
     "serverless-bundle": "4.3.1",
