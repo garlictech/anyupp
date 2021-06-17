@@ -15,6 +15,7 @@ import {
 import {
   getOrdersByUser,
   getTableOrders,
+  getTableSeatOrders,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
@@ -24,6 +25,7 @@ import {
   floorMapSelectors,
   getObjectById,
   getStatusBgColor,
+  getTableIds,
   getTableSeatId,
   getTableSeatIds,
   registerCanvasEvent,
@@ -31,11 +33,7 @@ import {
   setBorder,
 } from '@bgap/admin/shared/floor-map';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-  IFloorMapUserOrderObjects,
-} from '@bgap/shared/types';
+import { IFloorMapOrderObjects, IFloorMapOrders } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -53,8 +51,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   public unit?: CrudApi.Unit;
 
-  private _allTableOrders: IFloorMapTableOrderObjects = {};
-  private _allTableOrders$: BehaviorSubject<IFloorMapTableOrderObjects> =
+  private _allTableSeatOrders$: BehaviorSubject<IFloorMapOrderObjects> =
+    new BehaviorSubject({});
+  private _allTableOrders$: BehaviorSubject<IFloorMapOrderObjects> =
     new BehaviorSubject({});
 
   constructor(
@@ -108,12 +107,13 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
               ? clientWidth / (this.unit?.floorMap?.w || 1)
               : clientHeight / (this.unit?.floorMap?.h || 1);
 
-          (<HTMLElement>(
+          const floorMapElement = <HTMLElement>(
             document.querySelector('#floorMap')
-          )).style.transform = `scale(${scale.toFixed(2)})`;
-          (<HTMLElement>(
-            document.querySelector('#floorMap')
-          )).style.transformOrigin = 'top left';
+          );
+          if (floorMapElement) {
+            floorMapElement.style.transform = `scale(${scale.toFixed(2)})`;
+            floorMapElement.style.transformOrigin = 'top left';
+          }
         }),
         switchMap(
           (): Observable<CrudApi.Order[]> =>
@@ -123,23 +123,29 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
       )
       .subscribe((orders: CrudApi.Order[]): void => {
         if (this.unit?.floorMap?.objects) {
-          const tableSeatIds: string[] = getTableSeatIds(this.unit.floorMap);
-          const ordersByUser: IFloorMapUserOrderObjects =
-            getOrdersByUser(orders);
+          const tableIds = getTableIds(this.unit.floorMap);
+          const tableSeatIds = getTableSeatIds(this.unit.floorMap);
+          const ordersByUser = getOrdersByUser(orders);
+          console.error('ordersByUser', ordersByUser);
+          const _allTableSeatOrders = getTableSeatOrders(
+            tableSeatIds,
+            ordersByUser,
+          );
+          const _allTableOrders = getTableOrders(tableIds, ordersByUser);
 
-          this._allTableOrders = getTableOrders(tableSeatIds, ordersByUser);
+          // For the modal window
+          this._allTableSeatOrders$.next(_allTableSeatOrders);
+          this._allTableOrders$.next(_allTableOrders);
 
-          // For the modal
-          this._allTableOrders$.next(this._allTableOrders);
-
+          // Refresh seat color and border
           // tableOrders contains ALL seats!
-          Object.values(this._allTableOrders).forEach(
-            (tableOrder: IFloorMapTableOrders): void => {
+          Object.values(_allTableSeatOrders).forEach(
+            (tableSeatOrder: IFloorMapOrders): void => {
               const rawObj: CrudApi.FloorMapDataObject | undefined = (
                 <CrudApi.FloorMapDataObject[]>this.unit?.floorMap?.objects || []
               ).find(
                 (o: CrudApi.FloorMapDataObject): boolean =>
-                  getTableSeatId(o) === tableOrder.tsID,
+                  getTableSeatId(o) === tableSeatOrder.tsID,
               );
 
               const fabricObj: Group = <Group>getObjectById(rawObj?.id || '');
@@ -148,15 +154,15 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
                 // Highlight or clear border
                 setBorder(
                   fabricObj,
-                  tableOrder.hasPaymentIntention ? '#ff0000' : undefined,
-                  tableOrder.hasPaymentIntention ? 5 : undefined,
+                  tableSeatOrder.hasPaymentIntention ? '#a9ff29' : undefined,
+                  tableSeatOrder.hasPaymentIntention ? 5 : undefined,
                 );
 
                 // Repaint or clear bg
                 setBgColor(
                   fabricObj,
-                  tableOrder.lowestStatus
-                    ? getStatusBgColor(tableOrder.lowestStatus)
+                  tableSeatOrder.lowestStatus
+                    ? getStatusBgColor(tableSeatOrder.lowestStatus)
                     : undefined,
                 );
               }
@@ -174,22 +180,27 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _onMouseUp = (e: any): void => {
-    if (e.target.type.indexOf('seat') === 0) {
-      const rawObject: CrudApi.FloorMapDataObject = <
-        CrudApi.FloorMapDataObject
-      >(this.unit?.floorMap?.objects || []).find(o => o.id === e.target?.id);
+    const rawObject: CrudApi.FloorMapDataObject = <CrudApi.FloorMapDataObject>(
+      (this.unit?.floorMap?.objects || []).find(o => o.id === e.target?.id)
+    );
 
-      if (rawObject) {
-        const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {
-          dialogClass: 'floor-map-order-dialog',
-        });
+    if (rawObject) {
+      const dialog = this._nbDialogService.open(FloorMapOrdersComponent, {
+        dialogClass: 'floor-map-order-dialog',
+      });
 
-        dialog.componentRef.instance.tableId = rawObject.tID || '';
-        dialog.componentRef.instance.seatId = rawObject.sID || '';
-        dialog.componentRef.instance.allTableOrders$ = this._allTableOrders$;
+      dialog.componentRef.instance.tableId = rawObject.tID || '';
+      dialog.componentRef.instance.seatId = rawObject.sID || '';
+
+      if (e.target.type.indexOf('seat') === 0) {
+        dialog.componentRef.instance.mode = 'seat';
+        dialog.componentRef.instance.allOrders$ = this._allTableSeatOrders$;
+      } else {
+        dialog.componentRef.instance.mode = 'table';
+        dialog.componentRef.instance.allOrders$ = this._allTableOrders$;
       }
-
-      this._changeDetectorRef.detectChanges();
     }
+
+    this._changeDetectorRef.detectChanges();
   };
 }

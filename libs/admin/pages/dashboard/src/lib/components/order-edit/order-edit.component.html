@@ -1,6 +1,6 @@
 <div class="row p-0 m-0">
   <ng-container *ngFor="let orderItem of order?.items; index as i">
-    <div class="col-1 p-2 m-auto subtitle-2 text-right font-larger">
+    <div class="col-1 p-2 m-auto subtitle-2 text-end font-larger">
       {{ i + 1 }}.
     </div>
     <div
@@ -13,18 +13,16 @@
         orderItem.variantName | localize
       }})
     </div>
-    <div
-      class="col-1 p-2 m-auto caption text-right font-weight-bold font-larger"
-    >
+    <div class="col-1 p-2 m-auto caption text-end font-weight-bold font-larger">
       {{ orderItem.quantity }}x
     </div>
-    <div class="col-2 p-2 m-auto caption text-right font-larger">
+    <div class="col-2 p-2 m-auto caption text-end font-larger">
       {{
         orderItem.priceShown.priceSum
           | currencyFormatter: orderItem.priceShown.currency
       }}
     </div>
-    <div class="text-right p-2 col-3 m-auto">
+    <div class="text-end p-2 col-3 m-auto">
       <ng-container *ngIf="!isCurrentStatus(orderItem, 'rejected')">
         <button
           nbButton
@@ -39,7 +37,7 @@
         <button
           [disabled]="orderItem.quantity < 2"
           nbButton
-          class="ml-3"
+          class="ms-3"
           status="success"
           [size]="buttonSize"
           shape="round"
@@ -51,7 +49,7 @@
 
       <button
         nbButton
-        class="ml-3"
+        class="ms-3"
         status="success"
         [size]="buttonSize"
         shape="round"
@@ -66,12 +64,12 @@
 <hr class="mt-1 mb-1" />
 
 <div class="row p-0 m-0">
-  <div class="col-1 p-2 text-right m-auto font-larger"><strong>Σ</strong></div>
+  <div class="col-1 p-2 text-end m-auto font-larger"><strong>Σ</strong></div>
   <div class="col-6 m-auto">
     <!--button
       *ngFor="let method of paymentMethods"
       nbButton
-      class="float-right mr-1"
+      class="float-right me-1"
       [status]="order.paymentMode.method === method.value ? 'success' : 'basic'"
       [size]="buttonSize"
       shape="round"
@@ -81,13 +79,13 @@
     </button-->
   </div>
 
-  <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
+  <div class="col-2 p-2 caption text-end m-auto font-weight-bold font-larger">
     {{
       order.sumPriceShown.priceSum
         | currencyFormatter: order.sumPriceShown.currency
     }}
   </div>
-  <div class="col-3 p-2 pr-2 text-right m-auto">
+  <div class="col-3 p-2 pe-2 text-end m-auto">
     <button
       [nbSpinner]="workingOrderStatus"
       nbSpinnerStatus="control"

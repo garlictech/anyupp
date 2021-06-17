@@ -1,6 +1,6 @@
 <nb-card class="h-100">
   <nb-card-header class="p-2">
-    <div class="float-left font-larger">
+    <div class="float-start font-larger">
       {{ 'products.listTitle' | translate }}
     </div>
   </nb-card-header>
@@ -22,8 +22,8 @@
         *ngIf="product.productCategoryId === selectedProductCategoryId"
       >
         <div class="w-100">
-          <img class="product-image float-left" [src]="product.image" />
-          <div class="p-2 font-larger float-left">
+          <img class="product-image float-start" [src]="product.image" />
+          <div class="p-2 font-larger float-start">
             {{ product.name | localize }}
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div class="col-3 pt-2">
             <button
               nbButton
-              class="ml-3"
+              class="ms-3"
               status="success"
               [size]="buttonSize"
               shape="round"
