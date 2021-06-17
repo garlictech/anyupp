@@ -41,8 +41,7 @@ const createGoodResolverCall = (deps: AdminUserResolverDeps) =>
 test('Handle the good case', done => {
   createGoodResolverCall(goodDeps).subscribe(res => {
     expect(
-      (goodDeps.cognitoidentityserviceprovider.adminCreateUser as jest.Mock)
-        .mock.calls[0],
+      goodDeps.cognitoidentityserviceprovider.adminCreateUser.mock.calls[0],
     ).toMatchSnapshot('adminCreateUser parameters');
 
     expect(
@@ -71,7 +70,9 @@ const listUserCaseDeps = (result: Promise<unknown>): AdminUserResolverDeps => ({
 });
 
 test('Handle listUser unknown error', done => {
-  const deps = listUserCaseDeps(Promise.reject('UNKNOWN LISTUSERS ERROR'));
+  const deps = listUserCaseDeps(
+    Promise.reject(new Error('UNKNOWN LISTUSERS ERROR')),
+  );
 
   createGoodResolverCall(deps).subscribe({
     error: res => {
@@ -129,7 +130,7 @@ const adminCreateUserCaseDeps = (
 
 test('Handle adminCreateUser unknown error', done => {
   const deps = adminCreateUserCaseDeps(
-    Promise.reject('UNKNOWN ADMINCREATEUSER ERROR'),
+    Promise.reject(new Error('UNKNOWN ADMINCREATEUSER ERROR')),
   );
 
   createGoodResolverCall(deps).subscribe({

@@ -53,7 +53,9 @@ const listUserCaseDeps = (result: Promise<unknown>): Deps => ({
 });
 
 test('Handle listUser unknown error', done => {
-  const deps = listUserCaseDeps(Promise.reject('UNKNOWN LISTUSERS ERROR'));
+  const deps = listUserCaseDeps(
+    Promise.reject(new Error('UNKNOWN LISTUSERS ERROR')),
+  );
 
   createGoodHandlerCall(deps).subscribe({
     error: res => {
