@@ -1,13 +1,13 @@
 <nb-card [ngClass]="{ resized: resized }" class="h-100 mb-0">
   <nb-card-header class="position-relative">
-    <div class="float-left font-larger">
+    <div class="float-start font-larger">
       {{ 'dashboard.listTitle' | translate }}
       <button
         shape="round"
         nbButton
         *ngIf="selectedUnit"
         size="small"
-        class="ml-3 font-larger"
+        class="ms-3 font-larger"
         [status]="selectedUnit.isAcceptingOrders ? 'success' : 'danger'"
         (click)="toggleAcceptingOrders($event)"
       >

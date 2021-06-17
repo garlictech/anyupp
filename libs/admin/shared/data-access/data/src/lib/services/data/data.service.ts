@@ -27,8 +27,13 @@ import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  DEFAULT_LANG,
+  getDayIntervals,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { IDateIntervals } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -335,8 +340,8 @@ export class DataService {
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryDate),
-        switchMap((/*historyDate: number*/) => {
-          // const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+        switchMap((historyDate: number) => {
+          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
 
           return this._crudSdk.doListQuery(
             ordersActions.resetHistoryOrders(),
@@ -344,11 +349,10 @@ export class DataService {
               filter: {
                 unitId: { eq: unitId },
                 archived: { eq: true },
-                /* will be activated after green PR
                 createdAt: {
                   ge: new Date(dayIntervals.from).toISOString(),
                   le: new Date(dayIntervals.to).toISOString(),
-                },*/
+                },
               },
             }),
             (orders: CrudApi.Order[]) =>
