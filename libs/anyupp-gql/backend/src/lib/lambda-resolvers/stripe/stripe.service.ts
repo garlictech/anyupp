@@ -206,7 +206,7 @@ export const startStripePayment =
             userId: userId,
             orderId: orderId,
             currency: order.sumPriceShown.currency,
-            status: CrudApi.PaymentStatus.waiting_for_payment,
+            status: CrudApi.PaymentStatus.waiting_for_payment, // TODO: shouldn't we use statusLog instead of the simple actual status ???
             externalTransactionId: paymentIntent.id,
             total: order.sumPriceShown.priceSum,
             type: 'stripe',

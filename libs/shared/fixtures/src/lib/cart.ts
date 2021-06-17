@@ -1,8 +1,8 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { unitFixture } from './unit';
-import { productFixture } from './product';
-import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
+import { seededIdPrefix, testIdPrefix } from './common';
+import { productFixture } from './product';
+import { unitFixture } from './unit';
 const cartId_01 = `${testIdPrefix}cart_1_id`;
 const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
 const unitId_01 = unitFixture.unitId_seeded_01;
@@ -29,6 +29,13 @@ const getOrderItem = (
     priceSum: 2,
     tax, // this value wont be used, the tax will be collected from the product
     taxSum: 0, // not used
+  },
+  sumPriceShown: {
+    currency: 'EUR',
+    pricePerUnit: 1,
+    priceSum: 2,
+    tax,
+    taxSum: 0,
   },
   // productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
   productId: unitProductId_01,

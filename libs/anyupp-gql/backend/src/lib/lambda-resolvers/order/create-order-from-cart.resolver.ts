@@ -10,12 +10,12 @@ import {
   validateUnitProduct,
 } from '@bgap/shared/data-validators';
 import {
-  calculateOrderSumPrice,
-  calculateTaxSumFromBrutto,
+  calculateOrderItemPriceRounded,
+  calculateOrderItemSumPriceRounded,
+  calculateOrderSumPriceRounded,
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
-  toFixed2Number,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
@@ -135,7 +135,7 @@ const toOrderInputFormat = ({
     items,
     // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
-    sumPriceShown: calculateOrderSumPrice(items),
+    sumPriceShown: calculateOrderSumPriceRounded(items),
     place,
     unitId,
     transactionStatus: PaymentStatus.waiting_for_payment,
@@ -189,22 +189,18 @@ const convertCartOrderItemToOrderItem = ({
   laneId: string | null | undefined;
   tax: number;
 }): CrudApi.OrderItemInput => {
+  const orderItemWithCorrectTaxAndCurrency: CrudApi.OrderItem = {
+    ...cartItem,
+    priceShown: { ...cartItem.priceShown, tax, currency },
+  };
   return {
     productName: cartItem.productName,
-    priceShown: {
-      currency,
-      pricePerUnit: cartItem.priceShown.pricePerUnit,
-      priceSum: toFixed2Number(
-        cartItem.priceShown.pricePerUnit * cartItem.quantity,
-      ),
-      tax,
-      taxSum: toFixed2Number(
-        calculateTaxSumFromBrutto({
-          tax,
-          brutto: cartItem.priceShown.pricePerUnit * cartItem.quantity,
-        }),
-      ),
-    },
+    priceShown: calculateOrderItemPriceRounded(
+      orderItemWithCorrectTaxAndCurrency,
+    ),
+    sumPriceShown: calculateOrderItemSumPriceRounded(
+      orderItemWithCorrectTaxAndCurrency,
+    ),
     productId: cartItem.productId,
     quantity: cartItem.quantity,
     variantId: cartItem.variantId,

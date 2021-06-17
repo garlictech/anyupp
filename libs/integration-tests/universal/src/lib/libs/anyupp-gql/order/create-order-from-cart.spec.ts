@@ -199,31 +199,47 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(order.archived).toEqual(false);
             expect(order.items[0]).not.toBeNull();
             expect(order.items[0].allergens).not.toBeNull();
-            // The item.priceShown should NOT contain the configSetPrices
-            expect(order.items[0].priceShown).toEqual({
-              currency: 'EUR',
-              pricePerUnit: 1,
-              priceSum: toFixed2Number(orderItemPrice_01),
-              tax: 27,
-              taxSum: toFixed2Number(orderItemTax_01),
-            });
             expect(order.items[0].allergens).toEqual(
               cart_01.items[0].allergens,
             );
-            expect(order.items[1].priceShown).toEqual({
+
+            // The item.priceShown should NOT contain the configSetPrices
+            const priceShownBasicWithoutConfigSet = {
               currency: 'EUR',
               pricePerUnit: 1,
               priceSum: toFixed2Number(orderItemPrice_01),
               tax: 27,
               taxSum: toFixed2Number(orderItemTax_01),
-            });
-            expect(order.items[2].priceShown).toEqual({
+            };
+            expect(order.items[0].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+            expect(order.items[1].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+            expect(order.items[2].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+
+            // SumPriceShown contains the configSets too
+            expect(order.items[0].sumPriceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+            expect(order.items[1].sumPriceShown).toEqual({
               currency: 'EUR',
               pricePerUnit: 1,
-              priceSum: toFixed2Number(orderItemPrice_01),
+              priceSum: toFixed2Number(orderItemPrice_02),
               tax: 27,
-              taxSum: toFixed2Number(orderItemTax_01),
+              taxSum: toFixed2Number(orderItemTax_02),
             });
+            expect(order.items[1].sumPriceShown).toEqual({
+              currency: 'EUR',
+              pricePerUnit: 1,
+              priceSum: toFixed2Number(orderItemPrice_03),
+              tax: 27,
+              taxSum: toFixed2Number(orderItemTax_03),
+            });
+
             // expect(
             //   order.items[0].allergens?.sort(
             //     (a, b) => (a && b && a > b ? 1 : -1), // using sort it will be in the same order all the time
