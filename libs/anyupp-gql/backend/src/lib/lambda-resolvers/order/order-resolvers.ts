@@ -16,7 +16,7 @@ export const createOrderResolvers = ({
         "payload": {
           "handler": "createOrderFromCart",
           "payload": {
-            "userId": $util.toJson($ctx.identity.sub),
+            "userId": $util.toJson($ctx.identity.claims.get("cognito:username")),
             "input": $util.toJson($ctx.arguments.input)
           }
         }
