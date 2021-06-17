@@ -29,7 +29,8 @@ import { Store } from '@ngrx/store';
 })
 export class AdminUserRoleFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public adminUserId = '';
   public adminUser?: CrudApi.AdminUser;
   public roleContextOptions: IKeyValue[] = [];

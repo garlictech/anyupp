@@ -17,7 +17,8 @@ import { IUser } from '@bgap/shared/types';
 })
 export class UserFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public user: IUser | undefined;
 
   constructor(

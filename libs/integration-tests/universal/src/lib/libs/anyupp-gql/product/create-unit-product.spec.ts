@@ -4,7 +4,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   productFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { combineLatest, throwError } from 'rxjs';
@@ -28,7 +28,7 @@ describe('CreateUnitProduct tests', () => {
   beforeAll(async () => {
     publicAnyuppSdk = getAnyuppSdkPublic();
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     )
       .toPromise()

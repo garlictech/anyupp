@@ -1,54 +1,125 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
-import { from } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { flow, pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { AdminUserResolverDeps } from './utils';
+import { defer, from, of, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  mapTo,
+  switchMap,
+  switchMapTo,
+  throwIfEmpty,
+} from 'rxjs/operators';
+import { filterNullish } from '@bgap/shared/utils';
+import { ResolverErrorCode } from '../../utils/errors';
 
-const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
-  apiVersion: '2016-04-18',
-  region: 'eu-west-1',
-});
+export const createAdminUser =
+  (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
+  (deps: AdminUserResolverDeps) => {
+    console.debug('Resolver parameters: ', vars);
+    const newUsername = deps.userNameGenerator();
 
-export const createAdminUser = (
-  vars: AnyuppApi.CreateAdminUserMutationVariables,
-) => (deps: AdminUserResolverDeps) => {
-  console.debug('Resolver parameters: ', vars);
-  const Username = vars.input.email || vars.input.phone || '';
-
-  return pipe(
-    {
-      UserPoolId: deps.userPoolId,
-      Username,
-    },
-    params => cognitoidentityserviceprovider.adminCreateUser(params).promise(),
-    from,
-    switchMap(() =>
-      from(
-        cognitoidentityserviceprovider
-          .adminGetUser({
+    return pipe(
+      {
+        Limit: 2,
+        AttributesToGet: ['email', 'phone_number'],
+        Filter: `email = "${vars.input.email}"`,
+        UserPoolId: deps.userPoolId,
+      },
+      params =>
+        defer(() =>
+          from(deps.cognitoidentityserviceprovider.listUsers(params).promise()),
+        ),
+      filterNullish(),
+      map(
+        flow(
+          result => result?.Users,
+          E.fromPredicate(
+            users => users?.length === undefined || users.length < 2,
+            () => ({
+              code: ResolverErrorCode.DatabaseError,
+              message:
+                'Something bad happened, more users found with the provided data',
+            }),
+          ),
+          E.chain(
+            E.fromPredicate(
+              users => users?.length === undefined || users.length === 0,
+              () => ({
+                code: ResolverErrorCode.UserAlreadyExists,
+                message: 'User already exists',
+              }),
+            ),
+          ),
+          E.map(() => ({
+            Username: newUsername,
+            UserAttributes: [
+              {
+                Name: 'email',
+                Value: vars.input.email,
+              },
+              {
+                Name: 'phone_number',
+                Value: vars.input.phone,
+              },
+              {
+                Name: 'name',
+                Value: vars.input.name,
+              },
+            ],
             UserPoolId: deps.userPoolId,
-            Username,
+          })),
+        ),
+      ),
+      switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
+      switchMap(params =>
+        defer(() =>
+          from(
+            deps.cognitoidentityserviceprovider
+              .adminCreateUser(params)
+              .promise(),
+          ),
+        ),
+      ),
+      filterNullish(),
+      switchMap(() =>
+        deps.crudSdk
+          .CreateAdminUser({
+            input: {
+              name: vars.input.name,
+              id: newUsername,
+              email: vars.input.email,
+              phone: vars.input.phone,
+            },
           })
-          .promise(),
+          .pipe(
+            catchError(err =>
+              defer(() =>
+                from(
+                  deps.cognitoidentityserviceprovider
+                    .adminDeleteUser({
+                      UserPoolId: deps.userPoolId,
+                      Username: newUsername,
+                    })
+                    .promise(),
+                ),
+              ).pipe(
+                switchMapTo(
+                  throwError({
+                    code: ResolverErrorCode.UnknownError,
+                    message: JSON.stringify(err, null, 2),
+                  }),
+                ),
+              ),
+            ),
+          ),
       ),
-    ),
-    map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
-      pipe(
-        user.UserAttributes,
-        fp.find(attr => attr.Name === 'sub'),
-        attr => attr?.Value,
-      ),
-    ),
-    filter(fp.negate(fp.isEmpty)),
-    map((adminUserId: string) => ({
-      id: adminUserId,
-      name: vars.input.name,
-      email: vars.input.email,
-      phone: vars.input.phone,
-    })),
-    switchMap(input => deps.crudSdk.CreateAdminUser({ input })),
-    map(data => data?.id),
-  ).toPromise();
-};
+      mapTo(newUsername),
+      throwIfEmpty(() => 'UnkownCognitoError'),
+      catchError(err => {
+        console.error('ERROR:', JSON.stringify(err, null, 2));
+        return throwError(err);
+      }),
+    ).toPromise();
+  };

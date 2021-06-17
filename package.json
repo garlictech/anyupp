@@ -32,7 +32,10 @@
     "workspace-generator": "nx workspace-generator",
     "postinstall": "patch-package && ngcc --properties es2015 browser module main",
     "codegen:models": "if [ -d libs/api/graphql/schema/src/lib/models ]; then rm -r libs/api/graphql/schema/src/lib/models; fi; amplify codegen models; if [ -d apps/admin/src/models ]; then mv apps/admin/src/models libs/api/graphql/schema/src/lib/models; fi",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts",
+    "deleteAllTableData": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts",
+    "unittest": "yarn nx run-many --target=test --all --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
   },
   "private": true,
   "dependencies": {
@@ -78,6 +81,7 @@
     "express": "4.17.1",
     "fabric": "4.5.0",
     "fp-ts": "2.10.5",
+    "fp-ts-rxjs": "^0.6.15",
     "geo-tz": "6.0.1",
     "geolib": "3.3.1",
     "graphql": "15.5.0",
@@ -91,7 +95,7 @@
     "ngx-logger": "4.2.2",
     "print-js": "1.6.0",
     "reflect-metadata": "0.1.13",
-    "stripe": "8.155.0",
+    "stripe": "8.154.0",
     "rxjs": "6.6.7",
     "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.1.0",
     "tslib": "2.3.0",

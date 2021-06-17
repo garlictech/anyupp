@@ -1,4 +1,5 @@
 export { createAdminUserResolvers } from './lib/lambda-resolvers/admin-user/admin-user-resolvers';
+export { createAdminUser } from './lib/lambda-resolvers/admin-user/create-admin-user.resolver';
 export { adminRequestHandler } from './lib/lambda-resolvers/admin-user/admin-user-request-handler';
 export { createOrderResolvers } from './lib/lambda-resolvers/order/order-resolvers';
 export { orderRequestHandler } from './lib/lambda-resolvers/order/order-request-handler';
@@ -13,3 +14,5 @@ export * from './lib/szamlazzhu';
 
 import * as vtl from './lib/resolver-mapping-templates';
 export { vtl };
+
+export * from './lib/utils/errors';
