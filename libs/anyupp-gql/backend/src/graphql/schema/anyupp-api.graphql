@@ -135,7 +135,7 @@ type Availability @aws_cognito_user_pools {
   timeTo: String
   price: Float!
 }
-input CreateUnitProductInput {
+input CreateUnitProductInput { # TODO: delete the whole CreateUnitProduct mutation because we would use stream later probably and this whole endpoint is NOT used at all
   id: ID!
   parentId: ID! # parent groupProduct ID
   chainId: ID!
