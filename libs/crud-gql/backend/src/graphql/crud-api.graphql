@@ -658,6 +658,7 @@ type Cart
 
 type Transaction
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!

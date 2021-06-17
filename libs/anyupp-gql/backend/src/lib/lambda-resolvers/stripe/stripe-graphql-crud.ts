@@ -104,14 +104,17 @@ export const loadUnit = (unitId: string) => (deps: StripeResolverDeps) => {
  */
 export const loadTransactionByExternalTransactionId =
   (externalTransactionId: string) => (deps: StripeResolverDeps) => {
-    // console.debug('loadTransactionByExternalTransactionId.external_id=' + externalTransactionId)
-    const listTransactionListVars: CrudApi.ListTransactionsQueryVariables = {
+    console.debug(
+      'loadTransactionByExternalTransactionId.external_id=' +
+        externalTransactionId,
+    );
+    const searchTransactionsVars: CrudApi.SearchTransactionsQueryVariables = {
       filter: {
         externalTransactionId: { eq: externalTransactionId },
       },
     };
     return deps.crudSdk
-      .ListTransactions(listTransactionListVars)
+      .SearchTransactions(searchTransactionsVars)
       .pipe(
         map(data => data?.items),
         map(data => (data && data?.length > 0 ? data[0] : null)),
@@ -139,6 +142,7 @@ export const createTransaction =
  */
 export const updateTransactionState =
   (id: string, status: CrudApi.PaymentStatus) => (deps: StripeResolverDeps) => {
+    console.debug('updateTransactionState().id=' + id + ', status=' + status);
     const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
       input: {
         id,
