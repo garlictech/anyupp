@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/graphql/mutations/create_anonym_user.dart';
@@ -61,6 +63,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         variables: {},
         useApi: true,
       );
+      print('signInAnonymously.response().exception=${result.exception}');
+      print('signInAnonymously.response().data=${jsonEncode(result.data)}');
       
       String email = result.data['createAnonymUser']['email'];
       String pwd = result.data['createAnonymUser']['pwd'];
@@ -79,7 +83,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   }
 
   @override
-  Future<bool> registerUserWithEmailAndPassword(
+  Future<String> registerUserWithEmailAndPassword(
       String userEmail, String userPhone, String email, String password) async {
     try {
       List<AttributeArg> attributes = [];
@@ -91,10 +95,15 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       if (userEmail != null) {
         attributes.add(AttributeArg(name: 'email', value: userEmail));
       }
-      CognitoUserPoolData userPoolData = await _service.userPool.signUp(email, password, userAttributes: attributes);
+      String username = UUID.getUUID();
+      print('**** registerUserWithEmailAndPassword().username=$username, email=$email');
+      // attributes.add(
+      //   AttributeArg(name: 'Username', value: username),
+      // );
+      CognitoUserPoolData userPoolData = await _service.userPool.signUp(username, password, userAttributes: attributes);
 
       if (userPoolData.user != null) {
-        return Future.value(true);
+        return Future.value(username);
       }
     } on CognitoClientException catch (e) {
       if (e.code == 'UsernameExistsException') {
@@ -106,9 +115,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
 
       print(e.code);
     } on Exception catch (e) {
+      print('**** registerUserWithEmailAndPassword().error=$e');
       throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
-    return Future.value(false);
+    return Future.value(null);
   }
 
   @override
