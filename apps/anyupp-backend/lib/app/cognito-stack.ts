@@ -486,14 +486,18 @@ export class CognitoStack extends Stack {
   }
 
   private createConsumerPreSignupTriggerLambda() {
-    const lambdaFn = new lambda.Function(this, 'AdminPreSignupTriggerLambda', {
-      ...commonLambdaProps,
-      // It must be relative to the serverless.yml file
-      handler: 'lib/lambda/consumer-pre-signup/index.handler',
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/consumer-pre-signup.zip'),
-      ),
-    });
+    const lambdaFn = new lambda.Function(
+      this,
+      'ConsumerPreSignupTriggerLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        handler: 'lib/lambda/consumer-pre-signup/index.handler',
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, '../../.serverless/consumer-pre-signup.zip'),
+        ),
+      },
+    );
 
     if (lambdaFn.role) {
       lambdaFn.role.addToPrincipalPolicy(
