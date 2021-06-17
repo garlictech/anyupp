@@ -1,16 +1,14 @@
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
-import { filter, map, mapTo, switchMap, tap } from 'rxjs/operators';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { filter, map, mapTo, switchMap } from 'rxjs/operators';
 import { AdminUserResolverDeps } from './utils';
 
 export const deleteAdminUser =
   (params: AnyuppApi.DeleteAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
     console.debug('Resolver parameters: ', params);
-    let userId: string;
 
     return from(
       deps.cognitoidentityserviceprovider
@@ -21,35 +19,23 @@ export const deleteAdminUser =
         .promise(),
     )
       .pipe(
-        map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
-          pipe(
-            user.UserAttributes,
-            fp.find(attr => attr.Name === 'sub'),
-            attr => attr?.Value,
-          ),
+        map(
+          (user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
+            user.Username,
         ),
         filter(fp.negate(fp.isEmpty)),
-        tap((sub: string) => (userId = sub)),
-        switchMap(() =>
-          deps.cognitoidentityserviceprovider
-            .adminDeleteUser({
-              UserPoolId: deps.userPoolId,
-              Username: params.userName,
-            })
-            .promise(),
+        switchMap(username =>
+          from(
+            deps.cognitoidentityserviceprovider
+              .adminDeleteUser({
+                UserPoolId: deps.userPoolId,
+                Username: username,
+              })
+              .promise(),
+          ).pipe(mapTo(username)),
         ),
-        filter(fp.negate(fp.isEmpty)),
-        tap((sub: string) => (userId = sub)),
-        switchMap(() =>
-          deps.cognitoidentityserviceprovider
-            .adminDeleteUser({
-              UserPoolId: deps.userPoolId,
-              Username: params.userName,
-            })
-            .promise(),
-        ),
-        switchMap(() =>
-          deps.crudSdk.DeleteAdminUser({ input: { id: userId } }),
+        switchMap(username =>
+          deps.crudSdk.DeleteAdminUser({ input: { id: username } }),
         ),
         mapTo(true),
       )

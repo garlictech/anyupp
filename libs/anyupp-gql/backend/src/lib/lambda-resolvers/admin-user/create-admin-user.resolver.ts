@@ -1,7 +1,7 @@
-import { flow, pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { AdminUserResolverDeps } from './utils';
+import { filterNullish } from '@bgap/shared/utils';
+import * as E from 'fp-ts/lib/Either';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
@@ -11,8 +11,8 @@ import {
   switchMapTo,
   throwIfEmpty,
 } from 'rxjs/operators';
-import { filterNullish } from '@bgap/shared/utils';
 import { ResolverErrorCode } from '../../utils/errors';
+import { AdminUserResolverDeps } from './utils';
 
 export const createAdminUser =
   (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
