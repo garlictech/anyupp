@@ -14,6 +14,7 @@ export interface CreateConfirmedUserInput {
   email: string;
   password: string;
   name: string;
+  username?: string;
 }
 
 export const createConfirmedUserInCognito =
@@ -22,7 +23,7 @@ export const createConfirmedUserInCognito =
     cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
   }) =>
   (input: CreateConfirmedUserInput): Observable<CreateAnonymUserOutput> => {
-    const username = uuidV1();
+    const username = input.username ? input.username : uuidV1();
 
     return defer(() =>
       deps.cognitoidentityserviceprovider
