@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 
-import 'invoice_info.dart';
+import '../../../shared/widgets/transaction_info_widget.dart';
 import 'order_simple_list_item_widget.dart';
 
 class OrderHistoryCard extends StatelessWidget {
@@ -41,7 +41,7 @@ class OrderHistoryCard extends StatelessWidget {
             _buildOrderHeader(context),
             _buildDivider(context),
             ..._buildOrderItemList(context),
-            TransactionInfoWidget(order),
+            TransactionInfoWidget(order.transactionItem),
             _buildFooter(context),
           ],
         ),
@@ -84,13 +84,13 @@ class OrderHistoryCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+             order.orderNum != null ? Text(
                 '${order.orderNum}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
                 ),
-              ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.only(
                   right: 20.0,

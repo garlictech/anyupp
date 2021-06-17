@@ -1,11 +1,11 @@
 <nb-user
-  class="float-left"
+  class="float-start"
   [name]="product?.name | localize"
   [title]="product?.description | localize"
   [picture]="(product?.image || '' | awsStoragePath) || ''"
 ></nb-user>
 
-<bgap-status-led class="ml-1" [status]="product?.isVisible"></bgap-status-led>
+<bgap-status-led class="ms-1" [status]="product?.isVisible"></bgap-status-led>
 
 <bgap-colorized-lane-icon
   *ngIf="productLevel === EProductLevel.UNIT"
@@ -32,7 +32,7 @@
         shape="round"
         size="tiny"
         [title]="'common.moveDown' | translate"
-        class="float-right mr-2"
+        class="float-right me-2"
         (click)="moveDown()"
       >
         <nb-icon icon="chevron-down"></nb-icon>
@@ -43,7 +43,7 @@
         shape="round"
         size="tiny"
         [title]="'common.moveUp' | translate"
-        class="float-right mr-2"
+        class="float-right me-2"
         (click)="moveUp()"
       >
         <nb-icon icon="chevron-up"></nb-icon>
@@ -68,13 +68,13 @@
 <div class="clearfix"></div>
 
 <bgap-allergens
-  class="ml-5 d-inline-block"
+  class="ms-5 d-inline-block"
   [allergens]="product?.allergens || []"
 ></bgap-allergens>
 
 <div class="clearfix"></div>
 
-<div class="caption ml-5">
+<div class="caption ms-5">
   <div
     class="caption d-inline-block availability-badge"
     [ngStyle]="{ opacity: variant?.isAvailable ? '' : '0.7' }"
@@ -97,7 +97,7 @@
     </ng-container>
 
     <bgap-status-led
-      class="ml-1"
+      class="ms-1"
       [status]="variant?.isAvailable"
     ></bgap-status-led>
   </div>

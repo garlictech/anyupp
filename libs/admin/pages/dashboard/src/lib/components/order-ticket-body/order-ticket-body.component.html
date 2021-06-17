@@ -21,15 +21,15 @@
   <div class="col-12 col-md-8 p-1 md-h-100">
     <nb-card *ngIf="selectedOrder" class="md-h-100">
       <nb-card-header class="p-2">
-        <div class="float-left font-larger pt-1">
-          <div class="d-inline mr-3 ml-2" *ngIf="ordersSum">
+        <div class="float-start font-larger pt-1">
+          <div class="d-inline me-3 ms-2" *ngIf="ordersSum">
             #{{ selectedOrder.orderNum }}
           </div>
 
           <nb-icon class="user-icon" icon="person-outline"></nb-icon>
           {{ selectedOrder.place?.table }}/{{ selectedOrder.place?.seat }}
 
-          <div class="d-inline ml-3" *ngIf="ordersSum">
+          <div class="d-inline ms-3" *ngIf="ordersSum">
             Σ
             {{
               (dashboardSettings.showAllUserOrders
@@ -47,7 +47,7 @@
             "
             nbButton
             shape="round"
-            class="ml-3 d-inline"
+            class="ms-3 d-inline"
             [size]="buttonSize"
             [status]="dashboardSettings.showAllUserOrders ? 'success' : 'basic'"
             (click)="toggleShowAllUserOrders()"
@@ -73,7 +73,7 @@
           status="success"
           [size]="buttonSize"
           shape="round"
-          class="float-right mr-2 mt-1"
+          class="float-right me-2 mt-1"
           (click)="print()"
         >
           <nb-icon icon="printer-outline"></nb-icon>

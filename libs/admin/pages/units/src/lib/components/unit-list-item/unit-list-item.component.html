@@ -1,7 +1,7 @@
-<div class="float-left">
+<div class="float-start">
   <div class="subtitle-2">
     {{ unit!.name }}
-    <bgap-status-led class="ml-1" [status]="unit?.isActive"></bgap-status-led>
+    <bgap-status-led class="ms-1" [status]="unit?.isActive"></bgap-status-led>
   </div>
   <div class="caption">{{ unit!.description! | localize }}</div>
   <bgap-contact [contact]="unit"></bgap-contact>
@@ -22,7 +22,7 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right mr-2"
+  class="float-right me-2"
   [title]="'units.editFloorMap' | translate"
   (click)="editUnitFloorMap()"
 >
@@ -37,7 +37,7 @@
   shape="round"
   status="danger"
   size="tiny"
-  class="float-right mr-4"
+  class="float-right me-4"
   (click)="regenerateData()"
 >
   {{ 'units.regenerateMenu' | translate }}
