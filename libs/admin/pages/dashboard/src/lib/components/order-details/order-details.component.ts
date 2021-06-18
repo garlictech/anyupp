@@ -221,7 +221,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             if (this.order.id) {
               this._orderService
                 .archiveOrder(this.order, CrudApi.OrderStatus.rejected)
-                .subscribe();
+                .subscribe(() => {
+                  this._store.dispatch(
+                    ordersActions.removeActiveOrder({
+                      orderId: this.order.id,
+                    }),
+                  );
+                });
             }
           },
           status: 'success',
