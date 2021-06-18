@@ -74,7 +74,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         ),
                       ),
                       ...getExtraNames(context),
-                      getOrderItemAllergenWidget(),
+                     // getOrderItemAllergenWidget(),
                       SizedBox(
                         height: 16,
                       ),
