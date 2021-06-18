@@ -24,7 +24,7 @@ const userName = 'int-test-user-name';
 const phone = '+1234567892';
 const staticUserNameGenerator = () => userName;
 
-describe('Admin user creation/deletion', () => {
+describe.skip('Admin user creation/deletion', () => {
   const authAnyuppSdk = createAuthenticatedAnyuppSdk(
     testAdminEmail,
     testAdminUserPassword,
