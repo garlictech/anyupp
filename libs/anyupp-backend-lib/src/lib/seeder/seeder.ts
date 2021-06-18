@@ -67,6 +67,14 @@ export const seedAdminUser = (deps: SeederDependencies) =>
           if (err.code === ResolverErrorCode.UserAlreadyExists) {
             console.warn(`${email} user already exists, no problem...`);
             return of({});
+          } else if (
+            err ===
+            "Error: GraphQL error: Cannot return null for non-nullable type: 'AdminUser' within parent 'AdminRoleContext'"
+          ) {
+            console.warn(
+              `To handle: Cannot return null for non-nullable type: 'AdminUser' within parent 'AdminRoleContext'`,
+            );
+            return of({});
           }
 
           return throwError(err);
