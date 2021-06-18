@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash/fp';
 import { EMPTY } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { catchError, switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -191,27 +191,27 @@ export class OrderService {
     status: CrudApi.PaymentStatus,
   ) {
     if (order.transactionId) {
-      return this._crudSdk.doMutation(
-        this._crudSdk.sdk
-          .UpdateTransaction({
+      return this._crudSdk
+        .doMutation(
+          this._crudSdk.sdk.UpdateTransaction({
             input: {
               id: order.transactionId,
               status,
             },
-          })
-          .pipe(
-            switchMap(() =>
-              this._crudSdk.doMutation(
-                this._crudSdk.sdk.UpdateOrder({
-                  input: {
-                    id: order.id,
-                    transactionStatus: status,
-                  },
-                }),
-              ),
+          }),
+        )
+        .pipe(
+          switchMap(() =>
+            this._crudSdk.doMutation(
+              this._crudSdk.sdk.UpdateOrder({
+                input: {
+                  id: order.id,
+                  transactionStatus: status,
+                },
+              }),
             ),
           ),
-      );
+        );
     } else {
       return EMPTY;
     }
