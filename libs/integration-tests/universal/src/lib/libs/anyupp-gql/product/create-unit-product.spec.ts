@@ -14,6 +14,7 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
+import { Auth } from 'aws-amplify';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
   input: productFixture.unitProductBase,
@@ -35,6 +36,10 @@ describe('CreateUnitProduct tests', () => {
       .then(x => x.authAnyuppSdk);
     publicCrudSdk = CrudApi.getCrudSdkPublic();
     iamCrudSdk = createIamCrudSdk();
+  });
+
+  afterAll(async () => {
+    await Auth.signOut();
   });
 
   it('should require authentication to access', done => {

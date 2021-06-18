@@ -1,20 +1,19 @@
-import { Context, Handler } from 'aws-lambda';
-import * as fp from 'lodash/fp';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
-
 import {
   adminRequestHandler,
   createStripeClient,
+  createSzamlazzClient,
   orderRequestHandler,
   productRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
   userRequestHandler,
 } from '@bgap/anyupp-gql/backend';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
-import { createSzamlazzClient } from '@bgap/anyupp-gql/backend';
+import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import * as fp from 'lodash/fp';
 import { v1 as uuidV1 } from 'uuid';
 
 export interface AnyuppRequest {
@@ -52,6 +51,8 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
   _context: Context,
 ): Promise<unknown> => {
+  console.debug('### Appsync Lambda handler ~ event:AnyuppRequest', event);
+
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
     crudSdk,

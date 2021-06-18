@@ -17,7 +17,7 @@ import { AdminUserResolverDeps } from './utils';
 export const createAdminUser =
   (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
-    console.debug('Resolver parameters: ', vars);
+    console.debug('createAdminUser Resolver parameters: ', vars);
     const newUsername = deps.userNameGenerator();
 
     return pipe(

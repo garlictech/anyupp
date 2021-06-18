@@ -100,10 +100,14 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
       print('SocialLoginScreen.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
       print('SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
       print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
+      dynamic payload = idToken.decodePayload();
+      String username = payload['cognito:username'];
+      print('SocialLoginScreen()signUserInWithAuthCode().username=' + username);
 
       final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
       AuthRepository repository = getIt<AuthRepository>();
-      await repository.loginWithCognitoSession(session);
+      await repository.loginWithCognitoSession(session, username);
+      
       Navigator.of(context).pop();
     } on Exception catch (e) {
       setState(() {

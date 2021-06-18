@@ -163,7 +163,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     (status: CrudApi.PaymentStatus) => () => {
       if (this.order.transactionId) {
         this._orderService
-          .updateOrderTransactionStatus(this.order.transactionId, status)
+          .updateOrderTransactionStatus(this.order, status)
           .pipe(
             switchMap(() =>
               status === CrudApi.PaymentStatus.success &&
@@ -221,7 +221,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             if (this.order.id) {
               this._orderService
                 .archiveOrder(this.order, CrudApi.OrderStatus.rejected)
-                .subscribe();
+                .subscribe(() => {
+                  this._store.dispatch(
+                    ordersActions.removeActiveOrder({
+                      orderId: this.order.id,
+                    }),
+                  );
+                });
             }
           },
           status: 'success',
