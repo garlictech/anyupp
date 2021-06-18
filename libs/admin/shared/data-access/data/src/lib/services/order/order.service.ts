@@ -187,17 +187,34 @@ export class OrderService {
   }
 
   public updateOrderTransactionStatus(
-    transactionId: string,
+    order: CrudApi.Order,
     status: CrudApi.PaymentStatus,
   ) {
-    return this._crudSdk.doMutation(
-      this._crudSdk.sdk.UpdateTransaction({
-        input: {
-          id: transactionId,
-          status,
-        },
-      }),
-    );
+    if (order.transactionId) {
+      return this._crudSdk
+        .doMutation(
+          this._crudSdk.sdk.UpdateTransaction({
+            input: {
+              id: order.transactionId,
+              status,
+            },
+          }),
+        )
+        .pipe(
+          switchMap(() =>
+            this._crudSdk.doMutation(
+              this._crudSdk.sdk.UpdateOrder({
+                input: {
+                  id: order.id,
+                  transactionStatus: status,
+                },
+              }),
+            ),
+          ),
+        );
+    } else {
+      return EMPTY;
+    }
   }
 
   public archiveOrder(order: CrudApi.Order, status: CrudApi.OrderStatus) {
