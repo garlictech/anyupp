@@ -1,7 +1,5 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { EProductType } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
   generatedProductFixture,
@@ -10,10 +8,12 @@ import {
   seededIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { combineLatest, concat, Observable, of } from 'rxjs';
-import { pipe } from 'fp-ts/lib/function';
+import { EProductType } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { pipe } from 'fp-ts/lib/function';
+import { combineLatest, concat, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -105,7 +105,8 @@ export const createTestGroup =
       id: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
       name: `Seeded group #${groupIdx}`,
-      currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
+      // currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
+      currency: 'HUF',
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteGroup({ input: { id: input.id ?? '' } }),
@@ -484,7 +485,7 @@ export const createTestUnitProduct =
         {
           id: generateVariantId(chainIdx, productIdx, 1, 'unit'),
           isAvailable: true,
-          price: 11,
+          price: 150,
           position: 1,
           pack: {
             size: 2,
@@ -498,7 +499,7 @@ export const createTestUnitProduct =
             {
               dayFrom: '',
               dayTo: '',
-              price: productIdx * 60,
+              price: productIdx * 150,
               timeFrom: '',
               timeTo: '',
               type: 'A',
@@ -575,9 +576,9 @@ export const createTestCart =
             hu: 'Viz',
           },
           priceShown: {
-            currency: 'EUR',
-            pricePerUnit: 1,
-            priceSum: 2,
+            currency: 'HUF',
+            pricePerUnit: 350,
+            priceSum: 700,
             tax: 0, // empty
             taxSum: 0, // empty
           },
