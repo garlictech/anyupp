@@ -3,10 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget allergenGridWidget(
-    {String allergen, int index, String assetPath, bool showName = false, double fontSize = 16.0, double borderRadius = 12.0}) {
+    {String allergen,
+    int index,
+    String assetPath,
+    bool showName = false,
+    double fontSize = 16.0,
+    double borderRadius = 12.0,
+    Color backgroud = Colors.white}) {
   return LayoutBuilder(
     builder: (context, constrains) {
-      double padding = constrains.maxHeight/4;
+      double padding = constrains.maxHeight / 4;
       return Stack(
         children: [
           Container(
@@ -29,9 +35,7 @@ Widget allergenGridWidget(
             ),
             child: Column(
               children: [
-                Expanded(
-                    flex: 5,
-                    child: SvgPicture.asset(assetPath)),
+                Expanded(flex: 5, child: SvgPicture.asset(assetPath)),
                 showName
                     ? Expanded(
                         flex: 1,
@@ -51,19 +55,21 @@ Widget allergenGridWidget(
               ],
             ),
           ),
-                Positioned(
-          top: 2,
-          left: 7,
-          child: Text(
-            index.toString(),
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              //fontSize: 16.0,
-              fontSize: fontSize,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF3C2F2F),
-            ),
-          ))
+          Positioned(
+              top: 2,
+              left: 7,
+              child: Text(
+                index.toString(),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  //fontSize: 16.0,
+                  backgroundColor: backgroud,
+
+                  //fontSize: fontSize,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF3C2F2F),
+                ),
+              ))
         ],
       );
     },

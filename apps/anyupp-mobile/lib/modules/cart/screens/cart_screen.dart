@@ -154,6 +154,7 @@ class CartScreen extends StatelessWidget {
       children: <Widget>[
         // LIST
         Expanded(
+          flex: 10,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
@@ -177,7 +178,7 @@ class CartScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
+          padding: EdgeInsets.only(left: 30, top: 5, right: 15, bottom: 10),
           child: cartAllergens.keys.toList().isNotEmpty
               ? AllergensWidget(allergens: cartAllergens.values.toList())
               : Container(),

@@ -71,7 +71,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
               getLocalizedText(context, modifier.name),
               style: GoogleFonts.poppins(
                 color: theme.text,
-                fontSize: 24.0,
+                fontSize: 20.0,
               ),
             ),
             collapsed: Column(
