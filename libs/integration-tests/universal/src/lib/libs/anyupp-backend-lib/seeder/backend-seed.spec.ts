@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
 import { testAdminEmail } from '@bgap/shared/fixtures';
+import { Auth } from 'aws-amplify';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -14,6 +15,10 @@ const username = testAdminEmail;
 
 // TODO add test to find the user in the DB
 describe('Testing backend seed state', () => {
+  afterAll(async () => {
+    await Auth.signOut();
+  });
+
   test('Test user must be present and we can log in', done => {
     from(
       cognitoidentityserviceprovider

@@ -5,7 +5,6 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import { awsConfig } from '@bgap/crud-gql/api';
 import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
-import { pipeDebug } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { defer, iif, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -14,14 +13,14 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
 });
 
 const email = 'foobar@anyupp.com';
-const userName = 'intTestUserName';
+const userName = 'int-test-user-name';
 const phone = '+1234567892';
 const staticUserNameGenerator = () => userName;
 
@@ -53,7 +52,6 @@ describe('Admin user creation/deletion', () => {
               }
               return throwError(err);
             }),
-            pipeDebug('### AfterDelete'),
             // ERROR - Invalid phoneNumber
             switchMap(() => {
               const input = {
