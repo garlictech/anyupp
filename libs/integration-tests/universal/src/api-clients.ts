@@ -1,13 +1,13 @@
 import {
-  awsConfig,
-  getCrudSdkForIAM,
-  getCrudSdkForUserPool,
-} from '@bgap/crud-gql/api';
-import {
   AnyuppSdk,
   getAnyuppSdkForIAM,
   getAnyuppSdkForUserPool,
 } from '@bgap/anyupp-gql/api';
+import {
+  awsConfig,
+  getCrudSdkForIAM,
+  getCrudSdkForUserPool,
+} from '@bgap/crud-gql/api';
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export const createAuthenticatedAnyuppSdk = (
   return from(Auth.signIn(userName, password)).pipe(
     map(user => ({
       userAttributes: {
-        id: user.attributes.sub,
+        id: user.signInUserSession?.idToken?.payload?.['cognito:username'], // The Username is the new userId
         ...user.attributes,
       },
       authAnyuppSdk: getAnyuppSdkForUserPool(),

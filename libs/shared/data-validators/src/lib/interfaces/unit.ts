@@ -36,11 +36,8 @@ export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   ...addressInfoSchema,
 };
 
-export const { validate: validateUnit, isType: isUnit } = validateSchema<
-  CrudApi.Unit
->(unitSchema, 'Unit');
+export const { validate: validateUnit, isType: isUnit } =
+  validateSchema<CrudApi.Unit>(unitSchema, 'Unit');
 
-export const {
-  validate: validateUnitList,
-  isType: isUnitList,
-} = validateGqlList<CrudApi.Unit>(unitSchema, 'UnitList');
+export const { validate: validateUnitList, isType: isUnitList } =
+  validateGqlList<CrudApi.Unit>(unitSchema, 'UnitList');

@@ -3,7 +3,7 @@ Feature: Create or update Group
   Background: Login and steps to the Groups
     Given I am on the login page
     When I fill out the input with id "username" with the "test@anyupp.com" value
-    And I fill out the input with id "password" with the "Testtesttest12_" value
+    And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     When I click the "skip" text with timeout 15000

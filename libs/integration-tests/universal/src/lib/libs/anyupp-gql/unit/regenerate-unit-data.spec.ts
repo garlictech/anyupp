@@ -14,7 +14,7 @@ import {
   productCategoryFixture,
   productComponentSetFixture,
   productFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -285,7 +285,7 @@ describe('RegenerateUnitData mutation tests', () => {
   ).pipe(toArray());
 
   beforeAll(async () => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    await createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .toPromise()
       .then(x => {
         authAnyuppSdk = x.authAnyuppSdk;
@@ -339,7 +339,7 @@ describe('RegenerateUnitData mutation tests', () => {
 
   afterAll(async () => {
     await cleanup.toPromise();
-  });
+  }, 15000);
 
   it('should return helpful error message in case the unit has no items', done => {
     const input = { id: 'EMPTY UNIT' };

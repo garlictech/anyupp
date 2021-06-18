@@ -42,18 +42,17 @@ export const calculatePriceFromAvailabilities = (
   return price;
 };
 
-const isAvailabilityActiveAtTime = (atTime: DateTime) => (
-  availability: CrudApi.Maybe<CrudApi.Availability>,
-) => {
-  return (
-    availability &&
-    (availability.type === EVariantAvailabilityType.ALWAYS ||
-      (availability.type === EVariantAvailabilityType.SEASONAL &&
-        isSeasonalActive(availability, atTime)) ||
-      (availability.type === EVariantAvailabilityType.WEEKLY &&
-        isWeeklyActive(availability, atTime)))
-  );
-};
+const isAvailabilityActiveAtTime =
+  (atTime: DateTime) => (availability: CrudApi.Maybe<CrudApi.Availability>) => {
+    return (
+      availability &&
+      (availability.type === EVariantAvailabilityType.ALWAYS ||
+        (availability.type === EVariantAvailabilityType.SEASONAL &&
+          isSeasonalActive(availability, atTime)) ||
+        (availability.type === EVariantAvailabilityType.WEEKLY &&
+          isWeeklyActive(availability, atTime)))
+    );
+  };
 
 // Seasonal availability uses absolute times that is in the Unit's timezone
 // => the calculation should use the timezone information because the atTime comes from the server
