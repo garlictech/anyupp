@@ -33,7 +33,7 @@ class AllergensWidget extends StatelessWidget {
               assetPath: "assets/allergens/$allergen.svg",
               borderRadius: iconBorderRadius,
               fontSize: fontSize,
-              backgroud: theme.background
+              themeColor: theme.highlight
             ),
           ),
         ));
@@ -61,7 +61,7 @@ class AllergensWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         color: theme.highlight,
                         fontWeight: FontWeight.normal,
-                        fontSize: 13,
+                        fontSize: fontSize,
                       )),
                   SizedBox(
                     width: 5,

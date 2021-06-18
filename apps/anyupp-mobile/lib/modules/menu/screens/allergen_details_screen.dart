@@ -129,7 +129,8 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
               index: allergenIndex,
               assetPath: "assets/allergens/$allergenName.svg",
               showName: true,
-              backgroud: theme.background);
+              themeColor: theme.highlight,
+              fontSize: 20);
         }, childCount: allergens.keys.length));
   }
 }
