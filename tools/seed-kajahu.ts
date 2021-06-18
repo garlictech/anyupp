@@ -1,23 +1,24 @@
 //#########
 // execute with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-kajahu.ts EMAIL PASSWORD
+// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-kajahu.ts
 
-import chalk from 'chalk';
-import { createConfirmedUserInCognito } from '../libs/anyupp-gql/backend/src/lib/lambda-resolvers/user/utils';
-import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
-import { awsConfig } from '../libs/crud-gql/api/src';
-import { map, tap, switchMap, mapTo } from 'rxjs/operators';
 import assert from 'assert';
+import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import chalk from 'chalk';
 import { defer, Observable } from 'rxjs';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
+import { createConfirmedUserInCognito } from '../libs/anyupp-gql/backend/src/lib/lambda-resolvers/user/utils';
 import * as CrudApi from '../libs/crud-gql/api/src';
+import { awsConfig } from '../libs/crud-gql/api/src';
 import {
   validateChain,
   validateGroup,
   validateUnit,
 } from '../libs/shared/data-validators/src';
 
-const EMAIL = process.argv[2];
-const PASSWORD = process.argv[3];
+const EMAIL = 'anyupp-admin@anyupp.com';
+const PASSWORD = 'Hideghegy12_';
+const USER_NAME = 'megafirstsuperuser';
 const CONTEXT = 'SU_CTX_ID';
 const NAME = 'KAJAHU_ADMIN_USER';
 const PHONE = '123123213';
@@ -185,8 +186,8 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: process.env.AWS_REGION || '',
 });
 
-console.log('INPUT PARAMS EMAIL', chalk.yellowBright.bold(EMAIL));
-console.log('INPUT PARAMS PASSWORD', chalk.yellowBright.bold(PASSWORD));
+console.log('EMAIL', chalk.yellowBright.bold(EMAIL));
+console.log('PASSWORD', chalk.yellowBright.bold(PASSWORD));
 console.log('CONTEXT', chalk.yellowBright.bold(CONTEXT));
 if (!EMAIL) {
   throw new Error('email param is missing');
@@ -241,22 +242,27 @@ const createAndCheckAdminUser = () =>
   createConfirmedUserInCognito({
     cognitoidentityserviceprovider,
     userPoolId: adminUserPoolId,
-  })({ email: EMAIL, password: PASSWORD, name: NAME }).pipe(
+  })({
+    email: EMAIL,
+    password: PASSWORD,
+    name: NAME,
+    username: USER_NAME,
+  }).pipe(
     tap({
       next(newAdminUser) {
         assert(!!newAdminUser);
       },
     }),
-    switchMap(props =>
-      isAdminUserCanAuthenticate(props).pipe(map(() => props)),
+    switchMap(() =>
+      isAdminUserCanAuthenticate({ email: EMAIL, password: PASSWORD }),
     ),
-    switchMap(props =>
+    switchMap(() =>
       crudSdk
         .CreateAdminUser({
           input: {
-            id: props.userId,
-            email: props.email,
-            name: props.name,
+            id: USER_NAME,
+            email: EMAIL,
+            name: NAME,
             phone: PHONE,
           },
         })
@@ -266,15 +272,15 @@ const createAndCheckAdminUser = () =>
               assert(!!newAdminUserDbRecord, 'User from db is missing');
               assert(
                 !!newAdminUserDbRecord['id'] &&
-                  newAdminUserDbRecord['id'] === props.userId,
+                  newAdminUserDbRecord['id'] === USER_NAME,
                 'UserId is not the same or missing',
               );
               assert(
-                newAdminUserDbRecord['email'] === props.email,
+                newAdminUserDbRecord['email'] === EMAIL,
                 'Email from db is not the requested',
               );
               assert(
-                newAdminUserDbRecord['name'] === props.name,
+                newAdminUserDbRecord['name'] === NAME,
                 'Name from db is not the requested',
               );
               console.log(
@@ -285,7 +291,7 @@ const createAndCheckAdminUser = () =>
               console.log(chalk.redBright.bold('ADMIN USER create ERROR'));
             },
           }),
-          mapTo(props.userId),
+          mapTo(USER_NAME),
         ),
     ),
   );

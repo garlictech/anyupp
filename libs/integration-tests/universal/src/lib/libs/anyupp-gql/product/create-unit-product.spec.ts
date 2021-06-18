@@ -4,7 +4,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   productFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { combineLatest, throwError } from 'rxjs';
@@ -14,6 +14,7 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
+import { Auth } from 'aws-amplify';
 
 const input: AnyuppApi.CreateUnitProductMutationVariables = {
   input: productFixture.unitProductBase,
@@ -28,13 +29,17 @@ describe('CreateUnitProduct tests', () => {
   beforeAll(async () => {
     publicAnyuppSdk = getAnyuppSdkPublic();
     authAnyuppSdk = await createAuthenticatedAnyuppSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     )
       .toPromise()
       .then(x => x.authAnyuppSdk);
     publicCrudSdk = CrudApi.getCrudSdkPublic();
     iamCrudSdk = createIamCrudSdk();
+  });
+
+  afterAll(async () => {
+    await Auth.signOut();
   });
 
   it('should require authentication to access', done => {

@@ -14,9 +14,8 @@ export interface GroupsPartialState {
   readonly [GROUPS_FEATURE_KEY]: GroupsState;
 }
 
-export const groupsAdapter: EntityAdapter<CrudApi.Group> = createEntityAdapter<
-  CrudApi.Group
->();
+export const groupsAdapter: EntityAdapter<CrudApi.Group> =
+  createEntityAdapter<CrudApi.Group>();
 
 export const initialState: GroupsState = groupsAdapter.getInitialState({});
 

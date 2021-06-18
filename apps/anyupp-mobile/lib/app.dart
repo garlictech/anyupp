@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'dart:io';
+
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/affiliate.dart';
@@ -17,6 +20,7 @@ import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'core/dependency_indjection/dependency_injection.dart';
 import 'core/theme/theme.dart';
@@ -42,6 +46,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _initDeepLinks();
+    if (Platform.isAndroid) {
+      checkForAndroidUpdates();
+    }
   }
 
   @override
@@ -82,6 +89,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> checkForAndroidUpdates() async {
+      AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
+      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.performImmediateUpdate();
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -95,26 +109,16 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-        BlocProvider<UnitSelectBloc>(
-            create: (context) => getIt<UnitSelectBloc>()),
-        BlocProvider<FavoritesBloc>(
-            create: (context) => getIt<FavoritesBloc>()),
-        BlocProvider<TransactionsBloc>(
-            create: (context) => getIt<TransactionsBloc>()),
-        BlocProvider<LoginBloc>(
-            create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<SimplePayBloc>(
-            create: (BuildContext context) => getIt<SimplePayBloc>()),
-        BlocProvider<ThemeBloc>(
-            create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<AffiliateBloc>(
-            create: (BuildContext context) => getIt<AffiliateBloc>()),
-        BlocProvider<MainNavigationBloc>(
-            create: (BuildContext context) => getIt<MainNavigationBloc>()),
-        BlocProvider<ConfigsetBloc>(
-            create: (BuildContext context) => getIt<ConfigsetBloc>()),
-        BlocProvider<UserDetailsBloc>(
-            create: (BuildContext context) => getIt<UserDetailsBloc>()),
+        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(create: (context) => getIt<TransactionsBloc>()),
+        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
+        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
+        BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
@@ -146,7 +150,7 @@ class _MyAppState extends State<MyApp> {
             },
 
             // The first app page
-            home: OnBoarding(),
+            home: UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()),
 
             // To hide the debug mark (in debugging and development modes)
             debugShowCheckedModeBanner: false,

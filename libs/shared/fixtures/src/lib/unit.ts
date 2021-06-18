@@ -14,7 +14,7 @@ const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   isActive: true,
   isAcceptingOrders: true,
-  name: `Test unit #${unitId_01}`,
+  name: `Késdobáló S`,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',

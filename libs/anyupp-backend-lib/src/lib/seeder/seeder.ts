@@ -1,21 +1,13 @@
 import {
-  testAdminUsername,
+  otherAdminEmails,
+  testAdminEmail,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { concat, defer, from, of, throwError } from 'rxjs';
+import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
+import { catchError, delay, switchMap, tap, toArray } from 'rxjs/operators';
 import {
-  catchError,
-  delay,
-  map,
-  mapTo,
-  switchMap,
-  takeLast,
-} from 'rxjs/operators';
-import {
-  createTestAdminRoleContext,
   createTestCart,
   createTestChain,
   createTestChainProduct,
@@ -28,83 +20,117 @@ import {
   createAdminUser,
   SeederDependencies,
   createComponentSets,
+  createTestAdminRoleContext,
 } from './seed-data-fn';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
+import {
+  createAdminUser as resolverCreateAdminUser,
+  ResolverErrorCode,
+} from '@bgap/anyupp-gql/backend';
 
-const username = testAdminUsername;
+const ce = (tag: string) =>
+  catchError(err => {
+    console.error(`[${tag}: Error]`, JSON.stringify(err, undefined, 2));
+    throw err;
+  });
+
+const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
+  emails.map((email, index) => ({
+    email,
+    username: email.split('@')[0],
+    phone: `+123456789${index}`,
+  })),
+);
+
 const password = testAdminUserPassword;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    {
-      UserPoolId: deps.userPoolId,
-      Username: username,
-      UserAttributes: [
-        {
-          Name: 'email',
-          Value: username,
-        },
-        {
-          Name: 'phone_number',
-          Value: '+123456789013',
-        },
-      ],
-    },
-    // CREATE user in Cognito
-    params =>
-      defer(() =>
-        deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
-      ).pipe(
+    userData.map(({ email, username, phone }) =>
+      deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
         switchMap(() =>
-          from(
-            deps.cognitoidentityserviceprovider
-              .adminSetUserPassword({
-                UserPoolId: deps.userPoolId,
-                Username: username,
-                Password: password,
-                Permanent: true,
-              })
-              .promise(),
+          defer(() =>
+            from(
+              resolverCreateAdminUser({
+                input: {
+                  name: email.split('@')[0],
+                  phone,
+                  email,
+                },
+              })({
+                ...deps,
+                userNameGenerator: () => email.split('@')[0],
+              }),
+            ),
           ),
         ),
         catchError(err => {
-          if (err?.code === 'UsernameExistsException') {
-            console.warn('Admin user in Cognito already exists, no problem');
+          if (err.code === ResolverErrorCode.UserAlreadyExists) {
+            console.warn(`${email} user already exists, no problem...`);
             return of({});
-          } else {
-            return throwError(err);
           }
+
+          return throwError(err);
         }),
       ),
-    // pipeDebug('### Cognito user CREATED'),
-    // GET user from Cognito
+    ),
+    combineLatest,
     switchMap(() =>
-      from(
-        deps.cognitoidentityserviceprovider
-          .adminGetUser({
-            UserPoolId: deps.userPoolId,
-            Username: username,
-          })
-          .promise(),
-      ),
-    ),
-    // pipeDebug('### Cognito user GET'),
-    map((user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
       pipe(
-        user.UserAttributes,
-        fp.find(attr => attr.Name === 'sub'),
-        attr => attr?.Value,
+        userData.map(({ username }) => ({
+          UserPoolId: deps.userPoolId,
+          Username: username,
+          Password: password,
+          Permanent: true,
+        })),
+
+        fp.map(params => [
+          defer(() =>
+            deps.cognitoidentityserviceprovider
+              .adminSetUserPassword(params)
+              .promise(),
+          ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
+
+          defer(() =>
+            deps.cognitoidentityserviceprovider
+              .adminUpdateUserAttributes({
+                UserPoolId: deps.userPoolId,
+                Username: params.Username,
+                UserAttributes: [
+                  {
+                    Name: 'email_verified',
+                    Value: 'true',
+                  },
+                  {
+                    Name: 'phone_number_verified',
+                    Value: 'true',
+                  },
+                ],
+              })
+              .promise(),
+          ).pipe(
+            tap(() => console.log('USER EMAIL AND PHONE VERIFIED', params)),
+          ),
+        ]),
+        fp.flatten,
+        combineLatest,
       ),
     ),
-    throwIfEmptyValue(),
-    switchMap(adminUserId =>
-      createAdminUser(adminUserId, username)(deps).pipe(mapTo(adminUserId)),
+    switchMap(() =>
+      pipe(
+        userData.map(({ username, email }) =>
+          createAdminUser(
+            username,
+            email,
+          )(deps).pipe(
+            tap(() => console.log('USER CREATED in DB', username, email)),
+          ),
+        ),
+        combineLatest,
+      ),
     ),
   );
 
-export const seedBusinessData = (userId: string) => (
-  deps: SeederDependencies,
-) =>
+export const seedBusinessData = (deps: SeederDependencies) =>
   createTestRoleContext(
     1,
     1,
@@ -113,7 +139,6 @@ export const seedBusinessData = (userId: string) => (
   )(deps)
     .pipe(
       ce('### RoleContext SEED 01'),
-      takeLast(1),
       delay(1000),
       switchMap(() =>
         concat(
@@ -180,19 +205,23 @@ export const seedBusinessData = (userId: string) => (
           })(deps),
         ),
       ),
-      takeLast(1),
-      switchMap(() =>
-        createTestAdminRoleContext(
-          1,
-          1,
-          userId,
-        )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
-      ),
+      toArray(),
     )
     .pipe(ce('### seedBusinessData'));
 
-const ce = (tag: string) =>
-  catchError(err => {
-    console.error(`[${tag}: Error]`, JSON.stringify(err, undefined, 2));
-    throw err;
-  });
+export const seedAll = (deps: SeederDependencies) =>
+  seedAdminUser(deps).pipe(
+    delay(2000),
+    switchMap(() => seedBusinessData(deps)),
+    switchMap(() =>
+      combineLatest(
+        userData.map(({ username }) =>
+          createTestAdminRoleContext(
+            1,
+            1,
+            username.split('@')[0],
+          )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
+        ),
+      ),
+    ),
+  );

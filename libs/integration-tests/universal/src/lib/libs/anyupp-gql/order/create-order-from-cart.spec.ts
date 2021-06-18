@@ -3,7 +3,7 @@ import { validateOrder } from '@bgap/shared/data-validators';
 import {
   cartFixture,
   groupFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -129,7 +129,7 @@ describe('CreatCartFromOrder mutation test', () => {
     ]);
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .pipe(
         tap(x => {
           authAnyuppSdk = x.authAnyuppSdk;
