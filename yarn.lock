@@ -5768,18 +5768,6 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.27.0.tgz#cd7b7ef239ad6937e55bf10b6cbf41235250078d"
-  integrity sha512-wbLSrso1WDekrVBv70J1YuRjgXBWCmp5r8Tvsel3Or+4eea0KpMg9f95eda9xqYQroxw+0AgB85ihoht2jEpBA==
-  dependencies:
-    aws-cdk "1.105.0"
-    aws-sdk "^2.761.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    fs-extra "^9.0.1"
-    log4js "^6.3.0"
-
 "@serverless-stack/core@^0.28.0":
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.28.0.tgz#ba04f71c89b5d88b0924869e355b9778e297679d"
@@ -5792,10 +5780,22 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.27.0.tgz#ad8a226aeff013c9364ba38fce72b51e81f5c214"
-  integrity sha512-PeHhafYn5TpM/yHLZePUSVJ8pouaNTJLhJ2PU1Bw0pkYQlBdwqA+AoSthLfp67GRRHhnM0Vo1pfzi+oGKFlyHQ==
+"@serverless-stack/core@^0.28.1":
+  version "0.28.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.28.1.tgz#686f38d0452824877c0881453f6bbf3d59842c8d"
+  integrity sha512-bjHFvYr1e5xkQoGHJZ/2+Ym2pk5dIeKANLgBGRkX1BrMDxqr9zYCM2rjNnRR8ZVt2LxDTM84w5kYLAVndh7O4Q==
+  dependencies:
+    aws-cdk "1.105.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+
+"@serverless-stack/resources@0.28.1":
+  version "0.28.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.28.1.tgz#fdb4d5e2a8436001559b6343a4f87192d92e9268"
+  integrity sha512-dacIzUAN3mYkP2v7zc/kA3QASPfjT6TCgMyP2XeZ6WoPQHf5AAdd1MjznRTeKPV5xz4HxThfX3YQe0jEYHe7mQ==
   dependencies:
     "@aws-cdk/aws-apigateway" "1.105.0"
     "@aws-cdk/aws-apigatewayv2" "1.105.0"
@@ -5827,7 +5827,7 @@
     "@aws-cdk/aws-sqs" "1.105.0"
     "@aws-cdk/core" "1.105.0"
     "@aws-cdk/cx-api" "1.105.0"
-    "@serverless-stack/core" "^0.27.0"
+    "@serverless-stack/core" "^0.28.1"
     "@types/jest" "^26.0.7"
     chalk "^4.1.0"
     cross-spawn "^7.0.3"
