@@ -47,6 +47,12 @@ export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
     userData.map(({ email, username, phone }) =>
       deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
+        catchError(err => {
+          console.warn(
+            `Temporarily ignored error during admin user deletion: ${err}`,
+          );
+          return of({});
+        }),
         switchMap(() =>
           defer(() =>
             from(
@@ -66,14 +72,6 @@ export const seedAdminUser = (deps: SeederDependencies) =>
         catchError(err => {
           if (err.code === ResolverErrorCode.UserAlreadyExists) {
             console.warn(`${email} user already exists, no problem...`);
-            return of({});
-          } else if (
-            err ===
-            "Error: GraphQL error: Cannot return null for non-nullable type: 'AdminUser' within parent 'AdminRoleContext'"
-          ) {
-            console.warn(
-              `To handle: Cannot return null for non-nullable type: 'AdminUser' within parent 'AdminRoleContext'`,
-            );
             return of({});
           }
 

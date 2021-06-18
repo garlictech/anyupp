@@ -86,7 +86,7 @@ export const createTestChain =
     const input: CrudApi.CreateChainInput = {
       ...chainFixture.chainBase,
       id: generateChainId(chainIdx),
-      name: `Seeded chain #${chainIdx}`,
+      name: `Rab lánc #${chainIdx}`,
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteChain({ input: { id: input.id ?? '' } }),
@@ -104,7 +104,7 @@ export const createTestGroup =
       ...groupFixture.groupBase,
       id: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
-      name: `Seeded group #${groupIdx}`,
+      name: `Nagy csoport #${groupIdx}`,
       // currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
       currency: 'HUF',
     };
@@ -147,7 +147,7 @@ export const createTestUnit =
       id: generateUnitId(chainIdx, groupIdx, unitIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
-      name: `Seeded unit #${chainIdx}${groupIdx}${unitIdx}`,
+      name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
       lanes: [
         {
           color: '#e72222',
